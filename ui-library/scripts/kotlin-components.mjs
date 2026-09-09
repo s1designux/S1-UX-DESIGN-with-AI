@@ -2,10 +2,16 @@
  * kotlin-components.mjs — Compose 부품의 뼈대(레이아웃 트리)만 담는다.
  * --------------------------------------------------------------------------
  * 치수·색·글자값은 한 자리도 여기 없다. 전부 S1*Spec.box(...) 에서 꺼내 쓴다.
- * 뼈대가 정본과 다른 모양이면 그건 여기서 고칠 일이고, 값이 다르면 CSS 정본이 정답이다.
+ *
+ * 축이 하나뿐이면 파라미터로 내보내지 않는다 — 안드로이드는 모바일 한 벌만 쓰므로
+ * 대부분의 부품에서 size·break 는 고를 것이 없다(river 결정 2026-09-09).
+ * 고를 것이 없는 것을 고르게 하면 개발자가 없는 선택지를 찾게 된다.
  */
 
 const NOTE = "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run ui:build` 를 실행하세요.";
+
+/** 비어 있는 축은 줄 자체를 없앤다 — 생성물에 빈 줄이 남지 않게. */
+const lines = (...items) => items.flat().filter((one) => one !== null && one !== undefined && String(one).trim() !== "").join("\n");
 
 const header = (pkg, imports, title) => [
   `// ${NOTE}`,
@@ -43,20 +49,38 @@ const COMMON = [
   "androidx.compose.ui.unit.dp"
 ];
 
-export function buttonKt(pkg) {
+/* ── 축 → 파라미터·키 ────────────────────────────────────────────────── */
+
+/** 고를 것이 둘 이상일 때만 파라미터로 낸다. */
+const sizeParameter = (api) => (api.sizeParam ? [`    size: String = "${api.sizes[0]}",`] : []);
+const variantParameter = (api, name = "variant") => (api.variantParam ? [`    ${name}: String = "${api.variants[0]}",`] : []);
+
+/** 스타일 표를 찾는 열쇠 — 고정된 축은 값을 그대로 박는다. */
+const sizeKey = (api) => (api.sizeParam ? "$size" : api.size);
+const variantKey = (api, name = "variant") => (api.variantParam ? `$${name}` : api.variant);
+
+/** 이 부품이 무엇으로 고정돼 있는지 코드에 남긴다 — 나중에 축이 늘면 여기가 먼저 바뀐다. */
+function fixedNote(api) {
+  const fixed = [];
+  if (!api.sizeParam && api.size) fixed.push(`크기 ${api.size}`);
+  if (api.breakName) fixed.push(`화면 ${api.breakName}`);
+  if (!api.variantParam && api.variant) fixed.push(`변형 ${api.variant}`);
+  return fixed.length === 0 ? "" : ` * 이 부품은 ${fixed.join(" · ")} 한 벌뿐이라 고를 파라미터가 없다.\n`;
+}
+
+export function buttonKt(pkg, api) {
   return header(pkg, [...COMMON, "androidx.compose.ui.text.style.TextAlign", "androidx.compose.ui.text.style.TextOverflow"],
-    "S1Button — 정본 Button(Primary·Secondary·Blue Line × MD·XSM·XXSM·LG)") + `
+    `S1Button — 정본 Button(${api.variants.join(" · ")} × ${api.sizes.join(" · ")})`) + `
 /**
- * 승인된 버튼. variant·size 는 배포본 허용목록의 값만 받는다(없는 조합은 즉시 멈춘다).
- * Hover 는 마우스가 있는 화면에서만 생긴다 — 정본 CSS 의 @media (hover: hover) 와 같다.
+ * 승인된 버튼. 없는 조합을 넣으면 그 자리에서 멈추고 쓸 수 있는 조합을 알려 준다.
+${fixedNote(api)} * Hover 는 마우스가 있는 화면에서만 생긴다 — 정본 CSS 의 @media (hover: hover) 와 같다.
  */
 @Composable
 fun S1Button(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    variant: String = "primary",
-    size: String = "md",
+${lines(variantParameter(api), sizeParameter(api))}
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
@@ -67,7 +91,7 @@ fun S1Button(
         hovered || pressed -> "hover"
         else -> "default"
     }
-    val box = S1ButtonSpec.box("$variant|$size|$state", "root")
+    val box = S1ButtonSpec.box("${variantKey(api)}|${sizeKey(api)}|$state", "root")
     Box(
         modifier = modifier
             .s1Box(box, applyPadding = false)
@@ -91,21 +115,19 @@ fun S1Button(
 `;
 }
 
-export function chipKt(pkg) {
+export function chipKt(pkg, api) {
   return header(pkg, [...COMMON, "androidx.compose.ui.text.style.TextAlign", "androidx.compose.ui.text.style.TextOverflow"],
-    "S1Chip — 정본 Chip(Line·Solid × Default·Hover·Selected·Disabled)") + `
+    `S1Chip — 정본 Chip(${api.variants.join(" · ")})`) + `
 /**
  * 승인된 칩. 눌린 상태(selected)는 정본 Selected 셀을 쓰고, 선택된 칩에는 Hover 변형이 없다.
- */
+${fixedNote(api)} */
 @Composable
 fun S1Chip(
     text: String,
     selected: Boolean,
     onSelectedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    variant: String = "line",
-    size: String = "md",
-    breakName: String = "pc",
+${lines(variantParameter(api), sizeParameter(api))}
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
@@ -116,7 +138,7 @@ fun S1Chip(
         hovered -> "hover"
         else -> "default"
     }
-    val box = S1ChipSpec.box("$variant|$size|$breakName|$state", "root")
+    val box = S1ChipSpec.box("${variantKey(api)}|${sizeKey(api)}|${api.breakName}|$state", "root")
     Box(
         modifier = modifier
             .s1Box(box, applyPadding = false)
@@ -149,8 +171,8 @@ export function controlKt(pkg, id) {
   return header(pkg, [...COMMON, "androidx.compose.foundation.Image", "androidx.compose.ui.graphics.ColorFilter"],
     `${name} — 정본 ${id === "checkbox" ? "Checkbox(18×18, check 16×16)" : "Radio(원 18×18, 점 10×10)"}`) + `
 /**
- * 승인된 ${id === "checkbox" ? "체크박스" : "라디오"}. 라벨은 선택 부품이라 없으면 상자만 남는다(정본과 같다).
- * 선택 표시 색은 상자의 글자색을 따라간다 — 정본 CSS 의 currentColor 와 같은 배선이다.
+ * 승인된 ${id === "checkbox" ? "체크박스" : "라디오"}. 정본에 크기·화면 축이 없어 PC 와 모바일이 같은 한 벌이다.
+ * 라벨은 선택 부품이라 없으면 상자만 남는다. 선택 표시 색은 상자의 글자색을 따라간다(정본 currentColor).
  */
 @Composable
 fun ${name}(
@@ -219,7 +241,7 @@ fun ${name}(
 export function toggleKt(pkg) {
   return header(pkg, COMMON, "S1Toggle — 정본 Toggle(트랙 40×20, 노브 16×16)") + `
 /**
- * 승인된 토글. 정본에 Hover·모션 변형이 없어 여기서도 만들지 않는다.
+ * 승인된 토글. 정본에 크기·화면 축이 없어 PC 와 모바일이 같은 한 벌이고, Hover·모션 변형도 없다.
  * 노브 위치는 정본 값(꺼짐 왼쪽 2 · 켜짐 오른쪽 2)을 그대로 쓴다.
  */
 @Composable
@@ -260,33 +282,29 @@ fun S1Toggle(
 `;
 }
 
-export function tabKt(pkg) {
+export function tabKt(pkg, api) {
   return header(pkg, [...COMMON, "androidx.compose.foundation.layout.RowScope", "androidx.compose.ui.text.style.TextAlign"],
     "S1TabRow — 정본 Line Tab(기본선 1px · 선택선 2px)") + `
 /**
  * 승인된 라인 탭. 정본은 탭이 묶음 폭을 균등하게 나눠 갖는다(flex: 1 1 0) — 여기서도 같다.
- * 기본선(전체 폭 1px)과 선택선(탭 폭 2px)은 정본과 같은 바닥선에서 시작한다.
- */
+${fixedNote(api)} */
 @Composable
 fun S1TabRow(
     tabs: List<String>,
     selectedIndex: Int,
     onSelect: (Int) -> Unit,
-    modifier: Modifier = Modifier,
-    size: String = "md",
-    breakName: String = "pc"
+    modifier: Modifier = Modifier
+${api.sizeParam ? `,\n    size: String = "${api.sizes[0]}"` : ""}
 ) {
-    val root = S1TabSpec.box("$size|$breakName|default", "root")
-    val baseline = S1TabSpec.box("$size|$breakName|default", "baseline")
+    val root = S1TabSpec.box("${sizeKey(api)}|${api.breakName}|default", "root")
+    val baseline = S1TabSpec.box("${sizeKey(api)}|${api.breakName}|default", "baseline")
     Box(modifier = modifier.s1Box(root, applyPadding = false)) {
         Row(modifier = Modifier.fillMaxWidth()) {
             tabs.forEachIndexed { index, label ->
                 S1Tab(
                     label = label,
                     selected = index == selectedIndex,
-                    onClick = { onSelect(index) },
-                    size = size,
-                    breakName = breakName
+                    onClick = { onSelect(index) }${api.sizeParam ? ",\n                    size = size" : ""}
                 )
             }
         }
@@ -304,9 +322,7 @@ fun S1TabRow(
 private fun RowScope.S1Tab(
     label: String,
     selected: Boolean,
-    onClick: () -> Unit,
-    size: String,
-    breakName: String
+    onClick: () -> Unit${api.sizeParam ? ",\n    size: String" : ""}
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val hovered by interactionSource.collectIsHoveredAsState()
@@ -315,7 +331,7 @@ private fun RowScope.S1Tab(
         hovered -> "hover"
         else -> "default"
     }
-    val key = "$size|$breakName|$state"
+    val key = "${sizeKey(api)}|${api.breakName}|$state"
     val tab = S1TabSpec.box(key, "tab")
     val indicator = S1TabSpec.box(key, "indicator")
     Box(
@@ -355,11 +371,12 @@ private fun RowScope.S1Tab(
 `;
 }
 
-export function dropdownKt(pkg) {
+export function dropdownKt(pkg, api) {
   return header(pkg, [...COMMON, "androidx.compose.foundation.layout.ColumnScope", "androidx.compose.ui.text.style.TextOverflow"],
     "S1Dropdown — 정본 Dropdown(패널 + 옵션 행 · Text·Checkbox 유형)") + `
 /**
- * 승인된 목록. 폭은 정본 규칙대로 최소 100 이고, 트리거가 있는 소비자(S1Select)가 자기 폭을 넘겨준다.
+ * 승인된 목록. 정본에 화면 축이 없어 PC 와 모바일이 같은 한 벌이다.
+ * 폭은 정본 규칙대로 최소 100 이고, 트리거가 있는 소비자(S1Select)가 자기 폭을 넘겨준다.
  * 긴 옵션은 줄바꿈하지 않고 말줄임으로 자른다(river 결정 2026-09-07).
  */
 @Composable
@@ -368,24 +385,22 @@ fun S1Dropdown(
     selectedIndices: Set<Int>,
     onOptionClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    type: String = "text",
-    size: String = "md",
-    selectAllLabel: String? = null,
+${api.variantParam ? `    type: String = "${api.variants[0]}",\n` : ""}${api.sizeParam ? `    size: String = "${api.sizes[0]}",\n` : ""}    selectAllLabel: String? = null,
     selectAllChecked: Boolean = false,
     onSelectAll: (() -> Unit)? = null
 ) {
-    val root = S1DropdownSpec.box("$type|$size|default", "root")
+    val root = S1DropdownSpec.box("${variantKey(api, "type")}|${sizeKey(api)}|default", "root")
     Column(modifier = modifier.s1Box(root)) {
         if (selectAllLabel != null && onSelectAll != null) {
             S1DropdownOption(
                 label = selectAllLabel,
                 selected = selectAllChecked,
-                type = type,
-                size = size,
+                type = ${api.variantParam ? "type" : `"${api.variant}"`},
+                size = ${api.sizeParam ? "size" : `"${api.size}"`},
                 selectAll = true,
                 onClick = onSelectAll
             )
-            val divider = S1DropdownSpec.box("$type|$size|default", "divider")
+            val divider = S1DropdownSpec.box("${variantKey(api, "type")}|${sizeKey(api)}|default", "divider")
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -397,8 +412,8 @@ fun S1Dropdown(
             S1DropdownOption(
                 label = label,
                 selected = selectedIndices.contains(index),
-                type = type,
-                size = size,
+                type = ${api.variantParam ? "type" : `"${api.variant}"`},
+                size = ${api.sizeParam ? "size" : `"${api.size}"`},
                 selectAll = false,
                 onClick = { onOptionClick(index) }
             )
@@ -451,7 +466,7 @@ private fun ColumnScope.S1DropdownOption(
 `;
 }
 
-export function selectKt(pkg) {
+export function selectKt(pkg, api, dropdownApi) {
   return header(pkg, [
     ...COMMON,
     "androidx.compose.foundation.Image",
@@ -468,7 +483,7 @@ export function selectKt(pkg) {
 /**
  * 승인된 셀렉트 박스. 목록은 별도 부품(S1Dropdown)을 그대로 쓰고, 여기서는 배치와 폭만 담당한다 —
  * 웹 배포본에서 select.css 가 dropdown.css 를 복제하지 않는 것과 같은 구조다.
- */
+${fixedNote(api)} */
 @Composable
 fun S1Select(
     options: List<String>,
@@ -476,9 +491,7 @@ fun S1Select(
     onSelect: (Int) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = "선택",
-    size: String = "md",
-    breakName: String = "pc",
-    enabled: Boolean = true
+${api.sizeParam ? `    size: String = "${api.sizes[0]}",\n` : ""}    enabled: Boolean = true
 ) {
     var expanded by remember { mutableStateOf(false) }
     var triggerWidth by remember { mutableStateOf(0) }
@@ -491,7 +504,7 @@ fun S1Select(
         hovered -> "hover"
         else -> "default"
     }
-    val key = "$size|$breakName|$state"
+    val key = "${sizeKey(api)}|${api.breakName}|$state"
     val trigger = S1SelectSpec.box(key, "trigger")
     val icon = S1SelectSpec.box(key, "icon")
     val panel = S1SelectSpec.box(key, "panel")
@@ -544,9 +557,7 @@ fun S1Select(
                         onSelect(index)
                         expanded = false
                     },
-                    modifier = Modifier.width(with(density) { triggerWidth.toDp() }),
-                    type = "text",
-                    size = size
+                    modifier = Modifier.width(with(density) { triggerWidth.toDp() })${dropdownApi.variantParam ? ',\n                    type = "text"' : ""}${dropdownApi.sizeParam ? `,\n                    size = "${api.size ?? api.sizes[0]}"` : ""}
                 )
             }
         }
@@ -555,7 +566,7 @@ fun S1Select(
 `;
 }
 
-export function inputKt(pkg) {
+export function inputKt(pkg, api) {
   return header(pkg, [
     ...COMMON,
     "androidx.compose.foundation.Image",
@@ -570,7 +581,7 @@ export function inputKt(pkg) {
   ], "S1Input — 정본 Base Input + 비밀번호 · 검색 조립") + `
 /**
  * 승인된 입력칸. 비밀번호·검색은 별도 부품이 아니라 이 입력칸을 조립한 것이다(river D1, 2026-09-04).
- * 상태는 화면이 정하지 않고 값·초점·플래그에서 정해진다 — 정본 CSS 의 우선순위와 같은 순서다.
+${fixedNote(api)} * 상태는 화면이 정하지 않고 값·초점·플래그에서 정해진다 — 정본 CSS 의 우선순위와 같은 순서다.
  */
 @Composable
 fun S1Input(
@@ -580,9 +591,7 @@ fun S1Input(
     label: String? = null,
     placeholder: String? = null,
     message: String? = null,
-    size: String = "md",
-    breakName: String = "pc",
-    enabled: Boolean = true,
+${api.sizeParam ? `    size: String = "${api.sizes[0]}",\n` : ""}    enabled: Boolean = true,
     readOnly: Boolean = false,
     isError: Boolean = false,
     isCorrect: Boolean = false,
@@ -600,7 +609,7 @@ fun S1Input(
         focused -> "focus"
         else -> "default"
     }
-    val key = "$size|$breakName|$state"
+    val key = "${sizeKey(api)}|${api.breakName}|$state"
     val root = S1InputSpec.box(key, "root")
     val labelBox = S1InputSpec.box(key, "label")
     val field = S1InputSpec.box(key, "field")
@@ -649,18 +658,18 @@ fun S1Input(
             )
             var first = true
             if (value.isNotEmpty()) {
-                S1InputAction("clear", size, breakName, state, first) { onValueChange("") }
+                S1InputAction("clear", ${api.sizeParam ? "size" : `"${api.size}"`}, state, first) { onValueChange("") }
                 first = false
             }
             if (mode == "password") {
                 S1InputAction(
                     if (passwordVisible) "password-pressed" else "password",
-                    size, breakName, state, first
+                    ${api.sizeParam ? "size" : `"${api.size}"`}, state, first
                 ) { passwordVisible = !passwordVisible }
                 first = false
             }
             if (mode == "search") {
-                S1InputAction("search", size, breakName, state, first) { onSearch?.invoke() }
+                S1InputAction("search", ${api.sizeParam ? "size" : `"${api.size}"`}, state, first) { onSearch?.invoke() }
                 first = false
             }
         }
@@ -672,7 +681,6 @@ fun S1Input(
 private fun S1InputAction(
     action: String,
     size: String,
-    breakName: String,
     inputState: String,
     first: Boolean,
     onClick: () -> Unit
@@ -684,7 +692,7 @@ private fun S1InputAction(
         hovered -> "hover"
         else -> "default"
     }
-    val key = "$size|$breakName|$action|$state"
+    val key = "$size|${api.breakName}|$action|$state"
     val box = S1InputSpec.inputActionsBox(key, "action")
     val icon = S1InputSpec.inputActionsBox(key, "icon")
     val iconName = icon.icon ?: return
@@ -711,10 +719,7 @@ private fun S1InputAction(
 `;
 }
 
-export function modalKt(pkg, footerButtonSizes) {
-  const mapping = Object.entries(footerButtonSizes)
-    .map(([breakName, size]) => `        "${breakName}" -> "${size}"`)
-    .join("\n");
+export function modalKt(pkg, api, footerButtonSize) {
   return header(pkg, [
     ...COMMON,
     "androidx.compose.foundation.Image",
@@ -723,11 +728,12 @@ export function modalKt(pkg, footerButtonSizes) {
     "androidx.compose.ui.graphics.ColorFilter",
     "androidx.compose.ui.window.Dialog",
     "androidx.compose.ui.window.DialogProperties"
-  ], "S1Modal — 정본 Modal Shell(Break PC·Mobile × Footer Single·Dual)") + `
+  ], "S1Modal — 정본 Modal Shell(Footer Single·Dual)") + `
 /**
- * 승인된 모달. 정본에 크기 축·상태 축이 없고 변형은 Break × Footer 넷뿐이다.
- * 푸터 버튼 크기는 승인된 예제 마크업에서 읽은 값이다(PC·Mobile 각각).
- * Mobile 에는 정본에 닫기 버튼이 없어 여기서도 그리지 않는다.
+ * 승인된 모달. 정본에 크기 축·상태 축이 없고, 안드로이드는 모바일 한 벌만 쓰므로
+ * 변형은 푸터(확인만 / 취소+확인) 둘뿐이다.
+ * 푸터 버튼 크기는 승인된 모바일 예제 마크업에서 읽은 값(${footerButtonSize})이다.
+ * 모바일 정본에는 닫기 버튼이 없어 여기서도 그리지 않는다.
  */
 @Composable
 fun S1Modal(
@@ -738,8 +744,7 @@ fun S1Modal(
     confirmLabel: String = "확인",
     onConfirm: () -> Unit = onDismissRequest,
     cancelLabel: String? = null,
-    onCancel: () -> Unit = onDismissRequest,
-    breakName: String = "pc"
+    onCancel: () -> Unit = onDismissRequest
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -753,8 +758,7 @@ fun S1Modal(
             confirmLabel = confirmLabel,
             onConfirm = onConfirm,
             cancelLabel = cancelLabel,
-            onCancel = onCancel,
-            breakName = breakName
+            onCancel = onCancel
         )
     }
 }
@@ -769,11 +773,10 @@ fun S1ModalPanel(
     confirmLabel: String = "확인",
     onConfirm: () -> Unit = onDismissRequest,
     cancelLabel: String? = null,
-    onCancel: () -> Unit = onDismissRequest,
-    breakName: String = "pc"
+    onCancel: () -> Unit = onDismissRequest
 ) {
     val footerKind = if (cancelLabel == null) "single" else "dual"
-    val key = "$breakName|$footerKind"
+    val key = "${api.breakName}|$footerKind"
     val overlay = S1ModalSpec.box(key, "overlay")
     val panel = S1ModalSpec.box(key, "panel")
     val content = S1ModalSpec.box(key, "content")
@@ -807,7 +810,6 @@ fun S1ModalPanel(
                         style = s1TextStyle(titleBox),
                         modifier = Modifier.weight(1f)
                     )
-                    if (breakName != "mobile") S1ModalClose(breakName = breakName, onClick = onDismissRequest)
                 }
                 Column(
                     modifier = Modifier.s1Padding(bodyBox),
@@ -820,71 +822,38 @@ fun S1ModalPanel(
                 modifier = Modifier
                     .fillMaxWidth()
                     .s1Padding(footerBox),
-                horizontalArrangement = if (breakName == "mobile") {
-                    Arrangement.spacedBy(footerBox.gapDp)
-                } else {
-                    Arrangement.spacedBy(footerBox.gapDp, Alignment.End)
-                }
+                horizontalArrangement = Arrangement.spacedBy(footerBox.gapDp)
             ) {
-                val buttonSize = footerButtonSize(breakName)
                 if (cancelLabel != null) {
                     S1Button(
                         text = cancelLabel,
                         onClick = onCancel,
-                        modifier = if (breakName == "mobile") Modifier.weight(1f) else Modifier,
-                        variant = "secondary",
-                        size = buttonSize
+                        modifier = Modifier.weight(1f),
+                        variant = "secondary"
                     )
                 }
                 S1Button(
                     text = confirmLabel,
                     onClick = onConfirm,
-                    modifier = if (breakName == "mobile") Modifier.weight(1f) else Modifier,
-                    variant = "primary",
-                    size = buttonSize
+                    modifier = Modifier.weight(1f),
+                    variant = "primary"
                 )
             }
         }
-    }
-}
-
-/** 승인된 예제 마크업이 쓰는 푸터 버튼 크기. */
-private fun footerButtonSize(breakName: String): String = when (breakName) {
-${mapping}
-        else -> error("[s1] modal: 승인되지 않은 break \\"$breakName\\"")
-    }
-
-@Composable
-private fun S1ModalClose(breakName: String, onClick: () -> Unit) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val hovered by interactionSource.collectIsHoveredAsState()
-    val base = S1ModalSpec.box("$breakName|single", "close")
-    val icon = S1ModalSpec.box("$breakName|single", "closeIcon")
-    val box = if (hovered) S1ModalSpec.modalCloseHoverBox(breakName, "close") else base
-    val iconName = icon.icon ?: return
-    Box(
-        modifier = Modifier
-            .s1Box(box, applyPadding = false)
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClick
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Image(
-            imageVector = S1Icons.byName(iconName),
-            contentDescription = "닫기",
-            modifier = Modifier.size((box.width ?: 0f).dp, (box.height ?: 0f).dp),
-            colorFilter = ColorFilter.tint(icon.background?.value() ?: Color.Unspecified)
-        )
     }
 }
 `;
 }
 
 /** 미리보기 화면 — 승인된 조합을 축 목록에서 그대로 훑어 그린다(빠뜨릴 자리가 없다). */
-export function galleryKt(pkg) {
+export function galleryKt(pkg, apis) {
+  const button = apis.button;
+  const chip = apis.chip;
+  const dropdown = apis.dropdown;
+  const tab = apis.tab;
+  const select = apis.select;
+  const input = apis.input;
+
   return header(pkg, [
     "androidx.compose.foundation.background",
     "androidx.compose.foundation.layout.Arrangement",
@@ -913,6 +882,7 @@ export function galleryKt(pkg) {
 /**
  * 눈으로 대조하기 위한 화면이다. 여기 나오는 조합은 스타일 표의 축 목록에서 바로 훑는다 —
  * 승인 목록에 무엇이 늘거나 줄면 이 화면도 함께 늘거나 준다.
+ * 안드로이드는 모바일 한 벌만 쓰므로 크기 축이 하나인 부품에는 크기 선택이 없다.
  */
 @Composable
 fun S1Gallery(modifier: Modifier = Modifier, dark: Boolean = false) {
@@ -927,24 +897,20 @@ fun S1Gallery(modifier: Modifier = Modifier, dark: Boolean = false) {
         ) {
             GallerySection("Button") {
                 for (variant in S1ButtonSpec.variants) {
-                    for (size in S1ButtonSpec.sizes) {
-                        GalleryRow("$variant · $size") {
-                            S1Button(text = "버튼", onClick = {}, variant = variant, size = size)
-                            S1Button(text = "비활성", onClick = {}, variant = variant, size = size, enabled = false)
-                        }
+                    GalleryRow(variant) {
+                        S1Button(text = "버튼", onClick = {}${button.variantParam ? ", variant = variant" : ""})
+                        S1Button(text = "비활성", onClick = {}${button.variantParam ? ", variant = variant" : ""}, enabled = false)
                     }
                 }
             }
 
             GallerySection("Chip") {
                 for (variant in S1ChipSpec.variants) {
-                    for ((size, breakName) in S1ChipSpec.sizeBreaks) {
-                        var selected by remember { mutableStateOf(false) }
-                        GalleryRow("$variant · $size · $breakName") {
-                            S1Chip(text = "칩", selected = selected, onSelectedChange = { selected = it }, variant = variant, size = size, breakName = breakName)
-                            S1Chip(text = "선택됨", selected = true, onSelectedChange = {}, variant = variant, size = size, breakName = breakName)
-                            S1Chip(text = "비활성", selected = false, onSelectedChange = {}, variant = variant, size = size, breakName = breakName, enabled = false)
-                        }
+                    var selected by remember { mutableStateOf(false) }
+                    GalleryRow(variant) {
+                        S1Chip(text = "칩", selected = selected, onSelectedChange = { selected = it }${chip.variantParam ? ", variant = variant" : ""})
+                        S1Chip(text = "선택됨", selected = true, onSelectedChange = {}${chip.variantParam ? ", variant = variant" : ""})
+                        S1Chip(text = "비활성", selected = false, onSelectedChange = {}${chip.variantParam ? ", variant = variant" : ""}, enabled = false)
                     }
                 }
             }
@@ -977,42 +943,31 @@ fun S1Gallery(modifier: Modifier = Modifier, dark: Boolean = false) {
             }
 
             GallerySection("Line Tab") {
-                for ((size, breakName) in S1TabSpec.sizeBreaks) {
-                    var index by remember { mutableStateOf(0) }
-                    GalleryLabel("$size · $breakName")
-                    S1TabRow(
-                        tabs = listOf("탭 메뉴 1", "탭 메뉴 2", "탭 메뉴 3"),
-                        selectedIndex = index,
-                        onSelect = { index = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        size = size,
-                        breakName = breakName
-                    )
-                }
+                var index by remember { mutableStateOf(0) }
+                S1TabRow(
+                    tabs = listOf("탭 메뉴 1", "탭 메뉴 2", "탭 메뉴 3"),
+                    selectedIndex = index,
+                    onSelect = { index = it },
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
 
             GallerySection("Select Box") {
-                for ((size, breakName) in S1SelectSpec.sizeBreaks) {
-                    var picked by remember { mutableStateOf<Int?>(null) }
-                    GalleryRow("$size · $breakName") {
-                        S1Select(
-                            options = listOf("서울", "부산", "제주"),
-                            selectedIndex = picked,
-                            onSelect = { picked = it },
-                            modifier = Modifier.width(200.dp),
-                            size = size,
-                            breakName = breakName
-                        )
-                        S1Select(
-                            options = listOf("서울"),
-                            selectedIndex = null,
-                            onSelect = {},
-                            modifier = Modifier.width(200.dp),
-                            size = size,
-                            breakName = breakName,
-                            enabled = false
-                        )
-                    }
+                var picked by remember { mutableStateOf<Int?>(null) }
+                GalleryRow("select") {
+                    S1Select(
+                        options = listOf("서울", "부산", "제주"),
+                        selectedIndex = picked,
+                        onSelect = { picked = it },
+                        modifier = Modifier.width(200.dp)
+                    )
+                    S1Select(
+                        options = listOf("서울"),
+                        selectedIndex = null,
+                        onSelect = {},
+                        modifier = Modifier.width(200.dp),
+                        enabled = false
+                    )
                 }
             }
 
@@ -1023,48 +978,38 @@ fun S1Gallery(modifier: Modifier = Modifier, dark: Boolean = false) {
                         S1Dropdown(
                             options = listOf("최신순", "인기순", "과거순"),
                             selectedIndices = setOf(0),
-                            onOptionClick = {},
-                            type = type,
-                            size = size
+                            onOptionClick = {}${dropdown.variantParam ? ",\n                            type = type" : ""}${dropdown.sizeParam ? ",\n                            size = size" : ""}
                         )
                     }
                 }
             }
 
             GallerySection("Input") {
-                for ((size, breakName) in S1InputSpec.sizeBreaks) {
-                    var text by remember { mutableStateOf("") }
-                    GalleryLabel("$size · $breakName")
-                    S1Input(
-                        value = text,
-                        onValueChange = { text = it },
-                        label = "이름",
-                        placeholder = "내용을 입력하세요",
-                        message = "안내 문구",
-                        size = size,
-                        breakName = breakName
-                    )
-                    S1Input(value = "오류 값", onValueChange = {}, message = "다시 확인해 주세요", size = size, breakName = breakName, isError = true)
-                    S1Input(value = "읽기 전용", onValueChange = {}, size = size, breakName = breakName, readOnly = true)
-                    S1Input(value = "", onValueChange = {}, placeholder = "비활성", size = size, breakName = breakName, enabled = false)
-                    S1Input(value = "비밀번호", onValueChange = {}, size = size, breakName = breakName, mode = "password")
-                    S1Input(value = "검색어", onValueChange = {}, size = size, breakName = breakName, mode = "search")
-                }
+                var text by remember { mutableStateOf("") }
+                S1Input(
+                    value = text,
+                    onValueChange = { text = it },
+                    label = "이름",
+                    placeholder = "내용을 입력하세요",
+                    message = "안내 문구"
+                )
+                S1Input(value = "오류 값", onValueChange = {}, message = "다시 확인해 주세요", isError = true)
+                S1Input(value = "읽기 전용", onValueChange = {}, readOnly = true)
+                S1Input(value = "", onValueChange = {}, placeholder = "비활성", enabled = false)
+                S1Input(value = "비밀번호", onValueChange = {}, mode = "password")
+                S1Input(value = "검색어", onValueChange = {}, mode = "search")
             }
 
             GallerySection("Modal") {
-                for (breakName in S1ModalSpec.breaks) {
-                    for (footer in S1ModalSpec.footers) {
-                        GalleryLabel("$breakName · $footer")
-                        Box(modifier = Modifier.fillMaxWidth().height(360.dp)) {
-                            S1ModalPanel(
-                                title = "제목 영역",
-                                message = "변경한 내용이 저장되지 않고 사라집니다.\\n정말 이 작업을 진행하시겠어요?",
-                                onDismissRequest = {},
-                                cancelLabel = if (footer == "dual") "취소" else null,
-                                breakName = breakName
-                            )
-                        }
+                for (footer in S1ModalSpec.footers) {
+                    GalleryLabel(footer)
+                    Box(modifier = Modifier.fillMaxWidth().height(360.dp)) {
+                        S1ModalPanel(
+                            title = "제목 영역",
+                            message = "변경한 내용이 저장되지 않고 사라집니다.\\n정말 이 작업을 진행하시겠어요?",
+                            onDismissRequest = {},
+                            cancelLabel = if (footer == "dual") "취소" else null
+                        )
                     }
                 }
             }

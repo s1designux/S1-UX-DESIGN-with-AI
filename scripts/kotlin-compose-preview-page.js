@@ -105,14 +105,23 @@ const AUTO_STATE = {
   filled: '값이 들어오면 저절로 이 모습이 됩니다 — 코드로 켜지 않습니다.'
 };
 
+/** 고정된 축은 코드에도 쓰지 않는다 — 부품이 그 파라미터를 받지 않기 때문이다. */
+const axisArg = (api, axis, value) => {
+  if (axis === 'size') return api.sizeParam ? [`size = "${value}"`] : [];
+  if (axis === 'variant') return api.variantParam ? [`variant = "${value}"`] : [];
+  if (axis === 'type') return api.variantParam ? [`type = "${value}"`] : [];
+  return [];
+};
+
 const SNIPPET = {
-  button: (c) => call('S1Button', [
-    'text = "버튼"', 'onClick = { }', `variant = "${c.variant}"`, `size = "${c.size}"`,
+  button: (c, api) => call('S1Button', [
+    'text = "버튼"', 'onClick = { }',
+    ...axisArg(api, 'variant', c.variant), ...axisArg(api, 'size', c.size),
     ...(c.state === 'disabled' ? ['enabled = false'] : [])
   ]),
-  chip: (c) => call('S1Chip', [
+  chip: (c, api) => call('S1Chip', [
     'text = "칩"', `selected = ${c.state === 'selected'}`, 'onSelectedChange = { }',
-    `variant = "${c.variant}"`, `size = "${c.size}"`, `breakName = "${c.breakName}"`,
+    ...axisArg(api, 'variant', c.variant), ...axisArg(api, 'size', c.size),
     ...(c.state === 'disabled' ? ['enabled = false'] : [])
   ]),
   checkbox: (c) => call('S1Checkbox', [
@@ -129,26 +138,26 @@ const SNIPPET = {
     `checked = ${c.state === 'on' || c.state === 'disabledOn'}`, 'onCheckedChange = { }',
     ...(c.state.startsWith('disabled') ? ['enabled = false'] : [])
   ]),
-  tab: (c) => call('S1TabRow', [
+  tab: (c, api) => call('S1TabRow', [
     'tabs = listOf("탭 메뉴 1", "탭 메뉴 2", "탭 메뉴 3")',
     `selectedIndex = ${c.state === 'selected' ? 0 : 1}`, 'onSelect = { }',
-    `size = "${c.size}"`, `breakName = "${c.breakName}"`
+    ...axisArg(api, 'size', c.size)
   ]),
-  select: (c) => call('S1Select', [
+  select: (c, api) => call('S1Select', [
     'options = listOf("서울", "부산", "제주")',
     `selectedIndex = ${c.state === 'filled' ? '0' : 'null'}`, 'onSelect = { }',
-    `size = "${c.size}"`, `breakName = "${c.breakName}"`,
+    ...axisArg(api, 'size', c.size),
     ...(c.state === 'disabled' ? ['enabled = false'] : [])
   ]),
-  dropdown: (c) => call('S1Dropdown', [
+  dropdown: (c, api) => call('S1Dropdown', [
     'options = listOf("최신순", "인기순", "과거순")',
     `selectedIndices = ${c.state === 'selected' ? 'setOf(0)' : 'emptySet()'}`, 'onOptionClick = { }',
-    `type = "${c.type}"`, `size = "${c.size}"`
+    ...axisArg(api, 'type', c.type), ...axisArg(api, 'size', c.size)
   ]),
-  input: (c) => call('S1Input', [
+  input: (c, api) => call('S1Input', [
     `value = ${c.state === 'default' ? '""' : '"입력한 값"'}`, 'onValueChange = { }',
     'label = "이름"', 'placeholder = "내용을 입력하세요"',
-    `size = "${c.size}"`, `breakName = "${c.breakName}"`,
+    ...axisArg(api, 'size', c.size),
     ...(c.state === 'error' ? ['isError = true', 'message = "다시 확인해 주세요"'] : []),
     ...(c.state === 'correct' ? ['isCorrect = true', 'message = "사용할 수 있습니다"'] : []),
     ...(c.state === 'readOnly' ? ['readOnly = true'] : []),
@@ -157,8 +166,7 @@ const SNIPPET = {
   modal: (c) => call('S1Modal', [
     'title = "제목 영역"', 'message = "변경한 내용이 저장되지 않고 사라집니다."',
     'onDismissRequest = { }', 'confirmLabel = "확인"',
-    ...(c.footer === 'dual' ? ['cancelLabel = "취소"'] : []),
-    `breakName = "${c.breakName}"`
+    ...(c.footer === 'dual' ? ['cancelLabel = "취소"'] : [])
   ])
 };
 
@@ -262,7 +270,7 @@ function footerSizesOf(base, manifest) {
 const AXIS_LABEL = { state: '상태', footer: '푸터', size: '크기', breakName: '화면', variant: '변형', type: '유형' };
 
 async function main() {
-  const { PLANS, extractSpec } = await import(path.join(ROOT, 'ui-library/scripts/kotlin-compose.mjs'));
+  const { PLANS, extractSpec, planFor, apiOf } = await import(path.join(ROOT, 'ui-library/scripts/kotlin-compose.mjs'));
   const { readTokens } = await import(path.join(ROOT, 'ui-library/scripts/platform.mjs'));
   const tokensCss = fs.readFileSync(path.join(ROOT, 'assets/css/tokens.css'), 'utf8');
   const tokenData = readTokens(tokensCss);
@@ -291,8 +299,14 @@ async function main() {
     const manifest = JSON.parse(fs.readFileSync(path.join(base, 'manifest.json'), 'utf8'));
     const planOptions = id === 'modal' ? footerSizesOf(base, manifest) : undefined;
     const spec = extractSpec({ id, css, manifest, tokenValues, planOptions });
-    const plan = PLANS[id](manifest, planOptions);
-    const shape = MATRIX[id];
+    /* 안드로이드는 모바일 한 벌만 쓴다 — PC 조합은 아예 만들지 않는다(river 결정 2026-09-09). */
+    const plan = planFor(id, manifest, planOptions);
+    const api = apiOf(id, manifest);
+    /* 값이 하나뿐인 축은 줄 이름에 쓰지 않는다 — 고를 것이 없는 것을 이름에 달면 읽는 사람이 헷갈린다. */
+    const shape = {
+      column: MATRIX[id].column,
+      rows: MATRIX[id].rows.filter((axis) => new Set(plan.combos.map((combo) => combo[axis])).size > 1)
+    };
 
     const columns = [];
     const rows = new Map();
@@ -329,7 +343,7 @@ async function main() {
           key,
           sample: serialize(root, SAMPLE_TEXT[id] ?? '보기'),
           values: valueChips(spec.table[key].parts, tokenValues),
-          code: SNIPPET[id](combo),
+          code: SNIPPET[id](combo, api),
           note: AUTO_STATE[columnValue] ?? null
         };
         return `<td data-col="${escapeHtml(columnValue)}"><button type="button" class="cell" data-detail="${escapeHtml(detailId)}">${serialize(root, SAMPLE_TEXT[id] ?? '보기')}</button></td>`;
@@ -338,10 +352,18 @@ async function main() {
     }
 
     const unread = coverage.components.find((entry) => entry.component === id)?.unreadDeclarations ?? [];
+    const pcOnly = unread.filter((one) => one.reason === 'pc-only');
+    const displayRules = unread.filter((one) => one.reason === 'display-rule');
+    const summaryParts = [];
+    if (pcOnly.length > 0) summaryParts.push(`안드로이드가 안 쓰는 PC 조합 ${pcOnly.length}건`);
+    if (displayRules.length > 0) summaryParts.push(`값이 아닌 표시·배치 규칙 ${displayRules.length}건`);
+    const list = (items) => `<ul>${items.map((one) => `<li><code>${escapeHtml(one.property)}: ${escapeHtml(one.value)}</code> <span>${escapeHtml(one.selector)}</span></li>`).join('')}</ul>`;
     const unreadBlock = unread.length === 0
       ? '<p class="ok">배포본 CSS 의 모든 선언을 읽었습니다.</p>'
-      : `<details class="unread"><summary>Compose 가 값으로 읽지 않은 선언 ${unread.length}건 — 모두 표시·배치 규칙입니다</summary>
-         <ul>${unread.map((one) => `<li><code>${escapeHtml(one.property)}: ${escapeHtml(one.value)}</code> <span>${escapeHtml(one.selector)}</span></li>`).join('')}</ul></details>`;
+      : `<details class="unread"><summary>부품이 값으로 읽지 않은 선언 ${unread.length}건 — ${summaryParts.join(' · ')}</summary>
+         ${pcOnly.length > 0 ? `<p class="unreadhead">안드로이드가 안 쓰는 PC 조합</p>${list(pcOnly)}` : ''}
+         ${displayRules.length > 0 ? `<p class="unreadhead">값이 아닌 표시·배치 규칙 (부품 뼈대가 직접 담당)</p>${list(displayRules)}` : ''}
+         </details>`;
 
     sections.push(`
     <section id="${id}" data-component="${id}">
@@ -431,6 +453,7 @@ ${embeddedCss}
   .unread summary { color: var(--color-text-state-caution); cursor: pointer; }
   .unread ul { font-size: 11px; opacity: .8; padding-left: 18px; }
   .unread span { opacity: .6; }
+  .unreadhead { font-size: 11px; font-weight: 600; margin: 8px 0 2px; opacity: .7; }
 
   /* 자세히 보기 — 오른쪽에서 열린다 */
   .drawer { background: var(--color-bg-level-0); border-left: 1px solid var(--color-bg-level-3); bottom: 0; box-shadow: -8px 0 24px rgba(0,0,0,.08); display: flex; flex-direction: column; overflow-y: auto; position: fixed; right: 0; top: 0; transform: translateX(100%); transition: transform .18s ease; width: 420px; z-index: 100; }

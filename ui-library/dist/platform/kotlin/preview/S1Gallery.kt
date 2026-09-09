@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 /**
  * 눈으로 대조하기 위한 화면이다. 여기 나오는 조합은 스타일 표의 축 목록에서 바로 훑는다 —
  * 승인 목록에 무엇이 늘거나 줄면 이 화면도 함께 늘거나 준다.
+ * 안드로이드는 모바일 한 벌만 쓰므로 크기 축이 하나인 부품에는 크기 선택이 없다.
  */
 @Composable
 fun S1Gallery(modifier: Modifier = Modifier, dark: Boolean = false) {
@@ -44,24 +45,20 @@ fun S1Gallery(modifier: Modifier = Modifier, dark: Boolean = false) {
         ) {
             GallerySection("Button") {
                 for (variant in S1ButtonSpec.variants) {
-                    for (size in S1ButtonSpec.sizes) {
-                        GalleryRow("$variant · $size") {
-                            S1Button(text = "버튼", onClick = {}, variant = variant, size = size)
-                            S1Button(text = "비활성", onClick = {}, variant = variant, size = size, enabled = false)
-                        }
+                    GalleryRow(variant) {
+                        S1Button(text = "버튼", onClick = {}, variant = variant)
+                        S1Button(text = "비활성", onClick = {}, variant = variant, enabled = false)
                     }
                 }
             }
 
             GallerySection("Chip") {
                 for (variant in S1ChipSpec.variants) {
-                    for ((size, breakName) in S1ChipSpec.sizeBreaks) {
-                        var selected by remember { mutableStateOf(false) }
-                        GalleryRow("$variant · $size · $breakName") {
-                            S1Chip(text = "칩", selected = selected, onSelectedChange = { selected = it }, variant = variant, size = size, breakName = breakName)
-                            S1Chip(text = "선택됨", selected = true, onSelectedChange = {}, variant = variant, size = size, breakName = breakName)
-                            S1Chip(text = "비활성", selected = false, onSelectedChange = {}, variant = variant, size = size, breakName = breakName, enabled = false)
-                        }
+                    var selected by remember { mutableStateOf(false) }
+                    GalleryRow(variant) {
+                        S1Chip(text = "칩", selected = selected, onSelectedChange = { selected = it }, variant = variant)
+                        S1Chip(text = "선택됨", selected = true, onSelectedChange = {}, variant = variant)
+                        S1Chip(text = "비활성", selected = false, onSelectedChange = {}, variant = variant, enabled = false)
                     }
                 }
             }
@@ -94,42 +91,31 @@ fun S1Gallery(modifier: Modifier = Modifier, dark: Boolean = false) {
             }
 
             GallerySection("Line Tab") {
-                for ((size, breakName) in S1TabSpec.sizeBreaks) {
-                    var index by remember { mutableStateOf(0) }
-                    GalleryLabel("$size · $breakName")
-                    S1TabRow(
-                        tabs = listOf("탭 메뉴 1", "탭 메뉴 2", "탭 메뉴 3"),
-                        selectedIndex = index,
-                        onSelect = { index = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        size = size,
-                        breakName = breakName
-                    )
-                }
+                var index by remember { mutableStateOf(0) }
+                S1TabRow(
+                    tabs = listOf("탭 메뉴 1", "탭 메뉴 2", "탭 메뉴 3"),
+                    selectedIndex = index,
+                    onSelect = { index = it },
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
 
             GallerySection("Select Box") {
-                for ((size, breakName) in S1SelectSpec.sizeBreaks) {
-                    var picked by remember { mutableStateOf<Int?>(null) }
-                    GalleryRow("$size · $breakName") {
-                        S1Select(
-                            options = listOf("서울", "부산", "제주"),
-                            selectedIndex = picked,
-                            onSelect = { picked = it },
-                            modifier = Modifier.width(200.dp),
-                            size = size,
-                            breakName = breakName
-                        )
-                        S1Select(
-                            options = listOf("서울"),
-                            selectedIndex = null,
-                            onSelect = {},
-                            modifier = Modifier.width(200.dp),
-                            size = size,
-                            breakName = breakName,
-                            enabled = false
-                        )
-                    }
+                var picked by remember { mutableStateOf<Int?>(null) }
+                GalleryRow("select") {
+                    S1Select(
+                        options = listOf("서울", "부산", "제주"),
+                        selectedIndex = picked,
+                        onSelect = { picked = it },
+                        modifier = Modifier.width(200.dp)
+                    )
+                    S1Select(
+                        options = listOf("서울"),
+                        selectedIndex = null,
+                        onSelect = {},
+                        modifier = Modifier.width(200.dp),
+                        enabled = false
+                    )
                 }
             }
 
@@ -149,39 +135,31 @@ fun S1Gallery(modifier: Modifier = Modifier, dark: Boolean = false) {
             }
 
             GallerySection("Input") {
-                for ((size, breakName) in S1InputSpec.sizeBreaks) {
-                    var text by remember { mutableStateOf("") }
-                    GalleryLabel("$size · $breakName")
-                    S1Input(
-                        value = text,
-                        onValueChange = { text = it },
-                        label = "이름",
-                        placeholder = "내용을 입력하세요",
-                        message = "안내 문구",
-                        size = size,
-                        breakName = breakName
-                    )
-                    S1Input(value = "오류 값", onValueChange = {}, message = "다시 확인해 주세요", size = size, breakName = breakName, isError = true)
-                    S1Input(value = "읽기 전용", onValueChange = {}, size = size, breakName = breakName, readOnly = true)
-                    S1Input(value = "", onValueChange = {}, placeholder = "비활성", size = size, breakName = breakName, enabled = false)
-                    S1Input(value = "비밀번호", onValueChange = {}, size = size, breakName = breakName, mode = "password")
-                    S1Input(value = "검색어", onValueChange = {}, size = size, breakName = breakName, mode = "search")
-                }
+                var text by remember { mutableStateOf("") }
+                S1Input(
+                    value = text,
+                    onValueChange = { text = it },
+                    label = "이름",
+                    placeholder = "내용을 입력하세요",
+                    message = "안내 문구"
+                )
+                S1Input(value = "오류 값", onValueChange = {}, message = "다시 확인해 주세요", isError = true)
+                S1Input(value = "읽기 전용", onValueChange = {}, readOnly = true)
+                S1Input(value = "", onValueChange = {}, placeholder = "비활성", enabled = false)
+                S1Input(value = "비밀번호", onValueChange = {}, mode = "password")
+                S1Input(value = "검색어", onValueChange = {}, mode = "search")
             }
 
             GallerySection("Modal") {
-                for (breakName in S1ModalSpec.breaks) {
-                    for (footer in S1ModalSpec.footers) {
-                        GalleryLabel("$breakName · $footer")
-                        Box(modifier = Modifier.fillMaxWidth().height(360.dp)) {
-                            S1ModalPanel(
-                                title = "제목 영역",
-                                message = "변경한 내용이 저장되지 않고 사라집니다.\n정말 이 작업을 진행하시겠어요?",
-                                onDismissRequest = {},
-                                cancelLabel = if (footer == "dual") "취소" else null,
-                                breakName = breakName
-                            )
-                        }
+                for (footer in S1ModalSpec.footers) {
+                    GalleryLabel(footer)
+                    Box(modifier = Modifier.fillMaxWidth().height(360.dp)) {
+                        S1ModalPanel(
+                            title = "제목 영역",
+                            message = "변경한 내용이 저장되지 않고 사라집니다.\n정말 이 작업을 진행하시겠어요?",
+                            onDismissRequest = {},
+                            cancelLabel = if (footer == "dual") "취소" else null
+                        )
                     }
                 }
             }

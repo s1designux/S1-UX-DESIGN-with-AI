@@ -38,6 +38,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 
 /**
  * 승인된 입력칸. 비밀번호·검색은 별도 부품이 아니라 이 입력칸을 조립한 것이다(river D1, 2026-09-04).
+ * 이 부품은 크기 md · 화면 mobile · 변형 base 한 벌뿐이라 고를 파라미터가 없다.
  * 상태는 화면이 정하지 않고 값·초점·플래그에서 정해진다 — 정본 CSS 의 우선순위와 같은 순서다.
  */
 @Composable
@@ -48,8 +49,6 @@ fun S1Input(
     label: String? = null,
     placeholder: String? = null,
     message: String? = null,
-    size: String = "md",
-    breakName: String = "pc",
     enabled: Boolean = true,
     readOnly: Boolean = false,
     isError: Boolean = false,
@@ -68,7 +67,7 @@ fun S1Input(
         focused -> "focus"
         else -> "default"
     }
-    val key = "$size|$breakName|$state"
+    val key = "md|mobile|$state"
     val root = S1InputSpec.box(key, "root")
     val labelBox = S1InputSpec.box(key, "label")
     val field = S1InputSpec.box(key, "field")
@@ -117,18 +116,18 @@ fun S1Input(
             )
             var first = true
             if (value.isNotEmpty()) {
-                S1InputAction("clear", size, breakName, state, first) { onValueChange("") }
+                S1InputAction("clear", "md", state, first) { onValueChange("") }
                 first = false
             }
             if (mode == "password") {
                 S1InputAction(
                     if (passwordVisible) "password-pressed" else "password",
-                    size, breakName, state, first
+                    "md", state, first
                 ) { passwordVisible = !passwordVisible }
                 first = false
             }
             if (mode == "search") {
-                S1InputAction("search", size, breakName, state, first) { onSearch?.invoke() }
+                S1InputAction("search", "md", state, first) { onSearch?.invoke() }
                 first = false
             }
         }
@@ -140,7 +139,6 @@ fun S1Input(
 private fun S1InputAction(
     action: String,
     size: String,
-    breakName: String,
     inputState: String,
     first: Boolean,
     onClick: () -> Unit
@@ -152,7 +150,7 @@ private fun S1InputAction(
         hovered -> "hover"
         else -> "default"
     }
-    val key = "$size|$breakName|$action|$state"
+    val key = "$size|mobile|$action|$state"
     val box = S1InputSpec.inputActionsBox(key, "action")
     val icon = S1InputSpec.inputActionsBox(key, "icon")
     val iconName = icon.icon ?: return

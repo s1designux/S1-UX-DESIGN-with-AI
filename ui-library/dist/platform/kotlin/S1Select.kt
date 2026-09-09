@@ -40,6 +40,7 @@ import androidx.compose.ui.window.Popup
 /**
  * 승인된 셀렉트 박스. 목록은 별도 부품(S1Dropdown)을 그대로 쓰고, 여기서는 배치와 폭만 담당한다 —
  * 웹 배포본에서 select.css 가 dropdown.css 를 복제하지 않는 것과 같은 구조다.
+ * 이 부품은 크기 md · 화면 mobile · 변형 base 한 벌뿐이라 고를 파라미터가 없다.
  */
 @Composable
 fun S1Select(
@@ -48,8 +49,6 @@ fun S1Select(
     onSelect: (Int) -> Unit,
     modifier: Modifier = Modifier,
     placeholder: String = "선택",
-    size: String = "md",
-    breakName: String = "pc",
     enabled: Boolean = true
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -63,7 +62,7 @@ fun S1Select(
         hovered -> "hover"
         else -> "default"
     }
-    val key = "$size|$breakName|$state"
+    val key = "md|mobile|$state"
     val trigger = S1SelectSpec.box(key, "trigger")
     val icon = S1SelectSpec.box(key, "icon")
     val panel = S1SelectSpec.box(key, "panel")
@@ -118,7 +117,7 @@ fun S1Select(
                     },
                     modifier = Modifier.width(with(density) { triggerWidth.toDp() }),
                     type = "text",
-                    size = size
+                    size = "md"
                 )
             }
         }

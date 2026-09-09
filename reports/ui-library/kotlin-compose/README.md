@@ -5,6 +5,23 @@
 A안 10종: button · input · checkbox · radio · toggle · chip · dropdown · select · tab · modal
 값은 `S1Tokens`, 동작은 `dist/platform/behavior.json` 을 따른다.
 
+**모바일 한 벌만 만든다.** 안드로이드는 태블릿에서도 모바일을 쓴다(river 결정 2026-09-09).
+그래서 화면 축이 있는 부품은 `breaks.mobile` 만 뽑고 PC 조합은 아예 만들지 않는다.
+그 결과 **크기가 하나뿐인 부품은 크기 파라미터가 없다** — 고를 것이 없는 것을 고르게 하지 않는다.
+체크박스·라디오·토글·드롭다운은 정본에 화면 축이 없어 PC 와 같은 한 벌을 그대로 쓴다.
+
+| 부품 | 조합 | 고를 수 있는 것 |
+|---|---|---|
+| button | 9 | variant(primary·secondary·blue-line) |
+| chip | 8 | variant(line·solid) |
+| checkbox · radio | 각 5 | 없음 |
+| toggle | 4 | 없음 |
+| tab | 3 | 없음 |
+| select | 5 | 없음 |
+| input | 7 | 없음 (mode 로 비밀번호·검색) |
+| dropdown | 18 | type(text·checkbox) · size(xxsm·xsm·md) |
+| modal | 2 | 푸터(취소 있음/없음) |
+
 ## 방식 — 손으로 옮겨 적지 않는다
 
 승인된 웹 배포본 CSS 를 **실제 캐스케이드까지 계산해서** 상태별 최종 값을 뽑고, 그 표를 Kotlin 으로 굳힌다.
@@ -26,10 +43,10 @@ Compose 코드에는 치수·색 리터럴이 한 자리도 없다 — 전부 `S
 
 | 검사 | 방법 | 결과 |
 |---|---|---|
-| 값이 배포본과 같은가 | 헤드리스 크롬에 같은 요소·같은 상태를 그려 `getComputedStyle` 과 대조 (`npm run kotlin:parity`) | ✅ 772건 질의 · 3879개 값 일치 |
-| 빠뜨린 CSS 선언이 있는가 | 어느 질의에도 읽히지 않은 선언을 기록 (`dist/platform/kotlin/coverage.json`) | 9건 — 전부 `display`·`flex`·`pointer-events`·`width:100%` 같은 표시·배치 규칙(값 아님) |
+| 값이 배포본과 같은가 | 헤드리스 크롬에 같은 요소·같은 상태를 그려 `getComputedStyle` 과 대조 (`npm run kotlin:parity`) | ✅ 312건 질의 · 1603개 값 일치 |
+| 빠뜨린 CSS 선언이 있는가 | 어느 질의에도 읽히지 않은 선언을 두 갈래로 갈라 기록 (`dist/platform/kotlin/coverage.json`) | PC 전용 64건(안드로이드가 안 씀) · 표시·배치 규칙 9건(값 아님) · **빠뜨린 값 0건** |
 | 참조가 실재하는가 | 팔레트 색·아이콘 이름·괄호 짝 (`npm run kotlin:lint`) | ✅ |
-| 사람이 보는 검수 | `reports/ui-library/kotlin-compose/preview.html` (`npm run kotlin:preview`) | 라이트·다크 전환, 조합별 웹 표출 ↔ Compose 값 |
+| 사람이 보는 검수 | `reports/ui-library/kotlin-compose/preview.html` (`npm run kotlin:preview`) | 부품마다 표 한 장(가로=상태·세로=변형) · 필터·검색 · 칸을 누르면 값 전부와 붙여 쓸 코드 |
 
 ### 아직 확인 못 한 것 (정직하게)
 

@@ -31,28 +31,25 @@ import androidx.compose.ui.text.style.TextAlign
 
 /**
  * 승인된 라인 탭. 정본은 탭이 묶음 폭을 균등하게 나눠 갖는다(flex: 1 1 0) — 여기서도 같다.
- * 기본선(전체 폭 1px)과 선택선(탭 폭 2px)은 정본과 같은 바닥선에서 시작한다.
+ * 이 부품은 크기 sm · 화면 mobile · 변형 line 한 벌뿐이라 고를 파라미터가 없다.
  */
 @Composable
 fun S1TabRow(
     tabs: List<String>,
     selectedIndex: Int,
     onSelect: (Int) -> Unit,
-    modifier: Modifier = Modifier,
-    size: String = "md",
-    breakName: String = "pc"
+    modifier: Modifier = Modifier
+
 ) {
-    val root = S1TabSpec.box("$size|$breakName|default", "root")
-    val baseline = S1TabSpec.box("$size|$breakName|default", "baseline")
+    val root = S1TabSpec.box("sm|mobile|default", "root")
+    val baseline = S1TabSpec.box("sm|mobile|default", "baseline")
     Box(modifier = modifier.s1Box(root, applyPadding = false)) {
         Row(modifier = Modifier.fillMaxWidth()) {
             tabs.forEachIndexed { index, label ->
                 S1Tab(
                     label = label,
                     selected = index == selectedIndex,
-                    onClick = { onSelect(index) },
-                    size = size,
-                    breakName = breakName
+                    onClick = { onSelect(index) }
                 )
             }
         }
@@ -70,9 +67,7 @@ fun S1TabRow(
 private fun RowScope.S1Tab(
     label: String,
     selected: Boolean,
-    onClick: () -> Unit,
-    size: String,
-    breakName: String
+    onClick: () -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val hovered by interactionSource.collectIsHoveredAsState()
@@ -81,7 +76,7 @@ private fun RowScope.S1Tab(
         hovered -> "hover"
         else -> "default"
     }
-    val key = "$size|$breakName|$state"
+    val key = "sm|mobile|$state"
     val tab = S1TabSpec.box(key, "tab")
     val indicator = S1TabSpec.box(key, "indicator")
     Box(

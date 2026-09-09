@@ -5,64 +5,10 @@ package com.s1.designsystem
 
 object S1TabSpec {
     /** sizeBreaks — 승인된 (size, break) 조합만 담는다. */
-    val sizeBreaks: List<Pair<String, String>> = listOf("md" to "pc", "sm" to "pc", "xsm" to "pc", "sm" to "mobile")
+    val sizeBreaks: List<Pair<String, String>> = listOf("sm" to "mobile")
     val states: List<String> = listOf("default", "hover", "selected")
 
     val boxes: Map<String, Map<String, S1Box>> = mapOf(
-        "md|pc|default" to mapOf(
-            "root" to S1Box(background = S1Palette.colorNavigationBg),
-            "baseline" to S1Box(background = S1Palette.colorNavigationIndicatorDefault, height = 1f, left = 0f, right = 0f),
-            "tab" to S1Box(foreground = S1Palette.colorNavigationLabelDefault, height = 44f, minWidth = 76f, paddingStart = 16f, paddingEnd = 16f, paddingBottom = 2f, fontSize = 18f, fontWeight = 500),
-            "indicator" to S1Box()
-        ),
-        "md|pc|hover" to mapOf(
-            "root" to S1Box(background = S1Palette.colorNavigationBg),
-            "baseline" to S1Box(background = S1Palette.colorNavigationIndicatorDefault, height = 1f, left = 0f, right = 0f),
-            "tab" to S1Box(foreground = S1Palette.colorNavigationLabelHover, height = 44f, minWidth = 76f, paddingStart = 16f, paddingEnd = 16f, paddingBottom = 2f, fontSize = 18f, fontWeight = 500),
-            "indicator" to S1Box(background = S1Palette.colorNavigationIndicatorHover, height = 2f, left = 0f, right = 0f)
-        ),
-        "md|pc|selected" to mapOf(
-            "root" to S1Box(background = S1Palette.colorNavigationBg),
-            "baseline" to S1Box(background = S1Palette.colorNavigationIndicatorDefault, height = 1f, left = 0f, right = 0f),
-            "tab" to S1Box(foreground = S1Palette.colorNavigationLabelSelected, height = 44f, minWidth = 76f, paddingStart = 16f, paddingEnd = 16f, paddingBottom = 2f, fontSize = 18f, fontWeight = 500),
-            "indicator" to S1Box(background = S1Palette.colorNavigationIndicatorSelected, height = 2f, left = 0f, right = 0f)
-        ),
-        "sm|pc|default" to mapOf(
-            "root" to S1Box(background = S1Palette.colorNavigationBg),
-            "baseline" to S1Box(background = S1Palette.colorNavigationIndicatorDefault, height = 1f, left = 0f, right = 0f),
-            "tab" to S1Box(foreground = S1Palette.colorNavigationLabelDefault, height = 42f, minWidth = 76f, paddingStart = 16f, paddingEnd = 16f, paddingBottom = 2f, fontSize = 16f, fontWeight = 500),
-            "indicator" to S1Box()
-        ),
-        "sm|pc|hover" to mapOf(
-            "root" to S1Box(background = S1Palette.colorNavigationBg),
-            "baseline" to S1Box(background = S1Palette.colorNavigationIndicatorDefault, height = 1f, left = 0f, right = 0f),
-            "tab" to S1Box(foreground = S1Palette.colorNavigationLabelHover, height = 42f, minWidth = 76f, paddingStart = 16f, paddingEnd = 16f, paddingBottom = 2f, fontSize = 16f, fontWeight = 500),
-            "indicator" to S1Box(background = S1Palette.colorNavigationIndicatorHover, height = 2f, left = 0f, right = 0f)
-        ),
-        "sm|pc|selected" to mapOf(
-            "root" to S1Box(background = S1Palette.colorNavigationBg),
-            "baseline" to S1Box(background = S1Palette.colorNavigationIndicatorDefault, height = 1f, left = 0f, right = 0f),
-            "tab" to S1Box(foreground = S1Palette.colorNavigationLabelSelected, height = 42f, minWidth = 76f, paddingStart = 16f, paddingEnd = 16f, paddingBottom = 2f, fontSize = 16f, fontWeight = 500),
-            "indicator" to S1Box(background = S1Palette.colorNavigationIndicatorSelected, height = 2f, left = 0f, right = 0f)
-        ),
-        "xsm|pc|default" to mapOf(
-            "root" to S1Box(background = S1Palette.colorNavigationBg),
-            "baseline" to S1Box(background = S1Palette.colorNavigationIndicatorDefault, height = 1f, left = 0f, right = 0f),
-            "tab" to S1Box(foreground = S1Palette.colorNavigationLabelDefault, height = 40f, minWidth = 76f, paddingStart = 16f, paddingEnd = 16f, paddingBottom = 2f, fontSize = 14f, fontWeight = 500),
-            "indicator" to S1Box()
-        ),
-        "xsm|pc|hover" to mapOf(
-            "root" to S1Box(background = S1Palette.colorNavigationBg),
-            "baseline" to S1Box(background = S1Palette.colorNavigationIndicatorDefault, height = 1f, left = 0f, right = 0f),
-            "tab" to S1Box(foreground = S1Palette.colorNavigationLabelHover, height = 40f, minWidth = 76f, paddingStart = 16f, paddingEnd = 16f, paddingBottom = 2f, fontSize = 14f, fontWeight = 500),
-            "indicator" to S1Box(background = S1Palette.colorNavigationIndicatorHover, height = 2f, left = 0f, right = 0f)
-        ),
-        "xsm|pc|selected" to mapOf(
-            "root" to S1Box(background = S1Palette.colorNavigationBg),
-            "baseline" to S1Box(background = S1Palette.colorNavigationIndicatorDefault, height = 1f, left = 0f, right = 0f),
-            "tab" to S1Box(foreground = S1Palette.colorNavigationLabelSelected, height = 40f, minWidth = 76f, paddingStart = 16f, paddingEnd = 16f, paddingBottom = 2f, fontSize = 14f, fontWeight = 500),
-            "indicator" to S1Box(background = S1Palette.colorNavigationIndicatorSelected, height = 2f, left = 0f, right = 0f)
-        ),
         "sm|mobile|default" to mapOf(
             "root" to S1Box(background = S1Palette.colorNavigationBg),
             "baseline" to S1Box(background = S1Palette.colorNavigationIndicatorDefault, height = 1f, left = 0f, right = 0f),

@@ -4,36 +4,10 @@
 package com.s1.designsystem
 
 object S1ModalSpec {
-    val breaks: List<String> = listOf("pc", "mobile")
+    val breaks: List<String> = listOf("mobile")
     val footers: List<String> = listOf("single", "dual")
 
     val boxes: Map<String, Map<String, S1Box>> = mapOf(
-        "pc|single" to mapOf(
-            "root" to S1Box(),
-            "overlay" to S1Box(background = S1Palette.colorOverlay),
-            "panel" to S1Box(background = S1Palette.colorSurfaceRaised, borderColor = S1Palette.colorModalPanelBorder, borderWidth = 1f, radius = 8f, width = 360f, paddingTop = 20f, paddingBottom = 20f, gap = 32f, shadow = listOf(S1Shadow(0f, 4f, 6f, -2f, 0x0F000000), S1Shadow(0f, 12f, 20f, -4f, 0x1A000000))),
-            "content" to S1Box(gap = 32f),
-            "header" to S1Box(paddingStart = 24f, paddingEnd = 24f, gap = 8f),
-            "title" to S1Box(foreground = S1Palette.colorTextTitlePrimary, fontSize = 16f, lineHeight = 1.3f, fontWeight = 700),
-            "body" to S1Box(paddingStart = 24f, paddingEnd = 24f, gap = 8f),
-            "message" to S1Box(foreground = S1Palette.colorTextBodyPrimary, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 400),
-            "footer" to S1Box(paddingStart = 24f, paddingEnd = 24f, gap = 8f),
-            "close" to S1Box(radius = 4f, height = 24f, width = 24f),
-            "closeIcon" to S1Box(background = S1Palette.colorIconGrayDark, icon = "close")
-        ),
-        "pc|dual" to mapOf(
-            "root" to S1Box(),
-            "overlay" to S1Box(background = S1Palette.colorOverlay),
-            "panel" to S1Box(background = S1Palette.colorSurfaceRaised, borderColor = S1Palette.colorModalPanelBorder, borderWidth = 1f, radius = 8f, width = 360f, paddingTop = 20f, paddingBottom = 20f, gap = 32f, shadow = listOf(S1Shadow(0f, 4f, 6f, -2f, 0x0F000000), S1Shadow(0f, 12f, 20f, -4f, 0x1A000000))),
-            "content" to S1Box(gap = 32f),
-            "header" to S1Box(paddingStart = 24f, paddingEnd = 24f, gap = 8f),
-            "title" to S1Box(foreground = S1Palette.colorTextTitlePrimary, fontSize = 16f, lineHeight = 1.3f, fontWeight = 700),
-            "body" to S1Box(paddingStart = 24f, paddingEnd = 24f, gap = 8f),
-            "message" to S1Box(foreground = S1Palette.colorTextBodyPrimary, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 400),
-            "footer" to S1Box(paddingStart = 24f, paddingEnd = 24f, gap = 8f),
-            "close" to S1Box(radius = 4f, height = 24f, width = 24f),
-            "closeIcon" to S1Box(background = S1Palette.colorIconGrayDark, icon = "close")
-        ),
         "mobile|single" to mapOf(
             "root" to S1Box(),
             "overlay" to S1Box(background = S1Palette.colorOverlay),
@@ -65,9 +39,6 @@ object S1ModalSpec {
     fun box(key: String, part: String): S1Box = boxes.box(key, part, "modal")
 
     val modalCloseHoverBoxes: Map<String, Map<String, S1Box>> = mapOf(
-        "pc" to mapOf(
-            "close" to S1Box(background = S1Palette.colorControlBgHover, radius = 4f, height = 24f, width = 24f)
-        ),
         "mobile" to mapOf(
             "close" to S1Box(radius = 4f, height = 24f, width = 24f)
         )

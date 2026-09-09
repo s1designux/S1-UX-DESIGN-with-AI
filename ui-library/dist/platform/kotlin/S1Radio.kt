@@ -30,8 +30,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.ui.graphics.ColorFilter
 
 /**
- * 승인된 라디오. 라벨은 선택 부품이라 없으면 상자만 남는다(정본과 같다).
- * 선택 표시 색은 상자의 글자색을 따라간다 — 정본 CSS 의 currentColor 와 같은 배선이다.
+ * 승인된 라디오. 정본에 크기·화면 축이 없어 PC 와 모바일이 같은 한 벌이다.
+ * 라벨은 선택 부품이라 없으면 상자만 남는다. 선택 표시 색은 상자의 글자색을 따라간다(정본 currentColor).
  */
 @Composable
 fun S1Radio(

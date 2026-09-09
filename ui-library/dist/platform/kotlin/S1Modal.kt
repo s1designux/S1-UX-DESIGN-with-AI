@@ -1,5 +1,5 @@
 // 자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run ui:build` 를 실행하세요.
-// S1Modal — 정본 Modal Shell(Break PC·Mobile × Footer Single·Dual)
+// S1Modal — 정본 Modal Shell(Footer Single·Dual)
 
 package com.s1.designsystem
 
@@ -34,9 +34,10 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 
 /**
- * 승인된 모달. 정본에 크기 축·상태 축이 없고 변형은 Break × Footer 넷뿐이다.
- * 푸터 버튼 크기는 승인된 예제 마크업에서 읽은 값이다(PC·Mobile 각각).
- * Mobile 에는 정본에 닫기 버튼이 없어 여기서도 그리지 않는다.
+ * 승인된 모달. 정본에 크기 축·상태 축이 없고, 안드로이드는 모바일 한 벌만 쓰므로
+ * 변형은 푸터(확인만 / 취소+확인) 둘뿐이다.
+ * 푸터 버튼 크기는 승인된 모바일 예제 마크업에서 읽은 값(lg)이다.
+ * 모바일 정본에는 닫기 버튼이 없어 여기서도 그리지 않는다.
  */
 @Composable
 fun S1Modal(
@@ -47,8 +48,7 @@ fun S1Modal(
     confirmLabel: String = "확인",
     onConfirm: () -> Unit = onDismissRequest,
     cancelLabel: String? = null,
-    onCancel: () -> Unit = onDismissRequest,
-    breakName: String = "pc"
+    onCancel: () -> Unit = onDismissRequest
 ) {
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -62,8 +62,7 @@ fun S1Modal(
             confirmLabel = confirmLabel,
             onConfirm = onConfirm,
             cancelLabel = cancelLabel,
-            onCancel = onCancel,
-            breakName = breakName
+            onCancel = onCancel
         )
     }
 }
@@ -78,11 +77,10 @@ fun S1ModalPanel(
     confirmLabel: String = "확인",
     onConfirm: () -> Unit = onDismissRequest,
     cancelLabel: String? = null,
-    onCancel: () -> Unit = onDismissRequest,
-    breakName: String = "pc"
+    onCancel: () -> Unit = onDismissRequest
 ) {
     val footerKind = if (cancelLabel == null) "single" else "dual"
-    val key = "$breakName|$footerKind"
+    val key = "mobile|$footerKind"
     val overlay = S1ModalSpec.box(key, "overlay")
     val panel = S1ModalSpec.box(key, "panel")
     val content = S1ModalSpec.box(key, "content")
@@ -116,7 +114,6 @@ fun S1ModalPanel(
                         style = s1TextStyle(titleBox),
                         modifier = Modifier.weight(1f)
                     )
-                    if (breakName != "mobile") S1ModalClose(breakName = breakName, onClick = onDismissRequest)
                 }
                 Column(
                     modifier = Modifier.s1Padding(bodyBox),
@@ -129,64 +126,23 @@ fun S1ModalPanel(
                 modifier = Modifier
                     .fillMaxWidth()
                     .s1Padding(footerBox),
-                horizontalArrangement = if (breakName == "mobile") {
-                    Arrangement.spacedBy(footerBox.gapDp)
-                } else {
-                    Arrangement.spacedBy(footerBox.gapDp, Alignment.End)
-                }
+                horizontalArrangement = Arrangement.spacedBy(footerBox.gapDp)
             ) {
-                val buttonSize = footerButtonSize(breakName)
                 if (cancelLabel != null) {
                     S1Button(
                         text = cancelLabel,
                         onClick = onCancel,
-                        modifier = if (breakName == "mobile") Modifier.weight(1f) else Modifier,
-                        variant = "secondary",
-                        size = buttonSize
+                        modifier = Modifier.weight(1f),
+                        variant = "secondary"
                     )
                 }
                 S1Button(
                     text = confirmLabel,
                     onClick = onConfirm,
-                    modifier = if (breakName == "mobile") Modifier.weight(1f) else Modifier,
-                    variant = "primary",
-                    size = buttonSize
+                    modifier = Modifier.weight(1f),
+                    variant = "primary"
                 )
             }
         }
-    }
-}
-
-/** 승인된 예제 마크업이 쓰는 푸터 버튼 크기. */
-private fun footerButtonSize(breakName: String): String = when (breakName) {
-        "pc" -> "xxsm"
-        "mobile" -> "lg"
-        else -> error("[s1] modal: 승인되지 않은 break \"$breakName\"")
-    }
-
-@Composable
-private fun S1ModalClose(breakName: String, onClick: () -> Unit) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val hovered by interactionSource.collectIsHoveredAsState()
-    val base = S1ModalSpec.box("$breakName|single", "close")
-    val icon = S1ModalSpec.box("$breakName|single", "closeIcon")
-    val box = if (hovered) S1ModalSpec.modalCloseHoverBox(breakName, "close") else base
-    val iconName = icon.icon ?: return
-    Box(
-        modifier = Modifier
-            .s1Box(box, applyPadding = false)
-            .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClick
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Image(
-            imageVector = S1Icons.byName(iconName),
-            contentDescription = "닫기",
-            modifier = Modifier.size((box.width ?: 0f).dp, (box.height ?: 0f).dp),
-            colorFilter = ColorFilter.tint(icon.background?.value() ?: Color.Unspecified)
-        )
     }
 }

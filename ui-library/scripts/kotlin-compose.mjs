@@ -246,14 +246,17 @@ const hoverOnly = (isHover) => (condition) => (/hover/.test(condition) ? isHover
 function buttonPlan(manifest) {
   const states = ["default", "hover", "disabled"];
   const combos = [];
-  for (const size of manifest.sizes) {
+  /* 크기는 manifest.sizes 전부가 아니라 **쓰이는 화면의 크기**만 본다 —
+     안드로이드는 모바일 한 벌이라 여기 오는 breaks 에는 mobile 만 남아 있다. */
+  const sizes = manifest.breaks ? [...new Set(Object.values(manifest.breaks).flat())] : manifest.sizes;
+  for (const size of sizes) {
     for (const variant of manifest.variants) {
       for (const state of states) combos.push({ size, variant, state });
     }
   }
   return {
     id: "button",
-    axes: { variants: manifest.variants, sizes: manifest.sizes, states, breaks: manifest.breaks },
+    axes: { variants: manifest.variants, sizes, states, breaks: manifest.breaks },
     combos,
     key: (combo) => `${combo.variant}|${combo.size}|${combo.state}`,
     build: (combo) => {
@@ -606,6 +609,36 @@ export const EXTRA_PLANS = {
 
 /* ── 4. 스펙 추출 ────────────────────────────────────────────────────── */
 
+/**
+ * Kotlin 은 안드로이드다 — PC 조합은 쓰이지 않는다(태블릿에서도 모바일을 쓴다. river 결정 2026-09-09).
+ * break 축이 있는 컴포넌트만 모바일로 좁히고, 축이 없는 것(체크박스·라디오·토글·드롭다운)은 그대로 둔다.
+ */
+export function mobileOnly(manifest) {
+  if (!manifest.breaks || !manifest.breaks.mobile) return manifest;
+  return { ...manifest, breaks: { mobile: manifest.breaks.mobile } };
+}
+
+/** 부품이 실제로 받는 축 — 값이 하나뿐인 축은 파라미터로 내보내지 않는다. */
+export function apiOf(id, manifest) {
+  const mobile = mobileOnly(manifest);
+  const sizes = mobile.breaks ? mobile.breaks.mobile : (mobile.sizes ?? []);
+  const variants = mobile.variants ?? [];
+  return {
+    id,
+    sizes,
+    sizeParam: sizes.length > 1,
+    size: sizes[0] ?? null,
+    breakName: mobile.breaks ? "mobile" : null,
+    variants,
+    variantParam: variants.length > 1,
+    variant: variants[0] ?? null
+  };
+}
+
+export function planFor(id, manifest, planOptions) {
+  return PLANS[id](mobileOnly(manifest), planOptions);
+}
+
 export function extractSpec({ id, css, manifest, tokenValues, planOptions }) {
   const rules = parseStylesheet(css);
   const usage = new Set();
@@ -627,10 +660,10 @@ export function extractSpec({ id, css, manifest, tokenValues, planOptions }) {
     return { axes: plan.axes, table };
   };
 
-  const main = collect(PLANS[id](manifest, planOptions));
+  const main = collect(planFor(id, manifest, planOptions));
   const extras = {};
   for (const factory of EXTRA_PLANS[id] ?? []) {
-    const plan = factory(manifest);
+    const plan = factory(mobileOnly(manifest));
     extras[plan.id] = collect(plan);
   }
   return { id, axes: main.axes, table: main.table, extras, unused: unusedDeclarations(rules, usage) };
@@ -642,16 +675,31 @@ export function extractSpec({ id, css, manifest, tokenValues, planOptions }) {
 export const COMPOSE_COMPONENTS = ["button", "input", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "tab", "modal"];
 
 const COMPONENT_FILE = {
-  button: (pkg) => buttonKt(pkg),
-  chip: (pkg) => chipKt(pkg),
+  button: (pkg, api) => buttonKt(pkg, api),
+  chip: (pkg, api) => chipKt(pkg, api),
   checkbox: (pkg) => controlKt(pkg, "checkbox"),
   radio: (pkg) => controlKt(pkg, "radio"),
   toggle: (pkg) => toggleKt(pkg),
-  tab: (pkg) => tabKt(pkg),
-  select: (pkg) => selectKt(pkg),
-  dropdown: (pkg) => dropdownKt(pkg),
-  input: (pkg) => inputKt(pkg)
+  tab: (pkg, api) => tabKt(pkg, api),
+  dropdown: (pkg, api) => dropdownKt(pkg, api)
 };
+
+/**
+ * 읽히지 않은 선언이 왜 안 읽혔는지 기계로 가른다.
+ * PC 전용 규칙(안드로이드가 안 쓰는 것)과 표시·배치 규칙(값이 아닌 것)은 뜻이 전혀 다르다 —
+ * 한 덩어리로 묶어 놓으면 "빠뜨린 값"을 그 안에 숨길 수 있다.
+ */
+function classifyUnread(unread, api) {
+  const mobileSizes = new Set(api.sizes);
+  return unread.map((one) => {
+    const selector = one.selector;
+    const sizes = [...selector.matchAll(/data-size="([a-z]+)"/g)].map((match) => match[1]);
+    const pcOnly = selector.includes('data-break="pc"')
+      || selector.includes(':not([data-break="mobile"])')
+      || (sizes.length > 0 && sizes.every((size) => !mobileSizes.has(size)));
+    return { ...one, reason: pcOnly ? "pc-only" : "display-rule" };
+  });
+}
 
 /** 승인된 예제 마크업에서 모달 푸터 버튼 크기를 읽는다 — 값을 정하지 않고 읽는다. */
 function modalFooterButtonSizes(component) {
@@ -671,6 +719,7 @@ export function buildKotlinOutputs({ componentOutputs, tokenData, iconAssets, pk
   const specs = [];
   const coverage = [];
 
+  const apis = {};
   for (const id of COMPOSE_COMPONENTS) {
     const component = byId.get(id);
     if (!component) throw new Error(`Compose 범위에 있는 ${id} 가 배포본에 없습니다.`);
@@ -678,15 +727,32 @@ export function buildKotlinOutputs({ componentOutputs, tokenData, iconAssets, pk
     const planOptions = id === "modal" ? modalFooterButtonSizes(component) : undefined;
     const spec = extractSpec({ id, css: component.css, manifest: component.manifest, tokenValues, planOptions });
     specs.push(spec);
+    const api = apiOf(id, component.manifest);
+    const unread = classifyUnread(spec.unused, api);
     coverage.push({
       component: id,
       combinations: Object.keys(spec.table).length,
       parts: Object.keys(Object.values(spec.table)[0].parts),
-      unreadDeclarations: spec.unused
+      unreadPcOnly: unread.filter((one) => one.reason === "pc-only").length,
+      unreadDisplayRules: unread.filter((one) => one.reason === "display-rule").length,
+      unreadDeclarations: unread
     });
     outputs.set(`platform/kotlin/S1${pascal(id)}Spec.kt`, specKt(pkg, spec, GENERATED_NOTE));
-    const file = COMPONENT_FILE[id] ?? ((packageName) => modalKt(packageName, modalFooterButtonSizes(component)));
-    outputs.set(`platform/kotlin/S1${pascal(id)}.kt`, file(pkg));
+    apis[id] = api;
+  }
+
+  /* 부품 파일은 축을 다 안 뒤에 만든다 — select 는 dropdown 의 축을 알아야 목록을 부를 수 있다. */
+  for (const id of COMPOSE_COMPONENTS) {
+    const api = apis[id];
+    const build = COMPONENT_FILE[id];
+    const text = build
+      ? build(pkg, api)
+      : id === "select"
+        ? selectKt(pkg, api, apis.dropdown)
+        : id === "input"
+          ? inputKt(pkg, api)
+          : modalKt(pkg, api, modalFooterButtonSizes(byId.get(id))[api.breakName]);
+    outputs.set(`platform/kotlin/S1${pascal(id)}.kt`, text);
   }
 
   outputs.set("platform/kotlin/S1Style.kt", runtimeKt(pkg));
@@ -707,7 +773,7 @@ export function buildKotlinOutputs({ componentOutputs, tokenData, iconAssets, pk
     return readIcon(name, asset.asset);
   });
   outputs.set("platform/kotlin/S1Icons.kt", iconsKt(pkg, icons, GENERATED_NOTE));
-  outputs.set("platform/kotlin/preview/S1Gallery.kt", galleryKt(pkg));
+  outputs.set("platform/kotlin/preview/S1Gallery.kt", galleryKt(pkg, apis));
 
   return { outputs, coverage, icons: icons.map(({ name }) => name) };
 }

@@ -108,8 +108,19 @@ const COMPARED = [
   ['lineHeight', 'lineHeight', 'ratio']
 ];
 
+function footerSizesOf(base, manifest) {
+  const sizes = {};
+  for (const [breakName, spec] of Object.entries(manifest.htmlContract.breakExamples ?? {})) {
+    const file = path.join(base, path.basename(spec.source));
+    if (!fs.existsSync(file)) continue;
+    const match = /data-s1-component="button"[^>]*data-size="([a-z]+)"/.exec(fs.readFileSync(file, 'utf8'));
+    if (match) sizes[breakName] = match[1];
+  }
+  return sizes;
+}
+
 async function main() {
-  const { PLANS, EXTRA_PLANS, extractSpec } = await import(path.join(ROOT, 'ui-library/scripts/kotlin-compose.mjs'));
+  const { PLANS, EXTRA_PLANS, extractSpec, mobileOnly } = await import(path.join(ROOT, 'ui-library/scripts/kotlin-compose.mjs'));
   const { readTokens } = await import(path.join(ROOT, 'ui-library/scripts/platform.mjs'));
 
   const tokensCss = fs.readFileSync(path.join(ROOT, 'assets/css/tokens.css'), 'utf8');
@@ -126,8 +137,11 @@ async function main() {
     const manifest = JSON.parse(fs.readFileSync(path.join(base, 'manifest.json'), 'utf8'));
     styleBlocks.push(forceStates(css));
 
-    const plans = [PLANS[id](manifest), ...(EXTRA_PLANS[id] ?? []).map((factory) => factory(manifest))];
-    const spec = extractSpec({ id, css, manifest, tokenValues });
+    /* 안드로이드는 모바일 한 벌만 쓴다 — 스타일 표와 같은 축으로 물어야 대조가 성립한다. */
+    const planOptions = id === 'modal' ? footerSizesOf(base, manifest) : undefined;
+    const mobile = mobileOnly(manifest);
+    const plans = [PLANS[id](mobile, planOptions), ...(EXTRA_PLANS[id] ?? []).map((factory) => factory(mobile))];
+    const spec = extractSpec({ id, css, manifest, tokenValues, planOptions });
     const tables = { [id]: spec.table, ...Object.fromEntries(Object.entries(spec.extras).map(([key, value]) => [key, value.table])) };
 
     for (const plan of plans) {

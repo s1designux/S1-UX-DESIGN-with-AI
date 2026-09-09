@@ -1,5 +1,5 @@
 // 자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run ui:build` 를 실행하세요.
-// S1Chip — 정본 Chip(Line·Solid × Default·Hover·Selected·Disabled)
+// S1Chip — 정본 Chip(line · solid)
 
 package com.s1.designsystem
 
@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 
 /**
  * 승인된 칩. 눌린 상태(selected)는 정본 Selected 셀을 쓰고, 선택된 칩에는 Hover 변형이 없다.
+ * 이 부품은 크기 sm · 화면 mobile 한 벌뿐이라 고를 파라미터가 없다.
  */
 @Composable
 fun S1Chip(
@@ -39,8 +40,6 @@ fun S1Chip(
     onSelectedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     variant: String = "line",
-    size: String = "md",
-    breakName: String = "pc",
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
@@ -51,7 +50,7 @@ fun S1Chip(
         hovered -> "hover"
         else -> "default"
     }
-    val box = S1ChipSpec.box("$variant|$size|$breakName|$state", "root")
+    val box = S1ChipSpec.box("$variant|sm|mobile|$state", "root")
     Box(
         modifier = modifier
             .s1Box(box, applyPadding = false)

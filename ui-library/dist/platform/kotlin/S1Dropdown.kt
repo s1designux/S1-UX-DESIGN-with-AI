@@ -30,7 +30,8 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.ui.text.style.TextOverflow
 
 /**
- * 승인된 목록. 폭은 정본 규칙대로 최소 100 이고, 트리거가 있는 소비자(S1Select)가 자기 폭을 넘겨준다.
+ * 승인된 목록. 정본에 화면 축이 없어 PC 와 모바일이 같은 한 벌이다.
+ * 폭은 정본 규칙대로 최소 100 이고, 트리거가 있는 소비자(S1Select)가 자기 폭을 넘겨준다.
  * 긴 옵션은 줄바꿈하지 않고 말줄임으로 자른다(river 결정 2026-09-07).
  */
 @Composable
@@ -40,7 +41,7 @@ fun S1Dropdown(
     onOptionClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     type: String = "text",
-    size: String = "md",
+    size: String = "xxsm",
     selectAllLabel: String? = null,
     selectAllChecked: Boolean = false,
     onSelectAll: (() -> Unit)? = null
