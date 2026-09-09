@@ -176,6 +176,21 @@ if (foldDirty.length) {
   console.log(`   ✅ 검사기 통과 — ${g.out.split('\n').filter(Boolean).slice(-1)[0] || ''}`);
 }
 
+// ── 5b. 본 폴더의 '깃에 안 담기는 생성물' 재생성 ───────────────────────────
+//   Figma 는 본 폴더의 plugins/figma-vars-installer/dist 를 직접 읽는데, 그 경로는 .gitignore 대상이라
+//   **합쳐도 따라오지 않는다.** 별도 폴더 방식(2026-09-09) 이전에는 모든 세션이 본 폴더에서 빌드해
+//   저절로 갱신됐다. 그 뒤로 본 폴더 dist 가 옛것에 멈춰, 정본을 네 번 고쳤는데도 플러그인은
+//   오전 9:39 판 그대로였다(river 실측 2026-09-09). 그래서 합치기의 마지막에 여기서 다시 짓는다.
+//   실패해도 되돌리지 않는다 — main 은 이미 정상이고, 안 되는 건 화면에 보이는 생성물 하나뿐이다.
+step('5b/6 본 폴더: 깃에 안 담기는 생성물 재생성 (Figma 플러그인)');
+const rebuild = run('npm', ['run', '--silent', 'installer:build'], MAIN);
+if (rebuild.code === 0) {
+  console.log('   ✅ 설치기 dist·zip 재생성 — 원래 등록해 둔 플러그인이 바로 새 것을 읽는다');
+} else {
+  console.error('   ⚠️ 설치기 dist 재생성 실패 — main 합치기는 끝났습니다. 본 폴더에서 `npm run installer:build` 를 직접 돌리세요.');
+  console.error(`      ${(rebuild.err || rebuild.out || '').split('\n').filter(Boolean).slice(-3).join('\n      ')}`);
+}
+
 // ── 6. push ────────────────────────────────────────────────────────────────
 step('6/6 원격 push');
 if (NO_PUSH) console.log('   (--no-push) 생략');
