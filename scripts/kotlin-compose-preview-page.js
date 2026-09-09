@@ -94,6 +94,46 @@ function footerSizesOf(base, manifest) {
   return sizes;
 }
 
+/** 아이콘 url 을 파일 안에 박아 넣는다 — 이 화면 한 장만 옮겨도 그림이 깨지지 않게. */
+function inlineIcons(css, iconDir) {
+  return css.replace(/url\(\s*"?\.?\.?\/?[^")]*\/assets\/icons\/([a-z0-9_-]+\.svg)"?\s*\)/gi, (whole, file) => {
+    const target = path.join(iconDir, file);
+    if (!fs.existsSync(target)) return whole;
+    const encoded = Buffer.from(fs.readFileSync(target)).toString('base64');
+    return `url("data:image/svg+xml;base64,${encoded}")`;
+  });
+}
+
+/** 상태 가상 클래스를 같은 명시도의 속성으로 바꾼 사본 — 검수 화면에서만 쓴다. */
+function forceStates(css) {
+  return unwrapHoverMedia(css
+    .replace(/:focus-within\b/g, '[data-force-focus-within]')
+    .replace(/:focus-visible\b/g, '[data-force-focus-visible]')
+    .replace(/:hover\b/g, '[data-force-hover]')
+    .replace(/:active\b/g, '[data-force-active]'));
+}
+
+function unwrapHoverMedia(css) {
+  let out = '';
+  let index = 0;
+  while (index < css.length) {
+    const at = css.indexOf('@media', index);
+    if (at === -1) { out += css.slice(index); break; }
+    const open = css.indexOf('{', at);
+    const condition = css.slice(at + 6, open).trim();
+    let depth = 0;
+    let end = open;
+    for (; end < css.length; end += 1) {
+      if (css[end] === '{') depth += 1;
+      else if (css[end] === '}') { depth -= 1; if (depth === 0) break; }
+    }
+    out += css.slice(index, at);
+    out += /hover/.test(condition) ? css.slice(open + 1, end) : '';
+    index = end + 1;
+  }
+  return out;
+}
+
 async function main() {
   const { PLANS, extractSpec } = await import(path.join(ROOT, 'ui-library/scripts/kotlin-compose.mjs'));
   const { readTokens } = await import(path.join(ROOT, 'ui-library/scripts/platform.mjs'));
@@ -101,6 +141,17 @@ async function main() {
   const tokenData = readTokens(tokensCss);
   const tokenValues = new Map(tokenData.tokens.map((token) => [token.name, token.value]));
   const coverage = JSON.parse(fs.readFileSync(path.join(ROOT, 'ui-library/dist/platform/kotlin/coverage.json'), 'utf8'));
+  const distDir = path.join(ROOT, 'ui-library/dist');
+  const iconDir = path.join(distDir, 'assets/icons');
+  const read = (relative) => fs.readFileSync(path.join(distDir, relative), 'utf8');
+  const bundleCss = inlineIcons(read('s1-ui.css'), iconDir);
+  const embeddedCss = [
+    read('assets/css/tokens.css'),
+    read('assets/css/typography.css'),
+    bundleCss,
+    '/* ── 상태 흉내 사본 — 값이 아니라 "언제 보이는가"만 바꾼다 ── */',
+    forceStates(bundleCss)
+  ].join('\n');
 
   const sections = [];
   const sampleText = { button: '버튼', chip: '칩', checkbox: '선택 항목', radio: '항목', toggle: '', tab: '탭 메뉴', select: '선택', dropdown: '항목 이름', input: '', modal: '제목 영역' };
@@ -155,9 +206,10 @@ async function main() {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kotlin(Compose) 부품 검수 — S1 Design System</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="../../../ui-library/dist/assets/css/tokens.css">
-<link rel="stylesheet" href="../../../ui-library/dist/assets/css/typography.css">
-<link rel="stylesheet" href="../../../ui-library/dist/s1-ui.css">
+<style>
+/* 승인된 배포본 CSS 를 그대로 박아 넣는다 — 이 파일 한 장만 열어도 같은 모습이 나오게. */
+${embeddedCss}
+</style>
 <style>
   /* 상태 흉내 — 검수 화면에서만 쓰는 사본 규칙. 값이 아니라 "언제 보이는가"만 바꾼다. */
   body { background: var(--color-bg-level-1); color: var(--color-text-body-primary); font-family: "Pretendard", sans-serif; margin: 0; padding: 32px; }
@@ -206,19 +258,6 @@ async function main() {
 <nav>${Object.keys(PLANS).map((id) => `<a href="#${id}">${id}</a>`).join('')}</nav>
 ${sections.join('')}
 <script>
-  /* 상태 흉내 — :hover 같은 것은 스크립트로 켤 수 없어서, 같은 명시도의 속성 규칙을 덧댄다. */
-  const sheet = new CSSStyleSheet ? null : null;
-  const style = document.createElement('style');
-  style.textContent = [...document.styleSheets].map(() => '').join('');
-  document.head.appendChild(style);
-  fetch('../../../ui-library/dist/s1-ui.css').then((response) => response.text()).then((css) => {
-    style.textContent = css
-      .replace(/:focus-within\\b/g, '[data-force-focus-within]')
-      .replace(/:focus-visible\\b/g, '[data-force-focus-visible]')
-      .replace(/:hover\\b/g, '[data-force-hover]')
-      .replace(/:active\\b/g, '[data-force-active]')
-      .replace(/@media \\(hover: hover\\) \\{/g, '@media all {');
-  });
   const light = document.getElementById('light');
   const dark = document.getElementById('dark');
   const setTheme = (value) => {
