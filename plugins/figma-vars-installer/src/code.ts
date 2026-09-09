@@ -1054,6 +1054,11 @@ async function runInstall(
       }
     }
 
+    // 설치가 끝나면 깔린 것 전체가 한 화면에 들어오게 화면을 맞춘다(river 지시 2026-09-09).
+    //   종전에는 설치 직후 보던 자리에 그대로 있어, 부품이 어디에 깔렸는지 직접 찾아다녀야 했다.
+    //   노드를 옮기는 게 아니라 **보는 위치만** 바꾼다 — 캔버스 내용은 건드리지 않는다.
+    fitInstalledIntoView();
+
     post("progress", { step: "완료", pct: 100 });
     post("done", {
       foundationCount,
@@ -1079,6 +1084,22 @@ async function runInstall(
     }
     post("error", { message: msg });
     return "error";
+  }
+}
+
+/**
+ * 이 페이지에 깔린 것 전체가 한 화면에 보이도록 화면(뷰포트)만 맞춘다.
+ * 섹션까지 포함해 페이지 최상위 노드를 전부 넘긴다 — 컴포넌트는 카테고리 섹션 안에 들어 있고,
+ * 섹션을 넘기면 그 안의 내용도 함께 잡힌다. 빈 페이지면 아무것도 하지 않는다.
+ * 실패해도 설치를 깨지 않는다(보기 편의 기능이다).
+ */
+function fitInstalledIntoView(): void {
+  try {
+    const kids = figma.currentPage.children as SceneNode[];
+    if (!Array.isArray(kids) || kids.length === 0) return;
+    figma.viewport.scrollAndZoomIntoView(kids);
+  } catch (e) {
+    console.warn("[installer] 설치 후 화면 맞추기 실패(설치 자체는 정상):", e);
   }
 }
 
