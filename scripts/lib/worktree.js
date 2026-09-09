@@ -100,7 +100,34 @@ function listWorktrees(from) {
   return rows;
 }
 
+/**
+ * 추적되면 안 되는 symlink — 별도 작업 폴더가 만드는 연결(node_modules · .claude/cache)이
+ * git 에 들어가면, 본 폴더가 그 커밋을 받는 순간 **실제 폴더가 링크로 치환돼 사라진다**
+ * (2026-09-09 실측: 본 폴더 node_modules 51MB 소실 · npm/git 이 ELOOP 로 조용히 실패).
+ * 절대경로를 가리키는 링크도 다른 컴퓨터에서 깨지므로 함께 막는다.
+ * 반환: [{ file, target, why }]
+ */
+function trackedRiskySymlinks(from) {
+  const root = checkoutRoot(from);
+  const out = git('ls-files -s', root);
+  if (!out) return [];
+  const bad = [];
+  for (const line of out.split('\n')) {
+    if (!line.startsWith('120000')) continue;              // symlink 모드
+    const file = line.split('\t').slice(1).join('\t');
+    let target = '';
+    try { target = fs.readlinkSync(path.join(root, file)); } catch (_) {}
+    const base = path.basename(file);
+    if (base === 'node_modules' || file.includes('.claude/cache')) {
+      bad.push({ file, target, why: '작업 폴더 연결용 링크 — 추적되면 본 폴더의 실제 폴더가 치환돼 사라진다' });
+    } else if (path.isAbsolute(target)) {
+      bad.push({ file, target, why: '절대경로 링크 — 다른 컴퓨터·다른 작업 폴더에서 깨진다' });
+    }
+  }
+  return bad;
+}
+
 module.exports = {
   git, checkoutRoot, mainRoot, isLinkedWorktree, projectSlug, projectsBase,
-  transcriptDirs, currentBranch, branchSlug, listWorktrees,
+  transcriptDirs, currentBranch, branchSlug, listWorktrees, trackedRiskySymlinks,
 };

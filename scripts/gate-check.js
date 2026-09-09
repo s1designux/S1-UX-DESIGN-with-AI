@@ -1160,6 +1160,10 @@ gateHeader('[Gate 48] 세션장부분리 검사기 (Session Ledger Split)');
 try {
   const rr = require('./lib/repeated-requests');
   const problems = rr.check();
+  // 작업 폴더 연결용 symlink 가 추적되면 본 폴더의 실제 폴더가 치환돼 사라진다(2026-09-09 실측).
+  for (const s of require('./lib/worktree').trackedRiskySymlinks(ROOT)) {
+    problems.push(`추적되면 안 되는 symlink 가 git 에 들어 있습니다 — ${s.file} → ${s.target} (${s.why}). git rm --cached ${s.file} 후 .gitignore 확인`);
+  }
   if (problems.length) for (const p of problems) fail(`Gate 48: ${p}`);
   else {
     const pending = rr.loadInbox().reduce((a, s) => a + s.entries.length, 0);
