@@ -456,10 +456,16 @@ function frameEmit(frame: FrameNode, maps: BuildMaps, modeId: string, shadowMode
 // 컴포넌트 세트 노드는 텍스트/사각형 자식을 못 받으므로, 라벨/밴드를 캔버스에 띄워 세트 위에 정렬(절대 oy 기준).
 // ox = 세트 가로 오프셋. 라벨/밴드는 페이지 절대좌표라 ox 를 더하고, cell(=세트 내부 variant)은 세트 기준 상대좌표라 ox 미적용
 // (세트 자체를 set.x=ox 로 옮기므로 시각적으로 정렬됨).
-function floatingEmit(oy: number, ox = 0): LayoutEmit {
+/** 캔버스에 떠 있는 스펙 장식(라벨·밴드)의 이름 꼬리표 — footprint 정리가 이 이름으로 걷어낸다. */
+const DECO_SUFFIX = "— Spec Deco";
+
+function floatingEmit(oy: number, ox = 0, tag?: string): LayoutEmit {
+  // tag = 이 장식이 어느 세트의 것인지. 이름을 붙여 두면 재설치 때 옛 장식을 **이름으로 정확히**
+  //   걷어낼 수 있다(종전에는 이름이 없어 안 지워지고 재설치마다 겹쳐 쌓였다 — 결함 1).
+  const mark = (n: SceneNode) => { if (tag) { try { n.name = `${tag} ${DECO_SUFFIX}`; } catch (e) { /* */ } } };
   return {
-    text: async (s, x, y, w, al, col, fs, st) => { await makeLabel(s, fs, st, ox + x, oy + y, w, al, col); },
-    band: (x, y, w, h, col) => { const b = figma.createRectangle(); b.resize(w, h); b.cornerRadius = 4; b.fills = [{ type: "SOLID", color: col }]; b.x = ox + x; b.y = oy + y; },
+    text: async (s, x, y, w, al, col, fs, st) => { mark(await makeLabel(s, fs, st, ox + x, oy + y, w, al, col)); },
+    band: (x, y, w, h, col) => { const b = figma.createRectangle(); b.resize(w, h); b.cornerRadius = 4; b.fills = [{ type: "SOLID", color: col }]; b.x = ox + x; b.y = oy + y; mark(b); },
     cell: (comp, x, y) => { comp.x = x; comp.y = y; },
   };
 }
@@ -490,7 +496,7 @@ async function decorateSetGrouped(set: ComponentSetNode, opts: GroupedSpecOpts, 
   const ox = opts.offsetX ?? 0;
   set.x = ox; set.y = opts.originY;
   try { set.fills = [{ type: "SOLID", color: specPalette(false).bg }]; } catch (e) { /* skip */ }
-  const H = await renderGrouped(opts, false, floatingEmit(opts.originY, ox));
+  const H = await renderGrouped(opts, false, floatingEmit(opts.originY, ox, set.name));
   set.resize(W, H);
   setLightMode(set, maps);
   if (opts.shadowMode) setShadowMode(set, maps, maps.semanticShadowLightModeId);
@@ -821,7 +827,7 @@ async function decorateSetFlat(set: ComponentSetNode, opts: SpecOpts, maps: Buil
   const W = specWidth(rowLabelW, opts.colHeaders.length, opts.cellW);
   set.x = 0; set.y = opts.originY;
   try { set.fills = [{ type: "SOLID", color: specPalette(false).bg }]; } catch (e) { /* skip */ }
-  const H = await renderFlat(opts, false, floatingEmit(opts.originY));
+  const H = await renderFlat(opts, false, floatingEmit(opts.originY, 0, set.name));
   set.resize(W, H);
   setLightMode(set, maps);
   return opts.originY + H;
@@ -5452,8 +5458,8 @@ async function buildCalendarCellLayout(maps: BuildMaps, originY: number): Promis
 
   // ── Light: 세트 원본을 두 표로 꾸민다(라벨=캔버스 절대좌표, 셀=세트 상대좌표). ──
   const floatAt = (oy: number, cy: number): LayoutEmit => ({
-    text: async (s, x, y, w, al, col, fs, st) => { await makeLabel(s, fs, st, x, oy + y, w, al, col); },
-    band: (x, y, w, h, col) => { const b = figma.createRectangle(); b.resize(w, h); b.cornerRadius = 4; b.fills = [{ type: "SOLID", color: col }]; b.x = x; b.y = oy + y; },
+    text: async (s, x, y, w, al, col, fs, st) => { const t = await makeLabel(s, fs, st, x, oy + y, w, al, col); try { t.name = `${set.name} ${DECO_SUFFIX}`; } catch (e) { /* */ } },
+    band: (x, y, w, h, col) => { const b = figma.createRectangle(); b.resize(w, h); b.cornerRadius = 4; b.fills = [{ type: "SOLID", color: col }]; b.x = x; b.y = oy + y; try { b.name = `${set.name} ${DECO_SUFFIX}`; } catch (e) { /* */ } },
     cell: (comp, x, y) => { comp.x = x; comp.y = cy + y; },
   });
   set.x = 0; set.y = originY;
@@ -6605,8 +6611,36 @@ export async function buildAllComponents(
   TEXT_STYLES = maps.textStyles || {};  // makeBoundText 가 텍스트 스타일 바인딩에 사용
   const page = figma.currentPage;
 
-  let topNodes: SceneNode[] = [];
-  try { if (Array.isArray(page.children)) topNodes = page.children as SceneNode[]; } catch (e) { /* mock */ }
+  // ── 캔버스 레벨 노드(매 호출 시점에 새로 읽는다) ────────────────────────────
+  //   ⚠️ 함수 진입 시 한 번 캡처한 page.children 만 훑으면 **첫 설치 뒤 섹션 안으로 들어간 노드를
+  //   영원히 못 본다.** 실측 결과: 옛 산출물(달력 부품 설명 시트 등)이 안 지워지고 재설치마다
+  //   겹쳐 쌓였고(2벌씩), 기존 항목의 y 전진(regionBottom)도 null 이 돼 카테고리끼리 겹쳤다.
+  //   → 설치기가 만드는 노드는 언제나 "페이지 직속" 또는 "페이지 직속 SECTION 의 직속 자식"이다.
+  //     그 2단만 매번 새로 읽는다(전체 재귀는 컴포넌트 내부의 동명 자식까지 잡아 위험).
+  const canvasNodes = (): SceneNode[] => {
+    const out: SceneNode[] = [];
+    try {
+      const kids = page.children;
+      if (!Array.isArray(kids)) return out;
+      for (const n of kids as SceneNode[]) {
+        out.push(n);
+        if (n.type !== "SECTION") continue;
+        try {
+          const sk = (n as SectionNode).children;
+          if (Array.isArray(sk)) for (const c of sk as SceneNode[]) out.push(c);
+        } catch (e) { /* ignore */ }
+      }
+    } catch (e) { /* mock */ }
+    return out;
+  };
+  const sectionByName = (nm: string): SectionNode | null => {
+    try {
+      const kids = page.children;
+      if (!Array.isArray(kids)) return null;
+      for (const n of kids as SceneNode[]) if (n.type === "SECTION" && n.name === nm) return n as SectionNode;
+    } catch (e) { /* mock */ }
+    return null;
+  };
   let existing = new Set<string>();
   try {
     const r = page.findAll((n) => n.type === "COMPONENT_SET");
@@ -6631,16 +6665,28 @@ export async function buildAllComponents(
     // Date Picker Mobile Bottom Sheet backward-compat: 구 "Date Picker Mobile" 세트 자동 정리(재설치 시)
     if (p === "Date Picker Mobile Bottom Sheet") base.push(
       "Date Picker Mobile", "Date Picker Mobile — Spec Light", "Date Picker Mobile — Spec Dark");
-    return base;
+    // 장식(떠있는 라벨·밴드)은 `<세트이름> — Spec Deco` 로 이름이 붙는다 → 이름으로 함께 걷어낸다.
+    return base.concat(base.map((b) => `${b} ${DECO_SUFFIX}`));
   };
   const regionBottom = (p: string): number | null => {
     const names = new Set(footprint(p));
-    const ms = topNodes.filter((n) => names.has(n.name));
-    return ms.length ? Math.max(...ms.map((n) => n.y + n.height)) : null;
+    // 섹션 자식은 n.y 가 섹션 상대좌표라 절대좌표(absoluteBoundingBox)로 읽는다.
+    const bb = absBBox(canvasNodes().filter((n) => names.has(n.name)));
+    return bb ? bb.maxY : null;
   };
-  const removeByNames = (list: string[]): void => {
+  //   keepSets = 이름이 같아도 **지우면 안 되는 COMPONENT_SET**(정본 부품). 재설치 때 보존된
+  //   Calendar·Date Picker 안의 인스턴스가 그 세트를 가리키고 있어, 지우면 detach 로 깨진다
+  //   (`getOrBuildCalendarCell` 의 재사용 가드 주석 참조 — Figma 는 자동 remap 하지 않는다).
+  const removeByNames = (list: string[], keepSets?: string[]): void => {
     const names = new Set(list);
-    for (const n of topNodes.filter((x) => names.has(x.name))) { try { n.remove(); } catch (e) { /* ignore */ } }
+    const keep = new Set(keepSets || []);
+    // 옛 산출물은 **이름으로만** 지운다. 좌표(박스)로 지우면 경계에 걸친 남의 라벨까지 사라진다
+    //   (실측: 재설치 3회차에 Calendar/Date Picker 설명 라벨 5개 유실). 그래서 떠있는 장식에도
+    //   `<세트이름> — Spec Deco` 이름을 붙여 footprint 로 정확히 걷어낸다.
+    for (const n of canvasNodes().filter((x) => names.has(x.name))) {
+      if (n.type === "COMPONENT_SET" && keep.has(n.name)) continue;
+      try { n.remove(); } catch (e) { /* ignore */ }
+    }
   };
 
   let created = 0;
@@ -6720,6 +6766,45 @@ export async function buildAllComponents(
   for (const cat of COMPONENT_CATEGORIES) {
     const catTopY = y + SECTION_TITLE_SPACE; // 섹션 이름 라벨이 차지할 상단 여백 확보
     let catY = catTopY;
+    // 재설치 회수: 이 카테고리의 옛 섹션을 2단계에서 흩어놓은 자리(가로 컬럼)에서 1단계 컬럼으로
+    //   되돌린다. 이렇게 해야 "이미 있어 보존한 부품"과 "이번에 새로 만든 부품"이 같은 좌표계에
+    //   놓여 아래 layout/래핑이 한 카테고리 안에서만 계산된다.
+    //   회수 방식은 "섹션째 옮기기"가 아니라 **자식을 페이지로 도로 꺼내기**다. 섹션 자식의 x·y 는
+    //   섹션 기준 상대좌표인데, 빌더는 재사용한 세트에도 `set.y = originY` 처럼 **페이지 절대좌표를
+    //   전제로** 값을 쓴다. 섹션 안에 둔 채로 빌드하면 그 값이 섹션 원점만큼 어긋나, 재사용된 세트가
+    //   제 설명 시트와 떨어져 엉뚱한 자리에 서고 카테고리 배치가 어긋난다(실측: Calendar Cell 세트가
+    //   자기 Spec 시트에서 932px 아래로 떨어짐). 꺼낸 뒤 원점을 (0, catTopY)로 맞춰
+    //   빌더가 새로 만드는 노드와 같은 좌표계에 세운다. 다시 담는 것은 아래 래핑이 한다.
+    // ── 소유권 장부 ────────────────────────────────────────────────────────────
+    //   "화면상 y 위치로 짐작"을 버리고 **이번 실행에서 내가 만든 노드 + 내 섹션에 있던 자식**만
+    //   이 카테고리의 것으로 본다. 부품 1개가 실패해도 남의 카테고리 부품을 삼킬 수 없다.
+    //   (2026-09-08 실측 사고: Navigation 섹션 84,178px 안에 Form Control 의 Input 이 들어감)
+    const ownedIds = new Set<string>();
+    try {
+      const oldSec = sectionByName(cat.name);
+      const kids = oldSec ? oldSec.children : null;
+      if (oldSec && Array.isArray(kids) && kids.length) {
+        const keep = (kids as SceneNode[]).map((k) => {
+          const b = k.absoluteBoundingBox;
+          return { k, x: b && typeof b.x === "number" ? b.x : null, y: b && typeof b.y === "number" ? b.y : null };
+        });
+        for (const it of keep) {
+          try { page.appendChild(it.k); } catch (e) { continue; }
+          const a = it.k.absoluteBoundingBox;
+          if (it.x != null && it.y != null && a && typeof a.x === "number" && typeof it.k.x === "number") {
+            it.k.x += it.x - a.x; it.k.y += it.y - a.y;
+          }
+        }
+        const bb = absBBox(keep.map((it) => it.k));
+        if (bb) {
+          const dx = 0 - bb.minX, dy = catTopY - bb.minY;
+          if (dx !== 0 || dy !== 0) {
+            for (const it of keep) { try { (it.k as any).x += dx; (it.k as any).y += dy; } catch (e) { /* */ } }
+          }
+        }
+        for (const it of keep) ownedIds.add(it.k.id);
+      }
+    } catch (e) { /* mock/no-page */ }
     // ── 빌드 패스: 의존성(요소 먼저) 순서로 생성 — 표시순서 ≠ 빌드순서 규칙(BUILD_DEPENDENCIES) ──
     //   빌드 시점 Y(catY)는 임시(겹치지 않게 세로로 쌓음). 최종 세로 위치는 아래 layout 패스가 정한다.
     for (const name of buildOrderFor(cat.members)) {
@@ -6736,13 +6821,22 @@ export async function buildAllComponents(
       done++;
       const isDepSet = name === "Calendar Cell" || name === "Calendar Tile";
       if (existing.has(name) && !isDepSet) {
+        // ⚠️ 대입이 아니라 **전진**이다. 대입하면 앞 멤버가 밀어놓은 자리를 되돌려, 그 자리에
+        //   뒤 멤버(재빌드되는 Calendar Cell 등)를 겹쳐 세운다(🤖 verifier 실측: Calendar 위에
+        //   Calendar Cell 이 528x422 전면 겹침). 빌드 커서는 뒤로 가지 않는다.
         const rb = regionBottom(name);
-        if (rb != null) catY = rb + 140;
+        if (rb != null) catY = Math.max(catY, rb + 140);
+        // 보존한 기존 부품도 이 카테고리 소유로 등록(옛 섹션 밖에 남아 있던 경우까지).
+        const fnames = new Set(footprint(name));
+        for (const n of canvasNodes()) if (fnames.has(n.name)) ownedIds.add(n.id);
         skipped.push(name);
         continue;
       }
       if (onProgress) onProgress(`${name} 생성 중…`, 92 + Math.round((done / TOTAL) * 8));
-      removeByNames(footprint(name));
+      // isDepSet(Calendar Cell·Calendar Tile)은 이미 있어도 매번 러너가 돈다(빠진 크기 채우기).
+      //   그 세트는 보존된 Calendar·Date Picker 인스턴스의 원본이라 **지우면 안 된다** — 옛 스펙 시트와
+      //   장식만 걷어내고 세트는 남겨 `getOrBuildCalendarCell` 이 그대로 재사용하게 한다.
+      removeByNames(footprint(name), isDepSet ? [name] : []);
       // 건별 try/catch — 컴포넌트 1개가 실패해도 나머지를 계속 만든다(2026-08-01 신설).
       //   종전엔 이 자리에 방어가 없어 **1개 실패 = 전체 설치 중단**이었다. 뒤 컴포넌트는
       //   하나도 안 생기고, 앞서 만든 것만 캔버스에 남은 반쪽 상태가 됐다.
@@ -6766,6 +6860,11 @@ export async function buildAllComponents(
         created += res.set.children.length;
         added.push(name);
         catY = res.bottomY + 140;
+        // 이번 빌더가 새로 만든 최상위 노드 = 이 카테고리 소유(떠있는 그룹라벨·밴드 포함).
+        try {
+          const kids = figma.currentPage.children as SceneNode[];
+          if (Array.isArray(kids)) for (const n of kids) if (!beforeIds.has(n.id)) ownedIds.add(n.id);
+        } catch (_) { /* mock/no-page */ }
       } catch (e: any) {
         const reason = (e && (e.message || String(e))) || "unknown";
         // 부분 산출물 제거 — 이게 없으면 "정상으로 위장된 반쪽"이 영구 고착된다.
@@ -6800,7 +6899,11 @@ export async function buildAllComponents(
     try {
       const pageKids = figma.currentPage.children;
       if (Array.isArray(pageKids)) {
-        const kids = (pageKids as SceneNode[]).filter((n) => n.type !== "SECTION");
+        // ★ 대상은 "페이지의 모든 최상위 노드"가 아니라 **이 카테고리가 소유한 노드**뿐이다.
+        //   (소유 = 이번 실행에서 이 카테고리가 만든 것 + 이 카테고리 섹션의 기존 자식)
+        //   종전에는 페이지 전체를 대상으로 ±Infinity 밴드를 잡아, 한 부품이 실패하면 그 구역이
+        //   남의 카테고리 부품을 통째로 삼켰다.
+        const kids = canvasNodes().filter((n) => n.type !== "SECTION" && ownedIds.has(n.id));
         const cy = (n: SceneNode): number | null => {
           const b = n.absoluteBoundingBox;
           return b && typeof b.y === "number" && typeof b.height === "number" ? b.y + b.height / 2 : null;
@@ -6843,8 +6946,9 @@ export async function buildAllComponents(
         }
       }
     } catch (e) { /* mock/no-page */ }
-    // 카테고리를 1개 섹션으로 래핑(세로 밴드 기준 — 내용이 실제로 섹션 자식이 됨)
-    await wrapCategoryInSection(cat.name, cat.members, footprint, SECTION_TITLE_SPACE, SECTION_PAD);
+    // 카테고리를 1개 섹션으로 래핑 — **소유 노드 목록으로** 담는다(y밴드 짐작 폐기).
+    await wrapCategoryInSection(cat.name, canvasNodes().filter((n) => n.type !== "SECTION" && ownedIds.has(n.id)),
+      SECTION_TITLE_SPACE, SECTION_PAD);
     y = catY + SECTION_GAP;
   }
 
@@ -7022,37 +7126,17 @@ function relocateSection(section: SectionNode, targetX: number, targetY: number)
   }
 }
 
+// ⚠️ nodes 는 **호출자가 소유권으로 확정한 목록**이다(이번 실행에서 이 카테고리가 만든 노드 +
+//   이 카테고리 섹션의 기존 자식). 종전처럼 "y밴드에 들어오는 페이지의 모든 노드"를 담지 않는다 —
+//   그 방식은 한 부품이 실패하면 밴드가 남의 카테고리를 삼켜 배치가 통째로 무너졌다(2026-09-08 실측).
 async function wrapCategoryInSection(
   title: string,
-  members: string[],
-  footprintFn: (p: string) => string[],
+  nodes: SceneNode[],
   titleSpace: number,
   pad: number,
 ): Promise<void> {
   if (typeof figma.createSection !== "function") return; // mock/구버전 → 건너뜀
-  let kids: SceneNode[] = [];
-  try {
-    const c = figma.currentPage.children;
-    if (Array.isArray(c)) kids = (c as SceneNode[]).filter((n) => n.type !== "SECTION");
-  } catch (e) { return; }
-  if (!kids.length) return;
-  // 1) footprint 이름(세트+스펙)으로 이 카테고리의 대표 노드 → y밴드 산출
-  const names = new Set<string>();
-  for (const m of members) for (const n of footprintFn(m)) names.add(n);
-  const seedBox = absBBox(kids.filter((n) => names.has(n.name)));
-  if (!seedBox) return;
-  const bandTop = seedBox.minY - titleSpace;
-  const bandBot = seedBox.maxY + pad;
-  // 2) y밴드에 들어오는 모든 페이지 노드 수집 — 세트 데코레이션(decorateSet*→floatingEmit)이
-  //    만든 "떠있는" 그룹라벨·밴드(footprint 이름 아님)까지 포함해야 섹션 배경에 가려지지 않음.
-  //    카테고리는 disjoint 한 세로 밴드라 이웃 카테고리 노드는 잡히지 않는다.
-  const nodes = kids.filter((n) => {
-    const b = n.absoluteBoundingBox;
-    if (!b || typeof b.y !== "number" || typeof b.height !== "number") return false;
-    const cy = b.y + b.height / 2;
-    return cy >= bandTop && cy <= bandBot;
-  });
-  if (!nodes.length) return;
+  if (!nodes || !nodes.length) return;
   const box = absBBox(nodes);
   if (!box) return;
 
@@ -7064,6 +7148,13 @@ async function wrapCategoryInSection(
   } catch (e) { /* mock → 신규 */ }
   if (!section) section = figma.createSection();
   section.name = title;
+  // ⚠️ 목표 절대위치는 **섹션을 움직이기 전에** 기록한다. 재설치 때는 nodes 중 일부가 이미 이
+  //   섹션의 자식이라, 섹션을 먼저 옮기면 그 자식들이 함께 끌려가 위치가 어긋난다.
+  const desired: { n: SceneNode; x: number; y: number }[] = [];
+  for (const n of nodes) {
+    const b = n.absoluteBoundingBox;
+    if (b && typeof b.x === "number" && typeof b.y === "number") desired.push({ n, x: b.x, y: b.y });
+  }
   // 섹션을 먼저 bbox 기준으로 배치/크기지정(자식 추가 전) → 이후 자식 절대위치 보정
   // 가로 배치는 빌드 후 2단계 relocateSection 가 담당. 여기선 내용에 딱 맞게만 래핑한다.
   try { section.x = box.minX - pad; section.y = box.minY - titleSpace; } catch (e) { /* */ }
@@ -7074,10 +7165,10 @@ async function wrapCategoryInSection(
     );
   } catch (e) { /* */ }
   // 노드를 섹션으로 이동하되 절대 위치 보존(섹션 자식 좌표 규약과 무관하게 보정)
-  for (const n of nodes) {
-    const before = n.absoluteBoundingBox;
-    const bx = before && typeof before.x === "number" ? before.x : null;
-    const by = before && typeof before.y === "number" ? before.y : null;
+  for (const d of desired) {
+    const n = d.n;
+    const bx = d.x;
+    const by = d.y;
     try { section.appendChild(n); } catch (e) { continue; }
     const after = n.absoluteBoundingBox;
     if (bx != null && by != null && after && typeof after.x === "number" && typeof n.x === "number") {

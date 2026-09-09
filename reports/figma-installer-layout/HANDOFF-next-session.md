@@ -1,43 +1,37 @@
-# 인계 — Figma 설치기 배치·정리 결함 2건
+# 설치기 배치·정리 결함 2건 — 해결 완료 (2026-09-09)
 
-> 작성 2026-09-08. 원 세션(「Figma 설치기 배치·정리 결함」)은 **river 결정 2건을 기다리다 종료**됐다.
-> 코드 변경은 **0건**이다. 조사 결과만 아래에 남긴다. 이 문서 전체를 읽고 이어받으면 된다.
+> 2026-09-08 인계분(결함 1·2 + 죽은 코드 청소)을 이 세션에서 전부 처리했다.
+> 🤖 component-verifier 3회 검증 후 PASS, Gate 13 기록 `reports/installer-build/verifications/d3274f6df3d60912.json`.
 
-## ⬇️ 붙여넣기용 프롬프트
+## 무엇을 고쳤나
 
-````text
-S1-UX-DESIGN-with-AI 저장소. Figma 설치기(plugins/figma-vars-installer)의 배치·정리 결함 2건을 이어받는다.
-먼저 reports/figma-installer-layout/HANDOFF-next-session.md 전체를 읽어라. 착수 전 river 결정 2건이 필요하다.
-````
+**결함 1 — 달력 부품 설명 시트가 재설치마다 겹쳐 쌓임**
+- 옛 산출물을 지우는 `removeByNames` 가 함수 진입 시 캡처한 페이지 최상위 노드만 훑어, 첫 설치 뒤 SECTION 안으로 들어간 것을 못 봤다 → **매 호출 시점에 캔버스 2단(페이지 직속 + 섹션 직속)을 새로 읽는다**(`canvasNodes()`).
+- 세트 위에 떠 있는 설명 라벨·밴드는 이름이 없어 이름 매칭에서 빠졌다 → **`<세트이름> — Spec Deco` 이름을 붙이고**(`DECO_SUFFIX`) footprint 가 함께 걷어낸다. 좌표(박스)로 지우는 방식은 경계에 걸친 남의 라벨까지 지워서 폐기했다.
+- Calendar Cell·Calendar Tile 은 매번 러너가 도는 부품(빠진 크기 채우기)이라 그 **COMPONENT_SET 자체는 지우지 않는다**(`removeByNames(list, keepSets)`). 지우면 보존된 Calendar·Date Picker 인스턴스가 detach 된다.
 
-## 1️⃣ river 결정 대기 2건 (착수 전 필수)
+**결함 2 — 부품 1개 실패가 페이지 배치 전체를 무너뜨림**
+- layout 패스와 `wrapCategoryInSection` 이 담당 구역을 ±Infinity y밴드 · 페이지의 모든 최상위 노드로 잡던 것을 폐기하고, **소유권 장부 `ownedIds`**(이번 실행에서 이 카테고리가 만든 노드 + 옛 섹션에 있던 자식)로만 계산한다. `wrapCategoryInSection` 은 노드 목록을 직접 받는다.
+- 재설치 때 옛 섹션의 자식을 **페이지로 도로 꺼내 원점을 (0, catTopY)로 맞춘다.** 섹션 자식의 x·y 는 섹션 상대좌표인데 빌더는 페이지 절대좌표를 전제로 값을 쓰기 때문이다(그대로 두면 재사용된 세트가 제 설명 시트에서 932px 떨어졌다). 섹션 폭이 회차마다 +64px 자라던 것도 같이 해소.
+- 보존 부품의 y 전진이 `catY = rb + 140`(대입)이라 앞 멤버가 밀어놓은 커서를 되돌렸다 → **`Math.max(catY, rb + 140)`**.
 
-| # | 무엇을 정해야 하나 | 선택지 | 안 정하면 |
-|---|---|---|---|
-| D-1 | 두 결함을 함께 고칠지 | (A) 2건 동시 진행 (B) 결함 1만 먼저 | 착수 못 함 |
-| D-2 | 2026-09-08 설치 때 부품 3개가 실패한 **화면상 실패 사유 문구**를 river가 알려줄 수 있나 | (A) 알려준다 → 원인 확정 가능 (B) 모른다 → 일부러 실패시켜 재현만, **원인은 미확정으로 남김** | (B)로 진행 |
+**죽은 코드 청소** — `code.ts` 의 레거시 교체 탭 잔재(핸들러 3개 + 함수 4개 + onmessage 타입의 `mappings`) 174줄 삭제. dist·zip 재빌드 후 해당 문자열 0건.
 
-## 2️⃣ 결함 1 — 달력 부품 설명 시트가 설치할 때마다 쌓인다 (재현됨)
+## 검증 결과 (🤖 component-verifier 독립 재현)
 
-- `build-components.ts:6737` `isDepSet`(Calendar Cell·Calendar Tile) 두 부품만 **이미 있어도 매번 다시 만든다.**
-- 옛 산출물을 지우는 `removeByNames`(`:6641`)는 함수 진입 시 캡처한 **페이지 최상위 노드만** 훑는다. 첫 설치 뒤 시트는 SECTION 안으로 들어가 최상위에 없다 → 안 지워지고 겹쳐 쌓인다. 실측 2벌씩. river가 "컴포넌트가 다 중복돼 엉망"이라고 본 것이 이것.
-- **예외는 유지가 맞다**(조사 완료): 달력 패널이 쓰는 부속품이라, 재설치 때 빠진 크기(SM)를 채우려고 2026-09-04 SM 신설 때 일부러 넣은 장치다. 한계는 `:3975` 주석에 이미 적혀 있다.
-- → 고칠 곳은 **"옛 것 지우기"의 범위**뿐이다. 페이지 전체(재귀)로 넓힌다.
+| 검사 | 결과 |
+|---|---|
+| 6회 연속 설치 · 15개 섹션 x/폭/높이/자식수 | run1(첫 설치)~run6 **전부 동일** · 세트 49 불변 · 떠도는 노드 0 |
+| 부품끼리 겹침 | 6런 전부 **0**(HEAD 는 run2 에 13건, run3 에 19건) |
+| HEAD 재설치 | Date Picker 섹션 `1432x996`·자식 88→112 로 붕괴 — 신규 판에서 소멸 |
+| 실패 주입 4세트(부품 3개 / Chip 전멸 / Table 전멸 / Input) | 신규 판 전부 run1=run2 동일, 타 카테고리 잠식 0 |
+| HEAD 대비 회귀 대조 | 5058노드 중 543개 차이, **전부** `props.name` 신규 부여뿐 · 그 밖 속성 차이 0 |
+| Gate | `npm run gate:check` **PASSED**(경고 14, error 0) |
 
-## 3️⃣ 결함 2 — 부품 1개 설치 실패가 페이지 배치 전체를 무너뜨린다 (기전 확인 · 인과 미확정)
+## 남은 것
 
-- `:6718` 부근 layout 패스가 각 멤버의 담당 구역을 **맨 위 -Infinity · 맨 아래 +Infinity** 로 잡고, 대상이 그 카테고리가 아니라 **페이지의 모든 최상위 노드**다. `wrapCategoryInSection`(`:7025`)도 "y밴드에 든 모든 노드"를 섹션에 담는다.
-- 구성이 어긋나면 한 멤버 구역이 남의 부품을 삼키고 그 덩치만큼 다음 멤버가 밀린다. 실측: Navigation 섹션 84,178px, 그 안에 Form Control 소속 Input·Search Input·Text Area가 들어가 있었다. 3개(GNB Sub Menu·GNB Sub Menu Item·Assist Button)가 정상 설치되자 최대 6,244px로 복귀.
-- **원인 가설(미확정):** 셋 다 2026-09-08 신규 부품이고 같은 커밋에 새 색 4개가 함께 들어갔다 → 새 색을 설치 안 한 상태에서 부품만 설치했을 가능성. D-2 답이 있어야 확정된다.
-- → 고칠 방향: 배치·섹션 담기가 **"화면상 y 위치로 짐작"하는 방식을 버리고 "이번 실행에서 내가 만든 노드"로 소유권을 확정**한다. 실패가 나도 남의 부품을 삼키지 못하게.
-
-## 4️⃣ 지켜야 할 것
-
-- `build-components.ts` 구조 변경 = **하드룰 H1②**. 빌드는 직접 가능하나 검증은 🤖 `component-verifier` 실제 spawn 필수 → 통과 후 `node scripts/installer-build-verify-check.js --record --by component-verifier --change structural --note "..."` 로 Gate 13 기록. 그전엔 커밋이 훅에 막힌다.
-- **회귀 대조:** HEAD 소스를 사본 디렉터리에 두고 같은 Figma mock으로 양쪽을 돌려 좌표·크기 포함 전 노드를 대조한다(`scripts/lib/figma-build-mock.js` 의 `runBuild` + esbuild 번들). ⚠️ **이 mock은 `createSection`을 만들지 않는다**(`:7032`·`:6992`가 mock에서 no-op) — 즉 **결함 2가 사는 그 단계는 대조 범위 밖**이다. "mock 통과 = 배치 안전"이라고 말하지 말 것.
-- 실물 확인은 사람만 가능하다. **원본이 아니라 사본 파일**에서 river에게 부탁한다.
-- 같은 파일에서 **"설치기 제자리 갱신(upsertSet)"** 작업이 설계 결함으로 보류돼 있다(부품 속을 통째로 갈아끼워 인스턴스 오버라이드가 지워짐 — 실측). 경위는 `reports/figma-library-build/input-state-focus/7-installer-upsert-verification.md`, 코드는 같은 폴더 `upsert-in-place.patch`. 착수 시 `git status` 로 먼저 확인.
-
-## 5️⃣ 원 세션이 계획했던 흐름 (참고)
-
-🔧 두 곳 수정 → 🔎 좌표·섹션까지 재현하는 검증판으로 「일부러 실패시킨 설치」 대조 → 🔎 변경 전 코드와 전 노드 회귀 대조 → 🤖 component-verifier 독립 검증 → 🚧 Gate 기록·커밋 → 🙋 river 실물 확인(사본 파일)
+- **NOT_VERIFIED:** 2026-09-08 원 증상(Navigation 섹션이 Form Control 의 Input 을 삼킴)을 HEAD **첫 설치**에서는 mock 으로 재현하지 못했다. 재설치 붕괴 해소는 실측 확인됐다. 실패 사유 문구를 river 가 기억하지 못해(D-2 = B) **실패 원인 자체는 미확정**으로 남긴다.
+- **river 결정 대기:** 사용자가 Calendar Cell/Tile 세트를 제 섹션 밖(다른 섹션·중첩 프레임)으로 끌어낸 캔버스는 `canvasNodes()` 사정거리 밖이라 소유가 안 잡혀 엉뚱한 섹션에 담길 수 있다. HEAD 도 사정거리가 같거나 더 좁았고 유실은 아니다. 막을지 둘지 결정 필요.
+- **개선 적재(비차단):** 카테고리 섹션 이름과 멤버 이름이 같은 10건(Line Tab·Pagination·Chip·Dropdown·Date Picker·Time Picker·Table·Bottom Sheet·Modal·Filter Chip)에서 `regionBottom` 이 빈 옛 SECTION 박스를 집는다. `Math.max` 가 흡수해 산출 영향 0이지만 우연에 가깝다.
+- **실물 미확인:** 전부 mock·코드 레벨이다. Figma 실제 캔버스 육안 확인은 사람만 가능하다 — **원본이 아니라 사본 파일**에서 확인할 것.
+- 같은 파일의 **"설치기 제자리 갱신(upsertSet)"** 은 여전히 보류다(경위 `reports/figma-library-build/input-state-focus/7-installer-upsert-verification.md`).
