@@ -39,6 +39,20 @@ Compose 코드에는 치수·색 리터럴이 한 자리도 없다 — 전부 `S
 산출물은 `ui-library/dist/platform/kotlin/` 과 `ui-library/dist/platform/kotlin-sample/` 이며
 `npm run ui:build` 한 번으로 전부 다시 만들어진다. **dist 손편집 금지**(빌드마다 통째로 지워진다).
 
+## 값 체계 — 무엇이 들어 있나
+
+| 층 | 어디에 | 개수 |
+|---|---|---|
+| Foundation · Semantic · Component 토큰 (색·크기·간격·반경·글꼴값) | `S1Tokens.kt` · `S1Palette.kt` | 481 |
+| 이름 붙은 텍스트 스타일 (`title-32b` … `body-10r`) | `S1Type.kt` | 20 |
+| 아이콘 | `S1Icons.kt` | 7 |
+
+텍스트 스타일은 낱개 값을 매번 조립하지 않게 이름으로 부르는 묶음이다.
+
+```kotlin
+BasicText(text = "본문", style = S1Type.body14r.textStyle(S1Palette.colorTextBodyPrimary))
+```
+
 ## 검증
 
 | 검사 | 방법 | 결과 |

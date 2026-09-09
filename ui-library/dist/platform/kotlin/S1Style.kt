@@ -64,6 +64,30 @@ fun S1Theme(
     )
 }
 
+/**
+ * 이름 붙은 글자 묶음 하나(텍스트 스타일). 서체는 테마가 준다 —
+ * 정본 서체는 Pretendard 이고, 안드로이드 폰트 리소스는 앱이 넣어 S1Theme 에 넘긴다.
+ */
+@Immutable
+data class S1TypeSpec(
+    val fontSize: Float,
+    val fontWeight: Int,
+    /** 글꼴 크기에 곱하는 배수(정본 130% = 1.3). */
+    val lineHeight: Float,
+    /** em 단위 자간. */
+    val letterSpacing: Float
+)
+
+@Composable
+fun S1TypeSpec.textStyle(color: S1Color? = null): TextStyle = TextStyle(
+    color = color?.resolve(LocalS1Dark.current) ?: Color.Unspecified,
+    fontFamily = LocalS1FontFamily.current,
+    fontSize = fontSize.sp,
+    fontWeight = FontWeight(fontWeight),
+    letterSpacing = if (letterSpacing == 0f) TextUnit.Unspecified else letterSpacing.em,
+    lineHeight = (fontSize * lineHeight).sp
+)
+
 /** 그림자 한 겹. CSS box-shadow 의 x·y·번짐·퍼짐·색을 그대로 옮긴 것이다. */
 @Immutable
 data class S1Shadow(val x: Float, val y: Float, val blur: Float, val spread: Float, val color: Long)

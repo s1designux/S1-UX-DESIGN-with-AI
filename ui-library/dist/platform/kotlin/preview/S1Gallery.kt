@@ -150,6 +150,18 @@ fun S1Gallery(modifier: Modifier = Modifier, dark: Boolean = false) {
                 S1Input(value = "검색어", onValueChange = {}, mode = "search")
             }
 
+            GallerySection("Text Style") {
+                for ((name, spec) in S1Type.all) {
+                    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        GalleryLabel(name)
+                        BasicText(
+                            text = "다람쥐 헌 쳇바퀴에 타고파 AaBbGg 123",
+                            style = spec.textStyle(S1Palette.colorTextBodyPrimary)
+                        )
+                    }
+                }
+            }
+
             GallerySection("Modal") {
                 for (footer in S1ModalSpec.footers) {
                     GalleryLabel(footer)

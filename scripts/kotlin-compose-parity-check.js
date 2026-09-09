@@ -121,15 +121,17 @@ function footerSizesOf(base, manifest) {
 
 async function main() {
   const { PLANS, EXTRA_PLANS, extractSpec, mobileOnly } = await import(path.join(ROOT, 'ui-library/scripts/kotlin-compose.mjs'));
+  const { readTextStyles } = await import(path.join(ROOT, 'ui-library/scripts/kotlin-typography.mjs'));
   const { readTokens } = await import(path.join(ROOT, 'ui-library/scripts/platform.mjs'));
 
   const tokensCss = fs.readFileSync(path.join(ROOT, 'assets/css/tokens.css'), 'utf8');
+  const typographyCss = fs.readFileSync(path.join(ROOT, 'assets/css/typography.css'), 'utf8');
   const tokenData = readTokens(tokensCss);
   const tokenValues = new Map(tokenData.tokens.map((token) => [token.name, token.value]));
 
   const ids = Object.keys(PLANS);
   const cases = [];
-  const styleBlocks = [forceStates(tokensCss)];
+  const styleBlocks = [forceStates(tokensCss), typographyCss];
 
   for (const id of ids) {
     const base = path.join(ROOT, 'ui-library/src/components', id);
@@ -164,6 +166,25 @@ async function main() {
         }
       }
     }
+  }
+
+  /* 이름 붙은 글자 묶음도 같은 방식으로 확인한다 — 네 값을 브라우저가 계산한 것과 맞춰 본다. */
+  for (const style of readTextStyles(typographyCss, tokenValues)) {
+    cases.push({
+      component: 'typography',
+      plan: 'typography',
+      key: style.name,
+      part: 'text',
+      html: `<span class="typo-${style.name}">본문</span>`,
+      chain: [],
+      pseudoElement: null,
+      expected: {
+        fontSize: style.fontSize.value,
+        fontWeight: style.fontWeight.value,
+        letterSpacing: style.letterSpacing.value,
+        lineHeight: style.lineHeight.value
+      }
+    });
   }
 
   const page = buildPage(styleBlocks.join('\n'), cases);

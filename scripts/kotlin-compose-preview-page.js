@@ -271,6 +271,7 @@ const AXIS_LABEL = { state: '상태', footer: '푸터', size: '크기', breakNam
 
 async function main() {
   const { PLANS, extractSpec, planFor, apiOf } = await import(path.join(ROOT, 'ui-library/scripts/kotlin-compose.mjs'));
+  const { readTextStyles } = await import(path.join(ROOT, 'ui-library/scripts/kotlin-typography.mjs'));
   const { readTokens } = await import(path.join(ROOT, 'ui-library/scripts/platform.mjs'));
   const tokensCss = fs.readFileSync(path.join(ROOT, 'assets/css/tokens.css'), 'utf8');
   const tokenData = readTokens(tokensCss);
@@ -389,6 +390,48 @@ async function main() {
       .join('')}</div>`;
   };
 
+  /* 이름 붙은 글자 묶음 — 부품이 아니라 값 체계라 표 대신 목록으로 보여 준다. */
+  const typographyCss = fs.readFileSync(path.join(ROOT, 'assets/css/typography.css'), 'utf8');
+  const textStyles = readTextStyles(typographyCss, tokenValues);
+  const typeRows = textStyles.map((style) => {
+    const detailId = `typography|${style.name}`;
+    details[detailId] = {
+      component: 'typography',
+      title: `텍스트 스타일 — ${style.name}`,
+      key: style.name,
+      sample: `<span class="typo-${style.name}">다람쥐 헌 쳇바퀴에 타고파 AaBbGg 123</span>`,
+      values: `<div class="partgroup"><h4>text</h4><div>` + [
+        `<span class="chip">글자 크기 <b>${style.fontSize.value}sp</b></span>`,
+        `<span class="chip">굵기 <b>${style.fontWeight.value}</b></span>`,
+        `<span class="chip">줄간격 <b>${style.lineHeight.value}배</b></span>`,
+        `<span class="chip">자간 <b>${style.letterSpacing.value}em</b></span>`,
+        `<span class="chip">토큰 <code>${escapeHtml(style.fontSize.token ?? '-')}</code></span>`
+      ].join('') + `</div></div>`,
+      code: `BasicText(\n    text = "본문",\n    style = S1Type.${style.property}.textStyle(S1Palette.colorTextBodyPrimary)\n)`,
+      note: null
+    };
+    return `<tr data-row="[]" data-search="typography ${escapeHtml(style.name.toLowerCase())}">
+      <th scope="row">${escapeHtml(style.name)}</th>
+      <td><button type="button" class="cell" data-detail="${escapeHtml(detailId)}"><span class="typo-${style.name}">다람쥐 헌 쳇바퀴에 타고파 AaBbGg</span></button></td>
+      <td class="typemeta">${style.fontSize.value}sp · 굵기 ${style.fontWeight.value} · 줄간격 ${style.lineHeight.value} · 자간 ${style.letterSpacing.value}em</td>
+    </tr>`;
+  }).join('');
+
+  sections.push(`
+    <section id="typography" data-component="typography">
+      <div class="sectionhead">
+        <h2>텍스트 스타일 <span class="en">S1Type</span></h2>
+        <p class="meta">${textStyles.length}종 · 낱개 값은 S1Tokens 에 있고, 여기 있는 것은 이름으로 부르는 묶음이다</p>
+      </div>
+      <div class="tablewrap">
+        <table class="matrix">
+          <thead><tr><th class="corner">이름</th><th>보이는 모습</th><th>값</th></tr></thead>
+          <tbody>${typeRows}</tbody>
+        </table>
+      </div>
+      <p class="ok">네 값(크기·굵기·줄간격·자간) 전부 브라우저 계산과 맞춰 확인했습니다.</p>
+    </section>`);
+
   const html = `<!doctype html>
 <html lang="ko" data-theme="light">
 <head>
@@ -483,13 +526,14 @@ ${embeddedCss}
   .backdrop[data-open="true"] { opacity: 1; pointer-events: auto; }
   .hidden { display: none !important; }
   .emptynote { font-size: 13px; opacity: .6; padding: 8px 0; }
+  .typemeta { font-size: 11px; opacity: .65; white-space: nowrap; }
 </style>
 </head>
 <body>
 <div class="toolbar">
   <div class="inner">
     <div class="row1">
-      <nav>${Object.keys(PLANS).map((id) => `<a href="#${id}">${escapeHtml(COMPONENT_TITLE[id] ?? id)}</a>`).join('')}</nav>
+      <nav>${Object.keys(PLANS).map((id) => `<a href="#${id}">${escapeHtml(COMPONENT_TITLE[id] ?? id)}</a>`).join('')}<a href="#typography">텍스트 스타일</a></nav>
       <input id="search" type="search" placeholder="찾기 (예: md, disabled, 버튼)" autocomplete="off">
       <button type="button" class="themebtn" id="light" aria-pressed="true">라이트</button>
       <button type="button" class="themebtn" id="dark" aria-pressed="false">다크</button>
@@ -628,7 +672,8 @@ ${embeddedCss}
         row.classList.toggle('hidden', !show);
         if (show) visibleRows += 1;
       }
-      const empty = visibleRows === 0 || visibleColumns === 0;
+      /* 상태 축이 없는 표(텍스트 스타일)는 가로 필터가 적용될 자리가 없다 — 줄만 본다. */
+      const empty = visibleRows === 0 || (columns.length > 0 && visibleColumns === 0);
       section.classList.toggle('hidden', empty);
     }
   }

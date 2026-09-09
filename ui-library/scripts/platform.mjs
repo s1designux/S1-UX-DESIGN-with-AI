@@ -703,7 +703,7 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
   outputs.set("platform/swift/S1Tokens.swift", buildSwift(tokenData));
   outputs.set("platform/cpp/s1_tokens.h", buildCppHeader(tokenData));
   /* Compose 부품 — 값(S1Tokens)만으로는 화면을 못 그린다. 승인 배포본 CSS 를 계산해 부품까지 만든다. */
-  const kotlin = buildKotlinOutputs({ componentOutputs, tokenData, iconAssets });
+  const kotlin = buildKotlinOutputs({ componentOutputs, tokenData, iconAssets, typographyCss });
   for (const [relative, content] of kotlin.outputs) outputs.set(relative, content);
   for (const [relative, content] of sampleFiles("com.s1.designsystem", COMPOSE_COMPONENTS)) outputs.set(relative, content);
   outputs.set("platform/kotlin/coverage.json", stable({
@@ -713,6 +713,7 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
       rule: "unreadDeclarations 는 표시·배치 규칙이어야 한다. 색·치수가 여기 남으면 부품이 그만큼 정본과 다르다."
     },
     icons: kotlin.icons,
+    textStyles: kotlin.textStyles,
     components: kotlin.coverage
   }));
 

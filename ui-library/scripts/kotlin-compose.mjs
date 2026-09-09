@@ -19,6 +19,7 @@ import { parseStylesheet, element, computeStyle, unusedDeclarations } from "./cs
 import { runtimeKt } from "./kotlin-runtime.mjs";
 import { paletteKt, specKt } from "./kotlin-emit.mjs";
 import { readIcon, iconsKt } from "./kotlin-icons.mjs";
+import { readTextStyles, typeKt } from "./kotlin-typography.mjs";
 import { buttonKt, chipKt, controlKt, toggleKt, tabKt, selectKt, dropdownKt, inputKt, modalKt, galleryKt } from "./kotlin-components.mjs";
 
 const GENERATED_NOTE = "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run ui:build` 를 실행하세요.";
@@ -712,7 +713,7 @@ function modalFooterButtonSizes(component) {
   return sizes;
 }
 
-export function buildKotlinOutputs({ componentOutputs, tokenData, iconAssets, pkg = PACKAGE }) {
+export function buildKotlinOutputs({ componentOutputs, tokenData, iconAssets, typographyCss, pkg = PACKAGE }) {
   const tokenValues = new Map(tokenData.tokens.map((token) => [token.name, token.value]));
   const byId = new Map(componentOutputs.map((component) => [component.id, component]));
   const outputs = new Map();
@@ -757,6 +758,8 @@ export function buildKotlinOutputs({ componentOutputs, tokenData, iconAssets, pk
 
   outputs.set("platform/kotlin/S1Style.kt", runtimeKt(pkg));
   outputs.set("platform/kotlin/S1Palette.kt", paletteKt(pkg, tokenData.tokens, GENERATED_NOTE));
+  const textStyles = readTextStyles(typographyCss, tokenValues);
+  outputs.set("platform/kotlin/S1Type.kt", typeKt(pkg, textStyles, GENERATED_NOTE));
 
   const usedIcons = new Set();
   for (const spec of specs) {
@@ -775,5 +778,5 @@ export function buildKotlinOutputs({ componentOutputs, tokenData, iconAssets, pk
   outputs.set("platform/kotlin/S1Icons.kt", iconsKt(pkg, icons, GENERATED_NOTE));
   outputs.set("platform/kotlin/preview/S1Gallery.kt", galleryKt(pkg, apis));
 
-  return { outputs, coverage, icons: icons.map(({ name }) => name) };
+  return { outputs, coverage, icons: icons.map(({ name }) => name), textStyles: textStyles.map(({ name }) => name) };
 }
