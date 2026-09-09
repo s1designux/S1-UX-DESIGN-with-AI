@@ -772,6 +772,10 @@ interface SpecOpts {
   rowGap?: number;
   /** 스펙 배경을 흰색 대신 옅은 회색(band)으로 깐다. 부품 자체가 흰 바탕이면 흰 배경에 묻혀 안 보인다. */
   contrastBg?: boolean;
+  /** 다크 스펙에서 인스턴스 대신 쓸 **미리 만들어 둔 노드**(키 = 마스터 컴포넌트 id).
+   *  Figma SLOT 은 인스턴스에서 마스터의 예시 자식을 그대로 보여주지 않아 본문이 비어 나온다.
+   *  슬롯을 쓰는 부품은 다크 검수용으로 슬롯 없는 사본을 따로 만들어 여기에 넘긴다(river 결정 2026-09-09 A안). */
+  darkCellNodes?: Map<string, SceneNode>;
 }
 /** 평면(컬럼×행) 레이아웃을 emit으로 렌더. 반환=총 높이. */
 async function renderFlat(opts: SpecOpts, dark: boolean, emit: LayoutEmit): Promise<number> {
@@ -825,7 +829,26 @@ async function buildSpec(opts: SpecOpts, maps: BuildMaps): Promise<number> {
   frame.resize(W, 1600);
   frame.x = opts.darkOffset?.x ?? (opts.stackDarkBelow ? 0 : W + 80); // 폭이 길면 Light 아래, 아니면 기존처럼 우측
   frame.y = opts.darkOffset?.y ?? opts.originY;
-  const H = await renderFlat(opts, true, frameEmit(frame, maps, modeId));
+  const baseEmit = frameEmit(frame, maps, modeId);
+  const emit: LayoutEmit = opts.darkCellNodes ? {
+    text: baseEmit.text,
+    band: baseEmit.band,
+    cell: (comp, x, y) => {
+      const ready = opts.darkCellNodes!.get(comp.id);
+      if (!ready) {
+        // 사본을 못 찾으면 조용히 인스턴스로 돌아가지 않는다 — 그 경우 사본이 스펙 프레임 밖(섹션)에
+        //   그대로 얹혀 섹션 높이가 회차마다 튄다(🤖 verifier 재현). 눈에 띄지만 원인은 안 보이므로 남긴다.
+        console.warn(`[installer] 다크 사본을 못 찾아 인스턴스로 대체합니다: ${comp.name}`);
+        baseEmit.cell(comp, x, y);
+        return;
+      }
+      frame.appendChild(ready);
+      ready.x = x; ready.y = y;
+      setMode(ready, maps, modeId);
+      try { ((ready as FrameNode).findAll((n: SceneNode) => n.type === "INSTANCE") as SceneNode[]).forEach((d) => setMode(d, maps, modeId)); } catch (e) { /* */ }
+    },
+  } : baseEmit;
+  const H = await renderFlat(opts, true, emit);
   frame.resize(W, H);
   if (opts.stackDarkBelow && opts.darkOffset?.y === undefined) frame.y = opts.originY + H + 80;
   setMode(frame, maps, modeId);
@@ -4995,7 +5018,9 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
   // 슬롯은 헤더·푸터의 정본 구조를 잠그고, 화면별 본문만 자유롭게 교체하기 위한 Figma 공식 SlotNode다.
   // 기본 콘텐츠는 기존과 동일한 Bottom Sheet Option 4행이며, 슬롯을 비우거나 다른 콘텐츠로 교체하면
   // 시트와 content가 AUTO 높이로 함께 늘고 줄어든다.
-  const buildContent = async (owner: ComponentNode): Promise<FrameNode> => {
+  //   useSlot=false 면 슬롯 대신 **평범한 프레임**에 같은 예시 4행을 넣는다. 다크 검수 화면에서
+  //   인스턴스의 슬롯이 비어 보이는 문제 때문에, 다크에는 슬롯 없는 사본을 쓴다(river 결정 A안).
+  const buildContent = async (owner: ComponentNode | FrameNode, useSlot: boolean): Promise<FrameNode> => {
     const content = figma.createFrame();
     content.name = "content"; content.fills = [];
     content.layoutMode = "VERTICAL"; content.primaryAxisSizingMode = "AUTO"; content.counterAxisSizingMode = "FIXED";
@@ -5017,10 +5042,12 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
     // Content Slot: 기본값은 Bottom Sheet Option(Text) 4개(2번째=Selected).
     // createSlot()이 owner에 SLOT component property를 함께 만들며, 이후 content 안으로 옮겨도
     // owner component의 속성으로 유지된다.
-    const existingSlotProperties = new Set(Object.entries(owner.componentPropertyDefinitions)
-      .filter(([, definition]) => definition.type === "SLOT")
-      .map(([propertyName]) => propertyName));
-    const slot = owner.createSlot();
+    const existingSlotProperties = new Set(useSlot
+      ? Object.entries((owner as ComponentNode).componentPropertyDefinitions)
+          .filter(([, definition]) => definition.type === "SLOT")
+          .map(([propertyName]) => propertyName)
+      : []);
+    const slot: FrameNode = useSlot ? (owner as ComponentNode).createSlot() as unknown as FrameNode : figma.createFrame();
     slot.name = "Content"; slot.fills = [];
     slot.layoutMode = "VERTICAL"; slot.primaryAxisSizingMode = "AUTO"; slot.counterAxisSizingMode = "FIXED"; slot.itemSpacing = 0;
     slot.resize(SHEET_W, 48 * 4);
@@ -5037,7 +5064,8 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
     content.appendChild(slot);
     try { slot.layoutAlign = "STRETCH"; } catch (e) { /* */ }
 
-    const slotDefinitions = Object.entries(owner.componentPropertyDefinitions || {});
+    if (!useSlot) return content;   // 다크 사본 — 컴포넌트 속성이 없으므로 여기서 끝난다.
+    const slotDefinitions = Object.entries((owner as ComponentNode).componentPropertyDefinitions || {});
     const slotProperty = slotDefinitions
       .find(([propertyName, definition]) => definition.type === "SLOT" && !existingSlotProperties.has(propertyName))?.[0];
     // 구형 검증 mock은 componentPropertyDefinitions를 기록하지 않는다. 실제 Figma에서는 createSlot()
@@ -5047,7 +5075,7 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
     }
     if (slotProperty) {
       const optionSet = BUILT_SETS["Bottom Sheet Option"];
-      owner.editComponentProperty(slotProperty, {
+      (owner as ComponentNode).editComponentProperty(slotProperty, {
         name: "Content",
         description: "바텀시트 본문 슬롯. 기본값은 Bottom Sheet Option 4행이며 헤더와 푸터는 슬롯 밖의 정본 구조로 유지합니다.",
         preferredValues: optionSet ? [{ type: "COMPONENT_SET", key: optionSet.key }] : [],
@@ -5070,9 +5098,13 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
 
   const variants: { footer: "None" | "Single" | "Dual" }[] = [{ footer: "None" }, { footer: "Single" }, { footer: "Dual" }];
   const byFooter: Record<string, ComponentNode> = {};
-  for (const v of variants) {
-    const comp = figma.createComponent();
-    comp.name = `Footer=${v.footer}`;
+  // 다크 검수용 사본(슬롯 없음) — 마스터 id → 사본 프레임. buildSpec 이 인스턴스 대신 이걸 놓는다.
+  const darkCopies = new Map<string, SceneNode>();
+  /** 시트 한 벌을 짓는다. asComponent=true → 정본 마스터(슬롯 사용) · false → 다크 검수 사본(슬롯 없음). */
+  const makeSheet = async (footer: "None" | "Single" | "Dual", asComponent: boolean): Promise<ComponentNode | FrameNode> => {
+    const comp: any = asComponent ? figma.createComponent() : figma.createFrame();
+    comp.name = asComponent ? `Footer=${footer}` : `Bottom Sheet ${footer} — Dark`;
+    const v = { footer };
     comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "FIXED";
     comp.resize(SHEET_W, 100);
     comp.itemSpacing = 48; // 콘텐츠 ↔ 푸터 (spacing/section/xxl)
@@ -5087,7 +5119,7 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
     const sheetEffects = shadowEffects("shadow/raised-up");   // 오류는 여기서 던진다(삼키지 않음)
     try { (comp as any).effects = sheetEffects; } catch (e) { /* 환경 미지원 */ }
 
-    const content = await buildContent(comp);
+    const content = await buildContent(comp, asComponent);
     try { content.layoutAlign = "STRETCH"; } catch (e) { /* */ }
 
     if (v.footer !== "None") {
@@ -5106,8 +5138,16 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
       if (apply) { footer.appendChild(apply); try { (apply as InstanceNode).layoutSizingHorizontal = "FILL"; } catch (e) { /* */ } }
     }
 
-    setLightMode(comp, maps);
-    byFooter[v.footer] = comp;
+    if (asComponent) setLightMode(comp, maps);
+    return comp;
+  };
+
+  for (const v of variants) {
+    byFooter[v.footer] = await makeSheet(v.footer, true) as ComponentNode;
+  }
+  for (const v of variants) {
+    // 다크 사본은 마스터를 다 지은 뒤에 만든다(푸터 버튼·옵션 인스턴스가 이미 준비돼 있어야 한다).
+    try { darkCopies.set(byFooter[v.footer].id, await makeSheet(v.footer, false) as FrameNode); } catch (e) { console.warn(e); }
   }
 
   const set = figma.combineAsVariants([byFooter["None"], byFooter["Single"], byFooter["Dual"]], figma.currentPage);
@@ -5122,6 +5162,7 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
     rowLabels: [""],
     cellAt: (_r, c) => byFooter[cols[c]] ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 400, cellH: 420, rowLabelW: 16,
+    darkCellNodes: darkCopies,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }

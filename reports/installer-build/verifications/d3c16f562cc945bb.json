@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:d3c16f562cc945bb1b2a86d79cca6c1332c83c03db253f3a3039ae299b632a81",
+  "verifiedBy": "orchestrator",
+  "verdict": "pass",
+  "changeType": "mechanical",
+  "verifiedAt": "2026-09-09T06:04:44.469Z",
+  "notes": "🤖 component-verifier PASS(c1c5a76c499ab878) 직후, verifier 가 권고한 폴백 경고 한 줄(console.warn)만 추가. 산출물 무변화를 mock 전수 대조로 확인 — 검증본과 5194노드 직렬화 완전 동일(scratchpad regress.js). 구조·값 변경 0."
+}

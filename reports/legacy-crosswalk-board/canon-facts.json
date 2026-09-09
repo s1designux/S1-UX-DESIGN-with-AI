@@ -40,7 +40,7 @@
           "reason": "정본에 variant 축이 없다 — 한 가지 모양뿐이다."
         }
       ],
-      "sourceFingerprint": "1242ccc3bac4914cc0f4e870eaa88e9b813cf4e1b9e4467893df60d4cd5e15a1"
+      "sourceFingerprint": "690fb6727fdc2c66c17f9788d177af45f99f2908e15add46dfbc3b8872da5f7a"
     },
     "button": {
       "id": "button",
@@ -111,7 +111,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "1e1b089aa6043fcac09b37f93a7fb42d5a7fbec63c5e61037b592dbda76b7080"
+      "sourceFingerprint": "a614a85ef57459f3f0c152364ccdf67d69066ea4e9684e91b0668c4426310654"
     },
     "checkbox": {
       "id": "checkbox",
@@ -139,7 +139,7 @@
         "Dis+Checked": "disabledChecked"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "fd1016341345746697976fa4803b9326eb01dd2f586d6da1752feacf740e9307"
+      "sourceFingerprint": "ccb86e7787c92f5e887bb64625f66230be4c0d0ba0a72f29d3175c7b0b4b0886"
     },
     "chip": {
       "id": "chip",
@@ -204,7 +204,7 @@
           "reason": "정본에 Mobile MD 조합이 없다. CSS 는 정본 3조합만 정의한다."
         }
       ],
-      "sourceFingerprint": "8335f2f50fd33853b122b378553f728f82edafa95b3757045154387391e95dc3"
+      "sourceFingerprint": "5f83b37ea0d99a8e83eec5b6a5e12597234ed32a2e8d43a808e840d9717772fe"
     },
     "date-picker": {
       "id": "date-picker",
@@ -274,7 +274,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "80abe48ee8e4355d8c00166ad369149c801c46f0bdf2e356733fed32212a4390"
+      "sourceFingerprint": "2937fc420c59993be228f53a381c8d294795e0a96b034f3639b79311def55bb2"
     },
     "dropdown": {
       "id": "dropdown",
@@ -310,7 +310,7 @@
           "reason": "정본 buildDropdown 은 패널 자체의 state 축이 없다(항상 State=Default) — 상태는 옵션 행이 담당한다. 패널에 별도 open/closed 시각 변형을 만들지 않았다."
         }
       ],
-      "sourceFingerprint": "e0cc0147d574934cc327eeedd7b330e44dfcbba21f57b8c7aab87829856f7a79"
+      "sourceFingerprint": "86d073e8e6c21ada23cfd6d92c823f273e46f9cdb8d7d666378904dbd5cb39b1"
     },
     "filter-chip": {
       "id": "filter-chip",
@@ -377,7 +377,7 @@
           "reason": "정본에 Error 상태가 없다."
         }
       ],
-      "sourceFingerprint": "c4f1f9a829c1085cc103a302de47f0248a82595e0b89ef18347390e33474cbb2"
+      "sourceFingerprint": "65b358d412b5ad5fd90f2c86fcb59c34f98c5aeec7bffab5a9333c1e68e8f783"
     },
     "input": {
       "id": "input",
@@ -451,7 +451,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "868c4abb8672f856fca450776fbf4bf59fd09b624c92cc6f342fc9da88f3e174"
+      "sourceFingerprint": "7b58d5f31e380a12d2d73104780fbcaf039e08a4adb4873903c01e69ab610499"
     },
     "mobile-bottom-nav": {
       "id": "mobile-bottom-nav",
@@ -476,7 +476,7 @@
           "reason": "정본에 hover·disabled 상태가 없다(D2). unselected·selected 2가지만 만든다."
         }
       ],
-      "sourceFingerprint": "75d394eacded1859599e79f8ce27c065fc02e1e5bab30d5db60348861f423571"
+      "sourceFingerprint": "669bb64e594f7847d6dc022894a1f790dac2fbc958e99f66d323673a1ced5777"
     },
     "mobile-header": {
       "id": "mobile-header",
@@ -502,7 +502,7 @@
           "reason": "StatusBar 제외로 App/Web 차이(상태바 높이만 다름)가 사라져 Platform 축도 함께 뺀다 — Type 6종 1축만 배포한다."
         }
       ],
-      "sourceFingerprint": "0d526ad31feb8e845d370a22f3893db2ad7a3e459e488275a73a9417a1cb2346"
+      "sourceFingerprint": "c52e0a81bbeb39a0b206a10bc32f956a490d7072ebdb0b85838ba2379d3aa83a"
     },
     "modal-content": {
       "id": "modal-content",
@@ -562,7 +562,7 @@
           "reason": "확인 계열 Modal 에는 없는 크기 축이다. 콘텐츠 계열에만 있다(river 지시 2026-09-08 'MD 이상부터')."
         }
       ],
-      "sourceFingerprint": "d305e47019d7bae90589607fb982c524d1a3dca1c75718cf39fcaba68220055e"
+      "sourceFingerprint": "62fb50fdca9c9b4b4de39be2a7037ebb83b77500ddf01e2c1685cd220fa29b0e"
     },
     "modal": {
       "id": "modal",
@@ -596,7 +596,7 @@
           "reason": "정본에 크기 축이 없다 — Break(PC·Mobile)가 패널 폭과 밀도를 결정한다."
         }
       ],
-      "sourceFingerprint": "72bfd9a75a447599a01a24dae336a4a1175435ea446f59eba83ebcd3f3851ec3"
+      "sourceFingerprint": "07911d4807374069e0b8efb13f1e8a3a349482e4fe6374d08181a1d679eb3d05"
     },
     "multi-toggle": {
       "id": "multi-toggle",
@@ -625,7 +625,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "999505fecc56904a3821beb17214580536318b4b795568031d4e707c2b5fbd57"
+      "sourceFingerprint": "51452926c516f0f29757e6775d07e31a22c794f6fdad94c5b6eda36ca4c64c5b"
     },
     "pagination": {
       "id": "pagination",
@@ -655,7 +655,7 @@
         "Pagination Cell · Selected": "selected"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "7053e1706012d49a575713b555bc06df8e5c7ff6b3e999d4d39f996e68d27725"
+      "sourceFingerprint": "e53262bbf30168aa1d00cabd5a1c6af17d0ec6ea98f4c411d48a89b780f1cfd2"
     },
     "radio": {
       "id": "radio",
@@ -683,7 +683,7 @@
         "Dis+Selected": "disabledSelected"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "35bb922976766bccb37aae81b321c0cf6a70c94ee4412c75583c087b89dfdf2a"
+      "sourceFingerprint": "a3448af9c546f15b8b4b156ba7ce68be2af519e3485652c4977e89189062c2fd"
     },
     "select": {
       "id": "select",
@@ -762,7 +762,7 @@
           "reason": "정본에 Error 상태가 없다."
         }
       ],
-      "sourceFingerprint": "7a904cfd281393bf294083600df5c62985bd6a258d597153250bc0ae241956a0"
+      "sourceFingerprint": "a0b45b776f5660cecfc9fd2aa5b8f8d9096635f7255fb8213b825663ab0d9da9"
     },
     "tab": {
       "id": "tab",
@@ -828,7 +828,7 @@
         "Selected": "selected"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "ec4212d2f0c61775826a798e59ea76727c1da1be57f80026435a52906b74a66f"
+      "sourceFingerprint": "e8dbbbcf1cb405f2379775c57981689eafc9e6ffc944d583ff4c21d37a078198"
     },
     "table": {
       "id": "table",
@@ -889,7 +889,7 @@
           "reason": "정본·Registry 모두 모바일 표 표출 규칙이 없다. 이번 배포는 PC 만 선언한다."
         }
       ],
-      "sourceFingerprint": "ed3612faa4607a8dd0fb79dca85c1c15d6ec206ee278d2a556008e5b71844750"
+      "sourceFingerprint": "49d3221fded306b0eb15fdb35256beb64911e827b61340b4de0a65f07f47b17f"
     },
     "text-button": {
       "id": "text-button",
@@ -924,7 +924,7 @@
           "reason": "정본에 크기 축이 없다 — 배경·테두리·고정 크기가 전부 없고 글자만 있다(hug)."
         }
       ],
-      "sourceFingerprint": "8e4510046ef92a7cba130e548537b510b9d17efe3c3b1b68591893e3996d131e"
+      "sourceFingerprint": "a7b4a7db5cc8c0ee438a515d504266351a10a80d8e0ffb1fc802bdd005aa00de"
     },
     "textarea": {
       "id": "textarea",
@@ -957,7 +957,7 @@
           "reason": "정본은 State 축만 있고 sm/md/lg 같은 크기 축이 없다."
         }
       ],
-      "sourceFingerprint": "a2e43b247030ca0826a3dc764d38afd46aef12835edb98ba2c43ee5e44b8e09a"
+      "sourceFingerprint": "8777aa21635d92ad5f562f30d05fc37f35bfb6fb26fbd8f95229df6d1b2f3074"
     },
     "time-picker": {
       "id": "time-picker",
@@ -1035,7 +1035,7 @@
           "reason": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
         }
       ],
-      "sourceFingerprint": "d97bda58903e11d8ce0539a0f35590cb25acb773ab5c33b81e19db2b71d0c154"
+      "sourceFingerprint": "1739406cc1ba13bb9376eee6dd1f37678d03eb773c6c78c430eb3f82cf03b6a7"
     },
     "toggle": {
       "id": "toggle",
@@ -1061,7 +1061,7 @@
         "Pressed=On, State=Disabled": "disabledOn"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "6d34f533925582eb2d5f76999407ccecc3bf5bb7270058a951adb3bb71cbae66"
+      "sourceFingerprint": "63a8e49100225b57234573726caa4754895b7fdf263ce5458416ea947cf677d1"
     }
   }
 }

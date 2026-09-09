@@ -6,7 +6,7 @@
   "modes": [
     "search"
   ],
-  "canonicalFingerprint": "b01ad1148e87830316dfbe8fbe68904bcf104dcd29e217be3889af306f08bdcf",
+  "canonicalFingerprint": "f77836d11256713be4aaa04170ef4b74d66a5d994e00cfcdbdafb984b13071e4",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -72,7 +72,8 @@
       "opt-in": "root[data-mode=search] + action[data-action=search] 마크업이 있을 때만 동작(Input 옵션).",
       "execute": "click 또는 control 의 Enter keydown(IME 조합 중 제외) → s1:input:search 발화. 자동완성 없음(정본에 없음).",
       "visibility": "항상 표시 — 값 유무와 무관(river D4)",
-      "trailOrder": "[clear][search], 간격 4px, 돋보기가 가장 오른쪽"
+      "trailOrder": "[clear][search], 간격 4px, 돋보기가 가장 오른쪽",
+      "minWidth": "root 와 field 에 min-width:200px. 정본 build-components.ts 의 SEARCH_MIN_W 와 같은 값이며, 그보다 좁으면 좌우 아이콘이 붙어 보인다(river 지시 2026-09-09). 폭이 넓어지는 것은 제한하지 않는다."
     }
   },
   "parts": [
@@ -264,5 +265,5 @@
     "controlMode": "uncontrolled",
     "behavior": "Focus에서 값이 있을 때 remove action을 보이고, 실행하면 값 삭제·input event 발생·Input focus 복귀. Password 옵션(type=password + action[data-action=password])이 있으면 누를 때마다 type 을 password↔text 로 바꾸고 aria-pressed·aria-label 을 맞춘 뒤 focus 를 되돌린다. Search 옵션(root[data-mode=search] + action[data-action=search])이 있으면 클릭 또는 Enter(IME 조합 제외)에서 s1:input:search 를 발화하고, clear 표시 조건은 focus 와 무관하게 값 유무만 본다."
   },
-  "sourceFingerprint": "868c4abb8672f856fca450776fbf4bf59fd09b624c92cc6f342fc9da88f3e174"
+  "sourceFingerprint": "7b58d5f31e380a12d2d73104780fbcaf039e08a4adb4873903c01e69ab610499"
 }
