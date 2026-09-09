@@ -448,24 +448,24 @@
       "GNB": {
         "source": {
           "sectionId": "gnb",
+          "sourceFile": "ui-library/src/components/gnb/gnb.js",
           "sourceEvidence": [
-            "function setupGnb(el)",
-            "btn.classList.add('is-selected')"
+            "export const componentId = \"gnb\";",
+            "export const jsRequired = false;",
+            "export const runtime = null;"
           ]
         },
         "status": "verified",
-        "initialState": "one menu selected",
-        "events": [
-          {
-            "on": "click",
-            "target": "menu",
-            "result": "select the clicked menu and unselect every sibling"
-          }
-        ],
-        "selection": "single",
-        "keyboard": "native-button-click-only",
-        "focus": "native-button",
-        "accessibility": "not-defined"
+        "initialState": "no menu current (aria-current unset) unless the host page renders one as current",
+        "events": [],
+        "keyboard": "Tab order: logo → menus (left to right) → language → account → menu-toggle; native button/link Enter/Space activation",
+        "focus": "browser default focus indication (no custom focus styling defined by canon)",
+        "accessibility": {
+          "role": "nav (root) with aria-label; menu list is ul/li of a[href]; language/account/menu-toggle are button[type=button]",
+          "name": "nav aria-label (e.g. \"주 메뉴\"); account/menu-toggle carry aria-label; language button's accessible name is its visible label text",
+          "current": "aria-current=\"page\" reflects the host page's current route; no local click-to-select toggle logic"
+        },
+        "runtimeNote": "런타임 없음(jsRequired=false). 현재 메뉴 표시(aria-current)는 mobile-bottom-nav 의 aria-selected 와 같은 방식으로 호스트 화면이 정적으로 설정한다. Hover 는 native CSS :hover 다. 옛 손관리 harness(setupGnb·클릭 시 is-selected 이동)는 ui-library-code 워크플로우 gnb-nav 작업(2026-09-09)에서 폐기했다 — 배포 정본은 host 소유의 정적 상태이지 컴포넌트 내부 토글이 아니다. 이 status 는 '문서 근거가 실제 코드와 일치'만 확인한 것이다 — ui-library/src/components/gnb/manifest.json 의 배포 상태는 candidate 이며 component-verifier 원본대조·river UX 승인 전이다."
       },
       "Pagination": {
         "source": {

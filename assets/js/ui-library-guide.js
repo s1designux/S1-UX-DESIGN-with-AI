@@ -125,6 +125,12 @@ const componentConfig = {
     approvedScope: "Type 6종(Home 2 · Standard 4) · AppBar 56px 고정 · 크기 축 없음 · JavaScript 불필요",
     runtime: S1UI.mobileHeader
   },
+  gnb: {
+    title: "GNB",
+    description: "PC 상단 글로벌 내비게이션입니다. 로고 + 메뉴 슬롯 + 유틸리티(언어·계정·전체메뉴) 조립체이며 PC 전용입니다.",
+    approvedScope: "바 Align×Size 6종(Center-Between·Start × MD·SM·XSM) · 메뉴 Size×State 9종 · viewport 는 full-width 반응형으로 통합 · JavaScript 불필요",
+    runtime: S1UI.gnb
+  },
   "time-picker": {
     title: "Time Picker",
     description: "시각을 고를 때 사용합니다. PC는 트리거 아래 시·분 목록이 열리고, Mobile은 하단 시트가 올라옵니다. 값은 확인(모바일은 적용)을 눌러야 남습니다.",
@@ -1824,6 +1830,105 @@ function mobileHeaderStateMatrix() {
     <div class="platform-section platform-section-mobile"><div class="preview-area">${mobileHeaderActionBlock("mobile")}${list}</div></div>`;
 }
 
+/* ── GNB ──
+   정본: buildGNB(바 6종 Align×Size, build-components.ts:3515) + fillGnbMenu(메뉴 9종 Size×State, :3133).
+   메뉴의 aria-current="page" 는 host 화면이 현재 경로에 맞춰 정적으로 설정하는 값이다(jsRequired=false) —
+   미리보기 칸에는 마우스가 없으니 Hover 는 data-force-state="hover" 로 흉내낸다(다른 컴포넌트와 같은 방식).
+   GNB 는 PC 전용(registry gnb.json doNotUse)이라 platform-section 수식자 없이 한 벌만 낸다(multi-toggle 과 같은 방식). */
+
+let gnbId = 0;
+
+function gnbMenuMarkup(label, { state = "default" } = {}) {
+  const current = state === "selected" ? ' aria-current="page"' : "";
+  const force = state === "hover" ? ' data-force-state="hover"' : "";
+  return `<li><a data-s1-part="menu" href="#"${current}${force}>${label}</a></li>`;
+}
+
+function gnbMarkup({ size = "md", align = "center-between", isPreview = false } = {}) {
+  gnbId += 1;
+  const preview = isPreview ? " is-preview" : "";
+  const menus = `<ul data-s1-part="menus">${gnbMenuMarkup("홈", { state: "selected" })}${gnbMenuMarkup("서비스")}${gnbMenuMarkup("통계")}</ul>`;
+  const util = `<div data-s1-part="util">
+      <button type="button" data-s1-part="lang">
+        <span data-s1-part="lang-icon" aria-hidden="true"></span>
+        <span data-s1-part="lang-label">한국어</span>
+      </button>
+      <button type="button" data-s1-part="account" aria-label="계정">
+        <span data-s1-part="account-icon" aria-hidden="true"></span>
+      </button>
+      <button type="button" data-s1-part="menu-toggle" aria-label="전체 메뉴">
+        <span data-s1-part="menu-icon" aria-hidden="true"></span>
+      </button>
+    </div>`;
+  const logo = `<a data-s1-part="logo" href="#">SAMPLE LOGO</a>`;
+  const body = align === "start" ? `<div data-s1-part="leading">${logo}${menus}</div>${util}` : `${logo}${menus}${util}`;
+  return `<nav data-guide-sample="set" data-s1-component="gnb" data-size="${size}" data-variant="${align}" aria-label="주 메뉴 ${gnbId}" class="${preview}">${body}</nav>`;
+}
+
+/* 메뉴 슬롯 9변형은 바 안에 끼우면 밑줄·hover 차이가 작아 잘 안 보인다 — 독립 셀로 따로 크게 보여준다. */
+function gnbMenuCellMarkup(size, state) {
+  return `<nav data-s1-component="gnb" data-size="${size}" data-variant="center-between" aria-label="메뉴 슬롯 표본" class="is-preview uilg-gnb-menu-cell"><ul data-s1-part="menus">${gnbMenuMarkup("메뉴", { state })}</ul></nav>`;
+}
+
+/* 유틸리티 5조합(정본 buildGNBUtilIcon 의 language·menu·user on/off 조합) — GNB 바가 실제로 쓰는 것은
+   all-on(첫 행) 하나뿐이지만, 언어·계정·메뉴 부품은 각자 독립된 part 라 host 가 넣고 빼서 나머지
+   4조합도 그대로 낼 수 있다(registry gnb.json notInCanon.utilVariantAxis). 언어 라벨은 English/한국어
+   두 값(Language Icon 축)을 번갈아 보여준다. */
+const GNB_UTIL_COMBOS = [
+  { language: true, account: true, menu: true, label: "언어·계정·메뉴", lang: "한국어" },
+  { language: true, account: true, menu: false, label: "언어·계정", lang: "English" },
+  { language: true, account: false, menu: false, label: "언어", lang: "한국어" },
+  { language: false, account: true, menu: true, label: "계정·메뉴" },
+  { language: false, account: true, menu: false, label: "계정" }
+];
+
+function gnbUtilMarkup(combo) {
+  const parts = [];
+  if (combo.language) parts.push(`<button type="button" data-s1-part="lang"><span data-s1-part="lang-icon" aria-hidden="true"></span><span data-s1-part="lang-label">${combo.lang}</span></button>`);
+  if (combo.account) parts.push(`<button type="button" data-s1-part="account" aria-label="계정"><span data-s1-part="account-icon" aria-hidden="true"></span></button>`);
+  if (combo.menu) parts.push(`<button type="button" data-s1-part="menu-toggle" aria-label="전체 메뉴"><span data-s1-part="menu-icon" aria-hidden="true"></span></button>`);
+  return `<nav data-s1-component="gnb" data-size="md" data-variant="start" aria-label="유틸리티 표본" class="is-preview uilg-gnb-menu-cell"><div data-s1-part="util">${parts.join("")}</div></nav>`;
+}
+
+function gnbStateMatrix() {
+  const sizes = [["md", "MD", "56px"], ["sm", "SM", "48px"], ["xsm", "XSM", "36px"]];
+  const aligns = [["center-between", "Center-Between"], ["start", "Start"]];
+  const states = [["default", "Default"], ["hover", "Hover"], ["selected", "Selected"]];
+
+  const barRows = aligns.flatMap(([align, alignLabel]) => sizes.map(([size, sizeLabel, dim]) => `
+    <div class="uilg-gnb-row">
+      <p class="uilg-gnb-row-label">${alignLabel} · ${sizeLabel}<span class="uilg-size-dim">${dim}</span></p>
+      <div class="uilg-gnb-row-bar">${gnbMarkup({ size, align, isPreview: true })}</div>
+    </div>`)).join("");
+
+  const menuHeader = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+    states.map(([, label]) => `<div class="matrix-col-header">${label}</div>`).join("");
+  const menuRows = sizes.map(([size, label, dim]) =>
+    `<div class="matrix-row-label">${label}<span>${dim}</span></div>` +
+    states.map(([state]) => `<div class="comp-state-cell">${gnbMenuCellMarkup(size, state)}</div>`).join("")).join("");
+  const menuGrid = `<div class="comp-state-matrix" style="grid-template-columns: 110px repeat(${states.length}, minmax(160px, 1fr));">${menuHeader}${menuRows}</div>`;
+
+  return `
+    <div class="platform-section">
+      <div class="preview-area">
+        <p class="uilg-demo-note">GNB 바 — 정렬(Align) × 사이즈(Size) 6가지. 실제 폭은 화면 전체(full-width)이며 카드 폭에 맞춰 그대로 늘어납니다.</p>
+        <div class="uilg-gnb-list">${barRows}</div>
+      </div>
+      <div class="preview-area">
+        <p class="uilg-demo-note">메뉴 슬롯 — 사이즈(Size) × 상태(State) 9가지. Hover 와 Selected 는 정본에서 시각이 같습니다(밑줄·글자색). Selected 에만 aria-current="page" 가 붙습니다.</p>
+        ${menuGrid}
+      </div>
+      <div class="preview-area">
+        <p class="uilg-demo-note">유틸리티 구성 5가지 — 언어·계정·전체메뉴 부품을 각각 넣고 뺄 수 있습니다. GNB 바가 실제로 쓰는 것은 첫 번째(전체)뿐입니다.</p>
+        <div class="uilg-gnb-list">${GNB_UTIL_COMBOS.map((combo) => `
+          <div class="uilg-gnb-row">
+            <p class="uilg-gnb-row-label">${combo.label}</p>
+            <div class="uilg-gnb-row-bar">${gnbUtilMarkup(combo)}</div>
+          </div>`).join("")}</div>
+      </div>
+    </div>`;
+}
+
 /* ── Component documentation (실제 동작 다음에 온다) ── */
 
 /* ── Time Picker ──
@@ -2397,6 +2502,7 @@ function stateMatrix(id) {
   if (id === "text-button") return textButtonStateMatrix();
   if (id === "mobile-bottom-nav") return mobileBottomNavStateMatrix();
   if (id === "mobile-header") return mobileHeaderStateMatrix();
+  if (id === "gnb") return gnbStateMatrix();
   if (id === "time-picker") return timePickerStateMatrix();
   return controlStateMatrix(id);
 }
@@ -2758,6 +2864,6 @@ async function mountGuide(id) {
   }
 }
 
-const guideComponents = ["input", "button", "assist-button", "text-button", "checkbox", "radio", "toggle", "chip", "select", "dropdown", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "modal-content", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker"];
+const guideComponents = ["input", "button", "assist-button", "text-button", "checkbox", "radio", "toggle", "chip", "select", "dropdown", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "modal-content", "table", "mobile-bottom-nav", "mobile-header", "gnb", "time-picker", "date-picker"];
 await Promise.all(guideComponents.map(mountGuide));
 document.dispatchEvent(new CustomEvent("s1:component-guide:ready", { detail: { components: guideComponents } }));

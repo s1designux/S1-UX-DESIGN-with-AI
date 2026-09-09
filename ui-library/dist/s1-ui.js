@@ -17,6 +17,7 @@ export * as mobileBottomNav from "./components/mobile-bottom-nav.js";
 export * as mobileHeader from "./components/mobile-header.js";
 export * as timePicker from "./components/time-picker.js";
 export * as datePicker from "./components/date-picker.js";
+export * as gnb from "./components/gnb.js";
 export * as assistButton from "./components/assist-button.js";
 export * as textButton from "./components/text-button.js";
 export * as modalContent from "./components/modal-content.js";

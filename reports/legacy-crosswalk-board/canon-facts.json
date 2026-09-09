@@ -3,7 +3,7 @@
     "목적": "검수판 카드에 박는 정본 사실 — 사람이 요약하지 않고 기계가 뽑는다",
     "출처": "ui-library/dist/components/*.manifest.json (정본 build-components.ts 에서 생성)",
     "재생성": "npm run board:facts",
-    "생성일": "2026-09-08"
+    "생성일": "2026-09-09"
   },
   "components": {
     "assist-button": {
@@ -379,6 +379,44 @@
       ],
       "sourceFingerprint": "1c46f59175b831db1f92b82c6b9402933c9365f9b821c431235c1749bd16cc4e"
     },
+    "gnb": {
+      "id": "gnb",
+      "status": "verified",
+      "version": "0.1.0",
+      "sizes": [
+        "md",
+        "sm",
+        "xsm"
+      ],
+      "breaks": {},
+      "sizeBreakGrid": [],
+      "variants": [
+        "center-between",
+        "start"
+      ],
+      "types": null,
+      "states": [
+        "default",
+        "hover",
+        "selected"
+      ],
+      "canonicalStateMap": {
+        "Size × State=Default": "default",
+        "Size × State=Hover": "hover",
+        "Size × State=Selected": "selected"
+      },
+      "absentCombinations": [
+        {
+          "key": "utilSizeAxis",
+          "reason": "registry gnb.json 의 sizing 은 xsm 유틸 아이콘을 24px 프레임/18px glyph 로 축소한다고 서술하지만, 정본 buildGNBUtilIcon(build-components.ts:3155)은 GNB 사이즈(sk)를 받지 않고 32×32/24glyph 고정 1변형만 만든다(BUILT_COMPS['GNBUtil:full'] 을 md·sm·xsm 전부가 그대로 재사용, buildGNB:3607-3612). 시각 정본(canonicalBoundaries.visual)을 따라 유틸 아이콘은 사이즈 불문 32×32/24glyph 고정으로 배포한다."
+        },
+        {
+          "key": "utilVariantAxis",
+          "reason": "GNB Utility Icon 세트는 language·menu·user on/off 5변형을 갖지만, GNB 바가 실제로 쓰는 것은 all-on(GNBUtil:full) 1개뿐이다(buildGNB:3607, registry 서술). 다른 4변형은 이 컴포넌트가 배포하지 않는다 — 유틸 영역 구성을 바꾸려면 host 화면이 data-s1-part 를 골라 빼고 넣는다."
+        }
+      ],
+      "sourceFingerprint": "3f6d562ec8384aa047d417afe3f4326f7d36547750e330e0f8d9a901a48eae8b"
+    },
     "input": {
       "id": "input",
       "status": "approved",
@@ -655,7 +693,7 @@
         "Pagination Cell · Selected": "selected"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "a8f3ddd715aaf93f97b480df695f6d0b0cdacc4116593722de41bb3b8bba8359"
+      "sourceFingerprint": "3d8e7849d7d43bab7f82bcdd9c2859f4b19f69809ee2409f339afdb2bf23479a"
     },
     "radio": {
       "id": "radio",
@@ -828,7 +866,7 @@
         "Selected": "selected"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "a62f21f4ef4a8845383fa1cc2993050e23e306abfe85a2a42187237e73aa4585"
+      "sourceFingerprint": "d9250637e26a1effd48492ed1984192432dcabbe1baf73716ba3a25ce9758a10"
     },
     "table": {
       "id": "table",

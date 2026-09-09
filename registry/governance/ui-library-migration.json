@@ -666,6 +666,31 @@
       "riverApproval": null,
       "promotionDecision": "build 단계만 완료(⭐ 자가 배선) — 🤖 component-verifier 원본대조와 river UX 승인 전. status=draft로 정직 기록.",
       "note": "ui-library/src manifest.json 의 status 필드는 이전 세션이 approved 로 이미 표시했으나, 이 migration 레코드는 독립검증·river 승인 여부를 별도로 추적한다(자가인증 금지). 푸터 버튼은 코어 Button 배포본을 조립한다(coreComponents: button)."
+    },
+    {
+      "id": "gnb",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "draft",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "globe.svg",
+        "account.svg",
+        "menu.svg"
+      ],
+      "lastVerified": null,
+      "reverifyTrigger": "정본 buildGNB·fillGnbMenu·buildGNBUtilIcon·buildLanguageIcon 의 geometry·variant·state·token·HTML part·CSS selector 변경 · 아이콘 원본 대조 기록 변경",
+      "evidence": [
+        "reports/ui-library/gnb-nav/1-inventory.md",
+        "reports/ui-library/gnb-nav/2-canon-readiness.md",
+        "reports/ui-library/gnb-nav/3-build.md",
+        "reports/ui-library/gnb-nav/workflow-state.json"
+      ],
+      "riverApproval": null,
+      "promotionDecision": "build 단계만 완료(🧱 ui-library-builder) — 🤖 component-verifier 원본대조와 river UX 승인 전. ui-library/src manifest.json 의 status 는 candidate 로 정직 기록.",
+      "note": "손관리 인라인 harness(components.html:2113-2459, 2026-07-08 최종수정)를 폐기하고 정본에서 새로 만들었다. 유틸리티는 all-on 1변형만 배포한다(정본 buildGNB 가 GNB 사이즈와 무관하게 GNBUtil:full 인스턴스 하나만 재사용) — 손관리 harness 가 보여주던 language/menu/user on-off 조합 5변형은 이 컴포넌트가 배포하지 않는다. 'nav'(사이드바 내비게이션)는 정본이 없어 이 work-id 의 blocker B1 로 별도 대기 중이다.",
+      "platform": "pc-only"
     }
   ]
 }

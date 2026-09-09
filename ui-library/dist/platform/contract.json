@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
     "purpose": "개발 툴과 검사기가 함께 읽는 허용목록. 여기 없는 variant·size·속성은 승인된 적이 없는 것이다.",
-    "canonicalFingerprint": "aec70603bcb61fe78ae84799fd5c4d6a0c4a98e7db84771d9b023ddf4c338ade"
+    "canonicalFingerprint": "fcce2753b6fab9e16d313f340727b579764445f8565fb730627f194a4821770b"
   },
   "components": [
     {
@@ -486,8 +486,8 @@
       "jsRequired": true,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "0422ce13f6a503c678d1eaa05a5cf5fc7b43e57be09dab0d1cdc2a7822bf5506",
-      "sourceFingerprint": "a62f21f4ef4a8845383fa1cc2993050e23e306abfe85a2a42187237e73aa4585"
+      "canonicalFingerprint": "55c7c9bb1a3e7e5524a14c1e30e27d9d0125c1026d22f5e5640d3ba6acfdce97",
+      "sourceFingerprint": "d9250637e26a1effd48492ed1984192432dcabbe1baf73716ba3a25ce9758a10"
     },
     {
       "id": "pagination",
@@ -529,8 +529,8 @@
       "jsRequired": true,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "798c323d9b81693ca8f264ae79b2702347a04c1826bb8e4d2b87f737e0059dcf",
-      "sourceFingerprint": "a8f3ddd715aaf93f97b480df695f6d0b0cdacc4116593722de41bb3b8bba8359"
+      "canonicalFingerprint": "e657717c4e3a37b1e33d14b3fcc30efd9e3ff9f78cdb7347c563724cd4242d93",
+      "sourceFingerprint": "3d8e7849d7d43bab7f82bcdd9c2859f4b19f69809ee2409f339afdb2bf23479a"
     },
     {
       "id": "textarea",
@@ -956,6 +956,50 @@
       ],
       "canonicalFingerprint": "e77c693f6774f36fd2925520868565568fcc8c2a842f7c398ba9b509ea4e247c",
       "sourceFingerprint": "601f2fe28023566dd281bc330cc4aef5a78f2ad4480c412714cab5ae8340936a"
+    },
+    {
+      "id": "gnb",
+      "status": "verified",
+      "rootSelector": "[data-s1-component=\"gnb\"]",
+      "root": "nav[data-s1-component=gnb][data-size][data-variant]",
+      "variants": [
+        "center-between",
+        "start"
+      ],
+      "sizes": [
+        "md",
+        "sm",
+        "xsm"
+      ],
+      "breaks": null,
+      "states": [
+        "default",
+        "hover",
+        "selected"
+      ],
+      "parts": [
+        "logo",
+        "leading",
+        "menus",
+        "menu",
+        "util",
+        "lang",
+        "lang-icon",
+        "lang-label",
+        "account",
+        "account-icon",
+        "menu-toggle",
+        "menu-icon"
+      ],
+      "variantAttribute": "data-variant",
+      "sizeAttribute": "data-size",
+      "requiredAttributes": [],
+      "requiredParts": [],
+      "jsRequired": false,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "53ebe38acc5bd0e63259cf1abb66d2ccecef43e43092e51df4c06a9369bf4b9d",
+      "sourceFingerprint": "3f6d562ec8384aa047d417afe3f4326f7d36547750e330e0f8d9a901a48eae8b"
     },
     {
       "id": "assist-button",

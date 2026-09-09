@@ -1731,16 +1731,16 @@ agent:
     platform: "PC"
     source: "registry/components/component-behavior.pc.json ← pages/components.html#gnb"
     status: "verified"
-    initialState: "one menu selected"
+    initialState: "no menu current (aria-current unset) unless the host page renders one as current"
     events:
-      -
-        on: "click"
-        target: "menu"
-        result: "select the clicked menu and unselect every sibling"
-    selection: "single"
-    keyboard: "native-button-click-only"
-    focus: "native-button"
-    accessibility: "not-defined"
+      []
+    keyboard: "Tab order: logo → menus (left to right) → language → account → menu-toggle; native button/link Enter/Space activation"
+    focus: "browser default focus indication (no custom focus styling defined by canon)"
+    accessibility:
+      role: "nav (root) with aria-label; menu list is ul/li of a[href]; language/account/menu-toggle are button[type=button]"
+      name: "nav aria-label (e.g. \"주 메뉴\"); account/menu-toggle carry aria-label; language button's accessible name is its visible label text"
+      current: "aria-current=\"page\" reflects the host page's current route; no local click-to-select toggle logic"
+    runtimeNote: "런타임 없음(jsRequired=false). 현재 메뉴 표시(aria-current)는 mobile-bottom-nav 의 aria-selected 와 같은 방식으로 호스트 화면이 정적으로 설정한다. Hover 는 native CSS :hover 다. 옛 손관리 harness(setupGnb·클릭 시 is-selected 이동)는 ui-library-code 워크플로우 gnb-nav 작업(2026-09-09)에서 폐기했다 — 배포 정본은 host 소유의 정적 상태이지 컴포넌트 내부 토글이 아니다. 이 status 는 '문서 근거가 실제 코드와 일치'만 확인한 것이다 — ui-library/src/components/gnb/manifest.json 의 배포 상태는 candidate 이며 component-verifier 원본대조·river UX 승인 전이다."
   geometry:
     common:
       target: "root"
@@ -1838,8 +1838,16 @@ _Don't_
 - 선택 메뉴 표시를 색만이 아니라 상태 토큰으로 일관되게 한다.
 
 **접근성 (a11y)**
-- 현재 메뉴에 aria-current 를 준다.
-- 유틸 아이콘 버튼에 aria-label 을 단다.
+- 바 전체를 <nav> 로 감싸고 aria-label 로 이름을 준다(예: "주 메뉴"). 한 화면에 내비게이션이 둘 이상이면 이름으로 구분된다.
+- 메뉴 목록은 <ul>/<li>, 각 메뉴는 <a href> 로 낸다. 링크가 아닌 동작이면 <button type="button"> 을 쓴다.
+- 현재 메뉴에 aria-current="page" 를 준다. Selected 는 시각 표현이고 현재 위치를 알리는 것은 aria-current 다.
+- Hover 와 Selected 는 정본에서 시각이 같다 — 그래도 aria-current 는 Selected 에만 준다.
+- 유틸 아이콘 버튼(계정·메뉴)은 <button type="button"> + aria-label 로 이름을 준다. 아이콘 SVG 는 aria-hidden 이다.
+- 언어 항목은 지구본 아이콘 + 보이는 글자 라벨을 함께 두므로 별도 aria-label 을 붙이지 않는다.
+- 로고는 홈으로 가는 링크일 때 <a> 로 내고 글자 라벨이 접근 가능한 이름이 된다.
+- 키보드: Tab 으로 로고 → 메뉴 순서대로 → 유틸 순서대로 이동한다. 정본에 방향키 이동·포커스 가둠·자동 포커스 이동이 없으므로 만들지 않는다(not-applicable).
+- 포커스 표시는 브라우저 기본값을 그대로 쓴다 — 정본에 별도 focus 표현이 없다.
+- 오류 관계·모션 감소는 이 컴포넌트에 해당 없음(not-applicable) — 오류 표시도 애니메이션도 정본에 없다.
 
 ### Input
 
@@ -4526,4 +4534,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 73a52ce8bcb6 · 손편집 금지 -->
+<!-- generated-stamp: 8358ad6e62b8 · 손편집 금지 -->

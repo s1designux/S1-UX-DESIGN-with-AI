@@ -1,0 +1,198 @@
+{
+  "id": "gnb",
+  "version": "0.1.0",
+  "status": "verified",
+  "canonicalFingerprint": "53ebe38acc5bd0e63259cf1abb66d2ccecef43e43092e51df4c06a9369bf4b9d",
+  "canonicalSources": [
+    "plugins/figma-vars-installer/src/build-components.ts",
+    "plugins/figma-vars-installer/src/vars-data.ts",
+    "plugins/figma-vars-installer/src/textstyles-data.ts",
+    "registry/components/gnb.json"
+  ],
+  "rootSelector": "[data-s1-component=\"gnb\"]",
+  "variants": [
+    "center-between",
+    "start"
+  ],
+  "canonicalVariantMap": {
+    "center-between": "Align=Center-Between",
+    "start": "Align=Start"
+  },
+  "sizes": [
+    "md",
+    "sm",
+    "xsm"
+  ],
+  "states": {
+    "default": "메뉴에 hover·aria-current 없음(기본값)",
+    "hover": "hover-capable pointer 가 메뉴 위에 있음(native :hover)",
+    "selected": "aria-current=\"page\""
+  },
+  "canonicalStateMap": {
+    "Size × State=Default": "default",
+    "Size × State=Hover": "hover",
+    "Size × State=Selected": "selected"
+  },
+  "notInCanon": {
+    "utilSizeAxis": "registry gnb.json 의 sizing 은 xsm 유틸 아이콘을 24px 프레임/18px glyph 로 축소한다고 서술하지만, 정본 buildGNBUtilIcon(build-components.ts:3155)은 GNB 사이즈(sk)를 받지 않고 32×32/24glyph 고정 1변형만 만든다(BUILT_COMPS['GNBUtil:full'] 을 md·sm·xsm 전부가 그대로 재사용, buildGNB:3607-3612). 시각 정본(canonicalBoundaries.visual)을 따라 유틸 아이콘은 사이즈 불문 32×32/24glyph 고정으로 배포한다.",
+    "menuKeyboardArrowNav": "정본·registry 모두 메뉴 간 방향키 이동을 정의하지 않는다(2-canon-readiness A). Tab 순서 이동만 제공한다.",
+    "utilVariantAxis": "GNB Utility Icon 세트는 language·menu·user on/off 5변형을 갖지만, GNB 바가 실제로 쓰는 것은 all-on(GNBUtil:full) 1개뿐이다(buildGNB:3607, registry 서술). 다른 4변형은 이 컴포넌트가 배포하지 않는다 — 유틸 영역 구성을 바꾸려면 host 화면이 data-s1-part 를 골라 빼고 넣는다."
+  },
+  "parts": [
+    "logo",
+    "leading",
+    "menus",
+    "menu",
+    "util",
+    "lang",
+    "lang-icon",
+    "lang-label",
+    "account",
+    "account-icon",
+    "menu-toggle",
+    "menu-icon"
+  ],
+  "htmlContract": {
+    "root": "nav[data-s1-component=gnb][data-size][data-variant]",
+    "perVariantParts": {
+      "center-between": [
+        "logo",
+        "menus",
+        "menu",
+        "util",
+        "lang",
+        "lang-icon",
+        "lang-label",
+        "account",
+        "account-icon",
+        "menu-toggle",
+        "menu-icon"
+      ],
+      "start": [
+        "leading",
+        "logo",
+        "menus",
+        "menu",
+        "util",
+        "lang",
+        "lang-icon",
+        "lang-label",
+        "account",
+        "account-icon",
+        "menu-toggle",
+        "menu-icon"
+      ]
+    },
+    "relations": [
+      "center-between 은 로고·메뉴·유틸이 nav 의 직계 자식 3개로 나열되고 justify-content:space-between 으로 3분할된다(정본 :3591-3592).",
+      "start 는 로고+메뉴가 [data-s1-part=leading] 안에 gap 64 로 묶이고, 유틸은 margin-left:auto 로 오른쪽에 붙는다(정본 :3593-3600).",
+      "메뉴가 놓이는 자리 전체가 정본의 Figma 슬롯 'Menus' 다 — 기본 3개이며, <li><a data-s1-part=menu> 를 늘리고 줄여 메뉴 수를 조정한다(registry anatomy, river 지시 2026-09-03).",
+      "현재 메뉴 1개에만 aria-current=\"page\" 를 준다. Hover 는 시각만 같고(fillGnbMenu active, 정본 :3138) ARIA 로는 alert 하지 않는다 — 마우스 hover 는 순수 :hover 의사클래스다.",
+      "언어 항목은 지구본 아이콘 + 보이는 글자 라벨(예: '한국어')을 함께 두므로 별도 aria-label 을 붙이지 않는다(registry a11y) — 버튼의 접근 가능한 이름은 라벨 텍스트다.",
+      "계정·메뉴(햄버거) 버튼은 아이콘만 있어 aria-label 로 이름을 준다(기본값 '계정'·'전체 메뉴').",
+      "util 안의 [data-s1-part=menu-toggle] 은 nav 링크 [data-s1-part=menu] 와 이름이 겹치지 않게 구분한 이름이다 — 정본 GNB Utility Icon 세트의 'menu' 축(햄버거)과 GNB Menu 세트의 메뉴 링크는 서로 다른 개념이다."
+    ],
+    "grouping": "코어는 GNB 바(로고+메뉴+유틸) 한 줄만 소유한다. 실제 라우팅·언어 전환·전체메뉴 오버레이 동작은 host 화면이 소유한다(jsRequired=false, progressiveEnhancement).",
+    "source": "components/gnb/gnb.example.html",
+    "distribution": "examples/gnb.html"
+  },
+  "cssContract": {
+    "entry": "components/gnb.css",
+    "rootScope": "[data-s1-component=gnb]",
+    "nativeStates": [
+      ":hover"
+    ],
+    "ariaStates": [
+      "[aria-current=\"page\"]"
+    ],
+    "documentedDataStates": [
+      "[data-size]",
+      "[data-variant]"
+    ],
+    "customization": "정본 Semantic token만 교체하며 공개 selector의 구조를 override하지 않는다."
+  },
+  "contentSlots": {
+    "logo": "required; 브랜드 텍스트(또는 홈 링크).",
+    "menu": "required, repeatable; 기본 3개(registry guide.sampleMenus). host 가 메뉴 <li> 를 늘리고 줄인다.",
+    "lang-label": "required; 현재 언어 표시 텍스트(예: 한국어/English)."
+  },
+  "dependencies": {
+    "font": [
+      {
+        "family": "Pretendard",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+      }
+    ],
+    "css": [
+      "assets/css/tokens.css",
+      "assets/css/typography.css"
+    ],
+    "coreComponents": []
+  },
+  "icons": [
+    {
+      "id": "globe",
+      "sourceKey": "dee16df7e4ccddbd5dd7aa1d2fbf93f841f5dee2",
+      "asset": "assets/icons/globe.svg",
+      "use": "언어 항목 지구본(24px, 32×32 슬롯)",
+      "accessibleNamePolicy": "decorative; 옆의 보이는 언어 라벨 텍스트가 접근 가능한 이름이다",
+      "note": "Figma 아이콘 라이브러리 V2.2 ic_인터넷(35:3317 · Property 1=Line, 35:3314) 실물 벡터 — 원본 대조 PASS(오차 0.00679)."
+    },
+    {
+      "id": "account",
+      "sourceKey": "a423e2e05cfff2f93062d6a83d6f3bdf79ca9647",
+      "asset": "assets/icons/account.svg",
+      "use": "계정 버튼(24px, 32×32 슬롯)",
+      "accessibleNamePolicy": "decorative; 버튼이 aria-label(기본값 \"계정\")로 이름을 갖는다",
+      "note": "Figma 아이콘 라이브러리 V2.2 ic_계정/사용자/ID(86:58 · Property 1=Line, 86:56) 실물 벡터 — 원본 대조 PASS(오차 0.00354)."
+    },
+    {
+      "id": "menu",
+      "sourceKey": "5157e9edc76358e2e6bc1a5ebc1539ccf5f2e787",
+      "asset": "assets/icons/menu.svg",
+      "use": "전체 메뉴(햄버거) 버튼(24px, 32×32 슬롯)",
+      "accessibleNamePolicy": "decorative; 버튼이 aria-label(기본값 \"전체 메뉴\")로 이름을 갖는다",
+      "note": "Figma 아이콘 라이브러리 V2.2 ic_메뉴(97:227 · Property 1=Line, 97:226) 실물 벡터 — 원본 대조 PASS(오차 0.00392)."
+    }
+  ],
+  "a11y": {
+    "nativeSemantics": {
+      "status": "required",
+      "value": "nav[data-s1-component=gnb][aria-label]. 메뉴 목록은 ul/li, 각 메뉴는 a[href]. 계정·메뉴·언어는 button[type=button]."
+    },
+    "accessibleName": {
+      "status": "required",
+      "value": "nav 는 aria-label(예: \"주 메뉴\")로 이름을 갖는다. 계정·메뉴 버튼은 aria-label. 언어 버튼은 보이는 라벨 텍스트가 이름이다. 로고가 링크면 텍스트가 이름이다."
+    },
+    "keyboard": {
+      "status": "required",
+      "value": "Tab 순서 = 로고 → 메뉴(좌→우) → 언어 → 계정 → 전체메뉴. 방향키 메뉴 이동·포커스 가둠은 정본에 없어 만들지 않는다."
+    },
+    "focus": {
+      "status": "not-applicable",
+      "reason": "정본에 포커스 가둠·자동 이동·별도 focus 표현이 없다. 브라우저 기본 포커스 표시를 그대로 쓴다."
+    },
+    "ariaStateSync": {
+      "status": "required",
+      "value": "현재 메뉴 1개에 aria-current=\"page\" 를 host 가 정적으로 설정한다(현재 경로 기준). Hover 는 순수 CSS :hover 이며 ARIA 로 알리지 않는다 — mobile-bottom-nav 와 같은 원칙(호스트가 정적 ARIA 를 설정, 컴포넌트는 로컬 토글 로직을 갖지 않는다)."
+    },
+    "errorRelation": {
+      "status": "not-applicable",
+      "reason": "정본에 오류 표시가 없다."
+    },
+    "reducedMotion": {
+      "status": "not-applicable",
+      "reason": "정본이 모션을 정의하지 않는다."
+    },
+    "touchTarget": {
+      "status": "not-applicable",
+      "reason": "GNB 는 PC 전용이다(registry doNotUse). 정본 유틸 아이콘 32×32 를 그대로 쓰고 모바일 44px 최소 터치영역 규칙을 적용하지 않는다."
+    }
+  },
+  "jsRequired": false,
+  "javascript": {
+    "runtime": "none",
+    "reason": "현재 메뉴 표시(aria-current)는 host 화면이 현재 경로에 맞춰 정적으로 설정하는 값이다(mobile-bottom-nav 의 aria-selected 와 같은 패턴). Hover 는 네이티브 CSS :hover 로 충분해 로컬 상태·이벤트 바인딩이 필요 없다."
+  },
+  "sourceFingerprint": "3f6d562ec8384aa047d417afe3f4326f7d36547750e330e0f8d9a901a48eae8b"
+}

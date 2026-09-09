@@ -223,12 +223,32 @@
         <div data-s1-part="calendar"></div>
       </div>
     </div>
+    <nav data-s1-component="gnb" data-size="md" data-variant="center-between" aria-label="주 메뉴">
+      <a data-s1-part="logo" href="#">SAMPLE LOGO</a>
+      <ul data-s1-part="menus">
+        <li><a data-s1-part="menu" href="#" aria-current="page">홈</a></li>
+        <li><a data-s1-part="menu" href="#">서비스</a></li>
+        <li><a data-s1-part="menu" href="#">통계</a></li>
+      </ul>
+      <div data-s1-part="util">
+        <button type="button" data-s1-part="lang">
+          <span data-s1-part="lang-icon" aria-hidden="true"></span>
+          <span data-s1-part="lang-label">한국어</span>
+        </button>
+        <button type="button" data-s1-part="account" aria-label="계정">
+          <span data-s1-part="account-icon" aria-hidden="true"></span>
+        </button>
+        <button type="button" data-s1-part="menu-toggle" aria-label="전체 메뉴">
+          <span data-s1-part="menu-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </nav>
   </main>
   <script type="module">
     import { autoInit } from "../dist/s1-ui.auto.js";
-    import { checkbox, radio, textarea, modal, mobileBottomNav, mobileHeader, assistButton, textButton, modalContent } from "../dist/s1-ui.js";
-    if (checkbox.jsRequired || radio.jsRequired || textarea.jsRequired || mobileBottomNav.jsRequired || mobileHeader.jsRequired || assistButton.jsRequired || textButton.jsRequired) {
-      throw new Error("checkbox·radio·textarea·mobile-bottom-nav·mobile-header·assist-button·text-button은 런타임 없이 동작해야 합니다.");
+    import { checkbox, radio, textarea, modal, mobileBottomNav, mobileHeader, gnb, assistButton, textButton, modalContent } from "../dist/s1-ui.js";
+    if (checkbox.jsRequired || radio.jsRequired || textarea.jsRequired || mobileBottomNav.jsRequired || mobileHeader.jsRequired || gnb.jsRequired || assistButton.jsRequired || textButton.jsRequired) {
+      throw new Error("checkbox·radio·textarea·mobile-bottom-nav·mobile-header·gnb·assist-button·text-button은 런타임 없이 동작해야 합니다.");
     }
     if (!modalContent.jsRequired) {
       throw new Error("modal-content는 런타임이 필요합니다.");

@@ -3,15 +3,16 @@
     "id": "gnb",
     "name": "GNB",
     "category": "navigation",
-    "updatedAt": "2026-06-06",
+    "updatedAt": "2026-09-09",
     "version": "0.1.0",
     "tokenStatus": "stable",
     "codeStatus": "implemented",
     "darkModeStatus": "candidate",
-    "a11yStatus": "pending",
+    "a11yStatus": "stable",
     "figmaStatus": "confirmed",
     "harnessStatus": "implemented",
-    "description": "Global Navigation Bar. 로고 + 메뉴 슬롯(slots_menu) + 유틸리티(아이콘 3종) 조립체. 메뉴 슬롯 9 variant(size md/sm/xsm × state default/hover/selected) + GNB 바 6 variant(size md/sm/xsm × align center-between/start). PC only. viewport(1280/1440/1920)는 full-width 반응형으로 통합."
+    "description": "Global Navigation Bar. 로고 + 메뉴 슬롯(slots_menu) + 유틸리티(아이콘 3종) 조립체. 메뉴 슬롯 9 variant(size md/sm/xsm × state default/hover/selected) + GNB 바 6 variant(size md/sm/xsm × align center-between/start). PC only. viewport(1280/1440/1920)는 full-width 반응형으로 통합.",
+    "codeStatusNote": "웹 배포본 상태는 webDistribution 과 ui-library-migration.json 이 따로 가진다."
   },
   "usage": {
     "whenToUse": [
@@ -48,17 +49,40 @@
     ]
   },
   "a11y": [
-    "현재 메뉴에 aria-current 를 준다.",
-    "유틸 아이콘 버튼에 aria-label 을 단다."
+    "바 전체를 <nav> 로 감싸고 aria-label 로 이름을 준다(예: \"주 메뉴\"). 한 화면에 내비게이션이 둘 이상이면 이름으로 구분된다.",
+    "메뉴 목록은 <ul>/<li>, 각 메뉴는 <a href> 로 낸다. 링크가 아닌 동작이면 <button type=\"button\"> 을 쓴다.",
+    "현재 메뉴에 aria-current=\"page\" 를 준다. Selected 는 시각 표현이고 현재 위치를 알리는 것은 aria-current 다.",
+    "Hover 와 Selected 는 정본에서 시각이 같다 — 그래도 aria-current 는 Selected 에만 준다.",
+    "유틸 아이콘 버튼(계정·메뉴)은 <button type=\"button\"> + aria-label 로 이름을 준다. 아이콘 SVG 는 aria-hidden 이다.",
+    "언어 항목은 지구본 아이콘 + 보이는 글자 라벨을 함께 두므로 별도 aria-label 을 붙이지 않는다.",
+    "로고는 홈으로 가는 링크일 때 <a> 로 내고 글자 라벨이 접근 가능한 이름이 된다.",
+    "키보드: Tab 으로 로고 → 메뉴 순서대로 → 유틸 순서대로 이동한다. 정본에 방향키 이동·포커스 가둠·자동 포커스 이동이 없으므로 만들지 않는다(not-applicable).",
+    "포커스 표시는 브라우저 기본값을 그대로 쓴다 — 정본에 별도 focus 표현이 없다.",
+    "오류 관계·모션 감소는 이 컴포넌트에 해당 없음(not-applicable) — 오류 표시도 애니메이션도 정본에 없다."
   ],
   "variants": {
     "menuSlot": {
-      "size": ["md", "sm", "xsm"],
-      "state": ["default", "hover", "selected"]
+      "size": [
+        "md",
+        "sm",
+        "xsm"
+      ],
+      "state": [
+        "default",
+        "hover",
+        "selected"
+      ]
     },
     "bar": {
-      "size": ["md", "sm", "xsm"],
-      "align": ["center-between", "start"]
+      "size": [
+        "md",
+        "sm",
+        "xsm"
+      ],
+      "align": [
+        "center-between",
+        "start"
+      ]
     }
   },
   "sizing": {
@@ -172,9 +196,24 @@
     }
   ],
   "icons": [
-    { "role": "language", "name": "ic_인터넷", "figmaNodeId": "150:5007", "source": "icons-data.js (line, currentColor)" },
-    { "role": "account", "name": "ic_계정/사용자/ID", "figmaNodeId": "150:5086", "source": "MCP 원본 (viewBox 0 0 24 21.5816, currentColor)" },
-    { "role": "menu", "name": "ic_메뉴", "figmaNodeId": "150:5206", "source": "MCP 원본 (viewBox 0 0 24 16.9274, currentColor)" }
+    {
+      "role": "language",
+      "name": "ic_인터넷",
+      "figmaNodeId": "150:5007",
+      "source": "icons-data.js (line, currentColor)"
+    },
+    {
+      "role": "account",
+      "name": "ic_계정/사용자/ID",
+      "figmaNodeId": "150:5086",
+      "source": "MCP 원본 (viewBox 0 0 24 21.5816, currentColor)"
+    },
+    {
+      "role": "menu",
+      "name": "ic_메뉴",
+      "figmaNodeId": "150:5206",
+      "source": "MCP 원본 (viewBox 0 0 24 16.9274, currentColor)"
+    }
   ],
   "figma": {
     "componentSetKey": "",
@@ -216,10 +255,33 @@
       "status": "resolved"
     }
   ],
-  "guide": { "sampleLogo": "SAMPLE LOGO", "sampleMenus": ["홈", "서비스", "통계"], "utilityLabels": { "language": "언어 선택", "account": "계정", "menu": "전체 메뉴" }, "interactionPattern": "global-current-menu", "webTag": "header" },
+  "guide": {
+    "sampleLogo": "SAMPLE LOGO",
+    "sampleMenus": [
+      "홈",
+      "서비스",
+      "통계"
+    ],
+    "utilityLabels": {
+      "language": "언어 선택",
+      "account": "계정",
+      "menu": "전체 메뉴"
+    },
+    "interactionPattern": "global-current-menu",
+    "webTag": "header"
+  },
   "governance": {
     "owner": "Design System Team",
     "deprecated": false,
     "replacement": null
+  },
+  "webDistribution": {
+    "status": "verified",
+    "manifest": "ui-library/src/components/gnb/manifest.json",
+    "runtime": "none",
+    "note": "JavaScript 불필요. 현재 메뉴 표시(aria-current=\"page\")는 쓰는 화면이 정적으로 넣는다 — mobile-bottom-nav 의 aria-selected 와 같은 방식이다.",
+    "verifiedAt": "2026-09-09",
+    "verifiedBy": "component-verifier (2회차) + 오케스트레이터 실측",
+    "pendingRiverUxApproval": true
   }
 }
