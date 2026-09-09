@@ -3,7 +3,7 @@
     "generated": true,
     "source": "plugins/figma-vars-installer/src/build-components.ts",
     "method": "mock-execution",
-    "sourceHash": "c6bde60caa3a",
+    "sourceHash": "b56f6b8453f4",
     "unknownValuePolicy": [
       "unknown",
       "not-defined",
@@ -2564,6 +2564,7 @@
           "Hover",
           "Today",
           "Selected",
+          "Selected Hover",
           "Disabled",
           "Start",
           "End"
@@ -2605,6 +2606,7 @@
         "color/date-picker/cell/bg/hover",
         "color/date-picker/cell/bg/range",
         "color/date-picker/cell/bg/selected",
+        "color/date-picker/cell/bg/selected-hover",
         "color/date-picker/cell/bg/today",
         "color/date-picker/cell/border/today",
         "color/date-picker/text/disabled",

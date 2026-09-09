@@ -3892,18 +3892,24 @@ const CAL_GEO: Record<CalSize, CalGeo> = {
 };
 const CAL_SIZES: CalSize[] = ["MD", "SM"];
 
-// Calendar Cell — axes Size={MD,SM} × Type={Standard,Range} × State. Standard=5(Hover 포함)·Range=4(비대칭).
+// Calendar Cell — axes Size={MD,SM} × Type={Standard,Range} × State. Standard=6(Hover·Selected Hover 포함)·Range=4(비대칭).
 // 숫자 텍스트 layer 이름 = "num". 구조: outer(center) > [Range: 밴드 Rectangle(absolute)] + inner 원(센터) > 숫자.
 async function calCellCompsForSize(maps: BuildMaps, size: CalSize): Promise<Record<string, ComponentNode>> {
   // [innerFill, innerStroke, textKey] (V2.4 실측 — selected stroke = border/today)
   // Hover = Default 와 동일하되 inner 배경만 cell/bg/hover(gray/50) — Calendar Tile Hover(tile/bg/hover) 패턴 미러링.
-  //   Standard 에만 추가 — selected/range 는 (B)유형(파란 배경)이라 회색 hover 로 덮지 않는다.
+  //   Standard 에만 추가 — range 는 (B)유형(파란 배경)이라 회색 hover 로 덮지 않는다.
+  // "Selected Hover" = 선택된 파란 칸의 hover. 회색이 아니라 한 단계 진한 파랑(cell/bg/selected-hover)이고,
+  //   테두리도 같은 변수를 쓴다 — 테두리만 border/today(blue/400)에 남으면 채움(blue/500)보다 밝은 링이 생긴다
+  //   (river 지시 2026-09-04). 웹 date-picker.css 의 [data-state="selected"]:hover 규칙과 한 벌이다.
+  //   정본 배선 근거: river 승인 2026-09-08(메커니즘 승인 화면 M-7, 선택 A="웹이 맞다").
+  //   경위·감사 기록 = reports/canon-approval-audit-2026-09-07.md §9.
   const STD: Record<string, [string, string, string]> = {
-    Default:  ["cell/bg/today",    "cell/bg/today",     "text/secondary"],
-    Hover:    ["cell/bg/hover",    "cell/bg/hover",     "text/secondary"],
-    Today:    ["cell/bg/today",    "cell/border/today", "text/today"],
-    Selected: ["cell/bg/selected", "cell/border/today", "text/selected"],
-    Disabled: ["cell/bg/today",    "cell/bg/today",     "text/disabled"],
+    Default:            ["cell/bg/today",           "cell/bg/today",           "text/secondary"],
+    Hover:              ["cell/bg/hover",           "cell/bg/hover",           "text/secondary"],
+    Today:              ["cell/bg/today",           "cell/border/today",       "text/today"],
+    Selected:           ["cell/bg/selected",        "cell/border/today",       "text/selected"],
+    "Selected Hover":   ["cell/bg/selected-hover",  "cell/bg/selected-hover",  "text/selected"],
+    Disabled:           ["cell/bg/today",           "cell/bg/today",           "text/disabled"],
   };
   // Range: [innerFill, innerStroke, textKey] — 밴드는 absolute, 세로는 CalGeo(bandY·bandH)
   const RNG: Record<string, [string, string, string]> = {
@@ -3948,7 +3954,7 @@ async function calCellCompsForSize(maps: BuildMaps, size: CalSize): Promise<Reco
 
   const g = CAL_GEO[size];
   // Type=Standard (Hover 는 Default 뒤 = 상호작용 순서)
-  for (const state of ["Default", "Hover", "Today", "Selected", "Disabled"]) {
+  for (const state of ["Default", "Hover", "Today", "Selected", "Selected Hover", "Disabled"]) {
     const [f, st, txt] = STD[state];
     const comp = makeOuter(g, `Size=${size}, Type=Standard, State=${state}`);
     comp.appendChild(await makeInner(g, f, st, txt));
@@ -3978,7 +3984,15 @@ async function calCellCompsForSize(maps: BuildMaps, size: CalSize): Promise<Reco
 //   buildDatePicker 폴백이 Size=SM 을 못 찾아 State=Date(=MD 356)로 조용히 떨어진다 → XSM·XXSM 이
 //   계속 큰 달력을 연다. 오류 없이 종전 동작으로 퇴화하는 것이라 파괴적이지는 않지만,
 //   **기존 설치본에서 SM 을 보려면 캔버스의 Calendar 세트를 지우고 다시 설치해야 한다.**
-// Calendar Cell 세트 — 두 크기를 한 세트로 묶는다(축 Size × Type × State = 18 variant).
+// Calendar Cell 세트 — 두 크기를 한 세트로 묶는다(축 Size × Type × State = 20 variant:
+//   Standard 6 + Range 4, × Size 2). Standard 는 2026-09-09 에 "Selected Hover" 가 늘어 6 이 됐다.
+// ⚠️ 위 재설치 이관 한계는 **상태 신설에도 그대로 적용된다** — fillMissingCalSizes 는 빠진 "크기"만
+//   채우고(그 크기의 키가 하나라도 있으면 통째로 skip), 빠진 "상태"는 채우지 않는다. 즉 이미 설치된
+//   파일에 재설치해도 "Selected Hover" variant 는 추가되지 않고, 스펙 표만 6열로 늘어 그 열이 빈다
+//   (오류는 아니다 — renderFlat 은 cellAt 이 null 이면 셀을 건너뛴다).
+//   **기존 설치본에서 이 상태를 보려면 캔버스의 Calendar Cell 세트를 지우고 다시 설치해야 한다.**
+//   상태 단위까지 채우도록 넓히는 것은 기존 인스턴스 보호 규칙과 충돌 검토가 필요해 하지 않았다
+//   (🤖 component-verifier 2026-09-09 (c) 지적, ⭐ 가 (A)=명시 유지 선택).
 async function buildCalendarCell(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
   const variants: Record<string, ComponentNode> = {};
   for (const size of CAL_SIZES) Object.assign(variants, await calCellCompsForSize(maps, size));
@@ -5428,7 +5442,7 @@ async function buildModalContent(maps: BuildMaps, originY: number): Promise<{ se
 // CATEGORIES Form 에서 Date Picker 뒤 위치만 결정.
 async function buildCalendarCellLayout(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const { set, variants } = await getOrBuildCalendarCell(maps);
-  // ── 3안: 스펙 표를 Standard(5열)·Range(4열) 두 개로 분리한다 (2026-07-14, river 결정) ──
+  // ── 3안: 스펙 표를 Standard·Range 두 개로 분리한다 (2026-07-14, river 결정 — 당시 5열·4열) ──
   //   근거: 옛 colHeaders "Today / Start"·"Selected / End" 는 서로 무관한 두 상태를 "같은 열 번호"라는
   //   이유만으로 슬래시로 합친 것이라 표가 이미 부정확했다. Hover 추가가 문제를 만든 게 아니라 원래의
   //   무리를 드러냈다 → 억지로 열을 다시 맞추지 않고 표를 분리한다. Range 는 4상태 그대로 불변.
@@ -5436,7 +5450,7 @@ async function buildCalendarCellLayout(maps: BuildMaps, originY: number): Promis
   //   한 세트 노드 위에 두 표를 세로로 쌓으므로(세트는 1개) renderFlat 을 2회 호출하되, 두 번째 표의
   //   셀/라벨을 첫 표 높이(h1)만큼 내려 배치하는 오프셋 emit 을 등록기 로컬로 둔다(floatingEmit.cell 은
   //   오프셋을 안 받아 그대로 쓰면 셀이 겹침).
-  const stdStates = ["Default", "Hover", "Today", "Selected", "Disabled"]; // Hover = Default 뒤(상호작용 순서)
+  const stdStates = ["Default", "Hover", "Today", "Selected", "Selected Hover", "Disabled"]; // Hover 계열은 각자 base 뒤(상호작용 순서)
   const rngStates = ["Default", "Start", "End", "Disabled"];               // Range 불변(4상태)
   const cellW = 80, cellH = 60, rowLabelW = 80;
   const mkOpts = (title: string, states: string[], type: "Standard" | "Range"): SpecOpts => ({

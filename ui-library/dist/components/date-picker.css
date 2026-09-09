@@ -330,7 +330,8 @@
 }
 
 @media (hover: hover) {
-  /* M5: 정본 cell/bg/selected-hover(vars-data.ts) — 정본 시각 빌더엔 미배선이나 값이 있어 선택 셀 hover 에 적용. */
+  /* M5: 정본 cell/bg/selected-hover. 2026-09-09 정본 시각 빌더(build-components.ts calCellCompsForSize)에도
+     State="Selected Hover" 로 배선돼 웹과 정본이 일치한다. 경위 = canon-approval-audit-2026-09-07.md §9 M-7. */
   [data-s1-component="date-picker"] [data-s1-part="cell"]:not(:disabled)[data-state="default"]:hover [data-s1-part="cell-inner"] {
     background: var(--color-date-picker-cell-bg-hover);
   }

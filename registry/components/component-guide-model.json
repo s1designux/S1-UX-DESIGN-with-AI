@@ -210738,7 +210738,7 @@
     {
       "name": "Calendar Cell",
       "gridMembership": "internal",
-      "variantCount": 18,
+      "variantCount": 20,
       "axes": {
         "Size": [
           "MD",
@@ -210753,6 +210753,7 @@
           "Hover",
           "Today",
           "Selected",
+          "Selected Hover",
           "Disabled",
           "Start",
           "End"
@@ -211624,6 +211625,220 @@
           }
         },
         {
+          "name": "Size=MD, Type=Standard, State=Selected Hover",
+          "axes": {
+            "Size": "MD",
+            "Type": "Standard",
+            "State": "Selected Hover"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Size=MD, Type=Standard, State=Selected Hover",
+            "dimensions": {
+              "width": 44,
+              "height": 44
+            },
+            "position": {
+              "x": 464,
+              "y": 82
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "(없음)",
+              "stroke": null,
+              "fillPaints": [],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "FRAME",
+                "name": "inner",
+                "dimensions": {
+                  "width": 30,
+                  "height": 30
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": null,
+                "appearance": {
+                  "fill": "color/date-picker/cell/bg/selected-hover",
+                  "stroke": "color/date-picker/cell/bg/selected-hover",
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/date-picker/cell/bg/selected-hover",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/date-picker/cell/bg/selected-hover",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "opacity": null,
+                  "strokeWeight": 1,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {
+                  "bottomLeftRadius": "radius/full",
+                  "bottomRightRadius": "radius/full",
+                  "topLeftRadius": "radius/full",
+                  "topRightRadius": "radius/full"
+                },
+                "children": [
+                  {
+                    "type": "TEXT",
+                    "name": "num",
+                    "dimensions": {
+                      "width": null,
+                      "height": null
+                    },
+                    "position": {
+                      "x": null,
+                      "y": null
+                    },
+                    "layout": {
+                      "layoutMode": null,
+                      "primaryAxisSizingMode": null,
+                      "counterAxisSizingMode": null,
+                      "primaryAxisAlignItems": null,
+                      "counterAxisAlignItems": null,
+                      "layoutGrow": null,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": null,
+                      "layoutSizingVertical": null,
+                      "minWidth": null,
+                      "padding": {
+                        "top": null,
+                        "right": null,
+                        "bottom": null,
+                        "left": null
+                      },
+                      "gap": null
+                    },
+                    "text": {
+                      "characters": 1,
+                      "fontSize": 16,
+                      "fontStyle": "Medium",
+                      "fontFamily": "Pretendard",
+                      "textStyleId": "body/16M",
+                      "textAutoResize": null
+                    },
+                    "appearance": {
+                      "fill": "color/date-picker/text/selected",
+                      "stroke": null,
+                      "fillPaints": [
+                        {
+                          "type": "SOLID",
+                          "__tokenKey": "color/date-picker/text/selected",
+                          "color": {
+                            "r": 0,
+                            "g": 0,
+                            "b": 0
+                          }
+                        }
+                      ],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": null,
+                      "strokeTopWeight": null,
+                      "strokeRightWeight": null,
+                      "strokeBottomWeight": null,
+                      "strokeLeftWeight": null,
+                      "cornerRadius": null,
+                      "topLeftRadius": null,
+                      "topRightRadius": null,
+                      "bottomLeftRadius": null,
+                      "bottomRightRadius": null,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": null,
+                    "boundVariables": {},
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
           "name": "Size=MD, Type=Standard, State=Disabled",
           "axes": {
             "Size": "MD",
@@ -211638,7 +211853,7 @@
               "height": 44
             },
             "position": {
-              "x": 464,
+              "x": 544,
               "y": 82
             },
             "layout": {
@@ -213806,6 +214021,220 @@
           }
         },
         {
+          "name": "Size=SM, Type=Standard, State=Selected Hover",
+          "axes": {
+            "Size": "SM",
+            "Type": "Standard",
+            "State": "Selected Hover"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Size=SM, Type=Standard, State=Selected Hover",
+            "dimensions": {
+              "width": 33,
+              "height": 33
+            },
+            "position": {
+              "x": 464,
+              "y": 158
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "(없음)",
+              "stroke": null,
+              "fillPaints": [],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "FRAME",
+                "name": "inner",
+                "dimensions": {
+                  "width": 22.5,
+                  "height": 22.5
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": null,
+                "appearance": {
+                  "fill": "color/date-picker/cell/bg/selected-hover",
+                  "stroke": "color/date-picker/cell/bg/selected-hover",
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/date-picker/cell/bg/selected-hover",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/date-picker/cell/bg/selected-hover",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "opacity": null,
+                  "strokeWeight": 1,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {
+                  "bottomLeftRadius": "radius/full",
+                  "bottomRightRadius": "radius/full",
+                  "topLeftRadius": "radius/full",
+                  "topRightRadius": "radius/full"
+                },
+                "children": [
+                  {
+                    "type": "TEXT",
+                    "name": "num",
+                    "dimensions": {
+                      "width": null,
+                      "height": null
+                    },
+                    "position": {
+                      "x": null,
+                      "y": null
+                    },
+                    "layout": {
+                      "layoutMode": null,
+                      "primaryAxisSizingMode": null,
+                      "counterAxisSizingMode": null,
+                      "primaryAxisAlignItems": null,
+                      "counterAxisAlignItems": null,
+                      "layoutGrow": null,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": null,
+                      "layoutSizingVertical": null,
+                      "minWidth": null,
+                      "padding": {
+                        "top": null,
+                        "right": null,
+                        "bottom": null,
+                        "left": null
+                      },
+                      "gap": null
+                    },
+                    "text": {
+                      "characters": 1,
+                      "fontSize": 12,
+                      "fontStyle": "Medium",
+                      "fontFamily": "Pretendard",
+                      "textStyleId": "body/12M",
+                      "textAutoResize": null
+                    },
+                    "appearance": {
+                      "fill": "color/date-picker/text/selected",
+                      "stroke": null,
+                      "fillPaints": [
+                        {
+                          "type": "SOLID",
+                          "__tokenKey": "color/date-picker/text/selected",
+                          "color": {
+                            "r": 0,
+                            "g": 0,
+                            "b": 0
+                          }
+                        }
+                      ],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": null,
+                      "strokeTopWeight": null,
+                      "strokeRightWeight": null,
+                      "strokeBottomWeight": null,
+                      "strokeLeftWeight": null,
+                      "cornerRadius": null,
+                      "topLeftRadius": null,
+                      "topRightRadius": null,
+                      "bottomLeftRadius": null,
+                      "bottomRightRadius": null,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": null,
+                    "boundVariables": {},
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
           "name": "Size=SM, Type=Standard, State=Disabled",
           "axes": {
             "Size": "SM",
@@ -213820,7 +214249,7 @@
               "height": 33
             },
             "position": {
-              "x": 464,
+              "x": 544,
               "y": 158
             },
             "layout": {

@@ -72,7 +72,10 @@ window.REGISTRY_BUNDLE = {
       "pagination": "registry/components/pagination.json",
       "nav": "registry/components/nav.json",
       "table": "registry/components/table.json",
-      "select": "registry/components/select.json"
+      "select": "registry/components/select.json",
+      "assist-button": "registry/components/assist-button.json",
+      "text-button": "registry/components/text-button.json",
+      "modal-content": "registry/components/modal-content.json"
     },
     "figma": "registry/figma/figma-map.json",
     "governance": {
@@ -94,7 +97,7 @@ window.REGISTRY_BUNDLE = {
           "name": "SW Foundation Colors",
           "version": "2.4",
           "status": "stable",
-          "updatedAt": "2026-09-08",
+          "updatedAt": "2026-09-09",
           "source": "plugins/figma-vars-installer/src/vars-data.ts (FOUNDATION_COLOR)",
           "description": "Official SW Design System V2.4 foundation color foundation. Raw HEX values are allowed here only.",
           "generated": true,
@@ -9746,6 +9749,36 @@ window.REGISTRY_BUNDLE = {
           "buildModalShell(build-components.ts) Footer=Dual 1변형. 코어 Button(XXSM) + ic_닫기 인스턴스 재사용, 신규 토큰 1 — color/modal/panel/border(2026-07-29 신설). 나머지는 전부 기존 V3.0 슬롯 재사용.",
           "다크 그림자(shadow/raised)·나머지 4 State(Footer=Single)·사이즈 S/M/L/XL 미룸. component-verifier 검증 대기."
         ]
+      },
+      {
+        "id": "assist-button",
+        "name": "Assist Button",
+        "label": "Assist Button",
+        "category": "actions",
+        "path": "registry/components/assist-button.json",
+        "status": "in-progress",
+        "harnessStatus": "implemented",
+        "priority": 22
+      },
+      {
+        "id": "text-button",
+        "name": "Text Button",
+        "label": "Text Button",
+        "category": "actions",
+        "path": "registry/components/text-button.json",
+        "status": "in-progress",
+        "harnessStatus": "implemented",
+        "priority": 23
+      },
+      {
+        "id": "modal-content",
+        "name": "Modal Content",
+        "label": "Modal Content",
+        "category": "overlay",
+        "path": "registry/components/modal-content.json",
+        "status": "in-progress",
+        "harnessStatus": "implemented",
+        "priority": 24
       }
     ]
   },
@@ -10701,7 +10734,7 @@ window.REGISTRY_BUNDLE = {
         "HD-2": "확정 — 공식 컴포넌트명: DatePicker",
         "HD-5": "확정 — 전용 토큰 candidate → stable 전환. panel/cell/header/weekday 토큰 stable.",
         "HD-9": "확정 — weekStart=0 (일요일 시작). PC popover 동일.",
-        "HD-10": "확정 — YY.MM.DD 형식. Figma 일치. DB 연동 시 서비스 레벨 변환 처리.",
+        "HD-10": "확정 — 표시 YY.MM.DD 형식, Figma 일치. DB 연동 시 서비스 레벨 변환 처리(값 입출력은 ISO YYYY-MM-DD). river 결정 2026-09-08(메커니즘 승인 화면 M-8): 4자리 YYYY.MM.DD 로 바꿨다가 같은 날 원복 — 2자리 유지가 최종이다.",
         "HD-8": "결정 — 별도 전용 토큰 불생성. 서비스별 override로 처리.",
         "HD-4": "결정 — Mobile bottom sheet 구조 채택 (Figma 540:3836 확인). 별도 구현 단계 필요.",
         "HD-1": "보류 — 현재 불필요. figmaNodeId(540:3794)로 충분. 향후 Figma 라이브러리 publish 단계에서 재검토",
@@ -10973,7 +11006,7 @@ window.REGISTRY_BUNDLE = {
             "트리거 폭을 넘는 옵션 글자는 말줄임(…)하고, 마우스를 올리면 전체 글자를 보여준다."
           ],
           "webImplementation": "dropdown.css 의 min-width:100px + 소비자(select.css·filter-chip.css)의 width:100% 조합. 말줄임은 dropdown.css 의 text-overflow:ellipsis, 마우스 올림 안내는 dropdown.js 의 syncEllipsisTitles(잘린 옵션에만 title 부여).",
-          "figmaCanonNote": "Figma 정본(build-components.ts)은 트리거·패널을 모두 resize(140, …) 고정 폭으로 만든다. 140 은 하한 100 보다 크고 규칙 ③(트리거 폭과 동일)에 부합하므로 정본 폭 숫자는 바꾸지 않았다. 「트리거 폭을 따라간다」는 Figma 컴포넌트가 고정 폭이라 캔버스로 표현할 수 없어 정본에는 GUI 로 보이는 말줄임만 반영했다(2026-09-08: buildDropdownList 의 옵션 텍스트에 layoutGrow=1 · textAutoResize=HEIGHT · textTruncation=ENDING · maxLines=1). 폭 연동 규칙은 이 사양으로만 남는다.",
+          "figmaCanonNote": "Figma 정본(build-components.ts)도 목록 하한 100 을 그대로 만든다 — river 결정 2026-09-08 \"100이 최소값이니까 피그마에도 최소값으로 표출되는게 맞아\". 패널·옵션 행·구분선은 상수 DD_MIN_W=100 으로 만들고, 부모가 붙일 때 규칙 ②③ 대로 폭을 다시 준다 — 셀렉트는 트리거 폭(140), 필터칩은 max(100, 칩 폭). 셀렉트 트리거 자체의 140 은 웹 select.css 의 min-width:140px 과 한 벌이라 유지한다. 말줄임은 buildDropdownList 옵션 텍스트의 layoutGrow=1 · textAutoResize=HEIGHT · textTruncation=ENDING · maxLines=1 로 반영돼 있다. 칩 라벨 길이에 따라 폭이 달라지는 연속적 연동만은 고정 폭 컴포넌트로 표현할 수 없어 이 사양으로 남는다.",
           "measuredAt": "2026-09-07",
           "measured": {
             "filterChipTriggerPx": {
@@ -12759,7 +12792,8 @@ window.REGISTRY_BUNDLE = {
         "close-icon": "color/icon/gray-dark",
         "panel-radius": "radius/8 (공유 --radius-modal-md 와 동일값)",
         "overlay": "color/overlay (딤 — 모달 사용 시 적용, EX03 rgba 예외)",
-        "shadow": "shadow/raised (--shadow-raised) — 2026-07-29 신설 완료. Light 2겹 `0 4px 6px -2px rgba(0,0,0,0.06), 0 12px 20px -4px rgba(0,0,0,0.10)` / Dark 2겹 `0 8px 8px -4px rgba(0,0,0,1), 0 20px 24px -4px rgba(0,0,0,1)` (겹 수는 표면 위계 — 라이트·다크 동일 2겹, 차이는 alpha·기하). 정의=tokens/semantic.md §9-A · rgba 승인=token-exceptions EX07 · 경위=reports/shadow-token-infra-backlog.md. 웹 CSS 는 Modal 셀렉터 부재로 미적용(다음 단계)."
+        "shadow": "shadow/raised (--shadow-raised) — 2026-07-29 신설 완료. Light 2겹 `0 4px 6px -2px rgba(0,0,0,0.06), 0 12px 20px -4px rgba(0,0,0,0.10)` / Dark 2겹 `0 8px 8px -4px rgba(0,0,0,1), 0 20px 24px -4px rgba(0,0,0,1)` (겹 수는 표면 위계 — 라이트·다크 동일 2겹, 차이는 alpha·기하). 정의=tokens/semantic.md §9-A · rgba 승인=token-exceptions EX07 · 경위=reports/shadow-token-infra-backlog.md. 웹 CSS 는 Modal 셀렉터 부재로 미적용(다음 단계).",
+        "close-hover-bg": "color/control/bg/hover — river 지시 2026-09-08. 정본에 없는 웹 추가분(§두 갈래 분류 (b)), 새 토큰 0건. PC 전용(Mobile 은 close 자체가 없다)."
       },
       "reuses": {
         "coreComponents": [
@@ -14719,6 +14753,473 @@ window.REGISTRY_BUNDLE = {
         "deprecated": false,
         "replacement": null
       }
+    },
+    "assist-button": {
+      "_meta": {
+        "id": "assist-button",
+        "name": "Assist Button",
+        "category": "actions",
+        "updatedAt": "2026-09-08",
+        "version": "0.1.0",
+        "tokenStatus": "stable",
+        "codeStatus": "implemented",
+        "darkModeStatus": "stable",
+        "a11yStatus": "stable",
+        "figmaStatus": "existing",
+        "harnessStatus": "implemented",
+        "description": "한 크기(h32)만 있는 보조 버튼. 코어 Button 과 별도 컴포넌트다 — 크기 축이 하나뿐이라 Button 의 4크기 체계에 끼워 넣으면 있지도 않은 크기가 만들어진다(river 지시 2026-09-08).",
+        "codeStatusNote": "웹 배포본 상태는 webDistribution 과 ui-library-migration.json 이 따로 가진다."
+      },
+      "usage": {
+        "whenToUse": [
+          "본문 옆이나 목록 행 안처럼 좁은 자리에서, 눈에 덜 띄는 보조 동작 하나를 둘 때.",
+          "코어 Button 의 4크기(MD·XSM·XXSM·LG) 어디에도 맞지 않는, 원본에 정의된 고정 32px 자리."
+        ],
+        "whenNotToUse": [
+          "화면의 주 액션(저장·확인 등)에는 코어 Button 을 쓴다.",
+          "배경·테두리가 없는 링크형 액션은 Text Button 을 쓴다."
+        ]
+      },
+      "anatomy": [
+        {
+          "part": "라벨",
+          "role": "버튼 텍스트. body/14M."
+        },
+        {
+          "part": "컨테이너",
+          "role": "배경·테두리·반경. Secondary 배경/테두리 토큰을 빌려 쓰고 글자·hover 테두리만 전용 토큰."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "크기는 h32 하나만 쓴다 — 임의로 다른 높이를 만들지 않는다.",
+          "색은 Semantic 경유 토큰으로만 참조한다."
+        ],
+        "dont": [
+          "코어 Button 의 variant 로 편입하지 않는다(river 결정 2026-09-08 — 버튼 목록에 섞여 표출되면 안 된다).",
+          "아이콘 부착형(레거시 icon_lead·icon_trail)을 임의로 추가하지 않는다 — 이번 범위 밖."
+        ]
+      },
+      "a11y": [
+        "네이티브 <button type=\"button\"> 를 쓴다.",
+        "상태는 :hover·:active·[disabled] 로 표현하고 별도 data 상태를 만들지 않는다.",
+        "포커스 표시는 브라우저 기본값을 그대로 쓴다(정본에 별도 focus 표현이 없다)."
+      ],
+      "origin": {
+        "classification": "A",
+        "note": "레거시 pc_assist_button(yE5UCFEbmXJBlYJWB24Lz2 / 540:4650) — 🤖 figma-inspector 2026-09-07 실측.",
+        "legacySource": {
+          "pc": {
+            "file": "yE5UCFEbmXJBlYJWB24Lz2",
+            "canonicalSet": "540:4650",
+            "name": "pc_assist_button"
+          }
+        }
+      },
+      "family": {
+        "id": "assist-button",
+        "label": "보조 버튼(단일 크기)",
+        "note": "코어 Button 과 다른 별도 계열 — river 결정 2026-09-08."
+      },
+      "variantAxis": {
+        "property": [
+          "State"
+        ],
+        "values": {
+          "State": [
+            "Default",
+            "Hover",
+            "Pressed",
+            "Disabled"
+          ]
+        },
+        "sizeAxis": "없음 — h32 하나(원본 실측 그대로).",
+        "note": "Pressed 는 원본에 없어 코어 Button 정본 규칙(pressed = hover)을 그대로 따른다."
+      },
+      "scope": "light+dark",
+      "anatomySpec": {
+        "container": "HORIZONTAL · hug 높이 32 고정 · 좌우 패딩 spacing/12 · 최소폭 60 · radius/4 · 1px INSIDE 테두리",
+        "label": "body/14M, 중앙 정렬"
+      },
+      "tokens": {
+        "_note": "새 토큰 0건. 배경·기본 테두리는 코어 Button Secondary 토큰을 그대로 빌려 쓴다(전용 토큰 아님). 전용 토큰은 3개뿐 — border/assist--hover · label/assist--default · label/assist--hover.",
+        "bg-default": "color/button/bg/secondary--default",
+        "bg-hover": "color/button/bg/secondary--hover",
+        "border-default": "color/button/border/secondary--default",
+        "border-hover": "color/button/border/assist--hover",
+        "label-default": "color/button/label/assist--default",
+        "label-hover": "color/button/label/assist--hover",
+        "bg-disabled": "color/button/bg/disabled",
+        "border-disabled": "color/button/border/disabled",
+        "label-disabled": "color/button/label/disabled",
+        "radius": "radius/4",
+        "padding-inline": "spacing/12"
+      },
+      "reuses": {
+        "coreComponents": [],
+        "note": "Button 컴포넌트가 아니라 그 배경/테두리 토큰만 빌려 쓴다. 구조·CSS 파일은 완전히 독립적이다."
+      },
+      "figma": {
+        "componentSetKey": "(미발행)",
+        "fileKey": "cysG5U1udpQqVagYY1hWHW",
+        "targetFile": "SW UX GUIDE V3.0-TEST",
+        "builder": "plugins/figma-vars-installer/src/build-components.ts · buildAssistButtonSet",
+        "note": "2026-09-08 신설. 세트명 Assist Button, State 4변형(Default·Hover·Pressed·Disabled). 크기 축 없음."
+      },
+      "governance": {
+        "verify": "new",
+        "verifyNote": "설치기 정본 buildAssistButtonSet 신설(2026-09-08, river 승인) — component-verifier 독립 검증 대기.",
+        "coreReuseRule": "coreComponents 의존 없음. 상태·색 부족 시 needs-core-update 기록(임의 구현 금지)."
+      },
+      "webDistribution": {
+        "status": "approved",
+        "manifest": "ui-library/src/components/assist-button/manifest.json",
+        "runtime": "none",
+        "note": "웹 배포본은 네이티브 버튼 하나로 4상태를 전부 CSS로 표현한다. JavaScript 불필요.",
+        "approvedAt": "2026-09-08"
+      }
+    },
+    "text-button": {
+      "_meta": {
+        "id": "text-button",
+        "name": "Text Button",
+        "category": "actions",
+        "updatedAt": "2026-09-08",
+        "version": "0.1.0",
+        "tokenStatus": "stable",
+        "codeStatus": "implemented",
+        "darkModeStatus": "stable",
+        "a11yStatus": "stable",
+        "figmaStatus": "existing",
+        "harnessStatus": "implemented",
+        "description": "배경·테두리 없이 글자만 있는 버튼. 구조가 코어 Button 과 전혀 달라(고정 크기·배경·테두리가 전부 없음) 별도 컴포넌트다.",
+        "codeStatusNote": "웹 배포본 상태는 webDistribution 과 ui-library-migration.json 이 따로 가진다."
+      },
+      "usage": {
+        "whenToUse": [
+          "링크에 가까운 가벼운 보조 동작(더보기·자세히 등)을 텍스트만으로 표시할 때.",
+          "Primary 는 강조가 필요한 텍스트 액션, Secondary 는 덜 중요한 텍스트 액션."
+        ],
+        "whenNotToUse": [
+          "배경·테두리가 있는 버튼이 필요하면 코어 Button 또는 Assist Button 을 쓴다.",
+          "페이지 이동 전용 링크는 <a> 를 우선 고려한다."
+        ]
+      },
+      "anatomy": [
+        {
+          "part": "라벨",
+          "role": "버튼 텍스트. body/14M. 배경·테두리 없음(hug)."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "Hover·Pressed 는 색을 바꾸지 않고 밑줄만 더한다(원본 그대로).",
+          "색은 Primary=color/text/state/accent, Secondary=color/text/body/tertiary 만 쓴다."
+        ],
+        "dont": [
+          "코어 Button 의 variant 로 편입하지 않는다 — 구조(배경·테두리·고정 크기)가 아예 없다.",
+          "레거시 B m_subbutton(글자+화살표, 모바일)을 임의로 함께 만들지 않는다 — 원본 색이 raw hex 라 색 매핑 결정이 별도로 필요하다(river 결정 2026-09-08 ④, 범위 밖)."
+        ]
+      },
+      "a11y": [
+        "네이티브 <button type=\"button\"> 를 쓴다.",
+        "상태는 :hover·:active·[disabled] 로 표현하고 별도 data 상태를 만들지 않는다.",
+        "포커스 표시는 브라우저 기본값을 그대로 쓴다."
+      ],
+      "origin": {
+        "classification": "A",
+        "note": "레거시 pc_text_button(yE5UCFEbmXJBlYJWB24Lz2 / 540:4705) — 🤖 figma-inspector 2026-09-07 실측.",
+        "legacySource": {
+          "pc": {
+            "file": "yE5UCFEbmXJBlYJWB24Lz2",
+            "canonicalSet": "540:4705",
+            "name": "pc_text_button"
+          }
+        }
+      },
+      "family": {
+        "id": "text-button",
+        "label": "텍스트 버튼(배경·테두리 없음)"
+      },
+      "variantAxis": {
+        "property": [
+          "Variant",
+          "State"
+        ],
+        "values": {
+          "Variant": [
+            "Primary",
+            "Secondary"
+          ],
+          "State": [
+            "Default",
+            "Hover",
+            "Pressed",
+            "Disabled"
+          ]
+        },
+        "sizeAxis": "없음 — 고정 크기가 원본에 없다(hug).",
+        "note": "8변형(Variant 2 × State 4). Pressed 는 원본에 없어 코어 Button 정본 규칙(pressed = hover)을 그대로 따른다."
+      },
+      "scope": "light+dark",
+      "anatomySpec": {
+        "label": "body/14M · 패딩 0 · 반경 없음 · 아이콘 없음"
+      },
+      "tokens": {
+        "_note": "새 토큰 0건. 색은 전부 기존 text 토큰 재사용.",
+        "primary-default": "color/text/state/accent",
+        "secondary-default": "color/text/body/tertiary",
+        "disabled": "color/text/state/disabled"
+      },
+      "reuses": {
+        "coreComponents": [],
+        "note": "독립 컴포넌트. Hover·Pressed 는 CSS text-decoration:underline 만 추가하고 색은 그대로 유지한다."
+      },
+      "figma": {
+        "componentSetKey": "(미발행)",
+        "fileKey": "cysG5U1udpQqVagYY1hWHW",
+        "targetFile": "SW UX GUIDE V3.0-TEST",
+        "builder": "plugins/figma-vars-installer/src/build-components.ts · buildTextButtonSet",
+        "note": "2026-09-08 신설. 세트명 Text Button, Variant(Primary·Secondary) × State 4 = 8변형."
+      },
+      "governance": {
+        "verify": "new",
+        "verifyNote": "설치기 정본 buildTextButtonSet 신설(2026-09-08, river 승인) — component-verifier 독립 검증 대기.",
+        "coreReuseRule": "coreComponents 의존 없음. 상태·색 부족 시 needs-core-update 기록(임의 구현 금지)."
+      },
+      "webDistribution": {
+        "status": "approved",
+        "manifest": "ui-library/src/components/text-button/manifest.json",
+        "runtime": "none",
+        "note": "웹 배포본은 네이티브 버튼 하나로 Variant × State 8가지를 전부 CSS로 표현한다. JavaScript 불필요.",
+        "approvedAt": "2026-09-08"
+      }
+    },
+    "modal-content": {
+      "_meta": {
+        "id": "modal-content",
+        "name": "Modal Content",
+        "category": "overlay",
+        "updatedAt": "2026-09-08",
+        "version": "0.1.0",
+        "tokenStatus": "stable",
+        "codeStatus": "implemented",
+        "darkModeStatus": "stable",
+        "a11yStatus": "stable",
+        "figmaStatus": "existing",
+        "harnessStatus": "implemented",
+        "description": "콘텐츠 계열 모달 그릇 6종(Size MD|LG|XL × Footer Single|Dual). 입력창·표·이미지가 들어가는 큰 팝업. 확인 계열 Modal 과 별개 컴포넌트다(river 결정 2026-07-15 계열 분리). 제목·닫기·푸터 버튼은 확인 계열과 같은 규칙(16B·XXSM h28·close), 크기와 본문 내용물만 다르다.",
+        "codeStatusNote": "웹 배포본은 정본 336/587 을 고정값이 아니라 최소 높이로 구현한다 — grow→85vh 상한→content-area 내부 스크롤(reports/modal-content-family-backlog.md 「높이 규칙」)."
+      },
+      "usage": {
+        "whenToUse": [
+          "입력창·표·이미지처럼 확인 계열(짧은 텍스트)보다 큰 본문이 필요할 때.",
+          "Single=알림/설명체 1버튼, Dual=확인/질문체 2버튼(확인 계열과 같은 규칙)."
+        ],
+        "whenNotToUse": [
+          "짧은 확인 문구 하나면 확인 계열 Modal 을 쓴다.",
+          "페이지 전체를 차지하는 다단계 폼은 별도 페이지를 고려한다."
+        ]
+      },
+      "anatomy": [
+        {
+          "part": "딤(overlay)",
+          "role": "뒤 배경을 덮는 color-overlay 딤. 확인 계열과 같은 토큰."
+        },
+        {
+          "part": "헤더",
+          "role": "제목(16B) + 닫기(X). 확인 계열과 같은 규칙 — 제목 항상 존재."
+        },
+        {
+          "part": "본문(content-area)",
+          "role": "입력창·표·이미지 등 콘텐츠가 들어가는 자리. 유일하게 스크롤되는 영역."
+        },
+        {
+          "part": "본문 자리표시(content)",
+          "role": "회색 박스 + '컨텐츠 영역' 안내문구. 실제 화면에서는 이 자리를 실제 콘텐츠로 교체한다."
+        },
+        {
+          "part": "푸터",
+          "role": "코어 Button 1개(Single) 또는 2개(Dual), XXSM h28. 확인 계열과 같은 규칙."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "크기는 MD(520)·LG(1000)·XL(1200) 중에서 고른다 — SM(360)은 확인 계열 폭이라 채택하지 않는다.",
+          "닫기 아이콘은 확인 계열 Modal 과 같은 close 부품을 재사용한다.",
+          "본문이 정본 최소 높이를 넘으면 패널이 자라다가 화면 85% 에서 멈추고 그 다음은 본문 안에서만 스크롤한다."
+        ],
+        "dont": [
+          "본문에 샘플 문장을 넣지 않는다 — 회색 자리표시 박스 + '컨텐츠 영역' 문구만 둔다(river 지시 2026-09-08).",
+          "확인 계열 Modal 과 그릇을 공유하지 않는다 — 별개 컴포넌트다.",
+          "패널 폭(520/1000/1200)을 임의로 바꾸지 않는다. 좁은 화면 대응은 max-width 상한만 쓴다."
+        ]
+      },
+      "a11y": [
+        "패널을 role=dialog · aria-modal=true 로 표시하고, aria-labelledby 로 제목을 연결한다.",
+        "열릴 때 패널 안 첫 초점 요소로 초점을 옮기고, 닫힐 때 열기 전 초점 자리로 되돌린다.",
+        "열려 있는 동안 Tab·Shift+Tab 은 패널 안에서만 순환한다(초점 가둠).",
+        "Esc 로 닫을 수 있게 한다. 헤더의 닫기(X) 버튼에 '닫기' 이름을 준다.",
+        "열려 있는 동안 배경 스크롤을 잠근다.",
+        "본문(content-area)은 넘치면 스크롤되며, 키보드로도 스크롤 가능해야 한다(브라우저 기본 스크롤 동작을 막지 않는다)."
+      ],
+      "origin": {
+        "classification": "A",
+        "note": "레거시 pc_modal(yE5UCFEbmXJBlYJWB24Lz2 / 540:5815) — 🤖 figma-inspector 2026-09-07 실측. 확인 계열(buildModalShell, 6706:4218)과 별개.",
+        "legacySource": {
+          "pc": {
+            "file": "yE5UCFEbmXJBlYJWB24Lz2",
+            "canonicalSet": "540:5815",
+            "name": "pc_modal"
+          }
+        }
+      },
+      "family": {
+        "id": "content-modal",
+        "label": "콘텐츠 계열",
+        "canonicalNode": "540:5815",
+        "spec": "PC 전용: MD 520×336 · LG 1000×587 · XL 1200×587(최소 높이) · 제목16B · 본문14M(자리표시) · Button XXSM h28 · 닫기 있음.",
+        "note": "확인 계열(Modal, 6706:4218 — 폭360 단일·제목16B·본문14R 실제 텍스트)과 구분된 별개 계열. 상세: reports/modal-content-family-backlog.md"
+      },
+      "variantAxis": {
+        "property": [
+          "Size",
+          "Footer"
+        ],
+        "values": {
+          "Size": [
+            "MD",
+            "LG",
+            "XL"
+          ],
+          "Footer": [
+            "Single",
+            "Dual"
+          ]
+        },
+        "titleAlways": true,
+        "sizeAxis": "Size 가 패널 폭·최소 높이를 결정: MD 520×336 · LG 1000×587 · XL 1200×587.",
+        "note": "확인 계열에는 없는 크기 축이다. 6변형(Size 3 × Footer 2)."
+      },
+      "guardrail": {
+        "rule": "확인 계열(Modal) 패널 height/width 비율이 임계 초과 시 이 콘텐츠 계열로 전환한다.",
+        "threshold": "TBD",
+        "reason": "확인 계열은 짧은 텍스트 확인용 compact. 긴/큰 본문은 콘텐츠 계열(3크기·85vh 스크롤)이 담당."
+      },
+      "scope": "light+dark",
+      "templates": [
+        {
+          "id": "md-single",
+          "size": "MD",
+          "footer": "single",
+          "built": true,
+          "verify": "none",
+          "note": "회색 자리표시 박스 + '컨텐츠 영역' 안내문구, 확인 버튼 1개."
+        },
+        {
+          "id": "md-dual",
+          "size": "MD",
+          "footer": "dual",
+          "built": true,
+          "verify": "none",
+          "note": "취소→확인 2버튼."
+        },
+        {
+          "id": "lg-single",
+          "size": "LG",
+          "footer": "single",
+          "built": true,
+          "verify": "none"
+        },
+        {
+          "id": "lg-dual",
+          "size": "LG",
+          "footer": "dual",
+          "built": true,
+          "verify": "none"
+        },
+        {
+          "id": "xl-single",
+          "size": "XL",
+          "footer": "single",
+          "built": true,
+          "verify": "none"
+        },
+        {
+          "id": "xl-dual",
+          "size": "XL",
+          "footer": "dual",
+          "built": true,
+          "verify": "none"
+        }
+      ],
+      "anatomySpec": {
+        "panel": "VERTICAL · 폭 MD520/LG1000/XL1200 · 최소높이 MD336/LG587/XL587 · py20 · gap32. 공통 radius/8 · border 1px INSIDE color/modal/panel/border · shadow/raised",
+        "header": "HORIZONTAL space-between · items-center · px24 · [title 16B + close]",
+        "content-area": "px24 · flex-grow · min-height:0 · overflow-y:auto(유일한 스크롤 영역)",
+        "content": "회색 bg/level-3 박스 · radius/4 · 중앙 정렬 '컨텐츠 영역' body/14M",
+        "footer": "우측정렬 · px24 · gap8 · Button XXSM h28"
+      },
+      "heightRule": {
+        "min": "정본 336(MD)/587(LG)/587(XL)을 패널의 최소 높이로 쓴다.",
+        "grow": "본문(content-area)이 최소 높이를 넘으면 패널이 함께 자란다.",
+        "cap": "패널 전체 높이가 딤 화면 높이의 85%(85vh)에 도달하면 더 자라지 않는다.",
+        "scroll": "85vh 도달 이후에는 content-area 안에서만 스크롤한다. 헤더·푸터는 고정이며 스크롤되지 않는다.",
+        "reason": "Figma 컴포넌트 마스터는 높이를 하나만 가질 수 있어 정본이 실측 고정값을 쓸 뿐이다. 이 동작은 정본의 오류가 아니라 웹이 구현할 몫이다.",
+        "source": "reports/modal-content-family-backlog.md 「높이 규칙」"
+      },
+      "tokens": {
+        "_note": "색은 예외 없이 Semantic 경유. 신규 토큰 0건 — 확인 계열과 완전히 같은 토큰을 재사용한다.",
+        "panel-bg": "color/surface/raised",
+        "panel-border": "color/modal/panel/border",
+        "title-text": "color/text/title/primary",
+        "close-icon": "color/icon/gray-dark",
+        "panel-radius": "radius/8",
+        "overlay": "color/overlay",
+        "shadow": "shadow/raised",
+        "content-bg": "color/bg/level-3",
+        "close-hover-bg": "color/control/bg/hover",
+        "content-radius": "radius/4",
+        "content-label-text": "color/text/body/tertiary"
+      },
+      "reuses": {
+        "coreComponents": [
+          "button"
+        ],
+        "libraryIcons": [
+          "close (확인 계열 Modal 과 동일 자산 재사용 — 신규 등록 없음)"
+        ],
+        "note": "푸터 버튼 = 코어 Button(XXSM h28, 확인 계열과 동일). 닫기 아이콘도 확인 계열과 같은 부품을 그대로 쓴다. 시각 override 금지."
+      },
+      "figma": {
+        "componentSetKey": "(미발행)",
+        "fileKey": "cysG5U1udpQqVagYY1hWHW",
+        "builder": "plugins/figma-vars-installer/src/build-components.ts · buildModalContent",
+        "propertyMap": {
+          "size": [
+            "MD",
+            "LG",
+            "XL"
+          ],
+          "footer": [
+            "single",
+            "dual"
+          ]
+        },
+        "note": "2026-09-08 신설. 세트명 Modal Content, Size 3 × Footer 2 = 6변형. 노드 ID는 설치기 리빌드 시 바뀔 수 있다."
+      },
+      "governance": {
+        "verify": "new",
+        "verifyNote": "설치기 정본 buildModalContent 신설(2026-09-08, river 승인) — component-verifier 독립 검증 대기. 높이 규칙(grow→85vh→스크롤)은 웹 전용 동작이라 Figma 대조 대상이 아니다.",
+        "coreReuseRule": "button 은 dependencies.coreComponents 명시. 상태·variant 부족 시 needs-core-update 기록(임의 구현 금지)."
+      },
+      "webDistribution": {
+        "status": "approved",
+        "manifest": "ui-library/src/components/modal-content/manifest.json",
+        "runtime": "components/modal-content.js",
+        "note": "웹 배포본은 딤+패널 그릇과 여닫기 런타임을 제공한다. 높이 grow→85vh→내부 스크롤은 CSS로 처리된다. 푸터 버튼은 코어 Button 배포본을 조립한다.",
+        "approvedAt": "2026-09-08"
+      }
     }
   },
   "figma": {
@@ -15151,9 +15652,33 @@ window.REGISTRY_BUNDLE = {
     }
   },
   "reportsIndex": {
-    "generatedAt": "2026-09-01T07:10:36.915Z",
-    "totalCount": 81,
+    "generatedAt": "2026-09-08T14:12:11.259Z",
+    "totalCount": 82,
     "reports": [
+      {
+        "id": "modal-content-family-backlog",
+        "filename": "modal-content-family-backlog.md",
+        "title": "Modal Content (콘텐츠 계열) — 별건 백로그",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "complete",
+        "sourcePath": "reports/modal-content-family-backlog.md",
+        "updatedAt": "2026-09-08",
+        "summary": "**상태: 2026-09-08 Figma 정본·설치기 착수 완료** — `build-components.ts buildModalContent`, 세트명 `Modal Content`,",
+        "fileSizeKB": 5.4
+      },
+      {
+        "id": "canon-approval-audit-2026-09-07",
+        "filename": "canon-approval-audit-2026-09-07.md",
+        "title": "정본 승인 감사 — 2026-09-07 (river 결정 포함)",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/canon-approval-audit-2026-09-07.md",
+        "updatedAt": "2026-09-07",
+        "summary": "**읽기 전용 감사였다** — 감사 과정에서 정본·파생을 한 글자도 고치지 않았다.",
+        "fileSizeKB": 20
+      },
       {
         "id": "button-sync-check",
         "filename": "button-sync-check.md",
@@ -15162,7 +15687,7 @@ window.REGISTRY_BUNDLE = {
         "category": "audit",
         "status": "archive",
         "sourcePath": "reports/button-sync-check.md",
-        "updatedAt": "2026-09-01",
+        "updatedAt": "2026-09-02",
         "summary": "- **Variants:** primary, secondary, blue-line",
         "fileSizeKB": 3.2
       },
@@ -15383,18 +15908,6 @@ window.REGISTRY_BUNDLE = {
         "fileSizeKB": 9.4
       },
       {
-        "id": "modal-content-family-backlog",
-        "filename": "modal-content-family-backlog.md",
-        "title": "Modal Content (콘텐츠 계열) — 별건 백로그",
-        "stage": "Audit",
-        "category": "audit",
-        "status": "archive",
-        "sourcePath": "reports/modal-content-family-backlog.md",
-        "updatedAt": "2026-07-15",
-        "summary": "**상태: 미착수.** 확인 계열(`registry/components/modal.json`, compact 텍스트-확인)과 **구분되는 별개 컴포넌트**.",
-        "fileSizeKB": 3.3
-      },
-      {
         "id": "mvp-t2-token-sync",
         "filename": "mvp-t2-token-sync.md",
         "title": "MVP-T2 Token Sync Plugin Report",
@@ -15488,7 +16001,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/changelog-archive.md",
         "updatedAt": "2026-06-17",
         "summary": "이 파일은 CLAUDE.md `변경 이력` 표의 **상세 보존본**이다. 컨텍스트 비용을 줄이기 위해 CLAUDE.md 본문에서 분리했다.",
-        "fileSizeKB": 72.1
+        "fileSizeKB": 79.2
       },
       {
         "id": "harness-audit-2026-06-17",

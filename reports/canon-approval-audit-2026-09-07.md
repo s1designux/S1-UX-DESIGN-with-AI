@@ -206,17 +206,19 @@ Figma 시안 전용 크롬이며, 기본형부터 이미 OS 크롬(하단 내비
 | M-4 | 팝오버 8px·뒤집기 | **A** | — | 코드 변경 0건. manifest `popoverPlacement` 기록 |
 | M-5 | 화면별 이동 단위 | **A** | — | 코드 변경 0건. manifest `monthYearNavigation` 기록 |
 | M-6 | 격자 키보드 조작 | **A** | — | 코드 변경 0건. manifest `keyboard` 기록 |
-| M-7 | 선택 셀 hover 색 | **A** (웹이 맞다) | — | manifest `selectedHoverToken` 기록. **정본 배선은 미착수 — 아래 참조** |
+| M-7 | 선택 셀 hover 색 | **A** (웹이 맞다) | — | manifest `selectedHoverToken` 기록. **정본 배선 완료(2026-09-09)** — `State="Selected Hover"` 신설, 아래 「남은 후속」 1 참조 |
 | M-8 | 날짜 값 형식 | **B → 원복** | "2026.09.08" → "화면에 보이는 글자를 2026.09.08로 바꿔줘" → "오케이 그럼 원래대로 YY.MM.DD방식으로 원복하고 커밋해줘" | 4자리로 바꿔 실물을 보여준 뒤 river 가 되돌리기로 결정. **최종 = `YY.MM.DD` 유지, 값은 ISO 유지 — 코드 변경 0건** |
 | M-9 | 기간 트리거 문구 | **B** (물결표) | — | `date-picker.js:339-340` 구분자 `" - "` → `" ~ "`. `ui:build` 재생성·렌더 확인 완료 |
-| M-10 | Open×Filled 교차 | **미응답** | — | 코드 변경 0건. 지금대로(열림 우선) 유지 |
+| M-10 | Open×Filled 교차 | **미응답** | — | 코드 변경 0건. 지금대로(열림 우선) 유지. `select/manifest.json` `openFilledCross` 에 "제시했으나 미응답" 을 명시(2026-09-09) — 승인도 반려도 아님을 기록에 남긴다 |
 
 M-2 의 river 메모는 웹 현재 동작과 어긋나지 않는다 — 목록 모드는 이미 시·분을 다 골라야 confirm 이 풀리고, 메모는 그 규칙을 확인해 준 것이다. 휠 모드만 상시 활성으로 남는다.
 
 ### 남은 후속 2건
 
-1. **M-7 정본 배선 (승인은 이미 받음)** — `build-components.ts` 의 `calCellCompsForSize` STD 표에 Selected×Hover 자리를 만들고 `color/date-picker/cell/bg/selected-hover` 를 물려야 웹과 정본이 맞는다. 정본 구조 변경이라 **하드룰 H1②** 대상(검증 = 🤖 `component-verifier` 실제 spawn → `installer-build-verify-check.js --record --by component-verifier` → Gate 13).
-   **이번 세션 미착수 사유:** `git status --porcelain plugins/figma-vars-installer/src/build-components.ts` 가 ` M`(다른 세션의 미커밋 변경) — 여기서 고치면 Gate 13 이 남의 변경까지 함께 인증한다. 그 파일이 깨끗해지면 착수한다.
+1. **M-7 정본 배선 — 완료 (2026-09-09).** `calCellCompsForSize` 의 STD 표에 `State="Selected Hover"` 를 신설하고 채움·테두리 모두 `color/date-picker/cell/bg/selected-hover` 를 물렸다(텍스트는 `text/selected` 유지 — 웹 `date-picker.css` 의 `[data-state="selected"]:hover` 규칙과 한 벌). `buildCalendarCellLayout` 의 `stdStates` 도 6열로 늘려 스펙 시트에 드러낸다. 새 토큰 0건.
+   정본 구조 변경이라 **하드룰 H1②** 대상 — 🤖 `component-verifier` 실제 spawn 후 `installer-build-verify-check.js --record --by component-verifier` 로 Gate 13 기록.
+   `date-picker/manifest.json` 의 `selectedHoverToken` 도 "해소" 로 갱신했다(더 이상 notInCanon 이 아니다).
+   (2026-09-08 미착수 사유였던 "다른 세션의 미커밋 변경"은 2026-09-09 저장소 정리로 해소됐다.)
    함께 대기 중인 같은 파일 작업: NavBar `Web + Keyboard` 391→341 · `build-components.ts:2146` 주석 날짜 정정 · `Editing → Focus` 개명(§8).
 
 2. **M-8 은 남은 후속이 없다** — 아래 경위대로 원래 형식으로 되돌아갔다.
