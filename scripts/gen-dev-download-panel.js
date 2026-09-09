@@ -100,7 +100,9 @@ if (ledgerChanged && checkOnly) {
   process.exit(1);
 }
 
-/* 툴 카드 — 무엇을 주는지, 어디까지 되는지, 첫 줄을 어떻게 시작하는지. */
+/* 툴 카드 — 무엇을 주는지, 어디까지 되는지, **어떻게 설치하고 무엇이 들어있는지**.
+   예시 코드만 보이면 "그 세 개만 있나" 로 읽힌다(river 지적 2026-09-09).
+   그래서 카드는 ①설치 순서 ②들어있는 것 을 먼저 말하고, 코드는 붙여넣을 최소 줄만 남긴다. */
 const TOOL_CARDS = [
   {
     key: 'html-css-js',
@@ -108,12 +110,18 @@ const TOOL_CARDS = [
     note: `${approved.length}종 전부 · 퍼블리싱 · jQuery · JSP·PHP 같은 서버 렌더링`,
     support: 'full',
     supportLabel: '컴포넌트 그대로 사용',
+    install: [
+      '압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다',
+      '아래 두 줄을 <code>&lt;head&gt;</code> 에 넣어 겉모습을 읽힙니다',
+      '동작이 있는 컴포넌트는 <code>autoInit()</code> 한 번으로 전부 붙습니다'
+    ],
     code: `<link rel="stylesheet" href="s1-ui/assets/css/tokens.css">
 <link rel="stylesheet" href="s1-ui/s1-ui.css">
 <script type="module">
   import { autoInit } from "./s1-ui/s1-ui.auto.js";
   autoInit();
 </script>`,
+    contains: `컴포넌트 ${approved.length}종의 마크업(<code>examples/</code>) · 겉모습 한 벌(<code>s1-ui.css</code>) · 동작 스크립트 · 아이콘`,
     files: ['s1-ui.css', 's1-ui.auto.js', 'examples/'],
     lint: true
   },
@@ -123,15 +131,14 @@ const TOOL_CARDS = [
     note: `${approved.length}종 전부 · JSX 빌드 도구 필요 · 서버 렌더링·타입 정의 포함`,
     support: 'full',
     supportLabel: '컴포넌트 그대로 사용',
-    code: `import { S1Button, S1Input, S1Table }
-  from "./s1-ui/platform/react";
-
-<S1Button variant="primary" parts={{ label: "확인" }} />
-
-<S1Input value={name} onChange={onNameChange} />
-
-<S1Table headerCells={["이름", "부서"]}
-         rows={[["김하늘", "디자인"]]} />`,
+    install: [
+      '압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다',
+      '앱 진입 파일에서 겉모습 CSS 를 한 번 읽힙니다 (<code>tokens.css</code> · <code>s1-ui.css</code>)',
+      '쓸 컴포넌트만 이름으로 꺼내 씁니다 — 아래는 그 한 줄입니다'
+    ],
+    code: `import { S1Button, S1DatePicker }
+  from "./s1-ui/platform/react";`,
+    contains: `컴포넌트 ${approved.length}종 전부 — 이름은 앞에 <code>S1</code> (<code>input → S1Input</code> · <code>date-picker → S1DatePicker</code>) · 사용 설명서(README) · 타입 정의(index.d.ts)`,
     files: ['platform/react/', 'platform/react/README.md', 'platform/react/index.d.ts'],
     lint: true
   },
@@ -141,10 +148,14 @@ const TOOL_CARDS = [
     note: `${approved.length}종 전부 · SFC(.vue) 빌드 도구가 필요합니다`,
     support: 'full',
     supportLabel: '컴포넌트 그대로 사용',
-    code: `import { S1Button } from "./s1-ui/platform/vue";
-
-<S1Button variant="primary" size="md"
-          :parts="{ label: '확인' }" />`,
+    install: [
+      '압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다',
+      '앱 진입 파일에서 겉모습 CSS 를 한 번 읽힙니다 (<code>tokens.css</code> · <code>s1-ui.css</code>)',
+      '쓸 컴포넌트만 이름으로 꺼내 씁니다 — 아래는 그 한 줄입니다'
+    ],
+    code: `import { S1Button, S1DatePicker }
+  from "./s1-ui/platform/vue";`,
+    contains: `컴포넌트 ${approved.length}종 전부 — 이름은 앞에 <code>S1</code> (<code>input → S1Input</code> · <code>date-picker → S1DatePicker</code>)`,
     files: ['platform/vue/'],
     lint: true
   },
@@ -154,11 +165,15 @@ const TOOL_CARDS = [
     note: 'Compose · View 공용 상수',
     support: 'tokens',
     supportLabel: '색·크기 값만',
-    code: `import com.s1.designsystem.S1Tokens
-
-Color(S1Tokens.Colors.colorBgLevel0)   // Compose
+    install: [
+      '<code>S1Tokens.kt</code> 를 프로젝트 소스에 넣습니다 (패키지 <code>com.s1.designsystem</code>)',
+      '색·크기는 이 상수를 부릅니다 — 값을 눈으로 보고 옮겨 적지 마세요',
+      '눌렀을 때·꺼졌을 때 같은 상태 변화는 <code>behavior.json</code> 을 그대로 따릅니다'
+    ],
+    code: `Color(S1Tokens.Colors.colorBgLevel0)   // Compose
 S1Tokens.ColorsDark.colorBgLevel0      // 다크 값
 S1Tokens.Dimens.radiusControlSm        // 4.0f`,
+    contains: `색 ${platform.tokenCount}개(라이트·다크) · 크기·간격·반경 값 · 컴포넌트 동작 명세(<code>behavior.json</code>). <strong>화면 부품은 들어있지 않습니다 — 직접 그려야 합니다.</strong>`,
     files: ['platform/kotlin/S1Tokens.kt', 'platform/behavior.json'],
     lint: false
   },
@@ -168,9 +183,14 @@ S1Tokens.Dimens.radiusControlSm        // 4.0f`,
     note: 'UIKit · SwiftUI 공용 상수',
     support: 'tokens',
     supportLabel: '색·크기 값만',
-    code: `// 색은 0xAARRGGBB 정수입니다
-let bg = S1Tokens.Colors.colorBgLevel0
+    install: [
+      '<code>S1Tokens.swift</code> 를 프로젝트에 넣습니다',
+      '색·크기는 이 상수를 부릅니다 — 색은 <code>0xAARRGGBB</code> 정수입니다',
+      '눌렀을 때·꺼졌을 때 같은 상태 변화는 <code>behavior.json</code> 을 그대로 따릅니다'
+    ],
+    code: `let bg = S1Tokens.Colors.colorBgLevel0
 let radius = S1Tokens.Dimens.radiusControlSm`,
+    contains: `색 ${platform.tokenCount}개(라이트·다크) · 크기·간격·반경 값 · 컴포넌트 동작 명세(<code>behavior.json</code>). <strong>화면 부품은 들어있지 않습니다 — 직접 그려야 합니다.</strong>`,
     files: ['platform/swift/S1Tokens.swift', 'platform/behavior.json'],
     lint: false
   },
@@ -180,11 +200,17 @@ let radius = S1Tokens.Dimens.radiusControlSm`,
     note: '화면 라이브러리(Qt·MFC 등)가 정해지면 더 붙습니다',
     support: 'tokens',
     supportLabel: '색·크기 값만',
+    install: [
+      '<code>s1_tokens.h</code> 를 프로젝트에 넣고 <code>#include</code> 합니다',
+      '색·크기는 이 상수를 부릅니다 — 색은 <code>0xAARRGGBB</code> 정수입니다',
+      '값을 다른 형태로 쓰려면 <code>tokens.json</code> 을 읽어 쓰세요'
+    ],
     code: `#include "s1_tokens.h"
 using namespace s1::tokens;
 
 auto bg = S1_COLOR_BG_LEVEL_0;    // 0xAARRGGBB
 auto r  = S1_RADIUS_CONTROL_SM;   // 4.0f`,
+    contains: `색 ${platform.tokenCount}개(라이트·다크) · 크기·간격·반경 값 · 같은 값의 JSON 사본. <strong>화면 부품은 들어있지 않습니다 — 직접 그려야 합니다.</strong>`,
     files: ['platform/cpp/s1_tokens.h', 'platform/tokens.json'],
     lint: false
   }
@@ -208,7 +234,13 @@ function toolCard(tool) {
                 <span class="devtool-updated">업데이트 ${escape(updatedAt[tool.key] ?? '—')}</span>
               </div>
             </div>
+            <div class="devtool-section">설치</div>
+            <ol class="devtool-steps">
+              ${tool.install.map((step) => `<li>${step}</li>`).join('\n              ')}
+            </ol>
             <pre class="devtool-code"><code>${escape(tool.code)}</code></pre>
+            <div class="devtool-section">들어있는 것</div>
+            <p class="devtool-contains">${tool.contains}</p>
             <div class="devtool-foot">
               <span class="devtool-files">${tool.files.map((file) => `<code>${escape(file)}</code>`).join(' ')}</span>
               ${lint}

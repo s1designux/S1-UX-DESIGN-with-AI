@@ -248,6 +248,22 @@
       border-radius:8px; font-size:11.5px; line-height:1.6; overflow-x:auto;
       font-family:ui-monospace,SFMono-Regular,Menlo,monospace; color:#334155;
     }
+    .devtool-section {
+      margin:14px 16px 6px; font-size:11px; font-weight:700; color:#111827;
+    }
+    .devtool-steps {
+      margin:0 16px; padding-left:18px; font-size:12px; color:#4b5563; line-height:1.75;
+    }
+    .devtool-steps li { margin-bottom:2px; }
+    .devtool-steps code,
+    .devtool-contains code {
+      font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11px;
+      background:#f3f4f6; padding:1px 5px; border-radius:4px; color:#1d6ceb;
+    }
+    .devtool-contains {
+      margin:0 16px; font-size:12px; color:#4b5563; line-height:1.75;
+    }
+    .devtool-contains strong { color:#c2410c; }
     .devtool-foot {
       display:flex; align-items:center; gap:8px; flex-wrap:wrap;
       padding:11px 16px 14px; margin-top:auto;
@@ -566,12 +582,20 @@
                 <span class="devtool-updated">업데이트 2026-09-09</span>
               </div>
             </div>
+            <div class="devtool-section">설치</div>
+            <ol class="devtool-steps">
+              <li>압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다</li>
+              <li>아래 두 줄을 <code>&lt;head&gt;</code> 에 넣어 겉모습을 읽힙니다</li>
+              <li>동작이 있는 컴포넌트는 <code>autoInit()</code> 한 번으로 전부 붙습니다</li>
+            </ol>
             <pre class="devtool-code"><code>&lt;link rel="stylesheet" href="s1-ui/assets/css/tokens.css"&gt;
 &lt;link rel="stylesheet" href="s1-ui/s1-ui.css"&gt;
 &lt;script type="module"&gt;
   import { autoInit } from "./s1-ui/s1-ui.auto.js";
   autoInit();
 &lt;/script&gt;</code></pre>
+            <div class="devtool-section">들어있는 것</div>
+            <p class="devtool-contains">컴포넌트 22종의 마크업(<code>examples/</code>) · 겉모습 한 벌(<code>s1-ui.css</code>) · 동작 스크립트 · 아이콘</p>
             <div class="devtool-foot">
               <span class="devtool-files"><code>s1-ui.css</code> <code>s1-ui.auto.js</code> <code>examples/</code></span>
               <span class="devtool-check">자가 검사기 사용 가능</span>
@@ -588,15 +612,16 @@
                 <span class="devtool-updated">업데이트 2026-09-09</span>
               </div>
             </div>
-            <pre class="devtool-code"><code>import { S1Button, S1Input, S1Table }
-  from "./s1-ui/platform/react";
-
-&lt;S1Button variant="primary" parts={{ label: "확인" }} /&gt;
-
-&lt;S1Input value={name} onChange={onNameChange} /&gt;
-
-&lt;S1Table headerCells={["이름", "부서"]}
-         rows={[["김하늘", "디자인"]]} /&gt;</code></pre>
+            <div class="devtool-section">설치</div>
+            <ol class="devtool-steps">
+              <li>압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다</li>
+              <li>앱 진입 파일에서 겉모습 CSS 를 한 번 읽힙니다 (<code>tokens.css</code> · <code>s1-ui.css</code>)</li>
+              <li>쓸 컴포넌트만 이름으로 꺼내 씁니다 — 아래는 그 한 줄입니다</li>
+            </ol>
+            <pre class="devtool-code"><code>import { S1Button, S1DatePicker }
+  from "./s1-ui/platform/react";</code></pre>
+            <div class="devtool-section">들어있는 것</div>
+            <p class="devtool-contains">컴포넌트 22종 전부 — 이름은 앞에 <code>S1</code> (<code>input → S1Input</code> · <code>date-picker → S1DatePicker</code>) · 사용 설명서(README) · 타입 정의(index.d.ts)</p>
             <div class="devtool-foot">
               <span class="devtool-files"><code>platform/react/</code> <code>platform/react/README.md</code> <code>platform/react/index.d.ts</code></span>
               <span class="devtool-check">자가 검사기 사용 가능</span>
@@ -613,10 +638,16 @@
                 <span class="devtool-updated">업데이트 2026-09-09</span>
               </div>
             </div>
-            <pre class="devtool-code"><code>import { S1Button } from "./s1-ui/platform/vue";
-
-&lt;S1Button variant="primary" size="md"
-          :parts="{ label: '확인' }" /&gt;</code></pre>
+            <div class="devtool-section">설치</div>
+            <ol class="devtool-steps">
+              <li>압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다</li>
+              <li>앱 진입 파일에서 겉모습 CSS 를 한 번 읽힙니다 (<code>tokens.css</code> · <code>s1-ui.css</code>)</li>
+              <li>쓸 컴포넌트만 이름으로 꺼내 씁니다 — 아래는 그 한 줄입니다</li>
+            </ol>
+            <pre class="devtool-code"><code>import { S1Button, S1DatePicker }
+  from "./s1-ui/platform/vue";</code></pre>
+            <div class="devtool-section">들어있는 것</div>
+            <p class="devtool-contains">컴포넌트 22종 전부 — 이름은 앞에 <code>S1</code> (<code>input → S1Input</code> · <code>date-picker → S1DatePicker</code>)</p>
             <div class="devtool-foot">
               <span class="devtool-files"><code>platform/vue/</code></span>
               <span class="devtool-check">자가 검사기 사용 가능</span>
@@ -633,11 +664,17 @@
                 <span class="devtool-updated">업데이트 2026-09-09</span>
               </div>
             </div>
-            <pre class="devtool-code"><code>import com.s1.designsystem.S1Tokens
-
-Color(S1Tokens.Colors.colorBgLevel0)   // Compose
+            <div class="devtool-section">설치</div>
+            <ol class="devtool-steps">
+              <li><code>S1Tokens.kt</code> 를 프로젝트 소스에 넣습니다 (패키지 <code>com.s1.designsystem</code>)</li>
+              <li>색·크기는 이 상수를 부릅니다 — 값을 눈으로 보고 옮겨 적지 마세요</li>
+              <li>눌렀을 때·꺼졌을 때 같은 상태 변화는 <code>behavior.json</code> 을 그대로 따릅니다</li>
+            </ol>
+            <pre class="devtool-code"><code>Color(S1Tokens.Colors.colorBgLevel0)   // Compose
 S1Tokens.ColorsDark.colorBgLevel0      // 다크 값
 S1Tokens.Dimens.radiusControlSm        // 4.0f</code></pre>
+            <div class="devtool-section">들어있는 것</div>
+            <p class="devtool-contains">색 481개(라이트·다크) · 크기·간격·반경 값 · 컴포넌트 동작 명세(<code>behavior.json</code>). <strong>화면 부품은 들어있지 않습니다 — 직접 그려야 합니다.</strong></p>
             <div class="devtool-foot">
               <span class="devtool-files"><code>platform/kotlin/S1Tokens.kt</code> <code>platform/behavior.json</code></span>
               <span class="devtool-check devtool-check-off">자가 검사기 없음 — 값 대조까지만</span>
@@ -654,9 +691,16 @@ S1Tokens.Dimens.radiusControlSm        // 4.0f</code></pre>
                 <span class="devtool-updated">업데이트 2026-09-09</span>
               </div>
             </div>
-            <pre class="devtool-code"><code>// 색은 0xAARRGGBB 정수입니다
-let bg = S1Tokens.Colors.colorBgLevel0
+            <div class="devtool-section">설치</div>
+            <ol class="devtool-steps">
+              <li><code>S1Tokens.swift</code> 를 프로젝트에 넣습니다</li>
+              <li>색·크기는 이 상수를 부릅니다 — 색은 <code>0xAARRGGBB</code> 정수입니다</li>
+              <li>눌렀을 때·꺼졌을 때 같은 상태 변화는 <code>behavior.json</code> 을 그대로 따릅니다</li>
+            </ol>
+            <pre class="devtool-code"><code>let bg = S1Tokens.Colors.colorBgLevel0
 let radius = S1Tokens.Dimens.radiusControlSm</code></pre>
+            <div class="devtool-section">들어있는 것</div>
+            <p class="devtool-contains">색 481개(라이트·다크) · 크기·간격·반경 값 · 컴포넌트 동작 명세(<code>behavior.json</code>). <strong>화면 부품은 들어있지 않습니다 — 직접 그려야 합니다.</strong></p>
             <div class="devtool-foot">
               <span class="devtool-files"><code>platform/swift/S1Tokens.swift</code> <code>platform/behavior.json</code></span>
               <span class="devtool-check devtool-check-off">자가 검사기 없음 — 값 대조까지만</span>
@@ -673,11 +717,19 @@ let radius = S1Tokens.Dimens.radiusControlSm</code></pre>
                 <span class="devtool-updated">업데이트 2026-09-09</span>
               </div>
             </div>
+            <div class="devtool-section">설치</div>
+            <ol class="devtool-steps">
+              <li><code>s1_tokens.h</code> 를 프로젝트에 넣고 <code>#include</code> 합니다</li>
+              <li>색·크기는 이 상수를 부릅니다 — 색은 <code>0xAARRGGBB</code> 정수입니다</li>
+              <li>값을 다른 형태로 쓰려면 <code>tokens.json</code> 을 읽어 쓰세요</li>
+            </ol>
             <pre class="devtool-code"><code>#include "s1_tokens.h"
 using namespace s1::tokens;
 
 auto bg = S1_COLOR_BG_LEVEL_0;    // 0xAARRGGBB
 auto r  = S1_RADIUS_CONTROL_SM;   // 4.0f</code></pre>
+            <div class="devtool-section">들어있는 것</div>
+            <p class="devtool-contains">색 481개(라이트·다크) · 크기·간격·반경 값 · 같은 값의 JSON 사본. <strong>화면 부품은 들어있지 않습니다 — 직접 그려야 합니다.</strong></p>
             <div class="devtool-foot">
               <span class="devtool-files"><code>platform/cpp/s1_tokens.h</code> <code>platform/tokens.json</code></span>
               <span class="devtool-check devtool-check-off">자가 검사기 없음 — 값 대조까지만</span>
