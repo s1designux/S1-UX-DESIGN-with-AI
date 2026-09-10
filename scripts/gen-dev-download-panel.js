@@ -17,6 +17,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const { allToolFacts, assertProse } = require('./lib/platform-facts.js');
 
 const ROOT = path.join(__dirname, '..');
 const PAGE = path.join(ROOT, 'pages', 'install-prompt.html');
@@ -43,6 +44,10 @@ if (stamp.distFingerprint && stamp.canonicalFingerprint !== manifest.canonicalFi
 }
 
 const approved = manifest.components.filter((component) => component.status === 'approved');
+
+/* 배지·"들어있는 것"·대표 파일은 배포본이 스스로 선언한 사실에서 온다(scripts/lib/platform-facts.js).
+   사람이 카드에 적는 것은 설치 순서와 예시 코드뿐이고, 그 문장도 아래에서 기계로 검사한다. */
+const FACTS = allToolFacts(manifest, platform);
 
 /* ── 툴별 "마지막으로 바뀐 날" ───────────────────────────────────────────
    빌드는 날짜를 남기지 않는다(같은 정본이면 같은 결과여야 하므로). 그래서 툴마다
@@ -108,8 +113,6 @@ const TOOL_CARDS = [
     key: 'html-css-js',
     title: 'HTML · CSS · JavaScript',
     note: `${approved.length}종 전부 · 퍼블리싱 · jQuery · JSP·PHP 같은 서버 렌더링`,
-    support: 'full',
-    supportLabel: '컴포넌트 그대로 사용',
     install: [
       '압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 22종이 실제 모습으로 보입니다',
       '아래 두 줄을 <code>&lt;head&gt;</code> 에 넣어 겉모습을 읽힙니다',
@@ -121,16 +124,11 @@ const TOOL_CARDS = [
   import { autoInit } from "./s1-ui/s1-ui.auto.js";
   autoInit();
 </script>`,
-    contains: `컴포넌트 ${approved.length}종의 마크업(<code>examples/</code>) · 겉모습 한 벌(<code>s1-ui.css</code>) · 동작 스크립트 · 아이콘`,
-    files: ['s1-ui.css', 's1-ui.auto.js', 'examples/'],
-    lint: true
   },
   {
     key: 'react',
     title: 'React · Next.js',
     note: `${approved.length}종 전부 · JSX 빌드 도구 필요 · 서버 렌더링·타입 정의 포함`,
-    support: 'full',
-    supportLabel: '컴포넌트 그대로 사용',
     install: [
       '압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 22종이 실제 모습으로 보입니다',
       '앱 진입 파일에서 겉모습 CSS 를 한 번 읽힙니다 (<code>tokens.css</code> · <code>s1-ui.css</code>)',
@@ -138,16 +136,11 @@ const TOOL_CARDS = [
     ],
     code: `import { S1Button, S1DatePicker }
   from "./s1-ui/platform/react";`,
-    contains: `컴포넌트 ${approved.length}종 전부 — 이름은 앞에 <code>S1</code> (<code>input → S1Input</code> · <code>date-picker → S1DatePicker</code>) · 사용 설명서(README) · 타입 정의(index.d.ts)`,
-    files: ['platform/react/', 'platform/react/README.md', 'platform/react/index.d.ts'],
-    lint: true
   },
   {
     key: 'vue',
     title: 'Vue',
     note: `${approved.length}종 전부 · SFC(.vue) 빌드 도구가 필요합니다`,
-    support: 'full',
-    supportLabel: '컴포넌트 그대로 사용',
     install: [
       '압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 22종이 실제 모습으로 보입니다',
       '앱 진입 파일에서 겉모습 CSS 를 한 번 읽힙니다 (<code>tokens.css</code> · <code>s1-ui.css</code>)',
@@ -155,34 +148,26 @@ const TOOL_CARDS = [
     ],
     code: `import { S1Button, S1DatePicker }
   from "./s1-ui/platform/vue";`,
-    contains: `컴포넌트 ${approved.length}종 전부 — 이름은 앞에 <code>S1</code> (<code>input → S1Input</code> · <code>date-picker → S1DatePicker</code>)`,
-    files: ['platform/vue/'],
-    lint: true
   },
   {
     key: 'kotlin',
     title: 'Kotlin (Android)',
-    note: 'Compose · View 공용 상수',
-    support: 'tokens',
-    supportLabel: '색·크기 값만',
+    note: (facts) => `${facts.componentCount}종 부품 · 텍스트 스타일 ${facts.textStyles}종 · Jetpack Compose`,
     install: [
-      '<code>S1Tokens.kt</code> 를 프로젝트 소스에 넣습니다 (패키지 <code>com.s1.designsystem</code>)',
-      '색·크기는 이 상수를 부릅니다 — 값을 눈으로 보고 옮겨 적지 마세요',
-      '눌렀을 때·꺼졌을 때 같은 상태 변화는 <code>behavior.json</code> 을 그대로 따릅니다'
+      '<code>platform/kotlin</code> 폴더를 프로젝트 소스에 통째로 넣습니다 (패키지 <code>com.s1.designsystem</code>)',
+      '부품은 이름으로 부릅니다 — <code>S1Button</code> 처럼 <code>S1</code> 로 시작합니다',
+      '글자는 이름 붙은 스타일(<code>S1Type</code>)로, 색·크기는 상수로 부릅니다 — 값을 눈으로 보고 옮겨 적지 마세요',
+      '부품에 없는 화면을 직접 그릴 때만 상태 변화를 <code>behavior.json</code> 으로 맞춥니다'
     ],
-    code: `Color(S1Tokens.Colors.colorBgLevel0)   // Compose
-S1Tokens.ColorsDark.colorBgLevel0      // 다크 값
-S1Tokens.Dimens.radiusControlSm        // 4.0f`,
-    contains: `색 ${platform.tokenCount}개(라이트·다크) · 크기·간격·반경 값 · 컴포넌트 동작 명세(<code>behavior.json</code>). <strong>화면 부품은 들어있지 않습니다 — 직접 그려야 합니다.</strong>`,
-    files: ['platform/kotlin/S1Tokens.kt', 'platform/behavior.json'],
-    lint: false
+    code: `S1Theme(dark = isSystemInDarkTheme()) {
+  S1Button(text = "확인", onClick = { })
+  BasicText("본문", style = S1Type.body14r.textStyle())
+}`,
   },
   {
     key: 'swift',
     title: 'Swift (iOS)',
     note: 'UIKit · SwiftUI 공용 상수',
-    support: 'tokens',
-    supportLabel: '색·크기 값만',
     install: [
       '<code>S1Tokens.swift</code> 를 프로젝트에 넣습니다',
       '색·크기는 이 상수를 부릅니다 — 색은 <code>0xAARRGGBB</code> 정수입니다',
@@ -190,16 +175,11 @@ S1Tokens.Dimens.radiusControlSm        // 4.0f`,
     ],
     code: `let bg = S1Tokens.Colors.colorBgLevel0
 let radius = S1Tokens.Dimens.radiusControlSm`,
-    contains: `색 ${platform.tokenCount}개(라이트·다크) · 크기·간격·반경 값 · 컴포넌트 동작 명세(<code>behavior.json</code>). <strong>화면 부품은 들어있지 않습니다 — 직접 그려야 합니다.</strong>`,
-    files: ['platform/swift/S1Tokens.swift', 'platform/behavior.json'],
-    lint: false
   },
   {
     key: 'cpp',
     title: 'C++',
     note: '화면 라이브러리(Qt·MFC 등)가 정해지면 더 붙습니다',
-    support: 'tokens',
-    supportLabel: '색·크기 값만',
     install: [
       '<code>s1_tokens.h</code> 를 프로젝트에 넣고 <code>#include</code> 합니다',
       '색·크기는 이 상수를 부릅니다 — 색은 <code>0xAARRGGBB</code> 정수입니다',
@@ -210,11 +190,13 @@ using namespace s1::tokens;
 
 auto bg = S1_COLOR_BG_LEVEL_0;    // 0xAARRGGBB
 auto r  = S1_RADIUS_CONTROL_SM;   // 4.0f`,
-    contains: `색 ${platform.tokenCount}개(라이트·다크) · 크기·간격·반경 값 · 같은 값의 JSON 사본. <strong>화면 부품은 들어있지 않습니다 — 직접 그려야 합니다.</strong>`,
-    files: ['platform/cpp/s1_tokens.h', 'platform/tokens.json'],
-    lint: false
   }
 ];
+
+/** 카드 한 줄 설명 — 개수는 배포본에서 온다. */
+function noteOf(tool, facts) {
+  return typeof tool.note === 'function' ? tool.note(facts) : tool.note;
+}
 
 function toolCard(tool) {
   const packageInfo = stamp.packages?.[tool.key];
@@ -222,17 +204,26 @@ function toolCard(tool) {
     console.error(`❌ ${tool.key} 묶음이 없습니다 — 먼저 \`npm run ui:zip\` 을 실행하세요.`);
     process.exit(1);
   }
-  const badge = tool.support === 'full'
-    ? '<span class="devtool-badge devtool-badge-full">컴포넌트 그대로 사용</span>'
-    : '<span class="devtool-badge devtool-badge-tokens">색·크기 값만</span>';
-  const lint = tool.lint
+  const facts = FACTS.get(tool.key);
+  if (!facts) {
+    console.error(`❌ 배포본이 ${tool.key} 를 선언하지 않았습니다 — platform/manifest.json 을 보세요.`);
+    process.exit(1);
+  }
+  /* 사람이 적은 설치 순서·예시 코드가 배포본과 어긋나면 여기서 멈춘다. */
+  const problems = assertProse(facts, [...tool.install, tool.code, noteOf(tool, facts)]);
+  if (problems.length) {
+    console.error(`❌ ${tool.key} 카드 문장이 배포본과 다릅니다:\n   - ${problems.join('\n   - ')}`);
+    process.exit(1);
+  }
+  const badge = `<span class="devtool-badge ${facts.badgeClass}">${escape(facts.badgeLabel)}</span>`;
+  const lint = facts.lint
     ? '<span class="devtool-check">자가 검사기 사용 가능</span>'
     : '<span class="devtool-check devtool-check-off">자가 검사기 없음 — 값 대조까지만</span>';
   return `          <div class="devtool-card">
             <div class="devtool-head">
               <div>
                 <div class="devtool-title">${escape(tool.title)}</div>
-                <div class="devtool-note">${escape(tool.note)}</div>
+                <div class="devtool-note">${escape(noteOf(tool, facts))}</div>
               </div>
               <div class="devtool-head-right">
                 ${badge}
@@ -245,20 +236,42 @@ function toolCard(tool) {
             </ol>
             <pre class="devtool-code"><code>${escape(tool.code)}</code></pre>
             <div class="devtool-section">들어있는 것</div>
-            <p class="devtool-contains">${tool.contains}</p>
+            <p class="devtool-contains">${facts.contains}</p>
             <div class="devtool-get">
               <a class="devtool-btn" href="../assets/downloads/${escape(packageInfo.zip)}" download>
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                이 툴만 받기
+                다운로드
               </a>
               <span class="devtool-size">${packageInfo.sizeKB}KB · 파일 ${packageInfo.files}개</span>
             </div>
             <div class="devtool-foot">
-              <span class="devtool-files">${tool.files.map((file) => `<code>${escape(file)}</code>`).join(' ')}</span>
+              <span class="devtool-files">${facts.files.map((file) => `<code>${escape(file)}</code>`).join(' ')}</span>
               ${lint}
             </div>
           </div>`;
 }
+
+/* "부품까지 주는 툴 / 값만 주는 툴" 은 배포본 선언에서 갈린다 — 손으로 적지 않는다. */
+const TOOL_TITLES = new Map(TOOL_CARDS.map((tool) => [tool.key, tool.title]));
+const nameList = (keys) => keys.map((key) => TOOL_TITLES.get(key) ?? key).join(', ');
+const tokensOnly = [...FACTS.values()].filter((facts) => facts.support === 'tokens-only').map((facts) => facts.key);
+const partsOnly = [...FACTS.values()].filter((facts) => facts.support === 'components');
+const caveat = [
+  partsOnly.length
+    ? `${nameList(partsOnly.map((facts) => facts.key))} 는 자주 쓰는 부품 ${partsOnly[0].componentCount}종과 텍스트 스타일까지 들어 있습니다 — 그 밖의 화면은 색·크기 값과 <code>platform/behavior.json</code> 을 보고 직접 그리세요.`
+    : '',
+  tokensOnly.length
+    ? `${nameList(tokensOnly)} 는 화면 그리는 방식이 웹과 달라 컴포넌트를 그대로 드릴 수 없습니다. 직접 구현하시되 색·크기는 <code>platform/</code> 값을, 상태 변화는 <code>platform/behavior.json</code> 을 그대로 쓰세요 — 값을 눈으로 보고 옮겨 적지 마세요.`
+    : ''
+].filter(Boolean).join(' ');
+
+/* 머리말도 사실에서 만든다 — 툴 하나가 부품을 갖게 되면 문장이 따라 바뀐다. */
+const fullKeys = [...FACTS.values()].filter((facts) => facts.support === 'full').map((facts) => facts.key);
+const toolLead = ['쓰는 툴의 카드만 보면 됩니다.',
+  fullKeys.length ? `${nameList(fullKeys)} 는 컴포넌트 ${approved.length}종을 그대로 씁니다.` : '',
+  partsOnly.length ? `${nameList(partsOnly.map((facts) => facts.key))} 는 부품 ${partsOnly[0].componentCount}종과 텍스트 스타일까지 씁니다.` : '',
+  tokensOnly.length ? `${nameList(tokensOnly)} 는 색·크기 값과 동작 명세를 씁니다.` : ''
+].filter(Boolean).join(' ');
 
 const componentChips = approved
   .map(({ id }) => `<span class="devcomp-chip">${escape(id)}</span>`)
@@ -275,13 +288,7 @@ const panel = `${START}
                 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
                   <div class="step-title">S1 UI 라이브러리 배포본 <span class="ver-badge">${escape(manifest.version)}</span></div>
                 </div>
-                <div class="step-desc">디자인에서 승인한 컴포넌트 ${approved.length}종과 토큰 ${platform.tokenCount}개를 그대로 담은 웹 배포본입니다. 색·크기·동작을 새로 만들지 말고 이 안에 있는 것을 쓰세요</div>
               </div>
-              <!-- 받기 공개 (river 지시 2026-09-09). 다시 막을 때는 span.download-btn-disabled 로 되돌린다. -->
-              <a class="download-btn" style="margin-left:auto;" href="../assets/downloads/${escape(stamp.zip)}" download>
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                ZIP 다운로드
-              </a>
             </div>
             <div class="devget-row">
               <div class="devget-item">
@@ -304,13 +311,13 @@ const panel = `${START}
             <div class="step-header">
               <div>
                 <div class="step-title">내 개발 툴에서 시작하기</div>
-                <div class="step-desc">쓰는 툴의 카드만 보면 됩니다. 웹 계열은 컴포넌트를 그대로 쓰고, 네이티브는 색·크기 값과 동작 명세를 씁니다</div>
+                <div class="step-desc">${toolLead}</div>
               </div>
             </div>
             <div class="devtool-grid">
 ${TOOL_CARDS.map(toolCard).join('\n')}
             </div>
-            <p class="devtool-caveat">네이티브(Kotlin·Swift·C++)는 화면 그리는 방식이 웹과 달라 컴포넌트를 그대로 드릴 수 없습니다. 직접 구현하시되 색·크기는 <code>platform/</code> 값을, 상태 변화는 <code>platform/behavior.json</code> 을 그대로 쓰세요 — 값을 눈으로 보고 옮겨 적지 마세요.</p>
+            <p class="devtool-caveat">${caveat}</p>
           </div>
 
           <!-- 들어있는 컴포넌트 -->

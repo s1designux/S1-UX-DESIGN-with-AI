@@ -1,0 +1,14 @@
+{
+  "id": "handoff-guide-stale-vs-dist",
+  "category": "handoff",
+  "label": "안내 화면이 배포본보다 낡음",
+  "count": 1,
+  "promotionStatus": "watching",
+  "occurrences": [
+    {
+      "date": "2026-09-10",
+      "summary": "Kotlin 묶음에 부품·텍스트 스타일이 들어갔는데 개발자 안내 카드·묶음 README 는 '값만 들어있다' 로 남아 river 가 지적"
+    }
+  ],
+  "recommendedRule": "안내 문구는 배포본 선언(platform/manifest.json)에서 생성하고, 사람이 적은 문장은 실재 파일·이름 대조로 검사"
+}

@@ -670,7 +670,11 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
         componentSupport: "components",
         ui: "Jetpack Compose",
         components: COMPOSE_COMPONENTS,
+        /* 안내 화면과 묶음 README 가 "무엇이 들어있나" 를 여기서 읽는다 — 사람이 세어 적지 않는다. */
+        textStyles: kotlin.textStyles.length,
+        icons: kotlin.icons.length,
         sample: "platform/kotlin-sample",
+        preview: "platform/kotlin/preview/S1Gallery.kt",
         readme: "platform/kotlin/README.md",
         lint: false
       },

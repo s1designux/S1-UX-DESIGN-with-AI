@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { execSync } = require('child_process');
+const { allToolFacts, assertProse } = require('./lib/platform-facts.js');
 
 const ROOT = path.join(__dirname, '..');
 const DIST = path.join(ROOT, 'ui-library', 'dist');
@@ -48,8 +49,8 @@ const TOOL_PACKAGES = {
   },
   kotlin: {
     title: 'Kotlin (Android)',
-    include: ['manifest.json', 'platform/kotlin', 'platform/behavior.json', 'platform/tokens.json'],
-    start: ['`platform/kotlin/S1Tokens.kt` 를 프로젝트 소스에 넣습니다(패키지 `com.s1.designsystem`).', '색·크기는 이 상수를 부릅니다 — 값을 눈으로 보고 옮겨 적지 마세요.', '상태 변화(눌림·꺼짐 등)는 `platform/behavior.json` 을 그대로 따릅니다.', '**화면 부품은 들어있지 않습니다 — 직접 그려야 합니다.**']
+    include: ['manifest.json', 'platform/kotlin', 'platform/kotlin-sample', 'platform/behavior.json', 'platform/tokens.json'],
+    start: ['`platform/kotlin` 폴더를 프로젝트 소스에 통째로 넣습니다(패키지 `com.s1.designsystem`).', '부품은 이름으로 부릅니다 — `S1Button` 처럼 `S1` 로 시작합니다. 쓸 수 있는 조합은 `S1*Spec.kt` 에 있습니다.', '글자는 이름 붙은 스타일(`S1Type`)로 부릅니다 — 크기·굵기를 따로 적지 마세요.', '색·크기는 `S1Palette`·`S1Tokens` 상수를 부릅니다 — 값을 눈으로 보고 옮겨 적지 마세요.', '부품에 없는 화면을 직접 그릴 때만 상태 변화를 `platform/behavior.json` 으로 맞춥니다.']
   },
   swift: {
     title: 'Swift (iOS)',
@@ -94,11 +95,21 @@ function distFingerprint() {
 }
 
 const componentList = manifest.components.filter((component) => component.status === 'approved').map(({ id }) => id);
+const FACTS = allToolFacts(manifest, platform);
 
 function readme() {
-  const toolRows = Object.entries(platform.platforms)
-    .map(([name, spec]) => `| ${name} | ${spec.entry} | ${spec.componentSupport === 'full' ? '컴포넌트까지 그대로 사용' : '토큰(색·크기) 값만 제공'} | ${spec.lint ? '가능' : '해당 없음'} |`)
+  /* "어디까지 쓰나" 는 배포본이 선언한 사실에서 온다(scripts/lib/platform-facts.js). */
+  const toolRows = [...FACTS.values()]
+    .map((facts) => `| ${facts.key} | ${facts.entry} | ${facts.scope} | ${facts.lint ? '가능' : '해당 없음'} |`)
     .join('\n');
+  const tokensOnly = [...FACTS.values()].filter((facts) => facts.support === 'tokens-only');
+  const withParts = [...FACTS.values()].filter((facts) => facts.support === 'components');
+  const nativeLines = [
+    ...withParts.map((facts) => `- **${TOOL_PACKAGES[facts.key]?.title ?? facts.key}**: ${facts.containsMd} 부품에 없는 화면만 값과 동작 명세를 보고 직접 그리세요.`),
+    tokensOnly.length
+      ? `- **${tokensOnly.map((facts) => TOOL_PACKAGES[facts.key]?.title ?? facts.key).join(' · ')}**: 컴포넌트는 각자 구현해야 합니다. 대신 색·크기 값(\`platform/\`)과 동작 명세(\`platform/behavior.json\`)를 그대로 쓰세요. **값을 눈으로 보고 옮겨 적지 마세요.**`
+      : ''
+  ].filter(Boolean).join('\n');
 
   return `# S1 UI 라이브러리 — 개발자·퍼블리셔 배포본
 
@@ -135,7 +146,7 @@ ${toolRows}
 - **Vue**: \`import { S1Button } from "./s1-ui/platform/vue/index.js"\` — SFC(.vue) 빌드 도구가 필요합니다.
 - **이벤트 받는 모양이 둘이 다릅니다**: React 는 핸들러가 **이벤트 객체**를 받고(\`event.detail\` 로 값을 꺼냅니다), Vue 는 emit 이 **detail 값 자체**를 바로 넘깁니다.
 - **화면 크기별 마크업**: PC·Mobile 마크업이 다른 컴포넌트는 \`breakName\` 으로 고릅니다(\`"pc"\` / \`"mobile"\`). 값을 바꾸면 마크업이 다시 마운트됩니다.
-- **Kotlin·Swift·C++**: 컴포넌트는 각자 구현해야 합니다. 대신 색·크기 값(\`platform/\`)과 동작 명세(\`platform/behavior.json\`)를 그대로 쓰세요. **값을 눈으로 보고 옮겨 적지 마세요.**
+${nativeLines}
 
 ## 3. 내가 만든 것이 규칙에 맞는지 검사하기
 
@@ -272,6 +283,13 @@ function assertSelfContained(stage, key) {
 }
 
 function toolReadme(key, spec) {
+  const facts = FACTS.get(key);
+  /* 사람이 적은 시작 순서가 배포본과 어긋나면 여기서 멈춘다 — 옛 안내가 남지 않게. */
+  const problems = assertProse(facts, spec.start);
+  if (problems.length) {
+    console.error(`❌ ${key} 묶음 안내가 배포본과 다릅니다:\n   - ${problems.join('\n   - ')}`);
+    process.exit(1);
+  }
   return `# S1 UI 라이브러리 — ${spec.title} 묶음
 
 > 자동 생성물입니다. 이 폴더의 파일을 손으로 고치지 마세요 — 다음 배포 때 사라집니다.
@@ -281,6 +299,10 @@ function toolReadme(key, spec) {
 - 정본 지문: \`${manifest.canonicalFingerprint}\`
 - 승인 컴포넌트: **${componentList.length}종** (${componentList.join(', ')})
 - 토큰: **${platform.tokenCount}개**
+
+## 이 묶음에 들어있는 것
+
+${facts.containsMd}
 
 ## 시작하기
 

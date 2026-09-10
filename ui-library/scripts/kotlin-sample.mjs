@@ -208,6 +208,7 @@ private fun S1GalleryDarkPreview() {
 | \`S1Icons.kt\` | 배포본 아이콘을 옮긴 ImageVector |
 | \`S1*Spec.kt\` | 부품별 **승인 조합 → 최종 값** 표 (배포본 CSS 에서 계산) |
 | \`S1*.kt\` | Compose 부품 ${componentIds.length}종: ${componentIds.join(" · ")} |
+| \`S1Type.kt\` | 이름 붙은 텍스트 스타일 — 정본 타이포와 같은 값 |
 | \`preview/S1Gallery.kt\` | 승인 조합을 한 화면에 늘어놓는 검수 화면 |
 | \`../kotlin-sample/\` | Android Studio 로 바로 열어 보는 예제 앱 |
 
@@ -215,12 +216,14 @@ private fun S1GalleryDarkPreview() {
 
 \`\`\`kotlin
 S1Theme(dark = isSystemInDarkTheme()) {
-    S1Button(text = "확인", onClick = { }, variant = "primary", size = "md")
+    S1Button(text = "확인", onClick = { }, variant = "primary")
+    BasicText(text = "본문", style = S1Type.body14r.textStyle(S1Palette.colorTextBodyPrimary))
 }
 \`\`\`
 
-variant·size 는 배포본 허용목록의 값만 받는다. 없는 조합을 넣으면 그 자리에서 멈추고
+variant 같은 축은 배포본 허용목록의 값만 받는다. 없는 조합을 넣으면 그 자리에서 멈추고
 쓸 수 있는 조합을 알려 준다 — 조용히 다른 모양으로 그리지 않는다.
+글자는 낱개 값 대신 이름 붙은 스타일(\`S1Type\`)로 부른다.
 
 ## 서체
 
