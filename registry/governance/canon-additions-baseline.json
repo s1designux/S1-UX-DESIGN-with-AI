@@ -2,7 +2,7 @@
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
   "_updated": "2026-09-10",
-  "count": 648,
+  "count": 650,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -163,6 +163,8 @@
     "color:color/form-control/border/selected",
     "color:color/form-control/icon/default",
     "color:color/form-control/icon/disabled",
+    "color:color/form-control/icon/hover",
+    "color:color/form-control/icon/selected",
     "color:color/form-control/label/default",
     "color:color/form-control/label/disabled",
     "color:color/form-control/text-cursor",
@@ -1223,6 +1225,30 @@
       "evidence": {
         "transcript": "9fc3b9d3-428b-4819-8bf9-15da47650955.jsonl",
         "at": "2026-09-10T05:46:11.733Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/form-control/icon/hover",
+      "by": "river",
+      "reason": "폼 컨트롤 아이콘에 마우스 올림·펼침 상태 색 신설(값은 river 선택 '가' 진한 회색 = 글자 text/selected 와 같은 단계)",
+      "approvedAt": "2026-09-10T06:57:16.492Z",
+      "quote": "아이콘 내용은 승인하는데 적용전에 기존 토큰 구조에 어떻게 추가반영할건지 계획 먼저 보여줘.",
+      "evidence": {
+        "transcript": "9fc3b9d3-428b-4819-8bf9-15da47650955.jsonl",
+        "at": "2026-09-10T06:51:13.239Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/form-control/icon/selected",
+      "by": "river",
+      "reason": "폼 컨트롤 아이콘에 마우스 올림·펼침 상태 색 신설(값은 river 선택 '가' 진한 회색 = 글자 text/selected 와 같은 단계)",
+      "approvedAt": "2026-09-10T06:57:17.627Z",
+      "quote": "아이콘 내용은 승인하는데 적용전에 기존 토큰 구조에 어떻게 추가반영할건지 계획 먼저 보여줘.",
+      "evidence": {
+        "transcript": "9fc3b9d3-428b-4819-8bf9-15da47650955.jsonl",
+        "at": "2026-09-10T06:51:13.239Z"
       },
       "recordedBy": "orchestrator"
     }

@@ -93,11 +93,18 @@ function specStyleKey(style: string): string {
 /** 카테고리 섹션·가이드 페이지의 배경도 정본 토큰에 바인딩한다.
  *  Figma 가 기본으로 넣는 섹션/페이지 배경은 Variable 이 아닌 raw 색이라, 설치 결과 안에
  *  토큰을 거치지 않는 면이 남아 있었다(river 지적 2026-09-10). 부품 배경과 같은 규칙을 적용한다.
- *  면 위계: 페이지 level-3 < 섹션 level-2 < 스펙 시트 level-0(흰 면). */
+ *  면 배치는 바로 아래 SURFACE_TOKEN 주석 참조(2026-09-10 재조정). */
+//  면 배치(2026-09-10 재조정): 섹션 테두리가 보이려면 '선 색 ≠ 바깥 바탕색'이어야 한다.
+//    우리 회색 선 토큰은 line/gray/subtle(gray/100) 하나뿐인데 종전 배치는 페이지 바탕도 같은
+//    gray/100 이라 선이 바탕에 묻혔다. 새 토큰을 만들지 않고(river 지시) 면 단계를 옮겨 해결한다:
+//    페이지 level-2 → 섹션 level-0(흰 면 + 회색 선) 순으로, 선이 양쪽 어디에도 묻히지 않는다.
 const SURFACE_TOKEN: Record<"section" | "page", string> = {
-  section: "color/bg/level-2",
-  page: "color/bg/level-3",
+  section: "color/bg/level-0",
+  page: "color/bg/level-2",
 };
+// 섹션 테두리 — Figma 가 섹션에 기본으로 넣는 선은 검정 10%(Variable 아님, river 실측 2026-09-10).
+//   새 토큰을 만들지 않고 이미 있는 우리 선 토큰을 그대로 쓴다(river 지시: "우리 기준 중 하나로 스트록에 적용").
+const SECTION_STROKE_TOKEN = "color/line/gray/subtle";
 function bindSurface(target: "section" | "page", apply: (paint: SolidPaint) => void): void {
   if (!SPEC_MAPS) return;                                  // mock(키체크) 환경 → 건너뜀
   const v = SPEC_MAPS.semanticColor[SURFACE_TOKEN[target]];
@@ -1710,8 +1717,8 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
   const chevUp = (c: string) => `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 10L8 6L12 10" stroke="${c}" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
   const states = [
     { name: "Default",  bg: "bg/default",  border: "border/default",  tc: "text/placeholder", icon: "icon/default",  up: false },
-    { name: "Hover",    bg: "bg/hover",    border: "border/default",  tc: "text/placeholder", icon: "icon/default",  up: false },
-    { name: "Open",     bg: "bg/selected", border: "border/selected", tc: "text/placeholder", icon: "icon/default",  up: true },
+    { name: "Hover",    bg: "bg/hover",    border: "border/default",  tc: "text/placeholder", icon: "icon/hover",    up: false },
+    { name: "Open",     bg: "bg/selected", border: "border/selected", tc: "text/placeholder", icon: "icon/selected", up: true },
     { name: "Filled",   bg: "bg/default",  border: "border/default",  tc: "text/selected",    icon: "icon/default",  up: false },
     { name: "Disabled", bg: "bg/disabled", border: "border/disabled", tc: "text/disabled",    icon: "icon/disabled", up: false },
   ];
@@ -2702,8 +2709,8 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
   const CLOCK = `<svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="#000" stroke-width="1.2"/><path d="M9 5v4l2.5 2.5" stroke="#000" stroke-width="1.2" stroke-linecap="round"/></svg>`;
   const states = [
     { name: "Default",  bg: "bg/default",  border: "border/default",  txt: "시간 선택", tc: "text/placeholder", icon: "icon/default" },
-    { name: "Hover",    bg: "bg/hover",     border: "border/default",  txt: "시간 선택", tc: "text/placeholder", icon: "icon/default" },
-    { name: "Focus",    bg: "bg/default",   border: "border/selected", txt: "시간 선택", tc: "text/placeholder", icon: "icon/default" },
+    { name: "Hover",    bg: "bg/hover",     border: "border/default",  txt: "시간 선택", tc: "text/placeholder", icon: "icon/hover" },
+    { name: "Focus",    bg: "bg/default",   border: "border/selected", txt: "시간 선택", tc: "text/placeholder", icon: "icon/selected" },
     { name: "Filled",   bg: "bg/default",   border: "border/default",  txt: "09:30",     tc: "text/default",     icon: "icon/default" },
     { name: "Disabled", bg: "bg/disabled",  border: "border/disabled", txt: "00:00",     tc: "text/disabled",    icon: "icon/disabled" },
   ];
@@ -4498,7 +4505,7 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
   const states = [
     { name: "Default",  bg: "bg/default",  border: "border/default",  txt: "YY.MM.DD", tc: "text/placeholder", icon: "icon/default",  open: false },
     { name: "Filled",   bg: "bg/default",  border: "border/default",  txt: "26.06.17", tc: "text/default",     icon: "icon/default",  open: false },
-    { name: "Open",     bg: "bg/selected", border: "border/selected", txt: "26.06.17", tc: "text/selected",    icon: "icon/default",  open: true },
+    { name: "Open",     bg: "bg/selected", border: "border/selected", txt: "26.06.17", tc: "text/selected",    icon: "icon/selected", open: true },
     { name: "Disabled", bg: "bg/disabled", border: "border/disabled", txt: "YY.MM.DD", tc: "text/disabled",    icon: "icon/disabled", open: false },
   ];
   const sizes = [
@@ -7365,6 +7372,16 @@ async function wrapCategoryInSection(
   // 섹션 배경 = Semantic 토큰(재설치 때도 매번 다시 바인딩 — 손으로 바뀐 raw 색을 정본으로 되돌린다)
   const sec = section;
   bindSurface("section", (paint) => { sec.fills = [paint]; });
+  // 섹션 테두리도 같은 규칙. SectionNode.strokes 는 최신 Figma API(plugin-typings 1.138+)에서 열렸다.
+  if (SPEC_MAPS) {
+    const lineVar = SPEC_MAPS.semanticColor[SECTION_STROKE_TOKEN];
+    if (lineVar) {
+      try {
+        sec.strokes = [boundPaint(lineVar)];
+        sec.strokeWeight = 1;
+      } catch (e) { /* 구버전 런타임 → Figma 기본 테두리 유지 */ }
+    }
+  }
   // ⚠️ 목표 절대위치는 **섹션을 움직이기 전에** 기록한다. 재설치 때는 nodes 중 일부가 이미 이
   //   섹션의 자식이라, 섹션을 먼저 옮기면 그 자식들이 함께 끌려가 위치가 어긋난다.
   const desired: { n: SceneNode; x: number; y: number }[] = [];

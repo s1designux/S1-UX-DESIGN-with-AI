@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8"><title>아이콘 상태 토큰 계획</title>
+<style>
+ :root{color-scheme:light}
+ body{font-family:Pretendard,-apple-system,"Apple SD Gothic Neo",sans-serif;margin:0;padding:40px 32px 80px;background:#F5F5F5;color:#353535}
+ .wrap{max-width:960px;margin:0 auto}
+ h1{font-size:23px;margin:0 0 6px}
+ h2{font-size:17px;margin:34px 0 8px}
+ h3{font-size:14px;margin:22px 0 6px;color:#555}
+ p{font-size:14px;line-height:1.7;margin:0 0 12px}
+ .card{background:#fff;border:1px solid #E9E9E9;border-radius:10px;padding:20px 22px;margin-bottom:16px}
+ table{width:100%;border-collapse:collapse;font-size:14px}
+ th{text-align:left;font-size:12px;color:#757575;font-weight:500;padding:9px 10px;background:#FAFAFA;border-bottom:1px solid #E9E9E9}
+ td{padding:11px 10px;border-bottom:1px solid #F2F2F2;vertical-align:middle}
+ tr:last-child td{border-bottom:0}
+ code{font-family:ui-monospace,Menlo,monospace;font-size:12px;color:#555}
+ .sw{display:inline-flex;align-items:center;gap:6px;font-size:13px;white-space:nowrap}
+ .sw i{width:16px;height:16px;border-radius:4px;border:1px solid rgba(0,0,0,.12);display:inline-block}
+ .now{color:#9D9D9D}
+ .pick{background:#E7F0FD;border:1px solid #CFE0FB;border-radius:8px;padding:12px 14px;font-size:13.5px;line-height:1.7;color:#16467F;margin-top:10px}
+ ul{font-size:14px;line-height:1.8;margin:6px 0 0;padding-left:18px}
+ .muted{color:#757575;font-size:13px}
+</style></head><body><div class="wrap">
+
+<h1>아이콘 상태 색 · 섹션 테두리 — 적용 전 계획</h1>
+<p class="muted">확정하시면 그대로 넣습니다. 값 후보만 골라 주시면 나머지(전파·검증)는 제가 합니다.</p>
+
+<h2>1. 폼 컨트롤 아이콘에 상태 색 추가</h2>
+<div class="card">
+<p>지금은 <code>form-control/icon</code>에 <b>기본·비활성 두 색뿐</b>입니다. 셀렉트 박스·검색·달력 트리거·시계 트리거가 이 한 벌을 같이 쓰고,
+마우스 올림이나 펼침에서도 아이콘이 늘 같은 색입니다. 여기에 <b>두 칸을 더합니다.</b></p>
+
+<table>
+<thead><tr><th style="width:210px">토큰</th><th>라이트</th><th>다크</th><th style="width:190px">쓰이는 자리</th></tr></thead>
+<tbody>
+<tr><td class="now"><code>icon/default</code> (지금 있음)</td><td><span class="sw"><i style="background:#353535"></i>gray/800 <code>#353535</code></span></td><td><span class="sw"><i style="background:#8A8C96"></i>gray-dark/700 <code>#8A8C96</code></span></td><td class="muted">평상시</td></tr>
+<tr><td><b><code>icon/hover</code></b> 신설</td><td><span class="sw"><i style="background:#202020"></i>gray/900 <code>#202020</code></span></td><td><span class="sw"><i style="background:#B8BABF"></i>gray-dark/800 <code>#B8BABF</code></span></td><td>마우스 올림</td></tr>
+<tr><td><b><code>icon/selected</code></b> 신설</td><td>(가) <span class="sw"><i style="background:#202020"></i>gray/900 <code>#202020</code></span><br>(나) <span class="sw"><i style="background:#1D6CEB"></i>blue/400 <code>#1D6CEB</code></span></td><td>(가) <span class="sw"><i style="background:#B8BABF"></i>gray-dark/800 <code>#B8BABF</code></span><br>(나) <span class="sw"><i style="background:#4285E8"></i>blue-dark/350 <code>#4285E8</code></span></td><td>펼침 · 입력 중</td></tr>
+<tr><td class="now"><code>icon/disabled</code> (지금 있음)</td><td><span class="sw"><i style="background:#C4C4C4"></i>gray/300 <code>#C4C4C4</code></span></td><td><span class="sw"><i style="background:#3E4049"></i>gray-dark/500 <code>#3E4049</code></span></td><td class="muted">비활성</td></tr>
+</tbody></table>
+
+<div class="pick"><b>골라 주실 것 하나:</b> 펼쳤을 때 화살표를 <b>(가) 진한 회색</b>으로 둘지, <b>(나) 파랑</b>으로 테두리와 맞출지.
+파랑은 "지금 열려 있다"가 확실히 보이고, 회색은 조용합니다. 마우스 올림은 진한 회색 한 가지만 씁니다.</div>
+</div>
+
+<div class="card">
+<h3>구조는 지금처럼 '공용' 한 벌로 둡니다</h3>
+<p>셀렉트·검색·달력·시계는 생김새가 같은 트리거라 아이콘 색을 나눌 이유가 없습니다. 컴포넌트별로 쪼개면 토큰이 4배로 늘고 값은 다 같아집니다.
+달력 <i>안쪽</i> 화살표와 페이지네이션은 이미 자기 토큰을 갖고 있어 그대로 둡니다.</p>
+<h3>손대는 곳</h3>
+<ul>
+<li>토큰 정본 한 곳에 두 줄 추가 → 나머지(웹 CSS 변수·문서·설치기 파일)는 자동 재생성</li>
+<li>설치기의 상태표에서 셀렉트 Hover/Open·검색 Hover·달력/시계 트리거의 아이콘 칸을 새 토큰으로 교체</li>
+<li>웹 배포본 CSS에 마우스 올림·펼침 선택자 추가</li>
+<li>입력창의 지우기·눈은 손대지 않습니다(마우스 올림 규칙이 따로 있음)</li>
+</ul>
+<h3>검문소</h3>
+<p class="muted">토큰 신설 승인 기록 · 다크값 갈림 재확인 · 독립 검증(🤖) · 설치기 재빌드까지 제가 돌립니다.
+안 하시면 지금처럼 한 색으로 둡니다.</p>
+</div>
+
+<h2>2. 그룹 섹션(Platform 같은) 테두리</h2>
+<div class="card">
+<p>지금 테두리는 <b>검정 10%</b>입니다. 우리가 넣은 게 아니라 Figma가 섹션에 기본으로 넣는 선인데,
+설치기가 만질 방법이 예전 규격에는 없었습니다. <b>최신 규격(1.138)에서는 섹션 테두리를 바꿀 수 있습니다.</b></p>
+<table>
+<thead><tr><th style="width:210px">무엇을</th><th>지금</th><th>바꾼 뒤</th></tr></thead>
+<tbody>
+<tr><td>섹션 테두리</td><td><span class="sw"><i style="background:#E5E5E5"></i>검정 10% <code>#E5E5E5</code></span></td><td><span class="sw"><i style="background:#E9E9E9"></i>line/gray/subtle <code>#E9E9E9</code></span></td></tr>
+<tr><td class="muted">다크에서</td><td class="muted">그대로 검정 10%</td><td><span class="sw"><i style="background:#2E2F38"></i>gray-dark/300 <code>#2E2F38</code></span></td></tr>
+</tbody></table>
+<p style="margin-top:12px">밝기가 지금과 거의 같아 눈에 띄는 변화는 없고, <b>다크 모드에서 함께 뒤집히는 것</b>이 실제 이득입니다.</p>
+<p class="muted">먼저 Figma 규격 파일을 최신으로 올려야 합니다. 올린 뒤 전체 타입 검사를 돌려 다른 곳이 깨지지 않는지 확인하고, 깨지면 되돌립니다.</p>
+</div>
+
+</div></body></html>

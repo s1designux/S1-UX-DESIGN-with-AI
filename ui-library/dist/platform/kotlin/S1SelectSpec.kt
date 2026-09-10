@@ -20,7 +20,7 @@ object S1SelectSpec {
             "root" to S1Box(),
             "trigger" to S1Box(background = S1Palette.colorFormControlBgHover, foreground = S1Palette.colorFormControlTextPlaceholder, borderColor = S1Palette.colorFormControlBorderDefault, borderWidth = 1f, radius = 4f, height = 48f, minWidth = 140f, paddingStart = 16f, paddingEnd = 8f, fontSize = 14f, fontWeight = 400),
             "value" to S1Box(),
-            "icon" to S1Box(background = S1Palette.colorFormControlIconDefault, height = 24f, width = 24f, rotation = 90f, icon = "chevron"),
+            "icon" to S1Box(background = S1Palette.colorFormControlIconHover, height = 24f, width = 24f, rotation = 90f, icon = "chevron"),
             "panel" to S1Box(marginTop = 8f, left = 0f)
         ),
         "md|mobile|filled" to mapOf(
@@ -34,7 +34,7 @@ object S1SelectSpec {
             "root" to S1Box(),
             "trigger" to S1Box(background = S1Palette.colorFormControlBgSelected, foreground = S1Palette.colorFormControlTextPlaceholder, borderColor = S1Palette.colorFormControlBorderSelected, borderWidth = 1f, radius = 4f, height = 48f, minWidth = 140f, paddingStart = 16f, paddingEnd = 8f, fontSize = 14f, fontWeight = 400),
             "value" to S1Box(),
-            "icon" to S1Box(background = S1Palette.colorFormControlIconDefault, height = 24f, width = 24f, rotation = -90f, icon = "chevron"),
+            "icon" to S1Box(background = S1Palette.colorFormControlIconSelected, height = 24f, width = 24f, rotation = -90f, icon = "chevron"),
             "panel" to S1Box(marginTop = 8f, left = 0f)
         ),
         "md|mobile|disabled" to mapOf(

@@ -325,6 +325,10 @@ public enum S1Tokens {
         public static let colorFormControlIconDefault: UInt32 = 0xFF353535
         /// --color-form-control-icon-disabled = #C4C4C4
         public static let colorFormControlIconDisabled: UInt32 = 0xFFC4C4C4
+        /// --color-form-control-icon-hover = #202020
+        public static let colorFormControlIconHover: UInt32 = 0xFF202020
+        /// --color-form-control-icon-selected = #202020
+        public static let colorFormControlIconSelected: UInt32 = 0xFF202020
         /// --color-form-control-label-default = #353535
         public static let colorFormControlLabelDefault: UInt32 = 0xFF353535
         /// --color-form-control-label-disabled = #C4C4C4
@@ -1009,6 +1013,10 @@ public enum S1Tokens {
         public static let colorFormControlIconDefault: UInt32 = 0xFF8A8C96
         /// --color-form-control-icon-disabled = #3E4049
         public static let colorFormControlIconDisabled: UInt32 = 0xFF3E4049
+        /// --color-form-control-icon-hover = #B8BABF
+        public static let colorFormControlIconHover: UInt32 = 0xFFB8BABF
+        /// --color-form-control-icon-selected = #B8BABF
+        public static let colorFormControlIconSelected: UInt32 = 0xFFB8BABF
         /// --color-form-control-label-default = #B8BABF
         public static let colorFormControlLabelDefault: UInt32 = 0xFFB8BABF
         /// --color-form-control-label-disabled = #55575F

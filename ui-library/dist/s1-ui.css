@@ -878,6 +878,10 @@
     background: var(--color-form-control-bg-hover);
     color: var(--color-form-control-text-placeholder);
   }
+  /* 아이콘도 상태를 따라간다 — 정본 buildSelect 상태표 Hover=icon/hover(2026-09-10 신설). */
+  [data-s1-component="select"] [data-s1-part="trigger"]:hover:not(:disabled):not([aria-expanded="true"]):not([data-filled="true"]) [data-s1-part="icon"] {
+    background-color: var(--color-form-control-icon-hover);
+  }
 }
 
 /* Filled — 값이 선택된 뒤(닫힘). 정본: bg/default·border/default·text/selected. */
@@ -894,6 +898,8 @@
   color: var(--color-form-control-text-placeholder);
 }
 [data-s1-component="select"] [data-s1-part="trigger"][aria-expanded="true"] [data-s1-part="icon"] {
+  /* 정본 Open=icon/selected. :disabled 규칙이 뒤에 와서 이기므로 비활성 색은 그대로 유지된다. */
+  background-color: var(--color-form-control-icon-selected);
   transform: rotate(-90deg);
 }
 
@@ -1913,6 +1919,10 @@
   [data-s1-component="time-picker"] [data-s1-part="trigger"]:hover:not(:disabled):not([aria-expanded="true"]):not([data-filled="true"]) {
     background: var(--color-form-control-bg-hover);
   }
+  /* 정본 buildTimePicker 상태표 Hover=icon/hover(2026-09-10 신설). */
+  [data-s1-component="time-picker"] [data-s1-part="trigger"]:hover:not(:disabled):not([aria-expanded="true"]):not([data-filled="true"]) [data-s1-part="icon"] {
+    background-color: var(--color-form-control-icon-hover);
+  }
 }
 
 /* Filled — 값이 선택된 뒤(닫힘). 정본: bg/default·border/default·text/default. */
@@ -1922,10 +1932,13 @@
   color: var(--color-form-control-text-default);
 }
 
-/* Focus(=열림) — 정본: bg/default·border/selected. */
+/* Focus(=열림) — 정본: bg/default·border/selected·icon/selected. */
 [data-s1-component="time-picker"] [data-s1-part="trigger"][aria-expanded="true"] {
   background: var(--color-form-control-bg-default);
   border-color: var(--color-form-control-border-selected);
+}
+[data-s1-component="time-picker"] [data-s1-part="trigger"][aria-expanded="true"] [data-s1-part="icon"] {
+  background-color: var(--color-form-control-icon-selected);
 }
 
 [data-s1-component="time-picker"] [data-s1-part="trigger"]:disabled {
@@ -2323,11 +2336,14 @@
   color: var(--color-form-control-text-default);
 }
 
-/* Open(=aria-expanded true) — 정본: bg/border/text 모두 selected. */
+/* Open(=aria-expanded true) — 정본: bg/border/text 모두 selected, 아이콘도 icon/selected(2026-09-10 신설). */
 [data-s1-component="date-picker"] [data-s1-part="trigger"][aria-expanded="true"] {
   background: var(--color-form-control-bg-selected);
   border-color: var(--color-form-control-border-selected);
   color: var(--color-form-control-text-selected);
+}
+[data-s1-component="date-picker"] [data-s1-part="trigger"][aria-expanded="true"] [data-s1-part="icon"] {
+  background-color: var(--color-form-control-icon-selected);
 }
 
 [data-s1-component="date-picker"] [data-s1-part="trigger"]:disabled {

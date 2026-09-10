@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:12748ada117b393cb4e206c3b21161c34067fafe67807d45f722f2a21bf59772",
+  "verifiedBy": "orchestrator",
+  "verdict": "pass",
+  "changeType": "mechanical",
+  "verifiedAt": "2026-09-10T07:21:39.170Z",
+  "notes": "주석 1줄만 수정 — 옛 면 위계 서술(페이지 level-3 < 섹션 level-2)이 바로 아래 상수와 모순돼 참조로 대체. 코드 동작 무변경(직전 구조 검증 f30d606df76fee20 승계)."
+}

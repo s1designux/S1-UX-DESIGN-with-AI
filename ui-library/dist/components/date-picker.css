@@ -62,11 +62,14 @@
   color: var(--color-form-control-text-default);
 }
 
-/* Open(=aria-expanded true) — 정본: bg/border/text 모두 selected. */
+/* Open(=aria-expanded true) — 정본: bg/border/text 모두 selected, 아이콘도 icon/selected(2026-09-10 신설). */
 [data-s1-component="date-picker"] [data-s1-part="trigger"][aria-expanded="true"] {
   background: var(--color-form-control-bg-selected);
   border-color: var(--color-form-control-border-selected);
   color: var(--color-form-control-text-selected);
+}
+[data-s1-component="date-picker"] [data-s1-part="trigger"][aria-expanded="true"] [data-s1-part="icon"] {
+  background-color: var(--color-form-control-icon-selected);
 }
 
 [data-s1-component="date-picker"] [data-s1-part="trigger"]:disabled {

@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:f30d606df76fee20c0f8debc484ddfa4968767c8afc320924a8a98d48cfc9f76",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-10T07:20:11.730Z",
+  "notes": "델타 재검증 PASS. build-components.ts 변경 3건: ①폼컨트롤 아이콘 상태 재매칭(buildSelect Hover=icon/hover·Open=icon/selected, buildTimePicker Hover=icon/hover·Focus=icon/selected, buildDatePicker Open=icon/selected) — 아이콘열+Hover/Open행을 함께 가진 빌더 전수 확인(buildSearch 는 Hover 행 없음, input·textarea 는 아이콘 없음 → 대상 아님), keycheck 로 신규 키 2건 정본 존재 확인. ②섹션 테두리를 기존 토큰 color/line/gray/subtle 에 Variable 바인딩(하드코딩 hex 0, H2 준수) — SectionNode 는 plugin-typings 1.138 에서 MinimalStrokesMixin 상속 확인, package.json/lock ^1.138.0 정합·npm ci --dry-run 0. ③면 단계 재조정(페이지 color/bg/level-2 · 섹션 color/bg/level-0) — 라이트 페이지 #F5F5F5·섹션 #FFFFFF·선 #E9E9E9 로 선이 양쪽과 분리(대비 1.11/1.21), 다크 #1C1D23/#0D0E12/#2E2F38(1.27/1.45). 웹 3종 CSS 아이콘 상태 규칙 캐스케이드 대조: hover 규칙이 :not(:disabled):not([aria-expanded]):not([data-filled]) 로 배경 규칙과 제외조건 일치(정본에 Filled+Hover 행 없음과 일치), open(0,4,0)↔disabled(0,4,0) 동률에서 disabled 가 뒤에 와 우선 유지. 파생 표면 tokens:reconcile 0(재실행 후 추가 변경 0), 기계검사 재실행 전건 종료코드 0(gate:check 는 본 기록 전 Gate13 1건만). 한계: Figma 캔버스 실제 렌더 육안 미검증(코드·색값 대조만) — 특히 라이트/다크 모두 스펙 시트 면(level-0)이 섹션 면(level-0)과 동일색이 되어 면 위계가 3단→2단으로 축소된 점은 값으로만 판단했고 육안 확인 필요. build-components.ts:96 의 옛 면위계 주석(페이지 level-3 < 섹션 level-2)이 갱신되지 않아 새 상수와 모순 — 동작 영향 0, 다음 수정 시 정리 권고."
+}

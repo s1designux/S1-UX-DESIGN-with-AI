@@ -324,6 +324,10 @@ object S1Tokens {
         const val colorFormControlIconDefault: Long = 0xFF353535
         /** --color-form-control-icon-disabled = #C4C4C4 */
         const val colorFormControlIconDisabled: Long = 0xFFC4C4C4
+        /** --color-form-control-icon-hover = #202020 */
+        const val colorFormControlIconHover: Long = 0xFF202020
+        /** --color-form-control-icon-selected = #202020 */
+        const val colorFormControlIconSelected: Long = 0xFF202020
         /** --color-form-control-label-default = #353535 */
         const val colorFormControlLabelDefault: Long = 0xFF353535
         /** --color-form-control-label-disabled = #C4C4C4 */
@@ -1008,6 +1012,10 @@ object S1Tokens {
         const val colorFormControlIconDefault: Long = 0xFF8A8C96
         /** --color-form-control-icon-disabled = #3E4049 */
         const val colorFormControlIconDisabled: Long = 0xFF3E4049
+        /** --color-form-control-icon-hover = #B8BABF */
+        const val colorFormControlIconHover: Long = 0xFFB8BABF
+        /** --color-form-control-icon-selected = #B8BABF */
+        const val colorFormControlIconSelected: Long = 0xFFB8BABF
         /** --color-form-control-label-default = #B8BABF */
         const val colorFormControlLabelDefault: Long = 0xFFB8BABF
         /** --color-form-control-label-disabled = #55575F */

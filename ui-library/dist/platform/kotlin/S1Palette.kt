@@ -322,6 +322,10 @@ object S1Palette {
     val colorFormControlIconDefault: S1Color = S1Color(0xFF353535, 0xFF8A8C96)
     /** --color-form-control-icon-disabled — 라이트 #C4C4C4 · 다크 #3E4049 */
     val colorFormControlIconDisabled: S1Color = S1Color(0xFFC4C4C4, 0xFF3E4049)
+    /** --color-form-control-icon-hover — 라이트 #202020 · 다크 #B8BABF */
+    val colorFormControlIconHover: S1Color = S1Color(0xFF202020, 0xFFB8BABF)
+    /** --color-form-control-icon-selected — 라이트 #202020 · 다크 #B8BABF */
+    val colorFormControlIconSelected: S1Color = S1Color(0xFF202020, 0xFFB8BABF)
     /** --color-form-control-label-default — 라이트 #353535 · 다크 #B8BABF */
     val colorFormControlLabelDefault: S1Color = S1Color(0xFF353535, 0xFFB8BABF)
     /** --color-form-control-label-disabled — 라이트 #C4C4C4 · 다크 #55575F */

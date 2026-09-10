@@ -92,6 +92,10 @@
   [data-s1-component="time-picker"] [data-s1-part="trigger"]:hover:not(:disabled):not([aria-expanded="true"]):not([data-filled="true"]) {
     background: var(--color-form-control-bg-hover);
   }
+  /* 정본 buildTimePicker 상태표 Hover=icon/hover(2026-09-10 신설). */
+  [data-s1-component="time-picker"] [data-s1-part="trigger"]:hover:not(:disabled):not([aria-expanded="true"]):not([data-filled="true"]) [data-s1-part="icon"] {
+    background-color: var(--color-form-control-icon-hover);
+  }
 }
 
 /* Filled — 값이 선택된 뒤(닫힘). 정본: bg/default·border/default·text/default. */
@@ -101,10 +105,13 @@
   color: var(--color-form-control-text-default);
 }
 
-/* Focus(=열림) — 정본: bg/default·border/selected. */
+/* Focus(=열림) — 정본: bg/default·border/selected·icon/selected. */
 [data-s1-component="time-picker"] [data-s1-part="trigger"][aria-expanded="true"] {
   background: var(--color-form-control-bg-default);
   border-color: var(--color-form-control-border-selected);
+}
+[data-s1-component="time-picker"] [data-s1-part="trigger"][aria-expanded="true"] [data-s1-part="icon"] {
+  background-color: var(--color-form-control-icon-selected);
 }
 
 [data-s1-component="time-picker"] [data-s1-part="trigger"]:disabled {
