@@ -11072,7 +11072,7 @@ window.REGISTRY_BUNDLE = {
         "cssClass": "ds-filter-chip",
         "description": "목록의 조건을 바꾸는 필터 칩. 값이 붙은 알약(pill) 트리거를 누르면 드롭다운이 열린다. Chip 과 색 토큰을 100% 공유하지만 별개 컴포넌트다 — 상태가 5개(Complete 추가)이고, 타이틀 축과 화살표·드롭다운 부품을 갖는다.",
         "notes": [
-          "Filter Chip 전용 토큰은 0개 — color/chip/{line,solid}/* 를 그대로 쓴다.",
+          "Filter Chip 전용 토큰은 화살표 아이콘 5개뿐이다(color/chip/{line,solid}/icon/* — 2026-09-10 신설, Chip 에는 화살표가 없어 실질 전용). 나머지 색은 color/chip/{line,solid}/* 를 Chip 과 그대로 공유한다.",
           "Chip 인스턴스를 재사용하지 않고 알약을 직접 그린다(별도 빌더·별도 변형세트·별도 CSS 클래스 계열).",
           "State=Selected 일 때만 Dropdown 컴포넌트 인스턴스를 자식으로 붙인다(BUILD_DEPENDENCIES: Filter Chip → Dropdown). Dropdown 크기는 SM→XXSM(h28), MD→XSM(h34).",
           "Solid 의 hover 는 border 토큰이 아니라 bg/hover 를 스트록에도 써서 테두리를 배경색과 동일화한다(build-components.ts:2561).",
