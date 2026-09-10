@@ -408,7 +408,7 @@
     },
     "gnb-sub-menu": {
       "id": "gnb-sub-menu",
-      "status": "candidate",
+      "status": "verified",
       "version": "0.1.0",
       "sizes": [],
       "breaks": {},
@@ -422,11 +422,11 @@
         "Type=compact-2": "compact-2"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "3843206a21187524c9d0a9bc674f06b02800d2f7291a17778b8e8e21d43a16a4"
+      "sourceFingerprint": "52546a1a0a67d0e2f90b439bdf5084ac0e33adf3ab0fee422a7ddf4bf90a0cfe"
     },
     "gnb": {
       "id": "gnb",
-      "status": "candidate",
+      "status": "verified",
       "version": "0.1.0",
       "sizes": [
         "md",
@@ -460,7 +460,7 @@
           "reason": "GNB Utility Icon 세트는 language·menu·user on/off 5변형을 갖지만, GNB 바가 실제로 쓰는 것은 all-on(GNBUtil:full) 1개뿐이다(buildGNB:3607, registry 서술). 다른 4변형은 이 컴포넌트가 배포하지 않는다 — 유틸 영역 구성을 바꾸려면 host 화면이 data-s1-part 를 골라 빼고 넣는다."
         }
       ],
-      "sourceFingerprint": "ab2e5a53d49fa3e483db5f285f5eb924fe9c424ad56a7cd05b6cd44984ad310a"
+      "sourceFingerprint": "51536f317cd248de0bea5c3e6176af6e6c495e185f5da2678b1b231be3d4705e"
     },
     "input": {
       "id": "input",

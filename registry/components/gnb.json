@@ -280,11 +280,13 @@
     "replacement": null
   },
   "webDistribution": {
-    "status": "candidate",
+    "status": "verified",
     "manifest": "ui-library/src/components/gnb/manifest.json",
     "runtime": "components/gnb.js",
     "note": "river 지시(2026-09-09, D4·D5)로 하위메뉴(gnb-sub-menu) 여닫는 동작을 이 컴포넌트가 갖게 됐다 — jsRequired=true. 현재 메뉴 표시(aria-current=\"page\")는 여전히 쓰는 화면이 정적으로 넣는다. 이전 2회차 검증(PASS, 여닫는 동작 없음 전제)은 이 변경으로 superseded 다 — 델타 재검증 전.",
     "supersedes": "2026-09-09 2회차 component-verifier PASS(런타임 없음 전제) — 범위 확장으로 무효.",
-    "pendingRiverUxApproval": true
+    "pendingRiverUxApproval": true,
+    "verifiedAt": "2026-09-09",
+    "verifiedBy": "component-verifier (배포본 3회차 PASS + 정본 3회차 PASS · Gate 13 기록)"
   }
 }

@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
     "purpose": "개발 툴과 검사기가 함께 읽는 허용목록. 여기 없는 variant·size·속성은 승인된 적이 없는 것이다.",
-    "canonicalFingerprint": "73884d0b05eed0810e719c44f59e59ad60b3f373d3ddd1f554da09d59400f34b"
+    "canonicalFingerprint": "c6ca7029cdf75dcc3dd92c305fc45fd853bec2f05a9c8b425154672cd9af6417"
   },
   "components": [
     {
@@ -959,7 +959,7 @@
     },
     {
       "id": "gnb",
-      "status": "candidate",
+      "status": "verified",
       "rootSelector": "[data-s1-component=\"gnb\"]",
       "root": "nav[data-s1-component=gnb][data-size][data-variant]",
       "variants": [
@@ -1004,8 +1004,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "7aab40c62c5f11f8ae557509cbd27115c504c78ae78c8f986202c22b2f5ec1e2",
-      "sourceFingerprint": "ab2e5a53d49fa3e483db5f285f5eb924fe9c424ad56a7cd05b6cd44984ad310a"
+      "canonicalFingerprint": "c5c5200d45180395c9228fbc1715f840399c92315d529f357b70d32b718f34ff",
+      "sourceFingerprint": "51536f317cd248de0bea5c3e6176af6e6c495e185f5da2678b1b231be3d4705e"
     },
     {
       "id": "gnb-sub-menu-item",
@@ -1033,7 +1033,7 @@
     },
     {
       "id": "gnb-sub-menu",
-      "status": "candidate",
+      "status": "verified",
       "rootSelector": "[data-s1-component=\"gnb-sub-menu\"]",
       "root": "div[data-s1-component=gnb-sub-menu][data-type]",
       "variants": [],
@@ -1054,8 +1054,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "b751e84981b76241075a448a68d621f80b5083b8dfc6d1a945137fa6f4549bd2",
-      "sourceFingerprint": "3843206a21187524c9d0a9bc674f06b02800d2f7291a17778b8e8e21d43a16a4"
+      "canonicalFingerprint": "dd92f685649fb7b7863cf6d9ec27f2ddbe36802a606ede7ef49c07624fa4a47d",
+      "sourceFingerprint": "52546a1a0a67d0e2f90b439bdf5084ac0e33adf3ab0fee422a7ddf4bf90a0cfe"
     },
     {
       "id": "assist-button",

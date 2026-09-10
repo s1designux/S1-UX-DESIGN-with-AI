@@ -179,11 +179,13 @@
     "replacement": null
   },
   "webDistribution": {
-    "status": "candidate",
+    "status": "verified",
     "manifest": "ui-library/src/components/gnb-sub-menu/manifest.json",
     "runtime": "none",
     "note": "이 컴포넌트 자신은 여전히 JavaScript 가 없다(jsRequired=false) — 여닫는 동작은 이 패널을 여는 gnb(river 결정 2026-09-09, D4·D5)가 갖는다. 여닫기가 실제로 동작하려면 host 화면이 gnb 의 aria-controls 로 이 패널의 id 를 연결해야 한다(gnb.example.html 조립 예시).",
     "supersedes": "2026-09-09 2회차 component-verifier PASS(정본에 여닫는 규칙이 없다는 전제) — 부모 gnb 범위 확장으로 이 컴포넌트의 실제 사용 맥락(host)이 바뀌어 델타 재검증 전.",
-    "pendingRiverUxApproval": true
+    "pendingRiverUxApproval": true,
+    "verifiedAt": "2026-09-09",
+    "verifiedBy": "component-verifier (배포본 3회차 PASS + 정본 3회차 PASS · Gate 13 기록)"
   }
 }
