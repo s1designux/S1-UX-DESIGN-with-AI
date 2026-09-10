@@ -172,6 +172,10 @@ object S1Tokens {
         const val colorChipLineBorderDisabled: Long = 0xFFE9E9E9
         /** --color-chip-line-border-selected = #1D6CEB */
         const val colorChipLineBorderSelected: Long = 0xFF1D6CEB
+        /** --color-chip-line-icon-default = #757575 */
+        const val colorChipLineIconDefault: Long = 0xFF757575
+        /** --color-chip-line-icon-disabled = #C4C4C4 */
+        const val colorChipLineIconDisabled: Long = 0xFFC4C4C4
         /** --color-chip-line-label-default = #757575 */
         const val colorChipLineLabelDefault: Long = 0xFF757575
         /** --color-chip-line-label-disabled = #C4C4C4 */
@@ -194,6 +198,12 @@ object S1Tokens {
         const val colorChipSolidBorderDisabled: Long = 0xFFF5F5F5
         /** --color-chip-solid-border-selected = #1D6CEB */
         const val colorChipSolidBorderSelected: Long = 0xFF1D6CEB
+        /** --color-chip-solid-icon-default = #353535 */
+        const val colorChipSolidIconDefault: Long = 0xFF353535
+        /** --color-chip-solid-icon-disabled = #C4C4C4 */
+        const val colorChipSolidIconDisabled: Long = 0xFFC4C4C4
+        /** --color-chip-solid-icon-selected = #FFFFFF */
+        const val colorChipSolidIconSelected: Long = 0xFFFFFFFF
         /** --color-chip-solid-label-default = #353535 */
         const val colorChipSolidLabelDefault: Long = 0xFF353535
         /** --color-chip-solid-label-disabled = #C4C4C4 */
@@ -854,6 +864,10 @@ object S1Tokens {
         const val colorChipLineBorderDisabled: Long = 0xFF24252C
         /** --color-chip-line-border-selected = #3070D8 */
         const val colorChipLineBorderSelected: Long = 0xFF3070D8
+        /** --color-chip-line-icon-default = #8A8C96 */
+        const val colorChipLineIconDefault: Long = 0xFF8A8C96
+        /** --color-chip-line-icon-disabled = #55575F */
+        const val colorChipLineIconDisabled: Long = 0xFF55575F
         /** --color-chip-line-label-default = #8A8C96 */
         const val colorChipLineLabelDefault: Long = 0xFF8A8C96
         /** --color-chip-line-label-disabled = #55575F */
@@ -876,6 +890,10 @@ object S1Tokens {
         const val colorChipSolidBorderDisabled: Long = 0xFF24252C
         /** --color-chip-solid-border-selected = #3070D8 */
         const val colorChipSolidBorderSelected: Long = 0xFF3070D8
+        /** --color-chip-solid-icon-default = #8A8C96 */
+        const val colorChipSolidIconDefault: Long = 0xFF8A8C96
+        /** --color-chip-solid-icon-disabled = #55575F */
+        const val colorChipSolidIconDisabled: Long = 0xFF55575F
         /** --color-chip-solid-label-default = #8A8C96 */
         const val colorChipSolidLabelDefault: Long = 0xFF8A8C96
         /** --color-chip-solid-label-disabled = #55575F */

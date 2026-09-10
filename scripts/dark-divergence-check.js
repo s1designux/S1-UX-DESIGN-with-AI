@@ -13,6 +13,12 @@
  *   - 컴포넌트 계열(button·chip·form-control 등): color/{seg1}/… 의 seg1
  *   - 역할 계열(ROLE_SEGS: text·icon·bg·line·overlay·surface): seg1/seg2
  *     (예: text/body 내부 갈림 = 이상치 / text/body vs text/state = 단위 간 → 기록만)
+ *   - 컴포넌트 토큰: 컴포넌트/역할 (예: chip/bg · chip/icon · form-control/icon).
+ *     역할 마디(ROLE_WORDS)까지 묶음에 넣는다 — 2026-09-10 river 지시("검사기 묶음을 역할별로
+ *     나눠줘"). 종전에는 컴포넌트 이름 하나로만 묶어, 라이트가 같은 흰색이면 **배경과 글자·아이콘이
+ *     한 묶음**이 됐다. 배경 흰색은 다크에서 어두워지고 글자 흰색은 다크에서도 흰색이라 갈리는 게
+ *     정상인데, 그 정상 차이를 이상치로 세다가 동수가 되면 무고한 토큰까지 전부 신규 이상치로
+ *     승격되는 일이 실제로 일어났다(필터칩 화살표 토큰 신설 때 3건).
  *   알려진 한계: 역할 계열은 seg1+seg2 단위로 비교하므로, seg2 가 카테고리가 아니라 변형인
  *     계열(bg/level-* 등)은 단위당 토큰이 1개가 되어 내부 갈림 검출이 적용되지 않는다.
  *
@@ -30,7 +36,7 @@
  *
  * 데이터 소스는 vars-data.ts 단일(파일 스캔 없음)이라 legacy-skip 필터 대상이 아니다.
  *
- * 출력 끝줄: DARKDIV_SUMMARY units=N outliers=N baselined=N new=N resolved=N crossGroups=N
+ * 출력 끝줄: DARKDIV_SUMMARY units=N outliers=N baselined=N new=N resolved=N crossGroups=N crossRole=N
  * 사용법: npm run tokens:darkdiv  ·  단독 상세: node scripts/dark-divergence-check.js
  *
  * 도입 사유(2026-07-28): chip 선택 라벨 다크가 같은 chip 선택 계열(blue-dark/300)과 달리
@@ -46,6 +52,11 @@ const BASELINE = path.join(ROOT, 'registry', 'governance', 'dark-divergence-base
 
 // 역할·전역 계열: 비교 단위를 seg1/seg2 로 세분한다(컴포넌트가 아니므로 seg1 통짜 비교는 과판정).
 const ROLE_SEGS = new Set(['text', 'icon', 'bg', 'line', 'overlay', 'surface']);
+// 컴포넌트 토큰 안에서 '무엇의 색인가'를 가르는 마디. color/chip/line/**bg**/default 처럼
+//   컴포넌트·변형 뒤에 오며, 위치가 고정이 아니라 낱말로 찾는다(2·3번째 마디 모두 실재).
+const ROLE_WORDS = new Set([
+  'bg', 'surface', 'border', 'line', 'divider', 'label', 'text', 'icon', 'indicator', 'overlay', 'fill', 'stroke',
+]);
 
 // ── 값 정규화 ─────────────────────────────────────────
 // 실측(2026-07-28): Foundation 208개 전부 대문자 #RRGGBB, rgba 는 color/overlay 1쌍뿐.
@@ -90,6 +101,23 @@ function unitOf(key) {
   const parts = key.split('/'); // ['color', seg1, seg2, …]
   const seg1 = parts[1] || '';
   if (ROLE_SEGS.has(seg1)) return parts[2] ? `${seg1}/${parts[2]}` : seg1;
+  // 컴포넌트 토큰 — 역할 마디까지 묶는다. 마지막 마디(상태)를 제외하고 **뒤에서부터** 찾는다.
+  //   뒤에서 찾는 이유: 앞에서 찾으면 변형 이름이 역할 낱말과 겹칠 때 변형을 역할로 오인한다
+  //   (color/chip/**line**/border/selected 의 line 은 역할이 아니라 Line 변형이다).
+  for (let i = parts.length - 2; i >= 2; i--) {
+    if (ROLE_WORDS.has(parts[i])) return `${seg1}/${parts[i]}`;
+  }
+  return seg1;
+}
+
+// 역할을 떼어낸 굵은 묶음(= 2026-09-10 이전 방식). 역할별로 좁힌 뒤에도
+//   "같은 컴포넌트·같은 라이트값인데 역할을 가로질러 다크가 갈리는" 유형은 계속 보여야 한다 —
+//   이 검사기를 만든 사건(칩 선택 라벨만 blue-dark/350, 같은 선택 파랑 계열은 300)이 바로 그 유형이다.
+//   차단은 하지 않고 기록만 한다(차단 범위는 river 지시대로 역할 안쪽으로 좁혀 둔다).
+function coarseUnitOf(key) {
+  const parts = key.split('/');
+  const seg1 = parts[1] || '';
+  if (ROLE_SEGS.has(seg1)) return parts[2] ? `${seg1}/${parts[2]}` : seg1;
   return seg1;
 }
 
@@ -107,7 +135,7 @@ function analyze(varsDataPath) {
       unresolved.push(`${key} (light=${lv.light} dark=${lv.dark})`);
       continue;
     }
-    entries.push({ key, unit: unitOf(key), light, dark, darkRef: lv.dark });
+    entries.push({ key, unit: unitOf(key), coarseUnit: coarseUnitOf(key), light, dark, darkRef: lv.dark });
   }
 
   // 라이트 최종값 동일 그룹(크기 2 이상)
@@ -149,7 +177,35 @@ function analyze(varsDataPath) {
     }
   }
 
-  return { entries, unresolved, intraUnits, crossGroups, groupCount: [...byLight.values()].filter((g) => g.length >= 2).length };
+  // 역할을 가로지르는 갈림(기록 전용) — 굵은 묶음에서는 이상치인데 역할 묶음에서는 안 잡히는 것.
+  const flagged = new Set();
+  for (const iu of intraUnits) for (const e of iu.outliers) flagged.add(e.key);
+  const crossRole = [];
+  for (const [light, group] of byLight) {
+    if (group.length < 2) continue;
+    const byCoarse = new Map();
+    for (const e of group) {
+      if (!byCoarse.has(e.coarseUnit)) byCoarse.set(e.coarseUnit, []);
+      byCoarse.get(e.coarseUnit).push(e);
+    }
+    for (const [unit, es] of byCoarse) {
+      if (es.length < 2) continue;
+      const counts = new Map();
+      for (const e of es) counts.set(e.dark, (counts.get(e.dark) || 0) + 1);
+      if (counts.size < 2) continue;
+      const max = Math.max(...counts.values());
+      const tops = [...counts.entries()].filter(([, c]) => c === max).map(([d]) => d);
+      if (tops.length > 1) continue;            // 동수는 옳은 쪽을 못 고른다 — 기록에서도 뺀다
+      for (const e of es) {
+        if (e.dark === tops[0] || flagged.has(e.key)) continue;
+        const roles = [...new Set(es.map((x) => x.unit))];
+        if (roles.length < 2) continue;         // 역할을 가로지르지 않으면 이미 위에서 봤다
+        crossRole.push({ unit, light, key: e.key, dark: e.dark, majority: tops[0], roles });
+      }
+    }
+  }
+
+  return { entries, unresolved, intraUnits, crossRole, crossGroups, groupCount: [...byLight.values()].filter((g) => g.length >= 2).length };
 }
 
 const keyOf = (unit, light, e) => `${unit}::${light}::${tokenId(e.key)}::${e.dark}`;
@@ -184,6 +240,7 @@ function check(opts = {}) {
 
   return {
     intraUnits: a.intraUnits,
+    crossRole: a.crossRole,
     crossGroups: a.crossGroups,
     groupCount: a.groupCount,
     unresolved: a.unresolved,
@@ -260,6 +317,12 @@ if (require.main === module) {
     console.log(`\n✅ 해소됨(baseline 축소 가능): ${r.resolved.length}건`);
     r.resolved.forEach((k) => console.log(`  ✅ ${k}`));
   }
-  console.log(`\nDARKDIV_SUMMARY units=${r.intraUnits.length} outliers=${r.current.length} baselined=${r.baselined} new=${r.newOutliers.length} resolved=${r.resolved.length} crossGroups=${r.crossGroups}`);
+  if (r.crossRole.length) {
+    console.log('\n⚠️  역할을 가로지르는 갈림 (기록만 · 차단 아님):');
+    console.log('    같은 컴포넌트·같은 라이트값인데 역할이 달라 갈린 것. 역할별 묶음에서는 안 잡히지만');
+    console.log('    "선택 파랑 계열에서 한 토큰만 다른 단계" 같은 유형이 여기 보인다 — 사람이 판단할 것.');
+    r.crossRole.forEach((c) => console.log(`  ⚠️  ${c.unit} · 라이트 ${c.light} — ${tokenId(c.key)} 다크 ${c.dark} (같은 값 다수 ${c.majority} · 역할 ${c.roles.join('·')})`));
+  }
+  console.log(`\nDARKDIV_SUMMARY units=${r.intraUnits.length} outliers=${r.current.length} baselined=${r.baselined} new=${r.newOutliers.length} resolved=${r.resolved.length} crossGroups=${r.crossGroups} crossRole=${r.crossRole.length}`);
   process.exit(r.newOutliers.length || r.unresolved.length ? 1 : 0);
 }

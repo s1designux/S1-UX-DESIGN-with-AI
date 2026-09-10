@@ -1437,8 +1437,8 @@ _Don't_
 
 | variant | default | hover | selected | complete | disabled |
 | --- | --- | --- | --- | --- | --- |
-| line | — | --color-chip-line-bg-hover → color/chip/line/bg/hover | --color-chip-line-bg-selected → color/chip/line/bg/selected<br>--color-chip-line-border-selected → color/chip/line/border/selected | — | --color-chip-line-bg-disabled → color/chip/line/bg/disabled<br>--color-chip-line-border-disabled → color/chip/line/border/disabled<br>--color-chip-line-label-disabled → color/chip/line/label/disabled |
-| solid | — | --color-chip-solid-bg-hover → color/chip/solid/bg/hover | --color-chip-solid-bg-selected → color/chip/solid/bg/selected<br>--color-chip-solid-border-selected → color/chip/solid/border/selected<br>--color-chip-solid-label-selected → color/chip/solid/label/selected | — | --color-chip-solid-bg-disabled → color/chip/solid/bg/disabled<br>--color-chip-solid-border-disabled → color/chip/solid/border/disabled<br>--color-chip-solid-label-disabled → color/chip/solid/label/disabled |
+| line | — | --color-chip-line-bg-hover → color/chip/line/bg/hover | --color-chip-line-bg-selected → color/chip/line/bg/selected<br>--color-chip-line-border-selected → color/chip/line/border/selected | — | --color-chip-line-bg-disabled → color/chip/line/bg/disabled<br>--color-chip-line-border-disabled → color/chip/line/border/disabled<br>--color-chip-line-label-disabled → color/chip/line/label/disabled<br>--color-chip-line-icon-disabled → color/chip/line/icon/disabled |
+| solid | — | --color-chip-solid-bg-hover → color/chip/solid/bg/hover | --color-chip-solid-bg-selected → color/chip/solid/bg/selected<br>--color-chip-solid-border-selected → color/chip/solid/border/selected<br>--color-chip-solid-label-selected → color/chip/solid/label/selected<br>--color-chip-solid-icon-selected → color/chip/solid/icon/selected | — | --color-chip-solid-bg-disabled → color/chip/solid/bg/disabled<br>--color-chip-solid-border-disabled → color/chip/solid/border/disabled<br>--color-chip-solid-label-disabled → color/chip/solid/label/disabled<br>--color-chip-solid-icon-disabled → color/chip/solid/icon/disabled |
 
 #### Agent-readable contract
 
@@ -1614,6 +1614,12 @@ agent:
         chain: "--color-chip-line-label-disabled → --color-gray-300 → #C4C4C4"
         status: "resolved"
       -
+        chain: "--color-chip-line-icon-default → --color-gray-500 → #757575"
+        status: "resolved"
+      -
+        chain: "--color-chip-line-icon-disabled → --color-gray-300 → #C4C4C4"
+        status: "resolved"
+      -
         chain: "--color-chip-solid-bg-default → --color-gray-50 → #F5F5F5"
         status: "resolved"
       -
@@ -1642,6 +1648,15 @@ agent:
         status: "resolved"
       -
         chain: "--color-chip-solid-label-disabled → --color-gray-300 → #C4C4C4"
+        status: "resolved"
+      -
+        chain: "--color-chip-solid-icon-default → --color-gray-800 → #353535"
+        status: "resolved"
+      -
+        chain: "--color-chip-solid-icon-selected → --color-base-white → #FFFFFF"
+        status: "resolved"
+      -
+        chain: "--color-chip-solid-icon-disabled → --color-gray-300 → #C4C4C4"
         status: "resolved"
   figma:
     status: "available"
@@ -4749,4 +4764,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 7f15ea8db99d · 손편집 금지 -->
+<!-- generated-stamp: e2399255888a · 손편집 금지 -->

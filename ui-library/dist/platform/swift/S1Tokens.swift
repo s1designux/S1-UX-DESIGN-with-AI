@@ -173,6 +173,10 @@ public enum S1Tokens {
         public static let colorChipLineBorderDisabled: UInt32 = 0xFFE9E9E9
         /// --color-chip-line-border-selected = #1D6CEB
         public static let colorChipLineBorderSelected: UInt32 = 0xFF1D6CEB
+        /// --color-chip-line-icon-default = #757575
+        public static let colorChipLineIconDefault: UInt32 = 0xFF757575
+        /// --color-chip-line-icon-disabled = #C4C4C4
+        public static let colorChipLineIconDisabled: UInt32 = 0xFFC4C4C4
         /// --color-chip-line-label-default = #757575
         public static let colorChipLineLabelDefault: UInt32 = 0xFF757575
         /// --color-chip-line-label-disabled = #C4C4C4
@@ -195,6 +199,12 @@ public enum S1Tokens {
         public static let colorChipSolidBorderDisabled: UInt32 = 0xFFF5F5F5
         /// --color-chip-solid-border-selected = #1D6CEB
         public static let colorChipSolidBorderSelected: UInt32 = 0xFF1D6CEB
+        /// --color-chip-solid-icon-default = #353535
+        public static let colorChipSolidIconDefault: UInt32 = 0xFF353535
+        /// --color-chip-solid-icon-disabled = #C4C4C4
+        public static let colorChipSolidIconDisabled: UInt32 = 0xFFC4C4C4
+        /// --color-chip-solid-icon-selected = #FFFFFF
+        public static let colorChipSolidIconSelected: UInt32 = 0xFFFFFFFF
         /// --color-chip-solid-label-default = #353535
         public static let colorChipSolidLabelDefault: UInt32 = 0xFF353535
         /// --color-chip-solid-label-disabled = #C4C4C4
@@ -855,6 +865,10 @@ public enum S1Tokens {
         public static let colorChipLineBorderDisabled: UInt32 = 0xFF24252C
         /// --color-chip-line-border-selected = #3070D8
         public static let colorChipLineBorderSelected: UInt32 = 0xFF3070D8
+        /// --color-chip-line-icon-default = #8A8C96
+        public static let colorChipLineIconDefault: UInt32 = 0xFF8A8C96
+        /// --color-chip-line-icon-disabled = #55575F
+        public static let colorChipLineIconDisabled: UInt32 = 0xFF55575F
         /// --color-chip-line-label-default = #8A8C96
         public static let colorChipLineLabelDefault: UInt32 = 0xFF8A8C96
         /// --color-chip-line-label-disabled = #55575F
@@ -877,6 +891,10 @@ public enum S1Tokens {
         public static let colorChipSolidBorderDisabled: UInt32 = 0xFF24252C
         /// --color-chip-solid-border-selected = #3070D8
         public static let colorChipSolidBorderSelected: UInt32 = 0xFF3070D8
+        /// --color-chip-solid-icon-default = #8A8C96
+        public static let colorChipSolidIconDefault: UInt32 = 0xFF8A8C96
+        /// --color-chip-solid-icon-disabled = #55575F
+        public static let colorChipSolidIconDisabled: UInt32 = 0xFF55575F
         /// --color-chip-solid-label-default = #8A8C96
         public static let colorChipSolidLabelDefault: UInt32 = 0xFF8A8C96
         /// --color-chip-solid-label-disabled = #55575F

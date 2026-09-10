@@ -991,9 +991,11 @@
   color: inherit;
 }
 
-/* 아이콘 — chevron 20px 고정(리터럴, fcIconPx 미사용, build-components.ts:2599). currentColor 로 라벨색을 따라간다. */
+/* 아이콘 — chevron 20px 고정(리터럴, fcIconPx 미사용, build-components.ts:2614).
+   색은 화살표 전용 icon 토큰(2026-09-10 신설, river 지시). 종전에는 currentColor 로 라벨색을 빌려 썼다 —
+   값은 그대로 옮겨 왔으므로 보이는 색은 변하지 않는다. variant/state 별 지정은 아래 각 블록에 있다. */
 [data-s1-component="filter-chip"] [data-s1-part="icon"] {
-  background-color: currentColor;
+  background-color: var(--color-chip-line-icon-default);
   flex: 0 0 auto;
   height: var(--sizing-20);
   mask: url("./assets/icons/chevron.svg") center / contain no-repeat;
@@ -1011,6 +1013,9 @@
   border-color: var(--color-chip-line-border-default);
   color: var(--color-chip-line-label-default);
 }
+[data-s1-component="filter-chip"][data-variant="line"] [data-s1-part="icon"] {
+  background-color: var(--color-chip-line-icon-default);
+}
 @media (hover: hover) {
   [data-s1-component="filter-chip"][data-variant="line"] [data-s1-part="trigger"]:hover:not(:disabled):not([aria-expanded="true"]) {
     background: var(--color-chip-line-bg-hover);
@@ -1025,12 +1030,18 @@
   border-color: var(--color-chip-line-border-disabled);
   color: var(--color-chip-line-label-disabled);
 }
+[data-s1-component="filter-chip"][data-variant="line"] [data-s1-part="trigger"]:disabled [data-s1-part="icon"] {
+  background-color: var(--color-chip-line-icon-disabled);
+}
 
 /* Solid variant — chipSlot(v="solid"). Hover 의 보더는 fill 과 같은 색(bdGroup="bg") — 보더가 안 보이는 효과. */
 [data-s1-component="filter-chip"][data-variant="solid"] [data-s1-part="trigger"] {
   background: var(--color-chip-solid-bg-default);
   border-color: var(--color-chip-solid-border-default);
   color: var(--color-chip-solid-label-default);
+}
+[data-s1-component="filter-chip"][data-variant="solid"] [data-s1-part="icon"] {
+  background-color: var(--color-chip-solid-icon-default);
 }
 @media (hover: hover) {
   [data-s1-component="filter-chip"][data-variant="solid"] [data-s1-part="trigger"]:hover:not(:disabled):not([aria-expanded="true"]) {
@@ -1043,10 +1054,16 @@
   border-color: var(--color-chip-solid-border-selected);
   color: var(--color-chip-solid-label-selected);
 }
+[data-s1-component="filter-chip"][data-variant="solid"] [data-s1-part="trigger"][aria-expanded="true"] [data-s1-part="icon"] {
+  background-color: var(--color-chip-solid-icon-selected);
+}
 [data-s1-component="filter-chip"][data-variant="solid"] [data-s1-part="trigger"]:disabled {
   background: var(--color-chip-solid-bg-disabled);
   border-color: var(--color-chip-solid-border-disabled);
   color: var(--color-chip-solid-label-disabled);
+}
+[data-s1-component="filter-chip"][data-variant="solid"] [data-s1-part="trigger"]:disabled [data-s1-part="icon"] {
+  background-color: var(--color-chip-solid-icon-disabled);
 }
 
 /* Title(있음) + Line 조합만 값 라벨을 항상 강조색으로 — disabled 는 제외(build-components.ts:2588, valLbSlot). */

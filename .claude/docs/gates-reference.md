@@ -266,7 +266,7 @@
   26. Gate 26 (Icons Stats Consistency) — 표출용 아이콘 개수(icons-stats.js)가 정본(icons-data.js)과 일치하나(손편집 후 재생성 누락 차단·재생성 `npm run icons:stats`)
   27. Gate 27 (Token Role / 글자엔 글자 토큰) — 글자(TEXT) 색은 text/*·label/*·number/* 만 — border/*·bg/*·surface/* 오연결 차단(icon/*=허용목록만). build-components.ts mock 실행해 글자 fill 역할 대조. Input 안내메시지 테두리토큰 오연결(값 게이트 전부 ✅였던 사각지대) 재발 차단. 단독 `npm run tokens:rolecheck`
   28. Gate 28 (System Map Drift) — `pipeline-status.js --self-check` 로 현재 코드에서 시스템 맵을 재생성해 커밋본과 대조(휘발성 제외) — pipeline-status.html 이 낡았나. **불일치=경고(비차단)**: 대시보드는 생성물이라 낡아도 빌드가 안 깨지고, error 로 걸면 타 세션 커밋까지 막혀 `--no-verify` 를 부르고 그러면 Gate 1~27 이 전부 무력화되기 때문(2026-07-14 결정 — 신선도보다 게이트 생태계 보존 우선). 재생성 `node pipeline-status.js --check --skip gate:check,components:presentation --out pages/pipeline-status.html`
-  29. Gate 29 (Dark Divergence / 다크값갈림) — vars-data.ts 변경 시 / 항상. **라이트 최종값이 같은데 같은 비교 단위 안에서 다크 최종값만 갈리는 이상치 토큰**을 baseline(`registry/governance/dark-divergence-baseline.json`) 대조로 차단. 비교 단위 = 컴포넌트 계열은 `color/{seg1}` 의 seg1, 역할 계열(text·icon·bg·line·overlay·surface)은 seg1/seg2. 이상치 = 단위×라이트값 그룹에서 다수파와 다른 다크값(동수면 전원 등록·`[동수]` 표시, 옳은 쪽 판정 안 함). ❌차단 = baseline 에 없는 신규 이상치·끊긴 참조. ⚠️기록만 = 단위 간 갈림(의도 가능 — form-control 이 다크에서 밝게 가는 류)·baseline 해소분 알림. baseline 키 = `<단위>::<라이트값>::<토큰명>::<다크값>` (이상치 토큰 자체가 키 — 정상 토큰 추가로는 안 흔들림), reason 선택. **갱신은 줄이기 전용 래칫**(`--update-baseline` — 신규 있으면 기록 거부, gate20-fix A안 선반영). 도입 사유(2026-07-28): chip 선택 라벨 다크(blue-dark/350)가 같은 chip 선택 계열(300)과 홀로 어긋난 것을 사람이 발견 — 같은 유형을 기계가 잡도록 신설. 단독 `npm run tokens:darkdiv`
+  29. Gate 29 (Dark Divergence / 다크값갈림) — vars-data.ts 변경 시 / 항상. **라이트 최종값이 같은데 같은 비교 단위 안에서 다크 최종값만 갈리는 이상치 토큰**을 baseline(`registry/governance/dark-divergence-baseline.json`) 대조로 차단. 비교 단위 = 컴포넌트 계열은 `컴포넌트/역할`(예 chip/bg · chip/icon · form-control/icon — 역할 마디를 뒤에서부터 찾아 붙인다. 변형 이름이 역할 낱말과 겹치는 `chip/line/border/*` 오인 방지), 역할 계열(text·icon·bg·line·overlay·surface)은 seg1/seg2. **2026-09-10 river 지시로 컴포넌트 단위를 역할별로 좁혔다** — 종전에는 컴포넌트 하나로 묶어 라이트가 같은 흰색이면 배경과 글자·아이콘이 한 그룹이 됐고, 동수가 되면 무고한 토큰까지 신규 이상치로 승격됐다. 이상치 = 단위×라이트값 그룹에서 다수파와 다른 다크값(동수면 전원 등록·`[동수]` 표시, 옳은 쪽 판정 안 함). ❌차단 = baseline 에 없는 신규 이상치·끊긴 참조. ⚠️기록만 = 단위 간 갈림(의도 가능 — form-control 이 다크에서 밝게 가는 류)·baseline 해소분 알림·**역할을 가로지르는 갈림**(`crossRole` — 역할별로 좁히면서 차단 범위에서 빠진 유형. 도입 사유였던 '칩 선택 라벨만 다른 단계'가 여기 보인다. 사람이 판단). baseline 키 = `<단위>::<라이트값>::<토큰명>::<다크값>` (이상치 토큰 자체가 키 — 정상 토큰 추가로는 안 흔들림), reason 선택. **갱신은 줄이기 전용 래칫**(`--update-baseline` — 신규 있으면 기록 거부, gate20-fix A안 선반영). 도입 사유(2026-07-28): chip 선택 라벨 다크(blue-dark/350)가 같은 chip 선택 계열(300)과 홀로 어긋난 것을 사람이 발견 — 같은 유형을 기계가 잡도록 신설. 단독 `npm run tokens:darkdiv`
 ```
 
 스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 6b + 6c + 7 + 7b + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 15b + 16 + 17 + 18 + 19 + 20 + 21 + 22 + 23 + 24 + 25 + 26 + 27 + 28 + 29 자동)
@@ -346,7 +346,7 @@ DESIGN.md(AI 소비용) 가 정본(tokens.css+registry)보다 낡으면 차단
 
 ### Gate 29: Dark Divergence (다크값갈림)
 
-라이트 최종값이 같은데 같은 비교 단위(컴포넌트 seg1/역할계열 seg1+seg2) 안에서 다크만 갈리는 이상치 토큰을 baseline 래칫(줄이기 전용)으로 차단. 단위 간 갈림은 기록만(의도 가능). 단독 `npm run tokens:darkdiv`
+라이트 최종값이 같은데 같은 비교 단위(컴포넌트+역할 / 역할계열 seg1+seg2) 안에서 다크만 갈리는 이상치 토큰을 baseline 래칫(줄이기 전용)으로 차단. 단위 간 갈림은 기록만(의도 가능). 단독 `npm run tokens:darkdiv`
 
 ### Gate 30: Component Registration
 

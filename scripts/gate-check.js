@@ -814,6 +814,12 @@ try {
   if (r.crossGroups > 0) {
     warn(`Gate 29: 비교 단위 간 다크 갈림 ${r.crossGroups}그룹 — 의도 가능성이 있어 기록만(차단 아님). 상세: npm run tokens:darkdiv`);
   }
+  // 역할을 가로지르는 갈림 — 2026-09-10 역할별 재묶음으로 차단 범위에서 빠진 유형.
+  //   여기 안 띄우면 tokens:darkdiv 를 따로 돌릴 때만 보여 사실상 안 보인다(검증자 지적).
+  if (r.crossRole && r.crossRole.length) {
+    warn(`Gate 29: 역할을 가로지르는 다크 갈림 ${r.crossRole.length}건 — 차단 아님, 사람이 판단. 상세: npm run tokens:darkdiv`);
+    r.crossRole.forEach((c) => console.error(`       · ${c.unit} 라이트 ${c.light} — ${c.key.replace(/^color\//, '')} 다크 ${c.dark} (같은 값 다수 ${c.majority})`));
+  }
 } catch (e) {
   fail(`Gate 29 실행 실패: ${e.message}`);
 }

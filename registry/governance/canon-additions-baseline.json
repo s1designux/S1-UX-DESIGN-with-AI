@@ -2,7 +2,7 @@
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
   "_updated": "2026-09-10",
-  "count": 643,
+  "count": 648,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -87,6 +87,8 @@
     "color:color/chip/line/border/default",
     "color:color/chip/line/border/disabled",
     "color:color/chip/line/border/selected",
+    "color:color/chip/line/icon/default",
+    "color:color/chip/line/icon/disabled",
     "color:color/chip/line/label/default",
     "color:color/chip/line/label/disabled",
     "color:color/chip/line/label/selected",
@@ -98,6 +100,9 @@
     "color:color/chip/solid/border/default",
     "color:color/chip/solid/border/disabled",
     "color:color/chip/solid/border/selected",
+    "color:color/chip/solid/icon/default",
+    "color:color/chip/solid/icon/disabled",
+    "color:color/chip/solid/icon/selected",
     "color:color/chip/solid/label/default",
     "color:color/chip/solid/label/disabled",
     "color:color/chip/solid/label/selected",
@@ -1158,6 +1163,66 @@
       "evidence": {
         "transcript": "c6f808e0-8420-43e9-8927-7f6592568841.jsonl",
         "at": "2026-09-10T01:00:24.502Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/chip/line/icon/default",
+      "by": "river",
+      "reason": "필터칩 화살표가 라벨 토큰을 빌려 쓰던 것을 아이콘 전용 토큰으로 분리(값은 현행 라벨색 그대로 보존)",
+      "approvedAt": "2026-09-10T05:50:22.687Z",
+      "quote": "필터칩의 화살표 아이콘에 label 토큰이 붙어있네? 현재 필터의 icon 항목이 없어서 신규로 만들고 재매칭 해야할거같아.",
+      "evidence": {
+        "transcript": "9fc3b9d3-428b-4819-8bf9-15da47650955.jsonl",
+        "at": "2026-09-10T05:46:11.733Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/chip/line/icon/disabled",
+      "by": "river",
+      "reason": "필터칩 화살표가 라벨 토큰을 빌려 쓰던 것을 아이콘 전용 토큰으로 분리(값은 현행 라벨색 그대로 보존)",
+      "approvedAt": "2026-09-10T05:50:23.762Z",
+      "quote": "필터칩의 화살표 아이콘에 label 토큰이 붙어있네? 현재 필터의 icon 항목이 없어서 신규로 만들고 재매칭 해야할거같아.",
+      "evidence": {
+        "transcript": "9fc3b9d3-428b-4819-8bf9-15da47650955.jsonl",
+        "at": "2026-09-10T05:46:11.733Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/chip/solid/icon/default",
+      "by": "river",
+      "reason": "필터칩 화살표가 라벨 토큰을 빌려 쓰던 것을 아이콘 전용 토큰으로 분리(값은 현행 라벨색 그대로 보존)",
+      "approvedAt": "2026-09-10T05:50:24.821Z",
+      "quote": "필터칩의 화살표 아이콘에 label 토큰이 붙어있네? 현재 필터의 icon 항목이 없어서 신규로 만들고 재매칭 해야할거같아.",
+      "evidence": {
+        "transcript": "9fc3b9d3-428b-4819-8bf9-15da47650955.jsonl",
+        "at": "2026-09-10T05:46:11.733Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/chip/solid/icon/disabled",
+      "by": "river",
+      "reason": "필터칩 화살표가 라벨 토큰을 빌려 쓰던 것을 아이콘 전용 토큰으로 분리(값은 현행 라벨색 그대로 보존)",
+      "approvedAt": "2026-09-10T05:50:25.881Z",
+      "quote": "필터칩의 화살표 아이콘에 label 토큰이 붙어있네? 현재 필터의 icon 항목이 없어서 신규로 만들고 재매칭 해야할거같아.",
+      "evidence": {
+        "transcript": "9fc3b9d3-428b-4819-8bf9-15da47650955.jsonl",
+        "at": "2026-09-10T05:46:11.733Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/chip/solid/icon/selected",
+      "by": "river",
+      "reason": "필터칩 화살표가 라벨 토큰을 빌려 쓰던 것을 아이콘 전용 토큰으로 분리(값은 현행 라벨색 그대로 보존)",
+      "approvedAt": "2026-09-10T05:50:26.946Z",
+      "quote": "필터칩의 화살표 아이콘에 label 토큰이 붙어있네? 현재 필터의 icon 항목이 없어서 신규로 만들고 재매칭 해야할거같아.",
+      "evidence": {
+        "transcript": "9fc3b9d3-428b-4819-8bf9-15da47650955.jsonl",
+        "at": "2026-09-10T05:46:11.733Z"
       },
       "recordedBy": "orchestrator"
     }

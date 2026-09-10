@@ -535,6 +535,10 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/chip/line/border/default": { light: "gray/300", dark: "gray-dark/500" },
   "color/chip/line/border/disabled": { light: "gray/100", dark: "gray-dark/200" },
   "color/chip/line/border/selected": { light: "blue/400", dark: "blue-dark/300" },
+  // 화살표(쉐브론) 전용 — 종전에는 label 토큰을 그대로 빌려 썼다. 아이콘은 글자가 아니므로
+  //   독립 토큰을 갖는다(river 지시 2026-09-10). 값은 지금 색 그대로 옮겨 화면은 변하지 않는다.
+  "color/chip/line/icon/default": { light: "gray/500", dark: "gray-dark/700" },
+  "color/chip/line/icon/disabled": { light: "gray/300", dark: "gray-dark/600" },
   "color/chip/line/label/default": { light: "gray/500", dark: "gray-dark/700" },
   "color/chip/line/label/disabled": { light: "gray/300", dark: "gray-dark/600" },
   "color/chip/line/label/selected": { light: "blue/400", dark: "blue-dark/350" },
@@ -546,6 +550,9 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/chip/solid/border/default": { light: "gray/50", dark: "gray-dark/200" },
   "color/chip/solid/border/disabled": { light: "gray/50", dark: "gray-dark/200" },
   "color/chip/solid/border/selected": { light: "blue/400", dark: "blue-dark/300" },
+  "color/chip/solid/icon/default": { light: "gray/800", dark: "gray-dark/700" },
+  "color/chip/solid/icon/disabled": { light: "gray/300", dark: "gray-dark/600" },
+  "color/chip/solid/icon/selected": { light: "base/white", dark: "base/white" },
   "color/chip/solid/label/default": { light: "gray/800", dark: "gray-dark/700" },
   "color/chip/solid/label/disabled": { light: "gray/300", dark: "gray-dark/600" },
   "color/chip/solid/label/selected": { light: "base/white", dark: "base/white" },

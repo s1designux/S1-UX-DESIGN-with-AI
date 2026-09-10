@@ -94,6 +94,8 @@ constexpr std::uint32_t S1_COLOR_CHIP_LINE_BG_SELECTED = 0xFFFFFFFFu; // --color
 constexpr std::uint32_t S1_COLOR_CHIP_LINE_BORDER_DEFAULT = 0xFFC4C4C4u; // --color-chip-line-border-default = #C4C4C4
 constexpr std::uint32_t S1_COLOR_CHIP_LINE_BORDER_DISABLED = 0xFFE9E9E9u; // --color-chip-line-border-disabled = #E9E9E9
 constexpr std::uint32_t S1_COLOR_CHIP_LINE_BORDER_SELECTED = 0xFF1D6CEBu; // --color-chip-line-border-selected = #1D6CEB
+constexpr std::uint32_t S1_COLOR_CHIP_LINE_ICON_DEFAULT = 0xFF757575u; // --color-chip-line-icon-default = #757575
+constexpr std::uint32_t S1_COLOR_CHIP_LINE_ICON_DISABLED = 0xFFC4C4C4u; // --color-chip-line-icon-disabled = #C4C4C4
 constexpr std::uint32_t S1_COLOR_CHIP_LINE_LABEL_DEFAULT = 0xFF757575u; // --color-chip-line-label-default = #757575
 constexpr std::uint32_t S1_COLOR_CHIP_LINE_LABEL_DISABLED = 0xFFC4C4C4u; // --color-chip-line-label-disabled = #C4C4C4
 constexpr std::uint32_t S1_COLOR_CHIP_LINE_LABEL_SELECTED = 0xFF1D6CEBu; // --color-chip-line-label-selected = #1D6CEB
@@ -105,6 +107,9 @@ constexpr std::uint32_t S1_COLOR_CHIP_SOLID_BG_SELECTED_HOVER = 0xFF2747B9u; // 
 constexpr std::uint32_t S1_COLOR_CHIP_SOLID_BORDER_DEFAULT = 0xFFF5F5F5u; // --color-chip-solid-border-default = #F5F5F5
 constexpr std::uint32_t S1_COLOR_CHIP_SOLID_BORDER_DISABLED = 0xFFF5F5F5u; // --color-chip-solid-border-disabled = #F5F5F5
 constexpr std::uint32_t S1_COLOR_CHIP_SOLID_BORDER_SELECTED = 0xFF1D6CEBu; // --color-chip-solid-border-selected = #1D6CEB
+constexpr std::uint32_t S1_COLOR_CHIP_SOLID_ICON_DEFAULT = 0xFF353535u; // --color-chip-solid-icon-default = #353535
+constexpr std::uint32_t S1_COLOR_CHIP_SOLID_ICON_DISABLED = 0xFFC4C4C4u; // --color-chip-solid-icon-disabled = #C4C4C4
+constexpr std::uint32_t S1_COLOR_CHIP_SOLID_ICON_SELECTED = 0xFFFFFFFFu; // --color-chip-solid-icon-selected = #FFFFFF
 constexpr std::uint32_t S1_COLOR_CHIP_SOLID_LABEL_DEFAULT = 0xFF353535u; // --color-chip-solid-label-default = #353535
 constexpr std::uint32_t S1_COLOR_CHIP_SOLID_LABEL_DISABLED = 0xFFC4C4C4u; // --color-chip-solid-label-disabled = #C4C4C4
 constexpr std::uint32_t S1_COLOR_CHIP_SOLID_LABEL_SELECTED = 0xFFFFFFFFu; // --color-chip-solid-label-selected = #FFFFFF
@@ -436,6 +441,8 @@ constexpr std::uint32_t S1_COLOR_CHIP_LINE_BG_SELECTED = 0xFF1C1D23u; // --color
 constexpr std::uint32_t S1_COLOR_CHIP_LINE_BORDER_DEFAULT = 0xFF3E4049u; // --color-chip-line-border-default = #3E4049
 constexpr std::uint32_t S1_COLOR_CHIP_LINE_BORDER_DISABLED = 0xFF24252Cu; // --color-chip-line-border-disabled = #24252C
 constexpr std::uint32_t S1_COLOR_CHIP_LINE_BORDER_SELECTED = 0xFF3070D8u; // --color-chip-line-border-selected = #3070D8
+constexpr std::uint32_t S1_COLOR_CHIP_LINE_ICON_DEFAULT = 0xFF8A8C96u; // --color-chip-line-icon-default = #8A8C96
+constexpr std::uint32_t S1_COLOR_CHIP_LINE_ICON_DISABLED = 0xFF55575Fu; // --color-chip-line-icon-disabled = #55575F
 constexpr std::uint32_t S1_COLOR_CHIP_LINE_LABEL_DEFAULT = 0xFF8A8C96u; // --color-chip-line-label-default = #8A8C96
 constexpr std::uint32_t S1_COLOR_CHIP_LINE_LABEL_DISABLED = 0xFF55575Fu; // --color-chip-line-label-disabled = #55575F
 constexpr std::uint32_t S1_COLOR_CHIP_LINE_LABEL_SELECTED = 0xFF4285E8u; // --color-chip-line-label-selected = #4285E8
@@ -447,6 +454,8 @@ constexpr std::uint32_t S1_COLOR_CHIP_SOLID_BG_SELECTED_HOVER = 0xFF2A65C8u; // 
 constexpr std::uint32_t S1_COLOR_CHIP_SOLID_BORDER_DEFAULT = 0xFF24252Cu; // --color-chip-solid-border-default = #24252C
 constexpr std::uint32_t S1_COLOR_CHIP_SOLID_BORDER_DISABLED = 0xFF24252Cu; // --color-chip-solid-border-disabled = #24252C
 constexpr std::uint32_t S1_COLOR_CHIP_SOLID_BORDER_SELECTED = 0xFF3070D8u; // --color-chip-solid-border-selected = #3070D8
+constexpr std::uint32_t S1_COLOR_CHIP_SOLID_ICON_DEFAULT = 0xFF8A8C96u; // --color-chip-solid-icon-default = #8A8C96
+constexpr std::uint32_t S1_COLOR_CHIP_SOLID_ICON_DISABLED = 0xFF55575Fu; // --color-chip-solid-icon-disabled = #55575F
 constexpr std::uint32_t S1_COLOR_CHIP_SOLID_LABEL_DEFAULT = 0xFF8A8C96u; // --color-chip-solid-label-default = #8A8C96
 constexpr std::uint32_t S1_COLOR_CHIP_SOLID_LABEL_DISABLED = 0xFF55575Fu; // --color-chip-solid-label-disabled = #55575F
 constexpr std::uint32_t S1_COLOR_CONTROL_BG_DEFAULT = 0xFF1C1D23u; // --color-control-bg-default = #1C1D23

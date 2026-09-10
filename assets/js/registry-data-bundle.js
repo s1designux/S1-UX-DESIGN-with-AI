@@ -99,7 +99,7 @@ window.REGISTRY_BUNDLE = {
           "name": "SW Foundation Colors",
           "version": "2.4",
           "status": "stable",
-          "updatedAt": "2026-09-09",
+          "updatedAt": "2026-09-10",
           "source": "plugins/figma-vars-installer/src/vars-data.ts (FOUNDATION_COLOR)",
           "description": "Official SW Design System V2.4 foundation color foundation. Raw HEX values are allowed here only.",
           "generated": true,
@@ -11214,7 +11214,7 @@ window.REGISTRY_BUNDLE = {
               "name": "--color-chip-line-label-default",
               "semanticRef": "color/chip/line/label/default",
               "state": "default·hover·selected·complete",
-              "property": "text-color·arrow-color"
+              "property": "text-color"
             },
             {
               "name": "--color-chip-line-label-selected",
@@ -11226,7 +11226,20 @@ window.REGISTRY_BUNDLE = {
               "name": "--color-chip-line-label-disabled",
               "semanticRef": "color/chip/line/label/disabled",
               "state": "disabled",
-              "property": "text-color·arrow-color"
+              "property": "text-color"
+            },
+            {
+              "name": "--color-chip-line-icon-default",
+              "semanticRef": "color/chip/line/icon/default",
+              "state": "default·hover·selected·complete",
+              "property": "arrow-color",
+              "note": "화살표 전용(2026-09-10 신설). 종전에는 label 토큰을 빌려 썼고 값은 그대로 옮겼다."
+            },
+            {
+              "name": "--color-chip-line-icon-disabled",
+              "semanticRef": "color/chip/line/icon/disabled",
+              "state": "disabled",
+              "property": "arrow-color"
             }
           ]
         },
@@ -11281,19 +11294,38 @@ window.REGISTRY_BUNDLE = {
               "name": "--color-chip-solid-label-default",
               "semanticRef": "color/chip/solid/label/default",
               "state": "default·hover·complete",
-              "property": "text-color·arrow-color"
+              "property": "text-color"
             },
             {
               "name": "--color-chip-solid-label-selected",
               "semanticRef": "color/chip/solid/label/selected",
               "state": "selected",
-              "property": "text-color·arrow-color"
+              "property": "text-color"
             },
             {
               "name": "--color-chip-solid-label-disabled",
               "semanticRef": "color/chip/solid/label/disabled",
               "state": "disabled",
-              "property": "text-color·arrow-color"
+              "property": "text-color"
+            },
+            {
+              "name": "--color-chip-solid-icon-default",
+              "semanticRef": "color/chip/solid/icon/default",
+              "state": "default·hover·complete",
+              "property": "arrow-color",
+              "note": "화살표 전용(2026-09-10 신설). 종전에는 label 토큰을 빌려 썼고 값은 그대로 옮겼다."
+            },
+            {
+              "name": "--color-chip-solid-icon-selected",
+              "semanticRef": "color/chip/solid/icon/selected",
+              "state": "selected",
+              "property": "arrow-color"
+            },
+            {
+              "name": "--color-chip-solid-icon-disabled",
+              "semanticRef": "color/chip/solid/icon/disabled",
+              "state": "disabled",
+              "property": "arrow-color"
             }
           ]
         }

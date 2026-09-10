@@ -170,6 +170,10 @@ object S1Palette {
     val colorChipLineBorderDisabled: S1Color = S1Color(0xFFE9E9E9, 0xFF24252C)
     /** --color-chip-line-border-selected — 라이트 #1D6CEB · 다크 #3070D8 */
     val colorChipLineBorderSelected: S1Color = S1Color(0xFF1D6CEB, 0xFF3070D8)
+    /** --color-chip-line-icon-default — 라이트 #757575 · 다크 #8A8C96 */
+    val colorChipLineIconDefault: S1Color = S1Color(0xFF757575, 0xFF8A8C96)
+    /** --color-chip-line-icon-disabled — 라이트 #C4C4C4 · 다크 #55575F */
+    val colorChipLineIconDisabled: S1Color = S1Color(0xFFC4C4C4, 0xFF55575F)
     /** --color-chip-line-label-default — 라이트 #757575 · 다크 #8A8C96 */
     val colorChipLineLabelDefault: S1Color = S1Color(0xFF757575, 0xFF8A8C96)
     /** --color-chip-line-label-disabled — 라이트 #C4C4C4 · 다크 #55575F */
@@ -192,6 +196,12 @@ object S1Palette {
     val colorChipSolidBorderDisabled: S1Color = S1Color(0xFFF5F5F5, 0xFF24252C)
     /** --color-chip-solid-border-selected — 라이트 #1D6CEB · 다크 #3070D8 */
     val colorChipSolidBorderSelected: S1Color = S1Color(0xFF1D6CEB, 0xFF3070D8)
+    /** --color-chip-solid-icon-default — 라이트 #353535 · 다크 #8A8C96 */
+    val colorChipSolidIconDefault: S1Color = S1Color(0xFF353535, 0xFF8A8C96)
+    /** --color-chip-solid-icon-disabled — 라이트 #C4C4C4 · 다크 #55575F */
+    val colorChipSolidIconDisabled: S1Color = S1Color(0xFFC4C4C4, 0xFF55575F)
+    /** --color-chip-solid-icon-selected — 라이트 #FFFFFF */
+    val colorChipSolidIconSelected: S1Color = S1Color(0xFFFFFFFF, 0xFFFFFFFF)
     /** --color-chip-solid-label-default — 라이트 #353535 · 다크 #8A8C96 */
     val colorChipSolidLabelDefault: S1Color = S1Color(0xFF353535, 0xFF8A8C96)
     /** --color-chip-solid-label-disabled — 라이트 #C4C4C4 · 다크 #55575F */

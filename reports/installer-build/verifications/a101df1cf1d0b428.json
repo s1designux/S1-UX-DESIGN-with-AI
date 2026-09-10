@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:a101df1cf1d0b428f6a099e950c1d8e16b892a76148906d1cb80b5fec88492bb",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-10T06:30:52.453Z",
+  "notes": "build-components.ts 현재 내용 검증 PASS. 누적 2건: ①카테고리 섹션·가이드 페이지 배경을 Semantic 토큰(bg/level-2·level-3)에 바인딩 — 직전 기록 bf6d1541 에서 전수 대조 PASS, 이번 델타에는 변경 없음(재확인하지 않음). ②Filter Chip 화살표를 label 토큰 차용에서 신설 chip/{line,solid}/icon/* 토큰으로 재매칭(scv 키 1곳). 전수 대조: chipSlot 이 실제로 내는 ss.lb 도메인(line=default·disabled, solid=default·selected·disabled)과 신설 토큰 5개가 정확히 1:1 — 누락 0·잉여 0. 신설 토큰 값은 대응 label 토큰과 라이트·다크 전부 동일해 화면 변화 0(전 6조합 before/after 렌더 PNG 바이트 동일로 픽셀 확인). Gate 34 승인 5건 river 인용문·전사기록 근거 확인. 기계검사 전부 초록: installer:check 0 · components:keycheck 누락0 · components:anatomy 8/8 · components:iconpolicy 위반0 · ui:test 0 · gate:check error 는 본 Gate 13 뿐. 지문 25종 전량 canonicalSources 로 독립 재계산해 src=dist 일치, dist 는 현재 src 에서 재빌드 시 바이트 동일, 배포 zip 도 dist 와 동일. 한계: Figma 캔버스 실제 렌더(패킹 붕괴 육안)는 코드 레벨 범위 밖 — 육안 미검증."
+}

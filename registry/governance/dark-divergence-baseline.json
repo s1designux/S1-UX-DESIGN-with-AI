@@ -1,138 +1,71 @@
 {
   "_note": "라이트 최종값이 같은데 같은 비교 단위 안에서 다크값이 갈리는 이상치 토큰 목록. Gate 29(dark-divergence-check)가 여기 없는 신규 이상치를 차단한다. 갱신은 줄이기 전용(--update-baseline) — 신규가 있으면 기록 거부. reason 은 선택(비어 있어도 실패하지 않음). 각 건의 라이트/다크 값·다수파·컴포넌트 내 분포 등 상세 사실은 reports/dark-divergence-initial.md 참조.",
-  "_updated": "2026-07-28",
-  "count": 33,
+  "_regrouped": "2026-09-10 — 비교 단위를 컴포넌트에서 컴포넌트/역할로 좁히면서 키 앞마디를 재작성했다(river 지시 \"검사기 묶음을 역할별로 나눠줘\"). 값·토큰이 같은 항목 15건을 그대로 이어 왔고, 새 묶음에서 처음 이상치가 된 것 1건(date-picker/text::#C4C4C4::date-picker-text-disabled::#3E4049)을 함께 등록했다 — 값은 이날 바뀌지 않았고, 짝인 date-picker-text-other-month 가 이미 면제라 묶음을 좁히자 1:1 동수가 되어 함께 걸린 건이다. 면제를 1건 늘린 것이므로 숨기지 않고 여기 적는다(river 보고 완료).",
+  "_updated": "2026-09-10",
+  "count": 16,
   "items": [
     {
-      "key": "button::#2747B9::button-label-blue-line--hover::#3070D8",
+      "key": "button/bg::#F5F5F5::button-bg-disabled::#2E2F38",
       "reason": ""
     },
     {
-      "key": "button::#D9D9D9::button-border-disabled::#2E2F38",
+      "key": "button/bg::#F5F5F5::button-bg-secondary--hover::#24252C",
       "reason": ""
     },
     {
-      "key": "button::#F5F5F5::button-bg-disabled::#2E2F38",
+      "key": "button/border::#D9D9D9::button-border-disabled::#2E2F38",
       "reason": ""
     },
     {
-      "key": "button::#F5F5F5::button-bg-secondary--hover::#24252C",
+      "key": "chip/bg::#F5F5F5::chip-solid-bg-default::#2E2F38",
       "reason": ""
     },
     {
-      "key": "button::#FFFFFF::button-bg-blue-line--default::#1C1D23",
+      "key": "control/border::#D9D9D9::control-border-default::#3E4049",
       "reason": ""
     },
     {
-      "key": "button::#FFFFFF::button-bg-secondary--default::#1C1D23",
+      "key": "control/border::#D9D9D9::control-border-disabled::#2E2F38",
       "reason": ""
     },
     {
-      "key": "button::#FFFFFF::button-label-primary--default::#FFFFFF",
+      "key": "control/indicator::#C4C4C4::control-indicator-disabled::#3E4049",
       "reason": ""
     },
     {
-      "key": "button::#FFFFFF::button-label-primary--hover::#FFFFFF",
+      "key": "control/indicator::#C4C4C4::control-indicator-unselected::#35363F",
       "reason": ""
     },
     {
-      "key": "chip::#1D6CEB::chip-line-label-selected::#4285E8",
+      "key": "date-picker/text::#C4C4C4::date-picker-text-disabled::#3E4049",
+      "reason": "비활성 회색과 다른 달 회색을 다크에서 다르게 둔 쌍. 짝인 date-picker-text-other-month 는 이미 면제. 2026-09-10 역할별 재묶음 때 동수가 되어 함께 등록."
+    },
+    {
+      "key": "date-picker/text::#C4C4C4::date-picker-text-other-month::#35363F",
       "reason": ""
     },
     {
-      "key": "chip::#C4C4C4::chip-line-border-default::#3E4049",
+      "key": "form-control/bg::#FFFFFF::form-control-bg-default::#1C1D23",
       "reason": ""
     },
     {
-      "key": "chip::#E9E9E9::chip-line-border-disabled::#24252C",
+      "key": "form-control/bg::#FFFFFF::form-control-bg-selected::#24252C",
       "reason": ""
     },
     {
-      "key": "chip::#E9E9E9::chip-solid-bg-hover::#35363F",
+      "key": "form-control/text::#757575::form-control-text-placeholder::#55575F",
       "reason": ""
     },
     {
-      "key": "chip::#F5F5F5::chip-solid-bg-default::#2E2F38",
+      "key": "form-control/text::#757575::form-control-text-read-only::#8A8C96",
       "reason": ""
     },
     {
-      "key": "chip::#FFFFFF::chip-solid-label-selected::#FFFFFF",
+      "key": "pagination/bg::#F5F5F5::pagination-control-bg-disabled::#2E2F38",
       "reason": ""
     },
     {
-      "key": "control::#C4C4C4::control-indicator-disabled::#3E4049",
-      "reason": ""
-    },
-    {
-      "key": "control::#C4C4C4::control-indicator-unselected::#35363F",
-      "reason": ""
-    },
-    {
-      "key": "control::#C4C4C4::control-label-disabled::#55575F",
-      "reason": ""
-    },
-    {
-      "key": "control::#D9D9D9::control-border-default::#3E4049",
-      "reason": ""
-    },
-    {
-      "key": "control::#D9D9D9::control-border-disabled::#2E2F38",
-      "reason": ""
-    },
-    {
-      "key": "control::#FFFFFF::control-bg-default::#1C1D23",
-      "reason": ""
-    },
-    {
-      "key": "control::#FFFFFF::control-indicator-selected::#FFFFFF",
-      "reason": ""
-    },
-    {
-      "key": "date-picker::#C4C4C4::date-picker-text-other-month::#35363F",
-      "reason": ""
-    },
-    {
-      "key": "date-picker::#E9E9E9::date-picker-tile-bg-disabled::#24252C",
-      "reason": ""
-    },
-    {
-      "key": "date-picker::#E9E9E9::date-picker-tile-border-disabled::#2E2F38",
-      "reason": ""
-    },
-    {
-      "key": "date-picker::#FFFFFF::date-picker-text-selected::#FFFFFF",
-      "reason": ""
-    },
-    {
-      "key": "form-control::#353535::form-control-icon-default::#8A8C96",
-      "reason": ""
-    },
-    {
-      "key": "form-control::#757575::form-control-text-placeholder::#55575F",
-      "reason": ""
-    },
-    {
-      "key": "form-control::#757575::form-control-text-read-only::#8A8C96",
-      "reason": ""
-    },
-    {
-      "key": "form-control::#C4C4C4::form-control-icon-disabled::#3E4049",
-      "reason": ""
-    },
-    {
-      "key": "form-control::#FFFFFF::form-control-bg-default::#1C1D23",
-      "reason": ""
-    },
-    {
-      "key": "form-control::#FFFFFF::form-control-bg-selected::#24252C",
-      "reason": ""
-    },
-    {
-      "key": "pagination::#F5F5F5::pagination-control-bg-disabled::#2E2F38",
-      "reason": ""
-    },
-    {
-      "key": "pagination::#F5F5F5::pagination-control-bg-hover::#24252C",
+      "key": "pagination/bg::#F5F5F5::pagination-control-bg-hover::#24252C",
       "reason": ""
     }
   ]

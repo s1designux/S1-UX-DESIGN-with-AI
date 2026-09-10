@@ -2608,10 +2608,12 @@ async function buildFilterChip(maps: BuildMaps, originY: number): Promise<{ set:
           const valLbSlot = (t.key === "On" && v === "line" && !dis) ? "selected" : ss.lb;
           const valText = st === "Complete" ? "과거순" : "최신순";
           chip.appendChild(await makeBoundText(valText, sc.font, "Medium", scv(maps, `color/chip/${v}/label/${valLbSlot}`)));
-          // arrow: 펼침(open)=위↑(90°), 기본=아래↓(270°). 색 = 라벨색 정합.
+          // arrow: 펼침(open)=위↑(90°), 기본=아래↓(270°).
+          // 색 = 화살표 전용 icon 토큰(2026-09-10 신설). 종전에는 label 토큰을 빌려 썼다 —
+          //   아이콘은 글자가 아니라서 토큰을 따로 갖는다(river 지시). 값은 종전 라벨색 그대로라 화면 변화 0.
           const arrowSlot = ss.lb;
           // 20px 정사각 + 직각 회전 → 래퍼 프레임 불필요(Select Box 와 동일 근거). wrap:false.
-          chip.appendChild(await makeIconInstance("chevron", scv(maps, `color/chip/${v}/label/${arrowSlot}`), 20, ss.open ? arrowUp : arrowDown, ss.open ? 90 : 270, { wrap: false }));
+          chip.appendChild(await makeIconInstance("chevron", scv(maps, `color/chip/${v}/icon/${arrowSlot}`), 20, ss.open ? arrowUp : arrowDown, ss.open ? 90 : 270, { wrap: false }));
           chip.resize(chip.width, sc.h);
 
           // 컴포넌트(세로): chip + (Selected 면 드롭다운 패널)
