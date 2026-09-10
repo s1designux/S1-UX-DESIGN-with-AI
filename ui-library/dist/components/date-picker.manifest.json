@@ -2,7 +2,7 @@
   "id": "date-picker",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "58f480ff40b972ef61c3050b6991a6c2ca61caba00f546c5c4ef290a110ee05d",
+  "canonicalFingerprint": "2b44b3cee34c21339f27b0da16eebabd3a65054909fc518517881b148b5b7035",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -91,7 +91,7 @@
       "topRadius": "--radius-8",
       "source": "build-components.ts buildDatePickerBottomSheet 3751-3833"
     },
-    "minWidth": "180px (정본 trigger.resize(180, sc.h) — build-components.ts:3696)",
+    "minWidth": "180px (정본 trigger.resize(180, sc.h) — build-components.ts:4507)",
     "calendarSize": "달력 패널은 두 크기다 — MD(356) · SM(267). **입력창 크기를 따라간다**: md 트리거는 MD 달력, xsm·xxsm 트리거는 SM 달력(river 결정 2026-09-04 \"입력창이 작으면 달력도 자동으로 작게\"). 종전의 '캘린더 패널은 사이즈 불변(356 단일)'(2026-06-25)을 대체한다. 정본 = build-components.ts CAL_GEO.",
     "panelSm": {
       "width": "267px (정본 CAL_GEO.SM.panelW = 18 + 7×33 + 18)",
@@ -345,5 +345,5 @@
     "controlMode": "uncontrolled",
     "progressiveEnhancementNote": "JavaScript 없이는 캘린더가 렌더되지 않아 날짜를 고를 수 없다 — 복합 Picker(정본 계약)라 native fallback이 없다. 트리거는 native button 이라 포커스·이름은 유지된다."
   },
-  "sourceFingerprint": "23b0ac3dac80f0e4defa4af4509a8b6587fa34eeaee65f0bf38c8c73ffda418b"
+  "sourceFingerprint": "aa1456c38bbaac986ce6ae7f829082439088f30de6a6f6f9aee7acd02ecd1c28"
 }

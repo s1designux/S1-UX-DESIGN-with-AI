@@ -2,7 +2,7 @@
   "id": "filter-chip",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "07127adece4bd121d1c61a64ee142646eddaae2eec39322daba46f4e0d8299e4",
+  "canonicalFingerprint": "2c07b7c0e03ec7f3b4a0a91964dcfed6086d6a4cfd8172209742c141ddf0cccc",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -53,7 +53,7 @@
     "itemSpacing": "--spacing-4",
     "radius": "--radius-full",
     "border": "--border-width-1",
-    "icon": "--sizing-20 (fixed, fcIconPx 미사용, build-components.ts:2252)",
+    "icon": "--sizing-20 (fixed, fcIconPx 미사용, build-components.ts:2599)",
     "source": "build-components.ts buildFilterChip 2195-2330"
   },
   "states": {
@@ -73,7 +73,7 @@
   "notInCanon": {
     "multiSelect": "정본에 다중 선택 Filter Chip 이 없다. 이번 배포에서 만들지 않았다.",
     "errorAxis": "정본에 Error 상태가 없다.",
-    "panelSizeSameAsSelect": "패널 사이즈는 Select 와 다르게 매핑된다(SM→xsm·MD→xsm, river 결정 2026-09-01). Select 의 매핑을 재사용하지 않았다(build-components.ts:2264-2288)."
+    "panelSizeSameAsSelect": "패널 사이즈는 Select 와 다르게 매핑된다(SM→xsm·MD→xsm, river 결정 2026-09-01). Select 의 매핑을 재사용하지 않았다(build-components.ts:2602-2626)."
   },
   "parts": [
     "trigger",
@@ -224,5 +224,5 @@
     "singleSelectNote": "filter-chip 는 단일 선택이라 조립한 dropdown 이 Type=Text 로 고정된다(정본이 Select Box·Filter Chip 에 항상 Type=Text 패널만 붙인다). 런타임은 s1:dropdown:change 의 detail.type이 \"text\" 일 때만 반응하고 checkbox 유형 변화(전체 선택 포함)는 의도적으로 무시한다 — filter-chip 자신이 체크박스 유형 패널을 조립하지 않기 때문이며 방어적 무시가 아니다.",
     "disableCloseContract": "registry/components/component-behavior.pc.json 의 \"Filter Chip\" 계약(on: disable → close and block trigger clicks, status=verified)을 그대로 구현한다. 클릭 차단은 open() 의 disabled 가드, 자동 닫힘은 trigger 의 disabled 속성 변화를 관찰하는 MutationObserver 가 담당한다(인스턴스마다 자기 trigger 하나만 관찰 — 누적 없음, destroy() 가 disconnect)."
   },
-  "sourceFingerprint": "2701a757f405156e3ea4893843f4dffb7cddb5af88dcbb70646ba6d2e6b15701"
+  "sourceFingerprint": "aa0081e0d1ab17533226d69975bdb29f1684a6810c006afa2b6c1e21d3eabaa7"
 }

@@ -6770,7 +6770,7 @@ const ATTACH_DEPENDENCIES: { [parent: string]: string[] } = {
 //   '부모가 만들어 주는 것'을 구분할 수 없었다. 이제 선언한 것만 면제하고
 //   나머지는 noRunner 로 보고 → Gate 30 이 차단한다.
 export const BUILT_BY_PARENT: { [child: string]: string } = {
-  // buildTimePickerDropdown 이 buildTimePickerCell 을 호출해 셀 세트까지 생성(build-components.ts:2124).
+  // buildTimePickerDropdown 이 buildTimePickerCell 을 호출해 셀 세트까지 생성(build-components.ts:2817).
   "Time Picker Cell": "Time Picker Dropdown",
 };
 

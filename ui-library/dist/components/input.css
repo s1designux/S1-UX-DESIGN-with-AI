@@ -79,8 +79,8 @@
   display: none;
 }
 
-/* 트레일링 액션 사이 간격. Password = [눈][지우기] 2px(정본 trail itemSpacing:2, build-components.ts:990).
-   Search = [지우기][돋보기] 4px(정본 trail itemSpacing:4, build-components.ts:1298·1306) — data-mode=search 로 override. */
+/* 트레일링 액션 사이 간격. Password = [눈][지우기] 2px(정본 trail itemSpacing:2, build-components.ts:1246).
+   Search = [지우기][돋보기] 4px(정본 trail itemSpacing:4, build-components.ts:1591) — data-mode=search 로 override. */
 [data-s1-component="input"] [data-s1-part="action"] + [data-s1-part="action"] {
   margin-inline-start: var(--spacing-2);
 }
@@ -120,7 +120,7 @@
 }
 
 /* 비밀번호 표시 전환 — 숨김 중(aria-pressed=false)은 eye_hide, 표시 중(aria-pressed=true)은 eye_show.
-   눈 아이콘 색은 정본이 모든 상태에서 icon/default 하나만 쓴다(build-components.ts:986 — 상태별 분기 없음). */
+   눈 아이콘 색은 정본이 모든 상태에서 icon/default 하나만 쓴다(build-components.ts:1229 — 상태별 분기 없음). */
 [data-s1-component="input"] [data-s1-part="action"][data-action="password"] [data-s1-part="action-icon"] {
   mask: url("../assets/icons/eye_hide.svg") center / contain no-repeat;
 }
@@ -135,7 +135,7 @@
 }
 
 /* Search 돋보기만 Disabled 에서 색을 낮춘다 — 정본 buildSearch 의 Disabled state 만 icon/disabled 를 쓴다
-   (build-components.ts:1266). Password 눈·clear 는 정본에 disabled 전용 아이콘 색이 없어 그대로 둔다. */
+   (build-components.ts:1520). Password 눈·clear 는 정본에 disabled 전용 아이콘 색이 없어 그대로 둔다. */
 [data-s1-component="input"][data-mode="search"]:has([data-s1-part="control"]:disabled) [data-s1-part="action"][data-action="search"] {
   color: var(--color-form-control-icon-disabled);
 }

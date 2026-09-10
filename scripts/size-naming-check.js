@@ -15,7 +15,7 @@
  *   (D) harness-audit 의 라벨 단어 ↔ 클래스 단어 불일치 — label 'medium (h44)' ↔ 's1-btn-lg'
  *
  * 왜 필요했나 (2026-08-02 실측): 표기가 5계보로 갈려 있었고(설치기 축약형·표셀만 풀네임·
- *   웹 CSS 가 44를 lg 로·라벨 medium·registry pc-medium), build-components.ts:958 주석이
+ *   웹 CSS 가 44를 lg 로·라벨 medium·registry pc-medium), build-components.ts:1301 주석이
  *   "Issue 8 리네임 잔재(XSMALL/SMALL/MEDIUM)였음"이라 적고 있듯 **과거에 통일 작업을 했는데
  *   표 셀이 누락**됐다. 그런데 Gate 19 가 대조 전에 전부 소문자로 바꿔버려 어긋남이 기계에
  *   안 보였다(표 셀만 우연히 튀어나왔다). 사람 성실성에 기대던 층을 기계 층으로 승격한다.

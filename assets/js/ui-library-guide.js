@@ -1683,11 +1683,11 @@ function mobileBottomNavItemMarkup({ selected = false, label = "라벨" } = {}) 
 }
 
 /* 상태바는 정본 StatusBar(App 360×27)를 그대로 옮긴 그림이다 — 배포 부품이 아니다(D5).
-   정본 populateStatusRow(build-components.ts:4738-4767): 좌우 SPACE_BETWEEN · 패딩 20/16 ·
+   정본 populateStatusRow(build-components.ts:5741-5770): 좌우 SPACE_BETWEEN · 패딩 20/16 ·
    왼쪽 "12:30"(12 Medium, text/body/secondary) · 오른쪽 묶음 간격 6(신호 17×12 · wifi 16×12 ·
    배터리 24×12 · "78%"), 아이콘색 icon/gray-dark. wifi 는 정본 SHELL_WIFI_SVG 를 그대로 쓰되
    색만 하드코딩 hex 대신 currentColor 로 받는다.
-   배경: 정본은 상태바 인스턴스의 fills 를 비워(build-components.ts:3117-3119) 헤더 프레임의
+   배경: 정본은 상태바 인스턴스의 fills 를 비워(build-components.ts:3498-3500) 헤더 프레임의
    배경이 그대로 비쳐 보이게 한다 — 그래서 Home 유형에서는 상태바도 bg/home 이다. 이 그림도
    같은 기제를 쓴다(headerBg 로 위쪽 크롬 전체를 한 색으로 칠한다). */
 /* wifi — 정본 SHELL_WIFI_SVG 그대로(색만 hex → currentColor). 마스크 id 는 인스턴스마다 새로 만든다:
@@ -1843,7 +1843,7 @@ function mobileHeaderStateMatrix() {
 }
 
 /* ── GNB ──
-   정본: buildGNB(바 6종 Align×Size, build-components.ts:3515) + fillGnbMenu(메뉴 9종 Size×State, :3133).
+   정본: buildGNB(바 6종 Align×Size, build-components.ts:3627) + fillGnbMenu(메뉴 9종 Size×State, :3133).
    메뉴의 aria-current="page" 는 host 화면이 현재 경로에 맞춰 정적으로 설정하는 값이다(jsRequired=false) —
    미리보기 칸에는 마우스가 없으니 Hover 는 data-force-state="hover" 로 흉내낸다(다른 컴포넌트와 같은 방식).
    GNB 는 PC 전용(registry gnb.json doNotUse)이라 platform-section 수식자 없이 한 벌만 낸다(multi-toggle 과 같은 방식). */
@@ -2083,7 +2083,7 @@ function gnbStateMatrix() {
 }
 
 /* ── GNB Sub Menu Item ──
-   정본: buildGNBSubMenuItem(build-components.ts:3697). Depth(1depth=카테고리 제목·2depth=항목) 축이며
+   정본: buildGNBSubMenuItem(build-components.ts:3822). Depth(1depth=카테고리 제목·2depth=항목) 축이며
    상태는 2depth 만 갖는다(Default·Hover·Selected) — 1depth 는 Default 하나뿐이라 4변형이다.
    Hover 는 host 화면 마우스 없이 흉내내야 하므로 다른 컴포넌트와 같이 data-force-state="hover" 를 쓴다. */
 function gnbSubMenuItemMarkup({ depth = "2depth", state = "default", label = null, isPreview = false } = {}) {
@@ -2129,7 +2129,7 @@ function gnbSubMenuItemStateMatrix() {
 }
 
 /* ── GNB Sub Menu ──
-   정본: buildGNBSubMenu(build-components.ts:3737). Type(regular · compact-1 · compact-2) 3변형 — 2026-09-09 개편
+   정본: buildGNBSubMenu(build-components.ts:3864). Type(regular · compact-1 · compact-2) 3변형 — 2026-09-09 개편
    (종전 Depth 축은 없어졌다). TYPE_SPEC 은 정본 build-components.ts 의 표를 그대로 옮긴다.
    이 매트릭스는 변형 전수를 보여주는 자리라 트리거를 만들지 않고 펼쳐진 모양만 보여준다.
    여닫는 동작 자체는 gnb 가 갖는다(river 결정 2026-09-09, D4·D5) — 조립 예시는 GNB 섹션에 있다. */
@@ -2267,7 +2267,7 @@ function timePickerWheelMarkup({ content = "time-only" } = {}) {
   const triggerLabel = content === "date-time" ? "시작 일시 선택" : "시간 선택";
   /* 모바일 시트는 24시간제를 제공하지 않는다 — 오전/오후 열이 들어간 12시간제 휠 하나뿐이다
      (river 결정 2026-09-07). 정본도 두 변형 모두 4열(오전/오후·시·콜론·분)이다
-     (build-components.ts:4276-4283). */
+     (build-components.ts:4836-4839). */
   const type = "12h";
   const tabs = content === "date-time" ? `
       <div data-s1-part="tabs" data-s1-component="tab" data-size="sm" data-break="mobile" role="tablist" aria-label="날짜·시간 선택">
@@ -2613,7 +2613,7 @@ function datePickerStateMatrix() {
 
   /* 최하위 요소 — 정본이 별도 컴포넌트 세트로 선언한 두 부품이다(📖 source-reader 2026-09-07 판독,
      줄번호·상태는 2026-09-09 갱신):
-       · Calendar Cell(calCellCompsForSize, build-components.ts:3895-3979 — 세트 조립은 buildCalendarCell :3996-4003)
+       · Calendar Cell(calCellCompsForSize, build-components.ts:4048-4146 — 세트 조립은 buildCalendarCell :4147)
          Type=Standard → Default·Hover·Today·Selected·Selected Hover·Disabled
            ※ Selected Hover 는 2026-09-09 정본 신설(river 승인 M-7 — 감사문서 §9). 선택된 파란 칸의
              hover 는 회색이 아니라 한 단계 진한 파랑이고 테두리도 같은 색을 쓴다.

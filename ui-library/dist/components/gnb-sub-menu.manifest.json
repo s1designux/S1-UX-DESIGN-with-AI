@@ -2,7 +2,7 @@
   "id": "gnb-sub-menu",
   "version": "0.1.0",
   "status": "verified",
-  "canonicalFingerprint": "5d56bd29c1926cfd18c721576e3995ad45dd84adc05786f5db3d4607113a0289",
+  "canonicalFingerprint": "2215fbb457d25889f08734b4bf92b264f0c7a7fba2468f39186a5defbbb8116b",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -72,7 +72,7 @@
     "coreComponents": [
       "gnb-sub-menu-item"
     ],
-    "coreComponentsNote": "컬럼 안 각 <li> 의 내용은 GNB Sub Menu Item 코어 그대로다(build-components.ts:3737 itemComp). gnb-sub-menu 를 개별 설치할 때 gnb-sub-menu-item 의 CSS 도 함께 로드해야 한다."
+    "coreComponentsNote": "컬럼 안 각 <li> 의 내용은 GNB Sub Menu Item 코어 그대로다(build-components.ts:3866 itemComp). gnb-sub-menu 를 개별 설치할 때 gnb-sub-menu-item 의 CSS 도 함께 로드해야 한다."
   },
   "icons": [],
   "a11y": {
@@ -114,5 +114,5 @@
     "runtime": "none",
     "reason": "정본에 여닫는 동작이 없다 — 배포본은 펼쳐진 패널의 모양만 낸다. 패널을 열고 닫는 동작(aria-expanded 토글·hidden 전환·Esc·포커스 복귀)은 river 결정(2026-09-09, D4·D5)에 따라 이 패널을 여는 gnb(jsRequired=true)가 소유한다 — 이 컴포넌트는 그대로 수동형이다."
   },
-  "sourceFingerprint": "3bdf7bddfb5e121659e1e46a5fed259e4879603a12eeefaed4795cdbbc384e21"
+  "sourceFingerprint": "6a6771c58f267efd27706ce3fdfbc51e31d4fdd48b0270efa6ac808efd040523"
 }

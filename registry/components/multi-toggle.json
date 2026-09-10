@@ -15,7 +15,7 @@
     "description": "여러 선택지 중 하나를 고르는 분절 컨트롤(segmented control). 정본은 두 세트다 — 셀 정의 'Multi Toggle Element'(position×state×size, 32 variants)와 그 셀 인스턴스 3개를 묶은 조합형 'Multi Toggle'(Size×Selected, 6 variants).",
     "notes": [
       "색은 자체 토큰 없이 button/* 을 그대로 쓴다(선택=primary, 비선택=secondary, 비활성=disabled).",
-      "조합형 세트는 scv 호출이 0건 — 색은 전부 자식 셀 인스턴스가 갖는다(build-components.ts:4741~4830).",
+      "조합형 세트는 scv 호출이 0건 — 색은 전부 자식 셀 인스턴스가 갖는다(build-components.ts:6545~6647).",
       "position 은 '선택된 파란 셀 기준 상대 위치'다. 인접면 보더를 0 으로 두어 이중선을 막고, 경계는 파란 셀이 책임진다(reports/figma-library-build/multi-toggle/4-verification.md:44-48).",
       "웹 가이드의 Element States 블록은 position=first 만 상태별로 보여준다(middle/last 는 미노출).",
       "관측된 표면 드리프트(2026-08-01): components.html 의 Token Details 탭이 --color-control-* 3개를 적고 있으나, 같은 섹션의 CSS 탭·실 렌더 CSS·설치기는 모두 --color-button-* 을 쓴다. 이 문서는 정본 2곳(설치기·렌더 CSS)이 일치하는 button/* 을 기준으로 한다. Token Details 탭 교정은 별건."

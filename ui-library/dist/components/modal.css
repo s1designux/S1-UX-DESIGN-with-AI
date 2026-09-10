@@ -1,4 +1,4 @@
-/* Modal — 정본 buildModalShell(build-components.ts:4438) 기준.
+/* Modal — 정본 buildModalShell(build-components.ts:5290) 기준.
    변형축은 Break(PC·Mobile) × Footer(Single·Dual) 4가지뿐이다. 크기 축·상태 축은 정본에 없다.
    딤(overlay)은 정본 빌더에 없고 registry modal.json anatomy·tokens 가 소유한다(의미의 정본). */
 [data-s1-component="modal"] {
@@ -114,7 +114,7 @@
 /* ── Break=PC — 폭 360 · 좌우 여백은 패널이 아니라 내부 블록이 24씩 가진다(정본 paddingLeft/Right=0) ── */
 [data-s1-component="modal"][data-break="pc"] [data-s1-part="panel"] {
   gap: var(--spacing-32);
-  width: 360px;                   /* 정본 comp.resize(360, …) build-components.ts:4512 — 대응 sizing 토큰 없음 */
+  width: 360px;                   /* 정본 comp.resize(360, …) build-components.ts:5368 — 대응 sizing 토큰 없음 */
 }
 
 [data-s1-component="modal"][data-break="pc"] [data-s1-part="content"] { gap: var(--spacing-32); }
@@ -139,9 +139,9 @@
 
 /* ── Break=Mobile — 폭 300 · 패널이 좌우 20 여백을 갖고 닫기 버튼이 없다 ── */
 [data-s1-component="modal"][data-break="mobile"] [data-s1-part="panel"] {
-  gap: 30px;                      /* 정본 comp.itemSpacing = 30 build-components.ts:4513 — 대응 spacing 토큰 없음 */
+  gap: 30px;                      /* 정본 comp.itemSpacing = 30 build-components.ts:5369 — 대응 spacing 토큰 없음 */
   padding-inline: var(--spacing-20);
-  width: 300px;                   /* 정본 comp.resize(300, …) build-components.ts:4512 */
+  width: 300px;                   /* 정본 comp.resize(300, …) build-components.ts:5368 */
 }
 
 [data-s1-component="modal"][data-break="mobile"] [data-s1-part="content"] { gap: var(--spacing-24); }

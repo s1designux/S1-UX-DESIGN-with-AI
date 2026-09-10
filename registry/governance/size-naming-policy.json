@@ -1,7 +1,7 @@
 {
   "_note": "Gate 32(크기 이름 규칙) 정본. 크기(size) 어휘를 표면마다 다르게 적는 것을 차단한다. **크기의 '기준'은 컴포넌트마다 다를 수 있다**(버튼 md=44 · GNB md=56 은 정상) — 이 게이트가 막는 것은 '같은 것을 다른 단어로 적는 것'뿐이다. 단독 실행 npm run components:sizenaming.",
   "_updated": "2026-09-08",
-  "_why": "2026-08-02 전수 판독에서 크기 표기가 5계보로 갈려 있었다: 설치기 축약형(MD/SM) · 표 셀만 풀네임(MEDIUM/SMALL) · 웹 CSS 는 44를 lg 로(정본은 LG=48) · 라벨은 medium/xsmall · registry 는 pc-medium/sm-pc. build-components.ts:958 주석('Issue 8 리네임 잔재(XSMALL/SMALL/MEDIUM)였음')이 보여주듯 과거에 통일 작업을 했으나 표 셀이 누락됐고, Gate 19 가 비교 전에 전부 소문자로 바꾸는 바람에 어긋남이 기계에 안 보였다. 이 게이트는 그 재발을 막는다.",
+  "_why": "2026-08-02 전수 판독에서 크기 표기가 5계보로 갈려 있었다: 설치기 축약형(MD/SM) · 표 셀만 풀네임(MEDIUM/SMALL) · 웹 CSS 는 44를 lg 로(정본은 LG=48) · 라벨은 medium/xsmall · registry 는 pc-medium/sm-pc. build-components.ts:1301 주석('Issue 8 리네임 잔재(XSMALL/SMALL/MEDIUM)였음')이 보여주듯 과거에 통일 작업을 했으나 표 셀이 누락됐고, Gate 19 가 비교 전에 전부 소문자로 바꾸는 바람에 어긋남이 기계에 안 보였다. 이 게이트는 그 재발을 막는다.",
   "allowedSizeWords": [
     "xxsm",
     "xsm",

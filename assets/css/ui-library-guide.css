@@ -672,7 +672,7 @@
   padding-right: var(--spacing-16);
 }
 
-/* 상태바와 헤더 사이 16 간격 — 정본 comp.itemSpacing = 16 (build-components.ts:3106). */
+/* 상태바와 헤더 사이 16 간격 — 정본 comp.itemSpacing = 16 (build-components.ts:3487). */
 .uilg-phone-chrome-gap { background: var(--color-bg-level-0); flex: none; height: var(--spacing-16); }
 
 /* Home 유형은 헤더 배경이 bg/home 이라 위쪽 크롬도 같은 색이 된다(정본 :3107·3132 isHome 분기).

@@ -2,7 +2,7 @@
   "id": "time-picker",
   "version": "0.2.0",
   "status": "approved",
-  "canonicalFingerprint": "46edad40cad65ed4db323391bb76d57e627dd2e101db7708c65681d1ce855bc3",
+  "canonicalFingerprint": "adab427628adc6b8e3e70aa4326f426517288987f6f87ac2482a8a5240a3a5ba",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -76,7 +76,7 @@
       "ownership": "테두리(inset 1px)·모서리·그림자·위여백 12 는 panel 이 소유한다. columns 는 목록 높이 192 만, footer 는 확인 줄만 갖는다 — 정본 fillPanel 과 같은 소유 구조(2026-09-03 독립 검증 F-2 로 정정).",
       "columnWidth": "정본은 24h 44 · 12h 48(패널 고정폭 기준). 웹은 패널이 트리거보다 좁아지지 않으므로 24h 열이 기본 트리거 폭 150 에서 58.5 로 넓어진다(river 지시 2026-09-03 의 결과). 12h 는 패널 194 유지라 48 그대로. 정본 stroke 가 INSIDE 라 테두리를 inset 그림자로 옮겨 폭 계산에서 제외한다.",
       "footerDivider": "--border-width-1 solid --color-line-gray-subtle · 좌우 --spacing-8 안쪽(정본 panelW-16)",
-      "triggerToPanelGap": "--spacing-4 (정본 Time Picker itemSpacing=4, build-components.ts:2363)",
+      "triggerToPanelGap": "--spacing-4 (정본 Time Picker itemSpacing=4, build-components.ts:2730)",
       "columnSeparator": "--border-width-1 solid --color-line-gray-subtle (열 사이)"
     },
     "cell": {

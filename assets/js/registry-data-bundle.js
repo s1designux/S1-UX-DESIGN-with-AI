@@ -11075,7 +11075,7 @@ window.REGISTRY_BUNDLE = {
           "Filter Chip 전용 토큰은 0개 — color/chip/{line,solid}/* 를 그대로 쓴다.",
           "Chip 인스턴스를 재사용하지 않고 알약을 직접 그린다(별도 빌더·별도 변형세트·별도 CSS 클래스 계열).",
           "State=Selected 일 때만 Dropdown 컴포넌트 인스턴스를 자식으로 붙인다(BUILD_DEPENDENCIES: Filter Chip → Dropdown). Dropdown 크기는 SM→XXSM(h28), MD→XSM(h34).",
-          "Solid 의 hover 는 border 토큰이 아니라 bg/hover 를 스트록에도 써서 테두리를 배경색과 동일화한다(build-components.ts:1888).",
+          "Solid 의 hover 는 border 토큰이 아니라 bg/hover 를 스트록에도 써서 테두리를 배경색과 동일화한다(build-components.ts:2561).",
           "Line 의 hover 는 border/default 를 유지한다(테두리 색이 변하지 않는다).",
           "좌우 padding 이 비대칭이다 — 오른쪽이 좁은 이유는 화살표 아이콘 자리 때문.",
           "웹 가이드 섹션의 코드 탭은 HTML·Token Details 2개다(Chip·Multi Toggle 은 CSS 탭 포함 3개).",
@@ -11336,7 +11336,7 @@ window.REGISTRY_BUNDLE = {
             "Disabled"
           ]
         },
-        "_note": "노드ID 는 build-components.ts:1869 주석의 V2.4 표기가 유일한 근거이며 원본 대조 리포트는 아직 없다(reports/figma-library-build 에 filter-chip 디렉터리 없음). componentSetKey 는 Plugin 연동 전까지 보류."
+        "_note": "노드ID 는 build-components.ts:2542 주석의 V2.4 표기가 유일한 근거이며 원본 대조 리포트는 아직 없다(reports/figma-library-build 에 filter-chip 디렉터리 없음). componentSetKey 는 Plugin 연동 전까지 보류."
       },
       "origin": {
         "classification": "tbd",
@@ -12562,7 +12562,7 @@ window.REGISTRY_BUNDLE = {
         "figmaNodeId": "723:6",
         "description": "모바일 하단 내비게이션의 탭 아이템(Tab Item) 컴포넌트. 정본은 '탭 1칸'이며 4탭 바 자체는 컴포넌트가 아니라 이 아이템의 인스턴스 조합이다. 아이콘 32 + 라벨 12 세로 배치, 60×60 고정, 배경 투명(바 배경은 화면이 갖는다).",
         "notes": [
-          "설치기는 바를 만들지 않는다 — Tab Item 세트만 생성한다(build-components.ts:2604 주석).",
+          "설치기는 바를 만들지 않는다 — Tab Item 세트만 생성한다(build-components.ts:3357 주석).",
           "웹 가이드 표시명은 'Bottom Nav'(components.html:6279)로 설치기명과 다르다.",
           "V2.4 원본(540:6025)은 selected 아이콘에 color/control/indicator/selected 를 잘못 참조했다. V3.0 편입 시 color/icon/blue 로 재바인딩(정정 (a) 1건) — reports/figma-library-build/mobile-bottom-nav/node-map.json.",
           "V2.4 구본 세트는 2026-07-02 삭제 완료(0 survivors 확인).",
@@ -13231,7 +13231,7 @@ window.REGISTRY_BUNDLE = {
         "description": "여러 선택지 중 하나를 고르는 분절 컨트롤(segmented control). 정본은 두 세트다 — 셀 정의 'Multi Toggle Element'(position×state×size, 32 variants)와 그 셀 인스턴스 3개를 묶은 조합형 'Multi Toggle'(Size×Selected, 6 variants).",
         "notes": [
           "색은 자체 토큰 없이 button/* 을 그대로 쓴다(선택=primary, 비선택=secondary, 비활성=disabled).",
-          "조합형 세트는 scv 호출이 0건 — 색은 전부 자식 셀 인스턴스가 갖는다(build-components.ts:4741~4830).",
+          "조합형 세트는 scv 호출이 0건 — 색은 전부 자식 셀 인스턴스가 갖는다(build-components.ts:6545~6647).",
           "position 은 '선택된 파란 셀 기준 상대 위치'다. 인접면 보더를 0 으로 두어 이중선을 막고, 경계는 파란 셀이 책임진다(reports/figma-library-build/multi-toggle/4-verification.md:44-48).",
           "웹 가이드의 Element States 블록은 position=first 만 상태별로 보여준다(middle/last 는 미노출).",
           "관측된 표면 드리프트(2026-08-01): components.html 의 Token Details 탭이 --color-control-* 3개를 적고 있으나, 같은 섹션의 CSS 탭·실 렌더 CSS·설치기는 모두 --color-button-* 을 쓴다. 이 문서는 정본 2곳(설치기·렌더 CSS)이 일치하는 button/* 을 기준으로 한다. Token Details 탭 교정은 별건."
@@ -13863,7 +13863,7 @@ window.REGISTRY_BUNDLE = {
           "--textarea-* 별도 정의 없음 — --input-* 토큰 공유 확정(2026-05-20). Input과 시각 동일, 추가 divergence 없음.",
           "Figma Inputbox_large 노드 확인 후 figmaNodeId 등록 예정.",
           "resize 속성(none/vertical/both) 정책 미확정.",
-          "구조 불일치(2026-07-14): 웹 Textarea 에는 안내(helper) 텍스트가 있으나(이 tokens 표 --input-helper-text), Figma 설치기 빌더는 Text Area 안내문을 생성하지 않는다(build-components.ts:1144 '1차는 필드 상태만'). 색이 아니라 '요소 존재'가 다름 — 별도 작업으로 Figma 빌더에 helper 요소 추가 필요(needs-core-update). 기본 안내색은 Input 과 동일 기준 text/state/caption(gray/500).",
+          "구조 불일치(2026-07-14): 웹 Textarea 에는 안내(helper) 텍스트가 있으나(이 tokens 표 --input-helper-text), Figma 설치기 빌더는 Text Area 안내문을 생성하지 않는다(build-components.ts:1632 '1차는 필드 상태만'). 색이 아니라 '요소 존재'가 다름 — 별도 작업으로 Figma 빌더에 helper 요소 추가 필요(needs-core-update). 기본 안내색은 Input 과 동일 기준 text/state/caption(gray/500).",
           "resize 정책 확정(2026-09-02, river 결정): 세로로만 늘릴 수 있다(resize: vertical). 가로 확장은 옆 요소를 밀어 레이아웃이 깨져 금지."
         ]
       },
@@ -14100,7 +14100,7 @@ window.REGISTRY_BUNDLE = {
         "pc-md": "44px (var(--sizing-44))",
         "pc-xsm": "34px (var(--sizing-34))",
         "pc-xxsm": "28px (var(--sizing-28))",
-        "minWidth": "150px (정본 build-components.ts:2359 trigger.resize(150, sc.h) — 크기 루프 안이라 XXSM·XSM·MD(PC)·MD(Mobile) 4조합 전부 150)",
+        "minWidth": "150px (정본 build-components.ts:2726 trigger.resize(150, sc.h) — 크기 루프 안이라 XXSM·XSM·MD(PC)·MD(Mobile) 4조합 전부 150)",
         "dropdownOptionHeight": "32px",
         "radius": "var(--radius-control-xs) — 4px",
         "font": "Pretendard Regular 14px (xxsm: 12px)",

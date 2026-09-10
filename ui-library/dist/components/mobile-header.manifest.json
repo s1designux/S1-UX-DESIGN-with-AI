@@ -2,7 +2,7 @@
   "id": "mobile-header",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "93b3760c4a23d253dd0b02b7b4601912fd7b5a3eba0b5f24e2af46e9d2919a69",
+  "canonicalFingerprint": "92d5bd8f4a5fa3ae2f041253a3d57b302e36ecb47262013049e8286db85a0c05",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -165,7 +165,7 @@
       "asset": "assets/icons/mobile-header-arrow-down.svg",
       "use": "홈 서브타이틀 유형 제목 옆 아래화살표(24px) — CSS transform: rotate(90deg) 로 아래를 향하게 한다(정본 Figma rotation -90 과 부호가 반대다)",
       "accessibleNamePolicy": "decorative; 제목 텍스트에 종속된 장식 아이콘",
-      "note": "Figma V2.2 아이콘 라이브러리 ic_화살표,더보기,다음장(419:68 · Property 1=Solid) 실물 벡터. 보이는 것은 Stroke 2 획뿐(Fill 1 은 hidden, 정본 주석 build-components.ts:3143-3144) — 원본 대조 PASS. 획(stroke) 기반이라 glyph 뷰포트는 24 프레임 전체다 — 경로 경계로 잡으면 획 바깥 절반이 잘린다(2026-09-02 F-1)."
+      "note": "Figma V2.2 아이콘 라이브러리 ic_화살표,더보기,다음장(419:68 · Property 1=Solid) 실물 벡터. 보이는 것은 Stroke 2 획뿐(Fill 1 은 hidden, 정본 주석 build-components.ts:3550-3525) — 원본 대조 PASS. 획(stroke) 기반이라 glyph 뷰포트는 24 프레임 전체다 — 경로 경계로 잡으면 획 바깥 절반이 잘린다(2026-09-02 F-1)."
     }
   ],
   "a11y": {
@@ -207,5 +207,5 @@
     "runtime": "none",
     "reason": "정적 크롬이다 — 열림/닫힘 등 로컬 상태가 없어 native 시맨틱만으로 충분하다."
   },
-  "sourceFingerprint": "cce3f78d231fe1ee461f7a696700da3c9e13fc5492cd6b6980012eb07e1e281f"
+  "sourceFingerprint": "03d0e4b9e3212373fabfd52e5851f99ddcc052c16810ca87efe24ff3998dcb98"
 }

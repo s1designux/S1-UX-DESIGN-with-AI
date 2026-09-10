@@ -70,7 +70,7 @@ const PROPS = {
   gap: {
     canon: ['itemSpacing'], css: ['gap', 'column-gap', 'row-gap'], label: '간격',
     // Figma 오토레이아웃이 SPACE_BETWEEN 이면 간격은 '자동'이라 itemSpacing 값이 화면에 쓰이지 않는다.
-    // 정본도 그런 자리에 0 을 두고 있다(build-components.ts:2709 GNB — SPACE_BETWEEN 옆의 itemSpacing=0).
+    // 정본도 그런 자리에 0 을 두고 있다(build-components.ts:3678 GNB — SPACE_BETWEEN 옆의 itemSpacing=0).
     // 그 0 을 웹 gap 과 대조하면 존재하지 않는 어긋남이 잡힌다. 2026-08-13 확인.
     skipWhen: g => g.primaryAxisAlignItems === 'SPACE_BETWEEN',
   },

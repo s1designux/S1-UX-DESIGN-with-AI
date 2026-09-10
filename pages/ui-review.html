@@ -1887,7 +1887,7 @@
         </article>`;
     }
 
-    /* ── GNB Sub Menu Item — 정본 buildGNBSubMenuItem(build-components.ts:3697).
+    /* ── GNB Sub Menu Item — 정본 buildGNBSubMenuItem(build-components.ts:3822).
        Depth(1depth 제목 · 2depth 항목) 축이며 상태는 2depth 만 갖는다(Default·Hover·Selected) — 4변형. jsRequired=false.
        이 검수 화면은 강제 상태를 만들지 않는다(GNB 섹션과 같은 원칙) — Hover 는 river 가 직접 올린다.
        마크업은 자리마다 새로 만든다(문자열 재사용 금지 — 같은 문자열을 여러 자리에 붙이면
@@ -2008,7 +2008,7 @@
       const filled = state === "filled";
       const disabled = state === "disabled";
       /* 정본 Focus 변형의 트리거 문구는 값이 아니라 placeholder 다 — 값은 Filled 에서만 보인다
-         (build-components.ts:2333 · 독립 검증 F-8). */
+         (build-components.ts:2691 · 독립 검증 F-8). */
       const value = filled ? (type === "12h" ? "오전 09:30" : "09:30") : "시간 선택";
       const pick = tpPanelStates[panelState];
       const div = '<div data-s1-part="divider"></div>';

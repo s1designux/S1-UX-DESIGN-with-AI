@@ -5,7 +5,7 @@
     {
       "id": "clock",
       "sourceKey": "ca1d043ac09be07f827e939be3d8c3c7af8a8dd9",
-      "sourceBuilderSymbol": "ICON_KEYS.clock (build-components.ts:1173, Figma 97:271) — buildTimePicker 의 로컬 CLOCK 상수는 import 실패용 폴백이라 원본으로 쓰지 않았다. 원본은 저장소 내보내기 assets/icons/ic_시간시계_line.png 를 픽셀 측정해 벡터화했다(원 중심 24-frame 기준 (12,12) 반경 8.25 · 바늘 M9 4V9L6.5 11.5, 18x18 glyph 로컬좌표).",
+      "sourceBuilderSymbol": "ICON_KEYS.clock (build-components.ts:1365, Figma 97:271) — buildTimePicker 의 로컬 CLOCK 상수는 import 실패용 폴백이라 원본으로 쓰지 않았다. 원본은 저장소 내보내기 assets/icons/ic_시간시계_line.png 를 픽셀 측정해 벡터화했다(원 중심 24-frame 기준 (12,12) 반경 8.25 · 바늘 M9 4V9L6.5 11.5, 18x18 glyph 로컬좌표).",
       "file": "clock.svg",
       "webAssetFingerprint": "8727a44073d1db71ab926c4bb9f2db170bddc3c1a44b29d76c306c05ab7cc648",
       "symbolId": "s1-icon-clock",
@@ -103,7 +103,7 @@
         },
         "scaling": "proportional"
       },
-      "geometryEvidence": "정본 chevDown 인라인 SVG(build-components.ts:1450)는 16x16 viewBox 에 화살표가 꽉 차게 그려진다(glyph=frame). 웹 아이콘은 정본과 동일하게 아래(닫힘) 방향 하나만 자산으로 두고, 열림(위) 방향은 정본과 같은 철학(회전)으로 CSS transform: rotate(180deg) 로 표현한다 — chevUp(build-components.ts:1451)은 chevDown 을 180° 돌린 모양과 같다. 렌더 크기(Select XXSM 20px·그 외 24px, Filter Chip 20px 고정)는 컴포넌트 CSS 가 mask-size:contain 으로 이 16px 원본을 비율 유지 확대해 만든다(fcIconPx, build-components.ts:1310·1481, 2252).",
+      "geometryEvidence": "정본 chevDown 인라인 SVG(build-components.ts:1694)는 16x16 viewBox 에 화살표가 꽉 차게 그려진다(glyph=frame). 웹 아이콘은 정본과 동일하게 아래(닫힘) 방향 하나만 자산으로 두고, 열림(위) 방향은 정본과 같은 철학(회전)으로 CSS transform: rotate(180deg) 로 표현한다 — chevUp(build-components.ts:1695)은 chevDown 을 180° 돌린 모양과 같다. 렌더 크기(Select XXSM 20px·그 외 24px, Filter Chip 20px 고정)는 컴포넌트 CSS 가 mask-size:contain 으로 이 16px 원본을 비율 유지 확대해 만든다(fcIconPx, build-components.ts:1506·1481, 2252).",
       "dependencies": [],
       "sourceExport": "assets/icons/ic_화살표더보기_line.png"
     },
@@ -189,7 +189,7 @@
     {
       "id": "mobileHeaderBack",
       "sourceKey": "7190e284d345ae19a679a16ed7bceafbd54073ca",
-      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_이전 97:88 (Property 1=Solid) 실물 벡터 — Mobile Header 좌측 이전 버튼. 정본은 makeRequiredIconInstance 라 폴백이 없다(build-components.ts:3118).",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_이전 97:88 (Property 1=Solid) 실물 벡터 — Mobile Header 좌측 이전 버튼. 정본은 makeRequiredIconInstance 라 폴백이 없다(build-components.ts:1458).",
       "file": "mobile-header-back.svg",
       "webAssetFingerprint": "47df1aca6acf41bbc7d168d57ce1d745ad8d8e7972447dc7edaaeabd3255512a",
       "symbolId": "s1-icon-mobile-header-back",
@@ -294,14 +294,14 @@
         "type": "path-subset",
         "pathIndex": 1,
         "rule": "부모 자산의 glyph SVG 안 path 목록에서 pathIndex 번째 경로 하나만 남기고 frame·glyph·viewBox 는 그대로 유지한다.",
-        "why": "정본은 알림을 아이콘 1개 인스턴스로 쓰면서 본체(color/icon/gray-dark)와 신규 점(color/icon/red) 2색을 입힌다(build-components.ts:3173). 웹은 CSS 마스크 1겹으로 2색을 낼 수 없어 같은 원본을 본체 마스크와 점 마스크로 두 번 쓴다. 점 조각은 새로 그린 것이 아니라 원본의 일부이므로 독립 원본 대조 대상이 아니고, 대신 \"정말 그 원본의 일부인가\"를 검사기가 매번 기계로 증명한다(scripts/ui-library-icon-origin-check.js)."
+        "why": "정본은 알림을 아이콘 1개 인스턴스로 쓰면서 본체(color/icon/gray-dark)와 신규 점(color/icon/red) 2색을 입힌다(build-components.ts:3554). 웹은 CSS 마스크 1겹으로 2색을 낼 수 없어 같은 원본을 본체 마스크와 점 마스크로 두 번 쓴다. 점 조각은 새로 그린 것이 아니라 원본의 일부이므로 독립 원본 대조 대상이 아니고, 대신 \"정말 그 원본의 일부인가\"를 검사기가 매번 기계로 증명한다(scripts/ui-library-icon-origin-check.js)."
       },
       "accentColorToken": "--color-icon-red"
     },
     {
       "id": "mobileHeaderArrowDown",
       "sourceKey": "6babc3f493e48be1e7191a7b8a68945833039fe8",
-      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_화살표,더보기,다음장 419:68 (Property 1=Solid) 실물 벡터 — Mobile Header 서브타이틀 아래화살표. 원본은 Fill 1(12×12)이 hidden 이고 보이는 것은 Stroke 2 획뿐이다(정본 주석 build-components.ts:3143-3144).",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_화살표,더보기,다음장 419:68 (Property 1=Solid) 실물 벡터 — Mobile Header 서브타이틀 아래화살표. 원본은 Fill 1(12×12)이 hidden 이고 보이는 것은 Stroke 2 획뿐이다(정본 주석 build-components.ts:3550-3525).",
       "file": "mobile-header-arrow-down.svg",
       "webAssetFingerprint": "818bd5f7ee1a6ab7cd5c5ef293267197f66136e48b31ca0a7e314a4df1833dc6",
       "symbolId": "s1-icon-mobile-header-arrow-down",
@@ -320,14 +320,14 @@
         },
         "scaling": "proportional"
       },
-      "geometryEvidence": "정본이 24px 그대로 -90° 회전해 쓴다(build-components.ts:3166 makeRequiredIconInstance(\"mobileHeaderArrowDown\", iconDark, 24, undefined, -90)). 이 아이콘은 채움(fill)이 아니라 중심정렬 획(stroke)으로 그려지므로 glyph 를 경로(path) 경계로 잡으면 획의 바깥 절반이 중첩 SVG 뷰포트에 잘린다 — 2026-09-02 4-verification F-1 이 실측으로 적발했다(잉크량 원본 50.4 → 웹 43.8, 글리프 영역 기준 오차 0.02484 > 임계 0.015). 따라서 chevron.svg 와 동일하게 24 프레임 전체를 glyph 뷰포트로 두고 경로를 24 좌표계에 직접 그린다(경로 좌표는 같은 형상: M10.375 7.75L14.625 12L10.375 16.25). 획 기반 글리프에는 경로 경계 선언이 성립하지 않는다 — 같은 아이콘 패밀리의 chevron(419:67)이 같은 규칙을 쓴다. 원본 대조 기준은 저장소 내보내기 assets/icons/ic_화살표더보기_solid.png(24 프레임) 그대로다.",
+      "geometryEvidence": "정본이 24px 그대로 -90° 회전해 쓴다(build-components.ts:3547 makeRequiredIconInstance(\"mobileHeaderArrowDown\", iconDark, 24, undefined, -90)). 이 아이콘은 채움(fill)이 아니라 중심정렬 획(stroke)으로 그려지므로 glyph 를 경로(path) 경계로 잡으면 획의 바깥 절반이 중첩 SVG 뷰포트에 잘린다 — 2026-09-02 4-verification F-1 이 실측으로 적발했다(잉크량 원본 50.4 → 웹 43.8, 글리프 영역 기준 오차 0.02484 > 임계 0.015). 따라서 chevron.svg 와 동일하게 24 프레임 전체를 glyph 뷰포트로 두고 경로를 24 좌표계에 직접 그린다(경로 좌표는 같은 형상: M10.375 7.75L14.625 12L10.375 16.25). 획 기반 글리프에는 경로 경계 선언이 성립하지 않는다 — 같은 아이콘 패밀리의 chevron(419:67)이 같은 규칙을 쓴다. 원본 대조 기준은 저장소 내보내기 assets/icons/ic_화살표더보기_solid.png(24 프레임) 그대로다.",
       "dependencies": [],
       "sourceExport": "assets/icons/ic_화살표더보기_solid.png"
     },
     {
       "id": "calendar",
       "sourceKey": "ea0ffc118c38048f2cdfb5620be31c120426bb7a",
-      "sourceBuilderSymbol": "CAL_ICON (build-components.ts:3672, buildDatePicker)",
+      "sourceBuilderSymbol": "CAL_ICON (build-components.ts:4480, buildDatePicker)",
       "file": "calendar.svg",
       "webAssetFingerprint": "71c7c065292c532754bc0ecb19b0b1b061cec8a3247bbcd12aafb89532c06581",
       "symbolId": "s1-icon-calendar",
@@ -431,7 +431,7 @@
     {
       "id": "globe",
       "sourceKey": "dee16df7e4ccddbd5dd7aa1d2fbf93f841f5dee2",
-      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_인터넷 35:3317 (Property 1=Line, 35:3314) 실물 벡터 — OAuth 연결 get_design_context 로 2026-09-09 확보(figma-local 데스크톱 세션이 이 세션에 없어 OAuth 경로로 대체, 결과는 같은 라이브러리 파일·같은 노드). 설치기 GNB_UTIL_SVGS.lang(build-components.ts:3068)은 같은 도형을 24-frame·18x18 viewBox 로 옮겨 쓴 값이라 좌표가 1.333배 스케일된 사본임을 대조로 확인했다(0 0 18 18 원본 × 4/3 = 0 0 24 24, path 좌표 비율 일치) — 그래도 폴백 표시(비고)가 있어 웹 자산은 이번에 받은 원본에서 새로 만들었다. 잉크색은 선례(close·remove·clock·search)와 같이 black 으로 정규화 — 웹은 CSS 마스크(알파)만 쓰므로 색은 무의미하고, 원본 대조기가 웹 래스터를 RGB 로 읽어 어두운 정도를 알파로 환산하기 때문.",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_인터넷 35:3317 (Property 1=Line, 35:3314) 실물 벡터 — OAuth 연결 get_design_context 로 2026-09-09 확보(figma-local 데스크톱 세션이 이 세션에 없어 OAuth 경로로 대체, 결과는 같은 라이브러리 파일·같은 노드). 설치기 GNB_UTIL_SVGS.lang(build-components.ts:3176)은 같은 도형을 24-frame·18x18 viewBox 로 옮겨 쓴 값이라 좌표가 1.333배 스케일된 사본임을 대조로 확인했다(0 0 18 18 원본 × 4/3 = 0 0 24 24, path 좌표 비율 일치) — 그래도 폴백 표시(비고)가 있어 웹 자산은 이번에 받은 원본에서 새로 만들었다. 잉크색은 선례(close·remove·clock·search)와 같이 black 으로 정규화 — 웹은 CSS 마스크(알파)만 쓰므로 색은 무의미하고, 원본 대조기가 웹 래스터를 RGB 로 읽어 어두운 정도를 알파로 환산하기 때문.",
       "file": "globe.svg",
       "webAssetFingerprint": "8f147cc0e628fe5784b50c1341a39d0ab4ab503a611b6602bf88af6a7a95cba0",
       "symbolId": "s1-icon-globe",
@@ -457,7 +457,7 @@
     {
       "id": "account",
       "sourceKey": "a423e2e05cfff2f93062d6a83d6f3bdf79ca9647",
-      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_계정/사용자/ID 86:58 (Property 1=Line, 86:56) 실물 벡터 — OAuth 연결 get_design_context 로 2026-09-09 확보(사유는 globe 항목과 동일). 설치기 GNB_UTIL_SVGS.account(build-components.ts:3069)는 같은 도형을 24-frame·18x16.1862 viewBox 를 4/3 배로 옮겨 쓴 값(0 0 24 21.5816)이라 좌표 비교로 동일 도형임을 확인했다. 잉크색은 선례와 같이 black 으로 정규화.",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_계정/사용자/ID 86:58 (Property 1=Line, 86:56) 실물 벡터 — OAuth 연결 get_design_context 로 2026-09-09 확보(사유는 globe 항목과 동일). 설치기 GNB_UTIL_SVGS.account(build-components.ts:3177)는 같은 도형을 24-frame·18x16.1862 viewBox 를 4/3 배로 옮겨 쓴 값(0 0 24 21.5816)이라 좌표 비교로 동일 도형임을 확인했다. 잉크색은 선례와 같이 black 으로 정규화.",
       "file": "account.svg",
       "webAssetFingerprint": "073f6c09e0a04fb164768e1036a9c578a50a2f272e7446a138432a14c6f83f4d",
       "symbolId": "s1-icon-account",
@@ -483,7 +483,7 @@
     {
       "id": "menu",
       "sourceKey": "5157e9edc76358e2e6bc1a5ebc1539ccf5f2e787",
-      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_메뉴 97:227 (Property 1=Line, 97:226) 실물 벡터 — OAuth 연결 get_design_context 로 2026-09-09 확보(사유는 globe 항목과 동일). 설치기 GNB_UTIL_SVGS.menu(build-components.ts:3070)는 같은 도형을 24-frame·18x12.6955 viewBox 를 4/3 배로 옮겨 쓴 값(0 0 24 16.9274)이라 좌표 비교로 동일 도형임을 확인했다. 잉크색은 선례와 같이 black 으로 정규화.",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_메뉴 97:227 (Property 1=Line, 97:226) 실물 벡터 — OAuth 연결 get_design_context 로 2026-09-09 확보(사유는 globe 항목과 동일). 설치기 GNB_UTIL_SVGS.menu(build-components.ts:3178)는 같은 도형을 24-frame·18x12.6955 viewBox 를 4/3 배로 옮겨 쓴 값(0 0 24 16.9274)이라 좌표 비교로 동일 도형임을 확인했다. 잉크색은 선례와 같이 black 으로 정규화.",
       "file": "menu.svg",
       "webAssetFingerprint": "7852046c3b341d01b35eab7f38722bd774d70787e2e823e22b383a889b76c421",
       "symbolId": "s1-icon-menu",

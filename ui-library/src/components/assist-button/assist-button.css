@@ -1,4 +1,4 @@
-/* Assist Button — 정본 buildAssistButtonSet(build-components.ts:582) 기준.
+/* Assist Button — 정본 buildAssistButtonSet(build-components.ts:637) 기준.
    크기 축 없음(h32 하나). 상태는 State=Default·Hover·Pressed·Disabled 4가지뿐이며
    Pressed = Hover(코어 Button 과 같은 규칙)이라 CSS는 :hover와 :active를 합쳐 표현한다.
    배경·기본 테두리는 원본처럼 Button Secondary 토큰을 그대로 빌려 쓴다(전용 토큰 아님). */

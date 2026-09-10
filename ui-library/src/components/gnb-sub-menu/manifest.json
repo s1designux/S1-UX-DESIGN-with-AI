@@ -2,7 +2,7 @@
   "id": "gnb-sub-menu",
   "version": "0.1.0",
   "status": "verified",
-  "canonicalFingerprint": "5d56bd29c1926cfd18c721576e3995ad45dd84adc05786f5db3d4607113a0289",
+  "canonicalFingerprint": "2215fbb457d25889f08734b4bf92b264f0c7a7fba2468f39186a5defbbb8116b",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -72,7 +72,7 @@
     "coreComponents": [
       "gnb-sub-menu-item"
     ],
-    "coreComponentsNote": "컬럼 안 각 <li> 의 내용은 GNB Sub Menu Item 코어 그대로다(build-components.ts:3737 itemComp). gnb-sub-menu 를 개별 설치할 때 gnb-sub-menu-item 의 CSS 도 함께 로드해야 한다."
+    "coreComponentsNote": "컬럼 안 각 <li> 의 내용은 GNB Sub Menu Item 코어 그대로다(build-components.ts:3866 itemComp). gnb-sub-menu 를 개별 설치할 때 gnb-sub-menu-item 의 CSS 도 함께 로드해야 한다."
   },
   "icons": [],
   "a11y": {

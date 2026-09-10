@@ -2,7 +2,7 @@
   "id": "filter-chip",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "07127adece4bd121d1c61a64ee142646eddaae2eec39322daba46f4e0d8299e4",
+  "canonicalFingerprint": "2c07b7c0e03ec7f3b4a0a91964dcfed6086d6a4cfd8172209742c141ddf0cccc",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -53,7 +53,7 @@
     "itemSpacing": "--spacing-4",
     "radius": "--radius-full",
     "border": "--border-width-1",
-    "icon": "--sizing-20 (fixed, fcIconPx 미사용, build-components.ts:2252)",
+    "icon": "--sizing-20 (fixed, fcIconPx 미사용, build-components.ts:2599)",
     "source": "build-components.ts buildFilterChip 2195-2330"
   },
   "states": {
@@ -73,7 +73,7 @@
   "notInCanon": {
     "multiSelect": "정본에 다중 선택 Filter Chip 이 없다. 이번 배포에서 만들지 않았다.",
     "errorAxis": "정본에 Error 상태가 없다.",
-    "panelSizeSameAsSelect": "패널 사이즈는 Select 와 다르게 매핑된다(SM→xsm·MD→xsm, river 결정 2026-09-01). Select 의 매핑을 재사용하지 않았다(build-components.ts:2264-2288)."
+    "panelSizeSameAsSelect": "패널 사이즈는 Select 와 다르게 매핑된다(SM→xsm·MD→xsm, river 결정 2026-09-01). Select 의 매핑을 재사용하지 않았다(build-components.ts:2602-2626)."
   },
   "parts": [
     "trigger",

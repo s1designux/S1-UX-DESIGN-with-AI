@@ -1,6 +1,6 @@
 /* Filter Chip — 정본 buildFilterChip(2195-2330) 기준.
    Selected(=열림) 은 Dropdown(dropdown 모듈) 인스턴스를 자식으로 붙인다.
-   패널 사이즈 매핑은 Select 와 다르다: SM→xsm · MD→xsm (build-components.ts:2264-2288, river 결정 2026-09-01). */
+   패널 사이즈 매핑은 Select 와 다르다: SM→xsm · MD→xsm (build-components.ts:2602-2626, river 결정 2026-09-01). */
 
 [data-s1-component="filter-chip"] {
   display: inline-flex;
@@ -23,7 +23,7 @@
   gap: var(--spacing-4);
 }
 
-/* Size×Break — build-components.ts:2209-2213 */
+/* Size×Break — build-components.ts:2546-2550 */
 /* 화살표는 칩의 오른쪽 끝에 둔다 — river 지시 2026-09-07("칩의 라벨과 화살표아이콘이 좌우로 벌어지지 않는다").
    칩은 정본대로 내용 크기(hug)라 평소에는 남는 공간이 없어 **보이는 결과가 바뀌지 않는다**(폭·간격 실측 동일 확인).
    칩에 폭이 주어지는 경우(권장 사용은 아니다 — D24 에서 미지원으로 정리)에만 화살표가 끝으로 밀린다.
@@ -56,7 +56,7 @@
   color: inherit;
 }
 
-/* 아이콘 — chevron 20px 고정(리터럴, fcIconPx 미사용, build-components.ts:2252). currentColor 로 라벨색을 따라간다. */
+/* 아이콘 — chevron 20px 고정(리터럴, fcIconPx 미사용, build-components.ts:2599). currentColor 로 라벨색을 따라간다. */
 [data-s1-component="filter-chip"] [data-s1-part="icon"] {
   background-color: currentColor;
   flex: 0 0 auto;
@@ -114,7 +114,7 @@
   color: var(--color-chip-solid-label-disabled);
 }
 
-/* Title(있음) + Line 조합만 값 라벨을 항상 강조색으로 — disabled 는 제외(build-components.ts:2251, valLbSlot). */
+/* Title(있음) + Line 조합만 값 라벨을 항상 강조색으로 — disabled 는 제외(build-components.ts:2588, valLbSlot). */
 [data-s1-component="filter-chip"][data-variant="line"][data-title="on"] [data-s1-part="value"] {
   color: var(--color-chip-line-label-selected);
 }

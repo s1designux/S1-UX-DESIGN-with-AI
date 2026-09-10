@@ -24,7 +24,7 @@
   font-weight: var(--font-weight-regular);
   gap: var(--spacing-8);
   justify-content: space-between;
-  /* 정본 trigger.resize(150, sc.h) (build-components.ts:2359). river 지시(2026-09-03):
+  /* 정본 trigger.resize(150, sc.h) (build-components.ts:2726). river 지시(2026-09-03):
      ①기본 폭이 너무 좁고 ②값이 들어오면(Filled) 글자가 짧아져 입력칸이 줄어들었다 — 둘 다
      내용에 따라 폭이 정해지던 탓이다. 정본 폭을 최소 폭으로 두면 상태가 바뀌어도 크기가 그대로다.
      Select 가 정본 140 을 같은 방식으로 쓰는 선례와 동일(river 지시 2026-09-01, select.css:23).
@@ -33,7 +33,7 @@
   width: 100%;
 }
 
-/* Size × Break — build-components.ts:2380-2385 */
+/* Size × Break — build-components.ts:2682-2687 */
 [data-s1-component="time-picker"][data-size="xxsm"] [data-s1-part="trigger"] {
   font-size: var(--font-size-12);
   /* 호스트 페이지 상속 차단 — 정본 텍스트 스타일은 전부 130% 이고(10px 만 140%, 여기선 미사용),
@@ -78,7 +78,7 @@
   white-space: nowrap;
 }
 
-/* 아이콘 — clock. 크기: XXSM=20px, 그 외=24px (fcIconPx, build-components.ts:1312·2411). */
+/* 아이콘 — clock. 크기: XXSM=20px, 그 외=24px (fcIconPx, build-components.ts:1506·2411). */
 [data-s1-component="time-picker"] [data-s1-part="icon"] {
   background-color: var(--color-form-control-icon-default);
   flex: 0 0 auto;
@@ -122,7 +122,7 @@
    테두리를 border 가 아니라 inset 그림자로 그리는 이유: 정본 stroke 는 strokeAlign="INSIDE" 라
    바깥 폭(121/194)을 유지한 채 안쪽 내용 위에 겹쳐 그려진다. CSS border 로 옮기면 내용 폭이
    2px 줄어 열 폭이 44→43 으로 어긋난다(독립 검증 F-2 실측). inset 그림자가 그 동작의 정확한 대응이다.
-   트리거와의 간격은 정본 Time Picker 컴포넌트의 itemSpacing=4(build-components.ts:2363). */
+   트리거와의 간격은 정본 Time Picker 컴포넌트의 itemSpacing=4(build-components.ts:2730). */
 [data-s1-component="time-picker"] [data-s1-part="panel"] {
   background: var(--color-dropdown-list-bg);
   border-radius: var(--radius-4);
@@ -338,7 +338,7 @@
 [data-s1-component="time-picker"] [data-s1-part="wheel"] {
   display: flex;
   /* 열 간격은 정본이 평탄하지 않다 — 오전오후↔시각묶음 36, 시↔콜론↔분 32
-     (build-components.ts:4275·4280 주석이 그 이유까지 적어 둔다). 기본을 32 로 두고
+     (build-components.ts:4833·4837 주석이 그 이유까지 적어 둔다). 기본을 32 로 두고
      오전오후 다음 열에만 4 를 더해 36 을 만든다. 종전 웹은 간격 규칙이 아예 없었다. */
   column-gap: var(--spacing-32);
   height: 270px; /* 정본 그대로 — 위아래 여백 40 + 열 높이 190(항목 42 × 3 + 간격 32 × 2) */

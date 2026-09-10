@@ -48,7 +48,7 @@
 }
 
 /* 전체 선택 줄만 내용 행을 1px 낮춰 아래 구분선(1px)과 합쳐 다른 줄과 같은 총높이를 만든다.
-   정본 주석 "총높이는 다른 줄과 같게 유지(내용 = h-1)"(build-components.ts:1633-1645) 그대로. */
+   정본 주석 "총높이는 다른 줄과 같게 유지(내용 = h-1)"(build-components.ts:1877-1889) 그대로. */
 [data-s1-component="dropdown"][data-size="xxsm"] [data-s1-part="option"][data-select-all="true"] {
   min-height: calc(var(--sizing-28) - var(--border-width-1));
 }
@@ -73,7 +73,7 @@
   padding-inline: var(--spacing-12);
 }
 
-/* 체크박스 유형만 체크박스↔글자 간격(8px)을 갖는다 — 글자 유형은 itemSpacing 0(build-components.ts:1576-1583) */
+/* 체크박스 유형만 체크박스↔글자 간격(8px)을 갖는다 — 글자 유형은 itemSpacing 0(build-components.ts:1854) */
 [data-s1-component="dropdown"][data-type="checkbox"] [data-s1-part="option"] {
   gap: var(--spacing-8);
 }
@@ -108,7 +108,7 @@
   flex: 0 0 auto;
 }
 
-/* 전체 선택 줄 아래 1px 구분선 — 패널이 아니라 이 줄이 들고 있다(build-components.ts:1637-1645) */
+/* 전체 선택 줄 아래 1px 구분선 — 패널이 아니라 이 줄이 들고 있다(build-components.ts:1913-1921) */
 [data-s1-component="dropdown"] [data-s1-part="divider"] {
   background: var(--color-dropdown-list-border);
   flex: 0 0 auto;

@@ -321,7 +321,7 @@ for (const id of componentIds) {
     }
     if (/box-shadow:\s*inset 0 calc\(-1 \* var\(--border-width-1\)\)/.test(css) || /border-bottom:\s*var\(--border-width-2\)/.test(css)) failures.push("tab must not draw its baseline inside the reserved indicator space");
   }
-  /* Assist Button — 정본 buildAssistButtonSet(build-components.ts:582). 크기 축 없음(h32 하나),
+  /* Assist Button — 정본 buildAssistButtonSet(build-components.ts:637). 크기 축 없음(h32 하나),
      variant 축 없음. 배경·기본 테두리는 Button Secondary 토큰을 그대로 빌려 쓴다(전용 토큰 아님). */
   if (id === "assist-button") {
     if (manifest.jsRequired !== false) failures.push("assist-button must remain jsRequired=false; native semantics carry the behavior");
@@ -341,7 +341,7 @@ for (const id of componentIds) {
       failures.push("assist-button disabled state must reuse the core Button disabled tokens");
     }
   }
-  /* Text Button — 정본 buildTextButtonSet(build-components.ts:668). Variant(Primary|Secondary) × State 4 = 8변형,
+  /* Text Button — 정본 buildTextButtonSet(build-components.ts:711). Variant(Primary|Secondary) × State 4 = 8변형,
      크기 축 없음(hug). Hover·Pressed 는 색을 바꾸지 않고 밑줄만 더한다. */
   if (id === "text-button") {
     if (manifest.jsRequired !== false) failures.push("text-button must remain jsRequired=false; underline is pure CSS");
@@ -449,7 +449,7 @@ for (const id of componentIds) {
       failures.push("time-picker cell must not have a border — canon removed it 2026-06-30");
     }
   }
-  /* GNB Sub Menu Item — 정본 buildGNBSubMenuItem(build-components.ts:3697). Depth×State 6변형, 크기 축 없음. */
+  /* GNB Sub Menu Item — 정본 buildGNBSubMenuItem(build-components.ts:3822). Depth×State 6변형, 크기 축 없음. */
   if (id === "gnb-sub-menu-item") {
     if (manifest.jsRequired !== false) failures.push("gnb-sub-menu-item must remain jsRequired=false; native :hover/aria-current carry the behavior");
     if (!css.includes("var(--color-navigation-submenu-label-default)")) failures.push("gnb-sub-menu-item 1depth default color must reuse color/navigation/submenu/label/default");
@@ -457,7 +457,7 @@ for (const id of componentIds) {
     if (!css.includes("var(--color-navigation-label-selected)")) failures.push("gnb-sub-menu-item hover/selected color must reuse color/navigation/label/selected");
     if (!example.includes('data-depth="1depth"') || !example.includes('data-depth="2depth"')) failures.push("gnb-sub-menu-item example must demonstrate both depths");
   }
-  /* GNB Sub Menu — 정본 buildGNBSubMenu(build-components.ts:3737). Type 3변형(regular·compact-1·compact-2,
+  /* GNB Sub Menu — 정본 buildGNBSubMenu(build-components.ts:3864). Type 3변형(regular·compact-1·compact-2,
      2026-09-09 개편), PC 전용, 컬럼 슬롯 구조. */
   if (id === "gnb-sub-menu") {
     if (manifest.jsRequired !== false) failures.push("gnb-sub-menu must remain jsRequired=false; the canon has no open/close behavior (2-canon-readiness §A)");
@@ -474,7 +474,7 @@ for (const id of componentIds) {
       failures.push("gnb-sub-menu root must use data-type, not the retired data-depth panel axis");
     }
     if (/\[data-s1-part="columns"\]\s*\{[^}]*flex:\s*1/.test(css) || /\[data-s1-part="columns"\]\s*\{[^}]*width:\s*100%/.test(css)) {
-      failures.push("gnb-sub-menu column group must stay hug-sized — stretching it removes the centering margin (canon comment build-components.ts:3814)");
+      failures.push("gnb-sub-menu column group must stay hug-sized — stretching it removes the centering margin (canon comment build-components.ts:3932)");
     }
     if (!/\[data-s1-component="gnb-sub-menu"\]\[hidden\]\s*\{\s*display:\s*none;?\s*\}/.test(css)) {
       failures.push("gnb-sub-menu.css must force display:none on [hidden] — the unconditional display:flex on the same root selector otherwise overrides the UA default and the panel stays visible when gnb.js sets hidden=true");
@@ -530,7 +530,7 @@ for (const id of componentIds) {
       }
     }
     // start 정렬은 로고+메뉴를 [data-s1-part="leading"] 로 묶어야 gap 64 규칙이 걸린다
-    // (manifest.htmlContract.relations, 정본 build-components.ts:3593-3600). 이 래퍼가 빠지면
+    // (manifest.htmlContract.relations, 정본 build-components.ts:3715-3717). 이 래퍼가 빠지면
     // 예시를 그대로 복붙했을 때 로고↔메뉴 간격이 0이 된다(gnb-sub-menu 6회차에서 실제로 발견됨).
     for (const navBlock of example.matchAll(/<nav data-s1-component="gnb"[^>]*data-variant="start"[\s\S]*?<\/nav>/g)) {
       const nav = navBlock[0];

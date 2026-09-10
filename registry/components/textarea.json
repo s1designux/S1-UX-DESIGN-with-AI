@@ -17,7 +17,7 @@
       "--textarea-* 별도 정의 없음 — --input-* 토큰 공유 확정(2026-05-20). Input과 시각 동일, 추가 divergence 없음.",
       "Figma Inputbox_large 노드 확인 후 figmaNodeId 등록 예정.",
       "resize 속성(none/vertical/both) 정책 미확정.",
-      "구조 불일치(2026-07-14): 웹 Textarea 에는 안내(helper) 텍스트가 있으나(이 tokens 표 --input-helper-text), Figma 설치기 빌더는 Text Area 안내문을 생성하지 않는다(build-components.ts:1144 '1차는 필드 상태만'). 색이 아니라 '요소 존재'가 다름 — 별도 작업으로 Figma 빌더에 helper 요소 추가 필요(needs-core-update). 기본 안내색은 Input 과 동일 기준 text/state/caption(gray/500).",
+      "구조 불일치(2026-07-14): 웹 Textarea 에는 안내(helper) 텍스트가 있으나(이 tokens 표 --input-helper-text), Figma 설치기 빌더는 Text Area 안내문을 생성하지 않는다(build-components.ts:1632 '1차는 필드 상태만'). 색이 아니라 '요소 존재'가 다름 — 별도 작업으로 Figma 빌더에 helper 요소 추가 필요(needs-core-update). 기본 안내색은 Input 과 동일 기준 text/state/caption(gray/500).",
       "resize 정책 확정(2026-09-02, river 결정): 세로로만 늘릴 수 있다(resize: vertical). 가로 확장은 옆 요소를 밀어 레이아웃이 깨져 금지."
     ]
   },

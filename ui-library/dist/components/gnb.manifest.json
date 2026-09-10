@@ -2,7 +2,7 @@
   "id": "gnb",
   "version": "0.1.0",
   "status": "verified",
-  "canonicalFingerprint": "1ee3551dd79850a77f44a9b32bb88c43df8aa6f3023a91630dc21b21aa3b8fab",
+  "canonicalFingerprint": "a47a72305b82a0f4e192c750b78ae713446a64c9edd3c57e8035f08ef469e207",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -34,7 +34,7 @@
     "Size × State=Selected": "selected"
   },
   "notInCanon": {
-    "utilSizeAxis": "registry gnb.json 의 sizing 은 xsm 유틸 아이콘을 24px 프레임/18px glyph 로 축소한다고 서술하지만, 정본 buildGNBUtilIcon(build-components.ts:3155)은 GNB 사이즈(sk)를 받지 않고 32×32/24glyph 고정 1변형만 만든다(BUILT_COMPS['GNBUtil:full'] 을 md·sm·xsm 전부가 그대로 재사용, buildGNB:3607-3612). 시각 정본(canonicalBoundaries.visual)을 따라 유틸 아이콘은 사이즈 불문 32×32/24glyph 고정으로 배포한다.",
+    "utilSizeAxis": "registry gnb.json 의 sizing 은 xsm 유틸 아이콘을 24px 프레임/18px glyph 로 축소한다고 서술하지만, 정본 buildGNBUtilIcon(build-components.ts:3263)은 GNB 사이즈(sk)를 받지 않고 32×32/24glyph 고정 1변형만 만든다(BUILT_COMPS['GNBUtil:full'] 을 md·sm·xsm 전부가 그대로 재사용, buildGNB:3607-3612). 시각 정본(canonicalBoundaries.visual)을 따라 유틸 아이콘은 사이즈 불문 32×32/24glyph 고정으로 배포한다.",
     "menuKeyboardArrowNav": "정본·registry 모두 메뉴 간 방향키 이동을 정의하지 않는다(2-canon-readiness A). Tab 순서 이동만 제공한다.",
     "utilVariantAxis": "GNB Utility Icon 세트는 language·menu·user on/off 5변형을 갖지만, GNB 바가 실제로 쓰는 것은 all-on(GNBUtil:full) 1개뿐이다(buildGNB:3607, registry 서술). 다른 4변형은 이 컴포넌트가 배포하지 않는다 — 유틸 영역 구성을 바꾸려면 host 화면이 data-s1-part 를 골라 빼고 넣는다.",
     "subMenuOpenClose": "정본에는 하위메뉴를 여는 트리거도 여닫는 동작도 없다(2-canon-readiness §A) — 그래서 D2(2026-09-09 1차 결정)는 배포본에 여닫는 코드를 넣지 않았다. river 가 그 결정을 직접 뒤집었다(D4, 2026-09-09 실제 발화: \"GNB 서브메뉴를 GNB랑 같은 화면에 구성해야하지 않을까? 그리고 액션되는것도 구현 함께 해야하고\" + 여는 방법으로 '마우스를 올리면 열림' 선택) — 그 결정에 따라 gnb 가 여닫는 런타임을 갖는다(D5: 트리거를 아는 쪽이 gnb 이므로). 시각·구조(색·크기·패널 모양)는 여전히 정본 그대로이고, 바뀐 것은 상호작용뿐이다."
@@ -229,5 +229,5 @@
     },
     "behaviorContract": "registry/components/component-behavior.pc.json 의 \"GNB\" 장부."
   },
-  "sourceFingerprint": "822ee7f9759aeb95856872c868771aed07d3c7e754ef795994d70b574a1a198c"
+  "sourceFingerprint": "fbf5601437a9d60fcdf81db17c709bcf342ca97c37e77ce408fb778f79a06852"
 }

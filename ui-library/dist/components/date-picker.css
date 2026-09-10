@@ -23,7 +23,7 @@
   font-weight: var(--font-weight-regular);
   gap: var(--spacing-8);
   justify-content: space-between;
-  min-width: 180px; /* 정본 trigger.resize(180, sc.h) — build-components.ts:3696 */
+  min-width: 180px; /* 정본 trigger.resize(180, sc.h) — build-components.ts:4507 */
   padding-left: var(--spacing-16);
   padding-right: var(--spacing-8);
   width: 100%;
@@ -47,7 +47,7 @@
   mask: url("../assets/icons/calendar.svg") center / contain no-repeat;
 }
 /* F-1: 정본 fcIconPx(h) — h<=28(XXSM)=20, 나머지(XSM 34·MD PC 44·MD Mobile 48)=24
-   (build-components.ts:1256, 3698). select·time-picker 와 동일한 사이즈별 분기 방식. */
+   (build-components.ts:1506, 4506). select·time-picker 와 동일한 사이즈별 분기 방식. */
 [data-s1-component="date-picker"][data-size="xxsm"] [data-s1-part="icon"] { width: var(--sizing-20); height: var(--sizing-20); }
 [data-s1-component="date-picker"][data-size="xsm"] [data-s1-part="icon"],
 [data-s1-component="date-picker"][data-size="md"] [data-s1-part="icon"] { width: var(--sizing-24); height: var(--sizing-24); }

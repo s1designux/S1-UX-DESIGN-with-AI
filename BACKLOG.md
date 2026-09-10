@@ -8,8 +8,8 @@
 
 - **성격**: 버그 가능성. 백로그가 아니라 확인 대상.
 - **증상 가능성**: 설치기 실행 중 Calendar Cell/Tile 세트가 재사용됐다가 뒤 단계에서 다시 삭제될 수 있는 분기가 코드상 관측됨.
-  - `build-components.ts:2858-2883` (재사용 로직)
-  - `build-components.ts:4808` (삭제 분기)
+  - `build-components.ts:4248-4262` (재사용 로직 — `getOrBuildCalendarCell`)
+  - `build-components.ts:6881-6883` (삭제 분기 — 옛 산출물 이름 기준 제거)
 - **왜 지금 보나**: 실제로 발생한다면 Calendar 컴포넌트가 설치 결과에서 누락되거나 깨진 상태로 남을 수 있음. 현재 영향 여부 미확인.
 - **확인 방법**: 다음 설치기 실행 시, Calendar Cell/Tile 세트가 정상적으로 남아 있는지, 배리언트가 전부 있는지 육안 확인.
 - **부수 확인**: 모듈 캐시(`_calCell` 등)가 설치 실행 사이에 초기화되는지. 초기화되지 않으면 두 번째 실행부터 동작이 달라질 수 있음.
@@ -46,7 +46,7 @@
          1007~1010 (selected 전용 selected-hover 규칙) — 2026-07-30 재확인
 
 ⚠️ 정정 (작업 ③ 조사 결과): chip solid 는 '우회 배선' 이 아니었다 — 아래 기록이 오판이었음.
-   chip-solid-bg-selected-hover 는 plugins/figma-vars-installer/src/vars-data.ts:508 에 이미 정의돼 있고(light blue/500 · dark blue-dark/250),
+   chip-solid-bg-selected-hover 는 plugins/figma-vars-installer/src/vars-data.ts:545 에 이미 정의돼 있고(light blue/500 · dark blue-dark/250),
    tokens.css 의 해당 줄은 GEN:SEMANTIC 자동생성 블록 안이며(수동 직접 배선 아님) vars-data 와 같은
    커밋(6bbde8c3, 2026-07-10)에서 함께 생성됐다. 웹·semantic·install-prompt 전 표면에도 정상 반영돼 있었다.
    → chip 은 작업 ③ 에서 손대지 않았다(고칠 것 없음). date-picker 만 실제 신설 작업이었다.
@@ -363,7 +363,7 @@ zip 반영 여부를 수동 확인해야 하는 구조
 - `pages/policy.html:314·337` 에 `--color-action-primary` 유령 참조 2건 (정의 없음. 정본은 `--color-action-primary-default`)
 - `plugins/ds-apply/skills/ds-apply/references/tokens.css` 가 원본보다 4종 뒤짐 (`--color-modal-panel-border`, `--shadow-dropdown`, `--shadow-raised`, `--shadow-raised-up`)
 - **정본 신설 후보 0건.** `vars-data.ts` SEMANTIC_COLOR 171종 = `tokens.css` Semantic 171종(차집합 양쪽 0). 설치기는 이 171개로 전 컴포넌트를 그리며, 부품 전용 토큰 대신 기존 토큰을 재사용한다
-  - dropdown 트리거 → `color/form-control/{bg,border,text,icon}/*` (`build-components.ts:1263~1267`)
+  - dropdown 트리거 → `color/form-control/{bg,border,text,icon}/*` (`build-components.ts:1697~1701`)
   - toggle knob → `color/control/indicator/selected` · `indicator/disabled` (`:747`)
   - gnb 밑줄 → `color/navigation/indicator/selected` (`:2500`)
   - navigation 테두리 → `color/line/gray/subtle` (`:2742`)
@@ -372,7 +372,7 @@ zip 반영 여부를 수동 확인해야 하는 구조
 - 실제 문제는 값이 아니라 **이름 배선**이다. registry 의 `name` 이 정본에 없는 별칭(예 `--chip-line-default-icon`)이고, `scripts/gen-design-md.js` 가 그 이름을 `DESIGN.core.md` 에 실어 AI 에 노출한다. 고칠 곳은 registry 의 `name` 필드 또는 `gen-design-md.js` 의 출력 방식 — 둘 중 하나
 - registry 엔트리 138건 중 정본과 이름이 대응하지 않는 것 60건. 전부 이름 문제이며 값 신설은 불필요 (명명 관례 차이 포함: checked↔selected, focus↔selected, on·off↔selected·unselected, row↔cell, text↔label)
 - 값이 정확히 일치하는 정본이 없는 것은 registry 참조 48건 중 3건뿐이고, 셋 다 다크값만 갈린다 — `dropdown.json:75` `--dropdown-list-bg`(surface-raised 다크 #35363F vs 정본 #1C1D23) · `textarea.json:77` `--input-readonly-text`(다크 #3E4049 vs 정본 #8A8C96) · `textarea.json:79` `--input-error-text`(라이트 red-400 vs 정본 red-300)
-- **별건 발견**: 설치기 Chip 에 아이콘·닫기(X) 변형 부품이 없다(`build-components.ts:771~837` 은 fill·stroke·label 3개만). registry `chip.json:150` 은 `subVariants ["text-only","with-icon","with-close"]` 를 선언한다. 토큰 문제가 아니라 컴포넌트 커버리지 공백 — 별도 항목
+- **별건 발견**: 설치기 Chip 에 아이콘·닫기(X) 변형 부품이 없다(`build-components.ts:1066~1129` 은 fill·stroke·label 3개만). registry `chip.json:150` 은 `subVariants ["text-only","with-icon","with-close"]` 를 선언한다. 토큰 문제가 아니라 컴포넌트 커버리지 공백 — 별도 항목
 - ds-apply 스킬 적용 불가 — `SKILL.md:3` 이 design-system 유지보수 작업을 명시적으로 배제
 
 **[미확인]**
@@ -397,7 +397,7 @@ zip 반영 여부를 수동 확인해야 하는 구조
 **증상:** 부품 세트가 캔버스에 이미 있어 `skipped` 로 보존되면 `BUILT_COMPS` 가 비어, 그 부품을
 인스턴스로 붙이는 부모가 **조용히 fallback 으로 떨어진다**(경고 없음).
 
-**범위:** 의존 23쌍 중 **7쌍**만 해당. 나머지 16쌍은 `getBuiltSet()`(build-components.ts:66-69)·
+**범위:** 의존 23쌍 중 **7쌍**만 해당. 나머지 16쌍은 `getBuiltSet()`(build-components.ts:113-116)·
 `getReuseComp()`(:3560-3567) 이 `figma.currentPage.findOne()` 으로 캔버스의 기존 세트를 찾아
 정상 부착하므로 문제 없다.
 

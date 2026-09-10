@@ -14,7 +14,7 @@
     "figmaNodeId": "723:6",
     "description": "모바일 하단 내비게이션의 탭 아이템(Tab Item) 컴포넌트. 정본은 '탭 1칸'이며 4탭 바 자체는 컴포넌트가 아니라 이 아이템의 인스턴스 조합이다. 아이콘 32 + 라벨 12 세로 배치, 60×60 고정, 배경 투명(바 배경은 화면이 갖는다).",
     "notes": [
-      "설치기는 바를 만들지 않는다 — Tab Item 세트만 생성한다(build-components.ts:2604 주석).",
+      "설치기는 바를 만들지 않는다 — Tab Item 세트만 생성한다(build-components.ts:3357 주석).",
       "웹 가이드 표시명은 'Bottom Nav'(components.html:6279)로 설치기명과 다르다.",
       "V2.4 원본(540:6025)은 selected 아이콘에 color/control/indicator/selected 를 잘못 참조했다. V3.0 편입 시 color/icon/blue 로 재바인딩(정정 (a) 1건) — reports/figma-library-build/mobile-bottom-nav/node-map.json.",
       "V2.4 구본 세트는 2026-07-02 삭제 완료(0 survivors 확인).",

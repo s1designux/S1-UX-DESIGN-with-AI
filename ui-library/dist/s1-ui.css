@@ -80,8 +80,8 @@
   display: none;
 }
 
-/* 트레일링 액션 사이 간격. Password = [눈][지우기] 2px(정본 trail itemSpacing:2, build-components.ts:990).
-   Search = [지우기][돋보기] 4px(정본 trail itemSpacing:4, build-components.ts:1298·1306) — data-mode=search 로 override. */
+/* 트레일링 액션 사이 간격. Password = [눈][지우기] 2px(정본 trail itemSpacing:2, build-components.ts:1246).
+   Search = [지우기][돋보기] 4px(정본 trail itemSpacing:4, build-components.ts:1591) — data-mode=search 로 override. */
 [data-s1-component="input"] [data-s1-part="action"] + [data-s1-part="action"] {
   margin-inline-start: var(--spacing-2);
 }
@@ -121,7 +121,7 @@
 }
 
 /* 비밀번호 표시 전환 — 숨김 중(aria-pressed=false)은 eye_hide, 표시 중(aria-pressed=true)은 eye_show.
-   눈 아이콘 색은 정본이 모든 상태에서 icon/default 하나만 쓴다(build-components.ts:986 — 상태별 분기 없음). */
+   눈 아이콘 색은 정본이 모든 상태에서 icon/default 하나만 쓴다(build-components.ts:1229 — 상태별 분기 없음). */
 [data-s1-component="input"] [data-s1-part="action"][data-action="password"] [data-s1-part="action-icon"] {
   mask: url("./assets/icons/eye_hide.svg") center / contain no-repeat;
 }
@@ -136,7 +136,7 @@
 }
 
 /* Search 돋보기만 Disabled 에서 색을 낮춘다 — 정본 buildSearch 의 Disabled state 만 icon/disabled 를 쓴다
-   (build-components.ts:1266). Password 눈·clear 는 정본에 disabled 전용 아이콘 색이 없어 그대로 둔다. */
+   (build-components.ts:1520). Password 눈·clear 는 정본에 disabled 전용 아이콘 색이 없어 그대로 둔다. */
 [data-s1-component="input"][data-mode="search"]:has([data-s1-part="control"]:disabled) [data-s1-part="action"][data-action="search"] {
   color: var(--color-form-control-icon-disabled);
 }
@@ -746,7 +746,7 @@
 }
 
 /* 전체 선택 줄만 내용 행을 1px 낮춰 아래 구분선(1px)과 합쳐 다른 줄과 같은 총높이를 만든다.
-   정본 주석 "총높이는 다른 줄과 같게 유지(내용 = h-1)"(build-components.ts:1633-1645) 그대로. */
+   정본 주석 "총높이는 다른 줄과 같게 유지(내용 = h-1)"(build-components.ts:1877-1889) 그대로. */
 [data-s1-component="dropdown"][data-size="xxsm"] [data-s1-part="option"][data-select-all="true"] {
   min-height: calc(var(--sizing-28) - var(--border-width-1));
 }
@@ -771,7 +771,7 @@
   padding-inline: var(--spacing-12);
 }
 
-/* 체크박스 유형만 체크박스↔글자 간격(8px)을 갖는다 — 글자 유형은 itemSpacing 0(build-components.ts:1576-1583) */
+/* 체크박스 유형만 체크박스↔글자 간격(8px)을 갖는다 — 글자 유형은 itemSpacing 0(build-components.ts:1854) */
 [data-s1-component="dropdown"][data-type="checkbox"] [data-s1-part="option"] {
   gap: var(--spacing-8);
 }
@@ -806,7 +806,7 @@
   flex: 0 0 auto;
 }
 
-/* 전체 선택 줄 아래 1px 구분선 — 패널이 아니라 이 줄이 들고 있다(build-components.ts:1637-1645) */
+/* 전체 선택 줄 아래 1px 구분선 — 패널이 아니라 이 줄이 들고 있다(build-components.ts:1913-1921) */
 [data-s1-component="dropdown"] [data-s1-part="divider"] {
   background: var(--color-dropdown-list-border);
   flex: 0 0 auto;
@@ -847,7 +847,7 @@
   width: 100%;
 }
 
-/* Size×Break — build-components.ts:1459-1464 */
+/* Size×Break — build-components.ts:1703-1708 */
 [data-s1-component="select"][data-size="xxsm"] [data-s1-part="trigger"] { font-size: var(--font-size-12); height: var(--sizing-28); }
 [data-s1-component="select"][data-size="xsm"] [data-s1-part="trigger"] { font-size: var(--font-size-14); height: var(--sizing-34); }
 [data-s1-component="select"][data-size="md"] [data-s1-part="trigger"] { font-size: var(--font-size-14); height: var(--sizing-44); }
@@ -860,7 +860,7 @@
   white-space: nowrap;
 }
 
-/* 아이콘 — chevron. 크기: XXSM=20px, 그 외=24px(fcIconPx, build-components.ts:1310·1481).
+/* 아이콘 — chevron. 크기: XXSM=20px, 그 외=24px(fcIconPx, build-components.ts:1506·1481).
    방향은 회전으로 표현(닫힘 아래·열림 위) — 정본과 동일 철학. */
 [data-s1-component="select"] [data-s1-part="icon"] {
   background-color: var(--color-form-control-icon-default);
@@ -908,7 +908,7 @@
 }
 
 /* 패널 배치 — dropdown(자식 코어)의 형태·상태는 dropdown.css 가 소유하고, select 는 배치·간격만 담당한다.
-   정본 itemSpacing 8px(build-components.ts:1461 comp.itemSpacing) 유지, 웹에서는 겹쳐 뜨는 오버레이로 배치한다. */
+   정본 itemSpacing 8px(build-components.ts:1732 comp.itemSpacing) 유지, 웹에서는 겹쳐 뜨는 오버레이로 배치한다. */
 [data-s1-component="select"] [data-s1-part="panel"] {
   left: 0;
   margin-top: var(--spacing-8);
@@ -935,7 +935,7 @@
 /* component:filter-chip */
 /* Filter Chip — 정본 buildFilterChip(2195-2330) 기준.
    Selected(=열림) 은 Dropdown(dropdown 모듈) 인스턴스를 자식으로 붙인다.
-   패널 사이즈 매핑은 Select 와 다르다: SM→xsm · MD→xsm (build-components.ts:2264-2288, river 결정 2026-09-01). */
+   패널 사이즈 매핑은 Select 와 다르다: SM→xsm · MD→xsm (build-components.ts:2602-2626, river 결정 2026-09-01). */
 
 [data-s1-component="filter-chip"] {
   display: inline-flex;
@@ -958,7 +958,7 @@
   gap: var(--spacing-4);
 }
 
-/* Size×Break — build-components.ts:2209-2213 */
+/* Size×Break — build-components.ts:2546-2550 */
 /* 화살표는 칩의 오른쪽 끝에 둔다 — river 지시 2026-09-07("칩의 라벨과 화살표아이콘이 좌우로 벌어지지 않는다").
    칩은 정본대로 내용 크기(hug)라 평소에는 남는 공간이 없어 **보이는 결과가 바뀌지 않는다**(폭·간격 실측 동일 확인).
    칩에 폭이 주어지는 경우(권장 사용은 아니다 — D24 에서 미지원으로 정리)에만 화살표가 끝으로 밀린다.
@@ -991,7 +991,7 @@
   color: inherit;
 }
 
-/* 아이콘 — chevron 20px 고정(리터럴, fcIconPx 미사용, build-components.ts:2252). currentColor 로 라벨색을 따라간다. */
+/* 아이콘 — chevron 20px 고정(리터럴, fcIconPx 미사용, build-components.ts:2599). currentColor 로 라벨색을 따라간다. */
 [data-s1-component="filter-chip"] [data-s1-part="icon"] {
   background-color: currentColor;
   flex: 0 0 auto;
@@ -1049,7 +1049,7 @@
   color: var(--color-chip-solid-label-disabled);
 }
 
-/* Title(있음) + Line 조합만 값 라벨을 항상 강조색으로 — disabled 는 제외(build-components.ts:2251, valLbSlot). */
+/* Title(있음) + Line 조합만 값 라벨을 항상 강조색으로 — disabled 는 제외(build-components.ts:2588, valLbSlot). */
 [data-s1-component="filter-chip"][data-variant="line"][data-title="on"] [data-s1-part="value"] {
   color: var(--color-chip-line-label-selected);
 }
@@ -1157,7 +1157,7 @@
 [data-s1-component="pagination"] button:disabled { background: var(--color-pagination-control-bg-disabled); border-color: var(--color-pagination-control-border-disabled); color: var(--color-pagination-control-icon-disabled); cursor: not-allowed; }
 
 /* component:textarea */
-/* Textarea — 정본 buildTextarea(build-components.ts:1388) 기준.
+/* Textarea — 정본 buildTextarea(build-components.ts:1632) 기준.
    축은 State 1개뿐(default·focus·filled·disabled·readonly) — size 축·helper·counter·label 부품 없음(1-inventory.md A).
    색은 color/form-control/* 을 Input 과 그대로 공유한다(registry textarea.json doDont). */
 [data-s1-component="textarea"] {
@@ -1302,7 +1302,7 @@
 }
 
 /* component:modal */
-/* Modal — 정본 buildModalShell(build-components.ts:4438) 기준.
+/* Modal — 정본 buildModalShell(build-components.ts:5290) 기준.
    변형축은 Break(PC·Mobile) × Footer(Single·Dual) 4가지뿐이다. 크기 축·상태 축은 정본에 없다.
    딤(overlay)은 정본 빌더에 없고 registry modal.json anatomy·tokens 가 소유한다(의미의 정본). */
 [data-s1-component="modal"] {
@@ -1418,7 +1418,7 @@
 /* ── Break=PC — 폭 360 · 좌우 여백은 패널이 아니라 내부 블록이 24씩 가진다(정본 paddingLeft/Right=0) ── */
 [data-s1-component="modal"][data-break="pc"] [data-s1-part="panel"] {
   gap: var(--spacing-32);
-  width: 360px;                   /* 정본 comp.resize(360, …) build-components.ts:4512 — 대응 sizing 토큰 없음 */
+  width: 360px;                   /* 정본 comp.resize(360, …) build-components.ts:5368 — 대응 sizing 토큰 없음 */
 }
 
 [data-s1-component="modal"][data-break="pc"] [data-s1-part="content"] { gap: var(--spacing-32); }
@@ -1443,9 +1443,9 @@
 
 /* ── Break=Mobile — 폭 300 · 패널이 좌우 20 여백을 갖고 닫기 버튼이 없다 ── */
 [data-s1-component="modal"][data-break="mobile"] [data-s1-part="panel"] {
-  gap: 30px;                      /* 정본 comp.itemSpacing = 30 build-components.ts:4513 — 대응 spacing 토큰 없음 */
+  gap: 30px;                      /* 정본 comp.itemSpacing = 30 build-components.ts:5369 — 대응 spacing 토큰 없음 */
   padding-inline: var(--spacing-20);
-  width: 300px;                   /* 정본 comp.resize(300, …) build-components.ts:4512 */
+  width: 300px;                   /* 정본 comp.resize(300, …) build-components.ts:5368 */
 }
 
 [data-s1-component="modal"][data-break="mobile"] [data-s1-part="content"] { gap: var(--spacing-24); }
@@ -1561,7 +1561,7 @@
 }
 
 /* component:mobile-bottom-nav */
-/* Mobile Bottom Nav — 정본 buildMobileBottomNav(build-components.ts:2959) 기준.
+/* Mobile Bottom Nav — 정본 buildMobileBottomNav(build-components.ts:3358) 기준.
    변형축은 state(unselected·selected) 1개뿐이다. 정본은 "탭 1칸"만 만들고 4칸 바는
    컴포넌트가 아니다(주석 :2979) — 화면이 아이템 인스턴스를 role=tablist 컨테이너 안에
    가로로 배열해 조립하고, 바 배경은 화면이 --color-navigation-bg 로 칠한다(D1). */
@@ -1614,7 +1614,7 @@
 }
 
 /* component:mobile-header */
-/* Mobile Header — 정본 buildMobileHeaderVariant(build-components.ts:3069)·buildMobileHeader(:3160) 기준.
+/* Mobile Header — 정본 buildMobileHeaderVariant(build-components.ts:3474)·buildMobileHeader(:3160) 기준.
    river 결정(D5): 상태바(StatusBar)를 웹 배포본에서 제외하고 AppBar 56px 만 배포한다.
    Platform(App/Web) 축도 상태바 유무 차이일 뿐이라 함께 제외 — Type 6종 1축만 남는다. */
 [data-s1-component="mobile-header"] {
@@ -1828,7 +1828,7 @@
   font-weight: var(--font-weight-regular);
   gap: var(--spacing-8);
   justify-content: space-between;
-  /* 정본 trigger.resize(150, sc.h) (build-components.ts:2359). river 지시(2026-09-03):
+  /* 정본 trigger.resize(150, sc.h) (build-components.ts:2726). river 지시(2026-09-03):
      ①기본 폭이 너무 좁고 ②값이 들어오면(Filled) 글자가 짧아져 입력칸이 줄어들었다 — 둘 다
      내용에 따라 폭이 정해지던 탓이다. 정본 폭을 최소 폭으로 두면 상태가 바뀌어도 크기가 그대로다.
      Select 가 정본 140 을 같은 방식으로 쓰는 선례와 동일(river 지시 2026-09-01, select.css:23).
@@ -1837,7 +1837,7 @@
   width: 100%;
 }
 
-/* Size × Break — build-components.ts:2380-2385 */
+/* Size × Break — build-components.ts:2682-2687 */
 [data-s1-component="time-picker"][data-size="xxsm"] [data-s1-part="trigger"] {
   font-size: var(--font-size-12);
   /* 호스트 페이지 상속 차단 — 정본 텍스트 스타일은 전부 130% 이고(10px 만 140%, 여기선 미사용),
@@ -1882,7 +1882,7 @@
   white-space: nowrap;
 }
 
-/* 아이콘 — clock. 크기: XXSM=20px, 그 외=24px (fcIconPx, build-components.ts:1312·2411). */
+/* 아이콘 — clock. 크기: XXSM=20px, 그 외=24px (fcIconPx, build-components.ts:1506·2411). */
 [data-s1-component="time-picker"] [data-s1-part="icon"] {
   background-color: var(--color-form-control-icon-default);
   flex: 0 0 auto;
@@ -1926,7 +1926,7 @@
    테두리를 border 가 아니라 inset 그림자로 그리는 이유: 정본 stroke 는 strokeAlign="INSIDE" 라
    바깥 폭(121/194)을 유지한 채 안쪽 내용 위에 겹쳐 그려진다. CSS border 로 옮기면 내용 폭이
    2px 줄어 열 폭이 44→43 으로 어긋난다(독립 검증 F-2 실측). inset 그림자가 그 동작의 정확한 대응이다.
-   트리거와의 간격은 정본 Time Picker 컴포넌트의 itemSpacing=4(build-components.ts:2363). */
+   트리거와의 간격은 정본 Time Picker 컴포넌트의 itemSpacing=4(build-components.ts:2730). */
 [data-s1-component="time-picker"] [data-s1-part="panel"] {
   background: var(--color-dropdown-list-bg);
   border-radius: var(--radius-4);
@@ -2142,7 +2142,7 @@
 [data-s1-component="time-picker"] [data-s1-part="wheel"] {
   display: flex;
   /* 열 간격은 정본이 평탄하지 않다 — 오전오후↔시각묶음 36, 시↔콜론↔분 32
-     (build-components.ts:4275·4280 주석이 그 이유까지 적어 둔다). 기본을 32 로 두고
+     (build-components.ts:4833·4837 주석이 그 이유까지 적어 둔다). 기본을 32 로 두고
      오전오후 다음 열에만 4 를 더해 36 을 만든다. 종전 웹은 간격 규칙이 아예 없었다. */
   column-gap: var(--spacing-32);
   height: 270px; /* 정본 그대로 — 위아래 여백 40 + 열 높이 190(항목 42 × 3 + 간격 32 × 2) */
@@ -2267,7 +2267,7 @@
   font-weight: var(--font-weight-regular);
   gap: var(--spacing-8);
   justify-content: space-between;
-  min-width: 180px; /* 정본 trigger.resize(180, sc.h) — build-components.ts:3696 */
+  min-width: 180px; /* 정본 trigger.resize(180, sc.h) — build-components.ts:4507 */
   padding-left: var(--spacing-16);
   padding-right: var(--spacing-8);
   width: 100%;
@@ -2291,7 +2291,7 @@
   mask: url("./assets/icons/calendar.svg") center / contain no-repeat;
 }
 /* F-1: 정본 fcIconPx(h) — h<=28(XXSM)=20, 나머지(XSM 34·MD PC 44·MD Mobile 48)=24
-   (build-components.ts:1256, 3698). select·time-picker 와 동일한 사이즈별 분기 방식. */
+   (build-components.ts:1506, 4506). select·time-picker 와 동일한 사이즈별 분기 방식. */
 [data-s1-component="date-picker"][data-size="xxsm"] [data-s1-part="icon"] { width: var(--sizing-20); height: var(--sizing-20); }
 [data-s1-component="date-picker"][data-size="xsm"] [data-s1-part="icon"],
 [data-s1-component="date-picker"][data-size="md"] [data-s1-part="icon"] { width: var(--sizing-24); height: var(--sizing-24); }
@@ -2778,7 +2778,7 @@
 [data-s1-component="date-picker"] [data-s1-part="apply"] { width: 100%; }
 
 /* component:gnb */
-/* GNB — 정본 buildGNB(build-components.ts:3515)·fillGnbMenu(:3133)·
+/* GNB — 정본 buildGNB(build-components.ts:3627)·fillGnbMenu(:3133)·
    buildGNBUtilIcon(:3155)·buildLanguageIcon 기준. PC 전용(registry gnb.json — 모바일에 쓰지 않는다).
    정본은 바 폭을 1920 고정으로 표현하지만 웹은 full-width 반응형이다
    (viewport 1280/1440/1920 는 full-width 반응형으로 통합 — registry gnb.json 선언, river 승인). */
@@ -3008,7 +3008,7 @@
 }
 
 /* component:gnb-sub-menu-item */
-/* GNB Sub Menu Item — 정본 buildGNBSubMenuItem(build-components.ts:3697) 기준.
+/* GNB Sub Menu Item — 정본 buildGNBSubMenuItem(build-components.ts:3822) 기준.
    Depth(1depth=카테고리 제목 · 2depth=항목) 축이며 상태는 2depth 만 갖는다(Default·Hover·Selected) — 4변형.
    들여쓰기 없음(A 기준 원본은 8px 들여쓰기가 없다, 정본 주석 3673·3689) · 배경 없음 · 아이콘 없음 · 크기는 hug.
    단독으로 쓰지 않고 GNB Sub Menu 컬럼 안 <li> 에 넣어 쓴다. */
@@ -3046,7 +3046,7 @@
 }
 
 /* component:gnb-sub-menu */
-/* GNB Sub Menu — 정본 buildGNBSubMenu(build-components.ts:3737) 기준. PC 전용.
+/* GNB Sub Menu — 정본 buildGNBSubMenu(build-components.ts:3864) 기준. PC 전용.
    정본은 폭 1920 고정이지만 웹은 GNB 바와 같은 이유로 full-width 반응형이다(gnb.css 선례).
    Type(regular · compact-1 · compact-2) 3변형 — 2026-09-09 개편(종전 Depth 축은 없어졌다).
    묶음 사이 80 은 세 유형 공통. 묶음 안 간격은 유형마다 다르다(regular·compact-1 = 24, compact-2 = 20). */
@@ -3121,7 +3121,7 @@
 }
 
 /* component:assist-button */
-/* Assist Button — 정본 buildAssistButtonSet(build-components.ts:582) 기준.
+/* Assist Button — 정본 buildAssistButtonSet(build-components.ts:637) 기준.
    크기 축 없음(h32 하나). 상태는 State=Default·Hover·Pressed·Disabled 4가지뿐이며
    Pressed = Hover(코어 Button 과 같은 규칙)이라 CSS는 :hover와 :active를 합쳐 표현한다.
    배경·기본 테두리는 원본처럼 Button Secondary 토큰을 그대로 빌려 쓴다(전용 토큰 아님). */
@@ -3173,7 +3173,7 @@
 }
 
 /* component:text-button */
-/* Text Button — 정본 buildTextButtonSet(build-components.ts:668) 기준.
+/* Text Button — 정본 buildTextButtonSet(build-components.ts:711) 기준.
    배경·테두리·고정 크기 없음(hug). 축 = Variant(Primary|Secondary) × State(Default·Hover·Pressed·Disabled).
    Hover·Pressed 는 색을 바꾸지 않고 밑줄만 더한다(원본 그대로). Pressed = Hover(코어 Button 규칙). */
 [data-s1-component="text-button"] {
