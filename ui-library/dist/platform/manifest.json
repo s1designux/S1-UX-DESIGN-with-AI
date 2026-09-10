@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요."
   },
-  "canonicalFingerprint": "b848aa81d87c5e7c1097ee7202f942ca576bac76c8ec72f839afc9e6e5680e3f",
+  "canonicalFingerprint": "109cf930c8f71d5dd6f77b1840fbf158fba73a87f8945bd10a7a877f35b5aa7a",
   "generatedAt": null,
   "platforms": {
     "html-css-js": {
@@ -14,7 +14,8 @@
       "entry": "platform/react/index.js",
       "componentSupport": "full",
       "lint": true,
-      "requires": "JSX 빌드 도구"
+      "requires": "JSX 빌드 도구",
+      "note": "진짜 React 컴포넌트 — 서버 렌더링·데이터 목록·자식 요소·폼 연결을 지원한다."
     },
     "vue": {
       "entry": "platform/vue/index.js",
@@ -24,7 +25,22 @@
     },
     "kotlin": {
       "entry": "platform/kotlin/S1Tokens.kt",
-      "componentSupport": "tokens-only",
+      "componentSupport": "components",
+      "ui": "Jetpack Compose",
+      "components": [
+        "button",
+        "input",
+        "checkbox",
+        "radio",
+        "toggle",
+        "chip",
+        "dropdown",
+        "select",
+        "tab",
+        "modal"
+      ],
+      "sample": "platform/kotlin-sample",
+      "readme": "platform/kotlin/README.md",
       "lint": false
     },
     "swift": {

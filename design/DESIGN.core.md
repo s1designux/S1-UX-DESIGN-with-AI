@@ -1218,7 +1218,7 @@ _Don't_
 
 ### Dropdown
 
-Select Box와 Filter Chip이 재사용하는 옵션 패널 컴포넌트. 옵션 줄은 글자만(단일 선택)과 체크박스(다중 선택) 두 유형이며, 체크박스 유형은 「전체 선택」 줄을 기본 포함한다. 트리거 상태는 Select Box가 담당한다.
+Select Box와 Filter Chip이 재사용하는 옵션 패널 컴포넌트. 옵션 줄은 글자만(단일 선택)과 체크박스(다중 선택) 두 유형이며, 체크박스 유형은 「전체」 줄을 기본 포함한다. 트리거 상태는 Select Box가 담당한다.
 
 **언제 쓰나**
 - 트리거를 눌러 옵션 목록에서 하나를 고를 때(글자 유형).
@@ -4369,6 +4369,9 @@ agent:
     Break:
       - "PC"
       - "Mobile"
+    Type:
+      - "24h"
+      - "12h"
   states:
     builder:
       - "Default"
@@ -4746,4 +4749,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 4f7651ba3efa · 손편집 금지 -->
+<!-- generated-stamp: 7f15ea8db99d · 손편집 금지 -->

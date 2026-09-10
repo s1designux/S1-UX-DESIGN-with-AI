@@ -3,7 +3,7 @@
     "generated": true,
     "source": "plugins/figma-vars-installer/src/build-components.ts",
     "method": "mock-execution",
-    "sourceHash": "77518a239c89",
+    "sourceHash": "707e1c88b5ca",
     "unknownValuePolicy": [
       "unknown",
       "not-defined",
@@ -270,6 +270,7 @@
       "tokenBindings": [
         "color/bg/level-0",
         "color/bg/level-3",
+        "color/icon/blue",
         "color/line/gray/subtle",
         "color/scroll/bg",
         "color/text/body/secondary"
@@ -2269,7 +2270,7 @@
             "Break": "PC"
           },
           "target": "root",
-          "width": 160,
+          "width": 200,
           "height": 28,
           "layoutMode": "HORIZONTAL",
           "primaryAxisSizingMode": "FIXED",
@@ -2280,6 +2281,7 @@
           "paddingRight": "8",
           "paddingBottom": "0",
           "paddingLeft": "12",
+          "minWidth": "200",
           "cornerRadius": "4",
           "strokeWeight": "1",
           "strokeAlign": "INSIDE"
@@ -2290,7 +2292,7 @@
             "Break": "PC"
           },
           "target": "root",
-          "width": 160,
+          "width": 200,
           "height": 34,
           "layoutMode": "HORIZONTAL",
           "primaryAxisSizingMode": "FIXED",
@@ -2301,6 +2303,7 @@
           "paddingRight": "8",
           "paddingBottom": "0",
           "paddingLeft": "12",
+          "minWidth": "200",
           "cornerRadius": "4",
           "strokeWeight": "1",
           "strokeAlign": "INSIDE"
@@ -2311,7 +2314,7 @@
             "Break": "PC"
           },
           "target": "root",
-          "width": 160,
+          "width": 200,
           "height": 44,
           "layoutMode": "HORIZONTAL",
           "primaryAxisSizingMode": "FIXED",
@@ -2322,6 +2325,7 @@
           "paddingRight": "12",
           "paddingBottom": "0",
           "paddingLeft": "16",
+          "minWidth": "200",
           "cornerRadius": "4",
           "strokeWeight": "1",
           "strokeAlign": "INSIDE"
@@ -2332,7 +2336,7 @@
             "Break": "Mobile"
           },
           "target": "root",
-          "width": 160,
+          "width": 200,
           "height": 48,
           "layoutMode": "HORIZONTAL",
           "primaryAxisSizingMode": "FIXED",
@@ -2343,6 +2347,7 @@
           "paddingRight": "0",
           "paddingBottom": "0",
           "paddingLeft": "16",
+          "minWidth": "200",
           "cornerRadius": "4",
           "strokeWeight": "1",
           "strokeAlign": "INSIDE"
@@ -2569,6 +2574,7 @@
           "Hover",
           "Today",
           "Selected",
+          "Selected Hover",
           "Disabled",
           "Start",
           "End"
@@ -2610,6 +2616,7 @@
         "color/date-picker/cell/bg/hover",
         "color/date-picker/cell/bg/range",
         "color/date-picker/cell/bg/selected",
+        "color/date-picker/cell/bg/selected-hover",
         "color/date-picker/cell/bg/today",
         "color/date-picker/cell/border/today",
         "color/date-picker/text/disabled",
@@ -3117,6 +3124,10 @@
         "Break": [
           "PC",
           "Mobile"
+        ],
+        "Type": [
+          "24h",
+          "12h"
         ]
       },
       "geometry": [

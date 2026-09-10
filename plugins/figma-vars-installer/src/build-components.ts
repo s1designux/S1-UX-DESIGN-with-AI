@@ -49,6 +49,53 @@ const BUILT_COMPS: Record<string, ComponentNode> = {};
 
 // 텍스트 스타일 맵(buildAllComponents 진입 시 maps.textStyles 로 채움) — makeBoundText 가 setTextStyleIdAsync 로 바인딩.
 let TEXT_STYLES: Record<string, TextStyle> = {};
+
+// ── 스펙(설명용) 시트 전용 토큰 배선 ─────────────────────────────────────────
+// 스펙 시트의 제목·플랫폼 띠·사이즈 소제목·상태 라벨·배경은 종전에 raw RGB + raw fontSize 였다.
+//   검수기가 '비토큰 색·비정본 텍스트 스타일'로 정확히 잡아냈다(river 지적 2026-09-10) → 전부 정본 배선으로 옮긴다.
+//   다크 스펙은 프레임에 Dark 모드가 박히므로(setMode) 같은 토큰 한 벌로 양쪽이 맞는다.
+let SPEC_MAPS: BuildMaps | null = null;
+type SpecRole = "bg" | "band" | "title" | "platform" | "size" | "label";
+const SPEC_ROLE_TOKEN: Record<SpecRole, string> = {
+  bg: "color/bg/level-0",
+  band: "color/bg/level-2",
+  title: "color/text/title/primary",
+  platform: "color/text/body/primary",
+  size: "color/text/body/secondary",
+  label: "color/text/body/tertiary",
+};
+/** 역할 이름표 — 레이아웃 코드는 색이 아니라 역할만 넘기고, 실제 바인딩은 emit 이 한다. */
+const SPEC_ROLES: Record<SpecRole, SpecRole> = {
+  bg: "bg", band: "band", title: "title", platform: "platform", size: "size", label: "label",
+};
+/** 변수 맵이 아예 없을 때만 쓰는 안전 폴백. 현재 mock 실행 스크립트는 모두 semanticColor 를 채우므로 실제로는 도달하지 않는다. */
+const SPEC_FALLBACK: Record<SpecRole, { light: RGB; dark: RGB }> = {
+  bg:       { light: { r: 1, g: 1, b: 1 },          dark: { r: 0.075, g: 0.078, b: 0.094 } },
+  band:     { light: { r: 0.93, g: 0.94, b: 0.96 }, dark: { r: 0.14, g: 0.15, b: 0.18 } },
+  title:    { light: { r: 0.07, g: 0.07, b: 0.09 }, dark: { r: 0.95, g: 0.95, b: 0.96 } },
+  platform: { light: { r: 0.13, g: 0.13, b: 0.13 }, dark: { r: 0.9, g: 0.9, b: 0.92 } },
+  size:     { light: { r: 0.25, g: 0.27, b: 0.3 },  dark: { r: 0.78, g: 0.8, b: 0.84 } },
+  label:    { light: { r: 0.42, g: 0.45, b: 0.5 },  dark: { r: 0.6, g: 0.62, b: 0.67 } },
+};
+/** 역할 → Semantic 변수에 바인딩된 채움. 변수가 없으면(mock) 폴백 값. */
+function specPaint(role: SpecRole, dark: boolean): SolidPaint {
+  const v = SPEC_MAPS ? SPEC_MAPS.semanticColor[SPEC_ROLE_TOKEN[role]] : undefined;
+  if (v) return boundPaint(v);
+  return { type: "SOLID", color: SPEC_FALLBACK[role][dark ? "dark" : "light"] };
+}
+/** 스펙 라벨 글꼴 → 정본 텍스트 스타일. 굵은 제목류=title/14B · 나머지(11·12 Medium)=body/12M.
+ *  정본에 11px·12B 스타일이 없어 인접 표준으로 올린다(기존 textStyleKey 의 13→14 와 같은 방식).
+ *  ⚠️ 굵기를 보존하는 매핑이어야 한다 — makeLabel 은 스타일 적용 전 로드한 폰트로 characters/resize 를
+ *     쓰므로, 굵기가 바뀌는 매핑을 넣으면 "unloaded font" 로 막힌다(build-patterns.ts makeText 주석 참조). */
+function specStyleKey(style: string): string {
+  return style === "Bold" ? "title/14B" : "body/12M";
+}
+/** 라이트 스펙의 라벨·띠는 프레임 밖(페이지에 떠 있는 낱개 노드)이라 모드 상속이 없다.
+ *  색을 변수로 묶은 뒤에는 페이지를 다크로 돌리면 글자만 뒤집혀 흰 세트 위에서 안 보이게 된다
+ *  → 낱개마다 Light 모드를 박아 고정한다(🤖 component-verifier 지적 2026-09-10). */
+function pinLightMode(n: SceneNode): void {
+  if (SPEC_MAPS) { try { setLightMode(n, SPEC_MAPS); } catch (e) { /* skip */ } }
+}
 // (fontSize, weight) → V2.4 텍스트 스타일 키. Bold=title/* · Medium·Regular=body/*.
 //   비표준 사이즈는 인접 표준으로 매핑(사용자 결정 2026-06-30): 13→14, 9→10. (Shell 13px GNB·9px 배지)
 function textStyleKey(fontSize: number, style: string): string {
@@ -338,23 +385,26 @@ interface GridCell { comp: ComponentNode; variant: VariantId; size: SizeId; stat
 
 type RGB = { r: number; g: number; b: number };
 
-/** 도큐먼트 라벨 텍스트 (고정폭, 정렬·색 지정). */
+/** 도큐먼트 라벨 텍스트 (고정폭, 정렬·역할색 지정). 글꼴=정본 텍스트 스타일 · 색=Semantic 변수 바인딩. */
 async function makeLabel(
   text: string, fontSize: number, style: string,
   x: number, y: number, w: number,
-  align: "LEFT" | "CENTER", color: RGB
+  align: "LEFT" | "CENTER", role: SpecRole, dark: boolean
 ): Promise<TextNode> {
   await figma.loadFontAsync({ family: "Pretendard", style });
   const t = figma.createText();
   t.fontName = { family: "Pretendard", style };
   t.fontSize = fontSize;
   t.characters = text;
+  // 정본 텍스트 스타일 바인딩 — 스타일이 없으면(mock·설치 누락) raw 글꼴로 폴백해 빌드는 계속한다.
+  const ts = TEXT_STYLES[specStyleKey(style)];
+  if (ts) { try { await t.setTextStyleIdAsync(ts.id); } catch (e) { /* raw 유지 */ } }
   t.textAutoResize = "HEIGHT";
   t.resize(w, t.height);
   t.textAlignHorizontal = align;
   t.x = x;
   t.y = y;
-  t.fills = [{ type: "SOLID", color }];
+  t.fills = [specPaint(role, dark)];
   return t;
 }
 
@@ -377,21 +427,18 @@ interface GroupedSpecOpts {
   /** 실제 Light/Dark 그림자 변수를 쓰는 컴포넌트만 켠다. 현재 Modal 전용. */
   shadowMode?: boolean;
 }
-function specPalette(dark: boolean): Record<string, RGB> {
-  return {
-    bg: dark ? { r: 0.075, g: 0.078, b: 0.094 } : { r: 1, g: 1, b: 1 },
-    title: dark ? { r: 0.95, g: 0.95, b: 0.96 } : { r: 0.07, g: 0.07, b: 0.09 },
-    platform: dark ? { r: 0.9, g: 0.9, b: 0.92 } : { r: 0.13, g: 0.13, b: 0.13 },
-    size: dark ? { r: 0.78, g: 0.8, b: 0.84 } : { r: 0.25, g: 0.27, b: 0.3 },
-    label: dark ? { r: 0.6, g: 0.62, b: 0.67 } : { r: 0.42, g: 0.45, b: 0.5 },
-    band: dark ? { r: 0.14, g: 0.15, b: 0.18 } : { r: 0.93, g: 0.94, b: 0.96 },
-  };
+
+
+/** 스펙 배경색. contrast=true 면 한 단계 진한 band 색을 써서, 부품 자체가 바탕색과 같아 묻히는 것을 막는다
+ *  (river 지시 2026-09-09 — Mobile Header 는 흰 바탕 부품이라 흰 스펙 배경에서 안 보였다). */
+function specBg(contrast?: boolean): SpecRole {
+  return contrast ? "band" : "bg";
 }
 
 // 레이아웃 출력 콜백 — 스펙 프레임(인스턴스)과 세트 꾸미기(실제 comp 이동)가 같은 레이아웃 코드를 공유.
 interface LayoutEmit {
-  text: (s: string, x: number, y: number, w: number, align: "LEFT" | "CENTER", color: RGB, fontSize: number, style: string) => Promise<void>;
-  band: (x: number, y: number, w: number, h: number, color: RGB) => void;
+  text: (s: string, x: number, y: number, w: number, align: "LEFT" | "CENTER", role: SpecRole, fontSize: number, style: string) => Promise<void>;
+  band: (x: number, y: number, w: number, h: number, role: SpecRole) => void;
   cell: (comp: ComponentNode, x: number, y: number) => void;
 }
 
@@ -404,7 +451,7 @@ async function renderGrouped(opts: GroupedSpecOpts, dark: boolean, emit: LayoutE
   const PAD = 24, TITLE_H = 34, PLATFORM_GAP = 20, BAND_H = 32, SIZE_GAP = 14, SIZE_TITLE_H = 22, HEADER_H = 24;
   const gridLeft = PAD + opts.rowLabelW;
   const W = specWidth(opts.rowLabelW, opts.colHeaders.length, opts.cellW);
-  const c = specPalette(dark);
+  const c = SPEC_ROLES;
   let y = PAD;
   await emit.text(`${opts.title} · ${dark ? "Dark" : "Light"}`, PAD, y, 320, "LEFT", c.title, 14, "Bold");
   y += TITLE_H;
@@ -415,7 +462,9 @@ async function renderGrouped(opts: GroupedSpecOpts, dark: boolean, emit: LayoutE
     y += BAND_H + 4;
     for (const size of plat.sizes) {
       y += SIZE_GAP;
-      if (size) { await emit.text(size, PAD, y, 200, "LEFT", c.size, 12, "Bold"); y += SIZE_TITLE_H; }
+      // 사이즈 소제목은 가는 글씨(body/12M) — 정본에 굵은 12 가 없어 14B 로 올리면 표 제목·플랫폼 띠와
+      //   같은 크기가 되어 제목 계단이 평평해진다(river 결정 2026-09-10 B안).
+      if (size) { await emit.text(size, PAD, y, 200, "LEFT", c.size, 12, "Medium"); y += SIZE_TITLE_H; }
       for (let col = 0; col < opts.colHeaders.length; col++) {
         if (opts.colHeaders[col]) await emit.text(opts.colHeaders[col], gridLeft + col * opts.cellW, y, opts.cellW, "CENTER", c.label, 12, "Medium"); // 빈 헤더는 빈 텍스트 노드 안 만든다
       }
@@ -441,8 +490,8 @@ async function renderGrouped(opts: GroupedSpecOpts, dark: boolean, emit: LayoutE
 /** 프레임에 그리는 emit (인스턴스). */
 function frameEmit(frame: FrameNode, maps: BuildMaps, modeId: string, shadowModeId?: string): LayoutEmit {
   return {
-    text: async (s, x, y, w, al, col, fs, st) => { frame.appendChild(await makeLabel(s, fs, st, x, y, w, al, col)); },
-    band: (x, y, w, h, col) => { const b = figma.createRectangle(); b.x = x; b.y = y; b.resize(w, h); b.cornerRadius = 4; b.fills = [{ type: "SOLID", color: col }]; frame.appendChild(b); },
+    text: async (s, x, y, w, al, role, fs, st) => { frame.appendChild(await makeLabel(s, fs, st, x, y, w, al, role, true)); },
+    band: (x, y, w, h, role) => { const b = figma.createRectangle(); b.x = x; b.y = y; b.resize(w, h); b.cornerRadius = 4; b.fills = [specPaint(role, true)]; frame.appendChild(b); },
     cell: (comp, x, y) => {
       const inst = comp.createInstance(); frame.appendChild(inst); inst.x = x; inst.y = y; setMode(inst, maps, modeId);
       setShadowMode(inst, maps, shadowModeId);
@@ -456,10 +505,16 @@ function frameEmit(frame: FrameNode, maps: BuildMaps, modeId: string, shadowMode
 // 컴포넌트 세트 노드는 텍스트/사각형 자식을 못 받으므로, 라벨/밴드를 캔버스에 띄워 세트 위에 정렬(절대 oy 기준).
 // ox = 세트 가로 오프셋. 라벨/밴드는 페이지 절대좌표라 ox 를 더하고, cell(=세트 내부 variant)은 세트 기준 상대좌표라 ox 미적용
 // (세트 자체를 set.x=ox 로 옮기므로 시각적으로 정렬됨).
-function floatingEmit(oy: number, ox = 0): LayoutEmit {
+/** 캔버스에 떠 있는 스펙 장식(라벨·밴드)의 이름 꼬리표 — footprint 정리가 이 이름으로 걷어낸다. */
+const DECO_SUFFIX = "— Spec Deco";
+
+function floatingEmit(oy: number, ox = 0, tag?: string): LayoutEmit {
+  // tag = 이 장식이 어느 세트의 것인지. 이름을 붙여 두면 재설치 때 옛 장식을 **이름으로 정확히**
+  //   걷어낼 수 있다(종전에는 이름이 없어 안 지워지고 재설치마다 겹쳐 쌓였다 — 결함 1).
+  const mark = (n: SceneNode) => { if (tag) { try { n.name = `${tag} ${DECO_SUFFIX}`; } catch (e) { /* */ } } };
   return {
-    text: async (s, x, y, w, al, col, fs, st) => { await makeLabel(s, fs, st, ox + x, oy + y, w, al, col); },
-    band: (x, y, w, h, col) => { const b = figma.createRectangle(); b.resize(w, h); b.cornerRadius = 4; b.fills = [{ type: "SOLID", color: col }]; b.x = ox + x; b.y = oy + y; },
+    text: async (s, x, y, w, al, role, fs, st) => { const t = await makeLabel(s, fs, st, ox + x, oy + y, w, al, role, false); pinLightMode(t); mark(t); },
+    band: (x, y, w, h, role) => { const b = figma.createRectangle(); b.resize(w, h); b.cornerRadius = 4; b.fills = [specPaint(role, false)]; b.x = ox + x; b.y = oy + y; pinLightMode(b); mark(b); },
     cell: (comp, x, y) => { comp.x = x; comp.y = y; },
   };
 }
@@ -471,7 +526,7 @@ async function buildGroupedSpec(opts: GroupedSpecOpts, maps: BuildMaps): Promise
   const modeId = maps.semanticDarkModeId;
   const frame = figma.createFrame();
   frame.name = `${opts.title} — Spec Dark`;
-  frame.fills = [{ type: "SOLID", color: specPalette(true).bg }];
+  frame.fills = [specPaint("bg", true)];
   frame.cornerRadius = 8;
   frame.resize(W, 2400);
   frame.x = opts.darkOffset?.x ?? ((opts.offsetX ?? 0) + W + 80); // 기본=원본 우측 밀착; darkOffset 지정 시 GNB처럼 아래 배치
@@ -489,8 +544,8 @@ async function decorateSetGrouped(set: ComponentSetNode, opts: GroupedSpecOpts, 
   const W = specWidth(opts.rowLabelW, opts.colHeaders.length, opts.cellW);
   const ox = opts.offsetX ?? 0;
   set.x = ox; set.y = opts.originY;
-  try { set.fills = [{ type: "SOLID", color: specPalette(false).bg }]; } catch (e) { /* skip */ }
-  const H = await renderGrouped(opts, false, floatingEmit(opts.originY, ox));
+  try { set.fills = [specPaint("bg", false)]; } catch (e) { /* skip */ }
+  const H = await renderGrouped(opts, false, floatingEmit(opts.originY, ox, set.name));
   set.resize(W, H);
   setLightMode(set, maps);
   if (opts.shadowMode) setShadowMode(set, maps, maps.semanticShadowLightModeId);
@@ -755,13 +810,21 @@ interface SpecOpts {
   /** 셀을 셀폭 중앙배치 대신 좌측(gridLeft)에 정렬. 폭이 크게 다른 variant(Footer PC1920 vs Mobile360)가
    *  좌측 기준으로 일관 정렬되게 한다(라이트·다크 스펙 양쪽 동일 적용). 미지정=기존 중앙배치. */
   leftAlignCells?: boolean;
+  /** 행 사이에 더 주는 세로 여유(px). 부품이 크고 상태가 여러 줄인 스펙에서 다닥다닥 붙는 것을 푼다. */
+  rowGap?: number;
+  /** 스펙 배경을 흰색 대신 옅은 회색(band)으로 깐다. 부품 자체가 흰 바탕이면 흰 배경에 묻혀 안 보인다. */
+  contrastBg?: boolean;
+  /** 다크 스펙에서 인스턴스 대신 쓸 **미리 만들어 둔 노드**(키 = 마스터 컴포넌트 id).
+   *  Figma SLOT 은 인스턴스에서 마스터의 예시 자식을 그대로 보여주지 않아 본문이 비어 나온다.
+   *  슬롯을 쓰는 부품은 다크 검수용으로 슬롯 없는 사본을 따로 만들어 여기에 넘긴다(river 결정 2026-09-09 A안). */
+  darkCellNodes?: Map<string, SceneNode>;
 }
 /** 평면(컬럼×행) 레이아웃을 emit으로 렌더. 반환=총 높이. */
 async function renderFlat(opts: SpecOpts, dark: boolean, emit: LayoutEmit): Promise<number> {
   const PAD = 24, TITLE_H = 30, HEADER_H = 24;
   const rowLabelW = opts.rowLabelW ?? 96;
   const gridLeft = PAD + rowLabelW;
-  const c = specPalette(dark);
+  const c = SPEC_ROLES;
   let y = PAD;
   await emit.text(`${opts.title} · ${dark ? "Dark" : "Light"}`, PAD, y, 320, "LEFT", c.title, 14, "Bold");
   y += TITLE_H;
@@ -778,7 +841,7 @@ async function renderFlat(opts: SpecOpts, dark: boolean, emit: LayoutEmit): Prom
     for (let cc = 0; cc < opts.colHeaders.length; cc++) { const cp = opts.cellAt(r, cc); if (cp && cp.height > rowH) rowH = cp.height; }
     // 셀별 유형명 22px + 하단 여유 8px. 두 행이면 기존 수동 스펙과 같은 336px 높이가 된다.
     const cellLabelH = opts.cellLabelAt ? 22 : 0;
-    rowH = (rowH || opts.cellH) + (cellLabelH ? cellLabelH + 8 : 16);
+    rowH = (rowH || opts.cellH) + (cellLabelH ? cellLabelH + 8 : 16) + (opts.rowGap ?? 0);
     const top = y + (cellLabelH || 4);
     if (opts.rowLabels[r]) await emit.text(opts.rowLabels[r], PAD, top, rowLabelW, "LEFT", c.label, 11, "Medium");
     for (let cc = 0; cc < opts.colHeaders.length; cc++) {
@@ -803,12 +866,31 @@ async function buildSpec(opts: SpecOpts, maps: BuildMaps): Promise<number> {
   const modeId = maps.semanticDarkModeId;
   const frame = figma.createFrame();
   frame.name = `${opts.title} — Spec Dark`;
-  frame.fills = [{ type: "SOLID", color: specPalette(true).bg }];
+  frame.fills = [specPaint(specBg(opts.contrastBg), true)];
   frame.cornerRadius = 8;
   frame.resize(W, 1600);
   frame.x = opts.darkOffset?.x ?? (opts.stackDarkBelow ? 0 : W + 80); // 폭이 길면 Light 아래, 아니면 기존처럼 우측
   frame.y = opts.darkOffset?.y ?? opts.originY;
-  const H = await renderFlat(opts, true, frameEmit(frame, maps, modeId));
+  const baseEmit = frameEmit(frame, maps, modeId);
+  const emit: LayoutEmit = opts.darkCellNodes ? {
+    text: baseEmit.text,
+    band: baseEmit.band,
+    cell: (comp, x, y) => {
+      const ready = opts.darkCellNodes!.get(comp.id);
+      if (!ready) {
+        // 사본을 못 찾으면 조용히 인스턴스로 돌아가지 않는다 — 그 경우 사본이 스펙 프레임 밖(섹션)에
+        //   그대로 얹혀 섹션 높이가 회차마다 튄다(🤖 verifier 재현). 눈에 띄지만 원인은 안 보이므로 남긴다.
+        console.warn(`[installer] 다크 사본을 못 찾아 인스턴스로 대체합니다: ${comp.name}`);
+        baseEmit.cell(comp, x, y);
+        return;
+      }
+      frame.appendChild(ready);
+      ready.x = x; ready.y = y;
+      setMode(ready, maps, modeId);
+      try { ((ready as FrameNode).findAll((n: SceneNode) => n.type === "INSTANCE") as SceneNode[]).forEach((d) => setMode(d, maps, modeId)); } catch (e) { /* */ }
+    },
+  } : baseEmit;
+  const H = await renderFlat(opts, true, emit);
   frame.resize(W, H);
   if (opts.stackDarkBelow && opts.darkOffset?.y === undefined) frame.y = opts.originY + H + 80;
   setMode(frame, maps, modeId);
@@ -820,8 +902,8 @@ async function decorateSetFlat(set: ComponentSetNode, opts: SpecOpts, maps: Buil
   const rowLabelW = opts.rowLabelW ?? 96;
   const W = specWidth(rowLabelW, opts.colHeaders.length, opts.cellW);
   set.x = 0; set.y = opts.originY;
-  try { set.fills = [{ type: "SOLID", color: specPalette(false).bg }]; } catch (e) { /* skip */ }
-  const H = await renderFlat(opts, false, floatingEmit(opts.originY));
+  try { set.fills = [specPaint(specBg(opts.contrastBg), false)]; } catch (e) { /* skip */ }
+  const H = await renderFlat(opts, false, floatingEmit(opts.originY, 0, set.name));
   set.resize(W, H);
   setLightMode(set, maps);
   return opts.originY + H;
@@ -864,7 +946,8 @@ async function buildCheckbox(maps: BuildMaps, originY: number): Promise<{ set: C
     colHeaders: states.map((s) => s.name),
     rowLabels: [""],
     cellAt: (_r, c) => comps[c],
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 64, cellH: 44,
+    // 열 폭 76 — "Dis+Checked"(12M 기준 73.4px)가 한 줄에 들어가야 한다. 종전 64 에서는 줄바꿈됐다(2026-09-10 실측).
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 76, cellH: 44,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
@@ -1296,7 +1379,7 @@ export const ICON_KEYS: Record<string, string> = {
 // 삼성 로고 컴포넌트 — V3.0 파일 로컬 노드 333:165 (134×30 벡터). 파일 동일 시 getNodeByIdAsync 직접 접근.
 const SAMSUNG_LOGO_KEY = "9b32bb9ada9e84cdd18550f641389874858fa6ee";
 // 삼성 로고 인스턴스 생성(targetH 높이로 비율 축소). 로컬→키→플레이스홀더 폴백.
-async function getSamsungLogoInstance(targetH: number): Promise<SceneNode> {
+async function getSamsungLogoInstance(targetH: number, maps: BuildMaps): Promise<SceneNode> {
   try {
     const n = await figma.getNodeByIdAsync("333:165") as ComponentNode | null;
     if (n && n.type === "COMPONENT") {
@@ -1317,7 +1400,8 @@ async function getSamsungLogoInstance(targetH: number): Promise<SceneNode> {
   r.name = "samsung-logo-placeholder";
   r.resize(Math.round(107 * targetH / 24), targetH);
   r.cornerRadius = 2;
-  r.fills = [{ type: "SOLID", color: { r: 0.09, g: 0.19, b: 0.55 } }];
+  // 자리표 색도 정본 바인딩 — CI 로고와 같은 Foundation brand/ci(#004097)를 쓴다(river 확인 2026-09-10).
+  r.fills = [boundPaint(requireVar(maps.foundationColor, "brand/ci", "Foundation Color"))];
   return r;
 }
 // 비밀번호 눈(미표시) 폴백 SVG — 라이브러리 import 실패 시만 사용.
@@ -1421,6 +1505,9 @@ async function makeClearIcon(colorVar: Variable, size = 0): Promise<SceneNode> {
 // form-control 아이콘 크기 규칙: XXSM(h<=28)=20px, 그 외=24px (2026-06-19 사용자 결정).
 const fcIconPx = (h: number, _base: number): number => (h <= 28 ? 20 : 24);
 
+/** Search Input 최소 폭 — 160 은 좌우 아이콘이 붙어 보인다(river 지시 2026-09-09). */
+const SEARCH_MIN_W = 200;
+
 // ── Search Input (form-control + 돋보기 아이콘) ───────────────────────────────
 async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const fc = (k: string) => `color/form-control/${k}`;
@@ -1511,7 +1598,10 @@ async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: Com
         comp.appendChild(textNode);
         comp.appendChild(wrapAction(await makeIconInstance("search", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), MAG), "search-action", actionHitSize, { hover: sc.brk !== "Mobile" }));
       }
-      comp.resize(160, sc.h);
+      // 최소 폭 200 (river 지시 2026-09-09) — 160 이면 글자 자리가 좁아 좌우 아이콘이 서로 붙어 보인다.
+      //   화면에서 늘려 쓸 수 있게 minWidth 도 함께 걸어 200 아래로 줄지 않게 한다(Button 과 같은 방식).
+      comp.resize(SEARCH_MIN_W, sc.h);
+      try { comp.minWidth = SEARCH_MIN_W; } catch (e) { /* mock */ }
       setLightMode(comp, maps);
       comps.push(comp);
       cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name });
@@ -1530,7 +1620,8 @@ async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: Com
     colHeaders: states.map((s) => s.name),
     cellAt: (platName, sizeName, _ri, ci) =>
       cells.find((x) => x.size === sizeName && x.brk === platName && x.state === states[ci].name)?.comp ?? null,
-    offsetX: 0, lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 176, cellH: 60, rowLabelW: 0,
+    // 칸 폭은 부품 폭(200)보다 넓어야 서로 안 붙는다 — SEARCH_MIN_W 를 따라간다.
+    offsetX: 0, lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: SEARCH_MIN_W + 24, cellH: 60, rowLabelW: 0,
   };
   let bottomY = await decorateSetGrouped(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
@@ -1738,7 +1829,8 @@ async function buildDropdownList(maps: BuildMaps, originY: number): Promise<{ se
   const types = [
     { name: "Text",         checkbox: false, divider: false, text: "옵션" },
     { name: "Checkbox",     checkbox: true,  divider: false, text: "옵션" },
-    { name: "Checkbox+All", checkbox: true,  divider: true,  text: "전체 선택" },
+    // '전체 선택' → '전체' (river 지시 2026-09-09) — 정본이 기준, 웹 배포본도 이 값을 따른다.
+    { name: "Checkbox+All", checkbox: true,  divider: true,  text: "전체" },
   ];
   const sizes = [
     { size: "XXSM", h: 28, font: 12 },
@@ -2191,9 +2283,12 @@ async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: 
   const W = 130;
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; row: number; col: number }[] = [];
+  // 행 순서 = 정렬(바깥) × 크기(안쪽) — 왼쪽 3칸이 먼저 쭉, 그 다음 가운데 3칸(river 지시 2026-09-09).
+  //   종전에는 크기가 바깥이라 왼쪽·가운데가 한 줄씩 번갈아 나와 크기 사다리를 견주기 어려웠다.
+  //   ⚠️ 산식을 바꿀 때는 아래 BUILT_COMPS 등록 루프와 rowLabels 까지 **세 곳을 함께** 뒤집어야 한다.
   for (let row = 0; row < sizes.length * aligns.length; row++) {
-    const sc = sizes[Math.floor(row / aligns.length)];
-    const al = aligns[row % aligns.length];
+    const al = aligns[Math.floor(row / sizes.length)];
+    const sc = sizes[row % sizes.length];
     for (let col = 0; col < variants.length; col++) {
       const v = variants[col];
       const comp = figma.createComponent();
@@ -2238,8 +2333,8 @@ async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: 
   set.x = 0; set.y = originY;
   // Table 에서 인스턴스 재사용 — BUILT_COMPS 등록 (Table.makeTableRow 가 이 키로 조회)
   for (const { comp, row, col } of cells) {
-    const size  = sizes[Math.floor(row / aligns.length)].size;  // "XSM" | "SM" | "MD"
-    const align = aligns[row % aligns.length].key;              // "Left" | "Center"
+    const align = aligns[Math.floor(row / sizes.length)].key;   // "Left" | "Center"
+    const size  = sizes[row % sizes.length].size;               // "XSM" | "SM" | "MD"
     const v     = variants[col];                                // { type, state, … }
     BUILT_COMPS[`TableCell:${size}:${v.type}:${v.state}:${align}`] = comp;
   }
@@ -2247,7 +2342,7 @@ async function buildTableCell(maps: BuildMaps, originY: number): Promise<{ set: 
   const opts: SpecOpts = {
     title: "Table Cell",
     colHeaders: variants.map((v) => v.head),
-    rowLabels: ([] as string[]).concat(...sizes.map((sz) => aligns.map((a) => `${sz.size} · ${a.label}`))),
+    rowLabels: ([] as string[]).concat(...aligns.map((a) => sizes.map((sz) => `${a.label} · ${sz.size}`))),
     cellAt: (r, c) => cells.find((x) => x.row === r && x.col === c)?.comp ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 152, cellH: 60, rowLabelW: 80,
   };
@@ -2601,10 +2696,19 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
     { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 16, padR: 8 },
     { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16, padR: 8 },
   ];
+  // 12시간제 / 24시간제 축 — 웹 배포본의 `data-type="12h" | "24h"` 와 1:1 (river 지시 2026-09-09).
+  //   Time Picker Dropdown 은 이미 Type 축을 갖고 있었는데 트리거에는 없어서, 설치기 결과만 보면
+  //   두 유형을 구분할 수 없었다. 트리거에서 달라지는 것은 ①입력된 시각 표기 ②Focus 때 붙는 드롭다운.
+  const types = [
+    { key: "24h", label: "24시간", filled: "09:30",    disabled: "00:00" },
+    { key: "12h", label: "12시간", filled: "오전 09:30", disabled: "오전 12:00" },
+  ];
   const comps: ComponentNode[] = [];
-  const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];
+  const cells: { comp: ComponentNode; size: string; brk: string; state: string; type: string }[] = [];
+  for (const ty of types) {
   for (const sc of sizes) {
     for (const st of states) {
+      const stTxt = st.name === "Filled" ? ty.filled : st.name === "Disabled" ? ty.disabled : st.txt;
       // 트리거(별도 프레임) — Focus 시 그 아래 드롭다운을 붙이기 위해 컴포넌트를 VERTICAL 로 둔다(Select 방식).
       const trigger = figma.createFrame();
       trigger.name = "trigger";
@@ -2617,17 +2721,18 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
       trigger.fills = [boundPaint(scv(maps, fc(st.bg)))];
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))];
       trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
-      trigger.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
+      trigger.appendChild(await makeBoundText(stTxt, sc.font, "Regular", scv(maps, fc(st.tc))));
       trigger.appendChild(await makeIconInstance("clock", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), CLOCK));
       trigger.resize(150, sc.h);
 
       const comp = figma.createComponent();
-      comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;
+      comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}, Type=${ty.key}`;
       comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 4;
       comp.appendChild(trigger);
       if (st.name === "Focus") {
         // Time Picker Dropdown 인스턴스 재사용 (anatomy gate: "dropdown" raw 프레임 금지)
-        const tpdComp = BUILT_COMPS["TPD:focus-default"];
+        //   유형별로 같은 유형의 패널을 붙인다 — 12h 는 오전/오후 열이 있는 패널.
+        const tpdComp = BUILT_COMPS[`TPD:${ty.key}/시 Selected`] ?? BUILT_COMPS["TPD:focus-default"];
         if (tpdComp) {
           const tpdInst = tpdComp.createInstance();
           tpdInst.name = "tpd";
@@ -2636,8 +2741,9 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
       }
       setLightMode(comp, maps);
       comps.push(comp);
-      cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name });
+      cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name, type: ty.key });
     }
+  }
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "Time Picker";
@@ -2645,11 +2751,13 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
   const opts: GroupedSpecOpts = {
     title: "Time Picker",
     platforms: [{ name: "PC", sizes: ["XXSM", "XSM", "MD"] }, { name: "Mobile", sizes: ["MD"] }],
-    rowLabels: [""],
+    rowLabels: types.map((t) => t.label),
     colHeaders: states.map((s) => s.name),
-    cellAt: (platName, size, _ri, ci) =>
-      cells.find((x) => x.size === size && x.brk === platName && x.state === states[ci].name)?.comp ?? null,
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 168, cellH: 250, rowLabelW: 16,
+    cellAt: (platName, size, ri, ci) =>
+      cells.find((x) => x.size === size && x.brk === platName && x.state === states[ci].name
+        && x.type === types[ri].key)?.comp ?? null,
+    // 12h 패널(194)이 24h(121)보다 넓어 칸을 넓힌다 — 좁으면 Focus 열끼리 겹친다.
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 216, cellH: 250, rowLabelW: 60,
   };
   let bottomY = await decorateSetGrouped(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
@@ -3506,6 +3614,10 @@ async function buildMobileHeader(maps: BuildMaps, originY: number): Promise<{ se
     cellW: 384, cellH: 149, rowLabelW: 232,
     leftAlignCells: true,
     stackDarkBelow: true,
+    // 상태끼리 다닥다닥 붙어 어디까지가 한 유형인지 안 보였다(river 지시 2026-09-09).
+    rowGap: 56,
+    // 헤더가 흰 바탕이라 흰 스펙 배경에서 사라진다 → 배경을 한 단계 진하게.
+    contrastBg: true,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
@@ -3931,18 +4043,24 @@ const CAL_GEO: Record<CalSize, CalGeo> = {
 };
 const CAL_SIZES: CalSize[] = ["MD", "SM"];
 
-// Calendar Cell — axes Size={MD,SM} × Type={Standard,Range} × State. Standard=5(Hover 포함)·Range=4(비대칭).
+// Calendar Cell — axes Size={MD,SM} × Type={Standard,Range} × State. Standard=6(Hover·Selected Hover 포함)·Range=4(비대칭).
 // 숫자 텍스트 layer 이름 = "num". 구조: outer(center) > [Range: 밴드 Rectangle(absolute)] + inner 원(센터) > 숫자.
 async function calCellCompsForSize(maps: BuildMaps, size: CalSize): Promise<Record<string, ComponentNode>> {
   // [innerFill, innerStroke, textKey] (V2.4 실측 — selected stroke = border/today)
   // Hover = Default 와 동일하되 inner 배경만 cell/bg/hover(gray/50) — Calendar Tile Hover(tile/bg/hover) 패턴 미러링.
-  //   Standard 에만 추가 — selected/range 는 (B)유형(파란 배경)이라 회색 hover 로 덮지 않는다.
+  //   Standard 에만 추가 — range 는 (B)유형(파란 배경)이라 회색 hover 로 덮지 않는다.
+  // "Selected Hover" = 선택된 파란 칸의 hover. 회색이 아니라 한 단계 진한 파랑(cell/bg/selected-hover)이고,
+  //   테두리도 같은 변수를 쓴다 — 테두리만 border/today(blue/400)에 남으면 채움(blue/500)보다 밝은 링이 생긴다
+  //   (river 지시 2026-09-04). 웹 date-picker.css 의 [data-state="selected"]:hover 규칙과 한 벌이다.
+  //   정본 배선 근거: river 승인 2026-09-08(메커니즘 승인 화면 M-7, 선택 A="웹이 맞다").
+  //   경위·감사 기록 = reports/canon-approval-audit-2026-09-07.md §9.
   const STD: Record<string, [string, string, string]> = {
-    Default:  ["cell/bg/today",    "cell/bg/today",     "text/secondary"],
-    Hover:    ["cell/bg/hover",    "cell/bg/hover",     "text/secondary"],
-    Today:    ["cell/bg/today",    "cell/border/today", "text/today"],
-    Selected: ["cell/bg/selected", "cell/border/today", "text/selected"],
-    Disabled: ["cell/bg/today",    "cell/bg/today",     "text/disabled"],
+    Default:            ["cell/bg/today",           "cell/bg/today",           "text/secondary"],
+    Hover:              ["cell/bg/hover",           "cell/bg/hover",           "text/secondary"],
+    Today:              ["cell/bg/today",           "cell/border/today",       "text/today"],
+    Selected:           ["cell/bg/selected",        "cell/border/today",       "text/selected"],
+    "Selected Hover":   ["cell/bg/selected-hover",  "cell/bg/selected-hover",  "text/selected"],
+    Disabled:           ["cell/bg/today",           "cell/bg/today",           "text/disabled"],
   };
   // Range: [innerFill, innerStroke, textKey] — 밴드는 absolute, 세로는 CalGeo(bandY·bandH)
   const RNG: Record<string, [string, string, string]> = {
@@ -3987,7 +4105,7 @@ async function calCellCompsForSize(maps: BuildMaps, size: CalSize): Promise<Reco
 
   const g = CAL_GEO[size];
   // Type=Standard (Hover 는 Default 뒤 = 상호작용 순서)
-  for (const state of ["Default", "Hover", "Today", "Selected", "Disabled"]) {
+  for (const state of ["Default", "Hover", "Today", "Selected", "Selected Hover", "Disabled"]) {
     const [f, st, txt] = STD[state];
     const comp = makeOuter(g, `Size=${size}, Type=Standard, State=${state}`);
     comp.appendChild(await makeInner(g, f, st, txt));
@@ -4017,7 +4135,15 @@ async function calCellCompsForSize(maps: BuildMaps, size: CalSize): Promise<Reco
 //   buildDatePicker 폴백이 Size=SM 을 못 찾아 State=Date(=MD 356)로 조용히 떨어진다 → XSM·XXSM 이
 //   계속 큰 달력을 연다. 오류 없이 종전 동작으로 퇴화하는 것이라 파괴적이지는 않지만,
 //   **기존 설치본에서 SM 을 보려면 캔버스의 Calendar 세트를 지우고 다시 설치해야 한다.**
-// Calendar Cell 세트 — 두 크기를 한 세트로 묶는다(축 Size × Type × State = 18 variant).
+// Calendar Cell 세트 — 두 크기를 한 세트로 묶는다(축 Size × Type × State = 20 variant:
+//   Standard 6 + Range 4, × Size 2). Standard 는 2026-09-09 에 "Selected Hover" 가 늘어 6 이 됐다.
+// ⚠️ 위 재설치 이관 한계는 **상태 신설에도 그대로 적용된다** — fillMissingCalSizes 는 빠진 "크기"만
+//   채우고(그 크기의 키가 하나라도 있으면 통째로 skip), 빠진 "상태"는 채우지 않는다. 즉 이미 설치된
+//   파일에 재설치해도 "Selected Hover" variant 는 추가되지 않고, 스펙 표만 6열로 늘어 그 열이 빈다
+//   (오류는 아니다 — renderFlat 은 cellAt 이 null 이면 셀을 건너뛴다).
+//   **기존 설치본에서 이 상태를 보려면 캔버스의 Calendar Cell 세트를 지우고 다시 설치해야 한다.**
+//   상태 단위까지 채우도록 넓히는 것은 기존 인스턴스 보호 규칙과 충돌 검토가 필요해 하지 않았다
+//   (🤖 component-verifier 2026-09-09 (c) 지적, ⭐ 가 (A)=명시 유지 선택).
 async function buildCalendarCell(maps: BuildMaps): Promise<{ set: ComponentSetNode; variants: Record<string, ComponentNode> }> {
   const variants: Record<string, ComponentNode> = {};
   for (const size of CAL_SIZES) Object.assign(variants, await calCellCompsForSize(maps, size));
@@ -4538,7 +4664,7 @@ async function buildDatePickerBottomSheet(maps: BuildMaps, originY: number): Pro
   // 다크 = 라이트 우측(buildSpec 기본 W+80). 시트 폭 360 = 좁은 컴포넌트라 우측 배치.
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
   // 세트 외부(변형 컨테이너) 배경 = bg/muted (Light gray/100 #E9E9E9) — 시트면=캘린더가 흰색(surface)이라 흰 섹션 배경에 묻힘.
-  //   ★ 반드시 decorateSetFlat(set.fills 를 specPalette 흰색으로 덮어씀) 이후에 적용해야 살아남는다(사용자 결정 2026-06-26·재현 2026-06-29).
+  //   ★ 반드시 decorateSetFlat(set.fills 를 스펙 배경(color/bg/level-0)으로 덮어씀) 이후에 적용해야 살아남는다(사용자 결정 2026-06-26·재현 2026-06-29).
   set.fills = [boundPaint(scv(maps, "color/bg/level-3"))];
   return { set, bottomY };
 }
@@ -4769,7 +4895,7 @@ async function buildTimePickerMobileBottomSheet(maps: BuildMaps, originY: number
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
   // 세트 외부(변형 컨테이너) 배경 = bg/level-3 — 흰 시트가 흰 섹션에 묻히지 않게(Date Picker Mobile BS 동일).
-  //   ★ 반드시 decorateSetFlat(set.fills 를 specPalette 로 덮음) 이후에 적용.
+  //   ★ 반드시 decorateSetFlat(set.fills 를 스펙 배경 토큰으로 덮음) 이후에 적용.
   set.fills = [boundPaint(scv(maps, "color/bg/level-3"))];
   return { set, bottomY };
 }
@@ -4975,7 +5101,12 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
   // 슬롯은 헤더·푸터의 정본 구조를 잠그고, 화면별 본문만 자유롭게 교체하기 위한 Figma 공식 SlotNode다.
   // 기본 콘텐츠는 기존과 동일한 Bottom Sheet Option 4행이며, 슬롯을 비우거나 다른 콘텐츠로 교체하면
   // 시트와 content가 AUTO 높이로 함께 늘고 줄어든다.
-  const buildContent = async (owner: ComponentNode): Promise<FrameNode> => {
+  //   useSlot=false 면 슬롯 대신 **평범한 프레임**에 같은 예시 4행을 넣는다. 다크 검수 화면에서
+  //   인스턴스의 슬롯이 비어 보이는 문제 때문에, 다크에는 슬롯 없는 사본을 쓴다(river 결정 A안).
+  //   darkModeId 가 오면(=다크 검수 사본) 안에 만드는 인스턴스마다 **다크를 직접 박는다.**
+  //   부모 프레임에만 다크를 걸면, 옵션 마스터에 걸린 라이트 핀이 부모를 이겨 그 부분만
+  //   흰 채로 남는다(같은 실패를 Mobile Header 안 StatusBar 에서 이미 겪었다 — clearMode 주석 참조).
+  const buildContent = async (owner: ComponentNode | FrameNode, useSlot: boolean, darkModeId?: string): Promise<FrameNode> => {
     const content = figma.createFrame();
     content.name = "content"; content.fills = [];
     content.layoutMode = "VERTICAL"; content.primaryAxisSizingMode = "AUTO"; content.counterAxisSizingMode = "FIXED";
@@ -4992,15 +5123,18 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
     header.appendChild(title);
     const closeIcon = await makeIconInstance("close", scv(maps, "color/icon/gray-dark"), 24, CLOSE_ICON_SVG);
     closeIcon.name = "close"; header.appendChild(closeIcon);
+    if (darkModeId) setMode(closeIcon, maps, darkModeId);
     content.appendChild(header);
     try { header.layoutAlign = "STRETCH"; } catch (e) { /* */ }
     // Content Slot: 기본값은 Bottom Sheet Option(Text) 4개(2번째=Selected).
     // createSlot()이 owner에 SLOT component property를 함께 만들며, 이후 content 안으로 옮겨도
     // owner component의 속성으로 유지된다.
-    const existingSlotProperties = new Set(Object.entries(owner.componentPropertyDefinitions)
-      .filter(([, definition]) => definition.type === "SLOT")
-      .map(([propertyName]) => propertyName));
-    const slot = owner.createSlot();
+    const existingSlotProperties = new Set(useSlot
+      ? Object.entries((owner as ComponentNode).componentPropertyDefinitions)
+          .filter(([, definition]) => definition.type === "SLOT")
+          .map(([propertyName]) => propertyName)
+      : []);
+    const slot: FrameNode = useSlot ? (owner as ComponentNode).createSlot() as unknown as FrameNode : figma.createFrame();
     slot.name = "Content"; slot.fills = [];
     slot.layoutMode = "VERTICAL"; slot.primaryAxisSizingMode = "AUTO"; slot.counterAxisSizingMode = "FIXED"; slot.itemSpacing = 0;
     slot.resize(SHEET_W, 48 * 4);
@@ -5012,12 +5146,14 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
       const inst = src.createInstance();
       inst.name = "option";
       slot.appendChild(inst);
+      if (darkModeId) setMode(inst, maps, darkModeId);
       try { inst.layoutSizingHorizontal = "FILL"; } catch (e) { /* */ }
     }
     content.appendChild(slot);
     try { slot.layoutAlign = "STRETCH"; } catch (e) { /* */ }
 
-    const slotDefinitions = Object.entries(owner.componentPropertyDefinitions || {});
+    if (!useSlot) return content;   // 다크 사본 — 컴포넌트 속성이 없으므로 여기서 끝난다.
+    const slotDefinitions = Object.entries((owner as ComponentNode).componentPropertyDefinitions || {});
     const slotProperty = slotDefinitions
       .find(([propertyName, definition]) => definition.type === "SLOT" && !existingSlotProperties.has(propertyName))?.[0];
     // 구형 검증 mock은 componentPropertyDefinitions를 기록하지 않는다. 실제 Figma에서는 createSlot()
@@ -5027,7 +5163,7 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
     }
     if (slotProperty) {
       const optionSet = BUILT_SETS["Bottom Sheet Option"];
-      owner.editComponentProperty(slotProperty, {
+      (owner as ComponentNode).editComponentProperty(slotProperty, {
         name: "Content",
         description: "바텀시트 본문 슬롯. 기본값은 Bottom Sheet Option 4행이며 헤더와 푸터는 슬롯 밖의 정본 구조로 유지합니다.",
         preferredValues: optionSet ? [{ type: "COMPONENT_SET", key: optionSet.key }] : [],
@@ -5037,7 +5173,7 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
   };
 
   // 버튼 인스턴스(Button 컴포넌트 재사용, 모바일 LG h48). 라벨 교체 + 풀와이드 FILL.
-  const makeFooterButton = async (variant: "primary" | "secondary", label: string): Promise<SceneNode | null> => {
+  const makeFooterButton = async (variant: "primary" | "secondary", label: string, darkModeId?: string): Promise<SceneNode | null> => {
     const vLabel = variant === "primary" ? "Primary" : "Secondary";
     const comp = await getReuseComp(`Button:${variant}:LG:Default`, "Button",
       [`Variant=${vLabel}`, "Size=LG", "State=Default"]);
@@ -5045,14 +5181,19 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
     const inst = comp.createInstance();
     inst.name = variant;
     await setInstanceLabel(inst, label);
+    if (darkModeId) setMode(inst, maps, darkModeId);
     return inst;
   };
 
   const variants: { footer: "None" | "Single" | "Dual" }[] = [{ footer: "None" }, { footer: "Single" }, { footer: "Dual" }];
   const byFooter: Record<string, ComponentNode> = {};
-  for (const v of variants) {
-    const comp = figma.createComponent();
-    comp.name = `Footer=${v.footer}`;
+  // 다크 검수용 사본(슬롯 없음) — 마스터 id → 사본 프레임. buildSpec 이 인스턴스 대신 이걸 놓는다.
+  const darkCopies = new Map<string, SceneNode>();
+  /** 시트 한 벌을 짓는다. asComponent=true → 정본 마스터(슬롯 사용) · false → 다크 검수 사본(슬롯 없음). */
+  const makeSheet = async (footer: "None" | "Single" | "Dual", asComponent: boolean): Promise<ComponentNode | FrameNode> => {
+    const comp: any = asComponent ? figma.createComponent() : figma.createFrame();
+    comp.name = asComponent ? `Footer=${footer}` : `Bottom Sheet ${footer} — Dark`;
+    const v = { footer };
     comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "FIXED";
     comp.resize(SHEET_W, 100);
     comp.itemSpacing = 48; // 콘텐츠 ↔ 푸터 (spacing/section/xxl)
@@ -5067,7 +5208,8 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
     const sheetEffects = shadowEffects("shadow/raised-up");   // 오류는 여기서 던진다(삼키지 않음)
     try { (comp as any).effects = sheetEffects; } catch (e) { /* 환경 미지원 */ }
 
-    const content = await buildContent(comp);
+    const darkModeId = asComponent ? undefined : maps.semanticDarkModeId;
+    const content = await buildContent(comp, asComponent, darkModeId);
     try { content.layoutAlign = "STRETCH"; } catch (e) { /* */ }
 
     if (v.footer !== "None") {
@@ -5079,15 +5221,32 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
       comp.appendChild(footer);
       try { footer.layoutAlign = "STRETCH"; } catch (e) { /* */ }
       if (v.footer === "Dual") {
-        const cancel = await makeFooterButton("secondary", "취소");
+        const cancel = await makeFooterButton("secondary", "취소", darkModeId);
         if (cancel) { footer.appendChild(cancel); try { (cancel as InstanceNode).layoutSizingHorizontal = "FILL"; } catch (e) { /* */ } }
       }
-      const apply = await makeFooterButton("primary", "적용");
+      const apply = await makeFooterButton("primary", "적용", darkModeId);
       if (apply) { footer.appendChild(apply); try { (apply as InstanceNode).layoutSizingHorizontal = "FILL"; } catch (e) { /* */ } }
     }
 
-    setLightMode(comp, maps);
-    byFooter[v.footer] = comp;
+    if (asComponent) setLightMode(comp, maps);
+    else setMode(comp, maps, maps.semanticDarkModeId);   // 사본 뿌리에도 다크를 박아 둔다
+    return comp;
+  };
+
+  for (const v of variants) {
+    byFooter[v.footer] = await makeSheet(v.footer, true) as ComponentNode;
+  }
+  for (const v of variants) {
+    // 다크 사본은 마스터를 다 지은 뒤에 만든다(푸터 버튼·옵션 인스턴스가 이미 준비돼 있어야 한다).
+    try {
+      darkCopies.set(byFooter[v.footer].id, await makeSheet(v.footer, false) as FrameNode);
+    } catch (e) {
+      // 조용히 넘어가면 그 칸만 옛 방식(인스턴스)으로 떨어져 본문이 빈 채로 나온다 — 어느 칸인지 남긴다.
+      console.warn(`[installer] Bottom Sheet 다크 사본 생성 실패(Footer=${v.footer}) — 이 칸은 본문이 비어 보입니다:`, e);
+    }
+  }
+  if (darkCopies.size !== variants.length) {
+    console.warn(`[installer] Bottom Sheet 다크 사본 ${darkCopies.size}/${variants.length}개만 준비됐습니다.`);
   }
 
   const set = figma.combineAsVariants([byFooter["None"], byFooter["Single"], byFooter["Dual"]], figma.currentPage);
@@ -5102,6 +5261,7 @@ async function buildBottomSheet(maps: BuildMaps, originY: number): Promise<{ set
     rowLabels: [""],
     cellAt: (_r, c) => byFooter[cols[c]] ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 400, cellH: 420, rowLabelW: 16,
+    darkCellNodes: darkCopies,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
@@ -5467,7 +5627,7 @@ async function buildModalContent(maps: BuildMaps, originY: number): Promise<{ se
 // CATEGORIES Form 에서 Date Picker 뒤 위치만 결정.
 async function buildCalendarCellLayout(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const { set, variants } = await getOrBuildCalendarCell(maps);
-  // ── 3안: 스펙 표를 Standard(5열)·Range(4열) 두 개로 분리한다 (2026-07-14, river 결정) ──
+  // ── 3안: 스펙 표를 Standard·Range 두 개로 분리한다 (2026-07-14, river 결정 — 당시 5열·4열) ──
   //   근거: 옛 colHeaders "Today / Start"·"Selected / End" 는 서로 무관한 두 상태를 "같은 열 번호"라는
   //   이유만으로 슬래시로 합친 것이라 표가 이미 부정확했다. Hover 추가가 문제를 만든 게 아니라 원래의
   //   무리를 드러냈다 → 억지로 열을 다시 맞추지 않고 표를 분리한다. Range 는 4상태 그대로 불변.
@@ -5475,9 +5635,10 @@ async function buildCalendarCellLayout(maps: BuildMaps, originY: number): Promis
   //   한 세트 노드 위에 두 표를 세로로 쌓으므로(세트는 1개) renderFlat 을 2회 호출하되, 두 번째 표의
   //   셀/라벨을 첫 표 높이(h1)만큼 내려 배치하는 오프셋 emit 을 등록기 로컬로 둔다(floatingEmit.cell 은
   //   오프셋을 안 받아 그대로 쓰면 셀이 겹침).
-  const stdStates = ["Default", "Hover", "Today", "Selected", "Disabled"]; // Hover = Default 뒤(상호작용 순서)
+  const stdStates = ["Default", "Hover", "Today", "Selected", "Selected Hover", "Disabled"]; // Hover 계열은 각자 base 뒤(상호작용 순서)
   const rngStates = ["Default", "Start", "End", "Disabled"];               // Range 불변(4상태)
-  const cellW = 80, cellH = 60, rowLabelW = 80;
+  // 열 폭 92 — 상태 이름 중 가장 긴 "Selected Hover"(12M 기준 83.6px)가 한 줄에 들어가야 한다(2026-09-10 실측).
+  const cellW = 92, cellH = 60, rowLabelW = 80;
   const mkOpts = (title: string, states: string[], type: "Standard" | "Range"): SpecOpts => ({
     title,
     colHeaders: states,
@@ -5491,12 +5652,12 @@ async function buildCalendarCellLayout(maps: BuildMaps, originY: number): Promis
 
   // ── Light: 세트 원본을 두 표로 꾸민다(라벨=캔버스 절대좌표, 셀=세트 상대좌표). ──
   const floatAt = (oy: number, cy: number): LayoutEmit => ({
-    text: async (s, x, y, w, al, col, fs, st) => { await makeLabel(s, fs, st, x, oy + y, w, al, col); },
-    band: (x, y, w, h, col) => { const b = figma.createRectangle(); b.resize(w, h); b.cornerRadius = 4; b.fills = [{ type: "SOLID", color: col }]; b.x = x; b.y = oy + y; },
+    text: async (s, x, y, w, al, role, fs, st) => { const t = await makeLabel(s, fs, st, x, oy + y, w, al, role, false); pinLightMode(t); try { t.name = `${set.name} ${DECO_SUFFIX}`; } catch (e) { /* */ } },
+    band: (x, y, w, h, role) => { const b = figma.createRectangle(); b.resize(w, h); b.cornerRadius = 4; b.fills = [specPaint(role, false)]; b.x = x; b.y = oy + y; pinLightMode(b); try { b.name = `${set.name} ${DECO_SUFFIX}`; } catch (e) { /* */ } },
     cell: (comp, x, y) => { comp.x = x; comp.y = cy + y; },
   });
   set.x = 0; set.y = originY;
-  try { set.fills = [{ type: "SOLID", color: specPalette(false).bg }]; } catch (e) { /* skip */ }
+  try { set.fills = [specPaint("bg", false)]; } catch (e) { /* skip */ }
   const h1 = await renderFlat(stdOpts, false, floatAt(originY, 0));
   const h2 = await renderFlat(rngOpts, false, floatAt(originY + h1, h1));
   set.resize(setW, h1 + h2);
@@ -5508,7 +5669,7 @@ async function buildCalendarCellLayout(maps: BuildMaps, originY: number): Promis
     const modeId = maps.semanticDarkModeId;
     const frame = figma.createFrame();
     frame.name = "Calendar Cell — Spec Dark";
-    frame.fills = [{ type: "SOLID", color: specPalette(true).bg }];
+    frame.fills = [specPaint("bg", true)];
     frame.cornerRadius = 8;
     frame.resize(setW, 1200);
     frame.x = setW + 80; // 원본 세트 우측 밀착(buildSpec 기본과 동일)
@@ -5516,8 +5677,8 @@ async function buildCalendarCellLayout(maps: BuildMaps, originY: number): Promis
     const base = frameEmit(frame, maps, modeId);
     const dh1 = await renderFlat(stdOpts, true, base);
     const off: LayoutEmit = {
-      text: (s, x, y, w, al, col, fs, st) => base.text(s, x, y + dh1, w, al, col, fs, st),
-      band: (x, y, w, h, col) => base.band(x, y + dh1, w, h, col),
+      text: (s, x, y, w, al, role, fs, st) => base.text(s, x, y + dh1, w, al, role, fs, st),
+      band: (x, y, w, h, role) => base.band(x, y + dh1, w, h, role),
       cell: (comp, x, y) => base.cell(comp, x, y + dh1),
     };
     const dh2 = await renderFlat(rngOpts, true, off);
@@ -6081,7 +6242,7 @@ async function buildWebTabBar(maps: BuildMaps, originY: number): Promise<{ set: 
 
   const favicon = figma.createRectangle();
   favicon.name = "favicon"; favicon.resize(16, 16); favicon.cornerRadius = 3;
-  favicon.fills = [{ type: "SOLID", color: { r: 0.4, g: 0.6, b: 1.0 } }];
+  favicon.fills = [boundPaint(scv(maps, "color/icon/blue"))];
   activeTab.appendChild(favicon);
   const tabTitle = await makeBoundText("[서비스명]", 13, "Regular", scv(maps, "color/text/body/secondary"));
   tabTitle.name = "tab-title"; activeTab.appendChild(tabTitle);
@@ -6162,7 +6323,7 @@ async function buildSamsungLogoComponent(maps: BuildMaps, originY: number): Prom
   const comp = figma.createComponent();
   comp.name = "C/IMG/Logo/Samsung_30";
   comp.resize(W, H); comp.fills = [];
-  const logoInst = await getSamsungLogoInstance(H);
+  const logoInst = await getSamsungLogoInstance(H, maps);
   logoInst.x = 0; logoInst.y = 0;
   comp.appendChild(logoInst);
 
@@ -6642,10 +6803,39 @@ export async function buildAllComponents(
   for (const key of Object.keys(BUILT_SETS)) delete BUILT_SETS[key];
   for (const key of Object.keys(BUILT_COMPS)) delete BUILT_COMPS[key];
   TEXT_STYLES = maps.textStyles || {};  // makeBoundText 가 텍스트 스타일 바인딩에 사용
+  SPEC_MAPS = maps;                     // 스펙 시트 라벨·밴드·배경의 토큰 바인딩에 사용
   const page = figma.currentPage;
 
-  let topNodes: SceneNode[] = [];
-  try { if (Array.isArray(page.children)) topNodes = page.children as SceneNode[]; } catch (e) { /* mock */ }
+  // ── 캔버스 레벨 노드(매 호출 시점에 새로 읽는다) ────────────────────────────
+  //   ⚠️ 함수 진입 시 한 번 캡처한 page.children 만 훑으면 **첫 설치 뒤 섹션 안으로 들어간 노드를
+  //   영원히 못 본다.** 실측 결과: 옛 산출물(달력 부품 설명 시트 등)이 안 지워지고 재설치마다
+  //   겹쳐 쌓였고(2벌씩), 기존 항목의 y 전진(regionBottom)도 null 이 돼 카테고리끼리 겹쳤다.
+  //   → 설치기가 만드는 노드는 언제나 "페이지 직속" 또는 "페이지 직속 SECTION 의 직속 자식"이다.
+  //     그 2단만 매번 새로 읽는다(전체 재귀는 컴포넌트 내부의 동명 자식까지 잡아 위험).
+  const canvasNodes = (): SceneNode[] => {
+    const out: SceneNode[] = [];
+    try {
+      const kids = page.children;
+      if (!Array.isArray(kids)) return out;
+      for (const n of kids as SceneNode[]) {
+        out.push(n);
+        if (n.type !== "SECTION") continue;
+        try {
+          const sk = (n as SectionNode).children;
+          if (Array.isArray(sk)) for (const c of sk as SceneNode[]) out.push(c);
+        } catch (e) { /* ignore */ }
+      }
+    } catch (e) { /* mock */ }
+    return out;
+  };
+  const sectionByName = (nm: string): SectionNode | null => {
+    try {
+      const kids = page.children;
+      if (!Array.isArray(kids)) return null;
+      for (const n of kids as SceneNode[]) if (n.type === "SECTION" && n.name === nm) return n as SectionNode;
+    } catch (e) { /* mock */ }
+    return null;
+  };
   let existing = new Set<string>();
   try {
     const r = page.findAll((n) => n.type === "COMPONENT_SET");
@@ -6670,16 +6860,28 @@ export async function buildAllComponents(
     // Date Picker Mobile Bottom Sheet backward-compat: 구 "Date Picker Mobile" 세트 자동 정리(재설치 시)
     if (p === "Date Picker Mobile Bottom Sheet") base.push(
       "Date Picker Mobile", "Date Picker Mobile — Spec Light", "Date Picker Mobile — Spec Dark");
-    return base;
+    // 장식(떠있는 라벨·밴드)은 `<세트이름> — Spec Deco` 로 이름이 붙는다 → 이름으로 함께 걷어낸다.
+    return base.concat(base.map((b) => `${b} ${DECO_SUFFIX}`));
   };
   const regionBottom = (p: string): number | null => {
     const names = new Set(footprint(p));
-    const ms = topNodes.filter((n) => names.has(n.name));
-    return ms.length ? Math.max(...ms.map((n) => n.y + n.height)) : null;
+    // 섹션 자식은 n.y 가 섹션 상대좌표라 절대좌표(absoluteBoundingBox)로 읽는다.
+    const bb = absBBox(canvasNodes().filter((n) => names.has(n.name)));
+    return bb ? bb.maxY : null;
   };
-  const removeByNames = (list: string[]): void => {
+  //   keepSets = 이름이 같아도 **지우면 안 되는 COMPONENT_SET**(정본 부품). 재설치 때 보존된
+  //   Calendar·Date Picker 안의 인스턴스가 그 세트를 가리키고 있어, 지우면 detach 로 깨진다
+  //   (`getOrBuildCalendarCell` 의 재사용 가드 주석 참조 — Figma 는 자동 remap 하지 않는다).
+  const removeByNames = (list: string[], keepSets?: string[]): void => {
     const names = new Set(list);
-    for (const n of topNodes.filter((x) => names.has(x.name))) { try { n.remove(); } catch (e) { /* ignore */ } }
+    const keep = new Set(keepSets || []);
+    // 옛 산출물은 **이름으로만** 지운다. 좌표(박스)로 지우면 경계에 걸친 남의 라벨까지 사라진다
+    //   (실측: 재설치 3회차에 Calendar/Date Picker 설명 라벨 5개 유실). 그래서 떠있는 장식에도
+    //   `<세트이름> — Spec Deco` 이름을 붙여 footprint 로 정확히 걷어낸다.
+    for (const n of canvasNodes().filter((x) => names.has(x.name))) {
+      if (n.type === "COMPONENT_SET" && keep.has(n.name)) continue;
+      try { n.remove(); } catch (e) { /* ignore */ }
+    }
   };
 
   let created = 0;
@@ -6759,6 +6961,45 @@ export async function buildAllComponents(
   for (const cat of COMPONENT_CATEGORIES) {
     const catTopY = y + SECTION_TITLE_SPACE; // 섹션 이름 라벨이 차지할 상단 여백 확보
     let catY = catTopY;
+    // 재설치 회수: 이 카테고리의 옛 섹션을 2단계에서 흩어놓은 자리(가로 컬럼)에서 1단계 컬럼으로
+    //   되돌린다. 이렇게 해야 "이미 있어 보존한 부품"과 "이번에 새로 만든 부품"이 같은 좌표계에
+    //   놓여 아래 layout/래핑이 한 카테고리 안에서만 계산된다.
+    //   회수 방식은 "섹션째 옮기기"가 아니라 **자식을 페이지로 도로 꺼내기**다. 섹션 자식의 x·y 는
+    //   섹션 기준 상대좌표인데, 빌더는 재사용한 세트에도 `set.y = originY` 처럼 **페이지 절대좌표를
+    //   전제로** 값을 쓴다. 섹션 안에 둔 채로 빌드하면 그 값이 섹션 원점만큼 어긋나, 재사용된 세트가
+    //   제 설명 시트와 떨어져 엉뚱한 자리에 서고 카테고리 배치가 어긋난다(실측: Calendar Cell 세트가
+    //   자기 Spec 시트에서 932px 아래로 떨어짐). 꺼낸 뒤 원점을 (0, catTopY)로 맞춰
+    //   빌더가 새로 만드는 노드와 같은 좌표계에 세운다. 다시 담는 것은 아래 래핑이 한다.
+    // ── 소유권 장부 ────────────────────────────────────────────────────────────
+    //   "화면상 y 위치로 짐작"을 버리고 **이번 실행에서 내가 만든 노드 + 내 섹션에 있던 자식**만
+    //   이 카테고리의 것으로 본다. 부품 1개가 실패해도 남의 카테고리 부품을 삼킬 수 없다.
+    //   (2026-09-08 실측 사고: Navigation 섹션 84,178px 안에 Form Control 의 Input 이 들어감)
+    const ownedIds = new Set<string>();
+    try {
+      const oldSec = sectionByName(cat.name);
+      const kids = oldSec ? oldSec.children : null;
+      if (oldSec && Array.isArray(kids) && kids.length) {
+        const keep = (kids as SceneNode[]).map((k) => {
+          const b = k.absoluteBoundingBox;
+          return { k, x: b && typeof b.x === "number" ? b.x : null, y: b && typeof b.y === "number" ? b.y : null };
+        });
+        for (const it of keep) {
+          try { page.appendChild(it.k); } catch (e) { continue; }
+          const a = it.k.absoluteBoundingBox;
+          if (it.x != null && it.y != null && a && typeof a.x === "number" && typeof it.k.x === "number") {
+            it.k.x += it.x - a.x; it.k.y += it.y - a.y;
+          }
+        }
+        const bb = absBBox(keep.map((it) => it.k));
+        if (bb) {
+          const dx = 0 - bb.minX, dy = catTopY - bb.minY;
+          if (dx !== 0 || dy !== 0) {
+            for (const it of keep) { try { (it.k as any).x += dx; (it.k as any).y += dy; } catch (e) { /* */ } }
+          }
+        }
+        for (const it of keep) ownedIds.add(it.k.id);
+      }
+    } catch (e) { /* mock/no-page */ }
     // ── 빌드 패스: 의존성(요소 먼저) 순서로 생성 — 표시순서 ≠ 빌드순서 규칙(BUILD_DEPENDENCIES) ──
     //   빌드 시점 Y(catY)는 임시(겹치지 않게 세로로 쌓음). 최종 세로 위치는 아래 layout 패스가 정한다.
     for (const name of buildOrderFor(cat.members)) {
@@ -6775,13 +7016,22 @@ export async function buildAllComponents(
       done++;
       const isDepSet = name === "Calendar Cell" || name === "Calendar Tile";
       if (existing.has(name) && !isDepSet) {
+        // ⚠️ 대입이 아니라 **전진**이다. 대입하면 앞 멤버가 밀어놓은 자리를 되돌려, 그 자리에
+        //   뒤 멤버(재빌드되는 Calendar Cell 등)를 겹쳐 세운다(🤖 verifier 실측: Calendar 위에
+        //   Calendar Cell 이 528x422 전면 겹침). 빌드 커서는 뒤로 가지 않는다.
         const rb = regionBottom(name);
-        if (rb != null) catY = rb + 140;
+        if (rb != null) catY = Math.max(catY, rb + 140);
+        // 보존한 기존 부품도 이 카테고리 소유로 등록(옛 섹션 밖에 남아 있던 경우까지).
+        const fnames = new Set(footprint(name));
+        for (const n of canvasNodes()) if (fnames.has(n.name)) ownedIds.add(n.id);
         skipped.push(name);
         continue;
       }
       if (onProgress) onProgress(`${name} 생성 중…`, 92 + Math.round((done / TOTAL) * 8));
-      removeByNames(footprint(name));
+      // isDepSet(Calendar Cell·Calendar Tile)은 이미 있어도 매번 러너가 돈다(빠진 크기 채우기).
+      //   그 세트는 보존된 Calendar·Date Picker 인스턴스의 원본이라 **지우면 안 된다** — 옛 스펙 시트와
+      //   장식만 걷어내고 세트는 남겨 `getOrBuildCalendarCell` 이 그대로 재사용하게 한다.
+      removeByNames(footprint(name), isDepSet ? [name] : []);
       // 건별 try/catch — 컴포넌트 1개가 실패해도 나머지를 계속 만든다(2026-08-01 신설).
       //   종전엔 이 자리에 방어가 없어 **1개 실패 = 전체 설치 중단**이었다. 뒤 컴포넌트는
       //   하나도 안 생기고, 앞서 만든 것만 캔버스에 남은 반쪽 상태가 됐다.
@@ -6805,6 +7055,11 @@ export async function buildAllComponents(
         created += res.set.children.length;
         added.push(name);
         catY = res.bottomY + 140;
+        // 이번 빌더가 새로 만든 최상위 노드 = 이 카테고리 소유(떠있는 그룹라벨·밴드 포함).
+        try {
+          const kids = figma.currentPage.children as SceneNode[];
+          if (Array.isArray(kids)) for (const n of kids) if (!beforeIds.has(n.id)) ownedIds.add(n.id);
+        } catch (_) { /* mock/no-page */ }
       } catch (e: any) {
         const reason = (e && (e.message || String(e))) || "unknown";
         // 부분 산출물 제거 — 이게 없으면 "정상으로 위장된 반쪽"이 영구 고착된다.
@@ -6839,7 +7094,11 @@ export async function buildAllComponents(
     try {
       const pageKids = figma.currentPage.children;
       if (Array.isArray(pageKids)) {
-        const kids = (pageKids as SceneNode[]).filter((n) => n.type !== "SECTION");
+        // ★ 대상은 "페이지의 모든 최상위 노드"가 아니라 **이 카테고리가 소유한 노드**뿐이다.
+        //   (소유 = 이번 실행에서 이 카테고리가 만든 것 + 이 카테고리 섹션의 기존 자식)
+        //   종전에는 페이지 전체를 대상으로 ±Infinity 밴드를 잡아, 한 부품이 실패하면 그 구역이
+        //   남의 카테고리 부품을 통째로 삼켰다.
+        const kids = canvasNodes().filter((n) => n.type !== "SECTION" && ownedIds.has(n.id));
         const cy = (n: SceneNode): number | null => {
           const b = n.absoluteBoundingBox;
           return b && typeof b.y === "number" && typeof b.height === "number" ? b.y + b.height / 2 : null;
@@ -6882,8 +7141,9 @@ export async function buildAllComponents(
         }
       }
     } catch (e) { /* mock/no-page */ }
-    // 카테고리를 1개 섹션으로 래핑(세로 밴드 기준 — 내용이 실제로 섹션 자식이 됨)
-    await wrapCategoryInSection(cat.name, cat.members, footprint, SECTION_TITLE_SPACE, SECTION_PAD);
+    // 카테고리를 1개 섹션으로 래핑 — **소유 노드 목록으로** 담는다(y밴드 짐작 폐기).
+    await wrapCategoryInSection(cat.name, canvasNodes().filter((n) => n.type !== "SECTION" && ownedIds.has(n.id)),
+      SECTION_TITLE_SPACE, SECTION_PAD);
     y = catY + SECTION_GAP;
   }
 
@@ -7061,37 +7321,17 @@ function relocateSection(section: SectionNode, targetX: number, targetY: number)
   }
 }
 
+// ⚠️ nodes 는 **호출자가 소유권으로 확정한 목록**이다(이번 실행에서 이 카테고리가 만든 노드 +
+//   이 카테고리 섹션의 기존 자식). 종전처럼 "y밴드에 들어오는 페이지의 모든 노드"를 담지 않는다 —
+//   그 방식은 한 부품이 실패하면 밴드가 남의 카테고리를 삼켜 배치가 통째로 무너졌다(2026-09-08 실측).
 async function wrapCategoryInSection(
   title: string,
-  members: string[],
-  footprintFn: (p: string) => string[],
+  nodes: SceneNode[],
   titleSpace: number,
   pad: number,
 ): Promise<void> {
   if (typeof figma.createSection !== "function") return; // mock/구버전 → 건너뜀
-  let kids: SceneNode[] = [];
-  try {
-    const c = figma.currentPage.children;
-    if (Array.isArray(c)) kids = (c as SceneNode[]).filter((n) => n.type !== "SECTION");
-  } catch (e) { return; }
-  if (!kids.length) return;
-  // 1) footprint 이름(세트+스펙)으로 이 카테고리의 대표 노드 → y밴드 산출
-  const names = new Set<string>();
-  for (const m of members) for (const n of footprintFn(m)) names.add(n);
-  const seedBox = absBBox(kids.filter((n) => names.has(n.name)));
-  if (!seedBox) return;
-  const bandTop = seedBox.minY - titleSpace;
-  const bandBot = seedBox.maxY + pad;
-  // 2) y밴드에 들어오는 모든 페이지 노드 수집 — 세트 데코레이션(decorateSet*→floatingEmit)이
-  //    만든 "떠있는" 그룹라벨·밴드(footprint 이름 아님)까지 포함해야 섹션 배경에 가려지지 않음.
-  //    카테고리는 disjoint 한 세로 밴드라 이웃 카테고리 노드는 잡히지 않는다.
-  const nodes = kids.filter((n) => {
-    const b = n.absoluteBoundingBox;
-    if (!b || typeof b.y !== "number" || typeof b.height !== "number") return false;
-    const cy = b.y + b.height / 2;
-    return cy >= bandTop && cy <= bandBot;
-  });
-  if (!nodes.length) return;
+  if (!nodes || !nodes.length) return;
   const box = absBBox(nodes);
   if (!box) return;
 
@@ -7103,6 +7343,13 @@ async function wrapCategoryInSection(
   } catch (e) { /* mock → 신규 */ }
   if (!section) section = figma.createSection();
   section.name = title;
+  // ⚠️ 목표 절대위치는 **섹션을 움직이기 전에** 기록한다. 재설치 때는 nodes 중 일부가 이미 이
+  //   섹션의 자식이라, 섹션을 먼저 옮기면 그 자식들이 함께 끌려가 위치가 어긋난다.
+  const desired: { n: SceneNode; x: number; y: number }[] = [];
+  for (const n of nodes) {
+    const b = n.absoluteBoundingBox;
+    if (b && typeof b.x === "number" && typeof b.y === "number") desired.push({ n, x: b.x, y: b.y });
+  }
   // 섹션을 먼저 bbox 기준으로 배치/크기지정(자식 추가 전) → 이후 자식 절대위치 보정
   // 가로 배치는 빌드 후 2단계 relocateSection 가 담당. 여기선 내용에 딱 맞게만 래핑한다.
   try { section.x = box.minX - pad; section.y = box.minY - titleSpace; } catch (e) { /* */ }
@@ -7113,10 +7360,10 @@ async function wrapCategoryInSection(
     );
   } catch (e) { /* */ }
   // 노드를 섹션으로 이동하되 절대 위치 보존(섹션 자식 좌표 규약과 무관하게 보정)
-  for (const n of nodes) {
-    const before = n.absoluteBoundingBox;
-    const bx = before && typeof before.x === "number" ? before.x : null;
-    const by = before && typeof before.y === "number" ? before.y : null;
+  for (const d of desired) {
+    const n = d.n;
+    const bx = d.x;
+    const by = d.y;
     try { section.appendChild(n); } catch (e) { continue; }
     const after = n.absoluteBoundingBox;
     if (bx != null && by != null && after && typeof after.x === "number" && typeof n.x === "number") {

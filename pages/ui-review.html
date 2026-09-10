@@ -1139,7 +1139,7 @@
 
     function dropdownMarkup({ type = "text", size = "md", withAll = false, ariaLabel = "지역", statik = false, allowHover = false, rows = dropdownRegionRows }) {
       const allRow = withAll
-        ? dropdownOption({ type, label: "전체 선택", value: "all", selected: false, selectAll: true }) + `<div data-s1-part="divider"></div>`
+        ? dropdownOption({ type, label: "전체", value: "all", selected: false, selectAll: true }) + `<div data-s1-part="divider"></div>`
         : "";
       const listRole = type === "text" ? ' role="listbox"' : "";
       const staticAttrs = statik ? ` data-review-static="true"${allowHover ? "" : ' class="review-static"'}` : "";

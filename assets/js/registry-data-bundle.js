@@ -99,7 +99,7 @@ window.REGISTRY_BUNDLE = {
           "name": "SW Foundation Colors",
           "version": "2.4",
           "status": "stable",
-          "updatedAt": "2026-09-08",
+          "updatedAt": "2026-09-09",
           "source": "plugins/figma-vars-installer/src/vars-data.ts (FOUNDATION_COLOR)",
           "description": "Official SW Design System V2.4 foundation color foundation. Raw HEX values are allowed here only.",
           "generated": true,
@@ -10796,7 +10796,7 @@ window.REGISTRY_BUNDLE = {
         "a11yStatus": "stable",
         "figmaStatus": "existing",
         "harnessStatus": "implemented",
-        "description": "Select Box와 Filter Chip이 재사용하는 옵션 패널 컴포넌트. 옵션 줄은 글자만(단일 선택)과 체크박스(다중 선택) 두 유형이며, 체크박스 유형은 「전체 선택」 줄을 기본 포함한다. 트리거 상태는 Select Box가 담당한다.",
+        "description": "Select Box와 Filter Chip이 재사용하는 옵션 패널 컴포넌트. 옵션 줄은 글자만(단일 선택)과 체크박스(다중 선택) 두 유형이며, 체크박스 유형은 「전체」 줄을 기본 포함한다. 트리거 상태는 Select Box가 담당한다.",
         "notes": [
           "--dropdown-list-bg: D002(2026-05-19) 결정 — var(--color-surface-raised)로 확정. surface-default 아님.",
           "trigger placeholder text / selected text / list border / option selected text는 D001(2026-05-19) 추가 4개 candidate 토큰.",

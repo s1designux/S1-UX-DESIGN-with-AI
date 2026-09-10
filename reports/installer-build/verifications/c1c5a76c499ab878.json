@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:c1c5a76c499ab87820e6cf3b44cd7cc2875c737f1a10a681cbf33f0ef5dd0348",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-09T06:02:17.629Z",
+  "notes": "델타검증(D): 다크 검수 사본(darkCellNodes) + Search min-width 200. HEAD↔작업본을 캔버스 mock(안정 id·페이지 부착)으로 전수 대조 — 컴포넌트 세트 49개 전부 바이트 동일, 스펙 프레임 48개 중 'Bottom Sheet — Spec Dark' 1개만 변경(의도 범위). 사본 3개는 Spec Dark 프레임 안에만 존재(조상: Spec Dark < Bottom Sheet 섹션 < PAGE), 떠도는 노드 0, 3회 설치 x=8856/w=2744/h=952/kids=16 불변. 세트 삭제 후 재빌드 시 옛 사본은 부모 Spec Dark 와 함께 제거 확인. 라이트 마스터 Content SLOT 속성·preferredValues·예시 4행 HEAD 와 동일. 사본 기하·패딩·gap·radius·effects 가 마스터와 일치. keycheck/anatomy/iconpolicy/installer:check/ui:build:check/ui:test:check/ui:zip:check/devpanel:check 전부 통과. 웹: 지문 22종 독립 재계산 일치, dist 실내용 변화는 input.css·s1-ui.css 7줄뿐, 360px 렌더 넘침 없음, search 만 200 고정·기본/비밀번호 불변 실측. 미검증: 중첩 인스턴스 다크 전파(findAll 이 mock 에서 stub — 기존 경로와 동일 코드), 실제 Figma 캔버스 육안."
+}

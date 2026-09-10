@@ -110,6 +110,7 @@
     "figma:usage:check": "node scripts/figma/check-figma-usage.mjs",
     "figma:usage:apply": "npm run figma:usage:check && node scripts/figma/apply-figma-usage.mjs && npm run reports:sync && npm run reports:check",
     "figma:usage:dry-run": "node scripts/figma/apply-figma-usage.mjs --dry-run",
+    "spec:labelwidth": "node scripts/spec-label-width-check.js",
     "gate:check": "node scripts/gate-check.js",
     "shot": "node scripts/render-shot.js",
     "review": "node scripts/open-review.js",
@@ -140,7 +141,11 @@
     "wt:merge": "node scripts/worktree-merge.js",
     "wt:list": "git worktree list",
     "rr": "node scripts/repeated-requests.js",
-    "rr:check": "node scripts/repeated-requests.js check"
+    "rr:check": "node scripts/repeated-requests.js check",
+    "ui:react": "node ui-library/scripts/react-parity-check.mjs",
+    "kotlin:parity": "node scripts/kotlin-compose-parity-check.js",
+    "kotlin:lint": "node scripts/kotlin-compose-lint.js",
+    "kotlin:preview": "node scripts/kotlin-compose-preview-page.js"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.97.0",

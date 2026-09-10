@@ -372,7 +372,7 @@
                 <div class="step-title">디자인가이드 저장소 받기</div>
                 <div class="step-desc">토큰 CSS · 컴포넌트 실측 사양 · PC 동작 계약 · 참고 화면이 한 벌로 묶여 있습니다</div>
               </div>
-              <span class="update-stamp" data-update-file="design/DESIGN.core.md"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-09-08 16:26</span>
+              <span class="update-stamp" data-update-file="design/DESIGN.core.md"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-09-10 12:39</span>
             </div>
             <div class="step-body">
               <div class="file-card">
@@ -515,27 +515,25 @@
                 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
                   <div class="step-title">S1 UI 라이브러리 배포본 <span class="ver-badge">0.1.0</span></div>
                 </div>
-                <div class="step-desc">디자인에서 승인한 컴포넌트 22종과 토큰 481개를 그대로 담은 웹 배포본입니다. 색·크기·동작을 새로 만들지 말고 이 안에 있는 것을 쓰세요 <strong style="color:#c2410c;">— 지금은 화면만 공개돼 있고 받기는 준비 중입니다</strong></div>
+                <div class="step-desc">디자인에서 승인한 컴포넌트 22종과 토큰 481개를 그대로 담은 웹 배포본입니다. 색·크기·동작을 새로 만들지 말고 이 안에 있는 것을 쓰세요</div>
               </div>
-              <!-- 배포 준비 전이라 받기는 막아 둔다(river 지시 2026-09-04). 화면 구성만 먼저 연다.
-                   열 때는 이 버튼을 a.download-btn 으로 되돌리면 된다 — 파일 경로는 이미 만들어져 있다. -->
-              <span class="download-btn download-btn-disabled" style="margin-left:auto;" aria-disabled="true" title="배포 준비 중입니다">
+              <!-- 받기 공개 (river 지시 2026-09-09). 다시 막을 때는 span.download-btn-disabled 로 되돌린다. -->
+              <a class="download-btn" style="margin-left:auto;" href="../assets/downloads/s1-ui-dev-package.zip" download>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 ZIP 다운로드
-                <em class="download-soon">준비 중</em>
-              </span>
+              </a>
             </div>
             <div class="devget-row">
               <div class="devget-item">
                 <div class="devget-label">항상 최신으로 쓰려면</div>
                 <div class="devget-body">저장소를 그대로 참조하면 디자인이 고칠 때 같이 최신이 됩니다.
-                  <span class="devget-pending">github.com/s1designux/S1-UX-DESIGN-with-AI/ui-library/dist — 공개 준비 중</span>
+                  <a class="devget-link" href="https://github.com/s1designux/S1-UX-DESIGN-with-AI/tree/main/ui-library/dist" target="_blank" rel="noopener">github.com/s1designux/S1-UX-DESIGN-with-AI/ui-library/dist ↗</a>
                 </div>
               </div>
               <div class="devget-item">
                 <div class="devget-label">내 배포본이 최신인지 확인</div>
                 <div class="devget-body">아래 지문과 <code>node s1-ui/tools/s1-ui-lint.mjs --version</code> 결과가 같아야 최신입니다.
-                  <div class="devget-fingerprint">b848aa81d87c5e7c1097ee7202f942ca576bac76c8ec72f839afc9e6e5680e3f</div>
+                  <div class="devget-fingerprint">109cf930c8f71d5dd6f77b1840fbf158fba73a87f8945bd10a7a877f35b5aa7a</div>
                 </div>
               </div>
             </div>
@@ -554,16 +552,34 @@
             <div class="devtool-head">
               <div>
                 <div class="devtool-title">HTML · CSS · JavaScript</div>
-                <div class="devtool-note">퍼블리싱 · jQuery · JSP·PHP 같은 서버 렌더링</div>
+                <div class="devtool-note">22종 전부 · 퍼블리싱 · jQuery · JSP·PHP 같은 서버 렌더링</div>
               </div>
-              <span class="devtool-badge devtool-badge-full">컴포넌트 그대로 사용</span>
+              <div class="devtool-head-right">
+                <span class="devtool-badge devtool-badge-full">컴포넌트 그대로 사용</span>
+                <span class="devtool-updated">업데이트 2026-09-10</span>
+              </div>
             </div>
+            <div class="devtool-section">설치</div>
+            <ol class="devtool-steps">
+              <li>압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 22종이 실제 모습으로 보입니다</li>
+              <li>아래 두 줄을 <code>&lt;head&gt;</code> 에 넣어 겉모습을 읽힙니다</li>
+              <li>동작이 있는 컴포넌트는 <code>autoInit()</code> 한 번으로 전부 붙습니다</li>
+            </ol>
             <pre class="devtool-code"><code>&lt;link rel="stylesheet" href="s1-ui/assets/css/tokens.css"&gt;
 &lt;link rel="stylesheet" href="s1-ui/s1-ui.css"&gt;
 &lt;script type="module"&gt;
   import { autoInit } from "./s1-ui/s1-ui.auto.js";
   autoInit();
 &lt;/script&gt;</code></pre>
+            <div class="devtool-section">들어있는 것</div>
+            <p class="devtool-contains">컴포넌트 22종의 마크업(<code>examples/</code>) · 겉모습 한 벌(<code>s1-ui.css</code>) · 동작 스크립트 · 아이콘</p>
+            <div class="devtool-get">
+              <a class="devtool-btn" href="../assets/downloads/s1-ui-html-css-js.zip" download>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                이 툴만 받기
+              </a>
+              <span class="devtool-size">270KB · 파일 145개</span>
+            </div>
             <div class="devtool-foot">
               <span class="devtool-files"><code>s1-ui.css</code> <code>s1-ui.auto.js</code> <code>examples/</code></span>
               <span class="devtool-check">자가 검사기 사용 가능</span>
@@ -573,16 +589,32 @@
             <div class="devtool-head">
               <div>
                 <div class="devtool-title">React · Next.js</div>
-                <div class="devtool-note">JSX 빌드 도구 필요 · JSX 런타임 automatic</div>
+                <div class="devtool-note">22종 전부 · JSX 빌드 도구 필요 · 서버 렌더링·타입 정의 포함</div>
               </div>
-              <span class="devtool-badge devtool-badge-full">컴포넌트 그대로 사용</span>
+              <div class="devtool-head-right">
+                <span class="devtool-badge devtool-badge-full">컴포넌트 그대로 사용</span>
+                <span class="devtool-updated">업데이트 2026-09-09</span>
+              </div>
             </div>
-            <pre class="devtool-code"><code>import { S1Button } from "./s1-ui/platform/react";
-
-&lt;S1Button variant="primary" size="md"
-          parts={{ label: "확인" }} /&gt;</code></pre>
+            <div class="devtool-section">설치</div>
+            <ol class="devtool-steps">
+              <li>압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 22종이 실제 모습으로 보입니다</li>
+              <li>앱 진입 파일에서 겉모습 CSS 를 한 번 읽힙니다 (<code>tokens.css</code> · <code>s1-ui.css</code>)</li>
+              <li>쓸 컴포넌트만 이름으로 꺼내 씁니다 — 아래는 그 한 줄입니다</li>
+            </ol>
+            <pre class="devtool-code"><code>import { S1Button, S1DatePicker }
+  from "./s1-ui/platform/react";</code></pre>
+            <div class="devtool-section">들어있는 것</div>
+            <p class="devtool-contains">컴포넌트 22종 전부 — 이름은 앞에 <code>S1</code> (<code>input → S1Input</code> · <code>date-picker → S1DatePicker</code>) · 사용 설명서(README) · 타입 정의(index.d.ts)</p>
+            <div class="devtool-get">
+              <a class="devtool-btn" href="../assets/downloads/s1-ui-react.zip" download>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                이 툴만 받기
+              </a>
+              <span class="devtool-size">171KB · 파일 82개</span>
+            </div>
             <div class="devtool-foot">
-              <span class="devtool-files"><code>platform/react/</code></span>
+              <span class="devtool-files"><code>platform/react/</code> <code>platform/react/README.md</code> <code>platform/react/index.d.ts</code></span>
               <span class="devtool-check">자가 검사기 사용 가능</span>
             </div>
           </div>
@@ -590,14 +622,30 @@
             <div class="devtool-head">
               <div>
                 <div class="devtool-title">Vue</div>
-                <div class="devtool-note">SFC(.vue) 빌드 도구가 필요합니다</div>
+                <div class="devtool-note">22종 전부 · SFC(.vue) 빌드 도구가 필요합니다</div>
               </div>
-              <span class="devtool-badge devtool-badge-full">컴포넌트 그대로 사용</span>
+              <div class="devtool-head-right">
+                <span class="devtool-badge devtool-badge-full">컴포넌트 그대로 사용</span>
+                <span class="devtool-updated">업데이트 2026-09-09</span>
+              </div>
             </div>
-            <pre class="devtool-code"><code>import { S1Button } from "./s1-ui/platform/vue";
-
-&lt;S1Button variant="primary" size="md"
-          :parts="{ label: '확인' }" /&gt;</code></pre>
+            <div class="devtool-section">설치</div>
+            <ol class="devtool-steps">
+              <li>압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 22종이 실제 모습으로 보입니다</li>
+              <li>앱 진입 파일에서 겉모습 CSS 를 한 번 읽힙니다 (<code>tokens.css</code> · <code>s1-ui.css</code>)</li>
+              <li>쓸 컴포넌트만 이름으로 꺼내 씁니다 — 아래는 그 한 줄입니다</li>
+            </ol>
+            <pre class="devtool-code"><code>import { S1Button, S1DatePicker }
+  from "./s1-ui/platform/vue";</code></pre>
+            <div class="devtool-section">들어있는 것</div>
+            <p class="devtool-contains">컴포넌트 22종 전부 — 이름은 앞에 <code>S1</code> (<code>input → S1Input</code> · <code>date-picker → S1DatePicker</code>)</p>
+            <div class="devtool-get">
+              <a class="devtool-btn" href="../assets/downloads/s1-ui-vue.zip" download>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                이 툴만 받기
+              </a>
+              <span class="devtool-size">182KB · 파일 78개</span>
+            </div>
             <div class="devtool-foot">
               <span class="devtool-files"><code>platform/vue/</code></span>
               <span class="devtool-check">자가 검사기 사용 가능</span>
@@ -609,13 +657,29 @@
                 <div class="devtool-title">Kotlin (Android)</div>
                 <div class="devtool-note">Compose · View 공용 상수</div>
               </div>
-              <span class="devtool-badge devtool-badge-tokens">색·크기 값만</span>
+              <div class="devtool-head-right">
+                <span class="devtool-badge devtool-badge-tokens">색·크기 값만</span>
+                <span class="devtool-updated">업데이트 2026-09-10</span>
+              </div>
             </div>
-            <pre class="devtool-code"><code>import com.s1.designsystem.S1Tokens
-
-Color(S1Tokens.Colors.colorBgLevel0)   // Compose
+            <div class="devtool-section">설치</div>
+            <ol class="devtool-steps">
+              <li><code>S1Tokens.kt</code> 를 프로젝트 소스에 넣습니다 (패키지 <code>com.s1.designsystem</code>)</li>
+              <li>색·크기는 이 상수를 부릅니다 — 값을 눈으로 보고 옮겨 적지 마세요</li>
+              <li>눌렀을 때·꺼졌을 때 같은 상태 변화는 <code>behavior.json</code> 을 그대로 따릅니다</li>
+            </ol>
+            <pre class="devtool-code"><code>Color(S1Tokens.Colors.colorBgLevel0)   // Compose
 S1Tokens.ColorsDark.colorBgLevel0      // 다크 값
 S1Tokens.Dimens.radiusControlSm        // 4.0f</code></pre>
+            <div class="devtool-section">들어있는 것</div>
+            <p class="devtool-contains">색 481개(라이트·다크) · 크기·간격·반경 값 · 컴포넌트 동작 명세(<code>behavior.json</code>). <strong>화면 부품은 들어있지 않습니다 — 직접 그려야 합니다.</strong></p>
+            <div class="devtool-get">
+              <a class="devtool-btn" href="../assets/downloads/s1-ui-kotlin.zip" download>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                이 툴만 받기
+              </a>
+              <span class="devtool-size">86KB · 파일 32개</span>
+            </div>
             <div class="devtool-foot">
               <span class="devtool-files"><code>platform/kotlin/S1Tokens.kt</code> <code>platform/behavior.json</code></span>
               <span class="devtool-check devtool-check-off">자가 검사기 없음 — 값 대조까지만</span>
@@ -627,11 +691,28 @@ S1Tokens.Dimens.radiusControlSm        // 4.0f</code></pre>
                 <div class="devtool-title">Swift (iOS)</div>
                 <div class="devtool-note">UIKit · SwiftUI 공용 상수</div>
               </div>
-              <span class="devtool-badge devtool-badge-tokens">색·크기 값만</span>
+              <div class="devtool-head-right">
+                <span class="devtool-badge devtool-badge-tokens">색·크기 값만</span>
+                <span class="devtool-updated">업데이트 2026-09-10</span>
+              </div>
             </div>
-            <pre class="devtool-code"><code>// 색은 0xAARRGGBB 정수입니다
-let bg = S1Tokens.Colors.colorBgLevel0
+            <div class="devtool-section">설치</div>
+            <ol class="devtool-steps">
+              <li><code>S1Tokens.swift</code> 를 프로젝트에 넣습니다</li>
+              <li>색·크기는 이 상수를 부릅니다 — 색은 <code>0xAARRGGBB</code> 정수입니다</li>
+              <li>눌렀을 때·꺼졌을 때 같은 상태 변화는 <code>behavior.json</code> 을 그대로 따릅니다</li>
+            </ol>
+            <pre class="devtool-code"><code>let bg = S1Tokens.Colors.colorBgLevel0
 let radius = S1Tokens.Dimens.radiusControlSm</code></pre>
+            <div class="devtool-section">들어있는 것</div>
+            <p class="devtool-contains">색 481개(라이트·다크) · 크기·간격·반경 값 · 컴포넌트 동작 명세(<code>behavior.json</code>). <strong>화면 부품은 들어있지 않습니다 — 직접 그려야 합니다.</strong></p>
+            <div class="devtool-get">
+              <a class="devtool-btn" href="../assets/downloads/s1-ui-swift.zip" download>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                이 툴만 받기
+              </a>
+              <span class="devtool-size">41KB · 파일 5개</span>
+            </div>
             <div class="devtool-foot">
               <span class="devtool-files"><code>platform/swift/S1Tokens.swift</code> <code>platform/behavior.json</code></span>
               <span class="devtool-check devtool-check-off">자가 검사기 없음 — 값 대조까지만</span>
@@ -643,13 +724,31 @@ let radius = S1Tokens.Dimens.radiusControlSm</code></pre>
                 <div class="devtool-title">C++</div>
                 <div class="devtool-note">화면 라이브러리(Qt·MFC 등)가 정해지면 더 붙습니다</div>
               </div>
-              <span class="devtool-badge devtool-badge-tokens">색·크기 값만</span>
+              <div class="devtool-head-right">
+                <span class="devtool-badge devtool-badge-tokens">색·크기 값만</span>
+                <span class="devtool-updated">업데이트 2026-09-10</span>
+              </div>
             </div>
+            <div class="devtool-section">설치</div>
+            <ol class="devtool-steps">
+              <li><code>s1_tokens.h</code> 를 프로젝트에 넣고 <code>#include</code> 합니다</li>
+              <li>색·크기는 이 상수를 부릅니다 — 색은 <code>0xAARRGGBB</code> 정수입니다</li>
+              <li>값을 다른 형태로 쓰려면 <code>tokens.json</code> 을 읽어 쓰세요</li>
+            </ol>
             <pre class="devtool-code"><code>#include "s1_tokens.h"
 using namespace s1::tokens;
 
 auto bg = S1_COLOR_BG_LEVEL_0;    // 0xAARRGGBB
 auto r  = S1_RADIUS_CONTROL_SM;   // 4.0f</code></pre>
+            <div class="devtool-section">들어있는 것</div>
+            <p class="devtool-contains">색 481개(라이트·다크) · 크기·간격·반경 값 · 같은 값의 JSON 사본. <strong>화면 부품은 들어있지 않습니다 — 직접 그려야 합니다.</strong></p>
+            <div class="devtool-get">
+              <a class="devtool-btn" href="../assets/downloads/s1-ui-cpp.zip" download>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                이 툴만 받기
+              </a>
+              <span class="devtool-size">41KB · 파일 5개</span>
+            </div>
             <div class="devtool-foot">
               <span class="devtool-files"><code>platform/cpp/s1_tokens.h</code> <code>platform/tokens.json</code></span>
               <span class="devtool-check devtool-check-off">자가 검사기 없음 — 값 대조까지만</span>
@@ -664,7 +763,8 @@ auto r  = S1_RADIUS_CONTROL_SM;   // 4.0f</code></pre>
             <div class="step-header">
               <div>
                 <div class="step-title">들어있는 컴포넌트 22종</div>
-                <div class="step-desc">마크업은 상상하지 말고 <code>examples/</code> 폴더의 파일을 복사해서 쓰세요. 모바일용은 <code>*.mobile.html</code> 입니다</div>
+                <div class="step-desc" style="margin-bottom:2px;"><a class="devget-link" href="../ui-library/dist/preview.html" target="_blank" rel="noopener">실제 모습으로 보기 ↗</a> — 크기·변형과 "언제 쓰나"가 함께 보입니다</div>
+                <div class="step-desc">아래 22종이 모두 들어 있습니다. HTML 은 <code>examples/</code> 폴더의 파일을 복사해서 쓰고(모바일용은 <code>*.mobile.html</code>), React·Vue 는 이름 앞에 <code>S1</code> 을 붙여 부릅니다 — <code>input → S1Input</code> · <code>date-picker → S1DatePicker</code></div>
               </div>
             </div>
             <div class="devcomp-list">
@@ -722,7 +822,7 @@ auto r  = S1_RADIUS_CONTROL_SM;   // 4.0f</code></pre>
               <div>
                 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
                   <div class="step-title">S-1 S/W UX Guide 설치/검수기 <span class="ver-badge">0.2Ver</span></div>
-                  <span class="update-stamp" style="margin-left:0;" data-update-file="assets/downloads/s1-ux-design-guide-installer.zip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-09-08 18:16</span>
+                  <span class="update-stamp" style="margin-left:0;" data-update-file="assets/downloads/s1-ux-design-guide-installer.zip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-09-10 12:39</span>
                 </div>
                 <div class="step-desc">Figma Desktop에서 실행하는 플러그인 — 토큰·텍스트 스타일·컴포넌트 세트를 파일에 설치하고, 선택한 프레임의 색·컴포넌트를 정본 기준으로 검수합니다</div>
               </div>

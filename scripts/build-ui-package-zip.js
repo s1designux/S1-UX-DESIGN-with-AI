@@ -24,6 +24,44 @@ const ROOT = path.join(__dirname, '..');
 const DIST = path.join(ROOT, 'ui-library', 'dist');
 const OUT_DIR = path.join(ROOT, 'assets', 'downloads');
 const ZIP_NAME = 's1-ui-dev-package.zip';
+
+/* 툴별 묶음 — React 쓰는 사람이 Vue·안드로이드 것까지 받지 않게 한다(river 지시 2026-09-09).
+   "그 툴이 실제로 필요로 하는 것"만 담는다. 겉모습 CSS·아이콘은 웹 계열 전부에 필요하다.
+   빠뜨리면 화면이 안 나오므로, 묶은 뒤 파일이 서로를 제대로 가리키는지 기계로 확인한다. */
+const TOOL_PACKAGES = {
+  'html-css-js': {
+    title: 'HTML · CSS · JavaScript',
+    include: ['manifest.json', 'component-token-map.json', 'assets', 's1-ui.css', 's1-ui.js', 's1-ui.auto.js', 'components', 'examples', 'tools', 'preview.html'],
+    start: ['압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.', '**`preview.html` 을 브라우저로 열면 컴포넌트 22종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.', '`assets/css/tokens.css` 와 `s1-ui.css` 를 `<head>` 에서 읽힙니다.', '`s1-ui.auto.js` 의 `autoInit()` 을 한 번 부르면 동작이 전부 붙습니다.', '마크업은 `examples/` 폴더의 파일을 복사해서 씁니다(모바일용은 `*.mobile.html`).']
+  },
+  react: {
+    title: 'React · Next.js',
+    include: ['manifest.json', 'assets', 's1-ui.css', 's1-ui.auto.js', 'components', 'platform/react', 'platform/contract.json', 'tools', 'preview.html'],
+    filter: (relative) => !relative.startsWith('components/') || relative.endsWith('.js'),
+    start: ['압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.', '**`preview.html` 을 브라우저로 열면 컴포넌트 22종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.', '앱 진입 파일에서 `assets/css/tokens.css` 와 `s1-ui.css` 를 한 번 읽힙니다.', '`import { S1Button } from "./s1-ui/platform/react";` 처럼 쓸 것만 꺼내 씁니다.', '받는 값과 쓰는 법은 `platform/react/README.md` 에 있습니다.']
+  },
+  vue: {
+    title: 'Vue',
+    include: ['manifest.json', 'assets', 's1-ui.css', 's1-ui.auto.js', 'components', 'platform/vue', 'platform/contract.json', 'tools', 'preview.html'],
+    filter: (relative) => !relative.startsWith('components/') || relative.endsWith('.js'),
+    start: ['압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.', '**`preview.html` 을 브라우저로 열면 컴포넌트 22종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.', '앱 진입 파일에서 `assets/css/tokens.css` 와 `s1-ui.css` 를 한 번 읽힙니다.', '`import { S1Button } from "./s1-ui/platform/vue";` 처럼 쓸 것만 꺼내 씁니다.']
+  },
+  kotlin: {
+    title: 'Kotlin (Android)',
+    include: ['manifest.json', 'platform/kotlin', 'platform/behavior.json', 'platform/tokens.json'],
+    start: ['`platform/kotlin/S1Tokens.kt` 를 프로젝트 소스에 넣습니다(패키지 `com.s1.designsystem`).', '색·크기는 이 상수를 부릅니다 — 값을 눈으로 보고 옮겨 적지 마세요.', '상태 변화(눌림·꺼짐 등)는 `platform/behavior.json` 을 그대로 따릅니다.', '**화면 부품은 들어있지 않습니다 — 직접 그려야 합니다.**']
+  },
+  swift: {
+    title: 'Swift (iOS)',
+    include: ['manifest.json', 'platform/swift', 'platform/behavior.json', 'platform/tokens.json'],
+    start: ['`platform/swift/S1Tokens.swift` 를 프로젝트에 넣습니다.', '색은 `0xAARRGGBB` 정수입니다.', '상태 변화는 `platform/behavior.json` 을 그대로 따릅니다.', '**화면 부품은 들어있지 않습니다 — 직접 그려야 합니다.**']
+  },
+  cpp: {
+    title: 'C++',
+    include: ['manifest.json', 'platform/cpp', 'platform/behavior.json', 'platform/tokens.json'],
+    start: ['`platform/cpp/s1_tokens.h` 를 프로젝트에 넣고 `#include` 합니다.', '색은 `0xAARRGGBB` 정수입니다.', '값을 다른 형태로 쓰려면 `platform/tokens.json` 을 읽어 씁니다.', '**화면 부품은 들어있지 않습니다 — 직접 그려야 합니다.**']
+  }
+};
 const OUT_PATH = path.join(OUT_DIR, ZIP_NAME);
 const STAMP_PATH = path.join(OUT_DIR, 's1-ui-dev-package.stamp.json');
 const checkOnly = process.argv.includes('--check');
@@ -162,8 +200,128 @@ if (checkOnly) {
     console.error('❌ 배포 ZIP 파일이 만들어진 뒤에 바뀌었습니다 — `npm run ui:zip` 으로 다시 만드세요.');
     process.exit(1);
   }
+  /* 툴별 묶음도 같은 눈으로 본다 — 하나라도 없거나 바뀌었으면 화면의 받기 버튼이 헛것을 가리킨다. */
+  for (const key of Object.keys(TOOL_PACKAGES)) {
+    const item = recorded.packages?.[key];
+    if (!item) {
+      console.error(`❌ ${key} 묶음 기록이 없습니다 — \`npm run ui:zip\` 을 실행하세요.`);
+      process.exit(1);
+    }
+    const packagePath = path.join(OUT_DIR, item.zip);
+    if (!fs.existsSync(packagePath)) {
+      console.error(`❌ ${item.zip} 이(가) 없습니다 — \`npm run ui:zip\` 을 실행하세요.`);
+      process.exit(1);
+    }
+    const actual = crypto.createHash('sha256').update(fs.readFileSync(packagePath)).digest('hex');
+    if (actual !== item.zipFingerprint) {
+      console.error(`❌ ${item.zip} 이(가) 만들어진 뒤에 바뀌었습니다 — \`npm run ui:zip\` 으로 다시 만드세요.`);
+      process.exit(1);
+    }
+  }
   console.log(`✅ 배포 ZIP 최신 (${componentList.length}종 · 지문 ${manifest.canonicalFingerprint.slice(0, 12)}…)`);
   process.exit(0);
+}
+
+/* ── 툴별 묶음 만들기 ───────────────────────────────────────────────────
+   dist 에서 그 툴이 쓰는 것만 복사한다. 복사한 뒤 **서로를 가리키는 경로가 실제로 있는지**
+   확인한다 — 하나라도 빠지면 개발자 화면에서 조용히 안 그려진다. */
+
+function copySelected(target, spec) {
+  const copied = [];
+  const copyPath = (relative) => {
+    const source = path.join(DIST, relative);
+    if (!fs.existsSync(source)) throw new Error(`배포본에 ${relative} 가 없습니다.`);
+    if (fs.statSync(source).isDirectory()) {
+      for (const entry of fs.readdirSync(source).sort()) copyPath(path.posix.join(relative, entry));
+      return;
+    }
+    if (spec.filter && !spec.filter(relative)) return;
+    const destination = path.join(target, relative);
+    fs.mkdirSync(path.dirname(destination), { recursive: true });
+    fs.copyFileSync(source, destination);
+    copied.push(relative);
+  };
+  for (const item of spec.include) copyPath(item);
+  return copied;
+}
+
+/** 묶음 안의 파일이 참조하는 상대 경로가 묶음 안에 실제로 있는지 본다. */
+function assertSelfContained(stage, key) {
+  const missing = [];
+  const walk = (directory) => {
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+      const absolute = path.join(directory, entry.name);
+      if (entry.isDirectory()) { walk(absolute); continue; }
+      if (!/\.(js|jsx|mjs|vue|css)$/.test(entry.name)) continue;
+      const text = fs.readFileSync(absolute, 'utf8');
+      const references = [
+        ...[...text.matchAll(/from\s+["'](\.[^"']+)["']/g)].map((match) => match[1]),
+        ...[...text.matchAll(/import\s+["'](\.[^"']+)["']/g)].map((match) => match[1]),
+        ...[...text.matchAll(/url\(\s*["']?(\.[^"')]+)["']?\s*\)/g)].map((match) => match[1])
+      ];
+      for (const reference of references) {
+        const resolved = path.resolve(path.dirname(absolute), reference.split('?')[0]);
+        if (!fs.existsSync(resolved)) missing.push(`${path.relative(stage, absolute)} → ${reference}`);
+      }
+    }
+  };
+  walk(stage);
+  if (missing.length) {
+    throw new Error(`${key} 묶음에 빠진 파일이 있습니다(${missing.length}건):\n  - ${missing.slice(0, 8).join('\n  - ')}`);
+  }
+}
+
+function toolReadme(key, spec) {
+  return `# S1 UI 라이브러리 — ${spec.title} 묶음
+
+> 자동 생성물입니다. 이 폴더의 파일을 손으로 고치지 마세요 — 다음 배포 때 사라집니다.
+> **${spec.title} 에 필요한 것만 담은 묶음입니다.** 다른 툴 것까지 필요하면 전체 묶음(\`${ZIP_NAME}\`)을 받으세요.
+
+- 버전: **${manifest.version}**
+- 정본 지문: \`${manifest.canonicalFingerprint}\`
+- 승인 컴포넌트: **${componentList.length}종** (${componentList.join(', ')})
+- 토큰: **${platform.tokenCount}개**
+
+## 시작하기
+
+${spec.start.map((step, index) => `${index + 1}. ${step}`).join('\n')}
+
+## 내 배포본이 최신인지 확인
+
+디자인가이드 다운로드 화면의 지문과 위 정본 지문이 같아야 최신입니다.${spec.include.includes('tools') ? `
+
+\`\`\`bash
+node s1-ui/tools/s1-ui-lint.mjs --version          # 지문 확인
+node s1-ui/tools/s1-ui-lint.mjs <내 소스 폴더>      # 규칙 검사
+\`\`\`` : ''}
+`;
+}
+
+function buildToolPackages() {
+  const packages = {};
+  for (const [key, spec] of Object.entries(TOOL_PACKAGES)) {
+    const stageRoot = fs.mkdtempSync(path.join(require('os').tmpdir(), `s1-ui-zip-${key}-`));
+    const stage = path.join(stageRoot, 's1-ui');
+    fs.mkdirSync(stage, { recursive: true });
+    const copied = copySelected(stage, spec);
+    fs.writeFileSync(path.join(stage, 'README.md'), toolReadme(key, spec));
+    assertSelfContained(stage, key);
+
+    const zipName = `s1-ui-${key}.zip`;
+    const zipPath = path.join(OUT_DIR, zipName);
+    fs.mkdirSync(OUT_DIR, { recursive: true });
+    if (fs.existsSync(zipPath)) fs.unlinkSync(zipPath);
+    execSync(`zip -X -q -r "${zipPath}" s1-ui -x "*.DS_Store"`, { cwd: stageRoot, stdio: 'inherit' });
+    fs.rmSync(stageRoot, { recursive: true, force: true });
+    packages[key] = {
+      zip: zipName,
+      title: spec.title,
+      files: copied.length + 1,
+      sizeKB: Number((fs.statSync(zipPath).size / 1024).toFixed(0)),
+      zipFingerprint: crypto.createHash('sha256').update(fs.readFileSync(zipPath)).digest('hex')
+    };
+  }
+  return packages;
 }
 
 const stageRoot = fs.mkdtempSync(path.join(require('os').tmpdir(), 's1-ui-zip-'));
@@ -176,7 +334,11 @@ if (fs.existsSync(OUT_PATH)) fs.unlinkSync(OUT_PATH);
 execSync(`zip -X -q -r "${OUT_PATH}" s1-ui -x "*.DS_Store"`, { cwd: stageRoot, stdio: 'inherit' });
 fs.rmSync(stageRoot, { recursive: true, force: true });
 stamp.zipFingerprint = crypto.createHash('sha256').update(fs.readFileSync(OUT_PATH)).digest('hex');
+stamp.packages = buildToolPackages();
 fs.writeFileSync(STAMP_PATH, `${JSON.stringify(stamp, null, 2)}\n`);
 
 const sizeKB = (fs.statSync(OUT_PATH).size / 1024).toFixed(0);
 console.log(`✅ 완료: assets/downloads/${ZIP_NAME} (${sizeKB}KB · 컴포넌트 ${componentList.length}종 · 토큰 ${platform.tokenCount}개)`);
+for (const [key, item] of Object.entries(stamp.packages)) {
+  console.log(`   └ ${key}: ${item.zip} (${item.sizeKB}KB · 파일 ${item.files}개)`);
+}

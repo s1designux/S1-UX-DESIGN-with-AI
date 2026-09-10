@@ -9,6 +9,13 @@
   width: 100%;
 }
 
+/* Search 최소 폭 — 정본 SEARCH_MIN_W(build-components.ts) 와 같은 200px.
+   좁아지면 좌우 아이콘이 서로 붙어 보인다(river 지시 2026-09-09). 늘어나는 것은 그대로 둔다. */
+[data-s1-component="input"][data-mode="search"],
+[data-s1-component="input"][data-mode="search"] [data-s1-part="field"] {
+  min-width: 200px;
+}
+
 [data-s1-component="input"] [data-s1-part="label"] {
   color: var(--color-form-control-label-default);
   font-family: "Pretendard", sans-serif;
@@ -2567,7 +2574,8 @@
 }
 
 @media (hover: hover) {
-  /* M5: 정본 cell/bg/selected-hover(vars-data.ts) — 정본 시각 빌더엔 미배선이나 값이 있어 선택 셀 hover 에 적용. */
+  /* M5: 정본 cell/bg/selected-hover. 2026-09-09 정본 시각 빌더(build-components.ts calCellCompsForSize)에도
+     State="Selected Hover" 로 배선돼 웹과 정본이 일치한다. 경위 = canon-approval-audit-2026-09-07.md §9 M-7. */
   [data-s1-component="date-picker"] [data-s1-part="cell"]:not(:disabled)[data-state="default"]:hover [data-s1-part="cell-inner"] {
     background: var(--color-date-picker-cell-bg-hover);
   }
