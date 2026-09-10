@@ -3667,8 +3667,9 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
 //   매핑 내역 — 왼쪽이 A 실측, 오른쪽이 이 코드가 쓰는 정본 토큰:
 //     컬럼 안 세로 간격    24  → spacing/24     (정확히 일치)
 //     2단 들여쓰기          0  → 없음           (A 는 들여쓰기가 없다 — B 의 8 을 버림)
-//     패널 위/아래 여백 regular 32/64 → spacing/32 · spacing/64 (정확히 일치) — Depth=2depth 변형
-//     패널 상하 여백   compact 24     → spacing/24 (정확히 일치)             — Depth=1depth 변형
+//     패널 위/아래 여백 regular 32/64 → spacing/32 · spacing/64 (정확히 일치) — Type=regular 변형
+//     패널 상하 여백   compact 24     → spacing/24 (정확히 일치)             — Type=compact-1 · compact-2 변형
+//     compact-2 열 안 간격  20        → spacing/20 (정확히 일치)             — regular 의 24 와 다른 별도 값
 //     컬럼 사이 간격        72  → spacing/80     (정본 토큰 64·80 의 정중앙이라 "가장 가까운 값" 규칙으로는
 //                                                못 고른다. river 가 64·72·80 세 안을 렌더로 비교해 **80 확정**, 2026-09-08)
 //     그림자   0 4px 4px 15%  → shadow/dropdown (정본 그림자 재사용 · 새 그림자 토큰 0건, river C-3)
@@ -3689,9 +3690,17 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
 //
 // ★ 구조: A 는 제목과 항목을 한 컬럼 안 **형제**로 나열한다(자식 중첩·들여쓰기 없음). 이 코드도 같다.
 //     (B 는 2단을 자식 레이어로 넣었는데, A 로 바꾸면서 그 차이 자체가 사라졌다.)
-//   Depth 축의 뜻: Item 의 1depth = 카테고리 제목(Bold) · 2depth = 항목(Medium).
-//                 패널의 1depth = 항목 목록만 · 2depth = 제목 + 항목 목록(A regular).
+//   Depth 축은 **Item 에만** 있다: 1depth = 카테고리 제목(Bold) · 2depth = 항목(Medium).
+//                 패널의 축은 Depth 가 아니라 Type 이다(regular · compact-1 · compact-2) — 2026-09-09 개편.
 const GNB_SUBMENU_DEPTHS = ["1depth", "2depth"] as const;
+// 패널 유형 — 레거시 A `gnb list`(540:6398) 의 세 변형 이름을 그대로 쓴다(🤖 figma-inspector 2026-09-09 실측).
+//   regular   (540:6423) 1920×342 — 카테고리 제목(Bold) + 항목 목록. 위 32 / 아래 64.
+//   compact-1 (540:6399) 1920×67  — 제목 없이 **항목을 한 줄로 가로 나열**. 상하 24. 항목 사이 72.
+//   compact-2 (540:6407) 1920×110 — 제목 없이 **열마다 항목 2개까지 세로**. 상하 24. 열 사이 72 · 열 안 20.
+// river 결정 2026-09-09: "원본 그대로 넣되 하위 메뉴가 들어가는 영역을 피그마에서는 슬롯 처리해서 넣어줘".
+//   ⚠️ 종전 Depth=1depth 변형(항목만 · 4컬럼 · 컬럼 안 24)은 원본의 어느 콤팩트와도 맞지 않는 근사치였다 —
+//      compact-1/compact-2 로 대체한다. Depth=2depth 는 regular 와 같은 것이라 이름만 바뀐다.
+const GNB_SUBMENU_TYPES = ["regular", "compact-1", "compact-2"] as const;
 const GNB_SUBMENU_STATES = ["Default", "Hover", "Selected"];
 
 async function buildGNBSubMenuItem(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
@@ -3735,32 +3744,65 @@ async function buildGNBSubMenuItem(maps: BuildMaps, originY: number): Promise<{ 
 }
 
 async function buildGNBSubMenu(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
-  const PANEL_W = 1920;             // GNB 바와 같은 폭(정본 BAR_W)
-  const COLUMN_COUNT = 4;           // 실측 1depth 4컬럼
+  const PANEL_W = 1920;             // GNB 바와 같은 폭(정본 BAR_W). 세 유형 공통(원본 실측 1920).
   const itemComp = async (depth: string, state: string): Promise<SceneNode> => {
     const c = BUILT_COMPS[`GNBSubMenuItem:${depth}:${state}`]
       ?? await reuseVariant("GNB Sub Menu Item", `GNBSubMenuItem:${depth}:${state}`, [`Depth=${depth}`, `State=${state}`]);
     if (c) return c.createInstance();
     throw new Error("GNB Sub Menu 는 GNB Sub Menu Item 정본이 먼저 필요합니다.");
   };
+  const num = (t: string): Variable => requireVar(maps.foundationNumber, t, "Foundation Number");
+
+  // 유형별 정본 사양 — 전부 🤖 figma-inspector 2026-09-09 실측(540:6399 · 540:6407 · 540:6423).
+  //   컬럼 사이 72 → spacing/80 매핑은 2026-09-08 river 결정(64·72·80 을 렌더로 비교해 80 확정)을 그대로 따른다.
+  //   compact-2 의 열 안 20 은 원본이 regular(24)와 다른 값을 쓰므로 spacing/20 으로 정확히 매핑한다.
+  //   2026-09-08 river 결정("두 깊이를 한 리듬으로" 24 통일)은 **2026-09-09 river 결정으로 갈음됐다** —
+  //   콤팩트를 원본 그대로 넣기로 하면서 줄간격을 "20 — 원본 그대로"로 골랐다. 갈음 기록은
+  //   reports/legacy-crosswalk-board/WIP-canon-additions.md (36·50·71행).
+  const TYPE_SPEC: Record<string, {
+    padTop: string; padBottom: string;
+    groups: number;                 // 항목 묶음 개수. compact-1 은 항목 하나짜리 묶음 6개가 한 줄로 늘어선다
+    perGroup: number[];             // 묶음별 항목 수
+    groupAxis: "VERTICAL" | "HORIZONTAL";
+    groupGap: string;               // 묶음 사이 간격
+    innerGap: string | null;        // 묶음 안 항목 간격(compact-1 은 묶음이 한 줄이라 null)
+    withTitle: boolean;             // 카테고리 제목(1depth Bold) 유무
+    selected: [number, number];     // [묶음 index, 그 안 항목 index] — Selected 표본 자리
+  }> = {
+    // regular(540:6423) — 제목 + 항목. 4열이고 열마다 항목 수가 다르다: 5 / 3 / 4 / 5.
+    //   Selected 표본은 4번째 열의 4번째 항목("단말기정보")이다 — 원본 스크린샷 실측
+    //   (figma-shots/regular_540-6423.png). 종전 [4,4,4,4]·첫 열 첫 항목은 근사치였다
+    //   (🤖 component-verifier 2026-09-09 A-1·A-2 적발). 높이로 교차검증됨:
+    //   32 + (제목 21 + 항목 5×21 + 간격 5×24 = 246) + 64 = 342 = 원본 높이.
+    "regular":   { padTop: "spacing/32", padBottom: "spacing/64", groups: 4, perGroup: [5, 3, 4, 5],
+                   groupAxis: "VERTICAL", groupGap: "spacing/80", innerGap: "spacing/24",
+                   withTitle: true, selected: [3, 3] },
+    // compact-1(540:6399) — 제목 없이 항목 6개를 한 줄로 가로 나열. 원본은 마지막 항목이 파란 강조다.
+    "compact-1": { padTop: "spacing/24", padBottom: "spacing/24", groups: 6, perGroup: [1, 1, 1, 1, 1, 1],
+                   groupAxis: "VERTICAL", groupGap: "spacing/80", innerGap: null,
+                   withTitle: false, selected: [5, 0] },
+    // compact-2(540:6407) — 제목 없이 5묶음, 묶음당 항목 2개(마지막 묶음만 1개). 원본은 그 1개가 파란 강조다.
+    "compact-2": { padTop: "spacing/24", padBottom: "spacing/24", groups: 5, perGroup: [2, 2, 2, 2, 1],
+                   groupAxis: "VERTICAL", groupGap: "spacing/80", innerGap: "spacing/20",
+                   withTitle: false, selected: [4, 0] },
+  };
+
   const comps: ComponentNode[] = [];
-  for (const depth of GNB_SUBMENU_DEPTHS) {
-    const twoLevel = depth === "2depth";
+  for (const type of GNB_SUBMENU_TYPES) {
+    const spec = TYPE_SPEC[type];
     const comp = figma.createComponent();
-    comp.name = `Depth=${depth}`;
+    comp.name = `Type=${type}`;
     comp.layoutMode = "HORIZONTAL";
     comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "AUTO";
-    comp.primaryAxisAlignItems = "CENTER";   // A: 컬럼 묶음 가운데 정렬(justify-center) — 좌우 여백은 정렬 규칙이지 값이 아니다
+    comp.primaryAxisAlignItems = "CENTER";   // A: 묶음 전체를 가운데 정렬(justify-center) — 좌우 여백은 정렬 규칙이지 값이 아니다
     comp.counterAxisAlignItems = "MIN";
     comp.itemSpacing = 0;
     comp.fills = [boundPaint(scv(maps, "color/navigation/bg"))];
-    const num = (t: string): Variable => requireVar(maps.foundationNumber, t, "Foundation Number");
-    // A 실측 그대로: regular(제목+항목) 위 32 / 아래 64 · compact(항목만) 상하 24. 전부 정본 토큰과 정확히 일치.
-    comp.setBoundVariable("paddingTop", num(twoLevel ? "spacing/32" : "spacing/24"));
-    comp.setBoundVariable("paddingBottom", num(twoLevel ? "spacing/64" : "spacing/24"));
+    comp.setBoundVariable("paddingTop", num(spec.padTop));
+    comp.setBoundVariable("paddingBottom", num(spec.padBottom));
     comp.setBoundVariable("paddingLeft", num("spacing/24"));   // 최소 여백 — 실제 위치는 CENTER 정렬이 정한다
     comp.setBoundVariable("paddingRight", num("spacing/24"));
-    // A: 패널 하단선 1px line/gray/subtle (GNB 바 하단선과 같은 토큰). 두 변형 공통.
+    // A: 패널 하단선 1px line/gray/subtle (GNB 바 하단선과 같은 토큰). 세 유형 공통.
     comp.strokes = [boundPaint(scv(maps, "color/line/gray/subtle"))];
     comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
     comp.strokeTopWeight = 0; comp.strokeLeftWeight = 0; comp.strokeRightWeight = 0; comp.strokeBottomWeight = 1;
@@ -3768,44 +3810,35 @@ async function buildGNBSubMenu(maps: BuildMaps, originY: number): Promise<{ set:
     // 그림자 = 정본 shadow/dropdown 재사용(river C-3) — 새 그림자 토큰을 만들지 않는다.
     try { (comp as any).effects = boundShadowEffects(maps, "shadow/dropdown"); } catch (e) { /* 환경 미지원 */ }
 
-    // 컬럼 묶음 = Figma 슬롯("Columns") — 메뉴 개수를 넣고 빼서 조절한다(GNB 바 "Menus" 슬롯과 같은 방식).
+    // 항목 묶음 = Figma 슬롯("Columns") — 메뉴 개수를 넣고 빼서 조절한다(river 지시 2026-09-09:
+    //   "하위 메뉴가 들어가는 영역을 피그마에서는 슬롯 처리해서 넣어줘"). GNB 바 "Menus" 슬롯과 같은 방식.
     const columns: SceneNode[] = [];
-    for (let ci = 0; ci < COLUMN_COUNT; ci++) {
+    for (let gi = 0; gi < spec.groups; gi++) {
       const col = figma.createFrame();
       col.name = "column";
-      col.layoutMode = "VERTICAL";
+      col.layoutMode = spec.groupAxis;
       col.primaryAxisSizingMode = "AUTO"; col.counterAxisSizingMode = "AUTO";
       col.counterAxisAlignItems = "MIN";
-      // 24 = A `regular`(540:6423) 실측(spacing/stack/lg). A 의 `compact` 판은 20 이지만 두 깊이를 한 리듬으로
-      //   통일한다 — river 결정 2026-09-08(24·20 을 렌더로 비교해 24 확정).
-      col.itemSpacing = 24;
-      col.setBoundVariable("itemSpacing", requireVar(maps.foundationNumber, "spacing/24", "Foundation Number"));
+      col.itemSpacing = spec.innerGap ? Number(spec.innerGap.split("/")[1]) : 0;
+      if (spec.innerGap) col.setBoundVariable("itemSpacing", num(spec.innerGap));
       col.fills = [];
-      if (twoLevel) {
-        // A regular 그대로: 카테고리 제목(1depth, Bold) 하나 + 항목(2depth, Medium) 여러 개. 첫 컬럼 첫 항목만 Selected.
-        col.appendChild(await itemComp("1depth", "Default"));
-        col.appendChild(await itemComp("2depth", ci === 0 ? "Selected" : "Default"));
-        col.appendChild(await itemComp("2depth", "Default"));
-        col.appendChild(await itemComp("2depth", "Default"));
-        col.appendChild(await itemComp("2depth", "Default"));
-      } else {
-        // 항목 목록만(A compact 계열). 첫 컬럼 첫 항목만 Selected.
-        col.appendChild(await itemComp("2depth", ci === 0 ? "Selected" : "Default"));
-        col.appendChild(await itemComp("2depth", "Default"));
-        col.appendChild(await itemComp("2depth", "Default"));
+      if (spec.withTitle) col.appendChild(await itemComp("1depth", "Default"));
+      for (let ii = 0; ii < spec.perGroup[gi]; ii++) {
+        const isSel = gi === spec.selected[0] && ii === spec.selected[1];
+        col.appendChild(await itemComp("2depth", isSel ? "Selected" : "Default"));
       }
       columns.push(col);
     }
     const wrap = await makeSlot(comp, "Columns",
-      "하위메뉴 컬럼이 놓이는 자리. 기본은 4컬럼이며, GNB Sub Menu Item 인스턴스를 넣고 빼서 메뉴 수와 깊이를 조절한다.",
+      "하위메뉴 항목이 놓이는 자리. GNB Sub Menu Item 인스턴스를 넣고 빼서 메뉴 수와 깊이를 조절한다. "
+      + "regular 는 제목+항목 4열, compact-1 은 항목 한 줄, compact-2 는 묶음마다 항목 2개까지다.",
       columns, BUILT_SETS["GNB Sub Menu Item"] ? [{ type: "COMPONENT_SET", key: BUILT_SETS["GNB Sub Menu Item"].key }] : [],
       { layoutMode: "HORIZONTAL", primaryAxisSizingMode: "AUTO", counterAxisSizingMode: "AUTO",
-        primaryAxisAlignItems: "MIN", counterAxisAlignItems: "MIN", itemSpacing: 80 });  // A 실측 72 → spacing/80 (아래 바인딩 참조)
+        primaryAxisAlignItems: "MIN", counterAxisAlignItems: "MIN", itemSpacing: 80 });  // A 실측 72 → spacing/80
     // makeSlot 은 itemSpacing 을 숫자로 대입만 하고 변수에 묶지 않는다 — 여기서 직접 바인딩한다.
-    //   (🤖 component-verifier 2026-09-08 적발: 매핑표는 spacing/80 이라 적었는데 코드는 생짜 80 이었다.)
-    try { wrap.setBoundVariable("itemSpacing", requireVar(maps.foundationNumber, "spacing/80", "Foundation Number")); } catch (e) { /* 환경 미지원 */ }
+    try { wrap.setBoundVariable("itemSpacing", num(spec.groupGap)); } catch (e) { /* 환경 미지원 */ }
     // ⚠️ layoutGrow 를 걸지 않는다 — 걸면 슬롯이 안쪽 폭을 다 차지해 부모의 CENTER 가 정렬할 여백을 잃고
-    //   슬롯 자신의 MIN 이 컬럼을 좌측에 붙인다(🤖 component-verifier 2026-09-08 적발). 슬롯은 hug 로 두고
+    //   슬롯 자신의 MIN 이 묶음을 좌측에 붙인다(🤖 component-verifier 2026-09-08 적발). 슬롯은 hug 로 두고
     //   가운데 정렬은 부모(primaryAxisAlignItems=CENTER)가 한다 — GNB 바의 Menus 슬롯과 같은 방식.
 
     setLightMode(comp, maps);
@@ -3817,10 +3850,10 @@ async function buildGNBSubMenu(maps: BuildMaps, originY: number): Promise<{ set:
   const opts: SpecOpts = {
     title: "GNB Sub Menu",
     colHeaders: [""],
-    rowLabels: GNB_SUBMENU_DEPTHS.map((d) => d),
+    rowLabels: GNB_SUBMENU_TYPES.map((t) => t),
     cellAt: (r, _c) => comps[r] ?? null,
     // 폭 1920 — GNB 바와 같은 이유로 다크 스펙을 우측이 아니라 아래에 쌓는다.
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: PANEL_W + 40, cellH: 320, rowLabelW: 160,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: PANEL_W + 40, cellH: 380, rowLabelW: 160,
     leftAlignCells: true,
   };
   const lightBottom = await decorateSetFlat(set, opts, maps);

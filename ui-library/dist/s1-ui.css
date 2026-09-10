@@ -2997,6 +2997,120 @@
   width: var(--sizing-32);
 }
 
+/* component:gnb-sub-menu-item */
+/* GNB Sub Menu Item — 정본 buildGNBSubMenuItem(build-components.ts:3697) 기준.
+   Depth(1depth=카테고리 제목 · 2depth=항목) × State(Default·Hover·Selected) 6변형.
+   들여쓰기 없음(A 기준 원본은 8px 들여쓰기가 없다, 정본 주석 3673·3689) · 배경 없음 · 아이콘 없음 · 크기는 hug.
+   단독으로 쓰지 않고 GNB Sub Menu 컬럼 안 <li> 에 넣어 쓴다. */
+[data-s1-component="gnb-sub-menu-item"] {
+  color: var(--color-navigation-label-default);
+  display: inline-flex;
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: var(--line-height-130);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* 1depth = 카테고리 제목. Bold 16(title/16B) · color/navigation/submenu/label/default.
+   2depth 와 letter-spacing 이 다른 것은 각각의 정본 텍스트 스타일(title/16B·title/16M)이 다르기 때문이다. */
+[data-s1-component="gnb-sub-menu-item"][data-depth="1depth"] {
+  color: var(--color-navigation-submenu-label-default);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-normal);
+}
+
+/* Hover 와 Selected 는 정본에서 색이 같다(1depth·2depth 공통) — GNB 메뉴와 같은 구조다.
+   원본에 hover 표본이 없어 selected 와 같은 색으로 사전 등록한 개선이다(정본 주석 3688).
+   data-force-state="hover" 는 안내 화면이 마우스 없이 Hover 칸을 미리보기로 흉내내는 용도다
+   (선례: gnb.css, tab.css).
+   Selected 표시 수단은 depth 로 갈린다 — 2depth(항목)는 <a href> 라 현재 위치를 뜻하는
+   aria-current="page" 가 시각까지 겸한다. 1depth(카테고리 제목)는 링크가 아니라 현재
+   페이지 개념이 없으므로 aria-current 를 쓰지 않고, 시각 전용 데이터 속성
+   data-state="selected" 로 같은 Selected 변형(build-components.ts:3702~3714)을 낸다. */
+[data-s1-component="gnb-sub-menu-item"]:hover,
+[data-s1-component="gnb-sub-menu-item"][data-force-state="hover"],
+[data-s1-component="gnb-sub-menu-item"][aria-current="page"],
+[data-s1-component="gnb-sub-menu-item"][data-depth="1depth"][data-state="selected"] {
+  color: var(--color-navigation-label-selected);
+}
+
+/* component:gnb-sub-menu */
+/* GNB Sub Menu — 정본 buildGNBSubMenu(build-components.ts:3737) 기준. PC 전용.
+   정본은 폭 1920 고정이지만 웹은 GNB 바와 같은 이유로 full-width 반응형이다(gnb.css 선례).
+   Type(regular · compact-1 · compact-2) 3변형 — 2026-09-09 개편(종전 Depth 축은 없어졌다).
+   묶음 사이 80 은 세 유형 공통. 묶음 안 간격은 유형마다 다르다(regular·compact-1 = 24, compact-2 = 20). */
+[data-s1-component="gnb-sub-menu"] {
+  align-items: flex-start;
+  background: var(--color-navigation-bg);
+  box-shadow: var(--shadow-dropdown);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+/* 이 패널을 여닫는 host(gnb)가 hidden 속성으로 접고 편다 — 위 display:flex 는 같은 요소에
+   author 스타일로 얹혀 있어 UA 기본 [hidden]{display:none} 규칙을 덮어써 버린다(select.css·
+   date-picker.css 의 패널 선례와 같은 함정). 이 규칙이 없으면 hidden 을 줘도 화면에서 안 사라진다. */
+[data-s1-component="gnb-sub-menu"][hidden] {
+  display: none;
+}
+
+/* 하단 1px 선 — GNB 바와 같은 이유로 겹쳐 그리는 선(::before)으로 둔다. border-bottom 으로 두면
+   패널 높이가 1px 줄어 정본 구조(strokeBottomWeight=1, strokeAlign=INSIDE)와 어긋난다(gnb.css 선례). */
+[data-s1-component="gnb-sub-menu"]::before {
+  background: var(--color-line-gray-subtle);
+  bottom: 0;
+  content: "";
+  height: var(--border-width-default);
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+}
+
+/* 여백 — A 실측 그대로: regular(제목+항목) 위 32/아래 64, compact-1·compact-2(제목 없음) 상하 24.
+   좌우는 정본 주석대로 "값이 아니라 정렬 규칙"이라 최소값 24 만 둔다 — 실제 위치는 위 justify-content:center 가 정한다. */
+[data-s1-component="gnb-sub-menu"][data-type="regular"] {
+  padding: var(--spacing-32) var(--spacing-24) var(--spacing-64);
+}
+[data-s1-component="gnb-sub-menu"][data-type="compact-1"],
+[data-s1-component="gnb-sub-menu"][data-type="compact-2"] {
+  padding: var(--spacing-24);
+}
+
+/* 묶음 전체 — Figma 슬롯 "Columns" 에 대응한다. ⚠️ 폭을 늘리지 않는다(hug) — 늘리면 위 justify-content:center 가
+   정렬할 여백을 잃고 왼쪽에 붙는다(정본 주석 3814, 🤖 component-verifier 2026-09-08 적발 사례). */
+[data-s1-component="gnb-sub-menu"] [data-s1-part="columns"] {
+  display: flex;
+  gap: var(--spacing-80);
+}
+
+/* 묶음(컬럼) 하나 — GNB Sub Menu Item 을 세로로 쌓는 목록. 묶음 자체는 목록을 담는 그릇이며
+   그 자체가 목록이 아니다(registry a11y) — 실제 목록 마크업은 <ul>/<li> 다.
+   묶음 안 간격 기본값 24 는 regular·compact-1 이 쓴다(compact-1 은 묶음마다 항목이 1개라 간격이 안 보인다). */
+[data-s1-component="gnb-sub-menu"] [data-s1-part="column"] {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-24);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* compact-2 만 묶음 안 간격이 20 이다(원본 실측 — regular·compact-1 의 24 와 다르다). */
+[data-s1-component="gnb-sub-menu"][data-type="compact-2"] [data-s1-part="column"] {
+  gap: var(--spacing-20);
+}
+
+[data-s1-component="gnb-sub-menu"] [data-s1-part="column"] > li {
+  margin: 0;
+}
+
 /* component:assist-button */
 /* Assist Button — 정본 buildAssistButtonSet(build-components.ts:582) 기준.
    크기 축 없음(h32 하나). 상태는 State=Default·Hover·Pressed·Disabled 4가지뿐이며

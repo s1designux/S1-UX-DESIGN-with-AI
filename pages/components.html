@@ -1806,6 +1806,8 @@
           <button class="comp-nav-btn" data-category="table" data-platforms="pc" onclick="showSection('table', this)">Table</button>
           <button class="comp-nav-btn" data-category="navigation" data-platforms="pc mobile" onclick="showSection('tab', this)">Line Tab</button>
           <button class="comp-nav-btn" data-category="navigation" data-platforms="pc" onclick="showSection('gnb', this)">GNB</button>
+          <button class="comp-nav-btn" data-category="navigation" data-platforms="pc" onclick="showSection('gnb-sub-menu', this)">GNB Sub Menu</button>
+          <button class="comp-nav-btn" data-category="navigation" data-platforms="pc" onclick="showSection('gnb-sub-menu-item', this)">GNB Sub Menu Item</button>
           <button class="comp-nav-btn" data-category="navigation" data-platforms="pc" onclick="showSection('pagination', this)">Pagination</button>
           <button class="comp-nav-btn" data-category="navigation" data-platforms="mobile" onclick="showSection('mobile-bottom-nav', this)">Bottom Nav</button>
           <button class="comp-nav-btn" data-category="navigation" data-platforms="mobile" onclick="showSection('mobile-header', this)">Mobile Header</button>
@@ -2112,6 +2114,12 @@
 
       <!-- Approved GNB guide: ui-library-guide.js renders from ui-library/dist -->
       <section class="comp-section" id="gnb" data-cov-align="center-between,start" data-cov-sizes="md,sm,xsm" data-cov-states="default,hover,selected" data-cov-language="on,off,english,korean" data-cov-menu="on,off" data-cov-user="on,off"></section>
+
+      <!-- Approved GNB Sub Menu guide: ui-library-guide.js renders from ui-library/dist -->
+      <section class="comp-section" id="gnb-sub-menu" data-cov-type="regular,compact-1,compact-2"></section>
+
+      <!-- Approved GNB Sub Menu Item guide: ui-library-guide.js renders from ui-library/dist -->
+      <section class="comp-section" id="gnb-sub-menu-item" data-cov-depth="1depth,2depth" data-cov-state="default,hover,selected"></section>
 
 
       <!-- Approved Select guide: ui-library-guide.js renders from ui-library/dist -->
@@ -3365,7 +3373,7 @@ update(); // 초기화</pre>
   applyPlatformMenu();
 
   (function initFromHash() {
-    var valid = ['button','checkbox','radio','toggle','multi-toggle','chip','filter-chip','input','date-picker','time-picker','textarea','select','dropdown','table','pagination','tab','gnb','mobile-bottom-nav','mobile-header','ci','footer','login-gnb','modal']; // 마이그레이션 완료 컴포넌트 + 회사 고유 자산 3종(상위가 없어 어디에도 안 보이던 것 — 2026-08-02 노출)
+    var valid = ['button','checkbox','radio','toggle','multi-toggle','chip','filter-chip','input','date-picker','time-picker','textarea','select','dropdown','table','pagination','tab','gnb','gnb-sub-menu','gnb-sub-menu-item','mobile-bottom-nav','mobile-header','ci','footer','login-gnb','modal']; // 마이그레이션 완료 컴포넌트 + 회사 고유 자산 3종(상위가 없어 어디에도 안 보이던 것 — 2026-08-02 노출)
     var hash  = window.location.hash.replace('#', '');
     var id    = (hash && valid.includes(hash)) ? hash : 'button'; // 기본은 Button(양 플랫폼 공통)
     var btn   = document.querySelector('.comp-nav-btn[onclick*="\'' + id + '\'"]');

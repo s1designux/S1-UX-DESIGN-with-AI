@@ -344,6 +344,34 @@
       "note": "루트 A(레거시 pc_text_button) 신규 편입(2026-09-08). 웹 UI 라이브러리 빌드 직후(⭐ ui-library-builder) — component-verifier 독립 검증(원본 대조) 대기, 통과 시 verify→new."
     },
     {
+      "id": "gnb-sub-menu-item",
+      "origin": "A",
+      "sourceNode": "레거시 A `gnb list` yE5UCFEbmXJBlYJWB24Lz2 / 540:6398(변형 regular 540:6423) — river 결정 2026-09-08 \"A로 가\"",
+      "verify": "none",
+      "verifyDate": "",
+      "mobile": "na",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "루트 A(레거시 A `gnb list`) 신규 편입(2026-09-08 정본 보강, work-id gnb-sub-menu). 웹 UI 라이브러리 빌드 직후(⭐ ui-library-builder) — component-verifier 독립 검증(원본 대조) 대기, 통과 시 verify→new."
+    },
+    {
+      "id": "gnb-sub-menu",
+      "origin": "A",
+      "sourceNode": "레거시 A `gnb list` yE5UCFEbmXJBlYJWB24Lz2 / 540:6398(변형 regular 540:6423) — river 결정 2026-09-08 \"A로 가\"",
+      "verify": "none",
+      "verifyDate": "",
+      "mobile": "na",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "루트 A(레거시 A `gnb list`) 신규 편입(2026-09-08 정본 보강, work-id gnb-sub-menu). PC 전용, 여닫는 동작은 host 화면 소유(정본에 없음). 웹 UI 라이브러리 빌드 직후(⭐ ui-library-builder) — component-verifier 독립 검증(원본 대조) 대기, 통과 시 verify→new."
+    },
+    {
       "id": "modal-content",
       "origin": "A",
       "sourceNode": "V2.4 yE5UCFEbmXJBlYJWB24Lz2 / 540:5815",

@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:18860eed398bd28e0ba9bdf5eec5c5183ef7b5682f1869e32c8c8897c003df94",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-09T11:12:33.570Z",
+  "notes": "GNB Sub Menu 패널 축 개편(Depth 2 → Type 3: regular·compact-1·compact-2). 레거시 A gnb list(540:6398) 원본 실측을 그대로 옮겼다 — regular 묶음 5·3·4·5(강조 4번째 묶음 4번째), compact-1 항목 6개 한 줄(강조 마지막), compact-2 묶음 5개 2·2·2·2·1(강조 마지막, 묶음 안 spacing/20). 세 유형 전부 Columns 슬롯. 새 토큰·새 색 0건. 3회차 델타 재검증 FAIL 0(1회차 FAIL 4 → 2회차 FAIL 4(전부 서술) → 3회차 해소). 남은 HOLD 1(crosswalk.json D-18 결정 장부 서술)은 ⭐ 가 갈음 추기로 닫았다. 보고서 reports/ui-library/gnb-sub-menu/5-canon-verification.md"
+}

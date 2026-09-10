@@ -1,8 +1,8 @@
 {
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
-  "_updated": "2026-09-09",
-  "count": 640,
+  "_updated": "2026-09-10",
+  "count": 643,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -585,6 +585,9 @@
     "uistate:filter-chip.disabled",
     "uistate:filter-chip.hover",
     "uistate:filter-chip.selected",
+    "uistate:gnb-sub-menu-item.default",
+    "uistate:gnb-sub-menu-item.hover",
+    "uistate:gnb-sub-menu-item.selected",
     "uistate:gnb.default",
     "uistate:gnb.hover",
     "uistate:gnb.selected",
@@ -1119,6 +1122,42 @@
       "evidence": {
         "transcript": "c6f808e0-8420-43e9-8927-7f6592568841.jsonl",
         "at": "2026-09-09T05:01:25.667Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:gnb-sub-menu-item.default",
+      "by": "river",
+      "reason": "GNB 하위메뉴 글자 부품의 웹 상태 이름 — 정본 buildGNBSubMenuItem 의 Default·Hover·Selected 와 같은 이름이다. 새 상태를 늘리지 않는다.",
+      "approvedAt": "2026-09-10T01:00:37.373Z",
+      "quote": "GNB 하위메뉴 웹 상태 이름 기본·마우스올림·선택됨 3개를 승인합니다. 승인 후 사이트 추가 수정하겠음",
+      "evidence": {
+        "transcript": "c6f808e0-8420-43e9-8927-7f6592568841.jsonl",
+        "at": "2026-09-10T01:00:24.502Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:gnb-sub-menu-item.hover",
+      "by": "river",
+      "reason": "GNB 하위메뉴 글자 부품의 웹 상태 이름 — 정본 buildGNBSubMenuItem 의 Default·Hover·Selected 와 같은 이름이다. 새 상태를 늘리지 않는다.",
+      "approvedAt": "2026-09-10T01:00:38.964Z",
+      "quote": "GNB 하위메뉴 웹 상태 이름 기본·마우스올림·선택됨 3개를 승인합니다. 승인 후 사이트 추가 수정하겠음",
+      "evidence": {
+        "transcript": "c6f808e0-8420-43e9-8927-7f6592568841.jsonl",
+        "at": "2026-09-10T01:00:24.502Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:gnb-sub-menu-item.selected",
+      "by": "river",
+      "reason": "GNB 하위메뉴 글자 부품의 웹 상태 이름 — 정본 buildGNBSubMenuItem 의 Default·Hover·Selected 와 같은 이름이다. 새 상태를 늘리지 않는다.",
+      "approvedAt": "2026-09-10T01:00:40.607Z",
+      "quote": "GNB 하위메뉴 웹 상태 이름 기본·마우스올림·선택됨 3개를 승인합니다. 승인 후 사이트 추가 수정하겠음",
+      "evidence": {
+        "transcript": "c6f808e0-8420-43e9-8927-7f6592568841.jsonl",
+        "at": "2026-09-10T01:00:24.502Z"
       },
       "recordedBy": "orchestrator"
     }

@@ -1733,14 +1733,16 @@ agent:
     status: "verified"
     initialState: "no menu current (aria-current unset) unless the host page renders one as current"
     events:
-      []
-    keyboard: "Tab order: logo → menus (left to right) → language → account → menu-toggle; native button/link Enter/Space activation"
-    focus: "browser default focus indication (no custom focus styling defined by canon)"
+      - "s1:gnb:open"
+      - "s1:gnb:close"
+    keyboard: "Tab order: logo → menus (left to right) → language → account → menu-toggle; native button/link Enter/Space activation. A menu with aria-controls opens its gnb-sub-menu panel on focusin (Tab entry) and closes on Escape, returning focus to the menu — focus is never trapped inside the panel."
+    focus: "Browser default focus indication; on Escape-close, focus programmatically returns to the trigger menu (no other custom focus movement)."
     accessibility:
       role: "nav (root) with aria-label; menu list is ul/li of a[href]; language/account/menu-toggle are button[type=button]"
       name: "nav aria-label (e.g. \"주 메뉴\"); account/menu-toggle carry aria-label; language button's accessible name is its visible label text"
-      current: "aria-current=\"page\" reflects the host page's current route; no local click-to-select toggle logic"
-    runtimeNote: "런타임 없음(jsRequired=false). 현재 메뉴 표시(aria-current)는 mobile-bottom-nav 의 aria-selected 와 같은 방식으로 호스트 화면이 정적으로 설정한다. Hover 는 native CSS :hover 다. 옛 손관리 harness(setupGnb·클릭 시 is-selected 이동)는 ui-library-code 워크플로우 gnb-nav 작업(2026-09-09)에서 폐기했다 — 배포 정본은 host 소유의 정적 상태이지 컴포넌트 내부 토글이 아니다. 이 status 는 '문서 근거가 실제 코드와 일치'만 확인한 것이다 — ui-library/src/components/gnb/manifest.json 의 배포 상태는 candidate 이며 component-verifier 원본대조·river UX 승인 전이다."
+      current: "aria-current=\"page\" reflects the host page's current route; no local click-to-select toggle logic (unchanged)."
+      expanded: "For a menu with aria-controls, aria-expanded (\"true\"/\"false\") and the target gnb-sub-menu panel's hidden attribute are managed by gnb.js — open on hover (pointer with hover:hover) or focusin, close 150ms after mouseleave/pointer-outside or immediately on Escape/opening a different menu."
+    runtimeNote: "런타임 있음(jsRequired=true, gnb.js) — river 결정(2026-09-09, D4·D5)에 따라 하위메뉴(gnb-sub-menu) 여닫는 동작을 gnb 가 갖는다. aria-controls 를 가진 메뉴가 없으면(하위메뉴 없이 상단바만 쓰는 화면) init() 은 아무 것도 하지 않고 조용히 끝난다 — 강제 의존이 아니다. 상호작용: hover-capable 기기는 마우스를 올리면 즉시 열고 바·패널을 벗어나면 150ms 유예 뒤 닫는다(둘 사이 틈을 지날 때 깜빡임 방지). hover 가 안 되는 기기(matchMedia로 매 이벤트마다 재확인)는 클릭으로 열고 닫는다. Tab 으로 들어가면 열리고 Esc 로 닫히며 초점이 그 메뉴로 되돌아온다 — 패널 안에 초점을 가두지 않는다. 한 번에 하나만 열리고, 바깥 포인터다운에도 닫힌다(select·date-picker 와 같은 안전망). 현재 메뉴 표시(aria-current)는 여전히 host 화면이 정적으로 설정한다(mobile-bottom-nav 와 같은 방식) — 이 런타임이 건드리지 않는다. 이 status 는 \"문서 근거가 실제 코드와 일치\"만 확인한 것이다 — ui-library/src/components/gnb/manifest.json 의 배포 상태는 candidate 이며 component-verifier 원본대조·river UX 승인 전이다."
   geometry:
     common:
       target: "root"
@@ -1836,6 +1838,7 @@ _Do_
 _Don't_
 - 모바일에 GNB 를 쓰지 않는다.
 - 선택 메뉴 표시를 색만이 아니라 상태 토큰으로 일관되게 한다.
+- 한 GNB 안에서는 하위메뉴를 가진 메뉴 전부가 같은 유형(Type)의 하위메뉴 패널을 연다 — 유형은 메뉴마다 고르는 게 아니라 사이트가 하나 고르는 것이다(river 결정 2026-09-09).
 
 **접근성 (a11y)**
 - 바 전체를 <nav> 로 감싸고 aria-label 로 이름을 준다(예: "주 메뉴"). 한 화면에 내비게이션이 둘 이상이면 이름으로 구분된다.
@@ -1845,9 +1848,218 @@ _Don't_
 - 유틸 아이콘 버튼(계정·메뉴)은 <button type="button"> + aria-label 로 이름을 준다. 아이콘 SVG 는 aria-hidden 이다.
 - 언어 항목은 지구본 아이콘 + 보이는 글자 라벨을 함께 두므로 별도 aria-label 을 붙이지 않는다.
 - 로고는 홈으로 가는 링크일 때 <a> 로 내고 글자 라벨이 접근 가능한 이름이 된다.
-- 키보드: Tab 으로 로고 → 메뉴 순서대로 → 유틸 순서대로 이동한다. 정본에 방향키 이동·포커스 가둠·자동 포커스 이동이 없으므로 만들지 않는다(not-applicable).
+- 키보드: Tab 으로 로고 → 메뉴 순서대로 → 유틸 순서대로 이동한다. 정본에 방향키 이동이 없으므로 만들지 않는다.
 - 포커스 표시는 브라우저 기본값을 그대로 쓴다 — 정본에 별도 focus 표현이 없다.
 - 오류 관계·모션 감소는 이 컴포넌트에 해당 없음(not-applicable) — 오류 표시도 애니메이션도 정본에 없다.
+- 하위메뉴를 여는 메뉴에는 aria-controls 로 그 패널의 id를, aria-expanded 로 열림/닫힘 상태를 준다 — 둘 다 이 컴포넌트의 JavaScript(gnb.js)가 관리한다(river 결정 2026-09-09). 마우스를 올리면 열리고(hover-capable), 바·패널 밖으로 나가면 150ms 유예 뒤 닫힌다. Tab 으로 들어가면 열리고, Esc 로 닫히며 초점이 그 메뉴로 되돌아온다 — 패널 안에 초점을 가두지 않는다. 마우스가 없는 기기는 클릭으로 열고 닫는다.
+- 닫힌 하위메뉴 패널은 hidden 속성으로 접근성 트리에서도 빠진다(gnb-sub-menu a11y) — 눈에만 안 보이게 하지 않는다.
+- 하위메뉴는 강제 의존이 아니다 — aria-controls 를 붙이지 않은 메뉴는 여전히 평범한 링크다.
+
+### GNB Sub Menu
+
+GNB 상단바 아래로 펼쳐지는 하위메뉴 패널. Type 3변형(2026-09-09 개편, 종전 Depth 축 폐지) — regular=카테고리 제목 + 항목 목록(묶음 4개, 항목 5·3·4·5) · compact-1=제목 없이 항목 6개가 한 줄 · compact-2=제목 없이 항목이 묶음마다 2개(마지막 묶음만 1개). 묶음(컬럼)은 유형별 정본 기본값이며 넣고 빼서 조절한다. PC 전용. 폭은 GNB 바와 같은 full-width 반응형.
+
+**언제 쓰나**
+- GNB 주 메뉴 아래로 하위 메뉴를 펼쳐 보일 때.
+
+**쓰지 말아야 할 때**
+- 모바일에는 쓰지 않는다(PC 전용).
+- 단일 목록 하나만 띄우는 자리에는 Dropdown 을 쓴다.
+
+**구성 (Anatomy)**
+
+| 요소 | 역할 |
+| --- | --- |
+| 패널 | 화면 폭을 채우는 흰 면. 하단 1px 선과 드롭다운 그림자를 갖는다. |
+| 컬럼 묶음 | 컬럼이 놓이는 자리. 컬럼 수는 유형별 기본값(regular=4 · compact-1=6 · compact-2=5), 컬럼 사이 80. 묶음 전체가 가운데 정렬된다. |
+| 컬럼 | GNB Sub Menu Item 을 세로로 쌓는다. 간격은 regular·compact-1 이 24, compact-2 가 20. |
+
+| variant | default | hover | pressed | disabled |
+| --- | --- | --- | --- | --- |
+| 0 | — | — | — | — |
+
+#### Agent-readable contract
+
+```yaml
+agent:
+  component: "GNB Sub Menu"
+  variantAxes:
+    Type:
+      - "regular"
+      - "compact-1"
+      - "compact-2"
+  states:
+    builder: "not-defined"
+    metadata: "unknown"
+  behavior:
+    platform: "PC"
+    status: "not-defined"
+  geometry:
+    common:
+      target: "root"
+      width: 1920
+      height: 100
+      layoutMode: "HORIZONTAL"
+      primaryAxisSizingMode: "FIXED"
+      counterAxisSizingMode: "AUTO"
+      primaryAxisAlignItems: "CENTER"
+      counterAxisAlignItems: "MIN"
+      itemSpacing: "0"
+      paddingRight: "spacing/24"
+      paddingLeft: "spacing/24"
+      strokeWeight: "1"
+      strokeAlign: "INSIDE"
+    variants:
+      -
+        when:
+          Type: "regular"
+        paddingTop: "spacing/32"
+        paddingBottom: "spacing/64"
+      -
+        when:
+          Type:
+            - "compact-1"
+            - "compact-2"
+        paddingTop: "spacing/24"
+        paddingBottom: "spacing/24"
+  composition:
+    mustReuse:
+      - "GNB Sub Menu Item"
+    mustNotCreate: "not-defined"
+    declaredParts:
+      - "Columns"
+  constraints: "unknown"
+  tokens:
+    figmaSemanticBindings:
+      - "color/line/gray/subtle"
+      - "color/navigation/bg"
+      - "color/navigation/label/default"
+      - "color/navigation/label/selected"
+      - "color/navigation/submenu/label/default"
+      - "spacing/20"
+      - "spacing/24"
+      - "spacing/32"
+      - "spacing/64"
+      - "spacing/80"
+    aliasChains: "not-defined"
+  figma:
+    status: "figma-unconfirmed"
+    identifiers: "figma-unconfirmed"
+    variants: "figma-unconfirmed"
+  icons:
+    allowed: "figma-unconfirmed"
+    slots: "unknown"
+```
+
+_Do_
+- 컬럼 묶음을 가운데 정렬한다 — 좌우 여백은 값이 아니라 정렬 결과다.
+- 컬럼 수·항목 수는 유형(regular·compact-1·compact-2)에 맞게 화면에서 넣고 뺀다.
+
+_Don't_
+- 컬럼 묶음을 패널 폭만큼 늘리지 않는다 — 늘리면 가운데 정렬할 여백이 사라져 왼쪽에 붙는다.
+- 패널 안에 아이콘·배지를 새로 만들지 않는다 — 정본에 없다.
+- 한 GNB 안에서는 하위메뉴를 가진 메뉴 전부가 같은 유형(Type)의 하위메뉴 패널을 연다 — 유형은 메뉴마다 고르는 게 아니라 사이트가 하나 고르는 것이다(river 결정 2026-09-09).
+
+**접근성 (a11y)**
+- 패널을 여는 GNB 메뉴에 aria-expanded 와 aria-controls 를 주고, 패널의 id 를 가리키게 한다 — 이 컴포넌트 자신이 아니라 gnb(2026-09-09부터 jsRequired=true)가 그 둘을 관리한다.
+- 패널 안 목록은 <ul>/<li> 로 낸다. 컬럼은 목록을 담는 그릇이며 그 자체가 목록이 아니다.
+- 닫힌 상태는 hidden 또는 display:none 으로 접근성 트리에서도 빠지게 한다 — 눈에만 안 보이게 하지 않는다. gnb-sub-menu.css 의 [data-s1-component=gnb-sub-menu][hidden]{display:none} 이 이걸 보장한다(같은 selector 의 display:flex 가 UA [hidden] 규칙을 덮어써 버리는 함정 방지).
+- Esc 로 닫고 포커스를 연 메뉴로 되돌린다. 이 동작은 이 컴포넌트가 아니라 패널을 여는 gnb 가 갖는다 — gnb-sub-menu 자신은 여전히 여닫는 코드가 없다(jsRequired=false 그대로).
+- 포커스를 패널 안에 가두지 않는다 — 정본에 가둠이 없고, 팝업이 아니라 펼침 영역이다.
+- 포커스 표시는 브라우저 기본값을 그대로 쓴다.
+- 오류 관계·모션 감소는 해당 없음(not-applicable) — 정본에 오류 표시도 애니메이션도 없다.
+
+### GNB Sub Menu Item
+
+GNB 하위메뉴 패널 안의 글자 한 줄. Depth(1depth=카테고리 제목 Bold 16 · 2depth=항목 Medium 16) × State(Default·Hover·Selected) 6변형. 아이콘·배경·들여쓰기가 없다. 단독으로 쓰지 않고 GNB Sub Menu 안에서 쓴다.
+
+**언제 쓰나**
+- GNB 하위메뉴 패널의 카테고리 제목 또는 항목을 놓을 때.
+
+**쓰지 말아야 할 때**
+- 상단바의 주 메뉴는 GNB 의 메뉴 슬롯을 쓴다.
+- 패널 없이 이 부품만 화면에 두지 않는다.
+
+**구성 (Anatomy)**
+
+| 요소 | 역할 |
+| --- | --- |
+| 라벨 | 글자 한 줄. Depth 에 따라 굵기·색이 갈린다. 아이콘·배경·들여쓰기 없음. |
+
+| variant | default | hover | pressed | disabled |
+| --- | --- | --- | --- | --- |
+| 0 | color/navigation/submenu/label/default<br>color/navigation/label/default | — | — | — |
+| 1 | color/navigation/submenu/label/default<br>color/navigation/label/default | — | — | — |
+
+#### Agent-readable contract
+
+```yaml
+agent:
+  component: "GNB Sub Menu Item"
+  variantAxes:
+    Depth:
+      - "1depth"
+      - "2depth"
+    State:
+      - "Default"
+      - "Hover"
+      - "Selected"
+  states:
+    builder:
+      - "Default"
+      - "Hover"
+      - "Selected"
+    metadata: "unknown"
+  behavior:
+    platform: "PC"
+    status: "not-defined"
+  geometry:
+    common:
+      target: "root"
+      layoutMode: "HORIZONTAL"
+      primaryAxisSizingMode: "AUTO"
+      counterAxisSizingMode: "AUTO"
+      counterAxisAlignItems: "CENTER"
+    variants:
+      -
+        when: "all"
+  composition:
+    mustReuse: "not-defined"
+    mustNotCreate: "not-defined"
+    declaredParts: "not-defined"
+  constraints: "unknown"
+  tokens:
+    figmaSemanticBindings:
+      - "color/navigation/label/default"
+      - "color/navigation/label/selected"
+      - "color/navigation/submenu/label/default"
+    aliasChains: "not-defined"
+  figma:
+    status: "figma-unconfirmed"
+    identifiers: "figma-unconfirmed"
+    variants: "figma-unconfirmed"
+  icons:
+    allowed: "figma-unconfirmed"
+    slots: "unknown"
+```
+
+_Do_
+- 1depth 는 카테고리 제목이므로 Bold 16, 2depth 는 항목이므로 Medium 16 을 쓴다.
+- 현재 위치인 항목에만 Selected 를 준다.
+
+_Don't_
+- 2depth 를 들여쓰지 않는다 — 기준 원본(A)에 들여쓰기가 없다.
+- Hover 와 Selected 의 색을 다르게 만들지 않는다 — 정본에서 같다.
+
+**접근성 (a11y)**
+- 패널의 목록 안에서 <li> 하나에 <a href> 하나로 낸다. 링크가 아닌 동작이면 <button type="button"> 을 쓴다.
+- 1depth(카테고리 제목)가 링크가 아니면 <a>·<button> 으로 만들지 않는다 — 목록의 제목 글자로 둔다.
+- 현재 위치인 2depth 항목(<a href>)에 aria-current="page" 를 준다. Selected 는 시각 표현이고 현재 위치를 알리는 것은 aria-current 다.
+- 1depth(카테고리 제목)는 링크가 아니라 '현재 페이지' 개념이 없으므로 aria-current 를 쓰지 않는다. Selected 를 보여야 하면 data-state="selected" 로 낸다 — 시각 전용이며 ARIA 로 알리지 않는다.
+- Hover 는 시각만이며 ARIA 로 알리지 않는다 — 정본에서 Selected 와 색이 같다.
+- 포커스 표시는 브라우저 기본값을 그대로 쓴다(정본에 별도 focus 표현이 없다).
+- 키보드는 Tab 이동 + Enter 활성화의 네이티브 동작만 쓴다. 방향키 이동은 정본에 없으므로 만들지 않는다(not-applicable).
+- 오류 관계·모션 감소는 해당 없음(not-applicable) — 정본에 오류 표시도 애니메이션도 없다.
 
 ### Input
 
@@ -4534,4 +4746,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 8358ad6e62b8 · 손편집 금지 -->
+<!-- generated-stamp: 69244575cbb0 · 손편집 금지 -->

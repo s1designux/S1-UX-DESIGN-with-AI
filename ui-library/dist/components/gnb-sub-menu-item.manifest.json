@@ -1,0 +1,112 @@
+{
+  "id": "gnb-sub-menu-item",
+  "version": "0.1.0",
+  "status": "verified",
+  "canonicalFingerprint": "325e06eda265bd8752a066d7d5b9e0daa759eac6f20c57480546ff10267b8dc6",
+  "canonicalSources": [
+    "plugins/figma-vars-installer/src/build-components.ts",
+    "plugins/figma-vars-installer/src/vars-data.ts",
+    "plugins/figma-vars-installer/src/textstyles-data.ts",
+    "registry/components/gnb-sub-menu-item.json"
+  ],
+  "rootSelector": "[data-s1-component=\"gnb-sub-menu-item\"]",
+  "variants": [],
+  "sizes": [],
+  "states": {
+    "default": "hover 없음·aria-current 없음·data-state 없음(기본값)",
+    "hover": "hover-capable pointer 가 항목 위에 있음(native :hover)",
+    "selected": "2depth(항목·<a href>)는 aria-current=\"page\" 로 낸다 — 현재 위치이자 시각이다. 1depth(카테고리 제목·<span>, 링크 아님)는 aria-current 를 쓰지 않고 data-state=\"selected\" 로 낸다 — 시각 전용, ARIA 없음."
+  },
+  "canonicalStateMap": {
+    "Depth × State=Default": "default",
+    "Depth × State=Hover": "hover",
+    "Depth × State=Selected": "selected"
+  },
+  "notInCanon": {
+    "depthAxis": "Depth 축은 크기·상태가 아니라 역할을 가른다 — 1depth=카테고리 제목(Bold 16), 2depth=항목(Medium 16). 두 값 모두 이 컴포넌트 하나가 낸다(build-components.ts:3696 주석)."
+  },
+  "parts": [],
+  "htmlContract": {
+    "root": "(a[href] | span)[data-s1-component=gnb-sub-menu-item][data-depth]",
+    "relations": [
+      "2depth(항목)는 <a href> 로 낸다. 목록 안에서는 <li> 하나에 <a> 하나로 감싼다(registry a11y).",
+      "1depth(카테고리 제목)가 링크가 아니면 <a>·<button> 으로 만들지 않는다 — 목록 안 <li> 의 제목 글자(<span>)로 둔다(registry a11y).",
+      "현재 위치인 2depth 항목에만 aria-current=\"page\" 를 host 가 정적으로 설정한다. Hover 는 시각만 같고(정본 두 갈래 분류 (b) 사전 등록된 개선 — GNB 메뉴와 같은 이유) ARIA 로는 알리지 않는다.",
+      "1depth(카테고리 제목)에는 aria-current 를 붙이지 않는다 — 링크가 아니라 '현재 페이지' 개념이 성립하지 않는다. 정본의 Depth=1depth × State=Selected 변형(build-components.ts:3702~3714)을 나타내야 할 때는 host 가 data-state=\"selected\" 를 정적으로 설정한다 — 시각 전용이며 ARIA 로는 알리지 않는다.",
+      "단독으로 배포하지 않고 GNB Sub Menu 컬럼 안에서 쓴다 — GNB Sub Menu 가 이 컴포넌트를 coreComponents 의존성으로 선언한다."
+    ],
+    "grouping": "이 컴포넌트는 글자 한 줄만 소유한다. 목록 구조(<ul>/<li>)·컬럼 배치·패널 크롬은 GNB Sub Menu 가 소유한다.",
+    "source": "components/gnb-sub-menu-item/gnb-sub-menu-item.example.html",
+    "distribution": "examples/gnb-sub-menu-item.html"
+  },
+  "cssContract": {
+    "entry": "components/gnb-sub-menu-item.css",
+    "rootScope": "[data-s1-component=gnb-sub-menu-item]",
+    "nativeStates": [
+      ":hover"
+    ],
+    "ariaStates": [
+      "[aria-current=\"page\"]"
+    ],
+    "documentedDataStates": [
+      "[data-depth]",
+      "[data-depth=\"1depth\"][data-state=\"selected\"]"
+    ],
+    "customization": "정본 Semantic token만 교체하며 공개 selector의 구조를 override하지 않는다."
+  },
+  "contentSlots": {},
+  "dependencies": {
+    "font": [
+      {
+        "family": "Pretendard",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+      }
+    ],
+    "css": [
+      "assets/css/tokens.css",
+      "assets/css/typography.css"
+    ],
+    "coreComponents": []
+  },
+  "icons": [],
+  "a11y": {
+    "nativeSemantics": {
+      "status": "required",
+      "value": "목록 안에서 <li> 하나에 2depth 는 <a href> 하나, 1depth 는 <a>·<button> 없는 텍스트(<span>) 하나로 낸다."
+    },
+    "accessibleName": {
+      "status": "required",
+      "value": "글자 자체가 접근 가능한 이름이다."
+    },
+    "keyboard": {
+      "status": "required",
+      "value": "Tab 이동 + Enter 활성화의 네이티브 동작만 쓴다. 방향키 이동은 정본에 없어 만들지 않는다."
+    },
+    "focus": {
+      "status": "not-applicable",
+      "reason": "정본에 별도 focus 표현이 없다. 브라우저 기본 포커스 표시를 그대로 쓴다."
+    },
+    "ariaStateSync": {
+      "status": "required",
+      "value": "현재 위치인 2depth 항목(<a href>)에 host 가 aria-current=\"page\" 를 정적으로 설정한다. 1depth(카테고리 제목·<span>, 링크 아님)는 '현재 페이지' 개념이 없어 aria-current 를 쓰지 않는다 — Selected 를 보여야 하면 host 가 data-state=\"selected\" 를 정적으로 설정한다(시각 전용, ARIA 없음)."
+    },
+    "errorRelation": {
+      "status": "not-applicable",
+      "reason": "정본에 오류 표시가 없다."
+    },
+    "reducedMotion": {
+      "status": "not-applicable",
+      "reason": "정본이 모션을 정의하지 않는다."
+    },
+    "touchTarget": {
+      "status": "not-applicable",
+      "reason": "GNB Sub Menu 는 PC 전용이다(registry doNotUse). 모바일 44px 최소 터치영역 규칙을 적용하지 않는다."
+    }
+  },
+  "jsRequired": false,
+  "javascript": {
+    "runtime": "none",
+    "reason": "Hover 는 네이티브 CSS :hover 로 충분하고, 현재 위치 표시(aria-current)는 host 화면이 현재 경로에 맞춰 정적으로 설정하는 값이다(gnb 의 메뉴 링크와 같은 패턴) — 로컬 상태·이벤트 바인딩이 필요 없다."
+  },
+  "sourceFingerprint": "9871352667bb9e2e792a532b9d8142eadc6dc7b5bb1e921030ce8c244684cca7"
+}

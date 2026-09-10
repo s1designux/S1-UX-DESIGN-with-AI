@@ -433,6 +433,46 @@
       "note": "현재 표출 잘 되어있음.",
       "managedBy": "ui-library-guide"
     },
+    "gnb-sub-menu-item": {
+      "platform": "pc",
+      "archetype": "current-plus-action",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "extraAxes": {
+        "depth": [
+          "1depth",
+          "2depth"
+        ]
+      },
+      "states": [
+        "default",
+        "hover",
+        "selected"
+      ],
+      "statesLayout": "row",
+      "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id gnb-sub-menu, 2026-09-09).",
+      "note": "Depth(1depth=카테고리 제목·2depth=항목) × State(Default·Hover·Selected) 6변형. 크기 축 없음(hug). GNB Sub Menu 안에서 쓴다.",
+      "managedBy": "ui-library-guide"
+    },
+    "gnb-sub-menu": {
+      "platform": "pc",
+      "archetype": "current-plus-action",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "extraAxes": {
+        "type": [
+          "regular",
+          "compact-1",
+          "compact-2"
+        ]
+      },
+      "statesLayout": "row",
+      "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id gnb-sub-menu, 2026-09-09). 같은 날 정본 개편으로 변형 축이 Depth → Type(regular·compact-1·compact-2)으로 바뀌었다.",
+      "note": "GNB 상단바 아래로 펼쳐지는 하위메뉴 패널. Type 3종(regular=제목+항목, compact-1=항목 6개 한 줄, compact-2=항목 2개씩 묶음), 묶음 사이 80·묶음 안 24(compact-2 만 20). 정본에 여닫는 동작이 없어 펼쳐진 모양만 배포한다 — 트리거·닫기는 host 화면 소유.",
+      "managedBy": "ui-library-guide"
+    },
     "gnb": {
       "platform": "pc",
       "archetype": "current-plus-action",

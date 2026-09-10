@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
     "purpose": "개발 툴과 검사기가 함께 읽는 허용목록. 여기 없는 variant·size·속성은 승인된 적이 없는 것이다.",
-    "canonicalFingerprint": "fcce2753b6fab9e16d313f340727b579764445f8565fb730627f194a4821770b"
+    "canonicalFingerprint": "73884d0b05eed0810e719c44f59e59ad60b3f373d3ddd1f554da09d59400f34b"
   },
   "components": [
     {
@@ -64,8 +64,8 @@
         "init is idempotent",
         "destroy removes listeners and hides clear action"
       ],
-      "canonicalFingerprint": "b6d4f851d336181bf5b3147fe8dcfcaec97116dc7bab27699ac13c4155bef357",
-      "sourceFingerprint": "b67e2addf4fb4d5e403028d0a08cea53513b5f06262436b6f68c8d6af0da8079"
+      "canonicalFingerprint": "966b460fb96ed5cb7c807378323168751378d81ef9892efc437f9c982f85ba43",
+      "sourceFingerprint": "1978915773babcbf8139f46d8cc3f26ed526c97c59fc87e108e47ce2cf825af1"
     },
     {
       "id": "button",
@@ -115,8 +115,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "75cadbffa5c3003d7fd987f75d3deec38e4e0c2e9d6352d4ec02ba413bd44e4d",
-      "sourceFingerprint": "25df9e833c3903fe705b8a26941fc5fdb66dc56c5a8a9c950ecc23c8a24b27f1"
+      "canonicalFingerprint": "d945d2deabeba6295839cebf1cfcbe60b7360f714b5aac4562d58fa86c9101ed",
+      "sourceFingerprint": "b5344c684b69369b8f021f3109d2d49e730afee40fd17c6de692e6fa91601380"
     },
     {
       "id": "checkbox",
@@ -148,8 +148,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "c924b241ffc2cf66a56e1cd6ee7954bc03aac5033f963a8f3472570f883fb6a1",
-      "sourceFingerprint": "cc513c796543a4ff7c0ed4433408058d1d774b4d8e9931847c9503e6b4130317"
+      "canonicalFingerprint": "be8cefb8d9a4888403c0b2c09333c3a963cdf3355980443f5be316c2280f7f39",
+      "sourceFingerprint": "feacad0cebc34ac63ecc1e3ed5513cfb9b7e23ce01f751bf373e7aa338dca6e7"
     },
     {
       "id": "radio",
@@ -181,8 +181,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "7f13bdafc772e88f7a6ffc7a4c3209d442c0fba7a13f28ec15064a5589f2631e",
-      "sourceFingerprint": "0cb3b659d03e9241e7faaf5f87c6d43f0d8fe92a8c0d8c0d67f441368fefc462"
+      "canonicalFingerprint": "a8c6ea730fc3449a27f6c145da0663f81f711f4ec673c6aba21c104b2c0d436a",
+      "sourceFingerprint": "36e40e548db38cb2da048d4f895fcc7cb28f057180b2b061259aef65d1e7f194"
     },
     {
       "id": "toggle",
@@ -216,8 +216,8 @@
       "jsRequired": true,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "618047a04fdd6facda7603ee6df5386fc35c184fdee07bd9a336f7b957667a3e",
-      "sourceFingerprint": "c68893a68fbd5a3e108671598b5ab1f11cddef06202de6066538d06a104a7c50"
+      "canonicalFingerprint": "e8c6d7046708e750c7e16037f98a0b66130acf677bd17128bf707b842c3e6e47",
+      "sourceFingerprint": "d0b30dea503e41a27ed2c2db11ee7214cc36ff1e5094ea393c52251e17528004"
     },
     {
       "id": "chip",
@@ -265,8 +265,8 @@
       "jsRequired": true,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "2f06c4ced1217d96c4f3a73d06e056ef441f1ccfb7c5a5b8889607361d34c1dc",
-      "sourceFingerprint": "01499da325131a5675ee5d7d17fc7256058bc99bdfac15b64f858c7e4e45d2ee"
+      "canonicalFingerprint": "a8be1203aea19d4aa59d4f704e643de38438c9deb5bf0249abf11dd41c451c54",
+      "sourceFingerprint": "6ec3864fc28b7d662477d01fbcdd52e981ff84ad0848128172b43bbaa903996d"
     },
     {
       "id": "dropdown",
@@ -313,8 +313,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "ca753837e9116df28e401a555fe2f276cfeafb0df2c5ffe2951f0483f18e7fe6",
-      "sourceFingerprint": "ef9cfe728c9aed9b282a94032e2081fcd1b31c572a40312110cbcd6c7d9d7f2f"
+      "canonicalFingerprint": "8e261f67965d4b6dc57af60f88c8643953e33933cbc2b16ae01422e25a3c9d5d",
+      "sourceFingerprint": "c763a5139ac43a55355f5e4f32d53945ad96a25dede47a8b4bce7fb67a7482c1"
     },
     {
       "id": "select",
@@ -374,8 +374,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "130ff385f6593013ba774dcf238b31796e366bf0e797ae4bbeaa57f3a41fb08a",
-      "sourceFingerprint": "3900fa9ac6e99efbe1aa115fb21b26e66d4d86fae9c039ffdeade27b73fefeb5"
+      "canonicalFingerprint": "1a0a75f184e440a5bee5bf3869fcdd5f450dfcea4502199ff0d0645dcfc5e52b",
+      "sourceFingerprint": "4aaa1bf7753c4eb04b9528dfeb905785a9803e2572c077e57227b2f6cdb70d64"
     },
     {
       "id": "filter-chip",
@@ -437,8 +437,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "0ace25499094813e8e8af346c327a87b357227d602fcea3a13b8fefe536ae8de",
-      "sourceFingerprint": "1c46f59175b831db1f92b82c6b9402933c9365f9b821c431235c1749bd16cc4e"
+      "canonicalFingerprint": "949f98344b9aaccb8648e2dc58a514562c6774d0fe5bfd7b5c3eb12c29744f49",
+      "sourceFingerprint": "c9c98902c439c0ebdd793df4ae2755e32b5b72a1ee1bbc49a758e9ea2f410e52"
     },
     {
       "id": "tab",
@@ -486,8 +486,8 @@
       "jsRequired": true,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "55c7c9bb1a3e7e5524a14c1e30e27d9d0125c1026d22f5e5640d3ba6acfdce97",
-      "sourceFingerprint": "d9250637e26a1effd48492ed1984192432dcabbe1baf73716ba3a25ce9758a10"
+      "canonicalFingerprint": "af384cce56e16bec9462ea7d486c79327f442aca466faf9f316ef4f5c43c57af",
+      "sourceFingerprint": "351865f222eb4e54df447b392dee4ee57f26e6df79053fcf7871fc430f8390ea"
     },
     {
       "id": "pagination",
@@ -529,8 +529,8 @@
       "jsRequired": true,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "e657717c4e3a37b1e33d14b3fcc30efd9e3ff9f78cdb7347c563724cd4242d93",
-      "sourceFingerprint": "3d8e7849d7d43bab7f82bcdd9c2859f4b19f69809ee2409f339afdb2bf23479a"
+      "canonicalFingerprint": "8eb32e88f8fd9872b5c7c5f8299d7e2de369c47651238352a79e024786377849",
+      "sourceFingerprint": "511a97221c77c93811a131fab4470a1bdaf460625a198e0070dffa9bc81777e5"
     },
     {
       "id": "textarea",
@@ -563,8 +563,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "93cbfc31b7e88c10b9a2c84178007b5cd48e487257d3709fa6bb22ca5a43977b",
-      "sourceFingerprint": "c668ac6d84b3170de67904e3b9e357179597194bb4a83209151da4632cfa5a84"
+      "canonicalFingerprint": "27d82fd09a30424c49f9bce0f3450209e2a360ee3fb43dfeabf0ccec4ef158fe",
+      "sourceFingerprint": "b40a5cd2bd892f6f60349d84427d83ac42854fa8204f74ffa65ef3b8c2ee44fc"
     },
     {
       "id": "multi-toggle",
@@ -604,8 +604,8 @@
         "init is idempotent",
         "destroy removes listeners"
       ],
-      "canonicalFingerprint": "a9428e6f23d7be4d7e0004089bec3f0476ae4465512caf251c0ace8dbd995515",
-      "sourceFingerprint": "e2e4f9485706cbfa2115124a8b2d96d40bf6dad2dde5e9cb55dcbbe893ee83d8"
+      "canonicalFingerprint": "3baae059a3e9739f2fb13ef3c48b1dde2ae5ecfd5ad19c6b153ed88a947f02eb",
+      "sourceFingerprint": "d74a3cc7c2e18b4fd5b8a722005587f5bce618dc3d26b278139976662cccc2b9"
     },
     {
       "id": "modal",
@@ -661,8 +661,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "a4eff731714533c9e4da483dde973338dd72b7c6c7c51c9983a0f3360f94b4cf",
-      "sourceFingerprint": "c208e6484a459eb048cc62c63a94af7b7219519ab7dbc8a6ae6b70f5f4a43c6c"
+      "canonicalFingerprint": "49ebe4979ef6feba5c13247593634e31f7eb1b4c2c18a0c276fb36c58580f476",
+      "sourceFingerprint": "c8eab147d2dfe4d6884794d78201aa5d805c63d9bc670e1f6480cfe47080d251"
     },
     {
       "id": "table",
@@ -711,8 +711,8 @@
         "s1:table:selectionchange"
       ],
       "lifecycle": [],
-      "canonicalFingerprint": "2f6d573937733c78ca166c21e8fffd59003f1756a1021b7c785e56de910ff456",
-      "sourceFingerprint": "2f9cc9456790fb62f5467f50a934f93fe3264d8a1b6cb04212988eff55b83477"
+      "canonicalFingerprint": "f281a94bd2d2faca110af754c2f52c871e2192b7af25f19715f903671d305f2d",
+      "sourceFingerprint": "65e0207c224b08b4ed4b7cc484f8877d824c69fd98ad459766bfe1c7a9467432"
     },
     {
       "id": "mobile-bottom-nav",
@@ -740,8 +740,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "425271aa995b1832984b3ed6651863fc8e0466239580f0d72168414278cfed08",
-      "sourceFingerprint": "074b7b113cbfd3efd2dbe56ce78b0d7441ac903fc508cd3b1ba3c4704b5e6e1d"
+      "canonicalFingerprint": "a31bd29382d23e36200fb6a053647c559b909f9a341280ca1d712bf2a5c3310e",
+      "sourceFingerprint": "adad0959cd67a53a861ce37a38c2acf9aed35dd4c7b45199677d521585310b99"
     },
     {
       "id": "mobile-header",
@@ -780,8 +780,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "2c6d803663f6832c13a51b593b7433b1efbc1f8a9ae00ce7ecab40e989c9af13",
-      "sourceFingerprint": "a4b0dde1e1c86f31a20bd4a1bfb73f019481480bc4caa8faef5fd07880231cfa"
+      "canonicalFingerprint": "6b306f49976e05801478e73f879bcfcff2417813762c7a29fa776f383ddd2838",
+      "sourceFingerprint": "7d846bc6a3201feaa3c24ceb5c98d9cdf3d2e04a0ab58b653c845a3b2380d412"
     },
     {
       "id": "time-picker",
@@ -866,8 +866,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "cfcdb79817b039291d3cffb85aa0788e086437aff7e0847b3469d07d4027b65b",
-      "sourceFingerprint": "d8f3f2e58f4b95bca67b1b225755d0054f2ba42f75311212fc616f6438fd6bda"
+      "canonicalFingerprint": "a9c89534ba3398d2fdf0492fb4e9da8bc284bc6f6eb4b8322706428746ed2750",
+      "sourceFingerprint": "90459ba25d118148217c1461f5e9dfd3b7951976788913d2b16c7c3a049f8f1e"
     },
     {
       "id": "date-picker",
@@ -954,12 +954,12 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "e77c693f6774f36fd2925520868565568fcc8c2a842f7c398ba9b509ea4e247c",
-      "sourceFingerprint": "601f2fe28023566dd281bc330cc4aef5a78f2ad4480c412714cab5ae8340936a"
+      "canonicalFingerprint": "73c0f96b953af2c20ed72c298e83dead425c262048a0acc875934d662d95fc40",
+      "sourceFingerprint": "b7460eb7f8c02e00029a289ca22c97e545b325a9dc1f31f7fa2521e1f6f37c37"
     },
     {
       "id": "gnb",
-      "status": "verified",
+      "status": "candidate",
       "rootSelector": "[data-s1-component=\"gnb\"]",
       "root": "nav[data-s1-component=gnb][data-size][data-variant]",
       "variants": [
@@ -995,11 +995,67 @@
       "sizeAttribute": "data-size",
       "requiredAttributes": [],
       "requiredParts": [],
+      "jsRequired": true,
+      "events": [
+        "s1:gnb:open",
+        "s1:gnb:close"
+      ],
+      "lifecycle": [
+        "init(root)",
+        "destroy(root)"
+      ],
+      "canonicalFingerprint": "7aab40c62c5f11f8ae557509cbd27115c504c78ae78c8f986202c22b2f5ec1e2",
+      "sourceFingerprint": "ab2e5a53d49fa3e483db5f285f5eb924fe9c424ad56a7cd05b6cd44984ad310a"
+    },
+    {
+      "id": "gnb-sub-menu-item",
+      "status": "verified",
+      "rootSelector": "[data-s1-component=\"gnb-sub-menu-item\"]",
+      "root": "(a[href] | span)[data-s1-component=gnb-sub-menu-item][data-depth]",
+      "variants": [],
+      "sizes": [],
+      "breaks": null,
+      "states": [
+        "default",
+        "hover",
+        "selected"
+      ],
+      "parts": [],
+      "variantAttribute": null,
+      "sizeAttribute": null,
+      "requiredAttributes": [],
+      "requiredParts": [],
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "53ebe38acc5bd0e63259cf1abb66d2ccecef43e43092e51df4c06a9369bf4b9d",
-      "sourceFingerprint": "3f6d562ec8384aa047d417afe3f4326f7d36547750e330e0f8d9a901a48eae8b"
+      "canonicalFingerprint": "325e06eda265bd8752a066d7d5b9e0daa759eac6f20c57480546ff10267b8dc6",
+      "sourceFingerprint": "9871352667bb9e2e792a532b9d8142eadc6dc7b5bb1e921030ce8c244684cca7"
+    },
+    {
+      "id": "gnb-sub-menu",
+      "status": "candidate",
+      "rootSelector": "[data-s1-component=\"gnb-sub-menu\"]",
+      "root": "div[data-s1-component=gnb-sub-menu][data-type]",
+      "variants": [],
+      "sizes": [],
+      "breaks": null,
+      "states": [],
+      "parts": [
+        "columns",
+        "column"
+      ],
+      "variantAttribute": null,
+      "sizeAttribute": null,
+      "requiredAttributes": [],
+      "requiredParts": [
+        "columns",
+        "column"
+      ],
+      "jsRequired": false,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "b751e84981b76241075a448a68d621f80b5083b8dfc6d1a945137fa6f4549bd2",
+      "sourceFingerprint": "3843206a21187524c9d0a9bc674f06b02800d2f7291a17778b8e8e21d43a16a4"
     },
     {
       "id": "assist-button",
@@ -1032,8 +1088,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "7eec93051920ea95655488b82e007267a127afcb571e0e8e49edc66574f0ff5b",
-      "sourceFingerprint": "347fb1104b4914ced3fc92b7d92086eb35986713012c7faf8d87a3fb09bbae24"
+      "canonicalFingerprint": "827c856fd2f1de17501dc70d9bb32de3bf203d9b3e038a3cd335f878799bb7d1",
+      "sourceFingerprint": "b1a8698309f5da525fe59da516e7b49b7d002ad49e16b79b69fc5e448779d69b"
     },
     {
       "id": "text-button",
@@ -1070,8 +1126,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "26cd003dc0955df8e91a91d01d307ce346532ffeaf798d03664620859da35dda",
-      "sourceFingerprint": "8eccf8887c1f0b40b701630879ca9a734c33b3c21a12d1c81696a52a70fc225d"
+      "canonicalFingerprint": "42a11e936da4a15c86450f38d0a52e799e8a5755a2e527104af81b72e676e5b3",
+      "sourceFingerprint": "5d55f4246d116925e8489490133b399a6d3a3cfde050c5a3ec0f63d82c75f675"
     },
     {
       "id": "modal-content",
@@ -1136,8 +1192,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "bcfeb62bbd50d3e56bdec4766606ba186f8f6edc494190a3018d124b61fe7938",
-      "sourceFingerprint": "4529d68f3467bedcf353afee2916f9cfd5116708f0e079d4145c518f9ebb82b3"
+      "canonicalFingerprint": "c2e10ee537d47f314f5064d083439a4893c120f5928dee79d88625c8e5122a26",
+      "sourceFingerprint": "17f019df3799c723844b0aec7d0116263d9b4d39886f0c38d8837781056a4599"
     }
   ]
 }

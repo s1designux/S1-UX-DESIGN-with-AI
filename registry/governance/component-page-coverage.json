@@ -24,7 +24,9 @@
     "Mobile Bottom Nav": "mobile-bottom-nav",
     "Assist Button": "assist-button",
     "Text Button": "text-button",
-    "Modal Content": "modal-content"
+    "Modal Content": "modal-content",
+    "GNB Sub Menu Item": "gnb-sub-menu-item",
+    "GNB Sub Menu": "gnb-sub-menu"
   },
   "_sectionForNote": {
     "Search Input": "input 섹션 안에 변형(variant-group)으로 임베드 — 독립 섹션 불요, input 섹션 존재로 충족",
@@ -129,14 +131,6 @@
     {
       "name": "Mobile Header",
       "reason": "모바일 상단 앱바 shell — Figma·설치기 정본만 신설하며 손관리 components 페이지는 별도 웹 UI 라이브러리 작업 전까지 제외(2026-08-25 사용자 승인)."
-    },
-    {
-      "name": "GNB Sub Menu",
-      "reason": "요소 — GNB(gnb 섹션) 바 아래 펼쳐지는 하위메뉴 패널. Figma·설치기 정본만 신설하며 손관리 components 페이지는 별도 웹 UI 라이브러리 작업 전까지 제외(river 승인 2026-09-08). GNB 는 웹 배포본(dist)에 없다."
-    },
-    {
-      "name": "GNB Sub Menu Item",
-      "reason": "요소 — GNB Sub Menu 안 메뉴 항목(1단·2단). 패널 슬롯에 인스턴스로 들어간다."
     }
   ],
   "mobileOnly": [

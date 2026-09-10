@@ -11,7 +11,7 @@ const sourceRoot = path.join(libraryRoot, "src");
 const distRoot = path.join(libraryRoot, "dist");
 const verificationRoot = path.join(libraryRoot, "verification");
 const checkOnly = process.argv.includes("--check");
-const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker", "gnb", "assist-button", "text-button", "modal-content"];
+const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker", "gnb", "gnb-sub-menu-item", "gnb-sub-menu", "assist-button", "text-button", "modal-content"];
 
 const read = (file) => readFile(file, "utf8");
 const hash = (value) => createHash("sha256").update(value).digest("hex");

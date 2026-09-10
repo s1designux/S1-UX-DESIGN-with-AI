@@ -15,7 +15,7 @@ const read = (relative) => readFile(path.join(libraryRoot, relative), "utf8");
 const build = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/build.mjs"), "--check"], { encoding: "utf8" });
 if (build.status !== 0) failures.push(`build freshness: ${build.stderr || build.stdout}`);
 
-const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker", "gnb", "assist-button", "text-button", "modal-content"];
+const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker", "gnb", "gnb-sub-menu-item", "gnb-sub-menu", "assist-button", "text-button", "modal-content"];
 const individualCss = [];
 for (const id of componentIds) {
   const css = await read(`dist/components/${id}.css`);
@@ -449,14 +449,104 @@ for (const id of componentIds) {
       failures.push("time-picker cell must not have a border — canon removed it 2026-06-30");
     }
   }
+  /* GNB Sub Menu Item — 정본 buildGNBSubMenuItem(build-components.ts:3697). Depth×State 6변형, 크기 축 없음. */
+  if (id === "gnb-sub-menu-item") {
+    if (manifest.jsRequired !== false) failures.push("gnb-sub-menu-item must remain jsRequired=false; native :hover/aria-current carry the behavior");
+    if (!css.includes("var(--color-navigation-submenu-label-default)")) failures.push("gnb-sub-menu-item 1depth default color must reuse color/navigation/submenu/label/default");
+    if (!css.includes("var(--color-navigation-label-default)")) failures.push("gnb-sub-menu-item 2depth default color must reuse color/navigation/label/default");
+    if (!css.includes("var(--color-navigation-label-selected)")) failures.push("gnb-sub-menu-item hover/selected color must reuse color/navigation/label/selected");
+    if (!example.includes('data-depth="1depth"') || !example.includes('data-depth="2depth"')) failures.push("gnb-sub-menu-item example must demonstrate both depths");
+  }
+  /* GNB Sub Menu — 정본 buildGNBSubMenu(build-components.ts:3737). Type 3변형(regular·compact-1·compact-2,
+     2026-09-09 개편), PC 전용, 컬럼 슬롯 구조. */
+  if (id === "gnb-sub-menu") {
+    if (manifest.jsRequired !== false) failures.push("gnb-sub-menu must remain jsRequired=false; the canon has no open/close behavior (2-canon-readiness §A)");
+    if (!manifest.dependencies?.coreComponents?.includes("gnb-sub-menu-item")) failures.push("gnb-sub-menu manifest must declare gnb-sub-menu-item as a core dependency");
+    if (!example.includes('data-s1-component="gnb-sub-menu-item"')) failures.push("gnb-sub-menu example must compose the gnb-sub-menu-item core, not duplicate its markup");
+    if (!css.includes("var(--shadow-dropdown)")) failures.push("gnb-sub-menu panel shadow must reuse the canonical shadow/dropdown token");
+    if (!css.includes("var(--spacing-80)")) failures.push("gnb-sub-menu column gap must use the canonical spacing/80 token");
+    if (!css.includes("var(--spacing-24)")) failures.push("gnb-sub-menu item gap/compact padding must use the canonical spacing/24 token");
+    if (!css.includes("var(--spacing-20)")) failures.push("gnb-sub-menu compact-2 column-inner gap must use the canonical spacing/20 token");
+    if (!example.includes('data-type="regular"') || !example.includes('data-type="compact-1"') || !example.includes('data-type="compact-2"')) {
+      failures.push("gnb-sub-menu example must demonstrate all three types (regular, compact-1, compact-2)");
+    }
+    if (/data-s1-component="gnb-sub-menu"\s+data-depth=/.test(example)) {
+      failures.push("gnb-sub-menu root must use data-type, not the retired data-depth panel axis");
+    }
+    if (/\[data-s1-part="columns"\]\s*\{[^}]*flex:\s*1/.test(css) || /\[data-s1-part="columns"\]\s*\{[^}]*width:\s*100%/.test(css)) {
+      failures.push("gnb-sub-menu column group must stay hug-sized — stretching it removes the centering margin (canon comment build-components.ts:3814)");
+    }
+    if (!/\[data-s1-component="gnb-sub-menu"\]\[hidden\]\s*\{\s*display:\s*none;?\s*\}/.test(css)) {
+      failures.push("gnb-sub-menu.css must force display:none on [hidden] — the unconditional display:flex on the same root selector otherwise overrides the UA default and the panel stays visible when gnb.js sets hidden=true");
+    }
+  }
+  /* GNB — 정본에 여닫는 동작이 없어(2-canon-readiness §A) river 가 직접 정한 host 배선(D4·D5, 2026-09-09).
+     정본 시각(색·크기·바 구조)은 그대로이고, gnb 가 하위메뉴 트리거+패널 여닫기 런타임을 갖는다.
+     조립 액션은 하단메뉴 유형에 맞게 3벌(regular·compact-1·compact-2)로 낸다(river 지시 2026-09-09) —
+     벌마다 id 접두사는 달라도 되지만(⚠️ 함정 §2 T5: 문서 전체 id 중복 금지), 한 벌 안에서는
+     하위메뉴를 가진 메뉴 전부가 같은 유형의 패널을 열어야 한다(registry gnb.json doDont). */
+  if (id === "gnb") {
+    if (manifest.jsRequired !== true) failures.push("gnb must be jsRequired=true — it now owns the sub-menu open/close runtime (river 결정 2026-09-09, D4·D5)");
+    if (manifest.dependencies?.coreComponents?.includes("gnb-sub-menu")) {
+      failures.push("gnb-sub-menu must stay an optional companion, not a forced coreComponents dependency — a bar-only screen must keep working without it");
+    }
+    // 패널 정의: data-type 과 id, hidden 여부를 모은다.
+    const panelTypeById = new Map();
+    const hiddenById = new Map();
+    for (const m of example.matchAll(/<div data-s1-component="gnb-sub-menu" data-type="([^"]+)"[^>]*\bid="([^"]+)"([^>]*)>/g)) {
+      const [, type, panelId, rest] = m;
+      panelTypeById.set(panelId, type);
+      hiddenById.set(panelId, /\bhidden\b/.test(rest));
+    }
+    if (panelTypeById.size === 0) {
+      failures.push("gnb example must demonstrate the assembled bar + sub-menu panel wiring via aria-controls");
+    }
+    for (const [panelId, isHidden] of hiddenById) {
+      if (!isHidden) failures.push(`gnb example's assembled sub-menu panel #${panelId} must start hidden`);
+    }
+    // 나브 블록별로 aria-controls 대상이 전부 같은 유형인지, 3유형이 전수 등장하는지 확인한다.
+    const typesSeen = new Set();
+    let controlsFound = 0;
+    for (const navBlock of example.matchAll(/<nav data-s1-component="gnb"[\s\S]*?<\/nav>/g)) {
+      const controlIds = [...navBlock[0].matchAll(/aria-controls="([^"]+)"/g)].map((m) => m[1]);
+      if (controlIds.length === 0) continue;
+      controlsFound += controlIds.length;
+      const types = new Set(controlIds.map((cid) => panelTypeById.get(cid)));
+      if (types.has(undefined)) {
+        failures.push("gnb example has a menu aria-controls pointing at an id with no matching gnb-sub-menu panel");
+        continue;
+      }
+      if (types.size > 1) {
+        failures.push("gnb example mixes sub-menu panel types within one GNB — every menu in one assembly must open the same type (registry gnb.json doDont, river 결정 2026-09-09)");
+      }
+      for (const t of types) typesSeen.add(t);
+    }
+    if (controlsFound === 0) {
+      failures.push("gnb example must demonstrate the assembled bar + sub-menu panel wiring via aria-controls");
+    }
+    for (const requiredType of ["regular", "compact-1", "compact-2"]) {
+      if (!typesSeen.has(requiredType)) {
+        failures.push(`gnb example must include an assembled action for type=${requiredType} (river 지시 2026-09-09: 하단메뉴 유형에 맞게 3개로 표출)`);
+      }
+    }
+    // start 정렬은 로고+메뉴를 [data-s1-part="leading"] 로 묶어야 gap 64 규칙이 걸린다
+    // (manifest.htmlContract.relations, 정본 build-components.ts:3593-3600). 이 래퍼가 빠지면
+    // 예시를 그대로 복붙했을 때 로고↔메뉴 간격이 0이 된다(gnb-sub-menu 6회차에서 실제로 발견됨).
+    for (const navBlock of example.matchAll(/<nav data-s1-component="gnb"[^>]*data-variant="start"[\s\S]*?<\/nav>/g)) {
+      const nav = navBlock[0];
+      if (!/<div data-s1-part="leading">[\s\S]*<a data-s1-part="logo"[\s\S]*<ul data-s1-part="menus">[\s\S]*<\/ul>[\s\S]*<\/div>/.test(nav)) {
+        failures.push('gnb example: a data-variant="start" bar is missing the [data-s1-part="leading"] wrapper around logo+menus — copy-paste as-is would collapse the logo↔menu gap to 0');
+      }
+    }
+  }
 
   const module = await import(`${pathToFileURL(path.join(libraryRoot, `dist/components/${id}.js`)).href}?check=${Date.now()}`);
   if (id === "input" && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
     failures.push("input runtime lifecycle is incomplete");
   }
   if (id === "button" && (module.jsRequired !== false || module.runtime !== null)) failures.push("button module unexpectedly requires runtime");
-  if ((id === "checkbox" || id === "radio" || id === "textarea" || id === "assist-button" || id === "text-button") && (module.jsRequired !== false || module.runtime !== null)) failures.push(`${id} module unexpectedly requires runtime`);
-  if ((id === "toggle" || id === "chip" || id === "dropdown" || id === "select" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "modal" || id === "modal-content" || id === "table" || id === "time-picker") && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
+  if ((id === "checkbox" || id === "radio" || id === "textarea" || id === "assist-button" || id === "text-button" || id === "gnb-sub-menu-item" || id === "gnb-sub-menu") && (module.jsRequired !== false || module.runtime !== null)) failures.push(`${id} module unexpectedly requires runtime`);
+  if ((id === "toggle" || id === "chip" || id === "dropdown" || id === "select" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "modal" || id === "modal-content" || id === "table" || id === "time-picker" || id === "gnb") && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
     failures.push(`${id} runtime lifecycle is incomplete`);
   }
 }

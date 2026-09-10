@@ -45,7 +45,8 @@
     ],
     "dont": [
       "모바일에 GNB 를 쓰지 않는다.",
-      "선택 메뉴 표시를 색만이 아니라 상태 토큰으로 일관되게 한다."
+      "선택 메뉴 표시를 색만이 아니라 상태 토큰으로 일관되게 한다.",
+      "한 GNB 안에서는 하위메뉴를 가진 메뉴 전부가 같은 유형(Type)의 하위메뉴 패널을 연다 — 유형은 메뉴마다 고르는 게 아니라 사이트가 하나 고르는 것이다(river 결정 2026-09-09)."
     ]
   },
   "a11y": [
@@ -56,9 +57,12 @@
     "유틸 아이콘 버튼(계정·메뉴)은 <button type=\"button\"> + aria-label 로 이름을 준다. 아이콘 SVG 는 aria-hidden 이다.",
     "언어 항목은 지구본 아이콘 + 보이는 글자 라벨을 함께 두므로 별도 aria-label 을 붙이지 않는다.",
     "로고는 홈으로 가는 링크일 때 <a> 로 내고 글자 라벨이 접근 가능한 이름이 된다.",
-    "키보드: Tab 으로 로고 → 메뉴 순서대로 → 유틸 순서대로 이동한다. 정본에 방향키 이동·포커스 가둠·자동 포커스 이동이 없으므로 만들지 않는다(not-applicable).",
+    "키보드: Tab 으로 로고 → 메뉴 순서대로 → 유틸 순서대로 이동한다. 정본에 방향키 이동이 없으므로 만들지 않는다.",
     "포커스 표시는 브라우저 기본값을 그대로 쓴다 — 정본에 별도 focus 표현이 없다.",
-    "오류 관계·모션 감소는 이 컴포넌트에 해당 없음(not-applicable) — 오류 표시도 애니메이션도 정본에 없다."
+    "오류 관계·모션 감소는 이 컴포넌트에 해당 없음(not-applicable) — 오류 표시도 애니메이션도 정본에 없다.",
+    "하위메뉴를 여는 메뉴에는 aria-controls 로 그 패널의 id를, aria-expanded 로 열림/닫힘 상태를 준다 — 둘 다 이 컴포넌트의 JavaScript(gnb.js)가 관리한다(river 결정 2026-09-09). 마우스를 올리면 열리고(hover-capable), 바·패널 밖으로 나가면 150ms 유예 뒤 닫힌다. Tab 으로 들어가면 열리고, Esc 로 닫히며 초점이 그 메뉴로 되돌아온다 — 패널 안에 초점을 가두지 않는다. 마우스가 없는 기기는 클릭으로 열고 닫는다.",
+    "닫힌 하위메뉴 패널은 hidden 속성으로 접근성 트리에서도 빠진다(gnb-sub-menu a11y) — 눈에만 안 보이게 하지 않는다.",
+    "하위메뉴는 강제 의존이 아니다 — aria-controls 를 붙이지 않은 메뉴는 여전히 평범한 링크다."
   ],
   "variants": {
     "menuSlot": {
@@ -258,7 +262,7 @@
   "guide": {
     "sampleLogo": "SAMPLE LOGO",
     "sampleMenus": [
-      "홈",
+      "공지사항",
       "서비스",
       "통계"
     ],
@@ -276,12 +280,11 @@
     "replacement": null
   },
   "webDistribution": {
-    "status": "verified",
+    "status": "candidate",
     "manifest": "ui-library/src/components/gnb/manifest.json",
-    "runtime": "none",
-    "note": "JavaScript 불필요. 현재 메뉴 표시(aria-current=\"page\")는 쓰는 화면이 정적으로 넣는다 — mobile-bottom-nav 의 aria-selected 와 같은 방식이다.",
-    "verifiedAt": "2026-09-09",
-    "verifiedBy": "component-verifier (2회차) + 오케스트레이터 실측",
+    "runtime": "components/gnb.js",
+    "note": "river 지시(2026-09-09, D4·D5)로 하위메뉴(gnb-sub-menu) 여닫는 동작을 이 컴포넌트가 갖게 됐다 — jsRequired=true. 현재 메뉴 표시(aria-current=\"page\")는 여전히 쓰는 화면이 정적으로 넣는다. 이전 2회차 검증(PASS, 여닫는 동작 없음 전제)은 이 변경으로 superseded 다 — 델타 재검증 전.",
+    "supersedes": "2026-09-09 2회차 component-verifier PASS(런타임 없음 전제) — 범위 확장으로 무효.",
     "pendingRiverUxApproval": true
   }
 }

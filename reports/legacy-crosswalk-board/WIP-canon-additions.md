@@ -11,7 +11,7 @@
 | `Assist Button` | State 4 · **크기 축 없음**(60×32) · 배경·기본테두리는 secondary 토큰 차용 | A `pc_assist_button` 540:4650 |
 | `Text Button` | Variant 2 × State 4 | A `pc_text_button` 540:4705 |
 | `Modal Content` | Size(MD·LG·XL) × Footer 2 | A `pc_modal` 540:5815 |
-| `GNB Sub Menu` | Depth 2 | A `gnb list` 540:6398 (변형 `regular` 540:6423) |
+| `GNB Sub Menu` | **Type 3**(regular · compact-1 · compact-2) — 2026-09-09 개편(당초 Depth 2) | A `gnb list` 540:6398 (변형 `regular` 540:6423 · `compact-1` 540:6399 · `compact-2` 540:6407) |
 | `GNB Sub Menu Item` | Depth 2 × State 3 | 〃 |
 | `Mobile Header` | `Home / Title + 1 Icon` 1종 추가(6→7) | A `mobile_header` 540:6112 |
 
@@ -33,7 +33,7 @@
 | 하위메뉴 기준 원본 | **A** (B 는 폐기) — "A로 가" |
 | 하위메뉴 2단 글자색 | `#555555`(색표에 있는 값) — 새 색 만들지 않음 |
 | 하위메뉴 컬럼 사이 간격 | **80** — 원본 72 는 정본 64·80 의 등거리라 렌더 비교 후 확정 |
-| 하위메뉴 목록 줄 간격 | **24** — A `regular` 값. `compact` 판의 20 대신 두 깊이를 한 리듬으로 통일 |
+| 하위메뉴 목록 줄 간격 | **regular 24 · compact-2 20** — 각 유형의 A 실측 그대로. ⚠️ 2026-09-08 에는 "두 깊이 한 리듬"으로 24 통일이었으나, 그때는 정본에 compact 변형 자체가 없었다. 2026-09-09 river 가 원본 compact-1·compact-2 를 정본에 넣기로 하면서 유형별 원본값으로 갈음됐다(river 결정: 줄간격 20 — 원본 그대로) |
 | 콘텐츠 모달 닫기(X) | **확인 계열과 같은 부품**(`close`) — 그림은 동일, 부품만 통일 |
 | 크기 단어 `xl` | 어휘에 추가 승인 — "xl 그대로 가" |
 | 확인 계열 모달 | **크기 축 없음** — PC 360 · Mobile 300(river 발화 "확인계열은 360으로만") |
@@ -47,14 +47,16 @@
 | 카테고리 제목(1단) | Bold 16 `title/16B` #353535 | `navigation/submenu/label/default` |
 | 항목(2단) | Medium 16 `title/16M` #555 | `navigation/label/default` |
 | 들여쓰기 | 없음 | 없음 |
-| 컬럼 안 세로 간격 | 24 | `spacing/24` |
+| 컬럼(묶음) 안 세로 간격 | regular 24 · compact-2 **20** | `spacing/24` · `spacing/20` (유형별 원본값 — 2026-09-09 river 갈음) |
 | 컬럼 사이 간격 | 72 | `spacing/80` (river 확정) |
-| 패널 여백 | regular 위32/아래64 · compact 상하24 | `spacing/32`·`spacing/64`·`spacing/24` |
+| 패널 여백 | regular 위32/아래64 · compact-1·compact-2 상하24 | `spacing/32`·`spacing/64`·`spacing/24` |
 | 좌우 | `justify-center` | 가운데 정렬(값이 아니라 규칙) |
 | 하단선 | 1px `line/gray/subtle` | 같은 토큰 |
 | 그림자 | 0 4px 4px 15% | `shadow/dropdown` 재사용 |
 
-`Depth` 축 — **Item**: 1depth=카테고리 제목(Bold) · 2depth=항목(Medium) / **패널**: 1depth=항목만 · 2depth=제목+항목.
+축 — **Item**: `Depth` 1depth=카테고리 제목(Bold) · 2depth=항목(Medium).
+**패널**: `Type` regular=제목+항목(4열 5·3·4·5) · compact-1=항목 6개 한 줄 · compact-2=묶음 5개, 묶음마다 항목 2개까지(2·2·2·2·1).
+(2026-09-09 개편 — 당초 패널도 `Depth` 1depth/2depth 였으나 1depth 가 원본의 어느 콤팩트와도 맞지 않는 근사치였다.)
 
 ## 레거시와 일부러 다르게 간 것 (§두 갈래 분류 (b))
 
@@ -66,7 +68,7 @@
 | 하위메뉴 Hover | 없음 | 선택색과 같게 | GNB Menu 선례(사전 등록된 개선) |
 | 보조·텍스트 버튼 Pressed | 없음 | = Hover | 코어 Button 정본 규칙 |
 | 콘텐츠 모달 닫기 부품 | 상단바와 같은 부품 | `close`(확인 계열과 같음) | river 결정 — 두 모달 계열이 같은 부품을 가리키게 |
-| 하위메뉴 목록 줄 간격 | compact 판 20 | 24 | river 결정 — 두 깊이 한 리듬 |
+| 하위메뉴 목록 줄 간격 | compact 판 20 | ~~24~~ → **유형별 원본값(regular 24 · compact-2 20)** | river 결정 2026-09-08 "두 깊이 한 리듬"(24) → **2026-09-09 갈음**. 당시엔 정본에 compact 변형이 없어 근사 변형 하나에만 걸린 결정이었고, river 가 원본 compact-1·compact-2 를 정본에 넣기로 하며 "20 — 원본 그대로"를 골랐다 |
 
 ## 검증 이력 (🤖 component-verifier)
 

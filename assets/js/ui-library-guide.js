@@ -127,9 +127,21 @@ const componentConfig = {
   },
   gnb: {
     title: "GNB",
-    description: "PC 상단 글로벌 내비게이션입니다. 로고 + 메뉴 슬롯 + 유틸리티(언어·계정·전체메뉴) 조립체이며 PC 전용입니다.",
-    approvedScope: "바 Align×Size 6종(Center-Between·Start × MD·SM·XSM) · 메뉴 Size×State 9종 · viewport 는 full-width 반응형으로 통합 · JavaScript 불필요",
+    description: "PC 상단 글로벌 내비게이션입니다. 로고 + 메뉴 슬롯 + 유틸리티(언어·계정·전체메뉴) 조립체이며 PC 전용입니다. 메뉴에 aria-controls 로 하위메뉴(GNB Sub Menu) 패널을 연결하면 마우스를 올려 여닫을 수 있습니다(river 결정 2026-09-09).",
+    approvedScope: "바 Align×Size 6종(Center-Between·Start × MD·SM·XSM) · 메뉴 Size×State 9종 · viewport 는 full-width 반응형으로 통합 · 하위메뉴를 여닫는 조립 예시(선택적, 강제 의존 아님)",
     runtime: S1UI.gnb
+  },
+  "gnb-sub-menu-item": {
+    title: "GNB Sub Menu Item",
+    description: "GNB 하위메뉴 패널 안의 글자 한 줄입니다. 1depth는 카테고리 제목(Bold), 2depth는 항목(Medium)입니다.",
+    approvedScope: "Depth×State 6종(1depth·2depth × Default·Hover·Selected) · 들여쓰기·배경·아이콘 없음 · 크기 축 없음(hug) · JavaScript 불필요",
+    runtime: S1UI.gnbSubMenuItem
+  },
+  "gnb-sub-menu": {
+    title: "GNB Sub Menu",
+    description: "GNB 상단바 아래로 펼쳐지는 하위메뉴 패널입니다. Type 3종(regular·compact-1·compact-2)이며, 여닫는 동작은 상단바(GNB)가 갖습니다 — 메뉴에 마우스를 올리면 이 패널이 펼쳐집니다.",
+    approvedScope: "Type 3종(regular=제목+항목 4묶음(5·3·4·5) · compact-1=항목 6개 한 줄 · compact-2=항목 5묶음(2·2·2·2·1)) · 묶음 수는 유형별 정본 기본값(넣고 빼서 조절) · PC 전용 · viewport 는 GNB 바와 같은 full-width 반응형 · 이 패널 자체는 JavaScript 가 없다(여닫기는 GNB 가 한다 — 메뉴의 aria-controls 로 이 패널을 가리킨다)",
+    runtime: S1UI.gnbSubMenu
   },
   "time-picker": {
     title: "Time Picker",
@@ -1847,7 +1859,7 @@ function gnbMenuMarkup(label, { state = "default" } = {}) {
 function gnbMarkup({ size = "md", align = "center-between", isPreview = false } = {}) {
   gnbId += 1;
   const preview = isPreview ? " is-preview" : "";
-  const menus = `<ul data-s1-part="menus">${gnbMenuMarkup("홈", { state: "selected" })}${gnbMenuMarkup("서비스")}${gnbMenuMarkup("통계")}</ul>`;
+  const menus = `<ul data-s1-part="menus">${gnbMenuMarkup("공지사항", { state: "selected" })}${gnbMenuMarkup("서비스")}${gnbMenuMarkup("통계")}</ul>`;
   const util = `<div data-s1-part="util">
       <button type="button" data-s1-part="lang">
         <span data-s1-part="lang-icon" aria-hidden="true"></span>
@@ -1890,6 +1902,110 @@ function gnbUtilMarkup(combo) {
   return `<nav data-s1-component="gnb" data-size="md" data-variant="start" aria-label="유틸리티 표본" class="is-preview uilg-gnb-menu-cell"><div data-s1-part="util">${parts.join("")}</div></nav>`;
 }
 
+/* 조립 예시 3벌 — 상단바 + 하위메뉴 패널을 한 화면에 두고 실제로 연다/닫는다(river 지시
+   2026-09-09: "액션은 하단메뉴 유형에 맞게 3개로 표출한다 — start형 gnb SM + 레귤러/콤팩트1/콤팩트2").
+   "SM" = GNB 바 크기 축(sm) · "start형" = GNB 바 정렬 축(start) 으로 읽었다.
+   gnb.js(jsRequired=true)가 이 인스턴스를 init() 하면 살아난다(아래 mountGuide 의 런타임 초기화가
+   `gnb` 를 대상에 추가한다). 미리보기용 정적 표본(.is-preview)이 아니므로 gnbId 를 그대로 써서
+   벌마다 매번 고유한 id 를 만든다 — 문서 전체 id 중복 0건이 되게 한다(⚠️ 함정 §2 T5).
+
+   ★ 핵심 규칙(registry doDont 반영): 한 GNB 안에서는 하위메뉴를 가진 메뉴가 전부 같은 유형(Type)의
+   패널을 연다 — "서비스"·"통계" 두 메뉴가 벌 안에서 같은 type 을 가리킨다. 유형은 사이트가
+   하나 고르는 것이지 메뉴마다 고르는 게 아니다(river 결정 2026-09-09, "이러면 안되지"). */
+const GNB_ASSEMBLED_TYPE_CONTENT = {
+  "regular": {
+    service: [
+      { depth: "1depth", label: "서비스 소개" },
+      { depth: "2depth", state: "selected", label: "개요" },
+      { depth: "2depth", label: "요금제" }
+    ],
+    service2: [
+      { depth: "1depth", label: "이용 안내" },
+      { depth: "2depth", label: "시작하기" },
+      { depth: "2depth", label: "FAQ" }
+    ],
+    stats: [
+      { depth: "1depth", label: "방문·매출" },
+      { depth: "2depth", label: "방문자 통계" },
+      { depth: "2depth", label: "매출 통계" }
+    ],
+    stats2: [
+      { depth: "1depth", label: "리포트" },
+      { depth: "2depth", label: "전체 리포트" }
+    ]
+  },
+  "compact-1": {
+    service: [{ depth: "2depth", label: "개요" }],
+    service2: [{ depth: "2depth", label: "요금제" }],
+    service3: [{ depth: "2depth", label: "시작하기" }],
+    stats: [{ depth: "2depth", label: "방문자 통계" }],
+    stats2: [{ depth: "2depth", label: "매출 통계" }],
+    stats3: [{ depth: "2depth", label: "리포트" }]
+  },
+  "compact-2": {
+    service: [{ depth: "2depth", label: "개요" }, { depth: "2depth", label: "요금제" }],
+    service2: [{ depth: "2depth", label: "시작하기" }, { depth: "2depth", label: "FAQ" }],
+    stats: [{ depth: "2depth", label: "방문자 통계" }, { depth: "2depth", label: "매출 통계" }],
+    stats2: [{ depth: "2depth", state: "selected", label: "전체 리포트" }]
+  }
+};
+
+function gnbAssembledColumnsMarkup(type, key) {
+  const groups = Object.keys(GNB_ASSEMBLED_TYPE_CONTENT[type]).filter((k) => k.startsWith(key));
+  return groups.map((g) =>
+    `<ul data-s1-part="column">${GNB_ASSEMBLED_TYPE_CONTENT[type][g].map((it) => gnbSubMenuItemMarkup(it)).join("")}</ul>`
+  ).join("");
+}
+
+/* 벌 하나 — align(고정 start)·size(고정 sm)·type 하나를 받아 상단바 + 패널 2개(서비스·통계, 같은 type)를 낸다. */
+function gnbAssembledUnitMarkup(type, typeLabel) {
+  gnbId += 1;
+  const serviceId = `gnb-sub-menu-service-${type}-${gnbId}`;
+  const statsId = `gnb-sub-menu-stats-${type}-${gnbId}`;
+  const bar = `<nav data-s1-component="gnb" data-size="sm" data-variant="start" aria-label="주 메뉴 조립 표본 · ${typeLabel} ${gnbId}">
+      <div data-s1-part="leading">
+        <a data-s1-part="logo" href="#">SAMPLE LOGO</a>
+        <ul data-s1-part="menus">
+          <li><a data-s1-part="menu" href="#" aria-current="page">공지사항</a></li>
+          <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="${serviceId}">서비스</a></li>
+          <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="${statsId}">통계</a></li>
+        </ul>
+      </div>
+      <div data-s1-part="util">
+        <button type="button" data-s1-part="lang">
+          <span data-s1-part="lang-icon" aria-hidden="true"></span>
+          <span data-s1-part="lang-label">한국어</span>
+        </button>
+        <button type="button" data-s1-part="account" aria-label="계정">
+          <span data-s1-part="account-icon" aria-hidden="true"></span>
+        </button>
+        <button type="button" data-s1-part="menu-toggle" aria-label="전체 메뉴">
+          <span data-s1-part="menu-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </nav>`;
+  const servicePanel = `<div data-s1-component="gnb-sub-menu" data-type="${type}" id="${serviceId}" aria-label="서비스 하위 메뉴 ${gnbId}" hidden>
+      <div data-s1-part="columns">${gnbAssembledColumnsMarkup(type, "service")}</div>
+    </div>`;
+  const statsPanel = `<div data-s1-component="gnb-sub-menu" data-type="${type}" id="${statsId}" aria-label="통계 하위 메뉴 ${gnbId}" hidden>
+      <div data-s1-part="columns">${gnbAssembledColumnsMarkup(type, "stats")}</div>
+    </div>`;
+  return `
+    <div class="uilg-gnb-assembled-item">
+      <p class="uilg-gnb-row-label">Start · SM · ${typeLabel}</p>
+      <div class="uilg-gnb-assembled">${bar}${servicePanel}${statsPanel}</div>
+    </div>`;
+}
+
+/* 3벌 — river 확정 순서: 레귤러 → 콤팩트1 → 콤팩트2. */
+function gnbAssembledMarkup() {
+  return [
+    gnbAssembledUnitMarkup("regular", "레귤러"),
+    gnbAssembledUnitMarkup("compact-1", "콤팩트1"),
+    gnbAssembledUnitMarkup("compact-2", "콤팩트2")
+  ].join("");
+}
+
 function gnbStateMatrix() {
   const sizes = [["md", "MD", "56px"], ["sm", "SM", "48px"], ["xsm", "XSM", "36px"]];
   const aligns = [["center-between", "Center-Between"], ["start", "Start"]];
@@ -1911,20 +2027,115 @@ function gnbStateMatrix() {
   return `
     <div class="platform-section">
       <div class="preview-area">
-        <p class="uilg-demo-note">GNB 바 — 정렬(Align) × 사이즈(Size) 6가지. 실제 폭은 화면 전체(full-width)이며 카드 폭에 맞춰 그대로 늘어납니다.</p>
+        <p class="uilg-demo-note">조립 액션 3벌 — 하단메뉴 유형에 맞춰 낸 실제 배선입니다(river 지시 2026-09-09). 세 벌 모두 Start 정렬·SM 크기이고, 벌마다 유형만 다릅니다(레귤러 → 콤팩트1 → 콤팩트2). "서비스"·"통계"에 마우스를 올리면(또는 Tab 으로 들어가면) 아래 패널이 펼쳐지고, 바깥으로 나가면 짧은 유예 뒤 닫힙니다. Esc 로 닫으면 초점이 그 메뉴로 돌아옵니다. "공지사항"은 하위메뉴가 없는 평범한 링크입니다 — 강제 의존이 아닙니다. 한 벌 안에서는 "서비스"·"통계"가 항상 같은 유형의 패널을 엽니다 — 유형은 메뉴마다 고르는 게 아니라 사이트가 하나 고르는 것입니다.</p>
+        <div class="uilg-gnb-assembled-wrap">${gnbAssembledMarkup()}</div>
+      </div>
+      <div class="preview-area">
+        <p class="uilg-demo-note">GNB 설명 — 바 변형 전수. 정렬(Align) × 사이즈(Size) 6가지. 실제 폭은 화면 전체(full-width)이며 카드 폭에 맞춰 그대로 늘어납니다. (아래 바들은 하위메뉴가 안 걸려 있어 펼쳐지지 않습니다 — 위 조립 액션 3벌만 실제로 엽니다.)</p>
         <div class="uilg-gnb-list">${barRows}</div>
       </div>
       <div class="preview-area">
-        <p class="uilg-demo-note">메뉴 슬롯 — 사이즈(Size) × 상태(State) 9가지. Hover 와 Selected 는 정본에서 시각이 같습니다(밑줄·글자색). Selected 에만 aria-current="page" 가 붙습니다.</p>
+        <p class="uilg-demo-note">GNB 설명 — 메뉴 슬롯. 사이즈(Size) × 상태(State) 9가지. Hover 와 Selected 는 정본에서 시각이 같습니다(밑줄·글자색). Selected 에만 aria-current="page" 가 붙습니다.</p>
         ${menuGrid}
       </div>
       <div class="preview-area">
-        <p class="uilg-demo-note">유틸리티 구성 5가지 — 언어·계정·전체메뉴 부품을 각각 넣고 뺄 수 있습니다. GNB 바가 실제로 쓰는 것은 첫 번째(전체)뿐입니다.</p>
+        <p class="uilg-demo-note">GNB 설명 — 유틸리티 구성 5가지. 언어·계정·전체메뉴 부품을 각각 넣고 뺄 수 있습니다. GNB 바가 실제로 쓰는 것은 첫 번째(전체)뿐입니다.</p>
         <div class="uilg-gnb-list">${GNB_UTIL_COMBOS.map((combo) => `
           <div class="uilg-gnb-row">
             <p class="uilg-gnb-row-label">${combo.label}</p>
             <div class="uilg-gnb-row-bar">${gnbUtilMarkup(combo)}</div>
           </div>`).join("")}</div>
+      </div>
+    </div>`;
+}
+
+/* ── GNB Sub Menu Item ──
+   정본: buildGNBSubMenuItem(build-components.ts:3697). Depth(1depth=카테고리 제목·2depth=항목) × State(Default·Hover·Selected).
+   Hover 는 host 화면 마우스 없이 흉내내야 하므로 다른 컴포넌트와 같이 data-force-state="hover" 를 쓴다. */
+function gnbSubMenuItemMarkup({ depth = "2depth", state = "default", label = null, isPreview = false } = {}) {
+  const selected = state === "selected";
+  const force = state === "hover" ? ' data-force-state="hover"' : "";
+  const preview = isPreview ? " is-preview" : "";
+  const text = label ?? (depth === "1depth" ? "카테고리 제목" : "하위 메뉴");
+  // 1depth(카테고리 제목·<span>)는 링크가 아니라 aria-current 를 쓰지 않는다 — 시각 전용
+  // data-state="selected" 로 낸다. 2depth(항목·<a href>)는 현재 위치이자 시각인
+  // aria-current="page" 를 그대로 쓴다(manifest htmlContract.relations).
+  return depth === "1depth"
+    ? `<li><span data-s1-component="gnb-sub-menu-item" data-depth="1depth"${selected ? ' data-state="selected"' : ""}${force} class="${preview.trim()}">${text}</span></li>`
+    : `<li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#"${selected ? ' aria-current="page"' : ""}${force} class="${preview.trim()}">${text}</a></li>`;
+}
+
+function gnbSubMenuItemStateMatrix() {
+  const depths = [["1depth", "1Depth", "카테고리 제목"], ["2depth", "2Depth", "항목"]];
+  const states = [["default", "Default"], ["hover", "Hover"], ["selected", "Selected"]];
+
+  const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+    states.map(([, label]) => `<div class="matrix-col-header">${label}</div>`).join("");
+  const rows = depths.map(([depth, label, dim]) =>
+    `<div class="matrix-row-label">${label}<span>${dim}</span></div>` +
+    states.map(([state]) => `<div class="comp-state-cell"><ul class="uilg-gnb-submenu-item-cell">${gnbSubMenuItemMarkup({ depth, state, isPreview: true })}</ul></div>`).join("")).join("");
+  const grid = `<div class="comp-state-matrix" style="grid-template-columns: 110px repeat(${states.length}, minmax(140px, 1fr));">${header}${rows}</div>`;
+
+  const action = `<div class="comp-action-top"><div class="matrix-col-header-action">Action</div>
+    <ul class="uilg-gnb-submenu-item-cell">
+      ${gnbSubMenuItemMarkup({ depth: "1depth", state: "default" })}
+      ${gnbSubMenuItemMarkup({ depth: "2depth", state: "selected" })}
+      ${gnbSubMenuItemMarkup({ depth: "2depth", state: "default" })}
+    </ul>
+    <p class="uilg-demo-note">목록 안 <a>·<span> 그대로이며, 실제로 링크를 누를 수 있습니다. 1depth(카테고리 제목)는 링크가 아니라 목록의 제목 글자입니다.</p>
+  </div>`;
+
+  return `<div class="platform-section"><div class="preview-area">${action}${grid}</div></div>`;
+}
+
+/* ── GNB Sub Menu ──
+   정본: buildGNBSubMenu(build-components.ts:3737). Type(regular · compact-1 · compact-2) 3변형 — 2026-09-09 개편
+   (종전 Depth 축은 없어졌다). TYPE_SPEC 은 정본 build-components.ts 의 표를 그대로 옮긴다.
+   이 매트릭스는 변형 전수를 보여주는 자리라 트리거를 만들지 않고 펼쳐진 모양만 보여준다.
+   여닫는 동작 자체는 gnb 가 갖는다(river 결정 2026-09-09, D4·D5) — 조립 예시는 GNB 섹션에 있다. */
+const GNB_SUBMENU_TYPE_SPEC = {
+  "regular": { withTitle: true, perGroup: [5, 3, 4, 5], selected: [3, 3] },
+  "compact-1": { withTitle: false, perGroup: [1, 1, 1, 1, 1, 1], selected: [5, 0] },
+  "compact-2": { withTitle: false, perGroup: [2, 2, 2, 2, 1], selected: [4, 0] }
+};
+
+function gnbSubMenuColumnMarkup(type, groupIndex) {
+  const spec = GNB_SUBMENU_TYPE_SPEC[type];
+  const items = [];
+  if (spec.withTitle) items.push(gnbSubMenuItemMarkup({ depth: "1depth" }));
+  for (let i = 0; i < spec.perGroup[groupIndex]; i++) {
+    const isSelected = spec.selected[0] === groupIndex && spec.selected[1] === i;
+    items.push(gnbSubMenuItemMarkup({ depth: "2depth", state: isSelected ? "selected" : "default" }));
+  }
+  return `<ul data-s1-part="column">${items.join("")}</ul>`;
+}
+
+function gnbSubMenuMarkup({ type = "regular", isPreview = false } = {}) {
+  const preview = isPreview ? " is-preview" : "";
+  const spec = GNB_SUBMENU_TYPE_SPEC[type];
+  const columns = spec.perGroup.map((_, gi) => gnbSubMenuColumnMarkup(type, gi)).join("");
+  return `<div data-guide-sample="set" data-s1-component="gnb-sub-menu" data-type="${type}" aria-label="하위 메뉴" class="${preview.trim()}">
+      <div data-s1-part="columns">${columns}</div>
+    </div>`;
+}
+
+function gnbSubMenuStateMatrix() {
+  const types = [
+    ["regular", "Regular", "제목 + 항목 목록 · 묶음 4개(5·3·4·5) · 위 32 / 아래 64"],
+    ["compact-1", "Compact-1", "제목 없음 · 항목 6개가 한 줄로 · 상하 24"],
+    ["compact-2", "Compact-2", "제목 없음 · 묶음 5개(2·2·2·2·1) · 상하 24 · 묶음 안 20"]
+  ];
+  const rows = types.map(([type, label, note]) => `
+    <div class="uilg-gnb-row">
+      <p class="uilg-gnb-row-label">${label}<span class="uilg-size-dim">${note}</span></p>
+      <div class="uilg-gnb-row-bar">${gnbSubMenuMarkup({ type, isPreview: true })}</div>
+    </div>`).join("");
+
+  return `
+    <div class="platform-section">
+      <div class="preview-area">
+        <p class="uilg-demo-note">하위메뉴 설명 — Type 3가지. 묶음 사이 간격 80은 세 유형 공통입니다. 묶음 안 항목 간격은 regular·compact-1이 24, compact-2가 20입니다. 묶음(컬럼)은 패널 폭이 아니라 내용 크기만큼(hug)이며 가운데 정렬됩니다. 여닫는 동작은 상단바(GNB)가 갖습니다 — 메뉴에 마우스를 올리거나 Tab 으로 들어가면 펼쳐지고, 벗어나거나 Esc 를 누르면 닫힙니다. 한 GNB 안에서는 모든 메뉴가 같은 유형의 패널을 엽니다(조립 액션 참조).</p>
+        <div class="uilg-gnb-list">${rows}</div>
       </div>
     </div>`;
 }
@@ -2503,6 +2714,8 @@ function stateMatrix(id) {
   if (id === "mobile-bottom-nav") return mobileBottomNavStateMatrix();
   if (id === "mobile-header") return mobileHeaderStateMatrix();
   if (id === "gnb") return gnbStateMatrix();
+  if (id === "gnb-sub-menu-item") return gnbSubMenuItemStateMatrix();
+  if (id === "gnb-sub-menu") return gnbSubMenuStateMatrix();
   if (id === "time-picker") return timePickerStateMatrix();
   return controlStateMatrix(id);
 }
@@ -2747,6 +2960,12 @@ async function mountGuide(id) {
          Open/Selected 칸이 사라진다. Action 영역의 실물만 살린다. */
       section.querySelectorAll(`[data-s1-component="${id}"]:not(.is-preview)`).forEach((root) => config.runtime.init(root));
     }
+    if (id === "gnb") {
+      /* GNB — 2026-09-09부터 jsRequired=true(D4·D5). aria-controls 를 가진 메뉴가 없는 인스턴스는
+         init() 이 조용히 아무 것도 안 하므로 .is-preview 구분 없이 전부 init 해도 안전하다 —
+         조립 예시(gnbAssembledMarkup)만 실제로 열리고 닫힌다. */
+      section.querySelectorAll('[data-s1-component="gnb"]').forEach((root) => config.runtime.init(root));
+    }
     /* 목업 안에서 열리는 시트는 페이지를 덮지 않는다 — 그런데 배포본은 시트를 열 때
        document.body 의 스크롤을 잠근다(실제 서비스에서는 화면 전체를 덮으므로 맞는 동작이다).
        안내 화면에서는 그 잠금 때문에 시트를 하나 열어 두면 페이지 전체가 멈춘다(river 제보 2026-09-07).
@@ -2864,6 +3083,6 @@ async function mountGuide(id) {
   }
 }
 
-const guideComponents = ["input", "button", "assist-button", "text-button", "checkbox", "radio", "toggle", "chip", "select", "dropdown", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "modal-content", "table", "mobile-bottom-nav", "mobile-header", "gnb", "time-picker", "date-picker"];
+const guideComponents = ["input", "button", "assist-button", "text-button", "checkbox", "radio", "toggle", "chip", "select", "dropdown", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "modal-content", "table", "mobile-bottom-nav", "mobile-header", "gnb", "gnb-sub-menu-item", "gnb-sub-menu", "time-picker", "date-picker"];
 await Promise.all(guideComponents.map(mountGuide));
 document.dispatchEvent(new CustomEvent("s1:component-guide:ready", { detail: { components: guideComponents } }));

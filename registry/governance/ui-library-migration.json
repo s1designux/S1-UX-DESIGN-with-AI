@@ -691,6 +691,51 @@
       "promotionDecision": "build 단계만 완료(🧱 ui-library-builder) — 🤖 component-verifier 원본대조와 river UX 승인 전. ui-library/src manifest.json 의 status 는 candidate 로 정직 기록.",
       "note": "손관리 인라인 harness(components.html:2113-2459, 2026-07-08 최종수정)를 폐기하고 정본에서 새로 만들었다. 유틸리티는 all-on 1변형만 배포한다(정본 buildGNB 가 GNB 사이즈와 무관하게 GNBUtil:full 인스턴스 하나만 재사용) — 손관리 harness 가 보여주던 language/menu/user on-off 조합 5변형은 이 컴포넌트가 배포하지 않는다. 'nav'(사이드바 내비게이션)는 정본이 없어 이 work-id 의 blocker B1 로 별도 대기 중이다.",
       "platform": "pc-only"
+    },
+    {
+      "id": "gnb-sub-menu-item",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "draft",
+      "dependencies": [
+        "tokens.css",
+        "typography.css"
+      ],
+      "lastVerified": null,
+      "reverifyTrigger": "정본 buildGNBSubMenuItem 의 geometry·Depth/State·token·HTML part·CSS selector 변경",
+      "evidence": [
+        "reports/ui-library/gnb-sub-menu/1-inventory.md",
+        "reports/ui-library/gnb-sub-menu/2-canon-readiness.md",
+        "reports/ui-library/gnb-sub-menu/3-build.md",
+        "reports/ui-library/gnb-sub-menu/workflow-state.json"
+      ],
+      "riverApproval": null,
+      "promotionDecision": "build 단계만 완료(🧱 ui-library-builder) — 🤖 component-verifier 원본대조와 river UX 승인 전. ui-library/src manifest.json 의 status 는 candidate 로 정직 기록.",
+      "note": "GNB 하위메뉴 패널 안 글자 한 줄. Depth(1depth=카테고리 제목 Bold 16·2depth=항목 Medium 16) × State(Default·Hover·Selected) 6변형. 들여쓰기·배경·아이콘 없음, 크기는 hug. 단독 배포하지 않고 GNB Sub Menu 가 coreComponents 로 조립한다. 새 색·새 토큰 0건.",
+      "platform": "pc-only"
+    },
+    {
+      "id": "gnb-sub-menu",
+      "kind": "core-component",
+      "legacyStatus": "implemented",
+      "uiLibraryStatus": "draft",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "gnb-sub-menu-item.css"
+      ],
+      "lastVerified": null,
+      "reverifyTrigger": "정본 buildGNBSubMenu 의 geometry·Type·컬럼 구조·token·HTML part·CSS selector 변경",
+      "evidence": [
+        "reports/ui-library/gnb-sub-menu/1-inventory.md",
+        "reports/ui-library/gnb-sub-menu/2-canon-readiness.md",
+        "reports/ui-library/gnb-sub-menu/3-build.md",
+        "reports/ui-library/gnb-sub-menu/workflow-state.json"
+      ],
+      "riverApproval": null,
+      "promotionDecision": "build 단계만 완료(🧱 ui-library-builder) — 🤖 component-verifier 원본대조와 river UX 승인 전. ui-library/src manifest.json 의 status 는 candidate 로 정직 기록.",
+      "note": "GNB 상단바 아래로 펼쳐지는 하위메뉴 패널. Type 3변형(2026-09-09 개편, 종전 Depth 축 폐지) — regular=제목+항목 목록(묶음 4개, 항목 5·3·4·5, spacing/80·spacing/24) · compact-1=제목 없이 항목 6개 한 줄(묶음 6개) · compact-2=제목 없이 항목 2개씩(마지막 묶음만 1개, 묶음 5개, 묶음 안 spacing/20). 이 패널 자신은 여닫는 코드가 없다(jsRequired=false) — 여닫는 동작은 상단바 gnb 가 갖는다(river 결정 2026-09-09, gnb.js). GNB 메뉴가 aria-expanded·aria-controls 로 이 패널을 가리킨다. gnb-sub-menu-item 을 coreComponents 로 선언. 새 색·새 토큰 0건.",
+      "platform": "pc-only"
     }
   ]
 }

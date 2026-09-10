@@ -3,7 +3,7 @@
     "generated": true,
     "source": "plugins/figma-vars-installer/src/build-components.ts",
     "method": "mock-execution",
-    "sourceHash": "c6bde60caa3a",
+    "sourceHash": "18860eed398b",
     "unknownValuePolicy": [
       "unknown",
       "not-defined",
@@ -584,35 +584,16 @@
     },
     "GNB Sub Menu": {
       "variantAxes": {
-        "Depth": [
-          "1depth",
-          "2depth"
+        "Type": [
+          "regular",
+          "compact-1",
+          "compact-2"
         ]
       },
       "geometry": [
         {
           "when": {
-            "Depth": "1depth"
-          },
-          "target": "root",
-          "width": 1920,
-          "height": 100,
-          "layoutMode": "HORIZONTAL",
-          "primaryAxisSizingMode": "FIXED",
-          "counterAxisSizingMode": "AUTO",
-          "primaryAxisAlignItems": "CENTER",
-          "counterAxisAlignItems": "MIN",
-          "itemSpacing": "0",
-          "paddingTop": "spacing/24",
-          "paddingRight": "spacing/24",
-          "paddingBottom": "spacing/24",
-          "paddingLeft": "spacing/24",
-          "strokeWeight": "1",
-          "strokeAlign": "INSIDE"
-        },
-        {
-          "when": {
-            "Depth": "2depth"
+            "Type": "regular"
           },
           "target": "root",
           "width": 1920,
@@ -629,6 +610,29 @@
           "paddingLeft": "spacing/24",
           "strokeWeight": "1",
           "strokeAlign": "INSIDE"
+        },
+        {
+          "when": {
+            "Type": [
+              "compact-1",
+              "compact-2"
+            ]
+          },
+          "target": "root",
+          "width": 1920,
+          "height": 100,
+          "layoutMode": "HORIZONTAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "AUTO",
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "MIN",
+          "itemSpacing": "0",
+          "paddingTop": "spacing/24",
+          "paddingRight": "spacing/24",
+          "paddingBottom": "spacing/24",
+          "paddingLeft": "spacing/24",
+          "strokeWeight": "1",
+          "strokeAlign": "INSIDE"
         }
       ],
       "anatomy": [
@@ -640,6 +644,7 @@
         "color/navigation/label/default",
         "color/navigation/label/selected",
         "color/navigation/submenu/label/default",
+        "spacing/20",
         "spacing/24",
         "spacing/32",
         "spacing/64",

@@ -11,6 +11,7 @@ import { init as init_modal } from "./components/modal.js";
 import { init as init_table } from "./components/table.js";
 import { init as init_timePicker } from "./components/time-picker.js";
 import { init as init_datePicker } from "./components/date-picker.js";
+import { init as init_gnb } from "./components/gnb.js";
 import { init as init_modalContent } from "./components/modal-content.js";
 export * as input from "./components/input.js";
 export * as button from "./components/button.js";
@@ -32,6 +33,8 @@ export * as mobileHeader from "./components/mobile-header.js";
 export * as timePicker from "./components/time-picker.js";
 export * as datePicker from "./components/date-picker.js";
 export * as gnb from "./components/gnb.js";
+export * as gnbSubMenuItem from "./components/gnb-sub-menu-item.js";
+export * as gnbSubMenu from "./components/gnb-sub-menu.js";
 export * as assistButton from "./components/assist-button.js";
 export * as textButton from "./components/text-button.js";
 export * as modalContent from "./components/modal-content.js";
@@ -51,6 +54,7 @@ export function autoInit(scope = document) {
     ...[...scope.querySelectorAll('[data-s1-component="table"]')].map((root) => init_table(root)),
     ...[...scope.querySelectorAll('[data-s1-component="time-picker"]')].map((root) => init_timePicker(root)),
     ...[...scope.querySelectorAll('[data-s1-component="date-picker"]')].map((root) => init_datePicker(root)),
+    ...[...scope.querySelectorAll('[data-s1-component="gnb"]')].map((root) => init_gnb(root)),
     ...[...scope.querySelectorAll('[data-s1-component="modal-content"]')].map((root) => init_modalContent(root))
   ];
   return Object.freeze(instances.filter(Boolean));

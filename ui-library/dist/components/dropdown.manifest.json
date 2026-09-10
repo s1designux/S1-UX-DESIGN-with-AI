@@ -2,7 +2,7 @@
   "id": "dropdown",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "ca753837e9116df28e401a555fe2f276cfeafb0df2c5ffe2951f0483f18e7fe6",
+  "canonicalFingerprint": "8e261f67965d4b6dc57af60f88c8643953e33933cbc2b16ae01422e25a3c9d5d",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -196,5 +196,5 @@
     "controlMode": "uncontrolled",
     "behaviorContract": "registry/components/component-behavior.pc.json 의 \"Dropdown (Checkbox)\" 장부(status=verified)를 그대로 구현한다 — 옵션 개별 토글은 형제에 영향 없음, select-all 은 전체를 자신의 반대 상태로 맞춤, 모든 옵션이 켜지면 select-all 이 스스로 켜짐, 선택은 패널을 닫지 않음."
   },
-  "sourceFingerprint": "ef9cfe728c9aed9b282a94032e2081fcd1b31c572a40312110cbcd6c7d9d7f2f"
+  "sourceFingerprint": "c763a5139ac43a55355f5e4f32d53945ad96a25dede47a8b4bce7fb67a7482c1"
 }
