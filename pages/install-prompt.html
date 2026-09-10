@@ -218,6 +218,7 @@
     .devget-label { font-size:11.5px; font-weight:700; color:#6b7280; margin-bottom:6px; }
     .devget-body  { font-size:12.5px; color:#374151; line-height:1.65; }
     .devget-body a { color:#1d6ceb; }
+    .devget-link { display:inline-block; margin-top:6px; word-break:break-all; font-size:12px; }
     .devget-fingerprint {
       margin-top:8px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
       font-size:10.5px; color:#4b5563; word-break:break-all; background:#fff;
@@ -238,11 +239,44 @@
     .devtool-title { font-size:14px; font-weight:700; color:#111827; }
     .devtool-note  { font-size:11.5px; color:#6b7280; margin-top:3px; }
     .devtool-badge {
-      margin-left:auto; flex:none; padding:3px 9px; border-radius:999px;
+      flex:none; padding:3px 9px; border-radius:999px;
       font-size:10.5px; font-weight:700; white-space:nowrap;
     }
     .devtool-badge-full   { background:#eff6ff; color:#1d6ceb; }
     .devtool-badge-tokens { background:#fff7ed; color:#c2410c; }
+    .devtool-head-right {
+      margin-left:auto; flex:none; display:flex; flex-direction:column;
+      align-items:flex-end; gap:4px;
+    }
+    .devtool-updated { font-size:10.5px; color:#9ca3af; white-space:nowrap; }
+    .devtool-section {
+      padding:12px 16px 6px; font-size:11px; font-weight:700;
+      color:#6b7280; letter-spacing:0.02em;
+    }
+    .devtool-steps {
+      margin:0; padding:0 16px 10px 34px;
+      font-size:12.5px; line-height:1.8; color:#374151;
+    }
+    .devtool-steps li { margin-bottom:3px; }
+    .devtool-steps code, .devtool-contains code {
+      background:#f3f4f6; padding:1px 5px; border-radius:4px;
+      font-size:11px; color:#1d6ceb;
+      font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    }
+    .devtool-contains {
+      margin:0; padding:0 16px 4px; font-size:12.5px; line-height:1.75; color:#4b5563;
+    }
+    .devtool-get {
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+      padding:12px 16px 4px;
+    }
+    .devtool-btn {
+      display:inline-flex; align-items:center; gap:6px;
+      padding:7px 13px; border-radius:7px; background:#111827; color:#fff;
+      font-size:12px; font-weight:700; text-decoration:none;
+    }
+    .devtool-btn:hover { background:#374151; }
+    .devtool-size { font-size:11px; color:#9ca3af; }
     .devtool-code {
       margin:0 16px; padding:11px 12px; background:#f8fafc; border:1px solid #eef2f7;
       border-radius:8px; font-size:11.5px; line-height:1.6; overflow-x:auto;
