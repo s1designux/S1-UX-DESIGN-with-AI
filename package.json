@@ -110,6 +110,7 @@
     "figma:usage:check": "node scripts/figma/check-figma-usage.mjs",
     "figma:usage:apply": "npm run figma:usage:check && node scripts/figma/apply-figma-usage.mjs && npm run reports:sync && npm run reports:check",
     "figma:usage:dry-run": "node scripts/figma/apply-figma-usage.mjs --dry-run",
+    "spec:labelwidth": "node scripts/spec-label-width-check.js",
     "gate:check": "node scripts/gate-check.js",
     "shot": "node scripts/render-shot.js",
     "review": "node scripts/open-review.js",

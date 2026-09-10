@@ -1176,6 +1176,23 @@ try {
   fail(`Gate 48 실행 실패: ${e.message}`);
 }
 
+// ── Gate 49: Spec Label Width (스펙 시트 라벨 줄바꿈) ───────────────
+// 스펙 시트의 열 헤더·행 라벨은 상자 폭이 고정이라, 글자가 상자보다 넓으면 두 줄이 되고
+// 그 줄이 바로 아래 컴포넌트를 덮는다. 캔버스는 파일이 아니라 렌더로 못 잡으므로
+// 설치기를 mock 으로 돌려 라벨을 전수 수집하고 설치된 Pretendard 의 advance width 로 판정한다
+// (2026-09-10 신설 — 정본 텍스트 스타일로 옮기며 라벨이 커졌을 때 실제로 2건이 넘쳤다).
+gateHeader('[Gate 49] 스펙라벨폭 검사기 (Spec Label Width)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync(process.execPath, [path.join(ROOT, 'scripts/spec-label-width-check.js')], { encoding: 'utf-8' });
+  const out = `${r.stdout || ''}${r.stderr || ''}`;
+  for (const l of out.split('\n').filter((l) => l.includes('⚠️'))) warn(l.replace(/^\s*⚠️\s*/, '').trim());
+  if (r.status === 0) pass(out.match(/✅ (.*)/)?.[1] || '스펙 라벨 전부 한 줄');
+  else for (const l of out.split('\n').filter((l) => l.includes('❌'))) fail(l.replace(/^\s*❌\s*/, '').trim());
+} catch (e) {
+  fail(`Gate 49 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 if (VERBOSE || errors > 0 || warnings > 0) console.log('\n─────────────────────────────────────────────────────');
 const tally = `게이트 ${gates}개 · ✅ ${passes}건${VERBOSE ? '' : ' (상세: --verbose)'}`;

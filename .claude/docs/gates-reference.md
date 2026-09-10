@@ -62,6 +62,7 @@
 | 45 | CSS Var Reference | 실재하지 않는 CSS 변수를 참조하는 죽은 선언 차단 — 「없는 이름을 지어내는」 실수를 커밋 시점에 막는다 |
 | 46 | Developer Handoff | 개발자가 받아 가는 전달본(ZIP·다운로드 화면·색/크기 값)이 현재 배포본보다 낡지 않았나 |
 | 42 | Screen Naming | 화면 프레임 이름이 네이밍 정본 규칙을 지키나 |
+| 49 | Spec Label Width | 스펙(설명용) 시트 라벨이 상자 폭을 넘어 두 줄이 되는지 — 설치기 mock 라벨 전수 × 설치된 Pretendard 실측. 단독 `npm run spec:labelwidth` (폰트 미설치 시 SKIP) |
 
 ---
 
