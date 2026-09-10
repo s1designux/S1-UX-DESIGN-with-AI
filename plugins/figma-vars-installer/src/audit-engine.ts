@@ -22,6 +22,7 @@ import {
 } from "./vars-data";
 import { TEXT_STYLES, TEXT_STYLE_FONT_FAMILY } from "./textstyles-data";
 import { parseCssShadow } from "./shadow-parse";
+import ALLOWED_REMOTE_KEYS from "../../../registry/figma/allowed-remote-keys.json";
 
 // 검수 대상 컬렉션 = 설치기가 만드는 V2 컬렉션 전부.
 //   2026-08-01: 종전에는 이 목록이 문자열 하드코딩 사본이었고, 2026-07-29 신설된
@@ -51,6 +52,33 @@ const CANONICAL_NAME_SET: { [norm: string]: true } = (() => {
   }
   return m;
 })();
+
+// 설치기가 화면에 직접 심는 **외부 라이브러리 부품**(V2.2 아이콘 등)의 컴포넌트 키 집합.
+// 이 부품들은 이 파일 안에 정본 컴포넌트로 존재하지 않으므로 이름 매칭이 절대 성립하지 않는다.
+// 그대로 두면 설치기가 만든 화면인데도 아이콘마다 "이름 다름 → 교체 후보" 카드가 떠서
+// 엉뚱한 컴포넌트(예: globe 아이콘 → Language Icon)로 바꾸라고 권한다(2026-09-10 river 보고).
+// 정본은 registry/figma/allowed-remote-keys.json 하나 — 이름(ic_ 접두사 등)이 아니라 **키**로만 판정한다.
+const INSTALLER_REMOTE_KEY_SET: { [key: string]: true } = (() => {
+  const m: { [key: string]: true } = {};
+  const src = (ALLOWED_REMOTE_KEYS as { allowedRemoteComponentKeys?: { [name: string]: string } }).allowedRemoteComponentKeys || {};
+  for (const name of Object.keys(src)) {
+    const k = src[name];
+    if (k) m[k] = true;
+  }
+  return m;
+})();
+
+// 이 인스턴스의 원본이 "설치기가 쓰는 외부 라이브러리 부품"인가? 세트 키로 불러온 아이콘
+// (edge_set·lock_set 등)은 variant 개별 키가 아니라 부모 세트 키가 허용목록에 있으므로 둘 다 본다.
+function isInstallerRemotePart(main: ComponentNode): boolean {
+  if (main.key && INSTALLER_REMOTE_KEY_SET[main.key]) return true;
+  const parent = main.parent;
+  if (parent && parent.type === "COMPONENT_SET") {
+    const setKey = (parent as ComponentSetNode).key;
+    if (setKey && INSTALLER_REMOTE_KEY_SET[setKey]) return true;
+  }
+  return false;
+}
 
 type AliasInfo = { variableId: string; collectionName: string };
 type V2Var = {
@@ -954,6 +982,7 @@ type SwapDiagnostics = {
   sameIdSkippedCount: number;  // 같은 컴포넌트라서 스킵된 수
   skippedNestedCount: number;  // 인스턴스 내부(하위레이어)라 교체 불가로 제외된 수
   noMatchCount: number;        // 기준 풀에 대응 이름이 없어 대상에서 빠진 수
+  skippedInstallerRemoteCount: number; // 설치기가 심는 외부 라이브러리 부품(아이콘 등)이라 제외된 수
   candidateCount: number;
   instancesPreview: { name: string; mainName: string; mainTopId: string; matched: boolean; sameAsTarget: boolean }[];
 };
@@ -1153,6 +1182,11 @@ async function collectModuleParts(root: SceneNode, pool: ReferenceComponent[]): 
       const currentTopId = main
         ? (main.parent && main.parent.type === "COMPONENT_SET" ? main.parent.id : main.id)
         : "";
+      // 설치기가 심는 외부 라이브러리 부품(아이콘 등)은 바꿀 것이 없다 — "이미 최신"으로 둔다.
+      if (main && isInstallerRemotePart(main)) {
+        parts.push({ id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "canonical", path, suggestions: [] });
+        return;
+      }
       let found = findReferenceMatch(compareName, pool);
       if (!found.match && inst.name && inst.name !== compareName) found = findReferenceMatch(inst.name, pool);
       const ranked = rankSuggestions(inst.name && inst.name !== compareName ? `${compareName} ${inst.name}` : compareName, pool);
@@ -1289,6 +1323,7 @@ async function scanSwapCandidates(
     sameIdSkippedCount: 0,
     skippedNestedCount: 0,
     noMatchCount: 0,
+    skippedInstallerRemoteCount: 0,
     candidateCount: 0,
     instancesPreview: [],
   };
@@ -1310,6 +1345,8 @@ async function scanSwapCandidates(
         if (diag.instancesPreview.length < 8) diag.instancesPreview.push({ name: inst.name, mainName: "(mainComponent null)", mainTopId: "", matched: false, sameAsTarget: false });
         continue;
       }
+      // 설치기 자신이 심는 외부 라이브러리 부품(아이콘 등)은 검수 대상이 아니다 — 정상 산출물이다.
+      if (isInstallerRemotePart(main)) { diag.skippedInstallerRemoteCount++; continue; }
       const compareName = main.parent && main.parent.type === "COMPONENT_SET"
         ? main.parent.name
         : main.name;
