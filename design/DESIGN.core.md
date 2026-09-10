@@ -1971,7 +1971,7 @@ _Don't_
 
 ### GNB Sub Menu Item
 
-GNB 하위메뉴 패널 안의 글자 한 줄. Depth(1depth=카테고리 제목 Bold 16 · 2depth=항목 Medium 16) × State(Default·Hover·Selected) 6변형. 아이콘·배경·들여쓰기가 없다. 단독으로 쓰지 않고 GNB Sub Menu 안에서 쓴다.
+GNB 하위메뉴 패널 안의 글자 한 줄. Depth(1depth=카테고리 제목 Bold 16 · 2depth=항목 Medium 16) 축이며, 상태(Default·Hover·Selected)는 2depth 만 갖는다 — 1depth 는 누를 수 없는 제목이라 늘 기본 색이다(river 지시 2026-09-10). 그래서 4변형이다. 아이콘·배경·들여쓰기가 없다. 단독으로 쓰지 않고 GNB Sub Menu 안에서 쓴다.
 
 **언제 쓰나**
 - GNB 하위메뉴 패널의 카테고리 제목 또는 항목을 놓을 때.
@@ -2055,7 +2055,7 @@ _Don't_
 - 패널의 목록 안에서 <li> 하나에 <a href> 하나로 낸다. 링크가 아닌 동작이면 <button type="button"> 을 쓴다.
 - 1depth(카테고리 제목)가 링크가 아니면 <a>·<button> 으로 만들지 않는다 — 목록의 제목 글자로 둔다.
 - 현재 위치인 2depth 항목(<a href>)에 aria-current="page" 를 준다. Selected 는 시각 표현이고 현재 위치를 알리는 것은 aria-current 다.
-- 1depth(카테고리 제목)는 링크가 아니라 '현재 페이지' 개념이 없으므로 aria-current 를 쓰지 않는다. Selected 를 보여야 하면 data-state="selected" 로 낸다 — 시각 전용이며 ARIA 로 알리지 않는다.
+- 1depth(카테고리 제목)는 링크가 아니라 '현재 페이지' 개념이 없으므로 aria-current 를 쓰지 않는다. 정본에도 1depth 의 Hover·Selected 변형이 없어 어떤 상태 표시도 붙이지 않는다(river 지시 2026-09-10).
 - Hover 는 시각만이며 ARIA 로 알리지 않는다 — 정본에서 Selected 와 색이 같다.
 - 포커스 표시는 브라우저 기본값을 그대로 쓴다(정본에 별도 focus 표현이 없다).
 - 키보드는 Tab 이동 + Enter 활성화의 네이티브 동작만 쓴다. 방향키 이동은 정본에 없으므로 만들지 않는다(not-applicable).
@@ -4746,4 +4746,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 69244575cbb0 · 손편집 금지 -->
+<!-- generated-stamp: 4f7651ba3efa · 손편집 금지 -->

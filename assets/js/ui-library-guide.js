@@ -134,7 +134,7 @@ const componentConfig = {
   "gnb-sub-menu-item": {
     title: "GNB Sub Menu Item",
     description: "GNB 하위메뉴 패널 안의 글자 한 줄입니다. 1depth는 카테고리 제목(Bold), 2depth는 항목(Medium)입니다.",
-    approvedScope: "Depth×State 6종(1depth·2depth × Default·Hover·Selected) · 들여쓰기·배경·아이콘 없음 · 크기 축 없음(hug) · JavaScript 불필요",
+    approvedScope: "4종 — 1depth(카테고리 제목)는 Default 하나, 2depth(항목)는 Default·Hover·Selected · 들여쓰기·배경·아이콘 없음 · 크기 축 없음(hug) · JavaScript 불필요",
     runtime: S1UI.gnbSubMenuItem
   },
   "gnb-sub-menu": {
@@ -1859,7 +1859,9 @@ function gnbMenuMarkup(label, { state = "default" } = {}) {
 function gnbMarkup({ size = "md", align = "center-between", isPreview = false } = {}) {
   gnbId += 1;
   const preview = isPreview ? " is-preview" : "";
-  const menus = `<ul data-s1-part="menus">${gnbMenuMarkup("공지사항", { state: "selected" })}${gnbMenuMarkup("서비스")}${gnbMenuMarkup("통계")}</ul>`;
+  // 어느 메뉴도 고정 선택하지 않는다 — 예시 메뉴는 전부 같은 자격의 메뉴다(river 지시 2026-09-10).
+  // Selected 시각은 아래 "메뉴 슬롯" 상태 매트릭스가 따로 보여준다.
+  const menus = `<ul data-s1-part="menus">${gnbMenuMarkup("공지사항")}${gnbMenuMarkup("서비스")}${gnbMenuMarkup("통계")}</ul>`;
   const util = `<div data-s1-part="util">
       <button type="button" data-s1-part="lang">
         <span data-s1-part="lang-icon" aria-hidden="true"></span>
@@ -1903,8 +1905,9 @@ function gnbUtilMarkup(combo) {
 }
 
 /* 조립 예시 3벌 — 상단바 + 하위메뉴 패널을 한 화면에 두고 실제로 연다/닫는다(river 지시
-   2026-09-09: "액션은 하단메뉴 유형에 맞게 3개로 표출한다 — start형 gnb SM + 레귤러/콤팩트1/콤팩트2").
-   "SM" = GNB 바 크기 축(sm) · "start형" = GNB 바 정렬 축(start) 으로 읽었다.
+   2026-09-09: "액션은 하단메뉴 유형에 맞게 3개로 표출한다 — 레귤러/콤팩트1/콤팩트2").
+   "SM" = GNB 바 크기 축(sm). 정렬 축은 river 지시 2026-09-10 으로 start → center-between 이다
+   (로고·메뉴·유틸 3분할). center-between 은 leading 래퍼 없이 로고·메뉴·유틸이 형제로 놓인다.
    gnb.js(jsRequired=true)가 이 인스턴스를 init() 하면 살아난다(아래 mountGuide 의 런타임 초기화가
    `gnb` 를 대상에 추가한다). 미리보기용 정적 표본(.is-preview)이 아니므로 gnbId 를 그대로 써서
    벌마다 매번 고유한 id 를 만든다 — 문서 전체 id 중복 0건이 되게 한다(⚠️ 함정 §2 T5).
@@ -1914,6 +1917,16 @@ function gnbUtilMarkup(combo) {
    하나 고르는 것이지 메뉴마다 고르는 게 아니다(river 결정 2026-09-09, "이러면 안되지"). */
 const GNB_ASSEMBLED_TYPE_CONTENT = {
   "regular": {
+    notice: [
+      { depth: "1depth", label: "공지·소식" },
+      { depth: "2depth", label: "공지사항" },
+      { depth: "2depth", label: "보도자료" }
+    ],
+    notice2: [
+      { depth: "1depth", label: "자료실" },
+      { depth: "2depth", label: "카탈로그" },
+      { depth: "2depth", label: "매뉴얼" }
+    ],
     service: [
       { depth: "1depth", label: "서비스 소개" },
       { depth: "2depth", state: "selected", label: "개요" },
@@ -1935,6 +1948,9 @@ const GNB_ASSEMBLED_TYPE_CONTENT = {
     ]
   },
   "compact-1": {
+    notice: [{ depth: "2depth", label: "공지사항" }],
+    notice2: [{ depth: "2depth", label: "보도자료" }],
+    notice3: [{ depth: "2depth", label: "자료실" }],
     service: [{ depth: "2depth", label: "개요" }],
     service2: [{ depth: "2depth", label: "요금제" }],
     service3: [{ depth: "2depth", label: "시작하기" }],
@@ -1942,11 +1958,24 @@ const GNB_ASSEMBLED_TYPE_CONTENT = {
     stats2: [{ depth: "2depth", label: "매출 통계" }],
     stats3: [{ depth: "2depth", label: "리포트" }]
   },
+  /* 콤팩트2 — river 지시 2026-09-10: 한 판에 항목 10개 정도. 정본 원본(A gnb list 540:6398)의
+     콤팩트2 는 "묶음마다 최대 2개"라 묶음 5개 × 2 = 10 으로 채운다(줄간격 20 · 묶음 사이 80 그대로). */
   "compact-2": {
+    notice: [{ depth: "2depth", label: "공지사항" }, { depth: "2depth", label: "보도자료" }],
+    notice2: [{ depth: "2depth", label: "자료실" }, { depth: "2depth", label: "카탈로그" }],
+    notice3: [{ depth: "2depth", label: "매뉴얼" }, { depth: "2depth", label: "브로슈어" }],
+    notice4: [{ depth: "2depth", label: "이벤트" }, { depth: "2depth", label: "뉴스레터" }],
+    notice5: [{ depth: "2depth", label: "채용 공고" }, { depth: "2depth", label: "입찰 공고" }],
     service: [{ depth: "2depth", label: "개요" }, { depth: "2depth", label: "요금제" }],
     service2: [{ depth: "2depth", label: "시작하기" }, { depth: "2depth", label: "FAQ" }],
+    service3: [{ depth: "2depth", label: "도입 사례" }, { depth: "2depth", label: "제휴 안내" }],
+    service4: [{ depth: "2depth", label: "API 안내" }, { depth: "2depth", label: "연동 가이드" }],
+    service5: [{ depth: "2depth", label: "보안 정책" }, { depth: "2depth", label: "이용 약관" }],
     stats: [{ depth: "2depth", label: "방문자 통계" }, { depth: "2depth", label: "매출 통계" }],
-    stats2: [{ depth: "2depth", state: "selected", label: "전체 리포트" }]
+    stats2: [{ depth: "2depth", label: "전체 리포트" }, { depth: "2depth", label: "기간 리포트" }],
+    stats3: [{ depth: "2depth", label: "사용량" }, { depth: "2depth", label: "전환율" }],
+    stats4: [{ depth: "2depth", label: "지역별" }, { depth: "2depth", label: "기기별" }],
+    stats5: [{ depth: "2depth", label: "내보내기" }, { depth: "2depth", label: "공유 설정" }]
   }
 };
 
@@ -1957,20 +1986,19 @@ function gnbAssembledColumnsMarkup(type, key) {
   ).join("");
 }
 
-/* 벌 하나 — align(고정 start)·size(고정 sm)·type 하나를 받아 상단바 + 패널 2개(서비스·통계, 같은 type)를 낸다. */
+/* 벌 하나 — align(고정 center-between)·size(고정 sm)·type 하나를 받아 상단바 + 패널 2개(서비스·통계, 같은 type)를 낸다. */
 function gnbAssembledUnitMarkup(type, typeLabel) {
   gnbId += 1;
+  const noticeId = `gnb-sub-menu-notice-${type}-${gnbId}`;
   const serviceId = `gnb-sub-menu-service-${type}-${gnbId}`;
   const statsId = `gnb-sub-menu-stats-${type}-${gnbId}`;
-  const bar = `<nav data-s1-component="gnb" data-size="sm" data-variant="start" aria-label="주 메뉴 조립 표본 · ${typeLabel} ${gnbId}">
-      <div data-s1-part="leading">
-        <a data-s1-part="logo" href="#">SAMPLE LOGO</a>
-        <ul data-s1-part="menus">
-          <li><a data-s1-part="menu" href="#" aria-current="page">공지사항</a></li>
-          <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="${serviceId}">서비스</a></li>
-          <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="${statsId}">통계</a></li>
-        </ul>
-      </div>
+  const bar = `<nav data-s1-component="gnb" data-size="sm" data-variant="center-between" aria-label="주 메뉴 조립 표본 · ${typeLabel} ${gnbId}">
+      <a data-s1-part="logo" href="#">SAMPLE LOGO</a>
+      <ul data-s1-part="menus">
+        <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="${noticeId}">공지사항</a></li>
+        <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="${serviceId}">서비스</a></li>
+        <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="${statsId}">통계</a></li>
+      </ul>
       <div data-s1-part="util">
         <button type="button" data-s1-part="lang">
           <span data-s1-part="lang-icon" aria-hidden="true"></span>
@@ -1984,16 +2012,21 @@ function gnbAssembledUnitMarkup(type, typeLabel) {
         </button>
       </div>
     </nav>`;
+  const noticePanel = `<div data-s1-component="gnb-sub-menu" data-type="${type}" id="${noticeId}" aria-label="공지사항 하위 메뉴 ${gnbId}" hidden>
+      <div data-s1-part="columns">${gnbAssembledColumnsMarkup(type, "notice")}</div>
+    </div>`;
   const servicePanel = `<div data-s1-component="gnb-sub-menu" data-type="${type}" id="${serviceId}" aria-label="서비스 하위 메뉴 ${gnbId}" hidden>
       <div data-s1-part="columns">${gnbAssembledColumnsMarkup(type, "service")}</div>
     </div>`;
   const statsPanel = `<div data-s1-component="gnb-sub-menu" data-type="${type}" id="${statsId}" aria-label="통계 하위 메뉴 ${gnbId}" hidden>
       <div data-s1-part="columns">${gnbAssembledColumnsMarkup(type, "stats")}</div>
     </div>`;
+  /* 패널 2개는 자리 예약 슬롯 안에 겹쳐 둔다 — 열고 닫아도 아래 내용이 밀리지 않는다(river 지시 2026-09-10).
+     슬롯 높이는 그 벌에서 가장 높은 패널이 정하므로 host 가 높이를 지어내지 않는다. */
   return `
     <div class="uilg-gnb-assembled-item">
-      <p class="uilg-gnb-row-label">Start · SM · ${typeLabel}</p>
-      <div class="uilg-gnb-assembled">${bar}${servicePanel}${statsPanel}</div>
+      <p class="uilg-gnb-row-label">Center-Between · SM · ${typeLabel}</p>
+      <div class="uilg-gnb-assembled">${bar}<div class="uilg-gnb-panel-slot">${noticePanel}${servicePanel}${statsPanel}</div></div>
     </div>`;
 }
 
@@ -2026,8 +2059,8 @@ function gnbStateMatrix() {
 
   return `
     <div class="platform-section">
-      <div class="preview-area">
-        <p class="uilg-demo-note">조립 액션 3벌 — 하단메뉴 유형에 맞춰 낸 실제 배선입니다(river 지시 2026-09-09). 세 벌 모두 Start 정렬·SM 크기이고, 벌마다 유형만 다릅니다(레귤러 → 콤팩트1 → 콤팩트2). "서비스"·"통계"에 마우스를 올리면(또는 Tab 으로 들어가면) 아래 패널이 펼쳐지고, 바깥으로 나가면 짧은 유예 뒤 닫힙니다. Esc 로 닫으면 초점이 그 메뉴로 돌아옵니다. "공지사항"은 하위메뉴가 없는 평범한 링크입니다 — 강제 의존이 아닙니다. 한 벌 안에서는 "서비스"·"통계"가 항상 같은 유형의 패널을 엽니다 — 유형은 메뉴마다 고르는 게 아니라 사이트가 하나 고르는 것입니다.</p>
+      <div class="preview-area uilg-gnb-action-area">
+        <p class="uilg-demo-note">조립 액션 3벌 — 하단메뉴 유형에 맞춰 낸 실제 배선입니다(river 지시 2026-09-09). 세 벌 모두 Center-Between 정렬·SM 크기이고, 벌마다 유형만 다릅니다(레귤러 → 콤팩트1 → 콤팩트2). 메뉴에 마우스를 올리면(또는 Tab 으로 들어가면) 아래 패널이 펼쳐지고, 바깥으로 나가면 짧은 유예 뒤 닫힙니다. Esc 로 닫으면 초점이 그 메뉴로 돌아옵니다. 한 벌 안에서는 세 메뉴가 항상 같은 유형의 패널을 엽니다 — 유형은 메뉴마다 고르는 게 아니라 사이트가 하나 고르는 것입니다. 패널이 펼쳐질 자리는 미리 비워 두어 열고 닫아도 아래 내용이 밀리지 않습니다 — 흰 패널이 잘 보이도록 이 칸 배경만 옅은 회색입니다(실제 화면 배경은 아닙니다).</p>
         <div class="uilg-gnb-assembled-wrap">${gnbAssembledMarkup()}</div>
       </div>
       <div class="preview-area">
@@ -2050,18 +2083,18 @@ function gnbStateMatrix() {
 }
 
 /* ── GNB Sub Menu Item ──
-   정본: buildGNBSubMenuItem(build-components.ts:3697). Depth(1depth=카테고리 제목·2depth=항목) × State(Default·Hover·Selected).
+   정본: buildGNBSubMenuItem(build-components.ts:3697). Depth(1depth=카테고리 제목·2depth=항목) 축이며
+   상태는 2depth 만 갖는다(Default·Hover·Selected) — 1depth 는 Default 하나뿐이라 4변형이다.
    Hover 는 host 화면 마우스 없이 흉내내야 하므로 다른 컴포넌트와 같이 data-force-state="hover" 를 쓴다. */
 function gnbSubMenuItemMarkup({ depth = "2depth", state = "default", label = null, isPreview = false } = {}) {
   const selected = state === "selected";
   const force = state === "hover" ? ' data-force-state="hover"' : "";
   const preview = isPreview ? " is-preview" : "";
   const text = label ?? (depth === "1depth" ? "카테고리 제목" : "하위 메뉴");
-  // 1depth(카테고리 제목·<span>)는 링크가 아니라 aria-current 를 쓰지 않는다 — 시각 전용
-  // data-state="selected" 로 낸다. 2depth(항목·<a href>)는 현재 위치이자 시각인
-  // aria-current="page" 를 그대로 쓴다(manifest htmlContract.relations).
+  // 1depth(카테고리 제목·<span>)는 상태가 없다 — 선택 표시도 hover 표시도 붙이지 않는다.
+  // 2depth(항목·<a href>)만 현재 위치이자 시각인 aria-current="page" 를 쓴다(manifest htmlContract.relations).
   return depth === "1depth"
-    ? `<li><span data-s1-component="gnb-sub-menu-item" data-depth="1depth"${selected ? ' data-state="selected"' : ""}${force} class="${preview.trim()}">${text}</span></li>`
+    ? `<li><span data-s1-component="gnb-sub-menu-item" data-depth="1depth" class="${preview.trim()}">${text}</span></li>`
     : `<li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#"${selected ? ' aria-current="page"' : ""}${force} class="${preview.trim()}">${text}</a></li>`;
 }
 
@@ -2071,9 +2104,16 @@ function gnbSubMenuItemStateMatrix() {
 
   const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
     states.map(([, label]) => `<div class="matrix-col-header">${label}</div>`).join("");
+  // 1depth(카테고리 제목)는 누를 수 없는 제목이라 상태가 없다 — Default 한 칸만 내고 나머지는 비운다
+  // (river 지시 2026-09-10: "최상단 큰글씨는 셀렉티드가 안되는 항목이니 기본 색상으로 표출할 것").
   const rows = depths.map(([depth, label, dim]) =>
     `<div class="matrix-row-label">${label}<span>${dim}</span></div>` +
-    states.map(([state]) => `<div class="comp-state-cell"><ul class="uilg-gnb-submenu-item-cell">${gnbSubMenuItemMarkup({ depth, state, isPreview: true })}</ul></div>`).join("")).join("");
+    states.map(([state]) => {
+      if (depth === "1depth" && state !== "default") {
+        return `<div class="comp-state-cell"><span class="uilg-na">해당 없음</span></div>`;
+      }
+      return `<div class="comp-state-cell"><ul class="uilg-gnb-submenu-item-cell">${gnbSubMenuItemMarkup({ depth, state, isPreview: true })}</ul></div>`;
+    }).join("")).join("");
   const grid = `<div class="comp-state-matrix" style="grid-template-columns: 110px repeat(${states.length}, minmax(140px, 1fr));">${header}${rows}</div>`;
 
   const action = `<div class="comp-action-top"><div class="matrix-col-header-action">Action</div>
@@ -2082,7 +2122,7 @@ function gnbSubMenuItemStateMatrix() {
       ${gnbSubMenuItemMarkup({ depth: "2depth", state: "selected" })}
       ${gnbSubMenuItemMarkup({ depth: "2depth", state: "default" })}
     </ul>
-    <p class="uilg-demo-note">목록 안 <a>·<span> 그대로이며, 실제로 링크를 누를 수 있습니다. 1depth(카테고리 제목)는 링크가 아니라 목록의 제목 글자입니다.</p>
+    <p class="uilg-demo-note">목록 안 <a>·<span> 그대로이며, 실제로 링크를 누를 수 있습니다. 1depth(카테고리 제목)는 링크가 아니라 목록의 제목 글자라 마우스를 올려도 선택돼도 늘 기본 색입니다 — 상태는 2depth(항목)만 갖습니다.</p>
   </div>`;
 
   return `<div class="platform-section"><div class="preview-area">${action}${grid}</div></div>`;

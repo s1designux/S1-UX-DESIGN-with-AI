@@ -3702,6 +3702,10 @@ const GNB_SUBMENU_DEPTHS = ["1depth", "2depth"] as const;
 //      compact-1/compact-2 로 대체한다. Depth=2depth 는 regular 와 같은 것이라 이름만 바뀐다.
 const GNB_SUBMENU_TYPES = ["regular", "compact-1", "compact-2"] as const;
 const GNB_SUBMENU_STATES = ["Default", "Hover", "Selected"];
+// ⚠️ 상태는 2depth(항목)만 갖는다 — 1depth(카테고리 제목)는 누를 수 없는 제목 글자라 Hover·Selected 가 성립하지 않는다.
+//   river 지시 2026-09-10 "최상단 큰글씨는 셀렉티드가 안되는 항목이니 기본 색상으로 표출할것" → "정본에서도 없애줘".
+//   그래서 변형은 6개(2×3)가 아니라 **4개**다: 1depth=Default · 2depth=Default/Hover/Selected.
+const gnbSubMenuItemHasState = (depth: string, state: string): boolean => depth !== "1depth" || state === "Default";
 
 async function buildGNBSubMenuItem(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const navc = (k: string) => `color/navigation/${k}`;
@@ -3710,6 +3714,7 @@ async function buildGNBSubMenuItem(maps: BuildMaps, originY: number): Promise<{ 
   for (const depth of GNB_SUBMENU_DEPTHS) {
     const first = depth === "1depth";
     for (const state of GNB_SUBMENU_STATES) {
+      if (!gnbSubMenuItemHasState(depth, state)) continue;   // 1depth 는 Default 하나뿐
       const comp = figma.createComponent();
       comp.name = `Depth=${depth}, State=${state}`;
       comp.layoutMode = "HORIZONTAL";
@@ -3735,6 +3740,7 @@ async function buildGNBSubMenuItem(maps: BuildMaps, originY: number): Promise<{ 
     title: "GNB Sub Menu Item",
     colHeaders: GNB_SUBMENU_STATES,
     rowLabels: GNB_SUBMENU_DEPTHS.map((d) => d),
+    // 1depth 의 Hover·Selected 칸은 비운다(변형이 없다) — 스펙시트는 null 을 빈 칸으로 그린다.
     cellAt: (r, c) => byKey.get(`${GNB_SUBMENU_DEPTHS[r]}:${GNB_SUBMENU_STATES[c]}`) ?? null,
     lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 160, cellH: 44, rowLabelW: 96,
   };

@@ -781,16 +781,29 @@
 .uilg-gnb-menu-cell { display: inline-flex; width: auto; }
 /* 조립 예시(상단바+패널) — 배치 전용. 세로로 쌓이는 실제 배포 구조(바 아래 패널)를 그대로
    보여줄 뿐 시각을 보정하지 않는다 — 색·크기·간격은 전부 dist CSS(s1-ui.css) 가 그린다. */
-.uilg-gnb-assembled-wrap { display: flex; flex-direction: column; gap: var(--spacing-24); overflow-x: auto; width: 100%; }
+.uilg-gnb-assembled-wrap { display: flex; flex-direction: column; gap: var(--spacing-40); overflow-x: auto; width: 100%; }
 /* 조립 액션 3벌(river 지시 2026-09-09) — 벌 사이 여백만 host 가 준다. 벌 안 레이블은 GNB 바 변형
    목록과 같은 .uilg-gnb-row-label 을 재사용한다(새 시각 규칙 0건). */
 .uilg-gnb-assembled-item { display: flex; flex-direction: column; gap: var(--spacing-8); min-width: 640px; }
 .uilg-gnb-assembled { display: flex; flex-direction: column; }
 
+/* 패널이 펼쳐질 자리를 미리 비워 둔다(river 지시 2026-09-10) — 두 패널(서비스·통계)을 같은 칸에 겹쳐 두면
+   슬롯 높이는 둘 중 높은 쪽이 정한다. 높이를 host 가 숫자로 지어내지 않으므로 유형별 실제 높이를 그대로 쓴다.
+   닫힌 패널은 자리만 지키고 보이지 않는다 — visibility:hidden 은 [hidden] 과 똑같이 접근성 트리·초점에서도 빠진다. */
+.uilg-gnb-panel-slot { display: grid; }
+.uilg-gnb-panel-slot > [data-s1-component="gnb-sub-menu"] { grid-area: 1 / 1; }
+.uilg-gnb-panel-slot > [data-s1-component="gnb-sub-menu"][hidden] { display: flex; visibility: hidden; }
+
+/* 조립 액션 칸만 옅은 회색 — 패널 배경이 흰색이라 흰 카드 위에서는 경계가 안 보인다(river 지시 2026-09-10). */
+.preview-area.uilg-gnb-action-area { background: var(--color-bg-level-2); }
+[data-theme="dark"] .preview-area.uilg-gnb-action-area { background: var(--color-bg-level-3); }
+
 /* GNB Sub Menu Item 미리보기 칸 — 부품 자체는 목록을 소유하지 않으므로(gnb-sub-menu 가 소유)
    상태 매트릭스·Action 칸에서 <li> 하나만 보일 때 감쌀 꾸미기 없는 <ul> 껍데기(mobile-bottom-nav 선례와 같은 원리). */
 .uilg-gnb-submenu-item-cell { display: flex; flex-direction: column; gap: var(--spacing-8); list-style: none; margin: 0; padding: 0; }
 .uilg-gnb-submenu-item-cell > li { margin: 0; }
+/* 상태가 없는 칸 — 1depth(카테고리 제목)의 Hover·Selected 자리(river 지시 2026-09-10). */
+.uilg-na { color: var(--color-text-body-secondary); font-size: var(--font-size-12, 12px); }
 
 /* ── Responsive ── */
 

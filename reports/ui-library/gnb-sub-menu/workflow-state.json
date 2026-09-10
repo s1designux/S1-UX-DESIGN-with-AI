@@ -78,20 +78,20 @@
   },
   "handoff": {
     "lastActor": "orchestrator",
-    "updatedAt": "2026-09-09",
-    "summary": "세션 종료 시점 인계. gnb·gnb-sub-menu·gnb-sub-menu-item 셋 다 uiLibraryStatus=verified 이고 안내 화면(pages/components.html)에 실물로 그려진다. gate:check 초록, 커밋 3개(b667a15·b57b18e·e247884)가 main 에 아직 안 합쳐졌다 — river 가 '새 세션에서 마저 하고 합치겠다'고 했다. 남은 일 2가지: ①river 사이트 추가 수정 → UX 승인 → approved 승격 ②개발자 배포 탭 공개(배포 통로는 GitHub 저장소로 확정, install-prompt.html 의 받기 잠금 해제 + 컴포넌트 수 22→25 갱신)."
+    "updatedAt": "2026-09-10",
+    "summary": "river 사이트 수정 2차: GNB 액션 정렬 center-between·패널 자리예약·액션 칸 회색 배경, GNB 메뉴 강조선 bottom 0 교정, 공지사항 하위메뉴 신설(콤팩트2 10항목), 1depth 상태 제거(정본 포함). 정본 변경분 재검증 대기."
   },
   "currentPhase": "5-human-review",
   "workflowStatus": "awaiting-user",
   "uiLibraryStatus": "draft",
   "lastCompletedCheckpoint": 4,
-  "nextAction": "river 가 새 세션에서 사이트 추가 수정을 지시한다. 이 작업 폴더(.claude/worktrees/elated-grothendieck-64c8b8)에서 이어가고, 끝나면 riverApproval 기록 → 6-promotion → npm run wt:merge 로 main 에 합친다.",
+  "nextAction": "🤖 component-verifier 재검증 → ❌ 0 이면 Gate 13 기록 후 커밋.",
   "blockers": [],
   "canonicalInputs": [
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "18860eed398bd28e0ba9bdf5eec5c5183ef7b5682f1869e32c8c8897c003df94"
+      "sha256": "77518a239c898c35dbe1a07e9f3f409b2462e47be892e6e8f536a1cd5f388c05"
     },
     {
       "role": "token-values",
@@ -186,6 +186,20 @@
       "by": "river",
       "what": "조립 액션 예시를 유형별 3벌(Start·SM 상단바 × regular/compact-1/compact-2)로 다시 짜고, 화면 순서를 액션 → GNB 설명 → 하단메뉴 설명으로 바꿨다.",
       "why": "river 발화 \"GNB는 액션 구성을 다시하자. 지금 메뉴마다 다른 유형의 하단메뉴가 나오고있는데 이러면 안되지. … 다음은 GNB 설명, 그다음은 하단메뉴 설명 이렇게 구성하자\". 한 GNB 안에서는 모든 메뉴가 같은 유형의 판을 연다는 규칙을 registry doDont 에 넣었고 ui:test 가 섞임을 직접 막는다. 'SM' 은 상단바 크기(data-size=sm)로 해석했다."
+    },
+    {
+      "id": "D12",
+      "at": "2026-09-10",
+      "by": "river",
+      "what": "GNB Sub Menu Item 의 1depth(카테고리 제목)는 상태를 갖지 않는다 — 정본에서 Depth=1depth × State=Hover·Selected 두 변형을 없앴다. 변형 6개 → 4개.",
+      "why": "river 발화 2026-09-10 \"하단 메뉴에 레귤러의 경우 최상단 큰글씨는 셀렉티드가 안되는 항목이니 기본 색상으로 표출할것\" → \"정본에서도 없애줘\". 카테고리 제목은 누를 수 없어 hover 도 '현재 페이지'도 성립하지 않는다. D3(1depth Selected 를 계약에 문서화)을 갈음한다."
+    },
+    {
+      "id": "D13",
+      "at": "2026-09-10",
+      "by": "orchestrator",
+      "what": "25개 컴포넌트 manifest 의 canonicalFingerprint 를 일괄 갱신했다.",
+      "why": "build-components.ts 는 25종 전부의 canonicalSource 라 한 줄만 바뀌어도 전부 stale 이 된다. 실제 변경 hunk 는 buildGNBSubMenuItem 세 곳(@@3705·@@3717·@@3743)뿐이고 다른 컴포넌트 빌더와 무관하다 — wiring-and-traps §3 의 '무관하면 지문만 갱신하고 근거를 남긴다' 경로를 따랐다."
     }
   ],
   "evidence": {

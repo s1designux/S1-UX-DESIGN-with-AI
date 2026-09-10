@@ -1,0 +1,101 @@
+{
+  "date": "2026-09-10",
+  "summary": {
+    "errors": 0,
+    "warns": 8,
+    "passes": 5
+  },
+  "findings": [
+    {
+      "rule": "SIZE_SPLIT",
+      "severity": "warn",
+      "compId": "button",
+      "message": "HTML 코드탭 pane \"btn-pri-pc\" 을 찾을 수 없음",
+      "autoFix": false
+    },
+    {
+      "rule": "SIZE_SPLIT",
+      "severity": "warn",
+      "compId": "chip",
+      "message": "HTML 코드탭 pane \"chip-html\" 을 찾을 수 없음",
+      "autoFix": false
+    },
+    {
+      "rule": "SIZE_SPLIT",
+      "severity": "warn",
+      "compId": "table",
+      "message": "HTML 코드탭 pane \"table-html\" 을 찾을 수 없음",
+      "autoFix": false
+    },
+    {
+      "rule": "SIZE_SPLIT",
+      "severity": "warn",
+      "compId": "time-picker (input형)",
+      "message": "HTML 코드탭 pane \"tp-input-html\" 을 찾을 수 없음",
+      "autoFix": false
+    },
+    {
+      "rule": "SIZE_SPLIT",
+      "severity": "warn",
+      "compId": "time-picker (select형)",
+      "message": "HTML 코드탭 pane \"tp-select-html\" 을 찾을 수 없음",
+      "autoFix": false
+    },
+    {
+      "rule": "SIZE_SPLIT",
+      "severity": "pass",
+      "compId": "tab (line tab)",
+      "message": "[tab (line tab)] 모든 사이즈 분기 존재 (pc-md (font 20px · indicator 2px) / pc-sm (font 16px · indicator 2px) / pc-xsm (h40 · font 14px · indicator 2px))",
+      "autoFix": false
+    },
+    {
+      "rule": "SIZE_SPLIT",
+      "severity": "pass",
+      "compId": "tab (line tab · mobile)",
+      "message": "[tab (line tab · mobile)] 모든 사이즈 분기 존재 (mobile (h32 · padding-inline 16))",
+      "autoFix": false
+    },
+    {
+      "rule": "SIZE_SPLIT",
+      "severity": "warn",
+      "compId": "gnb (menu slot)",
+      "message": "HTML 코드탭 pane \"gnb-pc-html\" 을 찾을 수 없음",
+      "autoFix": false
+    },
+    {
+      "rule": "SIZE_SPLIT",
+      "severity": "warn",
+      "compId": "multi-toggle",
+      "message": "HTML 코드탭 pane \"mtog-html\" 을 찾을 수 없음",
+      "autoFix": false
+    },
+    {
+      "rule": "SIZE_SPLIT",
+      "severity": "warn",
+      "compId": "dropdown",
+      "message": "HTML 코드탭 pane \"ddl-html\" 을 찾을 수 없음",
+      "autoFix": false
+    },
+    {
+      "rule": "DARK_COMPARE",
+      "severity": "pass",
+      "compId": "global",
+      "message": "인라인 forced-dark 패널 없음 — 전역 테마 토글 방식 올바르게 사용 중",
+      "autoFix": false
+    },
+    {
+      "rule": "ICON_COLOR",
+      "severity": "pass",
+      "compId": "form-control-icon-default",
+      "message": "[form-control-icon-default] 아이콘 색상 일관됨 — var(--color-form-control-icon-default)",
+      "autoFix": false
+    },
+    {
+      "rule": "ICON_COLOR",
+      "severity": "pass",
+      "compId": "disabled-icon-color",
+      "message": "[disabled-icon-color] disabled 아이콘 색상 — 허용 토큰 사용 중 (var(--color-form-control-text-disabled))",
+      "autoFix": false
+    }
+  ]
+}

@@ -279,6 +279,15 @@
       margin: 0;
     }
     .uilg-gnb-assembled { display: flex; flex-direction: column; min-width: 640px; }
+    /* 패널이 펼쳐질 자리를 미리 비워 둔다(river 지시 2026-09-10) — 세 패널을 같은 칸에 겹쳐 두면
+       슬롯 높이는 가장 높은 패널이 정한다. 닫힌 패널은 자리만 지키고 보이지 않는다
+       (visibility:hidden 은 [hidden] 과 같이 접근성 트리·초점에서도 빠진다). */
+    .uilg-gnb-panel-slot { display: grid; }
+    .uilg-gnb-panel-slot > [data-s1-component="gnb-sub-menu"] { grid-area: 1 / 1; }
+    .uilg-gnb-panel-slot > [data-s1-component="gnb-sub-menu"][hidden] { display: flex; visibility: hidden; }
+    /* 판 배경이 흰색이라 흰 칸 위에서는 경계가 안 보인다 — 조립 액션 묶음만 옅은 회색(river 지시 2026-09-10). */
+    .review-gnb-action { background: var(--color-bg-level-2); border-radius: 12px; padding: var(--spacing-16); }
+    [data-theme="dark"] .review-gnb-action { background: var(--color-bg-level-3); }
 
     /* GNB Sub Menu — 배치 전용(컴포넌트 시각 아님). 패널도 GNB 바와 같이 full-width 반응형이라
        2열(Light|Dark) 칸에서는 4컬럼 묶음의 가운데 정렬을 볼 수 없다. GNB 섹션과 같은 결로
@@ -739,7 +748,7 @@
     <section class="review-section" aria-labelledby="gnb-sub-menu-item-review-title" data-component-id="gnb-sub-menu-item">
       <div>
         <h2 class="review-section-title" id="gnb-sub-menu-item-review-title">23. GNB Sub Menu Item — 하단메뉴 글자 부품</h2>
-        <p class="review-note">하위메뉴 패널 안에 들어가는 <strong>글자 한 줄</strong>입니다. 단독으로 쓰지 않고 위 22번 패널의 목록 안에 넣어 씁니다. 정본 변형 6가지(Depth 1depth·2depth × 상태 Default·Hover·Selected)를 그대로 옮겼습니다. <strong>1depth는 굵은 글씨(카테고리 제목)이고 2depth는 보통 굵기(항목)</strong>이며, 1depth는 누를 수 있는 링크가 아니라 목록의 제목 글자입니다. <strong>Hover와 Selected는 정본에서 같은 모양(파란 글자)</strong>입니다 — 2depth(항목·링크)는 현재 위치를 뜻하는 <code>aria-current="page"</code>로, 1depth(카테고리 제목·링크 아님)는 시각 전용 <code>data-state="selected"</code>로 낸다는 점만 다릅니다. 아래 Hover 칸에는 <strong>마우스를 직접 올려</strong> 확인해 주세요(강제 상태를 만들지 않았습니다). 들여쓰기·배경·아이콘은 정본에 없어 넣지 않았습니다. 정본에 모바일 규칙이 없어 <strong>PC 전용</strong>입니다.</p>
+        <p class="review-note">하위메뉴 패널 안에 들어가는 <strong>글자 한 줄</strong>입니다. 단독으로 쓰지 않고 위 22번 패널의 목록 안에 넣어 씁니다. 정본 변형 4가지를 그대로 옮겼습니다 — <strong>1depth(카테고리 제목)는 Default 하나뿐</strong>이고, 상태(Default·Hover·Selected)는 2depth(항목)만 갖습니다(river 지시 2026-09-10). <strong>1depth는 굵은 글씨</strong>이고 2depth는 보통 굵기이며, 1depth는 누를 수 있는 링크가 아니라 목록의 제목 글자라 마우스를 올려도 늘 기본 색입니다. <strong>2depth의 Hover와 Selected는 정본에서 같은 모양(파란 글자)</strong>이고, 현재 위치는 <code>aria-current="page"</code>로 냅니다. 아래 Hover 칸에는 <strong>마우스를 직접 올려</strong> 확인해 주세요(강제 상태를 만들지 않았습니다). 들여쓰기·배경·아이콘은 정본에 없어 넣지 않았습니다. 정본에 모바일 규칙이 없어 <strong>PC 전용</strong>입니다.</p>
       </div>
       <div class="review-matrix" id="gnb-sub-menu-item-review-matrix"></div>
     </section>
@@ -1706,7 +1715,8 @@
     function gnbBarMarkup({ size = "md", align = "center-between" } = {}) {
       uniqueId += 1;
       const logo = `<a data-s1-part="logo" href="#">SAMPLE LOGO</a>`;
-      const menus = `<ul data-s1-part="menus">${gnbMenuItemMarkup("공지사항", { selected: true })}${gnbMenuItemMarkup("서비스")}${gnbMenuItemMarkup("통계")}</ul>`;
+      // 어느 메뉴도 고정 선택하지 않는다 — 예시 메뉴는 전부 같은 자격이다(river 지시 2026-09-10).
+      const menus = `<ul data-s1-part="menus">${gnbMenuItemMarkup("공지사항")}${gnbMenuItemMarkup("서비스")}${gnbMenuItemMarkup("통계")}</ul>`;
       const util = `<div data-s1-part="util">
           <button type="button" data-s1-part="lang">
             <span data-s1-part="lang-icon" aria-hidden="true"></span>
@@ -1730,21 +1740,25 @@
     }
 
     /* ── 조립 액션 3벌 — river 지시(2026-09-09): "액션은 하단메뉴 유형에 맞게 3개로 표출한다 —
-       1) start형 gnb SM + 레귤러 2) start형 gnb SM + 콤팩트1 3) start형 gnb SM + 콤팩트2".
-       "SM" = 바 크기 축(data-size="sm") · "start형" = 바 정렬 축(data-variant="start") 로 읽었다
-       (dist 예시 ui-library/dist/examples/gnb.html 과 같은 해석).
+       레귤러 · 콤팩트1 · 콤팩트2". "SM" = 바 크기 축(data-size="sm").
+       정렬 축은 river 지시 2026-09-10 으로 start → center-between 이다("현재 액션에 start유형이
+       적용되어있는데 이걸 center 유형으로 바꿔줘") — 로고·메뉴·유틸 3분할이라 [data-s1-part="leading"]
+       래퍼를 쓰지 않는다(그 래퍼의 gap 64 규칙은 start 정렬 전용이다).
        ⚠️ 한 GNB 안에서는 하위메뉴를 가진 메뉴가 전부 같은 유형(Type)의 패널을 연다 — 유형은
        사이트가 하나 고르는 것이지 메뉴마다 고르는 게 아니다(예전 조립 예시는 한 바 안에서
        서비스=regular · 통계=compact-1 로 섞여 있었다 — river 가 "이러면 안되지" 로 짚은 지점).
-       바 마크업은 dist CSS 계약대로 start 정렬에서 로고+메뉴를 [data-s1-part="leading"] 로 묶는다
-       (s1-ui.css 의 gap 64 규칙이 그 래퍼에 걸린다).
-       id 는 자리마다 uniqueId 로 새로 만든다 — 테마 4벌 × 액션 3벌이라 겹치면 gnb.js 가 남의
-       패널을 연다(문서 전체에서 고유해야 한다). */
+       세 메뉴 모두 자기 패널을 연다 — "공지사항" 도 2026-09-10 부터 하위메뉴를 갖는다.
+       id 는 자리마다 uniqueId 로 새로 만든다 — 테마 2벌(Light·Dark) × 액션 3벌이라 겹치면
+       gnb.js 가 남의 패널을 연다(문서 전체에서 고유해야 한다). */
     const GNB_ACTION_SETS = [
       {
         type: "regular",
-        label: "① Start · SM 바 + 하단메뉴 Regular",
-        note: "하위메뉴를 가진 메뉴(서비스·통계)가 둘 다 regular(카테고리 제목 + 항목 목록) 판을 엽니다.",
+        label: "① Center-Between · SM 바 + 하단메뉴 Regular",
+        note: "세 메뉴 모두 regular(카테고리 제목 + 항목 목록) 판을 엽니다.",
+        notice: [
+          [["1depth", "공지·소식"], ["2depth", "공지사항"], ["2depth", "보도자료"]],
+          [["1depth", "자료실"], ["2depth", "카탈로그"], ["2depth", "매뉴얼"]]
+        ],
         service: [
           [["1depth", "서비스 소개"], ["2depth", "개요", "selected"], ["2depth", "요금제"]],
           [["1depth", "이용 안내"], ["2depth", "시작하기"], ["2depth", "FAQ"]]
@@ -1756,22 +1770,36 @@
       },
       {
         type: "compact-1",
-        label: "② Start · SM 바 + 하단메뉴 Compact-1",
-        note: "둘 다 compact-1(제목 없이 항목이 한 줄로) 판을 엽니다.",
+        label: "② Center-Between · SM 바 + 하단메뉴 Compact-1",
+        note: "세 메뉴 모두 compact-1(제목 없이 항목이 한 줄로) 판을 엽니다.",
+        notice: [[["2depth", "공지사항"]], [["2depth", "보도자료"]], [["2depth", "자료실"]]],
         service: [[["2depth", "개요"]], [["2depth", "요금제"]], [["2depth", "시작하기"]]],
         stats: [[["2depth", "방문자 통계"]], [["2depth", "매출 통계"]], [["2depth", "리포트"]]]
       },
       {
         type: "compact-2",
-        label: "③ Start · SM 바 + 하단메뉴 Compact-2",
-        note: "둘 다 compact-2(제목 없이 묶음마다 항목 2개까지) 판을 엽니다.",
+        label: "③ Center-Between · SM 바 + 하단메뉴 Compact-2",
+        note: "세 메뉴 모두 compact-2(제목 없이 묶음마다 항목 2개까지) 판을 엽니다. river 지시로 판 하나에 항목 10개(2개씩 5묶음)를 담았습니다.",
+        notice: [
+          [["2depth", "공지사항"], ["2depth", "보도자료"]],
+          [["2depth", "자료실"], ["2depth", "카탈로그"]],
+          [["2depth", "매뉴얼"], ["2depth", "브로슈어"]],
+          [["2depth", "이벤트"], ["2depth", "뉴스레터"]],
+          [["2depth", "채용 공고"], ["2depth", "입찰 공고"]]
+        ],
         service: [
           [["2depth", "개요"], ["2depth", "요금제"]],
-          [["2depth", "시작하기"], ["2depth", "FAQ"]]
+          [["2depth", "시작하기"], ["2depth", "FAQ"]],
+          [["2depth", "도입 사례"], ["2depth", "제휴 안내"]],
+          [["2depth", "API 안내"], ["2depth", "연동 가이드"]],
+          [["2depth", "보안 정책"], ["2depth", "이용 약관"]]
         ],
         stats: [
           [["2depth", "방문자 통계"], ["2depth", "매출 통계"]],
-          [["2depth", "전체 리포트", "selected"]]
+          [["2depth", "전체 리포트"], ["2depth", "기간 리포트"]],
+          [["2depth", "사용량"], ["2depth", "전환율"]],
+          [["2depth", "지역별"], ["2depth", "기기별"]],
+          [["2depth", "내보내기"], ["2depth", "공유 설정"]]
         ]
       }
     ];
@@ -1784,17 +1812,17 @@
 
     function gnbActionMarkup(set) {
       uniqueId += 1;
+      const noticeId = `gnb-action-${set.type}-notice-${uniqueId}`;
       const serviceId = `gnb-action-${set.type}-service-${uniqueId}`;
       const statsId = `gnb-action-${set.type}-stats-${uniqueId}`;
-      const bar = `<nav data-s1-component="gnb" data-size="sm" data-variant="start" aria-label="주 메뉴 조립 표본 ${uniqueId}">
-          <div data-s1-part="leading">
-            <a data-s1-part="logo" href="#">SAMPLE LOGO</a>
-            <ul data-s1-part="menus">
-              <li><a data-s1-part="menu" href="#" aria-current="page">공지사항</a></li>
-              <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="${serviceId}">서비스</a></li>
-              <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="${statsId}">통계</a></li>
-            </ul>
-          </div>
+      // 정렬은 center-between — 로고·메뉴·유틸 3분할이라 leading 래퍼가 없다(river 지시 2026-09-10).
+      const bar = `<nav data-s1-component="gnb" data-size="sm" data-variant="center-between" aria-label="주 메뉴 조립 표본 ${uniqueId}">
+          <a data-s1-part="logo" href="#">SAMPLE LOGO</a>
+          <ul data-s1-part="menus">
+            <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="${noticeId}">공지사항</a></li>
+            <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="${serviceId}">서비스</a></li>
+            <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="${statsId}">통계</a></li>
+          </ul>
           <div data-s1-part="util">
             <button type="button" data-s1-part="lang">
               <span data-s1-part="lang-icon" aria-hidden="true"></span>
@@ -1810,7 +1838,9 @@
         </nav>`;
       const panel = (id, name, columns) =>
         `<div data-s1-component="gnb-sub-menu" data-type="${set.type}" id="${id}" aria-label="${name} ${uniqueId}" hidden>${gnbActionColumnsMarkup(columns)}</div>`;
-      return `<div class="uilg-gnb-assembled">${bar}${panel(serviceId, "서비스 하위 메뉴", set.service)}${panel(statsId, "통계 하위 메뉴", set.stats)}</div>`;
+      // 판 3개는 자리 예약 슬롯 안에 겹쳐 둔다 — 열고 닫아도 아래 내용이 밀리지 않는다(river 지시 2026-09-10).
+      const panels = `<div class="uilg-gnb-panel-slot">${panel(noticeId, "공지사항 하위 메뉴", set.notice)}${panel(serviceId, "서비스 하위 메뉴", set.service)}${panel(statsId, "통계 하위 메뉴", set.stats)}</div>`;
+      return `<div class="uilg-gnb-assembled">${bar}${panels}</div>`;
     }
 
     /* 액션 3벌 묶음 — 21번 섹션 맨 앞에 놓는다(river 가 정한 읽는 순서: 액션 → GNB → 하단메뉴). */
@@ -1838,8 +1868,8 @@
         <article class="review-panel" data-theme="${combo.theme}">
           <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">정본 변형 6가지(Align 2종 × Size 3종) · 메뉴 상태 9가지(Size 3종 × State 3종) · PC 전용 · 바 자체는 JavaScript 없이 동작(하위메뉴를 여닫는 부분만 JavaScript 필요)</p></div>
           <div class="review-group">
-            <h4 class="review-group-title">조립 액션 3벌 — Start · SM 바 × 하단메뉴 유형 3가지 (실제로 열립니다)</h4>
-            <p class="review-panel-description"><strong>마우스를 올려 확인하세요.</strong> 각 벌의 "서비스"·"통계" 메뉴에 마우스를 올리면 그 벌의 하단메뉴가 펼쳐집니다. <strong>한 벌 안에서는 두 메뉴가 같은 유형의 판을 엽니다</strong> — 유형은 사이트가 하나 고르는 것이지 메뉴마다 고르는 것이 아닙니다. 마우스를 바·판 밖으로 빼면 닫히고(짧은 유예 있음 — 둘 사이 틈을 지날 때 안 깜빡입니다), <kbd>Tab</kbd> 으로 메뉴에 들어가도 펼쳐지며 <kbd>Esc</kbd> 로 닫으면 초점이 그 메뉴로 돌아옵니다. "공지사항"은 하위메뉴가 없는 평범한 링크입니다 — 하위메뉴는 강제가 아닙니다. 한 번에 한 판만 열립니다.</p>
+            <h4 class="review-group-title">조립 액션 3벌 — Center-Between · SM 바 × 하단메뉴 유형 3가지 (실제로 열립니다)</h4>
+            <p class="review-panel-description"><strong>마우스를 올려 확인하세요.</strong> 각 벌의 세 메뉴에 마우스를 올리면 그 벌의 하단메뉴가 펼쳐집니다. <strong>한 벌 안에서는 세 메뉴가 같은 유형의 판을 엽니다</strong> — 유형은 사이트가 하나 고르는 것이지 메뉴마다 고르는 것이 아닙니다. 마우스를 바·판 밖으로 빼면 닫히고(짧은 유예 있음 — 둘 사이 틈을 지날 때 안 깜빡입니다), <kbd>Tab</kbd> 으로 메뉴에 들어가도 펼쳐지며 <kbd>Esc</kbd> 로 닫으면 초점이 그 메뉴로 돌아옵니다. 한 번에 한 판만 열립니다. 판이 펼쳐질 자리는 미리 비워 두어 열고 닫아도 아래 내용이 밀리지 않으며, 흰 판이 잘 보이도록 이 묶음 배경만 옅은 회색입니다(실제 화면 배경은 아닙니다).</p>
             ${gnbActionSetsMarkup()}
           </div>
           <hr class="review-separator">
@@ -1858,18 +1888,17 @@
     }
 
     /* ── GNB Sub Menu Item — 정본 buildGNBSubMenuItem(build-components.ts:3697).
-       Depth(1depth 제목 · 2depth 항목) × State(Default·Hover·Selected) 6변형. jsRequired=false.
+       Depth(1depth 제목 · 2depth 항목) 축이며 상태는 2depth 만 갖는다(Default·Hover·Selected) — 4변형. jsRequired=false.
        이 검수 화면은 강제 상태를 만들지 않는다(GNB 섹션과 같은 원칙) — Hover 는 river 가 직접 올린다.
        마크업은 자리마다 새로 만든다(문자열 재사용 금지 — 같은 문자열을 여러 자리에 붙이면
        문서 안 중복 id/label 이 생긴다). */
     function gnbSubMenuItemMarkup({ depth = "2depth", state = "default", label = null } = {}) {
       const selected = state === "selected";
       const text = label ?? (depth === "1depth" ? "카테고리 제목" : "하위 메뉴");
-      // 1depth(카테고리 제목·<span>)는 링크가 아니라 aria-current 를 쓰지 않는다 — 시각 전용
-      // data-state="selected" 로 낸다. 2depth(항목·<a href>)는 현재 위치이자 시각인
-      // aria-current="page" 를 그대로 쓴다(manifest htmlContract.relations).
+      // 1depth(카테고리 제목·<span>)는 상태가 없다 — 아무 표시도 붙이지 않는다.
+      // 2depth(항목·<a href>)만 현재 위치이자 시각인 aria-current="page" 를 쓴다(manifest htmlContract.relations).
       return depth === "1depth"
-        ? `<li><span data-s1-component="gnb-sub-menu-item" data-depth="1depth"${selected ? ' data-state="selected"' : ""}>${text}</span></li>`
+        ? `<li><span data-s1-component="gnb-sub-menu-item" data-depth="1depth">${text}</span></li>`
         : `<li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#"${selected ? ' aria-current="page"' : ""}>${text}</a></li>`;
     }
 
@@ -1879,22 +1908,24 @@
     }
 
     function renderGnbSubMenuItemPanel(combo) {
-      // 1depth 는 aria-current 가 아니라 data-state="selected" 로 낸다 — 라벨도 depth 별로 갈린다.
+      // 1depth 는 상태가 없다 — Default 한 칸만 낸다(river 지시 2026-09-10). 2depth 만 3상태를 낸다.
       const depths = [
-        ["1depth", "1Depth — 카테고리 제목 (Bold)", "Selected · data-state"],
+        ["1depth", "1Depth — 카테고리 제목 (Bold)", "(상태 없음)"],
         ["2depth", "2Depth — 항목 (Medium)", "Selected · aria-current"],
       ];
       const states = [["default", "Default"], ["hover", "Hover — 마우스를 올려 확인"]];
 
-      const cells = depths.flatMap(([depth, depthLabel, selectedLabel]) =>
-        [...states, ["selected", selectedLabel]].map(([state, stateLabel]) =>
-          sample(`${depthLabel} · ${stateLabel}`, gnbSubMenuItemCellMarkup(depth, state)))).join("");
+      const cells = depths.flatMap(([depth, depthLabel, selectedLabel]) => {
+        const list = depth === "1depth" ? [["default", "Default"]] : [...states, ["selected", selectedLabel]];
+        return list.map(([state, stateLabel]) =>
+          sample(`${depthLabel} · ${stateLabel}`, gnbSubMenuItemCellMarkup(depth, state)));
+      }).join("");
 
       return `
         <article class="review-panel" data-theme="${combo.theme}">
-          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">정본 변형 6가지(Depth 2종 × State 3종) · PC 전용 · JavaScript 불필요</p></div>
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">정본 변형 4가지(1depth=Default · 2depth=Default·Hover·Selected) · PC 전용 · JavaScript 불필요</p></div>
           <div class="review-group">
-            <p class="review-panel-description">1depth와 2depth의 차이는 <strong>글자 굵기와 색</strong>입니다 — 1depth는 굵은 제목 글자(링크 아님), 2depth는 누를 수 있는 항목입니다. Hover 칸은 아무 표시도 강제하지 않았으니 <strong>직접 마우스를 올려</strong> 오른쪽 Selected 칸과 같은 파란 글자가 되는지 비교하세요.</p>
+            <p class="review-panel-description">1depth와 2depth의 차이는 <strong>글자 굵기와 색</strong>입니다 — 1depth는 굵은 제목 글자(링크 아님·상태 없음), 2depth는 누를 수 있는 항목입니다. 2depth Hover 칸은 아무 표시도 강제하지 않았으니 <strong>직접 마우스를 올려</strong> 오른쪽 Selected 칸과 같은 파란 글자가 되는지 비교하세요. 1depth에는 마우스를 올려도 색이 변하지 않아야 합니다.</p>
             <div class="review-grid">${cells}</div>
           </div>
         </article>`;

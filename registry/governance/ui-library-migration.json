@@ -711,7 +711,7 @@
       ],
       "riverApproval": null,
       "promotionDecision": "build 단계만 완료(🧱 ui-library-builder) — 🤖 component-verifier 원본대조와 river UX 승인 전. ui-library/src manifest.json 의 status 는 candidate 로 정직 기록.",
-      "note": "GNB 하위메뉴 패널 안 글자 한 줄. Depth(1depth=카테고리 제목 Bold 16·2depth=항목 Medium 16) × State(Default·Hover·Selected) 6변형. 들여쓰기·배경·아이콘 없음, 크기는 hug. 단독 배포하지 않고 GNB Sub Menu 가 coreComponents 로 조립한다. 새 색·새 토큰 0건.",
+      "note": "GNB 하위메뉴 패널 안 글자 한 줄. Depth(1depth=카테고리 제목 Bold 16·2depth=항목 Medium 16) 축이며 상태는 2depth 만 갖는다(Default·Hover·Selected) — 4변형(river 지시 2026-09-10). 들여쓰기·배경·아이콘 없음, 크기는 hug. 단독 배포하지 않고 GNB Sub Menu 가 coreComponents 로 조립한다. 새 색·새 토큰 0건.",
       "platform": "pc-only"
     },
     {

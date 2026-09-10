@@ -117,11 +117,13 @@
 }
 
 /* 하단 2px 강조선 — 기본은 투명(Default), Hover·Selected 에서만 칠한다(정본 fillGnbMenu :3141-3145).
-   inset 은 md 24 / sm·xsm 20(정본 :3059). bottom 은 루트 1px 하단선(border-box)만큼 아래로 내려
-   강조선이 회색 하단선을 덮게 한다(정본 buildGNB :3609-3616 — 강조선이 하단선 위 z 에 그려진다). */
+   inset 은 md 24 / sm·xsm 20(정본 :3059).
+   ⚠️ bottom 은 0 이다 — 정본은 이 2px 를 메뉴(=바와 같은 높이) 맨 아래 '안쪽'에 놓고(fillGnbMenu :3143,
+   `ul.y = S.h - 2`), 1px 회색 하단선(border.y = h - 1)은 그 뒤 z 에 깔린다. 음수 bottom 을 주면
+   2px 가 바 밖으로 1px 흘러내려 회색선 아래로 삐져나온 것처럼 보인다(river 지적 2026-09-10). */
 [data-s1-component="gnb"] [data-s1-part="menu"]::after {
   background: transparent;
-  bottom: calc(-1 * var(--border-width-default));
+  bottom: 0;
   content: "";
   height: 2px;
   position: absolute;

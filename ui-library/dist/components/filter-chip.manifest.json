@@ -2,7 +2,7 @@
   "id": "filter-chip",
   "version": "0.1.0",
   "status": "approved",
-  "canonicalFingerprint": "949f98344b9aaccb8648e2dc58a514562c6774d0fe5bfd7b5c3eb12c29744f49",
+  "canonicalFingerprint": "31833890ecb381f040cdf4dc66b93c184ffbf9bc6801f74dd78f8223204778be",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -224,5 +224,5 @@
     "singleSelectNote": "filter-chip 는 단일 선택이라 조립한 dropdown 이 Type=Text 로 고정된다(정본이 Select Box·Filter Chip 에 항상 Type=Text 패널만 붙인다). 런타임은 s1:dropdown:change 의 detail.type이 \"text\" 일 때만 반응하고 checkbox 유형 변화(전체 선택 포함)는 의도적으로 무시한다 — filter-chip 자신이 체크박스 유형 패널을 조립하지 않기 때문이며 방어적 무시가 아니다.",
     "disableCloseContract": "registry/components/component-behavior.pc.json 의 \"Filter Chip\" 계약(on: disable → close and block trigger clicks, status=verified)을 그대로 구현한다. 클릭 차단은 open() 의 disabled 가드, 자동 닫힘은 trigger 의 disabled 속성 변화를 관찰하는 MutationObserver 가 담당한다(인스턴스마다 자기 trigger 하나만 관찰 — 누적 없음, destroy() 가 disconnect)."
   },
-  "sourceFingerprint": "c9c98902c439c0ebdd793df4ae2755e32b5b72a1ee1bbc49a758e9ea2f410e52"
+  "sourceFingerprint": "5f2ea12ee3eaf3c110ef35eeeac836b80657b3d142845064ab16a93c7c5901a7"
 }

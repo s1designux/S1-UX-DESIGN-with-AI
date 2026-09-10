@@ -2,7 +2,7 @@
   "id": "gnb-sub-menu",
   "version": "0.1.0",
   "status": "verified",
-  "canonicalFingerprint": "dd92f685649fb7b7863cf6d9ec27f2ddbe36802a606ede7ef49c07624fa4a47d",
+  "canonicalFingerprint": "f9006a3c889b50086603a50cf227f688a7cb1e7ff6589177f39939b0e80ccf7a",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -114,5 +114,5 @@
     "runtime": "none",
     "reason": "정본에 여닫는 동작이 없다 — 배포본은 펼쳐진 패널의 모양만 낸다. 패널을 열고 닫는 동작(aria-expanded 토글·hidden 전환·Esc·포커스 복귀)은 river 결정(2026-09-09, D4·D5)에 따라 이 패널을 여는 gnb(jsRequired=true)가 소유한다 — 이 컴포넌트는 그대로 수동형이다."
   },
-  "sourceFingerprint": "52546a1a0a67d0e2f90b439bdf5084ac0e33adf3ab0fee422a7ddf4bf90a0cfe"
+  "sourceFingerprint": "9e937f0c15f68af11dcd56d51f69252e76341ea98a6045758f6710ba3707f870"
 }
