@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:d292f9367cd5983ae203f505bd359a86f3c000fa2110d98d744fe3c9510127e8",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-10T01:21:57.239Z",
+  "notes": "델타 재검증 PASS. (1) 파생 재생성 확인 — facts/guide-model check 최신·일치, gate:check error 는 Gate 13 1건뿐. (2) pinLightMode 경로 전수 — LayoutEmit 생산자는 frameEmit(다크 전용)·floatingEmit·캘린더 floatAt 3개뿐이고 라이트 2경로의 text/band 전부 pin, 세트는 setLightMode 유지. (3) 가로 줄바꿈 독립 재현 — collect-labels.js 재실행 결과 307건 동일, 실제 Pretendard(시스템 설치, sans-serif 와 폭 상이 확인)로 재측정해 상자폭 초과 0건. mock 이 빠뜨린 Mobile Header 라벨 13종도 별도 실측 0건. 최소 여유 2.6px(Dis+Checked/box76). (4) 주석 2건 반영 확인. tsc --noEmit 0, installer:check/keycheck/anatomy/iconpolicy/installer:build 전부 exit 0. 잔여 비차단 메모: 4626·4857 줄 주석이 삭제된 specPalette 를 계속 지칭, SPEC_FALLBACK 주석의 '게이트 mock 3종' 은 실제 mock 수와 불일치. (c-1) 굵기 계단 뭉개짐은 river 결정 대기로 미판정."
+}
