@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:bf6d15419d4f9cf1d2cef37b86c9dab3cd7a2136b09214d95298a1df321b7418",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-10T05:31:11.293Z",
+  "notes": "섹션·가이드 페이지 배경을 Semantic 토큰(bg/level-2 · bg/level-3)에 바인딩. 항목 1·2·4·5·6 전수 대조 PASS, 하드코딩 hex 신규 0건, 부품 지문 무변경(sourceHash 만 변경). (c1)면 대비=Figma 기본 섹션색과 사실상 같은 level-2 채택으로 해소, (c2)패턴 페이지 배경도 level-2 로 확장."
+}

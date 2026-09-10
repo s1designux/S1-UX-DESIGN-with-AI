@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<title>설치기 아이콘 현황</title>
+<style>
+  :root { color-scheme: light; }
+  body { font-family: Pretendard, -apple-system, "Apple SD Gothic Neo", sans-serif; margin: 0; padding: 40px 32px 80px; background: #F5F5F5; color: #353535; }
+  .wrap { max-width: 1020px; margin: 0 auto; }
+  h1 { font-size: 24px; margin: 0 0 6px; }
+  .lead { color: #757575; font-size: 14px; margin: 0 0 28px; line-height: 1.6; }
+  .sum { display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; }
+  .sum div { background: #fff; border: 1px solid #E9E9E9; border-radius: 10px; padding: 16px 20px; flex: 1 1 200px; }
+  .sum b { display: block; font-size: 28px; margin-bottom: 4px; }
+  .sum span { font-size: 13px; color: #757575; }
+  table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #E9E9E9; border-radius: 10px; overflow: hidden; }
+  th { text-align: left; font-size: 12px; color: #757575; font-weight: 500; padding: 12px 14px; background: #FAFAFA; border-bottom: 1px solid #E9E9E9; }
+  td { padding: 14px; border-bottom: 1px solid #F0F0F0; vertical-align: middle; font-size: 14px; }
+  tr:last-child td { border-bottom: 0; }
+  .nm b { font-size: 14px; }
+  .sub { font-size: 12px; color: #9D9D9D; margin-top: 3px; line-height: 1.45; }
+  .cell { width: 96px; text-align: center; }
+  .glyph { width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; background: #FAFAFA; border: 1px solid #EEE; border-radius: 8px; margin: 0 auto; color: #353535; }
+  .glyph img { width: 28px; height: 28px; object-fit: contain; }
+  .arrow { width: 24px; color: #C4C4C4; text-align: center; }
+  .none { color: #C4C4C4; }
+  .verdict { width: 290px; }
+  .badge { display: inline-block; font-size: 12px; padding: 3px 9px; border-radius: 999px; font-weight: 600; }
+  .badge.ok { background: #E7F0FD; color: #1D6CEB; }
+  .badge.mid { background: #FFF4E0; color: #A96A00; }
+  .badge.no { background: #F0F0F0; color: #757575; }
+  h2 { font-size: 16px; margin: 36px 0 10px; }
+  .note { background: #E7F0FD; border: 1px solid #CFE0FB; color: #16467F; border-radius: 10px; padding: 14px 18px; font-size: 14px; line-height: 1.65; margin-bottom: 20px; }
+  .foot { font-size: 13px; color: #757575; line-height: 1.7; margin-top: 24px; }
+</style></head><body><div class="wrap">
+<h1>설치기가 심는 아이콘 — 검수 대상과 검수 제외</h1>
+<p class="lead">가이드 정본(설치기)이 그리는 아이콘은 두 종류입니다. 하나는 <b>우리 아이콘 라이브러리 컴포넌트를 그대로 불러 쓰는 것</b>,
+다른 하나는 <b>설치기 안에 직접 그려 넣은 그림</b>입니다. 아래는 직접 그려 넣은 자리 전부와, 우리 라이브러리에 같은 아이콘이 있는지 짝지어 본 표입니다.</p>
+<div class="note"><b>결정 (river · 2026-09-10):</b> 더미로 얹어지는 키보드·상태바·내비바 등에 그려진 아이콘은 <b>검수에서 제외</b>한다.
+아래 26칸 전부가 그 대상이며, 검수기가 더 이상 토큰·아이콘·부품 교체 대상으로 올리지 않는다. 표는 "무엇이 제외됐는지" 기록으로 남긴다.</div>
+<div class="sum">
+  <div><b>27</b><span>우리 아이콘을 불러 쓰는 곳 (부품 아이콘 — 체크·달력·시계·눈·닫기 등) · 검수 대상</span></div>
+  <div><b>26</b><span>더미 크롬 아이콘 (휴대폰 셸·키보드·웹 탭바) · 검수 제외</span></div>
+  <div><b>15</b><span>그중 우리 라이브러리에 같은 아이콘이 있는 것 (참고용)</span></div>
+  <div><b>11</b><span>대응 아이콘이 아예 없는 것 (OS 규격 글리프)</span></div>
+</div>
+<table>
+<thead><tr><th>자리</th><th>지금 그림</th><th></th><th>우리 아이콘 후보</th><th>판정</th></tr></thead>
+<tbody>
+    <tr class="ok">
+      <td class="nm"><b>뒤로 (‹)</b><div class="sub">휴대폰 셸 네비바 · 웹 탭바 주소행 · 3칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAANdJREFUeAHt17ENwjAUBNBvwxKRUrABRaKIkjHowkawARmDGdJliBR0bGD+l2AD3yHQvSpJdWdbsW0mIiIiIvI3uq67DsOwN5JkFXnwsZQy+eMzpXSc53kxsI1VtK7r0jTNzsMf/PXUtu3dvz0MqOoMfPgyuuWcz0aYCUiBwCoBKxAYJaAFAroEvEBAlqAUCKgStAIBUSIbV/UBYy6hyUd/tF9cQqjwgfEbhYUP6I0MGj4gjxLw8AF1mKOED9ULMMOHrVX0vtDQwkP0fX9hXilFRERERL7nBUvEcvHf0OYNAAAAAElFTkSuQmCC" alt="ic_화살표더보기"></div><div class="sub">ic_화살표더보기</div></td>
+      <td class="verdict"><span class="badge ok">검수 제외 · 우리 아이콘도 있음</span><div class="sub">설치기가 이미 chevron 키를 갖고 있고 방향만 회전이면 된다</div></td>
+    </tr>
+    <tr class="ok">
+      <td class="nm"><b>앞으로 (›)</b><div class="sub">휴대폰 셸 네비바 · 웹 탭바 주소행 · 2칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAANdJREFUeAHt17ENwjAUBNBvwxKRUrABRaKIkjHowkawARmDGdJliBR0bGD+l2AD3yHQvSpJdWdbsW0mIiIiIvI3uq67DsOwN5JkFXnwsZQy+eMzpXSc53kxsI1VtK7r0jTNzsMf/PXUtu3dvz0MqOoMfPgyuuWcz0aYCUiBwCoBKxAYJaAFAroEvEBAlqAUCKgStAIBUSIbV/UBYy6hyUd/tF9cQqjwgfEbhYUP6I0MGj4gjxLw8AF1mKOED9ULMMOHrVX0vtDQwkP0fX9hXilFRERERL7nBUvEcvHf0OYNAAAAAElFTkSuQmCC" alt="ic_화살표더보기"></div><div class="sub">ic_화살표더보기</div></td>
+      <td class="verdict"><span class="badge ok">검수 제외 · 우리 아이콘도 있음</span><div class="sub">위와 같은 아이콘, 회전만 다름</div></td>
+    </tr>
+    <tr class="ok">
+      <td class="nm"><b>홈</b><div class="sub">휴대폰 셸 네비바(iOS) · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M3.5 11L12 4L20.5 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 9.5V20H18V9.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAmtJREFUeAHtmEty2kAQhls8VhQVlrCKOYHFs9gFn8DcIOQExiewOEHsExjfAC+zyqwooADJy+zkDWy1TBWv/I2lKoqKiJ4oi/mqVIxGM1L/3T09SEQSiUQiCUGaYqTZbH4tFovqarV6o5hQKAZUVS2k0+nnVCrV4fPdbjfAoem6/k4RE3kEGo3GFxj+A0cLp9Z+v//NbQjqlEolc7lc/qIIiSwC7PVMJvOgKErP7nrLZrO38Lyy2WwE+j9z53a7fVwsFvcUEZEIqFQq1/Dwq2MkjH6az+e94zH1ep3FaYeHKoq5Xq/bUaRUikKClLmD5w02ng1DytycGs/MZrM+rqu4/o7jCnPMarWqUUgCRwApw0Y8w6g2n7PX8/m8JoSwzs1rtVpXSKMHNLt2l0CKdYNGI5AApMMtDB+gWcBhwfgevP7i5x5cYjGv70QOojS/92B8CfjLQhVYqN3RaBTIexwNeP84igMIuTcMw/J6D88CuDwid1+OFip7/Yki4HSB46cznU49bX6eBOAB3x2v+32AV+xo6Lg/pyWX2z7KrfaveWcF8EJFigzRvHb6sCmJyWRyQzEAR/100ulgnIdy61pGuTzCeJ0+jOcd9ZEuBFe0o3Jr1Gq1O7exrgJ4Mn1UGZHL5crwRmx/yE7Bs4YwvI3mwLah7DY243YB+djH7mo6CxURoUsyHo9N/HxDuRXYX17dxrkKsEtZJFUmDCgWZ/eG0H8lkkYKSBopIGmkgKSRApJGCkgaKSBppICkyfgcf3hT468IFA9ln+ODCXA+gfwPeBaArwNDvOR/goACxQicY+E7qiCJRCKRXII/H+ED5TMtYyYAAAAASUVORK5CYII=" alt="ic_홈"></div><div class="sub">ic_홈</div></td>
+      <td class="verdict"><span class="badge ok">검수 제외 · 우리 아이콘도 있음</span><div class="sub">설치기가 이미 home 키를 갖고 있다(모바일 하단 탭에서 사용 중)</div></td>
+    </tr>
+    <tr class="ok">
+      <td class="nm"><b>메뉴 (≡)</b><div class="sub">휴대폰 셸 네비바 · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAHpJREFUeAHt1tEJhTAMheFzb13EIdpnnUTcTCfR53ao6gBtQUGI8n+PCYHkKUcCAAC47VdreO83GZJSGkv1rjEz6AVaB8wCAADPamWhLEPOLFTc9a+Xq2Yh51wvAACMq0aJEMIkQ2KMa6le/cQ550W2XDvgtAsAAODbDnDjEeOs4D/IAAAAAElFTkSuQmCC" alt="ic_메뉴"></div><div class="sub">ic_메뉴</div></td>
+      <td class="verdict"><span class="badge ok">검수 제외 · 우리 아이콘도 있음</span><div class="sub">설치기가 이미 menu 키를 갖고 있다</div></td>
+    </tr>
+    <tr class="ok">
+      <td class="nm"><b>찾기 (돋보기)</b><div class="sub">안드로이드 키보드 툴바 · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.7"/><path d="M15.5 15.5L20 20" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAA4FJREFUeAHtWctNI0EQbRsQBy7OgMnAtgSIG00E7EZgiACIAJMBjgATwZoItveCED8PGQwZeE8c+O17pgaNrNX0x22vV5ontbpnPP151VVd1WWlKlSoUKHCFKipCGi1Wo2VlZUmm1KS/LePj4+0VqtlKObm5uZRRcZUBLDwZHl5+RCL28djw/Y9iby9vXXv7+8vVCQEEaDEsfATLOio8NqgpCiPS0tLGV+8v783sAPr+E6j1kpIxiTiTUCkbrCIdXnVR+nd3t6mtr5bW1sdkDrN+4LEGZ/TNB2pQHgRaLfbTS5efUryEQvphOj15ubmIXaki/4cJ315edkNJVF3/TCXPJoNSO1ibW1NhxoldquHsdog8cShcQD8VIFw2oGi2nDx0N19FQHb29vJ6+vreFyq08PDw7HyhNMOwChpsDTGLNbiievr66xer+/JHEdQrR3lCSsBSh+T7LONXdAqMqiGtAd57CpPWAlQ+tLsX11dPakZAGrUAwkasfbdhVICPO9z6cPQumpGkBPojO0J32JFKYHV1dUdGTSdlfRzcBdYi8NzRikBnAxa6l9qxpBdyFAacHhN1342G2Bgxh0IPqd9gCPasIbAWq59SgmIpyR+qzkA842kTlz72HbAGmFGhnc4YSMQHGTNC6UEoJMZa4bEag7APLnuWyPbHDYbyKTZVnMAfE4iTWebKyUA5zVgDW+8p2YMhizq89Qb3d3dGdd+pQSen58Zp4xQkpBAyweIszrSHPj0KyUgzqXPNkh4ufgAHMg8XtdMazAHyYxdPOzh26x2YWNj4ytc91EfwkqAMTukkgdafQZ4KiJ4TcW4XbYxz3flCacLDQKtU17/aAsw7B8qEmi4OCAu2Ub4cOqSGJiEEwHaAi8zhZh9CMlN5RvyBEGeocDY5yoAzpd6uf7pwkXcQHeDjldmJSZSMzyyTYhQvPNCxYs4n+Gt+yDWx/aXhtySfuxAAMeFvj2o0DmjUAaONGKkWPRwOHS+ewSnFuXk6H4NhMmxEOZBTR5VyiITVBrv6KQahW8P8hOnKBRfElPlRjkxjO8EUt0tqkMJDMoAOaULY8xocqwQElGy07IADTJNqFNLpM7YhpLmQpkvNbQjyxjeJKIRiAVfEgtHgPAhsZAECFcSzn5g3qC9iPMcRwBoD/4WxiwsAaJIAgfE5TT/I/xTaK3nnVyoUOG/wR9hLN4YAi/ptwAAAABJRU5ErkJggg==" alt="ic_찾기조회"></div><div class="sub">ic_찾기조회</div></td>
+      <td class="verdict"><span class="badge ok">검수 제외 · 우리 아이콘도 있음</span><div class="sub">설치기가 이미 search 키를 갖고 있다</div></td>
+    </tr>
+    <tr class="mid">
+      <td class="nm"><b>새로고침</b><div class="sub">휴대폰 셸 툴바 · 웹 탭바 주소행 · 2칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12.0002 19.9411C9.74488 19.9411 7.61666 18.9776 6.12374 17.3364H9.0143V16.2776H5.02257C4.7261 16.2776 4.49316 16.5106 4.49316 16.807V20.7882H5.55198V18.2576C7.23549 19.9941 9.54371 20.9999 12.0002 20.9999C16.966 20.9999 21.0001 16.9659 21.0001 12C21.0001 11.2271 20.9048 10.4647 20.7142 9.72357L19.6871 9.98828C19.8566 10.6342 19.9413 11.3118 19.9413 12C19.9413 16.3835 16.3836 19.9411 12.0002 19.9411Z" fill="currentColor"/><path d="M18.4481 5.74282C16.7646 4.00636 14.4564 3.00049 11.9999 3.00049C7.03408 3.00049 3 7.03457 3 12.0004C3 12.7733 3.09529 13.5357 3.29647 14.2769L4.32352 14.0122C4.15411 13.3663 4.0694 12.6886 4.0694 12.0004C4.05881 7.61692 7.61643 4.0593 11.9999 4.0593C14.2552 4.0593 16.3834 5.02282 17.8763 6.66398H14.9858V7.7228H18.9669C19.2634 7.7228 19.4963 7.48986 19.4963 7.19339V3.21225H18.4375V5.74282H18.4481Z" fill="currentColor"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAA7ZJREFUeAHtWdtR4zAUvTGBHx6TDuIONhmeww/uAKgAUwFsBYQKNqmA0EHSgfhheCdbAaGD7A8fvLLnGCWTySDbCtpxdsZnRkh2ZPucqyvp6iKSI0eOHFmiII6wvb1dfn193UOzghKglHQh+ii9wWDA0vr4+FCdTufpq/dUKpXS/Pz8L7Zvb28Pk777bQEbGxsHIBQWCoVA7KDwXPP+/v58/ObW1pb//v7+yDYEJPIrypRYX1/fgTXPUcogPyKF0sX1Ba09NzdHywsIlXDPB+EfWmhUPM8LYIAa+oYgeyFTwHoEOMTFYvEERI71rT4I1JeWlhpKqX6ad9DKb29vR2ju4z1l3oPI+sPDw0/bEbASAPI+/LOF5g9ew6KN5eXlWlrik9BkT9AM9a0uCg2jeOFUAMnD8kpbjFbfv7u7U+IAm5ubuxDSGL5b9ORPI8CTFNBuE5FH6WEUKq7IE9fX1228P4BRuDKVbJ5NNYm1z0fk+aHLy8sn+SawCJyNX2MEBO+n75fFAokCuEzCMtGEhc8fuyCvEYoDJAoA6VO9TDbhNm1xBBilltAl1bIaO0m09ZsuXcc1Yicxd1hdt2aRPGEUwGVzGB4sLCzUZUZhnANYKndZY7tXWVlfL987MGTfFGoYRwBuE7DG8qYkI4D8Echz5w9NfYwCYHlfN7uSERAMRt+Oi3SNArD6+FEHz+tJRoAXPGkuxt3ZKACqo4cwjFMFai4wDMclJrxIFQvNMuJcKFKPuN0quHIJHoR00+gFcS4UPQQ/9CUjYP6VNZeesY/pBx68dV2VjIARqOhmz9THuJFBPWOg9srKipLsEPAPhLRMHZylVVxDH1+jszFq3xQNzOwqxF2YdVIoM5MCaH1U+2xjFWzG9U11pNQ5oCCuDw47p+II2MBGR9jJxNck0ia21FjyygQnAtbW1nbxrZBtTN5aUv9pMnMX8MtH+QfQrtNgmzmnJOsT1gI4tC8vLwem5Oy0GM870XWYMEvznO0kZkKLy5viUIsjcI7hnZ3x1E3abJ+tgD0I6FIEDxqrq6tn1WrVKo8zDp64YAim0pV8Rpy/bZMHVgJgpR5WmyqTudHDnhdyNCCkbiNEEz/hRjVMEtPnFxcXrTMfqXZiDPFACxjtiBP5zCEUxCnUXR6EhmcJRrQ6KAzIf/yERZfBb4fTpiqnFjCEzh2FmpwNvvwHhy1SrUIM7Fg/Pz//mfzt5uaGBM6ZKgehHfmcJz5qllE8z/AchaS72KjaV1dXPcmRI0eO/x5/AUNkvG7AIjrQAAAAAElFTkSuQmCC" alt="ic_새로고침"></div><div class="sub">ic_새로고침</div></td>
+      <td class="verdict"><span class="badge mid">검수 제외 · 라이브러리에 있음</span><div class="sub">라이브러리에 있고 영상 도메인에서 이미 쓰는 키</div></td>
+    </tr>
+    <tr class="mid">
+      <td class="nm"><b>자물쇠 (주소창)</b><div class="sub">휴대폰 셸 URL 바 · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12.0002 3C9.16131 3 6.85731 5.39657 6.85731 8.33829V11.2286H5.31445V21H18.6859V11.2286H17.143V8.33829C17.143 5.39657 14.839 3 12.0002 3ZM7.88588 11.2286V8.33829C7.88588 5.96229 9.72702 4.02857 12.0002 4.02857C14.2733 4.02857 16.1145 5.96229 16.1145 8.33829V11.2286H7.88588Z" fill="currentColor"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAlBJREFUeAHtmMtNw0AQhsd5XtMBoQLyjnLCHQQqIB1AB5gOSAekA+jAXPPCdBA64JyX+SfaSJGFwB6PsZD2kyzvenfl+Xdnx7MmslgsljxxSJl+vz/c7XYjx3EaqNbN4yAMwxWu58ViMSFF1AR0u91LGDiB4Wc/9UP7CgI9LSEFUqDT6dzj5hvj33HdFYvF89ls5vCFehNtIwj8wFUvFApPrVbLIwVSrwAbD+M8Lu/3+zvM7Dhuf6zEw3K59CgFqQT0er0LzGjAZRg/iusWGHeDcU+m6mKVXklIKheC0S9855lM4tPT6XQCAY+m6lEKxAIGg8El+zxvSokbbLfbB4j4RNHlAEBCxALW6/WI75j9RxIQBAEbfxiLlbwmIWIBiCQc5zksvpMQjD24ICLWkISk2QMHAXCFgIRsNpsV3+FKNRKS+jtgXCHt2PwE5I0VkDf/XkDsVAI5zOq3TFML/jjia30ep2/sFfgr4xnOWOP2LVFCTHqcGUgrwiT97SbOG3UBjUajJmmToioABtZLpVLw3XGRT2KVSuWt2WyqBgNVAeVyecjRCtnl/amI4zHSnIevSJHEUegnEKHGMLbGxhoRnHaHkTPwmBRR3wPz+ZxPWh6XWYTmAf47MolCRoR/8sjPwngmEwHG592TR67Wf6Ao6gKi/31O3SkLEaoCkAbcRn0+uifa7fYtKaIqAAa+8O/D6IY9iuAss1qtPlMecJIVJ9FyXbcmaUv6niPqe8D3/U9JmxSbzOVN4lQi6YEja2KvAEcX+iM4WpHFYrH8C74ASH0VHs2MgpoAAAAASUVORK5CYII=" alt="ic_잠김"></div><div class="sub">ic_잠김</div></td>
+      <td class="verdict"><span class="badge mid">검수 제외 · 라이브러리에 있음</span><div class="sub">라이브러리에 있음(모달 잠김 아이콘과 같은 것)</div></td>
+    </tr>
+    <tr class="mid">
+      <td class="nm"><b>와이파이</b><div class="sub">휴대폰 셸 상태바 · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="21" viewBox="0 0 16 12" fill="none"><path d="M2.34315 4.34315C3.84344 2.84286 5.87827 2 8 2C10.1217 2 12.1566 2.84285 13.6569 4.34314L8 10" stroke="currentColor" stroke-width="1.6" fill="none"/><path d="M4.46447 6.46447C5.40215 5.52678 6.67392 5 8 5C9.32608 5 10.5979 5.52678 11.5355 6.46447L8 10" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="7.9998" cy="10.2" r="1.2" fill="currentColor"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAxRJREFUeAHtV7tuGkEUHcCPSLYlKst2Y/+BF9k8RMP6C3CbCvIFpkwX+AP8B/AFgTJVNg0iPJcuJSmAdtNQgICci2eTzSgLO8tiuZgjoVmWuXPPvXPn3IExBQUFBQUFBQXfCLGAkE6nr2ezmRYKhW7wVeOvb/g4XK1WFkb6mIvFwuz3+z9ZANgpgHg8ngGxR5B+ZH/JenMcCg0RiBEOhyvtdvsb8wnpADRNix4cHDyBQAFfo46f1tkFoeFyuTTx/Mtph0CvYUPzNf75Y8uDKcLOkN0ZqQDu7+8/CcSJdAXk6p1Ox2ASSKVSOkjnYPuANa/XZF4CKXe73Wev63gKIBaL3SLrVTze8lcGHJdkSbshkUjkkP2SM5D5fK572Y2tAaDOnzCU7YXhqADidbYHiIFgN0q9Xq+4ySay6ce7u7sKFvtIz1j4+fT09H2j0RiwPWE0Gg3Oz88rOEfv4DeFUb+4uIhOJpMvbjauO4B6/8zVxaKsoy6rzAOQRSozDTY3wk8m1rO8Kg7tPMq0yA++AbsHJhMAEQGJOrKQbbVarlknVTo+Ps5guwtw9o+6uMACMTpDtW1JIQ6YR1WQd+Pguw+4ySmdEwwmHNvNi95FqcEhITG7vu25JJ9edzewAHgDqzpUwwS5GilVs9kcbrKFfFIgGVF1sF7eT0OTDoD3gqLtGEQ++JVTP6ojIiIz2UneoUo/mE+Q6ozH4/LV1RUlQyfVuby8tKA6372uEWYSgIMa1TXI51G3BcMwLBYAsIMlDHSWrEgkYsjYSpeQruvRbcTpgB8dHVFZrG+ldKDRWQemaW612zZHRGDXaXJ+eHiY47dT3WUaHfbyLqojIpAARFXiMLm6kMTat9AXpzuojoidAxBVCcTKJycnVbHMqPSm02nWqTq8w3u+ef4POwfAOzZ11urZ2VnRy8G2r+VUapu6/KuBssskQQ2NKQSoQiKSyWQWnVWnZ5SXGaTyOLGXAKBKXzHowmvXK/EukOrEXkEH1L6Jclj81hq8L7Yn2OoE4uzNqI0sKAj+D01BQUFBQUFB4S3iN6q3rfQGTY1nAAAAAElFTkSuQmCC" alt="ic_통신와이파이WiFi"></div><div class="sub">ic_통신와이파이WiFi</div></td>
+      <td class="verdict"><span class="badge mid">검수 제외 · 라이브러리에 있음</span><div class="sub">라이브러리에 있음</div></td>
+    </tr>
+    <tr class="mid">
+      <td class="nm"><b>마이크</b><div class="sub">안드로이드 키보드 툴바 · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M9 6C9 4.34 10.34 3 12 3C13.66 3 15 4.34 15 6V11C15 12.66 13.66 14 12 14C10.34 14 9 12.66 9 11V6Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 10.5V11C6.5 14.04 8.96 16.5 12 16.5C15.04 16.5 17.5 14.04 17.5 11V10.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 16.5V20" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 20H15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAxBJREFUeAHtWW1uGjEQHTYkUZREIifo9gSFfCn/yg2SG4SeIOkJsjlBwwlCbpDeYPMHkAABJyg5QfmJxFffM94KRZSusattVT/JGtusvfNm/TEziHh4eHhkiZw4xtnZ2cf5fH6by+WKaIa6e4i+GOW50+k8iUM4I1AsFsN8Pv8IxcvrnsPvg/F4XO52u6/iAIE4gFY+1srT2hFkaX9//4iFdfQ9oLyihNvb23GpVHonDpAXB9DKU6E+lLus1+tvrdtjubi4qE4mkxh1RQLyvVjC+gucn59fU3kujV8o/xPNZnMAsuXkSxwfH0diCWsC3LCU0+k0Wqd8ApIA2S+sg8ylWMKKANZ+gYJ1EPiadhw2sTqJQL6o59gYVgT29vY+UHL59Hq9Ydpx+tkB6zs7O1ab2ckpZIPZbHYkFsicgC08gazhCWSNf56AkS9EVxmigqOvB7e4Kg5xenp6h/skRLXWarVe0o4z/QJ0vipwAa7EPcqyME5oMMbvgczhCWQNKwIMTCRjGBEIguA7JaMpytFoNEzaJn49Y2jRGQuEmAw36ZIXtDQyihEBTN6nTBSmX890iZooCG7TzoNj+FqPiTnHcmCE+OCbGMCIAMNB0YHI1taWUgJxcKTbN2kyDbQ+DKHGwPo1SiitQksGRmnC0mUY7wFYvKYGBkGFstFovDBhhWqBmQZ9W68Ef2MGQzdrSZILl9c9JcLSBzGEcVoFVqtCCZV5Ozk5uaFLgb5P6AtlsQxIIoYkqR7IFegiQPL2LqPOafrIF31mRbsQKquxu7v7LIbYKDMHBW8glLVgvUpiSa1MtG4snq8eHh5GcRwPYYBrfMma7r/dxL/aOLWIlz8my2j55UhehWhzGV3R+uoludyQDuDBwUGVirPvjRGqGJ/6EHBCYAWJGkr0u5ynTv5GSQ4VY56gfEU2hHVyd8WyiUWvf/WChfXDZB8sJ39tLJ/ASXaaywYnyB2qlZRDmGq/b7fbsVjC6f8Dmsglraxva3U58YSRxYkU4/R5SvbBXw+s9zmL/EF4d9rDw8Pj/8YPnkZut4VltUYAAAAASUVORK5CYII=" alt="ic_마이크"></div><div class="sub">ic_마이크</div></td>
+      <td class="verdict"><span class="badge mid">검수 제외 · 라이브러리에 있음</span><div class="sub">라이브러리에 있음</div></td>
+    </tr>
+    <tr class="mid">
+      <td class="nm"><b>설정 (톱니)</b><div class="sub">안드로이드 키보드 툴바 · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/><path d="M12 3V5M12 19V21M3 12H5M19 12H21M5.64 5.64L7.05 7.05M16.95 16.95L18.36 18.36M18.36 5.64L16.95 7.05M7.05 16.95L5.64 18.36" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAA0FJREFUeAHtWUtu2zAUpH8rG4iWXTnqCSLDv2WdEzjbrpycoOkJot7APUHtGzQnsFY26m90A3fhvbr3pzMCBQiBKcmNTRWIBpBJUZQyQ75H8r0IkSFDhgxpIidSgmVZRrFY/JLL5e5xa8rml/1+z8terVa/k3wnFQH1er2Xz+f7qBqqPofD4W4+nz+LGBSFZjQajS5GfSBvPRDtQ4yLy9vtdj+EnA20G0m+p10A8F2Wbrlc7jiO4/EGszKACJN1CPm2XC6HrVarh7pYLBZD1ce0mlC73e7Cvn+yXiqVzPF47Nt5s9m0UKxkN2c2m91ipp4wUzYbttutqfKJvNAIjGbH/6P5vBOQJ0CYjjuQtx2QHwXkZf+vqm9qFRDYNciuXz+DmTwEIkC+I5td/hQKha7qm1oFxCEsgn6AkX9iHcJN1TtaBWBk17J6p+pDEShqcGKbK5OIgTYBtVrtBgIeWUcZSYw+wRLOa8n+L6q+WgSQPHZdB1WDs4B6J+4d7NQmTMd3XpRKARffB46RD69Ax0DyWGa53F7j8lC3VX0vKiCOPInyOWz9wDMQTYsOG1qFOPr3UYIvtpElJY9n18fe5zsQ9YDzkBP1dy4i4ETydGgbl4mZMECas/AcR1xcSsCp5Gku0+nUFf+IswrQTZ44m4A0yBNnEZAWeeLNAtIkT7xJQNrkicQCEHR8YpwKEgZKTx7M7DTJJxIgiQ+jNpy0yBORRwlmD1AMQIC33HB4qOKWb2LDqfEIkCZ5QjkD8kDFOJVRlIt6N8khTCd5QjkDCOMYDQX2/V+SJ5QCYB5+MIHQrg8isVmyNMgTUQFNEA35RJCjuRHRuOIPE1W6yBNJIrIrJp0YFWFFWjGneawTnvv5Hjq40IgoAWu/A3KYuHqyzYIzj1Qi0oBSQDCioZSGI0tfxOv+wchjef0jNEIpAE4Z5DD9HA3TfRDjyCYr7BNcgYIwEOVIaETkThxOroZzlTL56tdpTpgRB1WmTdZw4I9CIxKdhSgEoz/wXwBJBtoyTWjJXI/vE2i7TRoKngsnZyWkTzjyeBHAg+0/YqYcoRmFJJ02m41brVaHoX86fOCPnI1+pVL5PJlMfokMGTJkeHf4C1qQ7AN0HV9/AAAAAElFTkSuQmCC" alt="ic_기기설정"></div><div class="sub">ic_기기설정</div></td>
+      <td class="verdict"><span class="badge mid">검수 제외 · 라이브러리에 있음</span><div class="sub">이름이 완전히 같지는 않다 — 기기설정/사용환경설정 중 고를 것</div></td>
+    </tr>
+    <tr class="ok">
+      <td class="nm"><b>닫기 (창 컨트롤 ✕)</b><div class="sub">웹 탭바 윈도우 컨트롤 · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 12 12" fill="none"><path d="M3 3L9 9M9 3L3 9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAOdEVYdFNvZnR3YXJlAEZpZ21hnrGWYwAAAY9JREFUeAHtmDtug0AURWcSWAMNklkCdJQsJVlZsoNsgQrRsQW7o00FEggyNxIWwpbn954bz5EQlgW8ewqGqxEiEAgEAq/Mu+6CPM+zNE1/kiSp+77/FU/AZuab5lkiiqIvKWUVx3FdFMVJMIPwamaNmer8rbveROBzXdeLOjJuiV34kzrOat6H7h4pDCjLMpvn+frgaZqqrusugpBjePW7appGO8NIAHBKuIYHxgKAQ8InPLASAJQSvuGBtQCgkKAID5wEgI8EVXjgLABcJCjDAy8BYCNBHR54CwATCY7wgEQAPJLgCg/IBMA9CVVBJFd4QCoAjhLLskiu8IBcAOwl/ocwhQfaNurCOI43/w3DIDggFzi+sNxVnFTg3mqDg1OC7B14tFRyVnESAZN1nkvCW8DmI8Uh4SXg8oWllnAW8KkHlBJOAhTdhkrCWoCymFFIWAlwtEpfCWMBzkrsI2EkwBl+w1VCK/CM8BsuEqabu+zhQdu25313ItvcVaeaO/zGJoGZJpu7gUAgEHht/gC/QvTGVBrdqgAAAABJRU5ErkJggg==" alt="ic_닫기"></div><div class="sub">ic_닫기</div></td>
+      <td class="verdict"><span class="badge ok">검수 제외 · 우리 아이콘도 있음</span><div class="sub">설치기가 이미 close 키를 갖고 있다. 다만 OS 창 버튼이라 그대로 둘 수도 있다</div></td>
+    </tr>
+    <tr class="no">
+      <td class="nm"><b>즐겨찾기 (별)</b><div class="sub">휴대폰 셸 네비바 · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 3.5L14.58 8.74L20.36 9.58L16.18 13.65L17.17 19.41L12 16.69L6.83 19.41L7.82 13.65L3.64 9.58L9.42 8.74L12 3.5Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><div class="none">—</div></div><div class="sub">없음</div></td>
+      <td class="verdict"><span class="badge no">검수 제외 · 대응 아이콘 없음</span><div class="sub">라이브러리에 대응 아이콘 없음</div></td>
+    </tr>
+    <tr class="no">
+      <td class="nm"><b>최근 앱 (|||)</b><div class="sub">휴대폰 셸 네비바(안드로이드) · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M8 6V18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 6V18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 6V18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><div class="none">—</div></div><div class="sub">없음</div></td>
+      <td class="verdict"><span class="badge no">검수 제외 · 대응 아이콘 없음</span><div class="sub">안드로이드 OS 규격 글리프</div></td>
+    </tr>
+    <tr class="no">
+      <td class="nm"><b>안드로이드 홈 (□)</b><div class="sub">휴대폰 셸 네비바(안드로이드) · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="6" y="6" width="12" height="12" rx="3" stroke="currentColor" stroke-width="2"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><div class="none">—</div></div><div class="sub">없음</div></td>
+      <td class="verdict"><span class="badge no">검수 제외 · 대응 아이콘 없음</span><div class="sub">안드로이드 OS 규격 글리프</div></td>
+    </tr>
+    <tr class="no">
+      <td class="nm"><b>이모지</b><div class="sub">안드로이드 키보드 툴바 · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.7"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="10" r="1" fill="currentColor"/><path d="M8.5 14C9.4 15.3 10.6 16 12 16C13.4 16 14.6 15.3 15.5 14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><div class="none">—</div></div><div class="sub">없음</div></td>
+      <td class="verdict"><span class="badge no">검수 제외 · 대응 아이콘 없음</span><div class="sub">라이브러리에 없음</div></td>
+    </tr>
+    <tr class="no">
+      <td class="nm"><b>번역</b><div class="sub">안드로이드 키보드 툴바 · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M4 5H13M8.5 3V5M6 8C7 10.5 9 12.5 12 14M11.5 8C10 12 7.5 15 4 17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 19L17.5 10L21 19M15.2 16H19.8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><div class="none">—</div></div><div class="sub">없음</div></td>
+      <td class="verdict"><span class="badge no">검수 제외 · 대응 아이콘 없음</span><div class="sub">라이브러리에 없음</div></td>
+    </tr>
+    <tr class="no">
+      <td class="nm"><b>더보기 (···)</b><div class="sub">안드로이드 키보드 툴바 · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="6" cy="12" r="1.3" fill="currentColor"/><circle cx="12" cy="12" r="1.3" fill="currentColor"/><circle cx="18" cy="12" r="1.3" fill="currentColor"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><div class="none">—</div></div><div class="sub">없음</div></td>
+      <td class="verdict"><span class="badge no">검수 제외 · 대응 아이콘 없음</span><div class="sub">라이브러리에 없음</div></td>
+    </tr>
+    <tr class="no">
+      <td class="nm"><b>Shift</b><div class="sub">안드로이드 키보드 자판 · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M5 12L12 5L19 12H15.5V19H8.5V12H5Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><div class="none">—</div></div><div class="sub">없음</div></td>
+      <td class="verdict"><span class="badge no">검수 제외 · 대응 아이콘 없음</span><div class="sub">자판 글리프</div></td>
+    </tr>
+    <tr class="no">
+      <td class="nm"><b>지우기</b><div class="sub">안드로이드 키보드 자판 · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M9 7H20V17H9L4 12L9 7Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 10L16 14M16 10L12 14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><div class="none">—</div></div><div class="sub">없음</div></td>
+      <td class="verdict"><span class="badge no">검수 제외 · 대응 아이콘 없음</span><div class="sub">자판 글리프</div></td>
+    </tr>
+    <tr class="no">
+      <td class="nm"><b>엔터</b><div class="sub">안드로이드 키보드 자판 · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M19 6V14H8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 10L7 14L11 18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><div class="none">—</div></div><div class="sub">없음</div></td>
+      <td class="verdict"><span class="badge no">검수 제외 · 대응 아이콘 없음</span><div class="sub">자판 글리프</div></td>
+    </tr>
+    <tr class="no">
+      <td class="nm"><b>최소화 (─)</b><div class="sub">웹 탭바 윈도우 컨트롤 · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 12 12" fill="none"><path d="M2 6.5H10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><div class="none">—</div></div><div class="sub">없음</div></td>
+      <td class="verdict"><span class="badge no">검수 제외 · 대응 아이콘 없음</span><div class="sub">OS 창 버튼</div></td>
+    </tr>
+    <tr class="no">
+      <td class="nm"><b>최대화 (□)</b><div class="sub">웹 탭바 윈도우 컨트롤 · 1칸</div></td>
+      <td class="cell"><div class="glyph"><svg width="28" height="28" viewBox="0 0 12 12" fill="none"><rect x="2.6" y="2.6" width="6.8" height="6.8" rx="0.6" stroke="currentColor" stroke-width="1.2"/></svg></div></td>
+      <td class="arrow">→</td>
+      <td class="cell"><div class="glyph pngbox"><div class="none">—</div></div><div class="sub">없음</div></td>
+      <td class="verdict"><span class="badge no">검수 제외 · 대응 아이콘 없음</span><div class="sub">OS 창 버튼</div></td>
+    </tr></tbody>
+</table>
+<h2>이미 우리 아이콘을 쓰고 있는 곳</h2>
+<p class="foot">체크박스·라디오 체크, 입력창 지우기(원+X)와 비밀번호 눈, 찾기 돋보기, 셀렉트·페이지네이션·달력 화살표, 시계, 달력, 계정, 지구본, 홈(모바일 하단 탭), 모달·바텀시트 닫기,
+모바일 헤더 4종(이전·닫기·알림·아래화살표) — <b>부품(컴포넌트) 안에 들어가는 아이콘은 전부 라이브러리 인스턴스</b>입니다.
+직접 그린 그림이 남아 있는 곳은 <b>부품이 아니라 화면 껍데기</b>(휴대폰 셸, 안드로이드 키보드, 웹 브라우저 탭바)뿐입니다.</p>
+</div></body></html>

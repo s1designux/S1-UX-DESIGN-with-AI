@@ -90,6 +90,21 @@ function specPaint(role: SpecRole, dark: boolean): SolidPaint {
 function specStyleKey(style: string): string {
   return style === "Bold" ? "title/14B" : "body/12M";
 }
+/** 카테고리 섹션·가이드 페이지의 배경도 정본 토큰에 바인딩한다.
+ *  Figma 가 기본으로 넣는 섹션/페이지 배경은 Variable 이 아닌 raw 색이라, 설치 결과 안에
+ *  토큰을 거치지 않는 면이 남아 있었다(river 지적 2026-09-10). 부품 배경과 같은 규칙을 적용한다.
+ *  면 위계: 페이지 level-3 < 섹션 level-2 < 스펙 시트 level-0(흰 면). */
+const SURFACE_TOKEN: Record<"section" | "page", string> = {
+  section: "color/bg/level-2",
+  page: "color/bg/level-3",
+};
+function bindSurface(target: "section" | "page", apply: (paint: SolidPaint) => void): void {
+  if (!SPEC_MAPS) return;                                  // mock(키체크) 환경 → 건너뜀
+  const v = SPEC_MAPS.semanticColor[SURFACE_TOKEN[target]];
+  if (!v) return;
+  try { apply(boundPaint(v)); } catch (e) { /* 바인딩 불가 환경 → Figma 기본 배경 유지 */ }
+}
+
 /** 라이트 스펙의 라벨·띠는 프레임 밖(페이지에 떠 있는 낱개 노드)이라 모드 상속이 없다.
  *  색을 변수로 묶은 뒤에는 페이지를 다크로 돌리면 글자만 뒤집혀 흰 세트 위에서 안 보이게 된다
  *  → 낱개마다 Light 모드를 박아 고정한다(🤖 component-verifier 지적 2026-09-10). */
@@ -6805,6 +6820,8 @@ export async function buildAllComponents(
   TEXT_STYLES = maps.textStyles || {};  // makeBoundText 가 텍스트 스타일 바인딩에 사용
   SPEC_MAPS = maps;                     // 스펙 시트 라벨·밴드·배경의 토큰 바인딩에 사용
   const page = figma.currentPage;
+  // 가이드 페이지 바탕도 정본 토큰(섹션보다 한 단계 아래 면). Figma 기본 배경은 raw 색이라 토큰 밖이었다.
+  bindSurface("page", (paint) => { page.backgrounds = [paint]; });
 
   // ── 캔버스 레벨 노드(매 호출 시점에 새로 읽는다) ────────────────────────────
   //   ⚠️ 함수 진입 시 한 번 캡처한 page.children 만 훑으면 **첫 설치 뒤 섹션 안으로 들어간 노드를
@@ -7343,6 +7360,9 @@ async function wrapCategoryInSection(
   } catch (e) { /* mock → 신규 */ }
   if (!section) section = figma.createSection();
   section.name = title;
+  // 섹션 배경 = Semantic 토큰(재설치 때도 매번 다시 바인딩 — 손으로 바뀐 raw 색을 정본으로 되돌린다)
+  const sec = section;
+  bindSurface("section", (paint) => { sec.fills = [paint]; });
   // ⚠️ 목표 절대위치는 **섹션을 움직이기 전에** 기록한다. 재설치 때는 nodes 중 일부가 이미 이
   //   섹션의 자식이라, 섹션을 먼저 옮기면 그 자식들이 함께 끌려가 위치가 어긋난다.
   const desired: { n: SceneNode; x: number; y: number }[] = [];

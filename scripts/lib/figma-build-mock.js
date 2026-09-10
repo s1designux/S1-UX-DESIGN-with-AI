@@ -25,6 +25,9 @@ let offlineFallbackSummaryShown = false;
 const PROP_CLASS = {
   // ── 시각 ──
   fills: 'VISUAL', strokes: 'VISUAL', effects: 'VISUAL',
+  // 페이지·섹션 바탕면(2026-09-10 토큰 바인딩 도입). 컴포넌트 트리 안에서는 아무도 쓰지 않아
+  //   기존 지문 해시는 그대로다 — 페이지 바탕이 바뀌면 눈에 보이므로 VISUAL 로 둔다.
+  backgrounds: 'VISUAL',
   opacity: 'VISUAL',
   strokeWeight: 'VISUAL', strokeAlign: 'VISUAL',
   strokeTopWeight: 'VISUAL', strokeRightWeight: 'VISUAL',

@@ -1225,6 +1225,15 @@ async function runPatternBuild(ids: string[]): Promise<void> {
 
     const page = await getOrCreatePatternPage();
     await figma.setCurrentPageAsync(page);
+    // 패턴 페이지 바탕도 정본 토큰(Figma 기본 배경은 Variable 이 아닌 raw 색). 패턴 섹션이 level-3 라
+    //   바탕은 한 단계 밝은 level-2 로 둔다 — 섹션 테두리가 바탕에 묻히지 않게.
+    try {
+      const bgVar = maps.colorVars["color/bg/level-2"];
+      if (bgVar) {
+        const base: SolidPaint = { type: "SOLID", color: { r: 0, g: 0, b: 0 } };
+        page.backgrounds = [figma.variables.setBoundVariableForPaint(base, "color", bgVar) as SolidPaint];
+      }
+    } catch (e) { /* 바인딩 불가 환경 → Figma 기본 배경 유지 */ }
 
     const results: { label: string; screens: number; sectionId: string }[] = [];
     const warnings: string[] = [];

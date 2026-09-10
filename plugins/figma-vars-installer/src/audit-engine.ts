@@ -23,6 +23,7 @@ import {
 import { TEXT_STYLES, TEXT_STYLE_FONT_FAMILY } from "./textstyles-data";
 import { parseCssShadow } from "./shadow-parse";
 import ALLOWED_REMOTE_KEYS from "../../../registry/figma/allowed-remote-keys.json";
+import DUMMY_CHROME from "../../../registry/governance/dummy-chrome-parts.json";
 
 // 검수 대상 컬렉션 = 설치기가 만드는 V2 컬렉션 전부.
 //   2026-08-01: 종전에는 이 목록이 문자열 하드코딩 사본이었고, 2026-07-29 신설된
@@ -76,6 +77,34 @@ function isInstallerRemotePart(main: ComponentNode): boolean {
   if (parent && parent.type === "COMPONENT_SET") {
     const setKey = (parent as ComponentSetNode).key;
     if (setKey && INSTALLER_REMOTE_KEY_SET[setKey]) return true;
+  }
+  return false;
+}
+
+// 설치기가 화면 예시용으로 얹는 **더미 크롬**(휴대폰 상태바 · 안드로이드 내비바/키보드 · 웹 브라우저 탭바).
+// OS/브라우저 껍데기를 흉내 낸 배경 소품이라 우리 디자인시스템 부품이 아니다 — 그 안의 아이콘은
+// OS 규격 글리프(최근앱·자판 Shift·창 최소화 등)여서 우리 아이콘으로 바꿀 대상이 아니다.
+// river 결정 2026-09-10: "더미로 얹어지는 키보드, 상태바, 내비바 등에 그려진 아이콘은 검수에서 제외".
+// 정본 = registry/governance/dummy-chrome-parts.json (이름 목록 · 결정 근거).
+const DUMMY_CHROME_ROOTS: { [name: string]: true } = (() => {
+  const m: { [name: string]: true } = {};
+  const d = DUMMY_CHROME as { excludedRootNames?: string[]; innerPartNames?: string[] };
+  for (const n of (d.excludedRootNames || [])) m[n.toLowerCase()] = true;
+  for (const n of (d.innerPartNames || [])) m[n.toLowerCase()] = true;
+  return m;
+})();
+
+/** 이 노드가 더미 크롬(또는 그 안쪽)인가? 자기 이름과 조상 이름을 함께 본다.
+ *  화면에서는 같은 이름의 인스턴스로 얹히므로 이름 판정으로 충분하다(변형 접미사 `StatusBar/Platform=App` 포함). */
+function isDummyChromePart(node: BaseNode | null): boolean {
+  let cur: BaseNode | null = node;
+  let depth = 0;
+  while (cur && cur.type !== "PAGE" && cur.type !== "DOCUMENT" && depth < 24) {
+    const raw = (cur.name || "").toLowerCase();
+    const base = raw.split("/")[0].trim();      // "StatusBar/Platform=App" → "statusbar"
+    if (DUMMY_CHROME_ROOTS[raw] || DUMMY_CHROME_ROOTS[base]) return true;
+    cur = cur.parent;
+    depth++;
   }
   return false;
 }
@@ -555,6 +584,7 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[]): Promise<{
   };
 
   for (const n of allNodes) {
+    if (isDummyChromePart(n)) continue;   // 더미 크롬(상태바·내비바/키보드·웹 탭바)은 검수 대상이 아니다
     const ctx = getComponentContext(n);
     const kind = classifyNode(n);
     for (const prop of ["fills", "strokes"] as const) {
@@ -680,6 +710,7 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
 
   // 2~4. 색 계층, 로컬 스타일, opacity 변형.
   for (const node of nodes) {
+    if (isDummyChromePart(node)) continue;   // 더미 크롬(상태바·내비바/키보드·웹 탭바)은 체크리스트 검수에서도 제외
     for (const prop of ["fills", "strokes"] as const) {
       if (!(prop in node)) continue;
       const paints = (node as any)[prop];
@@ -1183,7 +1214,7 @@ async function collectModuleParts(root: SceneNode, pool: ReferenceComponent[]): 
         ? (main.parent && main.parent.type === "COMPONENT_SET" ? main.parent.id : main.id)
         : "";
       // 설치기가 심는 외부 라이브러리 부품(아이콘 등)은 바꿀 것이 없다 — "이미 최신"으로 둔다.
-      if (main && isInstallerRemotePart(main)) {
+      if (main && (isInstallerRemotePart(main) || isDummyChromePart(inst))) {
         parts.push({ id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "canonical", path, suggestions: [] });
         return;
       }
@@ -1346,7 +1377,8 @@ async function scanSwapCandidates(
         continue;
       }
       // 설치기 자신이 심는 외부 라이브러리 부품(아이콘 등)은 검수 대상이 아니다 — 정상 산출물이다.
-      if (isInstallerRemotePart(main)) { diag.skippedInstallerRemoteCount++; continue; }
+      // 더미 크롬(상태바·내비바/키보드·웹 탭바)도 같은 이유로 교체 대상이 아니다 — OS 껍데기 소품이다.
+      if (isInstallerRemotePart(main) || isDummyChromePart(inst)) { diag.skippedInstallerRemoteCount++; continue; }
       const compareName = main.parent && main.parent.type === "COMPONENT_SET"
         ? main.parent.name
         : main.name;
