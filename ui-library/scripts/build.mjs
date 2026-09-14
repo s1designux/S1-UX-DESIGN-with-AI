@@ -6,6 +6,7 @@ import iconGeometryCheck from "../../scripts/ui-library-icon-geometry-check.js";
 import { componentIds } from "./component-ids.mjs";
 import { buildPlatformOutputs } from "./platform.mjs";
 import { buildPreviewPage } from "./preview.mjs";
+import { densityCssFor } from "./density.mjs";
 
 const libraryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repositoryRoot = path.resolve(libraryRoot, "..");
@@ -36,6 +37,7 @@ async function createOutputs() {
     throw new Error(`release-log.json(${releaseLog.version}) 과 package.json(${packageData.version}) 의 번호가 다릅니다 — npm run ui:version 으로 확인하세요.`);
   }
   const tokenMap = await read(path.join(sourceRoot, "component-token-map.json"));
+  const densityPolicy = JSON.parse(await read(path.join(repositoryRoot, "registry/governance/density-policy.json")));
   const tokensCss = await read(path.join(repositoryRoot, "assets/css/tokens.css"));
   const typographyCss = await read(path.join(repositoryRoot, "assets/css/typography.css"));
   const iconManifest = JSON.parse(await read(path.join(sourceRoot, "assets/icons/manifest.json")));
@@ -65,7 +67,10 @@ async function createOutputs() {
     if (manifest.canonicalFingerprint !== actualFingerprint) {
       throw new Error(`${id} canonicalFingerprint is stale. Review canon changes before rebuilding.`);
     }
-    const css = await read(path.join(base, `${id}.css`));
+    const sourceCss = await read(path.join(base, `${id}.css`));
+    /* 밀도 규칙은 원본 CSS 안의 크기 규칙을 선택자만 바꿔 복사한 것이다 — 값이 갈라지지 않는다.
+       전체 묶음과 개별 설치가 같은 CSS 를 쓰도록 여기서 한 번만 붙인다. */
+    const css = `${sourceCss}${densityCssFor(id, sourceCss, densityPolicy, manifest.breaks)}`;
     const js = await read(path.join(base, `${id}.js`));
     const example = await read(path.join(base, `${id}.example.html`));
     /* 플랫폼별 예제 — Mobile 크기·break 가 PC 와 다른 컴포넌트는 mobile 예제를 따로 낸다.
@@ -80,7 +85,7 @@ async function createOutputs() {
       extraExamples.push([spec.distribution, await read(path.join(sourceRoot, spec.source))]);
     }
     const componentIconAssets = iconAssets.filter(({ id: iconId }) => manifest.icons.some(({ id: usedId }) => usedId === iconId));
-    const sourceFingerprint = hash([css, js, example, ...extraExamples.map(([, text]) => text), stableJson(manifest), ...componentIconAssets.map(({ asset }) => asset)].join("\0"));
+    const sourceFingerprint = hash([sourceCss, js, example, ...extraExamples.map(([, text]) => text), stableJson(manifest), ...componentIconAssets.map(({ asset }) => asset)].join("\0"));
     const outputManifest = { ...manifest, sourceFingerprint };
     const exampleByBreak = { pc: example };
     for (const [breakName, spec] of Object.entries(breakExamples)) {

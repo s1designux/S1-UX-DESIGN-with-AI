@@ -4647,6 +4647,12 @@ _Don't_
 - 플랫폼별 컨테이너·컬럼: web 1200px/12 · app 1024px/8 · mobile 375px/4.
 - 컴포넌트는 플랫폼에 따라 크기·패딩·아이콘 슬롯이 달라질 수 있다(예: Input 은 PC 패딩 8px·토큰 radius / Mobile 패딩 12px·raw 4px, 모바일에서 지우기 버튼 노출). 각 컴포넌트의 플랫폼 차이는 해당 컴포넌트 항목을 참조한다.
 
+**밀도 (Density) — 크기는 화면에 한 번만 정한다**
+- 크기는 컴포넌트마다 고르지 않는다. 화면을 감싸는 요소에 밀도 한 단어와 화면 구분을 한 번만 준다 — data-s1-density="wide|normal|narrow" (넓게 44px · 보통 34px · 좁게 28px) 와 data-s1-break="pc|mobile". 그러면 안쪽 컨트롤이 data-size 없이도 같은 줄 높이로 그려진다.
+- 어느 밀도를 쓰나 — 일반 사용자용 폼·상세 화면은 넓게, 관리자 화면·표 안·도구 모음은 보통, 표 칸 안이나 필터 줄처럼 아주 좁은 자리는 좁게. 모바일은 밀도 축이 없다(손가락 기준 높이 하나) — data-s1-break="mobile" 만 준다.
+- 한 자리만 다르게 해야 하면 그 컴포넌트에 data-size 를 직접 준다 — 직접 준 값이 밀도보다 우선한다. 밀도가 닿는 컴포넌트와 눈금은 registry/governance/density-policy.json 이 정본이다(상단 바·모달·탭·달력은 자기 눈금을 쓰므로 대상이 아니다).
+- 같은 크기 단어가 컴포넌트마다 다른 높이를 뜻한다 — 버튼 md=44 인데 칩 md=34 다. 그래서 "전부 md 로" 는 줄을 어긋나게 만든다. 크기 단어 대신 밀도를 쓴다.
+
 ## 9. Agent Prompt Guide
 
 이 문서는 AI 에이전트가 S1 디자인시스템 기준으로 UI·토큰 산출물을 만들 때 통째로 읽는 단일 컨텍스트다.
@@ -4682,9 +4688,10 @@ DESIGN_SYSTEM_GAP:
 - 컴포넌트를 새로 만들기 전에 §4 Components 에서 기존 코어를 먼저 찾는다.
 - Light 기준으로 만들고 Dark 값을 함께 확인한다.
 - 컴포넌트별 Agent-readable contract에 실제로 나열된 상태만 다룬다. 전역 상태 목록을 모든 컴포넌트에 일괄 적용하지 않는다.
+- 화면을 만들 때 컴포넌트마다 크기를 고르지 말고, 감싸는 요소에 data-s1-break 와 data-s1-density 를 한 번만 선언한다(§8 밀도).
 
 **해석 순서 (Resolution)**
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 3286b8bc2698 · 손편집 금지 -->
+<!-- generated-stamp: c2dc0aa33d4f · 손편집 금지 -->

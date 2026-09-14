@@ -380,7 +380,9 @@ function buildResponsive(rs, tokens) {
   if (!rs && !table) return '';
   const intro = rs ? paras(rs.intro) : '';
   const adapt = rs && asArr(rs.adaptation).length ? bullets(rs.adaptation) : '';
-  return section('8. Responsive Behavior', [intro, table, adapt]);
+  // 밀도(넓게·보통·좁게) — 크기를 컴포넌트마다 고르지 않게 하는 층. 정본 density-policy.json.
+  const density = rs && asArr(rs.density).length ? `**밀도 (Density) — 크기는 화면에 한 번만 정한다**\n${bullets(rs.density)}` : '';
+  return section('8. Responsive Behavior', [intro, table, adapt, density]);
 }
 
 // §9 Agent Prompt Guide
