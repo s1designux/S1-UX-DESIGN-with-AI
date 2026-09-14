@@ -1,6 +1,6 @@
 {
   "sourceRegistry": "registry/figma/allowed-remote-keys.json",
-  "sourceRegistryFingerprint": "d8eea72d0f1f6d078acdf457938e2d04eac8b0c8c301c885bf9cbedd0bec8e27",
+  "sourceRegistryFingerprint": "3fb4ebdd76f8ac68915295383f0bcebe7dae7545afd4e57a57f3568f1d0e8a38",
   "icons": [
     {
       "id": "clock",
@@ -505,6 +505,84 @@
       "geometryEvidence": "Figma 노드 97:226 get_design_context 인셋 23.55%(상하)·12.5%(좌우) 실측 — 24 프레임 안 (3, 5.65225) 에 18×12.6955 도형. 저장소 내보내기 assets/icons/ic_메뉴_line.png 와 픽셀 대조.",
       "dependencies": [],
       "sourceExport": "assets/icons/ic_메뉴_line.png"
+    },
+    {
+      "id": "navSearch",
+      "sourceKey": "e86d0bce3a9de2bf1ed37b29ee56278bf4927cb9",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_찾기/조회 97:124 (Property 1=Solid) 실물 벡터 — Mobile Bottom Nav 검색 아이콘. 입력칸이 쓰는 search.svg(Line)와 다른 자산이다 — 하단 내비는 홈이 Solid 라 같은 결로 맞춘다.",
+      "file": "nav-search.svg",
+      "webAssetFingerprint": "0514860c3eb688f57bdc649722de9edb9792aad93e6d7b332a14a95ba0678c2d",
+      "symbolId": "s1-icon-nav-search",
+      "individualFile": "assets/icons/nav-search.svg",
+      "accessibleNamePolicy": "decorative; 접근성 이름은 탭 버튼의 라벨 텍스트가 이미 제공한다",
+      "geometry": {
+        "frame": {
+          "width": 24,
+          "height": 24
+        },
+        "glyph": {
+          "x": 0,
+          "y": 0,
+          "width": 24,
+          "height": 24
+        },
+        "scaling": "proportional"
+      },
+      "geometryEvidence": "정본은 하단 내비 아이콘을 32×32 로 확대해 쓴다(build-components.ts buildMobileBottomNav). 저장소 내보내기 ic_찾기조회_solid.png(24 프레임 실측)와 같은 24 프레임 좌표계이며, 이 아이콘은 프레임을 가득 채운다(여백 0).",
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_찾기조회_solid.png"
+    },
+    {
+      "id": "navNotification",
+      "sourceKey": "0994ea9c97ad4c65a9d461a0f0b7381675946973",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_알림 97:260 (Property 1=Solid) 실물 벡터 — Mobile Bottom Nav 알림 아이콘. 헤더의 ic_알림(신규)(빨간 점 포함)와 다른 자산이며 서로 덮어쓰지 않는다.",
+      "file": "nav-notification.svg",
+      "webAssetFingerprint": "7a9d45ebf81560c57e3efa7701bb95db6207b209d6f524174447bae4b2c1c91e",
+      "symbolId": "s1-icon-nav-notification",
+      "individualFile": "assets/icons/nav-notification.svg",
+      "accessibleNamePolicy": "decorative; 접근성 이름은 탭 버튼의 라벨 텍스트가 이미 제공한다",
+      "geometry": {
+        "frame": {
+          "width": 24,
+          "height": 24
+        },
+        "glyph": {
+          "x": 3.0024,
+          "y": 3,
+          "width": 17.994,
+          "height": 18
+        },
+        "scaling": "proportional"
+      },
+      "geometryEvidence": "Figma 가 보고한 프레임 내 여백(inset 세로 12.5% · 가로 12.51%)을 그대로 옮겼다. 저장소 내보내기 ic_알림_solid.png(24 프레임)와 같은 좌표계다.",
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_알림_solid.png"
+    },
+    {
+      "id": "navSettings",
+      "sourceKey": "175fb8933701ad7db5485a44dd07e26d34dfeef2",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_사용환경설정 97:312 (Property 1=Solid) 실물 벡터 — Mobile Bottom Nav 설정 아이콘. river 선택 2026-09-14(톱니바퀴 — ic_기기설정(스패너) 아님).",
+      "file": "nav-settings.svg",
+      "webAssetFingerprint": "2c0f091c5e3aabb47bc034bfece590201769439ebfff9e84f3ea9a15d27c806d",
+      "symbolId": "s1-icon-nav-settings",
+      "individualFile": "assets/icons/nav-settings.svg",
+      "accessibleNamePolicy": "decorative; 접근성 이름은 탭 버튼의 라벨 텍스트가 이미 제공한다",
+      "geometry": {
+        "frame": {
+          "width": 24,
+          "height": 24
+        },
+        "glyph": {
+          "x": 3,
+          "y": 3.3604,
+          "width": 18,
+          "height": 17.2792
+        },
+        "scaling": "proportional"
+      },
+      "geometryEvidence": "Figma 가 보고한 프레임 내 여백(inset 세로 14% · 가로 12.5%)을 그대로 옮겼다. 저장소 내보내기 ic_사용환경설정_solid.png(24 프레임)와 같은 좌표계다.",
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_사용환경설정_solid.png"
     }
   ]
 }

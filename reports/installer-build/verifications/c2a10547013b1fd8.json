@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:c2a10547013b1fd822e92f24b082e088a33284b777918f7a07dc6009bd99e156",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-14T07:06:00.498Z",
+  "notes": "Mobile Bottom Nav icon 축 신설(8변형) 재검증 — Kotlin 이스케이프·icon registry 지문 해소 확인, 폴백은 makeRequiredIconInstance 로 전환. 잔여: 재설치 후 Figma 캔버스 육안 확인 미수행(코드 레벨 검증)."
+}

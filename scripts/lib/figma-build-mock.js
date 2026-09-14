@@ -312,7 +312,7 @@ async function runBuild(mod, opts) {
     },
     loadFontAsync: async () => {},
     // The offline guide build cannot fetch remote library component geometry.
-    // Mobile Header는 raw SVG fallback 자체를 금지하므로 승인된 remote key만
+    // Mobile Header·Mobile Bottom Nav 는 raw SVG fallback 자체를 금지하므로 승인된 remote key만
     // 결정론적 INSTANCE 껍데기로 기록한다. 그 외 기존 아이콘은 source-owned SVG 경로를 유지한다.
     importComponentByKeyAsync: async (key) => {
       const requiredRemoteKeys = new Set([
@@ -320,6 +320,10 @@ async function runBuild(mod, opts) {
         '54469d54f16ed38de2d7b420b0e2195e4cf7c118',
         '13cf1b580ec982fda488f9318c6821930ddfb26e',
         '6babc3f493e48be1e7191a7b8a68945833039fe8',
+        // 하단 내비 칸별 아이콘(2026-09-14) — 정본이 폴백 도형 없이 원본만 허용한다.
+        'e86d0bce3a9de2bf1ed37b29ee56278bf4927cb9',
+        '0994ea9c97ad4c65a9d461a0f0b7381675946973',
+        '175fb8933701ad7db5485a44dd07e26d34dfeef2',
       ]);
       if (!requiredRemoteKeys.has(String(key))) throw new Error('offline guide model: use canonical source SVG fallback');
       const remote = recNode('COMPONENT');

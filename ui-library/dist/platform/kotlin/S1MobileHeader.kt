@@ -54,7 +54,7 @@ fun S1MobileHeader(
     onNotification: (() -> Unit)? = null
 ) {
     require(S1MobileHeaderSpec.variants.contains(variant)) {
-        "S1MobileHeader: 승인되지 않은 유형 \"\$variant\". 쓸 수 있는 값: " + S1MobileHeaderSpec.variants.joinToString(" · ")
+        "S1MobileHeader: 승인되지 않은 유형 \"$variant\". 쓸 수 있는 값: " + S1MobileHeaderSpec.variants.joinToString(" · ")
     }
     val has = { part: String -> S1MobileHeaderSpec.boxes[variant]?.containsKey(part) == true }
     val root = S1MobileHeaderSpec.box(variant, "root")

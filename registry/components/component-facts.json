@@ -3,7 +3,7 @@
     "generated": true,
     "source": "plugins/figma-vars-installer/src/build-components.ts",
     "method": "mock-execution",
-    "sourceHash": "12748ada117b",
+    "sourceHash": "c2a10547013b",
     "unknownValuePolicy": [
       "unknown",
       "not-defined",
@@ -28,6 +28,9 @@
       "mobileHeaderBack",
       "mobileHeaderClose",
       "mobileHeaderNotification",
+      "navNotification",
+      "navSearch",
+      "navSettings",
       "remove",
       "search"
     ]
@@ -662,6 +665,12 @@
     },
     "Mobile Bottom Nav": {
       "variantAxes": {
+        "icon": [
+          "home",
+          "search",
+          "notification",
+          "settings"
+        ],
         "state": [
           "unselected",
           "selected"
@@ -682,7 +691,10 @@
         }
       ],
       "anatomy": [
-        "home"
+        "home",
+        "navNotification",
+        "navSearch",
+        "navSettings"
       ],
       "tokenBindings": [
         "color/navigation/label/default",

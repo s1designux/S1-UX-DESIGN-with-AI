@@ -6,14 +6,14 @@ import { onBeforeUnmount, onMounted, ref, watch, watchEffect } from "vue";
 // mobile-bottom-nav 는 JavaScript 런타임이 없다 — 브라우저 기본 동작만 쓴다.
 
 const MARKUPS = {
-  "pc": "<button type=\"button\" data-s1-component=\"mobile-bottom-nav\" role=\"tab\" aria-selected=\"true\">\n    <span data-s1-part=\"icon\" aria-hidden=\"true\"></span>\n    <span data-s1-part=\"label\">홈</span>\n  </button>"
+  "pc": "<button type=\"button\" data-s1-component=\"mobile-bottom-nav\" data-icon=\"home\" role=\"tab\" aria-selected=\"true\">\n    <span data-s1-part=\"icon\" aria-hidden=\"true\"></span>\n    <span data-s1-part=\"label\">홈</span>\n  </button>"
 };
 const DEFAULT_BREAK = "pc";
 const BREAKS = ["pc"];
-const VARIANTS = [];
+const VARIANTS = ["home","search","notification","settings"];
 const SIZES = [];
 /* variant·size 속성 이름은 컴포넌트마다 다르다 — 승인된 마크업에서 읽어 온 것이다. */
-const VARIANT_ATTRIBUTE = null;
+const VARIANT_ATTRIBUTE = "data-icon";
 const SIZE_ATTRIBUTE = null;
 
 /* defineProps 는 컴파일 타임 매크로라 인자가 setup() 밖으로 끌어올려진다 —
@@ -21,7 +21,7 @@ const SIZE_ATTRIBUTE = null;
    그래서 허용목록을 리터럴로 박아 넣는다. 값의 출처는 위 상수와 같은 manifest 다.
    (2026-09-04 독립 검증에서 19종 전부 컴파일 실패로 발견) */
 const props = defineProps({
-  variant: { type: String, default: undefined, validator: (value) => true },
+  variant: { type: String, default: undefined, validator: (value) => ["home","search","notification","settings"].includes(value) },
   size: { type: String, default: undefined, validator: (value) => true },
   breakName: { type: String, default: "pc", validator: (value) => ["pc"].includes(value) },
   parts: { type: Object, default: () => ({}) },

@@ -249,13 +249,15 @@ fun S1Gallery(modifier: Modifier = Modifier, dark: Boolean = false) {
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    listOf("홈", "검색", "알림", "설정").forEachIndexed { index, label ->
-                        S1MobileBottomNav(
-                            label = label,
-                            selected = index == picked,
-                            onClick = { picked = index }
-                        )
-                    }
+                    listOf("홈" to "home", "검색" to "search", "알림" to "notification", "설정" to "settings")
+                        .forEachIndexed { index, (label, icon) ->
+                            S1MobileBottomNav(
+                                label = label,
+                                icon = icon,
+                                selected = index == picked,
+                                onClick = { picked = index }
+                            )
+                        }
                 }
             }
         }

@@ -221,6 +221,58 @@ object S1Icons {
             .build()
     }
 
+    /** nav-notification.svg (24×24) */
+    val navNotification: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "nav-notification",
+            defaultWidth = 24f.dp,
+            defaultHeight = 24f.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        )
+            .addPath(
+                pathData = PathParser().parsePathString("M 12.0002 20.9998 C 13.1522 20.9998 14.0882 20.1238 14.2202 19.0078 H 9.7922 C 9.9122 20.1238 10.8602 20.9998 12.0122 20.9998 H 12.0002 Z").toNodes(),
+                fill = SolidColor(Color.Black)
+            )
+            .addPath(
+                pathData = PathParser().parsePathString("M 20.8914 17.22 L 18.1554 13.356 V 9.42 C 18.1554 6.204 15.8034 3.336 12.5994 3.024 C 12.3954 3 12.1914 3 11.9994 3 C 8.5914 3 5.8434 5.76 5.8434 9.156 V 13.356 L 3.1074 17.22 C 2.8434 17.592 3.1074 18.108 3.5634 18.108 H 20.4354 C 20.8914 18.108 21.1554 17.592 20.8914 17.22 Z").toNodes(),
+                fill = SolidColor(Color.Black)
+            )
+            .build()
+    }
+
+    /** nav-search.svg (24×24) */
+    val navSearch: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "nav-search",
+            defaultWidth = 24f.dp,
+            defaultHeight = 24f.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        )
+            .addPath(
+                pathData = PathParser().parsePathString("M 11.1654 18.8592 C 13.001 18.8562 14.7735 18.1861 16.1552 16.9726 L 20.8472 21.6221 L 21.5762 20.8901 L 16.9149 16.2097 C 18.044 14.8921 18.6904 13.2265 18.7469 11.4892 C 18.8034 9.7519 18.2665 8.0475 17.2254 6.6588 C 16.1843 5.2701 14.7016 4.2805 13.0233 3.8545 C 11.3451 3.4284 9.5722 3.5914 7.9989 4.3164 C 6.4255 5.0414 5.1464 6.2848 4.3738 7.8403 C 3.6012 9.3958 3.3815 11.1698 3.7513 12.8679 C 4.121 14.5659 5.0579 16.086 6.4065 17.1758 C 7.7551 18.2656 9.4343 18.8596 11.1654 18.8592 Z M 11.1654 4.6427 C 12.4658 4.6407 13.7377 5.0261 14.8198 5.7504 C 15.902 6.4746 16.7458 7.5049 17.2444 8.7109 C 17.743 9.917 17.874 11.2445 17.6208 12.5253 C 17.3676 13.8061 16.7415 14.9827 15.822 15.9061 C 14.9024 16.8294 13.7306 17.458 12.455 17.7123 C 11.1794 17.9665 9.8574 17.835 8.6563 17.3343 C 7.4552 16.8337 6.4291 15.9864 5.7078 14.8998 C 4.9866 13.8132 4.6027 12.5361 4.6047 11.2303 C 4.602 10.363 4.7696 9.5037 5.098 8.7014 C 5.4264 7.8992 5.909 7.1699 6.5184 6.5552 C 7.1277 5.9405 7.8518 5.4524 8.6492 5.1189 C 9.4466 4.7855 10.3016 4.6131 11.1654 4.6118 V 4.6427 Z").toNodes(),
+                fill = SolidColor(Color.Black)
+            )
+            .build()
+    }
+
+    /** nav-settings.svg (24×24) */
+    val navSettings: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "nav-settings",
+            defaultWidth = 24f.dp,
+            defaultHeight = 24f.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        )
+            .addPath(
+                pathData = PathParser().parsePathString("M 3 12 C 3 12.742 3.0954 13.4629 3.2756 14.1625 H 5.47 C 5.7668 15.0636 6.2438 15.8692 6.8587 16.5583 L 5.7456 18.4664 C 6.2544 18.9646 6.8269 19.4099 7.4735 19.7915 C 8.1201 20.1625 8.788 20.4381 9.477 20.6396 L 10.5795 18.742 C 11.0353 18.8374 11.5124 18.8904 12 18.8904 C 12.4876 18.8904 12.9647 18.8374 13.4205 18.742 L 14.523 20.6396 C 15.212 20.4381 15.8799 20.1625 16.5265 19.7915 C 17.1731 19.4205 17.7456 18.9646 18.2544 18.4664 L 17.1413 16.5583 C 17.7562 15.8692 18.2332 15.053 18.53 14.1625 H 20.7244 C 20.894 13.4735 21 12.7526 21 12 C 21 11.2473 20.9046 10.5371 20.7244 9.8374 H 18.53 C 18.2332 8.9364 17.7562 8.1307 17.1413 7.4417 L 18.2544 5.5335 C 17.7456 5.0353 17.1731 4.5901 16.5265 4.2085 C 15.8799 3.8268 15.212 3.5618 14.523 3.3604 L 13.4205 5.2579 C 12.9647 5.1625 12.4876 5.1095 11.9894 5.1095 C 11.4912 5.1095 11.0247 5.1625 10.5689 5.2579 L 9.4664 3.3604 C 8.7774 3.5618 8.1095 3.8374 7.4629 4.2085 C 6.8163 4.5795 6.2438 5.0353 5.735 5.5335 L 6.8481 7.4417 C 6.2332 8.1307 5.7562 8.947 5.4594 9.8374 H 3.2756 C 3.106 10.5265 3 11.2473 3 12 Z M 12.0106 9.8798 C 13.1767 9.8798 14.1307 10.8339 14.1307 12 C 14.1307 13.1661 13.1767 14.1201 12.0106 14.1201 C 10.8445 14.1201 9.8905 13.1661 9.8905 12 C 9.8905 10.8339 10.8445 9.8798 12.0106 9.8798 Z").toNodes(),
+                fill = SolidColor(Color.Black)
+            )
+            .build()
+    }
+
     /** remove.svg (24×24) */
     val remove: ImageVector by lazy {
         ImageVector.Builder(
@@ -280,6 +332,9 @@ object S1Icons {
         "mobile-header-notification" -> mobileHeaderNotification
         "mobile-header-notification-accent" -> mobileHeaderNotificationAccent
         "mobile-nav-home" -> mobileNavHome
+        "nav-notification" -> navNotification
+        "nav-search" -> navSearch
+        "nav-settings" -> navSettings
         "remove" -> remove
         "search" -> search
         else -> error("[s1] 배포본에 없는 아이콘: $name")

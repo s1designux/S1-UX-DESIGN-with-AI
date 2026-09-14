@@ -36,6 +36,22 @@ const BUMP = process.argv.includes('--bump');
 const MINOR = process.argv.includes('--minor');
 const JSON_OUT = process.argv.includes('--json');
 const RECORD = process.argv.includes('--record');
+/* --refresh: 번호는 그대로 두고 지문만 다시 적는다. 같은 판(release)을 아직 커밋하기 전에
+   정본을 한 번 더 다듬었을 때 쓴다 — 이미 올린 번호를 또 올리면 개발자에게 없던 판이 생긴다. */
+const REFRESH = process.argv.includes('--refresh');
+/* 정본 파일 하나(build-components.ts)가 25개 부품 지문에 모두 걸려 있다.
+   그래서 한 부품만 고쳐도 전부 "달라짐"으로 잡힌다 — 실제로 달라진 부품만 번호를 올리려면
+   `--only <id,id>` 로 짚어 준다. 지문은 어차피 전부 갱신된다(그러지 않으면 빌드가 멈춘다). */
+const ONLY = (() => {
+  const at = process.argv.indexOf('--only');
+  if (at === -1) return null;
+  const value = process.argv[at + 1];
+  if (!value || value.startsWith('--')) {
+    console.error('❌ --only 뒤에 부품 id 를 쉼표로 적어 주세요 (예: --only mobile-bottom-nav)');
+    process.exit(1);
+  }
+  return value.split(',').map((one) => one.trim()).filter(Boolean);
+})();
 
 const read = (file) => fs.readFileSync(file, 'utf8');
 const readJson = (file) => JSON.parse(read(file));
@@ -117,6 +133,23 @@ const combined = (list) => hash(list.map(({ manifest, actual }) => (BUMP ? actua
 const pkg = readJson(PACKAGE);
 const stale = components.filter((component) => component.stale);
 
+// ── 지문만 갱신(번호 유지) ────────────────────────────────────────────
+if (REFRESH) {
+  const touched = [];
+  for (const component of components.filter((one) => one.stale)) {
+    component.manifest.canonicalFingerprint = component.actual;
+    writeJson(component.file, component.manifest);
+    touched.push(component.id);
+  }
+  const ledger = readJson(LEDGER);
+  ledger.canonicalFingerprint = hash(components.map(({ actual }) => actual).join('\0'));
+  writeJson(LEDGER, ledger);
+  console.log(touched.length
+    ? `✅ 지문만 갱신 ${touched.length}종 (번호 ${ledger.version} 그대로): ${touched.join(', ')}`
+    : 'ℹ️  갱신할 지문이 없습니다.');
+  process.exit(0);
+}
+
 // ── 전달본 지문 기록 (빌드 뒤) ─────────────────────────────────────────
 if (RECORD) {
   const ledger = readJson(LEDGER);
@@ -147,14 +180,23 @@ if (BUMP) {
     console.log('ℹ️  정본도 전달본도 달라진 것이 없습니다 — 올릴 번호가 없습니다.');
     process.exit(0);
   }
+  if (ONLY) {
+    const unknown = ONLY.filter((id) => !components.some((component) => component.id === id));
+    if (unknown.length) {
+      console.error(`❌ 모르는 부품 id: ${unknown.join(', ')}`);
+      process.exit(1);
+    }
+  }
   const changed = [];
+  const refreshed = [];
   for (const component of stale) {
+    const bumps = !ONLY || ONLY.includes(component.id);
     const from = component.manifest.version;
-    const to = bumpVersion(from, kind);
-    component.manifest.version = to;
+    if (bumps) component.manifest.version = bumpVersion(from, kind);
     component.manifest.canonicalFingerprint = component.actual;
     writeJson(component.file, component.manifest);
-    changed.push({ id: component.id, from, to });
+    if (bumps) changed.push({ id: component.id, from, to: component.manifest.version });
+    else refreshed.push(component.id);
   }
   const version = bumpVersion(ledger.version, kind);
   const fingerprint = combined(components);
@@ -168,6 +210,7 @@ if (BUMP) {
 
   console.log(`\n🔢 배포본 번호 ${version} (${kind === 'minor' ? '가운데 자리 — 쓰는 법이 바뀜' : '끝자리 — 값만 바뀜'}) · ${ledger.releasedAt}`);
   for (const { id, from, to } of changed) console.log(`   · ${id} ${from} → ${to}`);
+  if (refreshed.length) console.log(`   · 지문만 갱신(내용 그대로) ${refreshed.length}종: ${refreshed.join(', ')}`);
   console.log('\n   이제 `npm run ui:build` 로 전달본을 다시 만든 뒤 `npm run ui:version -- --record` 로 마무리하세요.\n');
   process.exit(0);
 }

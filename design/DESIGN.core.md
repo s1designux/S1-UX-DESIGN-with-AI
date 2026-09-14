@@ -173,6 +173,9 @@ agentContractDefaults:
       - "mobileHeaderBack"
       - "mobileHeaderClose"
       - "mobileHeaderNotification"
+      - "navNotification"
+      - "navSearch"
+      - "navSettings"
       - "remove"
       - "search"
   unknownMarkers:
@@ -2371,6 +2374,11 @@ _Don't_
 agent:
   component: "Mobile Bottom Nav"
   variantAxes:
+    icon:
+      - "home"
+      - "search"
+      - "notification"
+      - "settings"
     state:
       - "unselected"
       - "selected"
@@ -2412,6 +2420,9 @@ agent:
     mustNotCreate: "not-defined"
     declaredParts:
       - "home"
+      - "navNotification"
+      - "navSearch"
+      - "navSettings"
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
@@ -2439,6 +2450,11 @@ agent:
       fileKey: "cysG5U1udpQqVagYY1hWHW"
       figmaNodeId: "723:6"
     variants:
+      icon:
+        - "home"
+        - "search"
+        - "notification"
+        - "settings"
       state:
         - "unselected"
         - "selected"
@@ -4764,4 +4780,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: e2399255888a · 손편집 금지 -->
+<!-- generated-stamp: 56fab4d273ee · 손편집 금지 -->

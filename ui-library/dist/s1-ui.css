@@ -1584,10 +1584,11 @@
 }
 
 /* component:mobile-bottom-nav */
-/* Mobile Bottom Nav — 정본 buildMobileBottomNav(build-components.ts:3358) 기준.
-   변형축은 state(unselected·selected) 1개뿐이다. 정본은 "탭 1칸"만 만들고 4칸 바는
-   컴포넌트가 아니다(주석 :2979) — 화면이 아이템 인스턴스를 role=tablist 컨테이너 안에
-   가로로 배열해 조립하고, 바 배경은 화면이 --color-navigation-bg 로 칠한다(D1). */
+/* Mobile Bottom Nav — 정본 buildMobileBottomNav(build-components.ts) 기준.
+   축은 두 개다: icon(home·search·notification·settings) × state(unselected·selected).
+   정본은 "탭 1칸"만 만들고 4칸 바는 컴포넌트가 아니다 — 화면이 아이템 인스턴스를
+   role=tablist 컨테이너 안에 가로로 배열해 조립하고, 바 배경은 화면이 --color-navigation-bg 로 칠한다(D1).
+   2026-09-14 river 승인: 칸마다 아이콘이 달라야 바를 조립할 수 있어 icon 축을 신설했다. */
 [data-s1-component="mobile-bottom-nav"] {
   align-items: center;
   appearance: none;
@@ -1605,7 +1606,8 @@
   width: var(--sizing-60);
 }
 
-/* 아이콘 32×32 — 정본이 홈 아이콘 인스턴스를 32 로 리사이즈한다(:2973). */
+/* 아이콘 32×32 — 정본이 아이콘 인스턴스를 32 로 리사이즈한다.
+   모양은 data-icon 이 고르고(기본 home), 색은 선택 여부가 고른다. */
 [data-s1-component="mobile-bottom-nav"] [data-s1-part="icon"] {
   background-color: var(--color-icon-gray);
   display: block;
@@ -1614,6 +1616,21 @@
   -webkit-mask: url("./assets/icons/mobile-nav-home.svg") center / contain no-repeat;
   mask: url("./assets/icons/mobile-nav-home.svg") center / contain no-repeat;
   width: var(--sizing-32);
+}
+
+[data-s1-component="mobile-bottom-nav"][data-icon="search"] [data-s1-part="icon"] {
+  -webkit-mask-image: url("./assets/icons/nav-search.svg");
+  mask-image: url("./assets/icons/nav-search.svg");
+}
+
+[data-s1-component="mobile-bottom-nav"][data-icon="notification"] [data-s1-part="icon"] {
+  -webkit-mask-image: url("./assets/icons/nav-notification.svg");
+  mask-image: url("./assets/icons/nav-notification.svg");
+}
+
+[data-s1-component="mobile-bottom-nav"][data-icon="settings"] [data-s1-part="icon"] {
+  -webkit-mask-image: url("./assets/icons/nav-settings.svg");
+  mask-image: url("./assets/icons/nav-settings.svg");
 }
 
 /* 라벨 12/Medium (body/12M) — 아이콘과 간격 4(정본 itemSpacing). */

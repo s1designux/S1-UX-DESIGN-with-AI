@@ -32,10 +32,22 @@
     ]
   },
   "anatomy": [
-    { "part": "아이콘", "role": "32×32 라이브러리 아이콘 인스턴스. 상태에 따라 색만 바뀐다." },
-    { "part": "라벨", "role": "Pretendard Medium 12(body/12M). 아이콘 아래 4px 간격." },
-    { "part": "아이템 컨테이너", "role": "60×60 고정, 세로 가운데 정렬, 배경 투명." },
-    { "part": "바(bar)", "role": "컴포넌트가 아님 — 아이템 인스턴스를 가로로 배열해 화면에서 구성한다. 배경색은 화면이 --color-navigation-bg 로 칠한다." }
+    {
+      "part": "아이콘",
+      "role": "32×32 라이브러리 아이콘 인스턴스. 상태에 따라 색만 바뀐다."
+    },
+    {
+      "part": "라벨",
+      "role": "Pretendard Medium 12(body/12M). 아이콘 아래 4px 간격."
+    },
+    {
+      "part": "아이템 컨테이너",
+      "role": "60×60 고정, 세로 가운데 정렬, 배경 투명."
+    },
+    {
+      "part": "바(bar)",
+      "role": "컴포넌트가 아님 — 아이템 인스턴스를 가로로 배열해 화면에서 구성한다. 배경색은 화면이 --color-navigation-bg 로 칠한다."
+    }
   ],
   "doDont": {
     "do": [
@@ -54,26 +66,76 @@
     "아이콘만으로 의미를 전달하지 않는다 — 라벨을 항상 함께 보여준다.",
     "터치 타깃은 60×60 으로 최소 권장치를 만족한다."
   ],
-  "states": ["unselected", "selected"],
+  "states": [
+    "unselected",
+    "selected"
+  ],
   "sizing": {
-    "item": { "width": 60, "height": 60, "gap": 4, "iconSize": 32, "labelSize": 12, "labelWeight": "Medium" }
+    "item": {
+      "width": 60,
+      "height": 60,
+      "gap": 4,
+      "iconSize": 32,
+      "labelSize": 12,
+      "labelWeight": "Medium"
+    }
   },
   "tokens": [
-    { "cssVar": "--color-icon-gray", "semanticRef": "color/icon/gray", "state": "unselected", "property": "icon-color" },
-    { "cssVar": "--color-navigation-label-default", "semanticRef": "color/navigation/label/default", "state": "unselected", "property": "label-color" },
-    { "cssVar": "--color-icon-blue", "semanticRef": "color/icon/blue", "state": "selected", "property": "icon-color" },
-    { "cssVar": "--color-navigation-label-selected", "semanticRef": "color/navigation/label/selected", "state": "selected", "property": "label-color" },
-    { "cssVar": "--color-navigation-bg", "semanticRef": "color/navigation/bg", "state": "all", "property": "bar-background", "note": "아이템이 아니라 바(화면 레이어)가 쓰는 토큰. 설치기 Tab Item 세트는 이 토큰을 바인딩하지 않는다." }
+    {
+      "cssVar": "--color-icon-gray",
+      "semanticRef": "color/icon/gray",
+      "state": "unselected",
+      "property": "icon-color"
+    },
+    {
+      "cssVar": "--color-navigation-label-default",
+      "semanticRef": "color/navigation/label/default",
+      "state": "unselected",
+      "property": "label-color"
+    },
+    {
+      "cssVar": "--color-icon-blue",
+      "semanticRef": "color/icon/blue",
+      "state": "selected",
+      "property": "icon-color"
+    },
+    {
+      "cssVar": "--color-navigation-label-selected",
+      "semanticRef": "color/navigation/label/selected",
+      "state": "selected",
+      "property": "label-color"
+    },
+    {
+      "cssVar": "--color-navigation-bg",
+      "semanticRef": "color/navigation/bg",
+      "state": "all",
+      "property": "bar-background",
+      "note": "아이템이 아니라 바(화면 레이어)가 쓰는 토큰. 설치기 Tab Item 세트는 이 토큰을 바인딩하지 않는다."
+    }
   ],
   "figma": {
     "componentSetKey": "",
     "figmaNodeId": "723:6",
     "fileKey": "cysG5U1udpQqVagYY1hWHW",
-    "variantNodes": { "state=unselected": "722:12", "state=selected": "722:17" },
+    "variantNodes": {
+      "icon=home, state=unselected": "722:12",
+      "icon=home, state=selected": "722:17"
+    },
     "usageExample": "723:8",
     "darkSpec": "735:3",
-    "propertyMap": { "state": ["unselected", "selected"] },
-    "_note": "componentSetKey 는 Figma Plugin 연동 전까지 보류(figma-map.json _meta.note 정책과 동일). nodeId 는 reports/figma-library-build/mobile-bottom-nav/node-map-v3.json 실측."
+    "propertyMap": {
+      "icon": [
+        "home",
+        "search",
+        "notification",
+        "settings"
+      ],
+      "state": [
+        "unselected",
+        "selected"
+      ]
+    },
+    "_note": "componentSetKey 는 Figma Plugin 연동 전까지 보류(figma-map.json _meta.note 정책과 동일). nodeId 는 reports/figma-library-build/mobile-bottom-nav/node-map-v3.json 실측. 2026-09-14: icon 축 신설로 변형이 8개가 됐다. 여기 적힌 노드 id 는 icon=home 두 칸(축 신설 전 노드)뿐이며, 나머지 6칸은 설치기를 다시 돌려 Figma 에 심은 뒤 채운다 — 모르는 것을 지어내지 않는다."
   },
   "origin": {
     "classification": "B",
@@ -85,6 +147,20 @@
       "retired": "2026-07-02 삭제 완료(0 survivors)"
     }
   },
-  "guide": { "sampleLabels": ["홈", "검색", "알림", "내 정보"], "interactionPattern": "tab-item-composition", "webTag": "button", "boundaryNote": "정본은 Tab Item 1칸이며 Action 예시는 아이템 인스턴스를 최소 조합한 탭 목록이다." },
-  "governance": { "owner": "design-system", "deprecated": false, "replacement": null }
+  "guide": {
+    "sampleLabels": [
+      "홈",
+      "검색",
+      "알림",
+      "설정"
+    ],
+    "interactionPattern": "tab-item-composition",
+    "webTag": "button",
+    "boundaryNote": "정본은 Tab Item 1칸이며 Action 예시는 아이템 인스턴스를 최소 조합한 탭 목록이다."
+  },
+  "governance": {
+    "owner": "design-system",
+    "deprecated": false,
+    "replacement": null
+  }
 }

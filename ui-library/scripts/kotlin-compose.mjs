@@ -144,7 +144,7 @@ const BOX_PROPERTIES = new Set([
   "padding", "padding-inline", "padding-block", "padding-left", "padding-right", "padding-top", "padding-bottom",
   "padding-inline-start", "padding-inline-end", "padding-block-start", "padding-block-end", "inset",
   "gap", "margin-inline-start", "margin-top", "font-size", "font-weight", "letter-spacing", "line-height", "box-shadow", "left", "right", "top", "bottom",
-  "transform", "mask", "opacity", "flex", "text-decoration"
+  "transform", "mask", "mask-image", "opacity", "flex", "text-decoration"
 ]);
 
 /** 계산된 선언 뭉치에서 Compose 가 쓰는 값만 뽑아 정규화한다. */
@@ -233,8 +233,11 @@ function toBox(style, tokenValues, where) {
     const measured = length(style[property]);
     box[field] = measured ? measured.px : null;
   }
-  if (style.mask !== undefined) {
-    const icon = /url\(\s*"?([^")]+)"?\s*\)/.exec(style.mask);
+  /* mask 는 한 줄로 쓴 것(shorthand), mask-image 는 그림만 바꿔 끼운 것이다 —
+     하단 내비가 칸마다 아이콘을 갈아 끼울 때 뒤엣것을 쓴다. 나중 선언이 이긴다. */
+  for (const property of ["mask", "mask-image"]) {
+    if (style[property] === undefined) continue;
+    const icon = /url\(\s*"?([^")]+)"?\s*\)/.exec(style[property]);
     if (icon) box.icon = icon[1].split("/").pop().replace(/\.svg$/, "");
   }
   /* 밑줄 — 글자 버튼이 hover·pressed 에서 색 대신 밑줄로만 달라진다(정본 그대로). */
@@ -619,18 +622,22 @@ function modalCloseHoverPlan(manifest) {
 /* ── 모바일 하단 내비 ──────────────────────────────────────────────────
    정본은 "탭 1칸"만 만든다(바 4칸은 화면이 조립한다) — 여기서도 1칸만 부품으로 낸다.
    축은 선택 여부 하나뿐이고, 그 표현은 aria-selected 라는 네이티브 상태다. */
-function mobileBottomNavPlan() {
+function mobileBottomNavPlan(manifest) {
   const states = ["unselected", "selected"];
+  const icons = manifest.variants;
+  const combos = [];
+  /* 축 이름은 다른 부품과 같은 variant 를 쓴다 — 검수 화면의 변형 거르개가 같은 이름을 본다. */
+  for (const variant of icons) for (const state of states) combos.push({ variant, state });
   return {
     id: "mobile-bottom-nav",
-    axes: { states },
-    combos: states.map((state) => ({ state })),
-    key: (combo) => combo.state,
+    axes: { variants: icons, states },
+    combos,
+    key: (combo) => `${combo.variant}|${combo.state}`,
     build: (combo) => {
       const icon = el("span", { "data-s1-part": "icon" });
       const label = el("span", { "data-s1-part": "label" });
       const root = el("button", {
-        "data-s1-component": "mobile-bottom-nav", role: "tab",
+        "data-s1-component": "mobile-bottom-nav", "data-icon": combo.variant, role: "tab",
         "aria-selected": combo.state === "selected" ? "true" : "false", type: "button"
       }, [], [icon, label]);
       return {
@@ -938,7 +945,7 @@ const COMPONENT_FILE = {
   tab: (pkg, api) => tabKt(pkg, api),
   dropdown: (pkg, api) => dropdownKt(pkg, api),
   "mobile-header": (pkg, api) => mobileHeaderKt(pkg, api),
-  "mobile-bottom-nav": (pkg) => mobileBottomNavKt(pkg),
+  "mobile-bottom-nav": (pkg, api) => mobileBottomNavKt(pkg, api),
   textarea: (pkg) => textareaKt(pkg),
   "text-button": (pkg, api) => labelButtonKt(pkg, api, "text-button"),
   "assist-button": (pkg, api) => labelButtonKt(pkg, api, "assist-button"),

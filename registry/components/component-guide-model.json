@@ -43501,8 +43501,14 @@
     {
       "name": "Mobile Bottom Nav",
       "gridMembership": "public",
-      "variantCount": 2,
+      "variantCount": 8,
       "axes": {
+        "icon": [
+          "home",
+          "search",
+          "notification",
+          "settings"
+        ],
         "state": [
           "unselected",
           "selected"
@@ -43511,24 +43517,27 @@
       "presentationAxes": {
         "rowAxis": null,
         "columnAxis": "state",
-        "bandAxes": []
+        "bandAxes": [
+          "icon"
+        ]
       },
       "dependencies": [],
       "variants": [
         {
-          "name": "state=unselected",
+          "name": "icon=home, state=unselected",
           "axes": {
+            "icon": "home",
             "state": "unselected"
           },
           "node": {
             "type": "COMPONENT",
-            "name": "state=unselected",
+            "name": "icon=home, state=unselected",
             "dimensions": {
               "width": 60,
               "height": 60
             },
             "position": {
-              "x": 100,
+              "x": 180,
               "y": 82
             },
             "layout": {
@@ -43663,7 +43672,7 @@
                   "gap": null
                 },
                 "text": {
-                  "characters": "라벨",
+                  "characters": "홈",
                   "fontSize": 12,
                   "fontStyle": "Medium",
                   "fontFamily": "Pretendard",
@@ -43707,19 +43716,20 @@
           }
         },
         {
-          "name": "state=selected",
+          "name": "icon=home, state=selected",
           "axes": {
+            "icon": "home",
             "state": "selected"
           },
           "node": {
             "type": "COMPONENT",
-            "name": "state=selected",
+            "name": "icon=home, state=selected",
             "dimensions": {
               "width": 60,
               "height": 60
             },
             "position": {
-              "x": 220,
+              "x": 300,
               "y": 82
             },
             "layout": {
@@ -43854,7 +43864,1129 @@
                   "gap": null
                 },
                 "text": {
-                  "characters": "라벨",
+                  "characters": "홈",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/navigation/label/selected",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/navigation/label/selected",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "icon=search, state=unselected",
+          "axes": {
+            "icon": "search",
+            "state": "unselected"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "icon=search, state=unselected",
+            "dimensions": {
+              "width": 60,
+              "height": 60
+            },
+            "position": {
+              "x": 180,
+              "y": 158
+            },
+            "layout": {
+              "layoutMode": "VERTICAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": 4
+            },
+            "text": null,
+            "appearance": {
+              "fill": "(없음)",
+              "stroke": null,
+              "fillPaints": [],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "INSTANCE",
+                "name": "navSearch",
+                "dimensions": {
+                  "width": 32,
+                  "height": 32
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": null,
+                "appearance": {
+                  "fill": null,
+                  "stroke": null,
+                  "fillPaints": [],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              },
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "검색",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/navigation/label/default",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/navigation/label/default",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "icon=search, state=selected",
+          "axes": {
+            "icon": "search",
+            "state": "selected"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "icon=search, state=selected",
+            "dimensions": {
+              "width": 60,
+              "height": 60
+            },
+            "position": {
+              "x": 300,
+              "y": 158
+            },
+            "layout": {
+              "layoutMode": "VERTICAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": 4
+            },
+            "text": null,
+            "appearance": {
+              "fill": "(없음)",
+              "stroke": null,
+              "fillPaints": [],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "INSTANCE",
+                "name": "navSearch",
+                "dimensions": {
+                  "width": 32,
+                  "height": 32
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": null,
+                "appearance": {
+                  "fill": null,
+                  "stroke": null,
+                  "fillPaints": [],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              },
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "검색",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/navigation/label/selected",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/navigation/label/selected",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "icon=notification, state=unselected",
+          "axes": {
+            "icon": "notification",
+            "state": "unselected"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "icon=notification, state=unselected",
+            "dimensions": {
+              "width": 60,
+              "height": 60
+            },
+            "position": {
+              "x": 180,
+              "y": 234
+            },
+            "layout": {
+              "layoutMode": "VERTICAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": 4
+            },
+            "text": null,
+            "appearance": {
+              "fill": "(없음)",
+              "stroke": null,
+              "fillPaints": [],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "INSTANCE",
+                "name": "navNotification",
+                "dimensions": {
+                  "width": 32,
+                  "height": 32
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": null,
+                "appearance": {
+                  "fill": null,
+                  "stroke": null,
+                  "fillPaints": [],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              },
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "알림",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/navigation/label/default",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/navigation/label/default",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "icon=notification, state=selected",
+          "axes": {
+            "icon": "notification",
+            "state": "selected"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "icon=notification, state=selected",
+            "dimensions": {
+              "width": 60,
+              "height": 60
+            },
+            "position": {
+              "x": 300,
+              "y": 234
+            },
+            "layout": {
+              "layoutMode": "VERTICAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": 4
+            },
+            "text": null,
+            "appearance": {
+              "fill": "(없음)",
+              "stroke": null,
+              "fillPaints": [],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "INSTANCE",
+                "name": "navNotification",
+                "dimensions": {
+                  "width": 32,
+                  "height": 32
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": null,
+                "appearance": {
+                  "fill": null,
+                  "stroke": null,
+                  "fillPaints": [],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              },
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "알림",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/navigation/label/selected",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/navigation/label/selected",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "icon=settings, state=unselected",
+          "axes": {
+            "icon": "settings",
+            "state": "unselected"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "icon=settings, state=unselected",
+            "dimensions": {
+              "width": 60,
+              "height": 60
+            },
+            "position": {
+              "x": 180,
+              "y": 310
+            },
+            "layout": {
+              "layoutMode": "VERTICAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": 4
+            },
+            "text": null,
+            "appearance": {
+              "fill": "(없음)",
+              "stroke": null,
+              "fillPaints": [],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "INSTANCE",
+                "name": "navSettings",
+                "dimensions": {
+                  "width": 32,
+                  "height": 32
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": null,
+                "appearance": {
+                  "fill": null,
+                  "stroke": null,
+                  "fillPaints": [],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              },
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "설정",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/navigation/label/default",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/navigation/label/default",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "icon=settings, state=selected",
+          "axes": {
+            "icon": "settings",
+            "state": "selected"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "icon=settings, state=selected",
+            "dimensions": {
+              "width": 60,
+              "height": 60
+            },
+            "position": {
+              "x": 300,
+              "y": 310
+            },
+            "layout": {
+              "layoutMode": "VERTICAL",
+              "primaryAxisSizingMode": "FIXED",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": 4
+            },
+            "text": null,
+            "appearance": {
+              "fill": "(없음)",
+              "stroke": null,
+              "fillPaints": [],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "INSTANCE",
+                "name": "navSettings",
+                "dimensions": {
+                  "width": 32,
+                  "height": 32
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": null,
+                "appearance": {
+                  "fill": null,
+                  "stroke": null,
+                  "fillPaints": [],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              },
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "설정",
                   "fontSize": 12,
                   "fontStyle": "Medium",
                   "fontFamily": "Pretendard",

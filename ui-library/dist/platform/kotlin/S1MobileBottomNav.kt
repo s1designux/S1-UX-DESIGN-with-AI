@@ -28,12 +28,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.Image
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
 
 /**
  * 승인된 하단 내비 **한 칸**. 정본은 칸 하나만 부품으로 만들고 4칸 바는 화면이 조립한다 —
  * 바 배경과 가로 배치는 이 부품이 아니라 화면이 소유한다(웹 배포본과 같은 경계).
- * 아이콘은 정본이 홈 하나만 배포한다. 다른 칸을 그릴 때는 icon 으로 바꿔 넣는다.
+ * 아이콘은 승인된 네 가지 중에 고른다: home · search · notification · settings.
  */
 @Composable
 fun S1MobileBottomNav(
@@ -41,13 +40,17 @@ fun S1MobileBottomNav(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    icon: ImageVector? = null,
+    icon: String = "home",
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
+    require(S1MobileBottomNavSpec.variants.contains(icon)) {
+        "S1MobileBottomNav: 승인되지 않은 아이콘 \"$icon\". 쓸 수 있는 값: " + S1MobileBottomNavSpec.variants.joinToString(" · ")
+    }
     val state = if (selected) "selected" else "unselected"
-    val root = S1MobileBottomNavSpec.box(state, "root")
-    val iconBox = S1MobileBottomNavSpec.box(state, "icon")
-    val labelBox = S1MobileBottomNavSpec.box(state, "label")
+    val key = "$icon|$state"
+    val root = S1MobileBottomNavSpec.box(key, "root")
+    val iconBox = S1MobileBottomNavSpec.box(key, "icon")
+    val labelBox = S1MobileBottomNavSpec.box(key, "label")
     Column(
         modifier = modifier
             .s1Box(root)
@@ -60,10 +63,9 @@ fun S1MobileBottomNav(
         verticalArrangement = Arrangement.spacedBy(root.gapDp, Alignment.CenterVertically)
     ) {
         val iconName = iconBox.icon
-        val drawn = icon ?: iconName?.let { S1Icons.byName(it) }
-        if (drawn != null) {
+        if (iconName != null) {
             Image(
-                imageVector = drawn,
+                imageVector = S1Icons.byName(iconName),
                 contentDescription = null,
                 modifier = Modifier.size((iconBox.width ?: 0f).dp, (iconBox.height ?: 0f).dp),
                 colorFilter = ColorFilter.tint(iconBox.background?.value() ?: Color.Unspecified)

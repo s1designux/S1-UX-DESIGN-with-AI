@@ -1393,6 +1393,10 @@ export const ICON_KEYS: Record<string, string> = {
   eye:      "d4e9eb5b7e193ee291aa2a7e04396c8de2d2dae7", // 비밀번호 미표시(눈+슬래시 ic_비밀번호미표시 Line) — Input Password Icon boolean 기본값. 표시 눈은 인스턴스 스왑으로 교체
   eye_show: "b130623bad9bf035e273501b404bf7a245af1460", // 비밀번호 표시(뜬 눈 ic_비밀번호표시 Line) — 웹 Password 옵션의 표시 중 아이콘(river C4, 2026-09-04). Figma 변형 자체는 위 eye(미표시) 하나만 쓰고, 표시 눈은 웹에서만 별도 스왑한다.
   home:     "6bf422c937034ce15f6814e5c430d8f85953ed4e", // 홈(ic_홈 Solid) 97:292 — V2.2 아이콘 라이브러리. Mobile Bottom Nav
+  // 하단 내비의 나머지 칸(2026-09-14 river 승인 "A로 진행해줘"). 홈이 Solid 라 같은 결로 Solid 를 쓴다.
+  navSearch:       "e86d0bce3a9de2bf1ed37b29ee56278bf4927cb9", // ic_찾기/조회 Solid 97:124 — 입력칸이 쓰는 search(Line)와 다른 변형이다
+  navNotification: "0994ea9c97ad4c65a9d461a0f0b7381675946973", // ic_알림 Solid 97:260 — 헤더의 ic_알림(신규)(빨간 점)와 다른 아이콘
+  navSettings:     "175fb8933701ad7db5485a44dd07e26d34dfeef2", // ic_사용환경설정 Solid 97:312 — river 선택(톱니바퀴 · ic_기기설정(스패너) 아님)
   mobileHeaderBack: "7190e284d345ae19a679a16ed7bceafbd54073ca", // ic_이전 / Solid — Mobile Header
   mobileHeaderClose: "54469d54f16ed38de2d7b420b0e2195e4cf7c118", // ic_닫기 / Solid — Mobile Header
   mobileHeaderNotification: "13cf1b580ec982fda488f9318c6821930ddfb26e", // ic_알림(신규) / Line — Mobile Header
@@ -3376,32 +3380,52 @@ async function buildLanguageIcon(maps: BuildMaps, originY: number): Promise<{ se
   return { set, bottomY };
 }
 
-// ── Mobile Bottom Nav (Tab Item 세트) — 홈 아이콘 + 라벨, 60×60 세로 오토레이아웃 ─────────
+// ── Mobile Bottom Nav (Tab Item 세트) — 아이콘 + 라벨, 60×60 세로 오토레이아웃 ─────────
 // Figma V3.0 TEST 540:6025 기준. state=unselected/selected(원본 소문자 네이밍 그대로).
-// home=ICON_KEYS["home"](V2.2 라이브러리). 4탭 "바"는 설치기에서 만들지 않음 — Tab Item 세트만.
+// 2026-09-14 river 승인("A로 진행해줘"): 칸마다 아이콘이 달라야 바를 조립할 수 있어 icon 축을 신설한다.
+//   icon=home·search·notification·settings — 전부 V2.2 라이브러리 Solid 변형(홈과 같은 결).
+//   종전에는 홈 하나뿐이라 4칸 바를 만들면 네 칸이 모두 홈 그림이었다.
+// 4탭 "바"는 설치기에서 만들지 않음 — Tab Item 세트만(바 배경·배치는 화면이 소유).
+const BOTTOM_NAV_ICONS = [
+  { icon: "home",         role: "home",            label: "홈" },
+  { icon: "search",       role: "navSearch",       label: "검색" },
+  { icon: "notification", role: "navNotification", label: "알림" },
+  { icon: "settings",     role: "navSettings",     label: "설정" },
+];
 async function buildMobileBottomNav(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
-  const variants = [
+  const states = [
     { state: "unselected", icon: "color/icon/gray",  label: "color/navigation/label/default" },
     { state: "selected",   icon: "color/icon/blue",  label: "color/navigation/label/selected" },
   ];
+  const variants: Array<{ state: string; icon: string; label: string; iconName: string; iconRole: string; text: string }> = [];
+  for (const iconDef of BOTTOM_NAV_ICONS) {
+    for (const st of states) {
+      variants.push({ ...st, iconName: iconDef.icon, iconRole: iconDef.role, text: iconDef.label });
+    }
+  }
   const comps: ComponentNode[] = [];
   for (const v of variants) {
     const comp = figma.createComponent();
-    comp.name = `state=${v.state}`;
+    comp.name = `icon=${v.iconName}, state=${v.state}`;
     comp.layoutMode = "VERTICAL";
     comp.primaryAxisAlignItems = "CENTER"; comp.counterAxisAlignItems = "CENTER";
     comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
     comp.itemSpacing = 4; comp.fills = [];
     comp.resize(60, 60);
-    // 홈 아이콘 32×32 (V2.2 라이브러리 인스턴스, 색 재바인딩)
-    const icon = await makeIconInstance("home", scv(maps, v.icon), 32, HOME_SVG);
+    // 아이콘 32×32 (V2.2 라이브러리 인스턴스, 색 재바인딩).
+    //   home 은 기존대로 폴백 도형(HOME_SVG)을 갖고,
+    //   2026-09-14 신설한 세 아이콘은 **폴백을 두지 않는다** — 빈 SVG 를 넘기면 조용히 빈 도형이 남으므로
+    //   모바일 헤더와 같은 makeRequiredIconInstance 로 "원본이 아니면 빌드 중단"을 쓴다(🤖 검증 지적 반영).
+    const icon = v.iconRole === "home"
+      ? await makeIconInstance("home", scv(maps, v.icon), 32, HOME_SVG)
+      : await makeRequiredIconInstance(v.iconRole, scv(maps, v.icon), 32);
     comp.appendChild(icon);
     // 라벨 12/Medium → body/12M 텍스트스타일 자동 바인딩
-    const label = await makeBoundText("라벨", 12, "Medium", scv(maps, v.label));
+    const label = await makeBoundText(v.text, 12, "Medium", scv(maps, v.label));
     comp.appendChild(label);
     setLightMode(comp, maps);
     comps.push(comp);
-    BUILT_COMPS[`MobileBottomNav:${v.state}`] = comp;
+    BUILT_COMPS[`MobileBottomNav:${v.iconName}:${v.state}`] = comp;
   }
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "Mobile Bottom Nav"; set.x = 0; set.y = originY;
@@ -3409,9 +3433,9 @@ async function buildMobileBottomNav(maps: BuildMaps, originY: number): Promise<{
   const opts: SpecOpts = {
     title: "Mobile Bottom Nav",
     colHeaders: ["Unselected", "Selected"],
-    rowLabels: [""],
-    cellAt: (_r, c) => comps[c] ?? null,
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 120, cellH: 60, rowLabelW: 16,
+    rowLabels: BOTTOM_NAV_ICONS.map((one) => one.icon),
+    cellAt: (r, c) => comps[r * 2 + c] ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 120, cellH: 60, rowLabelW: 96,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }

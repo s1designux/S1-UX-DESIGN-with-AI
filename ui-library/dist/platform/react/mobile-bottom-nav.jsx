@@ -8,7 +8,7 @@ import { scopeOf, slot } from "./runtime.js";
 
 export const BREAKS = ["pc"];
 export const DEFAULT_BREAK = "pc";
-export const VARIANTS = [];
+export const VARIANTS = ["home","search","notification","settings"];
 export const SIZES = [];
 export const PARTS = ["icon","label"];
 
@@ -17,13 +17,14 @@ function assertAllowed(label, value, allowed) {
   throw new Error(`[s1-ui] mobile-bottom-nav: 승인되지 않은 ${label} "${value}". 쓸 수 있는 값: ${allowed.join(", ")}`);
 }
 
-export default function S1MobileBottomNav({ parts, className, style, ...rest }) {
+export default function S1MobileBottomNav({ variant, parts, className, style, ...rest }) {
   const uid = useId();
   const rootRef = useRef(null);
   const partScope = scopeOf(parts);
+  assertAllowed("variant", variant, VARIANTS);
 
   return (
-      <button type="button" data-s1-component="mobile-bottom-nav" role="tab" aria-selected="true" ref={rootRef} className={className} style={style} {...rest}>
+      <button type="button" data-s1-component="mobile-bottom-nav" data-icon={variant ?? "home"} role="tab" aria-selected="true" ref={rootRef} className={className} style={style} {...rest}>
         <span data-s1-part="icon" aria-hidden="true" {...(slot(partScope, "icon").attrs ?? {})}>
           {slot(partScope, "icon").content ?? ""}
         </span>

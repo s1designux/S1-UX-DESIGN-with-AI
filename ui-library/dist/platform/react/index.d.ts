@@ -223,7 +223,8 @@ export interface S1TableProps extends S1BaseProps {
 export declare function S1Table(props: S1TableProps): ReactElement;
 
 export interface S1MobileBottomNavProps extends S1BaseProps {
-
+  /** 승인된 변형: home · search · notification · settings */
+  variant?: "home" | "search" | "notification" | "settings";
 }
 export declare function S1MobileBottomNav(props: S1MobileBottomNavProps): ReactElement;
 

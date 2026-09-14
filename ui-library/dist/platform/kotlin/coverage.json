@@ -16,6 +16,9 @@
     "mobile-header-notification",
     "mobile-header-notification-accent",
     "mobile-nav-home",
+    "nav-notification",
+    "nav-search",
+    "nav-settings",
     "remove",
     "search"
   ],
@@ -717,7 +720,7 @@
     },
     {
       "component": "mobile-bottom-nav",
-      "combinations": 2,
+      "combinations": 8,
       "parts": [
         "root",
         "icon",

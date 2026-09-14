@@ -846,13 +846,13 @@ fun S1ModalPanel(
 }
 
 /** 미리보기 화면 — 승인된 조합을 축 목록에서 그대로 훑어 그린다(빠뜨릴 자리가 없다). */
-export function mobileBottomNavKt(pkg) {
-  return header(pkg, [...COMMON, "androidx.compose.foundation.Image", "androidx.compose.ui.graphics.ColorFilter", "androidx.compose.ui.graphics.vector.ImageVector"],
+export function mobileBottomNavKt(pkg, api) {
+  return header(pkg, [...COMMON, "androidx.compose.foundation.Image", "androidx.compose.ui.graphics.ColorFilter"],
     "S1MobileBottomNav — 정본 Mobile Bottom Nav 아이템 1칸(60×60)") + `
 /**
  * 승인된 하단 내비 **한 칸**. 정본은 칸 하나만 부품으로 만들고 4칸 바는 화면이 조립한다 —
  * 바 배경과 가로 배치는 이 부품이 아니라 화면이 소유한다(웹 배포본과 같은 경계).
- * 아이콘은 정본이 홈 하나만 배포한다. 다른 칸을 그릴 때는 icon 으로 바꿔 넣는다.
+ * 아이콘은 승인된 네 가지 중에 고른다: ${api.variants.join(" · ")}.
  */
 @Composable
 fun S1MobileBottomNav(
@@ -860,13 +860,17 @@ fun S1MobileBottomNav(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    icon: ImageVector? = null,
+    icon: String = "${api.variants[0]}",
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
+    require(S1MobileBottomNavSpec.variants.contains(icon)) {
+        "S1MobileBottomNav: 승인되지 않은 아이콘 \\"$icon\\". 쓸 수 있는 값: " + S1MobileBottomNavSpec.variants.joinToString(" · ")
+    }
     val state = if (selected) "selected" else "unselected"
-    val root = S1MobileBottomNavSpec.box(state, "root")
-    val iconBox = S1MobileBottomNavSpec.box(state, "icon")
-    val labelBox = S1MobileBottomNavSpec.box(state, "label")
+    val key = "\$icon|\$state"
+    val root = S1MobileBottomNavSpec.box(key, "root")
+    val iconBox = S1MobileBottomNavSpec.box(key, "icon")
+    val labelBox = S1MobileBottomNavSpec.box(key, "label")
     Column(
         modifier = modifier
             .s1Box(root)
@@ -879,10 +883,9 @@ fun S1MobileBottomNav(
         verticalArrangement = Arrangement.spacedBy(root.gapDp, Alignment.CenterVertically)
     ) {
         val iconName = iconBox.icon
-        val drawn = icon ?: iconName?.let { S1Icons.byName(it) }
-        if (drawn != null) {
+        if (iconName != null) {
             Image(
-                imageVector = drawn,
+                imageVector = S1Icons.byName(iconName),
                 contentDescription = null,
                 modifier = Modifier.size((iconBox.width ?: 0f).dp, (iconBox.height ?: 0f).dp),
                 colorFilter = ColorFilter.tint(iconBox.background?.value() ?: Color.Unspecified)
@@ -918,7 +921,7 @@ fun S1MobileHeader(
     onNotification: (() -> Unit)? = null
 ) {
     require(S1MobileHeaderSpec.variants.contains(variant)) {
-        "S1MobileHeader: 승인되지 않은 유형 \\"\\$variant\\". 쓸 수 있는 값: " + S1MobileHeaderSpec.variants.joinToString(" · ")
+        "S1MobileHeader: 승인되지 않은 유형 \\"$variant\\". 쓸 수 있는 값: " + S1MobileHeaderSpec.variants.joinToString(" · ")
     }
     val has = { part: String -> S1MobileHeaderSpec.boxes[variant]?.containsKey(part) == true }
     val root = S1MobileHeaderSpec.box(variant, "root")
@@ -1559,13 +1562,15 @@ fun S1Gallery(modifier: Modifier = Modifier, dark: Boolean = false) {
                     horizontalArrangement = Arrangement.SpaceEvenly,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    listOf("홈", "검색", "알림", "설정").forEachIndexed { index, label ->
-                        S1MobileBottomNav(
-                            label = label,
-                            selected = index == picked,
-                            onClick = { picked = index }
-                        )
-                    }
+                    listOf("홈" to "home", "검색" to "search", "알림" to "notification", "설정" to "settings")
+                        .forEachIndexed { index, (label, icon) ->
+                            S1MobileBottomNav(
+                                label = label,
+                                icon = icon,
+                                selected = index == picked,
+                                onClick = { picked = index }
+                            )
+                        }
                 }
             }
         }

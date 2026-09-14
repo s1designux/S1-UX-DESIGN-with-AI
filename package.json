@@ -57,6 +57,8 @@
     "ui:version": "node scripts/ui-library-version.js",
     "ui:bump": "node scripts/ui-library-version.js --bump && npm run ui:build && node scripts/ui-library-version.js --record",
     "ui:bump:minor": "node scripts/ui-library-version.js --bump --minor && npm run ui:build && node scripts/ui-library-version.js --record",
+    "ui:bump:only": "node scripts/ui-library-version.js --bump --minor --only",
+    "ui:version:refresh": "node scripts/ui-library-version.js --refresh",
     "ui:version:record": "node scripts/ui-library-version.js --record",
     "ui:zip": "node scripts/build-ui-package-zip.js",
     "ui:zip:check": "node scripts/build-ui-package-zip.js --check",

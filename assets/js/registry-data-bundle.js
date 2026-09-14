@@ -99,7 +99,7 @@ window.REGISTRY_BUNDLE = {
           "name": "SW Foundation Colors",
           "version": "2.4",
           "status": "stable",
-          "updatedAt": "2026-09-10",
+          "updatedAt": "2026-09-14",
           "source": "plugins/figma-vars-installer/src/vars-data.ts (FOUNDATION_COLOR)",
           "description": "Official SW Design System V2.4 foundation color foundation. Raw HEX values are allowed here only.",
           "generated": true,
@@ -12698,18 +12698,24 @@ window.REGISTRY_BUNDLE = {
         "figmaNodeId": "723:6",
         "fileKey": "cysG5U1udpQqVagYY1hWHW",
         "variantNodes": {
-          "state=unselected": "722:12",
-          "state=selected": "722:17"
+          "icon=home, state=unselected": "722:12",
+          "icon=home, state=selected": "722:17"
         },
         "usageExample": "723:8",
         "darkSpec": "735:3",
         "propertyMap": {
+          "icon": [
+            "home",
+            "search",
+            "notification",
+            "settings"
+          ],
           "state": [
             "unselected",
             "selected"
           ]
         },
-        "_note": "componentSetKey 는 Figma Plugin 연동 전까지 보류(figma-map.json _meta.note 정책과 동일). nodeId 는 reports/figma-library-build/mobile-bottom-nav/node-map-v3.json 실측."
+        "_note": "componentSetKey 는 Figma Plugin 연동 전까지 보류(figma-map.json _meta.note 정책과 동일). nodeId 는 reports/figma-library-build/mobile-bottom-nav/node-map-v3.json 실측. 2026-09-14: icon 축 신설로 변형이 8개가 됐다. 여기 적힌 노드 id 는 icon=home 두 칸(축 신설 전 노드)뿐이며, 나머지 6칸은 설치기를 다시 돌려 Figma 에 심은 뒤 채운다 — 모르는 것을 지어내지 않는다."
       },
       "origin": {
         "classification": "B",
@@ -12726,7 +12732,7 @@ window.REGISTRY_BUNDLE = {
           "홈",
           "검색",
           "알림",
-          "내 정보"
+          "설정"
         ],
         "interactionPattern": "tab-item-composition",
         "webTag": "button",

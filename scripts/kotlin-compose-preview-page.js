@@ -79,9 +79,9 @@ const MATRIX = {
   dropdown: { column: 'state', rows: ['type', 'size'] },
   input: { column: 'state', rows: ['size', 'breakName'] },
   modal: { column: 'footer', rows: ['breakName'] },
-  /* 헤더는 상태 축이 없다 — 유형이 곧 칸이다. 하단 내비는 선택 여부 한 축뿐이다. */
+  /* 헤더는 상태 축이 없다 — 유형이 곧 칸이다. 하단 내비는 아이콘(세로) × 선택 여부(가로) 두 축이다. */
   'mobile-header': { column: 'variant', rows: [] },
-  'mobile-bottom-nav': { column: 'state', rows: [] },
+  'mobile-bottom-nav': { column: 'state', rows: ['variant'] },
   textarea: { column: 'state', rows: [] },
   'text-button': { column: 'state', rows: ['variant'] },
   'assist-button': { column: 'state', rows: [] },
@@ -99,8 +99,17 @@ const MAIN_PART = {
 const SAMPLE_TEXT = {
   button: '버튼', chip: '칩', checkbox: '선택 항목', radio: '항목', toggle: '',
   tab: '탭 메뉴', select: '선택', dropdown: '항목 이름', input: '', modal: '제목 영역',
-  'mobile-header': '화면 제목', 'mobile-bottom-nav': '홈',
+  'mobile-header': '화면 제목',
+  /* 하단 내비는 칸마다 라벨이 다르다 — 조합을 받아서 그 칸의 말을 돌려준다. */
+  'mobile-bottom-nav': (combo) => ({ home: '홈', search: '검색', notification: '알림', settings: '설정' }[combo.variant] ?? '홈'),
   textarea: '', 'text-button': '글자 버튼', 'assist-button': '보조 버튼', 'filter-chip': '최신순'
+};
+
+/** 보기 글자 — 컴포넌트 하나에 한 마디가 기본이고, 조합마다 달라야 하는 것만 함수로 준다. */
+const sampleTextFor = (id, combo) => {
+  const value = SAMPLE_TEXT[id];
+  if (typeof value === 'function') return value(combo);
+  return value ?? '보기';
 };
 
 const COMPONENT_TITLE = {
@@ -191,7 +200,9 @@ const SNIPPET = {
     ...(c.variant.endsWith('-close') ? ['onClose = { }'] : [])
   ]),
   'mobile-bottom-nav': (c) => call('S1MobileBottomNav', [
-    'label = "홈"', `selected = ${c.state === 'selected'}`, 'onClick = { }'
+    `label = "${{ home: '홈', search: '검색', notification: '알림', settings: '설정' }[c.variant] ?? '홈'}"`,
+    `icon = "${c.variant}"`,
+    `selected = ${c.state === 'selected'}`, 'onClick = { }'
   ]),
   textarea: (c) => call('S1Textarea', [
     `value = ${c.state === 'default' || c.state === 'disabled' ? '""' : '"입력한 내용"'}`, 'onValueChange = { }',
@@ -389,14 +400,14 @@ async function main() {
           component: id,
           title: `${COMPONENT_TITLE[id] ?? id} — ${rowKey === '기본' ? '' : rowKey + ' · '}${columnValue}`,
           key,
-          sample: serialize(root, SAMPLE_TEXT[id] ?? '보기'),
+          sample: serialize(root, sampleTextFor(id, combo)),
           values: valueChips(spec.table[key].parts, tokenValues),
           code: SNIPPET[id](combo, api),
           note: AUTO_STATE[columnValue] ?? null
         };
         /* 칸은 div 다 — 부품 안에 button 이 있는 것(헤더의 뒤로·닫기)을 button 으로 감싸면
            브라우저가 중첩을 허용하지 않아 구조를 끊고 배치가 무너진다. */
-        return `<td data-col="${escapeHtml(columnValue)}"><div role="button" tabindex="0" class="cell" data-detail="${escapeHtml(detailId)}">${serialize(root, SAMPLE_TEXT[id] ?? '보기')}</div></td>`;
+        return `<td data-col="${escapeHtml(columnValue)}"><div role="button" tabindex="0" class="cell" data-detail="${escapeHtml(detailId)}">${serialize(root, sampleTextFor(id, combo))}</div></td>`;
       }).join('');
       bodyRows.push(`<tr data-row="${escapeHtml(JSON.stringify(row.values))}" data-search="${escapeHtml((id + ' ' + rowKey).toLowerCase())}"><th scope="row">${escapeHtml(rowKey)}</th>${cells}</tr>`);
     }
