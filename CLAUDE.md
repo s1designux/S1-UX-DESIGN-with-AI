@@ -342,6 +342,6 @@ Claude는 **Main Orchestrator**다. 사용자는 **목표 수준 의도**만 준
 
 | 날짜 | 변경 내용 (한 줄) |
 |------|------------------|
-| 2026-09-14 | **안드로이드에 모바일 크롬 2종 추가 — 이름만 모바일이고 정작 안드로이드에 없던 구멍을 메웠다(river 결정).** Compose 부품 10→12종(mobile-header 6유형 · mobile-bottom-nav). 값은 배포본 CSS 를 계산해 뽑고 브라우저 실측 대조 378건 통과, 안 읽은 선언 0건. 읽기 엔진에 `^=`·`inset`·`padding-inline-*`·`calc(var*-1)` 지원을 더해 헤더 CSS 를 한 줄도 남기지 않고 읽는다. 눌리는 영역 44 는 배치를 바꾸지 않고 requiredSize 로 재현. 앞서 같은 날 **배포본 번호를 기계로 넘기고 Gate 50 신설**(장부 `ui-library/release-log.json` · `npm run ui:bump`), 이번 변경으로 0.1.0 → **0.2.0**. |
+| 2026-09-14 | **안드로이드 부품 10 → 16종.** 모바일 헤더·하단 내비(첫 묶음)에 이어 여러 줄 입력·글자 버튼·보조 버튼·필터 칩(둘째 묶음)을 옮겼다. 모달 속틀은 정본에 모바일 크기가 없어 제외. 값은 배포본 CSS 계산 → 브라우저 실측 524건 대조 PASS, 안 읽은 선언은 PC 전용 6건뿐. 읽기 엔진에 `^=`·`inset`·`padding-inline-*`·`text-decoration`·`calc(var*-1)` 추가. 같은 날 **배포본 번호를 기계로 넘기고 Gate 50 신설**(`npm run ui:bump` · 장부 `ui-library/release-log.json`) — 0.1.0 → **0.3.0**. |
 
 > 이전 전체 상세 이력: **`reports/changelog-archive.md`** 참조.

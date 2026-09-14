@@ -726,6 +726,105 @@
       "unreadPcOnly": 0,
       "unreadDisplayRules": 0,
       "unreadDeclarations": []
+    },
+    {
+      "component": "textarea",
+      "combinations": 4,
+      "parts": [
+        "root",
+        "control",
+        "placeholder"
+      ],
+      "unreadPcOnly": 0,
+      "unreadDisplayRules": 0,
+      "unreadDeclarations": []
+    },
+    {
+      "component": "text-button",
+      "combinations": 8,
+      "parts": [
+        "root",
+        "label"
+      ],
+      "unreadPcOnly": 0,
+      "unreadDisplayRules": 0,
+      "unreadDeclarations": []
+    },
+    {
+      "component": "assist-button",
+      "combinations": 4,
+      "parts": [
+        "root",
+        "label"
+      ],
+      "unreadPcOnly": 0,
+      "unreadDisplayRules": 0,
+      "unreadDeclarations": []
+    },
+    {
+      "component": "filter-chip",
+      "combinations": 20,
+      "parts": [
+        "root",
+        "trigger",
+        "value",
+        "icon",
+        "panel",
+        "title"
+      ],
+      "unreadPcOnly": 6,
+      "unreadDisplayRules": 1,
+      "unreadDeclarations": [
+        {
+          "selector": "[data-s1-component=\"filter-chip\"][data-size=\"sm\"][data-break=\"pc\"] [data-s1-part=\"trigger\"]",
+          "media": null,
+          "property": "height",
+          "value": "var(--sizing-28)",
+          "reason": "pc-only"
+        },
+        {
+          "selector": "[data-s1-component=\"filter-chip\"][data-size=\"sm\"][data-break=\"pc\"] [data-s1-part=\"trigger\"]",
+          "media": null,
+          "property": "padding-left",
+          "value": "var(--spacing-12)",
+          "reason": "pc-only"
+        },
+        {
+          "selector": "[data-s1-component=\"filter-chip\"][data-size=\"sm\"][data-break=\"pc\"] [data-s1-part=\"trigger\"]",
+          "media": null,
+          "property": "padding-right",
+          "value": "var(--spacing-6)",
+          "reason": "pc-only"
+        },
+        {
+          "selector": "[data-s1-component=\"filter-chip\"][data-size=\"md\"][data-break=\"pc\"] [data-s1-part=\"trigger\"]",
+          "media": null,
+          "property": "height",
+          "value": "var(--sizing-34)",
+          "reason": "pc-only"
+        },
+        {
+          "selector": "[data-s1-component=\"filter-chip\"][data-size=\"md\"][data-break=\"pc\"] [data-s1-part=\"trigger\"]",
+          "media": null,
+          "property": "padding-left",
+          "value": "var(--spacing-16)",
+          "reason": "pc-only"
+        },
+        {
+          "selector": "[data-s1-component=\"filter-chip\"][data-size=\"md\"][data-break=\"pc\"] [data-s1-part=\"trigger\"]",
+          "media": null,
+          "property": "padding-right",
+          "value": "var(--spacing-8)",
+          "reason": "pc-only"
+        },
+        {
+          "selector": "[data-s1-component=\"filter-chip\"] [data-s1-part=\"panel\"] [data-s1-component=\"dropdown\"]",
+          "media": null,
+          "property": "width",
+          "value": "100%",
+          "reason": "display-rule"
+        }
+      ]
     }
   ]
 }

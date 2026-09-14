@@ -30,6 +30,7 @@ const PART_TEXT = {
   tab: (text) => text,
   title: () => '제목 영역',
   subtitle: () => '부제목 영역',
+  control: () => '',
   message: () => '변경한 내용이 저장되지 않고 사라집니다.'
 };
 
@@ -80,26 +81,33 @@ const MATRIX = {
   modal: { column: 'footer', rows: ['breakName'] },
   /* 헤더는 상태 축이 없다 — 유형이 곧 칸이다. 하단 내비는 선택 여부 한 축뿐이다. */
   'mobile-header': { column: 'variant', rows: [] },
-  'mobile-bottom-nav': { column: 'state', rows: [] }
+  'mobile-bottom-nav': { column: 'state', rows: [] },
+  textarea: { column: 'state', rows: [] },
+  'text-button': { column: 'state', rows: ['variant'] },
+  'assist-button': { column: 'state', rows: [] },
+  'filter-chip': { column: 'state', rows: ['variant', 'title', 'size', 'breakName'] }
 };
 
 /** 조합마다 값 칩으로 보여 줄 대표 부품 — 그 컴포넌트에서 상태가 실제로 드러나는 자리다. */
 const MAIN_PART = {
   button: 'root', chip: 'root', checkbox: 'control', radio: 'control', toggle: 'root',
   tab: 'tab', select: 'trigger', dropdown: 'option', input: 'field', modal: 'panel',
-  'mobile-header': 'root', 'mobile-bottom-nav': 'label'
+  'mobile-header': 'root', 'mobile-bottom-nav': 'label',
+  textarea: 'control', 'text-button': 'root', 'assist-button': 'root', 'filter-chip': 'trigger'
 };
 
 const SAMPLE_TEXT = {
   button: '버튼', chip: '칩', checkbox: '선택 항목', radio: '항목', toggle: '',
   tab: '탭 메뉴', select: '선택', dropdown: '항목 이름', input: '', modal: '제목 영역',
-  'mobile-header': '화면 제목', 'mobile-bottom-nav': '홈'
+  'mobile-header': '화면 제목', 'mobile-bottom-nav': '홈',
+  textarea: '', 'text-button': '글자 버튼', 'assist-button': '보조 버튼', 'filter-chip': '최신순'
 };
 
 const COMPONENT_TITLE = {
   button: '버튼', chip: '칩', checkbox: '체크박스', radio: '라디오', toggle: '토글',
   tab: '라인 탭', select: '셀렉트 박스', dropdown: '드롭다운 목록', input: '입력칸', modal: '모달',
-  'mobile-header': '모바일 헤더', 'mobile-bottom-nav': '모바일 하단 내비'
+  'mobile-header': '모바일 헤더', 'mobile-bottom-nav': '모바일 하단 내비',
+  textarea: '여러 줄 입력', 'text-button': '글자 버튼', 'assist-button': '보조 버튼', 'filter-chip': '필터 칩'
 };
 
 /* ── 3. 붙여 쓸 Compose 코드 ────────────────────────────────────────── */
@@ -184,6 +192,28 @@ const SNIPPET = {
   ]),
   'mobile-bottom-nav': (c) => call('S1MobileBottomNav', [
     'label = "홈"', `selected = ${c.state === 'selected'}`, 'onClick = { }'
+  ]),
+  textarea: (c) => call('S1Textarea', [
+    `value = ${c.state === 'default' || c.state === 'disabled' ? '""' : '"입력한 내용"'}`, 'onValueChange = { }',
+    'placeholder = "여러 줄 내용을 입력하세요"',
+    ...(c.state === 'readOnly' ? ['readOnly = true'] : []),
+    ...(c.state === 'disabled' ? ['enabled = false'] : [])
+  ]),
+  'text-button': (c, api) => call('S1TextButton', [
+    'text = "글자 버튼"', 'onClick = { }',
+    ...axisArg(api, 'variant', c.variant),
+    ...(c.state === 'disabled' ? ['enabled = false'] : [])
+  ]),
+  'assist-button': (c) => call('S1AssistButton', [
+    'text = "보조 버튼"', 'onClick = { }',
+    ...(c.state === 'disabled' ? ['enabled = false'] : [])
+  ]),
+  'filter-chip': (c, api) => call('S1FilterChip', [
+    'options = listOf("최신순", "인기순", "과거순")',
+    `selectedIndex = ${c.state === 'complete' ? '0' : 'null'}`, 'onSelect = { }',
+    ...(c.title === 'on' ? ['title = "정렬"'] : []),
+    ...axisArg(api, 'variant', c.variant), ...axisArg(api, 'size', c.size),
+    ...(c.state === 'disabled' ? ['enabled = false'] : [])
   ])
 };
 

@@ -1088,6 +1088,224 @@ private fun RowScope.S1MobileHeaderAction(
 `;
 }
 
+export function textareaKt(pkg) {
+  return header(pkg, [...COMMON, "androidx.compose.foundation.text.BasicTextField", "androidx.compose.ui.focus.onFocusChanged", "androidx.compose.ui.graphics.SolidColor"],
+    "S1Textarea — 정본 Textarea(최소 높이 80, 상태 4가지)") + `
+/**
+ * 승인된 여러 줄 입력. 정본에 크기 축이 없어 한 벌뿐이고, 글자수·도움말·라벨은 이 부품이 아니다
+ * (필요하면 화면이 따로 조합한다 — 웹 배포본과 같은 경계).
+ * 값이 들어찬 상태(filled)는 따로 그리는 면이 없다 — 정본이 default 와 같은 면을 쓴다.
+ */
+@Composable
+fun S1Textarea(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    placeholder: String? = null,
+    enabled: Boolean = true,
+    readOnly: Boolean = false,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+) {
+    var focused by remember { mutableStateOf(false) }
+    val state = when {
+        !enabled -> "disabled"
+        readOnly -> "readOnly"
+        focused -> "focus"
+        else -> "default"
+    }
+    val control = S1TextareaSpec.box(state, "control")
+    val hint = S1TextareaSpec.box(state, "placeholder")
+    BasicTextField(
+        value = value,
+        onValueChange = onValueChange,
+        enabled = enabled,
+        readOnly = readOnly,
+        textStyle = s1TextStyle(control),
+        cursorBrush = SolidColor(control.foreground?.value() ?: Color.Unspecified),
+        interactionSource = interactionSource,
+        modifier = modifier
+            .fillMaxWidth()
+            .s1Box(control, applyPadding = false)
+            .onFocusChanged { focused = it.isFocused }
+            .s1Padding(control),
+        decorationBox = { inner ->
+            Box(modifier = Modifier.fillMaxWidth()) {
+                if (value.isEmpty() && placeholder != null) {
+                    BasicText(text = placeholder, style = s1TextStyle(control, hint.foreground))
+                }
+                inner()
+            }
+        }
+    )
+}
+`;
+}
+
+/**
+ * 글자 버튼·보조 버튼 — 라벨 하나짜리 버튼 둘을 같은 뼈대로 낸다.
+ * 다른 것은 이름과 변형 축뿐이고, 면(배경·테두리·밑줄)은 전부 스타일 표에서 나온다.
+ */
+export function labelButtonKt(pkg, api, id) {
+  const name = id === "text-button" ? "S1TextButton" : "S1AssistButton";
+  const spec = id === "text-button" ? "S1TextButtonSpec" : "S1AssistButtonSpec";
+  const title = id === "text-button"
+    ? "S1TextButton — 정본 Text Button(배경·테두리 없음, hover·pressed 는 밑줄만)"
+    : "S1AssistButton — 정본 Assist Button(높이 32, 최소 폭 60)";
+  return header(pkg, COMMON, title) + `
+/**
+ * 승인된 ${id === "text-button" ? "글자 버튼" : "보조 버튼"}. ${id === "text-button"
+    ? "누르는 동안에도 색은 그대로고 밑줄만 생긴다(정본 그대로)."
+    : "누르는 동안의 면은 hover 와 같다(코어 Button 규칙)."}
+${fixedNote(api)} */
+@Composable
+fun ${name}(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+${variantParameter(api)}    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+) {
+    val hovered by interactionSource.collectIsHoveredAsState()
+    val pressed by interactionSource.collectIsPressedAsState()
+    val state = when {
+        !enabled -> "disabled"
+        pressed -> "pressed"
+        hovered -> "hover"
+        else -> "default"
+    }
+    val key = ${api.variantParam ? '"$variant|$state"' : '"$state"'}
+    val root = ${spec}.box(key, "root")
+    val label = ${spec}.box(key, "label")
+    Box(
+        modifier = modifier
+            .s1Box(root, applyPadding = false)
+            .clickable(
+                enabled = enabled,
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClick
+            )
+            .s1Padding(root),
+        contentAlignment = Alignment.Center
+    ) {
+        /* 글자 값(크기·굵기·밑줄)은 뿌리 상자가 갖는다 — 라벨 상자는 색만 다를 때 그 색을 덮어쓴다. */
+        BasicText(text = text, style = s1TextStyle(root, label.foreground ?: root.foreground), maxLines = 1)
+    }
+}
+`;
+}
+
+export function filterChipKt(pkg, api, dropdownApi) {
+  return header(pkg, [
+    ...COMMON,
+    "androidx.compose.foundation.Image",
+    "androidx.compose.runtime.mutableStateOf",
+    "androidx.compose.runtime.setValue",
+    "androidx.compose.ui.draw.rotate",
+    "androidx.compose.ui.graphics.ColorFilter",
+    "androidx.compose.ui.layout.onGloballyPositioned",
+    "androidx.compose.ui.platform.LocalDensity",
+    "androidx.compose.ui.text.style.TextOverflow",
+    "androidx.compose.ui.unit.IntOffset",
+    "androidx.compose.ui.window.Popup"
+  ], "S1FilterChip — 정본 Filter Chip(트리거) + 목록은 S1Dropdown 재사용") + `
+/**
+ * 승인된 필터 칩. 목록은 별도 부품(S1Dropdown)을 그대로 쓰고 여기서는 배치·폭만 담당한다.
+ * 제목(title)을 주면 "제목 값" 두 칸이 되고, 주지 않으면 값 한 칸이다 — 정본의 Title 축이 그것이다.
+ * 고른 뒤의 complete 는 정본이 default 와 같은 면을 쓴다(값만 바뀐다).
+${fixedNote(api)} */
+@Composable
+fun S1FilterChip(
+    options: List<String>,
+    selectedIndex: Int?,
+    onSelect: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    placeholder: String = "전체",
+${variantParameter(api)}${sizeParameter(api)}    enabled: Boolean = true
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var triggerWidth by remember { mutableStateOf(0) }
+    val interactionSource = remember { MutableInteractionSource() }
+    val hovered by interactionSource.collectIsHoveredAsState()
+    val state = when {
+        !enabled -> "disabled"
+        expanded -> "selected"
+        selectedIndex != null -> "complete"
+        hovered -> "hover"
+        else -> "default"
+    }
+    val titleAxis = if (title != null) "on" else "off"
+    val key = "${variantKey(api)}|${sizeKey(api)}|${api.breakName}|\$titleAxis|\$state"
+    val trigger = S1FilterChipSpec.box(key, "trigger")
+    val valueBox = S1FilterChipSpec.box(key, "value")
+    val icon = S1FilterChipSpec.box(key, "icon")
+    val panel = S1FilterChipSpec.box(key, "panel")
+    val density = LocalDensity.current
+    Box(modifier = modifier) {
+        Row(
+            modifier = Modifier
+                .onGloballyPositioned { triggerWidth = it.size.width }
+                .s1Box(trigger, applyPadding = false)
+                .clickable(
+                    enabled = enabled,
+                    interactionSource = interactionSource,
+                    indication = null
+                ) { expanded = !expanded }
+                .s1Padding(trigger),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(trigger.gapDp)
+        ) {
+            if (title != null) {
+                val titleBox = S1FilterChipSpec.box(key, "title")
+                BasicText(
+                    text = title,
+                    style = s1TextStyle(trigger, titleBox.foreground ?: trigger.foreground),
+                    maxLines = 1
+                )
+            }
+            BasicText(
+                text = selectedIndex?.let { options.getOrNull(it) } ?: placeholder,
+                style = s1TextStyle(trigger, valueBox.foreground ?: trigger.foreground),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(1f, fill = false)
+            )
+            val iconName = icon.icon
+            if (iconName != null) {
+                Image(
+                    imageVector = S1Icons.byName(iconName),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size((icon.width ?: 0f).dp, (icon.height ?: 0f).dp)
+                        .rotate(icon.rotation ?: 0f),
+                    colorFilter = ColorFilter.tint(icon.background?.value() ?: Color.Unspecified)
+                )
+            }
+        }
+        if (expanded) {
+            val offsetY = with(density) { ((trigger.height ?: 0f) + panel.marginTop).dp.roundToPx() }
+            Popup(
+                alignment = Alignment.TopStart,
+                offset = IntOffset(0, offsetY),
+                onDismissRequest = { expanded = false }
+            ) {
+                S1Dropdown(
+                    options = options,
+                    selectedIndices = selectedIndex?.let { setOf(it) } ?: emptySet(),
+                    onOptionClick = { index ->
+                        onSelect(index)
+                        expanded = false
+                    },
+                    modifier = Modifier.width(with(density) { triggerWidth.toDp() })
+                )
+            }
+        }
+    }
+}
+`;
+}
+
 export function galleryKt(pkg, apis) {
   const button = apis.button;
   const chip = apis.chip;
@@ -1263,6 +1481,54 @@ fun S1Gallery(modifier: Modifier = Modifier, dark: Boolean = false) {
                             message = "변경한 내용이 저장되지 않고 사라집니다.\\n정말 이 작업을 진행하시겠어요?",
                             onDismissRequest = {},
                             cancelLabel = if (footer == "dual") "취소" else null
+                        )
+                    }
+                }
+            }
+
+            GallerySection("Text Button · Assist Button") {
+                for (variant in S1TextButtonSpec.variants) {
+                    GalleryRow(variant) {
+                        S1TextButton(text = "글자 버튼", onClick = {}, variant = variant)
+                        S1TextButton(text = "비활성", onClick = {}, variant = variant, enabled = false)
+                    }
+                }
+                GalleryRow("assist") {
+                    S1AssistButton(text = "보조 버튼", onClick = {})
+                    S1AssistButton(text = "비활성", onClick = {}, enabled = false)
+                }
+            }
+
+            GallerySection("Textarea") {
+                var memo by remember { mutableStateOf("") }
+                GalleryRow("default") { S1Textarea(value = memo, onValueChange = { memo = it }, placeholder = "여러 줄 내용을 입력하세요") }
+                GalleryRow("readOnly") { S1Textarea(value = "읽기 전용 내용", onValueChange = {}, readOnly = true) }
+                GalleryRow("disabled") { S1Textarea(value = "", onValueChange = {}, placeholder = "여러 줄 내용을 입력하세요", enabled = false) }
+            }
+
+            GallerySection("Filter Chip") {
+                for (variant in S1FilterChipSpec.variants) {
+                    var picked by remember { mutableStateOf<Int?>(null) }
+                    GalleryRow(variant) {
+                        S1FilterChip(
+                            options = listOf("최신순", "인기순", "과거순"),
+                            selectedIndex = picked,
+                            onSelect = { picked = it },
+                            title = "정렬",
+                            variant = variant
+                        )
+                        S1FilterChip(
+                            options = listOf("전체", "진행중", "완료"),
+                            selectedIndex = null,
+                            onSelect = {},
+                            variant = variant
+                        )
+                        S1FilterChip(
+                            options = listOf("전체"),
+                            selectedIndex = null,
+                            onSelect = {},
+                            variant = variant,
+                            enabled = false
                         )
                     }
                 }

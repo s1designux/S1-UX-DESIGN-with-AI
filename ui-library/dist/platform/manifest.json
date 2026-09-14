@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요."
   },
-  "version": "0.2.0",
+  "version": "0.3.0",
   "releasedAt": "2026-09-14",
   "canonicalFingerprint": "789e183460b0f76d2d9cbf2b8cc9be98570202138980da1b4541e9d9ad4a69c5",
   "generatedAt": null,
@@ -41,7 +41,11 @@
         "tab",
         "modal",
         "mobile-header",
-        "mobile-bottom-nav"
+        "mobile-bottom-nav",
+        "textarea",
+        "text-button",
+        "assist-button",
+        "filter-chip"
       ],
       "textStyles": 20,
       "icons": 13,

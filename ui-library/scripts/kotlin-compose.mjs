@@ -20,7 +20,7 @@ import { runtimeKt } from "./kotlin-runtime.mjs";
 import { paletteKt, specKt } from "./kotlin-emit.mjs";
 import { readIcon, iconsKt } from "./kotlin-icons.mjs";
 import { readTextStyles, typeKt } from "./kotlin-typography.mjs";
-import { buttonKt, chipKt, controlKt, toggleKt, tabKt, selectKt, dropdownKt, inputKt, modalKt, mobileHeaderKt, mobileBottomNavKt, galleryKt } from "./kotlin-components.mjs";
+import { buttonKt, chipKt, controlKt, toggleKt, tabKt, selectKt, dropdownKt, inputKt, modalKt, mobileHeaderKt, mobileBottomNavKt, textareaKt, labelButtonKt, filterChipKt, galleryKt } from "./kotlin-components.mjs";
 
 const GENERATED_NOTE = "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run ui:build` 를 실행하세요.";
 const PACKAGE = "com.s1.designsystem";
@@ -144,7 +144,7 @@ const BOX_PROPERTIES = new Set([
   "padding", "padding-inline", "padding-block", "padding-left", "padding-right", "padding-top", "padding-bottom",
   "padding-inline-start", "padding-inline-end", "padding-block-start", "padding-block-end", "inset",
   "gap", "margin-inline-start", "margin-top", "font-size", "font-weight", "letter-spacing", "line-height", "box-shadow", "left", "right", "top", "bottom",
-  "transform", "mask", "opacity", "flex"
+  "transform", "mask", "opacity", "flex", "text-decoration"
 ]);
 
 /** 계산된 선언 뭉치에서 Compose 가 쓰는 값만 뽑아 정규화한다. */
@@ -237,6 +237,8 @@ function toBox(style, tokenValues, where) {
     const icon = /url\(\s*"?([^")]+)"?\s*\)/.exec(style.mask);
     if (icon) box.icon = icon[1].split("/").pop().replace(/\.svg$/, "");
   }
+  /* 밑줄 — 글자 버튼이 hover·pressed 에서 색 대신 밑줄로만 달라진다(정본 그대로). */
+  if (style["text-decoration"] !== undefined) box.underline = /underline/.test(style["text-decoration"]);
   if (style.opacity !== undefined) box.opacity = numberOf(style.opacity, tokenValues, where);
   if (style.transform !== undefined) {
     const rotate = /rotate\((-?[\d.]+)deg\)/.exec(style.transform);
@@ -717,6 +719,125 @@ function mobileHeaderPlan(manifest) {
   };
 }
 
+/* ── 여러 줄 입력 ─────────────────────────────────────────────────────
+   축은 상태 하나뿐이다(크기·헬퍼·글자수 없음). filled 는 값이 있는 문서 상태라
+   강제 시각이 없고 default 와 같은 면을 쓴다 — 표에도 그대로 담는다. */
+function textareaPlan() {
+  const states = ["default", "focus", "readOnly", "disabled"];
+  return {
+    id: "textarea",
+    axes: { states },
+    combos: states.map((state) => ({ state })),
+    key: (combo) => combo.state,
+    build: (combo) => {
+      const attributes = { "data-s1-part": "control" };
+      const controlStates = [];
+      if (combo.state === "focus") controlStates.push("focus", "focus-visible");
+      if (combo.state === "readOnly") attributes.readonly = "";
+      if (combo.state === "disabled") controlStates.push("disabled");
+      const control = el("textarea", attributes, controlStates);
+      const root = el("div", { "data-s1-component": "textarea" }, combo.state === "focus" ? ["focus-within"] : [], [control]);
+      return {
+        targets: {
+          root: { node: root },
+          control: { node: control },
+          placeholder: { node: control, pseudoElement: "placeholder" }
+        },
+        mediaActive: hoverOnly(false)
+      };
+    }
+  };
+}
+
+/* ── 글자 버튼 · 보조 버튼 ────────────────────────────────────────────
+   둘 다 크기 축이 없고 상태 4가지뿐이다. pressed 는 hover 와 같은 면을 쓴다(코어 Button 규칙)
+   — 같은 값이 두 칸에 들어가는 것이 맞다. 값을 하나로 줄이면 규칙이 보이지 않는다. */
+function labelButtonPlan(id, manifest) {
+  const states = ["default", "hover", "pressed", "disabled"];
+  const variants = manifest.variants ?? [];
+  const combos = [];
+  if (variants.length) {
+    for (const variant of variants) for (const state of states) combos.push({ variant, state });
+  } else {
+    for (const state of states) combos.push({ state });
+  }
+  return {
+    id,
+    axes: variants.length ? { variants, states } : { states },
+    combos,
+    key: (combo) => (combo.variant ? `${combo.variant}|${combo.state}` : combo.state),
+    build: (combo) => {
+      const nodeStates = [];
+      if (combo.state === "hover") nodeStates.push("hover");
+      if (combo.state === "pressed") nodeStates.push("active");
+      if (combo.state === "disabled") nodeStates.push("disabled");
+      const label = el("span", { "data-s1-part": "label" });
+      const attributes = { "data-s1-component": id, type: "button" };
+      if (combo.variant) attributes["data-variant"] = combo.variant;
+      const root = el("button", attributes, nodeStates, [label]);
+      return {
+        targets: { root: { node: root }, label: { node: label } },
+        mediaActive: hoverOnly(combo.state === "hover")
+      };
+    }
+  };
+}
+
+/* ── 필터 칩 ──────────────────────────────────────────────────────────
+   제목 유무(data-title)가 값 라벨의 색을 바꾸므로 축으로 함께 물어본다.
+   열림(selected)은 목록을 자식으로 붙이는데, 목록 자체의 값은 dropdown 이 소유한다 — 여기서는 자리만 잰다. */
+function filterChipPlan(manifest) {
+  const states = ["default", "hover", "selected", "complete", "disabled"];
+  const titles = ["on", "off"];
+  const sizeBreaks = [];
+  for (const [breakName, sizes] of Object.entries(manifest.breaks)) {
+    for (const size of sizes) sizeBreaks.push({ size, breakName });
+  }
+  const combos = [];
+  for (const pair of sizeBreaks) {
+    for (const variant of manifest.variants) {
+      for (const title of titles) {
+        for (const state of states) combos.push({ ...pair, variant, title, state });
+      }
+    }
+  }
+  return {
+    id: "filter-chip",
+    axes: { variants: manifest.variants, sizeBreaks, titles, states },
+    combos,
+    key: (combo) => `${combo.variant}|${combo.size}|${combo.breakName}|${combo.title}|${combo.state}`,
+    build: (combo) => {
+      const open = combo.state === "selected";
+      const triggerStates = [];
+      if (combo.state === "hover") triggerStates.push("hover");
+      if (combo.state === "disabled") triggerStates.push("disabled");
+      const title = el("span", { "data-s1-part": "title" });
+      const value = el("span", { "data-s1-part": "value" });
+      const icon = el("span", { "data-s1-part": "icon" });
+      const triggerAttributes = {
+        "data-s1-part": "trigger", type: "button", "aria-haspopup": "listbox",
+        "aria-expanded": open ? "true" : "false"
+      };
+      if (combo.state === "complete") triggerAttributes["data-complete"] = "true";
+      const children = combo.title === "on" ? [title, value, icon] : [value, icon];
+      const trigger = el("button", triggerAttributes, triggerStates, children);
+      const panelAttributes = { "data-s1-part": "panel" };
+      if (!open) panelAttributes.hidden = "";
+      const panel = el("div", panelAttributes);
+      const root = el("div", {
+        "data-s1-component": "filter-chip", "data-variant": combo.variant, "data-size": combo.size,
+        "data-break": combo.breakName, "data-title": combo.title
+      }, [], [trigger, panel]);
+      const targets = {
+        root: { node: root }, trigger: { node: trigger }, value: { node: value },
+        icon: { node: icon }, panel: { node: panel }
+      };
+      if (combo.title === "on") targets.title = { node: title };
+      return { targets, mediaActive: hoverOnly(combo.state === "hover") };
+    }
+  };
+}
+
 export const PLANS = {
   button: buttonPlan,
   chip: chipPlan,
@@ -729,7 +850,11 @@ export const PLANS = {
   input: inputPlan,
   modal: modalPlan,
   "mobile-bottom-nav": mobileBottomNavPlan,
-  "mobile-header": mobileHeaderPlan
+  "mobile-header": mobileHeaderPlan,
+  textarea: textareaPlan,
+  "text-button": (manifest) => labelButtonPlan("text-button", manifest),
+  "assist-button": (manifest) => labelButtonPlan("assist-button", manifest),
+  "filter-chip": filterChipPlan
 };
 
 export const EXTRA_PLANS = {
@@ -802,7 +927,7 @@ export function extractSpec({ id, css, manifest, tokenValues, planOptions }) {
 /* ── 5. 묶어서 파일로 ────────────────────────────────────────────────── */
 
 /** A안 범위 — 화면 부품으로 옮기는 열 가지. 여기 없는 컴포넌트는 값(S1Tokens)만 제공한다. */
-export const COMPOSE_COMPONENTS = ["button", "input", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "tab", "modal", "mobile-header", "mobile-bottom-nav"];
+export const COMPOSE_COMPONENTS = ["button", "input", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "tab", "modal", "mobile-header", "mobile-bottom-nav", "textarea", "text-button", "assist-button", "filter-chip"];
 
 const COMPONENT_FILE = {
   button: (pkg, api) => buttonKt(pkg, api),
@@ -813,7 +938,11 @@ const COMPONENT_FILE = {
   tab: (pkg, api) => tabKt(pkg, api),
   dropdown: (pkg, api) => dropdownKt(pkg, api),
   "mobile-header": (pkg, api) => mobileHeaderKt(pkg, api),
-  "mobile-bottom-nav": (pkg) => mobileBottomNavKt(pkg)
+  "mobile-bottom-nav": (pkg) => mobileBottomNavKt(pkg),
+  textarea: (pkg) => textareaKt(pkg),
+  "text-button": (pkg, api) => labelButtonKt(pkg, api, "text-button"),
+  "assist-button": (pkg, api) => labelButtonKt(pkg, api, "assist-button"),
+  "filter-chip": (pkg, api) => filterChipKt(pkg, api)
 };
 
 /**

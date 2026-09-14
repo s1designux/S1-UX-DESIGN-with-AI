@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -123,6 +124,7 @@ data class S1Box(
     val opacity: Float? = null,
     val rotation: Float? = null,
     val icon: String? = null,
+    val underline: Boolean = false,
     val left: Float? = null,
     val right: Float? = null,
     val shadow: List<S1Shadow>? = null
@@ -212,7 +214,8 @@ fun s1TextStyle(box: S1Box, color: S1Color? = box.foreground): TextStyle {
         fontSize = size,
         fontWeight = box.fontWeight?.let { FontWeight(it) },
         letterSpacing = if (box.letterSpacing == 0f) TextUnit.Unspecified else box.letterSpacing.em,
-        lineHeight = if (box.lineHeight == null || box.fontSize == null) TextUnit.Unspecified else (box.fontSize * box.lineHeight).sp
+        lineHeight = if (box.lineHeight == null || box.fontSize == null) TextUnit.Unspecified else (box.fontSize * box.lineHeight).sp,
+        textDecoration = if (box.underline) TextDecoration.Underline else TextDecoration.None
     )
 }
 

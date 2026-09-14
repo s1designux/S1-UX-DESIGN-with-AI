@@ -176,6 +176,54 @@ fun S1Gallery(modifier: Modifier = Modifier, dark: Boolean = false) {
                 }
             }
 
+            GallerySection("Text Button · Assist Button") {
+                for (variant in S1TextButtonSpec.variants) {
+                    GalleryRow(variant) {
+                        S1TextButton(text = "글자 버튼", onClick = {}, variant = variant)
+                        S1TextButton(text = "비활성", onClick = {}, variant = variant, enabled = false)
+                    }
+                }
+                GalleryRow("assist") {
+                    S1AssistButton(text = "보조 버튼", onClick = {})
+                    S1AssistButton(text = "비활성", onClick = {}, enabled = false)
+                }
+            }
+
+            GallerySection("Textarea") {
+                var memo by remember { mutableStateOf("") }
+                GalleryRow("default") { S1Textarea(value = memo, onValueChange = { memo = it }, placeholder = "여러 줄 내용을 입력하세요") }
+                GalleryRow("readOnly") { S1Textarea(value = "읽기 전용 내용", onValueChange = {}, readOnly = true) }
+                GalleryRow("disabled") { S1Textarea(value = "", onValueChange = {}, placeholder = "여러 줄 내용을 입력하세요", enabled = false) }
+            }
+
+            GallerySection("Filter Chip") {
+                for (variant in S1FilterChipSpec.variants) {
+                    var picked by remember { mutableStateOf<Int?>(null) }
+                    GalleryRow(variant) {
+                        S1FilterChip(
+                            options = listOf("최신순", "인기순", "과거순"),
+                            selectedIndex = picked,
+                            onSelect = { picked = it },
+                            title = "정렬",
+                            variant = variant
+                        )
+                        S1FilterChip(
+                            options = listOf("전체", "진행중", "완료"),
+                            selectedIndex = null,
+                            onSelect = {},
+                            variant = variant
+                        )
+                        S1FilterChip(
+                            options = listOf("전체"),
+                            selectedIndex = null,
+                            onSelect = {},
+                            variant = variant,
+                            enabled = false
+                        )
+                    }
+                }
+            }
+
             GallerySection("Mobile Header") {
                 for (variant in S1MobileHeaderSpec.variants) {
                     GalleryLabel(variant)

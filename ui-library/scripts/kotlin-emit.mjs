@@ -81,6 +81,7 @@ function boxLiteral(box) {
   }
   if (box.fontWeight) fields.push(`fontWeight = ${box.fontWeight}`);
   if (box.icon) fields.push(`icon = "${box.icon}"`);
+  if (box.underline) fields.push("underline = true");
   if (box.shadow) {
     const layers = box.shadow.map((layer) => `S1Shadow(${float(layer.x)}, ${float(layer.y)}, ${float(layer.blur)}, ${float(layer.spread)}, ${layer.color})`);
     fields.push(`shadow = listOf(${layers.join(", ")})`);
