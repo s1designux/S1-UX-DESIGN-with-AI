@@ -5,10 +5,84 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.5.1",
+  "version": "0.5.2",
   "releasedAt": "2026-09-14",
-  "canonicalFingerprint": "f17bdd2312b3a38e920909993f66136e13b3313d098679b283d035b7fbc3f48c",
+  "canonicalFingerprint": "2444c67933ca9a5d226c4a3cdf254f84790c1ba828d02b3fba2986fa38ab28ff",
   "releases": [
+    {
+      "version": "0.5.2",
+      "date": "2026-09-14",
+      "kind": "patch",
+      "canonicalFingerprint": "2444c67933ca9a5d226c4a3cdf254f84790c1ba828d02b3fba2986fa38ab28ff",
+      "components": [
+        {
+          "id": "input",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "button",
+          "from": "0.1.0",
+          "to": "0.1.1"
+        },
+        {
+          "id": "checkbox",
+          "from": "0.1.0",
+          "to": "0.1.1"
+        },
+        {
+          "id": "radio",
+          "from": "0.1.0",
+          "to": "0.1.1"
+        },
+        {
+          "id": "toggle",
+          "from": "0.1.0",
+          "to": "0.1.1"
+        },
+        {
+          "id": "chip",
+          "from": "0.1.0",
+          "to": "0.1.1"
+        },
+        {
+          "id": "dropdown",
+          "from": "0.1.0",
+          "to": "0.1.1"
+        },
+        {
+          "id": "tab",
+          "from": "0.1.0",
+          "to": "0.1.1"
+        },
+        {
+          "id": "pagination",
+          "from": "0.1.0",
+          "to": "0.1.1"
+        },
+        {
+          "id": "textarea",
+          "from": "0.1.0",
+          "to": "0.1.1"
+        },
+        {
+          "id": "table",
+          "from": "0.1.0",
+          "to": "0.1.1"
+        },
+        {
+          "id": "date-picker",
+          "from": "0.1.0",
+          "to": "0.1.1"
+        },
+        {
+          "id": "gnb",
+          "from": "0.1.0",
+          "to": "0.1.1"
+        }
+      ],
+      "deliveryFingerprint": "8f76b54939b5d0663f6db1b32adb9cd04044d6022a83917d79674b1c2c7b4abb"
+    },
     {
       "version": "0.5.1",
       "date": "2026-09-14",
@@ -73,5 +147,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "e745cd67c9e3f72c09fbdbc842cf707c847426d714f377542de5e438da86ae4d"
+  "deliveryFingerprint": "8f76b54939b5d0663f6db1b32adb9cd04044d6022a83917d79674b1c2c7b4abb"
 }

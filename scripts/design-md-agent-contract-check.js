@@ -31,7 +31,9 @@ expect('Button 실제 variant 누락', ['Primary', 'Secondary', 'Blue-Line'].eve
 const buttonAxes = between(button, 'variantAxes:', 'states:');
 expect('Button 폐기 danger/ghost가 Agent variant에 재유입', !buttonAxes.includes('Danger') && !buttonAxes.includes('Ghost'));
 expect('Button PC MD 44 geometry 누락', button.includes('height: 44'));
-expect('미해결 component alias 표시 누락', button.includes('status: "unresolved"'));
+// 2026-09-14: 종전에는 "미해결 alias 가 표시되어 있는가"를 봤다. 배포본 기준 재매칭으로
+// Button 의 미해결 alias 가 0 이 됐으므로, 이제는 반대로 "미해결이 남아 있지 않은가"를 본다.
+expect('Button 에 배포본으로 풀리지 않는 alias 가 남음', !button.includes('status: "unresolved"'));
 expect('Button PC click/disabled 행동 계약 누락', button.includes('invoke the assigned action once') && button.includes('disabled=true'));
 
 const input = section('Input');
@@ -59,6 +61,15 @@ expect('DatePicker 키보드/포커스 행동 계약 누락', datePicker.include
 
 const timePicker = section('TimePicker');
 expect('TimePicker 시/분 선택 행동 계약 누락', timePicker.includes('one hour and one minute') && timePicker.includes('target: "outside"'));
+
+// 배포본에 실제로 있는 컴포넌트는 문서의 토큰이 전부 배포본으로 풀려야 한다.
+// 아직 안 만든 컴포넌트(codeStatus != implemented)만 미해결을 남길 수 있고, 그 절에는 경고가 붙는다.
+const unresolvedSections = [...DOC.matchAll(/\n### ([^\n]+)\n/g)]
+  .map((m) => ({ name: m[1], text: section(m[1]) }))
+  .filter((s) => s.text.includes('status: "unresolved"'))
+  .filter((s) => !s.text.includes('배포본에 아직 없는 컴포넌트입니다'))
+  .map((s) => s.name);
+expect(`배포본에 있는데 미해결 토큰이 남은 컴포넌트: ${unresolvedSections.join(', ')}`, !unresolvedSections.length);
 
 const modal = section('Modal');
 expect('PC 사이트에 없는 Modal 행동이 임의 생성됨', modal.includes('behavior:') && modal.includes('status: "not-defined"'));

@@ -640,6 +640,12 @@ function buildComponents(comps, factsDoc, behaviorDoc, figmaMap, allTokens) {
   if (!comps.length) { body.push('_등록된 컴포넌트가 없습니다._'); }
   for (const c of comps) {
     const parts = [`### ${c.name}`];
+    // 배포본(ui-library/dist)에 아직 없는 컴포넌트는 표의 토큰이 값으로 풀리지 않는다.
+    // AI 가 이 절을 보고 만들지 않도록 맨 앞에 알린다.
+    const codeStatus = c.json && ((c.json._meta && c.json._meta.codeStatus) || c.json.codeStatus);
+    if (codeStatus && codeStatus !== 'implemented') {
+      parts.push(`> ⚠️ 배포본에 아직 없는 컴포넌트입니다(codeStatus: \`${codeStatus}\`). 아래 토큰은 \`ui-library/dist\` 로 값이 풀리지 않으니 이 절을 보고 구현하지 마세요.`);
+    }
     const pr = componentProse(c);
     if (pr) parts.push(pr);
     parts.push(componentTable(c));
