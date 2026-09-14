@@ -30,10 +30,12 @@ const LIBRARY = path.join(ROOT, 'ui-library');
 const SRC_COMPONENTS = path.join(LIBRARY, 'src', 'components');
 const PACKAGE = path.join(LIBRARY, 'package.json');
 const LEDGER = path.join(LIBRARY, 'release-log.json');
+const DIST = path.join(LIBRARY, 'dist');
 
 const BUMP = process.argv.includes('--bump');
 const MINOR = process.argv.includes('--minor');
 const JSON_OUT = process.argv.includes('--json');
+const RECORD = process.argv.includes('--record');
 
 const read = (file) => fs.readFileSync(file, 'utf8');
 const readJson = (file) => JSON.parse(read(file));
@@ -54,6 +56,37 @@ function canonicalFingerprint(manifest) {
   for (const relative of manifest.canonicalSources) {
     digest.update(`${relative}\0`);
     digest.update(read(path.join(ROOT, relative)));
+    digest.update('\0');
+  }
+  return digest.digest('hex');
+}
+
+/**
+ * 전달본 지문 — **개발자가 받아 가는 내용**이 바뀌었는지 본다.
+ * 정본이 그대로여도 옮기는 코드가 늘면(예: Compose 부품 추가) 받는 것은 달라진다.
+ * 번호 자체는 파일 안에 박혀 있으므로 세기 전에 자리표시자로 바꾼다 — 그러지 않으면
+ * 번호를 올릴 때마다 지문이 따라 바뀌어 영원히 제자리를 맴돈다.
+ */
+function deliveryFingerprint(version, releasedAt) {
+  const files = [];
+  const walk = (directory, prefix = '') => {
+    if (!fs.existsSync(directory)) return;
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+      const relative = prefix ? `${prefix}/${entry.name}` : entry.name;
+      if (entry.isDirectory()) walk(path.join(directory, entry.name), relative);
+      else files.push(relative);
+    }
+  };
+  walk(DIST);
+  const digest = createHash('sha256');
+  for (const relative of files) {
+    digest.update(`${relative}\0`);
+    let content = fs.readFileSync(path.join(DIST, relative));
+    const text = content.toString('utf8');
+    if (!text.includes('\uFFFD')) {
+      content = Buffer.from(text.split(version).join('<VERSION>').split(releasedAt).join('<DATE>'), 'utf8');
+    }
+    digest.update(content);
     digest.update('\0');
   }
   return digest.digest('hex');
@@ -84,17 +117,35 @@ const combined = (list) => hash(list.map(({ manifest, actual }) => (BUMP ? actua
 const pkg = readJson(PACKAGE);
 const stale = components.filter((component) => component.stale);
 
+// ── 전달본 지문 기록 (빌드 뒤) ─────────────────────────────────────────
+if (RECORD) {
+  const ledger = readJson(LEDGER);
+  const delivery = deliveryFingerprint(ledger.version, ledger.releasedAt);
+  if (ledger.deliveryFingerprint === delivery) {
+    console.log('ℹ️  전달본 내용이 그대로입니다 — 기록할 것이 없습니다.');
+    process.exit(0);
+  }
+  ledger.deliveryFingerprint = delivery;
+  if (ledger.releases[0]) ledger.releases[0].deliveryFingerprint = delivery;
+  writeJson(LEDGER, ledger);
+  console.log(`✅ 전달본 지문 기록 — ${ledger.version} (${delivery.slice(0, 12)}…)`);
+  process.exit(0);
+}
+
 // ── 올리기 ────────────────────────────────────────────────────────────
 if (BUMP) {
   const kind = MINOR ? 'minor' : 'patch';
-  if (!stale.length) {
-    console.log('ℹ️  정본과 달라진 부품이 없습니다 — 올릴 번호가 없습니다.');
-    process.exit(0);
-  }
   const ledger = fs.existsSync(LEDGER) ? readJson(LEDGER) : null;
   if (!ledger) {
     console.error('❌ ui-library/release-log.json 이 없습니다 — 장부 없이 번호를 올릴 수 없습니다.');
     process.exit(1);
+  }
+  /* 장부에 전달본 지문이 아직 없으면 "그대로임"을 증명할 수 없다 — 올리는 것을 막지 않는다. */
+  const deliveryChanged = ledger.deliveryFingerprint === undefined
+    || ledger.deliveryFingerprint !== deliveryFingerprint(ledger.version, ledger.releasedAt);
+  if (!stale.length && !deliveryChanged) {
+    console.log('ℹ️  정본도 전달본도 달라진 것이 없습니다 — 올릴 번호가 없습니다.');
+    process.exit(0);
   }
   const changed = [];
   for (const component of stale) {
@@ -110,14 +161,14 @@ if (BUMP) {
   ledger.version = version;
   ledger.releasedAt = today();
   ledger.canonicalFingerprint = fingerprint;
-  ledger.releases.unshift({ version, date: ledger.releasedAt, kind, canonicalFingerprint: fingerprint, components: changed });
+  ledger.releases.unshift({ version, date: ledger.releasedAt, kind, canonicalFingerprint: fingerprint, components: changed, note: changed.length === 0 ? '정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).' : undefined });
   writeJson(LEDGER, ledger);
   pkg.version = version;
   writeJson(PACKAGE, pkg);
 
   console.log(`\n🔢 배포본 번호 ${version} (${kind === 'minor' ? '가운데 자리 — 쓰는 법이 바뀜' : '끝자리 — 값만 바뀜'}) · ${ledger.releasedAt}`);
   for (const { id, from, to } of changed) console.log(`   · ${id} ${from} → ${to}`);
-  console.log('\n   이제 `npm run ui:build` 로 전달본을 다시 만드세요.\n');
+  console.log('\n   이제 `npm run ui:build` 로 전달본을 다시 만든 뒤 `npm run ui:version -- --record` 로 마무리하세요.\n');
   process.exit(0);
 }
 
@@ -134,6 +185,12 @@ if (!ledger) {
 } else {
   if (ledger.canonicalFingerprint !== fingerprint && !stale.length) {
     errors.push(`장부의 지문이 지금 배포본과 다릅니다 — 번호를 올리세요 (\`npm run ui:bump\`)`);
+  }
+  if (ledger.deliveryFingerprint !== undefined && !stale.length) {
+    const delivery = deliveryFingerprint(ledger.version, ledger.releasedAt);
+    if (ledger.deliveryFingerprint !== delivery) {
+      errors.push('개발자가 받아 가는 내용이 바뀌었는데 번호가 그대로입니다 — 부품이 늘거나 쓰는 법이 바뀌었으면 `npm run ui:bump -- --minor`, 값만 달라졌으면 `npm run ui:bump`');
+    }
   }
   if (ledger.version !== pkg.version) {
     errors.push(`장부 번호(${ledger.version})와 ui-library/package.json 번호(${pkg.version})가 다릅니다`);

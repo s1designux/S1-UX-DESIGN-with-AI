@@ -20,13 +20,14 @@ import { runtimeKt } from "./kotlin-runtime.mjs";
 import { paletteKt, specKt } from "./kotlin-emit.mjs";
 import { readIcon, iconsKt } from "./kotlin-icons.mjs";
 import { readTextStyles, typeKt } from "./kotlin-typography.mjs";
-import { buttonKt, chipKt, controlKt, toggleKt, tabKt, selectKt, dropdownKt, inputKt, modalKt, galleryKt } from "./kotlin-components.mjs";
+import { buttonKt, chipKt, controlKt, toggleKt, tabKt, selectKt, dropdownKt, inputKt, modalKt, mobileHeaderKt, mobileBottomNavKt, galleryKt } from "./kotlin-components.mjs";
 
 const GENERATED_NOTE = "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run ui:build` 를 실행하세요.";
 const PACKAGE = "com.s1.designsystem";
 
 const parts = (name) => name.replace(/^--/, "").split("-").filter(Boolean);
 const camelName = (name) => parts(name).map((part, index) => (index === 0 ? part : part[0].toUpperCase() + part.slice(1))).join("");
+const camel = (id) => id.split(/[-_ ]/).filter(Boolean).map((part, index) => (index === 0 ? part : part[0].toUpperCase() + part.slice(1))).join("");
 const pascal = (id) => id.split(/[-_ ]/).filter(Boolean).map((part) => part[0].toUpperCase() + part.slice(1)).join("");
 
 /* ── 1. CSS 값 → Kotlin 표현 ─────────────────────────────────────────── */
@@ -58,6 +59,12 @@ function lengthOf(value, tokenValues, where) {
     const left = lengthOf(`var(${calc[1]})`, tokenValues, where);
     const right = lengthOf(`var(${calc[3]})`, tokenValues, where);
     return { px: calc[2] === "-" ? left.px - right.px : left.px + right.px, token: null, calc: text };
+  }
+  /* calc(var(--x) * -1) — 바깥으로 넓히는 값(터치 영역)을 음수로 쓴 꼴이다. */
+  const scaled = /^calc\(\s*var\(\s*(--[a-z0-9-]+)\s*\)\s*\*\s*(-?\d*\.?\d+)\s*\)$/i.exec(text);
+  if (scaled) {
+    const base = lengthOf(`var(${scaled[1]})`, tokenValues, where);
+    return { px: base.px * Number(scaled[2]), token: null, calc: text };
   }
   const plain = /^(-?\d*\.?\d+)px$/.exec(text);
   if (plain) return { px: Number(plain[1]), token: null, literal: true };
@@ -135,6 +142,7 @@ const BOX_PROPERTIES = new Set([
   "background", "background-color", "color", "border", "border-color", "border-width", "border-style",
   "border-radius", "height", "min-height", "width", "min-width", "max-width",
   "padding", "padding-inline", "padding-block", "padding-left", "padding-right", "padding-top", "padding-bottom",
+  "padding-inline-start", "padding-inline-end", "padding-block-start", "padding-block-end", "inset",
   "gap", "margin-inline-start", "margin-top", "font-size", "font-weight", "letter-spacing", "line-height", "box-shadow", "left", "right", "top", "bottom",
   "transform", "mask", "opacity", "flex"
 ]);
@@ -190,6 +198,10 @@ function toBox(style, tokenValues, where) {
   }
   if (style["padding-block"] !== undefined) applyPair(style["padding-block"], ["paddingTop", "paddingBottom"]);
   if (style["padding-inline"] !== undefined) applyPair(style["padding-inline"], ["paddingStart", "paddingEnd"]);
+  if (style["padding-inline-start"] !== undefined) sides.paddingStart = length(style["padding-inline-start"])?.px ?? 0;
+  if (style["padding-inline-end"] !== undefined) sides.paddingEnd = length(style["padding-inline-end"])?.px ?? 0;
+  if (style["padding-block-start"] !== undefined) sides.paddingTop = length(style["padding-block-start"])?.px ?? 0;
+  if (style["padding-block-end"] !== undefined) sides.paddingBottom = length(style["padding-block-end"])?.px ?? 0;
   if (style["padding-left"] !== undefined) sides.paddingStart = length(style["padding-left"])?.px ?? 0;
   if (style["padding-right"] !== undefined) sides.paddingEnd = length(style["padding-right"])?.px ?? 0;
   if (style["padding-top"] !== undefined) sides.paddingTop = length(style["padding-top"])?.px ?? 0;
@@ -204,6 +216,18 @@ function toBox(style, tokenValues, where) {
   if (style["letter-spacing"] !== undefined) box.letterSpacing = numberOf(style["letter-spacing"], tokenValues, where);
   if (style["line-height"] !== undefined) box.lineHeight = numberOf(style["line-height"], tokenValues, where);
   if (style["box-shadow"] !== undefined) box.shadow = shadowOf(style["box-shadow"], tokenValues, where);
+  /* inset 은 네 변을 한 줄로 쓴 것이다 — 터치 영역을 바깥으로 넓히는 값이 여기 담긴다. */
+  if (style.inset !== undefined) {
+    const pieces = splitOutside(style.inset).map((piece) => length(piece)?.px ?? 0);
+    const [top, right, bottom, left] = pieces.length === 1
+      ? [pieces[0], pieces[0], pieces[0], pieces[0]]
+      : pieces.length === 2
+        ? [pieces[0], pieces[1], pieces[0], pieces[1]]
+        : pieces.length === 3
+          ? [pieces[0], pieces[1], pieces[2], pieces[1]]
+          : pieces;
+    box.top = top; box.right = right; box.bottom = bottom; box.left = left;
+  }
   for (const [property, field] of [["left", "left"], ["right", "right"], ["top", "top"], ["bottom", "bottom"]]) {
     if (style[property] === undefined) continue;
     const measured = length(style[property]);
@@ -590,6 +614,109 @@ function modalCloseHoverPlan(manifest) {
   };
 }
 
+/* ── 모바일 하단 내비 ──────────────────────────────────────────────────
+   정본은 "탭 1칸"만 만든다(바 4칸은 화면이 조립한다) — 여기서도 1칸만 부품으로 낸다.
+   축은 선택 여부 하나뿐이고, 그 표현은 aria-selected 라는 네이티브 상태다. */
+function mobileBottomNavPlan() {
+  const states = ["unselected", "selected"];
+  return {
+    id: "mobile-bottom-nav",
+    axes: { states },
+    combos: states.map((state) => ({ state })),
+    key: (combo) => combo.state,
+    build: (combo) => {
+      const icon = el("span", { "data-s1-part": "icon" });
+      const label = el("span", { "data-s1-part": "label" });
+      const root = el("button", {
+        "data-s1-component": "mobile-bottom-nav", role: "tab",
+        "aria-selected": combo.state === "selected" ? "true" : "false", type: "button"
+      }, [], [icon, label]);
+      return {
+        targets: { root: { node: root }, icon: { node: icon }, label: { node: label } },
+        mediaActive: hoverOnly(false)
+      };
+    }
+  };
+}
+
+/* ── 모바일 헤더 ──────────────────────────────────────────────────────
+   유형 6종이 유일한 축이고, 유형마다 들어있는 슬롯이 다르다(manifest.htmlContract.perVariantParts).
+   그래서 조합마다 물어보는 부품 집합 자체가 다르다 — 없는 슬롯을 있는 척 묻지 않는다. */
+function mobileHeaderPlan(manifest) {
+  const variants = manifest.variants;
+  const partsOf = (variant) => manifest.htmlContract.perVariantParts[variant];
+  return {
+    id: "mobile-header",
+    axes: { variants },
+    combos: variants.map((variant) => ({ variant })),
+    key: (combo) => combo.variant,
+    build: (combo) => {
+      const present = new Set(partsOf(combo.variant));
+      const nodes = {};
+      const make = (part, tag, attributes = {}) => {
+        const node = el(tag, { "data-s1-part": part, ...attributes });
+        nodes[part] = node;
+        return node;
+      };
+      const children = [];
+      if (present.has("back")) {
+        const back = make("back", "button", { type: "button", "aria-label": "이전" });
+        back.children.push(Object.assign(make("back-icon", "span", { "aria-hidden": "true" }), { parent: back }));
+        children.push(back);
+      }
+      if (present.has("stack")) {
+        /* Home / Title + Subtitle — 제목줄(제목 + 아래화살표)과 부제목이 세로로 쌓인다. */
+        const stack = make("stack", "div");
+        const titleRow = make("title-row", "div");
+        titleRow.parent = stack;
+        stack.children.push(titleRow);
+        const title = make("title", "h1");
+        title.parent = titleRow;
+        titleRow.children.push(title);
+        if (present.has("arrow-icon")) {
+          const arrow = make("arrow-icon", "span", { "aria-hidden": "true" });
+          arrow.parent = titleRow;
+          titleRow.children.push(arrow);
+        }
+        const subtitle = make("subtitle", "p");
+        subtitle.parent = stack;
+        stack.children.push(subtitle);
+        children.push(stack);
+      } else if (present.has("title")) {
+        /* 제목이 없는 유형도 자리는 차지한다 — 빈 heading 을 만들지 않으려고 span 이다. */
+        const titled = combo.variant !== "standard-no-title" && combo.variant !== "standard-no-title-close";
+        children.push(make("title", titled ? "h1" : "span"));
+      }
+      if (present.has("notification")) {
+        const notification = make("notification", "button", { type: "button", "aria-label": "알림" });
+        const icon = make("notification-icon", "span", { "aria-hidden": "true" });
+        icon.parent = notification;
+        notification.children.push(icon);
+        children.push(notification);
+      }
+      if (present.has("close")) {
+        const close = make("close", "button", { type: "button", "aria-label": "닫기" });
+        const icon = make("close-icon", "span", { "aria-hidden": "true" });
+        icon.parent = close;
+        close.children.push(icon);
+        children.push(close);
+      }
+      if (present.has("spacer")) children.push(make("spacer", "span", { "aria-hidden": "true" }));
+
+      const root = el("header", { "data-s1-component": "mobile-header", "data-variant": combo.variant }, [], children);
+      const targets = { root: { node: root } };
+      for (const [part, node] of Object.entries(nodes)) targets[camel(part)] = { node };
+      /* 알림 아이콘의 빨간 점은 본체 위에 겹치는 두 번째 마스크 레이어다(::after). */
+      if (nodes["notification-icon"]) targets.notificationDot = { node: nodes["notification-icon"], pseudoElement: "after" };
+      /* 눌리는 영역은 보이는 32 보다 바깥으로 넓다(::before inset -6 → 44). 값이지 표시 규칙이 아니다. */
+      for (const part of ["back", "close", "notification"]) {
+        if (nodes[part]) targets[`${part}Hit`] = { node: nodes[part], pseudoElement: "before" };
+      }
+      return { targets, mediaActive: hoverOnly(false) };
+    }
+  };
+}
+
 export const PLANS = {
   button: buttonPlan,
   chip: chipPlan,
@@ -600,7 +727,9 @@ export const PLANS = {
   select: selectPlan,
   dropdown: dropdownPlan,
   input: inputPlan,
-  modal: modalPlan
+  modal: modalPlan,
+  "mobile-bottom-nav": mobileBottomNavPlan,
+  "mobile-header": mobileHeaderPlan
 };
 
 export const EXTRA_PLANS = {
@@ -673,7 +802,7 @@ export function extractSpec({ id, css, manifest, tokenValues, planOptions }) {
 /* ── 5. 묶어서 파일로 ────────────────────────────────────────────────── */
 
 /** A안 범위 — 화면 부품으로 옮기는 열 가지. 여기 없는 컴포넌트는 값(S1Tokens)만 제공한다. */
-export const COMPOSE_COMPONENTS = ["button", "input", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "tab", "modal"];
+export const COMPOSE_COMPONENTS = ["button", "input", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "tab", "modal", "mobile-header", "mobile-bottom-nav"];
 
 const COMPONENT_FILE = {
   button: (pkg, api) => buttonKt(pkg, api),
@@ -682,7 +811,9 @@ const COMPONENT_FILE = {
   radio: (pkg) => controlKt(pkg, "radio"),
   toggle: (pkg) => toggleKt(pkg),
   tab: (pkg, api) => tabKt(pkg, api),
-  dropdown: (pkg, api) => dropdownKt(pkg, api)
+  dropdown: (pkg, api) => dropdownKt(pkg, api),
+  "mobile-header": (pkg, api) => mobileHeaderKt(pkg, api),
+  "mobile-bottom-nav": (pkg) => mobileBottomNavKt(pkg)
 };
 
 /**

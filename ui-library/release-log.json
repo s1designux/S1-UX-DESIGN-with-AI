@@ -5,10 +5,19 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.1.0",
-  "releasedAt": "2026-09-10",
+  "version": "0.2.0",
+  "releasedAt": "2026-09-14",
   "canonicalFingerprint": "789e183460b0f76d2d9cbf2b8cc9be98570202138980da1b4541e9d9ad4a69c5",
   "releases": [
+    {
+      "version": "0.2.0",
+      "date": "2026-09-14",
+      "kind": "minor",
+      "canonicalFingerprint": "789e183460b0f76d2d9cbf2b8cc9be98570202138980da1b4541e9d9ad4a69c5",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "c699a46ea146e1bc6603df1e79dc66fe6194a85443b8368dd8a22f8d917cc038"
+    },
     {
       "version": "0.1.0",
       "date": "2026-09-10",
@@ -17,5 +26,6 @@
       "components": [],
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
-  ]
+  ],
+  "deliveryFingerprint": "c699a46ea146e1bc6603df1e79dc66fe6194a85443b8368dd8a22f8d917cc038"
 }

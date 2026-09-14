@@ -9,8 +9,8 @@ object S1ModalSpec {
 
     val boxes: Map<String, Map<String, S1Box>> = mapOf(
         "mobile|single" to mapOf(
-            "root" to S1Box(),
-            "overlay" to S1Box(background = S1Palette.colorOverlay),
+            "root" to S1Box(left = 0f, right = 0f),
+            "overlay" to S1Box(background = S1Palette.colorOverlay, left = 0f, right = 0f),
             "panel" to S1Box(background = S1Palette.colorSurfaceRaised, borderColor = S1Palette.colorModalPanelBorder, borderWidth = 1f, radius = 8f, width = 300f, paddingStart = 20f, paddingEnd = 20f, paddingTop = 20f, paddingBottom = 20f, gap = 30f, shadow = listOf(S1Shadow(0f, 4f, 6f, -2f, 0x0F000000), S1Shadow(0f, 12f, 20f, -4f, 0x1A000000))),
             "content" to S1Box(gap = 24f),
             "header" to S1Box(gap = 8f),
@@ -22,8 +22,8 @@ object S1ModalSpec {
             "closeIcon" to S1Box(background = S1Palette.colorIconGrayDark, icon = "close")
         ),
         "mobile|dual" to mapOf(
-            "root" to S1Box(),
-            "overlay" to S1Box(background = S1Palette.colorOverlay),
+            "root" to S1Box(left = 0f, right = 0f),
+            "overlay" to S1Box(background = S1Palette.colorOverlay, left = 0f, right = 0f),
             "panel" to S1Box(background = S1Palette.colorSurfaceRaised, borderColor = S1Palette.colorModalPanelBorder, borderWidth = 1f, radius = 8f, width = 300f, paddingStart = 20f, paddingEnd = 20f, paddingTop = 20f, paddingBottom = 20f, gap = 30f, shadow = listOf(S1Shadow(0f, 4f, 6f, -2f, 0x0F000000), S1Shadow(0f, 12f, 20f, -4f, 0x1A000000))),
             "content" to S1Box(gap = 24f),
             "header" to S1Box(gap = 8f),

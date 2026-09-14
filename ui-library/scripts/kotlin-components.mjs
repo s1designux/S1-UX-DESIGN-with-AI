@@ -846,6 +846,248 @@ fun S1ModalPanel(
 }
 
 /** 미리보기 화면 — 승인된 조합을 축 목록에서 그대로 훑어 그린다(빠뜨릴 자리가 없다). */
+export function mobileBottomNavKt(pkg) {
+  return header(pkg, [...COMMON, "androidx.compose.foundation.Image", "androidx.compose.ui.graphics.ColorFilter", "androidx.compose.ui.graphics.vector.ImageVector"],
+    "S1MobileBottomNav — 정본 Mobile Bottom Nav 아이템 1칸(60×60)") + `
+/**
+ * 승인된 하단 내비 **한 칸**. 정본은 칸 하나만 부품으로 만들고 4칸 바는 화면이 조립한다 —
+ * 바 배경과 가로 배치는 이 부품이 아니라 화면이 소유한다(웹 배포본과 같은 경계).
+ * 아이콘은 정본이 홈 하나만 배포한다. 다른 칸을 그릴 때는 icon 으로 바꿔 넣는다.
+ */
+@Composable
+fun S1MobileBottomNav(
+    label: String,
+    selected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    icon: ImageVector? = null,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+) {
+    val state = if (selected) "selected" else "unselected"
+    val root = S1MobileBottomNavSpec.box(state, "root")
+    val iconBox = S1MobileBottomNavSpec.box(state, "icon")
+    val labelBox = S1MobileBottomNavSpec.box(state, "label")
+    Column(
+        modifier = modifier
+            .s1Box(root)
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                onClick = onClick
+            ),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(root.gapDp, Alignment.CenterVertically)
+    ) {
+        val iconName = iconBox.icon
+        val drawn = icon ?: iconName?.let { S1Icons.byName(it) }
+        if (drawn != null) {
+            Image(
+                imageVector = drawn,
+                contentDescription = null,
+                modifier = Modifier.size((iconBox.width ?: 0f).dp, (iconBox.height ?: 0f).dp),
+                colorFilter = ColorFilter.tint(iconBox.background?.value() ?: Color.Unspecified)
+            )
+        }
+        BasicText(text = label, style = s1TextStyle(labelBox), maxLines = 1)
+    }
+}
+`;
+}
+
+export function mobileHeaderKt(pkg, api) {
+  const variants = api.variants;
+  return header(pkg, [...COMMON, "androidx.compose.foundation.Image", "androidx.compose.foundation.layout.RowScope", "androidx.compose.foundation.layout.requiredSize", "androidx.compose.ui.draw.rotate", "androidx.compose.ui.graphics.ColorFilter", "androidx.compose.ui.text.style.TextAlign", "androidx.compose.ui.text.style.TextOverflow"],
+    "S1MobileHeader — 정본 Mobile Header(AppBar 56)") + `
+/**
+ * 승인된 모바일 헤더. 유형 6종이 유일한 축이고, 유형마다 들어있는 슬롯이 다르다 —
+ * 없는 슬롯에 값을 넘기면 그 값은 그려지지 않는다(유형이 슬롯을 정한다).
+ *
+ * 상태바는 부품에 없다. 안드로이드에서는 OS 가 그리는 영역이라 우리가 그리면 가짜가 된다
+ * (웹 배포본과 같은 경계 — river 결정 D5).
+ *
+ * 쓸 수 있는 유형: ${variants.join(" · ")}
+ */
+@Composable
+fun S1MobileHeader(
+    variant: String = "${variants[0]}",
+    modifier: Modifier = Modifier,
+    title: String? = null,
+    subtitle: String? = null,
+    onBack: (() -> Unit)? = null,
+    onClose: (() -> Unit)? = null,
+    onNotification: (() -> Unit)? = null
+) {
+    require(S1MobileHeaderSpec.variants.contains(variant)) {
+        "S1MobileHeader: 승인되지 않은 유형 \\"\\$variant\\". 쓸 수 있는 값: " + S1MobileHeaderSpec.variants.joinToString(" · ")
+    }
+    val has = { part: String -> S1MobileHeaderSpec.boxes[variant]?.containsKey(part) == true }
+    val root = S1MobileHeaderSpec.box(variant, "root")
+    Row(
+        modifier = modifier.fillMaxWidth().s1Box(root),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(root.gapDp)
+    ) {
+        if (has("back")) {
+            S1MobileHeaderAction(
+                box = S1MobileHeaderSpec.box(variant, "back"),
+                icon = S1MobileHeaderSpec.box(variant, "backIcon"),
+                hit = S1MobileHeaderSpec.box(variant, "backHit"),
+                onClick = onBack
+            )
+        }
+        if (has("stack")) {
+            val stack = S1MobileHeaderSpec.box(variant, "stack")
+            val titleRow = S1MobileHeaderSpec.box(variant, "titleRow")
+            val titleBox = S1MobileHeaderSpec.box(variant, "title")
+            val subtitleBox = S1MobileHeaderSpec.box(variant, "subtitle")
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(stack.gapDp)
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(titleRow.gapDp)
+                ) {
+                    if (title != null) {
+                        BasicText(
+                            text = title,
+                            style = s1TextStyle(titleBox),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f, fill = false)
+                        )
+                    }
+                    if (has("arrowIcon")) {
+                        val arrow = S1MobileHeaderSpec.box(variant, "arrowIcon")
+                        val arrowName = arrow.icon
+                        if (arrowName != null) {
+                            Image(
+                                imageVector = S1Icons.byName(arrowName),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size((arrow.width ?: 0f).dp, (arrow.height ?: 0f).dp)
+                                    .rotate(arrow.rotation ?: 0f),
+                                colorFilter = ColorFilter.tint(arrow.background?.value() ?: Color.Unspecified)
+                            )
+                        }
+                    }
+                }
+                if (subtitle != null) {
+                    BasicText(
+                        text = subtitle,
+                        style = s1TextStyle(subtitleBox),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
+            }
+        } else if (has("title")) {
+            val titleBox = S1MobileHeaderSpec.box(variant, "title")
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .then(titleBox.height?.let { Modifier.height(it.dp) } ?: Modifier),
+                contentAlignment = Alignment.Center
+            ) {
+                if (title != null) {
+                    BasicText(
+                        text = title,
+                        style = s1TextStyle(titleBox).copy(
+                            textAlign = if (variant.startsWith("home-")) TextAlign.Start else TextAlign.Center
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
+        }
+        if (has("notification")) {
+            S1MobileHeaderAction(
+                box = S1MobileHeaderSpec.box(variant, "notification"),
+                icon = S1MobileHeaderSpec.box(variant, "notificationIcon"),
+                overlay = S1MobileHeaderSpec.box(variant, "notificationDot"),
+                hit = S1MobileHeaderSpec.box(variant, "notificationHit"),
+                onClick = onNotification
+            )
+        }
+        if (has("close")) {
+            S1MobileHeaderAction(
+                box = S1MobileHeaderSpec.box(variant, "close"),
+                icon = S1MobileHeaderSpec.box(variant, "closeIcon"),
+                hit = S1MobileHeaderSpec.box(variant, "closeHit"),
+                onClick = onClose
+            )
+        }
+        if (has("spacer")) {
+            val spacer = S1MobileHeaderSpec.box(variant, "spacer")
+            Box(modifier = Modifier.size((spacer.width ?: 0f).dp, (spacer.height ?: 0f).dp))
+        }
+    }
+}
+
+/**
+ * 뒤로·닫기·알림 — 보이는 크기는 32×32 한 벌이고, 알림만 위에 빨간 점 레이어가 겹친다.
+ *
+ * 눌리는 영역은 보이는 것보다 바깥으로 넓다(정본 44×44). 바깥 상자는 32 자리만 차지하고
+ * 안쪽 상자가 requiredSize 로 그 제약을 벗어나 44 로 커진다 — 배치는 그대로고 손가락만 넓어진다
+ * (웹이 ::before inset -6 으로 하는 것과 같은 결과).
+ */
+@Composable
+private fun RowScope.S1MobileHeaderAction(
+    box: S1Box,
+    icon: S1Box,
+    onClick: (() -> Unit)?,
+    overlay: S1Box? = null,
+    hit: S1Box? = null
+) {
+    val expand = -(hit?.left ?: 0f)
+    val touchWidth = (box.width ?: 0f) + expand * 2
+    val touchHeight = (box.height ?: 0f) + expand * 2
+    Box(
+        modifier = Modifier.size((box.width ?: 0f).dp, (box.height ?: 0f).dp),
+        contentAlignment = Alignment.Center
+    ) {
+      Box(
+        modifier = Modifier
+            .requiredSize(touchWidth.dp, touchHeight.dp)
+            .then(
+                if (onClick != null) {
+                    Modifier.clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = onClick
+                    )
+                } else {
+                    Modifier
+                }
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        val iconName = icon.icon
+        if (iconName != null) {
+            Image(
+                imageVector = S1Icons.byName(iconName),
+                contentDescription = null,
+                modifier = Modifier.size((icon.width ?: 0f).dp, (icon.height ?: 0f).dp),
+                colorFilter = ColorFilter.tint(icon.background?.value() ?: Color.Unspecified)
+            )
+        }
+        val dotName = overlay?.icon
+        if (overlay != null && dotName != null) {
+            Image(
+                imageVector = S1Icons.byName(dotName),
+                contentDescription = null,
+                modifier = Modifier.size((icon.width ?: 0f).dp, (icon.height ?: 0f).dp),
+                colorFilter = ColorFilter.tint(overlay.background?.value() ?: Color.Unspecified)
+            )
+        }
+      }
+    }
+}
+`;
+}
+
 export function galleryKt(pkg, apis) {
   const button = apis.button;
   const chip = apis.chip;
@@ -1021,6 +1263,41 @@ fun S1Gallery(modifier: Modifier = Modifier, dark: Boolean = false) {
                             message = "변경한 내용이 저장되지 않고 사라집니다.\\n정말 이 작업을 진행하시겠어요?",
                             onDismissRequest = {},
                             cancelLabel = if (footer == "dual") "취소" else null
+                        )
+                    }
+                }
+            }
+
+            GallerySection("Mobile Header") {
+                for (variant in S1MobileHeaderSpec.variants) {
+                    GalleryLabel(variant)
+                    S1MobileHeader(
+                        variant = variant,
+                        title = "화면 제목",
+                        subtitle = "부제목",
+                        onBack = {},
+                        onClose = {},
+                        onNotification = {}
+                    )
+                }
+            }
+
+            /* 하단 내비는 칸 하나가 부품이다 — 바(배경·가로 배치)는 화면이 조립한다.
+               검수 화면에서도 그 경계를 그대로 보여 준다. */
+            GallerySection("Mobile Bottom Nav") {
+                var picked by remember { mutableStateOf(0) }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(S1Palette.colorNavigationBg.resolve(dark)),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    listOf("홈", "검색", "알림", "설정").forEachIndexed { index, label ->
+                        S1MobileBottomNav(
+                            label = label,
+                            selected = index == picked,
+                            onClick = { picked = index }
                         )
                     }
                 }

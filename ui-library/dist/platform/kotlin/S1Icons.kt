@@ -118,6 +118,109 @@ object S1Icons {
             .build()
     }
 
+    /** mobile-header-arrow-down.svg (24×24) */
+    val mobileHeaderArrowDown: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "mobile-header-arrow-down",
+            defaultWidth = 24f.dp,
+            defaultHeight = 24f.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        )
+            .addPath(
+                pathData = PathParser().parsePathString("M 10.375 7.75 L 14.625 12 L 10.375 16.25").toNodes(),
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = 1f,
+                strokeLineCap = StrokeCap.Square,
+                strokeLineJoin = StrokeJoin.Miter
+            )
+            .build()
+    }
+
+    /** mobile-header-back.svg (24×24) */
+    val mobileHeaderBack: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "mobile-header-back",
+            defaultWidth = 24f.dp,
+            defaultHeight = 24f.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        )
+            .addPath(
+                pathData = PathParser().parsePathString("M 11.3109 4.944 L 10.5806 4.2137 L 3.1543 11.64 C 3.0617 11.7326 3 11.8663 3 12 C 3 12.1337 3.0514 12.2674 3.1543 12.36 L 10.5909 19.7863 L 11.3211 19.056 L 4.7589 12.5246 H 21 V 11.496 H 4.7589 L 11.3109 4.944 Z").toNodes(),
+                fill = SolidColor(Color.Black)
+            )
+            .build()
+    }
+
+    /** mobile-header-close.svg (24×24) */
+    val mobileHeaderClose: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "mobile-header-close",
+            defaultWidth = 24f.dp,
+            defaultHeight = 24f.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        )
+            .addPath(
+                pathData = PathParser().parsePathString("M 4.7231 20 L 11.9949 12.718 L 19.2769 20 L 20 19.2769 L 12.718 11.9949 L 20 4.7231 L 19.2769 4 L 11.9949 11.282 L 4.7231 4 L 4 4.7231 L 11.282 11.9949 L 4 19.2769 L 4.7231 20 Z").toNodes(),
+                fill = SolidColor(Color.Black)
+            )
+            .build()
+    }
+
+    /** mobile-header-notification.svg (24×24) */
+    val mobileHeaderNotification: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "mobile-header-notification",
+            defaultWidth = 24f.dp,
+            defaultHeight = 24f.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        )
+            .addPath(
+                pathData = PathParser().parsePathString("M 20.7753 16.5819 L 18.3146 13.11 V 9.6043 C 18.3146 9.6043 18.3034 9.5032 18.3034 9.4583 C 18.1349 9.5706 17.9439 9.6493 17.7528 9.7167 C 17.5731 9.7841 17.382 9.8178 17.191 9.8403 V 13.2898 C 17.191 13.4021 17.2247 13.5145 17.2922 13.6156 L 19.809 17.1662 L 14.3708 17.1887 H 13.7416 H 13 H 10.9663 H 10.2247 H 9.5843 L 4.1123 17.2111 L 6.6741 13.5931 C 6.7416 13.5032 6.7753 13.3796 6.7753 13.2673 V 9.3347 C 6.7753 7.874 7.3932 6.4695 8.4831 5.4807 C 9.4494 4.5931 10.6854 4.1212 11.9775 4.1212 C 12.1461 4.1212 12.3258 4.1212 12.4944 4.1436 C 13.4607 4.2335 14.3483 4.6268 15.0899 5.2111 C 15.236 5.0762 15.3933 4.9639 15.5618 4.874 C 15.7304 4.7729 15.9214 4.6942 16.1124 4.638 C 15.1461 3.7616 13.9438 3.1549 12.5955 3.0313 C 10.7865 2.8627 9.0562 3.4358 7.7191 4.6493 C 6.4045 5.8515 5.6517 7.5594 5.6517 9.3347 V 13.0875 L 3.2022 16.5819 C 2.9662 16.919 2.9325 17.346 3.1236 17.7055 C 3.3146 18.0651 3.6854 18.2898 4.0899 18.2898 H 9.3371 C 9.3371 18.2898 9.3371 18.3235 9.3371 18.3347 C 9.3371 19.7954 10.5281 20.9977 12 20.9977 C 13.4719 20.9977 14.6629 19.8066 14.6629 18.3347 C 14.6629 18.3235 14.6629 18.301 14.6629 18.2898 H 19.9102 C 20.3146 18.2898 20.6854 18.0651 20.8764 17.7055 C 21.0675 17.346 21.0338 16.9078 20.7978 16.5819 H 20.7753 Z M 13.5281 18.3347 C 13.5281 19.1774 12.8427 19.8741 11.9888 19.8741 C 11.1348 19.8741 10.4494 19.1887 10.4494 18.3347 C 10.4494 18.3235 10.4494 18.301 10.4494 18.2898 H 13.5169 C 13.5169 18.2898 13.5169 18.3235 13.5169 18.3347 H 13.5281 Z").toNodes(),
+                fill = SolidColor(Color.Black)
+            )
+            .addPath(
+                pathData = PathParser().parsePathString("M 16.8773 5.3791 C 16.8773 5.3791 16.8323 5.3791 16.8098 5.3791 C 16.5964 5.3791 16.3941 5.424 16.2031 5.5027 C 16.0233 5.5701 15.8548 5.6825 15.7087 5.8061 C 15.3042 6.1431 15.0458 6.6375 15.0458 7.1993 C 15.0458 8.2105 15.866 9.0196 16.866 9.0196 C 16.9559 9.0196 17.0458 9.0083 17.1245 8.9971 C 17.3155 8.9634 17.5065 8.9072 17.675 8.8285 C 17.8773 8.7274 18.0458 8.6038 18.2031 8.4353 C 18.5065 8.1094 18.6975 7.6712 18.6975 7.1993 C 18.6975 6.1881 17.8773 5.3791 16.8773 5.3791 Z").toNodes(),
+                fill = SolidColor(Color.Black)
+            )
+            .build()
+    }
+
+    /** mobile-header-notification-accent.svg (24×24) */
+    val mobileHeaderNotificationAccent: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "mobile-header-notification-accent",
+            defaultWidth = 24f.dp,
+            defaultHeight = 24f.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        )
+            .addPath(
+                pathData = PathParser().parsePathString("M 16.8773 5.3791 C 16.8773 5.3791 16.8323 5.3791 16.8098 5.3791 C 16.5964 5.3791 16.3941 5.424 16.2031 5.5027 C 16.0233 5.5701 15.8548 5.6825 15.7087 5.8061 C 15.3042 6.1431 15.0458 6.6375 15.0458 7.1993 C 15.0458 8.2105 15.866 9.0196 16.866 9.0196 C 16.9559 9.0196 17.0458 9.0083 17.1245 8.9971 C 17.3155 8.9634 17.5065 8.9072 17.675 8.8285 C 17.8773 8.7274 18.0458 8.6038 18.2031 8.4353 C 18.5065 8.1094 18.6975 7.6712 18.6975 7.1993 C 18.6975 6.1881 17.8773 5.3791 16.8773 5.3791 Z").toNodes(),
+                fill = SolidColor(Color.Black)
+            )
+            .build()
+    }
+
+    /** mobile-nav-home.svg (24×24) */
+    val mobileNavHome: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "mobile-nav-home",
+            defaultWidth = 24f.dp,
+            defaultHeight = 24f.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        )
+            .addPath(
+                pathData = PathParser().parsePathString("M 11.7031 4.0905 L 3 10.2338 L 3.5939 11.0734 L 5.8567 9.4761 V 20.0017 H 18.1433 V 9.4761 L 20.4061 11.0734 L 21 10.2338 L 12.2969 4.0905 C 12.1229 3.9676 11.8874 3.9676 11.7031 4.0905 Z").toNodes(),
+                fill = SolidColor(Color.Black)
+            )
+            .build()
+    }
+
     /** remove.svg (24×24) */
     val remove: ImageVector by lazy {
         ImageVector.Builder(
@@ -171,6 +274,12 @@ object S1Icons {
         "close" -> close
         "eye_hide" -> eyeHide
         "eye_show" -> eyeShow
+        "mobile-header-arrow-down" -> mobileHeaderArrowDown
+        "mobile-header-back" -> mobileHeaderBack
+        "mobile-header-close" -> mobileHeaderClose
+        "mobile-header-notification" -> mobileHeaderNotification
+        "mobile-header-notification-accent" -> mobileHeaderNotificationAccent
+        "mobile-nav-home" -> mobileNavHome
         "remove" -> remove
         "search" -> search
         else -> error("[s1] 배포본에 없는 아이콘: $name")

@@ -29,6 +29,7 @@ const PART_TEXT = {
   'option-label': (text) => text,
   tab: (text) => text,
   title: () => '제목 영역',
+  subtitle: () => '부제목 영역',
   message: () => '변경한 내용이 저장되지 않고 사라집니다.'
 };
 
@@ -76,23 +77,29 @@ const MATRIX = {
   select: { column: 'state', rows: ['size', 'breakName'] },
   dropdown: { column: 'state', rows: ['type', 'size'] },
   input: { column: 'state', rows: ['size', 'breakName'] },
-  modal: { column: 'footer', rows: ['breakName'] }
+  modal: { column: 'footer', rows: ['breakName'] },
+  /* 헤더는 상태 축이 없다 — 유형이 곧 칸이다. 하단 내비는 선택 여부 한 축뿐이다. */
+  'mobile-header': { column: 'variant', rows: [] },
+  'mobile-bottom-nav': { column: 'state', rows: [] }
 };
 
 /** 조합마다 값 칩으로 보여 줄 대표 부품 — 그 컴포넌트에서 상태가 실제로 드러나는 자리다. */
 const MAIN_PART = {
   button: 'root', chip: 'root', checkbox: 'control', radio: 'control', toggle: 'root',
-  tab: 'tab', select: 'trigger', dropdown: 'option', input: 'field', modal: 'panel'
+  tab: 'tab', select: 'trigger', dropdown: 'option', input: 'field', modal: 'panel',
+  'mobile-header': 'root', 'mobile-bottom-nav': 'label'
 };
 
 const SAMPLE_TEXT = {
   button: '버튼', chip: '칩', checkbox: '선택 항목', radio: '항목', toggle: '',
-  tab: '탭 메뉴', select: '선택', dropdown: '항목 이름', input: '', modal: '제목 영역'
+  tab: '탭 메뉴', select: '선택', dropdown: '항목 이름', input: '', modal: '제목 영역',
+  'mobile-header': '화면 제목', 'mobile-bottom-nav': '홈'
 };
 
 const COMPONENT_TITLE = {
   button: '버튼', chip: '칩', checkbox: '체크박스', radio: '라디오', toggle: '토글',
-  tab: '라인 탭', select: '셀렉트 박스', dropdown: '드롭다운 목록', input: '입력칸', modal: '모달'
+  tab: '라인 탭', select: '셀렉트 박스', dropdown: '드롭다운 목록', input: '입력칸', modal: '모달',
+  'mobile-header': '모바일 헤더', 'mobile-bottom-nav': '모바일 하단 내비'
 };
 
 /* ── 3. 붙여 쓸 Compose 코드 ────────────────────────────────────────── */
@@ -167,6 +174,16 @@ const SNIPPET = {
     'title = "제목 영역"', 'message = "변경한 내용이 저장되지 않고 사라집니다."',
     'onDismissRequest = { }', 'confirmLabel = "확인"',
     ...(c.footer === 'dual' ? ['cancelLabel = "취소"'] : [])
+  ]),
+  'mobile-header': (c) => call('S1MobileHeader', [
+    `variant = "${c.variant}"`,
+    ...(c.variant.includes('no-title') ? [] : ['title = "화면 제목"']),
+    ...(c.variant === 'home-title-subtitle' ? ['subtitle = "부제목"', 'onNotification = { }'] : []),
+    ...(c.variant.startsWith('standard-') ? ['onBack = { }'] : []),
+    ...(c.variant.endsWith('-close') ? ['onClose = { }'] : [])
+  ]),
+  'mobile-bottom-nav': (c) => call('S1MobileBottomNav', [
+    'label = "홈"', `selected = ${c.state === 'selected'}`, 'onClick = { }'
   ])
 };
 
@@ -347,7 +364,9 @@ async function main() {
           code: SNIPPET[id](combo, api),
           note: AUTO_STATE[columnValue] ?? null
         };
-        return `<td data-col="${escapeHtml(columnValue)}"><button type="button" class="cell" data-detail="${escapeHtml(detailId)}">${serialize(root, SAMPLE_TEXT[id] ?? '보기')}</button></td>`;
+        /* 칸은 div 다 — 부품 안에 button 이 있는 것(헤더의 뒤로·닫기)을 button 으로 감싸면
+           브라우저가 중첩을 허용하지 않아 구조를 끊고 배치가 무너진다. */
+        return `<td data-col="${escapeHtml(columnValue)}"><div role="button" tabindex="0" class="cell" data-detail="${escapeHtml(detailId)}">${serialize(root, SAMPLE_TEXT[id] ?? '보기')}</div></td>`;
       }).join('');
       bodyRows.push(`<tr data-row="${escapeHtml(JSON.stringify(row.values))}" data-search="${escapeHtml((id + ' ' + rowKey).toLowerCase())}"><th scope="row">${escapeHtml(rowKey)}</th>${cells}</tr>`);
     }
@@ -412,7 +431,7 @@ async function main() {
     };
     return `<tr data-row="[]" data-search="typography ${escapeHtml(style.name.toLowerCase())}">
       <th scope="row">${escapeHtml(style.name)}</th>
-      <td><button type="button" class="cell" data-detail="${escapeHtml(detailId)}"><span class="typo-${style.name}">다람쥐 헌 쳇바퀴에 타고파 AaBbGg</span></button></td>
+      <td><div role="button" tabindex="0" class="cell" data-detail="${escapeHtml(detailId)}"><span class="typo-${style.name}">다람쥐 헌 쳇바퀴에 타고파 AaBbGg</span></div></td>
       <td class="typemeta">${style.fontSize.value}sp · 굵기 ${style.fontWeight.value} · 줄간격 ${style.lineHeight.value} · 자간 ${style.letterSpacing.value}em</td>
     </tr>`;
   }).join('');
@@ -490,6 +509,9 @@ ${embeddedCss}
   .cell [data-s1-component="modal"] [data-s1-part="overlay"] { display: none; }
   .cell [data-s1-component="select"] [data-s1-part="panel"] { display: none; }
   .cell [data-s1-component="tab"] { min-width: 240px; }
+  /* 모바일 크롬은 폭을 다 쓰는 부품이다 — 실제 화면 폭(360)을 주지 않으면 칸에 눌려 모양이 무너진다. */
+  .cell [data-s1-component="mobile-header"] { width: 360px; }
+  td:has(> .cell [data-s1-component="mobile-header"]) { min-width: 384px; }
 
   .ok { color: var(--color-text-state-correct); font-size: 12px; margin: 12px 0 0; }
   .unread { font-size: 12px; margin-top: 12px; }

@@ -175,6 +175,41 @@ fun S1Gallery(modifier: Modifier = Modifier, dark: Boolean = false) {
                     }
                 }
             }
+
+            GallerySection("Mobile Header") {
+                for (variant in S1MobileHeaderSpec.variants) {
+                    GalleryLabel(variant)
+                    S1MobileHeader(
+                        variant = variant,
+                        title = "화면 제목",
+                        subtitle = "부제목",
+                        onBack = {},
+                        onClose = {},
+                        onNotification = {}
+                    )
+                }
+            }
+
+            /* 하단 내비는 칸 하나가 부품이다 — 바(배경·가로 배치)는 화면이 조립한다.
+               검수 화면에서도 그 경계를 그대로 보여 준다. */
+            GallerySection("Mobile Bottom Nav") {
+                var picked by remember { mutableStateOf(0) }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(S1Palette.colorNavigationBg.resolve(dark)),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    listOf("홈", "검색", "알림", "설정").forEachIndexed { index, label ->
+                        S1MobileBottomNav(
+                            label = label,
+                            selected = index == picked,
+                            onClick = { picked = index }
+                        )
+                    }
+                }
+            }
         }
     }
 }

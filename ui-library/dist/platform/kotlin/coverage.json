@@ -10,6 +10,12 @@
     "close",
     "eye_hide",
     "eye_show",
+    "mobile-header-arrow-down",
+    "mobile-header-back",
+    "mobile-header-close",
+    "mobile-header-notification",
+    "mobile-header-notification-accent",
+    "mobile-nav-home",
     "remove",
     "search"
   ],
@@ -697,6 +703,29 @@
           "reason": "display-rule"
         }
       ]
+    },
+    {
+      "component": "mobile-header",
+      "combinations": 6,
+      "parts": [
+        "root",
+        "title"
+      ],
+      "unreadPcOnly": 0,
+      "unreadDisplayRules": 0,
+      "unreadDeclarations": []
+    },
+    {
+      "component": "mobile-bottom-nav",
+      "combinations": 2,
+      "parts": [
+        "root",
+        "icon",
+        "label"
+      ],
+      "unreadPcOnly": 0,
+      "unreadDisplayRules": 0,
+      "unreadDeclarations": []
     }
   ]
 }

@@ -232,6 +232,8 @@ function matchesAttribute(node, attribute) {
   if (actual === undefined) return false;
   if (attribute.operator === null) return true;
   if (attribute.operator === "=") return actual === attribute.value;
+  /* ^= 은 모바일 헤더가 유형 계열(home-*·standard-*)을 한 줄로 묶을 때 쓴다. */
+  if (attribute.operator === "^=") return actual.startsWith(attribute.value);
   throw new Error(`지원하지 않는 속성 연산자: ${attribute.operator}`);
 }
 
