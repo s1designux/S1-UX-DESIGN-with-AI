@@ -617,12 +617,20 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
 
   outputs.set("platform/tokens.json", stable(buildTokensJson(tokenData, fingerprints)));
   outputs.set("platform/kotlin/S1Tokens.kt", buildKotlin(tokenData));
+  const release = {
+    version: distManifest.version,
+    releasedAt: distManifest.releasedAt,
+    canonicalFingerprint: distManifest.canonicalFingerprint
+  };
   outputs.set("platform/swift/S1Tokens.swift", buildSwift(tokenData));
+  outputs.set("platform/swift/S1Version.swift", versionSwift(release));
+  outputs.set("platform/cpp/s1_version.h", versionCpp(release));
+  outputs.set("platform/kotlin/S1Version.kt", versionKt("com.s1.designsystem", release));
   outputs.set("platform/cpp/s1_tokens.h", buildCppHeader(tokenData));
   /* Compose 부품 — 값(S1Tokens)만으로는 화면을 못 그린다. 승인 배포본 CSS 를 계산해 부품까지 만든다. */
   const kotlin = buildKotlinOutputs({ componentOutputs, tokenData, iconAssets, typographyCss });
   for (const [relative, content] of kotlin.outputs) outputs.set(relative, content);
-  for (const [relative, content] of sampleFiles("com.s1.designsystem", COMPOSE_COMPONENTS)) outputs.set(relative, content);
+  for (const [relative, content] of sampleFiles("com.s1.designsystem", COMPOSE_COMPONENTS, release)) outputs.set(relative, content);
   outputs.set("platform/kotlin/coverage.json", stable({
     _meta: {
       note: GENERATED_NOTE,
@@ -651,14 +659,19 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
   }
   const reactFacts = approved.map((component) => reactComponentFacts(component));
   outputs.set("platform/react/runtime.js", buildReactRuntime());
-  outputs.set("platform/react/package.json", buildReactPackage(distManifest.version));
+  outputs.set("platform/react/package.json", buildReactPackage(release));
+  outputs.set("platform/react/version.js", versionJs(release));
+  outputs.set("platform/vue/version.js", versionJs(release));
+  outputs.set("platform/vue/package.json", vuePackage(release));
   outputs.set("platform/react/index.d.ts", buildReactTypes(reactFacts));
-  outputs.set("platform/react/README.md", buildReactReadme(reactFacts, usageById));
-  outputs.set("platform/react/index.js", `/* ${GENERATED_NOTE} */\n${approved.map(({ id }) => `export { default as S1${pascalId(id)} } from "./${id}.jsx";`).join("\n")}\n`);
-  outputs.set("platform/vue/index.js", `/* ${GENERATED_NOTE} */\n${approved.map(({ id }) => `export { default as S1${pascalId(id)} } from "./${pascalId(id)}.vue";`).join("\n")}\n`);
+  outputs.set("platform/react/README.md", buildReactReadme(reactFacts, usageById, release));
+  outputs.set("platform/react/index.js", `/* ${GENERATED_NOTE} */\n${approved.map(({ id }) => `export { default as S1${pascalId(id)} } from "./${id}.jsx";`).join("\n")}\nexport { S1_VERSION, S1_RELEASED_AT } from "./version.js";\n`);
+  outputs.set("platform/vue/index.js", `/* ${GENERATED_NOTE} */\n${approved.map(({ id }) => `export { default as S1${pascalId(id)} } from "./${pascalId(id)}.vue";`).join("\n")}\nexport { S1_VERSION, S1_RELEASED_AT } from "./version.js";\n`);
 
   outputs.set("platform/manifest.json", stable({
     _meta: { note: GENERATED_NOTE },
+    version: release.version,
+    releasedAt: release.releasedAt,
     canonicalFingerprint: distManifest.canonicalFingerprint,
     generatedAt: null,
     platforms: {
@@ -685,6 +698,80 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
     tokenCount: tokenData.tokens.length
   }));
   return outputs;
+}
+
+/* ── 배포본 번호 — 툴마다 제 언어로 읽을 수 있게 같은 값을 심는다 ──────────
+   개발자는 자기 프로젝트에 넣어 둔 번호와 디자인가이드가 공개한 번호를 견주어
+   낡았는지 안다(river 결정 2026-09-14). 사람이 옮겨 적는 곳은 한 곳도 없다. */
+
+function versionKt(pkg, release) {
+  return [
+    `package ${pkg}`,
+    "",
+    `/* ${GENERATED_NOTE} */`,
+    "",
+    "/** 이 파일 묶음이 나온 배포본 번호. 디자인가이드가 공개한 번호와 다르면 낡은 것이다. */",
+    "public object S1Version {",
+    `    public const val VERSION: String = "${release.version}"`,
+    `    public const val RELEASED_AT: String = "${release.releasedAt}"`,
+    `    public const val CANONICAL_FINGERPRINT: String = "${release.canonicalFingerprint}"`,
+    "}",
+    ""
+  ].join("\n");
+}
+
+function versionSwift(release) {
+  return [
+    `// ${GENERATED_NOTE}`,
+    "",
+    "/// 이 파일 묶음이 나온 배포본 번호. 디자인가이드가 공개한 번호와 다르면 낡은 것이다.",
+    "public enum S1Version {",
+    `    public static let version = "${release.version}"`,
+    `    public static let releasedAt = "${release.releasedAt}"`,
+    `    public static let canonicalFingerprint = "${release.canonicalFingerprint}"`,
+    "}",
+    ""
+  ].join("\n");
+}
+
+function versionCpp(release) {
+  return [
+    `// ${GENERATED_NOTE}`,
+    "",
+    "// 이 파일 묶음이 나온 배포본 번호. 디자인가이드가 공개한 번호와 다르면 낡은 것이다.",
+    "#ifndef S1_VERSION_H",
+    "#define S1_VERSION_H",
+    "",
+    `#define S1_UI_VERSION "${release.version}"`,
+    `#define S1_UI_RELEASED_AT "${release.releasedAt}"`,
+    `#define S1_UI_CANONICAL_FINGERPRINT "${release.canonicalFingerprint}"`,
+    "",
+    "#endif // S1_VERSION_H",
+    ""
+  ].join("\n");
+}
+
+function versionJs(release) {
+  return [
+    `/* ${GENERATED_NOTE} */`,
+    `export const S1_VERSION = "${release.version}";`,
+    `export const S1_RELEASED_AT = "${release.releasedAt}";`,
+    ""
+  ].join("\n");
+}
+
+function vuePackage(release) {
+  return `${JSON.stringify({
+    name: "@s1/ui-vue",
+    version: release.version,
+    description: "S1 디자인 시스템 — 승인된 배포본 마크업을 그대로 옮긴 Vue 컴포넌트",
+    type: "module",
+    main: "./index.js",
+    exports: { ".": "./index.js", "./*": "./*" },
+    sideEffects: false,
+    peerDependencies: { vue: ">=3" },
+    files: ["*.vue", "index.js", "version.js"]
+  }, null, 2)}\n`;
 }
 
 export const _internal = { collectDeclarations, resolveValue, classify, colorToArgb };

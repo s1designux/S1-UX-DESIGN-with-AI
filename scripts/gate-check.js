@@ -1199,6 +1199,22 @@ try {
   fail(`Gate 49 실행 실패: ${e.message}`);
 }
 
+// ── Gate 50: UI Library Version (배포본 번호) ──────────────────────
+// 정본이 바뀌었는데 번호가 그대로면, 받아 간 개발자는 자기 것이 낡았는지 알 길이 없다.
+// 종전에는 사람이 손으로 version 을 찍어서 실제로 정본을 여러 번 고치는 동안 0.1.0 에 멈춰 있었다.
+// 번호는 `npm run ui:bump` 이 매기고(값만=끝자리 · 쓰는 법=가운데), 이 게이트가 빠뜨림을 막는다
+// (2026-09-14 신설 — river 승인: "그 규칙으로 별도 폴더에서 진행해줘").
+gateHeader('[Gate 50] 배포본번호 검사기 (UI Library Version)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync(process.execPath, [path.join(ROOT, 'scripts/ui-library-version.js')], { encoding: 'utf-8' });
+  const out = `${r.stdout || ''}${r.stderr || ''}`;
+  if (r.status === 0) pass(out.match(/✅ (.*)/)?.[1] || '배포본 번호 최신');
+  else for (const l of out.split('\n').filter((l) => l.includes('❌'))) fail(l.replace(/^\s*❌\s*/, '').trim());
+} catch (e) {
+  fail(`Gate 50 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 if (VERBOSE || errors > 0 || warnings > 0) console.log('\n─────────────────────────────────────────────────────');
 const tally = `게이트 ${gates}개 · ✅ ${passes}건${VERBOSE ? '' : ' (상세: --verbose)'}`;

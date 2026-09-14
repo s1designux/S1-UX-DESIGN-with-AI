@@ -543,7 +543,8 @@ export function reactComponentFacts({ id, manifest, example, exampleByBreak }) {
 
 /* ── 7. 패키지·타입·안내 ──────────────────────────────────────────────── */
 
-export function buildReactPackage(version) {
+export function buildReactPackage(release) {
+  const version = typeof release === "string" ? release : release.version;
   return `${JSON.stringify({
     name: "@s1/ui-react",
     version,
@@ -597,7 +598,7 @@ export interface S1BaseProps {
   return `${header}\n${body}\n`;
 }
 
-export function buildReactReadme(factsList, usageById = {}) {
+export function buildReactReadme(factsList, usageById = {}, release = null) {
   /* 고를 때 필요한 것을 다 적는다 — 개수가 아니라 실제 값, 그리고 "언제 쓰나".
      개수만 적으면(size(4)) 파일을 열어봐야 알 수 있어 고르기가 어렵다(river 지적 2026-09-09). */
   const sizeText = (facts) => {
@@ -634,7 +635,11 @@ export function buildReactReadme(factsList, usageById = {}) {
     .join("\n");
 
   return `# @s1/ui-react
-
+${release ? `
+**배포본 번호 ${release.version}** · ${release.releasedAt} 판
+이 번호가 최신인지는 디자인가이드 내려받기 화면에서 확인하세요 — 번호가 다르면 새로 받으면 됩니다.
+코드에서 볼 때는 \`import { S1_VERSION } from "@s1/ui-react"\` 입니다.
+` : ""}
 S1 디자인 시스템의 **승인된 배포본 마크업을 그대로 옮긴 React 컴포넌트**입니다.
 마크업을 새로 쓰지 않았고, 값·구조·속성은 배포본 예제와 같습니다.
 

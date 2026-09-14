@@ -16,7 +16,7 @@ const VERSIONS = {
   minSdk: 24
 };
 
-export function sampleFiles(pkg, componentIds) {
+export function sampleFiles(pkg, componentIds, release) {
   const samplePkg = `${pkg}.sample`;
   const files = new Map();
 
@@ -197,6 +197,10 @@ private fun S1GalleryDarkPreview() {
   files.set("platform/kotlin/README.md", `# S1 Design System — Kotlin (Jetpack Compose)
 
 > ${NOTE}
+
+**배포본 번호 ${release.version}** · ${release.releasedAt} 판
+이 번호가 최신인지는 디자인가이드 내려받기 화면에서 확인하세요 — 번호가 다르면 새로 받으면 됩니다.
+코드에서 볼 때는 \`S1Version.VERSION\` 을 읽습니다.
 
 ## 무엇이 들어 있나
 

@@ -63,6 +63,7 @@
 | 46 | Developer Handoff | 개발자가 받아 가는 전달본(ZIP·다운로드 화면·색/크기 값)이 현재 배포본보다 낡지 않았나 |
 | 42 | Screen Naming | 화면 프레임 이름이 네이밍 정본 규칙을 지키나 |
 | 49 | Spec Label Width | 스펙(설명용) 시트 라벨이 상자 폭을 넘어 두 줄이 되는지 — 설치기 mock 라벨 전수 × 설치된 Pretendard 실측. 단독 `npm run spec:labelwidth` (폰트 미설치 시 SKIP) |
+| 50 | UI Library Version | 정본이 바뀌었는데 배포본 번호가 그대로면 차단 — 받아 간 개발자가 낡았는지 알 수 있게 한다. 번호는 `npm run ui:bump`(값만=끝자리) · `npm run ui:bump -- --minor`(쓰는 법이 바뀜)이 매긴다. 장부 `ui-library/release-log.json` · 단독 `npm run ui:version` |
 
 ---
 

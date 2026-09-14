@@ -162,10 +162,10 @@ async function main() {
   const platformManifest = await readJson("platform/manifest.json");
 
   if (args.includes("--version") || args.includes("-v")) {
-    console.log(`s1-ui ${distManifest.version}`);
-    console.log(`정본 지문 ${distManifest.canonicalFingerprint}`);
+    console.log(`s1-ui ${distManifest.version} (${distManifest.releasedAt} 판)`);
     console.log(`컴포넌트 ${platformManifest.components.length}종 · 토큰 ${platformManifest.tokenCount}개`);
-    console.log("최신인지 확인: 디자인가이드 다운로드 화면의 지문과 이 값이 같아야 합니다.");
+    console.log(`정본 지문 ${distManifest.canonicalFingerprint}`);
+    console.log("최신인지 확인: 디자인가이드 내려받기 화면의 번호와 이 번호가 같으면 최신입니다.");
     return;
   }
 

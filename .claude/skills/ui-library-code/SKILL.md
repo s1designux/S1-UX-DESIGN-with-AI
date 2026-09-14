@@ -88,7 +88,7 @@ description: "정본 컴포넌트를 배포 가능한 HTML·CSS·JavaScript UI �
 
 **독립 검증을 spawn 하기 전에 오케스트레이터가 먼저 끝낸다 (2026-09-04 river 승인 — 반려 왕복 제거):**
 
-1. **기계검사 전량 초록** — `ui:contract` · `ui:build:check` · `ui:test:check` · `ui:icons` · `ui:icons:origin` · `ui:guide:render` · `ui:state` 를 전부 실행해 종료코드 0 을 만든 뒤, 명령·종료코드 표를 검증 요청문에 넣는다. **하나라도 빨간 채로 spawn 하면 검증자는 HOLD 로 즉시 돌려보낸다.**
+1. **기계검사 전량 초록** — `ui:contract` · `ui:version` · `ui:build:check` · `ui:test:check` · `ui:icons` · `ui:icons:origin` · `ui:guide:render` · `ui:state` 를 전부 실행해 종료코드 0 을 만든 뒤, 명령·종료코드 표를 검증 요청문에 넣는다. **하나라도 빨간 채로 spawn 하면 검증자는 HOLD 로 즉시 돌려보낸다.**
 2. **렌더 선캡처** — PC·Mobile × Light·Dark 스크린샷을 미리 찍어 파일 경로와 캡처 조건(URL·뷰포트·테마·시각)을 함께 넘긴다.
 3. **재검증이면 델타 입력** — 직전 검증 보고서 + 그 이후 변경된 파일 목록·지문을 넘긴다(없으면 검증자는 전수로 돈다).
 

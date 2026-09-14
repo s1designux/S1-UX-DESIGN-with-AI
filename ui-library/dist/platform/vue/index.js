@@ -21,3 +21,4 @@ export { default as S1DatePicker } from "./DatePicker.vue";
 export { default as S1AssistButton } from "./AssistButton.vue";
 export { default as S1TextButton } from "./TextButton.vue";
 export { default as S1ModalContent } from "./ModalContent.vue";
+export { S1_VERSION, S1_RELEASED_AT } from "./version.js";

@@ -54,7 +54,7 @@ const FACTS = allToolFacts(manifest, platform);
    전달본 내용의 지문을 떠서 장부에 적어 두고, 지문이 달라진 날만 날짜를 새로 적는다.
    → 내용이 그대로면 날짜도 그대로다(다시 만들어도 화면이 흔들리지 않는다). */
 const TOOL_SOURCES = {
-  'html-css-js': ['s1-ui.css', 's1-ui.js', 's1-ui.auto.js', 'components', 'examples', 'assets'],
+  'html-css-js': ['s1-ui.css', 's1-ui.js', 's1-ui.auto.js', 'components', 'examples', 'assets', 'tools'],
   react: ['platform/react'],
   vue: ['platform/vue'],
   kotlin: ['platform/kotlin', 'platform/behavior.json'],
@@ -87,19 +87,26 @@ function toolFingerprint(key) {
 }
 
 const today = new Date().toISOString().slice(0, 10);
-const ledger = fs.existsSync(UPDATES) ? JSON.parse(fs.readFileSync(UPDATES, 'utf8')) : { note: '자동 생성물 — 툴별 전달본이 마지막으로 바뀐 날. 지문이 달라진 날만 갱신된다.', tools: {} };
-const updatedAt = {};
 let ledgerChanged = false;
+const ledger = fs.existsSync(UPDATES) ? JSON.parse(fs.readFileSync(UPDATES, 'utf8')) : { note: '자동 생성물 — 툴별 전달본이 마지막으로 바뀐 날. 지문이 달라진 날만 갱신된다.', tools: {} };
+/* 개발자가 견줄 "최신 번호" — 받아 간 꾸러미 안의 번호와 이 번호가 다르면 낡은 것이다.
+   번호를 맨 앞에 두려고 장부를 다시 조립한다(사람이 먼저 볼 값이다). */
+if (ledger.version !== manifest.version || ledger.releasedAt !== manifest.releasedAt) ledgerChanged = true;
+ledger.version = manifest.version;
+ledger.releasedAt = manifest.releasedAt;
+const orderedLedger = () => ({ note: ledger.note, version: ledger.version, releasedAt: ledger.releasedAt, tools: ledger.tools });
+const updatedAt = {};
 for (const key of Object.keys(TOOL_SOURCES)) {
   const fingerprint = toolFingerprint(key);
   const known = ledger.tools[key];
   if (!known || known.fingerprint !== fingerprint) {
-    ledger.tools[key] = { fingerprint, date: today };
+    ledger.tools[key] = { fingerprint, date: today, version: manifest.version };
     ledgerChanged = true;
   }
+  if (ledger.tools[key].version !== manifest.version) { ledger.tools[key].version = manifest.version; ledgerChanged = true; }
   updatedAt[key] = ledger.tools[key].date;
 }
-if (ledgerChanged && !checkOnly) fs.writeFileSync(UPDATES, `${JSON.stringify(ledger, null, 2)}\n`);
+if (ledgerChanged && !checkOnly) fs.writeFileSync(UPDATES, `${JSON.stringify(orderedLedger(), null, 2)}\n`);
 if (ledgerChanged && checkOnly) {
   console.error('❌ 툴별 전달본이 바뀌었는데 갱신 날짜가 적히지 않았습니다 — `npm run devpanel:gen` 을 실행하세요.');
   process.exit(1);
@@ -227,7 +234,7 @@ function toolCard(tool) {
               </div>
               <div class="devtool-head-right">
                 ${badge}
-                <span class="devtool-updated">업데이트 ${escape(updatedAt[tool.key] ?? '—')}</span>
+                <span class="devtool-updated">v${escape(manifest.version)} · 업데이트 ${escape(updatedAt[tool.key] ?? '—')}</span>
               </div>
             </div>
             <div class="devtool-section">설치</div>
@@ -299,7 +306,8 @@ const panel = `${START}
               </div>
               <div class="devget-item">
                 <div class="devget-label">내 배포본이 최신인지 확인</div>
-                <div class="devget-body">아래 지문과 <code>node s1-ui/tools/s1-ui-lint.mjs --version</code> 결과가 같아야 최신입니다.
+                <div class="devget-body">지금 최신은 <strong>${escape(manifest.version)}</strong> (${escape(manifest.releasedAt)} 판)입니다. 내 것의 번호가 이것보다 낮으면 다시 받으세요.
+                  <div class="devget-body" style="margin-top:6px;">번호 읽는 법 — 웹·React·Vue <code>node s1-ui/tools/s1-ui-lint.mjs --version</code> · Kotlin <code>S1Version.VERSION</code> · Swift <code>S1Version.version</code> · C++ <code>S1_UI_VERSION</code></div>
                   <div class="devget-fingerprint">${escape(manifest.canonicalFingerprint)}</div>
                 </div>
               </div>

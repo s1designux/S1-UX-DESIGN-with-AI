@@ -63,8 +63,9 @@ run('11/16 build:bundle        (registry/** → assets/js/registry-data-bundle.j
 run('12/16 tokens:sync-prompt   (tokens.css+design md → install-prompt.html)', 'npm run --silent tokens:sync-prompt');
 // UI 라이브러리와 개발자 전달본 — 토큰 표면을 다 만든 뒤 마지막에 돌린다.
 //   ⚠️ 토큰 '값'이 바뀌면 ui:build 는 일부러 멈춘다("canonicalFingerprint is stale").
-//      컴포넌트가 그 값을 쓰고 있으므로 사람이 다시 확인하고 각 manifest 지문을 갱신해야
-//      배포본을 다시 만들 수 있다는 뜻이다. 여기서 멈춰도 위 토큰 표면 재생성은 이미 끝나 있다.
+//      컴포넌트가 그 값을 쓰고 있으므로 사람이 다시 확인해야 배포본을 다시 만들 수 있다는 뜻이다.
+//      확인이 끝나면 `npm run ui:bump`(값만 바뀜) 또는 `npm run ui:bump -- --minor`(쓰는 법이 바뀜)이
+//      지문과 번호를 함께 올린다 — 번호를 손으로 찍지 않는다(Gate 50). 여기서 멈춰도 위 토큰 표면 재생성은 이미 끝나 있다.
 run('13/16 ui:build             (tokens.css+manifest → dist + 툴별 전달본 6종)', 'npm run --silent ui:build');
 run('14/16 ui:zip               (dist → assets/downloads/s1-ui-dev-package.zip)', 'npm run --silent ui:zip');
 run('15/16 devpanel:gen         (dist+zip → install-prompt.html 개발자 패널)', 'npm run --silent devpanel:gen');

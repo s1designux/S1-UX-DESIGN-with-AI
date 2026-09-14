@@ -3,6 +3,7 @@ import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import iconGeometryCheck from "../../scripts/ui-library-icon-geometry-check.js";
+import { componentIds } from "./component-ids.mjs";
 import { buildPlatformOutputs } from "./platform.mjs";
 import { buildPreviewPage } from "./preview.mjs";
 
@@ -12,7 +13,6 @@ const sourceRoot = path.join(libraryRoot, "src");
 const distRoot = path.join(libraryRoot, "dist");
 const verificationRoot = path.join(libraryRoot, "verification");
 const checkOnly = process.argv.includes("--check");
-const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker", "gnb", "gnb-sub-menu-item", "gnb-sub-menu", "assist-button", "text-button", "modal-content"];
 
 const read = (file) => readFile(file, "utf8");
 const hash = (value) => createHash("sha256").update(value).digest("hex");
@@ -30,6 +30,11 @@ async function canonicalFingerprint(manifest) {
 
 async function createOutputs() {
   const packageData = JSON.parse(await read(path.join(libraryRoot, "package.json")));
+  /* 배포본 번호는 장부가 정본이다 — 사람이 손으로 찍지 않는다(`npm run ui:bump` · Gate 50). */
+  const releaseLog = JSON.parse(await read(path.join(libraryRoot, "release-log.json")));
+  if (releaseLog.version !== packageData.version) {
+    throw new Error(`release-log.json(${releaseLog.version}) 과 package.json(${packageData.version}) 의 번호가 다릅니다 — npm run ui:version 으로 확인하세요.`);
+  }
   const tokenMap = await read(path.join(sourceRoot, "component-token-map.json"));
   const tokensCss = await read(path.join(repositoryRoot, "assets/css/tokens.css"));
   const typographyCss = await read(path.join(repositoryRoot, "assets/css/typography.css"));
@@ -100,7 +105,8 @@ async function createOutputs() {
   const canonicalFingerprintValue = hash(componentOutputs.map(({ manifest }) => manifest.canonicalFingerprint).join("\0"));
   const distManifest = {
     id: "s1-ui",
-    version: packageData.version,
+    version: releaseLog.version,
+    releasedAt: releaseLog.releasedAt,
     status: "approved",
     canonicalFingerprint: canonicalFingerprintValue,
     tokenMapFingerprint: hash(tokenMap),
