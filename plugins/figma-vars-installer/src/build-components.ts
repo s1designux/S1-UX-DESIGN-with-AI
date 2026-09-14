@@ -3395,9 +3395,13 @@ const BOTTOM_NAV_ICONS = [
   { icon: "settings",     role: "navSettings",     label: "설정" },
 ];
 async function buildMobileBottomNav(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  // 2026-09-14 river 결정: 미선택 아이콘이 실제 서비스 화면보다 과하게 진했다(구 color/icon/gray
+  //   = gray-dark/600 #55575F). 하단 내비도 내비게이션의 한 종류인데 navigation 묶음에 아이콘 칸이
+  //   없어서 icon/* 에서 빌려 쓰던 것이 원인이라, navigation/icon/default 를 신설해 거기로 옮겼다.
+  //   라벨은 새 토큰을 만들지 않고 기존 navigation/label/default 를 그대로 쓴다(river 선택지 가).
   const states = [
-    { state: "unselected", icon: "color/icon/gray",  label: "color/navigation/label/default" },
-    { state: "selected",   icon: "color/icon/blue",  label: "color/navigation/label/selected" },
+    { state: "unselected", icon: "color/navigation/icon/default", label: "color/navigation/label/default" },
+    { state: "selected",   icon: "color/icon/blue",               label: "color/navigation/label/selected" },
   ];
   const variants: Array<{ state: string; icon: string; label: string; iconName: string; iconRole: string; text: string }> = [];
   for (const iconDef of BOTTOM_NAV_ICONS) {

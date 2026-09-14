@@ -623,6 +623,11 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
 
   // ── navigation ────────────────────────────────
   "color/navigation/bg": { light: "base/white", dark: "gray-dark/100" },
+  // 내비게이션 자리의 아이콘 색. navigation 묶음에는 아이콘 칸이 없어서 모바일 하단 내비가
+  //   icon/* 에서 빌려 쓰고 있었다(미선택이 과하게 진했던 원인). river 결정 2026-09-14 —
+  //   "모바일 바텀 내비도 네비게이션의 한 종류이고 아이콘이 없을 뿐이니까 아이콘 항목만 만들고".
+  //   라벨은 새로 만들지 않고 기존 navigation/label/default 를 그대로 쓴다(같은 결정, 선택지 가).
+  "color/navigation/icon/default": { light: "gray/300", dark: "gray-dark/600" },
   "color/navigation/indicator/default": { light: "gray/200", dark: "gray-dark/300" },
   "color/navigation/indicator/hover": { light: "blue/400", dark: "blue-dark/300" },
   "color/navigation/indicator/selected": { light: "blue/400", dark: "blue-dark/300" },

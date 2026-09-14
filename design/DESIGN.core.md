@@ -2366,7 +2366,7 @@ _Don't_
 
 | variant | unselected | selected |
 | --- | --- | --- |
-| default | --color-icon-gray → color/icon/gray<br>--color-navigation-label-default → color/navigation/label/default<br>--color-navigation-bg → color/navigation/bg | --color-icon-blue → color/icon/blue<br>--color-navigation-label-selected → color/navigation/label/selected<br>--color-navigation-bg → color/navigation/bg |
+| default | --color-navigation-icon-default → color/navigation/icon/default<br>--color-navigation-label-default → color/navigation/label/default<br>--color-navigation-bg → color/navigation/bg | --color-icon-blue → color/icon/blue<br>--color-navigation-label-selected → color/navigation/label/selected<br>--color-navigation-bg → color/navigation/bg |
 
 #### Agent-readable contract
 
@@ -2430,7 +2430,7 @@ agent:
       - "color/navigation/label/selected"
     aliasChains:
       -
-        chain: "--color-icon-gray → --color-gray-dark-600 → #55575F"
+        chain: "--color-navigation-icon-default → --color-gray-300 → #C4C4C4"
         status: "resolved"
       -
         chain: "--color-navigation-label-default → --color-gray-600 → #555555"
@@ -4782,4 +4782,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: c5bea5970f44 · 손편집 금지 -->
+<!-- generated-stamp: a666b5145031 · 손편집 금지 -->

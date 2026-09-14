@@ -6,7 +6,7 @@
   "modes": [
     "search"
   ],
-  "canonicalFingerprint": "44b479e97df3af4fa4ce7c82e63444a330f62c951bd1e7472b9e4b31c2f68424",
+  "canonicalFingerprint": "85a1fa7d5ffcee0c0954b6f468a50b0f506bad753ba3d9ebf5b99ac3f4a33c22",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -264,5 +264,5 @@
     "controlMode": "uncontrolled",
     "behavior": "Focus에서 값이 있을 때 remove action을 보이고, 실행하면 값 삭제·input event 발생·Input focus 복귀. Password 옵션(type=password + action[data-action=password])이 있으면 누를 때마다 type 을 password↔text 로 바꾸고 aria-pressed·aria-label 을 맞춘 뒤 focus 를 되돌린다. Search 옵션(root[data-mode=search] + action[data-action=search])이 있으면 클릭 또는 Enter(IME 조합 제외)에서 s1:input:search 를 발화하고, clear 표시 조건은 focus 와 무관하게 값 유무만 본다."
   },
-  "sourceFingerprint": "31a0a85e9a8732ee22cb032bd9e00c7274696fd7dc60667f177b00c272f4aba8"
+  "sourceFingerprint": "5e3e97b9d92a3473270a69d3e365fdce4b3980575546e42c8189d106c0adc990"
 }

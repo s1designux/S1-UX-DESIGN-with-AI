@@ -1,8 +1,8 @@
 {
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
-  "_updated": "2026-09-10",
-  "count": 650,
+  "_updated": "2026-09-14",
+  "count": 651,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -183,6 +183,7 @@
     "color:color/line/gray/subtle",
     "color:color/modal/panel/border",
     "color:color/navigation/bg",
+    "color:color/navigation/icon/default",
     "color:color/navigation/indicator/default",
     "color:color/navigation/indicator/hover",
     "color:color/navigation/indicator/selected",
@@ -1249,6 +1250,18 @@
       "evidence": {
         "transcript": "9fc3b9d3-428b-4819-8bf9-15da47650955.jsonl",
         "at": "2026-09-10T06:51:13.239Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/navigation/icon/default",
+      "by": "river",
+      "reason": "모바일 하단 내비 미선택 아이콘 — navigation 묶음에 아이콘 칸이 없어 icon/* 에서 빌려 쓰던 것을 제자리로. 라벨은 신설 없이 기존 navigation/label/default 사용",
+      "approvedAt": "2026-09-14T08:17:11.273Z",
+      "quote": "아니 모바일 바텀 내비도 네비게이션의 한 종류이고 아이콘이 없을 뿐이니까 아이콘 항목만 만들고 라벨은 최대한 기존에 있던거 활용하면 되지 않을까?",
+      "evidence": {
+        "transcript": "1fa63fef-621a-4e0e-89ed-340de25f5aa0.jsonl",
+        "at": "2026-09-14T08:15:29.031Z"
       },
       "recordedBy": "orchestrator"
     }

@@ -12664,14 +12664,14 @@ window.REGISTRY_BUNDLE = {
       },
       "tokens": [
         {
-          "cssVar": "--color-icon-gray",
-          "semanticRef": "color/icon/gray",
+          "cssVar": "--color-icon-gray-light",
+          "semanticRef": "color/icon/gray-light",
           "state": "unselected",
           "property": "icon-color"
         },
         {
-          "cssVar": "--color-navigation-label-default",
-          "semanticRef": "color/navigation/label/default",
+          "cssVar": "--color-text-state-helper",
+          "semanticRef": "color/text/state/helper",
           "state": "unselected",
           "property": "label-color"
         },
