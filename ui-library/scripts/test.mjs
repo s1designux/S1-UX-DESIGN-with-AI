@@ -728,9 +728,18 @@ if (platformManifest.canonicalFingerprint !== distManifestJson.canonicalFingerpr
 }
 
 const tokenNames = new Set(platformTokens.tokens.map(({ name }) => name));
+/* 토큰이 아닌 **갈아끼우기 손잡이**도 CSS 에 var() 로 나온다(예: 하단 내비 아이콘).
+   이런 것은 값이 아니라 화면이 채우는 자리라 tokens.json 에 없다 — 대신 컴포넌트가
+   cssContract.customProperties 로 **선언**해야 한다. 선언 없이 쓰면 여전히 실패다. */
+const declaredHooks = new Set();
+for (const id of componentIds) {
+  const componentManifest = JSON.parse(await read(`dist/components/${id}.manifest.json`));
+  for (const name of Object.keys(componentManifest.cssContract?.customProperties ?? {})) declaredHooks.add(name);
+}
 const bundleCssText = await read("dist/s1-ui.css");
 const referencedVars = new Set([...bundleCssText.matchAll(/var\(\s*(--[a-z0-9-]+)/g)].map((match) => match[1]));
 for (const reference of referencedVars) {
+  if (declaredHooks.has(reference)) continue;
   if (!tokenNames.has(reference)) failures.push(`platform/tokens.json is missing ${reference}, which dist CSS actually uses`);
 }
 if (!referencedVars.size) failures.push("platform token coverage check found no var() references — 검사기가 무력화된 상태입니다");

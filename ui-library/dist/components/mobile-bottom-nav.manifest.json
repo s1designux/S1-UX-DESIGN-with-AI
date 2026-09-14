@@ -29,7 +29,7 @@
     "stateAxis": "정본에 hover·disabled 상태가 없다(D2). unselected·selected 2가지만 만든다.",
     "bar": "4탭 '바'는 정본·registry 둘 다 컴포넌트가 아니라고 명시한다(D1). 이 컴포넌트는 아이템 1칸(60×60)만 배포하며, 바는 화면이 role=tablist 컨테이너로 조립하고 배경은 --color-navigation-bg 로 칠한다.",
     "size": "60×60 고정 크기다. 임의 크기 축을 만들지 않는다(D2).",
-    "iconAxis": "icon 축은 2026-09-14 river 승인으로 신설했다 — 홈 하나만 있어 4칸 바를 만들면 네 칸이 모두 홈 그림이었다. 승인 목록 밖의 아이콘은 만들지 않는다."
+    "iconAxis": "icon 축은 2026-09-14 river 승인으로 신설했다 — 홈 하나만 있어 4칸 바를 만들면 네 칸이 모두 홈 그림이었다. 여기 네 가지는 **예시**다(river 2026-09-14: \"예시로만 아이콘을 얹어놓고 개발자가 다운받은 아이콘으로 교체할 수 있도록\"). 실제 서비스의 칸 구성은 서비스마다 다르므로, 화면은 --s1-mobile-nav-icon(웹) · customIcon(Compose)으로 받은 아이콘을 끼운다. 예시 네 가지를 늘리는 것은 승인 사항이지만, 교체 통로로 넣는 아이콘은 화면 소유라 승인 대상이 아니다."
   },
   "parts": [
     "icon",
@@ -45,7 +45,7 @@
       "root 자체가 role=tab 이며, 여러 아이템을 담는 role=tablist 컨테이너(화면 소유)가 바깥에 있어야 완전한 탭 구조가 된다. 배포 예시는 복사만으로 무효 ARIA 가 생기지 않도록 꾸미기 없는 <nav role=\"tablist\"> 껍데기를 포함한다(river 결정 2026-09-02 HD-1 선택지 B) — 껍데기의 배치·배경은 여전히 화면 소유다.",
       "aria-selected 는 호스트 화면이 현재 경로에 맞춰 정적으로 설정한다 — 이 컴포넌트는 로컬 클릭 토글 로직을 갖지 않는다(jsRequired=false).",
       "라벨 텍스트가 곧 접근성 이름이다 — 아이콘은 항상 aria-hidden=\"true\" 로 장식 처리한다.",
-      "data-icon 이 아이콘 모양을 고른다(기본값 home — 속성을 빼면 홈으로 그려진다). 승인된 값은 home·search·notification·settings 네 가지뿐이며, 라벨 텍스트는 화면이 정한다."
+      "data-icon 이 **예시 아이콘**을 고른다(기본값 home — 속성을 빼면 홈으로 그려진다). 예시는 home·search·notification·settings 네 가지다. 실제 화면은 대개 다른 칸 구성을 쓰므로, 받은 아이콘을 style=\"--s1-mobile-nav-icon: url('…')\" 로 끼워 교체한다. 라벨 텍스트는 화면이 정한다."
     ],
     "grouping": "코어는 아이템 1칸만 소유한다. 4탭 바 조립·배경·role=tablist 컨테이너는 화면(패턴)이 소유한다.",
     "source": "components/mobile-bottom-nav/mobile-bottom-nav.example.html",
@@ -61,7 +61,10 @@
     "documentedDataStates": [
       "[data-icon]"
     ],
-    "customization": "정본 Semantic token만 교체하며 공개 selector의 구조를 override하지 않는다."
+    "customization": "정본 Semantic token만 교체하며 공개 selector의 구조를 override하지 않는다. 아이콘 모양만은 예외로 --s1-mobile-nav-icon 커스텀 속성으로 갈아 끼운다 — 색·크기는 그대로 컴포넌트가 정한다.",
+    "customProperties": {
+      "--s1-mobile-nav-icon": "이 칸의 아이콘 그림. url(...) 로 받은 SVG 를 넣으면 data-icon 예시 대신 그것을 쓴다. 단색 도형이어야 색 토큰이 먹는다(마스크 방식)."
+    }
   },
   "contentSlots": {
     "label": "required; 탭 라벨 텍스트(접근성 이름 겸용). 정본 예시 라벨은 registry guide.sampleLabels 를 따른다."
@@ -84,7 +87,7 @@
       "id": "home",
       "sourceKey": "6bf422c937034ce15f6814e5c430d8f85953ed4e",
       "asset": "assets/icons/mobile-nav-home.svg",
-      "use": "탭 아이템 아이콘(32×32) — data-icon=\"home\"(기본값)일 때.",
+      "use": "탭 아이템 **예시** 아이콘(32×32) — data-icon=\"home\"(기본값)일 때.",
       "accessibleNamePolicy": "decorative; 라벨 텍스트가 접근성 이름을 제공한다",
       "note": "Figma V2.2 아이콘 라이브러리 ic_홈(97:292 · Property 1=Solid) 실물 벡터. 24 프레임 안 (3,3.9983) 18×16.0034 채움 도형 — 원본 대조 PASS(오차 0.00169)."
     },
@@ -92,7 +95,7 @@
       "id": "navSearch",
       "sourceKey": "e86d0bce3a9de2bf1ed37b29ee56278bf4927cb9",
       "asset": "assets/icons/nav-search.svg",
-      "use": "탭 아이템 아이콘(32×32) — data-icon=\"search\".",
+      "use": "탭 아이템 **예시** 아이콘(32×32) — data-icon=\"search\".",
       "accessibleNamePolicy": "decorative; 라벨 텍스트가 접근성 이름을 제공한다",
       "note": "Figma V2.2 아이콘 라이브러리 ic_찾기/조회(97:124 · Property 1=Solid) 실물 벡터 — 테두리 링 + 채운 렌즈 두 도형. 입력칸이 쓰는 search.svg(Line)와 다른 자산이며 서로 덮어쓰지 않는다. 원본 대조 PASS(오차 0.00591)."
     },
@@ -100,7 +103,7 @@
       "id": "navNotification",
       "sourceKey": "0994ea9c97ad4c65a9d461a0f0b7381675946973",
       "asset": "assets/icons/nav-notification.svg",
-      "use": "탭 아이템 아이콘(32×32) — data-icon=\"notification\".",
+      "use": "탭 아이템 **예시** 아이콘(32×32) — data-icon=\"notification\".",
       "accessibleNamePolicy": "decorative; 라벨 텍스트가 접근성 이름을 제공한다",
       "note": "Figma V2.2 아이콘 라이브러리 ic_알림(97:260 · Property 1=Solid) 실물 벡터. 모바일 헤더의 ic_알림(신규)(빨간 점 포함)와 다른 아이콘이다. 원본 대조 PASS(오차 0.00188)."
     },
@@ -108,7 +111,7 @@
       "id": "navSettings",
       "sourceKey": "175fb8933701ad7db5485a44dd07e26d34dfeef2",
       "asset": "assets/icons/nav-settings.svg",
-      "use": "탭 아이템 아이콘(32×32) — data-icon=\"settings\".",
+      "use": "탭 아이템 **예시** 아이콘(32×32) — data-icon=\"settings\".",
       "accessibleNamePolicy": "decorative; 라벨 텍스트가 접근성 이름을 제공한다",
       "note": "Figma V2.2 아이콘 라이브러리 ic_사용환경설정(97:312 · Property 1=Solid) 실물 벡터(톱니바퀴). river 가 ic_기기설정(스패너) 대신 고른 것이다(2026-09-14). 원본 대조 PASS(오차 0.00274)."
     }
@@ -158,5 +161,5 @@
     "notification": "icon=notification",
     "settings": "icon=settings"
   },
-  "sourceFingerprint": "86e4f5bba23bebebe0b779ae1a5163336b160b0f00e1fb15947b4a388d189d3a"
+  "sourceFingerprint": "4d9e220fabb8b34872ffd00ce9d0e46818df5d7c50a8e80574bd7ee8523656a9"
 }

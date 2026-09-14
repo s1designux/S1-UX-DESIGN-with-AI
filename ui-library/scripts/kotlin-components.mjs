@@ -847,12 +847,17 @@ fun S1ModalPanel(
 
 /** 미리보기 화면 — 승인된 조합을 축 목록에서 그대로 훑어 그린다(빠뜨릴 자리가 없다). */
 export function mobileBottomNavKt(pkg, api) {
-  return header(pkg, [...COMMON, "androidx.compose.foundation.Image", "androidx.compose.ui.graphics.ColorFilter"],
+  return header(pkg, [...COMMON, "androidx.compose.foundation.Image", "androidx.compose.ui.graphics.ColorFilter", "androidx.compose.ui.graphics.vector.ImageVector"],
     "S1MobileBottomNav — 정본 Mobile Bottom Nav 아이템 1칸(60×60)") + `
 /**
  * 승인된 하단 내비 **한 칸**. 정본은 칸 하나만 부품으로 만들고 4칸 바는 화면이 조립한다 —
  * 바 배경과 가로 배치는 이 부품이 아니라 화면이 소유한다(웹 배포본과 같은 경계).
- * 아이콘은 승인된 네 가지 중에 고른다: ${api.variants.join(" · ")}.
+ *
+ * 아이콘은 두 갈래다:
+ *   · icon — 들어 있는 **예시 아이콘** 중에 고른다: ${api.variants.join(" · ")}
+ *   · customIcon — 아이콘 라이브러리에서 받은 그림을 직접 넣는다(이쪽이 이긴다)
+ * 실제 서비스의 하단 내비는 칸 구성이 서비스마다 다르다 — 예시 넷은 "이렇게 쓴다"는 보기일 뿐이고,
+ * 받은 아이콘을 ImageVector 로 만들어 customIcon 에 넘기면 된다. 색은 그래도 이 부품이 토큰으로 칠한다.
  */
 @Composable
 fun S1MobileBottomNav(
@@ -861,6 +866,7 @@ fun S1MobileBottomNav(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     icon: String = "${api.variants[0]}",
+    customIcon: ImageVector? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
     require(S1MobileBottomNavSpec.variants.contains(icon)) {
@@ -882,10 +888,10 @@ fun S1MobileBottomNav(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(root.gapDp, Alignment.CenterVertically)
     ) {
-        val iconName = iconBox.icon
-        if (iconName != null) {
+        val drawn = customIcon ?: iconBox.icon?.let { S1Icons.byName(it) }
+        if (drawn != null) {
             Image(
-                imageVector = S1Icons.byName(iconName),
+                imageVector = drawn,
                 contentDescription = null,
                 modifier = Modifier.size((iconBox.width ?: 0f).dp, (iconBox.height ?: 0f).dp),
                 colorFilter = ColorFilter.tint(iconBox.background?.value() ?: Color.Unspecified)

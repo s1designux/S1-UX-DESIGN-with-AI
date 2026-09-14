@@ -2,7 +2,7 @@
 
 > 자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run ui:build` 를 실행하세요.
 
-**배포본 번호 0.4.0** · 2026-09-14 판
+**배포본 번호 0.5.0** · 2026-09-14 판
 이 번호가 최신인지는 디자인가이드 내려받기 화면에서 확인하세요 — 번호가 다르면 새로 받으면 됩니다.
 코드에서 볼 때는 `S1Version.VERSION` 을 읽습니다.
 
@@ -32,6 +32,22 @@ S1Theme(dark = isSystemInDarkTheme()) {
 variant 같은 축은 배포본 허용목록의 값만 받는다. 없는 조합을 넣으면 그 자리에서 멈추고
 쓸 수 있는 조합을 알려 준다 — 조용히 다른 모양으로 그리지 않는다.
 글자는 낱개 값 대신 이름 붙은 스타일(`S1Type`)로 부른다.
+
+### 하단 내비 아이콘 갈아끼우기
+
+`S1MobileBottomNav` 에 들어 있는 아이콘 네 가지(home·search·notification·settings)는 **예시**다.
+실제 화면은 칸 구성이 서비스마다 다르므로, 아이콘 라이브러리에서 받은 그림을 `customIcon` 으로 넣는다.
+
+```kotlin
+S1MobileBottomNav(
+    label = "내 정보",
+    selected = false,
+    onClick = { },
+    customIcon = ImageVector.vectorResource(R.drawable.ic_my_info)
+)
+```
+
+색은 그래도 부품이 토큰으로 칠한다 — 단색 도형을 넣으면 된다.
 
 ## 서체
 

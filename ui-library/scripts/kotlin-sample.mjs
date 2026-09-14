@@ -229,6 +229,22 @@ variant 같은 축은 배포본 허용목록의 값만 받는다. 없는 조합�
 쓸 수 있는 조합을 알려 준다 — 조용히 다른 모양으로 그리지 않는다.
 글자는 낱개 값 대신 이름 붙은 스타일(\`S1Type\`)로 부른다.
 
+### 하단 내비 아이콘 갈아끼우기
+
+\`S1MobileBottomNav\` 에 들어 있는 아이콘 네 가지(home·search·notification·settings)는 **예시**다.
+실제 화면은 칸 구성이 서비스마다 다르므로, 아이콘 라이브러리에서 받은 그림을 \`customIcon\` 으로 넣는다.
+
+\`\`\`kotlin
+S1MobileBottomNav(
+    label = "내 정보",
+    selected = false,
+    onClick = { },
+    customIcon = ImageVector.vectorResource(R.drawable.ic_my_info)
+)
+\`\`\`
+
+색은 그래도 부품이 토큰으로 칠한다 — 단색 도형을 넣으면 된다.
+
 ## 서체
 
 정본 서체는 **Pretendard** 다. 안드로이드 폰트 리소스는 앱이 넣고 테마에 넘긴다.

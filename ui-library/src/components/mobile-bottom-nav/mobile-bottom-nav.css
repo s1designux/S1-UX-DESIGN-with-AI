@@ -21,30 +21,36 @@
 }
 
 /* 아이콘 32×32 — 정본이 아이콘 인스턴스를 32 로 리사이즈한다.
-   모양은 data-icon 이 고르고(기본 home), 색은 선택 여부가 고른다. */
+   색은 선택 여부가 고르고, 모양은 두 갈래로 정해진다:
+     ① data-icon 이 고르는 **예시 아이콘** 4종(home·search·notification·settings)
+     ② 화면이 --s1-mobile-nav-icon 에 제 아이콘을 넣으면 그것이 이긴다
+   ②가 있는 이유 — 실제 서비스의 하단 내비는 칸 구성이 서비스마다 다르다(river 2026-09-14).
+   여기 4종은 "이렇게 쓴다"는 예시일 뿐이고, 개발자는 아이콘 라이브러리에서 받은 SVG 로 갈아 끼운다 —
+   칸의 style 에 --s1-mobile-nav-icon 을 받은 파일 경로로 지정하면 된다(쓰는 법은 배포본 README).
+   받은 파일이 단색 도형이면 색은 이 컴포넌트가 계속 토큰으로 칠한다(마스크 방식). */
 [data-s1-component="mobile-bottom-nav"] [data-s1-part="icon"] {
   background-color: var(--color-icon-gray);
   display: block;
   flex: none;
   height: var(--sizing-32);
-  -webkit-mask: url("../assets/icons/mobile-nav-home.svg") center / contain no-repeat;
-  mask: url("../assets/icons/mobile-nav-home.svg") center / contain no-repeat;
+  -webkit-mask: var(--s1-mobile-nav-icon, url("../assets/icons/mobile-nav-home.svg")) center / contain no-repeat;
+  mask: var(--s1-mobile-nav-icon, url("../assets/icons/mobile-nav-home.svg")) center / contain no-repeat;
   width: var(--sizing-32);
 }
 
 [data-s1-component="mobile-bottom-nav"][data-icon="search"] [data-s1-part="icon"] {
-  -webkit-mask-image: url("../assets/icons/nav-search.svg");
-  mask-image: url("../assets/icons/nav-search.svg");
+  -webkit-mask-image: var(--s1-mobile-nav-icon, url("../assets/icons/nav-search.svg"));
+  mask-image: var(--s1-mobile-nav-icon, url("../assets/icons/nav-search.svg"));
 }
 
 [data-s1-component="mobile-bottom-nav"][data-icon="notification"] [data-s1-part="icon"] {
-  -webkit-mask-image: url("../assets/icons/nav-notification.svg");
-  mask-image: url("../assets/icons/nav-notification.svg");
+  -webkit-mask-image: var(--s1-mobile-nav-icon, url("../assets/icons/nav-notification.svg"));
+  mask-image: var(--s1-mobile-nav-icon, url("../assets/icons/nav-notification.svg"));
 }
 
 [data-s1-component="mobile-bottom-nav"][data-icon="settings"] [data-s1-part="icon"] {
-  -webkit-mask-image: url("../assets/icons/nav-settings.svg");
-  mask-image: url("../assets/icons/nav-settings.svg");
+  -webkit-mask-image: var(--s1-mobile-nav-icon, url("../assets/icons/nav-settings.svg"));
+  mask-image: var(--s1-mobile-nav-icon, url("../assets/icons/nav-settings.svg"));
 }
 
 /* 라벨 12/Medium (body/12M) — 아이콘과 간격 4(정본 itemSpacing). */

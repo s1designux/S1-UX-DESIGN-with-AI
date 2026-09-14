@@ -679,6 +679,21 @@ import { S1Button, S1Input, S1Table } from "@s1/ui-react";
 
 슬롯 한 칸에 속성까지 주려면 \`{ content, attrs }\` 로 넘깁니다.
 
+### 하단 내비 아이콘 갈아끼우기
+
+\`S1MobileBottomNav\` 에 들어 있는 아이콘 네 가지(\`home\`·\`search\`·\`notification\`·\`settings\`)는 **예시**입니다.
+실제 화면은 칸 구성이 다르기 마련이라, 아이콘 라이브러리에서 받은 SVG 를 이렇게 끼웁니다.
+
+\`\`\`jsx
+<S1MobileBottomNav
+  label="내 정보"
+  selected={false}
+  style={{ "--s1-mobile-nav-icon": "url(/icons/ic_내정보.svg)" }}
+/>
+\`\`\`
+
+단색 도형이면 색은 그대로 컴포넌트가 토큰으로 칠합니다(마스크 방식).
+
 \`\`\`jsx
 <S1Table rows={[{ cells: ["합계", "", { content: 8, attrs: { "data-align": "center" } }] }]} />
 \`\`\`

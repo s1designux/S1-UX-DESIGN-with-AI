@@ -1,6 +1,6 @@
 # @s1/ui-react
 
-**배포본 번호 0.4.0** · 2026-09-14 판
+**배포본 번호 0.5.0** · 2026-09-14 판
 이 번호가 최신인지는 디자인가이드 내려받기 화면에서 확인하세요 — 번호가 다르면 새로 받으면 됩니다.
 코드에서 볼 때는 `import { S1_VERSION } from "@s1/ui-react"` 입니다.
 
@@ -42,6 +42,21 @@ import { S1Button, S1Input, S1Table } from "@s1/ui-react";
 | 나머지 속성 | 루트에 그대로 붙는다 | `id` · `onClick` · `aria-*` |
 
 슬롯 한 칸에 속성까지 주려면 `{ content, attrs }` 로 넘깁니다.
+
+### 하단 내비 아이콘 갈아끼우기
+
+`S1MobileBottomNav` 에 들어 있는 아이콘 네 가지(`home`·`search`·`notification`·`settings`)는 **예시**입니다.
+실제 화면은 칸 구성이 다르기 마련이라, 아이콘 라이브러리에서 받은 SVG 를 이렇게 끼웁니다.
+
+```jsx
+<S1MobileBottomNav
+  label="내 정보"
+  selected={false}
+  style={{ "--s1-mobile-nav-icon": "url(/icons/ic_내정보.svg)" }}
+/>
+```
+
+단색 도형이면 색은 그대로 컴포넌트가 토큰으로 칠합니다(마스크 방식).
 
 ```jsx
 <S1Table rows={[{ cells: ["합계", "", { content: 8, attrs: { "data-align": "center" } }] }]} />
