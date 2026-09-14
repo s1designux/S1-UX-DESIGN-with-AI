@@ -2,7 +2,7 @@
   "id": "mobile-bottom-nav",
   "version": "0.2.0",
   "status": "approved",
-  "canonicalFingerprint": "4d8058fe306dea24494ee1d2cd689ee7d7938c8ee7d27c470c27f5b3c13086eb",
+  "canonicalFingerprint": "e465f4d254005ec1bb9d209946b2f936129e284f77ee466a07f6b88fba2198a4",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -29,7 +29,7 @@
     "stateAxis": "정본에 hover·disabled 상태가 없다(D2). unselected·selected 2가지만 만든다.",
     "bar": "4탭 '바'는 정본·registry 둘 다 컴포넌트가 아니라고 명시한다(D1). 이 컴포넌트는 아이템 1칸(60×60)만 배포하며, 바는 화면이 role=tablist 컨테이너로 조립하고 배경은 --color-navigation-bg 로 칠한다.",
     "size": "60×60 고정 크기다. 임의 크기 축을 만들지 않는다(D2).",
-    "iconAxis": "icon 축은 2026-09-14 river 승인으로 신설했다 — 홈 하나만 있어 4칸 바를 만들면 네 칸이 모두 홈 그림이었다. 여기 네 가지는 **예시**다(river 2026-09-14: \"예시로만 아이콘을 얹어놓고 개발자가 다운받은 아이콘으로 교체할 수 있도록\"). 실제 서비스의 칸 구성은 서비스마다 다르므로, 화면은 --s1-mobile-nav-icon(웹) · customIcon(Compose)으로 받은 아이콘을 끼운다. 예시 네 가지를 늘리는 것은 승인 사항이지만, 교체 통로로 넣는 아이콘은 화면 소유라 승인 대상이 아니다."
+    "iconAxis": "icon 축은 2026-09-14 river 승인으로 신설했다 — 홈 하나만 있어 4칸 바를 만들면 네 칸이 모두 홈 그림이었다. 여기 네 가지는 **예시**다(river 2026-09-14: \"예시로만 아이콘을 얹어놓고 개발자가 다운받은 아이콘으로 교체할 수 있도록\"). 실제 서비스의 칸 구성은 서비스마다 다르므로, 화면은 --s1-mobile-nav-icon(웹) · customIcon(Compose)으로 받은 아이콘을 끼운다. 예시 네 가지를 늘리는 것은 승인 사항이지만, 교체 통로로 넣는 아이콘은 화면 소유라 승인 대상이 아니다. 교체해 넣는 아이콘도 Solid 변형이어야 한다."
   },
   "parts": [
     "icon",
@@ -63,7 +63,7 @@
     ],
     "customization": "정본 Semantic token만 교체하며 공개 selector의 구조를 override하지 않는다. 아이콘 모양만은 예외로 --s1-mobile-nav-icon 커스텀 속성으로 갈아 끼운다 — 색·크기는 그대로 컴포넌트가 정한다.",
     "customProperties": {
-      "--s1-mobile-nav-icon": "이 칸의 아이콘 그림. url(...) 로 받은 SVG 를 넣으면 data-icon 예시 대신 그것을 쓴다. 단색 도형이어야 색 토큰이 먹는다(마스크 방식)."
+      "--s1-mobile-nav-icon": "이 칸의 아이콘 그림. url(...) 로 받은 SVG 를 넣으면 data-icon 예시 대신 그것을 쓴다. **아이콘 라이브러리의 Solid 변형만 쓴다**(river 지시 2026-09-14) — 한 바 안에서 Line 과 섞이면 칸마다 무게가 달라 보인다. 단색 도형이어야 색 토큰이 먹는다(마스크 방식)."
     }
   },
   "contentSlots": {
@@ -161,5 +161,5 @@
     "notification": "icon=notification",
     "settings": "icon=settings"
   },
-  "sourceFingerprint": "4d9e220fabb8b34872ffd00ce9d0e46818df5d7c50a8e80574bd7ee8523656a9"
+  "sourceFingerprint": "600435c4e3e4f76b5435dfe0168920d23208ddf465c5321149c2f1c7231f617d"
 }

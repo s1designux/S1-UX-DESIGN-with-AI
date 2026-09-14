@@ -4,5 +4,5 @@
 public enum S1Version {
     public static let version = "0.5.0"
     public static let releasedAt = "2026-09-14"
-    public static let canonicalFingerprint = "1e1780962b9a9e1642aed1df165a12f392b8e6c46be89e80beb11dc5dc50622a"
+    public static let canonicalFingerprint = "5a96654ece28dec43ed8454b0fe138008e64cf190c2909b2c71a355114d4bb26"
 }

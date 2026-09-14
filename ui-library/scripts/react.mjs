@@ -683,6 +683,7 @@ import { S1Button, S1Input, S1Table } from "@s1/ui-react";
 
 \`S1MobileBottomNav\` 에 들어 있는 아이콘 네 가지(\`home\`·\`search\`·\`notification\`·\`settings\`)는 **예시**입니다.
 실제 화면은 칸 구성이 다르기 마련이라, 아이콘 라이브러리에서 받은 SVG 를 이렇게 끼웁니다.
+**받을 때 Solid 변형으로 받으세요** — 하단 내비는 채운 도형이 기준이고, 한 바 안에서 Line 과 섞이면 칸마다 무게가 달라 보입니다.
 
 \`\`\`jsx
 <S1MobileBottomNav

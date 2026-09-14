@@ -3383,7 +3383,9 @@ async function buildLanguageIcon(maps: BuildMaps, originY: number): Promise<{ se
 // ── Mobile Bottom Nav (Tab Item 세트) — 아이콘 + 라벨, 60×60 세로 오토레이아웃 ─────────
 // Figma V3.0 TEST 540:6025 기준. state=unselected/selected(원본 소문자 네이밍 그대로).
 // 2026-09-14 river 승인("A로 진행해줘"): 칸마다 아이콘이 달라야 바를 조립할 수 있어 icon 축을 신설한다.
-//   icon=home·search·notification·settings — 전부 V2.2 라이브러리 Solid 변형(홈과 같은 결).
+//   icon=home·search·notification·settings — 전부 V2.2 라이브러리 **Solid 변형**.
+//   하단 내비 아이콘은 Solid 만 쓴다(river 지시 2026-09-14) — 한 바 안에서 Line 과 섞이면
+//   선택 상태가 아닌 칸이 꺼져 보인다. 예시를 늘릴 때도 Solid 변형을 고른다.
 //   종전에는 홈 하나뿐이라 4칸 바를 만들면 네 칸이 모두 홈 그림이었다.
 // 4탭 "바"는 설치기에서 만들지 않음 — Tab Item 세트만(바 배경·배치는 화면이 소유).
 const BOTTOM_NAV_ICONS = [

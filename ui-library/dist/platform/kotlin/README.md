@@ -37,6 +37,7 @@ variant 같은 축은 배포본 허용목록의 값만 받는다. 없는 조합�
 
 `S1MobileBottomNav` 에 들어 있는 아이콘 네 가지(home·search·notification·settings)는 **예시**다.
 실제 화면은 칸 구성이 서비스마다 다르므로, 아이콘 라이브러리에서 받은 그림을 `customIcon` 으로 넣는다.
+**받을 때 Solid 변형으로 받는다** — 하단 내비는 채운 도형이 기준이고, 한 바 안에서 Line 과 섞이면 칸마다 무게가 달라 보인다.
 
 ```kotlin
 S1MobileBottomNav(

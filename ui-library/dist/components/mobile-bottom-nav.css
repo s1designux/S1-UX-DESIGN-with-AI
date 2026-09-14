@@ -27,6 +27,8 @@
    ②가 있는 이유 — 실제 서비스의 하단 내비는 칸 구성이 서비스마다 다르다(river 2026-09-14).
    여기 4종은 "이렇게 쓴다"는 예시일 뿐이고, 개발자는 아이콘 라이브러리에서 받은 SVG 로 갈아 끼운다 —
    칸의 style 에 --s1-mobile-nav-icon 을 받은 파일 경로로 지정하면 된다(쓰는 법은 배포본 README).
+   **받는 것은 Solid 변형이어야 한다**(river 지시 2026-09-14) — 하단 내비는 채운 도형이 기준이고,
+   한 바 안에서 Line 과 섞이면 칸마다 무게가 달라 보인다. 예시 4종도 전부 Solid 다.
    받은 파일이 단색 도형이면 색은 이 컴포넌트가 계속 토큰으로 칠한다(마스크 방식). */
 [data-s1-component="mobile-bottom-nav"] [data-s1-part="icon"] {
   background-color: var(--color-icon-gray);
