@@ -76,6 +76,7 @@
     "components:bindinglookup": "node scripts/figma-binding-lookup.js",
     "content:check": "node scripts/content-verbatim-check.js",
     "components:preview": "node scripts/component-preview/render.js",
+    "components:missing": "node scripts/missing-inventory-scan.js",
     "components:facts": "node scripts/gen-component-facts.js",
     "components:facts:write": "node scripts/gen-component-facts.js --write",
     "components:facts:check": "node scripts/gen-component-facts.js",

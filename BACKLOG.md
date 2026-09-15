@@ -89,7 +89,7 @@ vars-data 의 토큰 키가 전부 embed 됐는지만 검사한다.
   4. 드롭다운의 모바일 대체로 쓸 **목록 시트** 사용 예시를 만든다.
   5. `registry/governance/density-policy.json` 의 `mobileSubstitutes.dropdown.libraryStatus` 를 `missing-component` → `available` 로 바꾸고, 검사기 안내 문구에서 "아직 부품이 없습니다"가 사라지는지 확인한다.
 - **완료 판정**: 독립 바텀시트 부품이 배포본(`ui-library/dist`)에 있고, 날짜·시간 선택이 그것을 재사용하며, 모바일 화면에서 드롭다운 대신 쓸 예시가 있다. 🤖 `component-verifier` 독립 검증 통과.
-- **관련**: `reports/ui-library/density-scale/workflow-state.json` 의 `evidence.followUps` · **선행**: `reports/missing-inventory-audit/BRIEF.md`(빠진 컴포넌트·토큰 전수 확인 — river 지시 2026-09-15, 이 확인이 먼저다)
+- **관련**: `reports/ui-library/density-scale/workflow-state.json` 의 `evidence.followUps` · **선행 확인 완료(2026-09-15)**: `reports/missing-inventory-audit/1-inventory.md` — 전수 확인 결과 **웹 배포본에서 진짜 빠진 부품은 바텀시트 하나**로 확인됐다(옵션 행 포함). 우선순위 1순위로 제안돼 있다.
 
 ### 0. 컴포넌트 CSS 배포 — guide model → `components.css` 생성기 (2026-08-12 신규)
 

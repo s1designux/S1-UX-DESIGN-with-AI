@@ -1,0 +1,986 @@
+{
+  "_meta": {
+    "generated": true,
+    "generator": "scripts/missing-inventory-scan.js",
+    "generatedAt": "2026-09-15",
+    "sources": [
+      "registry/components/component-facts.json",
+      "ui-library/dist/components/*.manifest.json",
+      "ui-library/dist/components/*.{css,js}",
+      "registry/components/*.json",
+      "registry/governance/ui-library-migration.json",
+      "registry/governance/density-policy.json",
+      "ui-library/dist/component-token-map.json"
+    ],
+    "caveat": "판정하지 않는다. canonOnly 는 \"정본 이름으로 웹 컴포넌트를 못 찾은 것\"일 뿐 \"빠진 것\"이 아니다 — 속부품·화면 크롬이 섞여 있다."
+  },
+  "counts": {
+    "canonSets": 49,
+    "distComponents": 25,
+    "registryComponents": 26,
+    "gapCandidates": 3,
+    "registryOnly": 1,
+    "distOnly": 0
+  },
+  "canonSets": [
+    "StatusBar",
+    "NavBar",
+    "CI",
+    "LoginGNB",
+    "WebTabBar",
+    "Footer",
+    "Language Icon",
+    "GNB Utility Icon",
+    "GNB Menu",
+    "GNB",
+    "GNB Sub Menu Item",
+    "GNB Sub Menu",
+    "Mobile Bottom Nav",
+    "Mobile Header",
+    "Line Tab",
+    "Line Tab Set",
+    "Pagination Cell",
+    "Pagination",
+    "Button",
+    "Assist Button",
+    "Text Button",
+    "Checkbox",
+    "Radio",
+    "Toggle",
+    "Multi Toggle Element",
+    "Multi Toggle",
+    "Dropdown List",
+    "Dropdown",
+    "Chip",
+    "Input",
+    "Search Input",
+    "Text Area",
+    "Select Box",
+    "Calendar Cell",
+    "Calendar Tile",
+    "Calendar",
+    "Date Picker",
+    "Date Picker Mobile Bottom Sheet",
+    "Time Picker Cell",
+    "Time Picker Dropdown",
+    "Time Picker",
+    "Time Picker Mobile Bottom Sheet",
+    "Table Cell",
+    "Table",
+    "Bottom Sheet Option",
+    "Bottom Sheet",
+    "Modal",
+    "Modal Content",
+    "Filter Chip"
+  ],
+  "distComponents": [
+    "assist-button",
+    "button",
+    "checkbox",
+    "chip",
+    "date-picker",
+    "dropdown",
+    "filter-chip",
+    "gnb",
+    "gnb-sub-menu",
+    "gnb-sub-menu-item",
+    "input",
+    "mobile-bottom-nav",
+    "mobile-header",
+    "modal",
+    "modal-content",
+    "multi-toggle",
+    "pagination",
+    "radio",
+    "select",
+    "tab",
+    "table",
+    "text-button",
+    "textarea",
+    "time-picker",
+    "toggle"
+  ],
+  "classified": [
+    {
+      "canonSet": "StatusBar",
+      "coverageKind": "screen-chrome",
+      "coverageReason": "Platform/Shell — 레이아웃·템플릿 성격. components 페이지 제외(사용자 결정 2026-06-30 A)",
+      "webComponent": null,
+      "webEvidence": null,
+      "partTrace": [],
+      "probeWords": [
+        "statusbar"
+      ]
+    },
+    {
+      "canonSet": "NavBar",
+      "coverageKind": "screen-chrome",
+      "coverageReason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)",
+      "webComponent": null,
+      "webEvidence": null,
+      "partTrace": [],
+      "probeWords": [
+        "navbar"
+      ]
+    },
+    {
+      "canonSet": "CI",
+      "coverageKind": "screen-chrome",
+      "coverageReason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)",
+      "webComponent": null,
+      "webEvidence": null,
+      "partTrace": [],
+      "probeWords": [
+        "ci"
+      ]
+    },
+    {
+      "canonSet": "LoginGNB",
+      "coverageKind": "screen-chrome",
+      "coverageReason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)",
+      "webComponent": null,
+      "webEvidence": null,
+      "partTrace": [],
+      "probeWords": [
+        "logingnb"
+      ]
+    },
+    {
+      "canonSet": "WebTabBar",
+      "coverageKind": "screen-chrome",
+      "coverageReason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)",
+      "webComponent": null,
+      "webEvidence": null,
+      "partTrace": [],
+      "probeWords": [
+        "webtabbar"
+      ]
+    },
+    {
+      "canonSet": "Footer",
+      "coverageKind": "screen-chrome",
+      "coverageReason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)",
+      "webComponent": null,
+      "webEvidence": null,
+      "partTrace": [
+        {
+          "part": "footer",
+          "owners": [
+            "modal",
+            "modal-content",
+            "time-picker"
+          ]
+        }
+      ],
+      "probeWords": [
+        "footer"
+      ]
+    },
+    {
+      "canonSet": "Language Icon",
+      "coverageKind": "sub-part",
+      "coverageReason": "요소 — GNB 안 인스턴스 부품",
+      "webComponent": "gnb",
+      "webEvidence": "ui-library/dist/components/gnb.css data-s1-part=\"lang\"·\"lang-icon\"·\"lang-label\"",
+      "partTrace": [
+        {
+          "part": "icon",
+          "owners": [
+            "date-picker",
+            "filter-chip",
+            "mobile-bottom-nav",
+            "pagination",
+            "select",
+            "time-picker"
+          ]
+        }
+      ],
+      "probeWords": [
+        "language-icon",
+        "languageicon",
+        "icon"
+      ]
+    },
+    {
+      "canonSet": "GNB Utility Icon",
+      "coverageKind": "sub-part",
+      "coverageReason": "요소(element) — GNB 안 인스턴스 부품. HTML 섹션 제목은 축약형 'GNB Util Icon' 이라 slug 자동 대응이 안 돼 sectionId 로 명시(2026-07-31)",
+      "webComponent": "gnb",
+      "webEvidence": "ui-library/dist/components/gnb.css data-s1-part=\"util\"·\"account\"·\"notification\"",
+      "partTrace": [
+        {
+          "part": "icon",
+          "owners": [
+            "date-picker",
+            "filter-chip",
+            "mobile-bottom-nav",
+            "pagination",
+            "select",
+            "time-picker"
+          ]
+        }
+      ],
+      "probeWords": [
+        "gnb-utility-icon",
+        "gnbutilityicon",
+        "icon"
+      ]
+    },
+    {
+      "canonSet": "GNB Menu",
+      "coverageKind": "unclassified",
+      "coverageReason": "",
+      "webComponent": "gnb",
+      "webEvidence": "ui-library/dist/components/gnb.css data-s1-part=\"menu\"",
+      "partTrace": [
+        {
+          "part": "menu",
+          "owners": [
+            "gnb"
+          ]
+        }
+      ],
+      "probeWords": [
+        "gnb-menu",
+        "gnbmenu",
+        "menu"
+      ]
+    },
+    {
+      "canonSet": "GNB",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "gnb",
+      "webEvidence": "ui-library/dist/components/gnb.manifest.json (이름 일치)",
+      "partTrace": [],
+      "probeWords": [
+        "gnb"
+      ]
+    },
+    {
+      "canonSet": "GNB Sub Menu Item",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "gnb-sub-menu-item",
+      "webEvidence": "ui-library/dist/components/gnb-sub-menu-item.manifest.json (이름 일치)",
+      "partTrace": [],
+      "probeWords": [
+        "gnb-sub-menu-item",
+        "gnbsubmenuitem",
+        "item"
+      ]
+    },
+    {
+      "canonSet": "GNB Sub Menu",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "gnb-sub-menu",
+      "webEvidence": "ui-library/dist/components/gnb-sub-menu.manifest.json (이름 일치)",
+      "partTrace": [
+        {
+          "part": "menu",
+          "owners": [
+            "gnb"
+          ]
+        }
+      ],
+      "probeWords": [
+        "gnb-sub-menu",
+        "gnbsubmenu",
+        "menu"
+      ]
+    },
+    {
+      "canonSet": "Mobile Bottom Nav",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "mobile-bottom-nav",
+      "webEvidence": "ui-library/dist/components/mobile-bottom-nav.manifest.json (이름 일치)",
+      "partTrace": [],
+      "probeWords": [
+        "mobile-bottom-nav",
+        "mobilebottomnav",
+        "nav"
+      ]
+    },
+    {
+      "canonSet": "Mobile Header",
+      "coverageKind": "other",
+      "coverageReason": "모바일 상단 앱바 shell — Figma·설치기 정본만 신설하며 손관리 components 페이지는 별도 웹 UI 라이브러리 작업 전까지 제외(2026-08-25 사용자 승인).",
+      "webComponent": "mobile-header",
+      "webEvidence": "ui-library/dist/components/mobile-header.manifest.json (이름 일치)",
+      "partTrace": [
+        {
+          "part": "header",
+          "owners": [
+            "date-picker",
+            "modal",
+            "modal-content"
+          ]
+        }
+      ],
+      "probeWords": [
+        "mobile-header",
+        "mobileheader",
+        "header"
+      ]
+    },
+    {
+      "canonSet": "Line Tab",
+      "coverageKind": "sub-part",
+      "coverageReason": "요소 — Line Tab Set(tab 섹션) 안 셀",
+      "webComponent": "tab",
+      "webEvidence": "ui-library/dist/examples/tab.html data-s1-part=\"tab\" role=tab = 정본 셀",
+      "partTrace": [
+        {
+          "part": "tab",
+          "owners": [
+            "tab"
+          ]
+        }
+      ],
+      "probeWords": [
+        "line-tab",
+        "linetab",
+        "tab"
+      ]
+    },
+    {
+      "canonSet": "Line Tab Set",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "tab",
+      "webEvidence": "ui-library/dist/examples/tab.html 루트 [data-s1-component=\"tab\"] role=tablist = 정본 Set 컨테이너",
+      "partTrace": [],
+      "probeWords": [
+        "line-tab-set",
+        "linetabset",
+        "set"
+      ]
+    },
+    {
+      "canonSet": "Pagination Cell",
+      "coverageKind": "sub-part",
+      "coverageReason": "요소 — Pagination 안 셀",
+      "webComponent": "pagination",
+      "webEvidence": "ui-library/dist/examples/pagination.html data-s1-part=\"page\"(Number) · data-icon=\"edge\"(Edge) · data-icon=\"chevron\"(Arrow) = 정본 Element 축 3종",
+      "partTrace": [
+        {
+          "part": "cell",
+          "owners": [
+            "date-picker",
+            "multi-toggle",
+            "table",
+            "time-picker"
+          ]
+        }
+      ],
+      "probeWords": [
+        "pagination-cell",
+        "paginationcell",
+        "cell"
+      ]
+    },
+    {
+      "canonSet": "Pagination",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "pagination",
+      "webEvidence": "ui-library/dist/components/pagination.manifest.json (이름 일치)",
+      "partTrace": [],
+      "probeWords": [
+        "pagination"
+      ]
+    },
+    {
+      "canonSet": "Button",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "button",
+      "webEvidence": "ui-library/dist/components/button.manifest.json (이름 일치)",
+      "partTrace": [],
+      "probeWords": [
+        "button"
+      ]
+    },
+    {
+      "canonSet": "Assist Button",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "assist-button",
+      "webEvidence": "ui-library/dist/components/assist-button.manifest.json (이름 일치)",
+      "partTrace": [],
+      "probeWords": [
+        "assist-button",
+        "assistbutton",
+        "button"
+      ]
+    },
+    {
+      "canonSet": "Text Button",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "text-button",
+      "webEvidence": "ui-library/dist/components/text-button.manifest.json (이름 일치)",
+      "partTrace": [],
+      "probeWords": [
+        "text-button",
+        "textbutton",
+        "button"
+      ]
+    },
+    {
+      "canonSet": "Checkbox",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "checkbox",
+      "webEvidence": "ui-library/dist/components/checkbox.manifest.json (이름 일치)",
+      "partTrace": [],
+      "probeWords": [
+        "checkbox"
+      ]
+    },
+    {
+      "canonSet": "Radio",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "radio",
+      "webEvidence": "ui-library/dist/components/radio.manifest.json (이름 일치)",
+      "partTrace": [],
+      "probeWords": [
+        "radio"
+      ]
+    },
+    {
+      "canonSet": "Toggle",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "toggle",
+      "webEvidence": "ui-library/dist/components/toggle.manifest.json (이름 일치)",
+      "partTrace": [],
+      "probeWords": [
+        "toggle"
+      ]
+    },
+    {
+      "canonSet": "Multi Toggle Element",
+      "coverageKind": "sub-part",
+      "coverageReason": "요소 — Multi Toggle 안 셀(multi-toggle 섹션 Element States 로 표출)",
+      "webComponent": "multi-toggle",
+      "webEvidence": "ui-library/dist/components/multi-toggle.css data-s1-part=\"cell\" = 정본 셀",
+      "partTrace": [],
+      "probeWords": [
+        "multi-toggle-element",
+        "multitoggleelement",
+        "element"
+      ]
+    },
+    {
+      "canonSet": "Multi Toggle",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "multi-toggle",
+      "webEvidence": "ui-library/dist/components/multi-toggle.manifest.json (이름 일치)",
+      "partTrace": [],
+      "probeWords": [
+        "multi-toggle",
+        "multitoggle",
+        "toggle"
+      ]
+    },
+    {
+      "canonSet": "Dropdown List",
+      "coverageKind": "sub-part",
+      "coverageReason": "요소 — Dropdown(dropdown 섹션) 안 옵션 리스트로 표출",
+      "webComponent": "dropdown",
+      "webEvidence": "ui-library/dist/components/dropdown.css data-s1-part=\"option\" = 정본 옵션 행",
+      "partTrace": [],
+      "probeWords": [
+        "dropdown-list",
+        "dropdownlist",
+        "list"
+      ]
+    },
+    {
+      "canonSet": "Dropdown",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "dropdown",
+      "webEvidence": "ui-library/dist/components/dropdown.manifest.json (이름 일치)",
+      "partTrace": [],
+      "probeWords": [
+        "dropdown"
+      ]
+    },
+    {
+      "canonSet": "Chip",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "chip",
+      "webEvidence": "ui-library/dist/components/chip.manifest.json (이름 일치)",
+      "partTrace": [],
+      "probeWords": [
+        "chip"
+      ]
+    },
+    {
+      "canonSet": "Input",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "input",
+      "webEvidence": "ui-library/dist/components/input.manifest.json (이름 일치)",
+      "partTrace": [],
+      "probeWords": [
+        "input"
+      ]
+    },
+    {
+      "canonSet": "Search Input",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "input",
+      "webEvidence": "ui-library/dist/components/input.css:13 [data-mode=\"search\"] · examples/input.search.html",
+      "partTrace": [],
+      "probeWords": [
+        "search-input",
+        "searchinput",
+        "input"
+      ]
+    },
+    {
+      "canonSet": "Text Area",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "textarea",
+      "webEvidence": "ui-library/dist/components/textarea.manifest.json rootSelector [data-s1-component=\"textarea\"]",
+      "partTrace": [],
+      "probeWords": [
+        "text-area",
+        "textarea",
+        "area"
+      ]
+    },
+    {
+      "canonSet": "Select Box",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "select",
+      "webEvidence": "ui-library/dist/components/select.manifest.json rootSelector [data-s1-component=\"select\"] · sizes xxsm/xsm/md = 정본 Size 축",
+      "partTrace": [],
+      "probeWords": [
+        "select-box",
+        "selectbox",
+        "box"
+      ]
+    },
+    {
+      "canonSet": "Calendar Cell",
+      "coverageKind": "sub-part",
+      "coverageReason": "요소 — Date Picker 안 날짜 셀",
+      "webComponent": "date-picker",
+      "webEvidence": "ui-library/dist/components/date-picker.css data-s1-part=\"cell\"",
+      "partTrace": [
+        {
+          "part": "cell",
+          "owners": [
+            "date-picker",
+            "multi-toggle",
+            "table",
+            "time-picker"
+          ]
+        }
+      ],
+      "probeWords": [
+        "calendar-cell",
+        "calendarcell",
+        "cell"
+      ]
+    },
+    {
+      "canonSet": "Calendar Tile",
+      "coverageKind": "sub-part",
+      "coverageReason": "요소 — Date Picker 안 타일",
+      "webComponent": "date-picker",
+      "webEvidence": "ui-library/dist/components/date-picker.css data-s1-part=\"tile\"",
+      "partTrace": [
+        {
+          "part": "tile",
+          "owners": [
+            "date-picker"
+          ]
+        }
+      ],
+      "probeWords": [
+        "calendar-tile",
+        "calendartile",
+        "tile"
+      ]
+    },
+    {
+      "canonSet": "Calendar",
+      "coverageKind": "sub-part",
+      "coverageReason": "요소 — Date Picker 안 캘린더 패널",
+      "webComponent": "date-picker",
+      "webEvidence": "ui-library/dist/components/date-picker.css data-s1-part=\"calendar\"",
+      "partTrace": [
+        {
+          "part": "calendar",
+          "owners": [
+            "date-picker"
+          ]
+        }
+      ],
+      "probeWords": [
+        "calendar"
+      ]
+    },
+    {
+      "canonSet": "Date Picker",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "date-picker",
+      "webEvidence": "ui-library/dist/components/date-picker.manifest.json (이름 일치)",
+      "partTrace": [],
+      "probeWords": [
+        "date-picker",
+        "datepicker",
+        "picker"
+      ]
+    },
+    {
+      "canonSet": "Date Picker Mobile Bottom Sheet",
+      "coverageKind": "sub-part",
+      "coverageReason": "요소/변형 — Date Picker(date-picker 섹션) 모바일 폼. HTML 섹션 제목이 'Date Picker Bottom Sheet'(Mobile 생략)이라 slug 자동 대응이 안 돼 sectionId 로 명시(2026-07-31)",
+      "webComponent": "date-picker",
+      "webEvidence": "ui-library/dist/components/date-picker.css data-s1-part=\"sheet\"·\"sheet-panel\"",
+      "partTrace": [
+        {
+          "part": "sheet",
+          "owners": [
+            "date-picker",
+            "time-picker"
+          ]
+        }
+      ],
+      "probeWords": [
+        "date-picker-mobile-bottom-sheet",
+        "datepickermobilebottomsheet",
+        "sheet"
+      ]
+    },
+    {
+      "canonSet": "Time Picker Cell",
+      "coverageKind": "sub-part",
+      "coverageReason": "요소 — Time Picker 안 셀",
+      "webComponent": "time-picker",
+      "webEvidence": "ui-library/dist/components/time-picker.css data-s1-part=\"wheel-cell\"",
+      "partTrace": [
+        {
+          "part": "cell",
+          "owners": [
+            "date-picker",
+            "multi-toggle",
+            "table",
+            "time-picker"
+          ]
+        }
+      ],
+      "probeWords": [
+        "time-picker-cell",
+        "timepickercell",
+        "cell"
+      ]
+    },
+    {
+      "canonSet": "Time Picker Dropdown",
+      "coverageKind": "sub-part",
+      "coverageReason": "요소 — Time Picker 안 드롭다운 패널",
+      "webComponent": "time-picker",
+      "webEvidence": "ui-library/dist/components/time-picker.css data-s1-part=\"panel\"·\"wheel-col\" = 정본 드롭다운 패널",
+      "partTrace": [],
+      "probeWords": [
+        "time-picker-dropdown",
+        "timepickerdropdown",
+        "dropdown"
+      ]
+    },
+    {
+      "canonSet": "Time Picker",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "time-picker",
+      "webEvidence": "ui-library/dist/components/time-picker.manifest.json (이름 일치)",
+      "partTrace": [],
+      "probeWords": [
+        "time-picker",
+        "timepicker",
+        "picker"
+      ]
+    },
+    {
+      "canonSet": "Time Picker Mobile Bottom Sheet",
+      "coverageKind": "sub-part",
+      "coverageReason": "요소/변형 — Time Picker(time-picker 섹션) 모바일 폼(휠 바텀시트)",
+      "webComponent": "time-picker",
+      "webEvidence": "ui-library/dist/components/time-picker.css data-s1-part=\"sheet\"·\"sheet-panel\"",
+      "partTrace": [
+        {
+          "part": "sheet",
+          "owners": [
+            "date-picker",
+            "time-picker"
+          ]
+        }
+      ],
+      "probeWords": [
+        "time-picker-mobile-bottom-sheet",
+        "timepickermobilebottomsheet",
+        "sheet"
+      ]
+    },
+    {
+      "canonSet": "Table Cell",
+      "coverageKind": "sub-part",
+      "coverageReason": "요소 — Table 안 셀",
+      "webComponent": "table",
+      "webEvidence": "ui-library/dist/components/table.css data-s1-part=\"cell\"·\"header-cell\" = 정본 Type(Cell/Header) 축",
+      "partTrace": [
+        {
+          "part": "cell",
+          "owners": [
+            "date-picker",
+            "multi-toggle",
+            "table",
+            "time-picker"
+          ]
+        }
+      ],
+      "probeWords": [
+        "table-cell",
+        "tablecell",
+        "cell"
+      ]
+    },
+    {
+      "canonSet": "Table",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "table",
+      "webEvidence": "ui-library/dist/components/table.manifest.json (이름 일치)",
+      "partTrace": [
+        {
+          "part": "table",
+          "owners": [
+            "table"
+          ]
+        }
+      ],
+      "probeWords": [
+        "table"
+      ]
+    },
+    {
+      "canonSet": "Bottom Sheet Option",
+      "coverageKind": "sub-part",
+      "coverageReason": "요소 — Bottom Sheet 안 옵션 행(Text/Checkbox/Radio/List).",
+      "webComponent": null,
+      "webEvidence": null,
+      "partTrace": [
+        {
+          "part": "option",
+          "owners": [
+            "dropdown"
+          ]
+        }
+      ],
+      "probeWords": [
+        "bottom-sheet-option",
+        "bottomsheetoption",
+        "option"
+      ]
+    },
+    {
+      "canonSet": "Bottom Sheet",
+      "coverageKind": "other",
+      "coverageReason": "공용 오버레이 컴포넌트 — 모바일 사용은 Filter Chip(·Time Picker) 섹션의 바텀시트로 표출(전용 섹션 불요). Figma 라이브러리 정본.",
+      "webComponent": null,
+      "webEvidence": null,
+      "partTrace": [
+        {
+          "part": "sheet",
+          "owners": [
+            "date-picker",
+            "time-picker"
+          ]
+        }
+      ],
+      "probeWords": [
+        "bottom-sheet",
+        "bottomsheet",
+        "sheet"
+      ]
+    },
+    {
+      "canonSet": "Modal",
+      "coverageKind": "other",
+      "coverageReason": "확인 계열 공통 팝업 셸(overlay) — codeStatus in-progress, 아직 HTML 하네스 데모 없음(harnessStatus not-started). Figma 라이브러리 정본. HTML 섹션 생기면 sectionFor 로 이관.",
+      "webComponent": "modal",
+      "webEvidence": "ui-library/dist/components/modal.manifest.json (이름 일치)",
+      "partTrace": [],
+      "probeWords": [
+        "modal"
+      ]
+    },
+    {
+      "canonSet": "Modal Content",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "modal-content",
+      "webEvidence": "ui-library/dist/components/modal-content.manifest.json (이름 일치)",
+      "partTrace": [
+        {
+          "part": "content",
+          "owners": [
+            "modal",
+            "modal-content"
+          ]
+        }
+      ],
+      "probeWords": [
+        "modal-content",
+        "modalcontent",
+        "content"
+      ]
+    },
+    {
+      "canonSet": "Filter Chip",
+      "coverageKind": "standalone",
+      "coverageReason": "",
+      "webComponent": "filter-chip",
+      "webEvidence": "ui-library/dist/components/filter-chip.manifest.json (이름 일치)",
+      "partTrace": [],
+      "probeWords": [
+        "filter-chip",
+        "filterchip",
+        "chip"
+      ]
+    }
+  ],
+  "gapCandidates": [
+    {
+      "canonSet": "GNB Menu",
+      "coverageKind": "unclassified",
+      "coverageReason": "",
+      "webComponent": "gnb",
+      "webEvidence": "ui-library/dist/components/gnb.css data-s1-part=\"menu\"",
+      "partTrace": [
+        {
+          "part": "menu",
+          "owners": [
+            "gnb"
+          ]
+        }
+      ],
+      "probeWords": [
+        "gnb-menu",
+        "gnbmenu",
+        "menu"
+      ]
+    },
+    {
+      "canonSet": "Bottom Sheet Option",
+      "coverageKind": "sub-part",
+      "coverageReason": "요소 — Bottom Sheet 안 옵션 행(Text/Checkbox/Radio/List).",
+      "webComponent": null,
+      "webEvidence": null,
+      "partTrace": [
+        {
+          "part": "option",
+          "owners": [
+            "dropdown"
+          ]
+        }
+      ],
+      "probeWords": [
+        "bottom-sheet-option",
+        "bottomsheetoption",
+        "option"
+      ]
+    },
+    {
+      "canonSet": "Bottom Sheet",
+      "coverageKind": "other",
+      "coverageReason": "공용 오버레이 컴포넌트 — 모바일 사용은 Filter Chip(·Time Picker) 섹션의 바텀시트로 표출(전용 섹션 불요). Figma 라이브러리 정본.",
+      "webComponent": null,
+      "webEvidence": null,
+      "partTrace": [
+        {
+          "part": "sheet",
+          "owners": [
+            "date-picker",
+            "time-picker"
+          ]
+        }
+      ],
+      "probeWords": [
+        "bottom-sheet",
+        "bottomsheet",
+        "sheet"
+      ]
+    }
+  ],
+  "registryOnly": [
+    "nav"
+  ],
+  "distOnly": [],
+  "migrationLedgerNotInDist": [
+    "password-field",
+    "search-input"
+  ],
+  "promisedSubstitutes": [
+    {
+      "forComponent": "dropdown",
+      "promised": "바텀시트",
+      "libraryStatus": "missing-component",
+      "libraryNote": "독립 바텀시트 컴포넌트가 아직 없다 — 지금은 date-picker·time-picker 안에 내장된 시트만 있다. 화면을 만들 때는 그 모양을 따르고, 부품화는 별도 작업으로 올린다."
+    },
+    {
+      "forComponent": "multi-toggle",
+      "promised": "라디오 또는 체크박스",
+      "libraryStatus": "available",
+      "libraryNote": "radio·checkbox 는 크기 축이 없어 화면 구분과 무관하게 그대로 쓴다."
+    }
+  ],
+  "tokenMapCoverage": {
+    "declared": [
+      "button",
+      "input"
+    ],
+    "undeclared": [
+      "assist-button",
+      "checkbox",
+      "chip",
+      "date-picker",
+      "dropdown",
+      "filter-chip",
+      "gnb",
+      "gnb-sub-menu",
+      "gnb-sub-menu-item",
+      "mobile-bottom-nav",
+      "mobile-header",
+      "modal",
+      "modal-content",
+      "multi-toggle",
+      "pagination",
+      "radio",
+      "select",
+      "tab",
+      "table",
+      "text-button",
+      "textarea",
+      "time-picker",
+      "toggle"
+    ],
+    "policy": "semantic-direct"
+  }
+}
