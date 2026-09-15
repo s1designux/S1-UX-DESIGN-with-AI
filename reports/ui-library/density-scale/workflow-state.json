@@ -47,7 +47,7 @@
     "repositoryInventory": "reports/component-inventory-audit.md",
     "inventory": "reports/ui-library/density-scale/1-inventory.md"
   },
-  "nextAction": "river UX 검수(5-human-review) — 실제 화면에서 넓게·보통·좁게가 쓸 만한지 판단. 그 뒤 6-promotion 에서 migration 장부 기록.",
+  "nextAction": "river 결정 3건(좁게 위로올림 · 모바일 3종 · 중첩 선언). 정해지면 반영 후 5-human-review.",
   "blockers": [],
   "decisions": [
     {
@@ -60,8 +60,8 @@
     {
       "id": "D-2",
       "question": "그 밀도에 맞는 크기가 없는 컴포넌트는?",
-      "answer": "가장 가까운 아래 크기로 대신한다(칩은 '넓게'에서 34). 위로 올리면 그 줄만 커져 줄이 어긋난다. — 오케스트레이터 판단, river 확인 필요.",
-      "by": "orchestrator",
+      "answer": "가장 가까운 아래 크기로 대신한다(칩은 넓게에서 34). river 승인 2026-09-14: \"칩이 34로 내려가는 거 괜찮아\".",
+      "by": "river",
       "at": "2026-09-14"
     },
     {
@@ -75,19 +75,19 @@
   "evidence": {
     "machineChecks": [
       {
-        "command": "npm run ui:density",
-        "result": "PASS (규칙 80줄 · 경고 4건 = 대체 크기 안내)"
-      },
-      {
-        "command": "npm run ui:build",
-        "result": "PASS (260 파일)"
+        "command": "ui:contract / ui:build:check / ui:test:check / ui:icons / ui:icons:origin / ui:guide:render / ui:version / ui:density / ui:state",
+        "result": "전부 exit 0 (2026-09-15, 0.5.7)"
       },
       {
         "command": "npm run gate:check",
-        "result": "PASS (오류 0 · 경고 17 — 착수 전과 동일)"
+        "result": "PASS (오류 0 · 경고 17)"
+      },
+      {
+        "command": "검사기 적대 테스트",
+        "result": "가짜 위반 4종(크기치환 누락 2 · break 이중부정 · 괄호 불균형) 전부 차단됨"
       }
     ],
-    "render": "넓게 44/44/34 · 보통 34/34/34 · 좁게 28/28/28 · 모바일 48/48 · 크기 직접 지정이 밀도를 이김(44 vs 28) — 브라우저 실측 확인 2026-09-14",
+    "render": "2026-09-15 브라우저 실측 · 배포본 0.5.7. 넓게 44(칩·필터칩 34) · 보통 34 전종 · 좁게 28(멀티토글·표만 34) · 모바일 48(칩·필터칩 30 · 표 44 · 멀티토글 19 · 드롭다운 27). 감싸기 안에서 크기만 직접 줘도 10종 전부 그 크기로 선다. 입력 아이콘 버튼 모바일 48×48(PC hover 칠 없음) · PC 28×28. 모바일 감싸개 안에서 자기 pc 를 적은 입력은 28×28 + hover 유지.",
     "riverApproval": null,
     "sourceAudit": {
       "observedAt": "2026-09-14",
@@ -96,13 +96,23 @@
     "implementationActualRender": {
       "verdict": "PASS",
       "by": "orchestrator",
-      "at": "2026-09-14",
-      "note": "브라우저 실측 — 넓게 44/44/34 · 보통 34/34/34 · 좁게 28/28/28 · 모바일 48/48. narrow 안에서 data-size=md 를 직접 준 버튼 44(예외가 이긴다)."
+      "at": "2026-09-15",
+      "note": "배포본 0.5.7 브라우저 실측. 넓게 44 · 보통 34 · 좁게 28 · 모바일 48 이 10종에서 선다(아래 openGaps 3건 제외). 감싸기 안에서 크기만 직접 줘도 10종 전부 그 크기로 선다. 입력 아이콘 버튼 모바일 48×48(PC hover 칠 없음) · PC 28×28. 컴포넌트가 자기 data-break 를 달고 있어도 결과 동일."
     },
     "independentVerification": {
-      "verdict": "PENDING",
-      "note": "component-verifier 시나리오 F 미실행 — 시각·원본 충실성 별도 검증 필요."
-    }
+      "verdict": "FAIL 4회 — 마지막(0.5.7)은 \"이번 라운드가 만든 결함 0, 고칠 것 없음, river 결정만 남음\"",
+      "by": "component-verifier",
+      "at": "2026-09-15",
+      "note": "누적 ❌ 8건 중 결정이 필요 없는 6건 전부 해소 확인. 기존 마크업 2600노드 0 차이 · 밀도 경로와 크기 직접 경로 900노드 0 차이 · 규칙 1188/1188 그대로 · 밀도 밖 컴포넌트 오염 0. 남은 FAIL 사유는 river 결정 대기 2건뿐."
+    },
+    "openGaps": [
+      "좁게(28): 멀티토글·표는 28 크기가 CSS 에 없어 34 로 올라간다. river 승인 문구는 \"가장 가까운 아래\" 뿐 — 결정 필요.",
+      "모바일(48): 멀티토글 19 · 드롭다운 27 로 찌그러진다. 모바일 크기가 정본에 없다. 이미 있는 크기(멀티토글 34·44, 드롭다운 28·34·44) 중 무엇을 쓸지, 아니면 모바일 선언 대상에서 뺄지 — 결정 필요.",
+      "밀도 선언 겹치기: 안쪽이 이기지 않고, 모바일>PC 중첩에서는 CSS(48)와 동작(PC 팝업)이 갈린다. 지금은 문서에 \"겹치지 말라\"로 적었다 — 제대로 지원할지 결정 필요."
+    ],
+    "followUps": [
+      "검사기 정리(급하지 않음): 다리 블록 안에 숨긴 위반은 면제 정의상 안 보인다 — 다리 줄에 대해 \"크기 규칙이 같은 부품에 같은 속성을 주는가\"를 따로 보면 막힌다."
+    ]
   },
   "outOfScope": [
     "tab",
@@ -113,8 +123,8 @@
   ],
   "handoff": {
     "lastActor": "orchestrator",
-    "updatedAt": "2026-09-14",
-    "summary": "0-governance ~ 3-build 완료. 4-verification 은 기계검사·렌더 실측까지 오케스트레이터가 끝냈고, 독립 검증(component-verifier 시나리오 F)과 river UX 검수가 남았다."
+    "updatedAt": "2026-09-15",
+    "summary": "독립 검증 4회. 결정이 필요 없는 결함 6건 전부 해소(0.5.7). 검증자가 \"고칠 것 없음, river 결정만 남음\" 으로 정리했다."
   },
   "contract": {
     "path": "registry/governance/ui-library-code-contract.json",
@@ -212,7 +222,7 @@
     }
   ],
   "workflowStatus": "awaiting-user",
-  "currentPhase": "5-human-review",
-  "uiLibraryStatus": "verified",
-  "lastCompletedCheckpoint": 4
+  "currentPhase": "4-verification",
+  "uiLibraryStatus": "needs-decision",
+  "lastCompletedCheckpoint": 3
 }

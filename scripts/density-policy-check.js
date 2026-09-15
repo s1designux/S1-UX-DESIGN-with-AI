@@ -43,7 +43,7 @@ async function main() {
 
     const source = fs.readFileSync(path.join(base, `${id}.css`), 'utf8');
     const manifest = JSON.parse(fs.readFileSync(path.join(base, 'manifest.json'), 'utf8'));
-    const { pc, mobile, heights } = densityMapFor(source, policy, manifest.breaks);
+    const { pc, mobile, heights, defaultHeight } = densityMapFor(source, policy, manifest.breaks);
 
     if (!heights.length) { failures.push(`${id}: CSS 에서 크기별 높이를 하나도 읽지 못했습니다 — 밀도를 만들 수 없습니다.`); continue; }
 
@@ -57,10 +57,16 @@ async function main() {
       failures.push(`${id}: 모바일 크기(${mobile})를 읽었는데 배포본에 규칙이 없습니다.`);
     }
 
-    const missing = policy.levels.filter((l) => !pc[l.id]);
+    const byDefault = policy.levels.filter((l) => !pc[l.id] && defaultHeight === l.pcHeight);
+    if (byDefault.length) {
+      notes.push(`${id}: ${byDefault.map((l) => `${l.ko}(${l.pcHeight})`).join(' · ')} 는 크기를 안 줘도 그 높이가 나와 규칙을 깔지 않습니다.`);
+    }
+    const missing = policy.levels.filter((l) => !pc[l.id] && defaultHeight !== l.pcHeight);
     if (missing.length) {
       notes.push(`${id}: ${missing.map((l) => `${l.ko}(${l.pcHeight})`).join(' · ')} 는 이 컴포넌트에 없어 가장 가까운 크기로 대신합니다.`);
     }
+    // 모바일 크기가 없는 컴포넌트는 화면 구분만 준 자리에서 높이를 못 받는다(내용 높이로 찌그러진다).
+    if (!mobile) notes.push(`${id}: 모바일 크기가 CSS 에 없어 data-s1-break="mobile" 만으로는 높이가 잡히지 않습니다 — 그 자리에서는 data-size 를 직접 주어야 합니다.`);
 
     // 정본이 아는 높이와 대조 — 다르면 경고로만 남긴다(컴포넌트마다 실측 대상이 다르다).
     const canonHeights = new Set((facts.components[factsName]?.geometry || [])
@@ -69,9 +75,73 @@ async function main() {
     if (unknown.length) notes.push(`${id}: CSS 높이 ${unknown.join('·')} 는 정본 실측에 없는 값입니다 — 웹 전용 기준인지 확인하세요.`);
   }
 
-  const densityLines = css.split('\n').filter((l) => l.includes(`[${policy.attribute}="`) && l.includes('[data-s1-component='));
-  const unguarded = densityLines.filter((l) => !l.includes(':not([data-size])'));
-  if (unguarded.length) failures.push(`밀도 규칙 ${unguarded.length}줄에 :not([data-size]) 가 빠졌습니다 — 크기를 직접 준 곳을 덮어씁니다.`);
+  /* 모바일 블록은 [data-s1-break="mobile"] 로 시작해 밀도 속성이 안 들어간다 — 두 축을 다 봐야
+     사각지대가 없다(독립 검증 2026-09-15 지적: 규칙 13% 가 그물 밖이었다). */
+  /* 생성된 줄은 조상 선언으로 **시작**한다 — 컴포넌트 자기 규칙([data-s1-component= 으로 시작)이
+     감싸개 선언을 참조하는 경우와 섞이지 않게 시작 모양으로 가린다. */
+  const densityRows = css.split('\n').map((l, index) => [index, l]).filter(([, l]) => {
+    const selector = l.split('{')[0].trimStart();
+    return l.includes('[data-s1-component=')
+      && (selector.startsWith(`[${policy.attribute}="`)
+        || selector.startsWith(`[${policy.breakAttribute}="`)
+        || selector.startsWith(`:is([${policy.breakAttribute}="`));
+  });
+  const densityLines = densityRows.map(([, l]) => l);
+  /* 가드가 지키는 것은 "크기를 안 줬을 때 높이를 주는 규칙이 크기 지정을 덮지 않는가" 하나다.
+     다리(bridge) 규칙은 컴포넌트 자기 규칙을 화면 구분만 느슨하게 해 그대로 옮긴 것이라 대상이 아니다.
+     면제는 **어느 블록에서 나온 줄인지**로 가린다 — 줄 생김새로 가리면 크기 치환을 빠뜨린 진짜 위반이
+     다리와 똑같이 생겨 함께 빠져나간다(독립 검증 2026-09-15 지적). */
+  /* 줄 '내용' 이 아니라 '몇 번째 줄' 로 기억한다 — 내용으로 기억하면 선택자가 똑같은 위반이
+     다른 블록에 있어도 면제를 물려받는다(독립 검증 2026-09-15 지적). */
+  const bridgeRows = new Set();
+  {
+    let inBridge = false;
+    css.split('\n').forEach((line, index) => {
+      if (line.includes('/* bridge:')) inBridge = true;
+      else if (line.includes('/* density:') || line.includes('/* ── 밀도(density)')) inBridge = false;
+      if (inBridge) bridgeRows.add(index);
+    });
+  }
+  const unguarded = densityRows.filter(([, l]) => !l.includes(':not([data-size])'))
+    .filter(([index]) => !bridgeRows.has(index))
+    .map(([, l]) => l);
+  if (unguarded.length) failures.push(`밀도 규칙 ${unguarded.length}줄에 :not([data-size]) 가 빠졌습니다 — 크기를 직접 준 곳을 덮어씁니다. 예) ${unguarded[0].split('{')[0].trim().slice(0, 90)}`);
+
+  /* 선택자 괄호가 안 맞으면 브라우저가 그 규칙과 뒤따르는 규칙까지 버린다.
+     :is([data-size="xsm"], [data-size="xxsm"]) 같은 묶음을 쉼표에서 반토막 내면 이렇게 됐다(2026-09-15). */
+  const broken = css.split('\n')
+    .map((l) => l.split('{')[0])
+    .filter((sel) => sel.includes('[data-s1-component=') &&
+      (sel.match(/\(/g) || []).length !== (sel.match(/\)/g) || []).length);
+  if (broken.length) failures.push(`선택자 괄호가 맞지 않는 규칙 ${broken.length}줄 — 브라우저가 통째로 버립니다. 예) ${broken[0].trim().slice(0, 80)}`);
+
+  /* 괄호는 맞는데 뜻이 뒤집히거나 새는 모양 3종(2026-09-15 독립 검증 지적).
+     지금 소스에는 없지만, 생기면 조용히 통과하던 자리라 여기서 막는다. */
+  const traps = [
+    [/:not\(\s*:not\(/, '이중 부정 :not(:not(…)) — 뜻이 정반대로 뒤집힙니다'],
+    [/:is\([^)]*:not\(\[data-size\]\)[^)]*,[^)]*\)|:is\([^)]*,[^)]*:not\(\[data-size\]\)[^)]*\)/, ':is() 안에 :not([data-size]) 가 다른 선택자와 섞였습니다 — 크기를 직접 준 곳까지 걸립니다'],
+    [/:where\([^)]*data-size[^)]*\)/, ':where() 로 묶인 크기 — 밀도 규칙이 조용히 사라지거나 약해집니다']
+  ];
+  for (const line of densityLines) {
+    for (const [pattern, why] of traps) {
+      if (pattern.test(line)) { failures.push(`${why}. 예) ${line.split('{')[0].trim().slice(0, 90)}`); break; }
+    }
+  }
+
+  /* @media 안 규칙도 화면 구분에 걸릴 수 있다(입력의 hover 억제). 밀도 대상 컴포넌트에서
+     그런 규칙이 컴포넌트 자기 [data-break] 만 보고 감싸개 선언을 무시하면, 감싸개로만 선언한
+     화면에서 조용히 어긋난다 — 0.5.6 이 그렇게 퇴행했다(독립 검증 2026-09-15). */
+  for (const id of Object.keys(policy.componentFacts)) {
+    const source = fs.readFileSync(path.join(ROOT, 'ui-library/src/components', id, `${id}.css`), 'utf8');
+    for (const block of source.match(/@media[^{]*\{[\s\S]*?\n\}/g) || []) {
+      for (const line of block.split('\n')) {
+        const selector = line.split('{')[0];
+        if (!/\[data-break="/.test(selector)) continue;
+        if (selector.includes(policy.breakAttribute)) continue;
+        failures.push(`${id}: @media 안 규칙이 감싸개의 ${policy.breakAttribute} 선언을 보지 않습니다 — 감싸개로만 화면을 선언한 자리에서 어긋납니다. 예) ${selector.trim().slice(0, 90)}`);
+      }
+    }
+  }
 
   console.log('🔎 밀도 정책 검사기 (Density Policy)');
   for (const n of notes) console.log(`  ⚠️  ${n}`);

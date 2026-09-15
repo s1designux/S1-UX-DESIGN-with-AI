@@ -1,0 +1,76 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>밀도 검수 화면</title>
+<script>/* ?theme=dark 로 열면 다크. 캡처 조건을 URL 에 적어 재현 가능하게 한다. */
+ document.documentElement.dataset.theme = new URLSearchParams(location.search).get("theme") === "dark" ? "dark" : "light";</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="/ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="/ui-library/dist/assets/css/typography.css">
+<link rel="stylesheet" href="/ui-library/dist/s1-ui.css">
+<style>
+ body{font-family:Pretendard,sans-serif;margin:0;padding:20px;background:var(--color-bg-level-1);color:var(--color-text-body-primary)}
+ h2{font-size:13px;font-weight:600;margin:20px 0 8px;color:var(--color-text-state-caption)}
+ .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:12px;border:1px dashed var(--color-line-gray-subtle);border-radius:4px;background:var(--color-surface-raised)}
+ .m{font:11px/1.6 monospace;color:var(--color-text-state-helper);margin:4px 0 0}
+ table{border-collapse:collapse}
+</style></head><body>
+<div id="app"></div>
+<script type="module">
+const control = (d) => `
+  <button type="button" data-s1-component="button" data-variant="primary"><span data-s1-part="label">확인</span></button>
+  <button type="button" data-s1-component="button" data-variant="secondary"><span data-s1-part="label">취소</span></button>
+  <div data-s1-component="input" style="width:170px"><div data-s1-part="field"><input data-s1-part="control" aria-label="입력${d}" placeholder="입력"><button type="button" data-s1-part="action" aria-label="지우기"><span data-s1-part="action-icon" aria-hidden="true"></span></button></div></div>
+  <div data-s1-component="select" style="width:120px"><button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false"><span data-s1-part="value">선택</span><span data-s1-part="icon" aria-hidden="true"></span></button></div>
+  <div data-s1-component="date-picker" data-mode="single"><button type="button" data-s1-part="trigger" aria-haspopup="dialog" aria-expanded="false"><span data-s1-part="value">YY.MM.DD</span><span data-s1-part="icon" aria-hidden="true"></span></button></div>
+  <div data-s1-component="time-picker" data-type="24h"><button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="시간"><span data-s1-part="value">시간</span><span data-s1-part="icon" aria-hidden="true"></span></button></div>
+  <button type="button" data-s1-component="chip" data-variant="line" aria-pressed="false"><span data-s1-part="label">라인 칩</span></button>
+  <button type="button" data-s1-component="chip" data-variant="solid" aria-pressed="true"><span data-s1-part="label">솔리드</span></button>
+  <div data-s1-component="filter-chip" data-variant="line" data-title="on"><button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false"><span data-s1-part="title">정렬</span><span data-s1-part="value">최신순</span><span data-s1-part="icon" aria-hidden="true"></span></button></div>
+  <div data-s1-component="multi-toggle" role="radiogroup" aria-label="정렬${d}"><button type="button" data-s1-part="cell" role="radio" aria-checked="true">왼쪽</button><button type="button" data-s1-part="cell" role="radio" aria-checked="false">가운데</button></div>`;
+const tableHtml = (d) => `<div data-s1-component="table" style="width:320px"><table data-s1-part="table"><thead><tr><th data-s1-part="header-cell" scope="col">항목</th><th data-s1-part="header-cell" data-align="center" scope="col">수량</th></tr></thead><tbody><tr data-s1-part="row"><td data-s1-part="cell">가${d}</td><td data-s1-part="cell" data-align="center">10</td></tr></tbody></table></div>`;
+const dropdownHtml = (d) => `<div data-s1-component="dropdown" data-type="text" role="listbox" aria-label="목록${d}" style="width:140px"><div data-s1-part="option" role="option" aria-selected="true" tabindex="0"><span data-s1-part="option-label">최신순</span></div><div data-s1-part="option" role="option" aria-selected="false" tabindex="-1"><span data-s1-part="option-label">인기순</span></div></div>`;
+
+const blocks = [
+  ['넓게 (density=wide · 44)', 'data-s1-break="pc" data-s1-density="wide"', 'w'],
+  ['보통 (density=normal · 34)', 'data-s1-break="pc" data-s1-density="normal"', 'n'],
+  ['좁게 (density=narrow · 28)', 'data-s1-break="pc" data-s1-density="narrow"', 'a'],
+  ['모바일 (break=mobile · 48)', 'data-s1-break="mobile"', 'm'],
+  ['예외 — 좁게 안에서 크기를 직접 준 것', 'data-s1-break="pc" data-s1-density="narrow"', 'x'],
+  ['겹침 — 넓게 + 컴포넌트가 자기 data-break="pc" 를 달고 있을 때', 'data-s1-break="pc" data-s1-density="wide"', 'p'],
+  ['겹침 — 모바일 + 컴포넌트가 자기 data-break="mobile" 을 달고 있을 때', 'data-s1-break="mobile"', 'b'],
+  ['예외 — 넓게 안에서 한 자리만 작은 크기를 직접 준 것(data-break 없이)', 'data-s1-density="wide"', 's']
+];
+const app = document.getElementById('app');
+/* ?only=m 으로 한 덩어리만 그린다 — 모바일 폭에서 그 자리만 캡처하기 위한 것. */
+const only = new URLSearchParams(location.search).get('only');
+for (const [label, attrs, k] of blocks) {
+  if (only && k !== only) continue;
+  const extra = k === 'x'
+    ? `<button type="button" data-s1-component="button" data-variant="primary" data-size="md"><span data-s1-part="label">md 강제</span></button>`
+    : '';
+  let html = `${extra}${control(k)}${tableHtml(k)}${dropdownHtml(k)}`;
+  // 겹침 칸: 배포되는 예시 마크업처럼 컴포넌트 자신에게도 data-break 를 달아 본다.
+  if (k === 'p' || k === 'b') {
+    const own = k === 'p' ? 'pc' : 'mobile';
+    html = html.replace(/data-s1-component="/g, `data-break="${own}" data-s1-component="`);
+  }
+  // 문서가 권하는 예외 처리 — 화면 구분은 안 적고 크기만 직접 준다. 컴포넌트마다 작은 크기 이름이 다르다.
+  if (k === 's') {
+    const small = { button: 'xxsm', input: 'xxsm', select: 'xxsm', 'date-picker': 'xxsm', 'time-picker': 'xxsm',
+      chip: 'sm', 'filter-chip': 'sm', 'multi-toggle': 'sm', table: 'xsm', dropdown: 'xxsm' };
+    html = html.replace(/data-s1-component="([a-z-]+)"/g, (whole, id) => `${whole} data-size="${small[id]}"`);
+  }
+  app.insertAdjacentHTML('beforeend', `<h2>${label}</h2><div class="row" ${attrs}>${html}</div><p class="m" data-for="${k}"></p>`);
+}
+for (const row of document.querySelectorAll('.row')) {
+  const k = row.nextElementSibling.dataset.for;
+  const seen = new Map();
+  for (const el of row.querySelectorAll('[data-s1-component]')) {
+    const id = el.dataset.s1Component;
+    const target = el.querySelector('[data-s1-part="field"],[data-s1-part="trigger"],[data-s1-part="cell"],[data-s1-part="option"]') || el;
+    const h = Math.round(target.getBoundingClientRect().height);
+    const key = id + (el.dataset.size ? `(${el.dataset.size})` : '');
+    if (!seen.has(key)) seen.set(key, h);
+  }
+  row.nextElementSibling.textContent = [...seen].map(([a, b]) => `${a}=${b}`).join('  ');
+}
+</script></body></html>

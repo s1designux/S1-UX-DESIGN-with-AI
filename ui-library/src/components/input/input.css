@@ -103,9 +103,11 @@
 
 /* Mobile break 는 hover 를 내지 않는다 — 손가락에는 hover 가 없고,
    PC 브라우저에서 Mobile 화면을 볼 때 48×48 누르는 영역이 통째로 칠해져
-   실제 아이콘보다 훨씬 큰 면이 반응하는 것처럼 보이기 때문이다(river 지시 2026-09-07). */
+   실제 아이콘보다 훨씬 큰 면이 반응하는 것처럼 보이기 때문이다(river 지시 2026-09-07).
+   화면 구분을 감싸는 요소에만 적었을 때도 같아야 한다 — 자기 [data-break] 가 없어도
+   모바일 감싸개 안이면 hover 를 내지 않는다(2026-09-15). 자기가 pc 라고 적었으면 그쪽이 이긴다. */
 @media (hover: hover) {
-  [data-s1-component="input"]:not([data-break="mobile"]) [data-s1-part="action"]:hover:not(:disabled) {
+  [data-s1-component="input"]:not([data-break="mobile"]):is([data-break="pc"], :not([data-s1-break="mobile"] *)) [data-s1-part="action"]:hover:not(:disabled) {
     background: var(--color-form-control-bg-hover);
     border-radius: var(--radius-control-sm);
   }

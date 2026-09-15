@@ -96,12 +96,6 @@
 
 
 /* ── 밀도(density) — registry/governance/density-policy.json 에서 생성. 손편집 금지 ── */
-/* density:wide 넓게(44px) — data-size 를 직접 주면 그쪽이 이긴다 */
-[data-s1-density="wide"] [data-s1-component="table"]:not([data-size]) [data-s1-part="header-cell"],
-[data-s1-density="wide"] [data-s1-component="table"]:not([data-size]) [data-s1-part="cell"] {
-  height: var(--sizing-38);
-}
-
 /* density:normal 보통(34px) — data-size 를 직접 주면 그쪽이 이긴다 */
 [data-s1-density="normal"] [data-s1-component="table"]:not([data-size]) [data-s1-part="header-cell"],
 [data-s1-density="normal"] [data-s1-component="table"]:not([data-size]) [data-s1-part="cell"] {

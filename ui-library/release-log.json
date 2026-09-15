@@ -5,10 +5,46 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.5.3",
+  "version": "0.5.7",
   "releasedAt": "2026-09-14",
   "canonicalFingerprint": "2444c67933ca9a5d226c4a3cdf254f84790c1ba828d02b3fba2986fa38ab28ff",
   "releases": [
+    {
+      "version": "0.5.7",
+      "date": "2026-09-14",
+      "kind": "patch",
+      "canonicalFingerprint": "2444c67933ca9a5d226c4a3cdf254f84790c1ba828d02b3fba2986fa38ab28ff",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "d53efa85d94419b3917c92ac5e494581ec17c7aceac2c88e14d1802aae11a71b"
+    },
+    {
+      "version": "0.5.6",
+      "date": "2026-09-14",
+      "kind": "patch",
+      "canonicalFingerprint": "2444c67933ca9a5d226c4a3cdf254f84790c1ba828d02b3fba2986fa38ab28ff",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "de2f3dcb24e2a942d2b65a3260deaf89489380e6bf3037d8f70002dd72239a00"
+    },
+    {
+      "version": "0.5.5",
+      "date": "2026-09-14",
+      "kind": "patch",
+      "canonicalFingerprint": "2444c67933ca9a5d226c4a3cdf254f84790c1ba828d02b3fba2986fa38ab28ff",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "8f9ffdca9432b1623d01b5551a68c91dd3cef87ee9b658a3552fb8c94d642f82"
+    },
+    {
+      "version": "0.5.4",
+      "date": "2026-09-14",
+      "kind": "patch",
+      "canonicalFingerprint": "2444c67933ca9a5d226c4a3cdf254f84790c1ba828d02b3fba2986fa38ab28ff",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "e83a05a6d2ea6c15f48a27fa8c24d03f247e0ac16b003f00ef2e5b064ba07d50"
+    },
     {
       "version": "0.5.3",
       "date": "2026-09-14",
@@ -156,5 +192,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "69c55b5afb50633b5abab8c2a8a67834b9976961e9756ba27cba599a023b4041"
+  "deliveryFingerprint": "d53efa85d94419b3917c92ac5e494581ec17c7aceac2c88e14d1802aae11a71b"
 }

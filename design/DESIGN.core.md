@@ -4652,6 +4652,8 @@ _Don't_
 - 어느 밀도를 쓰나 — 일반 사용자용 폼·상세 화면은 넓게, 관리자 화면·표 안·도구 모음은 보통, 표 칸 안이나 필터 줄처럼 아주 좁은 자리는 좁게. 모바일은 밀도 축이 없다(손가락 기준 높이 하나) — data-s1-break="mobile" 만 준다.
 - 한 자리만 다르게 해야 하면 그 컴포넌트에 data-size 를 직접 준다 — 직접 준 값이 밀도보다 우선한다. 밀도가 닿는 컴포넌트와 눈금은 registry/governance/density-policy.json 이 정본이다(상단 바·모달·탭·달력은 자기 눈금을 쓰므로 대상이 아니다).
 - 같은 크기 단어가 컴포넌트마다 다른 높이를 뜻한다 — 버튼 md=44 인데 칩 md=34 다. 그래서 "전부 md 로" 는 줄을 어긋나게 만든다. 크기 단어 대신 밀도를 쓴다.
+- 밀도 선언은 한 화면에 한 번만 한다. 밀도 선언 안에 또 밀도 선언을 겹치면 안쪽이 이기지 않는다 — 다르게 할 자리는 겹치지 말고 그 컴포넌트에 data-size 를 직접 준다.
+- 감싸는 요소의 화면 구분(data-s1-break)을 화면이 떠 있는 동안 바꾸면, 날짜 선택은 그 값을 다시 읽지 않는다 — 바꾼 뒤 다시 초기화한다.
 
 ## 9. Agent Prompt Guide
 
@@ -4694,4 +4696,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: c2dc0aa33d4f · 손편집 금지 -->
+<!-- generated-stamp: 0a524f337f6f · 손편집 금지 -->
