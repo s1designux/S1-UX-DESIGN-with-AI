@@ -82,12 +82,12 @@ vars-data 의 토큰 키가 전부 embed 됐는지만 검사한다.
 - **왜 지금 해야 하나**: 가이드(`design/DESIGN.core.md` §8)와 검사기(`npm run ui:density`)가 이미 "모바일에서는 바텀시트를 쓰라"고 말한다. **권하는 것이 부품으로 없는 상태**라, 안내를 따르려는 사람이 막힌다.
 - **필요한 작업**:
   1. `date-picker`·`time-picker` 의 시트를 훑어 **공통 뼈대**를 뽑는다(배경 가림막·올라오는 패널·머리말·닫기·포커스 가두기·`aria-modal`·바깥 누르면 닫기·Esc).
-  2. 정본(`plugins/figma-vars-installer/src/build-components.ts`)에 대응물이 있는지 먼저 확인한다. **없으면 `needs-decision`** — 임의로 만들지 않는다(하드룰 H6②·Gate 34).
+  2. ~~정본에 대응물이 있는지 먼저 확인한다~~ → **확인 끝(2026-09-15): 정본에 이미 있다.** `build-components.ts` 의 `buildBottomSheet`(5152줄) · `buildBottomSheetOption`(5009줄), 세트 이름 `"Bottom Sheet"` · `"Bottom Sheet Option"`, `component-facts.json` 에 실측도 있다. 새로 만드는 일이 아니라 **웹으로 옮기는 일**이다.
   3. 부품으로 뺀 뒤 `date-picker`·`time-picker` 가 그 부품을 **재사용**하게 한다(코어 재사용 원칙). 두 곳의 렌더 결과가 이관 전후로 같아야 한다.
   4. 드롭다운의 모바일 대체로 쓸 **목록 시트** 사용 예시를 만든다.
   5. `registry/governance/density-policy.json` 의 `mobileSubstitutes.dropdown.libraryStatus` 를 `missing-component` → `available` 로 바꾸고, 검사기 안내 문구에서 "아직 부품이 없습니다"가 사라지는지 확인한다.
 - **완료 판정**: 독립 바텀시트 부품이 배포본(`ui-library/dist`)에 있고, 날짜·시간 선택이 그것을 재사용하며, 모바일 화면에서 드롭다운 대신 쓸 예시가 있다. 🤖 `component-verifier` 독립 검증 통과.
-- **관련**: `reports/ui-library/density-scale/workflow-state.json` 의 `evidence.followUps`
+- **관련**: `reports/ui-library/density-scale/workflow-state.json` 의 `evidence.followUps` · **선행**: `reports/missing-inventory-audit/BRIEF.md`(빠진 컴포넌트·토큰 전수 확인 — river 지시 2026-09-15, 이 확인이 먼저다)
 
 ### 0. 컴포넌트 CSS 배포 — guide model → `components.css` 생성기 (2026-08-12 신규)
 
