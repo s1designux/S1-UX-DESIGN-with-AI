@@ -1,0 +1,14 @@
+{
+  "id": "orchestrator-misses-port-fallout",
+  "category": "uncategorized",
+  "label": "웹 CSS 를 고치면 이식본이 조용히 깨진다",
+  "count": 1,
+  "promotionStatus": "watching",
+  "occurrences": [
+    {
+      "date": "2026-09-15",
+      "summary": "bottom-sheet 작업에서 모바일 버튼 hover 를 걷어내자 안드로이드 Compose 포트가 누름 표시를 통째로 잃었다. 포트는 :hover 만 읽고 :active 를 안 읽는데, ui:build:check 는 재생성 일치만 보므로 틀린 값이 굳어도 초록이었다. 독립 검증이 잡았다."
+    }
+  ],
+  "recommendedRule": "공유 컴포넌트 CSS 의 상태 선택자를 나누거나 좁힐 때는 ui-library/scripts/*-compose.mjs 의 상태 매핑을 함께 확인한다 — 포트가 어떤 가상클래스를 읽는지 먼저 본다."
+}

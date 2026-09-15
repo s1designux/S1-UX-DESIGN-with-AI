@@ -291,9 +291,14 @@ function buttonPlan(manifest) {
     key: (combo) => `${combo.variant}|${combo.size}|${combo.state}`,
     build: (combo) => {
       const label = el("span", { "data-s1-part": "label" });
+      /* "hover" 칸은 Compose 에서 `hovered || pressed` 를 함께 담는 칸이다(kotlin-components.mjs buttonKt).
+         그래서 웹의 :hover 와 :active 를 **둘 다** 켜서 읽는다 — 어느 쪽이 걸리든 그 칠을 가져온다.
+         2026-09-15 이후 웹 Button 은 모바일(LG)에서 :hover 를 걷어내고 :active(누름)만 남겼다.
+         여기서 :hover 만 켜면 LG 칸이 통째로 Default 색이 되어 **안드로이드가 누름 표시를 잃는다**
+         (독립 검증 3회차 ❌(a)-1). PC 크기는 :hover 와 :active 가 같은 토큰이라 결과가 달라지지 않는다. */
       const root = el("button", {
         "data-s1-component": "button", "data-variant": combo.variant, "data-size": combo.size, type: "button"
-      }, combo.state === "hover" ? ["hover"] : combo.state === "disabled" ? ["disabled"] : [], [label]);
+      }, combo.state === "hover" ? ["hover", "active"] : combo.state === "disabled" ? ["disabled"] : [], [label]);
       return { targets: { root: { node: root }, label: { node: label } }, mediaActive: hoverOnly(combo.state === "hover") };
     }
   };

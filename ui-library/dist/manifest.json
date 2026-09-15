@@ -1,9 +1,9 @@
 {
   "id": "s1-ui",
-  "version": "0.5.7",
-  "releasedAt": "2026-09-14",
+  "version": "0.6.10",
+  "releasedAt": "2026-09-15",
   "status": "approved",
-  "canonicalFingerprint": "2444c67933ca9a5d226c4a3cdf254f84790c1ba828d02b3fba2986fa38ab28ff",
+  "canonicalFingerprint": "706ab4e1643d76a52873b374411652ca8a0c570fe170fac67c24e327d296420c",
   "tokenMapFingerprint": "796fb798dd329910ba6c42a29fb4af9e0fd217446b3fa847e140bc70a0a8f4c7",
   "commonCssDependencies": [
     "assets/css/tokens.css",
@@ -602,6 +602,63 @@
       "geometryEvidence": "Figma 가 보고한 프레임 내 여백(inset 세로 14% · 가로 12.5%)을 그대로 옮겼다. 저장소 내보내기 ic_사용환경설정_solid.png(24 프레임)와 같은 좌표계다.",
       "dependencies": [],
       "sourceExport": "assets/icons/ic_사용환경설정_solid.png"
+    },
+    {
+      "id": "lock",
+      "sourceKey": "28aa6b1615f3afb29ff22cf2767f0c771c941fdc",
+      "sourceSetKey": "b3ccc4b275de6aac8e3940df2ae97fbb00168624",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_잠김 세트 8:751 · Line variant 8:749 (이 세트만 속성명이 Type=Line 이다) 실물 벡터 — 🤖 figma-inspector 가 get_design_context 로 2026-09-15 확보. build-components.ts:4966 LOCK_FALLBACK_SVG 는 라이브러리 로드 실패용 근사치라 쓰지 않았다(chevron 2026-09-01 · close 2026-09-02 와 같은 사고를 피한다). 잉크색은 선례와 같이 #353535 → black 정규화.",
+      "file": "lock.svg",
+      "webAssetFingerprint": "e86ed1026f1b8bab34046763adb1d0f01339068200b9ccaa7c206590f81e3481",
+      "symbolId": "s1-icon-lock",
+      "individualFile": "assets/icons/lock.svg",
+      "accessibleNamePolicy": "decorative; 잠긴 줄이라는 뜻은 그 줄의 aria-disabled 와 글자가 전달한다",
+      "geometry": {
+        "frame": {
+          "width": 24,
+          "height": 24
+        },
+        "glyph": {
+          "x": 5,
+          "y": 3,
+          "width": 14,
+          "height": 18
+        },
+        "scaling": "proportional"
+      },
+      "geometryEvidence": "Figma 노드 8:749 get_design_context 인셋 12.5%(상하)·20.83%(좌우) 실측 — 24 프레임 안 (5, 3) 에 14×18 도형. 저장소 내보내기 assets/icons/ic_잠김_line.png(48×48 = 24 기준 2배)와 픽셀 대조.",
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_잠김_line.png"
+    },
+    {
+      "id": "check24",
+      "sourceKey": "5ab251e0d90adb555ee2fa316f84e86041f19916",
+      "sourceBuilderSymbol": "Figma 아이콘 라이브러리 V2.2 ic_확인 세트 97:167 · Line variant 97:166 실물 벡터 — 🤖 figma-inspector 가 get_design_context 로 2026-09-15 확보(river 가 활성 탭을 라이브러리로 전환해 준 뒤). 정본은 이 아이콘을 24px 로 놓는다(build-components.ts:5051). build-components.ts:4967 CHECK_24_SVG 는 로드 실패용 근사치 폴백이라 쓰지 않았다. 잉크색 #353535 → black 정규화.",
+      "file": "check24.svg",
+      "webAssetFingerprint": "2c65a72b53863a10beea57425f3bcb62399e62593858a609d36a42f68cea57a2",
+      "symbolId": "s1-icon-check24",
+      "individualFile": "assets/icons/check24.svg",
+      "accessibleNamePolicy": "decorative; 선택 상태는 그 줄의 aria-selected·aria-checked 가 알린다",
+      "geometry": {
+        "frame": {
+          "width": 24,
+          "height": 24
+        },
+        "glyph": {
+          "x": 3,
+          "y": 6.1008,
+          "width": 18,
+          "height": 11.8001
+        },
+        "scaling": "proportional"
+      },
+      "geometryEvidence": "Figma 노드 97:166 get_design_context 인셋 25.42%(상하)·12.5%(좌우) 실측 — 24 프레임 안 (3, 6.1008) 에 18×11.8001 도형. 저장소 내보내기 assets/icons/ic_확인_line.png(48×48) 알파 경계 실측 (3,6) 18×12 와 반올림 차이 수준으로 일치한다. 도형은 stroke 가 아니라 fill 폴리곤 1개다(lock 과 같은 패턴) — 팔 폭 실측 ≈1.02 이며, 45° 대각선이라 PNG 세로 런 1.5 와 모순되지 않는다(1.02×√2≈1.44).",
+      "dependencies": [],
+      "sourceExport": "assets/icons/ic_확인_line.png",
+      "relatedIcons": [
+        "check"
+      ],
+      "relatedIconsNote": "같은 라이브러리 아이콘(ic_확인)의 24 프레임 표출이다. check(16 프레임)는 체크박스가 16px 로 쓰므로 건드리지 않는다. 16 프레임 자산을 24 로 확대하면 선 굵기까지 1.5배가 되어 정본보다 굵어진다(2026-09-15 독립 검증 실측 2.27px vs 1.5px) — 그래서 프레임별로 자산을 나눈다."
     }
   ],
   "components": [
@@ -630,7 +687,7 @@
       "status": "approved",
       "jsRequired": false,
       "canonicalFingerprint": "77265d5da86c952b73d51e8b82a7deae2c6813bb8a491627cfaf00a9dbf71c3e",
-      "sourceFingerprint": "d151422b296508314deb353ebb799a742edfc79794bc72201c6c24968d3d38c0",
+      "sourceFingerprint": "0a6fa5f546580c415f243b7553d38829023c5b2fee462f7047289a08eaa207ba",
       "css": "components/button.css",
       "js": "components/button.js",
       "example": "examples/button.html",
@@ -861,7 +918,7 @@
       "status": "approved",
       "jsRequired": true,
       "canonicalFingerprint": "a37a11665159dcf9a3af0b735d7829ae98324bba91336961d145e92a28c8d0eb",
-      "sourceFingerprint": "cf0ba6fd0d7e0ed46c45b8ddcb8489b7583cb3272f491763abca901a11a9be4c",
+      "sourceFingerprint": "a0ad32eea0811b161b55a57b8ead67714410a84d04842b25ca0cc0afe80c3d5b",
       "css": "components/time-picker.css",
       "js": "components/time-picker.js",
       "example": "examples/time-picker.html",
@@ -876,7 +933,7 @@
       "status": "approved",
       "jsRequired": true,
       "canonicalFingerprint": "f098dc99ae633c91c1f056d6321310a270a0b024df404734670590f23925b61a",
-      "sourceFingerprint": "3a82885689e2a60d61c626e4d27d90dbeef70c22603843f0d2a0da9228c0b7c1",
+      "sourceFingerprint": "b7ee9265a856a76751528cf8f1396ddef59f8d0623de88c1b55b14c5bc0da126",
       "css": "components/date-picker.css",
       "js": "components/date-picker.js",
       "example": "examples/date-picker.html",
@@ -947,7 +1004,7 @@
       "status": "approved",
       "jsRequired": false,
       "canonicalFingerprint": "42bd2e76c6d1879ae8ad16704ebfaa370b14d4b3155e32ae252f740eebf5a5a3",
-      "sourceFingerprint": "fde5b68e01b988d1b49c51669a15c3ae1b0fac477133d46242130af0f2f59a4b",
+      "sourceFingerprint": "63195f1e82d513f5dcf2141f328e25148cdbad7f2bcc4ee02b8732909ea46100",
       "css": "components/text-button.css",
       "js": "components/text-button.js",
       "example": "examples/text-button.html",
@@ -967,6 +1024,34 @@
       "example": "examples/modal-content.html",
       "examples": {
         "pc": "examples/modal-content.html"
+      }
+    },
+    {
+      "id": "bottom-sheet-option",
+      "version": "0.1.1",
+      "status": "approved",
+      "jsRequired": false,
+      "canonicalFingerprint": "caa0b6750e4efe8b458178ff6738577c2e6f21dd8d27e0d2439aa1965bbe9235",
+      "sourceFingerprint": "fea372a072661d8e1826706b5e148239a13f79cc033eec0216480c17b5da1f08",
+      "css": "components/bottom-sheet-option.css",
+      "js": "components/bottom-sheet-option.js",
+      "example": "examples/bottom-sheet-option.html",
+      "examples": {
+        "pc": "examples/bottom-sheet-option.html"
+      }
+    },
+    {
+      "id": "bottom-sheet",
+      "version": "0.1.1",
+      "status": "approved",
+      "jsRequired": true,
+      "canonicalFingerprint": "b3736a9d4978ad60d0a7f7f9f67df19148b1bd20b7a902739ec4743ccd29c783",
+      "sourceFingerprint": "825328dadb22dcdc781f7d9c1d21977771b8275e5097231ee43f1ac49acad04f",
+      "css": "components/bottom-sheet.css",
+      "js": "components/bottom-sheet.js",
+      "example": "examples/bottom-sheet.html",
+      "examples": {
+        "pc": "examples/bottom-sheet.html"
       }
     }
   ],
@@ -996,7 +1081,9 @@
       "gnb-sub-menu",
       "assist-button",
       "text-button",
-      "modal-content"
+      "modal-content",
+      "bottom-sheet-option",
+      "bottom-sheet"
     ],
     "source": "ui-library/src/components/*",
     "rule": "Full and individual outputs are generated in this build invocation from identical source strings."

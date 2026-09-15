@@ -75,21 +75,22 @@ vars-data 의 토큰 키가 전부 embed 됐는지만 검사한다.
 
 ## 🔴 우선순위 높음
 
-### 0-b. 바텀시트 부품화 (2026-09-15 신규 · river 지시)
+### ~~0-b. 바텀시트 부품화~~ — ✅ **완료 (2026-09-15)**
 
-> **새 세션 착수 쪽지: `reports/ui-library/bottom-sheet/BRIEF.md`** — 정본 위치·변형 축·뼈대·조심할 것이 정리돼 있다.
+> **결과:** `bottom-sheet` · `bottom-sheet-option` 두 부품이 배포본 **0.6.9** 에 승인 등재됐다. river 승인 2026-09-15 "승인할게, 텍스트버튼도 A로 빼줘".
+> 기록: `reports/ui-library/bottom-sheet/` (1-inventory ~ 6-promotion · 독립 검증 5회차)
 
-- **배경**: 밀도(density) 작업에서 **모바일에는 드롭다운을 쓰지 않는다**로 정해졌다. river 결정 2026-09-15: "모바일에서는 드롭다운 대신 바텀시트를 제공해. 멀티토글 대신 라디오/체크박스를 사용해." 멀티 토글의 대체(radio·checkbox)는 이미 부품으로 있는데, **드롭다운의 대체인 바텀시트는 독립 부품이 없다.**
-- **지금 상태**: 시트 모양은 `date-picker`·`time-picker` **안에만** 있다(`[data-s1-part="sheet"]` / `sheet-backdrop` / `sheet-panel` / `sheet-header` / `sheet-title` / `sheet-close`). 화면을 만드는 사람이 가져다 쓸 독립 부품이 없어, 지금은 그 모양을 손으로 베껴야 한다.
-- **왜 지금 해야 하나**: 가이드(`design/DESIGN.core.md` §8)와 검사기(`npm run ui:density`)가 이미 "모바일에서는 바텀시트를 쓰라"고 말한다. **권하는 것이 부품으로 없는 상태**라, 안내를 따르려는 사람이 막힌다.
-- **필요한 작업**:
-  1. `date-picker`·`time-picker` 의 시트를 훑어 **공통 뼈대**를 뽑는다(배경 가림막·올라오는 패널·머리말·닫기·포커스 가두기·`aria-modal`·바깥 누르면 닫기·Esc).
-  2. ~~정본에 대응물이 있는지 먼저 확인한다~~ → **확인 끝(2026-09-15): 정본에 이미 있다.** `build-components.ts` 의 `buildBottomSheet`(5152줄) · `buildBottomSheetOption`(5009줄), 세트 이름 `"Bottom Sheet"` · `"Bottom Sheet Option"`, `component-facts.json` 에 실측도 있다. 새로 만드는 일이 아니라 **웹으로 옮기는 일**이다.
-  3. 부품으로 뺀 뒤 `date-picker`·`time-picker` 가 그 부품을 **재사용**하게 한다(코어 재사용 원칙). 두 곳의 렌더 결과가 이관 전후로 같아야 한다.
-  4. 드롭다운의 모바일 대체로 쓸 **목록 시트** 사용 예시를 만든다.
-  5. `registry/governance/density-policy.json` 의 `mobileSubstitutes.dropdown.libraryStatus` 를 `missing-component` → `available` 로 바꾸고, 검사기 안내 문구에서 "아직 부품이 없습니다"가 사라지는지 확인한다.
-- **완료 판정**: 독립 바텀시트 부품이 배포본(`ui-library/dist`)에 있고, 날짜·시간 선택이 그것을 재사용하며, 모바일 화면에서 드롭다운 대신 쓸 예시가 있다. 🤖 `component-verifier` 독립 검증 통과.
-- **관련**: `reports/ui-library/density-scale/workflow-state.json` 의 `evidence.followUps` · **선행 확인 완료(2026-09-15)**: `reports/missing-inventory-audit/1-inventory.md` — 전수 확인 결과 **웹 배포본에서 진짜 빠진 부품은 바텀시트 하나**로 확인됐다(옵션 행 포함). 우선순위 1순위로 제안돼 있다.
+- 정본(`buildBottomSheet` 5152 · `buildBottomSheetOption` 4957)을 웹으로 옮겼다. 새 토큰 0건, 정본 실재 9칸만 구현(없는 3칸은 만들지 않음).
+- `date-picker`·`time-picker` 가 그 부품을 재사용한다 — 이관 전후 렌더 **치수 차이 0**(독립 검증 재측정).
+- `density-policy.json` 의 드롭다운 대체 `libraryStatus` → `available`. 검사기 안내에서 "아직 부품이 없습니다"가 사라졌다.
+- 아이콘 2종 신규 등록(`lock` · `check24`) — 라이브러리 원본 픽셀 대조 통과(0.00203 · 0.00181).
+- 곁가지로 **모바일 마우스오버 없음** 규칙이 Input → Button → Text Button 세 부품에서 일관돼졌다(river 지시 2026-09-15).
+
+**남은 후속**(`6-promotion.md` 「승인 범위 밖」):
+1. `text-button` 변경·`css-model.mjs` 해석기 수정·검사기 강화는 **독립 검증을 받지 않았다**(5회차 PASS 이후 반영분).
+2. `modal`·`modal-content` 의 배포본 계약에도 「테마 새겨 옮기기」 규칙을 적을 것 — 지금은 검수 화면 배선만 고쳤다.
+3. `check24` 를 `allowed-remote-keys.json` 의 `nameAliases` 로 옮기는 정리(지금 옮기면 `build.mjs` 가 막는다).
+4. `bottom-sheet`·`bottom-sheet-option` 의 origin Ⓐ/Ⓑ 분류 `tbd` — river 결정 사항.
 
 ### 0. 컴포넌트 CSS 배포 — guide model → `components.css` 생성기 (2026-08-12 신규)
 

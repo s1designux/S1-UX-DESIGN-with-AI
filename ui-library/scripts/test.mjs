@@ -15,7 +15,7 @@ const read = (relative) => readFile(path.join(libraryRoot, relative), "utf8");
 const build = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/build.mjs"), "--check"], { encoding: "utf8" });
 if (build.status !== 0) failures.push(`build freshness: ${build.stderr || build.stdout}`);
 
-const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker", "gnb", "gnb-sub-menu-item", "gnb-sub-menu", "assist-button", "text-button", "modal-content"];
+const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker", "gnb", "gnb-sub-menu-item", "gnb-sub-menu", "assist-button", "text-button", "modal-content", "bottom-sheet-option", "bottom-sheet"];
 const individualCss = [];
 for (const id of componentIds) {
   const css = await read(`dist/components/${id}.css`);
@@ -350,8 +350,26 @@ for (const id of componentIds) {
     if (!css.includes("var(--color-text-state-accent)") || !css.includes("var(--color-text-body-tertiary)")) {
       failures.push("text-button variant colors must reuse the canonical text tokens");
     }
-    if (!/:is\(:hover, :active\):not\(:disabled\)\s*\{[^}]*text-decoration:\s*underline;/.test(css)) {
-      failures.push("text-button hover/pressed must add underline without changing color");
+    /* 2026-09-15 river 지시 "텍스트버튼도 A로 빼줘" — 모바일에서는 마우스오버 밑줄을 내지 않는다.
+       종전 한 덩어리(:is(:hover, :active))를 누름·마우스오버로 나눴으므로 검사도 나눈다.
+       **약화가 아니라 강화다** — 밑줄이 있는지에 더해 「누름은 어디서나 · 마우스오버는 PC 에서만」까지 못박는다. */
+    const pressedRule = css.match(/\[data-s1-component="text-button"\]:active:not\(:disabled\)\s*\{([^}]*)\}/);
+    if (!pressedRule || !/text-decoration:\s*underline;/.test(pressedRule[1])) {
+      failures.push("text-button pressed must add underline on every screen (:active, no break condition)");
+    }
+    if (pressedRule && /(^|[^-])color:/.test(pressedRule[1])) {
+      failures.push("text-button pressed must not change color");
+    }
+    const hoverRule = css.match(/\[data-s1-component="text-button"\][^{]*:hover:not\(:disabled\)\s*\{([^}]*)\}/);
+    if (!hoverRule || !/text-decoration:\s*underline;/.test(hoverRule[1])) {
+      failures.push("text-button hover must add underline without changing color");
+    }
+    if (hoverRule && /(^|[^-])color:/.test(hoverRule[1])) failures.push("text-button hover must not change color");
+    if (!/@media\s*\(hover:\s*hover\)/.test(css)) {
+      failures.push("text-button hover must be limited to hover-capable devices");
+    }
+    if (!/\[data-s1-component="text-button"\]:not\(\[data-break="mobile"\]\):is\(\[data-break="pc"\], :not\(\[data-s1-break="mobile"\] \*\)\):hover/.test(css)) {
+      failures.push("text-button hover must be suppressed on mobile (self-declared break and density wrapper)");
     }
     if (!css.includes("var(--color-text-state-disabled)")) failures.push("text-button disabled state must use the canonical disabled text token");
   }
@@ -540,13 +558,88 @@ for (const id of componentIds) {
     }
   }
 
+  /* Bottom Sheet — 정본 buildBottomSheet(build-components.ts:5152-5327). 변형축 Footer 한 축뿐이다.
+     date-picker·time-picker 가 이 코어를 재사용하므로, 값을 눈으로 지키지 말고 여기서 검사기가 지킨다
+     (3-build-spec.md §C-1). */
+  if (id === "bottom-sheet") {
+    if (manifest.jsRequired !== true) failures.push("bottom-sheet open/close, focus trap, scroll lock and backdrop-click require the declared runtime");
+    if (JSON.stringify(manifest.variants) !== JSON.stringify(["none", "single", "dual"])) failures.push("bottom-sheet variants differ from canon Footer axis");
+    if (JSON.stringify(manifest.breaks) !== JSON.stringify({ pc: [], mobile: [] })) failures.push("bottom-sheet has no Break axis in canon");
+    const panelRule = css.match(/\[data-s1-component="bottom-sheet"\] \[data-s1-part="sheet-panel"\]\s*\{([^}]*)\}/);
+    if (!panelRule || !panelRule[1].includes("background: var(--color-surface-raised);")) failures.push("bottom-sheet panel must be bound to color/surface/raised");
+    if (!panelRule || !panelRule[1].includes("var(--radius-8)")) failures.push("bottom-sheet panel top corners must use radius/8");
+    if (!panelRule || !panelRule[1].includes("box-shadow: var(--s1-bottom-sheet-shadow);")) failures.push("bottom-sheet panel shadow must be driven by the public --s1-bottom-sheet-shadow hook");
+    if (!panelRule || !panelRule[1].includes("gap: var(--s1-bottom-sheet-gap);")) failures.push("bottom-sheet panel gap must be driven by the public --s1-bottom-sheet-gap hook");
+    if (!css.includes("--s1-bottom-sheet-gap: var(--spacing-48);")) failures.push("bottom-sheet must declare its public gap hook default as --spacing-48 (canon root itemSpacing)");
+    if (!css.includes("--s1-bottom-sheet-shadow: var(--shadow-raised-up);")) failures.push("bottom-sheet must declare its public shadow hook default as --shadow-raised-up");
+    const footerNoneRule = css.match(/\[data-s1-component="bottom-sheet"\]\[data-footer="none"\] \[data-s1-part="sheet-panel"\]\s*\{([^}]*)\}/);
+    if (!footerNoneRule || !footerNoneRule[1].includes("padding-bottom: var(--spacing-40);")) failures.push("bottom-sheet data-footer=none panel must add padding-bottom: var(--spacing-40)");
+    const contentRule = css.match(/\[data-s1-component="bottom-sheet"\] \[data-s1-part="sheet-content"\]\s*\{([^}]*)\}/);
+    if (!contentRule || !contentRule[1].includes("gap: var(--spacing-24);")) failures.push("bottom-sheet sheet-content gap must be --spacing-24 (canon content itemSpacing)");
+    for (const part of ["sheet-header", "sheet-footer"]) {
+      const rule = css.match(new RegExp(`\\[data-s1-component="bottom-sheet"\\] \\[data-s1-part="${part}"\\]\\s*\\{([^}]*)\\}`));
+      if (!rule || !rule[1].includes("padding-inline: var(--spacing-20);")) failures.push(`bottom-sheet ${part} must use padding-inline: var(--spacing-20) (canon left/right 20)`);
+    }
+    const footerRule = css.match(/\[data-s1-component="bottom-sheet"\] \[data-s1-part="sheet-footer"\]\s*\{([^}]*)\}/);
+    if (!footerRule || !footerRule[1].includes("gap: var(--spacing-8);")) failures.push("bottom-sheet sheet-footer gap must be --spacing-8 (canon footer itemSpacing)");
+    if (!css.includes("var(--color-overlay)")) failures.push("bottom-sheet backdrop must use the canonical color/overlay token");
+    if (!css.includes('mask: url("../assets/icons/close.svg")')) failures.push("bottom-sheet close button must reuse the canonical close icon asset (shared with Modal, no re-registration)");
+    const jsSource = await read("src/components/bottom-sheet/bottom-sheet.js");
+    if (!jsSource.includes('`s1:bottom-sheet:${name}`')) failures.push("bottom-sheet runtime must dispatch s1:bottom-sheet:open/close events");
+    if (!jsSource.includes('backdrop?.addEventListener("click"')) failures.push("bottom-sheet runtime must wire a backdrop click to close (canon date-picker sheet behavior, no regression)");
+    if (!example.includes('role="dialog"') || !example.includes('aria-modal="true"') || !example.includes("aria-labelledby=")) {
+      failures.push("bottom-sheet example must expose dialog semantics with a labelled title");
+    }
+    if (!example.includes('data-s1-part="sheet-close"')) failures.push("bottom-sheet example must include the canonical close button");
+    if (!example.includes('data-footer="single"') || !example.includes('data-s1-component="bottom-sheet-option"')) {
+      failures.push("bottom-sheet example must demonstrate the canon default fill (Footer=Single + Bottom Sheet Option rows)");
+    }
+  }
+  /* Bottom Sheet Option — 정본 buildBottomSheetOption(build-components.ts:4957-5150). 실제로 존재하는
+     칸은 9개(12칸 매트릭스가 아니다) — absentCombinations 3건이 만들어지지 않았는지도 여기서 지킨다. */
+  if (id === "bottom-sheet-option") {
+    if (manifest.jsRequired !== false) failures.push("bottom-sheet-option must remain jsRequired=false; row shape only, no local state or events");
+    if (JSON.stringify(manifest.variants) !== JSON.stringify(["text", "checkbox", "radio", "list"])) failures.push("bottom-sheet-option variants differ from canon Type axis");
+    if (!Array.isArray(manifest.absentCombinations) || manifest.absentCombinations.length !== 3) {
+      failures.push("bottom-sheet-option manifest must declare exactly 3 absentCombinations (checkbox:disabled, radio:disabled, list:selected)");
+    }
+    const rowRule = css.match(/\[data-s1-component="bottom-sheet-option"\]:is\(\[data-type="text"\], \[data-type="checkbox"\], \[data-type="radio"\]\)\s*\{([^}]*)\}/);
+    if (!rowRule || !rowRule[1].includes("height: 48px;")) failures.push("bottom-sheet-option Text/Checkbox/Radio rows must be 48px tall (canon fixed height)");
+    const listRule = css.match(/\[data-s1-component="bottom-sheet-option"\]\[data-type="list"\]\s*\{([^}]*)\}/);
+    if (!listRule || !listRule[1].includes("padding-block: var(--spacing-12);")) failures.push("bottom-sheet-option List row must use padding-block: var(--spacing-12)");
+    if (!rowRule || !rowRule[1].includes("padding-inline: var(--spacing-20);")) failures.push("bottom-sheet-option rows must use padding-inline: var(--spacing-20)");
+    if (!listRule || !listRule[1].includes("padding-inline: var(--spacing-20);")) failures.push("bottom-sheet-option List row must use padding-inline: var(--spacing-20)");
+    if (!css.includes("var(--color-text-state-accent)")) failures.push("bottom-sheet-option Text:Selected label must use color/text/state/accent");
+    if (!css.includes("var(--color-text-state-disabled)")) failures.push("bottom-sheet-option Text:Disabled label must use color/text/state/disabled");
+    /* 정본 행 배경은 State 별 분기가 없다 — selected 전용 background 선언이 새로 생기면 회귀다. */
+    if (/\[data-state="selected"\][^{]*\{[^}]*\bbackground(?:-color)?:/.test(css)) {
+      failures.push("bottom-sheet-option must not add a selected-only background rule — canon marks selection with text color/icon only, never a row background");
+    }
+    const avatarRule = css.match(/\[data-s1-component="bottom-sheet-option"\] \[data-s1-part="avatar"\]\s*\{([^}]*)\}/);
+    if (!avatarRule || !avatarRule[1].includes("width: 40px;") || !avatarRule[1].includes("var(--radius-full)") || !avatarRule[1].includes("var(--color-icon-gray-light)")) {
+      failures.push("bottom-sheet-option avatar must be 40px, radius/full, color/icon/gray-light");
+    }
+    for (const [id2, absent] of [["checkbox", "disabled"], ["radio", "disabled"], ["list", "selected"]]) {
+      if (new RegExp(`data-type="${id2}"[^>]*data-state="${absent}"`).test(example)) {
+        failures.push(`bottom-sheet-option example must not render the absent combination ${id2}:${absent}`);
+      }
+    }
+    for (const [type, states] of [["text", ["default", "selected", "disabled"]], ["checkbox", ["default", "selected"]], ["radio", ["default", "selected"]], ["list", ["default", "disabled"]]]) {
+      for (const state of states) {
+        if (!new RegExp(`data-type="${type}"[^>]*data-state="${state}"`).test(example)) {
+          failures.push(`bottom-sheet-option example must demonstrate ${type}:${state}`);
+        }
+      }
+    }
+  }
+
   const module = await import(`${pathToFileURL(path.join(libraryRoot, `dist/components/${id}.js`)).href}?check=${Date.now()}`);
   if (id === "input" && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
     failures.push("input runtime lifecycle is incomplete");
   }
   if (id === "button" && (module.jsRequired !== false || module.runtime !== null)) failures.push("button module unexpectedly requires runtime");
-  if ((id === "checkbox" || id === "radio" || id === "textarea" || id === "assist-button" || id === "text-button" || id === "gnb-sub-menu-item" || id === "gnb-sub-menu") && (module.jsRequired !== false || module.runtime !== null)) failures.push(`${id} module unexpectedly requires runtime`);
-  if ((id === "toggle" || id === "chip" || id === "dropdown" || id === "select" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "modal" || id === "modal-content" || id === "table" || id === "time-picker" || id === "gnb") && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
+  if ((id === "checkbox" || id === "radio" || id === "textarea" || id === "assist-button" || id === "text-button" || id === "gnb-sub-menu-item" || id === "gnb-sub-menu" || id === "bottom-sheet-option") && (module.jsRequired !== false || module.runtime !== null)) failures.push(`${id} module unexpectedly requires runtime`);
+  if ((id === "toggle" || id === "chip" || id === "dropdown" || id === "select" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "modal" || id === "modal-content" || id === "table" || id === "time-picker" || id === "gnb" || id === "bottom-sheet") && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
     failures.push(`${id} runtime lifecycle is incomplete`);
   }
 }

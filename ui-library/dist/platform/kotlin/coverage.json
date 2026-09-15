@@ -53,7 +53,7 @@
         "label"
       ],
       "unreadPcOnly": 15,
-      "unreadDisplayRules": 25,
+      "unreadDisplayRules": 34,
       "unreadDeclarations": [
         {
           "selector": "[data-s1-component=\"button\"][data-size=\"md\"]",
@@ -159,6 +159,69 @@
           "property": "letter-spacing",
           "value": "var(--letter-spacing-normal)",
           "reason": "pc-only"
+        },
+        {
+          "selector": "[data-s1-component=\"button\"][data-variant=\"primary\"]:hover:not(:disabled):not([data-size=\"lg\"]):is([data-size], :not([data-s1-break=\"mobile\"] *))",
+          "media": "(hover: hover)",
+          "property": "background",
+          "value": "var(--color-button-bg-primary--hover)",
+          "reason": "display-rule"
+        },
+        {
+          "selector": "[data-s1-component=\"button\"][data-variant=\"primary\"]:hover:not(:disabled):not([data-size=\"lg\"]):is([data-size], :not([data-s1-break=\"mobile\"] *))",
+          "media": "(hover: hover)",
+          "property": "border-color",
+          "value": "var(--color-button-border-primary--hover)",
+          "reason": "display-rule"
+        },
+        {
+          "selector": "[data-s1-component=\"button\"][data-variant=\"primary\"]:hover:not(:disabled):not([data-size=\"lg\"]):is([data-size], :not([data-s1-break=\"mobile\"] *))",
+          "media": "(hover: hover)",
+          "property": "color",
+          "value": "var(--color-button-label-primary--hover)",
+          "reason": "display-rule"
+        },
+        {
+          "selector": "[data-s1-component=\"button\"][data-variant=\"secondary\"]:hover:not(:disabled):not([data-size=\"lg\"]):is([data-size], :not([data-s1-break=\"mobile\"] *))",
+          "media": "(hover: hover)",
+          "property": "background",
+          "value": "var(--color-button-bg-secondary--hover)",
+          "reason": "display-rule"
+        },
+        {
+          "selector": "[data-s1-component=\"button\"][data-variant=\"secondary\"]:hover:not(:disabled):not([data-size=\"lg\"]):is([data-size], :not([data-s1-break=\"mobile\"] *))",
+          "media": "(hover: hover)",
+          "property": "border-color",
+          "value": "var(--color-button-border-secondary--hover)",
+          "reason": "display-rule"
+        },
+        {
+          "selector": "[data-s1-component=\"button\"][data-variant=\"secondary\"]:hover:not(:disabled):not([data-size=\"lg\"]):is([data-size], :not([data-s1-break=\"mobile\"] *))",
+          "media": "(hover: hover)",
+          "property": "color",
+          "value": "var(--color-button-label-secondary--hover)",
+          "reason": "display-rule"
+        },
+        {
+          "selector": "[data-s1-component=\"button\"][data-variant=\"blue-line\"]:hover:not(:disabled):not([data-size=\"lg\"]):is([data-size], :not([data-s1-break=\"mobile\"] *))",
+          "media": "(hover: hover)",
+          "property": "background",
+          "value": "var(--color-button-bg-blue-line--hover)",
+          "reason": "display-rule"
+        },
+        {
+          "selector": "[data-s1-component=\"button\"][data-variant=\"blue-line\"]:hover:not(:disabled):not([data-size=\"lg\"]):is([data-size], :not([data-s1-break=\"mobile\"] *))",
+          "media": "(hover: hover)",
+          "property": "border-color",
+          "value": "var(--color-button-border-blue-line--hover)",
+          "reason": "display-rule"
+        },
+        {
+          "selector": "[data-s1-component=\"button\"][data-variant=\"blue-line\"]:hover:not(:disabled):not([data-size=\"lg\"]):is([data-size], :not([data-s1-break=\"mobile\"] *))",
+          "media": "(hover: hover)",
+          "property": "color",
+          "value": "var(--color-button-label-blue-line--hover)",
+          "reason": "display-rule"
         },
         {
           "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"button\"]:not([data-size])",

@@ -1,12 +1,13 @@
 {
   "$comment": "외부 라이브러리(remote:true) 중 '허용되는' 컴포넌트 키의 단일 출처. Figma 화면/라이브러리 빌드 시 인스턴스의 mainComponent.remote===true 인 것은 이 목록의 key 일 때만 허용하고, 그 외는 전부 외부 라이브러리 위반(❌)으로 본다. 이름(ic_ 접두사 등)으로 판단하지 말 것 — 외부 라이브러리도 같은 이름을 쓴다(2026-06-19 오탐/누수의 근본 원인). 키 기준만 신뢰한다.",
-  "lastSynced": "2026-07-10",
-  "source": "installer 아이콘 20키 = plugins/figma-vars-installer/src/build-components.ts ICON_KEYS(2026-09-04 eye_show 추가 — 웹 Password 옵션의 표시 중 아이콘 · 2026-09-14 navSearch·navNotification·navSettings 추가 — 하단 내비 칸별 아이콘, river 승인). V3.0-only 추가분(password-eye)은 ICON_KEYS 밖이며 V3.0 Login Input 에서 직접 사용. video-only 추가분(refresh)은 ICON_KEYS 밖이며 Video/Widget Header(figma-library-build)에서 직접 사용 — 이 파일이 provenance 허용목록의 정본.",
+  "lastSynced": "2026-09-15",
+  "source": "installer 아이콘 20키 = plugins/figma-vars-installer/src/build-components.ts ICON_KEYS(2026-09-04 eye_show 추가 — 웹 Password 옵션의 표시 중 아이콘 · 2026-09-14 navSearch·navNotification·navSettings 추가 — 하단 내비 칸별 아이콘, river 승인). V3.0-only 추가분(password-eye)은 ICON_KEYS 밖이며 V3.0 Login Input 에서 직접 사용. video-only 추가분(refresh)은 ICON_KEYS 밖이며 Video/Widget Header(figma-library-build)에서 직접 사용 — 이 파일이 provenance 허용목록의 정본. · 2026-09-15 check24 추가 — ic_확인 의 24 프레임 표출이라 check 과 **같은 key** 를 가리킨다(새 외부 컴포넌트를 허용하는 것이 아니라 이름 하나를 더 두는 것). 16 프레임 자산을 24 로 확대하면 선 굵기까지 1.5배가 되어 정본보다 굵어지므로 프레임별로 자산을 나눈다.",
   "iconLibraryFileKey": "YcBbW9e0MTR9T3W5Sz0Ukx",
   "iconLibraryName": "아이콘 라이브러리 V2.2 (14.UI 섹션)",
   "allowedRemoteComponentKeys": {
     "remove": "24b2df622d341e0af21cd4b23b4a7d23b97a5ea7",
     "check": "5ab251e0d90adb555ee2fa316f84e86041f19916",
+    "check24": "5ab251e0d90adb555ee2fa316f84e86041f19916",
     "search": "6b764af642b8883e892754281950da0e971224d7",
     "clock": "ca1d043ac09be07f827e939be3d8c3c7af8a8dd9",
     "calendar": "ea0ffc118c38048f2cdfb5620be31c120426bb7a",

@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
     "purpose": "개발 툴과 검사기가 함께 읽는 허용목록. 여기 없는 variant·size·속성은 승인된 적이 없는 것이다.",
-    "canonicalFingerprint": "2444c67933ca9a5d226c4a3cdf254f84790c1ba828d02b3fba2986fa38ab28ff"
+    "canonicalFingerprint": "706ab4e1643d76a52873b374411652ca8a0c570fe170fac67c24e327d296420c"
   },
   "components": [
     {
@@ -116,7 +116,7 @@
       "events": [],
       "lifecycle": [],
       "canonicalFingerprint": "77265d5da86c952b73d51e8b82a7deae2c6813bb8a491627cfaf00a9dbf71c3e",
-      "sourceFingerprint": "d151422b296508314deb353ebb799a742edfc79794bc72201c6c24968d3d38c0"
+      "sourceFingerprint": "0a6fa5f546580c415f243b7553d38829023c5b2fee462f7047289a08eaa207ba"
     },
     {
       "id": "checkbox",
@@ -872,7 +872,7 @@
         "destroy(root)"
       ],
       "canonicalFingerprint": "a37a11665159dcf9a3af0b735d7829ae98324bba91336961d145e92a28c8d0eb",
-      "sourceFingerprint": "cf0ba6fd0d7e0ed46c45b8ddcb8489b7583cb3272f491763abca901a11a9be4c"
+      "sourceFingerprint": "a0ad32eea0811b161b55a57b8ead67714410a84d04842b25ca0cc0afe80c3d5b"
     },
     {
       "id": "date-picker",
@@ -960,7 +960,7 @@
         "destroy(root)"
       ],
       "canonicalFingerprint": "f098dc99ae633c91c1f056d6321310a270a0b024df404734670590f23925b61a",
-      "sourceFingerprint": "3a82885689e2a60d61c626e4d27d90dbeef70c22603843f0d2a0da9228c0b7c1"
+      "sourceFingerprint": "b7ee9265a856a76751528cf8f1396ddef59f8d0623de88c1b55b14c5bc0da126"
     },
     {
       "id": "gnb",
@@ -1132,7 +1132,7 @@
       "events": [],
       "lifecycle": [],
       "canonicalFingerprint": "42bd2e76c6d1879ae8ad16704ebfaa370b14d4b3155e32ae252f740eebf5a5a3",
-      "sourceFingerprint": "fde5b68e01b988d1b49c51669a15c3ae1b0fac477133d46242130af0f2f59a4b"
+      "sourceFingerprint": "63195f1e82d513f5dcf2141f328e25148cdbad7f2bcc4ee02b8732909ea46100"
     },
     {
       "id": "modal-content",
@@ -1199,6 +1199,106 @@
       ],
       "canonicalFingerprint": "aab934baad143bfc646cd2602fbec0d9fc79cf068208141e1cd0f7a4ec8ea18d",
       "sourceFingerprint": "a2dd75dd0c2e687b99f27613fa40da486e983984c5566de0329dbc1b39d7fcca"
+    },
+    {
+      "id": "bottom-sheet-option",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"bottom-sheet-option\"]",
+      "root": "div[data-s1-component=bottom-sheet-option][data-type][data-state]",
+      "variants": [
+        "text",
+        "checkbox",
+        "radio",
+        "list"
+      ],
+      "sizes": [],
+      "breaks": {
+        "pc": [],
+        "mobile": []
+      },
+      "states": [
+        "default",
+        "selected",
+        "disabled"
+      ],
+      "parts": [
+        "label",
+        "check",
+        "list-left",
+        "avatar",
+        "list-text",
+        "list-title",
+        "list-sub",
+        "chevron",
+        "lock"
+      ],
+      "variantAttribute": "data-type",
+      "sizeAttribute": null,
+      "requiredAttributes": [
+        "data-type",
+        "data-state"
+      ],
+      "requiredParts": [],
+      "jsRequired": false,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "caa0b6750e4efe8b458178ff6738577c2e6f21dd8d27e0d2439aa1965bbe9235",
+      "sourceFingerprint": "fea372a072661d8e1826706b5e148239a13f79cc033eec0216480c17b5da1f08"
+    },
+    {
+      "id": "bottom-sheet",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"bottom-sheet\"]",
+      "root": "div[data-s1-component=bottom-sheet][data-break=mobile][data-footer][hidden]",
+      "variants": [
+        "none",
+        "single",
+        "dual"
+      ],
+      "sizes": [],
+      "breaks": {
+        "pc": [],
+        "mobile": []
+      },
+      "states": [
+        "closed",
+        "open"
+      ],
+      "parts": [
+        "sheet-backdrop",
+        "sheet-panel",
+        "sheet-content",
+        "sheet-header",
+        "sheet-title",
+        "sheet-close",
+        "sheet-body",
+        "sheet-footer"
+      ],
+      "variantAttribute": "data-footer",
+      "sizeAttribute": null,
+      "requiredAttributes": [
+        "data-break",
+        "data-footer"
+      ],
+      "requiredParts": [
+        "sheet-backdrop",
+        "sheet-panel",
+        "sheet-header",
+        "sheet-title",
+        "sheet-close",
+        "sheet-body"
+      ],
+      "jsRequired": true,
+      "events": [
+        "s1:bottom-sheet:open",
+        "s1:bottom-sheet:close"
+      ],
+      "lifecycle": [
+        "init(root)",
+        "destroy(root)"
+      ],
+      "canonicalFingerprint": "b3736a9d4978ad60d0a7f7f9f67df19148b1bd20b7a902739ec4743ccd29c783",
+      "sourceFingerprint": "825328dadb22dcdc781f7d9c1d21977771b8275e5097231ee43f1ac49acad04f"
     }
   ]
 }

@@ -1,0 +1,15 @@
+<!doctype html><html><head><meta charset="utf-8"><title>lock 원본 대조</title>
+<style>body{margin:0;padding:24px;font:12px system-ui;background:#fff}
+.row{display:flex;gap:32px;align-items:flex-end}
+.b{text-align:center}
+.mask{width:192px;height:192px;background:#353535;mask:url(../../../../ui-library/src/assets/icons/lock.svg) center/contain no-repeat}
+img{width:192px;height:192px;image-rendering:pixelated}
+</style></head><body>
+<div class="row">
+  <div class="b"><div class="mask"></div><div>웹 자산 lock.svg (CSS mask, 192px)</div></div>
+  <div class="b"><img src="../../../../assets/icons/ic_잠김_line.png"><div>라이브러리 원본 내보내기 ic_잠김_line.png</div></div>
+  <div class="b"><div style="position:relative;width:192px;height:192px">
+    <img src="../../../../assets/icons/ic_잠김_line.png" style="position:absolute;inset:0">
+    <div class="mask" style="position:absolute;inset:0;background:#e6007a;opacity:.5"></div>
+  </div><div>겹쳐보기 (분홍=웹 자산)</div></div>
+</div></body></html>

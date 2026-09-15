@@ -121,7 +121,7 @@ const TOOL_CARDS = [
     title: 'HTML · CSS · JavaScript',
     note: `${approved.length}종 전부 · 퍼블리싱 · jQuery · JSP·PHP 같은 서버 렌더링`,
     install: [
-      '압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 22종이 실제 모습으로 보입니다',
+      `압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 ${approved.length}종이 실제 모습으로 보입니다`,
       '아래 두 줄을 <code>&lt;head&gt;</code> 에 넣어 겉모습을 읽힙니다',
       '동작이 있는 컴포넌트는 <code>autoInit()</code> 한 번으로 전부 붙습니다'
     ],
@@ -137,7 +137,7 @@ const TOOL_CARDS = [
     title: 'React · Next.js',
     note: `${approved.length}종 전부 · JSX 빌드 도구 필요 · 서버 렌더링·타입 정의 포함`,
     install: [
-      '압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 22종이 실제 모습으로 보입니다',
+      `압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 ${approved.length}종이 실제 모습으로 보입니다`,
       '앱 진입 파일에서 겉모습 CSS 를 한 번 읽힙니다 (<code>tokens.css</code> · <code>s1-ui.css</code>)',
       '쓸 컴포넌트만 이름으로 꺼내 씁니다 — 아래는 그 한 줄입니다'
     ],
@@ -149,7 +149,7 @@ const TOOL_CARDS = [
     title: 'Vue',
     note: `${approved.length}종 전부 · SFC(.vue) 빌드 도구가 필요합니다`,
     install: [
-      '압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 22종이 실제 모습으로 보입니다',
+      `압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 ${approved.length}종이 실제 모습으로 보입니다`,
       '앱 진입 파일에서 겉모습 CSS 를 한 번 읽힙니다 (<code>tokens.css</code> · <code>s1-ui.css</code>)',
       '쓸 컴포넌트만 이름으로 꺼내 씁니다 — 아래는 그 한 줄입니다'
     ],
@@ -284,8 +284,35 @@ const componentChips = approved
   .map(({ id }) => `<span class="devcomp-chip">${escape(id)}</span>`)
   .join('\n              ');
 
-const panel = `${START}
-      <div class="top-panel" id="top-dev">
+/* ── 패널 조립 ────────────────────────────────────────────────────────────
+   탭은 둘이다 — 퍼블리셔(마크업·CSS 로 화면을 짜는 사람)와 개발자(툴 안에서 부르는 사람).
+   두 탭은 같은 배포본 사실에서 나온다. 사람이 두 벌 적지 않으므로 어긋날 수 없다.
+   퍼블리셔 탭은 HTML·CSS·JavaScript 하나만 보여 준다 — 나머지 툴 문장은 읽을 이유가 없다.
+   개발자 탭은 여섯 툴 전부(HTML 카드 포함 — jQuery·JSP·PHP 처럼 서버에서 그리는 개발도 그 카드를 쓴다). */
+const PANELS = {
+  pub: {
+    id: 'top-pub',
+    toolKeys: ['html-css-js'],
+    versionHowTo: '번호 읽는 법 — <code>node s1-ui/tools/s1-ui-lint.mjs --version</code>',
+    toolTitle: '시작하기',
+    toolLead: '복사해서 붙이는 방식입니다 — 컴포넌트를 직접 만들 일이 없습니다.',
+    caveat: false,
+    componentDesc: `아래 ${approved.length}종이 모두 들어 있습니다. <code>examples/</code> 폴더의 파일을 복사해서 씁니다 — 모바일용은 <code>*.mobile.html</code> 입니다`
+  },
+  dev: {
+    id: 'top-dev',
+    toolKeys: TOOL_CARDS.map((tool) => tool.key),
+    versionHowTo: '번호 읽는 법 — 웹·React·Vue <code>node s1-ui/tools/s1-ui-lint.mjs --version</code> · Kotlin <code>S1Version.VERSION</code> · Swift <code>S1Version.version</code> · C++ <code>S1_UI_VERSION</code>',
+    toolTitle: '내 개발 툴에서 시작하기',
+    toolLead,
+    caveat: true,
+    componentDesc: `아래 ${approved.length}종이 모두 들어 있습니다. HTML 은 <code>examples/</code> 폴더의 파일을 복사해서 쓰고(모바일용은 <code>*.mobile.html</code>), React·Vue 는 이름 앞에 <code>S1</code> 을 붙여 부릅니다 — <code>input → S1Input</code> · <code>date-picker → S1DatePicker</code>`
+  }
+};
+
+function buildPanel(spec) {
+  const cards = TOOL_CARDS.filter((tool) => spec.toolKeys.includes(tool.key));
+  return `      <div class="top-panel" id="${spec.id}">
         <div class="install-steps">
 
           <!-- 받기 -->
@@ -307,7 +334,7 @@ const panel = `${START}
               <div class="devget-item">
                 <div class="devget-label">내 배포본이 최신인지 확인</div>
                 <div class="devget-body">지금 최신은 <strong>${escape(manifest.version)}</strong> (${escape(manifest.releasedAt)} 판)입니다. 내 것의 번호가 이것보다 낮으면 다시 받으세요.
-                  <div class="devget-body" style="margin-top:6px;">번호 읽는 법 — 웹·React·Vue <code>node s1-ui/tools/s1-ui-lint.mjs --version</code> · Kotlin <code>S1Version.VERSION</code> · Swift <code>S1Version.version</code> · C++ <code>S1_UI_VERSION</code></div>
+                  <div class="devget-body" style="margin-top:6px;">${spec.versionHowTo}</div>
                   <div class="devget-fingerprint">${escape(manifest.canonicalFingerprint)}</div>
                 </div>
               </div>
@@ -318,15 +345,14 @@ const panel = `${START}
           <div class="install-step">
             <div class="step-header">
               <div>
-                <div class="step-title">내 개발 툴에서 시작하기</div>
-                <div class="step-desc">${toolLead}</div>
+                <div class="step-title">${escape(spec.toolTitle)}</div>
+                <div class="step-desc">${spec.toolLead}</div>
               </div>
             </div>
-            <div class="devtool-grid">
-${TOOL_CARDS.map(toolCard).join('\n')}
+            <div class="devtool-grid${cards.length === 1 ? ' devtool-grid-single' : ''}">
+${cards.map(toolCard).join('\n')}
             </div>
-            <p class="devtool-caveat">${caveat}</p>
-          </div>
+${spec.caveat ? `            <p class="devtool-caveat">${caveat}</p>\n` : ''}          </div>
 
           <!-- 들어있는 컴포넌트 -->
           <div class="install-step">
@@ -334,7 +360,7 @@ ${TOOL_CARDS.map(toolCard).join('\n')}
               <div>
                 <div class="step-title">들어있는 컴포넌트 ${approved.length}종</div>
                 <div class="step-desc" style="margin-bottom:2px;"><a class="devget-link" href="../ui-library/dist/preview.html" target="_blank" rel="noopener">실제 모습으로 보기 ↗</a> — 크기·변형과 "언제 쓰나"가 함께 보입니다</div>
-                <div class="step-desc">아래 ${approved.length}종이 모두 들어 있습니다. HTML 은 <code>examples/</code> 폴더의 파일을 복사해서 쓰고(모바일용은 <code>*.mobile.html</code>), React·Vue 는 이름 앞에 <code>S1</code> 을 붙여 부릅니다 — <code>input → S1Input</code> · <code>date-picker → S1DatePicker</code></div>
+                <div class="step-desc">${spec.componentDesc}</div>
               </div>
             </div>
             <div class="devcomp-list">
@@ -358,7 +384,13 @@ ${TOOL_CARDS.map(toolCard).join('\n')}
           </div>
 
         </div>
-      </div><!-- /top-dev -->
+      </div><!-- /${spec.id} -->`;
+}
+
+const panel = `${START}
+${buildPanel(PANELS.pub)}
+
+${buildPanel(PANELS.dev)}
       ${END}`;
 
 const page = fs.readFileSync(PAGE, 'utf8');

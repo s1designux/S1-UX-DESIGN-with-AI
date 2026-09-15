@@ -258,63 +258,14 @@
 
 /* ── 모바일 시간 휠 바텀시트 — build-components.ts buildTimePickerMobileBottomSheet 3862-4060.
    date-picker 시트와 같은 뼈대(헤더·닫기·적용 버튼)를 쓴다. data-mobile-ui="wheel" 일 때만 쓰인다
-   — 기본(list)은 그대로 유지되고, 이 시트는 추가 옵션이다(2-canon-readiness.md D1 해소, 2026-09-03). */
-[data-s1-component="time-picker"] [data-s1-part="sheet"] {
-  align-items: flex-end;
-  display: flex;
-  inset: 0;
-  justify-content: center;
-  position: fixed;
-  z-index: 1000;
-}
-[data-s1-component="time-picker"] [data-s1-part="sheet"][hidden] { display: none; }
-[data-s1-component="time-picker"] [data-s1-part="sheet-backdrop"] {
-  background: var(--color-overlay);
-  inset: 0;
-  position: absolute;
-}
-[data-s1-component="time-picker"] [data-s1-part="sheet-panel"] {
-  background: var(--color-surface-raised);
-  border-top-left-radius: var(--radius-8);
-  border-top-right-radius: var(--radius-8);
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-32);
-  max-height: 92vh;
-  overflow-y: auto;
-  padding-block: var(--spacing-20);
-  position: relative;
-  /* 정본 SHEET_W=360 은 Figma 모바일 프레임의 화면 폭이다. 웹에서는 화면 폭을 따르는 것이 같은 뜻이며,
-     고정하면 좁은 기기에서 넘친다 — date-picker 시트와 같은 처리. */
-  max-width: 360px;
-  width: 100%;
-}
-[data-s1-component="time-picker"] [data-s1-part="sheet-header"] {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  padding-inline: var(--spacing-20);
-}
-[data-s1-component="time-picker"] [data-s1-part="sheet-title"] {
-  color: var(--color-text-title-primary);
-  font-family: "Pretendard", sans-serif;
-  font-size: var(--font-size-20);
-  font-weight: var(--font-weight-bold);
-  /* W-2: line-height·letter-spacing 이 없으면 호스트 페이지 값을 상속해 화면마다 시트 높이가
-     달라진다(정본 title/20B = 20·130%·0, textstyles-data.ts:41). modal.css 의 title 규칙과 같은 방식. */
-  letter-spacing: var(--letter-spacing-normal);
-  line-height: var(--line-height-130);
-}
-[data-s1-component="time-picker"] [data-s1-part="sheet-close"] {
-  appearance: none;
-  background-color: var(--color-icon-gray-dark);
-  border: none;
-  cursor: pointer;
-  height: 24px;
-  mask: url("../assets/icons/close.svg") center / contain no-repeat;
-  padding: 0;
-  width: 24px;
+   — 기본(list)은 그대로 유지되고, 이 시트는 추가 옵션이다(2-canon-readiness.md D1 해소, 2026-09-03).
+   시트 껍데기(딤·패널·헤더·제목·닫기)는 bottom-sheet 코어 배포본이 소유한다(2026-09-15 이관,
+   3-build-spec.md D). 루트에 data-s1-component="bottom-sheet" 를 함께 달아 그 CSS 를 그대로 받는다.
+   정본이 이 시트에 준 값만 여기서 준다 — 간격 32(buildTimePickerMobileBottomSheet itemSpacing) ·
+   그림자 없음(정본에 effects 없음). 독립 Bottom Sheet 정본은 48 + shadow/raised-up 이라 값이 다르다. */
+[data-s1-component="time-picker"] [data-s1-component="bottom-sheet"] {
+  --s1-bottom-sheet-gap: var(--spacing-32);
+  --s1-bottom-sheet-shadow: none;
 }
 
 /* DateTime 변형 전용 날짜/시간 탭 — 승인된 tab 코어(Line Tab Mobile/SM) 인스턴스를 그대로 조립한다

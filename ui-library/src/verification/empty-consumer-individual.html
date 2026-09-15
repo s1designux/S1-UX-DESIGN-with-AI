@@ -32,6 +32,8 @@
   <link rel="stylesheet" href="../dist/components/gnb.css">
   <link rel="stylesheet" href="../dist/components/gnb-sub-menu-item.css">
   <link rel="stylesheet" href="../dist/components/gnb-sub-menu.css">
+  <link rel="stylesheet" href="../dist/components/bottom-sheet-option.css">
+  <link rel="stylesheet" href="../dist/components/bottom-sheet.css">
 </head>
 <body>
   <main>
@@ -197,6 +199,30 @@
         <div data-s1-part="footer">
           <button type="button" data-s1-component="button" data-variant="secondary" data-size="xxsm" data-consumer-close-modal-content><span data-s1-part="label">취소</span></button>
           <button type="button" data-s1-component="button" data-variant="primary" data-size="xxsm" data-consumer-close-modal-content><span data-s1-part="label">확인</span></button>
+        </div>
+      </div>
+    </div>
+    <button type="button" data-s1-component="button" data-variant="secondary" data-size="md" data-consumer-open-bottom-sheet><span data-s1-part="label">바텀시트 열기</span></button>
+    <div data-s1-component="bottom-sheet" data-s1-part="sheet" data-break="mobile" data-footer="single" hidden>
+      <div data-s1-part="sheet-backdrop"></div>
+      <div data-s1-part="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="consumer-bottom-sheet-title" tabindex="-1">
+        <div data-s1-part="sheet-content">
+          <div data-s1-part="sheet-header">
+            <span data-s1-part="sheet-title" id="consumer-bottom-sheet-title">항목 선택</span>
+            <button type="button" data-s1-part="sheet-close" aria-label="닫기"></button>
+          </div>
+          <div data-s1-part="sheet-body">
+            <div data-s1-component="bottom-sheet-option" data-type="text" data-state="default">
+              <span data-s1-part="label">항목 1</span>
+            </div>
+            <div data-s1-component="bottom-sheet-option" data-type="text" data-state="selected">
+              <span data-s1-part="label">항목 2</span>
+              <span data-s1-part="check" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+        <div data-s1-part="sheet-footer">
+          <button type="button" data-s1-component="button" data-variant="primary" data-size="lg" data-consumer-close-bottom-sheet><span data-s1-part="label">적용</span></button>
         </div>
       </div>
     </div>
@@ -390,6 +416,8 @@
     import { init as initModalContent } from "../dist/components/modal-content.js";
     import { init as initTimePicker } from "../dist/components/time-picker.js";
     import { init as initDatePicker } from "../dist/components/date-picker.js";
+    import "../dist/components/bottom-sheet-option.js";
+    import { init as initBottomSheet } from "../dist/components/bottom-sheet.js";
     document.querySelectorAll('[data-s1-component="gnb"]').forEach((root) => initGnb(root));
     document.querySelectorAll('[data-s1-component="input"]').forEach((root) => initInput(root));
     document.querySelectorAll('[data-s1-component="toggle"]').forEach((root) => initToggle(root));
@@ -411,6 +439,10 @@
     const consumerModalContentApi = initModalContent(consumerModalContent);
     document.querySelector("[data-consumer-open-modal-content]")?.addEventListener("click", () => consumerModalContentApi?.open());
     consumerModalContent?.querySelectorAll("[data-consumer-close-modal-content]").forEach((button) => button.addEventListener("click", () => consumerModalContentApi?.close({ reason: "footer-button" })));
+    const consumerBottomSheet = document.querySelector('[data-s1-component="bottom-sheet"]');
+    const consumerBottomSheetApi = initBottomSheet(consumerBottomSheet);
+    document.querySelector("[data-consumer-open-bottom-sheet]")?.addEventListener("click", () => consumerBottomSheetApi?.open());
+    consumerBottomSheet?.querySelectorAll("[data-consumer-close-bottom-sheet]").forEach((button) => button.addEventListener("click", () => consumerBottomSheetApi?.close({ reason: "footer-button" })));
   </script>
 </body>
 </html>

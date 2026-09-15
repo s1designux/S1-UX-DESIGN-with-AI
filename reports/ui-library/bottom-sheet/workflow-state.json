@@ -1,0 +1,311 @@
+{
+  "schemaVersion": 1,
+  "workflow": "ui-library-code",
+  "workId": "bottom-sheet",
+  "objective": "정본에 이미 있는 Bottom Sheet·Bottom Sheet Option 을 독립 웹 배포본(ui-library/dist)으로 옮긴다. 새로 디자인하지 않는다. date-picker·time-picker 안에 박혀 있는 시트를 그 부품의 소비자로 바꾸되 이관 전후 렌더가 같아야 한다.",
+  "intent": {
+    "approvedBy": "river",
+    "approvedAt": "2026-09-15",
+    "principles": [
+      "river 2026-09-15: \"모바일에서는 드롭다운 대신 바텀시트를 제공해\" — 가이드·검사기가 권하는데 가져다 쓸 부품이 없어서 하는 일이다.",
+      "정본에 없는 것을 만들지 않는다. 슬롯·변형 축·여백은 build-components.ts 가 기준이다.",
+      "date-picker·time-picker 가 새 부품을 재사용한다. 이관 전후 렌더가 달라지면 퇴행이다.",
+      "모달이 이미 가진 동작(배경 가림·초점 가둠·Esc·aria-modal)을 두 벌 만들지 않는다.",
+      "검수 화면은 실제 dist 를 소비한다."
+    ]
+  },
+  "target": {
+    "kind": "core-component",
+    "components": [
+      "bottom-sheet",
+      "bottom-sheet-option"
+    ]
+  },
+  "artifacts": {
+    "brief": "reports/ui-library/bottom-sheet/BRIEF.md",
+    "policyContract": "registry/governance/ui-library-code-contract.json",
+    "densityPolicy": "registry/governance/density-policy.json",
+    "sourceRoot": "ui-library/src",
+    "distManifest": "ui-library/dist/manifest.json",
+    "guidePage": "pages/components.html",
+    "reviewPage": "pages/ui-review.html",
+    "designDoc": "design/DESIGN.core.md",
+    "humanGuide": "registry/governance/ui-library-authoring-guide.md",
+    "componentChecklist": "registry/governance/ui-library-component-checklist.md",
+    "inventory": "reports/ui-library/bottom-sheet/1-inventory.md",
+    "canonReadiness": "reports/ui-library/bottom-sheet/2-canon-readiness.md",
+    "build": "reports/ui-library/bottom-sheet/3-build.md",
+    "verification": "reports/ui-library/bottom-sheet/4-verification.md",
+    "humanReview": "reports/ui-library/bottom-sheet/5-human-review.md",
+    "promotion": "reports/ui-library/bottom-sheet/6-promotion.md",
+    "migrationRecord": "registry/governance/ui-library-migration.json",
+    "repositoryInventory": "reports/component-inventory-audit.md"
+  },
+  "nextAction": "없음 — 승격 완료. 후속은 6-promotion.md 「승인 범위 밖」 6건.",
+  "blockers": [],
+  "decisions": [
+    {
+      "id": "D-1",
+      "question": "정본 세트 2개를 배포 컴포넌트 몇 개로 낼까?",
+      "answer": "2개(bottom-sheet · bottom-sheet-option). 저장소 관례 = 정본 세트 1개 → 배포 컴포넌트 1개(gnb-sub-menu ↔ gnb-sub-menu-item, modal ↔ modal-content).",
+      "by": "orchestrator",
+      "at": "2026-09-15"
+    },
+    {
+      "id": "D-2",
+      "question": "date-picker·time-picker 가 어떻게 재사용하면서 렌더가 안 변하나?",
+      "answer": "공유 CSS 가 조절 지점 2개(--s1-bottom-sheet-gap · --s1-bottom-sheet-shadow)를 선언하고 두 소비자가 자기 정본 값(32 · none)을 준다. 정본이 세 컴포넌트마다 다른 값을 갖고 있기 때문이며, 코어 내부 선택자 덮어쓰기가 아니다.",
+      "by": "orchestrator",
+      "at": "2026-09-15"
+    },
+    {
+      "id": "D-3",
+      "question": "밀도(density) 대상인가?",
+      "answer": "둘 다 outOfScope. 시트는 줄에 나란히 서는 컨트롤이 아니고(모달과 같은 이유), Option 줄은 정본에 크기 축이 없고 모바일 전용이라 PC 3단이 성립하지 않는다.",
+      "by": "orchestrator",
+      "at": "2026-09-15"
+    },
+    {
+      "id": "D-4",
+      "question": "배경(딤) 클릭으로 닫을까? 모달은 안 닫는다.",
+      "answer": "닫는다. 새 동작이 아니라 이미 배포된 date-picker 시트의 동작이며, 빼면 그 화면이 퇴행한다. 모달의 범위 A 결정(2026-09-02)은 모달에 대한 결정이라 시트에 자동 적용되지 않는다.",
+      "by": "orchestrator",
+      "at": "2026-09-15"
+    },
+    {
+      "id": "D-5",
+      "question": "정본에 없는 3칸(checkbox:disabled · radio:disabled · list:selected)은?",
+      "answer": "만들지 않는다. manifest absentCombinations 에 적는다.",
+      "by": "orchestrator",
+      "at": "2026-09-15"
+    },
+    {
+      "id": "D-6",
+      "question": "HD-1 — Type=List·State=Disabled 의 잠금 아이콘을 쓸 수 있게 목록에 넣을까?",
+      "answer": "(A) 넣는다 — List 줄 전부를 만든다. river 2026-09-15 \"넣어줘\".",
+      "by": "river",
+      "at": "2026-09-15"
+    },
+    {
+      "id": "D-7",
+      "question": "HD-1 의 전제가 맞았나?",
+      "answer": "틀렸다. 자물쇠는 registry/figma/allowed-remote-keys.json 에 lock·lock_set 로 이미 등재돼 있었다(26키 중 16·17번째). 오케스트레이터가 그 파일을 앞부분만 읽고 \"없다\"고 판단해 불필요한 승인을 물었다. 승인 절차(Gate 34)는 애초에 필요하지 않았고, river 의 답(A)은 결과적으로 만들 범위와 같으므로 산출물은 변하지 않는다. 기록을 남겨 이 근거가 뒤에 재인용되지 않게 한다.",
+      "by": "orchestrator",
+      "at": "2026-09-15"
+    },
+    {
+      "id": "D-8",
+      "question": "Text:Selected 의 체크 표시를 새 자산으로 만들까?",
+      "answer": "만들지 않는다. 등록된 check.svg(16 프레임, glyph=frame)를 24 로 비례 확대해 쓴다 — 잉크 비율 72.5% 대 정본 75% 로 차이가 0.6px 이다. check 는 원본 픽셀 대조 면제 목록(기존 부채)에 있어 기계 증명이 안 되므로, 실제 렌더에서 눈으로 확인한다.",
+      "by": "orchestrator",
+      "at": "2026-09-15"
+    },
+    {
+      "id": "D-9",
+      "question": "D-8(check 아이콘 16프레임 확대 재사용)이 맞았나?",
+      "answer": "틀렸다. 잉크 비율만 견주고 선 굵기 축을 보지 않았다 — 16프레임을 24로 키우면 선도 1.5배가 된다(실측 2.27px vs 정본 1.5px, 면적 +26%). 24프레임 원본을 따로 등록한다. 기존 16프레임 check 은 체크박스가 쓰므로 건드리지 않는다.",
+      "by": "component-verifier",
+      "at": "2026-09-15"
+    },
+    {
+      "id": "D-10",
+      "question": "시트와 모달이 배경 스크롤 잠금에서 부딪히는 것을 어떻게 고칠까?",
+      "answer": "잠그는 자리를 나눈다 — modal 계열은 body 인라인 overflow, 시트는 html(documentElement) 인라인 overflow. 승인된 modal·modal-content 를 건드리지 않고 순서 무관하게 \"하나라도 열려 있으면 잠김\"이 성립한다. 8단계 재검증 통과.",
+      "by": "orchestrator",
+      "at": "2026-09-15"
+    },
+    {
+      "id": "D-11",
+      "question": "check 24프레임 벡터를 저장소 PNG 에서 재구성해 쓸까?",
+      "answer": "쓰지 않는다. 측정 자체는 정확했지만(lock 으로 교차 검증) 재구성본이 픽셀 대조 기준 0.015 를 세 가지 선 끝 모양 전부에서 넘겼다(0.0225 안팎) — 구조가 다르다는 뜻이다. 더 만지면 측정이 아니라 원본에 맞춰 깎는 일이 되고, 그게 chevron·close 사고의 원인이었다. 재구성본을 지우고 Figma 원본을 기다린다.",
+      "by": "orchestrator",
+      "at": "2026-09-15"
+    },
+    {
+      "id": "D-12",
+      "question": "HD-3 — 새로 만든 독립 바텀시트도 딤(어두운 배경)을 눌러 닫히게 할까?",
+      "answer": "(A) 닫힌다. river 2026-09-15 \"3. A\". 모달(범위 A, 딤 클릭 안 닫힘)과 갈리지만 시트는 손가락으로 쓰는 화면이라 빠져나오기 쉬워야 한다는 판단. 이미 배포된 date-picker·time-picker 시트와도 동작이 같아진다.",
+      "by": "river",
+      "at": "2026-09-15"
+    },
+    {
+      "id": "D-13",
+      "question": "HD-2 — check 24프레임 원본을 Figma 에서 읽을 수 있게 해줄까?",
+      "answer": "(A) river 가 Figma Desktop 활성 탭을 아이콘 라이브러리 V2.2 로 전환했다. river 2026-09-15 \"2. A로 해줘. 라이브러리 켰음\". 판독 재시도 중.",
+      "by": "river",
+      "at": "2026-09-15"
+    },
+    {
+      "id": "D-14",
+      "question": "시트 안 버튼(모바일 LG)에 마우스오버를 둘까?",
+      "answer": "두지 않는다. river 2026-09-15 \"바텀시트 내에 있는 버튼은 호버사양이 없어야해\". 확인 결과 2026-09-07 결정은 Input 범위였고 Button 은 포함되지 않았으므로, 같은 원리를 Button 으로 넓히는 새 결정이다. 누름(:active)은 전 크기 유지, :hover 만 @media (hover: hover) + :not([data-size=\"lg\"]) 로 좁혔다. 파급: LG 버튼을 쓰는 모든 자리(모달 모바일 푸터 포함).",
+      "by": "river",
+      "at": "2026-09-15"
+    },
+    {
+      "id": "D-15",
+      "question": "다크 칸에서 연 시트가 라이트로 뜨는 것을 어떻게 고칠까?",
+      "answer": "옮기기 전에 자기 테마를 루트에 새겨 들고 나간다. body 배치 계약과 칸 단위 테마가 부딪히는 자리이며, modal·modal-content 에도 이미 있던 같은 구멍이라 그 배선도 함께 고쳤다. dist 코드 변경 0건 — 규칙은 manifest htmlContract.relations 에 적었다.",
+      "by": "orchestrator",
+      "at": "2026-09-15"
+    },
+    {
+      "id": "D-16",
+      "question": "안드로이드 포트가 누름 표시를 잃은 것을 어떻게 고칠까?",
+      "answer": "Compose 계획의 \"hover\" 칸이 웹의 :hover 와 :active 를 둘 다 켜서 읽게 했다. 그 칸은 Compose 에서 hovered||pressed 를 함께 담는 칸이라 의미도 맞는다. LG 는 :active 가 걸려 누름 칠 복구, PC 는 두 규칙이 같은 토큰이라 불변.",
+      "by": "orchestrator",
+      "at": "2026-09-15"
+    },
+    {
+      "id": "D-17",
+      "question": "\"모바일 버튼\"이 data-size=\"lg\" 하나만 뜻하나?",
+      "answer": "아니다. 밀도 감싸개(data-s1-break=\"mobile\" + 크기 생략)로 만든 48px 도 모바일 버튼이다. river 지시의 뜻은 화면에 서는 모바일 버튼이고 선언 방식은 표기 차이일 뿐이라 판단해, Input 선례(input.css:110)와 같은 형태로 완성했다. 자기가 크기를 직접 적었으면 그쪽이 이긴다. 근거 보강(독립 검증 4회차 지적): density-policy.json 이 river 승인(2026-09-14)으로 componentFacts 에 button 을 넣고 mobileHeight 48 · \"감싸개만 주면 된다\"를 정본화했다. 즉 크기 없는 48px 모바일 버튼은 규격 밖 마크업이 아니라 정책이 만들어 낸 모양이며, 그래서 밀도 정책과 Button 계약이 갈리지 않는다. 새 토큰·상태·크기·판정기준 0건.",
+      "by": "orchestrator",
+      "at": "2026-09-15"
+    },
+    {
+      "id": "D-18",
+      "question": "글자 버튼(Text Button)도 모바일에서 마우스오버를 뺄까?",
+      "answer": "(A) 뺀다. river 2026-09-15 \"승인할게, 텍스트버튼도 A로 빼줘\". 크기 축이 없어 화면 구분 선언으로 가른다(Input 과 같은 형태). 누름 밑줄은 유지.",
+      "by": "river",
+      "at": "2026-09-15"
+    },
+    {
+      "id": "D-19",
+      "question": "이식본 CSS 해석기가 :not() 안 자손 선택자에서 멈추는 것을 우회할까 고칠까?",
+      "answer": "고친다. 우회안(기본 주고 모바일에서 거두기)은 검사기 두 개가 막았고, Button 은 :is() 앞가지가 먼저 맞아 우연히 피하고 있었을 뿐이라 언제든 재발한다. matchesRelative 가 자손 결합자를 만나면 전체 선택자 대조로 넘기게 했다.",
+      "by": "orchestrator",
+      "at": "2026-09-15"
+    }
+  ],
+  "evidence": {
+    "machineChecks": [
+      {
+        "command": "ui:contract / ui:build:check / ui:test / ui:icons / ui:icons:origin / ui:guide:render / ui:version / ui:density / ui:state -- reports/ui-library/bottom-sheet/workflow-state.json",
+        "result": "전부 exit 0 (2026-09-15, 배포본 0.6.7). ※ ui:state 는 경로 인자가 필요하다 — 인자 없이 돌리면 exit 1."
+      },
+      {
+        "command": "npm run gate:check",
+        "result": "오류 5건 = Gate 34 uistate 5건 뿐(river 승인 발화 대기). Gate 46·47 은 ui:zip·devpanel:gen·board:refresh 로 닫음."
+      },
+      {
+        "command": "node scripts/ui-library-icon-origin-check.js --record",
+        "result": "check24 오차 0.00181 · lock 0.00203 · 아이콘 24종 오류 0"
+      }
+    ],
+    "openGaps": [
+      "check24 를 nameAliases 로 옮기는 정리 — build.mjs 가 id 로 직접 찾아서 지금 옮기면 빌드가 막힌다. 후속.",
+      "check(16프레임) 원본 픽셀 대조 면제 — 기존 부채 유지. 이 작업은 더 이상 그 자산에 기대지 않는다.",
+      "Gate 34 uistate 5건 — river 승인 발화 대기.",
+      "modal·modal-content 의 배포본 계약에도 「테마 새겨 옮기기」 규칙을 적어야 한다 — 지금은 검수 화면 배선만 고쳤다. 후속.",
+      "text-button 은 아직 모바일에서도 hover 가 산다 — river 지시 범위 밖이라 건드리지 않았다. 5-human-review 에서 질문."
+    ],
+    "followUps": [
+      "Gate 34 — uistate 5건(bottom-sheet.open/closed · bottom-sheet-option.default/selected/disabled)은 river UX 승인 시점에 실제 발화를 인용해 기록한다(date-picker 선례와 같은 순서).",
+      "Gate 16 — 두 컴포넌트의 origin Ⓐ/Ⓑ 분류가 tbd 다. 차단은 아니며 river 결정 사항(multi-toggle 과 같은 상태).",
+      "Gate 46·47 — ui:zip · devpanel:gen · board:refresh 는 화면 연결이 끝난 뒤 한 번에 돌린다."
+    ],
+    "sourceAudit": {
+      "observedAt": "2026-09-15",
+      "basis": "registry/components/component-facts.json 의 Bottom Sheet·Bottom Sheet Option geometry 와 build-components.ts 빌더 판독(📖 source-reader). 기존 시트 CSS 는 ui-library/src/components/date-picker/date-picker.css 469-540 · time-picker.css 262-320."
+    },
+    "migrationParity": {
+      "verdict": "IDENTICAL",
+      "by": "orchestrator",
+      "at": "2026-09-15",
+      "basis": "reports/ui-library/bottom-sheet/screens/ 의 이관 전/후 PNG 4장을 바이트 대조. date-picker sha256 37bb667f… · time-picker sha256 ec26258b… 가 before/after 동일 — 육안이 아니라 바이트가 같다.",
+      "limit": "정적 CSS-only 픽스처 렌더다. 실제 pages/*.html 화면과 Dark 모드는 4-verification 에서 따로 확인한다."
+    },
+    "render": "2026-09-15 · 배포본 0.6.0 · http://127.0.0.1:4173 실측. 시트 3변형(None 아래여백 40 · Single·Dual 20 · 간격 48 · 반경 8 · 폭 360 · 그림자 raised-up) · Option 9칸(48 고정, List hug 65) · Light/Dark 세만틱 토큰 경유 · 여닫기 3경로(Esc·딤·닫기X) 전부 초점 복귀 · 배경 스크롤 잠금 해제 확인 · 중복 id 0 · 콘솔 오류 0. 캡처 screens/verify-sheet-light-dark.png · verify-lock-origin.png",
+    "implementationActualRender": {
+      "verdict": "PASS",
+      "by": "orchestrator",
+      "at": "2026-09-15",
+      "note": "브라우저 계산값(getComputedStyle) 실측으로 정본 대조. 상세는 4-verification.md §2~5.",
+      "limits": "실기기·스크린리더 실낭독·키보드 전수 순회·이식본 미확인. check 아이콘 24px 확대는 기계 증명 없음(기존 부채)."
+    },
+    "statusFlagNote": "manifest status draft→verified 는 ⭐ 가 올렸다. 안내 화면 mountGuide 가 verified/approved 만 그려서 독립 검증자와 river 가 화면을 볼 수 있게 하려는 스위치이며 판정이 아니다. 독립 검증이 ❌ 면 draft 로 되돌린다.",
+    "independentVerification": {
+      "verdict": "PASS",
+      "by": "component-verifier",
+      "at": "2026-09-15",
+      "scenario": "F",
+      "round": 5,
+      "note": "최소 델타(button manifest 문구 1건) PASS. manifest 선언 ↔ 실제 선택자가 src·dist·번들·coverage 까지 글자 그대로 일치. CSS·런타임·포트 무변경 주장 성립(S1ButtonSpec.kt HEAD 와 byte 동일).",
+      "history": "1회차 FAIL(스크롤 잠금·check 굵기) → 2회차 PASS → river 지적 2건 반영 → 3회차 FAIL(안드로이드 누름 상실·모바일 안내 Hover 칸) → 4회차 FAIL(manifest 문구) → 5회차 PASS",
+      "stillUnverified": "실기기 · 터치 기기 @media (hover: hover) · 스크린리더 실낭독 · 키보드 전수 순회 · React·Vue·Swift·C++ 이식본 · river 발화 원문 · 재현 실패한 초점 재귀 오류 1건",
+      "report": "reports/ui-library/bottom-sheet/4-verification-independent-r5.md"
+    },
+    "riverApproval": {
+      "status": "approved",
+      "date": "2026-09-15",
+      "target": "ui-library/dist 배포본 · bottom-sheet · bottom-sheet-option (승인 시점 0.6.7 · 후속 반영 후 0.6.10)",
+      "quote": "승인할게, 텍스트버튼도 A로 빼줘",
+      "context": "독립 검증 5회차 PASS 후 검수 화면(ui-review.html 24·25번)을 보고 승인. 앞선 검수에서 지적 2건(모바일 버튼 hover · 다크 시트)을 반영한 뒤 재검수한 결과다.",
+      "followUpOrdered": "글자 버튼(Text Button)도 모바일 마우스오버 제거 — (A) 반영 완료"
+    },
+    "postApprovalChange": {
+      "what": "text-button 모바일 hover 제거 + css-model.mjs 해석기 수정 + ui:test 검사 강화",
+      "verifiedBy": "기계검사 전량 exit 0 · gate:check PASSED · 적대 테스트 1종",
+      "notIndependentlyVerified": "component-verifier 가 본 마지막 배포본은 0.6.7 이다. text-button 과 이식본 해석기 변경은 독립 검증 후속 대상."
+    }
+  },
+  "outOfScope": [],
+  "handoff": {
+    "lastActor": "orchestrator",
+    "updatedAt": "2026-09-15",
+    "summary": "바텀시트 2종 승격 완료(0.6.10). river 승인 2026-09-15. 검증 5회차 PASS. text-button 변경과 이식본 해석기 수정은 승인 후 반영분이라 독립 검증 후속 대상."
+  },
+  "contract": {
+    "path": "registry/governance/ui-library-code-contract.json",
+    "version": "0.1.2",
+    "status": "candidate"
+  },
+  "figmaSources": {
+    "role": "시각 정본은 build-components.ts(buildBottomSheet:5152 · buildBottomSheetOption:5009)다. Figma V3.0 은 선택적 시각 참고.",
+    "requiredForInventory": false,
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "fileName": "SW-UX-GUIDE V3.0 TEST",
+    "components": {
+      "bottom-sheet": {
+        "source": "plugins/figma-vars-installer/src/build-components.ts",
+        "sourceType": "repository",
+        "status": "existing",
+        "note": "시각 정본 = buildBottomSheet(5152줄, 세트 \"Bottom Sheet\"). Figma V3.0 은 선택적 시각 참고."
+      },
+      "bottom-sheet-option": {
+        "source": "plugins/figma-vars-installer/src/build-components.ts",
+        "sourceType": "repository",
+        "status": "existing",
+        "note": "시각 정본 = buildBottomSheetOption(5009줄, 세트 \"Bottom Sheet Option\"). Figma V3.0 은 선택적 시각 참고."
+      }
+    }
+  },
+  "canonicalInputs": [
+    {
+      "role": "component-visual",
+      "path": "plugins/figma-vars-installer/src/build-components.ts",
+      "sha256": "5ffeb42d115f1811a4cf574f462897c9b702324e9cda589fc701f9efcad5019a"
+    },
+    {
+      "role": "token-values",
+      "path": "plugins/figma-vars-installer/src/vars-data.ts",
+      "sha256": "14c5df38e32f154da10e83370004726971c11511f0108b94719a08f109433bc0"
+    },
+    {
+      "role": "text-styles",
+      "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
+      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+    },
+    {
+      "role": "ui-library-contract",
+      "path": "registry/governance/ui-library-code-contract.json",
+      "sha256": "2e13ba2efab71036f9d8c2d740f7da24343e0bbeff655f35ae5b6631c9ca0c27"
+    }
+  ],
+  "workflowStatus": "complete",
+  "currentPhase": "complete",
+  "uiLibraryStatus": "approved",
+  "lastCompletedCheckpoint": 6,
+  "ownership": {}
+}

@@ -3,7 +3,7 @@
   "meta": {
     "name": "업데이트 관리 (Update Management) 정본",
     "version": "0.2.0",
-    "updatedAt": "2026-06-25",
+    "updatedAt": "2026-09-15",
     "description": "컴포넌트·패턴별 진행 상태와 각 표면(Figma 설치기·tokens.css·HTML 가이드) 반영일을 한곳에서 관리한다. origin(분류)이 재발방지 게이트의 입력 — 'B(원본틀 필요)'인데 원본 대조 안 했으면 차단, 'A(정리완료)'는 면제. 날짜는 수동 도장(해당 표면을 실제로 갱신할 때 손으로 기록). mobile 칸은 모바일 폼 진행 상태(없으면 '-').",
     "legend": {
       "origin": {
@@ -384,6 +384,34 @@
         "html": ""
       },
       "note": "루트 A(레거시 pc_modal) 신규 편입(2026-09-08). 웹 UI 라이브러리 빌드 직후(⭐ ui-library-builder) — component-verifier 독립 검증(원본 대조) 대기, 통과 시 verify→new."
+    },
+    {
+      "id": "bottom-sheet",
+      "origin": "tbd",
+      "sourceNode": "",
+      "verify": "none",
+      "verifyDate": "",
+      "mobile": "완료",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "신규 편입(2026-09-15, work-id bottom-sheet). 모바일 전용 시트 그릇. 정본 buildBottomSheet(5152) 는 이미 빌드돼 있고 이번 작업은 웹 배포본 이관이다. origin 분류 tbd — 이 시트가 레거시 정리분(A)인지 원본 틀 갈이 대상(B)인지 river 결정 필요. 웹 빌드 직후 — component-verifier 독립 검증 대기, 통과 시 verify→new."
+    },
+    {
+      "id": "bottom-sheet-option",
+      "origin": "tbd",
+      "sourceNode": "",
+      "verify": "none",
+      "verifyDate": "",
+      "mobile": "완료",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "신규 편입(2026-09-15, work-id bottom-sheet). 시트 안 한 줄. 정본 buildBottomSheetOption(4957) 실재 9칸(12칸 아님). Checkbox·Radio 코어 재사용. origin 분류 tbd — river 결정 필요. 웹 빌드 직후 — component-verifier 독립 검증 대기, 통과 시 verify→new."
     }
   ],
   "patterns": [

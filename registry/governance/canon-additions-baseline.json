@@ -1,8 +1,8 @@
 {
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
-  "_updated": "2026-09-14",
-  "count": 651,
+  "_updated": "2026-09-15",
+  "count": 656,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -566,6 +566,11 @@
     "uistate:assist-button.disabled",
     "uistate:assist-button.hover",
     "uistate:assist-button.pressed",
+    "uistate:bottom-sheet-option.default",
+    "uistate:bottom-sheet-option.disabled",
+    "uistate:bottom-sheet-option.selected",
+    "uistate:bottom-sheet.closed",
+    "uistate:bottom-sheet.open",
     "uistate:button.default",
     "uistate:button.disabled",
     "uistate:button.hover",
@@ -1262,6 +1267,66 @@
       "evidence": {
         "transcript": "1fa63fef-621a-4e0e-89ed-340de25f5aa0.jsonl",
         "at": "2026-09-14T08:15:29.031Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:bottom-sheet.open",
+      "by": "river",
+      "reason": "바텀시트 웹 배포본의 표출 상태. open·closed 는 정본에 대응이 없는 플랫폼 표준 표출 상태이며(Figma 는 닫힌 시트를 그릴 수 없다) modal 과 같은 처리다(river 결정 2026-09-08 ④A). bottom-sheet-option 의 default·selected·disabled 는 정본 buildBottomSheetOption 의 State 축 3종을 그대로 옮긴 것이다. 새 토큰 0건. river 가 검수 화면(ui-review.html 24·25번)을 실제로 보고 승인했다 — 독립 검증 5회차 PASS 후.",
+      "approvedAt": "2026-09-15T07:24:29.182Z",
+      "quote": "승인할게, 텍스트버튼도 A로 빼줘",
+      "evidence": {
+        "transcript": "107e2ced-31b7-449c-860f-1267df6dd76d.jsonl",
+        "at": "2026-09-15T07:20:48.997Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:bottom-sheet.closed",
+      "by": "river",
+      "reason": "바텀시트 웹 배포본의 표출 상태. open·closed 는 정본에 대응이 없는 플랫폼 표준 표출 상태이며(Figma 는 닫힌 시트를 그릴 수 없다) modal 과 같은 처리다(river 결정 2026-09-08 ④A). bottom-sheet-option 의 default·selected·disabled 는 정본 buildBottomSheetOption 의 State 축 3종을 그대로 옮긴 것이다. 새 토큰 0건. river 가 검수 화면(ui-review.html 24·25번)을 실제로 보고 승인했다 — 독립 검증 5회차 PASS 후.",
+      "approvedAt": "2026-09-15T07:24:29.452Z",
+      "quote": "승인할게, 텍스트버튼도 A로 빼줘",
+      "evidence": {
+        "transcript": "107e2ced-31b7-449c-860f-1267df6dd76d.jsonl",
+        "at": "2026-09-15T07:20:48.997Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:bottom-sheet-option.default",
+      "by": "river",
+      "reason": "바텀시트 웹 배포본의 표출 상태. open·closed 는 정본에 대응이 없는 플랫폼 표준 표출 상태이며(Figma 는 닫힌 시트를 그릴 수 없다) modal 과 같은 처리다(river 결정 2026-09-08 ④A). bottom-sheet-option 의 default·selected·disabled 는 정본 buildBottomSheetOption 의 State 축 3종을 그대로 옮긴 것이다. 새 토큰 0건. river 가 검수 화면(ui-review.html 24·25번)을 실제로 보고 승인했다 — 독립 검증 5회차 PASS 후.",
+      "approvedAt": "2026-09-15T07:24:29.722Z",
+      "quote": "승인할게, 텍스트버튼도 A로 빼줘",
+      "evidence": {
+        "transcript": "107e2ced-31b7-449c-860f-1267df6dd76d.jsonl",
+        "at": "2026-09-15T07:20:48.997Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:bottom-sheet-option.selected",
+      "by": "river",
+      "reason": "바텀시트 웹 배포본의 표출 상태. open·closed 는 정본에 대응이 없는 플랫폼 표준 표출 상태이며(Figma 는 닫힌 시트를 그릴 수 없다) modal 과 같은 처리다(river 결정 2026-09-08 ④A). bottom-sheet-option 의 default·selected·disabled 는 정본 buildBottomSheetOption 의 State 축 3종을 그대로 옮긴 것이다. 새 토큰 0건. river 가 검수 화면(ui-review.html 24·25번)을 실제로 보고 승인했다 — 독립 검증 5회차 PASS 후.",
+      "approvedAt": "2026-09-15T07:24:29.988Z",
+      "quote": "승인할게, 텍스트버튼도 A로 빼줘",
+      "evidence": {
+        "transcript": "107e2ced-31b7-449c-860f-1267df6dd76d.jsonl",
+        "at": "2026-09-15T07:20:48.997Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:bottom-sheet-option.disabled",
+      "by": "river",
+      "reason": "바텀시트 웹 배포본의 표출 상태. open·closed 는 정본에 대응이 없는 플랫폼 표준 표출 상태이며(Figma 는 닫힌 시트를 그릴 수 없다) modal 과 같은 처리다(river 결정 2026-09-08 ④A). bottom-sheet-option 의 default·selected·disabled 는 정본 buildBottomSheetOption 의 State 축 3종을 그대로 옮긴 것이다. 새 토큰 0건. river 가 검수 화면(ui-review.html 24·25번)을 실제로 보고 승인했다 — 독립 검증 5회차 PASS 후.",
+      "approvedAt": "2026-09-15T07:24:30.257Z",
+      "quote": "승인할게, 텍스트버튼도 A로 빼줘",
+      "evidence": {
+        "transcript": "107e2ced-31b7-449c-860f-1267df6dd76d.jsonl",
+        "at": "2026-09-15T07:20:48.997Z"
       },
       "recordedBy": "orchestrator"
     }

@@ -1,0 +1,64 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8">
+<title>bottom-sheet 검증 픽스처 — 실제 dist 소비</title>
+<link rel="stylesheet" href="../../../../ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="../../../../ui-library/dist/assets/css/typography.css">
+<link rel="stylesheet" href="../../../../ui-library/dist/s1-ui.css">
+<style>
+  body{margin:0;font-family:"Pretendard",sans-serif;background:var(--color-bg-level-1,#fff)}
+  .wrap{display:flex;gap:24px;padding:24px;align-items:flex-start}
+  .pane{flex:1;padding:20px;border-radius:8px;background:var(--color-bg-level-1)}
+  .pane h2{font-size:14px;margin:0 0 12px}
+  .row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
+  .cell{width:360px}
+  .cell > .cap{font-size:11px;color:#888;margin-bottom:4px}
+  /* 시트를 지면에 눕혀 보여주는 검수 전용 표시 — dist 에 들어가지 않는다(이 파일이 소유) */
+  .inline [data-s1-component="bottom-sheet"]{position:static;display:block}
+  .inline [data-s1-part="sheet-backdrop"]{display:none}
+  .inline [data-s1-part="sheet-panel"]{max-height:none;border:1px solid rgba(0,0,0,.08)}
+  .optlist{width:360px;border:1px solid rgba(0,0,0,.08);border-radius:8px;overflow:hidden}
+</style></head><body>
+<div class="wrap">
+  <div class="pane" data-theme="light"><h2>Light</h2><div class="row inline" id="l"></div></div>
+  <div class="pane" data-theme="dark"><h2 style="color:#ECEDF0">Dark</h2><div class="row inline" id="d"></div></div>
+</div>
+<script>
+const opt = (type,state,extra='') =>
+  `<div data-s1-component="bottom-sheet-option" data-type="${type}" data-state="${state}">${extra}</div>`;
+const textRows = ['항목 1','항목 2','항목 3','항목 4'].map((t,i)=>
+  `<div data-s1-component="bottom-sheet-option" data-type="text" data-state="${i===1?'selected':'default'}">`+
+  `<span data-s1-part="label">${t}</span>${i===1?'<span data-s1-part="check" aria-hidden="true"></span>':''}</div>`).join('');
+function sheet(footer, n){
+  const foot = footer==='none' ? '' :
+    `<div data-s1-part="sheet-footer">`+
+    (footer==='dual'?`<button type="button" data-s1-component="button" data-variant="secondary" data-size="lg"><span data-s1-part="label">취소</span></button>`:'')+
+    `<button type="button" data-s1-component="button" data-variant="primary" data-size="lg"><span data-s1-part="label">적용</span></button></div>`;
+  return `<div class="cell"><div class="cap">Footer=${footer}</div>`+
+    `<div data-s1-component="bottom-sheet" data-s1-part="sheet" data-break="mobile" data-footer="${footer}">`+
+    `<div data-s1-part="sheet-backdrop"></div>`+
+    `<div data-s1-part="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="fx-t-${n}" tabindex="-1">`+
+    `<div data-s1-part="sheet-content"><div data-s1-part="sheet-header">`+
+    `<span data-s1-part="sheet-title" id="fx-t-${n}">항목 선택</span>`+
+    `<button type="button" data-s1-part="sheet-close" aria-label="닫기"></button></div>`+
+    `<div data-s1-part="sheet-body">${textRows}</div></div>${foot}</div></div></div>`;
+}
+const cells = [
+  ['text','default','<span data-s1-part="label">항목</span>'],
+  ['text','selected','<span data-s1-part="label">항목</span><span data-s1-part="check" aria-hidden="true"></span>'],
+  ['text','disabled','<span data-s1-part="label">항목</span>'],
+  ['checkbox','default','<div data-s1-component="checkbox"><input type="checkbox" data-s1-part="control"></div><span data-s1-part="label">항목</span>'],
+  ['checkbox','selected','<div data-s1-component="checkbox"><input type="checkbox" data-s1-part="control" checked></div><span data-s1-part="label">항목</span>'],
+  ['radio','default','<div data-s1-component="radio"><input type="radio" name="fx-r" data-s1-part="control"></div><span data-s1-part="label">항목</span>'],
+  ['radio','selected','<div data-s1-component="radio"><input type="radio" name="fx-r2" data-s1-part="control" checked></div><span data-s1-part="label">항목</span>'],
+  ['list','default','<div data-s1-part="list-left"><div data-s1-part="avatar" aria-hidden="true"></div><div data-s1-part="list-text"><span data-s1-part="list-title">제목</span><span data-s1-part="list-sub">서브 텍스트</span></div></div><span data-s1-part="chevron" aria-hidden="true"></span>'],
+  ['list','disabled','<div data-s1-part="list-left"><div data-s1-part="avatar" aria-hidden="true"></div><div data-s1-part="list-text"><span data-s1-part="list-title">제목</span><span data-s1-part="list-sub">서브 텍스트</span></div></div><span data-s1-part="lock" aria-hidden="true"></span>']
+];
+function options(scope){
+  return `<div class="cell"><div class="cap">Bottom Sheet Option — 정본 9칸</div><div class="optlist">`+
+    cells.map(([t,s,inner])=>opt(t,s,inner)).join('')+`</div></div>`;
+}
+let k=0;
+for (const id of ['l','d']) {
+  document.getElementById(id).innerHTML =
+    ['none','single','dual'].map(f=>sheet(f, ++k)).join('') + options(id);
+}
+</script></body></html>

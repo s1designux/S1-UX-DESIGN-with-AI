@@ -208,6 +208,20 @@
       inset: auto;
       position: relative;
     }
+    /* Bottom Sheet 정적 표본 — 위 date-picker 시트·modal 과 같은 이유·같은 처리.
+       배포본 시트는 position:fixed;inset:0 이라 그대로 두면 화면 전체를 덮는다. 지면 안에 눕혀
+       "열린 모습"만 보여준다. 이 CSS 는 이 페이지 것이고 dist 에 넣지 않는다(cssContract.previewNote). */
+    [data-s1-component="bottom-sheet"].is-review-inline {
+      inset: auto;
+      justify-content: flex-start;
+      position: relative;
+    }
+    /* 눕힌 표본에서는 딤을 그리지 않는다 — 실제 화면에서 딤은 화면 전체를 덮는 것이라
+       칸 안에 조각으로 남으면 시트 옆에 회색 덩어리가 붙은 것처럼 보인다. 딤 자체는
+       Action 칸(실제로 열리는 시트)에서 제 모습으로 확인한다. */
+    [data-s1-component="bottom-sheet"].is-review-inline [data-s1-part="sheet-backdrop"] { display: none; }
+    /* 옵션 줄은 시트 본문 폭(정본 360) 안에서 봐야 좌우 배치가 읽힌다. */
+    .review-bottom-sheet-option-box { max-width: 360px; width: 100%; }
     /* 모달 정적 표본 — 배포본은 화면 전체를 덮는 팝업이라(position: fixed) 검수 지면에 눕혀 둔다.
        이 CSS 는 이 페이지 것이고 dist 에 넣지 않는다. 색·크기·간격은 그대로 dist 가 그린다. */
     /* 모달 표본은 정본 고정 폭(PC 360 · Mobile 300)이라 2열 칸에 안 들어간다 — 한 줄에 하나씩 놓는다. */
@@ -258,6 +272,13 @@
        (modal 섹션이 고정 폭 패널 때문에 .review-grid 를 1열로 두는 것과 같은 배치 조정이다.) */
     [data-component-id="gnb"] .review-matrix { grid-template-columns: 1fr; }
     [data-component-id="gnb"] .review-component-slot { overflow-x: auto; }
+    /* 시트 패널은 정본 폭 360 이다. Light|Dark 2열 안에 푸터 3종이 또 들어가면 칸이 ≈200~300px 로
+       좁아져 패널이 눌린 채로 보인다(2026-09-15 독립 검증 2회차 지적 — river 가 승인 판단하는 화면이다).
+       gnb 와 같은 방식으로 Light·Dark 를 위아래로 놓아 칸을 넓힌다. */
+    [data-component-id="bottom-sheet"] .review-matrix { grid-template-columns: 1fr; }
+    [data-component-id="bottom-sheet"] .review-component-slot { overflow-x: auto; }
+    [data-component-id="bottom-sheet-option"] .review-matrix { grid-template-columns: 1fr; }
+
     /* 바 6종은 한 줄에 하나씩(가로로 긴 요소), 메뉴 슬롯 9칸은 상태 3열로 나란히 본다. */
     .review-gnb-bar-grid { grid-template-columns: 1fr; }
     .review-gnb-menu-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -751,6 +772,20 @@
         <p class="review-note">하위메뉴 패널 안에 들어가는 <strong>글자 한 줄</strong>입니다. 단독으로 쓰지 않고 위 22번 패널의 목록 안에 넣어 씁니다. 정본 변형 4가지를 그대로 옮겼습니다 — <strong>1depth(카테고리 제목)는 Default 하나뿐</strong>이고, 상태(Default·Hover·Selected)는 2depth(항목)만 갖습니다(river 지시 2026-09-10). <strong>1depth는 굵은 글씨</strong>이고 2depth는 보통 굵기이며, 1depth는 누를 수 있는 링크가 아니라 목록의 제목 글자라 마우스를 올려도 늘 기본 색입니다. <strong>2depth의 Hover와 Selected는 정본에서 같은 모양(파란 글자)</strong>이고, 현재 위치는 <code>aria-current="page"</code>로 냅니다. 아래 Hover 칸에는 <strong>마우스를 직접 올려</strong> 확인해 주세요(강제 상태를 만들지 않았습니다). 들여쓰기·배경·아이콘은 정본에 없어 넣지 않았습니다. 정본에 모바일 규칙이 없어 <strong>PC 전용</strong>입니다.</p>
       </div>
       <div class="review-matrix" id="gnb-sub-menu-item-review-matrix"></div>
+    </section>
+    <section class="review-section" aria-labelledby="bottom-sheet-review-title" data-component-id="bottom-sheet">
+      <div>
+        <h2 class="review-section-title" id="bottom-sheet-review-title">24. Bottom Sheet — 아래에서 올라오는 시트</h2>
+        <p class="review-note">모바일에서 화면 아래에서 올라오는 시트입니다. 정본 변형 3가지(<strong>푸터 없음 · 버튼 1개 · 버튼 2개</strong>)를 그대로 옮겼습니다. <strong>본문은 빈 자리</strong>이고 화면마다 다른 내용을 갈아끼웁니다 — 아래 표본에 들어 있는 4줄은 정본의 기본 채움(글자 줄 4개, 두 번째가 고른 줄)이라 그대로 보여 드리는 것입니다. 폭은 <strong>화면 폭을 따라갑니다</strong>(정본 360은 모바일 화면 폭이라 고정값이 아닙니다). <strong>Esc 키 · 닫기(X) · 어두운 배경 누르기 세 가지로 닫힙니다</strong> — 어두운 배경 누르기는 날짜 선택·시간 선택 시트가 이미 하고 있던 동작을 그대로 가져온 것이고, 확인 팝업(12번 Modal)은 어두운 배경을 눌러도 닫히지 않는다는 점이 다릅니다. 올라오는 <strong>애니메이션은 넣지 않았습니다</strong>(정본에 모션 규칙이 없습니다). 정본에 PC 규칙이 없어 <strong>모바일 전용</strong>입니다. 날짜 선택(17번)·시간 선택(16번) 시트가 이제 이 부품의 껍데기를 함께 씁니다 — <strong>옵기기 전후로 그 두 화면이 같아 보이는지 확인했습니다</strong>(패널 안 간격 32와 그림자 없음은 그 두 컴포넌트의 정본 값이라 그대로 유지됩니다).</p>
+      </div>
+      <div class="review-matrix" id="bottom-sheet-review-matrix"></div>
+    </section>
+    <section class="review-section" aria-labelledby="bottom-sheet-option-review-title" data-component-id="bottom-sheet-option">
+      <div>
+        <h2 class="review-section-title" id="bottom-sheet-option-review-title">25. Bottom Sheet Option — 시트 안 한 줄</h2>
+        <p class="review-note">위 24번 시트의 본문에 넣어 쓰는 <strong>한 줄</strong>입니다. 단독으로 쓰지 않습니다. 유형 4가지(글자 · 체크박스 · 라디오 · 목록) × 상태 3가지 중 <strong>정본에 실재하는 9칸만</strong> 있습니다 — <strong>체크박스의 비활성, 라디오의 비활성, 목록의 고른 상태 세 칸은 정본에 없어 만들지 않았고</strong> 표에서 빈 칸으로 둡니다. <strong>고른 줄에 배경색을 칠하지 않습니다</strong> — 정본이 파란 글자색과 오른쪽 체크 표시로만 구분합니다. 체크박스·라디오는 <strong>이미 승인된 배포본(3번·4번)을 그대로 넣었고</strong> 줄의 글자는 이 부품이 냅니다. 글자·체크박스·라디오 줄은 높이 48로 같고, <strong>목록 줄은 동그란 그림과 두 줄 글자가 들어가 내용만큼 높아집니다</strong>(비활성 목록 줄 오른쪽은 자물쇠 표시). 고르는 동작과 목록의 뜻(무엇을 고른 목록인지)은 시트를 여는 화면이 맡습니다. 정본에 PC 규칙이 없어 <strong>모바일 전용</strong>입니다.</p>
+      </div>
+      <div class="review-matrix" id="bottom-sheet-option-review-matrix"></div>
     </section>
     </div>
 
@@ -2058,7 +2093,7 @@
             <span data-s1-part="value">${triggerLabel}</span>
             <span data-s1-part="icon" aria-hidden="true"></span>
           </button>
-          <div data-s1-part="sheet" hidden>
+          <div data-s1-component="bottom-sheet" data-s1-part="sheet" data-break="mobile" data-footer="single" hidden>
             <div data-s1-part="sheet-backdrop"></div>
             <div data-s1-part="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="${sheetTitleId}" tabindex="-1">
               <div data-s1-part="sheet-header">
@@ -2208,7 +2243,7 @@
          같은 `.is-review-inline` 처리(position:fixed→relative)로 화면을 덮지 않게 눕힌다 — 실제로 눌러보는
          라이브 인스턴스(statik=false)는 그대로 hidden 상태로 시작해 진짜 fixed 오버레이로 동작한다. */
       const body = breakName === "mobile"
-        ? `<div data-s1-part="sheet"${open ? "" : " hidden"}${statik && open ? ' class="is-review-inline"' : ""}>
+        ? `<div data-s1-component="bottom-sheet" data-s1-part="sheet" data-break="mobile" data-footer="single"${open ? "" : " hidden"}${statik && open ? ' class="is-review-inline"' : ""}>
             <div data-s1-part="sheet-backdrop"></div>
             <div data-s1-part="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="${sheetTitleId}" tabindex="-1">
               <div data-s1-part="sheet-header">
@@ -2289,6 +2324,118 @@
         </article>`;
     }
 
+    /* ── Bottom Sheet / Bottom Sheet Option ─ 정본 buildBottomSheet · buildBottomSheetOption.
+       Bottom Sheet 는 Footer 한 축(None·Single·Dual), 크기·Break 축이 없다(모바일 전용).
+       Bottom Sheet Option 은 Type 4 × State 3 중 정본에 실재하는 9칸만 있다 —
+       checkbox:disabled · radio:disabled · list:selected 는 만들지 않는다(manifest absentCombinations).
+       마크업은 자리마다 새로 만든다 — 문자열을 두 곳에 붙이면 id·name 이 중복된다(배선표 §2 T5). */
+    function bottomSheetOptionMarkup({ type = "text", state = "default", label = "항목", statik = false } = {}) {
+      uniqueId += 1;
+      const uid = `review-bso-${uniqueId}`;
+      const tab = statik ? ' tabindex="-1"' : "";
+      const root = `data-s1-component="bottom-sheet-option" data-type="${type}" data-state="${state}"`;
+      if (type === "checkbox" || type === "radio") {
+        /* 라디오는 자리마다 name 을 새로 발급한다 — 같은 name 을 나누면 먼저 그려진 칸의 선택이 풀린다. */
+        const name = type === "radio" ? ` name="${uid}-group"` : "";
+        const checked = state === "selected" ? " checked" : "";
+        return `<div ${root}>
+            <div data-s1-component="${type}">
+              <input type="${type}" id="${uid}" data-s1-part="control" aria-labelledby="${uid}-label"${name}${checked}${tab}>
+            </div>
+            <span data-s1-part="label" id="${uid}-label">${label}</span>
+          </div>`;
+      }
+      if (type === "list") {
+        return `<div ${root}>
+            <div data-s1-part="list-left">
+              <div data-s1-part="avatar" aria-hidden="true"></div>
+              <div data-s1-part="list-text">
+                <span data-s1-part="list-title">제목</span>
+                <span data-s1-part="list-sub">서브 텍스트</span>
+              </div>
+            </div>
+            <span data-s1-part="${state === "disabled" ? "lock" : "chevron"}" aria-hidden="true"></span>
+          </div>`;
+      }
+      /* Text — Selected 만 오른쪽에 체크 표시를 갖는다. 행 배경은 상태별 분기가 없다(정본). */
+      return `<div ${root}>
+          <span data-s1-part="label">${label}</span>${state === "selected" ? `
+          <span data-s1-part="check" aria-hidden="true"></span>` : ""}
+        </div>`;
+    }
+
+    function bottomSheetMarkup({ footer = "single", statik = false } = {}) {
+      uniqueId += 1;
+      const titleId = `review-bottom-sheet-title-${uniqueId}`;
+      const tab = statik ? ' tabindex="-1"' : "";
+      const rows = [
+        bottomSheetOptionMarkup({ label: "항목 1", statik }),
+        bottomSheetOptionMarkup({ state: "selected", label: "항목 2", statik }),
+        bottomSheetOptionMarkup({ label: "항목 3", statik }),
+        bottomSheetOptionMarkup({ label: "항목 4", statik })
+      ].join("");
+      const buttons = footer === "dual"
+        ? `<button type="button" data-s1-component="button" data-variant="secondary" data-size="lg" data-sheet-close${tab}><span data-s1-part="label">취소</span></button>`
+          + `<button type="button" data-s1-component="button" data-variant="primary" data-size="lg" data-sheet-close${tab}><span data-s1-part="label">적용</span></button>`
+        : `<button type="button" data-s1-component="button" data-variant="primary" data-size="lg" data-sheet-close${tab}><span data-s1-part="label">적용</span></button>`;
+      const footerBlock = footer === "none" ? "" : `<div data-s1-part="sheet-footer">${buttons}</div>`;
+      /* 정적 표본은 초기화하지 않는다 — init 하면 배경 스크롤이 잠긴 채 남는다(Modal 과 같은 이유).
+         배포본 시트는 position:fixed 라 지면에 눈혀 보여준다(is-review-inline — 이 페이지 전용 CSS). */
+      const staticAttrs = statik ? ' data-review-static="true" class="is-review-inline"' : "";
+      return `<div data-s1-component="bottom-sheet" data-break="mobile" data-footer="${footer}"${staticAttrs}${statik ? "" : " hidden"}>
+          <div data-s1-part="sheet-backdrop"></div>
+          <div data-s1-part="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="${titleId}" tabindex="-1">
+            <div data-s1-part="sheet-content">
+              <div data-s1-part="sheet-header">
+                <span data-s1-part="sheet-title" id="${titleId}">항목 선택</span>
+                <button type="button" data-s1-part="sheet-close" aria-label="닫기"${tab}></button>
+              </div>
+              <div data-s1-part="sheet-body">${rows}</div>
+            </div>
+            ${footerBlock}
+          </div>
+        </div>`;
+    }
+
+    function renderBottomSheetPanel(combo) {
+      const cells = [["None · 푸터 없음", "none"], ["Single · 버튼 1개", "single"], ["Dual · 버튼 2개", "dual"]]
+        .map(([label, footer]) => sample(label, bottomSheetMarkup({ footer, statik: true }))).join("");
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">정본 변형 3가지 · 폭은 화면 폭(최대 360) · 모바일 전용</p></div>
+          <div class="review-group">
+            <h4 class="review-group-title">실제로 열어보기</h4>
+            <p class="review-panel-description">누르면 화면 아래에서 진짜 시트가 올라옵니다. Esc · 닫기(X) · 어두운 배경 누르기 세 가지로 닫히고, 닫으면 초점이 이 버튼으로 돌아옵니다.</p>
+            <div class="review-component-slot">
+              <button type="button" data-s1-component="button" data-variant="secondary" data-size="lg" data-sheet-open><span data-s1-part="label">시트 열기</span></button>
+              ${bottomSheetMarkup({ footer: "dual" })}
+            </div>
+          </div>
+          <hr class="review-separator">
+          <div class="review-grid">${cells}</div>
+        </article>`;
+    }
+
+    function renderBottomSheetOptionPanel(combo) {
+      const states = [["default", "Default"], ["selected", "Selected"], ["disabled", "Disabled"]];
+      const types = [["text", "Text · 글자"], ["checkbox", "Checkbox · 체크박스"], ["radio", "Radio · 라디오"], ["list", "List · 목록"]];
+      const absent = new Set(["checkbox:disabled", "radio:disabled", "list:selected"]);
+      const cells = types.flatMap(([type, typeLabel]) => states.map(([state, stateLabel]) => {
+        if (absent.has(`${type}:${state}`)) {
+          return sample(`${typeLabel} · ${stateLabel}`, `<p class="review-panel-description">정본에 없는 칸입니다 — 만들지 않았습니다.</p>`);
+        }
+        return sample(`${typeLabel} · ${stateLabel}`, `<div class="review-bottom-sheet-option-box">${bottomSheetOptionMarkup({ type, state })}</div>`);
+      })).join("");
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">정본에 실재하는 9칸(12칸 아님) · 크기 축 없음 · 모바일 전용 · JavaScript 불필요</p></div>
+          <div class="review-group">
+            <p class="review-panel-description">각 칸은 시트 본문 폭(360) 상자 안에 넣어 보입니다. 체크박스·라디오 줄은 실제로 눌러 보세요. <strong>고른 줄에 배경색을 칠하지 않습니다.</strong></p>
+            <div class="review-grid">${cells}</div>
+          </div>
+        </article>`;
+    }
+
     document.querySelector("#date-picker-review-matrix").innerHTML = combinations.map(renderDatePickerPanel).join("");
     document.querySelector("#time-picker-review-matrix").innerHTML = combinations.map(renderTimePickerPanel).join("");
 
@@ -2297,6 +2444,8 @@
     document.querySelector("#gnb-review-matrix").innerHTML = controlThemes.map(renderGnbPanel).join("");
     document.querySelector("#gnb-sub-menu-item-review-matrix").innerHTML = controlThemes.map(renderGnbSubMenuItemPanel).join("");
     document.querySelector("#gnb-sub-menu-review-matrix").innerHTML = controlThemes.map(renderGnbSubMenuPanel).join("");
+    document.querySelector("#bottom-sheet-review-matrix").innerHTML = controlThemes.map(renderBottomSheetPanel).join("");
+    document.querySelector("#bottom-sheet-option-review-matrix").innerHTML = controlThemes.map(renderBottomSheetOptionPanel).join("");
     /* GNB 도 런타임이 없다(jsRequired:false) — CSS 의 :hover 와 네이티브 ARIA(aria-current)만으로 상태가 드러난다. */
     /* Mobile Bottom Nav · Mobile Header 는 런타임이 없다(jsRequired:false) — CSS·네이티브 ARIA만으로 상태가 반영된다. */
 
@@ -2339,6 +2488,9 @@
     /* 모달도 정적 표본(data-review-static)은 초기화하지 않는다 — 초기화하면 배경 스크롤이 잠긴 채 남는다. */
     document.querySelectorAll('[data-s1-component="modal"]:not([data-review-static])').forEach((root) => {
       const opener = root.parentElement?.querySelector("[data-modal-open]");
+      /* 다크 칸에서 연 것이 라이트로 뜨지 않게 자기 테마를 새겨 들고 나간다(river 지적 2026-09-15 · 시트와 같은 이유). */
+      const themeHost = root.closest("[data-theme]");
+      if (themeHost) root.setAttribute("data-theme", themeHost.getAttribute("data-theme"));
       /* 배포본 계약대로 body 바로 아래로 옮긴다 — 검수 지면 안에 두면 위 요소가 모달을 덮는다. */
       document.body.append(root);
       const api = S1UI.modal.init(root);
@@ -2349,11 +2501,33 @@
     /* Modal Content 도 정적 표본(data-review-static)은 초기화하지 않는다 — Modal 과 같은 이유. */
     document.querySelectorAll('[data-s1-component="modal-content"]:not([data-review-static])').forEach((root) => {
       const opener = root.parentElement?.querySelector("[data-modal-content-open]");
+      /* 다크 칸에서 연 것이 라이트로 뜨지 않게 자기 테마를 새겨 들고 나간다(river 지적 2026-09-15 · 시트와 같은 이유). */
+      const themeHost = root.closest("[data-theme]");
+      if (themeHost) root.setAttribute("data-theme", themeHost.getAttribute("data-theme"));
       /* 배포본 계약대로 body 바로 아래로 옮긴다(contentSlots.placement) — 검수 지면 안에 두면 위 요소가 모달을 덮는다. */
       document.body.append(root);
       const api = S1UI.modalContent.init(root);
       opener?.addEventListener("click", () => api?.open());
       root.querySelectorAll("[data-modal-content-close]").forEach((button) => button.addEventListener("click", () => api?.close({ reason: "footer-button" })));
+    });
+
+    /* Bottom Sheet 도 정적 표본(data-review-static)은 초기화하지 않는다 — Modal 과 같은 이유.
+       닫기(X)와 어두운 배경 클릭은 런타임이 이미 배선한다 — 푸터 버튼만 여기서 연결한다. */
+    /* ⚠️ 선택자를 24번 섹션으로 좌드리는 것이 핵심이다 — date-picker·time-picker 시트도 이제
+       루트에 data-s1-component="bottom-sheet" 를 함께 달고 있어(껍데기 CSS 이관), 전체 문서를
+       잡으면 그 시트까지 body 로 옮기고 런타임을 이중으로 건다 — 그 두 화면이 깨진다. */
+    document.querySelectorAll('#bottom-sheet-review-matrix [data-s1-component="bottom-sheet"]:not([data-review-static])').forEach((root) => {
+      const opener = root.parentElement?.querySelector("[data-sheet-open]");
+      /* 배포본 계약대로 body 바로 아래로 옮긴다(htmlContract.placement).
+         ⚠️ 이 검수 화면은 테마를 :root 가 아니라 칸마다 [data-theme] 로 씌운다. body 로 옮기면
+         그 칸 밖으로 나가 다크 칸에서 연 시트가 라이트로 뜬다(river 지적 2026-09-15).
+         옮기기 전에 자기 테마를 루트에 새겨 들고 나간다. */
+      const themeHost = root.closest("[data-theme]");
+      if (themeHost) root.setAttribute("data-theme", themeHost.getAttribute("data-theme"));
+      document.body.append(root);
+      const api = S1UI.bottomSheet.init(root);
+      opener?.addEventListener("click", () => api?.open());
+      root.querySelectorAll("[data-sheet-close]").forEach((button) => button.addEventListener("click", () => api?.close({ reason: "footer-button" })));
     });
 
     /* Search Input — Enter·돋보기 클릭 둘 다 s1:input:search 를 낸다(river D2). 실제로 눈으로 확인. */
