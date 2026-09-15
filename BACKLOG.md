@@ -81,7 +81,9 @@ river 지시 "승인" 으로 배포본에 나가 있던 6종을 검수했고 **2
 
 - **M-1 · 모달 본문을 키보드로 스크롤할 수 없다** (`modal-content`) — `content-area` 가 `overflow-y:auto` 지만 `tabindex` 가 없어 초점이 닿지 않는다(`modal-content.css:105-112`). registry 접근성 선언이 스스로 "키보드로도 스크롤 가능해야 한다"고 요구하는데 실제가 다르다. **확인 계열 `modal` 도 같은 구멍일 가능성이 높다(미확인).**
 - **G-2 · GNB 3종에 React·Vue 전달본이 없다** (`gnb`·`gnb-sub-menu`·`gnb-sub-menu-item`) — approved 22종은 전부 갖고 있다. `ui-library/scripts/test.mjs:762-766` 이 래퍼 대조를 `status==="approved"` 에만 걸어 지금은 안 잡히지만, **승인해서 approved 로 바꾸는 순간 `ui:test:check` 가 실패한다.**
-- **G-1 · GNB 하위메뉴 링크에 키보드로 갈 수 없다** — river 결정 필요(위 보고서 참조). 정본에 여닫는 동작 자체가 없어 대조할 규칙이 없다(c).
+- ~~**G-1 · GNB 하위메뉴 링크에 키보드로 갈 수 없다**~~ → **2026-09-15 해결.** river 가 (A) 안을 골라 Tab 순서에 끼워 넣었다(배포본 0.7.0). 기록: `reports/ui-library/gnb-nav/6-keyboard-2026-09-15.md`. 남은 결정 2건(D-3 역방향 진입 · D-5 문서 맨 끝 조립에서 패널 잔존)은 그 보고서에 있다.
+- **D-2 · 마우스 없는 기기에서 첫 탭이 하위메뉴를 열지 못한다** (선행 결함) — `focusin` 이 먼저 열고 뒤따르는 `click` 이 "이미 열림"으로 보고 닫아 버린다. 두 번째 탭에서야 열린다. 선언(`gnb.js` 주석 · manifest `interactionModel.hoverIncapable` · registry a11y)은 "첫 클릭=열기"라고 적고 있다. 2026-09-09 커밋(b57b18e)부터 있던 것으로 2026-09-15 키보드 작업의 회귀가 아니다.
+- **회귀 그물 없음** — `ui-library/scripts/test.mjs` 의 gnb 케이스가 Tab 키 동작을 재현하지 않는다. 2026-09-15 에 실제로 초점 가둠(D-1)이 들어갔다가 사람 손 검증으로만 잡혔다. 같은 실수가 다시 들어와도 기계는 못 잡는다.
 - **X-1 · 안내 화면 딥링크가 엉뚱한 부품을 연다** — `?platform=pc#assist-button`·`#text-button`·`#modal-content` 셋 다 Button 섹션이 열린다(`#gnb` 계열은 정상). river 가 링크로 이 셋을 보러 가면 다른 화면을 본다.
 - **X-3 · registry 가 정본과 어긋난다** — `registry/components/gnb.json` 의 유틸 아이콘 sizing(40px 상자·xsm 24/18)이 정본에 없다. 정본은 32 박스/24 글리프 한 종류다. 고칠 쪽은 registry(하드룰 H6).
 

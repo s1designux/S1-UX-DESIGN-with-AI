@@ -22,6 +22,22 @@ function getPairs(root) {
   return pairs;
 }
 
+// river 결정 2026-09-15(gnb-nav 후속) — Tab 이 펼쳐진 패널 안으로 들어간다. 패널은 마크업상
+// nav 뒤 형제라 DOM 순서를 바꾸지 않는 한 Tab 이 저절로 들어가지 않는다 — 그래서 Tab 키만
+// 여기서 가로채 순서를 끼워 넣는다(초점 가둠이 아니다: 패널 밖으로는 항상 자연스럽게 나간다).
+const FOCUSABLE_SELECTOR = 'a[href], button, input, select, textarea, [tabindex]';
+
+function isFocusableElement(el) {
+  if (el.hidden || el.disabled) return false;
+  const tabindex = el.getAttribute("tabindex");
+  if (tabindex !== null && Number(tabindex) < 0) return false;
+  return true;
+}
+
+function getFocusables(container) {
+  return Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR)).filter(isFocusableElement);
+}
+
 export function init(root) {
   if (!(root instanceof Element) || root.dataset.s1Component !== componentId) return null;
   if (instances.has(root)) return instances.get(root);
@@ -103,8 +119,9 @@ export function init(root) {
     else openPair(pair);
   };
 
-  // Tab 으로 메뉴에 들어가면 펼치고, 트리거·패널 밖으로 초점이 나가면 닫는다(포커스는 가두지
-  // 않는다 — 그냥 자연스럽게 다음 요소로 넘어가게 둔다).
+  // Tab 으로 메뉴에 들어가면 펼치고, 트리거·패널 밖으로 초점이 나가면 닫는다. 패널 안팎을
+  // 넘나드는 Tab 자체는 handleKeydown(아래 handleTabNavigation)이 순서를 끼워 넣어 처리한다 —
+  // 포커스를 가두는 게 아니라, 원래 없던 자리(패널)를 Tab 순서에 끼워 넣는 것뿐이다.
   const handleFocusin = (event) => {
     const pair = pairFor(event.target);
     if (pair) {
@@ -115,8 +132,59 @@ export function init(root) {
     for (const other of pairs) closePair(other, { returnFocus: false });
   };
 
+  // Tab 순서 끼워 넣기(river 결정 2026-09-15) — 마크업 DOM 순서는 그대로 두고 이 트리거·패널
+  // 쌍을 지날 때만 다음/이전 초점 대상을 다시 계산한다. 초점 가둠이 아니다: 패널 첫/마지막
+  // 요소에서 나가면 항상 트리거·"다음 자연스러운 요소"로 흘러간다.
+  const handleTabNavigation = (event) => {
+    const pair = pairFor(event.target);
+    if (!pair || !isOpen(pair)) return; // 이 쌍과 무관하거나 패널이 닫혀 있으면 기본 동작 그대로
+
+    const inPanel = pair.panel.contains(event.target);
+    const panelFocusables = getFocusables(pair.panel);
+
+    if (!inPanel) {
+      // 트리거(또는 그 안)에서 Tab(정방향)만 가로채 패널 첫 요소로 보낸다. Shift+Tab(역방향)은
+      // 건드리지 않는다 — 트리거 밖으로 나가는 건 원래도 자연스러운 방향이다.
+      if (event.shiftKey) return;
+      if (!panelFocusables.length) return; // 빈 패널 — Tab 은 다음 트리거로 자연스럽게 흘러간다
+      event.preventDefault();
+      panelFocusables[0].focus();
+      return;
+    }
+
+    const idx = panelFocusables.indexOf(event.target);
+    if (idx === -1) return; // hidden/disabled 등으로 걸러진 요소 — 기본 동작에 맡긴다
+
+    if (event.shiftKey) {
+      if (idx !== 0) return; // 패널 내부 뒤로 이동은 기본 동작이 그대로 처리한다
+      event.preventDefault();
+      pair.trigger.focus();
+      return;
+    }
+
+    if (idx !== panelFocusables.length - 1) return; // 마지막 요소가 아니면 기본 동작에 맡긴다
+    // "다음 트리거(또는 그 다음 자연스러운 요소)" — 패널이 없었다면 이 트리거 다음에 왔을
+    // 요소를 nav 안에서 다시 찾는다(패널은 nav 의 자손이 아니므로 이 목록에 섞이지 않는다).
+    const navFocusables = getFocusables(root);
+    const triggerIdx = navFocusables.indexOf(pair.trigger);
+    const next = triggerIdx >= 0 ? navFocusables[triggerIdx + 1] : null;
+    // ⚠️ 트리거가 이 nav 의 **마지막** 초점 가능 요소이면 갈 곳이 nav 안에 없다(유틸 영역이 없는
+    //   GNB 가 그렇다 — 안내 화면에만 9개다). 예전에는 그때 트리거로 되돌렸는데, 되돌리면
+    //   handleFocusin 이 패널을 다시 열어 **Tab 이 무한 순환하는 초점 가둠**이 됐다
+    //   (🤖 component-verifier 2026-09-15 실측 D-1 — Tab 10회에 탈출 0회).
+    //   갈 곳이 없으면 **아무 것도 가로채지 않는다** — 브라우저가 nav 바깥(본문)으로 자연스럽게
+    //   넘기고, 초점이 어느 쌍에도 속하지 않게 되면 handleFocusin 이 패널을 닫는다(기존 경로).
+    //   여기서 미리 닫지 않는 이유: 지금 초점이 그 패널 안에 있어서, 먼저 hidden 을 걸면 초점이
+    //   body 로 떨어져 다음 Tab 이 문서 맨 앞에서 다시 시작한다.
+    if (!next) return;
+    event.preventDefault();
+    closePair(pair, { returnFocus: false });
+    next.focus();
+  };
+
   // Esc — 열려 있으면 닫고 초점을 그 메뉴로 되돌린다.
   const handleKeydown = (event) => {
+    if (event.key === "Tab") { handleTabNavigation(event); return; }
     if (event.key !== "Escape") return;
     const pair = pairFor(event.target);
     if (!pair || !isOpen(pair)) return;
