@@ -45,9 +45,12 @@
     "humanGuide": "registry/governance/ui-library-authoring-guide.md",
     "componentChecklist": "registry/governance/ui-library-component-checklist.md",
     "repositoryInventory": "reports/component-inventory-audit.md",
-    "inventory": "reports/ui-library/density-scale/1-inventory.md"
+    "inventory": "reports/ui-library/density-scale/1-inventory.md",
+    "humanReview": "reports/ui-library/density-scale/5-human-review.md",
+    "promotion": "reports/ui-library/density-scale/6-promotion.md",
+    "migrationRecord": "registry/governance/ui-library-migration.json"
   },
-  "nextAction": "river 확인 3가지 — ①통과 사실 ②결정 3건 문구가 맞는지 ③바텀시트 부품화를 별도 작업으로 올릴지. 확인되면 6-promotion.",
+  "nextAction": "없음 — 승격 완료. 후속은 BACKLOG.md §🔴 0-b 바텀시트 부품화.",
   "blockers": [],
   "decisions": [
     {
@@ -91,6 +94,13 @@
       "answer": "지원하지 않는다. 문서에 \"겹치지 말고, 다르게 할 자리는 그 컴포넌트에 data-size 를 직접 준다\"로 둔다. river 2026-09-15: \"지금처럼 겹치지 마세요로 둬\".",
       "by": "river",
       "at": "2026-09-15"
+    },
+    {
+      "id": "D-7",
+      "question": "독립 바텀시트 부품이 없는데 어떻게 할까?",
+      "answer": "별도 작업으로 올린다. river 2026-09-15: \"맞아, 바텀시트는 따로 올려줘\". BACKLOG.md §🔴 0-b 등록.",
+      "by": "river",
+      "at": "2026-09-15"
     }
   ],
   "evidence": {
@@ -109,7 +119,14 @@
       }
     ],
     "render": "2026-09-15 브라우저 실측 · 배포본 0.5.7. 넓게 44(칩·필터칩 34) · 보통 34 전종 · 좁게 28(멀티토글·표만 34) · 모바일 48(칩·필터칩 30 · 표 44 · 멀티토글 19 · 드롭다운 27). 감싸기 안에서 크기만 직접 줘도 10종 전부 그 크기로 선다. 입력 아이콘 버튼 모바일 48×48(PC hover 칠 없음) · PC 28×28. 모바일 감싸개 안에서 자기 pc 를 적은 입력은 28×28 + hover 유지.",
-    "riverApproval": null,
+    "riverApproval": {
+      "status": "approved",
+      "date": "2026-09-15",
+      "target": "ui-library/dist 밀도(density) 레이어 0.5.7 · 컴포넌트 10종",
+      "quote": "맞아, 바텀시트는 따로 올려줘",
+      "context": "독립 검증자가 PASS 에 단 조건 — 결정 3건의 발화가 실제 river 의 말인지 확인받을 것 — 에 대한 답. 세 문장(\"1번은 그대로 둘것\" · \"모바일에서는 드롭다운 대신 바텀시트를 제공해. 멀티토글 대신 라디오/체크박스를 사용해.\" · \"지금처럼 겹치지 마세요로 둬\")을 그대로 보여드리고 받았다.",
+      "followUpOrdered": "바텀시트 부품화를 별도 작업으로 올릴 것 — BACKLOG.md §🔴 0-b 에 등록"
+    },
     "sourceAudit": {
       "observedAt": "2026-09-14",
       "basis": "ui-library/src/components/*/{id}.css 의 data-size 별 실제 높이와 manifest.breaks. 컴포넌트마다 실측 대상이 달라 component-facts.json geometry 대신 배포될 CSS 자신을 읽는다(드롭다운은 facts 에 패널 높이만 있고 줄 높이는 CSS 에만 있다)."
@@ -144,9 +161,9 @@
     "calendar"
   ],
   "handoff": {
-    "lastActor": "component-verifier",
+    "lastActor": "orchestrator",
     "updatedAt": "2026-09-15",
-    "summary": "독립 검증 PASS(시나리오 F, 4라운드). river 최종 확인 대기."
+    "summary": "밀도 레이어 승격 완료(0.5.7). river 승인 2026-09-15. 바텀시트 부품화만 별도 작업으로 남았다."
   },
   "contract": {
     "path": "registry/governance/ui-library-code-contract.json",
@@ -243,8 +260,8 @@
       "sha256": "2e13ba2efab71036f9d8c2d740f7da24343e0bbeff655f35ae5b6631c9ca0c27"
     }
   ],
-  "workflowStatus": "awaiting-user",
-  "currentPhase": "5-human-review",
-  "uiLibraryStatus": "verified",
-  "lastCompletedCheckpoint": 4
+  "workflowStatus": "complete",
+  "currentPhase": "complete",
+  "uiLibraryStatus": "approved",
+  "lastCompletedCheckpoint": 6
 }

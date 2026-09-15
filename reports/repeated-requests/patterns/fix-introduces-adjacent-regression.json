@@ -1,0 +1,14 @@
+{
+  "id": "fix-introduces-adjacent-regression",
+  "category": "verification",
+  "label": "결함을 고치면 그 자리 옆에서 새 퇴행이 난다",
+  "count": 1,
+  "promotionStatus": "watching",
+  "occurrences": [
+    {
+      "date": "2026-09-15",
+      "summary": "밀도 작업에서 독립 검증 4라운드 연속으로, 직전 라운드 수정이 만든 새 결함이 나왔다(F 를 고치니 G 가 났다)"
+    }
+  ],
+  "recommendedRule": "검증 보고를 받아 고칠 때, 고친 자리와 '같은 부품·같은 속성을 건드리는 이웃 규칙'을 같은 라운드에서 함께 재보고 넘긴다"
+}
