@@ -1,0 +1,186 @@
+# 안 끝난 인수인계 문서 6건 — 항목별 현황표
+
+작성 2026-09-15 · 기준 시각 저장소 `main` @ `831af1a` · 판독 완료 2026-09-15
+근거: 저장소 직접 확인(`파일:줄`). 문서에 적힌 상태는 믿지 않았다(하드룰 H6 — 문서와 저장소가 다르면 저장소가 맞다).
+
+---
+
+## 0. 문서 6건 한눈
+
+| # | 문서 | 처음 쓴 시각 | 마지막으로 손댄 시각 | 방치 | 판정 |
+|---|---|---|---|---|---|
+| 1 | `reports/handoff-canon-consolidation.md` | 2026-08-03 10:27 | **2026-08-03 17:13** | 43일 | 절반 낡음 — 쪼갠다 |
+| 2 | `reports/handoff-pipeline-rebuild.md` | 2026-08-02 17:16 | **2026-08-02 22:24** | 44일 | 대체로 진짜 미결 |
+| 3 | `reports/figma-library-build/input-state-focus/HANDOFF-next-session.md` | 2026-09-08 22:47 | **2026-09-08 22:47** | 7일 | river 답 대기 ×3 |
+| 4 | `reports/figma-installer-layout/HANDOFF-next-session.md` | 2026-09-08 22:56 | **2026-09-09 13:31** | 6일 | 고친 건 끝 · 잔여 4 |
+| 5 | `reports/mechanism-approvals/HANDOFF-next-session.md` | 2026-09-08 22:47 | **2026-09-09 09:57** | — | ✅ **닫기** |
+| 6 | `reports/handoff/README-peer-wip-adoptInto.md` + `.patch` | 2026-09-08 13:44 | **2026-09-08 13:44** | 7일 | ✅ **닫기**(더 새 것이 있다) |
+
+---
+
+## 1. 문서 ⑤ 메커니즘 승인 9건 — 끝났다
+
+| 항목 | 상태 | 근거 |
+|---|---|---|
+| river 결정 9건 수령·기록 | **됨** | `reports/canon-approval-audit-2026-09-07.md:198` §9 — M-2~M-10 전부 선택·메모·처리까지 기재 (기록 시각 **2026-09-09 09:57**, `7db54a0`) |
+| M-7 정본 배선(`State="Selected Hover"`) | **됨** | 같은 문서 「남은 후속 1」 = 완료(2026-09-09) · 커밋 `7db54a0` |
+| M-9 구분자 ` - `→` ~ ` | **됨** | §9 표 M-9 행 |
+| M-8 4자리 → 2자리 원복 | **됨** | §9 「M-8 경위」 |
+| M-10 미응답 처리 | **됨** | `select/manifest.json` `openFilledCross` 에 "제시했으나 미응답" 명시 |
+
+**→ 이 문서는 지워도 된다.** `decision-screen.html` 은 결정 원본이라 남긴다.
+
+---
+
+## 2. 문서 ⑥ 보류 패치(adoptInto) — 더 새 것이 이미 있다
+
+| 항목 | 상태 | 근거 |
+|---|---|---|
+| `adoptInto`·`REFRESH_TARGETS` 가 정본에 들어갔나 | **미결(0건)** | `build-components.ts` 에 두 이름 0건 |
+| 이 패치가 지금 적용되나 | **안 된다** | `git apply --check` → `patch failed: build-components.ts:6197` · `patch does not apply`. `-3` 도 `repository lacks the necessary blob` 로 실패. **되살릴 수 없는 상태다** |
+| 이 패치가 유일본인가 | **아니다 — 구본이다** | 같은 작업의 **더 발전한 판**이 `reports/figma-library-build/input-state-focus/upsert-in-place.patch` (31,691 byte, **2026-09-08 22:20**) 에 있다. 보관본은 15,158 byte, **13:41** |
+| 무엇이 더 있나 | — | 새 판에만 `stampCanonSet` · `findCanonSet`(pluginData 표식) · `setSpecSuppressed` 가 있다. 구본의 `findSetByName`(이름으로 첫 번째 고르기)이 **엉뚱한 세트를 갱신하던 결함**을 새 판이 표식 방식으로 닫았다 |
+| 새 판의 검증 상태 | **6회차 HOLD** | `7-installer-upsert-verification.md` — ❌(치명) 0건 · 남은 건 ❓ 1건뿐(아래 질문 Q3) |
+| 주석의 "river 승인 = A-단계" 근거 | **모름 — 저장소에 없다** | `A-단계` 문자열이 **패치 주석과 그것을 인용한 문서 2곳에만** 존재. river 발화 기록 0건. 반복 실패 패턴 `approval-claimed-in-comment-only`(count **4**)와 같은 모양 |
+
+**→ 이 문서는 지워도 된다**(구본). 단 두 가지를 함께 처리한다:
+- **패치 파일 자체는 남긴다** — `reports/ui-library/select-dropdown-filter-chip/workflow-state.json:154` 와 `6-promotion-2026-09-08.md:66` 이 "보존한 남의 작업"으로 이 경로를 가리킨다. 지우면 그 기록이 끊긴다. 대신 **"구본 — 실작업은 `upsert-in-place.patch` 로 이어짐"** 한 줄을 패치 옆에 남긴다.
+- **"A-단계 승인"은 질문 Q3 에서 river 께 다시 확인**한다.
+
+---
+
+## 3. 문서 ③ Input 후속 3건 — 전부 river 답 대기
+
+| 항목 | 상태 | 근거 | 보낼 곳 |
+|---|---|---|---|
+| 1️⃣ 레거시 화면 옛 Input 20개 교체 | **미결** | `allowed-remote-keys.json` 에 해당 4키 없음(변동 없음) | **질문 Q1** |
+| 2️⃣ 세트 배경판 raw `#FFFFFF` | **미결** | `build-components.ts:923` `decorateSetFlat` 존재 · 전 세트 공통 | **질문 Q2** |
+| 3️⃣ 설치기 재실행이 인스턴스 연결을 끊음 (A/B/C) | **미결 · 그러나 A가 거의 다 만들어져 있다** | `upsert-in-place.patch` 6회 독립 검증, ❌ 0건 / 남은 건 관측 1건 | **질문 Q3** |
+| 문서 끝 「커밋 주의」 3건(Gate 47 · 남의 미커밋 · fingerprint stale) | **됨 — 지금은 해당 없음** | 다른 세션 작업이 2026-09-14 22:35(`cb45e3c`)까지 정리됐고 `legacy-crosswalk-board/` 도 살아 있다 | 닫기 |
+
+---
+
+## 4. 문서 ④ 설치기 배치 — 고친 건 진짜 끝, 잔여 4건
+
+| 항목 | 상태 | 근거 | 보낼 곳 |
+|---|---|---|---|
+| 결함 1·2 수정 | **됨** | `build-components.ts:531 DECO_SUFFIX` · `:6871 canvasNodes()` · Gate 13 기록 `reports/installer-build/verifications/d3274f6df3d60912.json`(**2026-09-09 17:05**) | 닫기 |
+| 죽은 코드(레거시 교체 탭) 174줄 삭제 | **됨** | 같은 커밋 `469c981`(2026-09-09 13:31) | 닫기 |
+| 제 구역 밖으로 끌어낸 달력 부품 | **미결** | `canvasNodes()` 가 페이지·섹션 2단만 훑는다(`:6871`) | **질문 Q4** |
+| NOT_VERIFIED — 원 증상 재현 실패 | **모름(영구)** | river 가 실패 문구를 기억 못 해 원인 미확정 | 닫기(모름으로 기록) |
+| 실물 미확인 — Figma 캔버스 육안 | **미결** | 사람만 가능 | **질문 Q5** |
+| 개선 적재 — 섹션 이름 = 멤버 이름 10건 | **미결(비차단)** | 산출 영향 0 | BACKLOG |
+
+---
+
+## 5. 문서 ① 정본 단일화 — 문서가 낡았다
+
+> ⚠️ **두 문서(①·②) 모두 "반드시 먼저 읽을 것"으로 지목한 계획 원문이 이 맥에 없다.**
+> ① `C:\Users\S1SECOM\.claude\plans\cozy-wondering-kite.md` — 옛 컴퓨터 경로 · ② `~/.claude/plans/gentle-zooming-avalanche.md` — 없음.
+> 두 문서는 **그 계획서의 요약본**이라, 원문 없이는 적힌 항목의 전모를 되살릴 수 없다. 아래 판정이 사실상 최종본이다.
+
+
+| 항목 | 상태 | 근거 | 보낼 곳 |
+|---|---|---|---|
+| Phase 4 `component-facts.json` 생성기 | **됨** | `scripts/gen-component-facts.js` · `registry/components/component-facts.json` · `package.json:80-82` `components:facts`. 도입 **2026-08-11 12:19** (`adb436d`) — 문서를 쓴 8일 뒤 | 닫기 |
+| facts 소비자 배선 | **됨** | 10개 스크립트가 참조(`gen-design-md.js`·`token-reconcile.js`·`component-geometry-check.js` 등) | 닫기 |
+| Gate 9e(재생성 대조) | **없음 — 미결** | `gate-check.js`·`gates-reference.md` 에 `9e` 0건. Gate 9 는 9~9d 까지만 존재. **facts 는 생성되는데 재생성 대조가 없다** = 손편집해도 기계가 못 막는다 | BACKLOG |
+| Phase 5 `sync:button` 은퇴 | **미결** | `package.json:21` 에 살아 있다 | BACKLOG |
+| Phase 6 registry JSON 값 필드 삭제 | **미결** | `registry/components/*.json` **27개**가 `variants`·`tokens`·`sizing`·`summary` 중 하나 이상 보유(문서는 "20개"라 적었다). 소비자도 살아 있다 — `gen-design-md.js:249,509` · `registry-token-realign.js:31` · `scan-system-map.js:292`. 파괴 단계라 river 확인 필요 | **질문 Q6** |
+| (b) 표 xsm 복원 | **됨** | `ui-library/src/components/table/table.css:41-43` — river 승인 2026-09-02 주석과 함께 | 닫기 |
+| (a) `textStyleKey()` 조용한 치환 3건 | **미결** | `build-components.ts:126-129` — 13→14 · 9→10 · 20M→18M 그대로 | BACKLOG |
+| (a) `makeBoundText` 정본 밖 요청 시 throw | **반만 됨** | `:796,798-801` — 스타일 키를 **명시**했을 때만 throw. 추측(`textStyleKey`) 경로는 실패해도 조용히 raw 로 떨어진다 | BACKLOG |
+| (c) 텍스트 스타일 이름 직접 지정 52곳 | **미결 · 문서보다 나쁨** | 명시 **10곳** vs 추측에 맡김 **53곳**. 문서는 "52곳을 직접 지정으로"였는데 실제로는 대다수가 아직 추측이다 | BACKLOG |
+| (d) 미리보기를 정본에 묶기 | **미결** | `render.js` 의 `textstyles-data` 참조 **0건** · `component-guide-scene-renderer.js:74` 행간 1.3 하드코딩 · 자간 미적용 | BACKLOG |
+| (e) 웹 CSS raw px | **미결 · 문서보다 많음** | `ui-library/src/components/**/*.css` 에 **68곳**(문서는 54). 예 `time-picker.css:157` `width:121px` · `:369` `padding-block:114px` · `dropdown.css:25` `min-width:100px` | BACKLOG |
+| Phase 5 값 소비자 이관 | **미결** | `gen-design-md.js:152-249,509` 정규화 층(`normalizeEntry`·`entriesFromField`·`collectEntries`) 살아 있고 실사용. facts(`:48`)와 registry 값 필드를 **둘 다** 읽는다 | BACKLOG |
+| 옛 zip 삭제 | **미결(부분)** | 옛 zip `assets/downloads/` 에 아직 있음(59,780 byte, 2026-07-07). docstring 은 `installer-freshness-check.js:22-24` 에서 이미 정정돼 검사 대상은 새 이름 | BACKLOG |
+
+---
+
+## 6. 문서 ② 파이프라인 정비 — 진짜 미결
+
+| 항목 | 상태 | 근거 | 보낼 곳 |
+|---|---|---|---|
+| Phase 5 영상 도메인 코드화 | **미결(0건)** | `registry/components/` 에 video·widget 이름 **0개**. Figma 쪽만 완료(V3.0 TEST `16:1170`) | **질문 Q7** |
+| Phase 6 뷰어 4페이지 은퇴 | **미결(숨김까지만 됨)** | 메뉴에는 **안 보인다** — `assets/js/main.js:35-39` 가 2026-06-24 river 결정으로 4개를 SITE_NAV 에서 뺐고 `index.html` 카드에도 없다. 다만 **파일·경로는 살아 있고** `data/site-map.json:134·158` 에는 그대로 등재돼 직접 URL 로 열린다. 내용은 `token-mapping`·`migration-board`·`registry-health` **2026-05-20 17:00**, `registry-explorer` **2026-06-16 14:27** 에 멈춤 | **질문 Q8** |
+| 죽은 렌더러 2개 정리 | **미결** | `assets/js/component-renderer.js` · `button-harness.js` 존재(마지막 변경 2026-07-09 15:37). **이미 `BACKLOG.md:220` 「7. Dead files 정리」에 있다** | 닫기(중복) |
+| 유령 규칙 R06 삭제 | **미결** | `registry/governance/audit-rules.json:9` 에 그대로. 가리키는 `md-review.html` 은 없다 | BACKLOG |
+| 네비 3면 대조 검사기 | **미결 · 드리프트 실재** | 전용 검사기 0건(`scripts/` 에 `site-map.json` 참조 0건). 세 면 항목 수가 다 다르다 — `main.js` SITE_NAV **15** vs `data/site-map.json` **18** vs `index.html` 카드 **8** | BACKLOG |
+| Table↔Table Cell 재사용 | **✅ 됨** | `build-components.ts:6789` `"Table": ["Pagination", "Table Cell"]` — 의존이 들어가 있고 위 주석(`:6786-6788`)에 경위까지 적혔다. **`BACKLOG.md:157` 항목도 같이 지워야 한다**(낡음) | 닫기 |
+| 설치기 구조 정리 | **미결(중복)** | 이미 `BACKLOG.md:191` 「12. 설치기 구조 정리」 | 닫기(중복) |
+| 영상위젯 도메인 커밋 | **미결(중복)** | 이미 `BACKLOG.md:185` 「6.」 | 닫기(중복) |
+
+---
+
+### 지우기 전 확인된 것 (문서 ①·②)
+
+`data/reports-index.json` 에 `handoff-canon-consolidation`·`handoff-pipeline-rebuild` 두 건이 **등재돼 있다**. 문서를 지우면 이 색인과 `assets/js/reports-bundle.js` 도 함께 갱신해야 한다 — 문서만 지우면 사이트의 리포트 목록이 깨진 링크를 남긴다.
+
+---
+
+## 7. 판독 결과 — 위 표에 모두 반영 완료
+
+18항목 전부 판독했고 결과는 §2·§5·§6 의 해당 행에 넣었다. 그 밖 4건:
+
+| 항목 | 판정 | 근거 |
+|---|---|---|
+| 미배선 검사기 — 문서는 "6개" | **3개다** | 6개 중 `figma-code-hex-check.js`·`figma-code-font-check.js` 는 PreToolUse 훅(`.claude/settings.json:11,20`)으로 배선돼 있고 `stamp-installer-ui.js` 는 `build-installer.js:52` 가 부른다. 진짜 안 걸린 건 `component-inventory-scan.js`·`registry-token-realign.js`·`scan-system-map.js` 3개 |
+| GitHub Actions gate:check 배지 | **미결** | `.github/workflows/` 3개 중 gate:check 를 도는 것 0건 |
+| NavBar `Web + Keyboard` 391→341 | **미결** | `build-components.ts:6100` `webKeyboard.resize(360, 391)` — 승인됐다는데 안 바뀌었다 |
+| `2026-08-11` 주석 날짜 정정 | **미결(추정)** | `build-components.ts:2124` 에 1건 남음. 문서가 지목한 바로 그 줄인지는 미확인 |
+
+### 모름으로 남기는 것 (정직하게)
+
+- **Gate 47 이 지금 통과하는지 실패하는지** — 정의는 있으나(`gate-check.js:1147-1160`) 전체 실행을 하지 않았다. 최근 실행 기록도 저장소에 없다.
+- **옛 zip 을 정말 아무도 안 쓰는지** — `installer-freshness-check.js` 기준으로만 봤고 전수조사는 안 했다.
+- **설치기 배치 수정의 실물 동작** — 전부 mock·코드 판독이다(질문 Q5).
+
+---
+
+## 8. river 님께 올릴 질문 — 모아서 8개
+
+> 아래 8개만 정해 주시면 6건이 전부 닫힙니다. 안 정하면 전부 지금 그대로 둡니다.
+
+### Q1 · 옛 로그인·회원가입 시안의 낡은 입력창 20개, 새것으로 바꿀까요?
+로그인 화면 12개 · Section 1 4개 · 모바일 앱 화면 4개가 아직 **옛날 입력창 부품**을 쓰고 있습니다. 새 시안 30개는 이미 새 부품으로 바꿔 놨고, 이 20개만 남았습니다.
+**(A) 바꾼다** — 화면 모양은 그대로, 부품만 교체. **(B) 레거시는 둔다** — 옛 화면이니 그대로.
+*안 정하면:* 그대로 둡니다. 나중에 그 화면을 고칠 때 옛 부품이 다시 걸립니다.
+
+### Q2 · 부품 설명판의 흰 바탕을 토큰으로 바꿀까요?
+Figma 에서 부품 위에 깔리는 설명판 바탕이 **토큰이 아니라 생 흰색**으로 박혀 있습니다. 2026-06-11부터 그랬고 **모든 부품 세트가 같습니다** — 다크모드로 뒤집을 때 이 판만 안 따라옵니다.
+**(A) 지금 고친다** — 전 세트에 한 번에 번집니다. **(B) 나중에** — 목록에 적어 둡니다.
+*안 정하면:* 그대로 둡니다(다크 전환 때 다시 걸립니다).
+
+### Q3 · 부품을 다시 설치하면 시안 연결이 끊기는 문제 — 어디까지 할까요? ⭐가장 큰 건
+지금은 [설치]를 누를 때마다 부품을 **지우고 새로 만듭니다.** 그래서 그 부품을 쓰던 시안이 조용히 끊깁니다. 지난번 시안 30개가 딱 그 경우였습니다.
+**(A) 제자리에서 갈아끼우게 바꾼다** — 근본 해결. **이미 거의 다 만들어져 있습니다**(검증 6번, 치명 결함 0). 다만 **river님이 5분만 확인해 주셔야** 마무리됩니다 — 사본 파일에서 입력창 하나의 안내문구를 손으로 바꿔 두고 → 색 하나만 바꿔 [설치] 1회 → 그 문구가 남아 있는지 보기. 남으면 완성, 지워지면 이 방식은 폐기.
+**(B) 설치 후 자동으로 다시 이어 붙인다** — 중간. A 가 되면 필요 없습니다.
+**(C) 끊긴 것만 알려준다** — 못 막지만 조용히 새는 건 막습니다. 가장 쌉니다.
+**+ 함께 확인:** 코드 주석에 *"river 승인 = A-단계"* 라고 적혀 있는데, **그 승인을 하신 기록이 저장소에 없습니다.** 실제로 승인하신 적 있나요?
+*안 정하면:* 그대로 둡니다. 다음 [설치] 때 또 끊길 수 있습니다.
+
+### Q4 · 부품을 제 구역 밖으로 끌어내 놓으면 어떻게 할까요?
+달력 부품 세트를 사용자가 다른 구역으로 옮겨 놓으면, 설치기가 그걸 못 찾아 **엉뚱한 구역에 담을 수** 있습니다. 없어지지는 않습니다.
+**(A) 막는다** — 밖으로 나간 것도 찾아오게. **(B) 둔다** — 원래 자리에 두시면 되는 일.
+*안 정하면:* 둡니다.
+
+### Q5 · Figma 실물 확인을 한 번 해 주시겠어요?
+설치기 배치 수정은 전부 **흉내내기(mock)로만** 확인했습니다. 실제 캔버스가 제대로 서는지는 사람만 볼 수 있습니다. **원본 말고 사본 파일**에서 [설치] 한 번 → 부품이 겹치거나 밀리지 않는지.
+**(A) 지금 해 본다** — Q3-A 의 5분 확인과 **같이 하면 한 번에 끝납니다.** **(B) 나중에.**
+*안 정하면:* 미확인으로 남습니다.
+
+### Q6 · 부품 목록표에서 중복된 숫자를 지워도 될까요? (되돌리기 어려운 일)
+부품 정보 파일 **27개**(그 중 2개는 지금 만드는 중)에 색·크기 숫자가 **정본과 따로 또 적혀 있습니다.** 손으로 적은 사본이라 이미 78곳이 정본과 어긋나 있습니다. 이제 정본에서 자동으로 뽑아 쓰므로 이 사본은 필요 없습니다.
+**(A) 지운다** — 어긋남이 구조적으로 사라집니다. 지우기 전 쓰는 곳을 전수 확인합니다. **(B) 둔다.**
+*안 정하면:* 둡니다(계속 어긋납니다).
+
+### Q7 · 영상 위젯을 코드로 옮기는 일, 지금 할까요?
+영상 위젯 5세트는 **Figma 만 끝났고 코드·웹 가이드는 0건**입니다(44일째). 이걸 "도메인을 붙이는 첫 시험"으로 쓰려던 계획이었습니다.
+**(A) 지금 한다.** **(B) 바텀시트·빠진 컴포넌트 먼저 끝내고 나중에.**
+*안 정하면:* (B) 로 봅니다 — 지금 열린 다른 두 건이 먼저입니다.
+
+### Q8 · 숨겨만 둔 뷰어 화면 4개, 이제 없앨까요?
+Registry Explorer · Token Mapping · Migration Board · System Status 네 화면은 **2026-06-24에 river님이 "거의 안 본다"고 하셔서 메뉴에서 뺐습니다.** 그때 "차후 정말 불필요한지 확인 후 삭제 결정"으로 남겨 뒀고, 그게 **석 달째** 그대로입니다. 파일은 살아 있어 주소를 직접 치면 열리는데, 내용은 2026-05-20 · 06-16 에 멈춰 있습니다.
+**(A) 없앤다** — 파일까지 레거시로 격리. **(B) 되살린다** — 데이터를 지금 것으로 잇습니다(비용 있음). **(C) 계속 숨겨만 둔다.**
+*안 정하면:* 지금처럼 숨긴 채 둡니다.
