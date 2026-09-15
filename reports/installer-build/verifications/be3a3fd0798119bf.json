@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:be3a3fd0798119bf2dfc9b88b9c51267d75ed9fdc5fb3c5716aa16ef7a850b41",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-15T11:39:33.389Z",
+  "notes": "canvasNodes() 사정거리 확장(river 결정 2026-09-15 '제 구역 밖 부품을 막는다'). 3회 독립 검증: 1회차 FAIL(❌a 2건 — 넓힌 사정거리가 사용자 FRAME 을 removeByNames 로 삭제·ownedIds 로 재부모화) → 깊이 가드 추가 → 2회차 HOLD(❓c 1건 — 깊은 단 사용자 COMPONENT_SET 삭제) → 삭제 경로만 HEAD 2단(canvasNodesShallow)으로 분리 → 3회차 PASS(❌0 ❓0). 삭제 대상 집합 HEAD 와 id 단위 완전 동일(8케이스), canvasNodesShallow 는 HEAD canvasNodes 와 바이트 동일. 부품 정의 무변경(component-facts sourceHash 1줄만). 잔여 경고 2건은 river 보고 몫: (1) 깊은 곳으로 옮겨진 옛 스펙 시트가 삭제는 안 되면서 regionBottom/ownedIds 계산에는 들어가 레이아웃 부풀림이 자가 수복되지 않음 (2) 깊은 곳의 사용자 COMPONENT_SET 이 삭제는 면했으나 섹션으로 이동은 됨. mock 에서 canvasNodes 는 항상 빈 배열이라 전체 회귀 0-diff 는 안전 근거가 아니며 실물 Figma 재설치는 NOT_VERIFIED."
+}

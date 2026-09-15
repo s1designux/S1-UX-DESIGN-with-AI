@@ -6867,8 +6867,65 @@ export async function buildAllComponents(
   //   영원히 못 본다.** 실측 결과: 옛 산출물(달력 부품 설명 시트 등)이 안 지워지고 재설치마다
   //   겹쳐 쌓였고(2벌씩), 기존 항목의 y 전진(regionBottom)도 null 이 돼 카테고리끼리 겹쳤다.
   //   → 설치기가 만드는 노드는 언제나 "페이지 직속" 또는 "페이지 직속 SECTION 의 직속 자식"이다.
-  //     그 2단만 매번 새로 읽는다(전체 재귀는 컴포넌트 내부의 동명 자식까지 잡아 위험).
+  //
+  //   2026-09-15 확장(river 결정 "막는다"): **사용자가 옮겨 놓은 것까지 찾는다.**
+  //   종전에는 그 2단만 읽었다. 그래서 사용자가 세트를 제 구역 밖(다른 섹션 안의 프레임·그룹 등)으로
+  //   끌어내면 사정거리 밖이라 소유가 안 잡혔고, y 전진(regionBottom)과 소유 등록이 조용히 빠졌다.
+  //   → 담는 그릇(SECTION·FRAME·GROUP)만 따라 내려간다. **COMPONENT·COMPONENT_SET·INSTANCE 안으로는
+  //     들어가지 않는다** — 종전 주석이 경고한 "컴포넌트 내부의 동명 자식" 위험이 정확히 거기 있고,
+  //     설치기가 만드는 노드는 부품 안쪽에 들어갈 일이 없다. 깊이 상한(6)으로 병적 중첩도 막는다.
+  //
+  //   🚨 깊은 단은 **이름만으로 받지 않는다**(🤖 component-verifier 2026-09-15 적발 — 이 가드가 없으면
+  //      사용자의 `FRAME "Button"` 이 removeByNames 에 지워지고 ownedIds 에 잡혀 섹션으로 끌려갔다).
+  //      footprint 의 이름표는 `Button`·`Table`·`Input` 처럼 사람이 레이어에 가장 흔히 붙이는 말이고,
+  //      keepSets 가드는 COMPONENT_SET 에만 걸려 사용자의 FRAME/GROUP 을 지켜 주지 못한다.
+  //      → 0·1단(페이지 직속 · 섹션 직속)은 종전 그대로 받고, **2단부터는 설치기가 지은 이름·형태**
+  //        (COMPONENT_SET 이거나 `— Spec Light/Dark/Deco` 로 끝나는 이름)만 받는다.
+  //        사람이 이 접미사를 손으로 붙일 일은 없다. 옮겨진 세트·스펙 시트는 그대로 잡히고,
+  //        같은 이름의 사용자 프레임은 걸리지 않는다.
+  const CANVAS_CONTAINERS = ["SECTION", "FRAME", "GROUP"];
+  const INSTALLER_NAME_SUFFIXES = [" — Spec Light", " — Spec Dark", ` ${DECO_SUFFIX}`];
+  const installerMade = (n: SceneNode): boolean => {
+    try { if (String(n.type) === "COMPONENT_SET") return true; } catch (e) { /* mock */ }
+    let nm = "";
+    try { nm = String(n.name); } catch (e) { return false; }
+    for (const suffix of INSTALLER_NAME_SUFFIXES) {
+      if (nm.length >= suffix.length && nm.slice(nm.length - suffix.length) === suffix) return true;
+    }
+    return false;
+  };
   const canvasNodes = (): SceneNode[] => {
+    const out: SceneNode[] = [];
+    const seen = new Set<string>();
+    const walk = (nodes: SceneNode[], depth: number): void => {
+      for (const n of nodes) {
+        let id = "";
+        try { id = String(n.id); } catch (e) { /* mock */ }
+        if (id) { if (seen.has(id)) continue; seen.add(id); }
+        if (depth <= 1 || installerMade(n)) out.push(n);   // 깊은 단은 설치기 산출물만
+        if (depth >= 6) continue;
+        let t = "";
+        try { t = String(n.type); } catch (e) { continue; }
+        if (CANVAS_CONTAINERS.indexOf(t) < 0) continue;   // 부품 내부는 보지 않는다
+        try {
+          const kids = (n as FrameNode).children;
+          if (Array.isArray(kids)) walk(kids as SceneNode[], depth + 1);
+        } catch (e) { /* ignore */ }
+      }
+    };
+    try {
+      const kids = page.children;
+      if (Array.isArray(kids)) walk(kids as SceneNode[], 0);
+    } catch (e) { /* mock */ }
+    return out;
+  };
+  //   ⚠️ **지우는 일에는 넓힌 사정거리를 쓰지 않는다**(🤖 component-verifier 2026-09-15 2회차 ❓(c)).
+  //      깊은 단까지 지우면, 사람이 중첩 프레임 안에 만들어 둔 **자기 COMPONENT_SET "Button"** 이
+  //      이름이 겹친다는 이유만으로 사라진다 — 되돌릴 수 없는 손실이고, 소유 범위를 넓히자는
+  //      이번 결정(river "막는다")의 범위 밖이다. 그 결정이 고치려던 것은 **자리 계산과 소유 등록**이다.
+  //      → 삭제(removeByNames)는 종전 2단 그대로. 넓힌 사정거리는 regionBottom·ownedIds 에만 쓴다.
+  //      대가: 사람이 깊은 곳으로 옮겨 놓은 옛 스펙 시트는 자동으로 안 걷힌다(남을 뿐, 잃지는 않는다).
+  const canvasNodesShallow = (): SceneNode[] => {
     const out: SceneNode[] = [];
     try {
       const kids = page.children;
@@ -6934,7 +6991,7 @@ export async function buildAllComponents(
     // 옛 산출물은 **이름으로만** 지운다. 좌표(박스)로 지우면 경계에 걸친 남의 라벨까지 사라진다
     //   (실측: 재설치 3회차에 Calendar/Date Picker 설명 라벨 5개 유실). 그래서 떠있는 장식에도
     //   `<세트이름> — Spec Deco` 이름을 붙여 footprint 로 정확히 걷어낸다.
-    for (const n of canvasNodes().filter((x) => names.has(x.name))) {
+    for (const n of canvasNodesShallow().filter((x) => names.has(x.name))) {
       if (n.type === "COMPONENT_SET" && keep.has(n.name)) continue;
       try { n.remove(); } catch (e) { /* ignore */ }
     }
