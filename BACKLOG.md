@@ -77,6 +77,8 @@ vars-data 의 토큰 키가 전부 embed 됐는지만 검사한다.
 
 ### 0-b. 바텀시트 부품화 (2026-09-15 신규 · river 지시)
 
+> **새 세션 착수 쪽지: `reports/ui-library/bottom-sheet/BRIEF.md`** — 정본 위치·변형 축·뼈대·조심할 것이 정리돼 있다.
+
 - **배경**: 밀도(density) 작업에서 **모바일에는 드롭다운을 쓰지 않는다**로 정해졌다. river 결정 2026-09-15: "모바일에서는 드롭다운 대신 바텀시트를 제공해. 멀티토글 대신 라디오/체크박스를 사용해." 멀티 토글의 대체(radio·checkbox)는 이미 부품으로 있는데, **드롭다운의 대체인 바텀시트는 독립 부품이 없다.**
 - **지금 상태**: 시트 모양은 `date-picker`·`time-picker` **안에만** 있다(`[data-s1-part="sheet"]` / `sheet-backdrop` / `sheet-panel` / `sheet-header` / `sheet-title` / `sheet-close`). 화면을 만드는 사람이 가져다 쓸 독립 부품이 없어, 지금은 그 모양을 손으로 베껴야 한다.
 - **왜 지금 해야 하나**: 가이드(`design/DESIGN.core.md` §8)와 검사기(`npm run ui:density`)가 이미 "모바일에서는 바텀시트를 쓰라"고 말한다. **권하는 것이 부품으로 없는 상태**라, 안내를 따르려는 사람이 막힌다.
