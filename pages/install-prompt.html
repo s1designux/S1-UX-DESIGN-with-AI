@@ -209,6 +209,24 @@
 
     /* ── 개발자 패널 (자동 생성 구간의 표시) ──
        컨테이너는 다른 탭과 동일하게 .install-steps > .install-step 을 그대로 쓴다(같은 폭). */
+    /* 2단 배치 — 왼쪽 받기(다운로드), 오른쪽 안내. 다운로드 버튼이 첫 화면에 들어오게 한다. */
+    .devpanel-2col {
+      display:grid; grid-template-columns:minmax(0,1.3fr) minmax(320px,0.85fr);
+      align-items:stretch;
+    }
+    .devpanel-2col > * { min-width:0; }
+    /* 두 단 사이 구분선 — 머리말은 하나로 통합되고, 본문만 좌우로 갈린다. */
+    .devpanel-side { border-left:1px solid #e5e7eb; }
+    .devpanel-side .devget-row { grid-template-columns:minmax(0,1fr); }
+    @media (max-width:1100px) {
+      .devpanel-2col { display:flex; flex-direction:column; }
+      .devpanel-side { border-left:0; border-top:1px solid #e5e7eb; }
+      .devpanel-side .devget-row { grid-template-columns:1fr 1fr; }
+    }
+    @media (max-width:700px) {
+      .devpanel-side .devget-row { grid-template-columns:minmax(0,1fr); }
+    }
+
     .devget-row {
       display:grid; grid-template-columns:1fr 1fr; gap:14px; padding:16px 20px 20px;
     }
@@ -216,6 +234,10 @@
       background:#f9fafb; border:1px solid #e5e7eb; border-radius:8px; padding:12px 14px;
     }
     .devget-label { font-size:11.5px; font-weight:700; color:#6b7280; margin-bottom:6px; }
+    /* 안내 3·4 — 컴포넌트 목록·검사 안내를 안내 칸 안에 넣을 때의 여백 보정 */
+    .devget-item .devcomp-list { padding:10px 0 0; }
+    .devget-item .devtool-code { margin:8px 0 0; }
+    .devget-item .devask { margin:10px 0 0; }
     .devget-body  { font-size:12.5px; color:#374151; line-height:1.65; }
     .devget-body a { color:#1d6ceb; }
     .devget-link { display:inline-block; margin-top:6px; word-break:break-all; font-size:12px; }
@@ -545,42 +567,22 @@
       <!-- DEV-PANEL:START — 자동 생성(npm run devpanel:gen). 손으로 고치지 마세요. -->
       <div class="top-panel" id="top-pub">
         <div class="install-steps">
-
-          <!-- 받기 -->
           <div class="install-step">
+
+            <!-- 머리말 — 두 단이 함께 쓰는 하나의 제목 -->
             <div class="step-header">
               <div>
                 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                  <div class="step-title">S1 UI 라이브러리 배포본 <span class="ver-badge">0.6.10</span></div>
+                  <div class="step-title">S-1 UI 퍼블리싱 키트 <span class="ver-badge">0.6.10</span></div>
                 </div>
               </div>
             </div>
-            <div class="devget-row">
-              <div class="devget-item">
-                <div class="devget-label">항상 최신으로 쓰려면</div>
-                <div class="devget-body">저장소를 그대로 참조하면 디자인이 고칠 때 같이 최신이 됩니다.
-                  <a class="devget-link" href="https://github.com/s1designux/S1-UX-DESIGN-with-AI/tree/main/ui-library/dist" target="_blank" rel="noopener">github.com/s1designux/S1-UX-DESIGN-with-AI/ui-library/dist ↗</a>
-                </div>
-              </div>
-              <div class="devget-item">
-                <div class="devget-label">내 배포본이 최신인지 확인</div>
-                <div class="devget-body">지금 최신은 <strong>0.6.10</strong> (2026-09-15 판)입니다. 내 것의 번호가 이것보다 낮으면 다시 받으세요.
-                  <div class="devget-body" style="margin-top:6px;">번호 읽는 법 — <code>node s1-ui/tools/s1-ui-lint.mjs --version</code></div>
-                  <div class="devget-fingerprint">706ab4e1643d76a52873b374411652ca8a0c570fe170fac67c24e327d296420c</div>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <!-- 툴별 -->
-          <div class="install-step">
-            <div class="step-header">
-              <div>
-                <div class="step-title">시작하기</div>
-                <div class="step-desc">복사해서 붙이는 방식입니다 — 컴포넌트를 직접 만들 일이 없습니다.</div>
-              </div>
-            </div>
-            <div class="devtool-grid devtool-grid-single">
+            <div class="devpanel-2col">
+
+              <!-- 왼쪽 단 — 받기 -->
+              <div class="devpanel-main">
+                <div class="devtool-grid devtool-grid-single">
           <div class="devtool-card">
             <div class="devtool-head">
               <div>
@@ -618,20 +620,32 @@
               <span class="devtool-check">자가 검사기 사용 가능</span>
             </div>
           </div>
-            </div>
-          </div>
-
-          <!-- 들어있는 컴포넌트 -->
-          <div class="install-step">
-            <div class="step-header">
-              <div>
-                <div class="step-title">들어있는 컴포넌트 24종</div>
-                <div class="step-desc" style="margin-bottom:2px;"><a class="devget-link" href="../ui-library/dist/preview.html" target="_blank" rel="noopener">실제 모습으로 보기 ↗</a> — 크기·변형과 "언제 쓰나"가 함께 보입니다</div>
-                <div class="step-desc">아래 24종이 모두 들어 있습니다. <code>examples/</code> 폴더의 파일을 복사해서 씁니다 — 모바일용은 <code>*.mobile.html</code> 입니다</div>
+                </div>
               </div>
-            </div>
-            <div class="devcomp-list">
-              <span class="devcomp-chip">input</span>
+
+              <!-- 오른쪽 단 — 안내 -->
+              <div class="devpanel-side">
+                <div class="devget-row">
+                  <div class="devget-item">
+                    <div class="devget-label">안내 1</div>
+                    <div class="devget-body">저장소를 그대로 참조하면 늘 최신입니다.
+                      <a class="devget-link" href="https://github.com/s1designux/S1-UX-DESIGN-with-AI/tree/main/ui-library/dist" target="_blank" rel="noopener">github.com/s1designux/S1-UX-DESIGN-with-AI/ui-library/dist ↗</a>
+                    </div>
+                  </div>
+                  <div class="devget-item">
+                    <div class="devget-label">안내 2</div>
+                    <div class="devget-body">최신은 <strong>0.6.10</strong> (2026-09-15). 내 번호가 이보다 낮으면 다시 받으세요.
+                      <div class="devget-body" style="margin-top:6px;">번호 읽는 법 — <code>node s1-ui/tools/s1-ui-lint.mjs --version</code></div>
+                      <div class="devget-fingerprint">706ab4e1643d76a52873b374411652ca8a0c570fe170fac67c24e327d296420c</div>
+                    </div>
+                  </div>
+                  <div class="devget-item">
+                    <div class="devget-label">안내 3</div>
+                    <div class="devget-body">24종 전부 들어 있습니다. <code>examples/</code> 파일을 복사해 쓰고, 모바일용은 <code>*.mobile.html</code> 입니다.
+                      <div class="devget-body" style="margin-top:6px;"><a class="devget-link" href="../ui-library/dist/preview.html" target="_blank" rel="noopener">실제 모습으로 보기 ↗</a></div>
+                    </div>
+                    <div class="devcomp-list">
+                  <span class="devcomp-chip">input</span>
               <span class="devcomp-chip">button</span>
               <span class="devcomp-chip">checkbox</span>
               <span class="devcomp-chip">radio</span>
@@ -655,65 +669,43 @@
               <span class="devcomp-chip">modal-content</span>
               <span class="devcomp-chip">bottom-sheet-option</span>
               <span class="devcomp-chip">bottom-sheet</span>
-            </div>
-          </div>
-
-          <!-- 검사 -->
-          <div class="install-step">
-            <div class="step-header">
-              <div>
-                <div class="step-title">내가 만든 것이 규칙에 맞는지 검사하기</div>
-                <div class="step-desc">직접 적은 색, 승인되지 않은 variant·size, 빠진 필수 속성, 없는 토큰 이름을 찾아 줍니다</div>
+                    </div>
+                  </div>
+                  <div class="devget-item">
+                    <div class="devget-label">안내 4</div>
+                    <div class="devget-body">직접 적은 색, 없는 variant·size, 빠진 필수 속성, 없는 토큰을 찾아 줍니다.</div>
+                    <pre class="devtool-code"><code>node s1-ui/tools/s1-ui-lint.mjs &lt;내 소스 폴더&gt;</code></pre>
+                    <div class="devask">
+                      <strong>필요한 것이 없으면 만들지 마세요.</strong>
+                      디자인팀에 요청해 주세요 — 임시로 만든 것은 나중에 다 걷어내야 합니다.
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-            <pre class="devtool-code"><code>node s1-ui/tools/s1-ui-lint.mjs &lt;내 소스 폴더&gt;</code></pre>
-            <div class="devask">
-              <strong>필요한 것이 없으면 만들지 마세요.</strong>
-              디자인에 없는 컴포넌트·색이 필요하면 디자인팀에 요청해 주세요. 임시로 만든 것은 나중에 전부 다시 걷어내야 합니다.
+
             </div>
           </div>
-
         </div>
       </div><!-- /top-pub -->
 
       <div class="top-panel" id="top-dev">
         <div class="install-steps">
-
-          <!-- 받기 -->
           <div class="install-step">
+
+            <!-- 머리말 — 두 단이 함께 쓰는 하나의 제목 -->
             <div class="step-header">
               <div>
                 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                  <div class="step-title">S1 UI 라이브러리 배포본 <span class="ver-badge">0.6.10</span></div>
+                  <div class="step-title">S-1 UI 개발 키트 <span class="ver-badge">0.6.10</span></div>
                 </div>
               </div>
             </div>
-            <div class="devget-row">
-              <div class="devget-item">
-                <div class="devget-label">항상 최신으로 쓰려면</div>
-                <div class="devget-body">저장소를 그대로 참조하면 디자인이 고칠 때 같이 최신이 됩니다.
-                  <a class="devget-link" href="https://github.com/s1designux/S1-UX-DESIGN-with-AI/tree/main/ui-library/dist" target="_blank" rel="noopener">github.com/s1designux/S1-UX-DESIGN-with-AI/ui-library/dist ↗</a>
-                </div>
-              </div>
-              <div class="devget-item">
-                <div class="devget-label">내 배포본이 최신인지 확인</div>
-                <div class="devget-body">지금 최신은 <strong>0.6.10</strong> (2026-09-15 판)입니다. 내 것의 번호가 이것보다 낮으면 다시 받으세요.
-                  <div class="devget-body" style="margin-top:6px;">번호 읽는 법 — 웹·React·Vue <code>node s1-ui/tools/s1-ui-lint.mjs --version</code> · Kotlin <code>S1Version.VERSION</code> · Swift <code>S1Version.version</code> · C++ <code>S1_UI_VERSION</code></div>
-                  <div class="devget-fingerprint">706ab4e1643d76a52873b374411652ca8a0c570fe170fac67c24e327d296420c</div>
-                </div>
-              </div>
-            </div>
-          </div>
 
-          <!-- 툴별 -->
-          <div class="install-step">
-            <div class="step-header">
-              <div>
-                <div class="step-title">내 개발 툴에서 시작하기</div>
-                <div class="step-desc">쓰는 툴의 카드만 보면 됩니다. HTML · CSS · JavaScript, React · Next.js, Vue 는 컴포넌트 24종을 그대로 씁니다. Kotlin (Android) 는 부품 16종과 텍스트 스타일까지 씁니다. Swift (iOS), C++ 는 색·크기 값과 동작 명세를 씁니다.</div>
-              </div>
-            </div>
-            <div class="devtool-grid">
+            <div class="devpanel-2col">
+
+              <!-- 왼쪽 단 — 받기 -->
+              <div class="devpanel-main">
+                <div class="devtool-grid">
           <div class="devtool-card">
             <div class="devtool-head">
               <div>
@@ -922,21 +914,33 @@ auto r  = S1_RADIUS_CONTROL_SM;   // 4.0f</code></pre>
               <span class="devtool-check devtool-check-off">자가 검사기 없음 — 값 대조까지만</span>
             </div>
           </div>
-            </div>
-            <p class="devtool-caveat">Kotlin (Android) 는 자주 쓰는 부품 16종과 텍스트 스타일까지 들어 있습니다 — 그 밖의 화면은 색·크기 값과 <code>platform/behavior.json</code> 을 보고 직접 그리세요. Swift (iOS), C++ 는 화면 그리는 방식이 웹과 달라 컴포넌트를 그대로 드릴 수 없습니다. 직접 구현하시되 색·크기는 <code>platform/</code> 값을, 상태 변화는 <code>platform/behavior.json</code> 을 그대로 쓰세요 — 값을 눈으로 보고 옮겨 적지 마세요.</p>
-          </div>
-
-          <!-- 들어있는 컴포넌트 -->
-          <div class="install-step">
-            <div class="step-header">
-              <div>
-                <div class="step-title">들어있는 컴포넌트 24종</div>
-                <div class="step-desc" style="margin-bottom:2px;"><a class="devget-link" href="../ui-library/dist/preview.html" target="_blank" rel="noopener">실제 모습으로 보기 ↗</a> — 크기·변형과 "언제 쓰나"가 함께 보입니다</div>
-                <div class="step-desc">아래 24종이 모두 들어 있습니다. HTML 은 <code>examples/</code> 폴더의 파일을 복사해서 쓰고(모바일용은 <code>*.mobile.html</code>), React·Vue 는 이름 앞에 <code>S1</code> 을 붙여 부릅니다 — <code>input → S1Input</code> · <code>date-picker → S1DatePicker</code></div>
+                </div>
+                <p class="devtool-caveat">Kotlin (Android) 는 자주 쓰는 부품 16종과 텍스트 스타일까지 들어 있습니다 — 그 밖의 화면은 색·크기 값과 <code>platform/behavior.json</code> 을 보고 직접 그리세요. Swift (iOS), C++ 는 화면 그리는 방식이 웹과 달라 컴포넌트를 그대로 드릴 수 없습니다. 직접 구현하시되 색·크기는 <code>platform/</code> 값을, 상태 변화는 <code>platform/behavior.json</code> 을 그대로 쓰세요 — 값을 눈으로 보고 옮겨 적지 마세요.</p>
               </div>
-            </div>
-            <div class="devcomp-list">
-              <span class="devcomp-chip">input</span>
+
+              <!-- 오른쪽 단 — 안내 -->
+              <div class="devpanel-side">
+                <div class="devget-row">
+                  <div class="devget-item">
+                    <div class="devget-label">안내 1</div>
+                    <div class="devget-body">저장소를 그대로 참조하면 늘 최신입니다.
+                      <a class="devget-link" href="https://github.com/s1designux/S1-UX-DESIGN-with-AI/tree/main/ui-library/dist" target="_blank" rel="noopener">github.com/s1designux/S1-UX-DESIGN-with-AI/ui-library/dist ↗</a>
+                    </div>
+                  </div>
+                  <div class="devget-item">
+                    <div class="devget-label">안내 2</div>
+                    <div class="devget-body">최신은 <strong>0.6.10</strong> (2026-09-15). 내 번호가 이보다 낮으면 다시 받으세요.
+                      <div class="devget-body" style="margin-top:6px;">번호 읽는 법 — 웹·React·Vue <code>node s1-ui/tools/s1-ui-lint.mjs --version</code> · Kotlin <code>S1Version.VERSION</code> · Swift <code>S1Version.version</code> · C++ <code>S1_UI_VERSION</code></div>
+                      <div class="devget-fingerprint">706ab4e1643d76a52873b374411652ca8a0c570fe170fac67c24e327d296420c</div>
+                    </div>
+                  </div>
+                  <div class="devget-item">
+                    <div class="devget-label">안내 3</div>
+                    <div class="devget-body">24종 전부 들어 있습니다. HTML 은 <code>examples/</code> 파일을 복사해 쓰고(모바일용 <code>*.mobile.html</code>), React·Vue 는 이름 앞에 <code>S1</code> 을 붙입니다 — <code>input → S1Input</code>.
+                      <div class="devget-body" style="margin-top:6px;"><a class="devget-link" href="../ui-library/dist/preview.html" target="_blank" rel="noopener">실제 모습으로 보기 ↗</a></div>
+                    </div>
+                    <div class="devcomp-list">
+                  <span class="devcomp-chip">input</span>
               <span class="devcomp-chip">button</span>
               <span class="devcomp-chip">checkbox</span>
               <span class="devcomp-chip">radio</span>
@@ -960,24 +964,22 @@ auto r  = S1_RADIUS_CONTROL_SM;   // 4.0f</code></pre>
               <span class="devcomp-chip">modal-content</span>
               <span class="devcomp-chip">bottom-sheet-option</span>
               <span class="devcomp-chip">bottom-sheet</span>
-            </div>
-          </div>
-
-          <!-- 검사 -->
-          <div class="install-step">
-            <div class="step-header">
-              <div>
-                <div class="step-title">내가 만든 것이 규칙에 맞는지 검사하기</div>
-                <div class="step-desc">직접 적은 색, 승인되지 않은 variant·size, 빠진 필수 속성, 없는 토큰 이름을 찾아 줍니다</div>
+                    </div>
+                  </div>
+                  <div class="devget-item">
+                    <div class="devget-label">안내 4</div>
+                    <div class="devget-body">직접 적은 색, 없는 variant·size, 빠진 필수 속성, 없는 토큰을 찾아 줍니다.</div>
+                    <pre class="devtool-code"><code>node s1-ui/tools/s1-ui-lint.mjs &lt;내 소스 폴더&gt;</code></pre>
+                    <div class="devask">
+                      <strong>필요한 것이 없으면 만들지 마세요.</strong>
+                      디자인팀에 요청해 주세요 — 임시로 만든 것은 나중에 다 걷어내야 합니다.
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-            <pre class="devtool-code"><code>node s1-ui/tools/s1-ui-lint.mjs &lt;내 소스 폴더&gt;</code></pre>
-            <div class="devask">
-              <strong>필요한 것이 없으면 만들지 마세요.</strong>
-              디자인에 없는 컴포넌트·색이 필요하면 디자인팀에 요청해 주세요. 임시로 만든 것은 나중에 전부 다시 걷어내야 합니다.
+
             </div>
           </div>
-
         </div>
       </div><!-- /top-dev -->
       <!-- DEV-PANEL:END -->
