@@ -145,12 +145,12 @@
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "2beb813ff18d9f7670bd11baa876950fee0d7a715ba6994162c9ccfe56c6a27e"
+      "sha256": "0c18a2f13da25963ccb06f7876249fc6d3e8c158d6ad61286ad3be8e78d9d441"
     },
     {
       "role": "token-values",
       "path": "plugins/figma-vars-installer/src/vars-data.ts",
-      "sha256": "81eb31cfbd5b1b7041f31967a9592d2181088cf386a9ccb26058a7625ec3c15a"
+      "sha256": "14c5df38e32f154da10e83370004726971c11511f0108b94719a08f109433bc0"
     },
     {
       "role": "text-styles",
@@ -160,22 +160,22 @@
     {
       "role": "ui-library-contract",
       "path": "registry/governance/ui-library-code-contract.json",
-      "sha256": "63dc0f64c6ea834218119f8629379ee48cfac6c8df8b36e39d78f51405807c85"
+      "sha256": "2e13ba2efab71036f9d8c2d740f7da24343e0bbeff655f35ae5b6631c9ca0c27"
     },
     {
       "role": "component-meaning-mobile-bottom-nav",
       "path": "registry/components/mobile-bottom-nav.json",
-      "sha256": "110c27661393a4baad9f64775835b55462a792696b645176773a4f67214fddb8"
+      "sha256": "4de38cf758875e90e5d9abeb6c245b11c0134e0e7fe6596c6a3c8c424e8630ea"
     },
     {
       "role": "component-meaning-mobile-header",
       "path": "registry/components/mobile-header.json",
-      "sha256": "850479dbe589e4c10a21e6dd132ee0a3f9d64c7654828e456f08a42a146439c0"
+      "sha256": "12b15fd381110ce2f0344e35bd8a233ef35fbe375a6a90d2aa0fad34feed472c"
     },
     {
       "role": "icon-keys-and-origin-gate",
       "path": "ui-library/src/assets/icons/manifest.json",
-      "sha256": "90f1ba66d0ec6617aed63ff84ac37549e27a2dbc49aae534f3b929ab1c631c87",
+      "sha256": "549b6415f3f9338a1f27bc5b2e75528c27c53a3053742d858d54c1c807541c9a",
       "note": "2026-09-02 갱신 — F-1 arrowDown glyph 정정 + F-3 파생 색 레이어 등재(river 지시 D8)로 지문이 바뀌었다. 이 변경 자체가 이번 수정의 내용이라 재검증 대상이다."
     }
   ],
@@ -320,6 +320,17 @@
         "registry/governance/canon-additions-baseline.json revocations",
         "CLAUDE.md 변경 이력 2026-09-02"
       ]
+    },
+    {
+      "id": "D10",
+      "topic": "정본이 자란 뒤 웹이 따라가지 않은 유형 1종",
+      "decidedBy": "river",
+      "decidedAt": "2026-09-15",
+      "decision": "모바일 헤더에 \"Home / Title + 1 Icon\"(웹 id home-title-1icon)을 배포본에 추가한다. river 지시 \"웹에도 넣어줘\". D5(2026-09-02 \"Type 6변형\")는 당시 정본이 6종이었기 때문이며 틀린 결정이 아니었다 — 이 유형은 2026-09-08 river 승인으로 정본에 신설됐고(build-components.ts:3460) 웹 승인일(09-02)보다 뒤라 따라오지 못했다. 상태바·Platform 축 제외(D5)는 그대로 유지한다.",
+      "evidence": [
+        "reports/missing-inventory-audit/1-inventory.md (HD-1)",
+        "plugins/figma-vars-installer/src/build-components.ts:3460"
+      ]
     }
   ],
   "blockers": [
@@ -398,12 +409,24 @@
       "approvedAt": "2026-09-02",
       "independentVerification": "performed",
       "basis": "🤖 component-verifier 시나리오 F 2·3회차 PASS(배포 부품) + river UX 승인. 승격 시점에 Gate 19(49/49 · 공백 0)·Gate 44(17종 × PC·Mobile 실제 렌더)를 실제 approved 상태로 재실행해 통과."
+    },
+    "followUp2026_09_15": {
+      "report": "reports/ui-library/mobile-nav-header/5-followup-2026-09-15.md",
+      "what": "정본 유형 Home / Title + 1 Icon(home-title-1icon) 을 배포본·안내 화면·검수 화면에 추가",
+      "version": "0.5.7 → 0.6.0",
+      "independentVerification": "🤖 component-verifier 2회 — 1회차 ❌(a) 2건(오토레이아웃 자식 좌표 대입 · Type 6종 낡은 문구 6곳) → 수정 → 2회차 ❌0·❓0",
+      "screens": "reports/ui-library/mobile-nav-header/screens/2026-09-15/",
+      "gate13": "reports/installer-build/verifications/0c18a2f13da25963.json (pass · structural)",
+      "limits": [
+        "Figma 캔버스 실물 미실행",
+        "안내 화면 다크 픽셀 캡처 없음(계산값 실측으로 대체)"
+      ]
     }
   },
   "handoff": {
     "lastActor": "orchestrator",
-    "updatedAt": "2026-09-02",
-    "summary": "승격 완료. 배포 부품 2종(mobile-bottom-nav·mobile-header)이 approved 로 공개된다. 경로: 4-verification FAIL 4건(아이콘 3 + 선언 1) → ⭐ 수정 · 🤖 독립 검증 2·3회차 PASS → river UX 검수에서 안내 화면 4건 반영 → 승격. 이번 작업에서 검사기 2종을 신설했다(파생 색 레이어 재현 증명 · dist CSS url() 해석) — 둘 다 적대 테스트 통과. 승격 직전 4회차 독립 검증이 안내 화면 결함 F-5(wifi 마스크 id 중복으로 그림 뭉개짐)를 잡아 고쳤다 — 배포 부품은 무결이라 승격은 유지했다. 남은 것: HD-3(아이콘 원본 대조가 24프레임 평균이라 작은 글리프의 큰 손상이 희석된다) · B11(다른 세션이 설치기·패턴 작업 중이라 커밋 범위를 계속 분리해야 한다)."
+    "updatedAt": "2026-09-15",
+    "summary": "승격 완료 뒤 후속 수정 — 정본 유형 1종(home-title-1icon)을 배포본·안내 화면·검수 화면에 추가. 배포본 0.5.7 → 0.6.0(가운데 자리 — 쓰는 법이 바뀜). 구현=🧱 ui-library-builder, 검수/안내 화면=🤖 guide-builder, 독립 검증=🤖 component-verifier."
   },
   "checkpointLog": [
     {
@@ -497,6 +520,21 @@
       "supersedesPriorVerification": false,
       "rationale": "아이콘 manifest 의 지문을 현재 상태로 맞췄다. HEAD 대비 diff 에는 신규 아이콘 항목 6종이 모두 들어 있다 — 이 작업(3-build)이 추가한 5종(home·mobileHeaderBack·mobileHeaderClose·mobileHeaderNotification·mobileHeaderArrowDown)과 동시 세션 time-picker 가 추가한 clock 1종이다. 그중 ⭐ 가 오늘 실제로 편집한 것은 clock 항목뿐이며(도형 좌표·geometryEvidence·webAssetFingerprint), 이 작업 소유 5종의 항목은 손대지 않았고 원본 대조도 각각 PASS 를 유지한다(home 0.00169 · back 0.00114 · close 0.00349 · notification 0.00308 · arrowDown 0.00372). 따라서 이전 검증을 superseded 하지 않는다.",
       "diffScopeEvidence": "git diff ui-library/src/assets/icons/manifest.json — HEAD 에는 이 6종 항목이 아직 없어 전체가 추가분으로 표시된다. ⭐ 의 오늘 편집 범위는 clock 항목으로 한정되며, 근거는 이 작업의 5종 원본 대조 오차가 3-build.md 기록값과 동일하게 유지된다는 점이다(node scripts/ui-library-icon-origin-check.js 재실행 결과 일치). 정정 기록: ⭐ 가 최초에 '변경 hunk 가 clock 항목 안에만 있음' 이라고 적었는데 이는 검증 없이 쓴 오기였다 — 실제 diff 를 확인해 바로잡았다."
+    },
+    {
+      "refreshedAt": "2026-09-15",
+      "refreshedBy": "orchestrator",
+      "paths": [
+        "plugins/figma-vars-installer/src/build-components.ts",
+        "plugins/figma-vars-installer/src/vars-data.ts",
+        "registry/governance/ui-library-code-contract.json",
+        "registry/components/mobile-bottom-nav.json",
+        "registry/components/mobile-header.json",
+        "ui-library/src/assets/icons/manifest.json"
+      ],
+      "supersedesPriorVerification": true,
+      "rationale": "mobile-header 는 정본이 실제로 바뀌었다(2026-09-08 유형 신설) — 이전 검증을 그대로 재사용하지 않고 이번에 다시 검증한다. 같은 커밋의 다른 정본 변경(달력 주말색·Calendar Nav Arrow 신설)은 buildCalendar 구간이라 mobile-header 와 무관하다.",
+      "diffScopeEvidence": "git diff -U0 plugins/figma-vars-installer/src/build-components.ts 의 hunk 는 4357·4451·4481·4489·4529·4537(buildCalendar 계열)·6814(카테고리)·6866(BUILD_DEPENDENCIES)·6905(ATTACH_DEPENDENCIES)·7060(runners) — buildMobileHeader(3484~) 구간 hunk 0건."
     }
   ],
   "resolvedBlockers": [

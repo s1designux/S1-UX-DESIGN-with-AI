@@ -4,7 +4,7 @@ package com.s1.designsystem
 
 /** 이 파일 묶음이 나온 배포본 번호. 디자인가이드가 공개한 번호와 다르면 낡은 것이다. */
 public object S1Version {
-    public const val VERSION: String = "0.5.7"
-    public const val RELEASED_AT: String = "2026-09-14"
-    public const val CANONICAL_FINGERPRINT: String = "2444c67933ca9a5d226c4a3cdf254f84790c1ba828d02b3fba2986fa38ab28ff"
+    public const val VERSION: String = "0.6.0"
+    public const val RELEASED_AT: String = "2026-09-15"
+    public const val CANONICAL_FINGERPRINT: String = "298ddc5b800f53f4fb1fea5a30751b14c20ec43c952a5029fa63c103ce7b70a3"
 }

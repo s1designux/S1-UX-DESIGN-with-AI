@@ -649,7 +649,9 @@ function mobileBottomNavPlan(manifest) {
 }
 
 /* ── 모바일 헤더 ──────────────────────────────────────────────────────
-   유형 6종이 유일한 축이고, 유형마다 들어있는 슬롯이 다르다(manifest.htmlContract.perVariantParts).
+   유형이 유일한 축이고, 유형마다 들어있는 슬롯이 다르다(manifest.htmlContract.perVariantParts).
+   개수를 문장에 박지 않는다 — 아래 "쓸 수 있는 유형" 줄이 manifest.variants 를 그대로 옮기므로
+   정본이 늘면 그 줄만 따라온다(2026-09-15 에 6종 → 7종이 되며 이 문장만 낡았다).
    그래서 조합마다 물어보는 부품 집합 자체가 다르다 — 없는 슬롯을 있는 척 묻지 않는다. */
 function mobileHeaderPlan(manifest) {
   const variants = manifest.variants;

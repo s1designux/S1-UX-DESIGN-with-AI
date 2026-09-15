@@ -99,7 +99,7 @@ window.REGISTRY_BUNDLE = {
           "name": "SW Foundation Colors",
           "version": "2.4",
           "status": "stable",
-          "updatedAt": "2026-09-14",
+          "updatedAt": "2026-09-15",
           "source": "plugins/figma-vars-installer/src/vars-data.ts (FOUNDATION_COLOR)",
           "description": "Official SW Design System V2.4 foundation color foundation. Raw HEX values are allowed here only.",
           "generated": true,
@@ -9855,7 +9855,7 @@ window.REGISTRY_BUNDLE = {
         "do": [
           "variant 는 primary·secondary·blue-line 만 쓴다.",
           "크기는 PC md(44)/xsm(34)/xxsm(28), Mobile lg(48) 중에서 고른다.",
-          "색은 Semantic 경유 component 토큰(--button-*)으로만 참조한다."
+          "색은 배포본이 쓰는 역할 토큰(--color-button-*)으로만 참조한다."
         ],
         "dont": [
           "Danger·ghost variant 를 재도입하지 않는다(폐지 확정).",
@@ -9934,14 +9934,12 @@ window.REGISTRY_BUNDLE = {
           "codeStatus": "implemented",
           "darkModeStatus": "stable",
           "tokens": [
-            "--button-primary-default-bg",
-            "--button-primary-hover-bg",
-            "--button-primary-pressed-bg",
-            "--button-primary-disabled-bg",
-            "--button-primary-disabled-border",
-            "--button-primary-default-text",
-            "--button-primary-disabled-text",
-            "--button-primary-default-icon"
+            "--color-button-bg-primary--default",
+            "--color-button-bg-primary--hover",
+            "--color-button-bg-disabled",
+            "--color-button-border-disabled",
+            "--color-button-label-primary--default",
+            "--color-button-label-disabled"
           ]
         },
         "secondary": {
@@ -9949,16 +9947,13 @@ window.REGISTRY_BUNDLE = {
           "codeStatus": "implemented",
           "darkModeStatus": "stable",
           "tokens": [
-            "--button-secondary-default-bg",
-            "--button-secondary-hover-bg",
-            "--button-secondary-pressed-bg",
-            "--button-secondary-disabled-bg",
-            "--button-secondary-default-border",
-            "--button-secondary-disabled-border",
-            "--button-secondary-default-text",
-            "--button-secondary-disabled-text",
-            "--button-secondary-default-icon",
-            "--button-secondary-disabled-icon"
+            "--color-button-bg-secondary--default",
+            "--color-button-bg-secondary--hover",
+            "--color-button-bg-disabled",
+            "--color-button-border-secondary--default",
+            "--color-button-border-disabled",
+            "--color-button-label-secondary--default",
+            "--color-button-label-disabled"
           ]
         },
         "blue-line": {
@@ -9966,54 +9961,46 @@ window.REGISTRY_BUNDLE = {
           "codeStatus": "implemented",
           "darkModeStatus": "stable",
           "tokens": [
-            "--button-blue-line-default-bg",
-            "--button-blue-line-hover-bg",
-            "--button-blue-line-pressed-bg",
-            "--button-blue-line-disabled-bg",
-            "--button-blue-line-default-border",
-            "--button-blue-line-hover-border",
-            "--button-blue-line-disabled-border",
-            "--button-blue-line-default-text",
-            "--button-blue-line-disabled-text"
+            "--color-button-bg-blue-line--default",
+            "--color-button-bg-blue-line--hover",
+            "--color-button-bg-disabled",
+            "--color-button-border-blue-line--default",
+            "--color-button-border-blue-line--hover",
+            "--color-button-border-disabled",
+            "--color-button-label-blue-line--default",
+            "--color-button-label-disabled"
           ]
         }
       },
       "tokens": {
         "background": [
-          "--button-primary-default-bg",
-          "--button-primary-hover-bg",
-          "--button-primary-pressed-bg",
-          "--button-primary-disabled-bg",
-          "--button-secondary-default-bg",
-          "--button-secondary-hover-bg",
-          "--button-secondary-pressed-bg",
-          "--button-secondary-disabled-bg",
-          "--button-blue-line-default-bg",
-          "--button-blue-line-hover-bg",
-          "--button-blue-line-pressed-bg",
-          "--button-blue-line-disabled-bg"
+          "--color-button-bg-primary--default",
+          "--color-button-bg-primary--hover",
+          "--color-button-bg-disabled",
+          "--color-button-bg-secondary--default",
+          "--color-button-bg-secondary--hover",
+          "--color-button-bg-disabled",
+          "--color-button-bg-blue-line--default",
+          "--color-button-bg-blue-line--hover",
+          "--color-button-bg-disabled"
         ],
         "text": [
-          "--button-primary-default-text",
-          "--button-primary-disabled-text",
-          "--button-secondary-default-text",
-          "--button-secondary-disabled-text",
-          "--button-blue-line-default-text",
-          "--button-blue-line-disabled-text"
+          "--color-button-label-primary--default",
+          "--color-button-label-disabled",
+          "--color-button-label-secondary--default",
+          "--color-button-label-disabled",
+          "--color-button-label-blue-line--default",
+          "--color-button-label-disabled"
         ],
         "border": [
-          "--button-primary-disabled-border",
-          "--button-secondary-default-border",
-          "--button-secondary-disabled-border",
-          "--button-blue-line-default-border",
-          "--button-blue-line-hover-border",
-          "--button-blue-line-disabled-border"
+          "--color-button-border-disabled",
+          "--color-button-border-secondary--default",
+          "--color-button-border-disabled",
+          "--color-button-border-blue-line--default",
+          "--color-button-border-blue-line--hover",
+          "--color-button-border-disabled"
         ],
-        "icon": [
-          "--button-primary-default-icon",
-          "--button-secondary-default-icon",
-          "--button-secondary-disabled-icon"
-        ]
+        "icon": []
       },
       "sizing": {
         "pc": [
@@ -10207,104 +10194,87 @@ window.REGISTRY_BUNDLE = {
           "cssModifier": null,
           "tokens": [
             {
-              "name": "--chip-line-default-bg",
-              "value": "var(--color-chip-line-bg-default)",
+              "name": "--color-chip-line-bg-default",
               "state": "default",
               "property": "background"
             },
             {
-              "name": "--chip-line-hover-bg",
-              "value": "var(--color-chip-line-bg-hover)",
+              "name": "--color-chip-line-bg-hover",
               "state": "hover",
               "property": "background"
             },
             {
-              "name": "--chip-line-selected-bg",
-              "value": "var(--color-chip-line-bg-selected)",
+              "name": "--color-chip-line-bg-selected",
               "state": "selected",
               "property": "background"
             },
             {
-              "name": "--chip-line-disabled-bg",
-              "value": "var(--color-chip-line-bg-disabled)",
+              "name": "--color-chip-line-bg-disabled",
               "state": "disabled",
               "property": "background"
             },
             {
-              "name": "--chip-line-default-border",
-              "value": "var(--color-chip-line-border-default)",
+              "name": "--color-chip-line-border-default",
               "state": "default",
               "property": "border-color"
             },
             {
-              "name": "--chip-line-hover-border",
-              "value": "var(--color-chip-line-border-default)",
+              "name": "--color-chip-line-border-default",
               "state": "hover",
               "property": "border-color"
             },
             {
-              "name": "--chip-line-selected-border",
-              "value": "var(--color-chip-line-border-selected)",
+              "name": "--color-chip-line-border-selected",
               "state": "selected",
               "property": "border-color"
             },
             {
-              "name": "--chip-line-disabled-border",
-              "value": "var(--color-chip-line-border-disabled)",
+              "name": "--color-chip-line-border-disabled",
               "state": "disabled",
               "property": "border-color"
             },
             {
-              "name": "--chip-line-default-text",
-              "value": "var(--color-chip-line-label-default)",
+              "name": "--color-chip-line-label-default",
               "state": "default",
               "property": "color"
             },
             {
-              "name": "--chip-line-selected-text",
-              "value": "var(--color-chip-line-label-selected)",
+              "name": "--color-chip-line-label-selected",
               "state": "selected",
               "property": "color"
             },
             {
-              "name": "--chip-line-disabled-text",
-              "value": "var(--color-chip-line-label-disabled)",
+              "name": "--color-chip-line-label-disabled",
               "state": "disabled",
               "property": "color"
             },
             {
-              "name": "--chip-line-default-icon",
-              "value": "var(--color-chip-line-label-default)",
+              "name": "--color-chip-line-icon-default",
               "state": "default",
               "property": "icon-color"
             },
             {
-              "name": "--chip-line-selected-icon",
-              "value": "var(--color-chip-line-label-selected)",
+              "name": "--color-chip-line-label-selected",
               "state": "selected",
               "property": "icon-color"
             },
             {
-              "name": "--chip-line-disabled-icon",
-              "value": "var(--color-chip-line-label-disabled)",
+              "name": "--color-chip-line-icon-disabled",
               "state": "disabled",
               "property": "icon-color"
             },
             {
-              "name": "--chip-line-default-close-icon",
-              "value": "var(--color-chip-line-label-default)",
+              "name": "--color-chip-line-label-default",
               "state": "default",
               "property": "close-icon-color"
             },
             {
-              "name": "--chip-line-hover-close-icon",
-              "value": "var(--color-chip-line-label-default)",
+              "name": "--color-chip-line-label-default",
               "state": "hover",
               "property": "close-icon-color"
             },
             {
-              "name": "--chip-line-selected-close-icon",
-              "value": "var(--color-chip-line-label-selected)",
+              "name": "--color-chip-line-label-selected",
               "state": "selected",
               "property": "close-icon-color"
             }
@@ -10318,106 +10288,89 @@ window.REGISTRY_BUNDLE = {
           "cssModifier": "s1-chip--solid",
           "tokens": [
             {
-              "name": "--chip-solid-default-bg",
-              "value": "var(--color-chip-solid-bg-default)",
+              "name": "--color-chip-solid-bg-default",
               "state": "default",
               "property": "background"
             },
             {
-              "name": "--chip-solid-hover-bg",
-              "value": "var(--color-chip-solid-bg-hover)",
+              "name": "--color-chip-solid-bg-hover",
               "state": "hover",
               "property": "background"
             },
             {
-              "name": "--chip-solid-selected-bg",
-              "value": "var(--color-chip-solid-bg-selected)",
+              "name": "--color-chip-solid-bg-selected",
               "state": "selected",
               "property": "background"
             },
             {
-              "name": "--chip-solid-disabled-bg",
-              "value": "var(--color-chip-solid-bg-disabled)",
+              "name": "--color-chip-solid-bg-disabled",
               "state": "disabled",
               "property": "background"
             },
             {
-              "name": "--chip-solid-default-border",
-              "value": "var(--color-chip-solid-border-default)",
+              "name": "--color-chip-solid-border-default",
               "state": "default",
               "property": "border-color",
               "note": "border = background (invisible)"
             },
             {
-              "name": "--chip-solid-hover-border",
-              "value": "var(--color-chip-solid-bg-hover)",
+              "name": "--color-chip-solid-bg-hover",
               "state": "hover",
               "property": "border-color",
               "note": "border = background (invisible) — 스트록 유지, fill과 동색"
             },
             {
-              "name": "--chip-solid-selected-border",
-              "value": "var(--color-chip-solid-border-selected)",
+              "name": "--color-chip-solid-border-selected",
               "state": "selected",
               "property": "border-color"
             },
             {
-              "name": "--chip-solid-disabled-border",
-              "value": "var(--color-chip-solid-border-disabled)",
+              "name": "--color-chip-solid-border-disabled",
               "state": "disabled",
               "property": "border-color"
             },
             {
-              "name": "--chip-solid-default-text",
-              "value": "var(--color-chip-solid-label-default)",
+              "name": "--color-chip-solid-label-default",
               "state": "default",
               "property": "color"
             },
             {
-              "name": "--chip-solid-selected-text",
-              "value": "var(--color-chip-solid-label-selected)",
+              "name": "--color-chip-solid-label-selected",
               "state": "selected",
               "property": "color"
             },
             {
-              "name": "--chip-solid-disabled-text",
-              "value": "var(--color-chip-solid-label-disabled)",
+              "name": "--color-chip-solid-label-disabled",
               "state": "disabled",
               "property": "color"
             },
             {
-              "name": "--chip-solid-default-icon",
-              "value": "var(--color-chip-solid-label-default)",
+              "name": "--color-chip-solid-icon-default",
               "state": "default",
               "property": "icon-color"
             },
             {
-              "name": "--chip-solid-selected-icon",
-              "value": "var(--color-chip-solid-label-selected)",
+              "name": "--color-chip-solid-icon-selected",
               "state": "selected",
               "property": "icon-color"
             },
             {
-              "name": "--chip-solid-disabled-icon",
-              "value": "var(--color-chip-solid-label-disabled)",
+              "name": "--color-chip-solid-icon-disabled",
               "state": "disabled",
               "property": "icon-color"
             },
             {
-              "name": "--chip-solid-default-close-icon",
-              "value": "var(--color-chip-solid-label-default)",
+              "name": "--color-chip-solid-label-default",
               "state": "default",
               "property": "close-icon-color"
             },
             {
-              "name": "--chip-solid-hover-close-icon",
-              "value": "var(--color-chip-solid-label-default)",
+              "name": "--color-chip-solid-label-default",
               "state": "hover",
               "property": "close-icon-color"
             },
             {
-              "name": "--chip-solid-selected-close-icon",
-              "value": "var(--color-chip-solid-label-selected)",
+              "name": "--color-chip-solid-label-selected",
               "state": "selected",
               "property": "close-icon-color"
             }
@@ -10496,7 +10449,8 @@ window.REGISTRY_BUNDLE = {
         "harnessStatus": "implemented",
         "figmaNodeId": "540:3794",
         "figmaNote": "2026-05-20 MVP-F1 플러그인 스캔으로 COMPONENT_SET nodeId 540:3794 확인. Section 노드 6456:4033은 figma.figmaSectionNodeId에 보존. mobile bottomsheet 540:3836 확인.",
-        "description": "Date selection component. Uses Base Input as trigger field. PC popover calendar panel (figma-unconfirmed) or Mobile bottom sheet (Figma confirmed)."
+        "description": "Date selection component. Uses Base Input as trigger field. PC popover calendar panel (figma-unconfirmed) or Mobile bottom sheet (Figma confirmed).",
+        "updatedAt": "2026-09-15"
       },
       "usage": {
         "whenToUse": [
@@ -10591,19 +10545,19 @@ window.REGISTRY_BUNDLE = {
         "trigger": {
           "note": "Base Input tokens 재사용 (Figma --color/form-control/* 확인)",
           "reuses": [
-            "--input-default-bg",
-            "--input-default-border",
-            "--input-focus-border",
-            "--input-disabled-bg",
-            "--input-disabled-border",
-            "--input-error-border",
-            "--input-placeholder-text",
-            "--input-disabled-text"
+            "--color-form-control-bg-default",
+            "--color-form-control-border-default",
+            "--color-form-control-border-selected",
+            "--color-form-control-bg-disabled",
+            "--color-form-control-border-disabled",
+            "--color-form-control-border-error",
+            "--color-form-control-text-placeholder",
+            "--color-form-control-text-disabled"
           ],
           "figmaVariables": {
             "--color/form-control/bg/default": "white (--input-default-bg)",
             "--color/form-control/border/default": "#d9d9d9 (--input-default-border)",
-            "--color/form-control/border/selected": "#1d6ceb (--input-focus-border)",
+            "--color/form-control/border/selected": "#1d6ceb (--color-form-control-border-selected)",
             "--color/form-control/bg/disabled": "#f5f5f5 (--input-disabled-bg)",
             "--color/form-control/border/disabled": "#d9d9d9 (--input-disabled-border)",
             "--color/form-control/text/placeholder": "#757575 (--input-placeholder-text)",
@@ -10613,36 +10567,36 @@ window.REGISTRY_BUNDLE = {
         },
         "panel": {
           "note": "PC popover panel — figma-unconfirmed. mobile bottomsheet 구조 참고.",
-          "--date-picker-panel-bg": "candidate: var(--color-surface-default)",
+          "--color-date-picker-panel-bg": "candidate: var(--color-surface-default)",
           "panel-border": "stable: color/date-picker/panel/border (--color-date-picker-panel-border) — light gray/200 · dark gray-dark/500. 2026-07-29 라이트를 gray/300 → gray/200 으로 변경(사용자 결정): Modal·Dropdown·Time Picker Dropdown·Date Picker 4개 패널 보더 값 통일. 다크 불변. 종전 candidate 표기 `var(--color-border-default)` 는 폐지된 generic 토큰을 가리켜 실현되지 않았으므로 폐기함(웹 CSS 는 이미 --color-date-picker-panel-border 참조라 값이 자동 반영)",
           "panel-shadow": "stable: var(--shadow-dropdown) — 공용 그림자 토큰(tokens/semantic.md §9-A). 2026-07-29 교체: 종전 candidate `--date-picker-panel-shadow: 0 4px 16px rgba(0,0,0,0.10)` 은 어느 CSS 에도 정의된 적이 없고 실제 구현값(0 4px 8px rgba(0,0,0,0.15))과도 달라 실현하지 않고 폐기함"
         },
         "cell": {
           "note": "Figma mobile bottomsheet (540:3836) 확인값",
-          "--date-picker-cell-text": "candidate: var(--color-text-secondary) (Figma: --color/text/body/tertiary #757575)",
-          "--date-picker-cell-other-month-text": "stable: var(--color-text-disabled) (Figma: --color/text/state/disabled #c4c4c4 확인)",
-          "--date-picker-cell-hover-bg": "candidate: var(--color-bg-subtle)",
-          "--date-picker-cell-selected-bg": "stable: var(--color-action-primary-default) (Figma: --color/control/bg/selected #1d6ceb 확인)",
-          "--date-picker-cell-selected-text": "stable: var(--color-base-white) (Figma: --color/text/state/accent-inverse white 확인)",
-          "--date-picker-cell-today-border": "stable: var(--color-action-primary-default) (Figma: --color/control/border/selected #1d6ceb 확인)",
-          "--date-picker-cell-today-text": "stable: var(--color-action-primary-default) (Figma: --color/text/state/accent #1d6ceb 확인)",
-          "--date-picker-cell-today-bg": "stable: var(--color-surface-default) (Figma: white 확인)",
-          "--date-picker-cell-disabled-text": "candidate: var(--color-text-disabled)"
+          "--color-date-picker-text-secondary": "candidate: var(--color-text-secondary) (Figma: --color/text/body/tertiary #757575)",
+          "--color-date-picker-text-other-month": "stable: var(--color-text-disabled) (Figma: --color/text/state/disabled #c4c4c4 확인)",
+          "--color-date-picker-cell-bg-hover": "candidate: var(--color-bg-subtle)",
+          "--color-date-picker-cell-bg-selected": "stable: var(--color-action-primary-default) (Figma: --color/control/bg/selected #1d6ceb 확인)",
+          "--color-date-picker-text-selected": "stable: var(--color-base-white) (Figma: --color/text/state/accent-inverse white 확인)",
+          "--color-date-picker-cell-border-today": "stable: var(--color-action-primary-default) (Figma: --color/control/border/selected #1d6ceb 확인)",
+          "--color-date-picker-text-today": "stable: var(--color-action-primary-default) (Figma: --color/text/state/accent #1d6ceb 확인)",
+          "--color-date-picker-cell-bg-today": "stable: var(--color-surface-default) (Figma: white 확인)",
+          "--color-date-picker-text-disabled": "candidate: var(--color-text-disabled)"
         },
         "header": {
-          "--date-picker-header-text": "candidate: var(--color-text-primary) (Figma: --color/text/title/primary black 확인)",
-          "--date-picker-nav-hover-bg": "candidate: var(--color-bg-subtle)"
+          "--color-date-picker-text-primary": "candidate: var(--color-text-primary) (Figma: --color/text/title/primary black 확인)",
+          "--color-date-picker-cell-bg-hover": "candidate: var(--color-bg-subtle)"
         },
         "icon": {
           "figmaNode": "ic_날짜/근태,달력 (node 221:3835)",
           "size": "24×24px (Figma 확인)",
-          "--date-picker-icon-color": "candidate: var(--color-icon-default)"
+          "--color-date-picker-icon-default": "candidate: var(--color-icon-default)"
         },
         "weekday": {
           "note": "Figma mobile: 월화수목금토일 순서. weekday text color Figma: --color/text/body/primary(#353535)",
-          "--date-picker-weekday-text": "candidate: var(--color-text-primary) (Figma: --color/text/body/primary #353535 확인)",
-          "--date-picker-sunday-text": "candidate: var(--color-status-error) (HD-8 미결)",
-          "--date-picker-saturday-text": "candidate: var(--color-action-primary-default) (HD-8 미결)"
+          "--color-date-picker-text-primary": "candidate: var(--color-text-primary) (Figma: --color/text/body/primary #353535 확인)",
+          "--color-date-picker-text-sunday": "candidate: var(--color-status-error) (HD-8 미결)",
+          "--color-date-picker-text-saturday": "candidate: var(--color-action-primary-default) (HD-8 미결)"
         }
       },
       "cellGeometry": {
@@ -10762,7 +10716,9 @@ window.REGISTRY_BUNDLE = {
         "HD-1": "보류 — 현재 불필요. figmaNodeId(540:3794)로 충분. 향후 Figma 라이브러리 publish 단계에서 재검토",
         "HD-3": "확정 — ic_날짜/근태,달력 SVG assets/icons/ic_calendar.svg 등록 완료 (2026-05-26). figmaDatePickerNodeId: 540:3800.",
         "HD-6": "확정 — Core는 인터페이스만 제공. data-disabled-dates=\"YYYY-MM-DD,...\" 속성으로 날짜 주입. 비활성 기준은 서비스 레벨 결정.",
-        "HD-7": "확정 — 이전달/다음달 날짜 항상 클릭 허용. 클릭 시 해당 월로 이동 후 날짜 선택."
+        "HD-7": "확정 — 이전달/다음달 날짜 항상 클릭 허용. 클릭 시 해당 월로 이동 후 날짜 선택.",
+        "HD-11": "확정 — 달력 요일 머리글에서 토요일·일요일을 색으로 구분한다(토=date-picker/text/saturday, 일=date-picker/text/sunday). river 결정 2026-09-15 \"토/일 색 구분하는걸로 다시 얘기했었음\" — 2026-06-30 의 '경비업 특성상 주말 색 미적용' 결정을 뒤집는다. 웹 배포본(date-picker.css)은 이미 그렇게 칠하고 있었고 Figma 정본만 전 요일 text/primary 였다. 이 결정으로 정본을 웹에 맞췄다(build-components.ts 요일 머리글 wkColor).",
+        "HD-12": "확정 — 달력 헤더의 이전/다음 화살표를 자기 부품으로 뺀다(세트 이름 'Calendar Nav Arrow', State=Default/Hover/Disabled). river 결정 2026-09-15 \"달력 화살표를 작은 부품으로 빼줘\" · Gate 34 정본 신설 승인 기록. 그 전에는 헤더에 아이콘을 직접 그려 손올림·못누름 색을 담을 자리가 없었고, 토큰(date-picker/icon/hover·disabled)이 만들어진 채 연결되지 않은 상태였다. 웹 배포본은 이미 두 상태를 쓰고 있었다(date-picker.css prev/next)."
       },
       "updatedAt": "2026-05-26",
       "guide": {
@@ -10863,137 +10819,67 @@ window.REGISTRY_BUNDLE = {
       },
       "tokens": [
         {
-          "cssVar": "--dropdown-trigger-default-bg",
-          "value": "var(--color-surface-default)",
-          "semanticRef": "color-surface-default",
+          "cssVar": "--color-dropdown-list-bg",
           "part": "trigger",
           "state": "default",
           "property": "background"
         },
         {
-          "cssVar": "--dropdown-trigger-hover-bg",
-          "value": "var(--color-bg-subtle)",
-          "semanticRef": "color-bg-subtle",
+          "cssVar": "--color-dropdown-option-bg-hover",
           "part": "trigger",
           "state": "hover",
           "property": "background"
         },
         {
-          "cssVar": "--dropdown-trigger-open-bg",
-          "value": "var(--color-bg-subtle)",
-          "semanticRef": "color-bg-subtle",
-          "part": "trigger",
-          "state": "open",
-          "property": "background"
-        },
-        {
-          "cssVar": "--dropdown-trigger-disabled-bg",
-          "value": "var(--color-bg-subtle)",
-          "semanticRef": "color-bg-subtle",
-          "part": "trigger",
-          "state": "disabled",
-          "property": "background"
-        },
-        {
-          "cssVar": "--dropdown-trigger-default-border",
-          "value": "var(--color-form-control-border-default)",
-          "semanticRef": "color-form-control-border-default",
+          "cssVar": "--color-dropdown-list-border",
           "part": "trigger",
           "state": "default",
           "property": "border"
         },
         {
-          "cssVar": "--dropdown-trigger-hover-border",
-          "value": "var(--color-border-strong)",
-          "semanticRef": "color-border-strong",
-          "part": "trigger",
-          "state": "hover",
-          "property": "border"
-        },
-        {
-          "cssVar": "--dropdown-trigger-open-border",
-          "value": "var(--color-border-focus)",
-          "semanticRef": "color-border-focus",
-          "part": "trigger",
-          "state": "open",
-          "property": "border"
-        },
-        {
-          "cssVar": "--dropdown-trigger-disabled-border",
-          "value": "var(--color-border-subtle)",
-          "semanticRef": "color-border-subtle",
-          "part": "trigger",
-          "state": "disabled",
-          "property": "border"
-        },
-        {
-          "cssVar": "--dropdown-trigger-default-text",
-          "value": "var(--color-text-secondary)",
-          "semanticRef": "color-text-secondary",
+          "cssVar": "--color-dropdown-option-label-default",
           "part": "trigger",
           "state": "default",
           "property": "text"
         },
         {
-          "cssVar": "--dropdown-trigger-disabled-text",
-          "value": "var(--color-text-disabled)",
-          "semanticRef": "color-text-disabled",
-          "part": "trigger",
-          "state": "disabled",
-          "property": "text"
-        },
-        {
-          "cssVar": "--dropdown-trigger-placeholder-text",
-          "value": "var(--color-text-placeholder)",
-          "semanticRef": "color-text-placeholder",
+          "cssVar": "--color-dropdown-option-label-default",
           "part": "trigger",
           "state": "empty",
           "property": "text"
         },
         {
-          "cssVar": "--dropdown-trigger-selected-text",
-          "value": "var(--color-text-primary)",
-          "semanticRef": "color-text-primary",
+          "cssVar": "--color-dropdown-option-label-selected",
           "part": "trigger",
           "state": "filled",
           "property": "text"
         },
         {
-          "cssVar": "--dropdown-list-bg",
-          "value": "var(--color-surface-raised)",
-          "semanticRef": "color-surface-raised",
+          "cssVar": "--color-dropdown-list-bg",
           "part": "list",
           "state": "all",
           "property": "background"
         },
         {
-          "cssVar": "--dropdown-list-border",
-          "value": "var(--color-border-default)",
-          "semanticRef": "color-border-default",
+          "cssVar": "--color-dropdown-list-border",
           "part": "list",
           "state": "all",
           "property": "border"
         },
         {
-          "cssVar": "--dropdown-option-hover-bg",
-          "value": "var(--color-bg-subtle)",
-          "semanticRef": "color-bg-subtle",
+          "cssVar": "--color-dropdown-option-bg-hover",
           "part": "option",
           "state": "hover",
           "property": "background"
         },
         {
-          "cssVar": "--dropdown-option-selected-bg",
-          "value": "transparent",
-          "semanticRef": null,
+          "cssVar": "--color-dropdown-option-bg-selected",
           "part": "option",
           "state": "selected",
           "property": "background"
         },
         {
-          "cssVar": "--dropdown-option-selected-text",
-          "value": "var(--color-action-primary-default)",
-          "semanticRef": "color-action-primary-default",
+          "cssVar": "--color-dropdown-option-label-selected",
           "part": "option",
           "state": "selected",
           "property": "text"
@@ -11538,56 +11424,49 @@ window.REGISTRY_BUNDLE = {
       },
       "tokens": [
         {
-          "name": "--gnb-bg",
-          "value": "var(--color-navigation-bg)",
+          "name": "--color-navigation-bg",
           "resolvedLight": "#FFFFFF",
           "figmaVariable": "color/navigation/bg",
           "status": "stable",
           "description": "GNB 바 배경"
         },
         {
-          "name": "--gnb-border",
-          "value": "var(--color-border-subtle)",
+          "name": "--color-line-gray-subtle",
           "resolvedLight": "#E9E9E9",
           "figmaVariable": "color/line/gray/subtle",
           "status": "stable",
           "description": "GNB 바 하단 1px 라인"
         },
         {
-          "name": "--gnb-menu-label-default",
-          "value": "var(--color-navigation-label-default-alt)",
+          "name": "--color-navigation-label-default-alt",
           "resolvedLight": "#434343",
           "figmaVariable": "color/navigation/label/default-alt",
           "status": "stable",
           "description": "메뉴 슬롯 기본 라벨 (V3.0: gray-700 #434343)"
         },
         {
-          "name": "--gnb-menu-label-active",
-          "value": "var(--color-navigation-label-selected)",
+          "name": "--color-navigation-label-hover",
           "resolvedLight": "#1D6CEB",
           "figmaVariable": "color/navigation/label/hover",
           "status": "stable",
           "description": "메뉴 슬롯 hover·selected 라벨"
         },
         {
-          "name": "--gnb-menu-underline-active",
-          "value": "var(--color-navigation-indicator-selected)",
+          "name": "--color-line-blue",
           "resolvedLight": "#1D6CEB",
           "figmaVariable": "color/line/blue",
           "status": "stable",
           "description": "메뉴 슬롯 hover·selected 하단 밑줄"
         },
         {
-          "name": "--gnb-logo-text",
-          "value": "var(--color-text-primary)",
+          "name": "--color-text-title-primary",
           "resolvedLight": "#202020",
           "figmaVariable": "color/text/title/primary",
           "status": "stable",
           "description": "로고 텍스트 색상 — HD-GNB-1 resolved: V3.0 로고 = color/text/title/primary #202020 = 코드값 일치"
         },
         {
-          "name": "--gnb-icon",
-          "value": "var(--color-navigation-icon)",
+          "name": "--color-icon-gray-dark",
           "resolvedLight": "#353535",
           "figmaVariable": "color/icon/gray-dark",
           "status": "stable",
@@ -12070,7 +11949,7 @@ window.REGISTRY_BUNDLE = {
       "doDont": {
         "do": [
           "색·테두리는 form-control 역할 토큰(--color-form-control-*)을 통해 참조한다.",
-          "focus 는 파란 테두리(--input-focus-border)로만 표시하고 배경은 바꾸지 않는다.",
+          "focus 는 파란 테두리(--color-form-control-border-selected)로만 표시하고 배경은 바꾸지 않는다.",
           "라벨은 form-control 밖 제목 텍스트 토큰(--color-text-title-secondary)을 쓴다.",
           "안내메시지는 규칙을 알려야 하는 화면에서만 켠다. 끌 때는 message 요소와 aria-describedby 를 함께 뺀다."
         ],
@@ -12139,10 +12018,10 @@ window.REGISTRY_BUNDLE = {
         "disabled"
       ],
       "stateNotes": {
-        "focus": "Figma: 'selected'. border → --input-focus-border(blue). bg 변경 없음.",
+        "focus": "Figma: 'selected'. border → --color-form-control-border-selected(blue). bg 변경 없음.",
         "filled": "Figma: 'complete'. HD-3: 별도 bg/border 없음. default와 동일 시각. text/default 색상으로만 구분(placeholder→typed). canonical: filled (token-aliases.json 확정).",
         "correct": "HD-4: correct로 통일(Figma: success). border = focus와 동일(blue, --color/form-control/border/selected). helper text = --color/text/state/correct(#1D6CEB).",
-        "error": "border → --input-error-border(#FF4554). helper text → error 메시지.",
+        "error": "border → --color-form-control-border-error(#FF4554). helper text → error 메시지.",
         "hover": "Input field Hover는 삭제(HD-2). suffix action Hover는 suffixAction.hover에서 별도 관리."
       },
       "iconSlots": [
@@ -12182,33 +12061,33 @@ window.REGISTRY_BUNDLE = {
             "helper": {
               "--color-text-state-helper": "var(--color-text-secondary)",
               "--color-text-state-correct": "#1D6CEB",
-              "--color-text-state-error": "var(--color-status-error)",
+              "--color-text-state-caution": "var(--color-status-error)",
               "note": "--color/text/state/correct = #1D6CEB (파란색). correct 상태 border와 동일 색조."
             }
           },
           "componentTokens": {
             "background": {
-              "--input-default-bg": "var(--color-form-control-bg-default)",
-              "--input-disabled-bg": "var(--color-form-control-bg-disabled)"
+              "--color-form-control-bg-default": "var(--color-form-control-bg-default)",
+              "--color-form-control-bg-disabled": "var(--color-form-control-bg-disabled)"
             },
             "border": {
-              "--input-default-border": "var(--color-form-control-border-default)",
-              "--input-focus-border": "var(--color-form-control-border-selected)",
-              "--input-error-border": "var(--color-form-control-border-error)",
-              "--input-correct-border": "var(--color-form-control-border-correct)",
-              "--input-disabled-border": "var(--color-form-control-border-disabled)"
+              "--color-form-control-border-default": "var(--color-form-control-border-default)",
+              "--color-form-control-border-selected": "var(--color-form-control-border-selected)",
+              "--color-form-control-border-error": "var(--color-form-control-border-error)",
+              "--color-form-control-border-correct": "var(--color-form-control-border-correct)",
+              "--color-form-control-border-disabled": "var(--color-form-control-border-disabled)"
             },
             "text": {
-              "--input-placeholder-text": "var(--color-form-control-text-placeholder)",
-              "--input-disabled-text": "var(--color-form-control-text-disabled)",
-              "--input-helper-text": "var(--color-text-state-helper)",
-              "--input-correct-text": "var(--color-text-state-correct)",
-              "--input-error-text": "var(--color-status-error)"
+              "--color-form-control-text-placeholder": "var(--color-form-control-text-placeholder)",
+              "--color-form-control-text-disabled": "var(--color-form-control-text-disabled)",
+              "--color-text-state-helper": "var(--color-text-state-helper)",
+              "--color-text-state-correct": "var(--color-text-state-correct)",
+              "--color-text-state-caution": "var(--color-status-error)"
             },
             "readonly": {
-              "--input-readonly-bg": "var(--color-form-control-bg-disabled)",
-              "--input-readonly-border": "var(--color-form-control-border-default)",
-              "--input-readonly-text": "var(--color-text-readonly)",
+              "--color-form-control-bg-disabled": "var(--color-form-control-bg-disabled)",
+              "--color-form-control-border-default": "var(--color-form-control-border-default)",
+              "--color-form-control-text-read-only": "var(--color-text-readonly)",
               "note": "Textarea 와 공유. readonly bg는 disabled와 동일하고 border는 default를 유지한다. text는 --color-text-readonly로 한 단계 진하다. build-components.ts Read-Only 정본과 일치."
             }
           },
@@ -12479,72 +12358,52 @@ window.REGISTRY_BUNDLE = {
       ],
       "tokens": [
         {
-          "cssVar": "--checkbox-default-bg",
-          "value": "var(--color-control-bg-default)",
-          "semanticRef": "color-control-bg-default",
+          "cssVar": "--color-control-bg-default",
           "state": "default",
           "property": "background"
         },
         {
-          "cssVar": "--checkbox-hover-bg",
-          "value": "var(--color-control-bg-hover)",
-          "semanticRef": "color-control-bg-hover",
+          "cssVar": "--color-control-bg-hover",
           "state": "hover",
           "property": "background"
         },
         {
-          "cssVar": "--checkbox-checked-bg",
-          "value": "var(--color-control-bg-selected)",
-          "semanticRef": "color-control-bg-selected",
+          "cssVar": "--color-control-bg-selected",
           "state": "checked",
           "property": "background"
         },
         {
-          "cssVar": "--checkbox-disabled-bg",
-          "value": "var(--color-control-bg-disabled)",
-          "semanticRef": "color-control-bg-disabled",
+          "cssVar": "--color-control-bg-disabled",
           "state": "disabled",
           "property": "background"
         },
         {
-          "cssVar": "--checkbox-default-border",
-          "value": "var(--color-control-border-default)",
-          "semanticRef": "color-control-border-default",
+          "cssVar": "--color-control-border-default",
           "state": "default",
           "property": "border"
         },
         {
-          "cssVar": "--checkbox-hover-border",
-          "value": "var(--color-control-border-default)",
-          "semanticRef": "color-control-border-default",
+          "cssVar": "--color-control-border-default",
           "state": "hover",
           "property": "border"
         },
         {
-          "cssVar": "--checkbox-checked-border",
-          "value": "var(--color-control-border-selected)",
-          "semanticRef": "color-control-border-selected",
+          "cssVar": "--color-control-border-selected",
           "state": "checked",
           "property": "border"
         },
         {
-          "cssVar": "--checkbox-disabled-border",
-          "value": "var(--color-control-border-disabled)",
-          "semanticRef": "color-control-border-disabled",
+          "cssVar": "--color-control-border-disabled",
           "state": "disabled",
           "property": "border"
         },
         {
-          "cssVar": "--checkbox-check-icon",
-          "value": "var(--color-control-indicator-selected)",
-          "semanticRef": "color-control-indicator-selected",
+          "cssVar": "--color-control-indicator-selected",
           "state": "checked",
           "property": "icon"
         },
         {
-          "cssVar": "--checkbox-disabled-check-icon",
-          "value": "var(--color-control-indicator-disabled)",
-          "semanticRef": "color-control-indicator-disabled",
+          "cssVar": "--color-control-indicator-disabled",
           "state": "disabled",
           "property": "icon"
         }
@@ -12664,14 +12523,14 @@ window.REGISTRY_BUNDLE = {
       },
       "tokens": [
         {
-          "cssVar": "--color-icon-gray-light",
-          "semanticRef": "color/icon/gray-light",
+          "cssVar": "--color-navigation-icon-default",
+          "semanticRef": "color/navigation/icon/default",
           "state": "unselected",
           "property": "icon-color"
         },
         {
-          "cssVar": "--color-text-state-helper",
-          "semanticRef": "color/text/state/helper",
+          "cssVar": "--color-navigation-label-default",
+          "semanticRef": "color/navigation/label/default",
           "state": "unselected",
           "property": "label-color"
         },
@@ -12772,7 +12631,8 @@ window.REGISTRY_BUNDLE = {
           "2026-08-31 river: 스펙은 Platform별 Home 2종·Standard 4종 행으로 배치하고, 폭이 길어져 Dark 스펙은 Light 스펙 아래에 둔다.",
           "2026-08-25 river: StatusBar 인스턴스의 Light 모드 핀을 해제해 다크를 상속하게 했고, 배경을 투명으로 두어 헤더 전체가 한 색으로 이어지게 했다(원본 구조). StatusBar 정본 세트는 변경하지 않았다.",
           "StatusBar는 선택한 Platform과 같은 정본 인스턴스를 재사용하며, 색은 Semantic 변수·텍스트는 Pretendard 정본 스타일에만 바인딩한다.",
-          "원본 아래화살표 legacy key는 V3 import가 불가능해 river 승인(2026-08-25)에 따라 아이콘 라이브러리 V2.2 419:68의 오른쪽 화살표를 -90° 회전해 사용한다."
+          "원본 아래화살표 legacy key는 V3 import가 불가능해 river 승인(2026-08-25)에 따라 아이콘 라이브러리 V2.2 419:68의 오른쪽 화살표를 -90° 회전해 사용한다.",
+          "2026-09-08 river 승인: 'Home / Title + 1 Icon' 신설(build-components.ts:3460 주석). 레거시(V2.4)에도 Figma 라이브러리 실물 컴포넌트에도 없는 신규 조합이라 figma.propertyMap·variantNodes에는 아직 노드 id가 없다 — 지어내지 않고 비워둔다. 2026-09-15 이 유형을 웹 배포본에 추가하며 variants.Type에만 반영했다."
         ]
       },
       "usage": {
@@ -12824,6 +12684,7 @@ window.REGISTRY_BUNDLE = {
       "variants": {
         "Type": [
           "Home / Title",
+          "Home / Title + 1 Icon",
           "Home / Title + Subtitle + 1 Icon",
           "Standard / Title",
           "Standard / Title + Close",
@@ -12959,7 +12820,7 @@ window.REGISTRY_BUNDLE = {
         ],
         "interactionPattern": "mobile-appbar",
         "webTag": "header",
-        "boundaryNote": "2026-09-02 ui-library-code 워크플로우로 웹 배포본을 만들었다 — components.html 섹션은 손관리가 아니라 ui-library-guide.js 가 dist 로 렌더한다(managedBy: ui-library-guide). StatusBar·Platform 축은 river 결정(D5)으로 배포본에서 뺐다 — AppBar 56px·Type 6종만 배포한다."
+        "boundaryNote": "2026-09-02 ui-library-code 워크플로우로 웹 배포본을 만들었다 — components.html 섹션은 손관리가 아니라 ui-library-guide.js 가 dist 로 렌더한다(managedBy: ui-library-guide). StatusBar·Platform 축은 river 결정(D5)으로 배포본에서 뺐다 — AppBar 56px·Type 7종(Home 3 · Standard 4)을 배포한다(2026-09-15 에 Home / Title + 1 Icon 이 더해져 6종 → 7종)."
       },
       "governance": {
         "owner": "design-system",
@@ -13651,65 +13512,47 @@ window.REGISTRY_BUNDLE = {
       ],
       "tokens": [
         {
-          "cssVar": "--radio-default-bg",
-          "value": "var(--color-control-bg-default)",
-          "semanticRef": "color-control-bg-default",
+          "cssVar": "--color-control-bg-default",
           "state": "default",
           "property": "background"
         },
         {
-          "cssVar": "--radio-hover-bg",
-          "value": "var(--color-control-bg-hover)",
-          "semanticRef": "color-control-bg-hover",
+          "cssVar": "--color-control-bg-hover",
           "state": "hover",
           "property": "background"
         },
         {
-          "cssVar": "--radio-disabled-bg",
-          "value": "var(--color-control-bg-disabled)",
-          "semanticRef": "color-control-bg-disabled",
+          "cssVar": "--color-control-bg-disabled",
           "state": "disabled",
           "property": "background"
         },
         {
-          "cssVar": "--radio-default-border",
-          "value": "var(--color-control-border-default)",
-          "semanticRef": "color-control-border-default",
+          "cssVar": "--color-control-border-default",
           "state": "default",
           "property": "border"
         },
         {
-          "cssVar": "--radio-hover-border",
-          "value": "var(--color-control-border-default)",
-          "semanticRef": "color-control-border-default",
+          "cssVar": "--color-control-border-default",
           "state": "hover",
           "property": "border"
         },
         {
-          "cssVar": "--radio-selected-border",
-          "value": "var(--color-control-border-selected)",
-          "semanticRef": "color-control-border-selected",
+          "cssVar": "--color-control-border-selected",
           "state": "selected",
           "property": "border"
         },
         {
-          "cssVar": "--radio-disabled-border",
-          "value": "var(--color-control-border-disabled)",
-          "semanticRef": "color-control-border-disabled",
+          "cssVar": "--color-control-border-disabled",
           "state": "disabled",
           "property": "border"
         },
         {
-          "cssVar": "--radio-selected-dot",
-          "value": "var(--color-control-indicator-selected-alt)",
-          "semanticRef": "color-control-indicator-selected-alt",
+          "cssVar": "--color-control-indicator-selected-alt",
           "state": "selected",
           "property": "dot-icon"
         },
         {
-          "cssVar": "--radio-disabled-dot",
-          "value": "var(--color-control-indicator-disabled)",
-          "semanticRef": "color-control-indicator-disabled",
+          "cssVar": "--color-control-indicator-disabled",
           "state": "disabled",
           "property": "dot-icon"
         }
@@ -13822,40 +13665,35 @@ window.REGISTRY_BUNDLE = {
       },
       "tokens": [
         {
-          "name": "--tab-bg",
-          "value": "var(--color-navigation-bg)",
+          "name": "--color-navigation-bg",
           "resolvedLight": "#FFFFFF",
           "figmaVariable": "color/navigation/bg",
           "status": "stable",
           "description": "탭 배경"
         },
         {
-          "name": "--tab-label-default",
-          "value": "var(--color-navigation-label-default)",
+          "name": "--color-navigation-label-default",
           "resolvedLight": "#555555",
           "figmaVariable": "color/navigation/label/default",
           "status": "stable",
           "description": "미선택 탭 라벨 색상"
         },
         {
-          "name": "--tab-label-selected",
-          "value": "var(--color-navigation-label-selected)",
+          "name": "--color-navigation-label-selected",
           "resolvedLight": "#1D6CEB",
           "figmaVariable": "color/navigation/label/selected",
           "status": "stable",
           "description": "선택·hover 탭 라벨 색상"
         },
         {
-          "name": "--tab-indicator-default",
-          "value": "var(--color-navigation-indicator-default)",
+          "name": "--color-navigation-indicator-default",
           "resolvedLight": "#D9D9D9",
           "figmaVariable": "color/navigation/indicator/default",
           "status": "stable",
           "description": "미선택 탭 하단 구분선"
         },
         {
-          "name": "--tab-indicator-selected",
-          "value": "var(--color-navigation-indicator-selected)",
+          "name": "--color-navigation-indicator-selected",
           "resolvedLight": "#1D6CEB",
           "figmaVariable": "color/navigation/indicator/selected",
           "status": "stable",
@@ -13944,7 +13782,7 @@ window.REGISTRY_BUNDLE = {
         "readonly"
       ],
       "stateNotes": {
-        "focus": "border → --input-focus-border (--color-form-control-border-selected)",
+        "focus": "border → --color-form-control-border-selected",
         "filled": "입력이 완료된 상태. 정본 Text Area의 Filled variant를 따른다.",
         "disabled": "bg → --input-disabled-bg. border → --input-disabled-border. text → --input-disabled-text",
         "readonly": "bg → --input-readonly-bg. border → --input-readonly-border. text → --input-readonly-text",
@@ -13952,68 +13790,57 @@ window.REGISTRY_BUNDLE = {
       },
       "tokens": [
         {
-          "name": "--input-default-bg",
-          "value": "var(--color-form-control-bg-default)",
+          "name": "--color-form-control-bg-default",
           "state": "default",
           "property": "bg"
         },
         {
-          "name": "--input-disabled-bg",
-          "value": "var(--color-form-control-bg-disabled)",
+          "name": "--color-form-control-bg-disabled",
           "state": "disabled",
           "property": "bg"
         },
         {
-          "name": "--input-readonly-bg",
-          "value": "var(--color-form-control-bg-disabled)",
+          "name": "--color-form-control-bg-disabled",
           "state": "readonly",
           "property": "bg"
         },
         {
-          "name": "--input-default-border",
-          "value": "var(--color-form-control-border-default)",
+          "name": "--color-form-control-border-default",
           "state": "default",
           "property": "border"
         },
         {
-          "name": "--input-focus-border",
-          "value": "var(--color-form-control-border-selected)",
+          "name": "--color-form-control-border-selected",
           "state": "focus",
           "property": "border"
         },
         {
-          "name": "--input-disabled-border",
-          "value": "var(--color-form-control-border-disabled)",
+          "name": "--color-form-control-border-disabled",
           "state": "disabled",
           "property": "border"
         },
         {
-          "name": "--input-readonly-border",
-          "value": "var(--color-form-control-border-disabled)",
+          "name": "--color-form-control-border-default",
           "state": "readonly",
           "property": "border"
         },
         {
-          "name": "--input-placeholder-text",
-          "value": "var(--color-form-control-text-placeholder)",
+          "name": "--color-form-control-text-placeholder",
           "state": "all",
           "property": "placeholder"
         },
         {
-          "name": "--input-disabled-text",
-          "value": "var(--color-form-control-text-disabled)",
+          "name": "--color-form-control-text-disabled",
           "state": "disabled",
           "property": "color"
         },
         {
-          "name": "--input-readonly-text",
-          "value": "var(--color-text-readonly)",
+          "name": "--color-form-control-text-read-only",
           "state": "readonly",
           "property": "color"
         },
         {
-          "name": "--input-helper-text",
-          "value": "var(--color-text-state-caption)",
+          "name": "--color-text-state-caption",
           "state": "default",
           "property": "helper"
         }
@@ -14333,30 +14160,22 @@ window.REGISTRY_BUNDLE = {
       ],
       "tokens": [
         {
-          "cssVar": "--toggle-on-bg",
-          "value": "var(--color-control-bg-selected)",
-          "semanticRef": "color-control-bg-selected",
+          "cssVar": "--color-control-bg-selected",
           "state": "on",
           "property": "background"
         },
         {
-          "cssVar": "--toggle-off-bg",
-          "value": "var(--color-control-indicator-unselected)",
-          "semanticRef": "color-control-indicator-unselected",
+          "cssVar": "--color-control-indicator-unselected",
           "state": "off",
           "property": "background"
         },
         {
-          "cssVar": "--toggle-disabled-bg",
-          "value": "var(--color-control-bg-disabled)",
-          "semanticRef": "color-control-bg-disabled",
+          "cssVar": "--color-control-bg-disabled",
           "state": "disabled",
           "property": "background"
         },
         {
-          "cssVar": "--toggle-knob",
-          "value": "var(--color-control-indicator-selected)",
-          "semanticRef": "color-control-indicator-selected",
+          "cssVar": "--color-control-indicator-selected",
           "state": "all",
           "property": "knob-color"
         }
@@ -14479,40 +14298,35 @@ window.REGISTRY_BUNDLE = {
       ],
       "tokens": [
         {
-          "name": "--pagination-control-bg",
-          "value": "var(--color-surface-default)",
+          "name": "--color-pagination-control-bg-default",
           "resolvedLight": "#FFFFFF",
           "figmaVariable": "color/pagination/control/bg/default",
           "status": "stable",
           "description": "화살표·페이지 번호 공통 배경"
         },
         {
-          "name": "--pagination-control-border",
-          "value": "var(--color-pagination-control-border-default)",
+          "name": "--color-pagination-control-border-default",
           "resolvedLight": "#D9D9D9",
           "figmaVariable": "color/pagination/control/border/default",
           "status": "stable",
           "description": "화살표 버튼 테두리 (페이지 번호에는 테두리 없음)"
         },
         {
-          "name": "--pagination-control-hover-bg",
-          "value": "var(--color-bg-subtle)",
+          "name": "--color-pagination-control-bg-hover",
           "resolvedLight": "#F5F5F5",
           "figmaVariable": "",
           "status": "candidate",
           "description": "화살표·번호 hover 배경 — Figma 미정의, assumed"
         },
         {
-          "name": "--pagination-number-text",
-          "value": "var(--color-gray-400)",
+          "name": "--color-gray-400",
           "resolvedLight": "#9D9D9D",
           "figmaVariable": "color/gray/400",
           "status": "stable",
           "description": "비선택 페이지 번호 텍스트"
         },
         {
-          "name": "--pagination-number-text-selected",
-          "value": "var(--color-text-secondary)",
+          "name": "--color-text-body-primary",
           "resolvedLight": "#353535",
           "figmaVariable": "color/text/body/primary",
           "status": "stable",
@@ -14623,8 +14437,7 @@ window.REGISTRY_BUNDLE = {
       ],
       "tokens": [
         {
-          "name": "--nav-bg",
-          "value": "var(--color-surface-default)",
+          "name": "--color-navigation-bg",
           "state": "all",
           "property": "bg",
           "figmaVariable": "color/navigation/bg"
@@ -14642,15 +14455,13 @@ window.REGISTRY_BUNDLE = {
           "property": "bg"
         },
         {
-          "name": "--nav-item-default-text",
-          "value": "var(--color-text-tertiary)",
+          "name": "--color-navigation-label-default",
           "state": "default",
           "property": "color",
           "figmaVariable": "color/navigation/label/default"
         },
         {
-          "name": "--nav-item-active-text",
-          "value": "var(--color-action-primary-default)",
+          "name": "--color-navigation-label-selected",
           "state": "active",
           "property": "color",
           "figmaVariable": "color/navigation/label/selected"
@@ -14668,15 +14479,13 @@ window.REGISTRY_BUNDLE = {
           "property": "icon"
         },
         {
-          "name": "--nav-item-indicator",
-          "value": "var(--color-action-primary-default)",
+          "name": "--color-navigation-indicator-selected",
           "state": "active",
           "property": "indicator",
           "figmaVariable": "color/navigation/indicator/selected"
         },
         {
-          "name": "--nav-item-indicator-default",
-          "value": "var(--color-border-subtle)",
+          "name": "--color-navigation-indicator-default",
           "state": "default",
           "property": "indicator",
           "figmaVariable": "color/navigation/indicator/default"
@@ -14855,80 +14664,70 @@ window.REGISTRY_BUNDLE = {
       ],
       "tokens": [
         {
-          "name": "--table-header-bg",
-          "value": "var(--color-bg-default)",
+          "name": "--color-table-header-bg",
           "resolvedLight": "#FAFAFA",
           "figmaVariable": "surface/neutral/bg/base-alt",
           "status": "stable",
           "description": "헤더 셀 기본 배경"
         },
         {
-          "name": "--table-header-text",
-          "value": "var(--color-text-secondary)",
+          "name": "--color-text-title-secondary",
           "resolvedLight": "#353535",
           "figmaVariable": "color/text/title/secondary",
           "status": "stable",
           "description": "헤더 셀 텍스트 색상"
         },
         {
-          "name": "--table-border-light",
-          "value": "var(--color-border-subtle)",
+          "name": "--color-table-border-default",
           "resolvedLight": "#E9E9E9",
           "figmaVariable": "color/table/border/default",
           "status": "stable",
           "description": "행 구분선 — 헤더·바디 셀 공통 참조"
         },
         {
-          "name": "--table-border-strong",
-          "value": "var(--color-border-emphasis)",
+          "name": "--color-table-border-strong",
           "resolvedLight": "#353535",
           "figmaVariable": "color/table/border/strong",
           "status": "stable",
           "description": "테이블 외곽 강조 테두리 — wrap 상단 2px + 하단 1px"
         },
         {
-          "name": "--table-header-border",
-          "value": "var(--table-border-light)",
+          "name": "--color-table-border-default",
           "resolvedLight": "#E9E9E9",
           "figmaVariable": "color/table/border/default",
           "status": "stable",
           "description": "헤더 셀 하단 구분선"
         },
         {
-          "name": "--table-row-default-bg",
-          "value": "var(--color-table-cell-default)",
+          "name": "--color-table-cell-hover",
           "resolvedLight": "#FFFFFF",
           "figmaVariable": "color/table/cell/default",
           "status": "stable",
           "description": "행 기본 배경 — Light: base/white (#FFFFFF) / Dark: gray-dark-100 (#1C1D23)"
         },
         {
-          "name": "--table-row-hover-bg",
-          "value": "var(--color-table-cell-hover)",
+          "name": "--color-table-cell-hover",
           "resolvedLight": "#F5F5F5",
           "figmaVariable": "color/table/cell/hover",
           "status": "stable",
           "description": "행 hover 배경 — Light: gray-50 (#F5F5F5) / Dark: gray-dark-200 (#24252C)"
         },
         {
-          "name": "--table-row-selected-bg",
-          "value": "var(--color-table-cell-selected)",
+          "name": "--color-table-cell-selected",
           "resolvedLight": "#E2F1FF",
           "figmaVariable": "color/table/cell/selected",
           "status": "stable",
           "description": "행 선택 배경 — Light: blue-50 (#E2F1FF) / Dark: blue-dark-100 (#112B55). hover(gray-50)와 시각 구분 확정(HD-Table-2)"
         },
         {
-          "name": "--table-cell-border",
-          "value": "var(--table-border-light)",
+          "name": "--color-table-border-default",
           "resolvedLight": "#E9E9E9",
           "figmaVariable": "color/table/border/default",
           "status": "stable",
           "description": "바디 셀 하단 구분선"
         },
         {
-          "name": "--table-cell-text",
-          "value": "var(--color-text-body-primary)",
+          "name": "--color-text-body-primary",
           "resolvedLight": "#202020",
           "figmaVariable": "color/text/body/primary",
           "status": "stable",
@@ -16055,9 +15854,45 @@ window.REGISTRY_BUNDLE = {
     }
   },
   "reportsIndex": {
-    "generatedAt": "2026-09-08T14:12:11.259Z",
-    "totalCount": 82,
+    "generatedAt": "2026-09-15T05:55:27.840Z",
+    "totalCount": 84,
     "reports": [
+      {
+        "id": "harness-audit-2026-09-15",
+        "filename": "harness-audit-2026-09-15.md",
+        "title": "Harness Audit Report — 2026-09-15",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-09-15.md",
+        "updatedAt": "2026-09-15",
+        "summary": "- 🟡 HTML 코드탭 pane \"btn-pri-pc\" 을 찾을 수 없음",
+        "fileSizeKB": 2.3
+      },
+      {
+        "id": "mvp-t2-token-sync",
+        "filename": "mvp-t2-token-sync.md",
+        "title": "MVP-T2 Token Sync Plugin Report",
+        "stage": "T2",
+        "category": "token",
+        "status": "archive",
+        "sourcePath": "reports/mvp-t2-token-sync.md",
+        "updatedAt": "2026-09-15",
+        "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
+        "fileSizeKB": 5
+      },
+      {
+        "id": "harness-audit-2026-09-10",
+        "filename": "harness-audit-2026-09-10.md",
+        "title": "Harness Audit Report — 2026-09-10",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-09-10.md",
+        "updatedAt": "2026-09-10",
+        "summary": "- 🟡 HTML 코드탭 pane \"btn-pri-pc\" 을 찾을 수 없음",
+        "fileSizeKB": 2.3
+      },
       {
         "id": "modal-content-family-backlog",
         "filename": "modal-content-family-backlog.md",
@@ -16080,7 +15915,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/canon-approval-audit-2026-09-07.md",
         "updatedAt": "2026-09-07",
         "summary": "**읽기 전용 감사였다** — 감사 과정에서 정본·파생을 한 글자도 고치지 않았다.",
-        "fileSizeKB": 20
+        "fileSizeKB": 20.4
       },
       {
         "id": "button-sync-check",
@@ -16311,18 +16146,6 @@ window.REGISTRY_BUNDLE = {
         "fileSizeKB": 9.4
       },
       {
-        "id": "mvp-t2-token-sync",
-        "filename": "mvp-t2-token-sync.md",
-        "title": "MVP-T2 Token Sync Plugin Report",
-        "stage": "T2",
-        "category": "token",
-        "status": "archive",
-        "sourcePath": "reports/mvp-t2-token-sync.md",
-        "updatedAt": "2026-07-07",
-        "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
-        "fileSizeKB": 5
-      },
-      {
         "id": "harness-audit-2026-07-06",
         "filename": "harness-audit-2026-07-06.md",
         "title": "Harness Audit Report — 2026-07-06",
@@ -16404,7 +16227,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/changelog-archive.md",
         "updatedAt": "2026-06-17",
         "summary": "이 파일은 CLAUDE.md `변경 이력` 표의 **상세 보존본**이다. 컨텍스트 비용을 줄이기 위해 CLAUDE.md 본문에서 분리했다.",
-        "fileSizeKB": 79.2
+        "fileSizeKB": 82
       },
       {
         "id": "harness-audit-2026-06-17",

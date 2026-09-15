@@ -75,6 +75,26 @@ vars-data 의 토큰 키가 전부 embed 됐는지만 검사한다.
 
 ## 🔴 우선순위 높음
 
+### 0-d. 승인 못 한 부품 4종 고치기 (2026-09-15 · reports/ui-library/draft-six-approval/1-verification.md)
+
+river 지시 "승인" 으로 배포본에 나가 있던 6종을 검수했고 **2종만 통과**했다(assist-button·text-button = approved). 나머지 4종은 아래를 고쳐야 승인할 수 있다.
+
+- **M-1 · 모달 본문을 키보드로 스크롤할 수 없다** (`modal-content`) — `content-area` 가 `overflow-y:auto` 지만 `tabindex` 가 없어 초점이 닿지 않는다(`modal-content.css:105-112`). registry 접근성 선언이 스스로 "키보드로도 스크롤 가능해야 한다"고 요구하는데 실제가 다르다. **확인 계열 `modal` 도 같은 구멍일 가능성이 높다(미확인).**
+- **G-2 · GNB 3종에 React·Vue 전달본이 없다** (`gnb`·`gnb-sub-menu`·`gnb-sub-menu-item`) — approved 22종은 전부 갖고 있다. `ui-library/scripts/test.mjs:762-766` 이 래퍼 대조를 `status==="approved"` 에만 걸어 지금은 안 잡히지만, **승인해서 approved 로 바꾸는 순간 `ui:test:check` 가 실패한다.**
+- **G-1 · GNB 하위메뉴 링크에 키보드로 갈 수 없다** — river 결정 필요(위 보고서 참조). 정본에 여닫는 동작 자체가 없어 대조할 규칙이 없다(c).
+- **X-1 · 안내 화면 딥링크가 엉뚱한 부품을 연다** — `?platform=pc#assist-button`·`#text-button`·`#modal-content` 셋 다 Button 섹션이 열린다(`#gnb` 계열은 정상). river 가 링크로 이 셋을 보러 가면 다른 화면을 본다.
+- **X-3 · registry 가 정본과 어긋난다** — `registry/components/gnb.json` 의 유틸 아이콘 sizing(40px 상자·xsm 24/18)이 정본에 없다. 정본은 32 박스/24 글리프 한 종류다. 고칠 쪽은 registry(하드룰 H6).
+
+### 0-c. 재고 조사에서 남은 결정·정리 (2026-09-15 · reports/missing-inventory-audit/1-inventory.md)
+
+빠진 컴포넌트·토큰 전수 확인에서 나온 것 중 **river 가 아직 정하지 않았거나 손대지 않은 것**이다. 결정 4건은 같은 날 반영했다(달력 주말 색·달력 화살표 부품·모바일 상단바 유형·부품 6종 승인).
+
+- **가이드 오안내 3건** — `design/DESIGN.core.md` 가 ①Modal 을 "배포본에 아직 없다"고 안내한다(실제로는 나가 있고 승인도 받았다 · 생성기가 웹 상태가 아니라 설치기 `codeStatus` 를 본다, `scripts/gen-design-md.js:649`) ②그림자 토큰이 "아직 정의돼 있지 않다"고 적혀 있다(실제로는 `--shadow-raised`·`-up`·`-dropdown` 3종이 라이트·다크 모두 있다) ③사라진 토큰 이름 `color-surface-default` 를 설명한다. **쓸 수 있는 것을 쓰지 말라고 하는 문장이라 사람과 AI 가 둘 다 잘못 따라간다.**
+- **토큰 지도가 비어 있다** — `ui-library/dist/component-token-map.json` 이 25종 중 2종(button·input)만 선언한다. 2026-08-25 이후 늘어난 23종이 빠져 있고, 검사기가 이 칸을 보지 않아 조용히 비어 있었다.
+- **달력 요일 순서가 정본과 웹에서 다르다** — 정본은 월요일 시작, 웹은 일요일 시작(registry date-picker HD-9 확정). 2026-09-15 주말 색 작업 중 확인했고 그 작업과 별개라 손대지 않았다.
+- **아직 안 정한 것(HD)** — HD-2(GNB Menu 갈래 선언 빈칸 · Gate 32 경고 지속) · HD-3(`nav` 사이드바 내비 계획 여부) · HD-7(화면 틀 5종 NavBar·LoginGNB·WebTabBar·CI·Footer 를 웹 배포본에 낼지 — 안 낸다는 기록조차 없다).
+
+
 ### 0-b. 바텀시트 부품화 (2026-09-15 신규 · river 지시)
 
 > **새 세션 착수 쪽지: `reports/ui-library/bottom-sheet/BRIEF.md`** — 정본 위치·변형 축·뼈대·조심할 것이 정리돼 있다.

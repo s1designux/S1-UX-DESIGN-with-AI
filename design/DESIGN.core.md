@@ -1082,8 +1082,10 @@ agent:
       - "color/date-picker/panel/border"
       - "color/date-picker/text/disabled"
       - "color/date-picker/text/primary"
+      - "color/date-picker/text/saturday"
       - "color/date-picker/text/secondary"
       - "color/date-picker/text/selected"
+      - "color/date-picker/text/sunday"
       - "color/date-picker/text/today"
       - "color/form-control/bg/default"
       - "color/form-control/bg/disabled"
@@ -2488,7 +2490,7 @@ agent:
     accessibility:
       name: "back/close/notification carry a context-appropriate aria-label; title-bearing variants render an h1"
       headingRole: "variants without title text render an empty non-heading span; the page body's own h1 acts as the primary heading"
-    runtimeNote: "런타임 없음(jsRequired=false). StatusBar·Platform 축은 river 결정(D5)으로 배포본에서 뺐다 — AppBar 56px·Type 6종만 배포한다."
+    runtimeNote: "런타임 없음(jsRequired=false). StatusBar·Platform 축은 river 결정(D5)으로 배포본에서 뺐다 — AppBar 56px·Type 7종(Home 3 · Standard 4)을 배포한다. 2026-09-15 에 Home / Title + 1 Icon 이 더해져 6종 → 7종."
   geometry:
     common:
       target: "root"
@@ -4698,4 +4700,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 183d3b716b9d · 손편집 금지 -->
+<!-- generated-stamp: e04838b37cf2 · 손편집 금지 -->

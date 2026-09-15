@@ -229,8 +229,8 @@ export interface S1MobileBottomNavProps extends S1BaseProps {
 export declare function S1MobileBottomNav(props: S1MobileBottomNavProps): ReactElement;
 
 export interface S1MobileHeaderProps extends S1BaseProps {
-  /** 승인된 변형: home-title · home-title-subtitle · standard-title · standard-title-close · standard-no-title · standard-no-title-close */
-  variant?: "home-title" | "home-title-subtitle" | "standard-title" | "standard-title-close" | "standard-no-title" | "standard-no-title-close";
+  /** 승인된 변형: home-title · home-title-1icon · home-title-subtitle · standard-title · standard-title-close · standard-no-title · standard-no-title-close */
+  variant?: "home-title" | "home-title-1icon" | "home-title-subtitle" | "standard-title" | "standard-title-close" | "standard-no-title" | "standard-no-title-close";
 }
 export declare function S1MobileHeader(props: S1MobileHeaderProps): ReactElement;
 
