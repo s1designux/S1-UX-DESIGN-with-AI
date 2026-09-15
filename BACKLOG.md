@@ -155,7 +155,10 @@ vars-data 의 토큰 키가 전부 embed 됐는지만 검사한다.
 - **고칠 방향(정책 판단 필요)**: id 스냅샷이 이미 있으므로 "이번 시도의 새 노드 전부"로 넓히면 완결되나,
   그러면 부모 실패 시 자식이 만든 세트까지 지우게 되어 정리 정책이 바뀐다. river 결정 사항.
 
-### Table 이 Table Cell 컴포넌트를 재사용하지 않는다 (코어 재사용 원칙 위배)
+### ~~Table 이 Table Cell 컴포넌트를 재사용하지 않는다~~ — 해결됨 (2026-08-02)
+
+> `build-components.ts:6789` `"Table": ["Pagination", "Table Cell"]` 로 의존이 들어가 있다. 2026-09-15 인계 감사에서 확인. 아래는 경위 보존용.
+
 - **실측(🤖 component-verifier 2026-08-01)**: 정상 빌드에서 Table 이 붙인 Table Cell 인스턴스 **0건**.
   `buildTable` 은 `BUILT_COMPS["TableCell:…"]` 을 읽되 없으면 plain frame 으로 그리는 fallback 이 있는데,
   `BUILD_DEPENDENCIES` 에 `"Table": ["Table Cell"]` 이 없어 **Table 이 Table Cell 보다 먼저 빌드**된다
@@ -219,10 +222,13 @@ vars-data 의 토큰 키가 전부 embed 됐는지만 검사한다.
 ## 🟢 낮음
 
 ### 7. Dead files 정리
-- `registry/tokens/component.tokens.json` (07-02 은퇴)
+- `registry/tokens/component.tokens.json` (07-02 은퇴) — 2026-09-15 유일 소비처였던 Registry Explorer 의 Component 탭을 걷어내 **이제 소비자 0**
 - `assets/css/component-tokens.css` (07-10 은퇴)
-- `assets/js/registry-data-bundle.js` (위 둘의 번들 사본)
+- ~~`assets/js/registry-data-bundle.js` (위 둘의 번들 사본)~~ → **지우면 안 된다(2026-09-15 정정).**
+  죽은 사본이 아니라 `scripts/build-registry-bundle.js` 가 `tokens:reconcile` 안에서 매번 다시 만드는 **생성물**이고,
+  Registry Explorer 가 `registry-loader.js` 를 통해 이걸 읽는다. 지우면 그 화면이 죽는다.
 - `assets/js/component-renderer.js`, `button-harness.js` (어디서도 로드 안 됨)
+- `assets/js/registry-health.js` (2026-09-15 은퇴 — 소비 화면 격리됨)
 - arrow 레거시 별칭이 이 안에 갇혀 있음
 
 ### 8. registry 전체 스캔
