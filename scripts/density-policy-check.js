@@ -65,8 +65,18 @@ async function main() {
     if (missing.length) {
       notes.push(`${id}: ${missing.map((l) => `${l.ko}(${l.pcHeight})`).join(' · ')} 는 이 컴포넌트에 없어 가장 가까운 크기로 대신합니다.`);
     }
-    // 모바일 크기가 없는 컴포넌트는 화면 구분만 준 자리에서 높이를 못 받는다(내용 높이로 찌그러진다).
-    if (!mobile) notes.push(`${id}: 모바일 크기가 CSS 에 없어 data-s1-break="mobile" 만으로는 높이가 잡히지 않습니다 — 그 자리에서는 data-size 를 직접 주어야 합니다.`);
+    /* 모바일 크기가 없는 컴포넌트. 셋으로 갈린다:
+       ① 대신 쓸 것이 정해져 있다(river 결정) ② 기본 높이가 있어 그 값으로 그려진다 ③ 찌그러진다. */
+    if (!mobile) {
+      const substitute = (policy.mobileSubstitutes || {})[id];
+      if (substitute) {
+        notes.push(`${id}: 모바일에서는 ${substitute.use} 를 대신 씁니다 — ${substitute.note}${substitute.libraryStatus === 'missing-component' ? ` (아직 부품이 없습니다: ${substitute.libraryNote})` : ''}`);
+      } else if (defaultHeight) {
+        notes.push(`${id}: 모바일 크기가 CSS 에 없어 기본 높이(${defaultHeight})로 그려집니다 — 손가락 기준 ${policy.mobileHeight} 이 필요하면 data-size 를 직접 주세요.`);
+      } else {
+        failures.push(`${id}: 모바일 크기가 없고 기본 높이도 없습니다 — data-s1-break="mobile" 만 주면 찌그러집니다. 대신 쓸 것을 density-policy.json 의 mobileSubstitutes 에 적거나 모바일 크기를 만드세요.`);
+      }
+    }
 
     // 정본이 아는 높이와 대조 — 다르면 경고로만 남긴다(컴포넌트마다 실측 대상이 다르다).
     const canonHeights = new Set((facts.components[factsName]?.geometry || [])
