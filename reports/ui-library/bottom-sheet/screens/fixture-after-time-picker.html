@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="/ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="/ui-library/dist/assets/css/typography.css">
+<link rel="stylesheet" href="/ui-library/dist/components/button.css">
+<link rel="stylesheet" href="/ui-library/dist/components/tab.css">
+<link rel="stylesheet" href="/ui-library/dist/components/bottom-sheet.css">
+<link rel="stylesheet" href="/ui-library/dist/components/time-picker.css">
+<style>body{margin:0;background:var(--color-bg-level-1,#fff);}</style>
+</head>
+<body>
+<div data-s1-component="time-picker" data-size="md" data-break="mobile" data-type="12h" data-minute-step="1" data-mobile-ui="wheel" data-mobile-content="time-only">
+  <div data-s1-component="bottom-sheet" data-s1-part="sheet" data-break="mobile" data-footer="single">
+    <div data-s1-part="sheet-backdrop"></div>
+    <div data-s1-part="sheet-panel" role="dialog" aria-modal="true" tabindex="-1">
+      <div data-s1-part="sheet-header">
+        <span data-s1-part="sheet-title">시간 선택</span>
+        <button type="button" data-s1-part="sheet-close" aria-label="닫기"></button>
+      </div>
+      <div data-s1-part="wheel" style="height:180px;">
+        <div data-s1-part="wheel-col" data-column="ampm" role="listbox" aria-label="오전오후"></div>
+        <div data-s1-part="wheel-col" data-column="hour" role="listbox" aria-label="시"></div>
+        <div data-s1-part="wheel-col" data-column="colon" aria-hidden="true"></div>
+        <div data-s1-part="wheel-col" data-column="minute" role="listbox" aria-label="분"></div>
+      </div>
+      <div data-s1-part="sheet-footer">
+        <button type="button" data-s1-part="apply" data-s1-component="button" data-variant="primary" data-size="lg">
+          <span data-s1-part="label">적용</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

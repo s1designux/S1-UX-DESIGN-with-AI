@@ -6,26 +6,261 @@
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
   "version": "0.7.0",
-  "releasedAt": "2026-09-15",
-  "canonicalFingerprint": "4e7c5ec88df2e7bb62d7b5f6edd5d9e02deae2f969ee33246dfbd7365d42eb58",
+  "releasedAt": "2026-09-16",
+  "canonicalFingerprint": "addca22ddd9fb7b8fe7bfd996d7115cc6e71f92936a396051d247563263b50f0",
   "releases": [
     {
       "version": "0.7.0",
-      "date": "2026-09-15",
+      "date": "2026-09-16",
       "kind": "minor",
-      "canonicalFingerprint": "0a0f4cff6281db763a32226474160bc7eefc1e1bd9cbabd6f36a13311a1db99d",
+      "canonicalFingerprint": "addca22ddd9fb7b8fe7bfd996d7115cc6e71f92936a396051d247563263b50f0",
+      "components": [
+        {
+          "id": "input",
+          "from": "0.2.1",
+          "to": "0.3.0"
+        },
+        {
+          "id": "button",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "checkbox",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "radio",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "toggle",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "chip",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "dropdown",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "select",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "filter-chip",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "tab",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "pagination",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "textarea",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "multi-toggle",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "modal",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "table",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "mobile-bottom-nav",
+          "from": "0.2.1",
+          "to": "0.3.0"
+        },
+        {
+          "id": "mobile-header",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "time-picker",
+          "from": "0.2.0",
+          "to": "0.3.0"
+        },
+        {
+          "id": "date-picker",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "gnb",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "gnb-sub-menu-item",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "gnb-sub-menu",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "assist-button",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "text-button",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "modal-content",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "bottom-sheet-option",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "bottom-sheet",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        }
+      ],
+      "deliveryFingerprint": "662109b2dc3ed9ec7ccff4fc91435ff94515da4e7f3029e7e32e19ab682f7bed"
+    },
+    {
+      "version": "0.6.10",
+      "date": "2026-09-15",
+      "kind": "patch",
+      "canonicalFingerprint": "706ab4e1643d76a52873b374411652ca8a0c570fe170fac67c24e327d296420c",
+      "components": [
+        {
+          "id": "bottom-sheet-option",
+          "from": "0.1.0",
+          "to": "0.1.1"
+        },
+        {
+          "id": "bottom-sheet",
+          "from": "0.1.0",
+          "to": "0.1.1"
+        }
+      ],
+      "deliveryFingerprint": "9758ed10e2548ab298d667af15219b5eebc77414b129d1c44b78c5066ecb7f60"
+    },
+    {
+      "version": "0.6.9",
+      "date": "2026-09-15",
+      "kind": "patch",
+      "canonicalFingerprint": "1e654cdc161304679058195d6e1a9d23fd01d52ea0843662b2b2af36ccc09aa5",
       "components": [],
       "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
-      "deliveryFingerprint": "6a8d15b0544525a8d97a0a0a0436ff9910428f25e69be4a5aff35147013269c1"
+      "deliveryFingerprint": "e26d9f1df8a4be631034d353eecff202775b5f6220235f8fd1091d08ed9b7b96"
+    },
+    {
+      "version": "0.6.8",
+      "date": "2026-09-15",
+      "kind": "patch",
+      "canonicalFingerprint": "1e654cdc161304679058195d6e1a9d23fd01d52ea0843662b2b2af36ccc09aa5",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "583e9dc35ba315c97b4e0f78256c373f988a0b1b2750fc41d91a2cb4c1db9aec"
+    },
+    {
+      "version": "0.6.7",
+      "date": "2026-09-15",
+      "kind": "patch",
+      "canonicalFingerprint": "1e654cdc161304679058195d6e1a9d23fd01d52ea0843662b2b2af36ccc09aa5",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "e1e4e1f8c4d30068fa8b6cff2c1231b1a843f15ec6d74338889ce06a4795c072"
+    },
+    {
+      "version": "0.6.6",
+      "date": "2026-09-15",
+      "kind": "patch",
+      "canonicalFingerprint": "1e654cdc161304679058195d6e1a9d23fd01d52ea0843662b2b2af36ccc09aa5",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "7cfb62324455436b351b75a220ff12b3cacf6050a8fa34e28ade52c3baf1f764"
+    },
+    {
+      "version": "0.6.5",
+      "date": "2026-09-15",
+      "kind": "patch",
+      "canonicalFingerprint": "1e654cdc161304679058195d6e1a9d23fd01d52ea0843662b2b2af36ccc09aa5",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "852f35df706645847f62b8af6ec2bbd5b25c7ac5710d4a834303a2d5b4be62c0"
+    },
+    {
+      "version": "0.6.4",
+      "date": "2026-09-15",
+      "kind": "patch",
+      "canonicalFingerprint": "1e654cdc161304679058195d6e1a9d23fd01d52ea0843662b2b2af36ccc09aa5",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "74ad40ef2b9e0cdde8d3c9bf7b2be9ea5bd73df943d6d32223ef72e3cfe0daf5"
+    },
+    {
+      "version": "0.6.3",
+      "date": "2026-09-15",
+      "kind": "patch",
+      "canonicalFingerprint": "1e654cdc161304679058195d6e1a9d23fd01d52ea0843662b2b2af36ccc09aa5",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "df8233024ea2fdc0b65333cb2349fe33db4d488a9fdf2c78db6a3ed11c6fde97"
+    },
+    {
+      "version": "0.6.2",
+      "date": "2026-09-15",
+      "kind": "patch",
+      "canonicalFingerprint": "1e654cdc161304679058195d6e1a9d23fd01d52ea0843662b2b2af36ccc09aa5",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "6bd1238bf7309a40940d3eb5eba9fdee24259ea8eef1d4edbd2157212d375484"
+    },
+    {
+      "version": "0.6.1",
+      "date": "2026-09-15",
+      "kind": "patch",
+      "canonicalFingerprint": "1e654cdc161304679058195d6e1a9d23fd01d52ea0843662b2b2af36ccc09aa5",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "d85482502c784dc92e27b108be60a73466eed8e9b375bb4d3280f7fc8dd887ac"
     },
     {
       "version": "0.6.0",
       "date": "2026-09-15",
       "kind": "minor",
-      "canonicalFingerprint": "e6d78569c57dce4e069bac40e6cf9e0fb2af8880370206bdb11f0f41ba47eefb",
+      "canonicalFingerprint": "1e654cdc161304679058195d6e1a9d23fd01d52ea0843662b2b2af36ccc09aa5",
       "components": [],
       "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
-      "deliveryFingerprint": "e81402662f3e4ec35ada8bef5aa2bfccdece1f496e567569e38e8eb40054e1c8"
+      "deliveryFingerprint": "05314cd88f88ce6acf485075d452f228467d277d42614d6f1336d1670e97fc0a"
     },
     {
       "version": "0.5.7",
@@ -210,5 +445,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "6a8d15b0544525a8d97a0a0a0436ff9910428f25e69be4a5aff35147013269c1"
+  "deliveryFingerprint": "662109b2dc3ed9ec7ccff4fc91435ff94515da4e7f3029e7e32e19ab682f7bed"
 }

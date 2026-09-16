@@ -1,0 +1,30 @@
+<!doctype html><html><head><meta charset="utf-8"><title>check 24 대조</title>
+<style>body{margin:0;padding:24px;font:12px system-ui;background:#fff}
+.row{display:flex;gap:28px;align-items:flex-end}
+.b{text-align:center}
+.m{width:168px;height:168px;background:#1D6CEB}
+.old{mask:url(../../../../ui-library/src/assets/icons/check.svg) center/contain no-repeat}
+.new{mask:url(../../../../ui-library/src/assets/icons/check24.svg) center/contain no-repeat}
+img{width:168px;height:168px;image-rendering:pixelated}
+.ov{position:relative;width:168px;height:168px}
+.ov img{position:absolute;inset:0}
+.ov .m{position:absolute;inset:0;opacity:.55;background:#e6007a}
+.line{display:flex;gap:10px;align-items:center;margin-top:20px}
+.i24{width:24px;height:24px;background:#353535}
+</style></head><body>
+<div class="row">
+  <div class="b"><div class="m old"></div><div>전: check.svg(16프레임) 확대</div></div>
+  <div class="b"><div class="m new"></div><div>후: check24.svg(24프레임 원본)</div></div>
+  <div class="b"><img src="../../../../assets/icons/ic_확인_line.png"><div>라이브러리 원본 내보내기</div></div>
+  <div class="b"><div class="ov"><img src="../../../../assets/icons/ic_확인_line.png"><div class="m new"></div></div><div>겹쳐보기 (분홍=check24)</div></div>
+</div>
+<div class="line">
+  <span>24px 나란히 — 굵기 일관성:</span>
+  <span class="i24 new"></span>
+  <span class="i24" style="mask:url(../../../../ui-library/src/assets/icons/chevron.svg) center/contain no-repeat"></span>
+  <span class="i24" style="mask:url(../../../../ui-library/src/assets/icons/lock.svg) center/contain no-repeat"></span>
+  <span class="i24" style="mask:url(../../../../ui-library/src/assets/icons/close.svg) center/contain no-repeat"></span>
+  <span style="margin-left:16px">(전) </span>
+  <span class="i24 old"></span>
+</div>
+</body></html>

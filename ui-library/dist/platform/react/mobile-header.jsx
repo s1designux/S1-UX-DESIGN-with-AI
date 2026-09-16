@@ -8,7 +8,7 @@ import { scopeOf, slot } from "./runtime.js";
 
 export const BREAKS = ["pc"];
 export const DEFAULT_BREAK = "pc";
-export const VARIANTS = ["home-title","home-title-1icon","home-title-subtitle","standard-title","standard-title-close","standard-no-title","standard-no-title-close"];
+export const VARIANTS = ["home-title","home-title-subtitle","standard-title","standard-title-close","standard-no-title","standard-no-title-close"];
 export const SIZES = [];
 export const PARTS = ["title","title-row","arrow-icon","stack","subtitle","back","back-icon","close","close-icon","spacer","notification","notification-icon"];
 

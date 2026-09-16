@@ -1,8 +1,8 @@
 {
   "id": "chip",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "status": "approved",
-  "canonicalFingerprint": "7568be5a92a810b73ebaeacfeaebbed2e5b2d568da2b1af03031452b3a2309a8",
+  "canonicalFingerprint": "d8c092747905bda85e2b9a6ed02ca319774c47a490129d992cd3f8843581181b",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -171,5 +171,5 @@
     "runtime": "components/chip.js",
     "reason": "registry 가 선언한 aria-pressed 선택 상태 전환을 런타임이 담당한다."
   },
-  "sourceFingerprint": "314fce25067f0c7d9c4f44038ba83a6dd9b1016c18011b7c7aa4dcca83b4f346"
+  "sourceFingerprint": "28178acb774d8fc0d417734426c931399787552ae93a9a4d82fac02fe8e6aa64"
 }

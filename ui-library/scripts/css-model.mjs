@@ -273,10 +273,15 @@ function matchesPseudoClass(node, pseudo, options) {
   }
 }
 
-/** :not()/:is() 안은 이 요소 자신에 대한 복합 선택자다(자손 결합자는 배포본에 없다). */
+/** :not()/:is() 안은 대개 이 요소 자신에 대한 복합 선택자다.
+ *  다만 자손 결합자를 쓰는 형태도 배포본에 있다 — `:not([data-s1-break="mobile"] *)` 는
+ *  "모바일 감싸개 안이 아닐 때"를 뜻하며 Input·Button·Text Button 이 모바일 hover 를 거를 때 쓴다
+ *  (input.css:110 · button.css · text-button.css). 그 경우는 전체 선택자 대조로 넘긴다 —
+ *  matchesSelector 가 오른쪽 끝부터 왼쪽으로 조상을 거슬러 맞추므로 브라우저와 같은 결과가 나온다.
+ *  (2026-09-15 이전 주석은 "자손 결합자는 배포본에 없다"였는데 더 이상 참이 아니다.) */
 function matchesRelative(node, selector, options) {
   const sequence = parseSelector(selector);
-  if (sequence.length !== 1) throw new Error(`:not()/:is() 안에서는 복합 선택자 하나만 지원합니다: ${selector}`);
+  if (sequence.length !== 1) return matchesSelector(node, sequence, options);
   return matchesCompound(node, sequence[0].compound, { ...options, pseudoElement: options.pseudoElement });
 }
 

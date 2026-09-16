@@ -651,6 +651,49 @@
       "statesLayout": "matrix",
       "note": "정본에 상태 축이 없다 — Size(행) × Footer(열) 매트릭스. Action 은 실제로 열리는 콘텐츠 모달이고 상태 칸은 지면에 눕혀 보여주는 검수 표시다(페이지 전용 CSS). PC 전용(river 지시 2026-09-08).",
       "managedBy": "ui-library-guide"
+    },
+    "bottom-sheet": {
+      "platform": "mobile",
+      "archetype": "current-plus-action",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "states": [],
+      "extraAxes": {
+        "footer": [
+          "none",
+          "single",
+          "dual"
+        ]
+      },
+      "statesLayout": "matrix",
+      "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id bottom-sheet, 2026-09-15).",
+      "note": "정본에 상태 축·크기 축·Break 축이 없다 — Footer 한 축(None·Single·Dual)뿐이다. Action 은 실제로 열리는 시트이고 상태 칸은 지면에 눈혀 보여주는 검수 표시다(페이지 전용 CSS). 모바일 전용.",
+      "managedBy": "ui-library-guide"
+    },
+    "bottom-sheet-option": {
+      "platform": "mobile",
+      "archetype": "current-plus-action",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "states": [
+        "default",
+        "selected",
+        "disabled"
+      ],
+      "extraAxes": {
+        "type": [
+          "text",
+          "checkbox",
+          "radio",
+          "list"
+        ]
+      },
+      "statesLayout": "matrix",
+      "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id bottom-sheet, 2026-09-15).",
+      "note": "Type(행) × State(열) 매트릭스이되, 정본에 실재하는 칸은 12칸이 아니라 9칸이다 — checkbox:disabled·radio:disabled·list:selected 는 정본에 없어 빈 칸으로 둔다(manifest absentCombinations). 크기 축 없음. 모바일 전용.",
+      "managedBy": "ui-library-guide"
     }
   }
 }

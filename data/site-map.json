@@ -135,28 +135,7 @@
           "title": "Registry Explorer",
           "icon": "🗄",
           "href": "pages/registry-explorer.html",
-          "description": "Foundation / Semantic / Component / Raw JSON 탭 통합 — registry 원장 검수"
-        },
-        {
-          "id": "token-mapping",
-          "title": "Token Mapping",
-          "icon": "🔗",
-          "href": "pages/token-mapping.html",
-          "description": "Figma ↔ CSS / Legacy → Canonical / Alias · Deprecated 매핑 검수"
-        },
-        {
-          "id": "migration-board",
-          "title": "Migration Board",
-          "icon": "📊",
-          "href": "pages/migration-board.html",
-          "description": "canonical-token-promotion-plan 기반 승격 상태 추적"
-        },
-        {
-          "id": "registry-health",
-          "title": "System Status",
-          "icon": "💚",
-          "href": "pages/registry-health.html",
-          "description": "Registry 전체 상태 요약 — token count, component status, governance"
+          "description": "Foundation / Semantic / Raw JSON 탭 — registry 원장 검수"
         },
         {
           "id": "reports",
@@ -171,7 +150,22 @@
   "_archive": {
     "_note": "Archive 파일은 nav에서 제거됨. 직접 URL 접근 가능. 삭제 금지.",
     "items": [
-      { "id": "legacy",      "href": "pages/legacy.html" }
+      {
+        "id": "legacy",
+        "href": "pages/legacy.html"
+      },
+      {
+        "id": "token-mapping",
+        "href": "pages/token-mapping.html"
+      },
+      {
+        "id": "migration-board",
+        "href": "pages/migration-board.html"
+      },
+      {
+        "id": "registry-health",
+        "href": "pages/registry-health.html"
+      }
     ]
   },
   "statusLegend": {

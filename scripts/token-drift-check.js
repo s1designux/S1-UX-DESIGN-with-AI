@@ -73,6 +73,30 @@ function entriesOf(obj, out) {
   }
 }
 
+// ── 이름만 적어 둔 토큰 참조 수집 (2026-09-15 신설) ────────────────────────────
+// entriesOf 는 {name|cssVar} + {value|ref} 가 **둘 다** 있는 객체형만 인정한다.
+// 그런데 registry/components/*.json 의 대다수는 값 없이 **이름만** 적는다 — 두 모양:
+//   ① {"tokens": {"background": ["--color-button-bg-primary--default", …]}}   (문자열 배열)
+//   ② {"tokens": [{"cssVar": "--color-dropdown-list-bg", "part": …}]}          (value 없는 객체)
+// 이 둘이 빠져 27개 파일 중 22개가 통째로 미계측이었다(토큰명 268종이 안 보임).
+// 이름만 있는 경우 **그 이름 자체가 참조**다 — authorityCss 대조는 동일하게 성립한다.
+// 반환: Map<토큰이름, 그 이름이 나온 자리 설명> — 자리는 첫 발견만 기록(중복 제거).
+function bareRefsOf(obj, out, where) {
+  const put = (tok, at) => { if (/^--color-[a-z0-9-]+$/.test(tok) && !out.has(tok)) out.set(tok, at); };
+  if (typeof obj === 'string') { put(obj, where); return; }
+  if (Array.isArray(obj)) { obj.forEach((o, i) => bareRefsOf(o, out, where)); return; }
+  if (obj && typeof obj === 'object') {
+    // ② value 없는 객체형 — cssVar/name 자체가 참조
+    const nm = obj.cssVar || obj.name;
+    const hasValue = typeof (obj.value !== undefined ? obj.value : obj.ref) === 'string';
+    if (typeof nm === 'string' && !hasValue) {
+      const part = [obj.part, obj.state, obj.property].filter(Boolean).join('/');
+      put(nm, part ? `${where}.${part}` : where);
+    }
+    for (const [k, v] of Object.entries(obj)) bareRefsOf(v, out, where ? `${where}.${k}` : k);
+  }
+}
+
 (async function main() {
   // 권위 집합 = 컴포넌트 실사용 토큰 (+ 의도적 비사용/레이아웃 면제)
   const usedPaths = await builderColorKeys();
@@ -88,6 +112,7 @@ function entriesOf(obj, out) {
   files = files.filter((rel) => !isLegacyFile(rel));
 
   const drift = new Map();
+  const proseHits = new Map();   // 산문 언급(경고 전용 · 차단하지 않음)
   // 미계측 계수(2026-07-31) — entriesOf 는 {name|cssVar} + {value|ref} 형태의 "객체형" 엔트리만
   //   인정한다. registry/components/*.json 중 일부는 tokens 를 {"background": ["--a","--b"]} 처럼
   //   문자열 배열로 적어 두는데, 그러면 추출이 0건이 되고 그 파일은 통째로 검사에서 빠진다.
@@ -107,10 +132,11 @@ function entriesOf(obj, out) {
     try { data = JSON.parse(raw); }
     catch (e) { drift.set(`${rel}::PARSE`, `${rel}: JSON parse 실패 — ${e.message}`); continue; }
     const entries = []; entriesOf(data, entries);
+    const bare = new Map(); bareRefsOf(data, bare, '');
     // 파일 안에 실제로 토큰 이름이 있는가(접두 조각 제외) — 추출 0건이 "형식 때문"인지
     // "애초에 토큰이 없어서"인지 구분한다. 후자는 미계측이 아니다.
     const tokenNames = new Set([...raw.matchAll(/--[a-z0-9-]+/g)].map((m) => m[0]).filter((t) => !t.endsWith('-')));
-    scanStats.push({ rel, entries: entries.length, tokenNames: tokenNames.size });
+    scanStats.push({ rel, entries: entries.length, bare: bare.size, tokenNames: tokenNames.size });
     for (const e of entries) {
       const refs = [...e.value.matchAll(/var\((--color-[a-z0-9-]+)\)/g)].map((m) => m[1]);
       for (const r of refs) {
@@ -125,12 +151,32 @@ function entriesOf(obj, out) {
         drift.set(`${rel}::${e.name}::figmismatch`, `${rel} · ${e.name}: figmaVariable(${e.fig}→${toCss(e.fig)}) ↔ value(${refs[0]}) 불일치`);
       }
     }
+    // 이름만 적힌 참조 — 값이 없으니 figmismatch 는 성립하지 않고, 존재/사용 여부만 본다.
+    // entriesOf 가 이미 잡은 이름은 중복 보고하지 않는다.
+    const seen = new Set(entries.map((e) => e.name));
+    for (const [tok, at] of bare) {
+      if (seen.has(tok)) continue;
+      if (authorityCss.has(tok)) continue;
+      const where = at || '(root)';
+      if (!definedCss.has(tok)) drift.set(`${rel}::${tok}::removed-bare`, `${rel} · ${where}: 삭제된 토큰 이름 ${tok}`);
+      else drift.set(`${rel}::${tok}::unused-bare`, `${rel} · ${where}: 컴포넌트 미사용 토큰 이름 ${tok}`);
+    }
+    // ③ 산문 언급 (2026-09-15) — 설명·usage·doDont 문장 안에 박힌 토큰 이름.
+    //   선언이 아니라 글이라 차단하지 않는다. 그러나 이 검사기의 목적이 "옛 토큰 정보가
+    //   읽는 사람·AI 를 오도하는 것을 막는 것"이므로, 글 속의 옛 이름도 똑같이 오도한다.
+    //   → 경고로만 세어 보고한다(exit 코드 무관).
+    const declared = new Set([...seen, ...bare.keys()]);
+    for (const m of raw.matchAll(/--color-[a-z0-9-]+/g)) {
+      const tok = m[0];
+      if (tok.endsWith('-') || declared.has(tok) || authorityCss.has(tok)) continue;
+      proseHits.set(`${rel}::${tok}`, `${rel}: 설명글 속 ${tok} — ${definedCss.has(tok) ? '컴포넌트 미사용' : '삭제됨'}`);
+    }
   }
   const currentKeys = new Set(drift.keys());
 
   if (UPDATE) {
     fs.writeFileSync(BASELINE, JSON.stringify({
-      note: 'registry 비정본(descriptive) 데이터의 알려진 stale 목록. 기준=최신 컴포넌트 실사용 토큰(build-components). 새 stale 는 token-drift-check 가 차단. 줄면 --update-baseline.',
+      note: 'registry 비정본(descriptive) 데이터의 알려진 stale 목록. 기준=최신 컴포넌트 실사용 토큰(build-components). 새 stale 는 token-drift-check 가 차단. 줄면 --update-baseline. 2026-09-15: 추출을 값형(name+value) 하나에서 이름형(문자열 배열·value 없는 cssVar 객체)까지 넓혀 미계측 22파일→8파일, 보이는 엔트리 15→179 가 됐다. 78건 중 54건은 2026-09-14 재매칭으로 해소, 새로 보이게 된 3건이 더해져 27건.',
       count: currentKeys.size, knownDrift: [...currentKeys].sort(),
     }, null, 2) + '\n');
     console.log(`🔎 토큰 drift baseline 기록 — known ${currentKeys.size}건`);
@@ -153,14 +199,22 @@ function entriesOf(obj, out) {
   //     ② gate-check.js:537 의 실패 분기는 `•` 가 든 줄을 실패 항목으로 수집한다.
   //        아래 줄에는 `•` 를 쓰지 않는다(`-` 사용).
   const printScanReport = () => {
-    const uninstrumented = scanStats.filter((s) => s.entries === 0 && s.tokenNames > 0);
+    // 값형·이름형 어느 쪽으로도 선언이 없는 파일 = 토큰 이름이 '설명 문장 안에만' 있는 파일.
+    // 사각지대가 아니다 — 아래 산문 경고가 그 이름들을 따로 본다.
+    const proseOnly = scanStats.filter((s) => s.entries === 0 && s.bare === 0 && s.tokenNames > 0);
     const totalEntries = scanStats.reduce((n, s) => n + s.entries, 0);
-    console.log(`  ℹ️ 스캔 ${scanStats.length}파일 · 추출 ${totalEntries}엔트리 · 미계측 ${uninstrumented.length}파일`);
-    if (uninstrumented.length) {
-      console.log('     (아래는 토큰 이름이 있는데 추출 0건 — tokens 가 {name,value} 객체형이 아니라 검사에서 빠짐)');
-      uninstrumented.forEach((s) => console.log(`     - ${s.rel} (토큰명 ${s.tokenNames}종)`));
+    const totalBare = scanStats.reduce((n, s) => n + s.bare, 0);
+    console.log(`  ℹ️ 스캔 ${scanStats.length}파일 · 값형 ${totalEntries}엔트리 · 이름형 ${totalBare}엔트리 · 선언 없음(설명글만) ${proseOnly.length}파일`);
+    if (proseOnly.length) {
+      console.log('     (아래는 토큰 선언이 없고 설명 문장 안에만 이름이 있다 — 산문 경고로 본다)');
+      proseOnly.forEach((s) => console.log(`     - ${s.rel} (토큰명 ${s.tokenNames}종)`));
     }
-    console.log(`DRIFT_SUMMARY files=${scanStats.length} entries=${totalEntries} uninstrumented=${uninstrumented.length}`);
+    if (proseHits.size) {
+      console.log(`  ⚠️ 설명글 속 옛 토큰 이름 ${proseHits.size}건 (선언이 아니라 차단 안 함 — 읽는 사람·AI 를 오도할 수 있어 보고만)`);
+      [...proseHits.values()].slice(0, 12).forEach((v) => console.log(`     - ${v}`));
+      if (proseHits.size > 12) console.log(`     - … 외 ${proseHits.size - 12}건`);
+    }
+    console.log(`DRIFT_SUMMARY files=${scanStats.length} entries=${totalEntries} bare=${totalBare} prose=${proseHits.size} proseOnly=${proseOnly.length}`);
   };
 
   if (newItems.length) {

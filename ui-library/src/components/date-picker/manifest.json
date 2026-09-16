@@ -1,8 +1,8 @@
 {
   "id": "date-picker",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "status": "approved",
-  "canonicalFingerprint": "9e3ea10e77d57bc778c1e722ae1da5bf57371284be7eb1b37d20c4f8d0629e5d",
+  "canonicalFingerprint": "c59ab2f16738d0006ebce65d13a2792fc18f738378bff0615da113a9400b7ee3",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -259,12 +259,14 @@
     "css": [
       "assets/css/tokens.css",
       "assets/css/typography.css",
-      "components/button.css"
+      "components/button.css",
+      "components/bottom-sheet.css"
     ],
     "coreComponents": [
-      "button"
+      "button",
+      "bottom-sheet"
     ],
-    "coreComponentsNote": "모바일 바텀시트의 하단 '적용' 버튼은 승인된 button 코어(Variant=Primary, Size=LG) 인스턴스를 그대로 조립한다(build-components.ts buildDatePickerBottomSheet 3805-3824). date-picker 를 개별 설치할 때 button 의 CSS도 함께 로드해야 한다(button 은 jsRequired=false 라 JS 는 불필요)."
+    "coreComponentsNote": "모바일 바텀시트의 하단 '적용' 버튼은 승인된 button 코어(Variant=Primary, Size=LG) 인스턴스를 그대로 조립한다(build-components.ts buildDatePickerBottomSheet 3805-3824). 시트 껍데기(딤·패널·헤더·제목·닫기)는 2026-09-15 부터 bottom-sheet 코어 CSS 를 그대로 받는다 — date-picker.css 는 --s1-bottom-sheet-gap(32)·--s1-bottom-sheet-shadow(none) 두 손잡이만 준다(정본이 독립 시트와 값이 다르다). 여닫기·초점 가둠 런타임은 date-picker.js 가 계속 자체 소유한다(bottom-sheet.js 를 겹쳐 물리지 않는다 — 초점 가둠·스크롤 잠금 이중 배선 방지). date-picker 를 개별 설치할 때 button·bottom-sheet 의 CSS도 함께 로드해야 한다(button 은 jsRequired=false 라 JS 는 불필요, bottom-sheet 의 JS 는 로드하지 않는다)."
   },
   "icons": [
     {

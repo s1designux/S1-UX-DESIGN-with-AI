@@ -296,6 +296,299 @@ _Don't_
 - 상태는 :hover·:active·[disabled] 로 표현하고 별도 data 상태를 만들지 않는다.
 - 포커스 표시는 브라우저 기본값을 그대로 쓴다(정본에 별도 focus 표현이 없다).
 
+### Bottom Sheet
+
+모바일에서 화면 아래에서 올라오는 시트 그릇 3종(Footer None|Single|Dual). 딤 위에 제목·닫기(X)·본문 자리·푸터 버튼으로 뜬다. 본문은 슬롯이라 화면마다 갈아끼운다 — 기본 채움은 Bottom Sheet Option 줄이고, 날짜·시간 선택은 달력·휠을 넣어 쓴다. 모바일에서 드롭다운을 대신하는 자리다.
+
+**언제 쓰나**
+- 모바일에서 목록을 띄워 고르게 할 때 — 드롭다운 대신 쓴다(density-policy mobileSubstitutes.dropdown).
+- 모바일에서 날짜·시간처럼 넓은 선택 UI 를 띄울 때.
+- Footer=None 은 고르는 즉시 적용되는 목록, Single 은 '적용' 하나, Dual 은 '취소+적용'.
+
+**쓰지 말아야 할 때**
+- PC 화면 — PC 는 드롭다운·팝오버·모달을 쓴다. 정본 시트는 모바일 폭(360) 기준이다.
+- 확인·알림처럼 짧은 결정 — Modal 을 쓴다.
+- 비차단 알림 — 토스트·인라인 메시지.
+
+**구성 (Anatomy)**
+
+| 요소 | 역할 |
+| --- | --- |
+| 딤(backdrop) | 뒤 배경을 덮는 color-overlay 딤. 누르면 닫힌다. |
+| 패널 | 아래에 붙어 위 모서리만 둥근 시트면. 폭은 화면 폭(최대 360). |
+| 헤더 | 제목 ↔ 닫기(X). 좌우 여백 20. |
+| 본문(슬롯) | 화면이 채우는 자리. 컴포넌트는 빈 그릇만 소유한다. |
+| 푸터(선택) | 코어 Button 1개(Single) 또는 2개(Dual). Footer=None 이면 없다. |
+
+| variant | default | hover | pressed | disabled |
+| --- | --- | --- | --- | --- |
+| default | — | — | — | — |
+
+#### Agent-readable contract
+
+```yaml
+agent:
+  component: "Bottom Sheet"
+  variantAxes:
+    Footer:
+      - "None"
+      - "Single"
+      - "Dual"
+  states:
+    builder: "not-defined"
+    metadata: "unknown"
+  behavior:
+    platform: "PC"
+    status: "not-defined"
+  geometry:
+    common:
+      target: "root"
+      width: 360
+      height: 100
+      layoutMode: "VERTICAL"
+      primaryAxisSizingMode: "AUTO"
+      counterAxisSizingMode: "FIXED"
+      counterAxisAlignItems: "CENTER"
+      itemSpacing: "48"
+      paddingTop: "20"
+      paddingRight: "0"
+      paddingLeft: "0"
+      topLeftRadius: "8"
+      topRightRadius: "8"
+      bottomLeftRadius: "0"
+      bottomRightRadius: "0"
+    variants:
+      -
+        when:
+          Footer: "None"
+        paddingBottom: "40"
+      -
+        when:
+          Footer:
+            - "Single"
+            - "Dual"
+        paddingBottom: "20"
+  composition:
+    mustReuse:
+      - "Bottom Sheet Option"
+      - "Button"
+      - "button"
+      - "bottom-sheet-option"
+    mustNotCreate: "not-defined"
+    declaredParts:
+      - "content"
+      - "footer"
+  constraints: "unknown"
+  tokens:
+    figmaSemanticBindings:
+      - "border-width/1"
+      - "color/button/bg/primary--default"
+      - "color/button/bg/secondary--default"
+      - "color/button/border/primary--default"
+      - "color/button/border/secondary--default"
+      - "color/button/label/primary--default"
+      - "color/button/label/secondary--default"
+      - "color/surface/raised"
+      - "color/text/body/primary"
+      - "color/text/state/accent"
+      - "color/text/title/primary"
+      - "radius/4"
+      - "spacing/16"
+    aliasChains: "not-defined"
+  figma:
+    status: "available"
+    identifiers:
+      componentSetKey: "(미발행 — 라이브러리 publish 시 기록)"
+      fileKey: "cysG5U1udpQqVagYY1hWHW"
+    variants:
+      footer:
+        - "none"
+        - "single"
+        - "dual"
+  icons:
+    allowed:
+      - "ic_닫기 (V2.2 아이콘 라이브러리)"
+    slots: "unknown"
+```
+
+_Do_
+- 제목은 항상 둔다. 닫기(X)도 항상 둔다(정본 3변형 전부 헤더에 있다).
+- 푸터 버튼은 코어 Button 배포본(Mobile LG)을 그대로 조립한다.
+- 시트는 화면(body) 바로 아래에 둔다 — 상자 안에 넣으면 갇힌다.
+- 본문에 넣는 줄은 Bottom Sheet Option 을 쓴다. 새로 그리지 않는다.
+
+_Don't_
+- 시트 문구(실제 카피)를 컴포넌트 정본으로 넣지 않는다 — 예시일 뿐(UX라이팅 영역).
+- PC 용 크기를 만들지 않는다 — 정본에 없다.
+- 정본에 없는 층(부제·손잡이 바 등)을 임의로 만들지 않는다.
+
+**접근성 (a11y)**
+- 패널을 role=dialog · aria-modal=true 로 표시하고 aria-labelledby 로 제목을 연결한다.
+- 열릴 때 패널 안 첫 초점 요소로 초점을 옮기고, 닫힐 때 열기 전 초점 자리로 되돌린다.
+- 열려 있는 동안 Tab·Shift+Tab 은 패널 안에서만 순환한다(초점 가둠).
+- Esc 로 닫을 수 있게 한다. 닫기(X) 버튼에 '닫기' 이름을 준다.
+- 딤을 눌러도 닫힌다 — 닫기 수단이 키보드(Esc)·버튼·포인터 세 갈래로 모두 있다.
+- 열려 있는 동안 배경 스크롤을 잠근다. 시트·모달이 여럿이면 마지막 하나가 닫힐 때 되돌린다.
+
+### Bottom Sheet Option
+
+바텀시트 안에 놓이는 한 줄. Type 4종(Text·Checkbox·Radio·List) × State(Default·Selected·Disabled) 중 정본에 실재하는 9칸. Text·Checkbox·Radio 는 높이 48 고정, List 는 아바타+두 줄 글자라 내용만큼 늘어난다. 단독으로 쓰지 않고 Bottom Sheet 본문 안에서 쓴다.
+
+**언제 쓰나**
+- 바텀시트 본문에 고를 것을 줄로 늘어놓을 때.
+- Text = 한 값 고르기(고른 줄에 파란 체크), Checkbox = 여러 값 고르기, Radio = 한 값 고르기(동그라미 표시), List = 사람·항목처럼 아바타와 설명이 함께 있는 줄.
+
+**쓰지 말아야 할 때**
+- 바텀시트 밖 — PC 목록은 Dropdown 을 쓴다.
+- 표의 행 — Table 을 쓴다.
+
+**구성 (Anatomy)**
+
+| 요소 | 역할 |
+| --- | --- |
+| 라벨 | 줄의 글자. Text·Checkbox·Radio 공통. |
+| 체크 표시(선택) | Text 가 선택됐을 때 오른쪽에 붙는 파란 체크 아이콘. |
+| 컨트롤(선택) | Checkbox·Radio 코어 배포본 인스턴스. 복제하지 않는다. |
+| list-left(선택) | List 줄의 왼쪽 묶음 — 아바타 40 + 제목/서브 두 줄. |
+| 오른쪽 아이콘(선택) | List 는 기본이 화살표(chevron), 비활성이면 자물쇠(lock). |
+
+| variant | default | hover | pressed | disabled |
+| --- | --- | --- | --- | --- |
+| default | — | — | — | — |
+
+#### Agent-readable contract
+
+```yaml
+agent:
+  component: "Bottom Sheet Option"
+  variantAxes:
+    Type:
+      - "Text"
+      - "Checkbox"
+      - "Radio"
+      - "List"
+    State:
+      - "Default"
+      - "Selected"
+      - "Disabled"
+  states:
+    builder:
+      - "Default"
+      - "Selected"
+      - "Disabled"
+    metadata: "unknown"
+  behavior:
+    platform: "PC"
+    status: "not-defined"
+  geometry:
+    common:
+      target: "root"
+      width: 360
+      layoutMode: "HORIZONTAL"
+      primaryAxisSizingMode: "FIXED"
+      counterAxisAlignItems: "CENTER"
+      paddingRight: "20"
+      paddingLeft: "20"
+    variants:
+      -
+        when:
+          Type:
+            - "Text"
+            - "Checkbox"
+            - "Radio"
+        height: 48
+        counterAxisSizingMode: "FIXED"
+        primaryAxisAlignItems: "MIN"
+        itemSpacing: "8"
+        paddingTop: "8"
+        paddingBottom: "8"
+      -
+        when:
+          Type: "Text"
+          State: "Selected"
+        height: 48
+        counterAxisSizingMode: "FIXED"
+        primaryAxisAlignItems: "SPACE_BETWEEN"
+        itemSpacing: "8"
+        paddingTop: "8"
+        paddingBottom: "8"
+      -
+        when:
+          Type: "List"
+          State:
+            - "Default"
+            - "Disabled"
+        counterAxisSizingMode: "AUTO"
+        primaryAxisAlignItems: "SPACE_BETWEEN"
+        paddingTop: "12"
+        paddingBottom: "12"
+  composition:
+    mustReuse:
+      - "Checkbox"
+      - "Radio"
+      - "checkbox"
+      - "radio"
+    mustNotCreate: "not-defined"
+    declaredParts:
+      - "check"
+      - "checkbox"
+      - "chevron"
+      - "list-left"
+  constraints: "unknown"
+  tokens:
+    figmaSemanticBindings:
+      - "color/control/bg/default"
+      - "color/control/bg/selected"
+      - "color/control/border/default"
+      - "color/control/border/selected"
+      - "color/icon/gray-light"
+      - "color/surface/raised"
+      - "color/text/body/primary"
+      - "color/text/body/secondary"
+      - "color/text/state/accent"
+      - "color/text/state/disabled"
+    aliasChains: "not-defined"
+  figma:
+    status: "available"
+    identifiers:
+      componentSetKey: "(미발행 — 라이브러리 publish 시 기록)"
+      fileKey: "cysG5U1udpQqVagYY1hWHW"
+    variants:
+      type:
+        - "text"
+        - "checkbox"
+        - "radio"
+        - "list"
+      state:
+        - "default"
+        - "selected"
+        - "disabled"
+  icons:
+    allowed:
+      - "ic_확인 (V2.2)"
+      - "ic_화살표더보기 (V2.2)"
+      - "ic_계정/사용자/ID (V2.2)"
+      - "ic_잠김 (V2.2)"
+    slots: "unknown"
+```
+
+_Do_
+- Checkbox·Radio 는 코어 배포본을 그대로 넣는다.
+- 줄의 의미(고르기·이동)는 시트를 여는 화면이 ARIA 로 준다.
+- 정본에 있는 9칸만 쓴다.
+
+_Don't_
+- 선택된 줄에 배경색을 칠하지 않는다 — 정본은 글자색과 아이콘으로만 구분한다.
+- 정본에 없는 칸(Checkbox·Radio 의 비활성, List 의 선택됨)을 만들지 않는다.
+- Checkbox·Radio 코어 내부를 override 하지 않는다.
+
+**접근성 (a11y)**
+- 줄 자체는 모양만 소유한다 — 역할(role)·이름·선택 상태는 시트를 여는 화면이 준다.
+- Checkbox·Radio 는 native input 을 그대로 쓴다(코어 배포본의 계약).
+- Text 의 선택 표시(파란 체크)는 장식이다 — 선택 상태는 aria-selected·aria-checked 로 따로 알린다.
+- 비활성 줄은 disabled 또는 aria-disabled 로 알리고 초점 순서에서 뺀다.
+- List 의 아바타 아이콘은 장식이다 — 이름은 제목 글자가 갖는다.
+
 ### Button
 
 Core interactive button component. Primary / Secondary / Blue-line variants with PC 3 sizes and Mobile 1 size.
@@ -4656,7 +4949,7 @@ _Don't_
 - 같은 크기 단어가 컴포넌트마다 다른 높이를 뜻한다 — 버튼 md=44 인데 칩 md=34 다. 그래서 "전부 md 로" 는 줄을 어긋나게 만든다. 크기 단어 대신 밀도를 쓴다.
 - 밀도 선언은 한 화면에 한 번만 한다. 밀도 선언 안에 또 밀도 선언을 겹치면 안쪽이 이기지 않는다 — 다르게 할 자리는 겹치지 말고 그 컴포넌트에 data-size 를 직접 준다.
 - 감싸는 요소의 화면 구분(data-s1-break)을 화면이 떠 있는 동안 바꾸면, 날짜 선택은 그 값을 다시 읽지 않는다 — 바꾼 뒤 다시 초기화한다.
-- 모바일에서는 드롭다운 대신 바텀시트를 쓰고, 멀티 토글 대신 라디오(하나 고르기)나 체크박스(여러 개 고르기)를 쓴다 — 이 둘은 모바일 크기가 없다. 라디오·체크박스는 크기 축이 없어 그대로 쓰면 되고, 바텀시트는 아직 독립 부품이 없어 date-picker·time-picker 안의 시트 모양을 따른다.
+- 모바일에서는 드롭다운 대신 바텀시트를 쓰고, 멀티 토글 대신 라디오(하나 고르기)나 체크박스(여러 개 고르기)를 쓴다 — 이 둘은 모바일 크기가 없다. 라디오·체크박스는 크기 축이 없어 그대로 쓰면 되고, 바텀시트는 승인된 배포본 부품이 있다 — 시트 그릇(bottom-sheet)에 줄(bottom-sheet-option)을 넣어 쓴다(2026-09-15 승인).
 - 그 밀도에 맞는 크기가 없는 컴포넌트는 가장 가까운 크기로 대신한다 — 아래를 먼저 쓰고 아래가 없으면 위를 쓴다. 칩은 넓게에서 34, 멀티 토글·표는 좁게에서 34 가 된다.
 
 ## 9. Agent Prompt Guide
@@ -4700,4 +4993,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: ff5fbc2aa088 · 손편집 금지 -->
+<!-- generated-stamp: 3e1b3637ba0d · 손편집 금지 -->

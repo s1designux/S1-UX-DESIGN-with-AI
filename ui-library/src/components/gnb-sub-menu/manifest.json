@@ -1,8 +1,8 @@
 {
   "id": "gnb-sub-menu",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "status": "verified",
-  "canonicalFingerprint": "e4756685cee62326a722ec8fd8247f74dcc8bf5b41ce0789461bc641bb254766",
+  "canonicalFingerprint": "028bccfcfb230467026b3e19dbbdac5b8f63107088459e90272985f5025231e9",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -86,11 +86,11 @@
     },
     "keyboard": {
       "status": "not-applicable",
-      "reason": "Esc 로 닫는 동작과 Tab 순서 편입(river 결정 2026-09-15, gnb-nav 후속 — 트리거에서 Tab 하면 이 패널의 첫 링크로 들어가고, 마지막 링크에서 Tab 하면 패널이 닫히며 다음 트리거로 넘어간다)은 전부 패널을 여닫는 gnb 가 갖는다(이 컴포넌트는 jsRequired=false 그대로). 이 컴포넌트는 로컬 키보드 처리를 갖지 않는다."
+      "reason": "Esc 로 닫는 동작은 패널을 여닫는 gnb 가 갖는다(이 컴포넌트는 jsRequired=false 그대로). 이 컴포넌트는 로컬 키보드 처리를 갖지 않는다."
     },
     "focus": {
       "status": "not-applicable",
-      "reason": "정본에 포커스 가둠이 없고, 팝업이 아니라 펼침 영역이다 — 포커스를 패널 안에 가두지 않는다. gnb.js 가 Tab 을 이 패널 안으로 끼워 넣지만(river 결정 2026-09-15) 그것도 가둠이 아니라 순서 편입이다 — 패널 안 어디서도 Tab/Shift+Tab 을 계속 누르면 결국 패널을 벗어난다 — nav 안에 갈 곳이 없는 조립(유틸 영역 없는 GNB)에서는 gnb.js 가 Tab 을 가로채지 않고 브라우저가 GNB 바깥으로 넘긴다. 이 컴포넌트 자신은 그 초점 로직을 갖지 않는다."
+      "reason": "정본에 포커스 가둠이 없고, 팝업이 아니라 펼침 영역이다 — 포커스를 패널 안에 가두지 않는다."
     },
     "ariaStateSync": {
       "status": "required",

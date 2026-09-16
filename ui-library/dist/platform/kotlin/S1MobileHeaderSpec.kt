@@ -4,20 +4,12 @@
 package com.s1.designsystem
 
 object S1MobileHeaderSpec {
-    val variants: List<String> = listOf("home-title", "home-title-1icon", "home-title-subtitle", "standard-title", "standard-title-close", "standard-no-title", "standard-no-title-close")
+    val variants: List<String> = listOf("home-title", "home-title-subtitle", "standard-title", "standard-title-close", "standard-no-title", "standard-no-title-close")
 
     val boxes: Map<String, Map<String, S1Box>> = mapOf(
         "home-title" to mapOf(
             "root" to S1Box(background = S1Palette.colorBgHome, height = 56f, paddingStart = 20f, paddingEnd = 16f, paddingTop = 12f, paddingBottom = 12f),
             "title" to S1Box(foreground = S1Palette.colorTextTitlePrimary, minWidth = 0f, fontSize = 18f, lineHeight = 1.3f, fontWeight = 700)
-        ),
-        "home-title-1icon" to mapOf(
-            "root" to S1Box(background = S1Palette.colorBgHome, height = 56f, paddingStart = 20f, paddingEnd = 16f, paddingTop = 12f, paddingBottom = 12f, gap = 8f),
-            "title" to S1Box(foreground = S1Palette.colorTextTitlePrimary, minWidth = 0f, fontSize = 18f, lineHeight = 1.3f, fontWeight = 700),
-            "notification" to S1Box(height = 32f, width = 32f),
-            "notificationIcon" to S1Box(background = S1Palette.colorIconGrayDark, height = 24f, width = 24f, icon = "mobile-header-notification"),
-            "notificationDot" to S1Box(background = S1Palette.colorIconRed, left = 0f, right = 0f, icon = "mobile-header-notification-accent"),
-            "notificationHit" to S1Box(left = -6f, right = -6f)
         ),
         "home-title-subtitle" to mapOf(
             "root" to S1Box(background = S1Palette.colorBgHome, height = 56f, paddingStart = 20f, paddingEnd = 16f, paddingTop = 6f, paddingBottom = 6f),

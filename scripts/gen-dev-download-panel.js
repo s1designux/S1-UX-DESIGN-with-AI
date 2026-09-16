@@ -121,7 +121,7 @@ const TOOL_CARDS = [
     title: 'HTML · CSS · JavaScript',
     note: `${approved.length}종 전부 · 퍼블리싱 · jQuery · JSP·PHP 같은 서버 렌더링`,
     install: [
-      '압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 22종이 실제 모습으로 보입니다',
+      `압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 ${approved.length}종이 실제 모습으로 보입니다`,
       '아래 두 줄을 <code>&lt;head&gt;</code> 에 넣어 겉모습을 읽힙니다',
       '동작이 있는 컴포넌트는 <code>autoInit()</code> 한 번으로 전부 붙습니다'
     ],
@@ -137,7 +137,7 @@ const TOOL_CARDS = [
     title: 'React · Next.js',
     note: `${approved.length}종 전부 · JSX 빌드 도구 필요 · 서버 렌더링·타입 정의 포함`,
     install: [
-      '압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 22종이 실제 모습으로 보입니다',
+      `압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 ${approved.length}종이 실제 모습으로 보입니다`,
       '앱 진입 파일에서 겉모습 CSS 를 한 번 읽힙니다 (<code>tokens.css</code> · <code>s1-ui.css</code>)',
       '쓸 컴포넌트만 이름으로 꺼내 씁니다 — 아래는 그 한 줄입니다'
     ],
@@ -149,7 +149,7 @@ const TOOL_CARDS = [
     title: 'Vue',
     note: `${approved.length}종 전부 · SFC(.vue) 빌드 도구가 필요합니다`,
     install: [
-      '압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 22종이 실제 모습으로 보입니다',
+      `압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 ${approved.length}종이 실제 모습으로 보입니다`,
       '앱 진입 파일에서 겉모습 CSS 를 한 번 읽힙니다 (<code>tokens.css</code> · <code>s1-ui.css</code>)',
       '쓸 컴포넌트만 이름으로 꺼내 씁니다 — 아래는 그 한 줄입니다'
     ],
@@ -272,93 +272,107 @@ const caveat = [
     : ''
 ].filter(Boolean).join(' ');
 
-/* 머리말도 사실에서 만든다 — 툴 하나가 부품을 갖게 되면 문장이 따라 바뀐다. */
-const fullKeys = [...FACTS.values()].filter((facts) => facts.support === 'full').map((facts) => facts.key);
-const toolLead = ['쓰는 툴의 카드만 보면 됩니다.',
-  fullKeys.length ? `${nameList(fullKeys)} 는 컴포넌트 ${approved.length}종을 그대로 씁니다.` : '',
-  partsOnly.length ? `${nameList(partsOnly.map((facts) => facts.key))} 는 부품 ${partsOnly[0].componentCount}종과 텍스트 스타일까지 씁니다.` : '',
-  tokensOnly.length ? `${nameList(tokensOnly)} 는 색·크기 값과 동작 명세를 씁니다.` : ''
-].filter(Boolean).join(' ');
-
 const componentChips = approved
   .map(({ id }) => `<span class="devcomp-chip">${escape(id)}</span>`)
   .join('\n              ');
 
-const panel = `${START}
-      <div class="top-panel" id="top-dev">
-        <div class="install-steps">
+/* ── 패널 조립 ────────────────────────────────────────────────────────────
+   탭은 둘이다 — 퍼블리셔(마크업·CSS 로 화면을 짜는 사람)와 개발자(툴 안에서 부르는 사람).
+   두 탭은 같은 배포본 사실에서 나온다. 사람이 두 벌 적지 않으므로 어긋날 수 없다.
+   퍼블리셔 탭은 HTML·CSS·JavaScript 하나만 보여 준다 — 나머지 툴 문장은 읽을 이유가 없다.
+   개발자 탭은 여섯 툴 전부(HTML 카드 포함 — jQuery·JSP·PHP 처럼 서버에서 그리는 개발도 그 카드를 쓴다). */
+const PANELS = {
+  pub: {
+    id: 'top-pub',
+    toolKeys: ['html-css-js'],
+    kitTitle: 'S-1 UI 퍼블리싱 키트',
+    versionHowTo: '번호 읽는 법 — <code>node s1-ui/tools/s1-ui-lint.mjs --version</code>',
+    toolTitle: null,
+    caveat: false,
+    componentDesc: `${approved.length}종 전부 들어 있습니다. <code>examples/</code> 파일을 복사해 쓰고, 모바일용은 <code>*.mobile.html</code> 입니다.`
+  },
+  dev: {
+    id: 'top-dev',
+    toolKeys: TOOL_CARDS.map((tool) => tool.key),
+    kitTitle: 'S-1 UI 개발 키트',
+    versionHowTo: '번호 읽는 법 — 웹·React·Vue <code>node s1-ui/tools/s1-ui-lint.mjs --version</code> · Kotlin <code>S1Version.VERSION</code> · Swift <code>S1Version.version</code> · C++ <code>S1_UI_VERSION</code>',
+    toolTitle: '내 개발 툴에서 시작하기',
+    caveat: true,
+    componentDesc: `${approved.length}종 전부 들어 있습니다. HTML 은 <code>examples/</code> 파일을 복사해 쓰고(모바일용 <code>*.mobile.html</code>), React·Vue 는 이름 앞에 <code>S1</code> 을 붙입니다 — <code>input → S1Input</code>.`
+  }
+};
 
-          <!-- 받기 -->
+function buildPanel(spec) {
+  const cards = TOOL_CARDS.filter((tool) => spec.toolKeys.includes(tool.key));
+  return `      <div class="top-panel" id="${spec.id}">
+        <div class="install-steps">
           <div class="install-step">
+
+            <!-- 머리말 — 두 단이 함께 쓰는 하나의 제목 -->
             <div class="step-header">
               <div>
                 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                  <div class="step-title">S1 UI 라이브러리 배포본 <span class="ver-badge">${escape(manifest.version)}</span></div>
+                  <div class="step-title">${escape(spec.kitTitle)} <span class="ver-badge">${escape(manifest.version)}</span></div>
                 </div>
               </div>
             </div>
-            <div class="devget-row">
-              <div class="devget-item">
-                <div class="devget-label">항상 최신으로 쓰려면</div>
-                <div class="devget-body">저장소를 그대로 참조하면 디자인이 고칠 때 같이 최신이 됩니다.
-                  <a class="devget-link" href="${REPOSITORY}/tree/main/ui-library/dist" target="_blank" rel="noopener">${REPOSITORY.replace('https://', '')}/ui-library/dist ↗</a>
+
+            <div class="devpanel-2col">
+
+              <!-- 왼쪽 단 — 받기 -->
+              <div class="devpanel-main">
+                <div class="devtool-grid${cards.length === 1 ? ' devtool-grid-single' : ''}">
+${cards.map(toolCard).join('\n')}
+                </div>
+${spec.caveat ? `                <p class="devtool-caveat">${caveat}</p>\n` : ''}              </div>
+
+              <!-- 오른쪽 단 — 안내 -->
+              <div class="devpanel-side">
+                <div class="devget-row">
+                  <div class="devget-item">
+                    <div class="devget-label">안내 1</div>
+                    <div class="devget-body">저장소를 그대로 참조하면 늘 최신입니다.
+                      <a class="devget-link" href="${REPOSITORY}/tree/main/ui-library/dist" target="_blank" rel="noopener">${REPOSITORY.replace('https://', '')}/ui-library/dist ↗</a>
+                    </div>
+                  </div>
+                  <div class="devget-item">
+                    <div class="devget-label">안내 2</div>
+                    <div class="devget-body">최신은 <strong>${escape(manifest.version)}</strong> (${escape(manifest.releasedAt)}). 내 번호가 이보다 낮으면 다시 받으세요.
+                      <div class="devget-body" style="margin-top:6px;">${spec.versionHowTo}</div>
+                      <div class="devget-fingerprint">${escape(manifest.canonicalFingerprint)}</div>
+                    </div>
+                  </div>
+                  <div class="devget-item">
+                    <div class="devget-label">안내 3</div>
+                    <div class="devget-body">${spec.componentDesc}
+                      <div class="devget-body" style="margin-top:6px;"><a class="devget-link" href="../ui-library/dist/preview.html" target="_blank" rel="noopener">실제 모습으로 보기 ↗</a></div>
+                    </div>
+                    <div class="devcomp-list">
+                  ${componentChips}
+                    </div>
+                  </div>
+                  <div class="devget-item">
+                    <div class="devget-label">안내 4</div>
+                    <div class="devget-body">직접 적은 색, 없는 variant·size, 빠진 필수 속성, 없는 토큰을 찾아 줍니다.</div>
+                    <pre class="devtool-code"><code>node s1-ui/tools/s1-ui-lint.mjs &lt;내 소스 폴더&gt;</code></pre>
+                    <div class="devask">
+                      <strong>필요한 것이 없으면 만들지 마세요.</strong>
+                      디자인팀에 요청해 주세요 — 임시로 만든 것은 나중에 다 걷어내야 합니다.
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="devget-item">
-                <div class="devget-label">내 배포본이 최신인지 확인</div>
-                <div class="devget-body">지금 최신은 <strong>${escape(manifest.version)}</strong> (${escape(manifest.releasedAt)} 판)입니다. 내 것의 번호가 이것보다 낮으면 다시 받으세요.
-                  <div class="devget-body" style="margin-top:6px;">번호 읽는 법 — 웹·React·Vue <code>node s1-ui/tools/s1-ui-lint.mjs --version</code> · Kotlin <code>S1Version.VERSION</code> · Swift <code>S1Version.version</code> · C++ <code>S1_UI_VERSION</code></div>
-                  <div class="devget-fingerprint">${escape(manifest.canonicalFingerprint)}</div>
-                </div>
-              </div>
+
             </div>
           </div>
-
-          <!-- 툴별 -->
-          <div class="install-step">
-            <div class="step-header">
-              <div>
-                <div class="step-title">내 개발 툴에서 시작하기</div>
-                <div class="step-desc">${toolLead}</div>
-              </div>
-            </div>
-            <div class="devtool-grid">
-${TOOL_CARDS.map(toolCard).join('\n')}
-            </div>
-            <p class="devtool-caveat">${caveat}</p>
-          </div>
-
-          <!-- 들어있는 컴포넌트 -->
-          <div class="install-step">
-            <div class="step-header">
-              <div>
-                <div class="step-title">들어있는 컴포넌트 ${approved.length}종</div>
-                <div class="step-desc" style="margin-bottom:2px;"><a class="devget-link" href="../ui-library/dist/preview.html" target="_blank" rel="noopener">실제 모습으로 보기 ↗</a> — 크기·변형과 "언제 쓰나"가 함께 보입니다</div>
-                <div class="step-desc">아래 ${approved.length}종이 모두 들어 있습니다. HTML 은 <code>examples/</code> 폴더의 파일을 복사해서 쓰고(모바일용은 <code>*.mobile.html</code>), React·Vue 는 이름 앞에 <code>S1</code> 을 붙여 부릅니다 — <code>input → S1Input</code> · <code>date-picker → S1DatePicker</code></div>
-              </div>
-            </div>
-            <div class="devcomp-list">
-              ${componentChips}
-            </div>
-          </div>
-
-          <!-- 검사 -->
-          <div class="install-step">
-            <div class="step-header">
-              <div>
-                <div class="step-title">내가 만든 것이 규칙에 맞는지 검사하기</div>
-                <div class="step-desc">직접 적은 색, 승인되지 않은 variant·size, 빠진 필수 속성, 없는 토큰 이름을 찾아 줍니다</div>
-              </div>
-            </div>
-            <pre class="devtool-code"><code>node s1-ui/tools/s1-ui-lint.mjs &lt;내 소스 폴더&gt;</code></pre>
-            <div class="devask">
-              <strong>필요한 것이 없으면 만들지 마세요.</strong>
-              디자인에 없는 컴포넌트·색이 필요하면 디자인팀에 요청해 주세요. 임시로 만든 것은 나중에 전부 다시 걷어내야 합니다.
-            </div>
-          </div>
-
         </div>
-      </div><!-- /top-dev -->
+      </div><!-- /${spec.id} -->`;
+}
+
+const panel = `${START}
+${buildPanel(PANELS.pub)}
+
+${buildPanel(PANELS.dev)}
       ${END}`;
 
 const page = fs.readFileSync(PAGE, 'utf8');

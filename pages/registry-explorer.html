@@ -187,14 +187,13 @@
 
     <div class="page-header">
       <h1 class="page-title">Registry Explorer</h1>
-      <p class="page-desc">Registry 원장 데이터 검수용 Admin 화면 — Foundation / Semantic / Component / Raw JSON</p>
+      <p class="page-desc">Registry 원장 데이터 검수용 Admin 화면 — Foundation / Semantic / Raw JSON</p>
     </div>
 
     <div class="page-content">
       <div class="admin-tabs" role="tablist">
         <button class="admin-tab active" data-tab="foundation" role="tab">Foundation</button>
         <button class="admin-tab" data-tab="semantic" role="tab">Semantic</button>
-        <button class="admin-tab" data-tab="component" role="tab">Component</button>
         <button class="admin-tab" data-tab="raw" role="tab">Raw JSON</button>
       </div>
 
@@ -204,10 +203,6 @@
 
       <section class="admin-tab-panel" data-panel="semantic">
         <div id="panel-semantic"><div class="empty-note">Semantic registry 로드 중...</div></div>
-      </section>
-
-      <section class="admin-tab-panel" data-panel="component">
-        <div id="panel-component"><div class="empty-note">Component registry 로드 중...</div></div>
       </section>
 
       <section class="admin-tab-panel" data-panel="raw">
@@ -226,15 +221,17 @@
   /* ============================================================
      Registry Explorer
      ------------------------------------------------------------
-     - foundation.colors.json / semantic.colors.json /
-       component.tokens.json 을 로드하여 4개 탭으로 표시
+     - foundation.colors.json / semantic.colors.json 을 로드하여 3개 탭으로 표시
+       (Component 탭은 2026-09-15 제거 — 유일 소스가 은퇴한 별칭 토큰층이었다)
      - 모든 데이터는 graceful fallback 처리
      ============================================================ */
 
   const FILES = {
     foundation: 'registry/tokens/foundation.colors.json',
     semantic:   'registry/tokens/semantic.colors.json',
-    component:  'registry/tokens/component.tokens.json',
+    // component: registry/tokens/component.tokens.json 은 2026-07-02 은퇴한 '컴포넌트-별칭 토큰층'이라
+    //   이 화면의 Component 탭을 2026-09-15 에 걷어냈다(river 결정). 그 파일은 legacyFiles 격리 대상이고
+    //   현행 정본은 build-components.ts 가 semantic 에 직접 바인딩한다. 부품별 실측은 component-facts.json.
     canonical:  'registry/tokens/canonical-token-draft.json',
   };
 
@@ -479,119 +476,6 @@
   }
 
   /* ============================================================
-     Tab 3 · Component
-     component.tokens.json 구조:
-       meta.{ name, version, status, updatedAt, source }
-       tokens.{ groupName: [array] OR { variant: [array] } }
-       (예: tokens.button.primary[], tokens.chip[])
-     ============================================================ */
-  function renderComponent(container, data) {
-    if (!data || typeof data !== 'object') {
-      renderError(container, 'Component registry 데이터가 비어 있습니다.');
-      return;
-    }
-    const meta = data.meta || {};
-    const tokens = data.tokens || {};
-    const groupEntries = Object.entries(tokens);
-
-    let totalTokens = 0;
-    const groupRows = groupEntries.map(([groupKey, groupVal]) => {
-      let count = 0;
-      let variants = [];
-      const statuses = new Set();
-      if (Array.isArray(groupVal)) {
-        count = groupVal.length;
-        variants = []; // flat group, no variant split
-        groupVal.forEach(t => {
-          if (t && t.status) statuses.add(t.status);
-        });
-      } else if (groupVal && typeof groupVal === 'object') {
-        Object.entries(groupVal).forEach(([variantName, arr]) => {
-          const list = Array.isArray(arr) ? arr : [];
-          count += list.length;
-          variants.push(`${variantName}(${list.length})`);
-          list.forEach(t => {
-            if (t && t.status) statuses.add(t.status);
-          });
-        });
-      }
-      totalTokens += count;
-      return {
-        groupKey,
-        count,
-        variants,
-        statuses: Array.from(statuses),
-      };
-    });
-
-    const summaryHtml = `
-      <div class="summary-card-grid">
-        <div class="summary-card">
-          <div class="summary-card-value">${totalTokens}</div>
-          <div class="summary-card-label">Component 토큰 총 수</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-card-value">${groupEntries.length}</div>
-          <div class="summary-card-label">컴포넌트 그룹 수</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-card-value">${escapeHtml(meta.version || '-')}</div>
-          <div class="summary-card-label">Version</div>
-          <div class="summary-card-meta">${escapeHtml(meta.updatedAt || '')}</div>
-        </div>
-        <div class="summary-card">
-          <div class="summary-card-value">${safeBadge(meta.status)}</div>
-          <div class="summary-card-label">Meta status</div>
-          <div class="summary-card-meta">${escapeHtml(meta.source || '')}</div>
-        </div>
-      </div>
-    `;
-
-    const rowsHtml = groupRows.length
-      ? groupRows.map(r => {
-          const variantStr = r.variants.length
-            ? r.variants.map(v => `<span class="var-pill">${escapeHtml(v)}</span>`).join(' ')
-            : '<span style="color:#9ca3af">flat</span>';
-          const statusStr = r.statuses.length
-            ? r.statuses.map(s => safeBadge(s)).join(' ')
-            : safeBadge('unknown');
-          return `
-            <tr>
-              <td class="col-mono">${escapeHtml(r.groupKey)}</td>
-              <td class="col-num">${r.count}</td>
-              <td>${variantStr}</td>
-              <td>${statusStr}</td>
-            </tr>
-          `;
-        }).join('')
-      : `<tr><td colspan="4" class="empty-note">컴포넌트 그룹이 없습니다.</td></tr>`;
-
-    container.innerHTML = `
-      <div class="admin-section">
-        <h2>${escapeHtml(meta.name || 'Component Tokens')}</h2>
-        <div class="admin-section-meta">
-          source: <code>${escapeHtml(meta.source || '-')}</code>
-          ${meta.description ? ` · ${escapeHtml(meta.description)}` : ''}
-        </div>
-        ${summaryHtml}
-        <div class="admin-table-wrap">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>컴포넌트 그룹</th>
-                <th>토큰 수</th>
-                <th>variant 목록</th>
-                <th>상태</th>
-              </tr>
-            </thead>
-            <tbody>${rowsHtml}</tbody>
-          </table>
-        </div>
-      </div>
-    `;
-  }
-
-  /* ============================================================
      Tab 4 · Raw JSON
      3개 파일 (foundation / semantic / component) 접기/펼치기
      ============================================================ */
@@ -599,7 +483,6 @@
     const blocks = [
       { key: 'foundation', label: FILES.foundation, payload: payloads.foundation },
       { key: 'semantic',   label: FILES.semantic,   payload: payloads.semantic },
-      { key: 'component',  label: FILES.component,  payload: payloads.component },
     ];
 
     const html = blocks.map(b => {
@@ -660,11 +543,10 @@
       tab.addEventListener('click', () => setActiveTab(tab.dataset.tab));
     });
 
-    // Load all 3 files in parallel
-    const [foundationRes, semanticRes, componentRes] = await Promise.all([
+    // Load both files in parallel
+    const [foundationRes, semanticRes] = await Promise.all([
       loadJson(FILES.foundation),
       loadJson(FILES.semantic),
-      loadJson(FILES.component),
     ]);
 
     // Tab 1 · Foundation
@@ -683,20 +565,11 @@
       renderSemantic(scEl, semanticRes.data);
     }
 
-    // Tab 3 · Component
-    const ctEl = document.getElementById('panel-component');
-    if (componentRes.error) {
-      renderError(ctEl, componentRes.error);
-    } else {
-      renderComponent(ctEl, componentRes.data);
-    }
-
-    // Tab 4 · Raw JSON
+    // Tab 3 · Raw JSON
     const rawEl = document.getElementById('panel-raw');
     renderRawJson(rawEl, {
       foundation: foundationRes,
       semantic: semanticRes,
-      component: componentRes,
     });
   });
 })();

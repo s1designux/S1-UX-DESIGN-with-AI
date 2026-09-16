@@ -176,6 +176,30 @@
         </div>
       </div>
     </div>
+    <button type="button" data-s1-component="button" data-variant="secondary" data-size="md" data-consumer-open-bottom-sheet><span data-s1-part="label">바텀시트 열기</span></button>
+    <div data-s1-component="bottom-sheet" data-s1-part="sheet" data-break="mobile" data-footer="single" hidden>
+      <div data-s1-part="sheet-backdrop"></div>
+      <div data-s1-part="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="consumer-bottom-sheet-title" tabindex="-1">
+        <div data-s1-part="sheet-content">
+          <div data-s1-part="sheet-header">
+            <span data-s1-part="sheet-title" id="consumer-bottom-sheet-title">항목 선택</span>
+            <button type="button" data-s1-part="sheet-close" aria-label="닫기"></button>
+          </div>
+          <div data-s1-part="sheet-body">
+            <div data-s1-component="bottom-sheet-option" data-type="text" data-state="default">
+              <span data-s1-part="label">항목 1</span>
+            </div>
+            <div data-s1-component="bottom-sheet-option" data-type="text" data-state="selected">
+              <span data-s1-part="label">항목 2</span>
+              <span data-s1-part="check" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+        <div data-s1-part="sheet-footer">
+          <button type="button" data-s1-component="button" data-variant="primary" data-size="lg" data-consumer-close-bottom-sheet><span data-s1-part="label">적용</span></button>
+        </div>
+      </div>
+    </div>
     <!-- 정본은 "탭 한 칸"만 부품으로 만들고 4칸 바는 부품이 아니다(build-components.ts:3354).
          바의 가로 배열·배경은 화면 소유라 이 빈 소비자 화면에서는 일부러 칠하지 않는다 —
          여기서 증명할 것은 "배포본만으로 탭 한 칸이 제대로 보이나"이고, 부품이 아닌 것을
@@ -342,12 +366,15 @@
   </main>
   <script type="module">
     import { autoInit } from "../dist/s1-ui.auto.js";
-    import { checkbox, radio, textarea, modal, mobileBottomNav, mobileHeader, gnb, gnbSubMenuItem, gnbSubMenu, assistButton, textButton, modalContent } from "../dist/s1-ui.js";
-    if (checkbox.jsRequired || radio.jsRequired || textarea.jsRequired || mobileBottomNav.jsRequired || mobileHeader.jsRequired || gnbSubMenuItem.jsRequired || gnbSubMenu.jsRequired || assistButton.jsRequired || textButton.jsRequired) {
-      throw new Error("checkbox·radio·textarea·mobile-bottom-nav·mobile-header·gnb-sub-menu-item·gnb-sub-menu·assist-button·text-button은 런타임 없이 동작해야 합니다.");
+    import { checkbox, radio, textarea, modal, mobileBottomNav, mobileHeader, gnb, gnbSubMenuItem, gnbSubMenu, assistButton, textButton, modalContent, bottomSheet, bottomSheetOption } from "../dist/s1-ui.js";
+    if (checkbox.jsRequired || radio.jsRequired || textarea.jsRequired || mobileBottomNav.jsRequired || mobileHeader.jsRequired || gnbSubMenuItem.jsRequired || gnbSubMenu.jsRequired || assistButton.jsRequired || textButton.jsRequired || bottomSheetOption.jsRequired) {
+      throw new Error("checkbox·radio·textarea·mobile-bottom-nav·mobile-header·gnb-sub-menu-item·gnb-sub-menu·assist-button·text-button·bottom-sheet-option은 런타임 없이 동작해야 합니다.");
     }
     if (!modalContent.jsRequired) {
       throw new Error("modal-content는 런타임이 필요합니다.");
+    }
+    if (!bottomSheet.jsRequired) {
+      throw new Error("bottom-sheet는 런타임이 필요합니다.");
     }
     /* gnb 는 2026-09-09부터 하위메뉴 여닫는 런타임을 갖는다(D4·D5) — jsRequired=true 여야 한다. */
     if (!gnb.jsRequired) {
@@ -362,6 +389,10 @@
     const consumerModalContentApi = modalContent.init(consumerModalContent);
     document.querySelector("[data-consumer-open-modal-content]")?.addEventListener("click", () => consumerModalContentApi?.open());
     consumerModalContent?.querySelectorAll("[data-consumer-close-modal-content]").forEach((button) => button.addEventListener("click", () => consumerModalContentApi?.close({ reason: "footer-button" })));
+    const consumerBottomSheet = document.querySelector('[data-s1-component="bottom-sheet"]');
+    const consumerBottomSheetApi = bottomSheet.init(consumerBottomSheet);
+    document.querySelector("[data-consumer-open-bottom-sheet]")?.addEventListener("click", () => consumerBottomSheetApi?.open());
+    consumerBottomSheet?.querySelectorAll("[data-consumer-close-bottom-sheet]").forEach((button) => button.addEventListener("click", () => consumerBottomSheetApi?.close({ reason: "footer-button" })));
   </script>
 </body>
 </html>

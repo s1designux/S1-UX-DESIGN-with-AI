@@ -388,6 +388,28 @@ try {
   fail(`Gate 9d 실행 실패: ${e.message}`);
 }
 
+// ── Gate 9e: Component Facts (생성물 드리프트) ─────────────────────
+// registry/components/component-facts.json 은 build-components.ts 를 mock 실행해 뽑는 생성물이다.
+// 손편집하면 "기계가 뽑았으니 믿을 수 있다"는 전제가 조용히 깨진다 — 이 파일을 근거로 삼는
+// 도구가 10개다(gen-design-md·token-reconcile·component-geometry-check 등).
+// 계획 Phase 4 가 신설을 예고했으나 배선되지 않은 채 남아 있었다(2026-09-15 인계 감사에서 발견).
+gateHeader('[Gate 9e] 부품사실 생성물 검사기 (Component Facts)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/gen-component-facts.js')], { encoding: 'utf-8' });
+  const out = ((r.stdout || '') + (r.stderr || '')).split('\n').filter((l) => l.trim());
+  if (r.status === 0) {
+    const ok = out.find((l) => l.includes('✅'));
+    pass(ok ? ok.replace(/^\s*✅\s*/, '').trim() : 'component facts 정본 일치');
+  } else {
+    const bad = out.filter((l) => l.includes('❌'));
+    if (bad.length === 0) fail(`Gate 9e: component-facts.json 이 정본과 어긋남 (exit ${r.status}) — npm run components:facts:write`);
+    else for (const l of bad) fail(`Gate 9e: ${l.replace(/^\s*❌\s*/, '').trim()}`);
+  }
+} catch (e) {
+  fail(`Gate 9e 실행 실패: ${e.message}`);
+}
+
 // ── Gate 10: Doc Token Reference Drift ────────────────────────────
 // 가이드/레퍼런스 HTML 이 rename·삭제된 토큰명을 쥐고 있는지 강제.
 // Check B(rename denylist)=차단 · Check A(미정의 --color-* 참조)=경고(기존 드리프트)
@@ -612,6 +634,10 @@ try {
     pass(`비정본 registry 새 stale 0 (정본=vars-data/build-components)${m ? ` · 알려진 backlog ${m[1]}건` : ''}`);
     if (m && Number(m[1]) > 0) warn(`비정본 registry 알려진 stale ${m[1]}건 (옛 토큰 정보 — 믿지 말 것, 정본 참조). 상세: node scripts/token-drift-check.js`);
     if (m && Number(m[3]) > 0) warn(`drift ${m[3]}건 해소됨 — baseline 갱신 권장: node scripts/token-drift-check.js --update-baseline`);
+    // 산문 언급(2026-09-15) — 선언이 아니라 차단하지 않지만, 옛 이름이 설명글에 남아 있으면
+    // registry 를 읽는 사람·AI 가 그대로 믿는다. 경고로 보이게만 한다.
+    const pm = out.match(/DRIFT_SUMMARY .*\bprose=(\d+)/);
+    if (pm && Number(pm[1]) > 0) warn(`registry 설명글 속 옛 토큰 이름 ${pm[1]}건 (선언 아님 · 비차단 — 읽는 쪽을 오도할 수 있음). 상세: node scripts/token-drift-check.js`);
   } else {
     const lines = out.split('\n').filter((l) => l.includes('•'));
     for (const l of lines) fail(l.replace(/^\s*•\s*/, '').trim());

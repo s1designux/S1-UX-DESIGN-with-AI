@@ -41,7 +41,7 @@ import androidx.compose.ui.text.style.TextOverflow
  * 상태바는 부품에 없다. 안드로이드에서는 OS 가 그리는 영역이라 우리가 그리면 가짜가 된다
  * (웹 배포본과 같은 경계 — river 결정 D5).
  *
- * 쓸 수 있는 유형: home-title · home-title-1icon · home-title-subtitle · standard-title · standard-title-close · standard-no-title · standard-no-title-close
+ * 쓸 수 있는 유형: home-title · home-title-subtitle · standard-title · standard-title-close · standard-no-title · standard-no-title-close
  */
 @Composable
 fun S1MobileHeader(

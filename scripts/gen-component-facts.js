@@ -196,7 +196,10 @@ async function main() {
     if (changed) fs.writeFileSync(OUT, content);
     console.log(changed ? `  ✍️  작성함: ${OUT_REL}` : `  = 최신: ${OUT_REL}`);
   } else {
-    console.log(changed ? `  변경감지: ${OUT_REL}` : `  최신: ${OUT_REL}`);
+    // 검사 모드 출력 규약(2026-09-15): Gate 9e 가 ✅/❌ 로 판정을 읽는다. 형제 생성기(9c·9d)와 같은 모양.
+    console.log(changed
+      ? `  ❌ component-facts.json 이 정본(build-components.ts)과 어긋남 — 손편집이거나 재생성 누락. npm run components:facts:write`
+      : `  ✅ component facts 정본 일치 (${OUT_REL})`);
   }
   process.exitCode = !WRITE && changed ? 1 : 0;
 }

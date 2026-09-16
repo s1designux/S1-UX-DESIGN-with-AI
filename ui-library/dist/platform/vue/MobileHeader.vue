@@ -10,7 +10,7 @@ const MARKUPS = {
 };
 const DEFAULT_BREAK = "pc";
 const BREAKS = ["pc"];
-const VARIANTS = ["home-title","home-title-1icon","home-title-subtitle","standard-title","standard-title-close","standard-no-title","standard-no-title-close"];
+const VARIANTS = ["home-title","home-title-subtitle","standard-title","standard-title-close","standard-no-title","standard-no-title-close"];
 const SIZES = [];
 /* variant·size 속성 이름은 컴포넌트마다 다르다 — 승인된 마크업에서 읽어 온 것이다. */
 const VARIANT_ATTRIBUTE = "data-variant";
@@ -21,7 +21,7 @@ const SIZE_ATTRIBUTE = null;
    그래서 허용목록을 리터럴로 박아 넣는다. 값의 출처는 위 상수와 같은 manifest 다.
    (2026-09-04 독립 검증에서 19종 전부 컴파일 실패로 발견) */
 const props = defineProps({
-  variant: { type: String, default: undefined, validator: (value) => ["home-title","home-title-1icon","home-title-subtitle","standard-title","standard-title-close","standard-no-title","standard-no-title-close"].includes(value) },
+  variant: { type: String, default: undefined, validator: (value) => ["home-title","home-title-subtitle","standard-title","standard-title-close","standard-no-title","standard-no-title-close"].includes(value) },
   size: { type: String, default: undefined, validator: (value) => true },
   breakName: { type: String, default: "pc", validator: (value) => ["pc"].includes(value) },
   parts: { type: Object, default: () => ({}) },

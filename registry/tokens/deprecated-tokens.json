@@ -287,6 +287,26 @@
       "path": "registry/tokens/legacy/semantic.colors.json",
       "reason": "역할기반 토큰 목록(--color-bg-default 등). 46개 중 43개가 정본(vars-data)에 없는 별개 계보이고 Gate 7 실제 대조는 2건뿐이었다. 역할 토큰의 실제 정본은 assets/css/site-base.css. 검사 제외.",
       "since": "2026-08-01"
+    },
+    {
+      "path": "pages/token-mapping.html",
+      "reason": "Figma↔CSS 매핑 검수 뷰어 — 2026-09-15 은퇴(river 결정). 옛 토큰명을 매핑 표에 들고 있어 검사 제외.",
+      "since": "2026-09-15"
+    },
+    {
+      "path": "pages/migration-board.html",
+      "reason": "토큰 승격 추적 뷰어 — 2026-09-15 은퇴(river 결정). 전환 완료로 역할 종료.",
+      "since": "2026-09-15"
+    },
+    {
+      "path": "pages/registry-health.html",
+      "reason": "Registry 상태 요약 뷰어 — 2026-09-15 은퇴(river 결정). 로드 고장 상태였고 대시보드가 역할 승계.",
+      "since": "2026-09-15"
+    },
+    {
+      "path": "assets/js/registry-health.js",
+      "reason": "위 registry-health.html 전용 렌더러 — 소비자 은퇴로 함께 격리.",
+      "since": "2026-09-15"
     }
   ]
 }
