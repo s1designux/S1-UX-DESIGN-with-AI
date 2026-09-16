@@ -5657,6 +5657,8 @@ const MODAL_CONTENT_GEO: Record<ModalContentSize, { w: number; h: number }> = {
   XL: { w: 1200, h: 587 },
 };
 
+const MODAL_CONTENT_SLOT_DESC = "모달 본문이 놓이는 자리. 기본은 \"컨텐츠 영역\" 자리표시 네모칸이며, 그것을 빼고 입력 폼·표·이미지 등 무엇이든 넣을 수 있다. 제목·닫기(X)와 푸터 버튼은 슬롯 밖 고정 영역이다.";
+
 async function buildModalContent(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   type MCFooter = "Single" | "Dual";
   const FOOTERS: MCFooter[] = ["Single", "Dual"];
@@ -5736,7 +5738,18 @@ async function buildModalContent(maps: BuildMaps, originY: number): Promise<{ se
       bodyWrap.setBoundVariable("paddingRight", num("spacing/24"));
       comp.insertChild(1, bodyWrap);
       try { bodyWrap.layoutAlign = "STRETCH"; bodyWrap.layoutGrow = 1; } catch (e) { /* */ }
-      bodyWrap.appendChild(body);
+      // 본문이 놓이는 자리를 Figma 슬롯("Content")으로 만든다 — 자리표시 네모칸은 슬롯의 기본 내용으로
+      //   그 안에 들어간다(river 지시 2026-09-16: "슬롯 영역으로 교체 후 그 위치에 컨텐츠 영역 네모칸을 넣으면 돼").
+      //   확인 계열 Modal 의 "Content" 슬롯(2026-09-03)·Dropdown "Options"·Tab "Tabs" 와 같은 방식이다.
+      //   좌우 여백 24 는 슬롯 밖(content-area)에 그대로 남는다 — 넣는 내용이 달라져도 여백은 고정이다.
+      //   슬롯은 owner(comp)에서 만들되 처음부터 content-area 안에 붙인다(parent) — owner 직계로 붙였다
+      //   옮기면 파생 사실에 유령 부품이 남는다(🤖 component-verifier 적발 2026-09-03).
+      const contentSlot = await makeSlot(comp, "Content", MODAL_CONTENT_SLOT_DESC, [body], [],
+        { parent: bodyWrap, layoutMode: "VERTICAL",
+          primaryAxisSizingMode: "FIXED", counterAxisSizingMode: "FIXED",
+          primaryAxisAlignItems: "CENTER", counterAxisAlignItems: "CENTER", itemSpacing: 0,
+          stretch: true, stretchContents: true });
+      try { (contentSlot as any).layoutGrow = 1; } catch (e) { /* */ }
       try { body.layoutAlign = "STRETCH"; body.layoutGrow = 1; } catch (e) { /* */ }
 
       // ── 푸터: 우측 정렬, 코어 Button XXSM h28(확인 계열과 같음, river 지시 ⑤) ──

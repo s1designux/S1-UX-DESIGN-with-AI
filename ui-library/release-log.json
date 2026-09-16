@@ -5,10 +5,154 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.7.0",
+  "version": "0.7.1",
   "releasedAt": "2026-09-16",
-  "canonicalFingerprint": "addca22ddd9fb7b8fe7bfd996d7115cc6e71f92936a396051d247563263b50f0",
+  "canonicalFingerprint": "7bba9947cef4a6b45cde642961cfc24e8dc08d1a2d3a23d005f1b13c7870f403",
   "releases": [
+    {
+      "version": "0.7.1",
+      "date": "2026-09-16",
+      "kind": "patch",
+      "canonicalFingerprint": "7bba9947cef4a6b45cde642961cfc24e8dc08d1a2d3a23d005f1b13c7870f403",
+      "components": [
+        {
+          "id": "input",
+          "from": "0.3.0",
+          "to": "0.3.1"
+        },
+        {
+          "id": "button",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "checkbox",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "radio",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "toggle",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "chip",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "dropdown",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "select",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "filter-chip",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "tab",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "pagination",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "textarea",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "multi-toggle",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "modal",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "table",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "mobile-bottom-nav",
+          "from": "0.3.0",
+          "to": "0.3.1"
+        },
+        {
+          "id": "mobile-header",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "time-picker",
+          "from": "0.3.0",
+          "to": "0.3.1"
+        },
+        {
+          "id": "date-picker",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "gnb",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "gnb-sub-menu-item",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "gnb-sub-menu",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "assist-button",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "text-button",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "modal-content",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "bottom-sheet-option",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "bottom-sheet",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        }
+      ],
+      "deliveryFingerprint": "db8a5056078810477726ac0cf18e9592fccb2aa79d6c75befdc26d3aca27dbab"
+    },
     {
       "version": "0.7.0",
       "date": "2026-09-16",
@@ -445,5 +589,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "662109b2dc3ed9ec7ccff4fc91435ff94515da4e7f3029e7e32e19ab682f7bed"
+  "deliveryFingerprint": "db8a5056078810477726ac0cf18e9592fccb2aa79d6c75befdc26d3aca27dbab"
 }

@@ -3,7 +3,7 @@
     "generated": true,
     "source": "plugins/figma-vars-installer/src/build-components.ts",
     "method": "mock-execution",
-    "sourceHash": "20fee6d25aef",
+    "sourceHash": "29f118c6de79",
     "unknownValuePolicy": [
       "unknown",
       "not-defined",
@@ -3873,7 +3873,10 @@
         "buildDependencies": [
           "Button"
         ]
-      }
+      },
+      "slots": [
+        "Content"
+      ]
     },
     "Filter Chip": {
       "variantAxes": {

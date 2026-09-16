@@ -3047,7 +3047,7 @@ _Don't_
 | 딤(overlay) | 뒤 배경을 덮는 color-overlay 딤. 확인 계열과 같은 토큰. |
 | 헤더 | 제목(16B) + 닫기(X). 확인 계열과 같은 규칙 — 제목 항상 존재. |
 | 본문(content-area) | 입력창·표·이미지 등 콘텐츠가 들어가는 자리. 유일하게 스크롤되는 영역. |
-| 본문 자리표시(content) | 회색 박스 + '컨텐츠 영역' 안내문구. 실제 화면에서는 이 자리를 실제 콘텐츠로 교체한다. |
+| 본문 자리표시(content) | 회색 박스 + '컨텐츠 영역' 안내문구. 이 자리가 Figma 슬롯('Content')이며 네모칸은 그 기본 내용이다 — 빼고 입력 폼·표·이미지 등 무엇이든 넣는다. 좌우 여백 24 는 슬롯 밖(content-area)에 고정이다. |
 | 푸터 | 코어 Button 1개(Single) 또는 2개(Dual), XXSM h28. 확인 계열과 같은 규칙. |
 
 | variant | default | hover | pressed | disabled |
@@ -4993,4 +4993,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 3e1b3637ba0d · 손편집 금지 -->
+<!-- generated-stamp: d274eeee4918 · 손편집 금지 -->

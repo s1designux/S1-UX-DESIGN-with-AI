@@ -1,8 +1,8 @@
 {
   "id": "modal",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "status": "approved",
-  "canonicalFingerprint": "6e79dfd4c32cbd882c778d6f28193864d0eff58ddb9d676d87bb7dbc0244c284",
+  "canonicalFingerprint": "b998b2c5066343db872328b10cea56e691cc507458e450726b1217628e059e15",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -226,5 +226,5 @@
     "scrollLockNote": "배경 스크롤 잠금은 열린 모달 수를 세어 마지막 하나가 닫힐 때만 원래 값으로 되돌린다 — 모달이 여럿 있는 화면에서 스크롤이 잠긴 채 남는 사고를 막는다.",
     "prewiredOpenNote": "이미 열린 채로 들어온 마크업(검수 화면·정적 예시)도 init 시점에 Escape·초점 가둠·스크롤 잠금을 배선한다."
   },
-  "sourceFingerprint": "06a4a61373d34937ec50c74e28be643f1a3d7fc5ca068541b3ea73c3dc8921fa"
+  "sourceFingerprint": "65ea30451caffd35b4869a8928bae43ee6bdf9200a4a8681d81df19398d376da"
 }

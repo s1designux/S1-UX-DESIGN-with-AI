@@ -331608,8 +331608,8 @@
                 },
                 "children": [
                   {
-                    "type": "FRAME",
-                    "name": "content",
+                    "type": "SLOT",
+                    "name": "Content",
                     "dimensions": {
                       "width": null,
                       "height": null
@@ -331630,28 +331630,18 @@
                       "layoutSizingVertical": null,
                       "minWidth": null,
                       "padding": {
-                        "top": null,
-                        "right": null,
-                        "bottom": null,
-                        "left": null
+                        "top": 0,
+                        "right": 0,
+                        "bottom": 0,
+                        "left": 0
                       },
-                      "gap": null
+                      "gap": 0
                     },
                     "text": null,
                     "appearance": {
-                      "fill": "color/bg/level-3",
+                      "fill": "(없음)",
                       "stroke": null,
-                      "fillPaints": [
-                        {
-                          "type": "SOLID",
-                          "__tokenKey": "color/bg/level-3",
-                          "color": {
-                            "r": 0,
-                            "g": 0,
-                            "b": 0
-                          }
-                        }
-                      ],
+                      "fillPaints": [],
                       "strokePaints": [],
                       "opacity": null,
                       "strokeWeight": null,
@@ -331668,16 +331658,11 @@
                       "effects": null
                     },
                     "asset": null,
-                    "boundVariables": {
-                      "bottomLeftRadius": "radius/4",
-                      "bottomRightRadius": "radius/4",
-                      "topLeftRadius": "radius/4",
-                      "topRightRadius": "radius/4"
-                    },
+                    "boundVariables": {},
                     "children": [
                       {
-                        "type": "TEXT",
-                        "name": "",
+                        "type": "FRAME",
+                        "name": "content",
                         "dimensions": {
                           "width": null,
                           "height": null
@@ -331687,13 +331672,13 @@
                           "y": null
                         },
                         "layout": {
-                          "layoutMode": null,
-                          "primaryAxisSizingMode": null,
-                          "counterAxisSizingMode": null,
-                          "primaryAxisAlignItems": null,
-                          "counterAxisAlignItems": null,
-                          "layoutGrow": null,
-                          "layoutAlign": null,
+                          "layoutMode": "VERTICAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "CENTER",
+                          "counterAxisAlignItems": "CENTER",
+                          "layoutGrow": 1,
+                          "layoutAlign": "STRETCH",
                           "layoutSizingHorizontal": null,
                           "layoutSizingVertical": null,
                           "minWidth": null,
@@ -331705,21 +331690,14 @@
                           },
                           "gap": null
                         },
-                        "text": {
-                          "characters": "컨텐츠 영역",
-                          "fontSize": 14,
-                          "fontStyle": "Medium",
-                          "fontFamily": "Pretendard",
-                          "textStyleId": "body/14M",
-                          "textAutoResize": null
-                        },
+                        "text": null,
                         "appearance": {
-                          "fill": "color/text/body/tertiary",
+                          "fill": "color/bg/level-3",
                           "stroke": null,
                           "fillPaints": [
                             {
                               "type": "SOLID",
-                              "__tokenKey": "color/text/body/tertiary",
+                              "__tokenKey": "color/bg/level-3",
                               "color": {
                                 "r": 0,
                                 "g": 0,
@@ -331743,8 +331721,85 @@
                           "effects": null
                         },
                         "asset": null,
-                        "boundVariables": {},
-                        "children": []
+                        "boundVariables": {
+                          "bottomLeftRadius": "radius/4",
+                          "bottomRightRadius": "radius/4",
+                          "topLeftRadius": "radius/4",
+                          "topRightRadius": "radius/4"
+                        },
+                        "children": [
+                          {
+                            "type": "TEXT",
+                            "name": "",
+                            "dimensions": {
+                              "width": null,
+                              "height": null
+                            },
+                            "position": {
+                              "x": null,
+                              "y": null
+                            },
+                            "layout": {
+                              "layoutMode": null,
+                              "primaryAxisSizingMode": null,
+                              "counterAxisSizingMode": null,
+                              "primaryAxisAlignItems": null,
+                              "counterAxisAlignItems": null,
+                              "layoutGrow": null,
+                              "layoutAlign": null,
+                              "layoutSizingHorizontal": null,
+                              "layoutSizingVertical": null,
+                              "minWidth": null,
+                              "padding": {
+                                "top": null,
+                                "right": null,
+                                "bottom": null,
+                                "left": null
+                              },
+                              "gap": null
+                            },
+                            "text": {
+                              "characters": "컨텐츠 영역",
+                              "fontSize": 14,
+                              "fontStyle": "Medium",
+                              "fontFamily": "Pretendard",
+                              "textStyleId": "body/14M",
+                              "textAutoResize": null
+                            },
+                            "appearance": {
+                              "fill": "color/text/body/tertiary",
+                              "stroke": null,
+                              "fillPaints": [
+                                {
+                                  "type": "SOLID",
+                                  "__tokenKey": "color/text/body/tertiary",
+                                  "color": {
+                                    "r": 0,
+                                    "g": 0,
+                                    "b": 0
+                                  }
+                                }
+                              ],
+                              "strokePaints": [],
+                              "opacity": null,
+                              "strokeWeight": null,
+                              "strokeTopWeight": null,
+                              "strokeRightWeight": null,
+                              "strokeBottomWeight": null,
+                              "strokeLeftWeight": null,
+                              "cornerRadius": null,
+                              "topLeftRadius": null,
+                              "topRightRadius": null,
+                              "bottomLeftRadius": null,
+                              "bottomRightRadius": null,
+                              "visible": null,
+                              "effects": null
+                            },
+                            "asset": null,
+                            "boundVariables": {},
+                            "children": []
+                          }
+                        ]
                       }
                     ]
                   }
@@ -331942,6 +331997,13 @@
                     ]
                   }
                 ]
+              }
+            ],
+            "componentProperties": [
+              {
+                "name": "Content",
+                "type": "SLOT",
+                "description": "모달 본문이 놓이는 자리. 기본은 \"컨텐츠 영역\" 자리표시 네모칸이며, 그것을 빼고 입력 폼·표·이미지 등 무엇이든 넣을 수 있다. 제목·닫기(X)와 푸터 버튼은 슬롯 밖 고정 영역이다."
               }
             ]
           }
@@ -332419,8 +332481,8 @@
                 },
                 "children": [
                   {
-                    "type": "FRAME",
-                    "name": "content",
+                    "type": "SLOT",
+                    "name": "Content",
                     "dimensions": {
                       "width": null,
                       "height": null
@@ -332441,28 +332503,18 @@
                       "layoutSizingVertical": null,
                       "minWidth": null,
                       "padding": {
-                        "top": null,
-                        "right": null,
-                        "bottom": null,
-                        "left": null
+                        "top": 0,
+                        "right": 0,
+                        "bottom": 0,
+                        "left": 0
                       },
-                      "gap": null
+                      "gap": 0
                     },
                     "text": null,
                     "appearance": {
-                      "fill": "color/bg/level-3",
+                      "fill": "(없음)",
                       "stroke": null,
-                      "fillPaints": [
-                        {
-                          "type": "SOLID",
-                          "__tokenKey": "color/bg/level-3",
-                          "color": {
-                            "r": 0,
-                            "g": 0,
-                            "b": 0
-                          }
-                        }
-                      ],
+                      "fillPaints": [],
                       "strokePaints": [],
                       "opacity": null,
                       "strokeWeight": null,
@@ -332479,16 +332531,11 @@
                       "effects": null
                     },
                     "asset": null,
-                    "boundVariables": {
-                      "bottomLeftRadius": "radius/4",
-                      "bottomRightRadius": "radius/4",
-                      "topLeftRadius": "radius/4",
-                      "topRightRadius": "radius/4"
-                    },
+                    "boundVariables": {},
                     "children": [
                       {
-                        "type": "TEXT",
-                        "name": "",
+                        "type": "FRAME",
+                        "name": "content",
                         "dimensions": {
                           "width": null,
                           "height": null
@@ -332498,13 +332545,13 @@
                           "y": null
                         },
                         "layout": {
-                          "layoutMode": null,
-                          "primaryAxisSizingMode": null,
-                          "counterAxisSizingMode": null,
-                          "primaryAxisAlignItems": null,
-                          "counterAxisAlignItems": null,
-                          "layoutGrow": null,
-                          "layoutAlign": null,
+                          "layoutMode": "VERTICAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "CENTER",
+                          "counterAxisAlignItems": "CENTER",
+                          "layoutGrow": 1,
+                          "layoutAlign": "STRETCH",
                           "layoutSizingHorizontal": null,
                           "layoutSizingVertical": null,
                           "minWidth": null,
@@ -332516,21 +332563,14 @@
                           },
                           "gap": null
                         },
-                        "text": {
-                          "characters": "컨텐츠 영역",
-                          "fontSize": 14,
-                          "fontStyle": "Medium",
-                          "fontFamily": "Pretendard",
-                          "textStyleId": "body/14M",
-                          "textAutoResize": null
-                        },
+                        "text": null,
                         "appearance": {
-                          "fill": "color/text/body/tertiary",
+                          "fill": "color/bg/level-3",
                           "stroke": null,
                           "fillPaints": [
                             {
                               "type": "SOLID",
-                              "__tokenKey": "color/text/body/tertiary",
+                              "__tokenKey": "color/bg/level-3",
                               "color": {
                                 "r": 0,
                                 "g": 0,
@@ -332554,8 +332594,85 @@
                           "effects": null
                         },
                         "asset": null,
-                        "boundVariables": {},
-                        "children": []
+                        "boundVariables": {
+                          "bottomLeftRadius": "radius/4",
+                          "bottomRightRadius": "radius/4",
+                          "topLeftRadius": "radius/4",
+                          "topRightRadius": "radius/4"
+                        },
+                        "children": [
+                          {
+                            "type": "TEXT",
+                            "name": "",
+                            "dimensions": {
+                              "width": null,
+                              "height": null
+                            },
+                            "position": {
+                              "x": null,
+                              "y": null
+                            },
+                            "layout": {
+                              "layoutMode": null,
+                              "primaryAxisSizingMode": null,
+                              "counterAxisSizingMode": null,
+                              "primaryAxisAlignItems": null,
+                              "counterAxisAlignItems": null,
+                              "layoutGrow": null,
+                              "layoutAlign": null,
+                              "layoutSizingHorizontal": null,
+                              "layoutSizingVertical": null,
+                              "minWidth": null,
+                              "padding": {
+                                "top": null,
+                                "right": null,
+                                "bottom": null,
+                                "left": null
+                              },
+                              "gap": null
+                            },
+                            "text": {
+                              "characters": "컨텐츠 영역",
+                              "fontSize": 14,
+                              "fontStyle": "Medium",
+                              "fontFamily": "Pretendard",
+                              "textStyleId": "body/14M",
+                              "textAutoResize": null
+                            },
+                            "appearance": {
+                              "fill": "color/text/body/tertiary",
+                              "stroke": null,
+                              "fillPaints": [
+                                {
+                                  "type": "SOLID",
+                                  "__tokenKey": "color/text/body/tertiary",
+                                  "color": {
+                                    "r": 0,
+                                    "g": 0,
+                                    "b": 0
+                                  }
+                                }
+                              ],
+                              "strokePaints": [],
+                              "opacity": null,
+                              "strokeWeight": null,
+                              "strokeTopWeight": null,
+                              "strokeRightWeight": null,
+                              "strokeBottomWeight": null,
+                              "strokeLeftWeight": null,
+                              "cornerRadius": null,
+                              "topLeftRadius": null,
+                              "topRightRadius": null,
+                              "bottomLeftRadius": null,
+                              "bottomRightRadius": null,
+                              "visible": null,
+                              "effects": null
+                            },
+                            "asset": null,
+                            "boundVariables": {},
+                            "children": []
+                          }
+                        ]
                       }
                     ]
                   }
@@ -332887,6 +333004,13 @@
                     ]
                   }
                 ]
+              }
+            ],
+            "componentProperties": [
+              {
+                "name": "Content",
+                "type": "SLOT",
+                "description": "모달 본문이 놓이는 자리. 기본은 \"컨텐츠 영역\" 자리표시 네모칸이며, 그것을 빼고 입력 폼·표·이미지 등 무엇이든 넣을 수 있다. 제목·닫기(X)와 푸터 버튼은 슬롯 밖 고정 영역이다."
               }
             ]
           }
@@ -333364,8 +333488,8 @@
                 },
                 "children": [
                   {
-                    "type": "FRAME",
-                    "name": "content",
+                    "type": "SLOT",
+                    "name": "Content",
                     "dimensions": {
                       "width": null,
                       "height": null
@@ -333386,28 +333510,18 @@
                       "layoutSizingVertical": null,
                       "minWidth": null,
                       "padding": {
-                        "top": null,
-                        "right": null,
-                        "bottom": null,
-                        "left": null
+                        "top": 0,
+                        "right": 0,
+                        "bottom": 0,
+                        "left": 0
                       },
-                      "gap": null
+                      "gap": 0
                     },
                     "text": null,
                     "appearance": {
-                      "fill": "color/bg/level-3",
+                      "fill": "(없음)",
                       "stroke": null,
-                      "fillPaints": [
-                        {
-                          "type": "SOLID",
-                          "__tokenKey": "color/bg/level-3",
-                          "color": {
-                            "r": 0,
-                            "g": 0,
-                            "b": 0
-                          }
-                        }
-                      ],
+                      "fillPaints": [],
                       "strokePaints": [],
                       "opacity": null,
                       "strokeWeight": null,
@@ -333424,16 +333538,11 @@
                       "effects": null
                     },
                     "asset": null,
-                    "boundVariables": {
-                      "bottomLeftRadius": "radius/4",
-                      "bottomRightRadius": "radius/4",
-                      "topLeftRadius": "radius/4",
-                      "topRightRadius": "radius/4"
-                    },
+                    "boundVariables": {},
                     "children": [
                       {
-                        "type": "TEXT",
-                        "name": "",
+                        "type": "FRAME",
+                        "name": "content",
                         "dimensions": {
                           "width": null,
                           "height": null
@@ -333443,13 +333552,13 @@
                           "y": null
                         },
                         "layout": {
-                          "layoutMode": null,
-                          "primaryAxisSizingMode": null,
-                          "counterAxisSizingMode": null,
-                          "primaryAxisAlignItems": null,
-                          "counterAxisAlignItems": null,
-                          "layoutGrow": null,
-                          "layoutAlign": null,
+                          "layoutMode": "VERTICAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "CENTER",
+                          "counterAxisAlignItems": "CENTER",
+                          "layoutGrow": 1,
+                          "layoutAlign": "STRETCH",
                           "layoutSizingHorizontal": null,
                           "layoutSizingVertical": null,
                           "minWidth": null,
@@ -333461,21 +333570,14 @@
                           },
                           "gap": null
                         },
-                        "text": {
-                          "characters": "컨텐츠 영역",
-                          "fontSize": 14,
-                          "fontStyle": "Medium",
-                          "fontFamily": "Pretendard",
-                          "textStyleId": "body/14M",
-                          "textAutoResize": null
-                        },
+                        "text": null,
                         "appearance": {
-                          "fill": "color/text/body/tertiary",
+                          "fill": "color/bg/level-3",
                           "stroke": null,
                           "fillPaints": [
                             {
                               "type": "SOLID",
-                              "__tokenKey": "color/text/body/tertiary",
+                              "__tokenKey": "color/bg/level-3",
                               "color": {
                                 "r": 0,
                                 "g": 0,
@@ -333499,8 +333601,85 @@
                           "effects": null
                         },
                         "asset": null,
-                        "boundVariables": {},
-                        "children": []
+                        "boundVariables": {
+                          "bottomLeftRadius": "radius/4",
+                          "bottomRightRadius": "radius/4",
+                          "topLeftRadius": "radius/4",
+                          "topRightRadius": "radius/4"
+                        },
+                        "children": [
+                          {
+                            "type": "TEXT",
+                            "name": "",
+                            "dimensions": {
+                              "width": null,
+                              "height": null
+                            },
+                            "position": {
+                              "x": null,
+                              "y": null
+                            },
+                            "layout": {
+                              "layoutMode": null,
+                              "primaryAxisSizingMode": null,
+                              "counterAxisSizingMode": null,
+                              "primaryAxisAlignItems": null,
+                              "counterAxisAlignItems": null,
+                              "layoutGrow": null,
+                              "layoutAlign": null,
+                              "layoutSizingHorizontal": null,
+                              "layoutSizingVertical": null,
+                              "minWidth": null,
+                              "padding": {
+                                "top": null,
+                                "right": null,
+                                "bottom": null,
+                                "left": null
+                              },
+                              "gap": null
+                            },
+                            "text": {
+                              "characters": "컨텐츠 영역",
+                              "fontSize": 14,
+                              "fontStyle": "Medium",
+                              "fontFamily": "Pretendard",
+                              "textStyleId": "body/14M",
+                              "textAutoResize": null
+                            },
+                            "appearance": {
+                              "fill": "color/text/body/tertiary",
+                              "stroke": null,
+                              "fillPaints": [
+                                {
+                                  "type": "SOLID",
+                                  "__tokenKey": "color/text/body/tertiary",
+                                  "color": {
+                                    "r": 0,
+                                    "g": 0,
+                                    "b": 0
+                                  }
+                                }
+                              ],
+                              "strokePaints": [],
+                              "opacity": null,
+                              "strokeWeight": null,
+                              "strokeTopWeight": null,
+                              "strokeRightWeight": null,
+                              "strokeBottomWeight": null,
+                              "strokeLeftWeight": null,
+                              "cornerRadius": null,
+                              "topLeftRadius": null,
+                              "topRightRadius": null,
+                              "bottomLeftRadius": null,
+                              "bottomRightRadius": null,
+                              "visible": null,
+                              "effects": null
+                            },
+                            "asset": null,
+                            "boundVariables": {},
+                            "children": []
+                          }
+                        ]
                       }
                     ]
                   }
@@ -333698,6 +333877,13 @@
                     ]
                   }
                 ]
+              }
+            ],
+            "componentProperties": [
+              {
+                "name": "Content",
+                "type": "SLOT",
+                "description": "모달 본문이 놓이는 자리. 기본은 \"컨텐츠 영역\" 자리표시 네모칸이며, 그것을 빼고 입력 폼·표·이미지 등 무엇이든 넣을 수 있다. 제목·닫기(X)와 푸터 버튼은 슬롯 밖 고정 영역이다."
               }
             ]
           }
@@ -334175,8 +334361,8 @@
                 },
                 "children": [
                   {
-                    "type": "FRAME",
-                    "name": "content",
+                    "type": "SLOT",
+                    "name": "Content",
                     "dimensions": {
                       "width": null,
                       "height": null
@@ -334197,28 +334383,18 @@
                       "layoutSizingVertical": null,
                       "minWidth": null,
                       "padding": {
-                        "top": null,
-                        "right": null,
-                        "bottom": null,
-                        "left": null
+                        "top": 0,
+                        "right": 0,
+                        "bottom": 0,
+                        "left": 0
                       },
-                      "gap": null
+                      "gap": 0
                     },
                     "text": null,
                     "appearance": {
-                      "fill": "color/bg/level-3",
+                      "fill": "(없음)",
                       "stroke": null,
-                      "fillPaints": [
-                        {
-                          "type": "SOLID",
-                          "__tokenKey": "color/bg/level-3",
-                          "color": {
-                            "r": 0,
-                            "g": 0,
-                            "b": 0
-                          }
-                        }
-                      ],
+                      "fillPaints": [],
                       "strokePaints": [],
                       "opacity": null,
                       "strokeWeight": null,
@@ -334235,16 +334411,11 @@
                       "effects": null
                     },
                     "asset": null,
-                    "boundVariables": {
-                      "bottomLeftRadius": "radius/4",
-                      "bottomRightRadius": "radius/4",
-                      "topLeftRadius": "radius/4",
-                      "topRightRadius": "radius/4"
-                    },
+                    "boundVariables": {},
                     "children": [
                       {
-                        "type": "TEXT",
-                        "name": "",
+                        "type": "FRAME",
+                        "name": "content",
                         "dimensions": {
                           "width": null,
                           "height": null
@@ -334254,13 +334425,13 @@
                           "y": null
                         },
                         "layout": {
-                          "layoutMode": null,
-                          "primaryAxisSizingMode": null,
-                          "counterAxisSizingMode": null,
-                          "primaryAxisAlignItems": null,
-                          "counterAxisAlignItems": null,
-                          "layoutGrow": null,
-                          "layoutAlign": null,
+                          "layoutMode": "VERTICAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "CENTER",
+                          "counterAxisAlignItems": "CENTER",
+                          "layoutGrow": 1,
+                          "layoutAlign": "STRETCH",
                           "layoutSizingHorizontal": null,
                           "layoutSizingVertical": null,
                           "minWidth": null,
@@ -334272,21 +334443,14 @@
                           },
                           "gap": null
                         },
-                        "text": {
-                          "characters": "컨텐츠 영역",
-                          "fontSize": 14,
-                          "fontStyle": "Medium",
-                          "fontFamily": "Pretendard",
-                          "textStyleId": "body/14M",
-                          "textAutoResize": null
-                        },
+                        "text": null,
                         "appearance": {
-                          "fill": "color/text/body/tertiary",
+                          "fill": "color/bg/level-3",
                           "stroke": null,
                           "fillPaints": [
                             {
                               "type": "SOLID",
-                              "__tokenKey": "color/text/body/tertiary",
+                              "__tokenKey": "color/bg/level-3",
                               "color": {
                                 "r": 0,
                                 "g": 0,
@@ -334310,8 +334474,85 @@
                           "effects": null
                         },
                         "asset": null,
-                        "boundVariables": {},
-                        "children": []
+                        "boundVariables": {
+                          "bottomLeftRadius": "radius/4",
+                          "bottomRightRadius": "radius/4",
+                          "topLeftRadius": "radius/4",
+                          "topRightRadius": "radius/4"
+                        },
+                        "children": [
+                          {
+                            "type": "TEXT",
+                            "name": "",
+                            "dimensions": {
+                              "width": null,
+                              "height": null
+                            },
+                            "position": {
+                              "x": null,
+                              "y": null
+                            },
+                            "layout": {
+                              "layoutMode": null,
+                              "primaryAxisSizingMode": null,
+                              "counterAxisSizingMode": null,
+                              "primaryAxisAlignItems": null,
+                              "counterAxisAlignItems": null,
+                              "layoutGrow": null,
+                              "layoutAlign": null,
+                              "layoutSizingHorizontal": null,
+                              "layoutSizingVertical": null,
+                              "minWidth": null,
+                              "padding": {
+                                "top": null,
+                                "right": null,
+                                "bottom": null,
+                                "left": null
+                              },
+                              "gap": null
+                            },
+                            "text": {
+                              "characters": "컨텐츠 영역",
+                              "fontSize": 14,
+                              "fontStyle": "Medium",
+                              "fontFamily": "Pretendard",
+                              "textStyleId": "body/14M",
+                              "textAutoResize": null
+                            },
+                            "appearance": {
+                              "fill": "color/text/body/tertiary",
+                              "stroke": null,
+                              "fillPaints": [
+                                {
+                                  "type": "SOLID",
+                                  "__tokenKey": "color/text/body/tertiary",
+                                  "color": {
+                                    "r": 0,
+                                    "g": 0,
+                                    "b": 0
+                                  }
+                                }
+                              ],
+                              "strokePaints": [],
+                              "opacity": null,
+                              "strokeWeight": null,
+                              "strokeTopWeight": null,
+                              "strokeRightWeight": null,
+                              "strokeBottomWeight": null,
+                              "strokeLeftWeight": null,
+                              "cornerRadius": null,
+                              "topLeftRadius": null,
+                              "topRightRadius": null,
+                              "bottomLeftRadius": null,
+                              "bottomRightRadius": null,
+                              "visible": null,
+                              "effects": null
+                            },
+                            "asset": null,
+                            "boundVariables": {},
+                            "children": []
+                          }
+                        ]
                       }
                     ]
                   }
@@ -334643,6 +334884,13 @@
                     ]
                   }
                 ]
+              }
+            ],
+            "componentProperties": [
+              {
+                "name": "Content",
+                "type": "SLOT",
+                "description": "모달 본문이 놓이는 자리. 기본은 \"컨텐츠 영역\" 자리표시 네모칸이며, 그것을 빼고 입력 폼·표·이미지 등 무엇이든 넣을 수 있다. 제목·닫기(X)와 푸터 버튼은 슬롯 밖 고정 영역이다."
               }
             ]
           }
@@ -335120,8 +335368,8 @@
                 },
                 "children": [
                   {
-                    "type": "FRAME",
-                    "name": "content",
+                    "type": "SLOT",
+                    "name": "Content",
                     "dimensions": {
                       "width": null,
                       "height": null
@@ -335142,28 +335390,18 @@
                       "layoutSizingVertical": null,
                       "minWidth": null,
                       "padding": {
-                        "top": null,
-                        "right": null,
-                        "bottom": null,
-                        "left": null
+                        "top": 0,
+                        "right": 0,
+                        "bottom": 0,
+                        "left": 0
                       },
-                      "gap": null
+                      "gap": 0
                     },
                     "text": null,
                     "appearance": {
-                      "fill": "color/bg/level-3",
+                      "fill": "(없음)",
                       "stroke": null,
-                      "fillPaints": [
-                        {
-                          "type": "SOLID",
-                          "__tokenKey": "color/bg/level-3",
-                          "color": {
-                            "r": 0,
-                            "g": 0,
-                            "b": 0
-                          }
-                        }
-                      ],
+                      "fillPaints": [],
                       "strokePaints": [],
                       "opacity": null,
                       "strokeWeight": null,
@@ -335180,16 +335418,11 @@
                       "effects": null
                     },
                     "asset": null,
-                    "boundVariables": {
-                      "bottomLeftRadius": "radius/4",
-                      "bottomRightRadius": "radius/4",
-                      "topLeftRadius": "radius/4",
-                      "topRightRadius": "radius/4"
-                    },
+                    "boundVariables": {},
                     "children": [
                       {
-                        "type": "TEXT",
-                        "name": "",
+                        "type": "FRAME",
+                        "name": "content",
                         "dimensions": {
                           "width": null,
                           "height": null
@@ -335199,13 +335432,13 @@
                           "y": null
                         },
                         "layout": {
-                          "layoutMode": null,
-                          "primaryAxisSizingMode": null,
-                          "counterAxisSizingMode": null,
-                          "primaryAxisAlignItems": null,
-                          "counterAxisAlignItems": null,
-                          "layoutGrow": null,
-                          "layoutAlign": null,
+                          "layoutMode": "VERTICAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "CENTER",
+                          "counterAxisAlignItems": "CENTER",
+                          "layoutGrow": 1,
+                          "layoutAlign": "STRETCH",
                           "layoutSizingHorizontal": null,
                           "layoutSizingVertical": null,
                           "minWidth": null,
@@ -335217,21 +335450,14 @@
                           },
                           "gap": null
                         },
-                        "text": {
-                          "characters": "컨텐츠 영역",
-                          "fontSize": 14,
-                          "fontStyle": "Medium",
-                          "fontFamily": "Pretendard",
-                          "textStyleId": "body/14M",
-                          "textAutoResize": null
-                        },
+                        "text": null,
                         "appearance": {
-                          "fill": "color/text/body/tertiary",
+                          "fill": "color/bg/level-3",
                           "stroke": null,
                           "fillPaints": [
                             {
                               "type": "SOLID",
-                              "__tokenKey": "color/text/body/tertiary",
+                              "__tokenKey": "color/bg/level-3",
                               "color": {
                                 "r": 0,
                                 "g": 0,
@@ -335255,8 +335481,85 @@
                           "effects": null
                         },
                         "asset": null,
-                        "boundVariables": {},
-                        "children": []
+                        "boundVariables": {
+                          "bottomLeftRadius": "radius/4",
+                          "bottomRightRadius": "radius/4",
+                          "topLeftRadius": "radius/4",
+                          "topRightRadius": "radius/4"
+                        },
+                        "children": [
+                          {
+                            "type": "TEXT",
+                            "name": "",
+                            "dimensions": {
+                              "width": null,
+                              "height": null
+                            },
+                            "position": {
+                              "x": null,
+                              "y": null
+                            },
+                            "layout": {
+                              "layoutMode": null,
+                              "primaryAxisSizingMode": null,
+                              "counterAxisSizingMode": null,
+                              "primaryAxisAlignItems": null,
+                              "counterAxisAlignItems": null,
+                              "layoutGrow": null,
+                              "layoutAlign": null,
+                              "layoutSizingHorizontal": null,
+                              "layoutSizingVertical": null,
+                              "minWidth": null,
+                              "padding": {
+                                "top": null,
+                                "right": null,
+                                "bottom": null,
+                                "left": null
+                              },
+                              "gap": null
+                            },
+                            "text": {
+                              "characters": "컨텐츠 영역",
+                              "fontSize": 14,
+                              "fontStyle": "Medium",
+                              "fontFamily": "Pretendard",
+                              "textStyleId": "body/14M",
+                              "textAutoResize": null
+                            },
+                            "appearance": {
+                              "fill": "color/text/body/tertiary",
+                              "stroke": null,
+                              "fillPaints": [
+                                {
+                                  "type": "SOLID",
+                                  "__tokenKey": "color/text/body/tertiary",
+                                  "color": {
+                                    "r": 0,
+                                    "g": 0,
+                                    "b": 0
+                                  }
+                                }
+                              ],
+                              "strokePaints": [],
+                              "opacity": null,
+                              "strokeWeight": null,
+                              "strokeTopWeight": null,
+                              "strokeRightWeight": null,
+                              "strokeBottomWeight": null,
+                              "strokeLeftWeight": null,
+                              "cornerRadius": null,
+                              "topLeftRadius": null,
+                              "topRightRadius": null,
+                              "bottomLeftRadius": null,
+                              "bottomRightRadius": null,
+                              "visible": null,
+                              "effects": null
+                            },
+                            "asset": null,
+                            "boundVariables": {},
+                            "children": []
+                          }
+                        ]
                       }
                     ]
                   }
@@ -335454,6 +335757,13 @@
                     ]
                   }
                 ]
+              }
+            ],
+            "componentProperties": [
+              {
+                "name": "Content",
+                "type": "SLOT",
+                "description": "모달 본문이 놓이는 자리. 기본은 \"컨텐츠 영역\" 자리표시 네모칸이며, 그것을 빼고 입력 폼·표·이미지 등 무엇이든 넣을 수 있다. 제목·닫기(X)와 푸터 버튼은 슬롯 밖 고정 영역이다."
               }
             ]
           }
@@ -335931,8 +336241,8 @@
                 },
                 "children": [
                   {
-                    "type": "FRAME",
-                    "name": "content",
+                    "type": "SLOT",
+                    "name": "Content",
                     "dimensions": {
                       "width": null,
                       "height": null
@@ -335953,28 +336263,18 @@
                       "layoutSizingVertical": null,
                       "minWidth": null,
                       "padding": {
-                        "top": null,
-                        "right": null,
-                        "bottom": null,
-                        "left": null
+                        "top": 0,
+                        "right": 0,
+                        "bottom": 0,
+                        "left": 0
                       },
-                      "gap": null
+                      "gap": 0
                     },
                     "text": null,
                     "appearance": {
-                      "fill": "color/bg/level-3",
+                      "fill": "(없음)",
                       "stroke": null,
-                      "fillPaints": [
-                        {
-                          "type": "SOLID",
-                          "__tokenKey": "color/bg/level-3",
-                          "color": {
-                            "r": 0,
-                            "g": 0,
-                            "b": 0
-                          }
-                        }
-                      ],
+                      "fillPaints": [],
                       "strokePaints": [],
                       "opacity": null,
                       "strokeWeight": null,
@@ -335991,16 +336291,11 @@
                       "effects": null
                     },
                     "asset": null,
-                    "boundVariables": {
-                      "bottomLeftRadius": "radius/4",
-                      "bottomRightRadius": "radius/4",
-                      "topLeftRadius": "radius/4",
-                      "topRightRadius": "radius/4"
-                    },
+                    "boundVariables": {},
                     "children": [
                       {
-                        "type": "TEXT",
-                        "name": "",
+                        "type": "FRAME",
+                        "name": "content",
                         "dimensions": {
                           "width": null,
                           "height": null
@@ -336010,13 +336305,13 @@
                           "y": null
                         },
                         "layout": {
-                          "layoutMode": null,
-                          "primaryAxisSizingMode": null,
-                          "counterAxisSizingMode": null,
-                          "primaryAxisAlignItems": null,
-                          "counterAxisAlignItems": null,
-                          "layoutGrow": null,
-                          "layoutAlign": null,
+                          "layoutMode": "VERTICAL",
+                          "primaryAxisSizingMode": "FIXED",
+                          "counterAxisSizingMode": "FIXED",
+                          "primaryAxisAlignItems": "CENTER",
+                          "counterAxisAlignItems": "CENTER",
+                          "layoutGrow": 1,
+                          "layoutAlign": "STRETCH",
                           "layoutSizingHorizontal": null,
                           "layoutSizingVertical": null,
                           "minWidth": null,
@@ -336028,21 +336323,14 @@
                           },
                           "gap": null
                         },
-                        "text": {
-                          "characters": "컨텐츠 영역",
-                          "fontSize": 14,
-                          "fontStyle": "Medium",
-                          "fontFamily": "Pretendard",
-                          "textStyleId": "body/14M",
-                          "textAutoResize": null
-                        },
+                        "text": null,
                         "appearance": {
-                          "fill": "color/text/body/tertiary",
+                          "fill": "color/bg/level-3",
                           "stroke": null,
                           "fillPaints": [
                             {
                               "type": "SOLID",
-                              "__tokenKey": "color/text/body/tertiary",
+                              "__tokenKey": "color/bg/level-3",
                               "color": {
                                 "r": 0,
                                 "g": 0,
@@ -336066,8 +336354,85 @@
                           "effects": null
                         },
                         "asset": null,
-                        "boundVariables": {},
-                        "children": []
+                        "boundVariables": {
+                          "bottomLeftRadius": "radius/4",
+                          "bottomRightRadius": "radius/4",
+                          "topLeftRadius": "radius/4",
+                          "topRightRadius": "radius/4"
+                        },
+                        "children": [
+                          {
+                            "type": "TEXT",
+                            "name": "",
+                            "dimensions": {
+                              "width": null,
+                              "height": null
+                            },
+                            "position": {
+                              "x": null,
+                              "y": null
+                            },
+                            "layout": {
+                              "layoutMode": null,
+                              "primaryAxisSizingMode": null,
+                              "counterAxisSizingMode": null,
+                              "primaryAxisAlignItems": null,
+                              "counterAxisAlignItems": null,
+                              "layoutGrow": null,
+                              "layoutAlign": null,
+                              "layoutSizingHorizontal": null,
+                              "layoutSizingVertical": null,
+                              "minWidth": null,
+                              "padding": {
+                                "top": null,
+                                "right": null,
+                                "bottom": null,
+                                "left": null
+                              },
+                              "gap": null
+                            },
+                            "text": {
+                              "characters": "컨텐츠 영역",
+                              "fontSize": 14,
+                              "fontStyle": "Medium",
+                              "fontFamily": "Pretendard",
+                              "textStyleId": "body/14M",
+                              "textAutoResize": null
+                            },
+                            "appearance": {
+                              "fill": "color/text/body/tertiary",
+                              "stroke": null,
+                              "fillPaints": [
+                                {
+                                  "type": "SOLID",
+                                  "__tokenKey": "color/text/body/tertiary",
+                                  "color": {
+                                    "r": 0,
+                                    "g": 0,
+                                    "b": 0
+                                  }
+                                }
+                              ],
+                              "strokePaints": [],
+                              "opacity": null,
+                              "strokeWeight": null,
+                              "strokeTopWeight": null,
+                              "strokeRightWeight": null,
+                              "strokeBottomWeight": null,
+                              "strokeLeftWeight": null,
+                              "cornerRadius": null,
+                              "topLeftRadius": null,
+                              "topRightRadius": null,
+                              "bottomLeftRadius": null,
+                              "bottomRightRadius": null,
+                              "visible": null,
+                              "effects": null
+                            },
+                            "asset": null,
+                            "boundVariables": {},
+                            "children": []
+                          }
+                        ]
                       }
                     ]
                   }
@@ -336399,6 +336764,13 @@
                     ]
                   }
                 ]
+              }
+            ],
+            "componentProperties": [
+              {
+                "name": "Content",
+                "type": "SLOT",
+                "description": "모달 본문이 놓이는 자리. 기본은 \"컨텐츠 영역\" 자리표시 네모칸이며, 그것을 빼고 입력 폼·표·이미지 등 무엇이든 넣을 수 있다. 제목·닫기(X)와 푸터 버튼은 슬롯 밖 고정 영역이다."
               }
             ]
           }

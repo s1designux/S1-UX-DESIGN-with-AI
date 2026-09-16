@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:29f118c6de7933706e1d9897478312392c2e9df29d8146258962051c53ee1210",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-16T07:51:26.349Z",
+  "notes": "buildModalContent 본문을 makeSlot('Content', parent=bodyWrap) 로 교체. 회귀 0 — component-facts.json diff 가 sourceHash + slots:[Content] 두 항목뿐(variantAxes·geometry 6변형·anatomy·tokenBindings 전부 바이트 동일). 기계검사 4종 exit=0 재확인(installer:check·anatomy·keycheck·iconpolicy). 남은 선행 결함(이 변경이 만든 것 아님): ① body(name=content)를 comp.appendChild 후 슬롯으로 옮겨 mock 이 재부모화를 안 해 anatomy 에 루트 직계 'content' 유령이 남음(build-components.ts:5726 부근) ② registry/components/modal-content.json:41 서술이 새 Content 슬롯을 언급 안 함(bottom-sheet/gnb 관행과 불일치). 캔버스 실물 렌더 미검증."
+}

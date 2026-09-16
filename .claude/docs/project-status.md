@@ -37,25 +37,21 @@
    - 결과: 신규 컴포넌트 **5**(Assist Button · Text Button · Modal Content · GNB Sub Menu · GNB Sub Menu Item) ·
      신규 색 **4** · `Mobile Header` 유형 1종 추가. Gate 34 승인 기록 완료.
      ⚠️ D-15 는 "모달 크기 축"이 아니라 **콘텐츠 계열 모달 신설**로 끝났다 — 확인 계열 Modal 은 크기 축이 없다(PC 360 · Mobile 300).
-   - 남은 것: **웹 배포본·안내 페이지에 새 컴포넌트 5개 없음**(별도 작업 "웹 업데이트 해줘") · Figma 캔버스 실물 설치 확인
+   - 남은 것: Figma 캔버스 실물 설치 확인. **웹 배포본·안내 페이지 5개는 완료**(0.7.0 · 2026-09-16 확인)
    - 결정 정본: `reports/legacy-crosswalk-board/crosswalk.json` · 시공 기록: `WIP-canon-additions.md` · 검수판 Gate 47 이 신선도 감시
 
-0. **개발자 배포 탭 공개 — UI 라이브러리 dist 연동을 다 끝낸 뒤에 연다 (river 결정 2026-09-02)**
-   - 진입점: pages/install-prompt.html 의 「개발자」 탭 (현재 "준비 중", 2026-08-12 부터 의도적으로 비움)
-   - 여는 조건: 아래 미배포 컴포넌트의 dist 연동 완료. 부분 공개하지 않는다 —
-     "다 있겠지" 하고 화면을 짜다 중간에 막히는 것이 탭을 닫았던 원래 이유다.
-   - **2026-09-09 재확인:** 위 목록은 낡았다. 실제 dist(ui-library/scripts/build.mjs 의 componentIds 와
-     ui-library/dist/components/ 실물 대조)는 아래와 같다.
-   - 배포 완료 23종: input · button · checkbox · radio · toggle · chip · dropdown · select · filter-chip ·
-     textarea · tab · multi-toggle · pagination · table · date-picker · time-picker · modal ·
-     mobile-bottom-nav · mobile-header · assist-button · text-button · modal-content · **gnb**(2026-09-09 verified)
-   - 미배포: **GNB Sub Menu · GNB Sub Menu Item** 2종(2026-09-08 정본 보강분, 작업 중)
+0. **개발자 배포 탭 공개 — 해소 (2026-09-16 확인)**
+   - 탭은 **열려 있다.** pages/install-prompt.html 「개발자」 탭에 배포본 **0.7.0** 이 실려 있고 "준비 중" 문구는 없다.
+   - 배포 완료 **27종** (`ui-library/scripts/component-ids.mjs` ↔ `ui-library/dist/components/` 실물 일치):
+     input · button · checkbox · radio · toggle · chip · dropdown · select · filter-chip · tab · pagination ·
+     textarea · multi-toggle · modal · table · mobile-bottom-nav · mobile-header · time-picker · date-picker ·
+     gnb · gnb-sub-menu · gnb-sub-menu-item · assist-button · text-button · modal-content ·
+     bottom-sheet · bottom-sheet-option
+   - **미배포 0건.** 2026-09-09 자 "GNB Sub Menu 2종 미배포"는 해소됐다(0.7.0 에 포함).
    - **nav 는 대상에서 뺐다(river 결정 2026-09-09).** 정본에 사이드바 내비게이션이 없고,
      build-components.ts 의 NavBar 는 카테고리 Platform 의 Android OS 크롬이라 UI 컴포넌트가 아니다.
      근거 정리 = reports/ui-library/gnb-nav/1-inventory.md §C
    - 배포 통로는 **GitHub 저장소**로 확정(river 결정 2026-09-09) — zip 은 채택하지 않는다.
-   - 다 끝나면 탭에 넣을 것(이미 준비된 것): 설치 파일 한 벌(tokens/typography/s1-ui.css/js) ·
-     컴포넌트별 복붙 마크업(PC·Mobile 갈래) · 빈 HTML 시작 예제 2종 · 범위 고지
 
 1. Figma Button componentSetKey 등록 (figmaNodeId 는 완료)
    - figmaNodeId = "6440:4032" 등록됨 (registry/figma/figma-map.json)
