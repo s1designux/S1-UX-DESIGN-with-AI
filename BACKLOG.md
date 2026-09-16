@@ -75,6 +75,18 @@ vars-data 의 토큰 키가 전부 embed 됐는지만 검사한다.
 
 ## 🔴 우선순위 높음
 
+### 0-c. 화면 조립 규칙 — 막힌 부품 2건 (2026-09-16 신규)
+
+> **배경:** 토큰 검사를 똑같이 통과한 두 안이 다른 계열로 보였고, 원인 대부분이 "어느 부품을 고르고 어디에 놓는가" 층에 있었다. river 발화 7개를 채록했다 — 정본 `registry/governance/composition-rules.json`(status **candidate · 게이트 미배선**), 근거 `reports/composition-rules/2026-09-16-status-summary-panel.md`.
+
+채록한 규칙 중 **둘은 지금 쓸 수 없다.** 쓰려면 아래가 먼저다.
+
+1. **새로고침 아이콘이 웹 배포본에 없다** (R-1 선행). 승인 목록 `registry/figma/allowed-remote-keys.json` 에 `refresh`(key `e9a3d9b7…`)가 있고 Video/Widget Header 가 쓰는데, `ui-library/*/assets/icons/` 로 내려오지 않았다.
+   - 등재 경로는 기존 아이콘과 동일: 라이브러리 원본 SVG 내보내기 → `src/assets/icons/` + manifest 항목 → `node scripts/ui-library-icon-origin-check.js --record` 로 `assets/icons/ic_새로고침_line.png` 와 픽셀 대조(임계 0.015) → 빌드.
+   - **막힌 지점:** 실물 SVG 내보내기가 필요하다. 대체용 인라인 SVG 를 손으로 그리는 것은 2026-09-01 river 지적으로 폐기된 방식이다(`chevron` manifest `sourceBuilderSymbol` 참조).
+2. **테두리 없는 아이콘 버튼이 독립 부품으로 없다** (R-1 선행). 정본 `build-components.ts` 에 빌더가 없고, 웹에서는 `modal`·`modal-content`·`mobile-header`·`input`·`bottom-sheet`·`date-picker` 안쪽 part 로만 존재한다. `ui-library-code-contract.json:208` 이 다른 코어의 내부 part 선택·override 를 금지하므로 화면에서 가져다 쓸 수 없다.
+   - 결정 필요: 정본에 신설할지(Gate 34 승인 필요), 웹 전용 부품으로 둘지, 또는 지금처럼 화면마다 다시 그릴지.
+
 ### ~~0-b. 바텀시트 부품화~~ — ✅ **완료 (2026-09-15)**
 
 > **결과:** `bottom-sheet` · `bottom-sheet-option` 두 부품이 배포본 **0.6.9** 에 승인 등재됐다. river 승인 2026-09-15 "승인할게, 텍스트버튼도 A로 빼줘".
