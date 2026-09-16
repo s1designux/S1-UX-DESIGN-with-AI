@@ -213,6 +213,7 @@
     .devpanel-2col {
       display:grid; grid-template-columns:minmax(0,1.3fr) minmax(320px,0.85fr);
       align-items:stretch;
+      background:#fff;            /* 본문 바탕 — 다른 탭의 .step-body 와 같은 흰 바탕 */
     }
     .devpanel-2col > * { min-width:0; }
     /* 두 단 사이 구분선 — 머리말은 하나로 통합되고, 본문만 좌우로 갈린다. */
@@ -430,7 +431,6 @@
               <div class="step-number">1</div>
               <div>
                 <div class="step-title">디자인가이드 저장소 받기</div>
-                <div class="step-desc">토큰 CSS · 컴포넌트 실측 사양 · PC 동작 계약 · 참고 화면이 한 벌로 묶여 있습니다</div>
               </div>
               <span class="update-stamp" data-update-file="design/DESIGN.core.md"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-09-14 17:17</span>
             </div>
@@ -478,7 +478,6 @@
               <div class="step-number">2</div>
               <div>
                 <div class="step-title">AI에 연결하는 두 가지 방법</div>
-                <div class="step-desc">쓰는 도구에 따라 골라주세요</div>
               </div>
             </div>
             <div class="step-body">
@@ -512,7 +511,6 @@
               <div class="step-number">3</div>
               <div>
                 <div class="step-title">AI에게 전달할 요청문</div>
-                <div class="step-desc">그대로 복사해서 붙여넣으세요</div>
               </div>
               <button class="copy-all-btn" style="margin-left:auto;" onclick="copyBlock(this, 'ai-request-text')">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -540,7 +538,6 @@
               <div class="step-number">4</div>
               <div>
                 <div class="step-title">실제 동작 확인 <span class="optional-tag">선택</span></div>
-                <div class="step-desc">받은 저장소에서 컴포넌트가 실제로 어떻게 움직이는지 눈으로 봅니다</div>
               </div>
             </div>
             <div class="step-body">
@@ -996,7 +993,6 @@ auto r  = S1_RADIUS_CONTROL_SM;   // 4.0f</code></pre>
                   <div class="step-title">S-1 S/W UX Guide 설치/검수기 <span class="ver-badge">0.2Ver</span></div>
                   <span class="update-stamp" style="margin-left:0;" data-update-file="assets/downloads/s1-ux-design-guide-installer.zip"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 업데이트 2026-09-14 16:24</span>
                 </div>
-                <div class="step-desc">Figma Desktop에서 실행하는 플러그인 — 토큰·텍스트 스타일·컴포넌트 세트를 파일에 설치하고, 선택한 프레임의 색·컴포넌트를 정본 기준으로 검수합니다</div>
               </div>
               <a class="download-btn" style="margin-left:auto;" href="../assets/downloads/s1-ux-design-guide-installer.zip" download>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
