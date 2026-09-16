@@ -707,7 +707,7 @@
     <section class="review-section" aria-labelledby="mobile-header-review-title" data-component-id="mobile-header">
       <div>
         <h2 class="review-section-title" id="mobile-header-review-title">15. Mobile Header</h2>
-        <p class="review-note">river 결정(D5)으로 <strong>상태바(StatusBar)·Platform 축을 뺐습니다</strong> — AppBar 56px만 배포합니다. Type 6종(Home/Title · Home/Title+Subtitle+1Icon · Standard/Title · Standard/Title+Close · Standard/No Title · Standard/No Title+Close)이 유일한 축입니다. 삭제된 'Home / Title + 2 Icons'는 만들지 않았습니다. No Title 계열은 제목 텍스트가 없어 본문의 h1이 화면의 주 제목 역할을 합니다. 알림 아이콘은 2색(본체 gray-dark + 신규 점 red)이라 CSS 마스크 2겹으로 표현합니다. 크기 축·JavaScript는 필요 없습니다(jsRequired=false).</p>
+        <p class="review-note">river 결정(D5)으로 <strong>상태바(StatusBar)·Platform 축을 뺐습니다</strong> — AppBar 56px만 배포합니다. Type 7종(Home/Title · Home/Title+1Icon · Home/Title+Subtitle+1Icon · Standard/Title · Standard/Title+Close · Standard/No Title · Standard/No Title+Close)이 유일한 축입니다. 삭제된 'Home / Title + 2 Icons'는 만들지 않았습니다. No Title 계열은 제목 텍스트가 없어 본문의 h1이 화면의 주 제목 역할을 합니다. 알림 아이콘은 2색(본체 gray-dark + 신규 점 red)이라 CSS 마스크 2겹으로 표현합니다. 크기 축·JavaScript는 필요 없습니다(jsRequired=false).</p>
       </div>
       <div class="review-matrix" id="mobile-header-review-matrix"></div>
     </section>
@@ -1696,13 +1696,21 @@
         </article>`;
     }
 
-    /* ── Mobile Header — Type 6종. StatusBar·Platform 축은 river 결정(D5)으로 배포본에서 뺐다. ── */
+    /* ── Mobile Header — Type 7종. StatusBar·Platform 축은 river 결정(D5)으로 배포본에서 뺐다.
+       6종 → 7종: river 승인 2026-09-08 으로 정본(MOBILE_HEADER_TYPES)에 "Home / Title + 1 Icon" 이
+       추가됐고, 2026-09-15 river 지시("웹에도 넣어줘")로 배포본·이 검수 화면에 반영했다. ── */
     function mobileHeaderMarkup(variant) {
       const back = `<button type="button" data-s1-part="back" aria-label="이전"><span data-s1-part="back-icon" aria-hidden="true"></span></button>`;
       const close = `<button type="button" data-s1-part="close" aria-label="닫기"><span data-s1-part="close-icon" aria-hidden="true"></span></button>`;
       const spacer = `<span data-s1-part="spacer" aria-hidden="true"></span>`;
       if (variant === "home-title") {
         return `<header data-s1-component="mobile-header" data-variant="home-title"><h1 data-s1-part="title">홈 타이틀</h1></header>`;
+      }
+      if (variant === "home-title-1icon") {
+        return `<header data-s1-component="mobile-header" data-variant="home-title-1icon">
+          <h1 data-s1-part="title">홈 타이틀</h1>
+          <button type="button" data-s1-part="notification" aria-label="알림"><span data-s1-part="notification-icon" aria-hidden="true"></span></button>
+        </header>`;
       }
       if (variant === "home-title-subtitle") {
         return `<header data-s1-component="mobile-header" data-variant="home-title-subtitle">
@@ -1725,6 +1733,7 @@
     function renderMobileHeaderPanel(combo) {
       const types = [
         ["Home / Title", "home-title"],
+        ["Home / Title + 1 Icon", "home-title-1icon"],
         ["Home / Title + Subtitle + 1 Icon", "home-title-subtitle"],
         ["Standard / Title", "standard-title"],
         ["Standard / Title + Close", "standard-title-close"],
@@ -1733,7 +1742,7 @@
       ].map(([label, variant]) => sample(label, mobileHeaderMarkup(variant))).join("");
       return `
         <article class="review-panel" data-theme="${combo.theme}">
-          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">Type 6종 · AppBar 56px 고정(StatusBar·Platform 축 제외, D5) · 크기 축 없음</p></div>
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">Type 7종 · AppBar 56px 고정(StatusBar·Platform 축 제외, D5) · 크기 축 없음</p></div>
           <div class="review-grid">${types}</div>
         </article>`;
     }

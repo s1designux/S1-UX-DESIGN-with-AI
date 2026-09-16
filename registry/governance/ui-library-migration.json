@@ -614,36 +614,38 @@
       "id": "assist-button",
       "kind": "core-component",
       "legacyStatus": "not-in-legacy-web",
-      "uiLibraryStatus": "draft",
+      "uiLibraryStatus": "approved",
       "dependencies": [
         "tokens.css",
         "typography.css"
       ],
-      "lastVerified": null,
+      "lastVerified": "2026-09-15",
       "reverifyTrigger": "정본 State·token·HTML part·CSS selector 변경",
       "evidence": [
-        "reports/ui-library/assist-text-modal-content/3-build.md"
+        "reports/ui-library/assist-text-modal-content/3-build.md",
+        "reports/ui-library/draft-six-approval/1-verification.md"
       ],
-      "riverApproval": null,
-      "promotionDecision": "build 단계만 완료(⭐ 자가 배선) — 🤖 component-verifier 원본대조와 river UX 승인 전. status=draft로 정직 기록.",
+      "riverApproval": "approved 2026-09-15",
+      "promotionDecision": "🤖 component-verifier 시나리오 F 독립 검증 PASS(2026-09-15 · 결함 0) — 정본 대조·렌더 실측·토큰/상태 전수 일치, React/Vue/contract 전달본 완비. river 승인 2026-09-15(\"승인\" — 재고 조사 reports/missing-inventory-audit/1-inventory.md HD-6 (A)안: 지금 검수하고 승인 기록을 남긴다).",
       "note": "ui-library/src manifest.json 의 status 필드는 이전 세션이 approved 로 이미 표시했으나, 이 migration 레코드는 독립검증·river 승인 여부를 별도로 추적한다(자가인증 금지)."
     },
     {
       "id": "text-button",
       "kind": "core-component",
       "legacyStatus": "not-in-legacy-web",
-      "uiLibraryStatus": "draft",
+      "uiLibraryStatus": "approved",
       "dependencies": [
         "tokens.css",
         "typography.css"
       ],
-      "lastVerified": null,
+      "lastVerified": "2026-09-15",
       "reverifyTrigger": "정본 Variant·State·token·HTML part·CSS selector 변경",
       "evidence": [
-        "reports/ui-library/assist-text-modal-content/3-build.md"
+        "reports/ui-library/assist-text-modal-content/3-build.md",
+        "reports/ui-library/draft-six-approval/1-verification.md"
       ],
-      "riverApproval": null,
-      "promotionDecision": "build 단계만 완료(⭐ 자가 배선) — 🤖 component-verifier 원본대조와 river UX 승인 전. status=draft로 정직 기록.",
+      "riverApproval": "approved 2026-09-15",
+      "promotionDecision": "🤖 component-verifier 시나리오 F 독립 검증 PASS(2026-09-15 · 결함 0) — 정본 대조·렌더 실측·토큰/상태 전수 일치, React/Vue/contract 전달본 완비. river 승인 2026-09-15(\"승인\" — 재고 조사 reports/missing-inventory-audit/1-inventory.md HD-6 (A)안: 지금 검수하고 승인 기록을 남긴다).",
       "note": "ui-library/src manifest.json 의 status 필드는 이전 세션이 approved 로 이미 표시했으나, 이 migration 레코드는 독립검증·river 승인 여부를 별도로 추적한다(자가인증 금지)."
     },
     {

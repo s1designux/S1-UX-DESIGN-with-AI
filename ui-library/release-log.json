@@ -5,10 +5,298 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.6.10",
-  "releasedAt": "2026-09-15",
-  "canonicalFingerprint": "870ef0123defbb3f4ef42ae35d236a1390515f6a6127b46a1ca23fdb925f4fd6",
+  "version": "0.7.1",
+  "releasedAt": "2026-09-16",
+  "canonicalFingerprint": "362954f2e6f0dab568067217bc7f1969dfce14f657c5b72143e01ba0fd1a3a94",
   "releases": [
+    {
+      "version": "0.7.1",
+      "date": "2026-09-16",
+      "kind": "patch",
+      "canonicalFingerprint": "7bba9947cef4a6b45cde642961cfc24e8dc08d1a2d3a23d005f1b13c7870f403",
+      "components": [
+        {
+          "id": "input",
+          "from": "0.3.0",
+          "to": "0.3.1"
+        },
+        {
+          "id": "button",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "checkbox",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "radio",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "toggle",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "chip",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "dropdown",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "select",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "filter-chip",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "tab",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "pagination",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "textarea",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "multi-toggle",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "modal",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "table",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "mobile-bottom-nav",
+          "from": "0.3.0",
+          "to": "0.3.1"
+        },
+        {
+          "id": "mobile-header",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "time-picker",
+          "from": "0.3.0",
+          "to": "0.3.1"
+        },
+        {
+          "id": "date-picker",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "gnb",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "gnb-sub-menu-item",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "gnb-sub-menu",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "assist-button",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "text-button",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "modal-content",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "bottom-sheet-option",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        },
+        {
+          "id": "bottom-sheet",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        }
+      ],
+      "deliveryFingerprint": "01616c7b7195746108b1a1b9729601c8440bced4fca85cd2947bb033fa0ca88e"
+    },
+    {
+      "version": "0.7.0",
+      "date": "2026-09-16",
+      "kind": "minor",
+      "canonicalFingerprint": "addca22ddd9fb7b8fe7bfd996d7115cc6e71f92936a396051d247563263b50f0",
+      "components": [
+        {
+          "id": "input",
+          "from": "0.2.1",
+          "to": "0.3.0"
+        },
+        {
+          "id": "button",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "checkbox",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "radio",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "toggle",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "chip",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "dropdown",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "select",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "filter-chip",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "tab",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "pagination",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "textarea",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "multi-toggle",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "modal",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "table",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "mobile-bottom-nav",
+          "from": "0.2.1",
+          "to": "0.3.0"
+        },
+        {
+          "id": "mobile-header",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "time-picker",
+          "from": "0.2.0",
+          "to": "0.3.0"
+        },
+        {
+          "id": "date-picker",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "gnb",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "gnb-sub-menu-item",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "gnb-sub-menu",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "assist-button",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "text-button",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "modal-content",
+          "from": "0.1.0",
+          "to": "0.2.0"
+        },
+        {
+          "id": "bottom-sheet-option",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        },
+        {
+          "id": "bottom-sheet",
+          "from": "0.1.1",
+          "to": "0.2.0"
+        }
+      ],
+      "deliveryFingerprint": "662109b2dc3ed9ec7ccff4fc91435ff94515da4e7f3029e7e32e19ab682f7bed"
+    },
     {
       "version": "0.6.10",
       "date": "2026-09-15",
@@ -26,7 +314,7 @@
           "to": "0.1.1"
         }
       ],
-      "deliveryFingerprint": "1bc647ed3e884cae9c8b0b94808e10c46bc5ff776d64984767f7ea5e9826ead0"
+      "deliveryFingerprint": "9758ed10e2548ab298d667af15219b5eebc77414b129d1c44b78c5066ecb7f60"
     },
     {
       "version": "0.6.9",
@@ -301,5 +589,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "1bc647ed3e884cae9c8b0b94808e10c46bc5ff776d64984767f7ea5e9826ead0"
+  "deliveryFingerprint": "01616c7b7195746108b1a1b9729601c8440bced4fca85cd2947bb033fa0ca88e"
 }

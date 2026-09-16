@@ -4329,11 +4329,21 @@ async function getOrBuildCalendarTile(maps: BuildMaps): Promise<{ set: Component
 }
 
 // Calendar Cell 인스턴스 — Type/State 선택 후 숫자("num") override.
-async function calCellInstance(cell: { variants: Record<string, ComponentNode> }, key: string, day: number): Promise<InstanceNode> {
+async function calCellInstance(cell: { variants: Record<string, ComponentNode> }, key: string, day: number, numColor?: Variable): Promise<InstanceNode> {
   const master = cell.variants[key] ?? cell.variants["MD:Standard:Default"];
   const inst = master.createInstance();
   const t = (inst.findOne((n) => n.name === "num" && n.type === "TEXT") ?? inst.findOne((n) => n.type === "TEXT")) as TextNode | null;
-  if (t) { await figma.loadFontAsync(t.fontName as FontName); t.characters = String(day); }
+  if (t) {
+    await figma.loadFontAsync(t.fontName as FontName);
+    t.characters = String(day);
+    // 주말 색은 **인스턴스 override** 다 — Calendar Cell 에 요일 축을 새로 만들지 않는다.
+    //   웹 배포본도 같은 방식이다(date-picker.css:303-306 — 같은 셀에 열(data-weekday)로 색만 덮는다).
+    //   ⚠️ 알려진 한계(🤖 component-verifier 2026-09-15 A1): override 는 **변형을 바꿔도 남는다.**
+    //   주말 칸을 캔버스에서 Default → Selected 로 바꾸면 파란 원 위에 파란/빨간 숫자가 남을 수 있다
+    //   (웹은 선택자가 다시 평가돼 이 문제가 없다). 정본이 만드는 표본은 기본 상태 칸에만 색을 주므로
+    //   설치 결과 자체는 옳고, 사람이 손으로 변형을 바꿀 때만 생긴다. 캔버스 실측은 아직 못 했다.
+    if (numColor) { try { t.fills = [boundPaint(numColor)]; } catch (e) { /* 바인딩 불가 환경 */ } }
+  }
   return inst;
 }
 
@@ -4352,6 +4362,61 @@ function dayKindToCellKey(kind: "normal" | "other" | "today" | "selected" | "dis
   if (kind === "selected") return "Standard:Selected";
   if (kind === "disabled" || kind === "other") return "Standard:Disabled";
   return "Standard:Default";
+}
+
+// ── Calendar Nav Arrow — 달력 헤더 이전/다음 화살표 (State 변형세트) ──────────
+// river 결정 2026-09-15("A" — 화살표도 작은 부품으로 뺀다): 날짜 칸(Calendar Cell)·페이지 번호 칸
+//   (Pagination Cell)과 같은 방식으로 화살표를 자기 세트로 뺀다. 그 전에는 달력 헤더에 아이콘이
+//   그냥 그려져 있어 **손 올림·못 누름 색을 담을 자리가 없었다** — 토큰(date-picker/icon/hover·disabled)은
+//   만들어져 있는데 아무도 쓰지 않는 상태였다(Gate 17 allowlist "연결 보류").
+//
+// 모양·크기는 **웹 배포본이 이미 쓰고 있는 것 그대로**다(date-picker.css:138-183, river 지시 2026-09-04):
+//   상자 24×24 · 반경 4(radius/control/sm — "아이콘 호버는 사각형에 r값이 살짝").
+//   ⚠️ 글리프는 **리사이즈하지 않는다**(size 0 = 라이브러리 네이티브). 지금 달력 헤더가 그렇게 쓰고 있어,
+//      숫자를 새로 정하면 있지도 않던 크기 변경이 끼어든다 — 바뀌는 것은 "면(hover 배경)이 생겼다" 하나뿐이다.
+//   새 토큰 0건 — hover 면색은 달력이 이미 쓰는 cell/bg/hover 를 그대로 쓴다.
+// 방향은 **이전(‹) 한 종류만** 만든다 — 다음(›)은 사용처에서 180° 회전(Pagination Cell Arrow 와 동일 철학).
+async function buildCalendarNavArrow(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const dpn = (k: string) => `color/date-picker/${k}`;
+  // icon-fallback-not-canon: 라이브러리 import 실패용 폴백(정본 CHEV_L 과 같은 16 프레임).
+  const CHEV_PREV = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8l4-4" stroke="#000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  const BOX = 24;
+  const states: { state: string; bg: string | null; icon: string }[] = [
+    { state: "Default",  bg: null,               icon: dpn("icon/default") },
+    { state: "Hover",    bg: dpn("cell/bg/hover"), icon: dpn("icon/hover") },
+    { state: "Disabled", bg: null,               icon: dpn("icon/disabled") },
+  ];
+  const comps: ComponentNode[] = [];
+  const byState = new Map<string, ComponentNode>();
+  for (const st of states) {
+    const comp = figma.createComponent();
+    comp.name = `State=${st.state}`;
+    comp.resize(BOX, BOX);
+    comp.cornerRadius = 4; // radius/control/sm = radius/4 (달력 패널·타일과 같은 반경)
+    comp.fills = st.bg ? [boundPaint(scv(maps, st.bg))] : [];
+    const icon = await makeIconInstance("chevron", scv(maps, st.icon), 0, CHEV_PREV, 180, { wrap: false, keepName: true });
+    comp.appendChild(icon);
+    centerIconInBox(icon, comp, BOX); // 180° 회전 인스턴스 — 실측 바운딩박스로 정중앙 보정
+    setLightMode(comp, maps);
+    comps.push(comp); byState.set(st.state, comp);
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Calendar Nav Arrow";
+  set.x = 0; set.y = originY;
+  for (const [k, v] of byState) BUILT_COMPS[`CalendarNavArrow:${k}`] = v;
+  BUILT_SETS["Calendar Nav Arrow"] = set;
+  const cols = states.map((s) => s.state);
+  const opts: SpecOpts = {
+    title: "Calendar Nav Arrow",
+    colHeaders: cols,
+    rowLabels: [""],
+    cellAt: (_r, c) => byState.get(cols[c]) ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 72, cellH: 48, rowLabelW: 64,
+    contrastBg: true, // 상자 자체가 투명(Default·Disabled)이라 흰 배경에서는 면이 안 보인다
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
 }
 
 /** PC 캘린더 패널 프레임 (356px, auto-layout). 모든 color/date-picker/* 변수를 시연. */
@@ -4393,18 +4458,48 @@ async function buildCalendar(maps: BuildMaps, originY: number): Promise<{ set: C
     return [comp, inner];
   }
 
+  // Calendar Nav Arrow(State=Default) 인스턴스 하나. next=true 면 180° 회전해 다음(›) 으로 쓴다.
+  //   세트를 못 찾으면(부품 없이 단독 설치) 종전처럼 아이콘을 직접 그린다 — 헤더가 빈자리가 되지 않게.
+  async function calNavArrow(next: boolean, fallbackSvg: string): Promise<SceneNode> {
+    const master = BUILT_COMPS["CalendarNavArrow:Default"]
+      ?? await reuseVariant("Calendar Nav Arrow", "CalendarNavArrow:Default", ["State=Default"]);
+    if (!master) {
+      console.warn("[Calendar] Calendar Nav Arrow 세트를 찾지 못해 아이콘을 직접 그립니다 — 세트를 먼저 설치하면 인스턴스로 붙습니다.");
+      return makeIconInstance("chevron", scv(maps, dp("icon/default")), 0, fallbackSvg, next ? 0 : 180, { wrap: !next });
+    }
+    const inst = master.createInstance();
+    inst.name = next ? "next" : "prev";
+    if (!next) return inst;
+    // 180° 회전은 원점(top-left) 기준이라 오토레이아웃 안에서 자리가 밀린다 → 정사각 래퍼에 담아 중앙 정렬.
+    //   순서가 중요하다: **회전을 먼저 걸고 그 다음에 래퍼에 담는다.** makeIconInstance 의 래퍼 경로와 같다
+    //   (makeIconInstance :1451~ — 거기도 rotation 을 준 뒤 append 하고, 정렬은 오토레이아웃(CENTER/CENTER)에 맡긴다).
+    //   오토레이아웃 자식의 x/y 를 직접 대입하지 않는다 — 이 파일에서 좌표를 쓰는 자리는 먼저
+    //   layoutPositioning="ABSOLUTE" 를 주고 try/catch 로 감싼다(예: :1206 · :3787). 🤖 component-verifier 지적 2026-09-15(B1).
+    const wrap = figma.createFrame();
+    wrap.name = "next"; wrap.fills = []; wrap.clipsContent = false;
+    wrap.layoutMode = "HORIZONTAL"; wrap.primaryAxisAlignItems = "CENTER"; wrap.counterAxisAlignItems = "CENTER";
+    wrap.primaryAxisSizingMode = "FIXED"; wrap.counterAxisSizingMode = "FIXED";
+    wrap.resize(inst.width, inst.height);
+    try { (inst as any).rotation = 180; } catch (e) { /* 회전 불가 환경 — 방향만 못 뒤집고 자리는 유지된다 */ }
+    wrap.appendChild(inst);
+    return wrap;
+  }
+
   // 공용 헤더 (이전·라벨·다음) — 폭 = 패널폭 - 좌우 여백, 높이·글자 크기는 CalGeo.
   async function makeCalHdr(g: CalGeo, hdrH: number, label: string): Promise<FrameNode> {
     const hdr = figma.createFrame(); hdr.name = "header"; hdr.fills = [];
     hdr.layoutMode = "HORIZONTAL"; hdr.primaryAxisSizingMode = "FIXED"; hdr.counterAxisSizingMode = "FIXED";
     hdr.primaryAxisAlignItems = "SPACE_BETWEEN"; hdr.counterAxisAlignItems = "CENTER";
     hdr.resize(g.panelW - g.padX * 2, hdrH);
-    // 좌측 화살표: 불필요한 래퍼 프레임 해제(wrap:false) — 우측(rotation 0, 래퍼 없음)과 동일 구조.
-    // 헤더 이전/다음 < > = 전용 date-picker/icon/* (default). 라벨 텍스트는 text/primary 유지.
-    // 화살표 아이콘은 두 크기 공통 24×24 — 원본에서 SM 도 줄지 않았다(실측 3381:15310).
-    hdr.appendChild(await makeIconInstance("chevron", scv(maps, dp("icon/default")), 0, CHEV_L, 180, { wrap: false }));
+    // 헤더 이전/다음 ‹ › = **Calendar Nav Arrow 세트의 State=Default 인스턴스**(river 결정 2026-09-15).
+    //   그 전에는 아이콘을 직접 그려 hover·disabled 색을 담을 자리가 없었다. 부품으로 빼면서
+    //   달력 안에서도 인스턴스로 쓴다 — Calendar Cell·Calendar Tile 과 같은 구조다.
+    //   방향: 세트 base 는 이전(‹). 다음(›)은 180° 회전 — 회전 인스턴스는 오토레이아웃과 충돌하므로
+    //   makeIconInstance 의 wrap 과 같은 방식으로 정사각 래퍼에 감싸 넣는다.
+    // 라벨 텍스트는 text/primary 유지. 화살표는 두 크기 공통 — 원본에서 SM 도 줄지 않았다(실측 3381:15310).
+    hdr.appendChild(await calNavArrow(false, CHEV_L));
     hdr.appendChild(await makeBoundText(label, g.hdrFont, "Bold", scv(maps, dp("text/primary"))));
-    hdr.appendChild(await makeIconInstance("chevron", scv(maps, dp("icon/default")), 0, CHEV_R, 0));
+    hdr.appendChild(await calNavArrow(true, CHEV_R));
     return hdr;
   }
 
@@ -4444,11 +4539,15 @@ async function buildCalendar(maps: BuildMaps, originY: number): Promise<{ set: C
     wkRow.layoutMode = "HORIZONTAL"; wkRow.itemSpacing = 0;
     wkRow.primaryAxisSizingMode = "AUTO"; wkRow.counterAxisSizingMode = "AUTO";
     calBody.appendChild(wkRow);
+    // 요일 색 — 토=파랑 / 일=빨강 / 평일=기본. river 결정 2026-09-15("토/일 색 구분하는걸로 다시 얘기했었음")로
+    //   2026-06-30 의 "경비업 특성상 주말 색 미적용" 결정을 뒤집는다. 웹 배포본(date-picker.css)이 이미
+    //   쓰고 있던 배선을 정본이 따라간 것 — 새 토큰을 만들지 않고 이미 있던 saturday/sunday 를 연결한다.
+    const wkColor = (ch: string) => ch === "토" ? dp("text/saturday") : ch === "일" ? dp("text/sunday") : dp("text/primary");
     for (const ch of ["월", "화", "수", "목", "금", "토", "일"]) {
       const cell = figma.createFrame(); cell.name = "wk"; cell.fills = [];
       cell.layoutMode = "HORIZONTAL"; cell.primaryAxisAlignItems = "CENTER"; cell.counterAxisAlignItems = "CENTER";
       cell.primaryAxisSizingMode = "FIXED"; cell.counterAxisSizingMode = "FIXED"; cell.resize(CW, g.cell);
-      cell.appendChild(await makeBoundText(ch, g.cellFont, "Medium", scv(maps, dp("text/primary"))));
+      cell.appendChild(await makeBoundText(ch, g.cellFont, "Medium", scv(maps, wkColor(ch))));
       wkRow.appendChild(cell);
     }
 
@@ -4467,7 +4566,14 @@ async function buildCalendar(maps: BuildMaps, originY: number): Promise<{ set: C
       for (let c = 0; c < 7; c++) {
         const gcell = calGrid[r * 7 + c];
         // day = Calendar Cell 인스턴스(Standard). other-month = Standard:Disabled 매핑(V2.4 미존재 — 보고).
-        const inst = await calCellInstance(calCell, `${size}:${dayKindToCellKey(gcell.kind)}`, gcell.day);
+        // 주말 색(river 결정 2026-09-15): 이 그리드는 **월요일 시작**이라 c=5 가 토, c=6 이 일이다.
+        //   기본 상태(normal)에만 덮는다 — 오늘·선택·비활성·지난달은 자기 상태 색을 그대로 쓴다.
+        //   웹도 같다(date-picker.css:303-306 은 data-state="default"·"range-mid" 에만 건다).
+        const weekendColor = gcell.kind !== "normal" ? undefined
+          : c === 5 ? scv(maps, dp("text/saturday"))
+          : c === 6 ? scv(maps, dp("text/sunday"))
+          : undefined;
+        const inst = await calCellInstance(calCell, `${size}:${dayKindToCellKey(gcell.kind)}`, gcell.day, weekendColor);
         weekRow.appendChild(inst);
       }
     }
@@ -5551,6 +5657,8 @@ const MODAL_CONTENT_GEO: Record<ModalContentSize, { w: number; h: number }> = {
   XL: { w: 1200, h: 587 },
 };
 
+const MODAL_CONTENT_SLOT_DESC = "모달 본문이 놓이는 자리. 기본은 \"컨텐츠 영역\" 자리표시 네모칸이며, 그것을 빼고 입력 폼·표·이미지 등 무엇이든 넣을 수 있다. 제목·닫기(X)와 푸터 버튼은 슬롯 밖 고정 영역이다.";
+
 async function buildModalContent(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   type MCFooter = "Single" | "Dual";
   const FOOTERS: MCFooter[] = ["Single", "Dual"];
@@ -5630,7 +5738,18 @@ async function buildModalContent(maps: BuildMaps, originY: number): Promise<{ se
       bodyWrap.setBoundVariable("paddingRight", num("spacing/24"));
       comp.insertChild(1, bodyWrap);
       try { bodyWrap.layoutAlign = "STRETCH"; bodyWrap.layoutGrow = 1; } catch (e) { /* */ }
-      bodyWrap.appendChild(body);
+      // 본문이 놓이는 자리를 Figma 슬롯("Content")으로 만든다 — 자리표시 네모칸은 슬롯의 기본 내용으로
+      //   그 안에 들어간다(river 지시 2026-09-16: "슬롯 영역으로 교체 후 그 위치에 컨텐츠 영역 네모칸을 넣으면 돼").
+      //   확인 계열 Modal 의 "Content" 슬롯(2026-09-03)·Dropdown "Options"·Tab "Tabs" 와 같은 방식이다.
+      //   좌우 여백 24 는 슬롯 밖(content-area)에 그대로 남는다 — 넣는 내용이 달라져도 여백은 고정이다.
+      //   슬롯은 owner(comp)에서 만들되 처음부터 content-area 안에 붙인다(parent) — owner 직계로 붙였다
+      //   옮기면 파생 사실에 유령 부품이 남는다(🤖 component-verifier 적발 2026-09-03).
+      const contentSlot = await makeSlot(comp, "Content", MODAL_CONTENT_SLOT_DESC, [body], [],
+        { parent: bodyWrap, layoutMode: "VERTICAL",
+          primaryAxisSizingMode: "FIXED", counterAxisSizingMode: "FIXED",
+          primaryAxisAlignItems: "CENTER", counterAxisAlignItems: "CENTER", itemSpacing: 0,
+          stretch: true, stretchContents: true });
+      try { (contentSlot as any).layoutGrow = 1; } catch (e) { /* */ }
       try { body.layoutAlign = "STRETCH"; body.layoutGrow = 1; } catch (e) { /* */ }
 
       // ── 푸터: 우측 정렬, 코어 Button XXSM h28(확인 계열과 같음, river 지시 ⑤) ──
@@ -6725,7 +6844,7 @@ export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] 
     // members = 표시(나열) 순서: 메인 컴포넌트 → 그 안을 구성하는 요소 컴포넌트 순. 빌드(생성) 순서는
     //   BUILD_DEPENDENCIES 로 의존성(요소 먼저)이 자동 적용된다 — 표시순서 ≠ 빌드순서 규칙(§ 아래 주석).
     { name: "Form Control", members: ["Input", "Search Input", "Text Area", "Select Box"] },
-    { name: "Date Picker",  members: ["Date Picker", "Calendar", "Calendar Cell", "Calendar Tile", "Date Picker Mobile Bottom Sheet"] },
+    { name: "Date Picker",  members: ["Date Picker", "Calendar", "Calendar Cell", "Calendar Tile", "Calendar Nav Arrow", "Date Picker Mobile Bottom Sheet"] },
     { name: "Time Picker",  members: ["Time Picker", "Time Picker Dropdown", "Time Picker Cell", "Time Picker Mobile Bottom Sheet"] },
     { name: "Table",        members: ["Table", "Table Cell"] },
     // Bottom Sheet: 메인 컨테이너(Bottom Sheet) → 요소(Bottom Sheet Option) 표시순서.
@@ -6777,6 +6896,7 @@ export const BUILD_DEPENDENCIES: Record<string, string[]> = {
   "Pagination": ["Pagination Cell"],  // 완성 바가 Pagination Cell(Arrow·Edge·Number) 인스턴스 조합
   "Multi Toggle": ["Multi Toggle Element"], // 조합형태가 Multi Toggle Element 셀 인스턴스 사용 → 요소 먼저 빌드
   "Date Picker": ["Calendar"],        // Open 상태가 Calendar 패널 인스턴스 부착(BUILT_COMPS["Calendar:Date"])
+  "Calendar": ["Calendar Nav Arrow"], // 헤더 이전/다음 화살표가 Calendar Nav Arrow 인스턴스 부착(river 결정 2026-09-15)
   // 모바일 바텀시트: Calendar:Date 인스턴스(본문) + Button primary(하단 "적용") 부착 → 둘 다 선빌드 필요.
   "Date Picker Mobile Bottom Sheet": ["Calendar", "Button"],
   // 시간 휠 바텀시트: 하단 "적용" Button + (DateTime 변형) 날짜·시간 Line Tab 인스턴스 부착 → 둘 다 선빌드.
@@ -6815,6 +6935,7 @@ const ATTACH_DEPENDENCIES: { [parent: string]: string[] } = {
   //   Table 이 정말 껍데기가 된다 → 열화 보고 대상이 맞다.
   "Table": ["Pagination", "Checkbox", "Select Box", "Table Cell"],
   "Mobile Header": ["StatusBar"],
+  "Calendar": ["Calendar Cell", "Calendar Tile", "Calendar Nav Arrow"],
 };
 
 // 부모가 **부수 생성**하는 컴포넌트 — 자기 runner 가 없는 것이 정상이다(2026-08-01 명시화).
@@ -7026,6 +7147,7 @@ export async function buildAllComponents(
     "Dropdown List":        (oy) => buildDropdownList(maps, oy),
     "Dropdown":             (oy) => buildDropdown(maps, oy),
     "Calendar":             (oy) => buildCalendar(maps, oy),
+    "Calendar Nav Arrow":   (oy) => buildCalendarNavArrow(maps, oy),
     "Date Picker":          (oy) => buildDatePicker(maps, oy),
     "Date Picker Mobile Bottom Sheet": (oy) => buildDatePickerBottomSheet(maps, oy),
     "Bottom Sheet":         (oy) => buildBottomSheet(maps, oy),

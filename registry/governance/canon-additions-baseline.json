@@ -2,7 +2,7 @@
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
   "_updated": "2026-09-15",
-  "count": 656,
+  "count": 657,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -404,6 +404,7 @@
     "component:CI",
     "component:Calendar",
     "component:Calendar Cell",
+    "component:Calendar Nav Arrow",
     "component:Calendar Tile",
     "component:Checkbox",
     "component:Chip",
@@ -1327,6 +1328,18 @@
       "evidence": {
         "transcript": "107e2ced-31b7-449c-860f-1267df6dd76d.jsonl",
         "at": "2026-09-15T07:20:48.997Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "component:Calendar Nav Arrow",
+      "by": "river",
+      "reason": "달력 화살표의 손 올림·못 누름 색을 Figma 에도 넣기 위해, 날짜 칸(Calendar Cell)·페이지 번호 칸(Pagination Cell)과 같은 방식으로 화살표를 자기 세트로 뺀다. 새 토큰 0건 — 이미 있던 date-picker/icon/hover·disabled 와 cell/bg/hover 를 연결한다.",
+      "approvedAt": "2026-09-15T05:41:01.562Z",
+      "quote": "달력 화살표를 작은 부품으로 빼줘",
+      "evidence": {
+        "transcript": "e899d4c6-3f84-4cee-941d-748a60750a53.jsonl",
+        "at": "2026-09-15T05:40:47.657Z"
       },
       "recordedBy": "orchestrator"
     }

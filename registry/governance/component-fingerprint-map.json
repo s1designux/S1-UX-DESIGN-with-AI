@@ -56,9 +56,10 @@
         "Calendar",
         "Calendar Cell",
         "Calendar Tile",
+        "Calendar Nav Arrow",
         "Date Picker Mobile Bottom Sheet"
       ],
-      "why": "BUILD_DEPENDENCIES: Date Picker→Calendar · Calendar→Cell/Tile. 달력·타일·셀·모바일시트를 담는 별도 배포 부품이 없다."
+      "why": "BUILD_DEPENDENCIES: Date Picker→Calendar · Calendar→Cell/Tile. 달력·타일·셀·모바일시트를 담는 별도 배포 부품이 없다. Calendar Nav Arrow 는 2026-09-15 정본 신설분으로 BUILD_DEPENDENCIES: Calendar→Calendar Nav Arrow 이며 이를 담는 별도 배포 부품이 없다."
     },
     "dropdown": {
       "canonSets": [

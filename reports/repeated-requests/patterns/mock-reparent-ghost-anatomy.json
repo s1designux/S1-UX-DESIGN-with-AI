@@ -1,0 +1,14 @@
+{
+  "id": "mock-reparent-ghost-anatomy",
+  "category": "derived-facts",
+  "label": "임시 부모에 붙였다 옮긴 노드가 파생 사실에 유령 부품으로 남는다",
+  "count": 1,
+  "promotionStatus": "watching",
+  "occurrences": [
+    {
+      "date": "2026-09-16",
+      "summary": "build-components.ts 가 노드를 comp 에 먼저 appendChild 한 뒤 안쪽 프레임으로 옮기면, 파생 사실 생성기의 Figma mock(scripts/lib/figma-build-mock.js:155 attach)이 재부모화를 하지 않아 루트 직계 anatomy 에 유령 부품이 남는다. 2026-09-16 Modal Content 슬롯 작업 중 🤖 component-verifier 적발 — build-components.ts:5726 의 content 가 실제 Figma 에서는 content-area 안인데 anatomy 에는 루트 직계로 남아 있다(이 변경 이전부터 틀려 있던 선행 결함). 2026-09-03 GNB 유령 부품과 같은 기전."
+    }
+  ],
+  "recommendedRule": "mock 의 attach 가 이전 부모에서 먼저 제거하도록 고친다(근본). 그 전까지는 빌더가 노드를 임시 부모에 붙이지 않고 만들자마자 최종 부모(또는 makeSlot contents)로 넘긴다."
+}

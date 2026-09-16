@@ -1,6 +1,6 @@
 {
   "id": "modal",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "status": "approved",
   "canonicalFingerprint": "b0d10ef6da989c7a32ad2c5a1ec83fccde9dbfdb68d080872aa4d19f96a25db4",
   "canonicalSources": [
@@ -226,5 +226,5 @@
     "scrollLockNote": "배경 스크롤 잠금은 열린 모달 수를 세어 마지막 하나가 닫힐 때만 원래 값으로 되돌린다 — 모달이 여럿 있는 화면에서 스크롤이 잠긴 채 남는 사고를 막는다.",
     "prewiredOpenNote": "이미 열린 채로 들어온 마크업(검수 화면·정적 예시)도 init 시점에 Escape·초점 가둠·스크롤 잠금을 배선한다."
   },
-  "sourceFingerprint": "8606cddd9284d4f090fe451383a8d3ea92b2c4ee1106a280c6e0ad4e20df29b0"
+  "sourceFingerprint": "c12c4c3d26dc753ef28cdaecd143970a73fe52f000c35d3f0d42a414df071672"
 }
