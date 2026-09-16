@@ -1241,6 +1241,23 @@ try {
   fail(`Gate 50 실행 실패: ${e.message}`);
 }
 
+// ── Gate 51: GNB Keyboard Order (하위메뉴 키보드 순서) ─────────────
+// 2026-09-15~16 에 이 한 자리에서 결함 네 건이 났고 **전부 사람 손 검증으로만** 잡혔다
+// (초점 가둠 · 역방향 진입 누락 2회 · 되돌아가기 표시 잔존). 기존 검사기는 마크업·토큰만 보고
+// 키 동작을 재현하지 않아 네 번 다 통과시켰다. river 지시 2026-09-16 "그 시험 만드는거 진행해줘".
+// 크롬이 없으면 건너뛴다(경고) — 렌더 검사기들과 같은 방침.
+gateHeader('[Gate 51] 키보드순서 검사기 (GNB Keyboard Order)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync(process.execPath, [path.join(ROOT, 'scripts/gnb-keyboard-order-check.js')], { encoding: 'utf-8' });
+  const out = `${r.stdout || ''}${r.stderr || ''}`;
+  if (r.status === 2) warn('Gate 51: 크롬이 없어 건너뜀 — 키보드 순서는 확인되지 않았습니다');
+  else if (r.status === 0) pass(out.match(/✅ (시험 .*)/)?.[1] || '키보드 순서 통과');
+  else for (const l of out.split('\n').filter((l) => l.includes('❌'))) fail(l.replace(/^\s*❌\s*/, '').trim());
+} catch (e) {
+  fail(`Gate 51 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 if (VERBOSE || errors > 0 || warnings > 0) console.log('\n─────────────────────────────────────────────────────');
 const tally = `게이트 ${gates}개 · ✅ ${passes}건${VERBOSE ? '' : ' (상세: --verbose)'}`;

@@ -54,6 +54,8 @@
     "ui:test": "npm --prefix ui-library run test --",
     "ui:test:check": "npm --prefix ui-library run test:check",
     "ui:runtime": "node ui-library/scripts/runtime-check.mjs",
+    "ui:keyboard": "node scripts/gnb-keyboard-order-check.js",
+    "ui:keyboard:selftest": "node scripts/gnb-keyboard-order-check.js --selftest",
     "ui:version": "node scripts/ui-library-version.js",
     "ui:bump": "node scripts/ui-library-version.js --bump && npm run ui:build && node scripts/ui-library-version.js --record",
     "ui:bump:minor": "node scripts/ui-library-version.js --bump --minor && npm run ui:build && node scripts/ui-library-version.js --record",
