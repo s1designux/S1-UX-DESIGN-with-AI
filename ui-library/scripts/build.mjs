@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
 import iconGeometryCheck from "../../scripts/ui-library-icon-geometry-check.js";
 import { componentIds } from "./component-ids.mjs";
 import { buildPlatformOutputs } from "./platform.mjs";
@@ -19,15 +20,12 @@ const read = (file) => readFile(file, "utf8");
 const hash = (value) => createHash("sha256").update(value).digest("hex");
 const stableJson = (value) => `${JSON.stringify(value, null, 2)}\n`;
 
-async function canonicalFingerprint(manifest) {
-  const digest = createHash("sha256");
-  for (const relative of manifest.canonicalSources) {
-    digest.update(`${relative}\0`);
-    digest.update(await read(path.join(repositoryRoot, relative)));
-    digest.update("\0");
-  }
-  return digest.digest("hex");
-}
+/* 정본 지문 = **부품 몫만** 센다. 계산은 저장소 한 곳(scripts/lib/canonical-fingerprint.js)에
+   있고 `npm run ui:version` 도 같은 모듈을 쓴다 — 두 벌로 두면 갈라진다.
+   종전에는 정본 파일을 통째로 세서 주석 한 줄만 고쳐도 부품 27종이 전부 "달라짐"이 됐다. */
+const { canonicalFingerprint } = createRequire(import.meta.url)(
+  path.join(repositoryRoot, "scripts/lib/canonical-fingerprint.js")
+);
 
 async function createOutputs() {
   const packageData = JSON.parse(await read(path.join(libraryRoot, "package.json")));
@@ -63,7 +61,7 @@ async function createOutputs() {
   for (const id of componentIds) {
     const base = path.join(sourceRoot, "components", id);
     const manifest = JSON.parse(await read(path.join(base, "manifest.json")));
-    const actualFingerprint = await canonicalFingerprint(manifest);
+    const actualFingerprint = canonicalFingerprint(manifest);
     if (manifest.canonicalFingerprint !== actualFingerprint) {
       throw new Error(`${id} canonicalFingerprint is stale. Review canon changes before rebuilding.`);
     }

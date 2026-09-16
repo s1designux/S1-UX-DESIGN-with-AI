@@ -1,5 +1,11 @@
 # 쪽지 — 부품이 "달라졌는지" 재는 방식 고치기 (새 세션용)
 
+> ✅ **2026-09-16 완료.** river 승인("다 묶는 걸로 하고, 글자 변화도 잡고, 빌려쓰는 것도 같이 올려")으로
+> 대응표를 `registry/governance/component-fingerprint-map.json` 에 선언하고, 지문 계산을
+> `scripts/lib/canonical-fingerprint.js` 한 곳으로 옮겼다(번호·빌드 양쪽이 같은 모듈을 쓴다).
+> 적대 시험 = `node scripts/component-fingerprint-selftest.js` (6가지 전부 통과).
+> 아래 내용은 착수 당시의 기록이다.
+
 작성 2026-09-15 · 요청: river "검사기 재는 방식은 새 세션에서 고치게 쪽지줄래"
 앞 작업: Q9 에서 (A) 번호 유지로 넘겼고, (C) 이 일이 남았다.
 

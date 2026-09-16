@@ -1,0 +1,207 @@
+{
+  "_meta": {
+    "id": "component-fingerprint-map",
+    "title": "배포본 부품 ↔ 정본 세트 대응표",
+    "purpose": "「이 부품이 달라졌나」를 정본 파일 통째가 아니라 부품별로 재기 위한 정본 선언. scripts/lib/canonical-fingerprint.js 가 이 표만 읽는다.",
+    "approvedBy": "river",
+    "approvedAt": "2026-09-16",
+    "approvalQuote": "다 묶는 걸로 하고, 글자 변화도 잡고, 빌려쓰는 것도 같이 올려",
+    "rules": [
+      "canonSets 에 적힌 정본 세트가 그 부품의 몫이다. 세트 하나는 부품 하나에만 붙는다(중복 금지).",
+      "unownedSets = 웹으로 배포하지 않아 대응 부품이 없는 세트. 이것이 바뀌면 어떤 부품 번호도 오르지 않는다(알고 두는 구멍).",
+      "components + unownedSets 의 합집합이 component-facts.json 의 세트 전부와 정확히 같아야 한다 — 어긋나면 지문 계산이 멈춘다.",
+      "빌려쓰기(다른 배포 부품을 인스턴스로 조립하는 관계)는 여기 적지 않는다 — 각 부품 manifest 의 dependencies.coreComponents 가 정본이고, 지문 계산이 그것을 따라 올라간다."
+    ]
+  },
+  "components": {
+    "assist-button": {
+      "canonSets": [
+        "Assist Button"
+      ],
+      "why": "buildAssistButtonSet 가 만드는 세트 1개."
+    },
+    "bottom-sheet": {
+      "canonSets": [
+        "Bottom Sheet"
+      ],
+      "why": "buildBottomSheet 가 만드는 세트 1개. 안에 붙는 Option·Button 은 각자 배포 부품이라 빌려쓰기로 처리한다."
+    },
+    "bottom-sheet-option": {
+      "canonSets": [
+        "Bottom Sheet Option"
+      ],
+      "why": "buildBottomSheetOption 가 만드는 세트 1개. Checkbox·Radio 는 각자 배포 부품."
+    },
+    "button": {
+      "canonSets": [
+        "Button"
+      ],
+      "why": "buildButtonSet 가 만드는 세트 1개."
+    },
+    "checkbox": {
+      "canonSets": [
+        "Checkbox"
+      ],
+      "why": "buildCheckbox 가 만드는 세트 1개."
+    },
+    "chip": {
+      "canonSets": [
+        "Chip"
+      ],
+      "why": "buildChip 가 만드는 세트 1개."
+    },
+    "date-picker": {
+      "canonSets": [
+        "Date Picker",
+        "Calendar",
+        "Calendar Cell",
+        "Calendar Tile",
+        "Date Picker Mobile Bottom Sheet"
+      ],
+      "why": "BUILD_DEPENDENCIES: Date Picker→Calendar · Calendar→Cell/Tile. 달력·타일·셀·모바일시트를 담는 별도 배포 부품이 없다."
+    },
+    "dropdown": {
+      "canonSets": [
+        "Dropdown",
+        "Dropdown List"
+      ],
+      "why": "BUILD_DEPENDENCIES: Dropdown→Dropdown List. manifest parts(option·option-label·option-check·divider)가 곧 Dropdown List 행이다."
+    },
+    "filter-chip": {
+      "canonSets": [
+        "Filter Chip"
+      ],
+      "why": "buildFilterChip 가 만드는 세트 1개. 패널은 dropdown 부품(manifest coreComponents=dropdown)."
+    },
+    "gnb": {
+      "canonSets": [
+        "GNB",
+        "GNB Menu",
+        "GNB Utility Icon",
+        "Language Icon"
+      ],
+      "why": "buildGNB 가 바(GNB)와 메뉴(GNB Menu) 두 세트를 함께 만든다. BUILD_DEPENDENCIES: GNB→GNB Utility Icon→Language Icon. manifest parts 에 menus·menu·util·lang·lang-icon 이 있고 이것들을 담는 별도 배포 부품이 없다. river 결정 2026-09-16 「다 묶는 걸로」."
+    },
+    "gnb-sub-menu": {
+      "canonSets": [
+        "GNB Sub Menu"
+      ],
+      "why": "buildGNBSubMenu 가 만드는 세트 1개. 항목은 별도 배포 부품."
+    },
+    "gnb-sub-menu-item": {
+      "canonSets": [
+        "GNB Sub Menu Item"
+      ],
+      "why": "buildGNBSubMenuItem 가 만드는 세트 1개."
+    },
+    "input": {
+      "canonSets": [
+        "Input",
+        "Search Input"
+      ],
+      "why": "buildInput·buildSearch. 검색 입력칸을 담는 별도 배포 부품이 없고 manifest 의 modes 가 검색 모드를 갖는다. river 결정 2026-09-16 「다 묶는 걸로」."
+    },
+    "mobile-bottom-nav": {
+      "canonSets": [
+        "Mobile Bottom Nav"
+      ],
+      "why": "buildMobileBottomNav 가 만드는 세트 1개."
+    },
+    "mobile-header": {
+      "canonSets": [
+        "Mobile Header"
+      ],
+      "why": "buildMobileHeader 가 만드는 세트 1개. StatusBar 는 manifest notInCanon 이 명시적으로 뺐다(river 결정 D5 2026-09-02)."
+    },
+    "modal": {
+      "canonSets": [
+        "Modal"
+      ],
+      "why": "buildModalShell 가 만드는 세트 1개. 푸터 Button 은 빌려쓰기."
+    },
+    "modal-content": {
+      "canonSets": [
+        "Modal Content"
+      ],
+      "why": "buildModalContent 가 만드는 세트 1개. 푸터 Button 은 빌려쓰기."
+    },
+    "multi-toggle": {
+      "canonSets": [
+        "Multi Toggle",
+        "Multi Toggle Element"
+      ],
+      "why": "BUILD_DEPENDENCIES: Multi Toggle→Multi Toggle Element. 칸을 담는 별도 배포 부품이 없다."
+    },
+    "pagination": {
+      "canonSets": [
+        "Pagination",
+        "Pagination Cell"
+      ],
+      "why": "BUILD_DEPENDENCIES: Pagination→Pagination Cell. 셀을 담는 별도 배포 부품이 없다."
+    },
+    "radio": {
+      "canonSets": [
+        "Radio"
+      ],
+      "why": "buildRadio 가 만드는 세트 1개."
+    },
+    "select": {
+      "canonSets": [
+        "Select Box"
+      ],
+      "why": "buildSelect 가 만드는 세트 1개. 패널은 dropdown 부품(manifest coreComponents=dropdown)."
+    },
+    "tab": {
+      "canonSets": [
+        "Line Tab",
+        "Line Tab Set"
+      ],
+      "why": "BUILD_DEPENDENCIES: Line Tab Set→Line Tab. 탭 묶음을 담는 별도 배포 부품이 없다."
+    },
+    "table": {
+      "canonSets": [
+        "Table",
+        "Table Cell"
+      ],
+      "why": "BUILD_DEPENDENCIES: Table→[Pagination, Table Cell] 중 Pagination 은 pagination 부품 몫이라 빌려쓰기로 처리하고, Table Cell 만 여기에 붙는다."
+    },
+    "text-button": {
+      "canonSets": [
+        "Text Button"
+      ],
+      "why": "buildTextButtonSet 가 만드는 세트 1개."
+    },
+    "textarea": {
+      "canonSets": [
+        "Text Area"
+      ],
+      "why": "buildTextarea 가 만드는 세트 1개."
+    },
+    "time-picker": {
+      "canonSets": [
+        "Time Picker",
+        "Time Picker Cell",
+        "Time Picker Dropdown",
+        "Time Picker Mobile Bottom Sheet"
+      ],
+      "why": "BUILD_DEPENDENCIES: Time Picker→Time Picker Dropdown→Time Picker Cell. 칸·드롭다운·모바일시트를 담는 별도 배포 부품이 없다."
+    },
+    "toggle": {
+      "canonSets": [
+        "Toggle"
+      ],
+      "why": "buildToggle 가 만드는 세트 1개."
+    }
+  },
+  "unownedSets": {
+    "sets": [
+      "StatusBar",
+      "NavBar",
+      "CI",
+      "LoginGNB",
+      "WebTabBar",
+      "Footer"
+    ],
+    "why": "웹으로 배포하지 않는 화면 틀(상태바·주소창·로그인 상단바·웹 탭바·푸터)이라 대응할 배포 부품이 없다. 실제 서비스에서는 OS·브라우저가 그리는 영역이다(river 결정 D5 2026-09-02 계열)."
+  }
+}

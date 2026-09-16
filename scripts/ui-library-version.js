@@ -66,16 +66,10 @@ function componentIds() {
   return JSON.parse(match[1]);
 }
 
-/** build.mjs 의 canonicalFingerprint 와 같은 계산 — 정본 파일 내용을 순서대로 이어 해시한다. */
-function canonicalFingerprint(manifest) {
-  const digest = createHash('sha256');
-  for (const relative of manifest.canonicalSources) {
-    digest.update(`${relative}\0`);
-    digest.update(read(path.join(ROOT, relative)));
-    digest.update('\0');
-  }
-  return digest.digest('hex');
-}
+/* 정본 지문 = **부품 몫만** 센다 — 계산은 scripts/lib/canonical-fingerprint.js 한 곳에 있고
+   빌드(ui-library/scripts/build.mjs)도 같은 모듈을 쓴다(두 벌로 두면 갈라진다).
+   종전에는 정본 파일을 통째로 세서 주석 한 줄만 고쳐도 27종 전부가 "달라짐"이 됐다. */
+const { canonicalFingerprint } = require('./lib/canonical-fingerprint');
 
 /**
  * 전달본 지문 — **개발자가 받아 가는 내용**이 바뀌었는지 본다.

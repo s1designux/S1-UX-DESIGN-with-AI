@@ -153,7 +153,8 @@
     "kotlin:parity": "node scripts/kotlin-compose-parity-check.js",
     "kotlin:lint": "node scripts/kotlin-compose-lint.js",
     "kotlin:preview": "node scripts/kotlin-compose-preview-page.js",
-    "ui:density": "node scripts/density-policy-check.js"
+    "ui:density": "node scripts/density-policy-check.js",
+    "ui:fingerprint:test": "node scripts/component-fingerprint-selftest.js"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.138.0",
