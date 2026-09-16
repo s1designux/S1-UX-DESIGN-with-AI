@@ -2,7 +2,7 @@
    Run: npm run reports:sync
 */
 window.REPORTS_INDEX = {
-  "generatedAt": "2026-09-15T07:47:34.944Z",
+  "generatedAt": "2026-09-16T10:16:08.330Z",
   "totalCount": 84,
   "reports": [
     {
@@ -375,7 +375,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/changelog-archive.md",
       "updatedAt": "2026-06-17",
       "summary": "이 파일은 CLAUDE.md `변경 이력` 표의 **상세 보존본**이다. 컨텍스트 비용을 줄이기 위해 CLAUDE.md 본문에서 분리했다.",
-      "fileSizeKB": 82
+      "fileSizeKB": 82.9
     },
     {
       "id": "harness-audit-2026-06-17",

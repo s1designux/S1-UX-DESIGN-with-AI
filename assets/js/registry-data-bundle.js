@@ -77,7 +77,9 @@ window.REGISTRY_BUNDLE = {
       "select": "registry/components/select.json",
       "assist-button": "registry/components/assist-button.json",
       "text-button": "registry/components/text-button.json",
-      "modal-content": "registry/components/modal-content.json"
+      "modal-content": "registry/components/modal-content.json",
+      "bottom-sheet": "registry/components/bottom-sheet.json",
+      "bottom-sheet-option": "registry/components/bottom-sheet-option.json"
     },
     "figma": "registry/figma/figma-map.json",
     "governance": {
@@ -5336,6 +5338,26 @@ window.REGISTRY_BUNDLE = {
           "path": "registry/tokens/legacy/semantic.colors.json",
           "reason": "역할기반 토큰 목록(--color-bg-default 등). 46개 중 43개가 정본(vars-data)에 없는 별개 계보이고 Gate 7 실제 대조는 2건뿐이었다. 역할 토큰의 실제 정본은 assets/css/site-base.css. 검사 제외.",
           "since": "2026-08-01"
+        },
+        {
+          "path": "pages/token-mapping.html",
+          "reason": "Figma↔CSS 매핑 검수 뷰어 — 2026-09-15 은퇴(river 결정). 옛 토큰명을 매핑 표에 들고 있어 검사 제외.",
+          "since": "2026-09-15"
+        },
+        {
+          "path": "pages/migration-board.html",
+          "reason": "토큰 승격 추적 뷰어 — 2026-09-15 은퇴(river 결정). 전환 완료로 역할 종료.",
+          "since": "2026-09-15"
+        },
+        {
+          "path": "pages/registry-health.html",
+          "reason": "Registry 상태 요약 뷰어 — 2026-09-15 은퇴(river 결정). 로드 고장 상태였고 대시보드가 역할 승계.",
+          "since": "2026-09-15"
+        },
+        {
+          "path": "assets/js/registry-health.js",
+          "reason": "위 registry-health.html 전용 렌더러 — 소비자 은퇴로 함께 격리.",
+          "since": "2026-09-15"
         }
       ]
     },
@@ -9437,7 +9459,7 @@ window.REGISTRY_BUNDLE = {
       "name": "SW Core Component Registry Index",
       "version": "0.2.0",
       "status": "mvp3.1",
-      "updatedAt": "2026-05-20",
+      "updatedAt": "2026-09-15",
       "description": "Core Component Harness의 entry point. Theme / Platform / Component 목록을 관리한다."
     },
     "harness": {
@@ -9801,6 +9823,26 @@ window.REGISTRY_BUNDLE = {
         "status": "in-progress",
         "harnessStatus": "implemented",
         "priority": 26
+      },
+      {
+        "id": "bottom-sheet",
+        "name": "Bottom Sheet",
+        "label": "Bottom Sheet",
+        "category": "overlay",
+        "path": "registry/components/bottom-sheet.json",
+        "status": "in-progress",
+        "harnessStatus": "implemented",
+        "priority": 27
+      },
+      {
+        "id": "bottom-sheet-option",
+        "name": "Bottom Sheet Option",
+        "label": "Bottom Sheet Option",
+        "category": "overlay",
+        "path": "registry/components/bottom-sheet-option.json",
+        "status": "in-progress",
+        "harnessStatus": "implemented",
+        "priority": 28
       }
     ]
   },
@@ -11359,7 +11401,7 @@ window.REGISTRY_BUNDLE = {
         "키보드: Tab 으로 로고 → 메뉴 순서대로 → 유틸 순서대로 이동한다. 하위메뉴를 연 메뉴를 지날 때는 그 패널 안 링크들도 이 순서 사이에 끼어든다(아래 하위메뉴 항목 참고). 정본에 방향키 이동이 없으므로 만들지 않는다.",
         "포커스 표시는 브라우저 기본값을 그대로 쓴다 — 정본에 별도 focus 표현이 없다.",
         "오류 관계·모션 감소는 이 컴포넌트에 해당 없음(not-applicable) — 오류 표시도 애니메이션도 정본에 없다.",
-        "하위메뉴를 여는 메뉴에는 aria-controls 로 그 패널의 id를, aria-expanded 로 열림/닫힘 상태를 준다 — 둘 다 이 컴포넌트의 JavaScript(gnb.js)가 관리한다(river 결정 2026-09-09). 마우스를 올리면 열리고(hover-capable), 바·패널 밖으로 나가면 150ms 유예 뒤 닫힌다. Tab 으로 들어가면 열리고, Esc 로 닫히며 초점이 그 메뉴로 되돌아온다. 열린 패널이 있는 메뉴에서 Tab 을 한 번 더 누르면 초점이 그 패널의 첫 링크로 들어가고, 패널의 마지막 링크에서 Tab 을 누르면 패널이 닫히며 다음 메뉴(또는 유틸 버튼)로 넘어간다 — 패널 첫 링크에서 Shift+Tab 을 누르면 다시 그 메뉴로 돌아간다(river 결정 2026-09-15, gnb-nav 후속). 이건 초점을 패널 안에 가두는 게 아니다 — 원래 Tab 순서에 없던 패널 내용을 순서 안에 끼워 넣을 뿐, 패널 안 어디서든 Tab/Shift+Tab 을 계속 누르면 결국 패널을 벗어난다 — 그 메뉴 뒤에 갈 곳이 없는 조립(유틸 영역 없는 GNB)에서는 Tab 을 가로채지 않고 GNB 바깥으로 그대로 넘긴다. 마우스가 없는 기기는 클릭으로 열고 닫는다(다만 첫 탭이 열지 못하는 선행 결함이 있다 — BACKLOG 0-d D-2).",
+        "하위메뉴를 여는 메뉴에는 aria-controls 로 그 패널의 id를, aria-expanded 로 열림/닫힘 상태를 준다 — 둘 다 이 컴포넌트의 JavaScript(gnb.js)가 관리한다(river 결정 2026-09-09). 마우스를 올리면 열리고(hover-capable), 바·패널 밖으로 나가면 150ms 유예 뒤 닫힌다. Tab 으로 들어가면 열리고, Esc 로 닫히며 초점이 그 메뉴로 되돌아온다. 열린 패널이 있는 메뉴에서 Tab 을 한 번 더 누르면 초점이 그 패널의 첫 링크로 들어가고, 패널의 마지막 링크에서 Tab 을 누르면 패널이 닫히며 다음 메뉴(또는 유틸 버튼)로 넘어간다 — 패널 첫 링크에서 Shift+Tab 을 누르면 다시 그 메뉴로 돌아간다(river 결정 2026-09-15, gnb-nav 후속). 되돌아오는 방향도 같다 — 어떤 자리에서 Shift+Tab 을 누를 때 바로 앞이 하위메뉴를 가진 메뉴면 그 목록의 마지막 링크부터 훑는다(river 결정 2026-09-16). 이건 초점을 패널 안에 가두는 게 아니다 — 원래 Tab 순서에 없던 패널 내용을 순서 안에 끼워 넣을 뿐, 패널 안 어디서든 Tab/Shift+Tab 을 계속 누르면 결국 패널을 벗어난다 — 그 메뉴 뒤에 갈 곳이 없는 조립(유틸 영역 없는 GNB)에서는 Tab 을 가로채지 않고 GNB 바깥으로 그대로 넘긴다. 마우스가 없는 기기는 클릭으로 열고 닫는다(다만 첫 탭이 열지 못하는 선행 결함이 있다 — BACKLOG 0-d D-2).",
         "닫힌 하위메뉴 패널은 hidden 속성으로 접근성 트리에서도 빠진다(gnb-sub-menu a11y) — 눈에만 안 보이게 하지 않는다.",
         "하위메뉴는 강제 의존이 아니다 — aria-controls 를 붙이지 않은 메뉴는 여전히 평범한 링크다."
       ],
@@ -15238,7 +15280,7 @@ window.REGISTRY_BUNDLE = {
         },
         {
           "part": "본문 자리표시(content)",
-          "role": "회색 박스 + '컨텐츠 영역' 안내문구. 실제 화면에서는 이 자리를 실제 콘텐츠로 교체한다."
+          "role": "회색 박스 + '컨텐츠 영역' 안내문구. 이 자리가 Figma 슬롯('Content')이며 네모칸은 그 기본 내용이다 — 빼고 입력 폼·표·이미지 등 무엇이든 넣는다. 좌우 여백 24 는 슬롯 밖(content-area)에 고정이다."
         },
         {
           "part": "푸터",
@@ -15421,6 +15463,300 @@ window.REGISTRY_BUNDLE = {
         "runtime": "components/modal-content.js",
         "note": "웹 배포본은 딤+패널 그릇과 여닫기 런타임을 제공한다. 높이 grow→85vh→내부 스크롤은 CSS로 처리된다. 푸터 버튼은 코어 Button 배포본을 조립한다.",
         "approvedAt": "2026-09-08"
+      }
+    },
+    "bottom-sheet": {
+      "_meta": {
+        "id": "bottom-sheet",
+        "name": "Bottom Sheet",
+        "category": "overlay",
+        "updatedAt": "2026-09-15",
+        "version": "0.1.0",
+        "tokenStatus": "stable",
+        "codeStatus": "implemented",
+        "darkModeStatus": "stable",
+        "a11yStatus": "stable",
+        "figmaStatus": "existing",
+        "harnessStatus": "implemented",
+        "description": "모바일에서 화면 아래에서 올라오는 시트 그릇 3종(Footer None|Single|Dual). 딤 위에 제목·닫기(X)·본문 자리·푸터 버튼으로 뜬다. 본문은 슬롯이라 화면마다 갈아끼운다 — 기본 채움은 Bottom Sheet Option 줄이고, 날짜·시간 선택은 달력·휠을 넣어 쓴다. 모바일에서 드롭다운을 대신하는 자리다.",
+        "a11yApproval": "modal 표준안(river 승인 2026-09-02)과 같은 규칙을 따른다 — role=dialog·aria-modal·제목 연결·초점 가둠·Esc 닫기·초점 복귀·배경 스크롤 잠금. 다른 점 한 가지: 딤 클릭 닫기를 제공한다(이미 배포된 date-picker 시트의 동작이며 빼면 퇴행).",
+        "codeStatusNote": "정본 buildBottomSheet 는 빌드돼 있다. 웹 배포본 상태는 webDistribution 과 ui-library-migration.json 이 따로 가진다."
+      },
+      "usage": {
+        "whenToUse": [
+          "모바일에서 목록을 띄워 고르게 할 때 — 드롭다운 대신 쓴다(density-policy mobileSubstitutes.dropdown).",
+          "모바일에서 날짜·시간처럼 넓은 선택 UI 를 띄울 때.",
+          "Footer=None 은 고르는 즉시 적용되는 목록, Single 은 '적용' 하나, Dual 은 '취소+적용'."
+        ],
+        "whenNotToUse": [
+          "PC 화면 — PC 는 드롭다운·팝오버·모달을 쓴다. 정본 시트는 모바일 폭(360) 기준이다.",
+          "확인·알림처럼 짧은 결정 — Modal 을 쓴다.",
+          "비차단 알림 — 토스트·인라인 메시지."
+        ]
+      },
+      "anatomy": [
+        {
+          "part": "딤(backdrop)",
+          "role": "뒤 배경을 덮는 color-overlay 딤. 누르면 닫힌다."
+        },
+        {
+          "part": "패널",
+          "role": "아래에 붙어 위 모서리만 둥근 시트면. 폭은 화면 폭(최대 360)."
+        },
+        {
+          "part": "헤더",
+          "role": "제목 ↔ 닫기(X). 좌우 여백 20."
+        },
+        {
+          "part": "본문(슬롯)",
+          "role": "화면이 채우는 자리. 컴포넌트는 빈 그릇만 소유한다."
+        },
+        {
+          "part": "푸터(선택)",
+          "role": "코어 Button 1개(Single) 또는 2개(Dual). Footer=None 이면 없다."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "제목은 항상 둔다. 닫기(X)도 항상 둔다(정본 3변형 전부 헤더에 있다).",
+          "푸터 버튼은 코어 Button 배포본(Mobile LG)을 그대로 조립한다.",
+          "시트는 화면(body) 바로 아래에 둔다 — 상자 안에 넣으면 갇힌다.",
+          "본문에 넣는 줄은 Bottom Sheet Option 을 쓴다. 새로 그리지 않는다."
+        ],
+        "dont": [
+          "시트 문구(실제 카피)를 컴포넌트 정본으로 넣지 않는다 — 예시일 뿐(UX라이팅 영역).",
+          "PC 용 크기를 만들지 않는다 — 정본에 없다.",
+          "정본에 없는 층(부제·손잡이 바 등)을 임의로 만들지 않는다."
+        ]
+      },
+      "a11y": [
+        "패널을 role=dialog · aria-modal=true 로 표시하고 aria-labelledby 로 제목을 연결한다.",
+        "열릴 때 패널 안 첫 초점 요소로 초점을 옮기고, 닫힐 때 열기 전 초점 자리로 되돌린다.",
+        "열려 있는 동안 Tab·Shift+Tab 은 패널 안에서만 순환한다(초점 가둠).",
+        "Esc 로 닫을 수 있게 한다. 닫기(X) 버튼에 '닫기' 이름을 준다.",
+        "딤을 눌러도 닫힌다 — 닫기 수단이 키보드(Esc)·버튼·포인터 세 갈래로 모두 있다.",
+        "열려 있는 동안 배경 스크롤을 잠근다. 시트·모달이 여럿이면 마지막 하나가 닫힐 때 되돌린다."
+      ],
+      "variantAxis": {
+        "property": [
+          "Footer"
+        ],
+        "values": {
+          "Footer": [
+            "None",
+            "Single",
+            "Dual"
+          ]
+        },
+        "titleAlways": true,
+        "sizeAxis": "없음 — 폭은 화면 폭(정본 360 = 모바일 프레임 폭), 높이는 내용에 따라 늘어난다.",
+        "note": "정본에 Break 축이 없다. 시트 자체가 모바일 전용이다."
+      },
+      "scope": "light+dark",
+      "tokens": {
+        "_note": "색은 예외 없이 Semantic 경유. 신규 토큰 0건 — 전부 기존 슬롯 재사용.",
+        "panel-bg": "color/surface/raised",
+        "overlay": "color/overlay (딤 — EX03 rgba 예외)",
+        "title-text": "color/text/title/primary",
+        "close-icon": "color/icon/gray-dark",
+        "panel-radius": "radius/8 (위 모서리만)",
+        "shadow": "shadow/raised-up (--shadow-raised-up) — 아래에서 올라오는 표면이라 y 부호가 반전된 그림자. Light·Dark 같은 값(vars-data.ts:451).",
+        "spacing": "root itemSpacing 48(본문↔푸터) · content itemSpacing 24(헤더↔본문) · 세로 패딩 20 / 아래 Footer=None 은 40 · 헤더·푸터 좌우 20 · 푸터 버튼 사이 8"
+      },
+      "reuses": {
+        "coreComponents": [
+          "button",
+          "bottom-sheet-option"
+        ],
+        "libraryIcons": [
+          "ic_닫기 (V2.2 아이콘 라이브러리)"
+        ],
+        "note": "푸터 버튼 = 코어 Button Mobile LG(h48). 본문 기본 채움 = Bottom Sheet Option. 시각 override 금지."
+      },
+      "figma": {
+        "componentSetKey": "(미발행 — 라이브러리 publish 시 기록)",
+        "fileKey": "cysG5U1udpQqVagYY1hWHW",
+        "targetFile": "SW UX GUIDE V3.0-TEST",
+        "builder": "plugins/figma-vars-installer/src/build-components.ts · buildBottomSheet (5152)",
+        "propertyMap": {
+          "footer": [
+            "none",
+            "single",
+            "dual"
+          ]
+        },
+        "note": "변형축 Footer=None|Single|Dual(3변형). 본문은 Figma SLOT 노드(이름 \"Content\")이며 preferredValues 가 Bottom Sheet Option 세트다. Dark 는 별도 마스터가 아니라 Appearance 모드로 제공한다."
+      },
+      "governance": {
+        "verify": "new",
+        "verifyNote": "2026-09-15 정본 판독(📖 source-reader, build-components.ts 5152-5327 전체 추적)으로 변형축·geometry·토큰·자식 트리를 확인했다. Figma 실물 렌더 대조는 하지 않았다.",
+        "coreReuseRule": "button·bottom-sheet-option 은 reuses.coreComponents 명시. 상태·variant 부족 시 needs-core-update 기록(임의 구현 금지)."
+      },
+      "webDistribution": {
+        "status": "approved",
+        "manifest": "ui-library/src/components/bottom-sheet/manifest.json",
+        "runtime": "components/bottom-sheet.js",
+        "note": "웹 배포본은 딤+패널 그릇과 여닫기 런타임을 제공한다. 본문은 빈 슬롯이고 화면이 채운다. date-picker·time-picker 가 이 부품을 재사용한다.",
+        "workId": "bottom-sheet",
+        "approvedAt": "2026-09-15"
+      }
+    },
+    "bottom-sheet-option": {
+      "_meta": {
+        "id": "bottom-sheet-option",
+        "name": "Bottom Sheet Option",
+        "category": "overlay",
+        "updatedAt": "2026-09-15",
+        "version": "0.1.0",
+        "tokenStatus": "stable",
+        "codeStatus": "implemented",
+        "darkModeStatus": "stable",
+        "a11yStatus": "stable",
+        "figmaStatus": "existing",
+        "harnessStatus": "implemented",
+        "description": "바텀시트 안에 놓이는 한 줄. Type 4종(Text·Checkbox·Radio·List) × State(Default·Selected·Disabled) 중 정본에 실재하는 9칸. Text·Checkbox·Radio 는 높이 48 고정, List 는 아바타+두 줄 글자라 내용만큼 늘어난다. 단독으로 쓰지 않고 Bottom Sheet 본문 안에서 쓴다.",
+        "a11yApproval": "목록 역할은 시트를 여는 화면이 준다 — 한 값 고르기는 role=radio, 여러 값 고르기는 native checkbox, 이동은 링크·버튼. 컴포넌트는 줄 모양만 소유한다.",
+        "codeStatusNote": "정본 buildBottomSheetOption 은 빌드돼 있다. 웹 배포본 상태는 webDistribution 과 ui-library-migration.json 이 따로 가진다."
+      },
+      "usage": {
+        "whenToUse": [
+          "바텀시트 본문에 고를 것을 줄로 늘어놓을 때.",
+          "Text = 한 값 고르기(고른 줄에 파란 체크), Checkbox = 여러 값 고르기, Radio = 한 값 고르기(동그라미 표시), List = 사람·항목처럼 아바타와 설명이 함께 있는 줄."
+        ],
+        "whenNotToUse": [
+          "바텀시트 밖 — PC 목록은 Dropdown 을 쓴다.",
+          "표의 행 — Table 을 쓴다."
+        ]
+      },
+      "anatomy": [
+        {
+          "part": "라벨",
+          "role": "줄의 글자. Text·Checkbox·Radio 공통."
+        },
+        {
+          "part": "체크 표시(선택)",
+          "role": "Text 가 선택됐을 때 오른쪽에 붙는 파란 체크 아이콘."
+        },
+        {
+          "part": "컨트롤(선택)",
+          "role": "Checkbox·Radio 코어 배포본 인스턴스. 복제하지 않는다."
+        },
+        {
+          "part": "list-left(선택)",
+          "role": "List 줄의 왼쪽 묶음 — 아바타 40 + 제목/서브 두 줄."
+        },
+        {
+          "part": "오른쪽 아이콘(선택)",
+          "role": "List 는 기본이 화살표(chevron), 비활성이면 자물쇠(lock)."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "Checkbox·Radio 는 코어 배포본을 그대로 넣는다.",
+          "줄의 의미(고르기·이동)는 시트를 여는 화면이 ARIA 로 준다.",
+          "정본에 있는 9칸만 쓴다."
+        ],
+        "dont": [
+          "선택된 줄에 배경색을 칠하지 않는다 — 정본은 글자색과 아이콘으로만 구분한다.",
+          "정본에 없는 칸(Checkbox·Radio 의 비활성, List 의 선택됨)을 만들지 않는다.",
+          "Checkbox·Radio 코어 내부를 override 하지 않는다."
+        ]
+      },
+      "a11y": [
+        "줄 자체는 모양만 소유한다 — 역할(role)·이름·선택 상태는 시트를 여는 화면이 준다.",
+        "Checkbox·Radio 는 native input 을 그대로 쓴다(코어 배포본의 계약).",
+        "Text 의 선택 표시(파란 체크)는 장식이다 — 선택 상태는 aria-selected·aria-checked 로 따로 알린다.",
+        "비활성 줄은 disabled 또는 aria-disabled 로 알리고 초점 순서에서 뺀다.",
+        "List 의 아바타 아이콘은 장식이다 — 이름은 제목 글자가 갖는다."
+      ],
+      "variantAxis": {
+        "property": [
+          "Type",
+          "State"
+        ],
+        "values": {
+          "Type": [
+            "Text",
+            "Checkbox",
+            "Radio",
+            "List"
+          ],
+          "State": [
+            "Default",
+            "Selected",
+            "Disabled"
+          ]
+        },
+        "absentCombinations": [
+          "Checkbox:Disabled",
+          "Radio:Disabled",
+          "List:Selected"
+        ],
+        "sizeAxis": "없음 — Text·Checkbox·Radio 는 48 고정, List 는 내용만큼(세로 패딩 12).",
+        "note": "정본에 실재하는 칸은 12개가 아니라 9개다(build-components.ts 5123-5124 order 배열)."
+      },
+      "scope": "light+dark",
+      "tokens": {
+        "_note": "색은 예외 없이 Semantic 경유. 신규 토큰 0건.",
+        "row-bg": "color/surface/raised — 전 Type·State 공통. State 별 배경 분기 없음.",
+        "label-default": "color/text/body/primary",
+        "label-selected": "color/text/state/accent (Text 만)",
+        "label-disabled": "color/text/state/disabled (Text 만)",
+        "check-icon": "color/icon/blue (Text:Selected)",
+        "chevron-icon": "color/icon/gray-dark (List:Default)",
+        "lock-icon": "color/icon/gray (List:Disabled)",
+        "avatar-bg": "color/icon/gray-light",
+        "avatar-icon": "color/icon/white",
+        "list-title": "color/text/body/primary",
+        "list-sub": "color/text/body/secondary",
+        "typography": "라벨·List 제목 = body/16M · List 서브 = body/14R",
+        "spacing": "Text·Checkbox·Radio 좌우 20 / 위아래 8 / 사이 8 · List 좌우 20 / 위아래 12 · list-left 사이 12 · list-text 사이 2"
+      },
+      "reuses": {
+        "coreComponents": [
+          "checkbox",
+          "radio"
+        ],
+        "libraryIcons": [
+          "ic_확인 (V2.2)",
+          "ic_화살표더보기 (V2.2)",
+          "ic_계정/사용자/ID (V2.2)",
+          "ic_잠김 (V2.2)"
+        ],
+        "note": "Checkbox·Radio 코어 배포본을 그대로 넣는다. 시각 override 금지."
+      },
+      "figma": {
+        "componentSetKey": "(미발행 — 라이브러리 publish 시 기록)",
+        "fileKey": "cysG5U1udpQqVagYY1hWHW",
+        "targetFile": "SW UX GUIDE V3.0-TEST",
+        "builder": "plugins/figma-vars-installer/src/build-components.ts · buildBottomSheetOption (4957)",
+        "propertyMap": {
+          "type": [
+            "text",
+            "checkbox",
+            "radio",
+            "list"
+          ],
+          "state": [
+            "default",
+            "selected",
+            "disabled"
+          ]
+        },
+        "note": "실재 9칸. Dark 는 별도 마스터가 아니라 Appearance 모드로 제공한다."
+      },
+      "governance": {
+        "verify": "new",
+        "verifyNote": "2026-09-15 정본 판독(📖 source-reader, build-components.ts 4957-5150 전체 추적)으로 9칸·geometry·토큰·자식 구조를 확인했다. Figma 실물 렌더 대조는 하지 않았다.",
+        "coreReuseRule": "checkbox·radio 는 reuses.coreComponents 명시. 상태·variant 부족 시 needs-core-update 기록(임의 구현 금지)."
+      },
+      "webDistribution": {
+        "status": "approved",
+        "manifest": "ui-library/src/components/bottom-sheet-option/manifest.json",
+        "runtime": null,
+        "note": "런타임 없음 — 줄 모양만 소유한다. 고르기 동작은 시트를 여는 화면이 배선한다.",
+        "workId": "bottom-sheet",
+        "approvedAt": "2026-09-15"
       }
     }
   },
@@ -15854,7 +16190,7 @@ window.REGISTRY_BUNDLE = {
     }
   },
   "reportsIndex": {
-    "generatedAt": "2026-09-15T07:41:38.077Z",
+    "generatedAt": "2026-09-15T07:47:34.944Z",
     "totalCount": 84,
     "reports": [
       {

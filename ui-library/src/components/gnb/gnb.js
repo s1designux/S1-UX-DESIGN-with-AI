@@ -25,12 +25,25 @@ function getPairs(root) {
 // river 결정 2026-09-15(gnb-nav 후속) — Tab 이 펼쳐진 패널 안으로 들어간다. 패널은 마크업상
 // nav 뒤 형제라 DOM 순서를 바꾸지 않는 한 Tab 이 저절로 들어가지 않는다 — 그래서 Tab 키만
 // 여기서 가로채 순서를 끼워 넣는다(초점 가둠이 아니다: 패널 밖으로는 항상 자연스럽게 나간다).
-const FOCUSABLE_SELECTOR = 'a[href], button, input, select, textarea, [tabindex]';
+// summary 는 브라우저가 초점을 주는데 이 목록에 없으면 "이웃"을 한 칸 잘못 짚는다
+//   (🤖 component-verifier 2026-09-16 — 안내 화면에서 실제로 초점을 받는 것을 확인).
+const FOCUSABLE_SELECTOR = 'a[href], button, input, select, textarea, summary, [tabindex]';
 
 function isFocusableElement(el) {
   if (el.hidden || el.disabled) return false;
   const tabindex = el.getAttribute("tabindex");
   if (tabindex !== null && Number(tabindex) < 0) return false;
+  // **조상까지 보고 판정한다.** 자기 자신만 보면 닫힌 패널(조상이 hidden) 안의 링크가 "초점 받을 수
+  //   있는 것"으로 세어진다 — 브라우저는 건너뛰는데 우리만 세는 상태가 되어, 이웃을 잘못 짚는다
+  //   (🤖 component-verifier 2026-09-16 실측 D-6 — 패널이 nav 뒤 형제라 늘 이 자리에 걸렸다).
+  //   display:none 은 사각형이 없고, visibility:hidden 은 사각형은 있지만 초점을 못 받는다.
+  //   안내 화면이 [hidden] 을 visibility:hidden 으로 덮어 그리므로 둘 다 본다.
+  if (typeof el.getClientRects === "function" && el.getClientRects().length === 0) return false;
+  const view = el.ownerDocument && el.ownerDocument.defaultView;
+  if (view && typeof view.getComputedStyle === "function") {
+    const style = view.getComputedStyle(el);
+    if (style && (style.visibility === "hidden" || style.visibility === "collapse" || style.display === "none")) return false;
+  }
   return true;
 }
 
@@ -59,6 +72,23 @@ export function init(root) {
 
   const closeTimers = new WeakMap();
   let suppressFocusOpenFor = null;
+  // Shift+Tab 을 막 눌렀다는 표시 — **그 키 한 번에만** 유효하다(역방향 진입 판단에 쓴다).
+  //   ⚠️ "다음 focusin 까지" 로 두면 안 된다: 화면 맨 위에서 Shift+Tab 으로 **주소창으로 나가면
+  //   focusin 이 아예 오지 않아** 표시가 살아남고, 그 다음 정방향 Tab·클릭으로 메뉴에 닿기만 해도
+  //   목록 마지막으로 끌려 들어간다(🤖 component-verifier 2026-09-16 실측 D-7 — 상단바는 화면
+  //   맨 위라 이게 가장 흔한 동선이다). 그래서 다음 tick 에 스스로 끈다 — 초점 이동과 focusin 은
+  //   그 전에 동기로 끝난다.
+  let reverseHop = false;
+  let reverseHopTimer = null;
+  const armReverseHop = () => {
+    reverseHop = true;
+    if (reverseHopTimer) clearTimeout(reverseHopTimer);
+    reverseHopTimer = setTimeout(() => { reverseHop = false; reverseHopTimer = null; }, 0);
+  };
+  const disarmReverseHop = () => {
+    reverseHop = false;
+    if (reverseHopTimer) { clearTimeout(reverseHopTimer); reverseHopTimer = null; }
+  };
 
   for (const { trigger, panel } of pairs) {
     if (!trigger.hasAttribute("aria-expanded")) trigger.setAttribute("aria-expanded", "false");
@@ -125,10 +155,19 @@ export function init(root) {
   const handleFocusin = (event) => {
     const pair = pairFor(event.target);
     if (pair) {
-      if (suppressFocusOpenFor === pair) { suppressFocusOpenFor = null; return; }
+      if (suppressFocusOpenFor === pair) { suppressFocusOpenFor = null; disarmReverseHop(); return; }
       openPair(pair);
+      // 역방향으로 **트리거에 막 도착**했다면 한 칸 더 들어가 그 목록의 마지막 링크에 선다.
+      //   브라우저가 이미 자기 순서대로 옮겨 준 뒤라, 사이에 무엇이 있었는지 우리가 셀 필요가 없다.
+      //   패널 안으로 들어온 경우(pair.panel.contains)는 이미 목록 안이므로 건드리지 않는다.
+      if (reverseHop && event.target === pair.trigger) {
+        const back = getFocusables(pair.panel);
+        if (back.length) { disarmReverseHop(); back[back.length - 1].focus(); return; }
+      }
+      disarmReverseHop();
       return;
     }
+    disarmReverseHop();
     for (const other of pairs) closePair(other, { returnFocus: false });
   };
 
@@ -137,15 +176,26 @@ export function init(root) {
   // 요소에서 나가면 항상 트리거·"다음 자연스러운 요소"로 흘러간다.
   const handleTabNavigation = (event) => {
     const pair = pairFor(event.target);
+    const inPanel = !!pair && pair.panel.contains(event.target);
+
+    // ── 역방향(Shift+Tab)으로 **앞 메뉴의 목록**에 들어간다 (river 결정 2026-09-16) ──
+    //   정방향이 트리거 → 목록 → 다음 트리거 이므로, 역방향은 그 거울이어야 한다.
+    //   ⚠️ **"바로 앞"을 우리가 세지 않는다.** 두 번 연속 그 계산이 틀렸다(🤖 component-verifier
+    //   2026-09-16 D-6) — 닫힌 패널 안 링크를 세거나, 스크롤되는 영역처럼 브라우저는 초점을 주는데
+    //   우리 목록엔 없는 요소를 놓쳤다. 우리 목록과 브라우저의 실제 Tab 순서는 언제든 어긋날 수 있다.
+    //   그래서 **가로채지 않고 브라우저가 옮기게 둔 뒤**, 초점이 우리 트리거에 앉았을 때만
+    //   그 패널의 마지막 링크로 옮긴다(handleFocusin 의 reverseEntry). 정답은 브라우저가 쥔다.
+    if (event.shiftKey && !inPanel) {
+      armReverseHop();                             // 그 키 한 번에만 유효한 표시
+      return;
+    }
+
     if (!pair || !isOpen(pair)) return; // 이 쌍과 무관하거나 패널이 닫혀 있으면 기본 동작 그대로
 
-    const inPanel = pair.panel.contains(event.target);
     const panelFocusables = getFocusables(pair.panel);
 
     if (!inPanel) {
-      // 트리거(또는 그 안)에서 Tab(정방향)만 가로채 패널 첫 요소로 보낸다. Shift+Tab(역방향)은
-      // 건드리지 않는다 — 트리거 밖으로 나가는 건 원래도 자연스러운 방향이다.
-      if (event.shiftKey) return;
+      // 트리거(또는 그 안)에서 Tab(정방향)을 가로채 패널 첫 요소로 보낸다.
       if (!panelFocusables.length) return; // 빈 패널 — Tab 은 다음 트리거로 자연스럽게 흘러간다
       event.preventDefault();
       panelFocusables[0].focus();
@@ -227,6 +277,7 @@ export function init(root) {
     closeMenu(trigger) { const pair = pairs.find((p) => p.trigger === trigger); if (pair) closePair(pair, { returnFocus: false }); },
     destroy() {
       for (const cleanup of cleanups) cleanup();
+      disarmReverseHop();                          // 남은 타이머가 떠 있으면 정리한다
       document.removeEventListener("focusin", handleFocusin, true);
       document.removeEventListener("keydown", handleKeydown, true);
       document.removeEventListener("pointerdown", handlePointerdown, true);
