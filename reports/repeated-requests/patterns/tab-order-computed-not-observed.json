@@ -1,0 +1,13 @@
+{
+  "id": "tab-order-computed-not-observed",
+  "category": "uncategorized",
+  "label": "GNB 하위메뉴 역방향 진입(2026-09-16) — nav 안에서만 세기 → 문서 전체로 넓히기 → 숨김 조상 판정 추가 3연속 실패. 닫힌 패널 링크·스크롤 영역처럼 '우리 목록 ≠ 브라우저 순서'인 자리가 계속 나왔다. 가로채지 않고 브라우저가 옮긴 뒤 보정하는 방식으로 바꿔서야 닫혔다.",
+  "count": 1,
+  "promotionStatus": "watching",
+  "occurrences": [
+    {
+      "date": "2026-09-16",
+      "summary": "Tab 순서를 우리가 계산해 맞추려다 브라우저 실제 순서와 어긋난다 — 계산 대신 관찰로 바꿔야 닫힌다"
+    }
+  ]
+}
