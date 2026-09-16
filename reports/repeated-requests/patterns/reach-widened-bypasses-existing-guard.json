@@ -1,0 +1,14 @@
+{
+  "id": "reach-widened-bypasses-existing-guard",
+  "category": "verification",
+  "label": "사정거리를 넓히면 기존 안전장치가 그 확장을 따라가지 못해 조용히 우회된다",
+  "count": 1,
+  "promotionStatus": "watching",
+  "occurrences": [
+    {
+      "date": "2026-09-15",
+      "summary": "설치기 canvasNodes 의 사정거리를 2단→깊이6으로 넓혔더니, 이름으로 지우는 removeByNames 가 사용자의 FRAME 'Button' 까지 삭제 대상으로 잡았다. keepSets 가드가 COMPONENT_SET 에만 걸려 FRAME/GROUP 을 못 지킨다. 소비자도 브리핑한 2개가 아니라 5개였다(ownedIds 등록·layout 패스·wrapCategoryInSection). 🤖 component-verifier 1회차가 합성 트리 실측으로 적발"
+    }
+  ],
+  "recommendedRule": "탐색 범위(깊이·경로·대상 집합)를 넓힐 때는 '지금 이 집합을 소비하는 쪽의 가드가 넓어진 범위에도 유효한가'를 먼저 확인한다. 특히 이름으로 매칭하고 타입으로 보호하는 구조는, 범위가 넓어지면 보호 밖 타입이 새로 들어와 가드를 통과한다. 소비자 목록을 grep 으로 전수 확인한 뒤에 넓힌다."
+}
