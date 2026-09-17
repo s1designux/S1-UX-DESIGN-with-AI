@@ -180,3 +180,82 @@ A:mobile_button --state pressed → Button ⚠ 결정된 바 없습니다 (표: 
 ## G. 고치지 않은 것
 
 지시대로 **어떤 파일도 수정하지 않았다.** 적대 시험은 전부 임시 폴더의 사본(`S1_LEGACY_MAP` 환경변수)으로 했고 저장소 파일은 건드리지 않았다(`git status` 깨끗).
+
+---
+
+# 3차 검증 (2차 ❌ 수정 후) — 델타 재검증
+
+- 검증자: 🤖 component-verifier · 2026-09-17
+- 대상 변경: `6349464` (`scripts/lib/legacy-name-map.js` · `scripts/legacy-map-apply.js` · `scripts/legacy-map-selftest.js` · `scripts/legacy-name-resolve.js` · `registry/governance/legacy-name-baseline.json` 재동결)
+- **판정: PASS** — 2차의 ❌ 2건(C-1·C-2)과 ⚠️ C-3·D 가 모두 실제로 닫혔다. **❌(a) 0건.**
+  남은 것은 ❓(c) 1건(자동추출만으로 «대응 없음» 이라 답하는 34건 — 1차부터 열려 있는 HD-1)과, **호출자 주장 1건의 표현이 사실과 다른 것**(§C).
+
+## A. 회귀 — ✅ 전부 그대로 (값 변동 0)
+
+1차 표본 10건 + 2차 F1·F2 항목을 재실행한 결과 **모든 답·축 값·근거가 1·2차와 글자 그대로 같다.**
+
+| 질의 | 답 | 근거 |
+|---|---|---|
+| A:timepicker_input --state selected / completed | Time Picker · State=Focus / Filled | D-09 |
+| A:datepicker_input --state selected | Date Picker · State=Open | D-10 |
+| A:select --state selected | Select Box · State=Open | D-07 |
+| A:Login input --size pc-sm | Input · Size=XSM · Break=PC | D-06 |
+| A:chip --size mobile | Chip · Size=SM · Break=Mobile | D-01 |
+| A:timepicker_select | 레거시에만 있음 | D-09 |
+| B:radiobutton --state pressed | Radio · State=Selected | D-22 |
+| B:tab --state pressed | Line Tab · State=Selected | D-16 |
+| B:form_elements | 배치 규칙 · 5세트 | D-19 |
+| B:menutree | 정본에 대응 없음 | 자동추출표 |
+| A:pc_button --state hover --size medium | Button · State=Hover · Size=MD | 자동추출표 |
+| A:radio / A:toggle --state on / --state disabled | Radio / Toggle · Pressed=On / State=Disabled | 자동추출표 |
+
+## B. 고쳤다는 주장별 판정 — 전부 ✅
+
+| # | 주장 | 판정 | 직접 확인한 것 |
+|---|---|---|---|
+| **C-2** | 결정에 없는 축은 같은 줄의 표를 마저 본다 | **✅ 고쳐짐** | `A:chip --state default → Chip(State=Default)` · `A:select --state default → Select Box(State=Default)` · `A:mobile_button --state pressed → Button(State=Pressed)` · `A:chip --size pc-md → Chip(Size=MD)`. **전수 재계산: 338건 중 붙음 307 · 결정 전 22** — 호출자 숫자와 일치 |
+| **C-2 (반대 방향)** | 표에 있다고 아무거나 갖다 붙이지 않는다 | **✅** | 전수에서 **정본에 없는 축 값을 답으로 낸 것 0건**. `A:radio --state disabled-checked` 는 여전히 partial + «표에 적힌 "disabledSelected" 가 정본 "Radio" 의 축 값에 없습니다». 표에 아예 없는 값(`A:chip --state pressed` · `A:select --state 없는값` · `A:Login input --size pc-xxsm`)도 partial 유지 |
+| **C-1** | 동결 키에 노드 id · 재동결 33건 | **✅ 고쳐짐** | **2차에서 뚫렸던 시험 C 재실행 → 이번엔 exit 1 로 막았다**(«A:radio stateMap "disabled-checked" → "아무도모르는없는값ZZZ" … 새로 생긴 것»). 동결 목록 재감사: items 33 · **고유 키 33**(2차엔 33/30) · **33/33 전부 노드 id 포함** · **허수 0건** · **미동결 0건** |
+| **C-3** | 되묻기가 접두사와 무관 · `--id` 로 고르기 | **✅ 고쳐짐** | 시험 D 재실행: 접두사 없이도, **`A:radio` 처럼 접두사를 붙여도** 조용히 첫 것을 고르지 않고 되묻는다. 안내 문구도 «같은 이름의 세트가 **A 파일 안에 2개** 있고… 노드 id 중 하나를 `--id` 로» 로 정확해졌다. `--id 999:8888 → Checkbox` · `--id 540:3113 → Radio` 로 실제로 갈라 고를 수 있다 |
+| **D** | 후보 줄은 되묻기일 때만 · 숫자 통일 | **✅** | 평상시 답(`A:pc_button`)에 `· Button` 중복 줄이 사라졌다. 게이트 문구 «옛 부채 **33**건» 과 파일 `_meta.count: 33` · items 33 · 고유 33 이 **모두 일치** |
+| **그물** | 적대 5종 + 회귀 5종 | **✅ 진짜로 잡는다** | 임시 사본에서 `A:chip default` 와 `A:toggle on` 의 답을 일부러 틀리게 만들자 **회귀 시험이 2/5 를 ❌ 로 잡고 exit 1**. 받은 답까지 함께 찍어 준다. 적대 시험에는 2차 지적분(«같은 이름 줄이 하나 더 있을 때 이미 동결된 칸으로 들어오는 새 어긋남»)이 신설돼 있다 |
+
+## C. 호출자 주장 중 표현이 사실과 다른 것 (❌ 아님 · 기록용)
+
+> 「«결정 전» 으로 남는 것이 **동결된 옛 부채뿐**인지 확인하라」 — **아니다. 22건 중 11건은 동결 목록에 없다.**
+
+원인은 하나다: **검사기는 「그 부품이 거느린 정본 세트 전부」에서 값을 찾고, 조회기는 「답으로 고른 한 세트」에서만 찾는다.**
+
+```
+A:pc_grid-table_body --state hover
+   표 부품 "table" = Table + Table Cell   (Hover 는 Table Cell 의 Variant 축에 있다)
+   조회기가 고른 세트 = Table (Size 축뿐) → partial
+   검사기 = "Table Cell 에 있으니 부채 아님" → 동결 목록에 없음
+```
+
+같은 모양 11건: `A:pc_grid-table_header`·`A:pc_grid-table_body`·`A:pc_embeded-table_body`·`B:table` (Table↔Table Cell) · `A:pagination_number`·`B:page_arrow` (Pagination↔Pagination Cell) · `B:m_combobox_time` (표는 time-picker 인데 D-20 결정이 Select Box 로 보냄).
+
+- **잘못된 답이 새어 나가지는 않는다** — 전부 정직하게 `partial` 이고, 정본에 없는 값을 낸 것은 0건이다. 그래서 ❌(a) 로 올리지 않는다.
+- 다만 **게이트의 «부채 0건» 과 조회기의 «결정 전» 이 서로 다른 것을 세고 있다.** 부수적으로, 표의 `canonComponent` 와 결정이 가리키는 세트가 다른 줄이 **15건** 있는데(모달→Modal Content · 콤보→Select Box+Dropdown 등, 대부분 결정이 더 정밀한 정상 경우) 이 어긋남을 보는 검사가 없다.
+- 이것은 이번 수정이 만든 것이 아니라 2차에도 같은 11건이 119건 안에 섞여 있던 것이다. **회귀 아님.**
+
+## D. 남은 ❓(c) — 1차부터 열려 있음
+
+- **C1/HD-1** — 자동추출만으로 «정본에 대응 없음» 이라 답하는 34건(`B:menutree` 포함). 답에 «사람이 정한 바는 없습니다» 가 붙고 원칙 4-1 이 «(c)로 올려라» 로 보강돼 위험은 줄었으나, **결정 자체는 여전히 river 대기.** 이번에 재확인하지 않음(변경 없음).
+
+## E. 기계검사 재확인 (종료코드만)
+
+| 명령 | 호출자 주장 | 검증자 재확인 |
+|---|---|---|
+| `node scripts/legacy-map-apply.js --check` | exit 0 · 옛 부채 33건 동결 | ✅ exit 0 · 문구도 «33건» |
+| `node scripts/legacy-map-selftest.js` | exit 0 · 적대 5종 · 회귀 5종 | ✅ exit 0 · 5+5 · **일부러 틀린 사본에선 exit 1** |
+| `npm run gate:check` | PASS · 게이트 56개 · 93건 · warning 17 | ✅ 동일 |
+
+## F. 이번에 재확인하지 않은 것 (직전 PASS 승계)
+
+- 1차 §2 **결정 원문 대조**(D-09·D-19 `quote2` ↔ 기계 칸) — `crosswalk.json` 무변경. **이번에 재확인하지 않음.**
+- 1차 §1 표본 10건의 **정본 실측표 대조**(축 값이 `component-facts.json` 에 실재하는지) — `component-facts.json` 무변경이고 답도 글자 그대로 같아 승계. 답 자체는 A 에서 재실행해 동일함을 확인했다.
+
+## G. 고치지 않은 것
+
+**어떤 파일도 수정하지 않았다.** 적대 시험 4종(C-1 재현·C-3 재현·회귀 찌르기·전수 재계산)은 전부 임시 폴더 사본 + `S1_LEGACY_MAP` 환경변수로 했고, 저장소는 `git status` 깨끗하다.
