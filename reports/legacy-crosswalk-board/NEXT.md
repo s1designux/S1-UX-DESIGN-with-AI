@@ -113,3 +113,20 @@ Gate 34 승인 **10건** 기록 완료(색 4 + 컴포넌트 5 + 슬롯 속성 1)
    (반복 패턴 `canon-axis-flattened-in-summary`)
 2. **"정본에 없다"를 확인 없이 단정한다** — 바텀시트가 정본에 4종이나 있는데 "없다"고 두 번 적었다.
    → 없다고 쓰기 전에 `build-components.ts` 의 빌더 함수와 설치기 등록 목록(파일 끝 부근)을 **직접 grep** 할 것.
+
+---
+
+## ✅ 2026-09-17 — 23건 전부 닫힘
+
+미결로 남아 있던 **D-09(시간 선택) · D-19(폼 묶음)** 을 river 가 결정했다. 대응표(`crosswalk.json`)에 반영 완료 — `open` 0건.
+
+| 건 | 확정 |
+|---|---|
+| D-09 트리거 `selected` | **정본 Focus** — river: 목록(PC 드롭다운·모바일 바텀시트)이 열린 상태. 정본은 열린 상태를 Focus 로 표현한다 |
+| D-09 트리거 `completed` | **정본 Filled** |
+| D-09 셀렉트형 트리거(`timepicker_select` 540:3636) | **만들지 않음** — 옛 형태로 기록만 |
+| D-19 폼 묶음(`form_elements` 78:5977) | **패턴** — 컴포넌트 아님. 배치 규칙만 남김(라벨 폭 130 · 간격 8, 라디오만 16) |
+
+근거 자료: 레거시 실측 `D09-D19-legacy-facts.md`(🤖 figma-inspector) · 정본 판독 `D09-D19-canon-facts.md`(📖 source-reader) · 결정 화면 `decisions-d09-d19.html`.
+
+**남은 후속(별건):** `registry/components/time-picker.json` 의 states 에 Hover 가 빠져 있다(정본에는 있음).

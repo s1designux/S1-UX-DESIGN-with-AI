@@ -122,18 +122,26 @@
     },
     {
       "id": "D-09",
-      "분류": "아직 미결",
-      "kind": "open",
+      "분류": "대응 확정",
+      "kind": "mapping",
       "무엇": "시간 선택의 selected · editing",
       "컴포넌트": "time-picker",
       "레거시": "A 시간 선택 7세트 — 최하위 드롭다운까지 한 세트",
-      "정본": "Time Picker(트리거) · Time Picker Dropdown(목록 패널) · Time Picker Cell(칸) · Time Picker Mobile Bottom Sheet — 층이 나뉘어 있음",
+      "정본": "Time Picker(트리거) · Time Picker Dropdown(목록 패널) · Time Picker Cell(칸) · Time Picker Mobile Bottom Sheet — 층이 나뉘어 있음. 트리거 상태 = Default·Hover·Focus·Filled·Disabled",
       "quote": "레거시는 최하위의 드롭다운까지 한 세트에 들어있고, 최신것은 시간 드롭다운이 별개로 세팅되어있어. 비교하기엔 뎁스가 안맞으니 다시확인해서 검수할수있게 해줘",
       "by": "river",
       "date": "2026-09-04",
       "note": "층 대응은 레거시 화면과 변형 축 이름을 보고 정리한 것이며, Figma 원본 구조 데이터까지 읽어 확인하지는 않았다.",
       "확인": "⭐ 2026-09-04 레거시 6세트의 화면·변형축과 정본 층 구조를 대조해 카드를 다시 짰다. 레거시 timepicker_select(셀렉트형 트리거)는 정본에 대응이 없다.",
-      "남은것": "①트리거의 selected·completed 가 정본의 무엇인지 ②셀렉트형 트리거를 정본에 넣을지 — river 결정 대기."
+      "확정": {
+        "selected": "정본 Focus — 레거시 selected 는 「시간 목록(PC 드롭다운·모바일 바텀시트)이 열린 상태」다. 정본은 열린 상태를 Focus 로 표현한다(Time Picker(Focus) 가 Time Picker Dropdown 을 부착 · 웹은 trigger[aria-expanded=\"true\"]).",
+        "completed": "정본 Filled — 값이 채워진 상태.",
+        "셀렉트형 트리거(timepicker_select 540:3636)": "정본에 대응 없음. 옛 형태로 기록하고 만들지 않는다(정본 보강 대상 아님)."
+      },
+      "quote2": "셀렉티드는 시간 입력 드롭다운 또는 바텀시트가 나오는 상태고 컴플리트는 값 채워진 상태야 / (화살표 두 칸형) 옛 형태로 기록하고 만들지 않음",
+      "by2": "river",
+      "date2": "2026-09-17",
+      "근거": "레거시 실측 = reports/legacy-crosswalk-board/D09-D19-legacy-facts.md (🤖 figma-inspector 2026-09-17) · 정본 = build-components.ts:1159-1160,1232 · ui-library/src/components/time-picker/time-picker.css:109"
     },
     {
       "id": "D-10",
@@ -272,16 +280,20 @@
     },
     {
       "id": "D-19",
-      "분류": "아직 미결",
-      "kind": "open",
+      "분류": "변환 규칙 확정",
+      "kind": "rule",
       "무엇": "폼 묶음(form)",
       "컴포넌트": "-",
       "레거시": "B form_elements",
-      "정본": "미정",
+      "정본": "컴포넌트 아님 — 「라벨 + 입력 요소 한 줄」 배치 패턴. 레거시 실측 배치값: 라벨 폭 130 · 라벨↔입력 간격 8(라디오만 16)",
       "quote": "패턴으로 볼지 컴포넌트로 볼지 모호해서 논의 필요",
       "by": "river",
       "date": "2026-09-04",
-      "note": "river: 패턴으로 볼지 컴포넌트로 볼지 모호해서 논의 필요. 아직 결정되지 않았다."
+      "note": "D-03(입력창+버튼)과 같은 결 — 컴포넌트 대응표에서 제외하고 배치 규칙만 남긴다.",
+      "quote2": "배치 규칙(패턴)으로 분류",
+      "by2": "river",
+      "date2": "2026-09-17",
+      "근거": "레거시 실측 = reports/legacy-crosswalk-board/D09-D19-legacy-facts.md · 정본·registry·ui-library 에 form 컴포넌트 없음(📖 source-reader 판독) · 선례 D-03"
     },
     {
       "id": "D-20",
