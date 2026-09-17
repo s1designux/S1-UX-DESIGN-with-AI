@@ -64,6 +64,8 @@
 | 42 | Screen Naming | 화면 프레임 이름이 네이밍 정본 규칙을 지키나 |
 | 49 | Spec Label Width | 스펙(설명용) 시트 라벨이 상자 폭을 넘어 두 줄이 되는지 — 설치기 mock 라벨 전수 × 설치된 Pretendard 실측. 단독 `npm run spec:labelwidth` (폰트 미설치 시 SKIP) |
 | 50 | UI Library Version | 정본이 바뀌었는데 배포본 번호가 그대로면 차단 — 받아 간 개발자가 낡았는지 알 수 있게 한다. 번호는 `npm run ui:bump`(값만=끝자리) · `npm run ui:bump -- --minor`(쓰는 법이 바뀜)이 매긴다. 장부 `ui-library/release-log.json` · 단독 `npm run ui:version` |
+| 51 | GNB Keyboard Order | 상단바 하위메뉴를 키보드로 쓰는 길이 깨졌는지 실제 DOM 에서 잰다 · 적대 시험 내장. 단독 `npm run ui:keyboard` (크롬 없으면 SKIP) |
+| 52 | Legacy Name Auto-Match | 레거시 이름을 지금 이름에 자동으로 붙이는 표가 river 결정과 어긋나거나, 정본에 없는 이름을 쓰면 차단. 반영 `npm run legacy:apply` · 조회 `npm run legacy:resolve -- <레거시 이름>` |
 
 ---
 
@@ -427,6 +429,22 @@ DESIGN.md(AI 소비용) 가 정본(tokens.css+registry)보다 낡으면 차단
 **못 재는 것(정직하게):** 브라우저가 Tab 을 **실제로 어디로 옮기는지**는 재현하지 않는다(헤드리스로 진짜 키를 보내려면 디버깅 프로토콜이 필요하다). 지금 런타임은 순서를 스스로 계산하지 않고 브라우저가 옮긴 뒤 보정하는 방식이라, 여기서 재는 것은 **"보정이 맞나"** 다. 크롬이 없으면 경고로 건너뛴다.
 
 단독 실행 `npm run ui:keyboard` · 적대 시험 `npm run ui:keyboard:selftest`.
+
+### Gate 52: Legacy Name Auto-Match (레거시 이름 자동 붙이기)
+
+레거시 가이드 두 벌(A = SW UX GUIDE V2.4 · B = S-1 Component Set)의 컴포넌트·상태 이름을 **지금 정본 이름에 기계가 붙인다.**
+river 결정 23건은 `reports/legacy-crosswalk-board/crosswalk.json` 에 있었지만 **읽는 것이 검수 화면뿐**이어서, 검수 때마다 사람이 이름을 다시 맞춰 봤다(river 지시 2026-09-17 "자동으로 붙게 만들어줘").
+
+**층 구조:** 결정 정본 = `crosswalk.json` 의 `items[].machine`(기계가 읽는 칸) → 반영 = `npm run legacy:apply` → 속성표 `registry/governance/legacy-component-map.json` → 조회 = `npm run legacy:resolve`.
+**정본 이름 사전은 `registry/components/component-facts.json` 의 `variantAxes` 하나뿐이다** — 거기 없는 세트·축·값을 결정에 적으면 실패한다(하드룰 H6② — 근거 없는 자리를 내가 지어 메우지 않기).
+
+판정 두 가지: ①결정이 표에 반영돼 있는가(`--check` 가 다시 만들어 본 결과와 파일이 같은가 — 손편집·반영 누락을 함께 잡는다) ②결정이 정본에 실재하는 이름만 쓰는가. 닫힌 결정인데 표가 아직 `결정 전`으로 남아 있어도 실패다(자동 대조에서 조용히 빠지므로).
+
+**답의 종류:** 붙음(정본 세트 + 축 값) · 배치 규칙(부품 아님) · 레거시에만 있음 · 정본에 대응 없음 · 결정 전. **모르면 모른다고 답하고 이름을 지어내지 않는다.**
+
+**적대 시험 내장** — `npm run legacy:selftest` 가 결함 3종(없는 정본 이름·기계 칸 소실·표 손편집)을 임시 사본에 되살려 **이 검사기가 실제로 잡는지** 확인한다.
+
+단독 실행 `npm run legacy:check` · 전체 훑기 `npm run legacy:resolve -- --all` · 적대 시험 `npm run legacy:selftest`.
 
 ### Gate 45: CSS Var Reference (CSS 변수 참조)
 

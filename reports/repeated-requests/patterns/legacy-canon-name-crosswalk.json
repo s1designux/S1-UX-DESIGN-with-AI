@@ -2,12 +2,16 @@
   "id": "legacy-canon-name-crosswalk",
   "category": "verification-accuracy",
   "label": "레거시 가이드 ↔ 정본 이름 대응표 (검수 자동 대조 근거)",
-  "count": 1,
+  "count": 2,
   "promotionStatus": "tracking",
   "occurrences": [
     {
       "date": "2026-09-03",
       "summary": "레거시 Figma 가이드 2벌(V2.4 64세트·704변형 / S-1 Component Set latest 62세트·592변형)을 읽어 정본 21컴포넌트와 이름·속성·상태 단위로 대조. 확정 27 · 판단필요 64 · 정본없음 35. 두 레거시 파일이 서로 달랐다(A=success / B=correct, 정본=correct) — 한 파일만으로 만들었으면 반대편에서 전량 오답. 규칙 기반 자동 정규화는 스스로 2건 오답(mobile_header·mobile_bottom-nav)을 냈다. 정본 registry/governance/legacy-component-map.json, river 결정 23건은 판단 페이지로 분리."
+    },
+    {
+      "date": "2026-09-17",
+      "summary": "결정 23건이 표에만 있고 검수기가 읽지 않아 레거시 이름 대조가 계속 사람 손이었다. river 지시로 자동 붙이기 구현 — 조회기(legacy:resolve) + 반영기(legacy:apply) + Gate 52(적대 시험 3종 내장). 126세트 중 88 자동 매칭 · 나머지는 '정본에 대응 없음'·'배치 규칙'·'레거시에만'으로 분류."
     }
   ]
 }

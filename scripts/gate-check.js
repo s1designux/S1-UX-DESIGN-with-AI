@@ -1258,6 +1258,22 @@ try {
   fail(`Gate 51 실행 실패: ${e.message}`);
 }
 
+// ── Gate 52: Legacy Name Auto-Match (레거시 이름 자동 붙이기) ───────
+// river 결정 23건이 표에만 적혀 있고 검수기는 그 표를 읽지 않아, 레거시 이름 대조가 계속
+// 사람 손이었다(2026-09-17 river "자동으로 붙게 만들어줘"). 결정 원본(crosswalk.json items[].machine)이
+// 속성표(legacy-component-map.json)에 반영돼 있는지, 그리고 결정이 **정본에 실재하는 이름만**
+// 쓰는지(하드룰 H6② — 없는 이름을 지어 빈자리를 메우지 않기) 두 가지를 기계가 지킨다.
+gateHeader('[Gate 52] 레거시이름 검사기 (Legacy Name Auto-Match)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync(process.execPath, [path.join(ROOT, 'scripts/legacy-map-apply.js'), '--check'], { encoding: 'utf-8' });
+  const out = `${r.stdout || ''}${r.stderr || ''}`;
+  if (r.status === 0) pass(out.match(/✅ (.*)/)?.[1] || '결정과 표가 같습니다');
+  else for (const l of out.split('\n').filter((l) => l.includes('❌'))) fail(l.replace(/^\s*❌\s*/, '').trim());
+} catch (e) {
+  fail(`Gate 52 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 if (VERBOSE || errors > 0 || warnings > 0) console.log('\n─────────────────────────────────────────────────────');
 const tally = `게이트 ${gates}개 · ✅ ${passes}건${VERBOSE ? '' : ' (상세: --verbose)'}`;

@@ -11,7 +11,12 @@
       "confidence=decide 항목은 자동 매칭에 사용하지 않는다. river 결정 후 high 로 승격한다.",
       "두 레거시 파일은 서로 다르므로 반드시 source(A/B)를 구분해 기록한다.",
       "canonical 값은 이미 존재하는 정본 이름만 쓴다. 새 이름을 만들지 않는다."
-    ]
+    ],
+    "autoMatch": {
+      "무엇": "이 표의 stateMap·sizeMap·variantMap·canonSet 은 river 결정에서 기계로 옮겨 온 것이다.",
+      "되돌리는 법": "npm run legacy:apply (결정 원본 = reports/legacy-crosswalk-board/crosswalk.json items[].machine)",
+      "손편집": "하지 않는다 — 결정 쪽을 고치고 다시 돌린다."
+    }
   },
   "sources": {
     "A": {
@@ -100,22 +105,27 @@
           ]
         },
         "role": "모바일 버튼",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
           "pressed": "pressed",
           "disabled": "disabled"
         },
-        "sizeMap": {},
+        "sizeMap": {
+          "mobile": "LG"
+        },
         "variantMap": {
           "primary": "primary",
           "secondary": "secondary",
-          "blue-line": "blue-line"
+          "blue-line": "blue-line",
+          "mobile": "Mobile"
         },
         "notes": [
           "모바일 크기가 정본 lg 인지 md 인지 불명"
         ],
-        "decision": "D-12"
+        "decision": "D-12",
+        "resolvedBy": "D-12",
+        "canonSet": "Button"
       },
       {
         "source": "B",
@@ -147,7 +157,7 @@
           ]
         },
         "role": "PC 버튼",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "pressed=on": "pressed",
           "disabled=on": "disabled"
@@ -159,7 +169,13 @@
           "red 는 정본에서 삭제 확정된 danger 계열일 가능성",
           "long ver / big ver 가 정본 크기 중 무엇인지 불명"
         ],
-        "decision": "D-21"
+        "decision": "D-21",
+        "resolvedBy": "D-21",
+        "canonSet": "Button",
+        "composedOf": [
+          "Button"
+        ],
+        "resolvedNote": "레거시 mix 는 버튼 두 개가 한 덩어리인 유형이다. 옮길 때 하위 버튼을 각각 유형·크기에 맞춰 바꾼다. blue·white·red 낱개 대응은 결정되지 않았다."
       },
       {
         "source": "B",
@@ -192,7 +208,7 @@
           ]
         },
         "role": "모바일 버튼",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "pressed=on": "pressed",
           "disabled=on": "disabled"
@@ -202,7 +218,13 @@
         "notes": [
           "color 에 mix2 라는 뜻을 알 수 없는 값이 있음"
         ],
-        "decision": "D-21"
+        "decision": "D-21",
+        "resolvedBy": "D-21",
+        "canonSet": "Button",
+        "composedOf": [
+          "Button"
+        ],
+        "resolvedNote": "레거시 mix 는 버튼 두 개가 한 덩어리인 유형이다. 옮길 때 하위 버튼을 각각 유형·크기에 맞춰 바꾼다. blue·white·red 낱개 대응은 결정되지 않았다."
       },
       {
         "source": "B",
@@ -222,14 +244,20 @@
           ]
         },
         "role": "모바일 보조 버튼",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {},
         "sizeMap": {},
         "variantMap": {},
         "notes": [
           "type=Big(Black)/Big(Gray)/Small 이 정본 변형·크기 어디에도 대응 없음"
         ],
-        "decision": "D-13"
+        "decision": "D-13",
+        "resolvedBy": "D-13",
+        "canonSet": [
+          "Assist Button",
+          "Text Button"
+        ],
+        "resolvedNote": "보조 버튼은 Button 의 변형이 아니라 별도 세트다(크기 1종)."
       }
     ],
     "checkbox": [
@@ -361,7 +389,7 @@
           ]
         },
         "role": "컴포넌트 전체",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
           "selected": "selected",
@@ -369,16 +397,20 @@
         },
         "sizeMap": {
           "pc-md": "md",
-          "pc-sm": "sm"
+          "pc-sm": "sm",
+          "mobile": "SM"
         },
         "variantMap": {
           "line": "line",
-          "solid": "solid"
+          "solid": "solid",
+          "mobile": "Mobile"
         },
         "notes": [
           "platform=mobile 이 정본 md/sm 중 무엇인지 불명"
         ],
-        "decision": "D-01"
+        "decision": "D-01",
+        "resolvedBy": "D-01",
+        "canonSet": "Chip"
       },
       {
         "source": "B",
@@ -401,20 +433,25 @@
           ]
         },
         "role": "모바일 칩",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "checked=on": "selected",
           "disabled=on": "disabled"
         },
-        "sizeMap": {},
+        "sizeMap": {
+          "mobile": "SM"
+        },
         "variantMap": {
           "solid=on": "solid",
-          "solid=off": "line"
+          "solid=off": "line",
+          "mobile": "Mobile"
         },
         "notes": [
           "solid on/off 스위치 → 정본은 변형 line/solid"
         ],
-        "decision": "D-01"
+        "decision": "D-01",
+        "resolvedBy": "D-01",
+        "canonSet": "Chip"
       }
     ],
     "date-picker": [
@@ -439,11 +476,15 @@
           ]
         },
         "role": "날짜 입력창",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
-          "completed": "filled",
-          "disabled": "disabled"
+          "completed": "Filled",
+          "disabled": "disabled",
+          "selected": "Open",
+          "editing(day)": "Open",
+          "editing(month)": "Open",
+          "editing(year)": "Open"
         },
         "sizeMap": {
           "pc-md": "md",
@@ -454,7 +495,9 @@
         "notes": [
           "state=selected 가 정본 open(달력 열림) 인지 불명"
         ],
-        "decision": "D-10"
+        "decision": "D-10",
+        "resolvedBy": "D-10",
+        "canonSet": "Date Picker"
       },
       {
         "source": "A",
@@ -475,12 +518,19 @@
           ]
         },
         "role": "모바일 날짜 바텀시트",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {},
         "sizeMap": {},
         "variantMap": {},
         "notes": [],
-        "decision": "D-05"
+        "decision": "D-05",
+        "resolvedBy": "D-05",
+        "canonSet": [
+          "Bottom Sheet",
+          "Bottom Sheet Option",
+          "Date Picker Mobile Bottom Sheet",
+          "Time Picker Mobile Bottom Sheet"
+        ]
       },
       {
         "source": "A",
@@ -503,7 +553,7 @@
           ]
         },
         "role": "달력 날짜 칸",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
           "disabled": "disabled"
@@ -516,7 +566,14 @@
         "notes": [
           "state=start/end/today 가 정본 상태 목록에 없음"
         ],
-        "decision": "D-11"
+        "decision": "D-11",
+        "resolvedBy": "D-11",
+        "canonSet": [
+          "Calendar Cell",
+          "Calendar Tile",
+          "Calendar"
+        ],
+        "resolvedNote": "레거시의 화살표는 별도 세트가 아니라 달력 머리의 아이콘이다(2026-09-04 결정 당시 기준)."
       },
       {
         "source": "A",
@@ -535,7 +592,7 @@
           ]
         },
         "role": "달력 이전/다음 화살표",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
           "disabled": "disabled"
@@ -543,7 +600,14 @@
         "sizeMap": {},
         "variantMap": {},
         "notes": [],
-        "decision": "D-11"
+        "decision": "D-11",
+        "resolvedBy": "D-11",
+        "canonSet": [
+          "Calendar Cell",
+          "Calendar Tile",
+          "Calendar"
+        ],
+        "resolvedNote": "레거시의 화살표는 별도 세트가 아니라 달력 머리의 아이콘이다(2026-09-04 결정 당시 기준)."
       },
       {
         "source": "A",
@@ -559,7 +623,7 @@
           ]
         },
         "role": "달력 타일",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
           "disabled": "disabled",
@@ -568,7 +632,14 @@
         "sizeMap": {},
         "variantMap": {},
         "notes": [],
-        "decision": "D-11"
+        "decision": "D-11",
+        "resolvedBy": "D-11",
+        "canonSet": [
+          "Calendar Cell",
+          "Calendar Tile",
+          "Calendar"
+        ],
+        "resolvedNote": "레거시의 화살표는 별도 세트가 아니라 달력 머리의 아이콘이다(2026-09-04 결정 당시 기준)."
       },
       {
         "source": "A",
@@ -586,7 +657,7 @@
           ]
         },
         "role": "PC 달력 전체",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default"
         },
@@ -595,7 +666,14 @@
         "notes": [
           "state=default_button / month select / year select / year range select 가 정본에 없음"
         ],
-        "decision": "D-11"
+        "decision": "D-11",
+        "resolvedBy": "D-11",
+        "canonSet": [
+          "Calendar Cell",
+          "Calendar Tile",
+          "Calendar"
+        ],
+        "resolvedNote": "레거시의 화살표는 별도 세트가 아니라 달력 머리의 아이콘이다(2026-09-04 결정 당시 기준)."
       },
       {
         "source": "B",
@@ -618,18 +696,24 @@
           ]
         },
         "role": "달력 입력창",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
-          "completed": "filled",
-          "disabled": "disabled"
+          "completed": "Filled",
+          "disabled": "disabled",
+          "selected": "Open",
+          "editing(day)": "Open",
+          "editing(month)": "Open",
+          "editing(year)": "Open"
         },
         "sizeMap": {},
         "variantMap": {},
         "notes": [
           "editing(day)/(month)/(year) 3종이 정본 상태에 없음(정본은 focus 하나)"
         ],
-        "decision": "D-10"
+        "decision": "D-10",
+        "resolvedBy": "D-10",
+        "canonSet": "Date Picker"
       },
       {
         "source": "B",
@@ -650,16 +734,23 @@
           ]
         },
         "role": "모바일 달력 입력창",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "Default": "default",
           "editing": "focus",
-          "disabled": "disabled"
+          "disabled": "disabled",
+          "selected": "Open",
+          "editing(day)": "Open",
+          "editing(month)": "Open",
+          "editing(year)": "Open",
+          "completed": "Filled"
         },
         "sizeMap": {},
         "variantMap": {},
         "notes": [],
-        "decision": "D-10"
+        "decision": "D-10",
+        "resolvedBy": "D-10",
+        "canonSet": "Date Picker"
       }
     ],
     "dropdown": [
@@ -682,22 +773,28 @@
           ]
         },
         "role": "선택 목록의 한 줄",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
           "hover": "hover",
-          "disabled": null
+          "disabled": null,
+          "selected": "Selected"
         },
         "sizeMap": {
           "md": "md"
         },
-        "variantMap": {},
+        "variantMap": {
+          "selected": "Text"
+        },
         "notes": [
           "state=selected 가 정본 selectedText / selectedCheckbox 중 무엇인지 불명",
           "size=sm 이 정본 xsm 인지 불명",
           "정본 dropdown 에 disabled 상태 없음"
         ],
-        "decision": "D-08"
+        "decision": "D-08",
+        "resolvedBy": "D-08",
+        "canonSet": "Dropdown List",
+        "resolvedNote": "레거시 selected 는 글자형 선택 표시다 — 정본에서는 Type=Text 의 State=Selected."
       },
       {
         "source": "A",
@@ -712,16 +809,23 @@
           ]
         },
         "role": "펼쳐진 목록 전체",
-        "confidence": "decide",
-        "stateMap": {},
+        "confidence": "high",
+        "stateMap": {
+          "selected": "Selected"
+        },
         "sizeMap": {
           "md": "md"
         },
-        "variantMap": {},
+        "variantMap": {
+          "selected": "Text"
+        },
         "notes": [
           "size=sm 대응 불명"
         ],
-        "decision": "D-08"
+        "decision": "D-08",
+        "resolvedBy": "D-08",
+        "canonSet": "Dropdown List",
+        "resolvedNote": "레거시 selected 는 글자형 선택 표시다 — 정본에서는 Type=Text 의 State=Selected."
       }
     ],
     "filter-chip": [
@@ -750,7 +854,7 @@
           ]
         },
         "role": "라벨만 있는 형태",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
           "selected": "selected",
@@ -765,7 +869,13 @@
           "solid": "solid"
         },
         "notes": [],
-        "decision": "D-02"
+        "decision": "D-02",
+        "resolvedBy": "D-02",
+        "canonSet": [
+          "Chip",
+          "Filter Chip"
+        ],
+        "resolvedNote": "레거시는 한 세트에 '라벨만'과 '제목 붙은'을 함께 뒀다. 정본은 Chip 과 Filter Chip 두 세트로 갈라져 있고, '제목 붙은' 은 Filter Chip 의 Title=On 이다."
       },
       {
         "source": "A",
@@ -793,7 +903,7 @@
           ]
         },
         "role": "제목이 붙은 형태",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
           "selected": "selected",
@@ -810,7 +920,13 @@
         "notes": [
           "⚠️ platform 속성에 \"filter-chip\" 이라는 잘못된 값이 섞여 있음(레거시 데이터 오류)"
         ],
-        "decision": "D-02"
+        "decision": "D-02",
+        "resolvedBy": "D-02",
+        "canonSet": [
+          "Chip",
+          "Filter Chip"
+        ],
+        "resolvedNote": "레거시는 한 세트에 '라벨만'과 '제목 붙은'을 함께 뒀다. 정본은 Chip 과 Filter Chip 두 세트로 갈라져 있고, '제목 붙은' 은 Filter Chip 의 Title=On 이다."
       }
     ],
     "gnb": [
@@ -902,14 +1018,23 @@
           ]
         },
         "role": "상단 바",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {},
         "sizeMap": {},
-        "variantMap": {},
+        "variantMap": {
+          "1depth": "1depth",
+          "2depth": "2depth"
+        },
         "notes": [
           "sub menu=1depth/2depth/off 축이 정본 gnb 에 없음"
         ],
-        "decision": "D-18"
+        "decision": "D-18",
+        "resolvedBy": "D-18",
+        "canonSet": [
+          "GNB Sub Menu",
+          "GNB Sub Menu Item"
+        ],
+        "resolvedNote": "깊이 축은 항목(GNB Sub Menu Item)에 있고, 펼침 패널은 Type(regular·compact-1·compact-2)으로 나뉜다."
       }
     ],
     "input": [
@@ -931,7 +1056,7 @@
           ]
         },
         "role": "입력창+버튼 조합",
-        "confidence": "decide",
+        "confidence": "pattern",
         "stateMap": {
           "default": "default",
           "complete": "filled",
@@ -945,7 +1070,14 @@
         "notes": [
           "helper 는 상태가 아니라 도움말 표시 여부"
         ],
-        "decision": "D-03"
+        "decision": "D-03",
+        "resolvedBy": "D-03",
+        "canonSet": null,
+        "patternOf": [
+          "Input",
+          "Button"
+        ],
+        "resolvedNote": "컴포넌트가 아니라 입력창과 버튼을 나란히 놓는 배치다."
       },
       {
         "source": "A",
@@ -962,7 +1094,7 @@
           ]
         },
         "role": "큰 입력창",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
           "complete_long": "filled",
@@ -974,7 +1106,10 @@
         "notes": [
           "\"large\" 크기가 정본 크기(xxsm/xsm/md)에 없음"
         ],
-        "decision": "D-04"
+        "decision": "D-04",
+        "resolvedBy": "D-04",
+        "canonSet": "Text Area",
+        "resolvedNote": "크기 대응이 아니라 종류 대응 — 레거시 '큰 입력창' 은 정본의 텍스트박스다."
       },
       {
         "source": "A",
@@ -1083,7 +1218,7 @@
           ]
         },
         "role": "로그인 입력창",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
           "complete": "filled",
@@ -1092,15 +1227,25 @@
           "disabled": "disabled"
         },
         "sizeMap": {
-          "pc-md": "md",
-          "pc-xsm": "xsm"
+          "pc-md": "MD",
+          "pc-xsm": "XXSM",
+          "pc-sm": "XSM",
+          "mobile": "MD"
         },
-        "variantMap": {},
+        "variantMap": {
+          "mobile": "Mobile",
+          "pc-md": "PC",
+          "pc-sm": "PC",
+          "pc-xsm": "PC"
+        },
         "notes": [
           "platform=pc-sm 이 정본에 없음(정본은 xxsm/xsm/md)",
           "icon=1/2+/off/on 은 정본에 축 없음"
         ],
-        "decision": "D-06"
+        "decision": "D-06",
+        "resolvedBy": "D-06",
+        "canonSet": "Input",
+        "resolvedNote": "river 규칙: 높이 값으로 맞추고, 같은 높이가 없으면 가장 가까운 높이. 실측 mobile 48 · pc-md 44 · pc-sm 34 · pc-xsm 28."
       },
       {
         "source": "B",
@@ -1333,14 +1478,17 @@
           ]
         },
         "role": "컴포넌트 전체",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {},
         "sizeMap": {},
         "variantMap": {},
         "notes": [
           "레거시 5종 ↔ 정본 6종. 레거시 값에 오타(titel) 있음"
         ],
-        "decision": "D-17"
+        "decision": "D-17",
+        "resolvedBy": "D-17",
+        "canonSet": "Mobile Header",
+        "resolvedNote": "없앤 두 유형 자리를 아이콘 1개 유형 하나로 채웠다. 이 조합은 레거시 두 파일 어디에도 없어 새로 만든 것이다."
       }
     ],
     "modal": [
@@ -1388,14 +1536,21 @@
           ]
         },
         "role": "PC 모달",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {},
-        "sizeMap": {},
+        "sizeMap": {
+          "md": "MD",
+          "lg": "LG",
+          "xl": "XL"
+        },
         "variantMap": {},
         "notes": [
           "size=sm/md/lg/xl 이 정본 modal 에 없음(정본은 변형 single/dual 만)"
         ],
-        "decision": "D-15"
+        "decision": "D-15",
+        "resolvedBy": "D-15",
+        "canonSet": "Modal Content",
+        "resolvedNote": "확인 계열 Modal 에는 크기 축이 없다. 레거시 모달 크기 체계는 콘텐츠 계열 것이다."
       },
       {
         "source": "A",
@@ -1415,14 +1570,21 @@
           ]
         },
         "role": "모바일 모달(부품)",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {},
-        "sizeMap": {},
+        "sizeMap": {
+          "md": "MD",
+          "lg": "LG",
+          "xl": "XL"
+        },
         "variantMap": {},
         "notes": [
           "btn=1 btn/2 btn 이 정본 single/dual 로 보이나 위 mobile_modal 과 중복"
         ],
-        "decision": "D-15"
+        "decision": "D-15",
+        "resolvedBy": "D-15",
+        "canonSet": "Modal Content",
+        "resolvedNote": "확인 계열 Modal 에는 크기 축이 없다. 레거시 모달 크기 체계는 콘텐츠 계열 것이다."
       },
       {
         "source": "A",
@@ -1440,14 +1602,21 @@
           ]
         },
         "role": "작은 모달(용도별)",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {},
-        "sizeMap": {},
+        "sizeMap": {
+          "md": "MD",
+          "lg": "LG",
+          "xl": "XL"
+        },
         "variantMap": {},
         "notes": [
           "state 값이 상태가 아니라 용도(삭제/입력취소/…) — 정본과 축이 다름"
         ],
-        "decision": "D-15"
+        "decision": "D-15",
+        "resolvedBy": "D-15",
+        "canonSet": "Modal Content",
+        "resolvedNote": "확인 계열 Modal 에는 크기 축이 없다. 레거시 모달 크기 체계는 콘텐츠 계열 것이다."
       },
       {
         "source": "B",
@@ -1466,14 +1635,21 @@
           ]
         },
         "role": "다이얼로그",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {},
-        "sizeMap": {},
+        "sizeMap": {
+          "md": "MD",
+          "lg": "LG",
+          "xl": "XL"
+        },
         "variantMap": {},
         "notes": [
           "double button=on/off 가 정본 dual/single 로 보이나 확정 필요"
         ],
-        "decision": "D-15"
+        "decision": "D-15",
+        "resolvedBy": "D-15",
+        "canonSet": "Modal Content",
+        "resolvedNote": "확인 계열 Modal 에는 크기 축이 없다. 레거시 모달 크기 체계는 콘텐츠 계열 것이다."
       },
       {
         "source": "B",
@@ -1492,12 +1668,19 @@
           ]
         },
         "role": "팝업",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {},
-        "sizeMap": {},
+        "sizeMap": {
+          "md": "MD",
+          "lg": "LG",
+          "xl": "XL"
+        },
         "variantMap": {},
         "notes": [],
-        "decision": "D-15"
+        "decision": "D-15",
+        "resolvedBy": "D-15",
+        "canonSet": "Modal Content",
+        "resolvedNote": "확인 계열 Modal 에는 크기 축이 없다. 레거시 모달 크기 체계는 콘텐츠 계열 것이다."
       },
       {
         "source": "B",
@@ -1521,14 +1704,21 @@
           ]
         },
         "role": "모바일 다이얼로그",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {},
-        "sizeMap": {},
+        "sizeMap": {
+          "md": "MD",
+          "lg": "LG",
+          "xl": "XL"
+        },
         "variantMap": {},
         "notes": [
           "pair button=on/off 가 정본 dual/single 로 보임"
         ],
-        "decision": "D-15"
+        "decision": "D-15",
+        "resolvedBy": "D-15",
+        "canonSet": "Modal Content",
+        "resolvedNote": "확인 계열 Modal 에는 크기 축이 없다. 레거시 모달 크기 체계는 콘텐츠 계열 것이다."
       }
     ],
     "multi-toggle": [
@@ -1730,11 +1920,11 @@
           ]
         },
         "role": "페이지 이동 바 전체",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
-          "single page": "single",
-          "1st page": "first",
-          "normal": "middle"
+          "single page": "Single",
+          "1st page": "First",
+          "normal": "Middle"
         },
         "sizeMap": {},
         "variantMap": {},
@@ -1742,7 +1932,10 @@
           "⚠️ 세트 이름이 \"pagenation\" 오타",
           "정본 last 상태에 대응하는 값이 없음"
         ],
-        "decision": "D-23"
+        "decision": "D-23",
+        "resolvedBy": "D-23",
+        "canonSet": "Pagination",
+        "resolvedNote": "레거시에 '마지막 페이지' 가 빠져 있다 — 정본이 맞다."
       }
     ],
     "radio": [
@@ -1796,16 +1989,19 @@
           ]
         },
         "role": "라디오 버튼",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
-          "disabled=on": "disabled"
+          "disabled=on": "disabled",
+          "pressed": "Selected"
         },
         "sizeMap": {},
         "variantMap": {},
         "notes": [
           "⚠️ \"선택됨\" 상태가 없고 pressed(누름)만 있음 — pressed 가 정본 selected 인지 불명"
         ],
-        "decision": "D-22"
+        "decision": "D-22",
+        "resolvedBy": "D-22",
+        "canonSet": "Radio"
       },
       {
         "source": "B",
@@ -1828,14 +2024,17 @@
           ]
         },
         "role": "모바일 라디오",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
-          "disabled=on": "disabled"
+          "disabled=on": "disabled",
+          "pressed": "Selected"
         },
         "sizeMap": {},
         "variantMap": {},
         "notes": [],
-        "decision": "D-22"
+        "decision": "D-22",
+        "resolvedBy": "D-22",
+        "canonSet": "Radio"
       }
     ],
     "select": [
@@ -1859,10 +2058,11 @@
           ]
         },
         "role": "컴포넌트 전체",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
-          "disabled": "disabled"
+          "disabled": "disabled",
+          "selected": "Open"
         },
         "sizeMap": {
           "pc-md": "md",
@@ -1873,7 +2073,9 @@
         "notes": [
           "state=selected 가 정본 open(펼침) 인지 filled(값 채워짐) 인지 불명"
         ],
-        "decision": "D-07"
+        "decision": "D-07",
+        "resolvedBy": "D-07",
+        "canonSet": "Select Box"
       },
       {
         "source": "B",
@@ -1902,7 +2104,7 @@
           ]
         },
         "role": "콤보박스",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "Default": "default",
           "completed": "filled",
@@ -1915,7 +2117,17 @@
           "콤보박스가 정본 select 인지 dropdown 인지 확정 필요",
           "time=on/off 축은 time-picker 쪽일 수 있음"
         ],
-        "decision": "D-20"
+        "decision": "D-20",
+        "resolvedBy": "D-20",
+        "canonSet": [
+          "Select Box",
+          "Dropdown"
+        ],
+        "composedOf": [
+          "Select Box",
+          "Dropdown"
+        ],
+        "resolvedNote": "레거시 콤보박스 = 정본 선택창 + 목록 패널 조합. 옮길 때 각각 최신 것으로 바꾼다."
       },
       {
         "source": "B",
@@ -1952,7 +2164,7 @@
           ]
         },
         "role": "모바일 콤보박스",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "Default": "default",
           "completed": "filled",
@@ -1962,7 +2174,17 @@
         "sizeMap": {},
         "variantMap": {},
         "notes": [],
-        "decision": "D-20"
+        "decision": "D-20",
+        "resolvedBy": "D-20",
+        "canonSet": [
+          "Select Box",
+          "Dropdown"
+        ],
+        "composedOf": [
+          "Select Box",
+          "Dropdown"
+        ],
+        "resolvedNote": "레거시 콤보박스 = 정본 선택창 + 목록 패널 조합. 옮길 때 각각 최신 것으로 바꾼다."
       }
     ],
     "tab": [
@@ -1986,11 +2208,12 @@
           ]
         },
         "role": "컴포넌트 전체",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
-          "unselected": "default",
-          "hover": "hover",
-          "selected": "selected"
+          "unselected": "Unselected",
+          "hover": "Hover",
+          "selected": "Selected",
+          "pressed": "Selected"
         },
         "sizeMap": {
           "pc-md": "md",
@@ -2001,7 +2224,9 @@
           "state=pressed 가 정본에 없음",
           "variant=mobile 이 정본 크기 중 무엇인지 불명"
         ],
-        "decision": "D-16"
+        "decision": "D-16",
+        "resolvedBy": "D-16",
+        "canonSet": "Line Tab"
       },
       {
         "source": "B",
@@ -2020,16 +2245,22 @@
           ]
         },
         "role": "탭 1형",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "selected=on": "selected",
           "hover=on": "hover",
-          "selected=off": "default"
+          "selected=off": "default",
+          "unselected": "Unselected",
+          "hover": "Hover",
+          "pressed": "Selected",
+          "selected": "Selected"
         },
         "sizeMap": {},
         "variantMap": {},
         "notes": [],
-        "decision": "D-16"
+        "decision": "D-16",
+        "resolvedBy": "D-16",
+        "canonSet": "Line Tab"
       },
       {
         "source": "B",
@@ -2053,18 +2284,24 @@
           ]
         },
         "role": "탭 2형",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "selected=on": "selected",
           "hover=on": "hover",
-          "selected=off": "default"
+          "selected=off": "default",
+          "unselected": "Unselected",
+          "hover": "Hover",
+          "pressed": "Selected",
+          "selected": "Selected"
         },
         "sizeMap": {},
         "variantMap": {},
         "notes": [
           "option=left/center/right 는 정렬 — 정본 tab 에 축 없음"
         ],
-        "decision": "D-16"
+        "decision": "D-16",
+        "resolvedBy": "D-16",
+        "canonSet": "Line Tab"
       },
       {
         "source": "B",
@@ -2074,14 +2311,21 @@
         "variantCount": 4,
         "legacyProps": {},
         "role": "탭",
-        "confidence": "decide",
-        "stateMap": {},
+        "confidence": "high",
+        "stateMap": {
+          "unselected": "Unselected",
+          "hover": "Hover",
+          "pressed": "Selected",
+          "selected": "Selected"
+        },
         "sizeMap": {},
         "variantMap": {},
         "notes": [
           "변형 속성이 없어 대응 판단 근거 부족"
         ],
-        "decision": "D-16"
+        "decision": "D-16",
+        "resolvedBy": "D-16",
+        "canonSet": "Line Tab"
       },
       {
         "source": "B",
@@ -2105,16 +2349,22 @@
           ]
         },
         "role": "모바일 탭 제목",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
-          "selected=on": "selected"
+          "selected=on": "selected",
+          "unselected": "Unselected",
+          "hover": "Hover",
+          "pressed": "Selected",
+          "selected": "Selected"
         },
         "sizeMap": {},
         "variantMap": {},
         "notes": [
           "count/new 배지 축은 정본 tab 에 없음"
         ],
-        "decision": "D-16"
+        "decision": "D-16",
+        "resolvedBy": "D-16",
+        "canonSet": "Line Tab"
       },
       {
         "source": "B",
@@ -2124,14 +2374,21 @@
         "variantCount": 3,
         "legacyProps": {},
         "role": "탭",
-        "confidence": "decide",
-        "stateMap": {},
+        "confidence": "high",
+        "stateMap": {
+          "unselected": "Unselected",
+          "hover": "Hover",
+          "pressed": "Selected",
+          "selected": "Selected"
+        },
         "sizeMap": {},
         "variantMap": {},
         "notes": [
           "변형 속성 없음"
         ],
-        "decision": "D-16"
+        "decision": "D-16",
+        "resolvedBy": "D-16",
+        "canonSet": "Line Tab"
       }
     ],
     "table": [
@@ -2249,7 +2506,7 @@
           ]
         },
         "role": "그리드 표 머리글",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
           "hover": "hover"
@@ -2262,7 +2519,9 @@
         "notes": [
           "정본 table 변형이 base 하나뿐 — grid 형태 구분이 사라졌는지 불명"
         ],
-        "decision": "D-14"
+        "decision": "D-14",
+        "resolvedBy": "D-14",
+        "canonSet": "Table"
       },
       {
         "source": "A",
@@ -2290,7 +2549,7 @@
           ]
         },
         "role": "그리드 표 본문",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
           "hover": "hover"
@@ -2301,7 +2560,9 @@
         },
         "variantMap": {},
         "notes": [],
-        "decision": "D-14"
+        "decision": "D-14",
+        "resolvedBy": "D-14",
+        "canonSet": "Table"
       },
       {
         "source": "A",
@@ -2321,12 +2582,14 @@
           ]
         },
         "role": "삽입형 표 머리글",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {},
         "sizeMap": {},
         "variantMap": {},
         "notes": [],
-        "decision": "D-14"
+        "decision": "D-14",
+        "resolvedBy": "D-14",
+        "canonSet": "Table"
       },
       {
         "source": "A",
@@ -2350,7 +2613,7 @@
           ]
         },
         "role": "삽입형 표 본문",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
           "hover": "hover"
@@ -2358,7 +2621,9 @@
         "sizeMap": {},
         "variantMap": {},
         "notes": [],
-        "decision": "D-14"
+        "decision": "D-14",
+        "resolvedBy": "D-14",
+        "canonSet": "Table"
       },
       {
         "source": "B",
@@ -2368,13 +2633,16 @@
         "variantCount": 1,
         "legacyProps": {},
         "role": "표(속성 없음)",
-        "confidence": "none",
+        "confidence": "high",
         "stateMap": {},
         "sizeMap": {},
         "variantMap": {},
         "notes": [
           "변형 속성이 없어 판단 근거 부족"
-        ]
+        ],
+        "decision": "D-14",
+        "resolvedBy": "D-14",
+        "canonSet": "Table"
       },
       {
         "source": "B",
@@ -2396,7 +2664,7 @@
           ]
         },
         "role": "표",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "hover": "hover",
           "selected": "selected"
@@ -2407,7 +2675,9 @@
           "⚠️ content option 에 \"Default\" 와 \"default\" 가 동시에 존재(대소문자 중복 오류)",
           "option=column/content 가 정본에서 머리글/본문 구분인지 불명"
         ],
-        "decision": "D-14"
+        "decision": "D-14",
+        "resolvedBy": "D-14",
+        "canonSet": "Table"
       }
     ],
     "time-picker": [
@@ -2425,17 +2695,22 @@
           ]
         },
         "role": "시간 입력창 부품",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
-          "hover": "hover"
+          "hover": "hover",
+          "selected": "Focus",
+          "completed": "Filled"
         },
         "sizeMap": {},
         "variantMap": {},
         "notes": [
           "state=selected 가 focus 인지 filled 인지 불명"
         ],
-        "decision": "D-09"
+        "decision": "D-09",
+        "resolvedBy": "D-09",
+        "canonSet": "Time Picker",
+        "resolvedNote": "레거시 selected 는 시간 목록이 열린 상태이고, 정본은 열린 상태를 Focus 로 표현한다."
       },
       {
         "source": "A",
@@ -2455,17 +2730,22 @@
           ]
         },
         "role": "시/분 숫자 목록",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
-          "hover": "hover"
+          "hover": "hover",
+          "selected": "Focus",
+          "completed": "Filled"
         },
         "sizeMap": {
           "md": "md"
         },
         "variantMap": {},
         "notes": [],
-        "decision": "D-09"
+        "decision": "D-09",
+        "resolvedBy": "D-09",
+        "canonSet": "Time Picker",
+        "resolvedNote": "레거시 selected 는 시간 목록이 열린 상태이고, 정본은 열린 상태를 Focus 로 표현한다."
       },
       {
         "source": "A",
@@ -2480,14 +2760,20 @@
           ]
         },
         "role": "시간 선택 펼침",
-        "confidence": "decide",
-        "stateMap": {},
+        "confidence": "high",
+        "stateMap": {
+          "selected": "Focus",
+          "completed": "Filled"
+        },
         "sizeMap": {
           "md": "md"
         },
         "variantMap": {},
         "notes": [],
-        "decision": "D-09"
+        "decision": "D-09",
+        "resolvedBy": "D-09",
+        "canonSet": "Time Picker",
+        "resolvedNote": "레거시 selected 는 시간 목록이 열린 상태이고, 정본은 열린 상태를 Focus 로 표현한다."
       },
       {
         "source": "A",
@@ -2502,14 +2788,20 @@
           ]
         },
         "role": "PC 시간 입력 펼침",
-        "confidence": "decide",
-        "stateMap": {},
+        "confidence": "high",
+        "stateMap": {
+          "selected": "Focus",
+          "completed": "Filled"
+        },
         "sizeMap": {},
         "variantMap": {},
         "notes": [
           "type=12h/24h 축이 정본에 없음"
         ],
-        "decision": "D-09"
+        "decision": "D-09",
+        "resolvedBy": "D-09",
+        "canonSet": "Time Picker",
+        "resolvedNote": "레거시 selected 는 시간 목록이 열린 상태이고, 정본은 열린 상태를 Focus 로 표현한다."
       },
       {
         "source": "A",
@@ -2529,7 +2821,7 @@
           ]
         },
         "role": "시간 선택",
-        "confidence": "decide",
+        "confidence": "legacy-only",
         "stateMap": {
           "default": "default",
           "disabled": "disabled"
@@ -2541,7 +2833,10 @@
         "notes": [
           "state=editing 이 정본 focus 인지 불명"
         ],
-        "decision": "D-09"
+        "decision": "D-09",
+        "resolvedBy": "D-09",
+        "canonSet": null,
+        "resolvedNote": "시·분을 각각 화살표 칸으로 고르는 형태 — 정본에 없고 만들지 않는다(2026-09-17 river)"
       },
       {
         "source": "A",
@@ -2564,11 +2859,12 @@
           ]
         },
         "role": "시간 입력창",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "default": "default",
-          "completed": "filled",
-          "disabled": "disabled"
+          "completed": "Filled",
+          "disabled": "disabled",
+          "selected": "Focus"
         },
         "sizeMap": {
           "pc-md": "md",
@@ -2579,7 +2875,10 @@
         "notes": [
           "state=selected 가 focus 인지 불명"
         ],
-        "decision": "D-09"
+        "decision": "D-09",
+        "resolvedBy": "D-09",
+        "canonSet": "Time Picker",
+        "resolvedNote": "레거시 selected 는 시간 목록이 열린 상태이고, 정본은 열린 상태를 Focus 로 표현한다."
       },
       {
         "source": "A",
@@ -2594,12 +2893,19 @@
           ]
         },
         "role": "모바일 시간 바텀시트",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {},
         "sizeMap": {},
         "variantMap": {},
         "notes": [],
-        "decision": "D-05"
+        "decision": "D-05",
+        "resolvedBy": "D-05",
+        "canonSet": [
+          "Bottom Sheet",
+          "Bottom Sheet Option",
+          "Date Picker Mobile Bottom Sheet",
+          "Time Picker Mobile Bottom Sheet"
+        ]
       },
       {
         "source": "B",
@@ -2620,7 +2926,7 @@
           ]
         },
         "role": "모바일 시간 콤보",
-        "confidence": "decide",
+        "confidence": "high",
         "stateMap": {
           "Default": "default",
           "editing": "focus",
@@ -2629,7 +2935,17 @@
         "sizeMap": {},
         "variantMap": {},
         "notes": [],
-        "decision": "D-20"
+        "decision": "D-20",
+        "resolvedBy": "D-20",
+        "canonSet": [
+          "Select Box",
+          "Dropdown"
+        ],
+        "composedOf": [
+          "Select Box",
+          "Dropdown"
+        ],
+        "resolvedNote": "레거시 콤보박스 = 정본 선택창 + 목록 패널 조합. 옮길 때 각각 최신 것으로 바꾼다."
       }
     ],
     "toggle": [
@@ -2740,14 +3056,21 @@
         ]
       },
       "role": "모바일 바텀시트",
-      "confidence": "decide",
+      "confidence": "high",
       "stateMap": {},
       "sizeMap": {},
       "variantMap": {},
       "notes": [
         "정본에 바텀시트 단독 컴포넌트 없음. modal 로 흡수됐는지 불명"
       ],
-      "decision": "D-05"
+      "decision": "D-05",
+      "resolvedBy": "D-05",
+      "canonSet": [
+        "Bottom Sheet",
+        "Bottom Sheet Option",
+        "Date Picker Mobile Bottom Sheet",
+        "Time Picker Mobile Bottom Sheet"
+      ]
     },
     {
       "source": "A",
@@ -2772,14 +3095,20 @@
         ]
       },
       "role": "보조 버튼",
-      "confidence": "decide",
+      "confidence": "high",
       "stateMap": {},
       "sizeMap": {},
       "variantMap": {},
       "notes": [
         "정본 button 변형(primary/secondary/blue-line)에 assist 없음"
       ],
-      "decision": "D-13"
+      "decision": "D-13",
+      "resolvedBy": "D-13",
+      "canonSet": [
+        "Assist Button",
+        "Text Button"
+      ],
+      "resolvedNote": "보조 버튼은 Button 의 변형이 아니라 별도 세트다(크기 1종)."
     },
     {
       "source": "A",
@@ -2799,14 +3128,20 @@
         ]
       },
       "role": "텍스트 버튼",
-      "confidence": "decide",
+      "confidence": "high",
       "stateMap": {},
       "sizeMap": {},
       "variantMap": {},
       "notes": [
         "정본에 텍스트 전용 버튼 없음"
       ],
-      "decision": "D-13"
+      "decision": "D-13",
+      "resolvedBy": "D-13",
+      "canonSet": [
+        "Assist Button",
+        "Text Button"
+      ],
+      "resolvedNote": "보조 버튼은 Button 의 변형이 아니라 별도 세트다(크기 1종)."
     },
     {
       "source": "A",
@@ -2851,12 +3186,19 @@
         ]
       },
       "role": "바텀시트 항목",
-      "confidence": "decide",
+      "confidence": "high",
       "stateMap": {},
       "sizeMap": {},
       "variantMap": {},
       "notes": [],
-      "decision": "D-05"
+      "decision": "D-05",
+      "resolvedBy": "D-05",
+      "canonSet": [
+        "Bottom Sheet",
+        "Bottom Sheet Option",
+        "Date Picker Mobile Bottom Sheet",
+        "Time Picker Mobile Bottom Sheet"
+      ]
     },
     {
       "source": "A",
@@ -2872,12 +3214,19 @@
         ]
       },
       "role": "모바일 바텀시트",
-      "confidence": "decide",
+      "confidence": "high",
       "stateMap": {},
       "sizeMap": {},
       "variantMap": {},
       "notes": [],
-      "decision": "D-05"
+      "decision": "D-05",
+      "resolvedBy": "D-05",
+      "canonSet": [
+        "Bottom Sheet",
+        "Bottom Sheet Option",
+        "Date Picker Mobile Bottom Sheet",
+        "Time Picker Mobile Bottom Sheet"
+      ]
     },
     {
       "source": "A",
@@ -3020,14 +3369,23 @@
         ]
       },
       "role": "상단 바 메뉴 목록",
-      "confidence": "decide",
+      "confidence": "high",
       "stateMap": {},
       "sizeMap": {},
-      "variantMap": {},
+      "variantMap": {
+        "1depth": "1depth",
+        "2depth": "2depth"
+      },
       "notes": [
         "정본 gnb 안에 흡수됐는지 불명"
       ],
-      "decision": "D-18"
+      "decision": "D-18",
+      "resolvedBy": "D-18",
+      "canonSet": [
+        "GNB Sub Menu",
+        "GNB Sub Menu Item"
+      ],
+      "resolvedNote": "깊이 축은 항목(GNB Sub Menu Item)에 있고, 펼침 패널은 Type(regular·compact-1·compact-2)으로 나뉜다."
     },
     {
       "source": "A",
@@ -3147,14 +3505,24 @@
         ]
       },
       "role": "폼 묶음(여러 컴포넌트 조합)",
-      "confidence": "decide",
+      "confidence": "pattern",
       "stateMap": {},
       "sizeMap": {},
       "variantMap": {},
       "notes": [
         "단일 컴포넌트가 아니라 입력창·콤보·달력·라디오를 묶은 폼 틀 → 정본에서는 패턴에 해당"
       ],
-      "decision": "D-19"
+      "decision": "D-19",
+      "resolvedBy": "D-19",
+      "canonSet": null,
+      "patternOf": [
+        "Input",
+        "Select Box",
+        "Radio",
+        "Date Picker",
+        "Text Area"
+      ],
+      "resolvedNote": "라벨과 입력 요소를 한 줄로 놓는 배치 규칙이다. 부품으로 만들지 않는다(2026-09-17 river)."
     },
     {
       "source": "B",
@@ -3297,14 +3665,20 @@
         ]
       },
       "role": "팝업 버튼",
-      "confidence": "decide",
+      "confidence": "high",
       "stateMap": {},
       "sizeMap": {},
       "variantMap": {},
       "notes": [
         "정본 button 으로 흡수됐는지 불명"
       ],
-      "decision": "D-21"
+      "decision": "D-21",
+      "resolvedBy": "D-21",
+      "canonSet": "Button",
+      "composedOf": [
+        "Button"
+      ],
+      "resolvedNote": "레거시 mix 는 버튼 두 개가 한 덩어리인 유형이다. 옮길 때 하위 버튼을 각각 유형·크기에 맞춰 바꾼다. blue·white·red 낱개 대응은 결정되지 않았다."
     },
     {
       "source": "B",
@@ -3522,14 +3896,17 @@
         ]
       },
       "role": "모바일 하위 상단바",
-      "confidence": "decide",
+      "confidence": "high",
       "stateMap": {},
       "sizeMap": {},
       "variantMap": {},
       "notes": [
         "정본 mobile-header 로 흡수됐는지 불명"
       ],
-      "decision": "D-17"
+      "decision": "D-17",
+      "resolvedBy": "D-17",
+      "canonSet": "Mobile Header",
+      "resolvedNote": "없앤 두 유형 자리를 아이콘 1개 유형 하나로 채웠다. 이 조합은 레거시 두 파일 어디에도 없어 새로 만든 것이다."
     },
     {
       "source": "B",
@@ -3555,14 +3932,17 @@
         ]
       },
       "role": "모바일 메인 상단바",
-      "confidence": "decide",
+      "confidence": "high",
       "stateMap": {},
       "sizeMap": {},
       "variantMap": {},
       "notes": [
         "정본 mobile-header 로 흡수됐는지 불명"
       ],
-      "decision": "D-17"
+      "decision": "D-17",
+      "resolvedBy": "D-17",
+      "canonSet": "Mobile Header",
+      "resolvedNote": "없앤 두 유형 자리를 아이콘 1개 유형 하나로 채웠다. 이 조합은 레거시 두 파일 어디에도 없어 새로 만든 것이다."
     },
     {
       "source": "B",

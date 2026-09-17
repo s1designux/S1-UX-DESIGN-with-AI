@@ -10,6 +10,17 @@
       "rule": "변환 규칙 확정",
       "todo": "후속 작업 필요",
       "open": "아직 미결"
+    },
+    "machine": {
+      "무엇": "각 결정을 기계가 읽을 수 있게 옮긴 칸. 검수기가 레거시 이름을 정본 이름에 자동으로 붙일 때 이 칸만 읽는다.",
+      "kind": {
+        "map": "레거시 한 세트 → 정본 한 세트",
+        "split": "레거시 한 갈래 → 정본 여러 세트",
+        "composite": "레거시 한 세트 = 정본 여러 세트의 조합",
+        "pattern": "부품이 아니라 배치 규칙",
+        "legacy-only": "레거시에만 있음"
+      },
+      "axisMap": "정본 변형 축 이름 → {레거시 값: 정본 값}. 정본 값은 registry/components/component-facts.json 의 variantAxes 에 실재해야 한다(게이트가 검사)."
     }
   },
   "items": [
@@ -23,7 +34,23 @@
       "정본": "Size=SM, Break=Mobile (높이 30·글자 14)",
       "quote": "정본대로 확정 — mobile = SM·Mobile",
       "by": "river",
-      "date": "2026-09-04"
+      "date": "2026-09-04",
+      "machine": {
+        "kind": "map",
+        "canonSet": "Chip",
+        "axisMap": {
+          "Size": {
+            "mobile": "SM"
+          },
+          "Break": {
+            "mobile": "Mobile"
+          }
+        },
+        "legacySets": [
+          "A:chip(540:3189)",
+          "B:m_chips(1747:9127)"
+        ]
+      }
     },
     {
       "id": "D-02",
@@ -36,7 +63,19 @@
       "quote": "레거시에서는 칩 세트 안에 함께 관리했으나 지금은 칩, 필터칩으로 구분함",
       "by": "river",
       "date": "2026-09-04",
-      "note": "레거시는 한 세트로 묶어 관리했고, 지금은 두 컴포넌트로 분리됐다는 것이 river 확인."
+      "note": "레거시는 한 세트로 묶어 관리했고, 지금은 두 컴포넌트로 분리됐다는 것이 river 확인.",
+      "machine": {
+        "kind": "split",
+        "canonSets": [
+          "Chip",
+          "Filter Chip"
+        ],
+        "note": "레거시는 한 세트에 '라벨만'과 '제목 붙은'을 함께 뒀다. 정본은 Chip 과 Filter Chip 두 세트로 갈라져 있고, '제목 붙은' 은 Filter Chip 의 Title=On 이다.",
+        "legacySets": [
+          "A:filter-chip label only(540:3226)",
+          "A:filter-chip with title(574:3520)"
+        ]
+      }
     },
     {
       "id": "D-03",
@@ -48,7 +87,18 @@
       "정본": "컴포넌트 아님 — input + button 을 나란히 놓는 패턴",
       "quote": "input + button 조합 — 컴포넌트가 아니라 패턴",
       "by": "river",
-      "date": "2026-09-04"
+      "date": "2026-09-04",
+      "machine": {
+        "kind": "pattern",
+        "patternOf": [
+          "Input",
+          "Button"
+        ],
+        "note": "컴포넌트가 아니라 입력창과 버튼을 나란히 놓는 배치다.",
+        "legacySets": [
+          "A:input+btn(641:4055)"
+        ]
+      }
     },
     {
       "id": "D-04",
@@ -61,7 +111,15 @@
       "quote": "레거시의 라지인풋은 텍스트박스임",
       "by": "river",
       "date": "2026-09-04",
-      "note": "카드가 '입력창의 큰 크기'를 묻는 전제였으나, river 확인 결과 레거시 라지인풋은 애초에 텍스트박스였다. 크기 대응 문제가 아니라 컴포넌트 종류 대응이다."
+      "note": "카드가 '입력창의 큰 크기'를 묻는 전제였으나, river 확인 결과 레거시 라지인풋은 애초에 텍스트박스였다. 크기 대응 문제가 아니라 컴포넌트 종류 대응이다.",
+      "machine": {
+        "kind": "map",
+        "canonSet": "Text Area",
+        "note": "크기 대응이 아니라 종류 대응 — 레거시 '큰 입력창' 은 정본의 텍스트박스다.",
+        "legacySets": [
+          "A:Inputbox_large(641:4060)"
+        ]
+      }
     },
     {
       "id": "D-05",
@@ -76,7 +134,23 @@
       "date": "2026-09-04",
       "note": "river: 정본에 있으니 찾아볼 것. 날짜·시간 시트 외에 나머지 3세트의 대응처를 확인해야 한다.",
       "확인": "⭐ 2026-09-04 정본 직접 확인 — build-components.ts:4475 · 4332 · 3961 · 4074, 설치기 등록 목록에 4종 모두 존재",
-      "남은것": "웹 배포본(ui-library/dist)에는 범용 Bottom Sheet·Bottom Sheet Option 이 없다. 날짜·시간 시트는 각 컴포넌트 안에 구현돼 있다. 웹 배포 여부는 river 결정 대기."
+      "남은것": "웹 배포본(ui-library/dist)에는 범용 Bottom Sheet·Bottom Sheet Option 이 없다. 날짜·시간 시트는 각 컴포넌트 안에 구현돼 있다. 웹 배포 여부는 river 결정 대기.",
+      "machine": {
+        "kind": "split",
+        "canonSets": [
+          "Bottom Sheet",
+          "Bottom Sheet Option",
+          "Date Picker Mobile Bottom Sheet",
+          "Time Picker Mobile Bottom Sheet"
+        ],
+        "legacySets": [
+          "A:mobile_bottomsheet(670:4386)",
+          "A:mobile_timepicker_bottomsheet(540:3729)",
+          "A:mobile_datepicker_bottomsheet(540:3835)",
+          "A:bottomsheet_option(540:5862)",
+          "A:mobile_bottomsheet(540:5903)"
+        ]
+      }
     },
     {
       "id": "D-06",
@@ -94,6 +168,28 @@
         "by": "🤖 figma-inspector",
         "date": "2026-09-07",
         "source": "A yE5UCFEbmXJBlYJWB24Lz2 540:3328 (get_metadata)"
+      },
+      "machine": {
+        "kind": "map",
+        "canonSet": "Input",
+        "axisMap": {
+          "Size": {
+            "pc-md": "MD",
+            "pc-sm": "XSM",
+            "pc-xsm": "XXSM",
+            "mobile": "MD"
+          },
+          "Break": {
+            "mobile": "Mobile",
+            "pc-md": "PC",
+            "pc-sm": "PC",
+            "pc-xsm": "PC"
+          }
+        },
+        "note": "river 규칙: 높이 값으로 맞추고, 같은 높이가 없으면 가장 가까운 높이. 실측 mobile 48 · pc-md 44 · pc-sm 34 · pc-xsm 28.",
+        "legacySets": [
+          "A:Login input(540:3328)"
+        ]
       }
     },
     {
@@ -106,7 +202,19 @@
       "정본": "open (목록이 펼쳐진 상태)",
       "quote": "selected = open (펼쳐진 모습)",
       "by": "river",
-      "date": "2026-09-04"
+      "date": "2026-09-04",
+      "machine": {
+        "kind": "map",
+        "canonSet": "Select Box",
+        "axisMap": {
+          "State": {
+            "selected": "Open"
+          }
+        },
+        "legacySets": [
+          "A:select(540:3397)"
+        ]
+      }
     },
     {
       "id": "D-08",
@@ -118,7 +226,24 @@
       "정본": "selectedText (글자로 표시)",
       "quote": "selected = selectedText (글자로 표시)",
       "by": "river",
-      "date": "2026-09-04"
+      "date": "2026-09-04",
+      "machine": {
+        "kind": "map",
+        "canonSet": "Dropdown List",
+        "axisMap": {
+          "State": {
+            "selected": "Selected"
+          },
+          "Type": {
+            "selected": "Text"
+          }
+        },
+        "note": "레거시 selected 는 글자형 선택 표시다 — 정본에서는 Type=Text 의 State=Selected.",
+        "legacySets": [
+          "A:dropdown_option(540:3425)",
+          "A:pc_dropdown(540:3442)"
+        ]
+      }
     },
     {
       "id": "D-09",
@@ -141,7 +266,32 @@
       "quote2": "셀렉티드는 시간 입력 드롭다운 또는 바텀시트가 나오는 상태고 컴플리트는 값 채워진 상태야 / (화살표 두 칸형) 옛 형태로 기록하고 만들지 않음",
       "by2": "river",
       "date2": "2026-09-17",
-      "근거": "레거시 실측 = reports/legacy-crosswalk-board/D09-D19-legacy-facts.md (🤖 figma-inspector 2026-09-17) · 정본 = build-components.ts:1159-1160,1232 · ui-library/src/components/time-picker/time-picker.css:109"
+      "근거": "레거시 실측 = reports/legacy-crosswalk-board/D09-D19-legacy-facts.md (🤖 figma-inspector 2026-09-17) · 정본 = build-components.ts:1159-1160,1232 · ui-library/src/components/time-picker/time-picker.css:109",
+      "machine": {
+        "kind": "map",
+        "canonSet": "Time Picker",
+        "axisMap": {
+          "State": {
+            "selected": "Focus",
+            "completed": "Filled"
+          }
+        },
+        "legacyOnly": [
+          {
+            "set": "A:timepicker_select(540:3636)",
+            "why": "시·분을 각각 화살표 칸으로 고르는 형태 — 정본에 없고 만들지 않는다(2026-09-17 river)"
+          }
+        ],
+        "note": "레거시 selected 는 시간 목록이 열린 상태이고, 정본은 열린 상태를 Focus 로 표현한다.",
+        "legacySets": [
+          "A:timepicker_input_component(540:3469)",
+          "A:timepicker_select_number(540:3476)",
+          "A:timepicker_select_dropdown(540:3489)",
+          "A:pc_timepicker_input_dropdown(540:3506)",
+          "A:timepicker_select(540:3636)",
+          "A:timepicker_input(540:3690)"
+        ]
+      }
     },
     {
       "id": "D-10",
@@ -153,7 +303,25 @@
       "정본": "selected→open · editing 3종→모두 open · completed→filled",
       "quote": "selected = open(달력 열림) · editing 3종 = 모두 open · completed = filled",
       "by": "river",
-      "date": "2026-09-04"
+      "date": "2026-09-04",
+      "machine": {
+        "kind": "map",
+        "canonSet": "Date Picker",
+        "axisMap": {
+          "State": {
+            "selected": "Open",
+            "editing(day)": "Open",
+            "editing(month)": "Open",
+            "editing(year)": "Open",
+            "completed": "Filled"
+          }
+        },
+        "legacySets": [
+          "A:datepicker_input(540:3794)",
+          "B:calendar(73:4022)",
+          "B:m_calendar_input(159:5733)"
+        ]
+      }
     },
     {
       "id": "D-11",
@@ -168,7 +336,22 @@
       "date": "2026-09-04",
       "note": "river: 부품도 정본에 있어야 하고 설치기에도 있다. 없다면 있는 게 맞다 → 정본·설치기에 실제로 다 있는지 확인하고, 빠진 것은 보강 대상.",
       "확인": "⭐ 2026-09-04 정본 직접 확인 — build-components.ts:3545 Calendar Cell · 3586 Calendar Tile · 3705 Calendar(변형 State=Date/Year/Month) · 3749·3751 헤더 chevron 인스턴스",
-      "남은것": "레거시 calendar_arrow 는 별도 컴포넌트였다. 정본처럼 아이콘 인스턴스로 둘지, 별도 컴포넌트로 만들지 river 결정 대기."
+      "남은것": "레거시 calendar_arrow 는 별도 컴포넌트였다. 정본처럼 아이콘 인스턴스로 둘지, 별도 컴포넌트로 만들지 river 결정 대기.",
+      "machine": {
+        "kind": "split",
+        "canonSets": [
+          "Calendar Cell",
+          "Calendar Tile",
+          "Calendar"
+        ],
+        "note": "레거시의 화살표는 별도 세트가 아니라 달력 머리의 아이콘이다(2026-09-04 결정 당시 기준).",
+        "legacySets": [
+          "A:DatePicker/Calendar Cell(540:4167)",
+          "A:calendar_arrow(540:4196)",
+          "A:DatePicker/Calendar Tile(540:4209)",
+          "A:pc_datepicker_calendar(540:4216)"
+        ]
+      }
     },
     {
       "id": "D-12",
@@ -180,7 +363,22 @@
       "정본": "Size=LG, Break=Mobile (높이 48·글자 16)",
       "quote": "정본대로 확정 — 모바일 버튼 = LG·Mobile",
       "by": "river",
-      "date": "2026-09-04"
+      "date": "2026-09-04",
+      "machine": {
+        "kind": "map",
+        "canonSet": "Button",
+        "axisMap": {
+          "Size": {
+            "mobile": "LG"
+          },
+          "Break": {
+            "mobile": "Mobile"
+          }
+        },
+        "legacySets": [
+          "A:mobile_button(540:4626)"
+        ]
+      }
     },
     {
       "id": "D-13",
@@ -198,6 +396,25 @@
         "by": "river (결정 화면)",
         "date": "2026-09-08",
         "source": "https://claude.ai/code/artifact/b76d3281-5e63-453a-894b-dabc971a1bd4"
+      },
+      "machine": {
+        "kind": "split",
+        "canonSets": [
+          "Assist Button",
+          "Text Button"
+        ],
+        "legacyOnly": [
+          {
+            "set": "A:m_subbutton",
+            "why": "모바일 서브버튼은 이번 범위 밖 — 별건(2026-09-08 river)"
+          }
+        ],
+        "note": "보조 버튼은 Button 의 변형이 아니라 별도 세트다(크기 1종).",
+        "legacySets": [
+          "A:pc_assist_button(540:4650)",
+          "A:pc_text_button(540:4705)",
+          "B:m_subbutton(1744:8493)"
+        ]
       }
     },
     {
@@ -210,7 +427,28 @@
       "정본": "별개 — 정본에 아직 없는 것으로 기록",
       "quote": "그리드·삽입형은 별개 — 정본에 아직 없는 것으로 기록",
       "by": "river",
-      "date": "2026-09-04"
+      "date": "2026-09-04",
+      "machine": {
+        "kind": "map",
+        "canonSet": "Table",
+        "legacyOnly": [
+          {
+            "set": "A:그리드 표",
+            "why": "정본에 아직 없음 — 없는 것으로 기록"
+          },
+          {
+            "set": "A:삽입형 표",
+            "why": "정본에 아직 없음 — 없는 것으로 기록"
+          }
+        ],
+        "legacySets": [
+          "A:pc_grid-table_header(540:5309)",
+          "A:pc_grid-table_body(540:5502)",
+          "A:pc_embeded-table_header(540:5593)",
+          "A:pc_embeded-table_body(540:5618)",
+          "B:table(2504:15255)"
+        ]
+      }
     },
     {
       "id": "D-15",
@@ -228,6 +466,32 @@
         "by": "river (결정 화면)",
         "date": "2026-09-08",
         "source": "https://claude.ai/code/artifact/b76d3281-5e63-453a-894b-dabc971a1bd4"
+      },
+      "machine": {
+        "kind": "map",
+        "canonSet": "Modal Content",
+        "axisMap": {
+          "Size": {
+            "md": "MD",
+            "lg": "LG",
+            "xl": "XL"
+          }
+        },
+        "legacyOnly": [
+          {
+            "set": "A:pc_modal size=sm",
+            "why": "확인 계열(360 단일)로 흡수 — 콘텐츠 계열에 SM 없음"
+          }
+        ],
+        "note": "확인 계열 Modal 에는 크기 축이 없다. 레거시 모달 크기 체계는 콘텐츠 계열 것이다.",
+        "legacySets": [
+          "A:pc_modal(540:5815)",
+          "A:mobile_modal component(682:5938)",
+          "A:modal_small(6706:4218)",
+          "B:dialog(53:1814)",
+          "B:popup(78:3071)",
+          "B:dialog(151:4106)"
+        ]
       }
     },
     {
@@ -240,7 +504,27 @@
       "정본": "pressed→selected (unselected→default 는 정본이 이미 선언)",
       "quote": "pressed = selected 를 그렇게 부른 것",
       "by": "river",
-      "date": "2026-09-04"
+      "date": "2026-09-04",
+      "machine": {
+        "kind": "map",
+        "canonSet": "Line Tab",
+        "axisMap": {
+          "State": {
+            "unselected": "Unselected",
+            "hover": "Hover",
+            "pressed": "Selected",
+            "selected": "Selected"
+          }
+        },
+        "legacySets": [
+          "A:tab(540:6032)",
+          "B:elements_tab1(5:10574)",
+          "B:elements_tab2(5:10603)",
+          "B:tab(1008:10175)",
+          "B:m_tab_title(42:2381)",
+          "B:tab(1008:10723)"
+        ]
+      }
     },
     {
       "id": "D-17",
@@ -258,6 +542,29 @@
         "by": "river (결정 화면)",
         "date": "2026-09-08",
         "source": "https://claude.ai/code/artifact/b76d3281-5e63-453a-894b-dabc971a1bd4"
+      },
+      "machine": {
+        "kind": "map",
+        "canonSet": "Mobile Header",
+        "legacyOnly": [
+          {
+            "set": "A:아이콘 2개 상단바",
+            "why": "쓰지 않음(river)"
+          },
+          {
+            "set": "B:appbar",
+            "why": "쓰지 않음(river)"
+          }
+        ],
+        "canonOnly": [
+          "Home / Title + 1 Icon"
+        ],
+        "note": "없앤 두 유형 자리를 아이콘 1개 유형 하나로 채웠다. 이 조합은 레거시 두 파일 어디에도 없어 새로 만든 것이다.",
+        "legacySets": [
+          "A:mobile_header(540:6112)",
+          "B:appbar_sub(42:1974)",
+          "B:appbar_main(42:3100)"
+        ]
       }
     },
     {
@@ -276,6 +583,24 @@
         "by": "river (결정 화면)",
         "date": "2026-09-08",
         "source": "https://claude.ai/code/artifact/b76d3281-5e63-453a-894b-dabc971a1bd4"
+      },
+      "machine": {
+        "kind": "split",
+        "canonSets": [
+          "GNB Sub Menu",
+          "GNB Sub Menu Item"
+        ],
+        "axisMap": {
+          "Depth": {
+            "1depth": "1depth",
+            "2depth": "2depth"
+          }
+        },
+        "note": "깊이 축은 항목(GNB Sub Menu Item)에 있고, 펼침 패널은 Type(regular·compact-1·compact-2)으로 나뉜다.",
+        "legacySets": [
+          "A:gnb list(540:6398)",
+          "B:gnb(5:10245)"
+        ]
       }
     },
     {
@@ -293,7 +618,26 @@
       "quote2": "배치 규칙(패턴)으로 분류",
       "by2": "river",
       "date2": "2026-09-17",
-      "근거": "레거시 실측 = reports/legacy-crosswalk-board/D09-D19-legacy-facts.md · 정본·registry·ui-library 에 form 컴포넌트 없음(📖 source-reader 판독) · 선례 D-03"
+      "근거": "레거시 실측 = reports/legacy-crosswalk-board/D09-D19-legacy-facts.md · 정본·registry·ui-library 에 form 컴포넌트 없음(📖 source-reader 판독) · 선례 D-03",
+      "machine": {
+        "kind": "pattern",
+        "patternOf": [
+          "Input",
+          "Select Box",
+          "Radio",
+          "Date Picker",
+          "Text Area"
+        ],
+        "layout": {
+          "labelWidth": 130,
+          "labelGap": 8,
+          "labelGapRadio": 16
+        },
+        "note": "라벨과 입력 요소를 한 줄로 놓는 배치 규칙이다. 부품으로 만들지 않는다(2026-09-17 river).",
+        "legacySets": [
+          "B:form_elements(78:5977)"
+        ]
+      }
     },
     {
       "id": "D-20",
@@ -305,7 +649,20 @@
       "정본": "select + dropdown 조합 — 변환 시 각각 최신 select·dropdown 으로",
       "quote": "콤보박스는 셀렉, 드롭다운 조합으로, 변환시에는 각각 최신 셀렉박스와 드롭다운으로 바꿔야함",
       "by": "river",
-      "date": "2026-09-04"
+      "date": "2026-09-04",
+      "machine": {
+        "kind": "composite",
+        "canonSets": [
+          "Select Box",
+          "Dropdown"
+        ],
+        "note": "레거시 콤보박스 = 정본 선택창 + 목록 패널 조합. 옮길 때 각각 최신 것으로 바꾼다.",
+        "legacySets": [
+          "B:combobox(73:3247)",
+          "B:m_combobox(109:26455)",
+          "B:m_combobox_time(230:4052)"
+        ]
+      }
     },
     {
       "id": "D-21",
@@ -318,7 +675,19 @@
       "quote": "mix는 버튼 두개가 모듈로있는 유형이며, 변환시 하위 두개 버튼을 각각 유형과 크기에  맞게 변형되도록 해야함",
       "by": "river",
       "date": "2026-09-04",
-      "note": "blue·white·red 개별 대응은 river 답변에 명시되지 않았다 — mix 만 확정됐다."
+      "note": "blue·white·red 개별 대응은 river 답변에 명시되지 않았다 — mix 만 확정됐다.",
+      "machine": {
+        "kind": "composite",
+        "canonSets": [
+          "Button"
+        ],
+        "note": "레거시 mix 는 버튼 두 개가 한 덩어리인 유형이다. 옮길 때 하위 버튼을 각각 유형·크기에 맞춰 바꾼다. blue·white·red 낱개 대응은 결정되지 않았다.",
+        "legacySets": [
+          "B:default(16:1880)",
+          "B:popup_button(49:1870)",
+          "B:m_button(307:8861)"
+        ]
+      }
     },
     {
       "id": "D-22",
@@ -330,7 +699,20 @@
       "정본": "selected (선택된 상태를 그렇게 부른 것)",
       "quote": "pressed = selected (선택된 상태를 그렇게 부른 것)",
       "by": "river",
-      "date": "2026-09-04"
+      "date": "2026-09-04",
+      "machine": {
+        "kind": "map",
+        "canonSet": "Radio",
+        "axisMap": {
+          "State": {
+            "pressed": "Selected"
+          }
+        },
+        "legacySets": [
+          "B:radiobutton(42:3283)",
+          "B:m_radiobutton(109:24654)"
+        ]
+      }
     },
     {
       "id": "D-23",
@@ -342,7 +724,25 @@
       "정본": "레거시 누락 — 정본(single·first·last·middle·selected)이 맞음",
       "quote": "레거시 누락 — 정본이 맞고 레거시에 빠진 것",
       "by": "river",
-      "date": "2026-09-04"
+      "date": "2026-09-04",
+      "machine": {
+        "kind": "map",
+        "canonSet": "Pagination",
+        "axisMap": {
+          "State": {
+            "single page": "Single",
+            "1st page": "First",
+            "normal": "Middle"
+          }
+        },
+        "canonOnly": [
+          "Last"
+        ],
+        "note": "레거시에 '마지막 페이지' 가 빠져 있다 — 정본이 맞다.",
+        "legacySets": [
+          "B:pagenation(2504:15164)"
+        ]
+      }
     }
   ]
 }

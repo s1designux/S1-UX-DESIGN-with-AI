@@ -156,7 +156,11 @@
     "kotlin:lint": "node scripts/kotlin-compose-lint.js",
     "kotlin:preview": "node scripts/kotlin-compose-preview-page.js",
     "ui:density": "node scripts/density-policy-check.js",
-    "ui:fingerprint:test": "node scripts/component-fingerprint-selftest.js"
+    "ui:fingerprint:test": "node scripts/component-fingerprint-selftest.js",
+    "legacy:resolve": "node scripts/legacy-name-resolve.js",
+    "legacy:apply": "node scripts/legacy-map-apply.js",
+    "legacy:check": "node scripts/legacy-map-apply.js --check",
+    "legacy:selftest": "node scripts/legacy-map-selftest.js"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.138.0",
