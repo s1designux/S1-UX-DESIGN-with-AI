@@ -37,6 +37,19 @@ const CASES = [
     expect: /정본 축 값에 없습니다/,
   },
   {
+    name: '같은 이름 줄이 하나 더 있을 때, 이미 동결된 칸으로 들어오는 새 어긋남',
+    mutate: (_cw, mp) => {
+      const list = (mp.components && mp.components.radio) || [];
+      const src = list.find((e) => e.set === 'radio') || list[0];
+      const twin = JSON.parse(JSON.stringify(src));
+      twin.setId = '000:000';
+      twin.confidence = 'high';
+      twin.stateMap = { ...(twin.stateMap || {}), 'disabled-checked': '아무도모르는없는값ZZZ' };
+      list.push(twin);
+    },
+    expect: /정본 축 값에 없습니다/,
+  },
+  {
     name: '표를 손으로 고쳤다(결정과 어긋남)',
     mutate: (_cw, mp) => { const e = (mp.unmatched || [])[0]; e.confidence = 'decide'; e.stateMap = { 손편집: '아무거나' }; },
     expect: /반영되지 않았습니다/,
@@ -66,4 +79,30 @@ for (const c of CASES) {
 }
 
 if (failed) { console.log(`\n❌ 적대 시험 실패 — ${failed}/${CASES.length} 건을 못 잡습니다\n`); process.exit(1); }
-console.log(`\n✅ 시험 ${CASES.length}종 전부 잡음 — 레거시 이름 그물에 구멍 없음\n`);
+console.log(`\n✅ 시험 ${CASES.length}종 전부 잡음 — 레거시 이름 그물에 구멍 없음`);
+
+// ── 조회기 회귀 시험 — 고친 답이 도로 틀어지지 않는지 본다(실제 데이터, 수정 없음) ──
+const { resolve } = require('./lib/legacy-name-map');
+const ANSWERS = [
+  { q: { set: 'pc_button', source: 'A', state: 'hover', size: 'medium' }, want: { status: 'matched', sets: ['Button'], axes: { State: 'Hover', Size: 'MD' } }, why: 'F1 — 파일 id 가 아니라 정본 세트 이름' },
+  { q: { set: 'chip', source: 'A', state: 'default' }, want: { status: 'matched', sets: ['Chip'], axes: { State: 'Default' } }, why: 'C-2 — 표에 답이 있으면 «결정 전» 이라 하지 않는다' },
+  { q: { set: 'toggle', source: 'A', state: 'on' }, want: { status: 'matched', sets: ['Toggle'], axes: { Pressed: 'On' } }, why: 'F2 — 정본에 있는 축으로 간다' },
+  { q: { set: 'radio', source: 'A', state: 'disabled-checked' }, want: { status: 'partial', sets: ['Radio'] }, why: 'F2 — 정본에 없는 값은 답으로 내지 않는다' },
+  { q: { set: 'timepicker_input', source: 'A', state: 'selected' }, want: { status: 'matched', sets: ['Time Picker'], axes: { State: 'Focus' } }, why: 'D-09 river 결정' },
+];
+
+let answerFailed = 0;
+console.log('\n조회기 회귀 시험');
+for (const a of ANSWERS) {
+  const r = resolve(a.q);
+  const okStatus = r.status === a.want.status;
+  const okSets = !a.want.sets || JSON.stringify(r.canonSets) === JSON.stringify(a.want.sets);
+  const okAxes = !a.want.axes || Object.entries(a.want.axes).every(([k, v]) => r.axes[k] === v);
+  const ok = okStatus && okSets && okAxes;
+  const label = `${a.q.source}:${a.q.set}${a.q.state ? ' --state ' + a.q.state : ''}${a.q.size ? ' --size ' + a.q.size : ''}`;
+  console.log(`${ok ? '  ✅' : '  ❌'} ${label} — ${a.why}`);
+  if (!ok) { answerFailed += 1; console.log(`     받은 답: ${r.status} ${JSON.stringify(r.canonSets)} ${JSON.stringify(r.axes)}`); }
+}
+if (answerFailed) { console.log(`\n❌ 조회기 회귀 실패 — ${answerFailed}/${ANSWERS.length}\n`); process.exit(1); }
+console.log(`✅ 조회기 회귀 ${ANSWERS.length}종 그대로\n`);
+

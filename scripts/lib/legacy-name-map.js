@@ -171,7 +171,8 @@ function resolve(query) {
   const asked = { State: state, Size: size, Variant: variant };
   const askedAny = Object.values(asked).some(Boolean);
 
-  const hits = entries.filter((e) => norm(e.set) === wanted && (!source || e.source === source));
+  const { setId = null } = query;
+  const hits = entries.filter((e) => norm(e.set) === wanted && (!source || e.source === source) && (!setId || e.setId === setId));
   const hit = hits[0] || null;
 
   const decision = decisions.find((d) => {
@@ -189,13 +190,19 @@ function resolve(query) {
   }
 
   // 같은 이름이 A·B 양쪽에 있는데 붙는 곳이 다르면 조용히 첫 것을 고르지 않는다.
-  if (!source && hits.length > 1) {
+  // 같은 이름이 여러 줄인데 붙는 곳이 다르면 조용히 첫 것을 고르지 않는다.
+  // 실제 중복은 대부분 **같은 파일 안**이라(B:dialog×2 등) 접두사로는 풀리지 않는다 — 노드 id 로 고르게 한다.
+  if (hits.length > 1) {
     const targets = new Set(hits.map((h) => h.canonComponent || '(대응 없음)'));
     if (targets.size > 1) {
+      const sameFile = new Set(hits.map((h) => h.source)).size === 1;
       return {
         status: 'ambiguous', canon: null, canonSets: [], axes: {}, basis: [],
-        why: `같은 이름이 ${hits.map((h) => h.source).join('·')} 양쪽에 있고 붙는 곳이 다릅니다 — "A:${set}" 처럼 어느 파일인지 밝혀 주세요`,
-        ...base, candidates: hits.map((h) => `${h.source}:${h.set} → ${h.canonComponent || '대응 없음'}`),
+        why: sameFile
+          ? `같은 이름의 세트가 ${hits[0].source} 파일 안에 ${hits.length}개 있고 붙는 곳이 다릅니다 — 아래 노드 id 중 하나를 --id 로 밝혀 주세요`
+          : `같은 이름이 ${[...new Set(hits.map((h) => h.source))].join('·')} 양쪽에 있고 붙는 곳이 다릅니다 — "A:${set}" 처럼 어느 파일인지 밝혀 주세요`,
+        ...base,
+        candidates: hits.map((h) => `${h.source}:${h.set}(${h.setId || 'id 없음'}) → ${h.canonComponent || '대응 없음'}`),
       };
     }
   }
@@ -247,9 +254,20 @@ function resolve(query) {
         if (canonised && !out.axes[canonised.axis]) out.axes[canonised.axis] = canonised.value;
       }
     }
+    // 결정은 '그 결정이 다루는 값'만 적는다. 나머지는 같은 줄의 표에 이미 짝이 있을 수 있으므로 마저 본다
+    // (2026-09-17 2차 검증 C-2: 표에 답이 있는 114건을 «결정된 바 없음» 으로 답하던 것).
+    const table = { ...(hit && hit.stateMap), ...(hit && hit.sizeMap), ...(hit && hit.variantMap) };
     for (const [askedAxis, value] of Object.entries(asked)) {
       if (!value || consumed.has(askedAxis)) continue;
-      out.unmapped.push({ asked: `${askedAxis}=${value}`, why: '이 값이 무엇에 해당하는지 결정된 바 없습니다' });
+      const found = Object.entries(table).find(([legacyValue]) => norm(legacyValue) === norm(value));
+      const canonised = found ? canonAxisValue(axes, chosen, null, found[1]) : null;
+      if (canonised) { out.axes[canonised.axis] = canonised.value; continue; }
+      out.unmapped.push({
+        asked: `${askedAxis}=${value}`,
+        why: found
+          ? `표에 적힌 "${found[1]}" 가 정본 "${chosen}" 의 축 값에 없습니다`
+          : '이 값이 무엇에 해당하는지 결정된 바 없습니다',
+      });
     }
     if (sets.length) {
       return { ...out, status: out.unmapped.length ? 'partial' : 'matched', canon: chosen, canonSets: sets, why: m.note || '' };

@@ -34,7 +34,7 @@ const LABEL = {
 
 function one(ref, opts) {
   const { source, set } = parseRef(ref);
-  const r = resolve({ set, source, state: opts.state, size: opts.size, variant: opts.variant });
+  const r = resolve({ set, source, setId: opts.setId, state: opts.state, size: opts.size, variant: opts.variant });
   return { legacy: ref, ...r };
 }
 
@@ -45,14 +45,14 @@ function printOne(r) {
   else if (r.status === 'partial') console.log(`  → ${r.canonSets.join(' + ')}${axes ? `  (${axes})` : ''}  ⚠ ${LABEL.partial}`);
   else console.log(`  → ${LABEL[r.status] || r.status}`);
   for (const u of r.unmapped || []) console.log(`     ⚠ ${u.asked} — ${u.why}`);
-  for (const c of r.candidates || []) console.log(`     · ${c}`);
+  if (r.status === 'ambiguous') for (const c of r.candidates || []) console.log(`     · ${c}`);
   if (r.status !== 'matched' && r.status !== 'partial' && r.why) console.log(`     ${r.why}`);
   if (r.decisionNote) console.log(`     메모(${(r.basis && r.basis[0]) || '출처'}): ${r.decisionNote}`);
   if (r.basis && r.basis.length) console.log(`     근거: ${r.basis.join(' · ')}`);
 }
 
 (function main() {
-  const opts = { state: flag('state'), size: flag('size'), variant: flag('variant') };
+  const opts = { state: flag('state'), size: flag('size'), variant: flag('variant'), setId: flag('id') };
 
   if (has('all')) {
     const { entries } = loadMap();
@@ -67,7 +67,7 @@ function printOne(r) {
   }
 
   if (!positional.length) {
-    console.log('쓰는 법: npm run legacy:resolve -- <레거시 세트 이름> [--state x] [--size y] [--variant z]');
+    console.log('쓰는 법: npm run legacy:resolve -- "<A|B>:<레거시 세트 이름>" [--state x] [--size y] [--variant z] [--id 540:3690]');
     console.log('        npm run legacy:resolve -- --all [--json]');
     process.exit(1);
   }

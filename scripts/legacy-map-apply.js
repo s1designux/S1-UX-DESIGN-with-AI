@@ -35,13 +35,13 @@ function autoExtractProblems() {
     if (e.confidence !== 'high') continue;
     const cands = idToSets.get(e.canonComponent) || [];
     if (!cands.length && e.canonComponent) {
-      out.push({ key: `${e.source}:${e.set}::세트`, msg: `${e.source}:${e.set} — "${e.canonComponent}" 가 정본 세트 이름으로 이어지지 않습니다` });
+      out.push({ key: `${e.source}:${e.set}(${e.setId || "id없음"})::세트`, msg: `${e.source}:${e.set} — "${e.canonComponent}" 가 정본 세트 이름으로 이어지지 않습니다` });
       continue;
     }
     for (const [bucket, table] of [['stateMap', e.stateMap], ['sizeMap', e.sizeMap], ['variantMap', e.variantMap]]) {
       for (const [legacyValue, canonValue] of Object.entries(table || {})) {
         if (cands.some((c) => canonAxisValue(axes, c, null, canonValue))) continue;
-        out.push({ key: `${e.source}:${e.set}::${bucket}::${legacyValue}`, msg: `${e.source}:${e.set} ${bucket} "${legacyValue}" → "${canonValue}" 가 정본 축 값에 없습니다` });
+        out.push({ key: `${e.source}:${e.set}(${e.setId || "id없음"})::${bucket}::${legacyValue}`, msg: `${e.source}:${e.set} ${bucket} "${legacyValue}" → "${canonValue}" 가 정본 축 값에 없습니다` });
       }
     }
   }
@@ -157,7 +157,7 @@ function applyAll() {
       for (const e of errors) console.log(`  ❌ ${e}`);
       process.exit(1);
     }
-    console.log(`✅ 레거시 이름 자동 붙이기 — 결정과 표가 같고, 새로 생긴 이름 어긋남 0건 (옛 부채 ${frozen.size}건은 동결돼 있고 조회기가 답으로 쓰지 않습니다)`);
+    console.log(`✅ 레거시 이름 자동 붙이기 — 결정과 표가 같고, 새로 생긴 이름 어긋남 0건 (옛 부채 ${problems.length}건은 동결돼 있고 조회기가 답으로 쓰지 않습니다)`);
     return;
   }
 

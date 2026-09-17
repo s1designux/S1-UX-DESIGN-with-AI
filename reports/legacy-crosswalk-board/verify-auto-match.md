@@ -80,3 +80,103 @@
 ## 8. 고치지 않은 것
 
 지시대로 **어떤 파일도 수정하지 않았다.** F1·F2·F3 의 수정은 조회기/게이트 구현자 소관이다.
+
+---
+
+# 2차 검증 (수정 후) — 델타 재검증
+
+- 검증자: 🤖 component-verifier · 2026-09-17
+- 대상 변경: `8ed8d43` (`scripts/lib/legacy-name-map.js` +204/−70 · `scripts/legacy-map-apply.js` · `scripts/legacy-map-selftest.js` · `scripts/legacy-name-resolve.js` · `registry/governance/legacy-name-baseline.json` 신설 · `.claude/agents/component-verifier.md`)
+- **판정: FAIL** — F1·F2 는 실제로 고쳐졌다. 그러나 **❌ 2건**이 남는다(하나는 이번 수정이 새로 만든 것).
+
+## A. 표본 10건 회귀 — ✅ 전부 그대로
+
+| 레거시 | 1차 답 | 2차 답 | 회귀 |
+|---|---|---|---|
+| A:timepicker_input --state selected | Time Picker · State=Focus | 동일 | ✅ |
+| A:timepicker_input --state completed | Time Picker · State=Filled | 동일 | ✅ |
+| A:datepicker_input --state selected | Date Picker · State=Open | 동일 | ✅ |
+| A:select --state selected | Select Box · State=Open | 동일 | ✅ |
+| A:Login input --size pc-sm | Input · Size=XSM · Break=PC | 동일 | ✅ |
+| A:chip --size mobile | Chip · Size=SM · Break=Mobile | 동일 | ✅ |
+| A:timepicker_select | 레거시에만 있음 | 동일 | ✅ |
+| B:radiobutton --state pressed | Radio · State=Selected | 동일 | ✅ |
+| B:tab --state pressed | Line Tab · State=Selected | 동일 | ✅ |
+| B:form_elements | 배치 규칙 | 동일 | ✅ |
+| B:menutree | 정본에 대응 없음 | 동일 + «사람이 정한 바는 없습니다» 추가 | ✅ |
+
+## B. 고쳤다는 주장별 판정
+
+| # | 주장 | 판정 | 확인한 것 |
+|---|---|---|---|
+| **F1** | 파일 id → 정본 세트 이름 | **✅ 고쳐짐** | `A:pc_button → Button (State=Hover · Size=MD)` · `A:radio → Radio` · `A:toggle --state on → Toggle (Pressed=On)`. 전량 126건 재훑기: 정본 실측표에 없는 이름 **0건**, 소문자 파일 id 모양 **0건**(1차 27건) |
+| **F2** | 정본에 없는 축 값은 안 내보낸다 | **✅ 고쳐짐** | `A:radio --state disabled-checked` → `partial` + «표에 적힌 "disabledSelected" 가 정본 "Radio" 의 축 값에 없습니다». `A:toggle --state on` 이 **틀린 축(State)이 아니라 정본 축 Pressed** 로 감. 전량 축 질의 338건에서 **낸 축 값 220개 전부 정본 글자 그대로**, 어긋남 0 |
+| **F3 ①** | 동결 목록이 실제 부채와 맞나 | **✅ 허수 없음** | 독립 재계산: 실제 부채 33건(고유 30) · **동결됐지만 실제 부채가 아닌 것 0건** · **실제 부채인데 동결 안 된 것 0건**. 검사를 무력화하려고 부풀린 흔적 없음 |
+| **F3 ②** | 적대 시험 4종 | **✅** | `legacy:selftest` exit 0, 4종 모두 잡음(자동추출 시험 신설분 포함) |
+| **F3 ③** | 새 어긋남을 넣으면 막는가 | **❌ 일부 뚫림** | 아래 §C-1 |
+| **F3 ④** | 통과 문구가 범위를 정확히 말하나 | **✅ (숫자 불일치 있음)** | 문구는 «새로 생긴 이름 어긋남 0건 (옛 부채 N건은 동결…조회기가 답으로 쓰지 않습니다)» 로 범위를 정확히 말한다. 다만 **문구는 30건, 파일 `_meta.count` 는 33건** — 같은 것을 두 숫자로 말한다(§C-1 과 같은 원인) |
+| **조용 ① partial** | 못 붙이면 partial + 사유 | **⚠️ 구현됐으나 과잉교정 ❌** | 아래 §C-2 |
+| **조용 ② ambiguous** | 이름 겹치면 되묻기 | **⚠️ 절반만** | 아래 §C-3 |
+| **조용 ③ 메모 분리** | `메모(D-xx)` 표기 | **✅** | `A:timepicker_input --state completed` 의 D-09 설명이 답과 분리돼 `메모(D-09):` 로 붙는다 |
+| **절차 4-1** | 지시문 보강 | **✅ (단서 있음)** | 접두사 필수·빈 축은 오류·«대응 없음»도 (c) 가 모두 들어갔다. 다만 §C-3 때문에 «접두사를 붙이면 갈리지 않는다» 는 약속이 실제로는 보장되지 않는다 |
+
+## C. ❌ 남은 결함
+
+### C-1 ❌ 래칫이 이름 겹치는 세트에서 새 어긋남을 통과시킨다
+
+동결 키가 `출처:세트이름::표이름::레거시값` 이라 **노드 id 가 빠져 있다.** 같은 파일에 같은 이름의 세트가 둘이면 키가 겹친다.
+
+- 실제로 겹치고 있다: `B:dialog::sizeMap::md|lg|xl` 이 두 줄에서 나와 **items 33개 = 고유 키 30개**(그래서 문구 30 · 파일 33).
+- 적대 시험(임시 사본, 실제 파일 무수정):
+  - **시험 A** — 동결 목록에 없는 새 키(`A:pc_button sizeMap huge→GIGANTIC`) → ❌ 로 **막았다** (exit 1) ✅
+  - **시험 C** — 같은 이름 줄을 하나 더 만들어 **이미 동결된 키와 같은 키**로 새 어긋남(`A:radio stateMap disabled-checked → 아무도모르는없는값ZZZ`) → **✅ 통과, exit 0** ❌ 막지 못함
+- 지금 이름이 겹치는 실제 짝: `B:dialog`×2 · `B:tab`×2 · `B:table`×2 · `A:mobile_bottomsheet`×2.
+- **완화 요소:** F2 가 살아 있어 조회기는 그 값을 답으로 내지 않고 `partial` 로 답한다. 잘못된 이름이 새어 나가지는 않으나, **래칫이 «새로 생긴 것 0건» 이라고 말할 때 그 말이 참이 아닐 수 있다.**
+
+### C-2 ❌ 결정이 있는 세트에서 표에 있는 값을 «결정된 바 없습니다» 라고 답한다 (이번 수정이 만든 것)
+
+`resolve()` 는 결정(`machine.axisMap`)이 있으면 **그 결정만 보고, 같은 줄의 `stateMap`/`sizeMap`/`variantMap` 은 보지 않는다.**
+그 결과 표에 canon 으로 이어지는 값이 멀쩡히 있는데도 «결정된 바 없습니다» 라고 답한다.
+
+```
+A:chip --state default   → Chip  ⚠ State=default — 이 값이 무엇에 해당하는지 결정된 바 없습니다   (근거 D-01)
+   실제 표: A:chip stateMap {"default":"default", ...} · 정본 Chip.State 에 Default 실재
+A:select --state default → Select Box ⚠ 결정된 바 없습니다  (표: default→default · 정본에 Default 실재)
+A:mobile_button --state pressed → Button ⚠ 결정된 바 없습니다 (표: pressed→pressed · 정본에 Pressed 실재)
+```
+
+- 규모: **114건 · 34개 레거시 세트** (`A:chip`·`A:select`·`A:datepicker_input`·`A:timepicker_input`·`A:tab`·`B:radiobutton` 등 **이번 표본 세트 대부분 포함**). 표값조차 정본에 없어 «결정 전» 이 정당한 것은 5건뿐이다.
+- 1차 때와 비교: 옛 코드는 같은 경우 **조용히 빈 축 + «붙음»** 이었다. 즉 **조용한 거짓 → 시끄러운 거짓**으로 바뀌었을 뿐 답은 여전히 틀렸다.
+- 왜 나쁜가: `legacy-map-apply.js` 는 결정의 axisMap 을 **표 안에 써 넣는 것**이 일인데(표가 결정의 상위집합), 조회기가 그 표를 안 읽는다. 보강된 원칙 4-1 이 «축이 비면 (c)로 올려라» 이므로, 이 상태로는 **이미 답이 정해진 114건이 river 에게 결정 요청으로 올라간다.**
+
+### C-3 ⚠️ ambiguous 가 같은 파일 안 중복은 못 잡는다 — 실제 중복은 전부 같은 파일이다
+
+`resolve()` 의 되묻기 조건은 `if (!source && hits.length > 1)` 이다. **접두사를 주면 검사 자체를 건너뛴다.**
+
+- 적대 시험 D(임시 사본): 같은 `A:radio` 를 서로 다른 정본 부품으로 갈라 놓자 —
+  - 접두사 없이 `radio` → ✅ «이름이 겹침» 으로 되물음 (의도대로 동작)
+  - 접두사 붙여 `A:radio` → ❌ **조용히 첫 것(Checkbox)** 을 고름. 1차에서 지적한 그 실패 그대로.
+- 되묻기 문구도 어긋난다: 둘 다 A 파일인데 «같은 이름이 **A·A** 양쪽에 있고… 어느 **파일**인지 밝혀 주세요» 라고 안내한다. 접두사로는 풀 수 없는 상황을 접두사로 풀라고 말한다.
+- 현재 실데이터의 중복 4짝(`B:dialog`·`B:tab`·`B:table`·`A:mobile_bottomsheet`)은 **모두 같은 파일 안** 중복이라, 이 가드가 지금 잡을 수 있는 중복은 **0건**이다. 오늘은 넷 다 같은 정본으로 붙어 답이 갈리지 않으나, 하나라도 갈리면 조용히 틀린다.
+
+## D. 사소한 것 (❌ 아님)
+
+- 자동추출 경로 출력에 `· Button` 같은 줄이 머리글과 겹쳐 한 번 더 찍힌다(보기만 지저분).
+- `legacy-name-baseline.json` 의 `_meta.count: 33` 과 게이트 문구 «30건» 이 다르다(C-1 과 같은 원인).
+
+## E. 기계검사 재확인 (종료코드만)
+
+| 명령 | 호출자 주장 | 검증자 재확인 |
+|---|---|---|
+| `node scripts/legacy-map-apply.js --check` | exit 0 | ✅ exit 0 |
+| `node scripts/legacy-map-selftest.js` (`npm run legacy:selftest`) | exit 0 · 4종 | ✅ exit 0 · 4종 |
+| `npm run gate:check` | PASS · 56게이트 · 93건 · warning 17 | ✅ PASS · 게이트 56개 · 93건 · warning 17 |
+
+## F. 이번에 재확인하지 않은 것 (직전 PASS 승계)
+
+- 1차 §2 의 **결정 원문 대조**(D-09·D-19 의 `quote2` ↔ 기계 칸 뜻 일치) — `crosswalk.json` 은 이번 커밋에서 바뀌지 않았다. **이번에 재확인하지 않음.**
+- 1차 §4 의 **C1(«정본에 대응 없음» 34건의 근거가 river 결정이 아님)** — 여전히 미결(커밋의 HD-1). 답 문구에 «사람이 정한 바는 없습니다» 가 붙고 4-1 이 «(c)로 올려라» 로 보강돼 **위험은 줄었으나 결정 자체는 그대로 열려 있다.**
+
+## G. 고치지 않은 것
+
+지시대로 **어떤 파일도 수정하지 않았다.** 적대 시험은 전부 임시 폴더의 사본(`S1_LEGACY_MAP` 환경변수)으로 했고 저장소 파일은 건드리지 않았다(`git status` 깨끗).
