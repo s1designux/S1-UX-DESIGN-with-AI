@@ -89,6 +89,7 @@ const ANSWERS = [
   { q: { set: 'toggle', source: 'A', state: 'on' }, want: { status: 'matched', sets: ['Toggle'], axes: { Pressed: 'On' } }, why: 'F2 — 정본에 있는 축으로 간다' },
   { q: { set: 'radio', source: 'A', state: 'disabled-checked' }, want: { status: 'partial', sets: ['Radio'] }, why: 'F2 — 정본에 없는 값은 답으로 내지 않는다' },
   { q: { set: 'timepicker_input', source: 'A', state: 'selected' }, want: { status: 'matched', sets: ['Time Picker'], axes: { State: 'Focus' } }, why: 'D-09 river 결정' },
+  { q: { set: 'menutree', source: 'B' }, want: { status: 'undecided' }, why: 'river 결정 2026-09-17 — 사람이 정한 적 없는 것을 «대응 없음» 으로 단정하지 않는다' },
 ];
 
 let answerFailed = 0;

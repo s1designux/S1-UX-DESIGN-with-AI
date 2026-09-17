@@ -157,7 +157,8 @@ function loadMap() {
  *   matched     — 세트(그리고 물어본 축)까지 정본 이름으로 붙었다
  *   partial     — 세트는 붙었으나 **물어본 축 값은 결정된 바 없다**(= 자동으로 정하지 않는다)
  *   ambiguous   — 같은 레거시 이름이 A·B 양쪽에 있고 붙는 곳이 다르다 → source 를 밝혀야 한다
- *   pattern · legacy-only · no-canon · undecided · unknown
+ *   pattern · legacy-only · undecided · unknown
+ *   (자동 훑기가 짝을 못 찾은 것도 'undecided' 다 — river 결정 2026-09-17. 기계가 «없다» 고 단정하지 않는다.)
  *
  * 규칙: 정본 실측표(component-facts.json)에 **없는 이름·축 값은 절대 내보내지 않는다.**
  */
@@ -297,8 +298,16 @@ function resolve(query) {
     }
     if (hit.confidence === 'decide') return { ...out, status: 'undecided', canon: null, canonSets: [], why: '결정 전이라 자동 대조에 쓰지 않습니다.' };
     if (hit.confidence === 'none') {
+      // river 결정 2026-09-17: 사람이 정한 적 없는 것을 «대응 없음» 으로 단정하지 않는다.
+      // 자동 훑기가 못 찾았다는 사실만 말하고 **결정 전**으로 돌려 사람에게 올라가게 한다.
       out.basis.push(`${MAP}#${hit.source}:${hit.set}`);
-      return { ...out, status: 'no-canon', canon: null, canonSets: [], why: (hit.notes || []).join(' · ') || '자동 대조에서 대응을 찾지 못했습니다 — 사람이 정한 바는 없습니다.' };
+      const note = (hit.notes || []).join(' · ');
+      return {
+        status: 'undecided', canon: null, canonSets: [], axes: {},
+        ...out,
+        status2: undefined,
+        why: `자동 훑기로는 지금 것에서 짝을 못 찾았습니다 — **사람이 정한 바는 없습니다.**${note ? ' (' + note + ')' : ''}`,
+      };
     }
     if (hit.confidence === 'legacy-only') return { ...out, status: 'legacy-only', canon: null, canonSets: [], why: hit.resolvedNote || '정본에 대응이 없다고 결정된 세트입니다.' };
     if (hit.confidence === 'pattern') return { ...out, status: 'pattern', canon: null, canonSets: hit.patternOf || [], why: hit.resolvedNote || '부품이 아니라 배치 규칙입니다.' };

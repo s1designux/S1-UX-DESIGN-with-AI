@@ -27,8 +27,7 @@ const LABEL = {
   ambiguous: '이름이 겹침 — A/B 를 밝혀 주세요',
   pattern: '배치 규칙(부품 아님)',
   'legacy-only': '레거시에만 있음',
-  undecided: '결정 전',
-  'no-canon': '정본에 대응 없음',
+  undecided: '결정 전 — 사람 확인 필요',
   unknown: '모름',
 };
 
