@@ -3,7 +3,7 @@
     "목적": "검수판 카드에 박는 정본 사실 — 사람이 요약하지 않고 기계가 뽑는다",
     "출처": "ui-library/dist/components/*.manifest.json (정본 build-components.ts 에서 생성)",
     "재생성": "npm run board:facts",
-    "생성일": "2026-09-16"
+    "생성일": "2026-09-17"
   },
   "components": {
     "assist-button": {
@@ -1126,7 +1126,7 @@
     "time-picker": {
       "id": "time-picker",
       "status": "approved",
-      "version": "0.3.1",
+      "version": "0.3.2",
       "sizes": [
         "xxsm",
         "xsm",
@@ -1199,7 +1199,7 @@
           "reason": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
         }
       ],
-      "sourceFingerprint": "94870634f8df0dfd9214ce334ec32588f03899aa7c043bc44cee4ee3c04bde24"
+      "sourceFingerprint": "3d8708522e4b4e62861b580e0875faebd53746414d18414634bcd247bfb61eb0"
     },
     "toggle": {
       "id": "toggle",
