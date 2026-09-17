@@ -19,6 +19,9 @@ import {
   SEMANTIC_NUMBER_COLLECTION,
   SEMANTIC_SHADOW_COLLECTION,
   SEMANTIC_SHADOW,
+  FOUNDATION_NUMBER,
+  LIGHT_MODE,
+  DARK_MODE,
 } from "./vars-data";
 import { TEXT_STYLES, TEXT_STYLE_FONT_FAMILY } from "./textstyles-data";
 import { parseCssShadow } from "./shadow-parse";
@@ -116,6 +119,11 @@ type V2Var = {
   collectionName: string;
   // mode별 resolved hex
   hexByMode: { [modeId: string]: string };
+  // 모드 '이름'별 값 — 화면이 라이트인지 다크인지 알고 나서 그 모드 값으로만 대조하기 위한 것.
+  // 단일 모드 컬렉션(Foundation·Number)은 그 하나의 값을 모든 이름에 넣지 않고 fallbackHex 로 둔다.
+  hexByModeName: { [modeName: string]: string };
+  fallbackHex: string;
+  modeCount: number;
 };
 
 type NodeKind = "text" | "icon" | "shape";
@@ -160,7 +168,7 @@ type ChecklistItemResult = {
 type ChecklistDetailIssue = {
   id: string;
   checklistId: number;
-  category: "color" | "text" | "shadow";
+  category: "color" | "text" | "shadow" | "mode" | "platform";
   nodeId: string;
   nodeName: string;
   detail: string;
@@ -171,6 +179,8 @@ type ChecklistFacts = {
   colorDetails: ChecklistDetailIssue[];
   textIssues: ChecklistDetailIssue[];
   shadowIssues: ChecklistDetailIssue[];
+  modeIssues: ChecklistDetailIssue[];
+  platformIssues: ChecklistDetailIssue[];
 };
 
 // "가이드에 없는 색" 판정 임계값(ΔRGB 유클리드). 12 미만은 반올림 오차 수준으로 흡수.
@@ -210,6 +220,7 @@ async function loadV2Vars(): Promise<{
       const v = await figma.variables.getVariableByIdAsync(variableId);
       if (!v || v.resolvedType !== "COLOR") continue;
       const hexByMode: { [modeId: string]: string } = {};
+      const hexByModeName: { [modeName: string]: string } = {};
       for (const m of col.modes) {
         try {
           // resolveForConsumer 사용을 피하고 valuesByMode를 직접 해석
@@ -233,12 +244,20 @@ async function loadV2Vars(): Promise<{
           } else if (val && typeof val === "object" && "r" in val) {
             hex = rgbToHex(val as RGB);
           }
-          if (hex) hexByMode[m.modeId] = hex;
+          if (hex) {
+            hexByMode[m.modeId] = hex;
+            hexByModeName[m.name] = hex;
+          }
         } catch {
           // skip
         }
       }
-      v2.push({ id: v.id, name: v.name, collectionName: col.name, hexByMode });
+      const modeIds = Object.keys(hexByMode);
+      v2.push({
+        id: v.id, name: v.name, collectionName: col.name, hexByMode, hexByModeName,
+        fallbackHex: modeIds.length ? hexByMode[modeIds[0]] : "",
+        modeCount: col.modes.length,
+      });
     }
   }
 
@@ -252,6 +271,165 @@ async function loadV2Vars(): Promise<{
   }
 
   return { v2, v2CollectionIds, byHex };
+}
+
+// 한 번의 검수 동안 변수 목록을 다시 읽지 않는다 — 화면 판정과 색 대조가 같은 목록을 쓴다.
+let v2Cache: { v2: V2Var[]; v2CollectionIds: Set<string>; byHex: { [hex: string]: V2Var[] } } | null = null;
+
+async function loadV2VarsCached() {
+  if (!v2Cache) v2Cache = await loadV2Vars();
+  return v2Cache;
+}
+
+let collectionsCache: VariableCollection[] | null = null;
+
+async function loadCollectionsCached(): Promise<VariableCollection[]> {
+  if (!collectionsCache) collectionsCache = await figma.variables.getLocalVariableCollectionsAsync();
+  return collectionsCache;
+}
+
+function clearV2Cache(): void {
+  v2Cache = null;
+  collectionsCache = null;
+}
+
+// 화면이 라이트인지 다크인지 알고 난 뒤, **그 모드 값**으로만 hex 색인을 만든다.
+// 종전에는 모든 모드 값을 한 바구니에 담아, 다크 화면인데 라이트 값이 같다는 이유로
+// 엉뚱한 토큰을 "정확히 일치"로 권하는 일이 있었다.
+function buildByHexForMode(v2: V2Var[], modeName: string): { [hex: string]: V2Var[] } {
+  const byHex: { [hex: string]: V2Var[] } = {};
+  for (const v of v2) {
+    // 모드가 둘 이상인 컬렉션은 그 모드 값이 없으면 넘어간다 —
+    // 여기서 반대쪽 모드 값을 끌어오면 고치려던 오제안이 그대로 되살아난다(🤖 검증 지적).
+    const hex = v.modeCount > 1 ? v.hexByModeName[modeName] : (v.hexByModeName[modeName] || v.fallbackHex);
+    if (!hex) continue;
+    if (!byHex[hex]) byHex[hex] = [];
+    if (byHex[hex].indexOf(v) === -1) byHex[hex].push(v);
+  }
+  return byHex;
+}
+
+// ── 화면 판정 (river 지시 2026-09-17) ──────────────────────────────────────
+// 검사 결과를 내놓기 전에 "무엇을 보고 있는지"부터 정한다:
+//   ① 화면 종류 — 선택한 틀의 가로 크기를 정본 breakpoint 토큰과 대조 (PC / 모바일)
+//   ② 모드 — 그 틀에 실제로 걸리는 Semantic Color 모드 (Light / Dark)
+//   ③ 톤 — 틀의 배경색이 정본 배경 토큰의 라이트 값인지 다크 값인지
+// 셋 중 확인이 안 되는 것은 추측하지 않고 '미확인'으로 남긴다.
+type ScreenContext = {
+  rootId: string;
+  rootName: string;
+  width: number;
+  platform: "PC" | "Mobile" | "unknown";
+  platformReason: string;
+  mode: string;                       // "Light" | "Dark" | "" (미확인)
+  modeReason: string;
+  tone: "light" | "dark" | "unknown";
+  toneHex: string;
+  toneMismatch: boolean;
+  label: string;
+};
+
+const MOBILE_BREAKPOINT = FOUNDATION_NUMBER["breakpoint/md"];   // 정본 값(768) — 여기서 새로 정하지 않는다.
+
+// 이 노드에 실제로 걸리는 모드 — 자기 고정 → 조상 고정 → 페이지 고정 → 컬렉션 기본값.
+function pinnedModeId(node: BaseNode, collectionId: string, includeSelf: boolean): string | null {
+  let cur: BaseNode | null = includeSelf ? node : node.parent;
+  while (cur) {
+    const pins = (cur as any).explicitVariableModes as { [collectionId: string]: string } | undefined;
+    if (pins && pins[collectionId]) return pins[collectionId];
+    if (cur.type === "PAGE" || cur.type === "DOCUMENT") break;
+    cur = cur.parent;
+  }
+  return null;
+}
+
+// 틀의 배경색 — 맨 위에 보이는 단색 칠. 토큰에 연결된 칠인지도 함께 돌려준다.
+//   토큰에 연결된 배경은 모드에 따라 값이 달라지므로, 그 값으로 톤을 판정하지 않는다.
+//   (연결돼 있으면 모드는 이미 정확히 알고 있어 톤 판정이 더할 것이 없다.)
+function backgroundPaintOf(node: SceneNode): { hex: string; bound: boolean } {
+  if (!("fills" in node)) return { hex: "", bound: false };
+  const fills = (node as any).fills;
+  if (!Array.isArray(fills)) return { hex: "", bound: false };
+  for (let i = fills.length - 1; i >= 0; i--) {
+    const paint = fills[i];
+    if (paint && paint.type === "SOLID" && paint.visible !== false) {
+      const bound = !!(paint.boundVariables && paint.boundVariables.color);
+      return { hex: rgbToHex(paint.color), bound };
+    }
+  }
+  return { hex: "", bound: false };
+}
+
+async function detectScreenContext(rootsOverride?: readonly SceneNode[]): Promise<ScreenContext[]> {
+  const roots = rootsOverride ? normalizeSelectionRoots(rootsOverride) : selectedRoots();
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  const semantic = collections.filter((col) => col.name === SEMANTIC_COLOR_COLLECTION)[0] || null;
+  const { v2 } = await loadV2VarsCached();
+
+  // 배경 역할 토큰의 모드별 값 — 톤 판정표. 정본에 있는 값만 쓴다(밝기 어림짐작 금지).
+  const lightBg: { [hex: string]: true } = {};
+  const darkBg: { [hex: string]: true } = {};
+  for (const v of v2) {
+    if (v.collectionName !== SEMANTIC_COLOR_COLLECTION) continue;
+    if (v.name.toLowerCase().indexOf("color/bg/") !== 0) continue;
+    const light = v.hexByModeName[LIGHT_MODE];
+    const dark = v.hexByModeName[DARK_MODE];
+    if (light) lightBg[light] = true;
+    if (dark) darkBg[dark] = true;
+  }
+
+  const out: ScreenContext[] = [];
+  for (const root of roots) {
+    const width = "width" in root ? Math.round((root as any).width) : 0;
+    // 화면 한 장을 통째로 골랐을 때만 종류를 말한다 — 버튼 하나를 골라 놓고
+    // "모바일 화면"이라고 단정하지 않는다(🤖 검증 지적 2026-09-17).
+    const parentType = root.parent ? root.parent.type : "";
+    const isWholeScreen = (parentType === "PAGE" || parentType === "SECTION")
+      && (root.type === "FRAME" || root.type === "COMPONENT" || root.type === "INSTANCE");
+    let platform: ScreenContext["platform"] = "unknown";
+    let platformReason = "가로 크기를 읽을 수 없어 화면 종류를 정하지 못했습니다";
+    if (!isWholeScreen) {
+      platformReason = "화면 한 장이 아니라 그 안의 일부를 골라, 화면 종류는 판정하지 않았습니다";
+    } else if (width > 0) {
+      platform = width >= MOBILE_BREAKPOINT ? "PC" : "Mobile";
+      platformReason = `가로 ${width} — 정본 기준선 ${MOBILE_BREAKPOINT}(breakpoint/md) ${width >= MOBILE_BREAKPOINT ? "이상" : "미만"}`;
+    }
+
+    let mode = "";
+    let modeReason = "Semantic Color 컬렉션이 이 파일에 없어 모드를 정하지 못했습니다";
+    if (semantic) {
+      const pinned = pinnedModeId(root, semantic.id, true);
+      const effective = pinned || semantic.defaultModeId;
+      const found = semantic.modes.filter((m) => m.modeId === effective)[0];
+      mode = found ? found.name : "";
+      modeReason = pinned
+        ? `이 틀에 '${mode}' 모드가 지정돼 있습니다`
+        : `따로 지정한 모드가 없어 기본값 '${mode}'로 봅니다`;
+    }
+
+    const bg = backgroundPaintOf(root);
+    const toneHex = bg.bound ? "" : bg.hex;   // 토큰에 연결된 배경은 톤으로 판정하지 않는다.
+    let tone: ScreenContext["tone"] = "unknown";
+    if (toneHex) {
+      const isLight = !!lightBg[toneHex];
+      const isDark = !!darkBg[toneHex];
+      if (isDark && !isLight) tone = "dark";
+      else if (isLight && !isDark) tone = "light";
+    }
+    const toneMismatch = tone !== "unknown" && !!mode && tone !== mode.toLowerCase();
+
+    const platformLabel = platform === "PC" ? "PC" : platform === "Mobile" ? "모바일"
+      : isWholeScreen ? "화면 종류 미확인" : "화면 일부";
+    const modeLabel = mode === DARK_MODE ? "다크" : mode === LIGHT_MODE ? "라이트" : "모드 미확인";
+    out.push({
+      rootId: root.id, rootName: root.name, width, platform, platformReason,
+      mode, modeReason, tone, toneHex, toneMismatch,
+      label: platform === "unknown" && !isWholeScreen
+        ? `화면 일부 · ${modeLabel} 모드`
+        : `${platformLabel} · ${modeLabel} 화면`,
+    });
+  }
+  return out;
 }
 
 function isFrameLike(n: BaseNode): n is FrameNode | ComponentNode | ComponentSetNode | InstanceNode | GroupNode {
@@ -542,7 +720,7 @@ function pickSuggestions(
   return result;
 }
 
-async function audit(rootOverride?: SceneNode | readonly SceneNode[]): Promise<{ issues: Issue[]; stats: { scanned: number; issuesCount: number; highCount: number } }> {
+async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?: string): Promise<{ issues: Issue[]; stats: { scanned: number; issuesCount: number; highCount: number } }> {
   // rootOverride 를 주면 해당 노드들(예: 검사 시작 시점 선택 스냅샷)을 대상으로, 없으면 현재 선택 영역.
   const sel: readonly SceneNode[] = rootOverride
     ? (Array.isArray(rootOverride) ? rootOverride : [rootOverride as SceneNode])
@@ -551,7 +729,9 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[]): Promise<{
     return { issues: [], stats: { scanned: 0, issuesCount: 0, highCount: 0 } };
   }
 
-  const { v2, v2CollectionIds, byHex } = await loadV2Vars();
+  const { v2, v2CollectionIds, byHex: byHexAllModes } = await loadV2VarsCached();
+  // 화면 모드를 알아냈으면 그 모드 값으로 만든 색인을 쓴다(모르면 종전대로 전 모드).
+  const byHex = modeName ? buildByHexForMode(v2, modeName) : byHexAllModes;
 
   // 모든 자손 수집
   const allNodes = collectUniqueSelectedNodes(sel);
@@ -654,7 +834,7 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[]): Promise<{
 
 // 1차 체크리스트의 토큰·텍스트·그림자 사실을 읽기 전용으로 수집한다.
 // 컴포넌트 항목은 별도 교체 후보 스캐너가 담당하므로 여기서는 1~9번만 반환한다.
-async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonly SceneNode[]): Promise<ChecklistFacts> {
+async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonly SceneNode[], context?: ScreenContext | null): Promise<ChecklistFacts> {
   const nodes = collectUniqueSelectedNodes(rootsOverride);
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const collectionById = new Map(collections.map((c) => [c.id, c.name]));
@@ -789,7 +969,101 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
     }
   }
 
-  const allDetails = [...colorDetails, ...textIssues, ...shadowIssues];
+  // 10. 모드 고정 — 선택 영역 **안쪽** 노드에 라이트/다크 모드가 박혀 있으면,
+  //     화면을 통째로 뒤집어도 그 부분만 따라오지 않는다(river 결정 2026-09-17 — 고정 먼저 잡기).
+  //     선택한 최상위 노드 자신의 고정은 "이 화면을 다크로 본다"는 정상 사용이라 제외한다.
+  const modeIssues: ChecklistDetailIssue[] = [];
+  {
+    const rootIds = new Set((rootsOverride ? normalizeSelectionRoots(rootsOverride) : selectedRoots()).map((node) => node.id));
+    // 모드가 2개 이상인 V2 컬렉션만 본다 — 단일 Default 모드(Foundation)는 고정해도 바뀔 것이 없다.
+    const themedCols = collections.filter((col) => V2_COLLECTION_NAMES.indexOf(col.name) >= 0 && col.modes.length > 1);
+    const modeNameOf = (col: VariableCollection, modeId: string | null) => {
+      if (!modeId) return "";
+      const found = col.modes.filter((m) => m.modeId === modeId)[0];
+      return found ? found.name : "";
+    };
+    // 이 노드가 고정을 걷어냈을 때 따라갔을 모드 — 가장 가까운 조상의 고정, 없으면 컬렉션 기본값.
+    const inheritedModeId = (node: SceneNode, collectionId: string): string | null => pinnedModeId(node, collectionId, false);
+    // 화면 모드를 알면 문구를 그 기준으로 쓴다 — "이 화면은 다크인데 이 부분만 라이트".
+    const screenModeLabel = context && context.mode === DARK_MODE ? "다크" : context && context.mode === LIGHT_MODE ? "라이트" : "";
+    const conflicting: ChecklistDetailIssue[] = [];
+    const silent: ChecklistDetailIssue[] = [];
+    let modeSeq = 0;
+    for (const node of nodes) {
+      if (rootIds.has(node.id)) continue;
+      if (isDummyChromePart(node)) continue;
+      const pins = (node as any).explicitVariableModes as { [collectionId: string]: string } | undefined;
+      if (!pins) continue;
+      // 한 노드가 컬렉션 두 곳에 고정돼 있을 수 있다. 보고는 한 번만 하되,
+      // 바깥과 어긋난 고정이 있으면 그것을 고른다 — 먼저 걸린 컬렉션이 아니라(🤖 검증 지적 2026-09-17).
+      let pickedDetail = "";
+      let pickedDiffers = false;
+      for (const col of themedCols) {
+        const pinned = pins[col.id];
+        if (!pinned) continue;
+        const inherited = inheritedModeId(node, col.id) || col.defaultModeId;
+        const pinnedName = modeNameOf(col, pinned) || "고정";
+        const inheritedName = modeNameOf(col, inherited) || "바깥";
+        const differs = pinned !== inherited;
+        if (pickedDetail && !differs) continue;
+        const pinnedLabel = pinnedName === DARK_MODE ? "다크" : pinnedName === LIGHT_MODE ? "라이트" : pinnedName;
+        pickedDetail = differs
+          ? (screenModeLabel
+            ? `이 화면은 ${screenModeLabel}인데 이 부분만 ${pinnedLabel}로 박혀 있어 안 바뀝니다`
+            : `'${pinnedName}' 모드로 고정 — 바깥은 '${inheritedName}'이라 이 부분만 안 바뀝니다`)
+          : `${pinnedLabel}로 고정 — 지금은 같아 보여도 모드를 바꾸면 안 따라옵니다`;
+        pickedDiffers = differs;
+        if (differs) break;
+      }
+      if (!pickedDetail) continue;
+      (pickedDiffers ? conflicting : silent).push({
+        id: `c10-${++modeSeq}`, checklistId: 10, category: "mode",
+        nodeId: node.id, nodeName: node.name, detail: pickedDetail,
+      });
+    }
+    for (const issue of conflicting) modeIssues.push(issue);
+    for (const issue of silent) modeIssues.push(issue);
+  }
+
+  // 11. 화면 종류에 맞는 변형 — 모바일 화면인데 PC용 변형을 쓰고 있는(또는 그 반대) 부품.
+  //     화면 종류를 못 정했으면 판정하지 않는다(추측 금지).
+  const platformIssues: ChecklistDetailIssue[] = [];
+  if (context && (context.platform === "PC" || context.platform === "Mobile")) {
+    const screenLabel = context.platform === "PC" ? "PC" : "모바일";
+    // 세트에 그 화면 종류의 변형이 실제로 있는지 — 없으면 "바꿔라"가 아니라 "전용 부품"이다.
+    const setHasPlatform = new Map<string, boolean>();
+    for (const node of nodes) {
+      if (node.type !== "INSTANCE") continue;
+      if (isDummyChromePart(node)) continue;
+      const vp = (node as InstanceNode).variantProperties || {};
+      const used = vp["Platform"];
+      if (used !== "PC" && used !== "Mobile") continue;   // App·Web(기기 크롬) 축은 화면 종류와 다른 축이다.
+      if (used === context.platform) continue;
+      const main = await (node as InstanceNode).getMainComponentAsync();
+      const set = main && main.parent && main.parent.type === "COMPONENT_SET" ? (main.parent as ComponentSetNode) : null;
+      let hasTarget = false;
+      if (set) {
+        const cacheKey = `${set.id}|${context.platform}`;
+        if (setHasPlatform.has(cacheKey)) {
+          hasTarget = !!setHasPlatform.get(cacheKey);
+        } else {
+          hasTarget = set.children.some((child) =>
+            child.type === "COMPONENT" && ((child as ComponentNode).variantProperties || {})["Platform"] === context.platform);
+          setHasPlatform.set(cacheKey, hasTarget);
+        }
+      }
+      const usedLabel = used === "PC" ? "PC" : "모바일";
+      platformIssues.push({
+        id: `c11-${platformIssues.length + 1}`, checklistId: 11, category: "platform",
+        nodeId: node.id, nodeName: node.name,
+        detail: hasTarget
+          ? `${screenLabel} 화면인데 ${usedLabel}용 변형을 쓰고 있습니다 — ${screenLabel}용 변형이 있습니다`
+          : `${usedLabel} 전용 부품입니다 — ${screenLabel} 화면에 쓰는 것이 맞는지 확인하세요`,
+      });
+    }
+  }
+
+  const allDetails = [...colorDetails, ...textIssues, ...shadowIssues, ...modeIssues, ...platformIssues];
   const count = (id: number) => allDetails.filter((issue) => issue.checklistId === id).length;
   const items: ChecklistItemResult[] = [
     { id: 1, count: count(1), status: count(1) ? "fail" : "pass", coverage: "full" },
@@ -801,8 +1075,17 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
     { id: 7, count: count(7), status: count(7) ? "fail" : "pass", coverage: "partial" },
     { id: 8, count: count(8), status: count(8) ? "fail" : "pass", coverage: "full" },
     { id: 9, count: count(9), status: count(9) ? "fail" : "pass", coverage: "partial" },
+    { id: 10, count: count(10), status: count(10) ? "warning" : "pass", coverage: "full" },
+    {
+      id: 11,
+      count: count(11),
+      status: context && (context.platform === "PC" || context.platform === "Mobile")
+        ? (count(11) ? "warning" : "pass")
+        : "unjudged",
+      coverage: "full",
+    },
   ];
-  return { items, colorDetails, textIssues, shadowIssues };
+  return { items, colorDetails, textIssues, shadowIssues, modeIssues, platformIssues };
 }
 
 async function applyOne(issue: Issue, suggestionIndex: number): Promise<boolean> {
@@ -1843,7 +2126,7 @@ async function restoreTextOverrides(inst: InstanceNode, captured: Map<string, st
 async function applySwap(
   candidate: SwapCandidate,
   mode: SwapMode = "lenient"
-): Promise<{ ok: boolean; result: SwapOutcome; reason?: string; variantReset?: boolean; axisLoss?: number; unpreserved?: string[]; rollback?: SwapRollback }> {
+): Promise<{ ok: boolean; result: SwapOutcome; reason?: string; variantReset?: boolean; axisLoss?: number; unpreserved?: string[]; rollback?: SwapRollback; modeFitted?: string }> {
   const inst = await figma.getNodeByIdAsync(candidate.instanceId);
   if (!inst || inst.type !== "INSTANCE") {
     return { ok: false, result: "failed", reason: "인스턴스를 찾을 수 없음" };
@@ -1893,7 +2176,61 @@ async function applySwap(
     const pres = await restoreTextOverrides(inst as InstanceNode, captured);
     unpreserved = pres.unpreserved;
   } catch (e) { /* 복원 실패해도 교체 자체는 성공 — 보존만 부분적 */ }
-  return { ok: true, result: "swapped", variantReset: res.variantReset, axisLoss: res.axisLoss, unpreserved, rollback };
+  const fitted = await fitInstanceToMode(inst as InstanceNode);
+  return { ok: true, result: "swapped", variantReset: res.variantReset, axisLoss: res.axisLoss, unpreserved, rollback, modeFitted: fitted.changed ? fitted.mode : undefined };
+}
+
+// ─── 교체한 부품을 화면 모드에 맞추기 (river 결정 2026-09-17 — "교체할 때 화면 모드에 맞춰줘") ───
+// 정본 부품에는 라이트가 박혀 있다(build-components 의 setLightMode). 그대로 갈아 끼우면
+// 다크 화면에서 그 자리만 라이트로 남는다. 그래서 교체 직후:
+//   ① 박힌 고정을 풀어 놓인 자리를 따라가게 하고
+//   ② 그래도 원하는 모드가 아니면 그 모드를 직접 지정한다(안쪽 부품까지).
+// 고정을 먼저 푸는 이유: 풀어서 맞으면 고정이 하나도 남지 않아, 나중에 화면을 통째로
+// 뒤집을 때도 따라온다(검사 10번이 잡는 상태를 우리가 새로 만들지 않는다).
+async function fitInstanceToMode(
+  target: InstanceNode,
+  contextNode?: SceneNode
+): Promise<{ changed: number; mode: string }> {
+  const collections = await loadCollectionsCached();
+  const semantic = collections.filter((col) => col.name === SEMANTIC_COLOR_COLLECTION)[0];
+  if (!semantic) return { changed: 0, mode: "" };
+  const wantModeId = contextNode
+    ? (pinnedModeId(contextNode, semantic.id, true) || semantic.defaultModeId)
+    : (pinnedModeId(target, semantic.id, false) || semantic.defaultModeId);
+  const found = semantic.modes.filter((m) => m.modeId === wantModeId)[0];
+  const wantName = found ? found.name : "";
+
+  const nodes: SceneNode[] = [target];
+  try { (target.findAll((n) => n.type === "INSTANCE") as SceneNode[]).forEach((n) => nodes.push(n)); } catch (e) { /* */ }
+
+  let changed = 0;
+  for (const node of nodes) {
+    const pins = (node as any).explicitVariableModes as { [collectionId: string]: string } | undefined;
+    const pinned = pins ? pins[semantic.id] : undefined;
+    if (pinned === wantModeId) continue;
+    if (pinned) {
+      try {
+        (node as any).clearExplicitVariableModeForCollection(semantic.id);
+        changed++;
+      } catch (e) { /* */ }
+    }
+    // 푼 뒤에도(또는 애초에 고정이 없었어도) 실제로 따라가는 모드가 다르면 직접 지정한다.
+    let resolved: string | undefined;
+    try {
+      const table = (node as any).resolvedVariableModes as { [collectionId: string]: string } | undefined;
+      resolved = table ? table[semantic.id] : undefined;
+    } catch (e) { /* 구버전 API — 아래 fallback */ }
+    if (resolved === undefined) {
+      resolved = pinnedModeId(node, semantic.id, true) || semantic.defaultModeId;
+    }
+    if (resolved !== wantModeId) {
+      try {
+        (node as any).setExplicitVariableModeForCollection(semantic.id, wantModeId);
+        changed++;
+      } catch (e) { /* */ }
+    }
+  }
+  return { changed, mode: wantName };
 }
 
 // ─── 모듈 하위 부품 교체 ────────────────────────────────────────────────
@@ -1903,7 +2240,7 @@ async function swapInstanceTo(
   inst: InstanceNode,
   candidate: SwapCandidate,
   mode: SwapMode
-): Promise<{ ok: boolean; result: SwapOutcome; reason?: string; variantReset?: boolean; axisLoss?: number; unpreserved?: string[] }> {
+): Promise<{ ok: boolean; result: SwapOutcome; reason?: string; variantReset?: boolean; axisLoss?: number; unpreserved?: string[]; modeFitted?: string }> {
   const res = await resolveSwapTarget(candidate, mode, inst.variantProperties || null);
   if (!res.target) {
     if (res.reason === "no-variant-match") {
@@ -1919,7 +2256,8 @@ async function swapInstanceTo(
   }
   let unpreserved: string[] = [];
   try { unpreserved = (await restoreTextOverrides(inst, captured)).unpreserved; } catch {}
-  return { ok: true, result: "swapped", variantReset: res.variantReset, axisLoss: res.axisLoss, unpreserved };
+  const fitted = await fitInstanceToMode(inst);
+  return { ok: true, result: "swapped", variantReset: res.variantReset, axisLoss: res.axisLoss, unpreserved, modeFitted: fitted.changed ? fitted.mode : undefined };
 }
 
 /**
@@ -1979,6 +2317,7 @@ type ModulePartSwapResult = {
   detached?: boolean;
   moduleNodeId?: string;
   parts?: ModulePart[];
+  modeFitted?: string;
 };
 
 /**
@@ -2001,12 +2340,12 @@ async function applyModulePartSwap(args: {
   }
   if (!hasInstanceAncestor(part)) {
     const r = await applySwap(args.candidate, "lenient");
-    return { ok: r.ok, result: r.result, reason: r.reason, variantReset: r.variantReset, axisLoss: r.axisLoss, unpreserved: r.unpreserved, rollback: r.rollback };
+    return { ok: r.ok, result: r.result, reason: r.reason, variantReset: r.variantReset, axisLoss: r.axisLoss, unpreserved: r.unpreserved, rollback: r.rollback, modeFitted: r.modeFitted };
   }
 
   if (!args.allowDetach) {
     const attempt = await swapInstanceTo(part as InstanceNode, args.candidate, "lenient");
-    if (attempt.ok) return { ok: true, result: "swapped", variantReset: attempt.variantReset, axisLoss: attempt.axisLoss, unpreserved: attempt.unpreserved };
+    if (attempt.ok) return { ok: true, result: "swapped", variantReset: attempt.variantReset, axisLoss: attempt.axisLoss, unpreserved: attempt.unpreserved, modeFitted: attempt.modeFitted };
     if (attempt.result === "demoted") return { ok: false, result: "demoted", reason: attempt.reason };
     return { ok: false, result: "blocked", reason: attempt.reason || "묶음 안에 있는 부품이라 그대로는 교체되지 않습니다." };
   }
@@ -2036,6 +2375,7 @@ async function applyModulePartSwap(args: {
     variantReset: swapped.variantReset,
     axisLoss: swapped.axisLoss,
     unpreserved: swapped.unpreserved,
+    modeFitted: swapped.modeFitted,
     detached: true,
     moduleNodeId: frame.id,
     rollback: rollbackAfterDetach,
@@ -2079,6 +2419,10 @@ async function importComponentCopy(
     ? res.target.parent.name
     : res.target.name;
   copy.name = `${setName} (가져옴)`;
+  // 원본이 놓인 화면의 모드로 보여준다 — 다크 화면 옆에 라이트 부품이 놓이지 않게.
+  if (inst && "type" in inst) {
+    try { await fitInstanceToMode(copy, inst as SceneNode); } catch (e) { /* */ }
+  }
   page.selection = [copy];
   figma.viewport.scrollAndZoomIntoView([copy]);
   return { ok: true, nodeId: copy.id, name: copy.name, variantReset: res.variantReset };
@@ -2312,8 +2656,9 @@ export {
   collectPageReference,
   buildImprovedCopy,
   auditChecklistFacts,
+  detectScreenContext,
+  clearV2Cache,
 };
 export type {
   Issue, Suggestion, ReferenceComponent, SwapCandidate, SwapDiagnostics, SavedReference, NodeKind,
-  SwapMode, SwapOutcome, SwapRollback, ModulePart, ModuleFlag, ModulePartSwapResult, VariantOption, VariantInfo, ImprovedSummary, BuildImprovedResult, ChecklistItemResult, ChecklistDetailIssue, ChecklistFacts,
-};
+  SwapMode, SwapOutcome, SwapRollback, ModulePart, ModuleFlag, ModulePartSwapResult, VariantOption, VariantInfo, ImprovedSummary, BuildImprovedResult, ChecklistItemResult, ChecklistDetailIssue, ChecklistFacts, ScreenContext };

@@ -416,6 +416,11 @@
   #audit-root .result-head { padding:13px 16px 3px; }
   #audit-root .result-head h2 { margin:0; font-size:15px; }
   #audit-root .result-head p { margin:4px 0 0; color:var(--muted); font-size:11px; }
+  #audit-root .screen-context { margin:10px 16px 2px; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:var(--code-bg); }
+  #audit-root .screen-context .ctx-title { font-size:12.5px; font-weight:700; }
+  #audit-root .screen-context .ctx-why { margin-top:3px; color:var(--muted); font-size:10.5px; line-height:1.5; }
+  #audit-root .screen-context .ctx-warn { margin-top:5px; color:var(--warning, #B26B00); font-size:10.5px; line-height:1.5; }
+  #audit-root .detail-group { padding:9px 16px 4px; color:var(--muted); font-size:10.5px; background:var(--code-bg); border-bottom:1px solid var(--line); }
   #audit-root .detail-list { padding:8px 0; overflow-y:auto; max-height:calc(100vh - 230px); }
   #audit-root .detail-item { padding:10px 16px; border-bottom:1px solid var(--line); cursor:pointer; }
   #audit-root .detail-item:hover { background:var(--code-bg); }
@@ -704,9 +709,9 @@
   </section>
 
 
-  <!-- 진행·결과 화면이 복제해 쓰는 10개 항목 원본 (시작 화면에는 표시하지 않는다) -->
+  <!-- 진행·결과 화면이 복제해 쓰는 검사 항목 원본 (시작 화면에는 표시하지 않는다) -->
   <template id="audit-checklist-template">
-      <div class="audit-checklist-title">검사 항목 10개</div>
+      <div class="audit-checklist-title">검사 항목 12개</div>
       <div class="check-group">컴포넌트</div>
       <div class="check-row" data-item="0"><span class="check-icon">○</span><span class="check-name">최신 컴포넌트 매칭</span><span class="check-result"></span></div>
       <div class="check-group">색상</div>
@@ -721,6 +726,9 @@
       <div class="check-row" data-item="8"><span class="check-icon">○</span><span class="check-name">가이드 글꼴 준수</span><span class="check-result"></span></div>
       <div class="check-group">그림자</div>
       <div class="check-row" data-item="9"><span class="check-icon">○</span><span class="check-name">가이드 그림자 매칭</span><span class="check-result"></span></div>
+      <div class="check-group">화면(종류·모드)</div>
+      <div class="check-row" data-item="10"><span class="check-icon">○</span><span class="check-name">모드 고정 없음</span><span class="check-result"></span></div>
+      <div class="check-row" data-item="11"><span class="check-icon">○</span><span class="check-name">화면 종류에 맞는 변형</span><span class="check-result"></span></div>
   </template>
 
   <!-- 진행: 같은 체크리스트가 순서대로 완료됨 -->
@@ -733,18 +741,21 @@
       <div class="audit-loading-track"><div class="audit-loading-fill" id="audit-progress-fill"></div></div>
       <p class="audit-loading-sub" id="audit-running-selection">선택 영역을 확인하고 있습니다.</p>
     </div>
-    <!-- 검사 중에는 진행 표시만 둔다 — 10개 항목표는 결과 화면에서만 보여준다(river 지시 2026-09-03) -->
+    <!-- 검사 중에는 진행 표시만 둔다 — 항목표는 결과 화면에서만 보여준다(river 지시 2026-09-03) -->
   </section>
 
   <!-- 결과: 전체·컴포넌트·색·텍스트·그림자 칩 -->
   <section class="audit-screen" id="audit-screen-result">
     <div class="result-head"><h2>검사 결과</h2><p id="audit-result-summary"></p><span id="improved-summary" class="audit-summary"></span></div>
+    <!-- 무엇을 보고 검사했는지 — 화면 종류·모드를 먼저 밝힌다(river 지시 2026-09-17) -->
+    <div class="screen-context" id="screen-context" style="display:none;"></div>
     <div class="tabs" id="result-chips">
       <button data-bucket="all" class="active">전체 <span class="count" id="cnt-all">0</span></button>
       <button data-bucket="component">컴포넌트 <span class="count" id="cnt-component">0</span></button>
       <button data-bucket="color">색 <span class="count" id="cnt-color">0</span></button>
       <button data-bucket="text">텍스트 <span class="count" id="cnt-text">0</span></button>
       <button data-bucket="shadow">그림자 <span class="count" id="cnt-shadow">0</span></button>
+      <button data-bucket="mode">화면·모드 <span class="count" id="cnt-mode">0</span></button>
     </div>
 
   <div class="view active" id="bucket-all">
@@ -790,6 +801,16 @@
 
   <div class="view" id="bucket-shadow">
     <div class="detail-list" id="shadow-list"><div class="empty">그림자 위반 없음</div></div>
+  </div>
+
+  <!-- 화면·모드 버킷: 판정한 화면 기준에 어긋나는 곳 -->
+  <div class="view" id="bucket-mode">
+    <div class="detail-list">
+      <div class="detail-group">모드가 박혀 화면을 뒤집어도 안 따라오는 곳</div>
+      <div id="mode-list"><div class="empty">모드 고정 없음</div></div>
+      <div class="detail-group">화면 종류와 다른 변형을 쓰는 곳</div>
+      <div id="platform-list"><div class="empty">화면 종류와 다른 변형 없음</div></div>
+    </div>
   </div>
 
   </section>
@@ -1281,6 +1302,7 @@ function send(type, payload) {
 const CHECK_LABELS = [
   "최신 컴포넌트 매칭", "색상 토큰 연결", "시맨틱 색상 용도 준수", "가이드 색상 스타일 준수", "투명도 가이드 준수",
   "텍스트 스타일 매칭", "글자 크기 가이드 준수", "텍스트 스타일 값 준수", "가이드 글꼴 준수", "가이드 그림자 매칭",
+  "모드 고정 없음", "화면 종류에 맞는 변형",
 ];
 let auditSelectionCount = 0;
 let auditInspecting = false;
@@ -1317,7 +1339,7 @@ function beginAuditGuideCheck() {
   send('selection-state', { requestId: auditGuideRequestId });
 }
 
-// 10개 항목 원본은 숨은 템플릿 1곳 — 진행·결과 화면이 그것을 복제해 쓴다.
+// 항목 원본은 숨은 템플릿 1곳 — 진행·결과 화면이 그것을 복제해 쓴다.
 const checklistTemplate = document.querySelector('#audit-checklist-template');
 const CHECKLIST_HTML = checklistTemplate ? checklistTemplate.innerHTML : '';
 // 진행 화면에는 체크리스트를 두지 않는다(로딩만) — 결과 화면만 CHECKLIST_HTML 을 복제해 쓴다.
@@ -1392,6 +1414,30 @@ function renderDetailList(selector, issues, emptyText) {
   target.querySelectorAll('[data-node-id]').forEach((row) => row.addEventListener('click', () => send('select-node', { nodeId: row.dataset.nodeId })));
 }
 
+// 검사 결과보다 먼저 읽히는 줄 — 무엇을 보고 검사했는지.
+function renderScreenContext(ctx, others, modeMixed) {
+  const box = $('#screen-context');
+  if (!ctx) { box.style.display = 'none'; box.innerHTML = ''; return; }
+  const why = [ctx.platformReason, ctx.modeReason].filter(Boolean).map(escape).join(' · ');
+  let warn = '';
+  if (ctx.toneMismatch) {
+    const toneLabel = ctx.tone === 'dark' ? '어두운' : '밝은';
+    const modeLabel = ctx.mode === 'Dark' ? '다크' : '라이트';
+    warn = `배경은 ${toneLabel} 색인데 모드는 ${modeLabel}입니다 — 둘 중 하나가 어긋나 있습니다.`;
+  } else if (ctx.tone === 'unknown' && ctx.toneHex) {
+    warn = `배경 ${escape(ctx.toneHex)} 는 가이드 배경 색이 아니라 톤으로는 확인하지 못했습니다.`;
+  }
+  const more = others && others.length > 1 ? ` · 선택한 틀 ${others.length}개 중 첫 번째 기준` : '';
+  if (modeMixed) {
+    warn = (warn ? warn + ' ' : '') + '고른 틀들의 모드가 서로 달라, 색 후보는 한쪽 모드로 좁히지 않았습니다.';
+  }
+  box.innerHTML =
+    '<div class="ctx-title">' + escape(ctx.label) + ' 기준으로 검사했습니다</div>' +
+    '<div class="ctx-why">' + why + escape(more) + '</div>' +
+    (warn ? '<div class="ctx-warn">' + warn + '</div>' : '');
+  box.style.display = 'block';
+}
+
 function startAuditInspection(phase) {
   if ((phase !== 'details' && auditSelectionCount < 1) || auditInspecting || !auditInstalled) return;
   if (phase !== 'details') {
@@ -1440,7 +1486,7 @@ $('#btn-audit-again').addEventListener('click', () => {
   send('selection-summary');
 });
 
-// 결과 칩 전환 (전체 / 컴포넌트 / 색 / 텍스트 / 그림자)
+// 결과 칩 전환 (전체 / 컴포넌트 / 색 / 텍스트 / 그림자 / 화면·모드)
 document.querySelectorAll("#result-chips button").forEach((btn) => {
   btn.addEventListener("click", () => {
     const bucket = btn.dataset.bucket;
@@ -2417,24 +2463,29 @@ function renderInspectionResult(payload) {
   }
   renderDetailList('#text-list', payload.textIssues || [], '텍스트 위반 없음');
   renderDetailList('#shadow-list', payload.shadowIssues || [], '그림자 위반 없음');
+  renderDetailList('#mode-list', payload.modeIssues || [], '모드 고정 없음');
+  renderDetailList('#platform-list', payload.platformIssues || [], '화면 종류와 다른 변형 없음');
+  renderScreenContext(payload.screen, payload.screenAll, payload.modeMixed);
 
   const componentCount = swapCandidates.length + manual.length + modules.length;
   const colorCount = lastIssues.length + extraColor.length;
   const textCount = (payload.textIssues || []).length;
   const shadowCount = (payload.shadowIssues || []).length;
-  const total = componentCount + colorCount + textCount + shadowCount;
+  const modeCount = (payload.modeIssues || []).length + (payload.platformIssues || []).length;
+  const total = componentCount + colorCount + textCount + shadowCount + modeCount;
   $('#cnt-all').textContent = total;
   $('#cnt-component').textContent = componentCount;
   $('#cnt-color').textContent = colorCount;
   $('#cnt-text').textContent = textCount;
   $('#cnt-shadow').textContent = shadowCount;
+  $('#cnt-mode').textContent = modeCount;
 
   const passCount = checklist.filter((item) => item.status === 'pass' && item.count === 0).length;
   const partialCount = checklist.filter((item) => item.coverage === 'partial').length;
   const selection = payload.selection || {};
   // 검수가 끝나면 모든 항목을 연다 — 컴포넌트를 먼저 교체해야 나머지가 열리던 잠금은 없앴다(river 지시 2026-09-03).
   $('#audit-result-summary').textContent =
-    `${selection.label || '선택 영역'} · 10개 중 ${passCount}개 통과${partialCount ? ` · 일부 판정 ${partialCount}개` : ''}`;
+    `${selection.label || '선택 영역'} · ${checklist.length}개 중 ${passCount}개 통과${partialCount ? ` · 일부 판정 ${partialCount}개` : ''}`;
   document.querySelectorAll('#result-chips button').forEach((btn) => {
     btn.disabled = false;
     btn.classList.toggle('active', btn.dataset.bucket === 'all');
