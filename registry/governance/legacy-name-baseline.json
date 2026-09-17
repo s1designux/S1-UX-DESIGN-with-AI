@@ -1,0 +1,144 @@
+{
+  "_meta": {
+    "무엇": "레거시 속성표의 자동추출분 가운데, 정본 축 값으로 이어지지 않는 옛 값 목록(동결).",
+    "왜": "2026-09-17 독립 검증에서 드러난 기존 부채다. 조회기는 이 값들을 내보내지 않고 \"결정 전\"으로 답한다 — 여기 적힌 것은 \"이미 알고 있고 답으로 쓰지 않는다\"는 뜻이지 승인이 아니다.",
+    "규칙": "새로 생기는 것은 Gate 52 가 막는다(래칫). 줄이려면 해당 레거시 값을 river 결정으로 올려 crosswalk 의 기계 칸에 적는다.",
+    "갱신": "node scripts/legacy-map-apply.js --rebase-baseline",
+    "updatedAt": "2026-09-17",
+    "count": 33
+  },
+  "items": [
+    {
+      "key": "A:checkbox::stateMap::disabled_checked",
+      "why": "A:checkbox stateMap \"disabled_checked\" → \"disabledChecked\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "B:checkbox::stateMap::checked=on,disabled=on",
+      "why": "B:checkbox stateMap \"checked=on,disabled=on\" → \"disabledChecked\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "B:m_checkbox::stateMap::checked=on,disabled=on",
+      "why": "B:m_checkbox stateMap \"checked=on,disabled=on\" → \"disabledChecked\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "A:DatePicker/Calendar Cell::variantMap::standard",
+      "why": "A:DatePicker/Calendar Cell variantMap \"standard\" → \"single\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "B:m_calendar_input::stateMap::editing",
+      "why": "B:m_calendar_input stateMap \"editing\" → \"focus\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "A:dropdown_option::stateMap::disabled",
+      "why": "A:dropdown_option stateMap \"disabled\" → \"null\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "B:gnb::variantMap::1depth",
+      "why": "B:gnb variantMap \"1depth\" → \"1depth\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "B:gnb::variantMap::2depth",
+      "why": "B:gnb variantMap \"2depth\" → \"2depth\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "A:pc_modal::sizeMap::md",
+      "why": "A:pc_modal sizeMap \"md\" → \"MD\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "A:pc_modal::sizeMap::lg",
+      "why": "A:pc_modal sizeMap \"lg\" → \"LG\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "A:pc_modal::sizeMap::xl",
+      "why": "A:pc_modal sizeMap \"xl\" → \"XL\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "A:mobile_modal component::sizeMap::md",
+      "why": "A:mobile_modal component sizeMap \"md\" → \"MD\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "A:mobile_modal component::sizeMap::lg",
+      "why": "A:mobile_modal component sizeMap \"lg\" → \"LG\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "A:mobile_modal component::sizeMap::xl",
+      "why": "A:mobile_modal component sizeMap \"xl\" → \"XL\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "A:modal_small::sizeMap::md",
+      "why": "A:modal_small sizeMap \"md\" → \"MD\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "A:modal_small::sizeMap::lg",
+      "why": "A:modal_small sizeMap \"lg\" → \"LG\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "A:modal_small::sizeMap::xl",
+      "why": "A:modal_small sizeMap \"xl\" → \"XL\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "B:dialog::sizeMap::md",
+      "why": "B:dialog sizeMap \"md\" → \"MD\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "B:dialog::sizeMap::lg",
+      "why": "B:dialog sizeMap \"lg\" → \"LG\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "B:dialog::sizeMap::xl",
+      "why": "B:dialog sizeMap \"xl\" → \"XL\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "B:popup::sizeMap::md",
+      "why": "B:popup sizeMap \"md\" → \"MD\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "B:popup::sizeMap::lg",
+      "why": "B:popup sizeMap \"lg\" → \"LG\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "B:popup::sizeMap::xl",
+      "why": "B:popup sizeMap \"xl\" → \"XL\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "B:dialog::sizeMap::md",
+      "why": "B:dialog sizeMap \"md\" → \"MD\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "B:dialog::sizeMap::lg",
+      "why": "B:dialog sizeMap \"lg\" → \"LG\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "B:dialog::sizeMap::xl",
+      "why": "B:dialog sizeMap \"xl\" → \"XL\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "A:pagination_number::stateMap::hover=on",
+      "why": "A:pagination_number stateMap \"hover=on\" → \"hover(정본 pagination 상태 목록에는 없음)\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "A:radio::stateMap::disabled-checked",
+      "why": "A:radio stateMap \"disabled-checked\" → \"disabledSelected\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "B:elements_tab1::stateMap::selected=off",
+      "why": "B:elements_tab1 stateMap \"selected=off\" → \"default\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "B:elements_tab2::stateMap::selected=off",
+      "why": "B:elements_tab2 stateMap \"selected=off\" → \"default\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "B:toggle::stateMap::on/off=on,disabled=on",
+      "why": "B:toggle stateMap \"on/off=on,disabled=on\" → \"disabledOn\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "A:gnb list::variantMap::1depth",
+      "why": "A:gnb list variantMap \"1depth\" → \"1depth\" 가 정본 축 값에 없습니다"
+    },
+    {
+      "key": "A:gnb list::variantMap::2depth",
+      "why": "A:gnb list variantMap \"2depth\" → \"2depth\" 가 정본 축 값에 없습니다"
+    }
+  ]
+}

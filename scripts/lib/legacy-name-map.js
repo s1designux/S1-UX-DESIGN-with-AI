@@ -82,6 +82,46 @@ function validateMachine(id, machine, axes) {
   return errors;
 }
 
+
+const FPMAP = 'registry/governance/component-fingerprint-map.json';
+
+/** registry 파일 id(button) → 정본 세트 이름(Button). 파일 id 는 정본 이름이 아니다. */
+function loadIdToSets() {
+  const m = readJson(FPMAP).components || {};
+  const out = new Map();
+  for (const [id, body] of Object.entries(m)) out.set(id, Array.isArray(body.canonSets) ? body.canonSets : []);
+  return out;
+}
+
+/**
+ * 축 값 하나를 정본 표기로 바꾼다. 대소문자·표기가 달라도 정본에 있으면 정본 글자 그대로 돌려주고,
+ * 정본에 없으면 null — **없는 값을 그대로 내보내지 않는다**(하드룰 H6②).
+ */
+function canonAxisValue(axes, setName, axisName, value) {
+  const ax = axes.get(setName);
+  if (!ax) return null;
+  const tryAxes = axisName && Array.isArray(ax[axisName]) ? [[axisName, ax[axisName]]] : Object.entries(ax);
+  for (const [name, vals] of tryAxes) {
+    if (!Array.isArray(vals)) continue;
+    const found = vals.find((v) => norm(v) === norm(value));
+    if (found) return { axis: name, value: found };
+  }
+  return null;
+}
+
+/** 여러 세트 후보 중, 물어본 축 값을 실제로 가진 세트를 고른다. */
+function pickSet(axes, candidates, asked) {
+  const wanted = Object.values(asked).filter(Boolean);
+  if (!wanted.length) return candidates[0] || null;
+  for (const c of candidates) {
+    if (wanted.every((v) => canonAxisValue(axes, c, null, v))) return c;
+  }
+  for (const c of candidates) {
+    if (wanted.some((v) => canonAxisValue(axes, c, null, v))) return c;
+  }
+  return candidates[0] || null;
+}
+
 /** 결정 → 기계 표. 열린 결정(open)은 자동 대조에 쓰지 않는다. */
 function loadDecisions() {
   const cw = readJson(CROSSWALK);
@@ -112,17 +152,28 @@ function loadMap() {
 
 /**
  * 레거시 이름 한 건을 정본 이름으로 붙인다.
- * @returns {{status:string, canon:?string, canonSets:string[], axes:Object, basis:string[], why:string}}
- *   status: 'matched' | 'pattern' | 'legacy-only' | 'undecided' | 'unknown'
+ *
+ * status:
+ *   matched     — 세트(그리고 물어본 축)까지 정본 이름으로 붙었다
+ *   partial     — 세트는 붙었으나 **물어본 축 값은 결정된 바 없다**(= 자동으로 정하지 않는다)
+ *   ambiguous   — 같은 레거시 이름이 A·B 양쪽에 있고 붙는 곳이 다르다 → source 를 밝혀야 한다
+ *   pattern · legacy-only · no-canon · undecided · unknown
+ *
+ * 규칙: 정본 실측표(component-facts.json)에 **없는 이름·축 값은 절대 내보내지 않는다.**
  */
 function resolve(query) {
   const { set, source = null, state = null, size = null, variant = null } = query;
   const axes = loadFacts();
+  const idToSets = loadIdToSets();
   const decisions = loadDecisions();
   const { entries } = loadMap();
   const wanted = norm(set);
+  const asked = { State: state, Size: size, Variant: variant };
+  const askedAny = Object.values(asked).some(Boolean);
 
-  const hit = entries.find((e) => norm(e.set) === wanted && (!source || e.source === source));
+  const hits = entries.filter((e) => norm(e.set) === wanted && (!source || e.source === source));
+  const hit = hits[0] || null;
+
   const decision = decisions.find((d) => {
     const m = d.machine;
     if (!m) return false;
@@ -131,78 +182,111 @@ function resolve(query) {
     return (m.legacyOnly || []).some((l) => norm(parseRef(l.set).set) === wanted);
   }) || (hit && hit.decision ? decisions.find((d) => d.id === hit.decision) : null);
 
-  const basis = [];
-  const outAxes = {};
-  let status = 'unknown';
-  let canon = hit ? hit.canonComponent : null;
-  let canonSets = [];
-  let why = '';
+  const base = { legacySource: hit ? hit.source : (source || null), candidates: [], unmapped: [], decisionNote: '' };
 
   if (decision && decision.open) {
-    return { status: 'undecided', canon: null, canonSets: [], axes: {}, basis: [decision.id], why: `아직 결정되지 않았습니다 — ${decision.what}` };
+    return { status: 'undecided', canon: null, canonSets: [], axes: {}, basis: [decision.id], why: `아직 결정되지 않았습니다 — ${decision.what}`, ...base };
   }
+
+  // 같은 이름이 A·B 양쪽에 있는데 붙는 곳이 다르면 조용히 첫 것을 고르지 않는다.
+  if (!source && hits.length > 1) {
+    const targets = new Set(hits.map((h) => h.canonComponent || '(대응 없음)'));
+    if (targets.size > 1) {
+      return {
+        status: 'ambiguous', canon: null, canonSets: [], axes: {}, basis: [],
+        why: `같은 이름이 ${hits.map((h) => h.source).join('·')} 양쪽에 있고 붙는 곳이 다릅니다 — "A:${set}" 처럼 어느 파일인지 밝혀 주세요`,
+        ...base, candidates: hits.map((h) => `${h.source}:${h.set} → ${h.canonComponent || '대응 없음'}`),
+      };
+    }
+  }
+
+  const out = { ...base, basis: [], unmapped: [] };
+  const mapAsked = (setName, pairs, bucketAxis) => {
+    // pairs: {레거시 값: 정본 값} · bucketAxis: 기본 축 이름(없으면 전 축에서 찾는다)
+    for (const [axisName, value] of Object.entries(asked)) {
+      if (!value || out.axes[axisName]) continue;
+      const found = Object.entries(pairs).find(([legacyValue]) => norm(legacyValue) === norm(value));
+      if (!found) continue;
+      const canonised = canonAxisValue(axes, setName, null, found[1]);
+      if (canonised) out.axes[canonised.axis] = canonised.value;
+      else out.unmapped.push({ asked: `${axisName}=${value}`, why: `표에 적힌 "${found[1]}" 가 정본 "${setName}" 의 축 값에 없습니다` });
+    }
+  };
+
+  out.axes = {};
 
   if (decision && decision.machine) {
     const m = decision.machine;
-    basis.push(decision.id);
+    out.basis.push(decision.id);
     const legacyOnly = (m.legacyOnly || []).find((l) => norm(parseRef(l.set).set) === wanted);
-    if (legacyOnly) {
-      return { status: 'legacy-only', canon: null, canonSets: [], axes: {}, basis, why: legacyOnly.why };
-    }
-    if (m.kind === 'pattern') {
-      return { status: 'pattern', canon: null, canonSets: m.patternOf || [], axes: {}, basis, why: m.note || '부품이 아니라 배치 규칙입니다.' };
-    }
-    canonSets = m.canonSet ? [m.canonSet] : (m.canonSets || []);
-    canon = canonSets[0] || canon;
-    why = m.note || '';
-    const ask = { State: state, Size: size, Variant: variant };
+    if (legacyOnly) return { ...out, status: 'legacy-only', canon: null, canonSets: [], axes: {}, why: legacyOnly.why };
+    if (m.kind === 'pattern') return { ...out, status: 'pattern', canon: null, canonSets: m.patternOf || [], axes: {}, why: m.note || '부품이 아니라 배치 규칙입니다.' };
+
+    const sets = m.canonSet ? [m.canonSet] : (m.canonSets || []);
+    const chosen = pickSet(axes, sets, asked);
+    out.decisionNote = m.note || '';
+    const consumed = new Set();
     for (const [axisName, pairs] of Object.entries(m.axisMap || {})) {
-      const asked = ask[axisName] !== undefined ? ask[axisName] : null;
-      const lookup = asked != null ? asked : null;
-      if (lookup == null) continue;
-      const found = Object.entries(pairs).find(([legacyValue]) => norm(legacyValue) === norm(lookup));
-      if (found) outAxes[axisName] = found[1];
-    }
-    // 축 이름이 다른 레거시 값(예: platform=mobile 이 Size 와 Break 를 동시에 정함)도 훑는다.
-    for (const askedValue of [state, size, variant].filter(Boolean)) {
-      for (const [axisName, pairs] of Object.entries(m.axisMap || {})) {
-        if (outAxes[axisName]) continue;
-        const found = Object.entries(pairs).find(([legacyValue]) => norm(legacyValue) === norm(askedValue));
-        if (found) outAxes[axisName] = found[1];
+      for (const [askedAxis, value] of Object.entries(asked)) {
+        if (!value || consumed.has(askedAxis)) continue;
+        const found = Object.entries(pairs).find(([legacyValue]) => norm(legacyValue) === norm(value));
+        if (!found) continue;
+        consumed.add(askedAxis);
+        const canonised = canonAxisValue(axes, chosen, axisName, found[1]) || canonAxisValue(axes, chosen, null, found[1]);
+        if (canonised) out.axes[canonised.axis] = canonised.value;
+        else out.unmapped.push({ asked: `${askedAxis}=${value}`, why: `결정이 가리키는 "${found[1]}" 가 정본 "${chosen}" 에 없습니다` });
       }
     }
-    status = canonSets.length ? 'matched' : 'unknown';
-  }
-
-  if (status !== 'matched' && hit) {
-    // 결정이 없어도 자동 추출표가 confidence=high 면 쓴다(규약).
-    if (hit.confidence === 'high' && hit.canonComponent) {
-      basis.push(`${MAP}#${hit.source}:${hit.set}`);
-      canon = hit.canonComponent;
-      canonSets = [hit.canonComponent];
-      if (state && hit.stateMap && hit.stateMap[state]) outAxes.State = hit.stateMap[state];
-      if (size && hit.sizeMap && hit.sizeMap[size]) outAxes.Size = hit.sizeMap[size];
-      if (variant && hit.variantMap && hit.variantMap[variant]) outAxes.Variant = hit.variantMap[variant];
-      status = 'matched';
-      why = (hit.notes || []).join(' · ');
-    } else if (hit.confidence === 'decide') {
-      status = 'undecided';
-      why = '결정 전이라 자동 대조에 쓰지 않습니다.';
-    } else if (hit.confidence === 'none') {
-      status = 'no-canon';
-      basis.push(`${MAP}#${hit.source}:${hit.set}`);
-      why = (hit.notes || []).join(' · ') || '정본에 대응 컴포넌트가 없습니다.';
-    } else if (hit.confidence === 'legacy-only') {
-      status = 'legacy-only';
-      why = hit.resolvedNote || '정본에 대응이 없다고 결정된 세트입니다.';
-    } else if (hit.confidence === 'pattern') {
-      status = 'pattern';
-      canonSets = hit.patternOf || [];
-      why = hit.resolvedNote || '부품이 아니라 배치 규칙입니다.';
+    // 한 레거시 값이 여러 축을 동시에 정하는 경우(platform=mobile → Size·Break)도 마저 채운다.
+    for (const [axisName, pairs] of Object.entries(m.axisMap || {})) {
+      for (const value of Object.values(asked)) {
+        if (!value) continue;
+        const found = Object.entries(pairs).find(([legacyValue]) => norm(legacyValue) === norm(value));
+        if (!found) continue;
+        const canonised = canonAxisValue(axes, chosen, axisName, found[1]) || canonAxisValue(axes, chosen, null, found[1]);
+        if (canonised && !out.axes[canonised.axis]) out.axes[canonised.axis] = canonised.value;
+      }
+    }
+    for (const [askedAxis, value] of Object.entries(asked)) {
+      if (!value || consumed.has(askedAxis)) continue;
+      out.unmapped.push({ asked: `${askedAxis}=${value}`, why: '이 값이 무엇에 해당하는지 결정된 바 없습니다' });
+    }
+    if (sets.length) {
+      return { ...out, status: out.unmapped.length ? 'partial' : 'matched', canon: chosen, canonSets: sets, why: m.note || '' };
     }
   }
 
-  return { status, canon, canonSets, axes: outAxes, basis, why };
+  if (hit) {
+    if (hit.confidence === 'high') {
+      const candidates = idToSets.get(hit.canonComponent) || [];
+      if (!candidates.length) {
+        return { ...out, status: 'unknown', canon: null, canonSets: [], why: `"${hit.canonComponent}" 가 정본 세트 이름으로 이어지지 않습니다 — 정본 대응표를 확인하세요` };
+      }
+      const chosen = pickSet(axes, candidates, asked);
+      out.basis.push(`${MAP}#${hit.source}:${hit.set}`);
+      out.decisionNote = (hit.notes || []).join(' · ');
+      const table = { ...(hit.stateMap || {}), ...(hit.sizeMap || {}), ...(hit.variantMap || {}) };
+      for (const [askedAxis, value] of Object.entries(asked)) {
+        if (!value) continue;
+        const found = Object.entries(table).find(([legacyValue]) => norm(legacyValue) === norm(value));
+        if (!found) { out.unmapped.push({ asked: `${askedAxis}=${value}`, why: '이 값이 무엇에 해당하는지 결정된 바 없습니다' }); continue; }
+        const canonised = canonAxisValue(axes, chosen, null, found[1]);
+        if (canonised) out.axes[canonised.axis] = canonised.value;
+        else out.unmapped.push({ asked: `${askedAxis}=${value}`, why: `표에 적힌 "${found[1]}" 가 정본 "${chosen}" 의 축 값에 없습니다` });
+      }
+      const status = out.unmapped.length ? 'partial' : 'matched';
+      return { ...out, status, canon: chosen, canonSets: [chosen], candidates };
+    }
+    if (hit.confidence === 'decide') return { ...out, status: 'undecided', canon: null, canonSets: [], why: '결정 전이라 자동 대조에 쓰지 않습니다.' };
+    if (hit.confidence === 'none') {
+      out.basis.push(`${MAP}#${hit.source}:${hit.set}`);
+      return { ...out, status: 'no-canon', canon: null, canonSets: [], why: (hit.notes || []).join(' · ') || '자동 대조에서 대응을 찾지 못했습니다 — 사람이 정한 바는 없습니다.' };
+    }
+    if (hit.confidence === 'legacy-only') return { ...out, status: 'legacy-only', canon: null, canonSets: [], why: hit.resolvedNote || '정본에 대응이 없다고 결정된 세트입니다.' };
+    if (hit.confidence === 'pattern') return { ...out, status: 'pattern', canon: null, canonSets: hit.patternOf || [], why: hit.resolvedNote || '부품이 아니라 배치 규칙입니다.' };
+  }
+
+  return { ...out, status: 'unknown', canon: null, canonSets: [], why: askedAny ? '' : '' };
 }
 
-module.exports = { ROOT, CROSSWALK, MAP, FACTS, readJson, parseRef, norm, loadFacts, loadDecisions, loadMap, validateMachine, resolve };
+module.exports = { ROOT, CROSSWALK, MAP, FACTS, FPMAP, loadIdToSets, canonAxisValue, readJson, parseRef, norm, loadFacts, loadDecisions, loadMap, validateMachine, resolve };

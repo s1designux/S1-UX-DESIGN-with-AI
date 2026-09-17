@@ -27,6 +27,16 @@ const CASES = [
     expect: /기계가 읽는 칸\(machine\)이 없습니다/,
   },
   {
+    name: '자동추출 줄이 정본에 없는 축 값을 답으로 낸다(새로 생긴 것)',
+    mutate: (_cw, mp) => {
+      const list = (mp.components && mp.components.button) || [];
+      const e = list[0];
+      e.confidence = 'high';
+      e.stateMap = { ...(e.stateMap || {}), 'selftest-새값': '있지도않은상태' };
+    },
+    expect: /정본 축 값에 없습니다/,
+  },
+  {
     name: '표를 손으로 고쳤다(결정과 어긋남)',
     mutate: (_cw, mp) => { const e = (mp.unmatched || [])[0]; e.confidence = 'decide'; e.stateMap = { 손편집: '아무거나' }; },
     expect: /반영되지 않았습니다/,

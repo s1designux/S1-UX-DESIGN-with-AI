@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>레거시 이름 자동 붙이기 결과</title><style>
+:root{--bg:#f7f8fa;--card:#fff;--line:#e5e7eb;--ink:#1f2328;--dim:#6b7280;--ok:#0f8a5f;--okbg:#e8f6f0;--warn:#b06a00;--warnbg:#fff4e5;--blue:#1d6ceb;--bluebg:#e9f1fe;--gray:#6b7280;--graybg:#f1f3f5}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 -apple-system,"Apple SD Gothic Neo",Pretendard,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:32px 16px 72px}
+h1{font-size:24px;margin:0 0 4px}.sub{color:var(--dim);font-size:14px;margin:0 0 24px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px}
+@media(max-width:720px){.cards{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+.stat b{display:block;font-size:30px;line-height:1.2}.stat span{font-size:13px;color:var(--dim)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;margin-bottom:24px}
+h2{font-size:18px;margin:0 0 4px}.lead{color:var(--dim);font-size:13.5px;margin:0 0 14px}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}
+th{background:#fafbfc;color:var(--dim);font-size:12.5px;font-weight:600;position:sticky;top:0}
+.q{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px}
+.opt{color:var(--blue)}.ax{color:var(--blue);font-size:12.5px}.why{color:var(--dim);font-size:12.5px}
+.muted{color:var(--dim)}
+.badge{display:inline-block;font-size:12px;font-weight:600;padding:2px 9px;border-radius:99px;white-space:nowrap}
+.badge.ok{background:var(--okbg);color:var(--ok)}.badge.warn{background:var(--warnbg);color:var(--warn)}
+.badge.blue{background:var(--bluebg);color:var(--blue)}.badge.gray{background:var(--graybg);color:var(--gray)}
+.d{display:inline-block;background:var(--bluebg);color:var(--blue);font-size:11.5px;font-weight:600;padding:1px 7px;border-radius:99px}
+.auto{color:var(--dim);font-size:12px}
+.scroll{max-height:560px;overflow:auto;border:1px solid var(--line);border-radius:10px}
+</style></head><body><div class="wrap">
+<h1>레거시 이름 자동 붙이기 — 실제로 돌린 결과</h1>
+<p class="sub">레거시 가이드 두 벌에 있는 세트 126개를 한 번에 돌린 결과입니다. 붙을 때는 river님 결정 번호가 근거로 함께 나옵니다.</p>
+
+<div class="cards">
+<div class="stat"><b style="color:var(--ok)">88</b><span>지금 이름으로 붙음</span></div>
+<div class="stat"><b>34</b><span>지금 것에 대응 없음</span></div>
+<div class="stat"><b style="color:var(--blue)">2</b><span>배치 규칙(부품 아님)</span></div>
+<div class="stat"><b style="color:var(--warn)">2</b><span>레거시에만 있는 옛 형태</span></div>
+</div>
+
+<div class="card">
+<h2>물어보면 이렇게 답합니다</h2>
+<p class="lead">레거시 이름과 상태를 주면, 지금 이름·상태로 바꿔 주고 어느 결정에서 나온 답인지 같이 알려 줍니다.</p>
+<table><tr><th style="width:32%">물어본 것</th><th style="width:30%">답</th><th style="width:12%">근거</th><th>덧붙임</th></tr>
+<tr><td class="q">timepicker_input <span class="opt">--state selected</span></td><td><b>Time Picker</b> <span class=ax>State=Focus</span></td><td><span class="d">D-09</span></td><td class="why">레거시 selected 는 시간 목록이 열린 상태이고, 정본은 열린 상태를 Focus 로 표현한다.</td></tr>
+<tr><td class="q">timepicker_input <span class="opt">--state completed</span></td><td><b>Time Picker</b> <span class=ax>State=Filled</span></td><td><span class="d">D-09</span></td><td class="why">값이 채워진 상태</td></tr>
+<tr><td class="q">datepicker_input <span class="opt">--state selected</span></td><td><b>Date Picker</b> <span class=ax>State=Open</span></td><td><span class="d">D-10</span></td><td class="why"></td></tr>
+<tr><td class="q">select <span class="opt">--state selected</span></td><td><b>Select Box</b> <span class=ax>State=Open</span></td><td><span class="d">D-07</span></td><td class="why"></td></tr>
+<tr><td class="q">B:radiobutton <span class="opt">--state pressed</span></td><td><b>Radio</b> <span class=ax>State=Selected</span></td><td><span class="d">D-22</span></td><td class="why"></td></tr>
+<tr><td class="q">B:tab <span class="opt">--state pressed</span></td><td><b>Line Tab</b> <span class=ax>State=Selected</span></td><td><span class="d">D-16</span></td><td class="why"></td></tr>
+<tr><td class="q">Login input <span class="opt">--size pc-sm</span></td><td><b>Input</b> <span class=ax>Size=XSM · Break=PC</span></td><td><span class="d">D-06</span></td><td class="why">river 규칙: 높이 값으로 맞추고, 같은 높이가 없으면 가장 가까운 높이. 실측 mobile 48 · pc-md 44 · pc-sm 34 · pc-xsm 28</td></tr>
+<tr><td class="q">chip <span class="opt">--size mobile</span></td><td><b>Chip</b> <span class=ax>Size=SM · Break=Mobile</span></td><td><span class="d">D-01</span></td><td class="why"></td></tr>
+<tr><td class="q">timepicker_select</td><td><b><span class="muted">레거시에만 있는 옛 형태</span></b></td><td><span class="d">D-09</span></td><td class="why">시·분을 각각 화살표 칸으로 고르는 형태 — 정본에 없고 만들지 않는다(2026-09-17 river)</td></tr>
+<tr><td class="q">form_elements</td><td><b><span class="muted">배치 규칙(부품 아님)</span></b></td><td><span class="d">D-19</span></td><td class="why">라벨과 입력 요소를 한 줄로 놓는 배치 규칙이다. 부품으로 만들지 않는다(2026-09-17 river).</td></tr>
+<tr><td class="q">B:menutree</td><td><b><span class="muted">지금 것에 대응 없음</span></b></td><td><span class="auto">자동 추출표</span></td><td class="why">정본에 대응 컴포넌트가 없습니다.</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h2>전체 126개</h2>
+<p class="lead">'모름'은 한 건도 없습니다. 지금 것에 대응이 없는 자리는 이름을 지어내지 않고 없다고 답합니다.</p>
+<div class="scroll"><table><tr><th style="width:30%">레거시 이름</th><th style="width:20%">판정</th><th style="width:25%">지금 이름</th><th>근거</th></tr>
+<tr><td class="q">A:DatePicker/Calendar Cell</td><td><span class="badge ok">붙음</span></td><td>Calendar Cell + Calendar Tile + Calendar</td><td><span class="d">D-11</span></td></tr>
+<tr><td class="q">A:DatePicker/Calendar Tile</td><td><span class="badge ok">붙음</span></td><td>Calendar Cell + Calendar Tile + Calendar</td><td><span class="d">D-11</span></td></tr>
+<tr><td class="q">A:Inputbox_large</td><td><span class="badge ok">붙음</span></td><td>Text Area</td><td><span class="d">D-04</span></td></tr>
+<tr><td class="q">A:Login input</td><td><span class="badge ok">붙음</span></td><td>Input</td><td><span class="d">D-06</span></td></tr>
+<tr><td class="q">A:bottomsheet_option</td><td><span class="badge ok">붙음</span></td><td>Bottom Sheet + Bottom Sheet Option + Date Picker Mobile Bottom Sheet + Time Picker Mobile Bottom Sheet</td><td><span class="d">D-05</span></td></tr>
+<tr><td class="q">A:calendar_arrow</td><td><span class="badge ok">붙음</span></td><td>Calendar Cell + Calendar Tile + Calendar</td><td><span class="d">D-11</span></td></tr>
+<tr><td class="q">A:checkbox</td><td><span class="badge ok">붙음</span></td><td>checkbox</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:chip</td><td><span class="badge ok">붙음</span></td><td>Chip</td><td><span class="d">D-01</span></td></tr>
+<tr><td class="q">A:datepicker_input</td><td><span class="badge ok">붙음</span></td><td>Date Picker</td><td><span class="d">D-10</span></td></tr>
+<tr><td class="q">A:dropdown_option</td><td><span class="badge ok">붙음</span></td><td>Dropdown List</td><td><span class="d">D-08</span></td></tr>
+<tr><td class="q">A:filter-chip label only</td><td><span class="badge ok">붙음</span></td><td>Chip + Filter Chip</td><td><span class="d">D-02</span></td></tr>
+<tr><td class="q">A:filter-chip with title</td><td><span class="badge ok">붙음</span></td><td>Chip + Filter Chip</td><td><span class="d">D-02</span></td></tr>
+<tr><td class="q">A:gnb list</td><td><span class="badge ok">붙음</span></td><td>GNB Sub Menu + GNB Sub Menu Item</td><td><span class="d">D-18</span></td></tr>
+<tr><td class="q">A:mobile_bottom-nav</td><td><span class="badge ok">붙음</span></td><td>mobile-bottom-nav</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:mobile_bottomsheet</td><td><span class="badge ok">붙음</span></td><td>Bottom Sheet + Bottom Sheet Option + Date Picker Mobile Bottom Sheet + Time Picker Mobile Bottom Sheet</td><td><span class="d">D-05</span></td></tr>
+<tr><td class="q">A:mobile_bottomsheet</td><td><span class="badge ok">붙음</span></td><td>Bottom Sheet + Bottom Sheet Option + Date Picker Mobile Bottom Sheet + Time Picker Mobile Bottom Sheet</td><td><span class="d">D-05</span></td></tr>
+<tr><td class="q">A:mobile_button</td><td><span class="badge ok">붙음</span></td><td>Button</td><td><span class="d">D-12</span></td></tr>
+<tr><td class="q">A:mobile_datepicker_bottomsheet</td><td><span class="badge ok">붙음</span></td><td>Bottom Sheet + Bottom Sheet Option + Date Picker Mobile Bottom Sheet + Time Picker Mobile Bottom Sheet</td><td><span class="d">D-05</span></td></tr>
+<tr><td class="q">A:mobile_header</td><td><span class="badge ok">붙음</span></td><td>Mobile Header</td><td><span class="d">D-17</span></td></tr>
+<tr><td class="q">A:mobile_input field with helper text</td><td><span class="badge ok">붙음</span></td><td>input</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:mobile_modal</td><td><span class="badge ok">붙음</span></td><td>modal</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:mobile_modal component</td><td><span class="badge ok">붙음</span></td><td>Modal Content</td><td><span class="d">D-15</span></td></tr>
+<tr><td class="q">A:mobile_timepicker_bottomsheet</td><td><span class="badge ok">붙음</span></td><td>Bottom Sheet + Bottom Sheet Option + Date Picker Mobile Bottom Sheet + Time Picker Mobile Bottom Sheet</td><td><span class="d">D-05</span></td></tr>
+<tr><td class="q">A:modal_small</td><td><span class="badge ok">붙음</span></td><td>Modal Content</td><td><span class="d">D-15</span></td></tr>
+<tr><td class="q">A:pagination_arrow</td><td><span class="badge ok">붙음</span></td><td>pagination</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:pagination_number</td><td><span class="badge ok">붙음</span></td><td>pagination</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:pc_assist_button</td><td><span class="badge ok">붙음</span></td><td>Assist Button + Text Button</td><td><span class="d">D-13</span></td></tr>
+<tr><td class="q">A:pc_button</td><td><span class="badge ok">붙음</span></td><td>button</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:pc_datepicker_calendar</td><td><span class="badge ok">붙음</span></td><td>Calendar Cell + Calendar Tile + Calendar</td><td><span class="d">D-11</span></td></tr>
+<tr><td class="q">A:pc_dropdown</td><td><span class="badge ok">붙음</span></td><td>Dropdown List</td><td><span class="d">D-08</span></td></tr>
+<tr><td class="q">A:pc_embeded-table_body</td><td><span class="badge ok">붙음</span></td><td>Table</td><td><span class="d">D-14</span></td></tr>
+<tr><td class="q">A:pc_embeded-table_header</td><td><span class="badge ok">붙음</span></td><td>Table</td><td><span class="d">D-14</span></td></tr>
+<tr><td class="q">A:pc_gnb</td><td><span class="badge ok">붙음</span></td><td>gnb</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:pc_grid-table_body</td><td><span class="badge ok">붙음</span></td><td>Table</td><td><span class="d">D-14</span></td></tr>
+<tr><td class="q">A:pc_grid-table_header</td><td><span class="badge ok">붙음</span></td><td>Table</td><td><span class="d">D-14</span></td></tr>
+<tr><td class="q">A:pc_input field with helper text</td><td><span class="badge ok">붙음</span></td><td>input</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:pc_modal</td><td><span class="badge ok">붙음</span></td><td>Modal Content</td><td><span class="d">D-15</span></td></tr>
+<tr><td class="q">A:pc_multi-toggle</td><td><span class="badge ok">붙음</span></td><td>multi-toggle</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:pc_pagination</td><td><span class="badge ok">붙음</span></td><td>pagination</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:pc_table_body</td><td><span class="badge ok">붙음</span></td><td>table</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:pc_table_header</td><td><span class="badge ok">붙음</span></td><td>table</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:pc_text_button</td><td><span class="badge ok">붙음</span></td><td>Assist Button + Text Button</td><td><span class="d">D-13</span></td></tr>
+<tr><td class="q">A:pc_timepicker_input_dropdown</td><td><span class="badge ok">붙음</span></td><td>Time Picker</td><td><span class="d">D-09</span></td></tr>
+<tr><td class="q">A:radio</td><td><span class="badge ok">붙음</span></td><td>radio</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:select</td><td><span class="badge ok">붙음</span></td><td>Select Box</td><td><span class="d">D-07</span></td></tr>
+<tr><td class="q">A:slots_menu</td><td><span class="badge ok">붙음</span></td><td>gnb</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:tab</td><td><span class="badge ok">붙음</span></td><td>Line Tab</td><td><span class="d">D-16</span></td></tr>
+<tr><td class="q">A:timepicker_input</td><td><span class="badge ok">붙음</span></td><td>Time Picker</td><td><span class="d">D-09</span></td></tr>
+<tr><td class="q">A:timepicker_input_component</td><td><span class="badge ok">붙음</span></td><td>Time Picker</td><td><span class="d">D-09</span></td></tr>
+<tr><td class="q">A:timepicker_select_dropdown</td><td><span class="badge ok">붙음</span></td><td>Time Picker</td><td><span class="d">D-09</span></td></tr>
+<tr><td class="q">A:timepicker_select_number</td><td><span class="badge ok">붙음</span></td><td>Time Picker</td><td><span class="d">D-09</span></td></tr>
+<tr><td class="q">A:toggle</td><td><span class="badge ok">붙음</span></td><td>toggle</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:Input box</td><td><span class="badge ok">붙음</span></td><td>input</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:appbar_main</td><td><span class="badge ok">붙음</span></td><td>Mobile Header</td><td><span class="d">D-17</span></td></tr>
+<tr><td class="q">B:appbar_sub</td><td><span class="badge ok">붙음</span></td><td>Mobile Header</td><td><span class="d">D-17</span></td></tr>
+<tr><td class="q">B:calendar</td><td><span class="badge ok">붙음</span></td><td>Date Picker</td><td><span class="d">D-10</span></td></tr>
+<tr><td class="q">B:checkbox</td><td><span class="badge ok">붙음</span></td><td>checkbox</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:combobox</td><td><span class="badge ok">붙음</span></td><td>Select Box + Dropdown</td><td><span class="d">D-20</span></td></tr>
+<tr><td class="q">B:default</td><td><span class="badge ok">붙음</span></td><td>Button</td><td><span class="d">D-21</span></td></tr>
+<tr><td class="q">B:dialog</td><td><span class="badge ok">붙음</span></td><td>Modal Content</td><td><span class="d">D-15</span></td></tr>
+<tr><td class="q">B:dialog</td><td><span class="badge ok">붙음</span></td><td>Modal Content</td><td><span class="d">D-15</span></td></tr>
+<tr><td class="q">B:elements_tab1</td><td><span class="badge ok">붙음</span></td><td>Line Tab</td><td><span class="d">D-16</span></td></tr>
+<tr><td class="q">B:elements_tab2</td><td><span class="badge ok">붙음</span></td><td>Line Tab</td><td><span class="d">D-16</span></td></tr>
+<tr><td class="q">B:gnb</td><td><span class="badge ok">붙음</span></td><td>GNB Sub Menu + GNB Sub Menu Item</td><td><span class="d">D-18</span></td></tr>
+<tr><td class="q">B:login_Input box</td><td><span class="badge ok">붙음</span></td><td>input</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:m_Input box</td><td><span class="badge ok">붙음</span></td><td>input</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:m_button</td><td><span class="badge ok">붙음</span></td><td>Button</td><td><span class="d">D-21</span></td></tr>
+<tr><td class="q">B:m_calendar_input</td><td><span class="badge ok">붙음</span></td><td>Date Picker</td><td><span class="d">D-10</span></td></tr>
+<tr><td class="q">B:m_certification_inputbox</td><td><span class="badge ok">붙음</span></td><td>input</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:m_checkbox</td><td><span class="badge ok">붙음</span></td><td>checkbox</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:m_chips</td><td><span class="badge ok">붙음</span></td><td>Chip</td><td><span class="d">D-01</span></td></tr>
+<tr><td class="q">B:m_combobox</td><td><span class="badge ok">붙음</span></td><td>Select Box + Dropdown</td><td><span class="d">D-20</span></td></tr>
+<tr><td class="q">B:m_combobox_time</td><td><span class="badge ok">붙음</span></td><td>Select Box + Dropdown</td><td><span class="d">D-20</span></td></tr>
+<tr><td class="q">B:m_macrocheck_Input box</td><td><span class="badge ok">붙음</span></td><td>input</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:m_radiobutton</td><td><span class="badge ok">붙음</span></td><td>Radio</td><td><span class="d">D-22</span></td></tr>
+<tr><td class="q">B:m_tab_title</td><td><span class="badge ok">붙음</span></td><td>Line Tab</td><td><span class="d">D-16</span></td></tr>
+<tr><td class="q">B:m_toggle</td><td><span class="badge ok">붙음</span></td><td>toggle</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:page_arrow</td><td><span class="badge ok">붙음</span></td><td>pagination</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:page_num</td><td><span class="badge ok">붙음</span></td><td>pagination</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:pagenation</td><td><span class="badge ok">붙음</span></td><td>Pagination</td><td><span class="d">D-23</span></td></tr>
+<tr><td class="q">B:popup</td><td><span class="badge ok">붙음</span></td><td>Modal Content</td><td><span class="d">D-15</span></td></tr>
+<tr><td class="q">B:popup_button</td><td><span class="badge ok">붙음</span></td><td>Button</td><td><span class="d">D-21</span></td></tr>
+<tr><td class="q">B:radiobutton</td><td><span class="badge ok">붙음</span></td><td>Radio</td><td><span class="d">D-22</span></td></tr>
+<tr><td class="q">B:tab</td><td><span class="badge ok">붙음</span></td><td>Line Tab</td><td><span class="d">D-16</span></td></tr>
+<tr><td class="q">B:tab</td><td><span class="badge ok">붙음</span></td><td>Line Tab</td><td><span class="d">D-16</span></td></tr>
+<tr><td class="q">B:table</td><td><span class="badge ok">붙음</span></td><td>Table</td><td><span class="d">D-14</span></td></tr>
+<tr><td class="q">B:table</td><td><span class="badge ok">붙음</span></td><td>Table</td><td><span class="d">D-14</span></td></tr>
+<tr><td class="q">B:toggle</td><td><span class="badge ok">붙음</span></td><td>toggle</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:timepicker_select</td><td><span class="badge warn">레거시에만 있는 옛 형태</span></td><td>—</td><td><span class="d">D-09</span></td></tr>
+<tr><td class="q">B:m_subbutton</td><td><span class="badge warn">레거시에만 있는 옛 형태</span></td><td>—</td><td><span class="d">D-13</span></td></tr>
+<tr><td class="q">A:input+btn</td><td><span class="badge blue">배치 규칙(부품 아님)</span></td><td>Input + Button</td><td><span class="d">D-03</span></td></tr>
+<tr><td class="q">B:form_elements</td><td><span class="badge blue">배치 규칙(부품 아님)</span></td><td>Input + Select Box + Radio + Date Picker + Text Area</td><td><span class="d">D-19</span></td></tr>
+<tr><td class="q">A:breadcrumb</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:breadcrumb_element</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:dataview</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:language_set</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:mobile_dot-nav</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:slot_utility</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:state_emoji</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:toobar</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:toolbar_link</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">A:toolbar_text</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:elements_category_v1</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:elements_category_v1_sub</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:elements_category_v2</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:elements_category_v2_sub</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:footer</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:form</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:form_label</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:keyboard</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:lnb</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:login</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:m_bar</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:m_base</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:m_card</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:m_dashboard</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:m_footer</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:m_list</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:m_slider</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:m_tooltip</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:menutree</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:phone_navi</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:search</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:serch tab</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:slider</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+<tr><td class="q">B:window</td><td><span class="badge gray">지금 것에 대응 없음</span></td><td>—</td><td><span class="auto">자동 추출표</span></td></tr>
+</table></div>
+</div>
+</div></body></html>

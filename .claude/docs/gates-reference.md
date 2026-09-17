@@ -442,7 +442,9 @@ river 결정 23건은 `reports/legacy-crosswalk-board/crosswalk.json` 에 있었
 
 **답의 종류:** 붙음(정본 세트 + 축 값) · 배치 규칙(부품 아님) · 레거시에만 있음 · 정본에 대응 없음 · 결정 전. **모르면 모른다고 답하고 이름을 지어내지 않는다.**
 
-**적대 시험 내장** — `npm run legacy:selftest` 가 결함 3종(없는 정본 이름·기계 칸 소실·표 손편집)을 임시 사본에 되살려 **이 검사기가 실제로 잡는지** 확인한다.
+**두 경로를 다 본다(2026-09-17 독립 검증으로 보강).** ①river 결정 경로 ②자동추출 경로 — 처음에는 ②가 검사 밖이라, 조회기가 정본 세트 이름 대신 **registry 파일 id**(`button`·`radio`)를 답으로 내던 것 27건을 통과시켰다. 지금은 파일 id 를 정본 세트 이름으로 옮기고(`registry/governance/component-fingerprint-map.json`), 정본 축 값에 없는 값은 **답으로 내보내지 않고** `세트는 붙음 · 이 축은 결정 전` 으로 답한다. 옛 부채 30건은 `registry/governance/legacy-name-baseline.json` 에 동결하고 **새로 생기는 것만** 막는다(래칫 · 갱신 `npm run legacy:apply -- --rebase-baseline`).
+
+**적대 시험 내장** — `npm run legacy:selftest` 가 결함 4종(없는 정본 이름·기계 칸 소실·자동추출의 없는 축 값·표 손편집)을 임시 사본에 되살려 **이 검사기가 실제로 잡는지** 확인한다.
 
 단독 실행 `npm run legacy:check` · 전체 훑기 `npm run legacy:resolve -- --all` · 적대 시험 `npm run legacy:selftest`.
 
