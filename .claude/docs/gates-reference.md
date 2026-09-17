@@ -66,6 +66,7 @@
 | 50 | UI Library Version | 정본이 바뀌었는데 배포본 번호가 그대로면 차단 — 받아 간 개발자가 낡았는지 알 수 있게 한다. 번호는 `npm run ui:bump`(값만=끝자리) · `npm run ui:bump -- --minor`(쓰는 법이 바뀜)이 매긴다. 장부 `ui-library/release-log.json` · 단독 `npm run ui:version` |
 | 51 | GNB Keyboard Order | 상단바 하위메뉴를 키보드로 쓰는 길이 깨졌는지 실제 DOM 에서 잰다 · 적대 시험 내장. 단독 `npm run ui:keyboard` (크롬 없으면 SKIP) |
 | 52 | Legacy Name Auto-Match | 레거시 이름을 지금 이름에 자동으로 붙이는 표가 river 결정과 어긋나거나, 정본에 없는 이름을 쓰면 차단. 반영 `npm run legacy:apply` · 조회 `npm run legacy:resolve -- <레거시 이름>` |
+| 53 | Guide Sample Liveness | 안내·검수 화면의 살아 있는 표본이 **화면 자신의 손으로** 깨어났나(T1), 배포본이 만들어야 할 목록을 손으로 채워 가로막지 않았나(T2) — 렌더된 DOM 에서 잰다 · 적대 시험 내장. 단독 `npm run ui:liveness` (크롬 없으면 SKIP) |
 
 ---
 
@@ -447,6 +448,31 @@ river 결정 23건은 `reports/legacy-crosswalk-board/crosswalk.json` 에 있었
 **적대 시험 내장** — `npm run legacy:selftest` 가 결함 4종(없는 정본 이름·기계 칸 소실·자동추출의 없는 축 값·표 손편집)을 임시 사본에 되살려 **이 검사기가 실제로 잡는지** 확인한다.
 
 단독 실행 `npm run legacy:check` · 전체 훑기 `npm run legacy:resolve -- --all` · 적대 시험 `npm run legacy:selftest`.
+
+### Gate 53: Guide Sample Liveness (안내 표본 생존)
+
+안내 화면이 보여 주는 「실제 동작」이 **정말로 배포본의 동작인지** 렌더된 DOM 에서 확인한다.
+
+**왜 만들었나 (river 지시 2026-09-17 "만들어줘"):** 안내 화면이 Time Picker 의 시·분 목록을 네 줄짜리 견본(08·09·10·11 / 00·15·30·45)으로 **미리 채워** 내보내고 있었다. 배포본 init 은 칸이 이미 차 있으면 채우기를 건너뛰므로(`time-picker.js` `getCells(column).length > 0) continue`) 전 구간(00~23 · 00~59)이 영영 만들어지지 않았고 스크롤도 없었다. 겉모습은 정상이라 기존 검사기가 전부 통과시켰고 **river 가 직접 눌러 보고 발견**했다.
+
+판정 두 가지:
+
+| 시험 | 무엇을 보나 | 어떻게 |
+|---|---|---|
+| T1 깨어남 | 움직이는 부품의 살아 있는 표본이 **화면 자신의 손으로** init 되었나 | 검사 중에만 배포본 모듈 소스를 서버가 감싸(저장소 파일은 그대로) 실제 init 호출을 기록한다 — **검사기가 대신 깨워 놓고 통과시키는 자기기만을 구조로 막는다** |
+| T2 목록 | 배포본이 만들어야 할 목록을 손으로 채워 가로막지 않았나 | 같은 표본을 복제해 그 칸만 비우고 배포본으로 다시 채운 뒤(=**오라클**) 값이 같은지 본다. **옳은 목록이 무엇인지는 검사기가 정하지 않는다** |
+
+**대상:** `pages/components.html`(안내) · `pages/ui-review.html`(검수). 정지 그림 칸(`.is-preview` · `data-review-static`)은 애초에 깨우지 않는 자리라 제외한다.
+
+**부모가 데리고 있는 껍데기는 건너뛴다.** 같은 노드에 `data-s1-part` 가 있고 바깥에 다른 부품 뿌리가 있으면 그 부모가 움직이는 부품이다 — date-picker·time-picker 의 바텀시트가 껍데기 CSS 때문에 `bottom-sheet` 이름을 함께 달고 있는데, 따로 깨우면 **그 두 화면이 깨진다**(`pages/ui-review.html` 주석이 못박은 사실).
+
+**계약이 낡는 것도 본다.** 배포본 부품 소스에 "마크업이 이미 채웠으면 건너뛴다"는 자리가 새로 생겼는데 T2 계약(`GENERATED_LISTS`)에 없으면 경고한다.
+
+**적대 시험 내장** — `npm run ui:liveness:selftest` 가 가짜 화면에 옛 결함 2종(견본을 미리 채운 표본 · 화면이 깨우지 않은 표본)을 되살려 **이 검사기가 실제로 잡는지** 확인한다.
+
+**못 재는 것(정직하게):** 보기 글자·표 내용처럼 **쓰는 쪽이 채우는 자리**는 대상이 아니다(오라클이 비어 있으면 건너뛴다). 눈에 보이는 모양·간격도 안 본다 — 이 검사기는 DOM 만 본다. 크롬이 없으면 경고로 건너뛴다.
+
+단독 실행 `npm run ui:liveness` · 적대 시험 `npm run ui:liveness:selftest`.
 
 ### Gate 45: CSS Var Reference (CSS 변수 참조)
 

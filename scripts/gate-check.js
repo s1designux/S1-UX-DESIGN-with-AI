@@ -1274,6 +1274,24 @@ try {
   fail(`Gate 52 실행 실패: ${e.message}`);
 }
 
+// ── Gate 53: Guide Sample Liveness (안내 표본 생존) ─────────────────
+// 안내 화면의 「실제 동작」 표본이 시·분 목록을 네 줄짜리 견본으로 미리 채워 내보내,
+// 배포본 init 이 "이미 채워졌다"며 건너뛰었다 — 1분 단위 목록도 스크롤도 없었는데 겉은 멀쩡해
+// 어떤 검사기도 못 잡았고 river 가 직접 발견했다(2026-09-17 "만들어줘").
+// 두 가지를 렌더된 화면에서 본다: 표본이 화면 자신의 손으로 깨어났나(T1) ·
+// 배포본이 만들어야 할 목록을 손으로 채워 가로막지 않았나(T2, 판정 기준은 배포본 자신=오라클).
+gateHeader('[Gate 53] 안내표본 생존 검사기 (Guide Sample Liveness)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync(process.execPath, [path.join(ROOT, 'scripts/guide-sample-liveness-check.js')], { encoding: 'utf-8' });
+  const out = `${r.stdout || ''}${r.stderr || ''}`;
+  if (r.status === 2) warn('Gate 53: 크롬이 없어 건너뜀 — 안내 표본이 살아 있는지 확인되지 않았습니다');
+  else if (r.status === 0) pass(out.match(/✅ (살아 있는 표본.*)/)?.[1] || '안내 표본 전부 살아 있음');
+  else for (const l of out.split('\n').filter((l) => l.includes('❌'))) fail(l.replace(/^\s*❌\s*/, '').trim());
+} catch (e) {
+  fail(`Gate 53 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 if (VERBOSE || errors > 0 || warnings > 0) console.log('\n─────────────────────────────────────────────────────');
 const tally = `게이트 ${gates}개 · ✅ ${passes}건${VERBOSE ? '' : ' (상세: --verbose)'}`;
