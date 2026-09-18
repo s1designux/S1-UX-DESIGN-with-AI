@@ -74,7 +74,13 @@
           <button type="button" class="pb-btn pb-btn-sm" data-place="beside" aria-checked="false" role="radio">→ 선택한 줄 옆</button>
         </div>
         <span class="pb-spacer"></span>
-        <label class="pb-field pb-tools-check" id="pb-statusbar-field" hidden><input type="checkbox" id="pb-statusbar" checked> 상태바</label>
+        <label class="pb-field" id="pb-shell-field" hidden>기기 크롬
+          <select id="pb-shell">
+            <option value="app">앱 — 상태바 · 안드로이드 내비</option>
+            <option value="web">웹 — 상태바+주소창 · 브라우저 툴바+내비</option>
+            <option value="none">없음</option>
+          </select>
+        </label>
         <button type="button" class="pb-btn pb-btn-sm" id="pb-add-row">+ 행 추가</button>
       </div>
       <div class="pb-stage">

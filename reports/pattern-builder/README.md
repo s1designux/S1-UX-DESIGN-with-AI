@@ -59,16 +59,24 @@ river 지적: "헤더가 제대로 생성 안 되어 있고 일부만 만들어�
 - **화면 끝까지(bleed)**: 상·하단 크롬(mobile-header · mobile-bottom-nav · gnb)은 놓을 때 자동으로 「화면 끝까지」가 된다.
   그 줄은 화면 안쪽 여백만큼 좌우로 빼서 그린다(`margin: 0 calc(padding * -1)`). 속성의 「가장자리」에서 끌 수 있다.
 
-## 모바일 상태바 — 2026-09-18 (river 지시)
+## 모바일 기기 크롬(상태바·주소창·툴바·내비) — 2026-09-18 (river 지시)
 
 > "모바일에서는 기본적으로 정본으로 만든 스테이터스 바가 상단에 고정되어 나오면 좋겠어"
+> "모바일에서도 웹/앱 선택에 따라 웹바, 내비바가 자동으로 표출되도록 하고싶어"
 
-- **상태바는 배포 부품이 아니다.** 정본(build-components.ts `buildStatusBar`)에는 있지만 **river 결정 D5** 로 웹 배포본에서 뺐다
+- **크롬은 배포 부품이 아니다.** 정본(build-components.ts `buildStatusBar` · `buildNavBar`)에는 있지만 **river 결정 D5** 로 웹 배포본에서 뺐다
   ("상태바는 OS·브라우저가 그리는 영역이라 배포본에 넣지 않습니다" — ui-library-guide.js:124).
-  `registry/governance/dummy-chrome-parts.json` 도 "우리 부품이 아닌 OS 껍데기 소품"으로 선언한다(2026-09-10 river 결정).
-- 그래서 **부품 목록에 넣지 않고 미리보기 틀 위쪽에 고정**으로만 얹는다. 모바일 틀에서만 보이고, 도구줄의 「상태바」로 끌 수 있다(기본 켜짐).
-- 수치·색은 정본 App 상태바 360×27 그대로 — 높이 27 · 좌 20 / 우 16 · 12 Medium · 오른쪽 묶음 간격 6 · 아이콘색 icon/gray-dark.
-  가이드 사이트의 같은 그림(`assets/css/ui-library-guide.css .uilg-phone-status`)과 동일하다.
-- 맨 윗줄이 Mobile Header 면 상태바와 헤더 사이에 **16** 을 둔다 — 정본 Mobile Header 합성물의 itemSpacing(build-components.ts:3487).
-  결과 높이 27 + 16 + 56 = **99**, 정본 주석의 "360×99"(:3451)와 같다.
-- ⚠️ **내보낸 HTML 에는 상태바가 들어가지 않는다.** 실제 기기·브라우저가 그리는 영역이기 때문(D5). 미리보기 전용이다.
+  `registry/governance/dummy-chrome-parts.json` 도 StatusBar·NavBar·WebTabBar 를 "우리 부품이 아닌 OS 껍데기 소품"으로 선언한다(2026-09-10 river 결정).
+- 그래서 **부품 목록에 넣지 않고 미리보기 틀에만** 얹는다. 모바일 틀에서만 보이고 도구줄의 「기기 크롬」에서 앱 · 웹 · 없음 을 고른다(기본 앱).
+
+| 유형 | 위 | 아래 | 정본 대응 |
+|---|---|---|---|
+| 앱 | 상태바 27 | 안드로이드 내비 45 | StatusBar `Platform=App` · NavBar `Platform=App` |
+| 웹 | 상태바 27 + 주소창 50 = **77** | 브라우저 툴바 50 + 안드로이드 내비 45 = **95** | StatusBar `Platform=Web`(360×77) · NavBar `Platform=Web`(360×95) |
+
+- 세부 수치·글리프도 정본 그대로: 상태바(좌 20 / 우 16 · 12 Medium · 묶음 간격 6 · icon/gray-dark) ·
+  주소창(h50 · 좌우 16 / 위아래 12 · 간격 6 · 자물쇠 24 + URL 알약 radius full · bg/level-2 · 14 Regular · text/body/tertiary + 새로고침 24) ·
+  브라우저 툴바(h50 · 좌우 16 · 뒤로·앞으로·홈·북마크·탭29·메뉴) · 안드로이드 내비(h45 · 좌우 48 · 최근·홈·뒤로). 아이콘 색 icon/gray.
+- 앱 유형에서 맨 윗줄이 Mobile Header 면 상태바와 헤더 사이 **16** — 정본 Mobile Header 합성물의 itemSpacing(build-components.ts:3487).
+  27 + 16 + 56 = **99**, 정본 주석 "360×99"(:3451)와 같다. 웹 유형은 주소창이 그 자리를 채우므로 넣지 않는다.
+- ⚠️ **내보낸 HTML 에는 크롬이 들어가지 않는다.** 실제 기기·브라우저가 그리는 영역이기 때문(D5). 미리보기 전용이다.

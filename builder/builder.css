@@ -79,9 +79,36 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .pb-tools-label { font-size: 11px; font-weight: 700; color: var(--color-text-body-tertiary); }
 .pb-tools-check { gap: 4px; font-size: 11px; }
 
-/* 모바일 상태바 — 정본 StatusBar(App 360×27)를 옮긴 그림. 배포 부품이 아니라 화면 틀의 크롬이다(D5). */
+/* 모바일 기기 크롬 — 정본 StatusBar·NavBar 의 App/Web 변형을 옮긴 그림.
+   배포 부품이 아니라 화면 틀의 OS·브라우저 껍데기다(D5 · dummy-chrome-parts.json). */
+.pb-shell-top { position: sticky; top: 0; z-index: 3; flex: none; }
+.pb-shell-bottom { position: sticky; bottom: 0; z-index: 3; flex: none; }
+.pb-shell-icon { color: var(--color-icon-gray); display: inline-flex; flex: none; }
+.pb-shell-icon svg { display: block; }
+
+/* 주소창 — 정본 buildShellUrlBar 360×50 */
+.pb-shell-urlbar {
+  align-items: center; display: flex; gap: 6px; height: 50px;
+  padding: 12px var(--spacing-16); background: var(--color-bg-level-0);
+}
+.pb-shell-url {
+  align-items: center; display: flex; flex: 1 1 auto; height: 100%;
+  justify-content: center; border-radius: var(--radius-full);
+  background: var(--color-bg-level-2); color: var(--color-text-body-tertiary);
+  font-size: var(--font-size-14); font-weight: var(--font-weight-regular);
+}
+/* 브라우저 툴바 — 정본 buildBrowserToolbarRow 360×50 */
+.pb-shell-toolbar {
+  align-items: center; display: flex; justify-content: space-between; height: 50px;
+  padding: 0 var(--spacing-16); background: var(--color-bg-level-0);
+}
+/* 안드로이드 내비 — 정본 populateAndroidNav 360×45 */
+.pb-shell-nav {
+  align-items: center; display: flex; justify-content: space-between; height: 45px;
+  padding: 0 var(--spacing-48); background: var(--color-bg-level-0);
+}
+
 .pb-statusbar {
-  position: sticky; top: 0; z-index: 3;
   align-items: center; display: flex; flex: none;
   height: 27px; justify-content: space-between;
   padding-left: var(--spacing-20); padding-right: var(--spacing-16);
@@ -133,7 +160,8 @@ body[data-pb-dragging] .pb-gap { height: 28px; margin: 4px 0; border: 1px dashed
 /* 가운데: 캔버스 */
 .pb-stage { background: var(--color-bg-level-1); padding: 24px; overflow: auto; flex: 1; border-radius: 0 0 var(--radius-12) var(--radius-12); }
 .pb-canvas-wrap { margin: 0 auto; position: relative; overflow: visible; }
-.pb-canvas { background: var(--color-bg-level-0); box-shadow: var(--shadow-raised); min-height: 480px; color: var(--color-text-body-primary); }
+.pb-canvas { background: var(--color-bg-level-0); box-shadow: var(--shadow-raised); min-height: 480px; color: var(--color-text-body-primary); display: flex; flex-direction: column; }
+.pb-canvas > .s1-screen { flex: 1 1 auto; }   /* 본문이 남는 높이를 채워 아래 크롬이 화면 끝에 붙는다 */
 .pb-canvas[data-theme="dark"] { color-scheme: dark; }
 .pb-frame-label { text-align: center; font-size: 11px; color: var(--color-text-body-tertiary); margin: 0 0 8px; }
 .pb-canvas .s1-row[data-pb-row] { position: relative; outline: 1px dashed transparent; outline-offset: 4px; border-radius: var(--radius-4); }
