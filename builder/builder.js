@@ -29,6 +29,17 @@ const SUBPART_IDS = new Set(["dropdown", "gnb-sub-menu", "gnb-sub-menu-item", "b
 const SPACING = ["0", "4", "8", "12", "16", "20", "24", "32", "40", "48", "64"];
 const TYPO = ["typo-title-32b", "typo-title-24b", "typo-title-20b", "typo-title-18b", "typo-title-16b", "typo-title-14b",
   "typo-body-16r", "typo-body-14r", "typo-body-14m", "typo-body-12r", "typo-body-12m"];
+/* ── 묶음 규칙 (조합 규칙) ─────────────────────────────────────
+   부품 하나로는 표현이 안 되고 화면마다 달라지지도 않는 "붙이는 규칙"이다.
+   ⚠️ 아직 정본이 아니다 — river 승인 전까지는 빌더 기본값(후보)이며, 화면 설정에서 눈으로 바꿔 정한다.
+   승인되면 이 표를 정본의 「묶음 규칙」 칸으로 옮기고 빌더는 읽기만 한다. */
+const GROUP_RULES = {
+  insideGap: "8",                 // 한 묶음 안 줄 사이 (라벨 ↔ 인풋 등)
+  betweenGap: "24",               // 묶음과 묶음 사이
+  labelTypo: "typo-body-14m",     // 라벨 글자
+  labelColor: "body-primary"
+};
+
 const TEXT_COLORS = [
   ["title-primary", "제목 기본"], ["title-secondary", "제목 보조"],
   ["body-primary", "본문 기본"], ["body-secondary", "본문 보조"], ["body-tertiary", "본문 3차"]
@@ -173,7 +184,7 @@ function freshState() {
   return {
     version: 1,
     meta: { name: "", service: d.service || "core", platform: "pc", role: d.role || "user", theme: d.theme || "light" },
-    screen: { padding: "24" },
+    screen: { padding: "24", groupGap: GROUP_RULES.insideGap, betweenGap: GROUP_RULES.betweenGap },
     rows: []
   };
 }
@@ -186,6 +197,18 @@ function findBlock(blockId) {
   return null;
 }
 function newRow() { return { id: nextId("r"), gap: "12", align: "start", marginBottom: "16", blocks: [] }; }
+
+/* 줄이 어느 묶음에 속하는지 — row.attached 는 "윗줄과 한 묶음" 표시다.
+   묶음 안이면 좁은 간격, 묶음이 끝나는 줄이면 넓은 간격을 쓴다(줄마다 손으로 맞추지 않는다). */
+function groupRoleOf(index) {
+  const row = state.rows[index];
+  if (!row) return null;
+  const next = state.rows[index + 1];
+  const inGroup = !!row.attached || !!(next && next.attached);
+  if (!inGroup) return null;
+  if (next && next.attached) return row.attached ? "mid" : "start";
+  return "end";
+}
 
 function persist() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch { /* 저장 불가 환경 */ } }
 function restore() {
@@ -513,10 +536,20 @@ async function renderScreen(target, editor) {
     rowEl.style.alignItems = "flex-start";
     rowEl.style.gap = `var(--spacing-${row.gap || "12"})`;
     rowEl.style.justifyContent = ALIGN_CSS[row.align] || "flex-start";
-    /* 가져온 화면은 원본 간격(px)을 그대로 쓴다 — 토큰 눈금에 맞춰 반올림하면 원본 모습이 아니다. */
-    rowEl.style.marginBottom = row.marginBottomPx != null
-      ? `${row.marginBottomPx}px`
-      : `var(--spacing-${row.marginBottom || "16"})`;
+    /* 묶음에 든 줄은 묶음 규칙이 간격을 정한다 — 줄마다 손으로 맞추지 않는다.
+       묶음이 아니면 예전대로(가져온 화면은 원본 px 그대로 — 토큰 눈금에 반올림하면 원본 모습이 아니다). */
+    const groupRole = groupRoleOf(ri);
+    if (groupRole) {
+      const gapToken = groupRole === "end"
+        ? (state.screen.betweenGap || GROUP_RULES.betweenGap)
+        : (state.screen.groupGap || GROUP_RULES.insideGap);
+      rowEl.style.marginBottom = `var(--spacing-${gapToken})`;
+      rowEl.dataset.s1Group = groupRole;
+    } else {
+      rowEl.style.marginBottom = row.marginBottomPx != null
+        ? `${row.marginBottomPx}px`
+        : `var(--spacing-${row.marginBottom || "16"})`;
+    }
     /* 가져온 화면 위에 새로 놓은 줄은 원본 본문과 같은 좌우 자리에 맞춘다(레거시 그림 줄은 이미 제 자리다). */
     const inset = Number(state.screen.importedInset) || 0;
     if (inset && !row.blocks.some((b) => b.kind === "legacy" || b.bleed)) {
@@ -1113,6 +1146,30 @@ function moveBlock(blockId, dir) {
   }
   update();
 }
+/* 라벨 붙이기 — 고른 부품 바로 윗줄에 라벨 글자를 넣고 둘을 한 묶음으로 묶는다.
+   라벨 글자 규격과 부품과의 간격은 묶음 규칙(GROUP_RULES)이 정한다 — 매번 사람이 고르지 않는다. */
+function attachLabel(blockId) {
+  const hit = findBlock(blockId); if (!hit) return;
+  const ri = state.rows.indexOf(hit.row);
+  const above = state.rows[ri - 1];
+  if (above && above.blocks.length === 1 && above.blocks[0].kind === "text" && hit.row.attached) {
+    selection = { rowId: above.id, blockId: above.blocks[0].id };   // 이미 붙어 있으면 그 라벨을 고른다
+    update();
+    return;
+  }
+  const labelRow = newRow();
+  const label = {
+    id: nextId("b"), kind: "text", width: "auto",
+    text: "라벨", typo: GROUP_RULES.labelTypo, color: GROUP_RULES.labelColor
+  };
+  labelRow.blocks.push(label);
+  labelRow.attached = hit.row.attached || false;   // 윗묶음에 이어 붙던 줄이면 그 자리를 라벨이 물려받는다
+  state.rows.splice(ri, 0, labelRow);
+  hit.row.attached = true;
+  selection = { rowId: labelRow.id, blockId: label.id };
+  update();
+}
+
 function duplicateBlock(blockId) {
   const hit = findBlock(blockId); if (!hit) return;
   const copy = { ...JSON.parse(JSON.stringify(hit.block)), id: nextId("b") };
@@ -1210,6 +1267,7 @@ function renderProps() {
       <button type="button" class="pb-btn pb-btn-sm" data-act="up">↑ 윗행</button>
       <button type="button" class="pb-btn pb-btn-sm" data-act="down">↓ 아랫행</button>
       <button type="button" class="pb-btn pb-btn-sm" data-act="split">↵ 새 줄로 분리</button>
+      ${b.kind === "component" ? `<button type="button" class="pb-btn pb-btn-sm" data-act="label">＋ 라벨 붙이기</button>` : ""}
       <button type="button" class="pb-btn pb-btn-sm" data-act="dup">복제</button>
       <button type="button" class="pb-btn pb-btn-sm" data-act="del">삭제</button>
     </div>`);
@@ -1224,7 +1282,11 @@ function renderProps() {
     parts.push(`<p class="pb-section-title">행</p>`);
     parts.push(propRow("정렬", selectHtml("row.align", [["start", "왼쪽"], ["center", "가운데"], ["end", "오른쪽"], ["between", "양끝"]], row.align)));
     parts.push(propRow("요소 간격", selectHtml("row.gap", spacingOpts, row.gap)));
-    parts.push(propRow("아래 여백", selectHtml("row.marginBottom", spacingOpts, row.marginBottom)));
+    const rowIndex = state.rows.indexOf(row);
+    const role = groupRoleOf(rowIndex);
+    if (rowIndex > 0) parts.push(propRow("윗줄과 한 묶음", selectHtml("row.attached", [["false", "아니오"], ["true", "예"]], String(!!row.attached))));
+    if (role) parts.push(`<p class="pb-note">묶음에 들어 있어 아래 여백은 <strong>묶음 규칙</strong>이 정합니다 — ${role === "end" ? "묶음 사이" : "묶음 안"} 간격.</p>`);
+    else parts.push(propRow("아래 여백", selectHtml("row.marginBottom", spacingOpts, row.marginBottom)));
     parts.push(`<div class="pb-prop-actions">
       <button type="button" class="pb-btn pb-btn-sm" data-act="row-up">행 위로</button>
       <button type="button" class="pb-btn pb-btn-sm" data-act="row-down">행 아래로</button>
@@ -1234,6 +1296,8 @@ function renderProps() {
 
   parts.push(`<p class="pb-section-title">화면</p>`);
   parts.push(propRow("안쪽 여백", selectHtml("screen.padding", spacingOpts, state.screen.padding)));
+  parts.push(propRow("묶음 안 간격", selectHtml("screen.groupGap", spacingOpts, state.screen.groupGap || GROUP_RULES.insideGap)));
+  parts.push(propRow("묶음 사이 간격", selectHtml("screen.betweenGap", spacingOpts, state.screen.betweenGap || GROUP_RULES.betweenGap)));
   if (!hit && !row) parts.push(`<p class="pb-note">캔버스에서 요소나 줄을 누르면 여기서 고칩니다. 왼쪽 부품을 누르면 새 줄로 내려가고, "선택한 줄 옆"을 고르면 나란히 들어갑니다.</p>`);
 
   els.props.innerHTML = parts.join("");
@@ -1247,6 +1311,7 @@ function renderProps() {
     const act = btn.dataset.act;
     const id = selection.blockId;
     if (act === "left" || act === "right" || act === "up" || act === "down" || act === "split") moveBlock(id, act);
+    else if (act === "label") attachLabel(id);
     else if (act === "dup") duplicateBlock(id);
     else if (act === "del") removeBlock(id);
     else if (act === "col-add") { hit.block.table.columns.push({ label: `열 ${hit.block.table.columns.length + 1}` }); update(); }
@@ -1261,7 +1326,10 @@ function renderProps() {
 function setProp(name, value) {
   if (name.startsWith("row.")) {
     const row = selection.blockId ? findBlock(selection.blockId)?.row : findRow(selection.rowId);
-    if (row) row[name.slice(4)] = value;
+    if (!row) return;
+    const key = name.slice(4);
+    if (key === "attached") row.attached = value === "true";
+    else row[key] = value;
   } else if (name.startsWith("screen.")) {
     state.screen[name.slice(7)] = value;
   } else {
@@ -1332,6 +1400,8 @@ const EXPORT_CSS = `
 .s1-screen[data-s1-header-bg="home"] { background: var(--color-bg-home); }   /* Home 유형 헤더 화면은 상단부터 본문까지 한 배경 */
 .s1-row { display: flex; flex-wrap: wrap; align-items: flex-start; }
 .s1-row[data-s1-bleed="true"] { flex-wrap: nowrap; }
+/* 묶음(data-s1-group) — 라벨+부품처럼 한 덩어리로 읽히는 줄들.
+   간격은 묶음 규칙이 정한 값이 각 줄에 인라인으로 박혀 나가므로 여기 규칙은 없다. */
 .s1-block { min-width: 0; }
 .s1-text { margin: 0; }
 .s1-divider { border: 0; border-top: 1px solid var(--color-line-gray-subtle); margin: 0; width: 100%; }

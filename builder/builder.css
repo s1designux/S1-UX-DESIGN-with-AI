@@ -244,3 +244,14 @@ body[data-pb-dragging] .pb-canvas .s1-row[data-pb-empty="true"] { outline-color:
 #pb-import-link { width: 100%; }
 .pb-note-offline { color: var(--color-text-state-caution); margin: -4px 0 8px; }
 .pb-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+/* ── 묶음 표시 (편집 화면에서만) ─────────────────────────────
+   라벨+부품처럼 한 덩어리로 읽히는 줄들을 왼쪽 세로선으로 묶어 보여준다. */
+.s1-row[data-s1-group] { position: relative; }
+.s1-row[data-s1-group]::before {
+  content: ""; position: absolute; left: -10px; top: -2px; bottom: -2px;
+  width: 2px; border-radius: 2px; background: var(--color-line-gray-subtle, #d9d9d9);
+}
+.s1-row[data-s1-group="start"]::before { top: 0; border-radius: 2px 2px 0 0; }
+.s1-row[data-s1-group="end"]::before { bottom: 0; border-radius: 0 0 2px 2px; }
+.s1-row[data-s1-group="mid"]::before { border-radius: 0; }
