@@ -22,6 +22,7 @@ import {
 } from "./vars-data";
 import { TEXT_STYLES, TEXT_STYLE_FONT_FAMILY } from "./textstyles-data";
 import { parseCssShadow } from "./shadow-parse";
+import { LEGACY_MAP, LegacyMapEntry } from "./legacy-map-data";
 import ALLOWED_REMOTE_KEYS from "../../../registry/figma/allowed-remote-keys.json";
 import DUMMY_CHROME from "../../../registry/governance/dummy-chrome-parts.json";
 
@@ -940,6 +941,9 @@ async function setVariablesMode(mode: "light" | "dark" | "clear"): Promise<{ cou
 
 // ─── 컴포넌트 swap 기능 ──────────────────────────────────────
 
+// 이 파일 안에 정본과 **이름이 같은 세트가 둘 이상** 있던 것들(검수가 헷갈릴 수 있는 자리).
+let REFERENCE_NAME_CLASHES: string[] = [];
+
 type ReferenceComponent = {
   id: string;       // 등록 시점의 파일 내 ID (같은 파일에서만 유효)
   key: string;      // component key (publish된 경우 다른 파일에서도 유효)
@@ -1006,6 +1010,9 @@ function collectInstances(root: BaseNode): InstanceNode[] {
 }
 
 type SwapDiagnostics = {
+  nameClashes?: string[];     // 이 파일에 이름이 겹치는 정본 후보가 있었나
+  medium?: ScreenMedium;      // 이 검수 자료가 모바일 화면인가 PC 화면인가
+  mediumWhy?: string;         // 그렇게 본 까닭(사람 말)
   selectionCount: number;
   instanceCount: number;
   referencePoolSize: number;
@@ -1096,7 +1103,7 @@ function scoreNameSimilarity(legacy: string, canon: string): number {
   if (ln.indexOf(cn) >= 0 || cn.indexOf(ln) >= 0) score = Math.max(score, 0.6);
   return score;
 }
-type MappingSuggestion = { id: string; key: string; type: "COMPONENT" | "COMPONENT_SET"; name: string; source?: string; score: number };
+type MappingSuggestion = { id: string; key: string; type: "COMPONENT" | "COMPONENT_SET"; name: string; source?: string; score: number; decided?: boolean };
 // 여러 부품이 뭉친 큰 모듈의 보조 판정 임계. 핵심 판정은 아래의
 // "같은 최신 부품이 2개 이상 들어 있는가"이며, 이름(m_button 등)은 예외로 쓰지 않는다.
 const MODULE_NESTED_THRESHOLD = 5;
@@ -1115,6 +1122,8 @@ type ModulePart = {
   path: number[];                    // 모듈 루트 기준 자식 순번 — 묶음을 푼 뒤 같은 부품을 다시 찾는 길
   suggestions: MappingSuggestion[];  // auto 면 [0] 이 자동 선정된 정본
   note?: string;
+  decision?: LegacyVerdict;          // 결정표가 무어라 답했나
+  decidedMissing?: boolean;          // 결정된 정본이 아직 이 파일에 없다
 };
 type ModuleFlag = { id: string; instanceId: string; instanceName: string; currentMainName: string; currentMainPath: string; nestedCount: number; repeatedPartName?: string; repeatedPartCount?: number; multiPartNote?: string; parts: ModulePart[]; detached?: boolean };
 
@@ -1170,6 +1179,172 @@ function countSimilarSizedParts(inst: InstanceNode): number {
   }
   return best;
 }
+// ─── 검수 자료의 매체(모바일/PC) 판정 ──────────────────────────────────
+// 모바일 화면을 검수하는데 PC 전용 크기까지 목록에 늘어놓으면 고르기만 어려워진다(river 2026-09-17).
+// 판정 근거는 두 가지뿐이다:
+//   ① 화면 안 부품들에 걸린 **river 결정**이 Break(PC/Mobile) 를 정해 두었나 — 가장 확실한 근거
+//   ② 그것이 없으면 **고른 프레임의 폭** — 정본 모바일 프레임이 360 이므로 그 언저리는 모바일로 본다
+// 어느 쪽으로도 알 수 없으면 **감추지 않는다**(잘못 감추는 것이 더 나쁘다).
+type ScreenMedium = "mobile" | "pc" | null;
+type MediumGuess = { medium: ScreenMedium; why: string };
+const MOBILE_MAX_WIDTH = 600;   // 이보다 좁으면 모바일 화면으로 본다(정본 모바일 폭 360 기준)
+
+function mediumFromAxes(axes: { [k: string]: string }): ScreenMedium {
+  for (const [axis, value] of Object.entries(axes || {})) {
+    if (normAxisName(axis) !== "break") continue;
+    const v = (value || "").toLowerCase();
+    if (v === "mobile") return "mobile";
+    if (v === "pc") return "pc";
+  }
+  return null;
+}
+
+function detectMedium(roots: readonly BaseNode[], votes: ScreenMedium[]): MediumGuess {
+  let mobile = 0, pc = 0;
+  for (const v of votes) { if (v === "mobile") mobile++; else if (v === "pc") pc++; }
+  // 한 표로 뒤집히지 않게 — 이긴 쪽이 2표 이상이고 진 쪽의 두 배는 되어야 «표» 로 친다.
+  let byVote: ScreenMedium = null;
+  if (mobile >= 2 && mobile >= pc * 2) byVote = "mobile";
+  else if (pc >= 2 && pc >= mobile * 2) byVote = "pc";
+
+  let width = 0;
+  for (const r of roots) {
+    const w = (r as SceneNode & LayoutMixin).width;
+    if (typeof w === "number" && w > width) width = w;
+  }
+  const byWidth: ScreenMedium = width ? (width <= MOBILE_MAX_WIDTH ? "mobile" : "pc") : null;
+
+  // 둘이 어긋나면 **감추지 않는다**. 잘못 감추는 것이 조금 어수선한 것보다 나쁘다.
+  if (byVote && byWidth && byVote !== byWidth) return { medium: null, why: "" };
+  const medium = byVote || byWidth;
+  if (!medium) return { medium: null, why: "" };
+  const label = medium === "mobile" ? "모바일" : "PC";
+  if (byVote) return { medium, why: `화면 안 부품 ${medium === "mobile" ? mobile : pc}개에 걸린 결정이 ${label} 을 가리킵니다` };
+  return { medium, why: `고른 화면 폭이 ${Math.round(width)} 이라 ${label} 로 봤습니다` };
+}
+
+// ─── 레거시 이름 결정표 판독 ───────────────────────────────────────────
+// river 결정 23건(+ 레거시 속성표)을 구워 실은 표를 **글자 유사도보다 먼저** 본다.
+// 유사도는 "비슷해 보인다"는 짐작이고, 이 표는 "사람이 정했다"는 사실이다.
+// 표에 답이 없으면 지어내지 않는다 — 그대로 «아직 안 정함» 으로 사람에게 올린다(하드룰 H6②).
+type LegacyVerdictKind = "decided" | "undecided" | "not-a-part" | "ambiguous";
+type LegacyVerdict = {
+  kind: LegacyVerdictKind;
+  legacy: string;                              // 사람이 읽는 레거시 표기 (예: "A:pc_button")
+  role: string;
+  canonSets: string[];                         // 정해진 정본 세트(여럿이면 그 안에서 사람이 고른다)
+  axes: { [canonAxis: string]: string };       // 이 인스턴스의 변형에서 정해진 정본 축 값
+  basis: { id: string; what: string; quote: string }[];
+  notes: { from: string; then: { [canonAxis: string]: string } }[];   // 조건을 몰라 자동으로 걸지 않는 결정 메모
+  why: string;
+  choices?: { source: string; set: string; setId: string | null; canonSets: string[] }[];  // 이름이 겹칠 때
+};
+
+const LEGACY_INDEX: { [norm: string]: LegacyMapEntry[] } = (() => {
+  const m: { [norm: string]: LegacyMapEntry[] } = {};
+  for (const e of LEGACY_MAP) {
+    const k = normalizeName(e.set);
+    if (!k) continue;
+    (m[k] = m[k] || []).push(e);
+  }
+  return m;
+})();
+
+function sameLegacyValue(a: string, b: string): boolean {
+  return (a || "").trim().toLowerCase() === (b || "").trim().toLowerCase();
+}
+
+// 규칙 하나가 이 인스턴스에 걸리는가. 조건이 비어 있으면 그 세트에는 언제나 걸린다.
+function legacyRuleHits(rule: LegacyMapEntry["rules"][number], vp: { [k: string]: string } | null): boolean {
+  // 조건이 없는 규칙은 «언제나 걸린다» 가 아니라 «걸리지 않는다» 로 읽는다.
+  // 조건을 모르는 것을 모두에 걸면 안 눌린 라디오가 «선택됨» 이 된다(🤖 독립 검증 2026-09-17).
+  if (!rule.when.length) return false;
+  if (!vp) return false;
+  return rule.when.every((cond) => {
+    if (cond.axis) {
+      const key = Object.keys(vp).find((a) => normAxisName(a) === normAxisName(cond.axis as string));
+      return !!key && sameLegacyValue(vp[key], cond.value);
+    }
+    return Object.keys(vp).some((a) => sameLegacyValue(vp[a], cond.value));
+  });
+}
+
+// 걸리는 규칙을 모아 정본 축 값을 정한다. 조건이 많이 맞는 규칙이 이긴다(구체적인 것이 우선).
+function applyLegacyRules(entry: LegacyMapEntry, vp: { [k: string]: string } | null): { axes: { [k: string]: string }; set: string | null } {
+  const hits = (entry.rules || []).filter((r) => legacyRuleHits(r, vp)).sort((a, b) => a.when.length - b.when.length);
+  const axes: { [k: string]: string } = {};
+  let set: string | null = null;
+  for (const r of hits) {
+    for (const [axis, value] of Object.entries(r.then)) axes[axis] = value;
+    if (r.set) set = r.set;
+  }
+  if (!set && entry.canonSets.length === 1) set = entry.canonSets[0];
+  return { axes, set };
+}
+
+/**
+ * 레거시 이름 하나를 결정표에 물어본다. 이름이 표에 없으면 null(= 표가 다루지 않는 것).
+ * 같은 이름이 여러 줄인데 붙는 곳이 다르면 조용히 첫 것을 고르지 않는다 — 노드 id 로 되묻는다.
+ */
+function lookupLegacyDecision(names: string[], vp: { [k: string]: string } | null): LegacyVerdict | null {
+  for (const name of names) {
+    const rows = LEGACY_INDEX[normalizeName(name || "")];
+    if (!rows || !rows.length) continue;
+
+    const signature = (e: LegacyMapEntry) => `${e.kind}|${e.canonSets.join("+")}`;
+    const distinct = rows.filter((e, i) => rows.findIndex((o) => signature(o) === signature(e)) === i);
+    if (distinct.length > 1) {
+      return {
+        kind: "ambiguous",
+        legacy: rows.map((e) => `${e.source}:${e.set}`)[0],
+        role: rows[0].role || "",
+        canonSets: [],
+        axes: {},
+        basis: [],
+        notes: [],
+        why: "같은 이름의 레거시 부품이 여러 개이고 붙는 곳이 다릅니다 — 어느 것인지 밝혀야 합니다.",
+        choices: rows.map((e) => ({ source: e.source, set: e.set, setId: e.setId, canonSets: e.canonSets })),
+      };
+    }
+
+    const entry = rows[0];
+    const applied = entry.kind === "decided" ? applyLegacyRules(entry, vp) : { axes: {}, set: null };
+    const canonSets = applied.set ? [applied.set] : entry.canonSets;
+    return {
+      kind: entry.kind,
+      legacy: `${entry.source}:${entry.set}`,
+      role: entry.role || "",
+      canonSets,
+      axes: applied.axes,
+      basis: entry.basis || [],
+      notes: (entry.notes || []).map((n) => ({ from: n.from, then: n.then })),
+      why: entry.why || entry.note || "",
+    };
+  }
+  return null;
+}
+
+// 인스턴스가 지금 어떤 변형 값을 쓰고 있나(레거시 축 이름 그대로).
+function legacyVariantProps(inst: InstanceNode): { [k: string]: string } | null {
+  const vp = (inst as InstanceNode).variantProperties;
+  return vp && Object.keys(vp).length ? (vp as { [k: string]: string }) : null;
+}
+
+/**
+ * 결정이 가리키는 정본을 제안 목록 맨 앞에 못박는다.
+ * 결정이 있어도 목록 자체는 남긴다 — river 결정(2026-09-17): 접어 두되 펼치면 바꿀 수 있게.
+ */
+function pinDecidedSuggestion(verdict: LegacyVerdict | null, ranked: MappingSuggestion[], pool: ReferenceComponent[]): MappingSuggestion[] {
+  if (!verdict || verdict.kind !== "decided" || !verdict.canonSets.length) return ranked;
+  const wanted = verdict.canonSets.map((n) => normalizeName(n));
+  const decided = pool.filter((p) => wanted.indexOf(normalizeName(p.name)) >= 0);
+  if (!decided.length) return ranked;
+  const head: MappingSuggestion[] = decided.map((p) => ({ id: p.id, key: p.key, type: p.type, name: p.name, source: p.sourceFileName, score: 1, decided: true }));
+  const headIds: { [id: string]: true } = {};
+  for (const h of head) headIds[h.id] = true;
+  return head.concat(ranked.filter((r) => !headIds[r.id]));
+}
+
 // 미매칭 레거시 인스턴스 1건 + 유사도 내림차순 정본 제안 목록(최상위=가장 유사)
 type ManualMapCandidate = {
   id: string;
@@ -1178,6 +1353,8 @@ type ManualMapCandidate = {
   currentMainName: string;
   currentMainPath: string;
   suggestions: MappingSuggestion[];
+  decision?: LegacyVerdict;        // 결정표가 무어라 답했나 (없으면 표가 다루지 않는 이름)
+  decidedMissing?: boolean;        // 결정된 정본이 아직 이 파일에 없다 → 설치 먼저
 };
 function rankSuggestions(legacyName: string, pool: ReferenceComponent[]): MappingSuggestion[] {
   return pool
@@ -1199,8 +1376,9 @@ function containsInstanceNode(n: SceneNode): boolean {
 // 부품 목록을 만든다. 인스턴스를 만나면 그 부품 자체를 1건으로 기록하고 **안쪽으로는 들어가지 않는다**
 // (그 안은 그 컴포넌트의 내부 구조이지 이 모듈의 부품이 아니다).
 // 인스턴스가 아닌데 채움·텍스트를 가진 가지는 "교체 불가 조각(raw)"으로 1건 기록한다.
-async function collectModuleParts(root: SceneNode, pool: ReferenceComponent[]): Promise<ModulePart[]> {
+async function collectModuleParts(root: SceneNode, pool: ReferenceComponent[], mediumVote?: (m: ScreenMedium) => void): Promise<ModulePart[]> {
   const parts: ModulePart[] = [];
+  const vote = mediumVote || function () {};
   const partId = (nodeId: string) => `p-${nodeId.replace(/[^a-zA-Z0-9]/g, "_")}`;
   const walk = async (node: SceneNode, path: number[]): Promise<void> => {
     if (node.visible === false) return;
@@ -1220,7 +1398,32 @@ async function collectModuleParts(root: SceneNode, pool: ReferenceComponent[]): 
       }
       let found = findReferenceMatch(compareName, pool);
       if (!found.match && inst.name && inst.name !== compareName) found = findReferenceMatch(inst.name, pool);
-      const ranked = rankSuggestions(inst.name && inst.name !== compareName ? `${compareName} ${inst.name}` : compareName, pool);
+      let ranked = rankSuggestions(inst.name && inst.name !== compareName ? `${compareName} ${inst.name}` : compareName, pool);
+      // 글자 유사도보다 먼저 — 사람이 정해 둔 답이 있나.
+      // 단, 이미 정본인 부품(신원이 후보 풀에 있는 것)에는 묻지 않는다 — 이름이 같은 레거시가 있다.
+      const isCanonAlready = pool.some((pc) => pc.id === currentTopId);
+      const verdict = isCanonAlready ? null : lookupLegacyDecision([compareName, inst.name], legacyVariantProps(inst));
+      if (verdict && verdict.kind === "decided") vote(mediumFromAxes(verdict.axes));
+      if (verdict && verdict.kind === "not-a-part") {
+        parts.push({
+          id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName,
+          kind: "manual", path, suggestions: [], decision: verdict,
+          note: verdict.why || "정본으로 바꿀 대상이 아닙니다.",
+        });
+        return;
+      }
+      if (verdict && verdict.kind === "decided") {
+        ranked = pinDecidedSuggestion(verdict, ranked, pool);
+        const wanted = verdict.canonSets.map((n) => normalizeName(n));
+        const decidedMissing = !pool.some((pc) => wanted.indexOf(normalizeName(pc.name)) >= 0);
+        // 이미 정본인 부품은 위에서 신원으로 걸러졌으므로 여기 오는 것은 모두 «사람이 볼 것» 이다.
+        parts.push({
+          id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName,
+          kind: "manual", path, suggestions: ranked,
+          decision: verdict, decidedMissing,
+        });
+        return;
+      }
       if (found.match && found.match.id === currentTopId) {
         parts.push({ id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "canonical", path, suggestions: [] });
       } else if (found.match) {
@@ -1230,7 +1433,7 @@ async function collectModuleParts(root: SceneNode, pool: ReferenceComponent[]): 
         const head: MappingSuggestion = { id: picked.id, key: picked.key, type: picked.type, name: picked.name, source: picked.sourceFileName, score: 1 };
         parts.push({ id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "auto", path, suggestions: [head].concat(rest) });
       } else {
-        parts.push({ id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "manual", path, suggestions: ranked });
+        parts.push({ id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "manual", path, suggestions: ranked, decision: verdict || undefined });
       }
       return;
     }
@@ -1346,6 +1549,7 @@ async function scanSwapCandidates(
   const sel: readonly BaseNode[] = roots && roots.length
     ? normalizeSelectionRoots(roots.filter((root): root is SceneNode => "id" in root && root.type !== "PAGE" && root.type !== "DOCUMENT") as SceneNode[])
     : selectedRoots();
+  const mediumVotes: ScreenMedium[] = [];
   const diag: SwapDiagnostics = {
     selectionCount: sel.length,
     instanceCount: 0,
@@ -1435,11 +1639,44 @@ async function scanSwapCandidates(
             multiPartNote: isStructuralModule
               ? `채움·텍스트를 가진 부품 모양 ${similarParts}개가 나란히 들어 있어 하나의 컴포넌트로 교체하지 않습니다. 내부 부품 단위로 재구성하세요.`
               : undefined,
-            parts: await collectModuleParts(inst, pool),
+            parts: await collectModuleParts(inst, pool, (m) => mediumVotes.push(m)),
           });
         }
         continue;
       }
+      // 사람이 정해 둔 답이 있으면 **이름이 딱 맞더라도** 그것이 먼저다.
+      // 종전에는 이름 매칭이 성공하면 결정표를 아예 보지 않아, 결정과 다른 정본으로
+      // 조용히 자동 교체되거나 «만들지 않기로 한 것» 이 후보로 되살아났다(🤖 독립 검증 2026-09-17).
+      // **이미 정본인 부품에는 결정표를 묻지 않는다.** 레거시 파일에도 정본과 **이름이 같은** 세트가 있어
+      // (체크박스·칩·라디오·토글·표 등 11건), 이름으로 가르면 정본이 레거시로 오인되거나
+      // 레거시가 «이미 정본» 으로 묻힌다(🤖 독립 검증 2026-09-17 2차). 신원(노드 id)으로만 가른다.
+      const isCanonAlready = pool.some((pc) => pc.id === currentTopId);
+      const verdict = isCanonAlready ? null : lookupLegacyDecision([compareName, inst.name], legacyVariantProps(inst));
+      if (verdict && (verdict.kind === "decided" || verdict.kind === "not-a-part")) {
+        if (verdict.kind === "decided") mediumVotes.push(mediumFromAxes(verdict.axes));
+        const wanted = verdict.canonSets.map((n) => normalizeName(n));
+        if (!manualSeen.has(inst.id)) {
+          manualSeen.add(inst.id);
+          let ranked: MappingSuggestion[] = [];
+          let decidedMissing = false;
+          if (verdict.kind === "decided") {
+            ranked = pinDecidedSuggestion(verdict, rankSuggestions(inst.name && inst.name !== compareName ? `${compareName} ${inst.name}` : compareName, pool), pool);
+            decidedMissing = !pool.some((pc) => wanted.indexOf(normalizeName(pc.name)) >= 0);
+          }
+          manualCandidates.push({
+            id: candidateId("m", inst.id),
+            instanceId: inst.id,
+            instanceName: inst.name,
+            currentMainName: compareName,
+            currentMainPath: await describeComponentLocation(main),
+            suggestions: ranked,
+            decision: verdict,
+            decidedMissing,
+          });
+        }
+        continue;
+      }
+
       if (matched) diag.matchedNameCount++;
       if (sameAsTarget) diag.sameIdSkippedCount++;
       if (diag.instancesPreview.length < 8) {
@@ -1462,10 +1699,11 @@ async function scanSwapCandidates(
               currentMainName: compareName,
               currentMainPath: await describeComponentLocation(main),
               nestedCount,
-              parts: await collectModuleParts(inst, pool),
+              parts: await collectModuleParts(inst, pool, (m) => mediumVotes.push(m)),
             });
           } else {
-            // 단순(부품 적은) 미매칭 → "가장 비슷한 정본"을 상위 제안하는 수동 매핑 후보(최종 선택은 사용자).
+            // 여기까지 온 것은 «아직 안 정함» 이거나 이름이 겹쳐 되물어야 하는 것뿐이다
+            // (정해진 것·교체 대상 아닌 것은 위에서 이미 갈라 나갔다).
             manualCandidates.push({
               id: candidateId("m", inst.id),
               instanceId: inst.id,
@@ -1473,6 +1711,7 @@ async function scanSwapCandidates(
               currentMainName: compareName,
               currentMainPath: await describeComponentLocation(main),
               suggestions: rankSuggestions(inst.name && inst.name !== compareName ? `${compareName} ${inst.name}` : compareName, pool),
+              decision: verdict || undefined,
             });
           }
         }
@@ -1500,6 +1739,10 @@ async function scanSwapCandidates(
     }
   }
   diag.candidateCount = candidates.length;
+  const guess = detectMedium(sel, mediumVotes);
+  diag.medium = guess.medium;
+  diag.mediumWhy = guess.why;
+  diag.nameClashes = REFERENCE_NAME_CLASHES.slice();
   return { candidates, diagnostics: diag, manualCandidates, modules };
 }
 
@@ -1546,6 +1789,7 @@ async function loadSuggestedNode(candidate: SwapCandidate): Promise<BaseNode | n
 // **못 좁히면 조용히 기본값을 쓰지 않고 "모름"으로 돌려준다** — 최종 선택은 사용자가 화면에서 한다.
 type VariantOption = { id: string; key: string; label: string; values: { [axis: string]: string } };
 type VariantInfo = {
+  hiddenByMedium?: number;   // 다른 매체 전용이라 감춘 변형 수
   ok: boolean;
   reason?: string;
   setId: string;
@@ -1564,7 +1808,8 @@ function variantLabel(vp: { [k: string]: string } | null): string {
 
 async function getVariantOptions(
   ref: { id: string; key?: string; type: "COMPONENT" | "COMPONENT_SET" },
-  legacyInstanceId: string
+  legacyInstanceId: string,
+  medium?: ScreenMedium
 ): Promise<VariantInfo> {
   const node = await loadReferenceNode(ref);
   if (!node) {
@@ -1575,7 +1820,17 @@ async function getVariantOptions(
     return { ok: true, setId: c.id, setName: c.name, hasVariants: false, options: [{ id: c.id, key: c.key, label: c.name, values: {} }], pickedId: c.id, matchedAxes: [], unmatchedAxes: [] };
   }
   const set = node as ComponentSetNode;
-  const variants = set.children.filter((c) => c.type === "COMPONENT") as ComponentNode[];
+  let variants = set.children.filter((c) => c.type === "COMPONENT") as ComponentNode[];
+  // 모바일 화면이면 PC 전용 변형을, PC 화면이면 모바일 전용 변형을 감춘다.
+  // 근거는 정본 세트 자신이 가진 Break 축뿐이다 — 없으면 감추지 않는다. 전부 사라지면 되돌린다.
+  let hiddenByMedium = 0;
+  if (medium) {
+    const kept = variants.filter((v) => {
+      const m = mediumFromAxes((v.variantProperties || {}) as { [k: string]: string });
+      return !m || m === medium;
+    });
+    if (kept.length) { hiddenByMedium = variants.length - kept.length; variants = kept; }
+  }
   const options: VariantOption[] = variants.map((v) => ({ id: v.id, key: v.key, label: variantLabel(v.variantProperties) || v.name, values: v.variantProperties || {} }));
   if (variants.length === 0) {
     return { ok: false, reason: "정본 세트에 변형이 없습니다.", setId: set.id, setName: set.name, hasVariants: false, options: [], pickedId: null, matchedAxes: [], unmatchedAxes: [] };
@@ -1633,6 +1888,7 @@ async function getVariantOptions(
     pickedId: picked ? picked.id : null,
     matchedAxes,
     unmatchedAxes,
+    hiddenByMedium,
   };
 }
 
@@ -2127,11 +2383,16 @@ function collectPageReference(preferredPage?: PageNode): ReferenceComponent[] {
   const fileName = figma.root.name;
   const seen: { [k: string]: boolean } = {};
   const out: ReferenceComponent[] = [];
+  REFERENCE_NAME_CLASHES = [];
   const push = (list: ReferenceComponent[]) => {
     for (const c of list) {
       const norm = (c.name || "").toLowerCase().replace(/[\s_\-\/]+/g, "");
       if (!CANONICAL_NAME_SET[norm]) continue;  // 정본 목록에 없는 이름은 기준에서 제외
       if (!seen[norm]) { seen[norm] = true; out.push(c); }
+      // 같은 이름이 이 파일에 둘 이상 있으면 **먼저 만난 것을 조용히 고르지 않는다.**
+      // 레거시 파일에도 정본과 이름이 같은 세트가 있어(체크박스·칩·표 등), 그것이 기준 자리를
+      // 차지하면 검수가 거꾸로 돈다. 삼키지 말고 사람에게 알린다(🤖 독립 검증 2026-09-17 3차).
+      else if (REFERENCE_NAME_CLASHES.indexOf(c.name) < 0) REFERENCE_NAME_CLASHES.push(c.name);
     }
   };
   const firstPage = preferredPage || figma.currentPage;
@@ -2155,11 +2416,17 @@ type ImprovedSummary = {
   skippedNested: number;   // 인스턴스 내부라 대상에서 제외된 수
   alreadyCanonical: number;// 이미 정본이라 바꿀 필요가 없던 수
   noMatch: number;         // 기준에 대응 컴포넌트가 없어 그대로 둔 수
-  manualNeeded: number;    // 이름이 안 맞아 수동 매핑이 필요한(제안과 함께 제시되는) 컴포넌트 수
+  manualNeeded: number;    // 이름이 안 맞아 사람이 봐야 하는 컴포넌트 수(아래 세 갈래의 합)
+  decidedCount: number;    // 결정으로 정해진 수 (사람이 이미 정해 둔 것)
+  undecidedCount: number;  // 아직 안 정한 수 (이번 한 번의 선택)
+  notAPartCount: number;   // 교체 대상이 아닌 수 (배치 규칙·레거시에만 있는 것)
   moduleNeeded: number;    // 여러 부품이 뭉쳐 재구성이 필요한(교체 부적절) 모듈 수
   textUnpreserved: number; // 자동교체 시 정본에 대응 위치가 없어 보존 못 한 입력 텍스트 수
   totalInstances: number;
   referencePoolSize: number;
+  medium?: ScreenMedium;
+  mediumWhy?: string;
+  nameClashes?: string[];
 };
 
 type BuildImprovedResult =
@@ -2226,12 +2493,18 @@ async function buildImprovedCopy(): Promise<BuildImprovedResult> {
         sourceName: src.name,
         autoSwapped, ambiguous, failed, axisLoss, textUnpreserved,
         manualNeeded: manualCandidates.length,
+        decidedCount: manualCandidates.filter((c) => c.decision && c.decision.kind === "decided").length,
+        undecidedCount: manualCandidates.filter((c) => !c.decision || c.decision.kind === "undecided" || c.decision.kind === "ambiguous").length,
+        notAPartCount: manualCandidates.filter((c) => c.decision && c.decision.kind === "not-a-part").length,
         moduleNeeded: modules.length,
         skippedNested: diagnostics.skippedNestedCount,
         alreadyCanonical: diagnostics.sameIdSkippedCount,
         noMatch: diagnostics.noMatchCount,
         totalInstances: diagnostics.instanceCount,
         referencePoolSize: pool.length,
+        medium: diagnostics.medium,
+        mediumWhy: diagnostics.mediumWhy,
+        nameClashes: diagnostics.nameClashes,
       },
       ambiguousCandidates: ambiguousList,
       failedCandidates: failedList,

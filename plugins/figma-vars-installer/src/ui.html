@@ -434,6 +434,31 @@
   #audit-root .swap-card-meta .to { padding:2px 6px; background:var(--code-bg); border-radius:3px; color:var(--high); }
   #audit-root .swap-card .apply-row { margin-top:6px; display:flex; gap:6px; }
   #audit-root .swap-card .apply-row button { font:inherit; padding:3px 10px; font-size:11px; border-radius:4px; border:1px solid var(--line); background:transparent; color:var(--fg); cursor:pointer; }
+  /* ── 판정 갈래 (결정표) ── 정해진 것·아직 안 정한 것·교체 대상 아님을 한눈에 가른다 */
+  #audit-root .verdict-badge { font-size:10px; font-weight:700; padding:2px 7px; border-radius:10px; white-space:nowrap; }
+  #audit-root .verdict-badge.is-decided { color:#0f6b3f; background:#e4f5ec; }
+  #audit-root .verdict-badge.is-undecided { color:#8a6100; background:#fdf3dc; }
+  #audit-root .verdict-badge.is-none { color:#5b6470; background:#eceef1; }
+  #audit-root .swap-card.is-decided { border-left:3px solid #1f9d63; }
+  #audit-root .swap-card.is-undecided { border-left:3px solid #d1a54a; }
+  #audit-root .swap-card.is-none { border-left:3px solid #c3c8cf; background:#fafbfc; }
+  #audit-root .verdict-note { margin-top:4px; font-size:10.5px; line-height:1.55; color:var(--muted); }
+  #audit-root .verdict-note.is-answer { color:var(--fg); }
+  #audit-root .verdict-note b { color:#0f6b3f; }
+  #audit-root .medium-banner { display:flex; align-items:center; gap:8px; margin:10px 2px 2px; padding:6px 10px; border-radius:6px; background:var(--code-bg); font-size:10.5px; color:var(--muted); }
+  #audit-root .medium-banner span { flex:1; }
+  #audit-root .medium-banner b { color:var(--fg); }
+  #audit-root .medium-banner button { font:inherit; font-size:10.5px; padding:2px 8px; border-radius:4px; border:1px solid var(--line); background:transparent; color:var(--fg); cursor:pointer; }
+  #audit-root .medium-hint { font-size:10px; color:var(--muted); margin-top:3px; }
+  #audit-root .verdict-group { font-size:11px; font-weight:600; color:var(--fg); margin:12px 2px 4px; }
+  #audit-root .verdict-group small { font-weight:400; color:var(--muted); margin-left:4px; }
+  #audit-root .pick-fold { margin-top:6px; }
+  #audit-root .pick-fold > summary { cursor:pointer; font-size:10.5px; color:var(--muted); list-style:none; padding:2px 0; }
+  #audit-root .pick-fold > summary::-webkit-details-marker { display:none; }
+  #audit-root .pick-fold > summary::before { content:'▸ '; }
+  #audit-root .pick-fold[open] > summary::before { content:'▾ '; }
+  .part-row.is-decided { background:#f6fbf8; }
+  .part-row.is-none { background:#fafbfc; }
   #audit-root .swap-card.applied { opacity:0.72; }
   #audit-root .swap-card.applied .apply-row button { background:var(--high); color:#fff; border-color:var(--high); }
   #audit-root .resize-handle { position:fixed; right:0; bottom:0; width:18px; height:18px; cursor:se-resize; z-index:100; }
@@ -1469,11 +1494,116 @@ function renderImprovedSummary(payload) {
   const parts = [];
   parts.push('<span style="color:var(--high);font-weight:600;">자동교체 ' + s.autoSwapped + '</span>');
   if (s.ambiguous) parts.push('<span style="color:var(--med);font-weight:600;">확인필요 ' + s.ambiguous + '</span>');
-  if (s.manualNeeded) parts.push('<span style="color:var(--med);font-weight:600;">수동매핑 ' + s.manualNeeded + '</span>');
+  if (s.decidedCount) parts.push('<span style="color:var(--high);font-weight:600;">결정으로 정해짐 ' + s.decidedCount + '</span>');
+  if (s.undecidedCount) parts.push('<span style="color:var(--med);font-weight:600;">아직 안 정함 ' + s.undecidedCount + '</span>');
+  if (s.notAPartCount) parts.push('<span style="color:var(--muted);font-weight:600;">교체 대상 아님 ' + s.notAPartCount + '</span>');
+  if (!s.decidedCount && !s.undecidedCount && !s.notAPartCount && s.manualNeeded) parts.push('<span style="color:var(--med);font-weight:600;">사람 확인 ' + s.manualNeeded + '</span>');
   if (s.moduleNeeded) parts.push('<span style="color:#8a6100;font-weight:600;">모듈 ' + s.moduleNeeded + '</span>');
   if (s.failed) parts.push('<span style="color:var(--low);font-weight:600;">실패 ' + s.failed + '</span>');
   if (s.textUnpreserved) parts.push('<span style="color:var(--med);">텍스트 보존안됨 ' + s.textUnpreserved + '</span>');
   box.innerHTML = parts.join(' · ');
+}
+
+// 매체 안내 한 줄 — 무엇을 감췄는지 숨기지 않고 알리고, 한 번에 되돌릴 수 있게 한다.
+// 이 파일에 정본과 이름이 같은 세트가 둘 이상 있으면 검수가 거꾸로 돌 수 있다 — 숨기지 않고 알린다.
+let auditNameClashes = [];
+function nameClashHtml() {
+  if (!auditNameClashes.length) return '';
+  return '<div class="medium-banner" style="background:#fdf3dc;color:#8a6100;">' +
+    '<span>이 파일에 <b>같은 이름의 세트가 둘 이상</b> 있습니다(' + escape(auditNameClashes.slice(0, 4).join(' · ')) +
+    (auditNameClashes.length > 4 ? ' 외 ' + (auditNameClashes.length - 4) + '개' : '') +
+    '). 어느 것이 정본인지 검수기가 가릴 수 없어, 이 이름들은 답이 뒤바뀔 수 있습니다.</span></div>';
+}
+function mediumBannerHtml() {
+  if (!auditMedium) return '';
+  const label = auditMedium === 'mobile' ? '모바일 화면' : 'PC 화면';
+  return '<div class="medium-banner">' +
+    (showAllMediums
+      ? '<span>' + label + '입니다. 지금은 다른 매체 것까지 모두 보여주는 중입니다.</span><button data-action="medium-filter">다시 걸러 보기</button>'
+      : '<span><b>' + label + '</b>으로 보고 다른 매체 전용은 목록에서 뺐습니다' + (auditMediumWhy ? ' — ' + escape(auditMediumWhy) : '') + '</span><button data-action="medium-all">전부 보기</button>') +
+    '</div>';
+}
+function toggleMediumFilter(showAll) {
+  showAllMediums = showAll;
+  renderModuleList(lastModuleList);
+  renderManualList(lastManualList);
+}
+let lastManualList = [];
+let lastModuleList = [];
+
+// ─── 판정 갈래(결정표) 표시 ────────────────────────────────────────────
+// 검수기는 세 가지로만 답한다: 사람이 정해 둔 것 · 아직 안 정한 것 · 아예 교체 대상이 아닌 것.
+// 색·배지·문구가 이 셋을 가른다(영어 상태 이름은 화면에 내보내지 않는다).
+function verdictKind(d) {
+  if (d && d.kind === 'decided') return 'decided';
+  if (d && d.kind === 'not-a-part') return 'none';
+  return 'undecided';
+}
+const VERDICT_BADGE = {
+  decided: '결정으로 정해짐',
+  undecided: '아직 안 정함',
+  none: '교체 대상 아님',
+};
+function decisionAxesText(d) {
+  if (!d || !d.axes) return '';
+  return Object.keys(d.axes).map(function (k) { return k + '=' + d.axes[k]; }).join(' · ');
+}
+// 근거는 번호만 던지지 않는다 — 무슨 결정이었는지 한 줄로 푼다.
+function decisionBasisLine(d) {
+  const b = (d && d.basis && d.basis[0]) || null;
+  if (!b) return '';
+  if (!b.id || b.id === '표') return '레거시 속성표에 적힌 짝';
+  return b.what + (b.quote ? ' — “' + b.quote + '”' : '') + ' (' + b.id + ')';
+}
+// 조건을 몰라 자동으로 걸지 않는 결정 메모 — 사람이 고를 때 쓰라고 한 줄로 보여준다.
+function decisionMemoLine(d) {
+  const notes = (d && d.notes) || [];
+  if (!notes.length) return '';
+  const many = notes.length > 1;
+  const txt = notes.map(function (n) {
+    const then = Object.keys(n.then || {}).map(function (k) { return k + '=' + n.then[k]; }).join(' · ');
+    return many ? '‘' + n.from + '’ 이면 ' + then : then;
+  }).join(' / ');
+  return '<div class="verdict-note">결정이 함께 적어 둔 것 — <b>' + escape(txt) + '</b> · 자동으로 걸지 않았으니 아래에서 직접 고르세요</div>';
+}
+function verdictNoteHtml(d, decidedMissing) {
+  const kind = verdictKind(d);
+  if (kind === 'decided') {
+    const axes = decisionAxesText(d);
+    const basis = decisionBasisLine(d);
+    let html = '<div class="verdict-note is-answer">' + escape(d.legacy) + ' → <b>' + escape((d.canonSets || []).join(' 또는 ')) + '</b>' +
+      (axes ? ' · ' + escape(axes) : '') + '</div>';
+    if (basis) html += '<div class="verdict-note">근거: ' + escape(basis) + '</div>';
+    html += decisionMemoLine(d);
+    if (decidedMissing) html += '<div class="verdict-note">정해진 부품이 이 파일에 아직 없습니다 — [설치] 탭을 먼저 실행하세요.</div>';
+    return html;
+  }
+  if (kind === 'none') {
+    const basis = decisionBasisLine(d);
+    return '<div class="verdict-note">' + escape((d && d.why) || '정본으로 바꿀 대상이 아닙니다.') + '</div>' +
+      (basis ? '<div class="verdict-note">근거: ' + escape(basis) + '</div>' : '');
+  }
+  if (d && d.kind === 'ambiguous') {
+    const rows = (d.choices || []).map(function (c) { return c.source + ':' + c.set + (c.setId ? ' (' + c.setId + ')' : ''); }).join(' · ');
+    return '<div class="verdict-note">같은 이름의 레거시 부품이 여럿이라 어느 것인지 알 수 없습니다 — ' + escape(rows) + '</div>' +
+           '<div class="verdict-note">고르면 이번 한 번의 선택입니다.</div>';
+  }
+  return '<div class="verdict-note">정해진 답이 없습니다 — 고르면 <b style="color:#8a6100">이번 한 번의 선택</b>입니다.</div>';
+}
+// 결정이 정해 둔 변형(크기·상태)을 고를 목록에서 미리 골라 둔다.
+let decisionAxesById = {};
+function pickOptionByAxes(info, axes) {
+  if (!info || !info.options || !axes) return null;
+  const keys = Object.keys(axes);
+  if (!keys.length) return null;
+  const hit = info.options.filter(function (o) {
+    return keys.every(function (k) {
+      const vals = o.values || {};
+      const axis = Object.keys(vals).filter(function (a) { return a.toLowerCase() === k.toLowerCase(); })[0];
+      return axis && String(vals[axis]).toLowerCase() === String(axes[k]).toLowerCase();
+    });
+  })[0];
+  return hit || null;
 }
 
 // 수동 매핑 — 이름이 정본과 안 맞아 자동 선정 못 한 컴포넌트. 가장 비슷한 정본을 상위 제안(드롭다운),
@@ -1533,38 +1663,69 @@ function manualCandidate(c, sug) {
 
 function renderManualList(list) {
   const box = $("#improved-manual");
+  lastManualList = list || [];
   manualMap = {};
   if (!list || list.length === 0) { box.style.display = "none"; box.innerHTML = ""; return; }
   box.style.display = "block";
-  let html = '<div style="font-size:11px;color:var(--fg);font-weight:600;margin:10px 2px 4px;">이름이 달라 자동 매칭 안 된 컴포넌트 ' + list.length + '건 — 바꿀 정본을 고르고 <b>교체</b></div>';
-  html += '<div style="font-size:10px;color:var(--muted);margin:0 2px 8px;">가장 비슷한 정본을 맨 위에 제안했습니다. 맞지 않으면 목록에서 직접 고르세요.</div>';
-  for (const c of list) {
-    manualMap[c.id] = c;
-    const opts = c.suggestions.map((s, i) =>
-      '<option value="' + i + '">' + escape(s.name) + (s.score > 0 ? ' (유사도 ' + Math.round(s.score * 100) + '%)' : '') + '</option>'
-    ).join('');
-    // 자동 교체 카드(renderSwapList)와 동일 규격: head · meta · (드롭다운) · apply-row(선택+교체)
-    html += '<div class="swap-card" data-manual-id="' + escape(c.id) + '">';
-    html += '<div class="swap-card-head"><div class="iname">' + escape(c.instanceName) + '</div><span style="font-size:10px;color:var(--med);font-weight:600;">이름 다름</span></div>';
-    html += '<div class="swap-card-meta"><span class="from">현재: ' + escape(c.currentMainName) + ' · ' + escape(c.currentMainPath) + '</span></div>';
-    html += '<div class="part-preview">';
-    html += '<img class="part-thumb empty" data-role="thumb-now" alt="">';
-    html += '<span class="part-arrow" data-role="thumb-arrow" hidden>→</span>';
-    html += '<img class="part-thumb empty" data-role="thumb-next" alt="">';
-    html += '</div>';
-    html += '<div class="part-selects">';
-    html += '<select class="ds-select" data-role="manual-pick">' + opts + '</select>';
-    html += '<select class="ds-select grow" data-role="variant-pick" data-part-id="' + escape(c.id) + '" disabled><option>변형 읽는 중…</option></select>';
-    html += '</div>';
-    html += '<div class="apply-row">';
-    html += '<button data-action="import-component">컴포넌트 가져오기</button>';
-    html += '<button data-action="manual-swap" class="primary">교체</button>';
-    html += '</div></div>';
+  // 판정 갈래로 나눠 보여준다 — 정해진 것 · 아직 안 정한 것 · 교체 대상 아님.
+  const groups = [
+    { key: 'decided', title: '결정으로 정해진 것', hint: '그대로 교체하면 됩니다', rows: [] },
+    { key: 'undecided', title: '아직 안 정한 것', hint: '고른 것은 이번 한 번의 선택', rows: [] },
+    { key: 'none', title: '교체 대상이 아닌 것', hint: '', rows: [] },
+  ];
+  for (const c of list) groups.filter((g) => g.key === verdictKind(c.decision))[0].rows.push(c);
+
+  let html = nameClashHtml() + mediumBannerHtml();
+  for (const g of groups) {
+    if (!g.rows.length) continue;
+    html += '<div class="verdict-group">' + g.title + ' ' + g.rows.length + '건' + (g.hint ? '<small>' + g.hint + '</small>' : '') + '</div>';
+    for (const c of g.rows) {
+      manualMap[c.id] = c;
+      const kind = g.key;
+      if (kind === 'decided' && c.decision && c.decision.axes) decisionAxesById[c.id] = c.decision.axes;
+      const opts = c.suggestions.map((s, i) =>
+        '<option value="' + i + '">' + escape(s.name) +
+        (s.decided ? ' (결정)' : (kind === 'undecided' && s.score > 0 ? ' · ' + Math.round(s.score * 100) + '%' : '')) + '</option>'
+      ).join('');
+      html += '<div class="swap-card is-' + kind + '" data-manual-id="' + escape(c.id) + '">';
+      html += '<div class="swap-card-head"><div class="iname">' + escape(c.instanceName) + '</div>';
+      html += '<span class="verdict-badge is-' + kind + '">' + VERDICT_BADGE[kind] + '</span></div>';
+      html += '<div class="swap-card-meta"><span class="from">현재: ' + escape(c.currentMainName) + '</span></div>';
+      html += verdictNoteHtml(c.decision, c.decidedMissing);
+      if (!c.suggestions.length) { html += '</div>'; continue; }   // 교체 대상 아님 — 후보를 권하지 않는다
+      html += '<div class="part-preview">';
+      html += '<img class="part-thumb empty" data-role="thumb-now" alt="">';
+      html += '<span class="part-arrow" data-role="thumb-arrow" hidden>→</span>';
+      html += '<img class="part-thumb empty" data-role="thumb-next" alt="">';
+      html += '</div>';
+      // 결정으로 정해진 것은 고르는 칸을 접어 둔다 — 바꾸고 싶을 때만 펼친다(river 결정 2026-09-17).
+      const selects = '<div class="part-selects">' +
+        '<select class="ds-select" data-role="manual-pick">' + opts + '</select>' +
+        '<select class="ds-select grow" data-role="variant-pick" data-part-id="' + escape(c.id) + '" disabled><option>변형 읽는 중…</option></select>' +
+        '</div>';
+      // 결정 메모가 있는 카드는 접지 않는다 — 메모가 «직접 고르라» 고 하는데 고를 칸이 접혀 있으면 어긋난다.
+      const hasMemo = !!(c.decision && (c.decision.notes || []).length);
+      const foldable = kind === 'decided' && !c.decidedMissing && !hasMemo && c.suggestions.some((s) => s.decided);
+      html += foldable
+        ? '<details class="pick-fold"><summary>정본·변형 직접 고르기</summary>' + selects + '</details>'
+        : selects;
+      html += '<div class="medium-hint" data-role="medium-hint"></div>';
+      html += '<div class="apply-row">';
+      html += '<button data-action="import-component">컴포넌트 가져오기</button>';
+      html += '<button data-action="manual-swap" class="primary">교체</button>';
+      html += '</div></div>';
+    }
   }
   box.innerHTML = html;
+  const banner = box.querySelector('.medium-banner');
+  if (banner) banner.addEventListener('click', (e) => {
+    const act = e.target.dataset && e.target.dataset.action;
+    if (act === 'medium-all') toggleMediumFilter(true);
+    else if (act === 'medium-filter') toggleMediumFilter(false);
+  });
   list.forEach((c) => {
     const row = rowEl(c.id);
-    if (!row) return;
+    if (!row || !c.suggestions.length) return;
     lazyHydrate(row, function () {
       setThumb(row.querySelector('[data-role="thumb-now"]'), { nodeId: c.instanceId });
       loadVariantsFor(c.id, c.instanceId, c.suggestions[0]);
@@ -1658,11 +1819,17 @@ function modulePartsHtml(c) {
   }
   let html = '';
   for (const p of parts) {
+    // 결정표가 답한 부품은 그 갈래로 보여준다(유사도 배지보다 우선).
+    const verdict = p.decision ? verdictKind(p.decision) : null;
     const badge = PART_BADGE[p.kind] || PART_BADGE.raw;
-    html += '<div class="part-row" data-part-row="' + escape(p.id) + '">';
+    if (verdict && p.decision && p.decision.axes) decisionAxesById[p.id] = p.decision.axes;
+    html += '<div class="part-row' + (verdict ? ' is-' + verdict : '') + '" data-part-row="' + escape(p.id) + '">';
     html += '<div class="part-head"><span class="part-name">' + escape(p.nodeName) + '</span>';
-    html += '<span class="part-badge" style="color:' + badge[1] + ';">' + badge[0] + '</span></div>';
+    html += verdict
+      ? '<span class="part-badge verdict-badge is-' + verdict + '">' + VERDICT_BADGE[verdict] + '</span></div>'
+      : '<span class="part-badge" style="color:' + badge[1] + ';">' + badge[0] + '</span></div>';
     html += '<div class="part-meta">현재: ' + escape(p.currentMainName) + '</div>';
+    if (verdict) html += verdictNoteHtml(p.decision, p.decidedMissing);
     if (p.kind === 'canonical') { html += '</div>'; continue; }
     if (p.suggestions && p.suggestions.length) {
       // 지금 모습 → 바뀔 모습 (이름을 몰라도 그림으로 고를 수 있게)
@@ -1671,12 +1838,20 @@ function modulePartsHtml(c) {
       html += '<span class="part-arrow" data-role="thumb-arrow" hidden>→</span>';
       html += '<img class="part-thumb empty" data-role="thumb-next" alt="">';
       html += '</div>';
-      html += '<div class="part-selects">';
-      html += '<select class="ds-select" data-role="part-pick" data-part-id="' + escape(p.id) + '">' + p.suggestions.map((s, i) =>
-        '<option value="' + i + '">' + escape(s.name) + (s.score > 0 ? ' · ' + Math.round(s.score * 100) + '%' : '') + '</option>'
-      ).join('') + '</select>';
-      html += '<select class="ds-select grow" data-role="variant-pick" data-part-id="' + escape(p.id) + '" disabled><option>변형 읽는 중…</option></select>';
-      html += '</div><div class="part-actions">';
+      const partSelects = '<div class="part-selects">' +
+        '<select class="ds-select" data-role="part-pick" data-part-id="' + escape(p.id) + '">' + p.suggestions.map((s, i) =>
+          '<option value="' + i + '">' + escape(s.name) +
+          (s.decided ? ' (결정)' : (verdict !== 'decided' && s.score > 0 ? ' · ' + Math.round(s.score * 100) + '%' : '')) + '</option>'
+        ).join('') + '</select>' +
+        '<select class="ds-select grow" data-role="variant-pick" data-part-id="' + escape(p.id) + '" disabled><option>변형 읽는 중…</option></select>' +
+        '</div>';
+      const partHasMemo = !!(p.decision && (p.decision.notes || []).length);
+      const partFoldable = verdict === 'decided' && !p.decidedMissing && !partHasMemo && (p.suggestions || []).some((s) => s.decided);
+      html += partFoldable
+        ? '<details class="pick-fold"><summary>정본·변형 직접 고르기</summary>' + partSelects + '</details>'
+        : partSelects;
+      html += '<div class="medium-hint" data-role="medium-hint"></div>';
+      html += '<div class="part-actions">';
       if (p.kind !== 'raw' && blockedParts[p.id]) {
         // 묶음을 먼저 풀어야 하는 상태 — 가져오기·교체는 감추고 [묶음 풀기] 하나만 낸다.
         html += '<button class="primary" data-action="module-detach">묶음 풀기</button>';
@@ -1687,7 +1862,7 @@ function modulePartsHtml(c) {
         }
       }
       html += '</div>';
-    } else {
+    } else if (!verdict) {
       html += '<div class="part-meta">대응할 정본 부품을 찾지 못했습니다.</div>';
     }
     html += '</div>';
@@ -1697,7 +1872,10 @@ function modulePartsHtml(c) {
 
 function moduleCardHtml(c) {
   const parts = c.parts || [];
-  const swappable = parts.filter((p) => p.kind === 'auto' || p.kind === 'manual').length;
+  // 교체 대상이 아니라고 답한 부품(후보 없음)은 세지 않는다.
+  const swappableParts = parts.filter((p) => (p.kind === 'auto' || p.kind === 'manual') && (p.suggestions || []).length);
+  const swappable = swappableParts.length;
+  const decidedHere = swappableParts.filter((p) => verdictKind(p.decision) === 'decided' && p.decision).length;
   let html = '<div class="swap-card-head"><div class="iname">' + escape(c.instanceName) + '</div><span class="module-badge">모듈 · 부품 ' + (parts.length || c.nestedCount || 0) + '개</span></div>';
   html += '<div class="swap-card-meta"><span class="from">현재: ' + escape(c.currentMainName) + '</span></div>';
   html += modulePartsHtml(c);
@@ -1705,7 +1883,7 @@ function moduleCardHtml(c) {
   html += '<div class="part-actions" style="margin-top:8px;">';
   if (c.detached) html += '<button data-action="module-undo">되돌리기</button>';
   if (swappable > 0) {
-    if (!anyBlocked) html += '<button class="primary" data-action="module-swap-all">부품 ' + swappable + '개 모두 교체</button>';
+    if (!anyBlocked) html += '<button class="primary" data-action="module-swap-all">부품 ' + swappable + '개 모두 교체' + (decidedHere ? ' (결정 ' + decidedHere + '건 포함)' : '') + '</button>';
   }
   html += '</div>';
   return html;
@@ -1805,6 +1983,11 @@ function updateSwapEnabled(id) {
 }
 function updatePartSwapEnabled(moduleId, partId) { updateSwapEnabled(partId); }
 
+// 검수 자료가 모바일 화면인지 PC 화면인지 — 다른 매체 전용 변형을 목록에서 감출 때 쓴다.
+let auditMedium = null;       // 'mobile' · 'pc' · null(모름)
+let auditMediumWhy = '';
+let showAllMediums = false;   // river 가 [전부 보기] 를 누르면 감추지 않는다
+
 function loadVariantsFor(id, instanceId, sug) {
   const row = rowEl(id);
   if (!row || !sug) return;
@@ -1812,7 +1995,8 @@ function loadVariantsFor(id, instanceId, sug) {
   if (vsel) { vsel.disabled = true; vsel.innerHTML = '<option>변형 읽는 중…</option>'; }
   variantState[id] = { info: null, chosenId: null };
   updateSwapEnabled(id);
-  ask('variant-options', { ref: { id: sug.id, key: sug.key, type: sug.type }, instanceId: instanceId }, function (info) {
+  const medium = showAllMediums ? null : auditMedium;
+  ask('variant-options', { ref: { id: sug.id, key: sug.key, type: sug.type }, instanceId: instanceId, medium: medium }, function (info) {
     applyVariantInfo(id, info);
   });
 }
@@ -1828,6 +2012,9 @@ function loadVariants(moduleId, partId) {
 
 function applyVariantInfo(id, info) {
   const partId = id;
+  // 결정이 «상태=Focus» 처럼 변형까지 정해 두었으면 그 변형을 미리 고른다.
+  const decided = pickOptionByAxes(info, decisionAxesById[partId]);
+  if (decided) info = Object.assign({}, info, { pickedId: decided.id });
   variantState[partId] = { info: info, chosenId: (info && info.pickedId) || null };
   const row = rowEl(partId);
   if (!row) return;
@@ -1852,6 +2039,11 @@ function applyVariantInfo(id, info) {
     if (chosen) setThumb(thumb, { ref: { id: chosen.id, key: chosen.key, type: 'COMPONENT' } });
     else { thumb.removeAttribute('src'); thumb.classList.add('empty'); syncPreviewRow(thumb); }
   }
+  const hint = row.querySelector('[data-role="medium-hint"]');
+  if (hint) {
+    const n = (info && info.hiddenByMedium) || 0;
+    hint.textContent = n ? (auditMedium === 'mobile' ? 'PC 전용 ' : '모바일 전용 ') + n + '개는 목록에서 뺐습니다' : '';
+  }
   updateSwapEnabled(partId);
 }
 
@@ -1870,18 +2062,26 @@ function hydrateModuleCard(moduleId) {
 }
 
 function renderModuleList(list) {
+  lastModuleList = list || [];
   const box = $("#improved-modules");
   moduleMap = {};
   blockedParts = {};
   moduleQueue = null;
   if (!list || list.length === 0) { box.style.display = "none"; box.innerHTML = ""; return; }
   box.style.display = "block";
-  let html = '<div style="font-size:11px;color:var(--fg);font-weight:600;margin:10px 2px 4px;">여러 부품이 뭉친 모듈 ' + list.length + '건 — 부품 단위로 교체</div>';
+  let html = ((lastManualList || []).length ? '' : mediumBannerHtml()) +
+    '<div style="font-size:11px;color:var(--fg);font-weight:600;margin:10px 2px 4px;">여러 부품이 뭉친 모듈 ' + list.length + '건 — 부품 단위로 교체</div>';
   for (const c of list) {
     moduleMap[c.id] = c;
     html += '<div class="module-card" data-module-id="' + escape(c.id) + '">' + moduleCardHtml(c) + '</div>';
   }
   box.innerHTML = html;
+  const mbanner = box.querySelector('.medium-banner');
+  if (mbanner) mbanner.addEventListener('click', (e) => {
+    const act = e.target.dataset && e.target.dataset.action;
+    if (act === 'medium-all') toggleMediumFilter(true);
+    else if (act === 'medium-filter') toggleMediumFilter(false);
+  });
   list.forEach((c) => hydrateModuleCard(c.id));
   box.querySelectorAll('[data-module-id]').forEach((card) => {
     const id = card.dataset.moduleId;
@@ -2393,13 +2593,17 @@ function renderInspectionResult(payload) {
   renderChecklistResults(checklist);
 
   const component = payload.component || {};
+  const diag = component.diagnostics || {};
+  auditMedium = diag.medium || null;
+  auditMediumWhy = diag.mediumWhy || '';
+  auditNameClashes = diag.nameClashes || [];
   swapCandidates = component.candidates || [];
   swapCandidateHistory = {};
   const manual = component.manualCandidates || [];
   const modules = component.modules || [];
   renderSwapList(component.diagnostics || null);
-  renderModuleList(modules);
   renderManualList(manual);
+  renderModuleList(modules);
   renderFailedList([]);
   renderRecentSwaps();
 
@@ -2567,14 +2771,17 @@ function handleAuditUiMessage(msg) {
   } else if (msg.type === "build-improved-result") {
     renderImprovedSummary(msg.payload);
     if (msg.payload.ok) {
+      auditMedium = (msg.payload.summary && msg.payload.summary.medium) || null;
+      auditMediumWhy = (msg.payload.summary && msg.payload.summary.mediumWhy) || '';
+      auditNameClashes = (msg.payload.summary && msg.payload.summary.nameClashes) || [];
       // ── 컴포넌트 버킷: 교체 가능한 항목 ──
       swapCandidates = msg.payload.candidates || [];
       swapCandidateHistory = {};
       const manual = msg.payload.manual || [];
       const modules = msg.payload.modules || [];
       renderSwapList(null);
-      renderModuleList(modules);
       renderManualList(manual);
+      renderModuleList(modules);
       renderFailedList(msg.payload.failed || []);
       renderRecentSwaps();
       // ── 그 외 버킷: HEX 색상 → 시멘틱 토큰 제안 ──

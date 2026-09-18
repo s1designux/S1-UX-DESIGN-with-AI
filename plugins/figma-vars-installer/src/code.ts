@@ -309,7 +309,7 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
       });
     } else if (type === "variant-options") {
       // 이름이 맞는 정본을 찾은 다음 "어느 변형(크기·유형·상태)으로 바꿀지"를 돌려준다.
-      const info = await getVariantOptions(payload.ref, payload.instanceId);
+      const info = await getVariantOptions(payload.ref, payload.instanceId, payload.medium || null);
       figma.ui.postMessage({ type: "audit:variant-options-result", payload: { requestId: payload.requestId, ...info } });
     } else if (type === "preview") {
       // 지금 모습(node) 또는 바뀔 모습(ref) 을 PNG 로 내보낸다 — UI 가 blob 으로 그린다.

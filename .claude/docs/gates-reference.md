@@ -447,7 +447,9 @@ river 결정 23건은 `reports/legacy-crosswalk-board/crosswalk.json` 에 있었
 
 **적대 시험 내장** — `npm run legacy:selftest` 가 결함 4종(없는 정본 이름·기계 칸 소실·자동추출의 없는 축 값·표 손편집)을 임시 사본에 되살려 **이 검사기가 실제로 잡는지** 확인한다.
 
-단독 실행 `npm run legacy:check` · 전체 훑기 `npm run legacy:resolve -- --all` · 적대 시험 `npm run legacy:selftest`.
+**세 번째 판정 — 구운 표가 최신인가(2026-09-17).** 검수 플러그인은 Figma 안에서 돌아 저장소 파일을 읽지 못한다. 그래서 조회기와 **같은 판독부**로 레거시 126세트를 전수로 구워 `plugins/figma-vars-installer/src/legacy-map-data.ts`(생성물·손편집 금지)에 싣고, 검수기가 글자 유사도보다 **먼저** 그 표를 본다. 결정이 바뀌었는데 다시 굽지 않으면 검수기가 옛 답을 사람에게 권하므로 Gate 52 가 같은 자리에서 최신성을 본다(래칫 아님 — `npm run legacy:bake` 한 번이면 끝난다). `legacy:selftest` 도 구운 표의 세트·축 값이 정본 사전 안에 있는지 다시 센다.
+
+단독 실행 `npm run legacy:check` · 전체 훑기 `npm run legacy:resolve -- --all` · 적대 시험 `npm run legacy:selftest` · 다시 굽기 `npm run legacy:bake`.
 
 ### Gate 53: Guide Sample Liveness (안내 표본 생존)
 

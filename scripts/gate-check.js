@@ -1270,6 +1270,14 @@ try {
   const out = `${r.stdout || ''}${r.stderr || ''}`;
   if (r.status === 0) pass(out.match(/✅ (.*)/)?.[1] || '결정과 표가 같습니다');
   else for (const l of out.split('\n').filter((l) => l.includes('❌'))) fail(l.replace(/^\s*❌\s*/, '').trim());
+
+  // 검수 플러그인에 실려 나가는 '구운 결정표'가 밀렸는지도 같은 자리에서 본다.
+  // 플러그인은 Figma 안에서 돌아 저장소를 못 읽으므로 구운 것 한 장만 보고 판정한다 —
+  // 결정이 바뀌었는데 안 구우면 검수기가 옛 답을 사람에게 권한다. 래칫이 아니다(다시 구우면 끝난다).
+  const b = spawnSync(process.execPath, [path.join(ROOT, 'scripts/build-legacy-map-data.js'), '--check'], { encoding: 'utf-8' });
+  const bout = `${b.stdout || ''}${b.stderr || ''}`;
+  if (b.status === 0) pass(bout.match(/✅ (.*)/)?.[1] || '구운 결정표가 최신입니다');
+  else for (const l of bout.split('\n').filter((l) => l.includes('❌'))) fail(l.replace(/^\s*❌\s*/, '').trim());
 } catch (e) {
   fail(`Gate 52 실행 실패: ${e.message}`);
 }
