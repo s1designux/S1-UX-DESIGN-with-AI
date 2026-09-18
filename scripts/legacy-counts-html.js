@@ -9,7 +9,7 @@ const fmt=v=>v==='없음'?v:(Number.isInteger(+v)?v:(+v).toFixed(2)+' (어긋남
 const histTbl=(arr,n=6)=>tbl(['값 (px)','화면 수'],arr.slice(0,n).map(([v,c])=>[fmt(v),c]));
 const measureSection=!M?'':`
 <h2>2-b. 간격 실측 (Figma 다시 읽음)</h2>
-<p class="sub">Figma에서 8개 페이지를 다시 읽어 폭 360 화면 ${M.총화면}장의 위치 값을 그대로 쟀습니다. 아래는 <b>바탕 크기(360×780) ${M.바탕780.총화면}장</b> 기준입니다. 반올림하지 않았고, 소수점이 붙은 값은 "어긋남"으로 표시했습니다. 페이지 2장(내 정보·설정)은 Figma에서 열리지 않아 못 쟀습니다.</p>
+<p class="sub">Figma에서 9개 페이지를 다시 읽어 폭 360 화면 ${M.총화면}장의 위치 값을 그대로 쟀습니다. 아래는 <b>바탕 크기(360×780) ${M.바탕780.총화면}장</b> 기준입니다. 반올림하지 않았고, 소수점이 붙은 값은 "어긋남"으로 표시했습니다. 페이지 1장(내 정보)은 Figma에서 열리지 않아 못 쟀습니다.</p>
 <div class="cards">
 <div class="card"><div class="v">24</div><div class="k">상태표시줄 높이 (${M.상태표시줄_높이[0][1]}장)</div></div>
 <div class="card"><div class="v">72</div><div class="k">제목줄 높이 (${M.제목줄_높이[0][1]}장)</div></div>
@@ -79,7 +79,7 @@ code{background:#f3f4f6;padding:1px 5px;border-radius:4px;font-size:13px}
 <div class="card"><div class="v">${d.combos.length}</div><div class="k">3장 이상 반복된 부품 조합</div></div>
 </div>
 
-${M?`<div class="note"><b>간격은 Figma를 다시 읽어 쟀습니다</b> (2-b 참조). 페이지 2장(내 정보·설정)은 Figma에서 열리지 않아 그 부분은 못 쟀습니다.</div>`:`<div class="note"><b>못 잰 것 하나.</b> 판독 원자료에는 부품의 <b>위치·여백 값이 들어 있지 않습니다.</b> 여백 실측이 필요하면 Figma를 다시 읽어야 합니다.</div>`}
+${M?`<div class="note"><b>간격은 Figma를 다시 읽어 쟀습니다</b> (2-b 참조). 페이지 1장(내 정보)은 Figma에서 열리지 않아 그 부분은 못 쟀습니다.</div>`:`<div class="note"><b>못 잰 것 하나.</b> 판독 원자료에는 부품의 <b>위치·여백 값이 들어 있지 않습니다.</b> 여백 실측이 필요하면 Figma를 다시 읽어야 합니다.</div>`}
 
 <h2>1. 화면 뼈대 — 위아래 틀</h2>
 <p class="sub">화면 ${d.counts.fullScreens}장의 위·아래 틀 유무</p>
