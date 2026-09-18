@@ -15,6 +15,7 @@ const URLS = {
   designManifest: url("../design/design.manifest.json"),
   registryIndex: url("../registry/components/index.json"),
   catalog: url("../registry/patterns/builder/catalog.json"),
+  compositionRules: url("../registry/governance/composition-rules.json"),
   imported: url("../reports/pattern-builder/imported/index.json"),
   importedBase: url("../reports/pattern-builder/"),
   componentManifest: (id) => url(`../ui-library/dist/components/${id}.manifest.json`),
@@ -31,14 +32,25 @@ const TYPO = ["typo-title-32b", "typo-title-24b", "typo-title-20b", "typo-title-
   "typo-body-16r", "typo-body-14r", "typo-body-14m", "typo-body-12r", "typo-body-12m"];
 /* ── 묶음 규칙 (조합 규칙) ─────────────────────────────────────
    부품 하나로는 표현이 안 되고 화면마다 달라지지도 않는 "붙이는 규칙"이다.
-   ⚠️ 아직 정본이 아니다 — river 승인 전까지는 빌더 기본값(후보)이며, 화면 설정에서 눈으로 바꿔 정한다.
-   승인되면 이 표를 정본의 「묶음 규칙」 칸으로 옮기고 빌더는 읽기만 한다. */
+   **정본은 registry/governance/composition-rules.json** (river 승인 2026-09-18).
+   빌더는 자기 값을 갖지 않는다 — 아래는 정본을 못 읽었을 때의 최후 대비값이고,
+   loadAll() 이 정본을 읽어 덮어쓴다. 값을 바꾸려면 정본을 고친다. */
 const GROUP_RULES = {
   insideGap: "8",                 // 한 묶음 안 줄 사이 (라벨 ↔ 인풋 등)
   betweenGap: "24",               // 묶음과 묶음 사이
+  rowGap: "12",                   // 한 줄 안에서 부품끼리
   labelTypo: "typo-body-14m",     // 라벨 글자
   labelColor: "body-primary"
 };
+function applyCompositionRules(rules) {
+  if (!rules) return;
+  const sp = rules.spacing || {};
+  if (sp.insideGroup?.value) GROUP_RULES.insideGap = String(sp.insideGroup.value);
+  if (sp.betweenGroups?.value) GROUP_RULES.betweenGap = String(sp.betweenGroups.value);
+  if (sp.insideRow?.value) GROUP_RULES.rowGap = String(sp.insideRow.value);
+  if (rules.label?.typography) GROUP_RULES.labelTypo = rules.label.typography;
+  if (rules.label?.color) GROUP_RULES.labelColor = rules.label.color;
+}
 
 const TEXT_COLORS = [
   ["title-primary", "제목 기본"], ["title-secondary", "제목 보조"],
@@ -70,6 +82,9 @@ async function loadAll() {
     fetchJson(URLS.catalog).catch(() => ({ patterns: [] }))
   ]);
   Object.assign(data, { dist, design, registry, catalog });
+  /* 묶음 규칙은 정본에서 읽는다 — 빌더가 자기 값을 갖지 않게 한다. */
+  data.compositionRules = await fetchJson(URLS.compositionRules).catch(() => null);
+  applyCompositionRules(data.compositionRules);
   // 가져온 화면 목록은 없을 수도 있다(아직 아무것도 안 가져왔을 때) — 없으면 빈 목록으로 둔다.
   data.imported = await fetchJson(URLS.imported).catch(() => ({ screens: [] }));
   const ids = (dist.components || []).map((c) => (typeof c === "string" ? c : c.id));
@@ -196,7 +211,7 @@ function findBlock(blockId) {
   for (const r of state.rows) { const b = r.blocks.find((x) => x.id === blockId); if (b) return { row: r, block: b }; }
   return null;
 }
-function newRow() { return { id: nextId("r"), gap: "12", align: "start", marginBottom: "16", blocks: [] }; }
+function newRow() { return { id: nextId("r"), gap: GROUP_RULES.rowGap, align: "start", marginBottom: "16", blocks: [] }; }
 
 /* 줄이 어느 묶음에 속하는지 — row.attached 는 "윗줄과 한 묶음" 표시다.
    묶음 안이면 좁은 간격, 묶음이 끝나는 줄이면 넓은 간격을 쓴다(줄마다 손으로 맞추지 않는다). */
