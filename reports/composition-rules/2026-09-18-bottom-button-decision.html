@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>화면 맨 아래 붙는 버튼 — 정할까요?</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="../../ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="../../ui-library/dist/assets/css/typography.css">
+<link rel="stylesheet" href="../../ui-library/dist/s1-ui.css">
+<style>
+:root{--pg-bg:#fff;--pg-fg:#1a1a1a;--pg-dim:#666;--pg-line:#e5e5e5;--pg-head:#f6f7f8;--pg-warn:#b45309;--pg-warnbg:#fffbeb;--pg-ok:#0b5fff;--pg-okbg:#f6f9ff}
+*{box-sizing:border-box}
+body{margin:0;padding:32px 16px 96px;font:15px/1.7 "Pretendard",-apple-system,"Apple SD Gothic Neo",sans-serif;color:var(--pg-fg);background:var(--pg-bg)}
+.wrap{max-width:980px;margin:0 auto}
+h1{font-size:26px;margin:0 0 4px}
+h2{font-size:20px;margin:48px 0 8px;padding-top:16px;border-top:2px solid var(--pg-fg)}
+h3{font-size:16px;margin:24px 0 6px}
+p.lead{color:var(--pg-dim);margin:0 0 20px}
+p.sub{color:var(--pg-dim);font-size:13px;margin:10px 0 4px}
+table{border-collapse:collapse;width:100%;margin:8px 0;font-size:14px}
+th,td{border:1px solid var(--pg-line);padding:6px 10px;text-align:left}
+th{background:var(--pg-head);font-weight:600;white-space:nowrap}
+td.n{text-align:right;font-variant-numeric:tabular-nums}
+.note{background:var(--pg-warnbg);border-left:4px solid var(--pg-warn);padding:12px 16px;margin:16px 0;font-size:14px}
+.note b{color:var(--pg-warn)}
+.pick{background:var(--pg-okbg);border:1px solid #cfe0ff;border-radius:8px;padding:4px 20px 16px}
+
+/* ── 화면 모형: 실제 배포본 부품을 360 폭 화면에 올린다 ── */
+.shelf{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start;margin:16px 0}
+.case{width:360px}
+.case>figcaption{font-size:13px;color:var(--pg-dim);margin-bottom:6px;line-height:1.5}
+.case>figcaption b{color:var(--pg-fg);display:block;font-size:14px}
+.phone{width:360px;border:1px solid var(--pg-line);border-radius:4px;overflow:hidden;position:relative;background:var(--color-surface-default,#fff)}
+.body{padding:20px;min-height:170px}
+.body .row{height:14px;border-radius:2px;background:var(--color-bg-subtle,#f1f2f4);margin-bottom:10px}
+.body .row.s{width:55%} .body .row.m{width:80%}
+/* 하단 고정 띠 — 이 페이지가 판단 대상으로 제안하는 자리 */
+.band{padding:20px;background:var(--color-surface-default,#fff);border-top:0}
+.band.two{display:flex;gap:8px}
+.band.two>*{flex:1}
+.navbar{display:flex;justify-content:space-around;background:var(--color-navigation-bg,#fff);border-top:1px solid var(--color-border-subtle,#eee)}
+/* 치수 표시 */
+.dim{position:relative}
+.dim::after{content:attr(data-dim);position:absolute;right:4px;top:3px;font-size:10px;font-weight:700;color:var(--pg-ok);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.band.mark{outline:2px dashed var(--pg-ok);outline-offset:-2px}
+.legend{font-size:12px;color:var(--pg-ok);margin-top:6px}
+.legend i{font-style:normal;border-bottom:2px dashed var(--pg-ok);padding-bottom:1px}
+</style></head><body><div class="wrap">
+
+<h1>화면 맨 아래 붙는 버튼 — 정할까요?</h1>
+<p class="lead">아래 그림의 <b style="color:#0b5fff">파란 점선 칸</b>이 정할 대상입니다.
+모두앱 레거시 <b>160개 화면</b>에 똑같은 모양으로 있었는데, 우리 부품 쪽에는 이 칸에 대한 약속이 없습니다.
+<span style="color:var(--pg-dim)">(2026-09-18)</span></p>
+
+<div class="note"><b>미리 알려드릴 건 하나예요.</b> 버튼 자체는 이미 있습니다 — 새로 만들 게 아닙니다.
+없는 것은 <b>“버튼을 화면 맨 아래에 어떻게 붙이나”</b>라는 약속뿐입니다. 위아래로 얼마를 띄우고, 내비 바로 위에 두는지 같은 것.</div>
+
+<h2>1. 어떤 모양인지</h2>
+<p class="sub">아래 셋은 실제 배포본 부품(제목줄·버튼·내비)을 그대로 올려 만든 것입니다. 레거시 화면에서 잰 자리에 놓았고, 버튼 높이는 우리 부품 값(48)입니다 — 레거시는 50이었습니다.</p>
+
+<div class="shelf">
+
+  <figure class="case">
+    <figcaption><b>가장 흔한 모양 — 158개 화면</b>본문 아래, 내비 위에 버튼 하나가 가로로 꽉 찹니다.</figcaption>
+    <div class="phone">
+      <header data-s1-component="mobile-header" data-variant="standard-title">
+        <button type="button" data-s1-part="back" aria-label="이전"><span data-s1-part="back-icon" aria-hidden="true"></span></button>
+        <h1 data-s1-part="title">아이디 찾기</h1>
+        <span data-s1-part="spacer" aria-hidden="true"></span>
+      </header>
+      <div class="body">
+        <div class="row m"></div><div class="row"></div><div class="row s"></div>
+        <div class="row m"></div><div class="row s"></div>
+      </div>
+      <div class="band mark dim" data-dim="88">
+        <button type="button" data-s1-component="button" data-variant="primary" data-size="lg" style="width:100%">
+          <span data-s1-part="label">인증 요청</span>
+        </button>
+      </div>
+      <nav class="navbar" aria-label="주요 메뉴" role="tablist">
+        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="home" role="tab" aria-selected="true"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">홈</span></button>
+        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="search" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">검색</span></button>
+        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="notification" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">알림</span></button>
+        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="settings" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">설정</span></button>
+      </nav>
+    </div>
+    <p class="legend"><i>점선 칸</i> = 정할 대상. 위 20 + 버튼 48 + 아래 20 = <b>88</b></p>
+  </figure>
+
+  <figure class="case">
+    <figcaption><b>버튼 둘이 나란히 — 6개 화면</b>같은 칸 안에 버튼 두 개가 반씩 나눠 섭니다.</figcaption>
+    <div class="phone">
+      <header data-s1-component="mobile-header" data-variant="standard-title">
+        <button type="button" data-s1-part="back" aria-label="이전"><span data-s1-part="back-icon" aria-hidden="true"></span></button>
+        <h1 data-s1-part="title">제휴 카드</h1>
+        <span data-s1-part="spacer" aria-hidden="true"></span>
+      </header>
+      <div class="body">
+        <div class="row m"></div><div class="row"></div><div class="row s"></div>
+        <div class="row m"></div><div class="row s"></div>
+      </div>
+      <div class="band two mark dim" data-dim="88">
+        <button type="button" data-s1-component="button" data-variant="blue-line" data-size="lg"><span data-s1-part="label">1544-7000</span></button>
+        <button type="button" data-s1-component="button" data-variant="primary" data-size="lg"><span data-s1-part="label">카드 신청하기</span></button>
+      </div>
+      <nav class="navbar" aria-label="주요 메뉴" role="tablist">
+        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="home" role="tab" aria-selected="true"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">홈</span></button>
+        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="search" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">검색</span></button>
+        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="notification" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">알림</span></button>
+        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="settings" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">설정</span></button>
+      </nav>
+    </div>
+    <p class="legend"><i>점선 칸</i> = 같은 칸(88), 버튼만 둘</p>
+  </figure>
+
+  <figure class="case">
+    <figcaption><b>내비가 없는 경우 — 4개 화면</b>덮는 화면(팝업·시트)에서는 버튼 칸이 화면 맨 아래에 그대로 붙습니다.</figcaption>
+    <div class="phone">
+      <header data-s1-component="mobile-header" data-variant="standard-title">
+        <button type="button" data-s1-part="back" aria-label="이전"><span data-s1-part="back-icon" aria-hidden="true"></span></button>
+        <h1 data-s1-part="title">검색</h1>
+        <span data-s1-part="spacer" aria-hidden="true"></span>
+      </header>
+      <div class="body" style="min-height:218px">
+        <div class="row m"></div><div class="row"></div><div class="row s"></div>
+        <div class="row m"></div><div class="row s"></div><div class="row"></div>
+      </div>
+      <div class="band mark dim" data-dim="88">
+        <button type="button" data-s1-component="button" data-variant="primary" data-size="lg" style="width:100%">
+          <span data-s1-part="label">검색</span>
+        </button>
+      </div>
+    </div>
+    <p class="legend"><i>점선 칸</i> = 같은 칸(88), 내비 없이 화면 바닥에 붙음</p>
+  </figure>
+
+</div>
+
+<h2>2. 레거시에서 잰 숫자</h2>
+<p class="sub">폭 360 화면에서 맨 아래에 붙은 버튼 169건 · 화면 160장. 반올림하지 않았습니다.</p>
+<table>
+<thead><tr><th>무엇</th><th>값</th><th>몇 건</th><th>다음으로 흔한 값</th></tr></thead>
+<tbody>
+<tr><td>버튼이 든 칸의 높이</td><td><b>90</b></td><td class="n">158</td><td>74 (6건) · 94 (1건)</td></tr>
+<tr><td>칸 위쪽 여백</td><td><b>20</b></td><td class="n">156</td><td>21·25 (각 2건)</td></tr>
+<tr><td>칸 아래쪽 여백</td><td><b>20</b></td><td class="n">157</td><td>25 (2건) · 3 (2건)</td></tr>
+<tr><td>버튼 크기</td><td><b>320 × 50</b></td><td class="n">158 / 164</td><td>156 폭 (6건, 버튼 둘일 때)</td></tr>
+<tr><td>버튼 왼쪽 자리</td><td><b>20</b></td><td class="n">159</td><td>184 (3건, 오른쪽 버튼)</td></tr>
+<tr><td>칸 아래에 내비가 있음</td><td><b>있음</b></td><td class="n">165</td><td>없음 (4건)</td></tr>
+</tbody>
+</table>
+<p class="sub">즉 <b>90 = 위 20 + 버튼 50 + 아래 20</b> 입니다. 160장 중 158장이 이 한 모양입니다.</p>
+
+<h2>3. 우리 부품으로 만들면</h2>
+<div class="note"><b>버튼 높이만 다릅니다.</b> 레거시 버튼은 50, 우리 부품은 <b>48</b>입니다(V3.0에서 다시 재서 정한 값).
+그래서 칸 높이도 90이 아니라 <b>88</b>이 됩니다. 레거시 50을 따라가지 않습니다 — 옛 값이 새 값을 덮지 않는다는 원칙 그대로입니다.</div>
+<table>
+<thead><tr><th></th><th>레거시(옛 자료)</th><th>우리 부품으로</th></tr></thead>
+<tbody>
+<tr><td>칸 위쪽 여백</td><td class="n">20</td><td class="n"><b>20</b></td></tr>
+<tr><td>버튼 높이</td><td class="n">50</td><td class="n"><b>48</b></td></tr>
+<tr><td>칸 아래쪽 여백</td><td class="n">20</td><td class="n"><b>20</b></td></tr>
+<tr><td>칸 전체 높이</td><td class="n">90</td><td class="n"><b>88</b></td></tr>
+<tr><td>버튼 좌우 여백</td><td class="n">20</td><td class="n"><b>20</b> (화면 여백과 같음)</td></tr>
+</tbody>
+</table>
+
+<h2>4. 정해주실 것</h2>
+<div class="pick">
+<h3>(A) 규칙으로 적는다 &nbsp;<span style="font-weight:400;color:var(--pg-dim);font-size:14px">— 권합니다</span></h3>
+<p>“화면 맨 아래 버튼 칸은 위 20 · 아래 20, 내비가 있으면 그 바로 위”를 뼈대 규칙에 적습니다.
+새 부품을 만드는 게 아니라 <b>놓는 자리만</b> 정하는 것이라 가볍습니다. 빌더가 바로 이 칸을 만들 수 있게 됩니다.</p>
+
+<h3>(B) 부품으로도 만든다</h3>
+<p>칸 자체를 부품으로 등록합니다. 개발자가 한 덩어리로 가져다 쓸 수 있지만, 새 부품이라 원본 대조 검수를 거쳐야 하고 시간이 더 걸립니다.</p>
+
+<h3>(C) 그냥 둔다</h3>
+<p>지금처럼 «미작성»으로 비워 둡니다. 빌더가 이 자리를 만들 때 매번 사람에게 물어보거나, 스스로 값을 지어내게 됩니다.</p>
+</div>
+
+<p class="sub">잰 자료: 모두앱 레거시 Figma 10개 페이지 · 폭 360 화면 593장 중 맨 아래 버튼이 있는 160장.
+화면 모형은 실제 배포본 부품(제목줄·버튼·내비)을 그대로 올린 것이고, 본문의 회색 줄만 자리 채움입니다.</p>
+</div></body></html>
