@@ -6,8 +6,22 @@
   "kind": "legacy",
   "canonPolicy": "separate",
   "note": "이미 운영 중이고 레거시 가이드라인이 적용된 서비스. 이 묶음의 값은 정본에 합치지 않는다 (river 결정 2026-09-18).",
-  "source": { "figmaFileKey": "aLxh458o9BRXklRFM3YYzk", "readAt": "2026-09-18", "screens": 547 },
+  "source": {
+    "figmaFileKey": "aLxh458o9BRXklRFM3YYzk",
+    "readAt": "2026-09-18",
+    "screens": 1084,
+    "method": "rest"
+  },
   "inventory": "reports/pattern-builder/inventory/modu-app/",
-  "chapters": ["screen-skeleton.md", "composition.md", "states.md", "content.md", "naming.md"],
-  "extras": { "list-row": "이 묶음 전용 목록 줄 — 정본 부품 아님" }
+  "chapters": [
+    "screen-types.md",
+    "screen-skeleton.md",
+    "composition.md",
+    "states.md",
+    "content.md",
+    "naming.md"
+  ],
+  "extras": {
+    "list-row": "이 묶음 전용 목록 줄 — 정본 부품 아님"
+  }
 }

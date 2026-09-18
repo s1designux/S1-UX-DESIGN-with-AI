@@ -11,6 +11,7 @@
 
 | 파일 | 내용 |
 |---|---|
+| `screen-types.md` | 화면이 어떤 갈래로 갈리나 (16갈래) |
 | `screen-skeleton.md` | 모두앱 화면의 세로 칸 나눔·폭·여백 |
 | `composition.md` | 모두앱에서 쓰인 부품 조합 |
 | `states.md` | 모두앱 화면 상태 |

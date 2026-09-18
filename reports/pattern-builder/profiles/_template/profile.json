@@ -6,7 +6,18 @@
   "kind": "legacy | new",
   "canonPolicy": "separate | feeds-canon",
   "note": "이 묶음을 왜 따로 두는지 한 줄",
-  "source": { "figmaFileKey": "", "readAt": "", "screens": 0 },
+  "source": {
+    "figmaFileKey": "",
+    "readAt": "",
+    "screens": 0
+  },
   "inventory": "reports/pattern-builder/inventory/<service>/",
-  "chapters": ["screen-skeleton.md", "composition.md", "states.md", "content.md", "naming.md"]
+  "chapters": [
+    "screen-types.md",
+    "screen-skeleton.md",
+    "composition.md",
+    "states.md",
+    "content.md",
+    "naming.md"
+  ]
 }

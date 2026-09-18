@@ -1,0 +1,25 @@
+{
+  "service": "삼성통근버스",
+  "kind": "legacy",
+  "canonPolicy": "separate",
+  "source": {
+    "figmaFileKey": "ET7lj2id4VAHQ5JeDX0EZ2",
+    "readAt": "2026-09-18",
+    "method": "rest",
+    "screens": 112
+  },
+  "inventory": "reports/pattern-builder/inventory/commuter-bus/",
+  "chapters": [
+    "screen-types.md",
+    "screen-skeleton.md",
+    "composition.md",
+    "states.md",
+    "content.md",
+    "naming.md"
+  ],
+  "id": "pcweb-busadmin",
+  "medium": "pcweb",
+  "mediumLabel": "PC 웹 (관리자)",
+  "filter": "Admin 페이지의 폭 1920 화면",
+  "note": "관리자가 사이트를 관리하는 화면. 탑승자 화면과 쓰는 사람도 화면 구성도 달라 따로 둔다."
+}

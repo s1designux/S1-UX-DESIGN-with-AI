@@ -1,0 +1,4462 @@
+{
+  "_meta": {
+    "source": "figma:rest",
+    "page": {
+      "name": "GUI_설계변경 2차_20251023",
+      "nodeId": "19294:24383"
+    },
+    "generatedAt": "2026-09-18",
+    "note": "기계 판독 원자료. 사람이 해석한 판독표는 같은 폴더의 md 에 쓴다."
+  },
+  "screenCount": 45,
+  "screens": [
+    {
+      "id": "19454:91720",
+      "name": "Frame 2087327771",
+      "section": "작업용",
+      "size": "3406x2074",
+      "nodeCount": 162,
+      "components": [
+        {
+          "name": "C/List/tabel_bar",
+          "count": 18
+        },
+        {
+          "name": "C/ICON/Detail",
+          "count": 17
+        },
+        {
+          "name": "M/DROPDOWN/Detail/filter",
+          "count": 15
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 15
+        },
+        {
+          "name": "C/LIST/Detail",
+          "count": 14
+        },
+        {
+          "name": "C/ICON/Detail/List/more",
+          "count": 14
+        },
+        {
+          "name": "C/ICON/Map",
+          "count": 11
+        },
+        {
+          "name": "C/BTN/Map/busstation",
+          "count": 9
+        },
+        {
+          "name": "C/TOOLTIP/Map/busstation",
+          "count": 9
+        },
+        {
+          "name": "W/Icon/Map/busstation_sel",
+          "count": 9
+        },
+        {
+          "name": "M/ICON/Header",
+          "count": 8
+        },
+        {
+          "name": "M/phone_navi",
+          "count": 4
+        },
+        {
+          "name": "M/StatusBar ",
+          "count": 4
+        },
+        {
+          "name": "M/Header/Title",
+          "count": 4
+        },
+        {
+          "name": "M/SELECT-CONTROL/Map/my-location",
+          "count": 3
+        },
+        {
+          "name": "C/ICON/Map/current_location",
+          "count": 3
+        },
+        {
+          "name": "C/BTN/Map/research",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Map/refresh",
+          "count": 1
+        },
+        {
+          "name": "C/INPUT-FIELD/search",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Account/Password",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19454:91718",
+      "name": "Frame 2087327770",
+      "section": "작업용",
+      "size": "2638x1747",
+      "nodeCount": 94,
+      "components": [
+        {
+          "name": "M/ICON/Home/category-more",
+          "count": 8
+        },
+        {
+          "name": "M/BTN/Bottom-menu",
+          "count": 8
+        },
+        {
+          "name": "M/ICON/Bottom-menu",
+          "count": 8
+        },
+        {
+          "name": "M/BTN/Home/text-btn",
+          "count": 6
+        },
+        {
+          "name": "M/TAG/Home/bookmark",
+          "count": 6
+        },
+        {
+          "name": "C/TAG/Detail/Status",
+          "count": 6
+        },
+        {
+          "name": "C/ICON/Detail/List/more",
+          "count": 6
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 4
+        },
+        {
+          "name": "M/BTN/Home/bookmark-alarm",
+          "count": 4
+        },
+        {
+          "name": "C/INPUT-FIELD/search",
+          "count": 4
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 4
+        },
+        {
+          "name": "M/ICON/Header/alarm",
+          "count": 4
+        },
+        {
+          "name": "M/ICON/Home/list",
+          "count": 4
+        },
+        {
+          "name": "new",
+          "count": 3
+        },
+        {
+          "name": "M/POPUP/Home/noti",
+          "count": 3
+        },
+        {
+          "name": "M/CARD/Home/bookmark/go-to-work",
+          "count": 2
+        },
+        {
+          "name": "M/CARD/Home/bookmark/leave work",
+          "count": 2
+        },
+        {
+          "name": "M/CARD/Home/bookmark/Shuttle",
+          "count": 2
+        },
+        {
+          "name": "M/BOTTOM-BAR",
+          "count": 2
+        },
+        {
+          "name": "M/phone_navi",
+          "count": 2
+        },
+        {
+          "name": "M/StatusBar ",
+          "count": 2
+        },
+        {
+          "name": "M/Header/Home",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/Header",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "id": "19294:24384",
+      "name": "웹_홈_일반사용자",
+      "section": "작업용",
+      "size": "1920x1545",
+      "nodeCount": 58,
+      "components": [
+        {
+          "name": "\bW/BTN/Home/board",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Home/Board",
+          "count": 4
+        },
+        {
+          "name": "\bW/CARD/Home/buscompany_list",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Home/timetable",
+          "count": 3
+        },
+        {
+          "name": "W/ICON/Home",
+          "count": 3
+        },
+        {
+          "name": "W/Footer",
+          "count": 2
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 2
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 2
+        },
+        {
+          "name": "W/INPUT-FIELD/Home/search",
+          "count": 2
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 2
+        },
+        {
+          "name": "W/BTN/Home/Banner/slide",
+          "count": 2
+        },
+        {
+          "name": "W/BTN/Home/shortcut",
+          "count": 2
+        },
+        {
+          "name": "W/ICON/Home/Table-btn/more",
+          "count": 2
+        },
+        {
+          "name": "W/DROPDOWN/combobox/company",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Search/search_map",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Search/map-search",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Home/Banner",
+          "count": 1
+        },
+        {
+          "name": "W/PAGINATION/Home/Banner/pause",
+          "count": 1
+        },
+        {
+          "name": "ic_more_w",
+          "count": 1
+        },
+        {
+          "name": "\bW/CARD/Home/buscompany_list/case",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Banner",
+          "count": 1
+        },
+        {
+          "name": "W/TAG/Top/banner/noti",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Top/noti_more",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Top/noti_more",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19294:145377",
+      "name": "노선 검색_메인 화면_수정",
+      "section": "작업용",
+      "size": "1920x1200",
+      "nodeCount": 87,
+      "components": [
+        {
+          "name": "C/List/tabel_bar",
+          "count": 9
+        },
+        {
+          "name": "C/BTN/Map/busstation",
+          "count": 7
+        },
+        {
+          "name": "C/TOOLTIP/Map/busstation",
+          "count": 7
+        },
+        {
+          "name": "W/Icon/Map/busstation_sel",
+          "count": 7
+        },
+        {
+          "name": "C/ICON/Map",
+          "count": 7
+        },
+        {
+          "name": "W/LIST/Detail",
+          "count": 7
+        },
+        {
+          "name": "C/ICON/Detail",
+          "count": 7
+        },
+        {
+          "name": "W/ICON/Detail/list/arrow_right",
+          "count": 7
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/TAB/route-search/pannel",
+          "count": 2
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Detail/panel",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "M/DROPDOWN/filter/company",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "C/INPUT-FIELD/search",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Map/Zoom",
+          "count": 1
+        },
+        {
+          "name": "W/SELECT-CONTROL/Map/view",
+          "count": 1
+        },
+        {
+          "name": "W/SELECT-CONTROL/Map/my-location",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19294:60609",
+      "name": "게시판 공통_페이지네이션_normal",
+      "section": "작업용",
+      "size": "1920x1900",
+      "nodeCount": 144,
+      "components": [
+        {
+          "name": "W//Board/List_inquiry board/list",
+          "count": 15
+        },
+        {
+          "name": "W/ICON/Board/notice",
+          "count": 15
+        },
+        {
+          "name": "W/ICON/Board/re",
+          "count": 15
+        },
+        {
+          "name": "W/ICON/Board/lock",
+          "count": 15
+        },
+        {
+          "name": "W/ICON/Home/Noti/new",
+          "count": 15
+        },
+        {
+          "name": "W/ICON/Board/attached",
+          "count": 15
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 4
+        },
+        {
+          "name": "W/TAB/timetable",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 2
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/INPUT-FIELD/search/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19312:147672",
+      "name": "게시판 공통_페이지네이션_normal",
+      "section": "작업용",
+      "size": "1920x1500",
+      "nodeCount": 111,
+      "components": [
+        {
+          "name": "W//Board/List_inquiry board/list",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Board/notice",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Board/re",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Board/lock",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Home/Noti/new",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Board/attached",
+          "count": 10
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 4
+        },
+        {
+          "name": "W/TAB/timetable",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 2
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/INPUT-FIELD/search/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19312:150168",
+      "name": "게시판 공통_페이지네이션_normal",
+      "section": "작업용",
+      "size": "1920x1600",
+      "nodeCount": 114,
+      "components": [
+        {
+          "name": "W//Board/List_inquiry board/list",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Board/notice",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Board/re",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Board/lock",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Home/Noti/new",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Board/attached",
+          "count": 10
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 4
+        },
+        {
+          "name": "W/TAB/timetable",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 2
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/INPUT-FIELD/search/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19294:145732",
+      "name": "게시판 공통_페이지네이션_normal",
+      "section": "작업용",
+      "size": "1920x1500",
+      "nodeCount": 114,
+      "components": [
+        {
+          "name": "W//Board/List_inquiry board/list",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Board/notice",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Board/re",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Board/lock",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Home/Noti/new",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Board/attached",
+          "count": 10
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 4
+        },
+        {
+          "name": "W/TAB/timetable",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 2
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 2
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/INPUT-FIELD/search/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19294:121830",
+      "name": "게시판 공통_상세 화면(일반 사용자 ver)",
+      "section": "작업용",
+      "size": "1920x1813",
+      "nodeCount": 30,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 6
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/Board/table/form_label_next",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19312:147722",
+      "name": "게시판 공통_상세 화면(일반 사용자 ver)",
+      "section": "작업용",
+      "size": "1920x1700",
+      "nodeCount": 27,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 6
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/Board/table/form_label_next",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19383:66261",
+      "name": "게시판 공통_상세 화면(일반 사용자 ver)",
+      "section": "작업용",
+      "size": "1920x1813",
+      "nodeCount": 30,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 6
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/Board/table/form_label_next",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19294:145781",
+      "name": "게시판 공통_상세 화면(일반 사용자 ver)",
+      "section": "작업용",
+      "size": "1920x1605",
+      "nodeCount": 30,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 6
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/Board/table/form_label_next",
+          "count": 2
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19294:143452",
+      "name": "출퇴근 버스 신청_Default Case",
+      "section": "작업용",
+      "size": "1920x1832",
+      "nodeCount": 140,
+      "components": [
+        {
+          "name": "C/TAG/Status",
+          "count": 60
+        },
+        {
+          "name": "W/Request/list",
+          "count": 15
+        },
+        {
+          "name": "C/TAG/Apply/My",
+          "count": 15
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 2
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/INPUT-FIELD/search/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19312:147781",
+      "name": "출퇴근 버스 신청_Default Case",
+      "section": "작업용",
+      "size": "1920x1400",
+      "nodeCount": 107,
+      "components": [
+        {
+          "name": "C/TAG/Status",
+          "count": 40
+        },
+        {
+          "name": "W/Request/list",
+          "count": 10
+        },
+        {
+          "name": "C/TAG/Apply/My",
+          "count": 10
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 2
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/INPUT-FIELD/search/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19383:66901",
+      "name": "출퇴근 버스 신청_Default Case",
+      "section": "작업용",
+      "size": "1920x1500",
+      "nodeCount": 110,
+      "components": [
+        {
+          "name": "C/TAG/Status",
+          "count": 40
+        },
+        {
+          "name": "W/Request/list",
+          "count": 10
+        },
+        {
+          "name": "C/TAG/Apply/My",
+          "count": 10
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 2
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 2
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/INPUT-FIELD/search/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19294:145840",
+      "name": "출퇴근 버스 신청_Default Case",
+      "section": "작업용",
+      "size": "1920x1540",
+      "nodeCount": 110,
+      "components": [
+        {
+          "name": "C/TAG/Status",
+          "count": 40
+        },
+        {
+          "name": "W/Request/list",
+          "count": 10
+        },
+        {
+          "name": "C/TAG/Apply/My",
+          "count": 10
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 2
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 2
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/INPUT-FIELD/search/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19312:146972",
+      "name": "노선 검색_메인 화면_Default",
+      "section": "작업용",
+      "size": "1920x1381",
+      "nodeCount": 87,
+      "components": [
+        {
+          "name": "C/List/tabel_bar",
+          "count": 9
+        },
+        {
+          "name": "C/BTN/Map/busstation",
+          "count": 7
+        },
+        {
+          "name": "C/TOOLTIP/Map/busstation",
+          "count": 7
+        },
+        {
+          "name": "W/Icon/Map/busstation_sel",
+          "count": 7
+        },
+        {
+          "name": "C/ICON/Map",
+          "count": 7
+        },
+        {
+          "name": "W/LIST/Detail",
+          "count": 7
+        },
+        {
+          "name": "C/ICON/Detail",
+          "count": 7
+        },
+        {
+          "name": "W/ICON/Detail/list/arrow_right",
+          "count": 7
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/TAB/route-search/pannel",
+          "count": 2
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Detail/panel",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "M/DROPDOWN/filter/company",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "C/INPUT-FIELD/search",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Map/Zoom",
+          "count": 1
+        },
+        {
+          "name": "W/SELECT-CONTROL/Map/view",
+          "count": 1
+        },
+        {
+          "name": "W/SELECT-CONTROL/Map/my-location",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19312:147832",
+      "name": "노선 검색_메인 화면_Default",
+      "section": "작업용",
+      "size": "1920x1381",
+      "nodeCount": 84,
+      "components": [
+        {
+          "name": "C/List/tabel_bar",
+          "count": 9
+        },
+        {
+          "name": "C/BTN/Map/busstation",
+          "count": 7
+        },
+        {
+          "name": "C/TOOLTIP/Map/busstation",
+          "count": 7
+        },
+        {
+          "name": "W/Icon/Map/busstation_sel",
+          "count": 7
+        },
+        {
+          "name": "C/ICON/Map",
+          "count": 7
+        },
+        {
+          "name": "W/LIST/Detail",
+          "count": 7
+        },
+        {
+          "name": "C/ICON/Detail",
+          "count": 7
+        },
+        {
+          "name": "W/ICON/Detail/list/arrow_right",
+          "count": 7
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/TAB/route-search/pannel",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Detail/panel",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "M/DROPDOWN/filter/company",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "C/INPUT-FIELD/search",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Map/Zoom",
+          "count": 1
+        },
+        {
+          "name": "W/SELECT-CONTROL/Map/view",
+          "count": 1
+        },
+        {
+          "name": "W/SELECT-CONTROL/Map/my-location",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19312:149813",
+      "name": "노선 검색_메인 화면_Default",
+      "section": "작업용",
+      "size": "1920x1381",
+      "nodeCount": 87,
+      "components": [
+        {
+          "name": "C/List/tabel_bar",
+          "count": 9
+        },
+        {
+          "name": "C/BTN/Map/busstation",
+          "count": 7
+        },
+        {
+          "name": "C/TOOLTIP/Map/busstation",
+          "count": 7
+        },
+        {
+          "name": "W/Icon/Map/busstation_sel",
+          "count": 7
+        },
+        {
+          "name": "C/ICON/Map",
+          "count": 7
+        },
+        {
+          "name": "W/LIST/Detail",
+          "count": 7
+        },
+        {
+          "name": "C/ICON/Detail",
+          "count": 7
+        },
+        {
+          "name": "W/ICON/Detail/list/arrow_right",
+          "count": 7
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/TAB/route-search/pannel",
+          "count": 2
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Detail/panel",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "M/DROPDOWN/filter/company",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "C/INPUT-FIELD/search",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Map/Zoom",
+          "count": 1
+        },
+        {
+          "name": "W/SELECT-CONTROL/Map/view",
+          "count": 1
+        },
+        {
+          "name": "W/SELECT-CONTROL/Map/my-location",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19312:147327",
+      "name": "웹_홈_로그인 시",
+      "section": "작업용",
+      "size": "1920x1938",
+      "nodeCount": 55,
+      "components": [
+        {
+          "name": "\bW/BTN/Home/board",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Home/Board",
+          "count": 4
+        },
+        {
+          "name": "\bW/CARD/Home/buscompany_list",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Home/timetable",
+          "count": 3
+        },
+        {
+          "name": "W/ICON/Home",
+          "count": 3
+        },
+        {
+          "name": "W/BTN/Home/Banner/slide",
+          "count": 2
+        },
+        {
+          "name": "W/INPUT-FIELD/Home/search",
+          "count": 2
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 2
+        },
+        {
+          "name": "W/BTN/Home/shortcut",
+          "count": 2
+        },
+        {
+          "name": "W/ICON/Home/Table-btn/more",
+          "count": 2
+        },
+        {
+          "name": "\bW/PAGINATION/Home/Banner",
+          "count": 1
+        },
+        {
+          "name": "W/PAGINATION/Home/Banner/pause",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/company",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Search/search_map",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Search/map-search",
+          "count": 1
+        },
+        {
+          "name": "ic_more_w",
+          "count": 1
+        },
+        {
+          "name": "\bW/CARD/Home/buscompany_list/case",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Banner",
+          "count": 1
+        },
+        {
+          "name": "W/TAG/Top/banner/noti",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Top/noti_more",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Top/noti_more",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19312:147889",
+      "name": "웹_홈_로그인 시",
+      "section": "작업용",
+      "size": "1920x1750",
+      "nodeCount": 55,
+      "components": [
+        {
+          "name": "\bW/BTN/Home/board",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Home/Board",
+          "count": 4
+        },
+        {
+          "name": "\bW/CARD/Home/buscompany_list",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Home/timetable",
+          "count": 3
+        },
+        {
+          "name": "W/ICON/Home",
+          "count": 3
+        },
+        {
+          "name": "W/BTN/Home/Banner/slide",
+          "count": 2
+        },
+        {
+          "name": "W/INPUT-FIELD/Home/search",
+          "count": 2
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 2
+        },
+        {
+          "name": "W/BTN/Home/shortcut",
+          "count": 2
+        },
+        {
+          "name": "W/ICON/Home/Table-btn/more",
+          "count": 2
+        },
+        {
+          "name": "\bW/PAGINATION/Home/Banner",
+          "count": 1
+        },
+        {
+          "name": "W/PAGINATION/Home/Banner/pause",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/company",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Search/search_map",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Search/map-search",
+          "count": 1
+        },
+        {
+          "name": "ic_more_w",
+          "count": 1
+        },
+        {
+          "name": "\bW/CARD/Home/buscompany_list/case",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Banner",
+          "count": 1
+        },
+        {
+          "name": "W/TAG/Top/banner/noti",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Top/noti_more",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Top/noti_more",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19312:149461",
+      "name": "웹_홈_로그인 시",
+      "section": "작업용",
+      "size": "1920x1672",
+      "nodeCount": 55,
+      "components": [
+        {
+          "name": "\bW/BTN/Home/board",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Home/Board",
+          "count": 4
+        },
+        {
+          "name": "\bW/CARD/Home/buscompany_list",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Home/timetable",
+          "count": 3
+        },
+        {
+          "name": "W/ICON/Home",
+          "count": 3
+        },
+        {
+          "name": "W/BTN/Home/Banner/slide",
+          "count": 2
+        },
+        {
+          "name": "W/INPUT-FIELD/Home/search",
+          "count": 2
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 2
+        },
+        {
+          "name": "W/BTN/Home/shortcut",
+          "count": 2
+        },
+        {
+          "name": "W/ICON/Home/Table-btn/more",
+          "count": 2
+        },
+        {
+          "name": "\bW/PAGINATION/Home/Banner",
+          "count": 1
+        },
+        {
+          "name": "W/PAGINATION/Home/Banner/pause",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/company",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Search/search_map",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Search/map-search",
+          "count": 1
+        },
+        {
+          "name": "ic_more_w",
+          "count": 1
+        },
+        {
+          "name": "\bW/CARD/Home/buscompany_list/case",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Banner",
+          "count": 1
+        },
+        {
+          "name": "W/TAG/Top/banner/noti",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Top/noti_more",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Top/noti_more",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19312:147669",
+      "name": "AS-IS",
+      "section": "작업용",
+      "size": "698x306",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "19451:5537",
+      "name": "PC Web 상하간격 수정",
+      "section": "작업용",
+      "size": "4883x621",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "19452:29317",
+      "name": "공지사항 N 표시",
+      "section": "작업용",
+      "size": "3297x621",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "19452:29320",
+      "name": "검색 결과화면에서 현위치 주변 검색",
+      "section": "작업용",
+      "size": "7207x621",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "19312:147670",
+      "name": "TO-BE",
+      "section": "작업용",
+      "size": "787x306",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "19423:43388",
+      "name": "브래드크럼 삭제",
+      "section": "작업용",
+      "size": "1606x306",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "19423:43389",
+      "name": "상하간격 조정",
+      "section": "작업용",
+      "size": "1385x306",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "19312:147671",
+      "name": "Rectangle 240653572",
+      "section": "작업용",
+      "size": "2667x13160",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "19423:43390",
+      "name": "Rectangle 240653573",
+      "section": "작업용",
+      "size": "2167x13160",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "19451:28538",
+      "name": "11.7 뉴스공지_2 메인(검색 결과)",
+      "section": "작업용",
+      "size": "360x780",
+      "nodeCount": 27,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 5
+        },
+        {
+          "name": "m_bar",
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
+          "name": "m_chips",
+          "count": 3
+        },
+        {
+          "name": "attached",
+          "count": 3
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "search",
+          "count": 1
+        },
+        {
+          "name": "new",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19451:28706",
+      "name": "12.1 이벤트_4 당첨자 발표",
+      "section": "작업용",
+      "size": "360x1030",
+      "nodeCount": 29,
+      "components": [
+        {
+          "name": "m_bar",
+          "count": 10
+        },
+        {
+          "name": "tabel_bar",
+          "count": 10
+        },
+        {
+          "name": "m_chips",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 1
+        },
+        {
+          "name": "new",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19530:9055",
+      "name": "게시판 공통_페이지네이션_normal",
+      "section": "2차 설계변경 시안",
+      "size": "1920x1450",
+      "nodeCount": 111,
+      "components": [
+        {
+          "name": "W//Board/List_inquiry board/list",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Board/notice",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Board/re",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Board/lock",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Home/Noti/new",
+          "count": 10
+        },
+        {
+          "name": "W/ICON/Board/attached",
+          "count": 10
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 4
+        },
+        {
+          "name": "W/TAB/timetable",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 2
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/INPUT-FIELD/search/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19530:9148",
+      "name": "게시판 공통_상세 화면(일반 사용자 ver)",
+      "section": "2차 설계변경 시안",
+      "size": "1920x1693",
+      "nodeCount": 27,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 6
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/Board/table/form_label_next",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19530:9266",
+      "name": "출퇴근 버스 신청_Default Case",
+      "section": "2차 설계변경 시안",
+      "size": "1920x1392",
+      "nodeCount": 107,
+      "components": [
+        {
+          "name": "C/TAG/Status",
+          "count": 40
+        },
+        {
+          "name": "W/Request/list",
+          "count": 10
+        },
+        {
+          "name": "C/TAG/Apply/My",
+          "count": 10
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 2
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/INPUT-FIELD/search/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19530:9596",
+      "name": "웹_홈_로그인 시",
+      "section": "2차 설계변경 시안",
+      "size": "1920x1651",
+      "nodeCount": 55,
+      "components": [
+        {
+          "name": "\bW/BTN/Home/board",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Home/Board",
+          "count": 4
+        },
+        {
+          "name": "\bW/CARD/Home/buscompany_list",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Home/timetable",
+          "count": 3
+        },
+        {
+          "name": "W/ICON/Home",
+          "count": 3
+        },
+        {
+          "name": "W/BTN/Home/Banner/slide",
+          "count": 2
+        },
+        {
+          "name": "W/INPUT-FIELD/Home/search",
+          "count": 2
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 2
+        },
+        {
+          "name": "W/BTN/Home/shortcut",
+          "count": 2
+        },
+        {
+          "name": "W/ICON/Home/Table-btn/more",
+          "count": 2
+        },
+        {
+          "name": "\bW/PAGINATION/Home/Banner",
+          "count": 1
+        },
+        {
+          "name": "W/PAGINATION/Home/Banner/pause",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/company",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Search/search_map",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Search/map-search",
+          "count": 1
+        },
+        {
+          "name": "ic_more_w",
+          "count": 1
+        },
+        {
+          "name": "\bW/CARD/Home/buscompany_list/case",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Banner",
+          "count": 1
+        },
+        {
+          "name": "W/TAG/Top/banner/noti",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Top/noti_more",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Top/noti_more",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19530:12256",
+      "name": "Mobile_25.11.12_설변",
+      "section": "2차 설계변경 시안",
+      "size": "4965x621",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "19530:12257",
+      "name": "PC_25.11.12_설변",
+      "section": "2차 설계변경 시안",
+      "size": "3974x621",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "19530:8391",
+      "name": "홈_최하단 스크롤",
+      "section": "2차 설계변경 시안",
+      "size": "360x812",
+      "nodeCount": 48,
+      "components": [
+        {
+          "name": "M/ICON/Home/category-more",
+          "count": 4
+        },
+        {
+          "name": "M/BTN/Bottom-menu",
+          "count": 4
+        },
+        {
+          "name": "M/ICON/Bottom-menu",
+          "count": 4
+        },
+        {
+          "name": "M/BTN/Home/text-btn",
+          "count": 3
+        },
+        {
+          "name": "M/TAG/Home/bookmark",
+          "count": 3
+        },
+        {
+          "name": "C/TAG/Detail/Status",
+          "count": 3
+        },
+        {
+          "name": "new",
+          "count": 3
+        },
+        {
+          "name": "C/ICON/Detail/List/more",
+          "count": 3
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 2
+        },
+        {
+          "name": "M/BTN/Home/bookmark-alarm",
+          "count": 2
+        },
+        {
+          "name": "C/INPUT-FIELD/search",
+          "count": 2
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/Header/alarm",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/Home/list",
+          "count": 2
+        },
+        {
+          "name": "M/CARD/Home/bookmark/go-to-work",
+          "count": 1
+        },
+        {
+          "name": "M/CARD/Home/bookmark/leave work",
+          "count": 1
+        },
+        {
+          "name": "M/CARD/Home/bookmark/Shuttle",
+          "count": 1
+        },
+        {
+          "name": "M/POPUP/Home/noti",
+          "count": 1
+        },
+        {
+          "name": "M/BOTTOM-BAR",
+          "count": 1
+        },
+        {
+          "name": "M/phone_navi",
+          "count": 1
+        },
+        {
+          "name": "M/StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "M/Header/Home",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/Header",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19530:8697",
+      "name": "노선 검색 결과 화면_지명 선택 case",
+      "section": "2차 설계변경 시안",
+      "size": "360x812",
+      "nodeCount": 44,
+      "components": [
+        {
+          "name": "C/ICON/Detail",
+          "count": 4
+        },
+        {
+          "name": "M/DROPDOWN/Detail/filter",
+          "count": 4
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 4
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 4
+        },
+        {
+          "name": "C/ICON/Map",
+          "count": 4
+        },
+        {
+          "name": "C/LIST/Detail",
+          "count": 3
+        },
+        {
+          "name": "C/ICON/Detail/List/more",
+          "count": 3
+        },
+        {
+          "name": "C/BTN/Map/busstation",
+          "count": 3
+        },
+        {
+          "name": "C/TOOLTIP/Map/busstation",
+          "count": 3
+        },
+        {
+          "name": "W/Icon/Map/busstation_sel",
+          "count": 3
+        },
+        {
+          "name": "M/ICON/Header",
+          "count": 2
+        },
+        {
+          "name": "M/phone_navi",
+          "count": 1
+        },
+        {
+          "name": "M/StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "M/Header/Title",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/Map/research",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Map/refresh",
+          "count": 1
+        },
+        {
+          "name": "M/SELECT-CONTROL/Map/my-location",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Map/current_location",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19530:8739",
+      "name": "노선 검색 결과 화면_지명 선택 case",
+      "section": "2차 설계변경 시안",
+      "size": "360x812",
+      "nodeCount": 41,
+      "components": [
+        {
+          "name": "C/ICON/Detail",
+          "count": 4
+        },
+        {
+          "name": "M/DROPDOWN/Detail/filter",
+          "count": 4
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 4
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 4
+        },
+        {
+          "name": "C/LIST/Detail",
+          "count": 3
+        },
+        {
+          "name": "C/ICON/Detail/List/more",
+          "count": 3
+        },
+        {
+          "name": "C/BTN/Map/busstation",
+          "count": 3
+        },
+        {
+          "name": "C/TOOLTIP/Map/busstation",
+          "count": 3
+        },
+        {
+          "name": "W/Icon/Map/busstation_sel",
+          "count": 3
+        },
+        {
+          "name": "C/ICON/Map",
+          "count": 3
+        },
+        {
+          "name": "M/ICON/Header",
+          "count": 2
+        },
+        {
+          "name": "M/phone_navi",
+          "count": 1
+        },
+        {
+          "name": "M/StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "M/Header/Title",
+          "count": 1
+        },
+        {
+          "name": "M/SELECT-CONTROL/Map/my-location",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Map/current_location",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19547:10838",
+      "name": "노선 검색_메인 화면_Default_필터 추가(좌측 끝)_간격수정",
+      "section": "2차 설계변경 시안",
+      "size": "1920x1260",
+      "nodeCount": 96,
+      "components": [
+        {
+          "name": "C/List/tabel_bar",
+          "count": 9
+        },
+        {
+          "name": "C/BTN/Map/busstation",
+          "count": 7
+        },
+        {
+          "name": "C/TOOLTIP/Map/busstation",
+          "count": 7
+        },
+        {
+          "name": "W/Icon/Map/busstation_sel",
+          "count": 7
+        },
+        {
+          "name": "C/ICON/Map",
+          "count": 7
+        },
+        {
+          "name": "W/LIST/Detail",
+          "count": 7
+        },
+        {
+          "name": "C/ICON/Detail",
+          "count": 7
+        },
+        {
+          "name": "W/ICON/Detail/list/arrow_right",
+          "count": 7
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 7
+        },
+        {
+          "name": "M/DROPDOWN/Detail/filter",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/TAB/route-search/pannel",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Detail/panel",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "M/DROPDOWN/filter/company",
+          "count": 1
+        },
+        {
+          "name": "C/INPUT-FIELD/search",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/Route/Detail/Filter_scroll",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Map/Zoom",
+          "count": 1
+        },
+        {
+          "name": "W/SELECT-CONTROL/Map/view",
+          "count": 1
+        },
+        {
+          "name": "W/SELECT-CONTROL/Map/my-location",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19550:10358",
+      "name": "노선 검색_메인 화면_Default_필터 추가(좌측 끝)_간격수정",
+      "section": "2차 설계변경 시안",
+      "size": "1920x1260",
+      "nodeCount": 69,
+      "components": [
+        {
+          "name": "C/BTN/Map/busstation",
+          "count": 7
+        },
+        {
+          "name": "C/TOOLTIP/Map/busstation",
+          "count": 7
+        },
+        {
+          "name": "W/Icon/Map/busstation_sel",
+          "count": 7
+        },
+        {
+          "name": "C/ICON/Map",
+          "count": 7
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 7
+        },
+        {
+          "name": "M/DROPDOWN/Detail/filter",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 2
+        },
+        {
+          "name": "W/TAB/route-search/pannel",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Map/Zoom",
+          "count": 1
+        },
+        {
+          "name": "W/SELECT-CONTROL/Map/view",
+          "count": 1
+        },
+        {
+          "name": "W/SELECT-CONTROL/Map/my-location",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Detail/panel",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "M/DROPDOWN/filter/company",
+          "count": 1
+        },
+        {
+          "name": "C/INPUT-FIELD/search",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/emoji",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/Route/Detail/Filter_scroll",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "19550:9850",
+      "name": "노선 검색_메인 화면_노선 검색_결과 없음",
+      "section": "2차 설계변경 시안",
+      "size": "1920x1381",
+      "nodeCount": 48,
+      "components": [
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 7
+        },
+        {
+          "name": "M/DROPDOWN/Detail/filter",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 2
+        },
+        {
+          "name": "W/TAB/route-search/pannel",
+          "count": 2
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/Map/busstation",
+          "count": 1
+        },
+        {
+          "name": "C/TOOLTIP/Map/busstation",
+          "count": 1
+        },
+        {
+          "name": "W/Icon/Map/busstation_sel",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Map",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Detail/panel",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "M/DROPDOWN/filter/company",
+          "count": 1
+        },
+        {
+          "name": "C/INPUT-FIELD/search",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/emoji",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/Route/Detail/Filter_scroll",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Map/Zoom",
+          "count": 1
+        },
+        {
+          "name": "W/SELECT-CONTROL/Map/view",
+          "count": 1
+        },
+        {
+          "name": "W/SELECT-CONTROL/Map/my-location",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "componentUsage": [
+    {
+      "name": "C/TAG/Status",
+      "count": 220
+    },
+    {
+      "name": "W/GNB/topbar/tab",
+      "count": 108
+    },
+    {
+      "name": "C/List/tabel_bar",
+      "count": 96
+    },
+    {
+      "name": "C/ICON/Detail/Filter/arrow",
+      "count": 74
+    },
+    {
+      "name": "C/ICON/Map",
+      "count": 61
+    },
+    {
+      "name": "C/ICON/Detail",
+      "count": 60
+    },
+    {
+      "name": "W/BTN/Detail/Pagination/page_num",
+      "count": 60
+    },
+    {
+      "name": "Btn/Page/Num/Normal Copy",
+      "count": 60
+    },
+    {
+      "name": "C/BTN/Map/busstation",
+      "count": 58
+    },
+    {
+      "name": "C/TOOLTIP/Map/busstation",
+      "count": 58
+    },
+    {
+      "name": "W/Icon/Map/busstation_sel",
+      "count": 58
+    },
+    {
+      "name": "W//Board/List_inquiry board/list",
+      "count": 55
+    },
+    {
+      "name": "W/ICON/Board/notice",
+      "count": 55
+    },
+    {
+      "name": "W/ICON/Board/re",
+      "count": 55
+    },
+    {
+      "name": "W/ICON/Board/lock",
+      "count": 55
+    },
+    {
+      "name": "W/ICON/Home/Noti/new",
+      "count": 55
+    },
+    {
+      "name": "W/ICON/Board/attached",
+      "count": 55
+    },
+    {
+      "name": "W/Request/list",
+      "count": 55
+    },
+    {
+      "name": "C/TAG/Apply/My",
+      "count": 55
+    },
+    {
+      "name": "C/BTN/basic_S",
+      "count": 40
+    },
+    {
+      "name": "W/BTN/Deatail/Pagination/page_arrow",
+      "count": 40
+    },
+    {
+      "name": "W/ICON/Detail/Pagination/arrow",
+      "count": 40
+    },
+    {
+      "name": "M/DROPDOWN/Detail/filter",
+      "count": 38
+    },
+    {
+      "name": "W/LIST/Detail",
+      "count": 35
+    },
+    {
+      "name": "W/ICON/Detail/list/arrow_right",
+      "count": 35
+    },
+    {
+      "name": "W/ICON/Header/combobox_arrow",
+      "count": 32
+    },
+    {
+      "name": "ic_more_w",
+      "count": 31
+    },
+    {
+      "name": "W/Board/table/form_label_title",
+      "count": 30
+    },
+    {
+      "name": "C/ICON/Detail/List/more",
+      "count": 29
+    },
+    {
+      "name": "C/Icon/Input/search",
+      "count": 29
+    },
+    {
+      "name": "W/Footer",
+      "count": 28
+    },
+    {
+      "name": "C/IMG/Logo/S1_g",
+      "count": 28
+    },
+    {
+      "name": "\bW/TOP-MENU/Header",
+      "count": 27
+    },
+    {
+      "name": "W/DROPDOWN/Header/language",
+      "count": 27
+    },
+    {
+      "name": "W/ICON/Header",
+      "count": 27
+    },
+    {
+      "name": "W/BTN/Header/myaccount",
+      "count": 27
+    },
+    {
+      "name": "\bW/TOP-MENU/GNB",
+      "count": 27
+    },
+    {
+      "name": "C/IMG/Logo/Samung+bus",
+      "count": 27
+    },
+    {
+      "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+      "count": 27
+    },
+    {
+      "name": "W/ICON/GNB",
+      "count": 27
+    },
+    {
+      "name": "C/LIST/Detail",
+      "count": 20
+    },
+    {
+      "name": "\bW/BTN/Home/board",
+      "count": 20
+    },
+    {
+      "name": "W/ICON/Home/Board",
+      "count": 20
+    },
+    {
+      "name": "\bW/CARD/Home/buscompany_list",
+      "count": 20
+    },
+    {
+      "name": "W/TAB/timetable",
+      "count": 20
+    },
+    {
+      "name": "W/DROPDOWN/combobox/timetable",
+      "count": 20
+    },
+    {
+      "name": "M/ICON/Header",
+      "count": 15
+    },
+    {
+      "name": "W/BTN/Home/timetable",
+      "count": 15
+    },
+    {
+      "name": "W/ICON/Home",
+      "count": 15
+    },
+    {
+      "name": "m_bar",
+      "count": 15
+    },
+    {
+      "name": "tabel_bar",
+      "count": 15
+    },
+    {
+      "name": "C/INPUT-FIELD/search",
+      "count": 14
+    },
+    {
+      "name": "W/TAB/route-search/pannel",
+      "count": 14
+    },
+    {
+      "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+      "count": 13
+    },
+    {
+      "name": "M/ICON/Home/category-more",
+      "count": 12
+    },
+    {
+      "name": "M/BTN/Bottom-menu",
+      "count": 12
+    },
+    {
+      "name": "M/ICON/Bottom-menu",
+      "count": 12
+    },
+    {
+      "name": "W/INPUT-FIELD/Home/search",
+      "count": 10
+    },
+    {
+      "name": "W/BTN/Home/Banner/slide",
+      "count": 10
+    },
+    {
+      "name": "W/BTN/Home/shortcut",
+      "count": 10
+    },
+    {
+      "name": "W/ICON/Home/Table-btn/more",
+      "count": 10
+    },
+    {
+      "name": "W/INPUT-FIELD/search/timetable",
+      "count": 10
+    },
+    {
+      "name": "\bW/PAGINATION/Detail",
+      "count": 10
+    },
+    {
+      "name": "W/Board/table/form_label_next",
+      "count": 10
+    },
+    {
+      "name": "M/phone_navi",
+      "count": 9
+    },
+    {
+      "name": "M/StatusBar ",
+      "count": 9
+    },
+    {
+      "name": "M/BTN/Home/text-btn",
+      "count": 9
+    },
+    {
+      "name": "M/TAG/Home/bookmark",
+      "count": 9
+    },
+    {
+      "name": "C/TAG/Detail/Status",
+      "count": 9
+    },
+    {
+      "name": "new",
+      "count": 8
+    },
+    {
+      "name": "W/BTN/Detail/panel",
+      "count": 7
+    },
+    {
+      "name": "icon/combobox_arrow",
+      "count": 7
+    },
+    {
+      "name": "M/DROPDOWN/filter/company",
+      "count": 7
+    },
+    {
+      "name": "W/BTN/Map/Zoom",
+      "count": 7
+    },
+    {
+      "name": "W/SELECT-CONTROL/Map/view",
+      "count": 7
+    },
+    {
+      "name": "W/SELECT-CONTROL/Map/my-location",
+      "count": 7
+    },
+    {
+      "name": "M/Header/Title",
+      "count": 6
+    },
+    {
+      "name": "M/BTN/Home/bookmark-alarm",
+      "count": 6
+    },
+    {
+      "name": "M/ICON/Header/alarm",
+      "count": 6
+    },
+    {
+      "name": "M/ICON/Home/list",
+      "count": 6
+    },
+    {
+      "name": "menu_arrow_right",
+      "count": 6
+    },
+    {
+      "name": "m_chips",
+      "count": 6
+    },
+    {
+      "name": "M/SELECT-CONTROL/Map/my-location",
+      "count": 5
+    },
+    {
+      "name": "C/ICON/Map/current_location",
+      "count": 5
+    },
+    {
+      "name": "W/DROPDOWN/combobox/company",
+      "count": 5
+    },
+    {
+      "name": "W/BTN/Search/search_map",
+      "count": 5
+    },
+    {
+      "name": "W/ICON/Search/map-search",
+      "count": 5
+    },
+    {
+      "name": "\bW/PAGINATION/Home/Banner",
+      "count": 5
+    },
+    {
+      "name": "W/PAGINATION/Home/Banner/pause",
+      "count": 5
+    },
+    {
+      "name": "\bW/CARD/Home/buscompany_list/case",
+      "count": 5
+    },
+    {
+      "name": "\bW/TOP-MENU/Banner",
+      "count": 5
+    },
+    {
+      "name": "W/TAG/Top/banner/noti",
+      "count": 5
+    },
+    {
+      "name": "W/BTN/Top/noti_more",
+      "count": 5
+    },
+    {
+      "name": "W/ICON/Top/noti_more",
+      "count": 5
+    },
+    {
+      "name": "W/List/Popup/buscompany",
+      "count": 5
+    },
+    {
+      "name": "W/ICON/Popup/no-list",
+      "count": 5
+    },
+    {
+      "name": "C/BTN/basic_L",
+      "count": 5
+    },
+    {
+      "name": "M/POPUP/Home/noti",
+      "count": 4
+    },
+    {
+      "name": "M/CARD/Home/bookmark/go-to-work",
+      "count": 3
+    },
+    {
+      "name": "M/CARD/Home/bookmark/leave work",
+      "count": 3
+    },
+    {
+      "name": "M/CARD/Home/bookmark/Shuttle",
+      "count": 3
+    },
+    {
+      "name": "M/BOTTOM-BAR",
+      "count": 3
+    },
+    {
+      "name": "M/Header/Home",
+      "count": 3
+    },
+    {
+      "name": "attached",
+      "count": 3
+    },
+    {
+      "name": "C/BTN/Route/Detail/Filter_scroll",
+      "count": 3
+    },
+    {
+      "name": "C/BTN/Map/research",
+      "count": 2
+    },
+    {
+      "name": "C/ICON/Map/refresh",
+      "count": 2
+    },
+    {
+      "name": "phone_navi",
+      "count": 2
+    },
+    {
+      "name": "m_StatusBar ",
+      "count": 2
+    },
+    {
+      "name": "appbar_sub",
+      "count": 2
+    },
+    {
+      "name": "icon/arrow",
+      "count": 2
+    },
+    {
+      "name": "C/IMG/emoji",
+      "count": 2
+    },
+    {
+      "name": "C/Icon/Account/Password",
+      "count": 1
+    },
+    {
+      "name": "search",
+      "count": 1
+    }
+  ]
+}

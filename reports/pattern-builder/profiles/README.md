@@ -8,6 +8,7 @@
 ```
 profiles/<묶음 id>/
   profile.json        어느 매체 · 어느 서비스 · 레거시인가 새것인가
+  screen-types.md     화면이 어떤 갈래로 갈리나
   screen-skeleton.md  화면의 세로 칸 나눔 · 폭 · 여백
   composition.md      어떤 부품을 어디에 쓰나
   states.md           화면이 가질 수 있는 상태

@@ -1,0 +1,25 @@
+{
+  "service": "삼성통근버스",
+  "kind": "legacy",
+  "canonPolicy": "separate",
+  "source": {
+    "figmaFileKey": "ET7lj2id4VAHQ5JeDX0EZ2",
+    "readAt": "2026-09-18",
+    "method": "rest",
+    "screens": 633
+  },
+  "inventory": "reports/pattern-builder/inventory/commuter-bus/",
+  "chapters": [
+    "screen-types.md",
+    "screen-skeleton.md",
+    "composition.md",
+    "states.md",
+    "content.md",
+    "naming.md"
+  ],
+  "id": "app-bus",
+  "medium": "app",
+  "mediumLabel": "휴대폰 앱",
+  "filter": "폭 360 화면",
+  "note": "탑승자가 쓰는 앱 화면. 같은 서비스의 웹은 pcweb-bus 묶음에 따로 있다."
+}
