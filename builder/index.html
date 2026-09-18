@@ -41,24 +41,23 @@
   </div>
 
   <div class="pb">
-    <!-- 왼쪽: 패턴 · 부품 -->
-    <section class="pb-panel" aria-label="패턴과 부품">
-      <div class="pb-panel-head"><h2 class="pb-panel-title">패턴 · 부품</h2></div>
+    <!-- 왼쪽: 컴포넌트 / 패턴 -->
+    <section class="pb-panel" aria-label="컴포넌트와 패턴">
+      <div class="pb-tabs" role="tablist" aria-label="컴포넌트와 패턴 전환">
+        <button type="button" class="pb-tab" id="pb-tab-parts" role="tab" aria-selected="true" aria-controls="pb-pane-parts" data-tab="parts">컴포넌트</button>
+        <button type="button" class="pb-tab" id="pb-tab-patterns" role="tab" aria-selected="false" aria-controls="pb-pane-patterns" data-tab="patterns">패턴</button>
+      </div>
       <div class="pb-panel-body">
-        <input type="search" class="pb-search" id="pb-search" placeholder="패턴·부품 검색 (예: 버튼, 표, 탭)" aria-label="패턴과 부품 검색">
-        <p class="pb-empty" id="pb-search-empty" hidden>찾는 이름이 없습니다.</p>
-        <p class="pb-note">카드를 <strong>끌어다</strong> 미리보기의 줄이나 줄 사이에 놓으세요. 누르면 "놓는 방식"대로 들어갑니다. 크기·변형은 카드에서 미리 고릅니다.</p>
-        <p class="pb-group-label">놓는 방식</p>
-        <div class="pb-place" role="radiogroup" aria-label="부품을 놓는 방식">
-          <button type="button" class="pb-btn pb-btn-sm" data-place="below" aria-checked="true" role="radio">↓ 아래 새 줄</button>
-          <button type="button" class="pb-btn pb-btn-sm" data-place="beside" aria-checked="false" role="radio">→ 선택한 줄 옆</button>
+        <div id="pb-pane-parts" role="tabpanel" aria-labelledby="pb-tab-parts">
+          <input type="search" class="pb-search" id="pb-search-parts" placeholder="컴포넌트 검색 (예: 버튼, 표, 탭)" aria-label="컴포넌트 검색">
+          <p class="pb-empty" id="pb-empty-parts" hidden>찾는 컴포넌트가 없습니다.</p>
+          <div id="pb-part-groups"></div>
         </div>
-        <p class="pb-note">부품을 누르면 기본으로 새 줄에 내려가고, "옆"을 고르면 지금 선택한 줄에 나란히 들어갑니다.</p>
-        <p class="pb-group-label">패턴</p>
-        <div class="pb-list" id="pb-pattern-list"></div>
-        <p class="pb-group-label">레이아웃 보조</p>
-        <div class="pb-list" id="pb-helper-list"></div>
-        <div id="pb-part-groups"></div>
+        <div id="pb-pane-patterns" role="tabpanel" aria-labelledby="pb-tab-patterns" hidden>
+          <input type="search" class="pb-search" id="pb-search-patterns" placeholder="패턴 검색" aria-label="패턴 검색">
+          <p class="pb-empty" id="pb-empty-patterns" hidden>찾는 패턴이 없습니다.</p>
+          <div id="pb-pattern-groups"></div>
+        </div>
       </div>
     </section>
 
@@ -68,10 +67,18 @@
         <h2 class="pb-panel-title">미리보기</h2>
         <span class="pb-note pb-note-inline" id="pb-frame-info"></span>
       </div>
+      <div class="pb-stage-tools">
+        <span class="pb-tools-label">놓는 방식</span>
+        <div class="pb-place" role="radiogroup" aria-label="부품을 놓는 방식">
+          <button type="button" class="pb-btn pb-btn-sm" data-place="below" aria-checked="true" role="radio">↓ 아래 새 줄</button>
+          <button type="button" class="pb-btn pb-btn-sm" data-place="beside" aria-checked="false" role="radio">→ 선택한 줄 옆</button>
+        </div>
+        <span class="pb-spacer"></span>
+        <button type="button" class="pb-btn pb-btn-sm" id="pb-add-row">+ 행 추가</button>
+      </div>
       <div class="pb-stage">
         <p class="pb-frame-label" id="pb-frame-label"></p>
         <div class="pb-canvas-wrap" id="pb-canvas-wrap"><div class="pb-canvas" id="pb-canvas"></div></div>
-        <div class="pb-row-add"><button type="button" class="pb-btn pb-btn-sm" id="pb-add-row">+ 행 추가</button></div>
       </div>
     </section>
 

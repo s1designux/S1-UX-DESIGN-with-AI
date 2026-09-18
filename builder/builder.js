@@ -116,10 +116,13 @@ const SEARCH_KO = {
   "gnb-sub-menu-item": ["하위 메뉴 항목", "서브 메뉴 줄"]
 };
 const koLabel = (id) => SEARCH_KO[id]?.[0] || "";
+/* 분류 이름도 정본은 영문이다. 옆에 붙이는 한글은 빌더 화면용 표시어. */
+const CATEGORY_KO = { actions: "동작", selection: "선택", form: "입력", table: "표", navigation: "이동", overlay: "겹쳐 뜨는 것" };
+const categoryTitle = (cat) => CATEGORY_KO[cat] ? `${categoryLabel(cat)} · ${CATEGORY_KO[cat]}` : categoryLabel(cat);
 /* 검색 대상 글 — 정본 이름·id·분류 + registry 의 한글 사용맥락 + 위 화면용 찾기말 */
 function searchText(id) {
   const spec = data.specs?.[id] || {};
-  const bits = [registryName(id), id, categoryLabel(registryCategory(id)), (SEARCH_KO[id] || []).join(" "),
+  const bits = [registryName(id), id, categoryTitle(registryCategory(id)), (SEARCH_KO[id] || []).join(" "),
     JSON.stringify(spec.usage || ""), JSON.stringify(spec.summary || ""), spec._meta?.title || ""];
   return bits.join(" ").replace(/[{}\[\]"\\]/g, " ");
 }
@@ -481,19 +484,54 @@ function renderToolbar() {
   els.distVersion.textContent = `s1-ui ${data.dist?.version || ""}`;
 }
 
+/* 패턴 탭 — 최상위 갈래(화면 종류)만 접힌 채로 보이고, 펼치면 그 안의 패턴이 나온다. */
 function renderPatternList() {
-  const list = els.patternList;
   const brk = state.meta.platform;
   const items = (data.catalog?.patterns || []).filter((p) => ["verified", "approved"].includes(p.status))
     .filter((p) => !p.platform || p.platform === brk)
     .filter((p) => !p.service || p.service === "core" || p.service === state.meta.service);
-  if (!items.length) {
-    list.innerHTML = `<div class="pb-empty">아직 등록된 패턴이 없습니다.<br>레거시 화면을 읽어 검증을 마친 패턴이 여기에 올라옵니다.</div>`;
-    return;
+  const groups = new Map();
+  for (const p of items) {
+    const key = p.group || p.kind || "기타";
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(p);
   }
-  list.innerHTML = items.map((p) => `<button type="button" class="pb-item" data-pattern="${p.id}" data-search="${escapeAttr(`${p.name} ${p.id} ${p.description || ""}`)}"><span>${p.name}</span><small>${p.service || "core"} · ${p.platform || ""}</small></button>`).join("");
-  list.querySelectorAll("[data-pattern]").forEach((b) => b.addEventListener("click", () => loadPattern(b.dataset.pattern)));
+  const helperHtml = `<div class="pb-list">${HELPERS.map(([k, n, d]) =>
+    `<div class="pb-item pb-item-helper" data-helper="${k}" data-search="${escapeAttr(`${n} ${d} ${k}`)}" draggable="true" role="button" tabindex="0"><span>${n}</span><small>${d}</small></div>`).join("")}</div>`;
+  const patternHtml = items.length
+    ? [...groups.entries()].map(([g, list]) => accordion(g, `${list.length}개`, `<div class="pb-list">${list.map((p) =>
+        `<button type="button" class="pb-item" data-pattern="${p.id}" data-search="${escapeAttr(`${p.name} ${p.id} ${g} ${p.description || ""}`)}"><span>${escapeHtml(p.name)}</span><small>${escapeHtml(p.service || "core")}</small></button>`).join("")}</div>`)).join("")
+    : `<div class="pb-empty" data-keep>아직 등록된 패턴이 없습니다.<br>레거시 화면을 읽어 검증을 마친 패턴이 여기에 올라옵니다.</div>`;
+  els.patternGroups.innerHTML = patternHtml + accordion("레이아웃 보조", `${HELPERS.length}개`, helperHtml);
+  wireAccordions(els.patternGroups);
+  els.patternGroups.querySelectorAll("[data-pattern]").forEach((b) => b.addEventListener("click", () => loadPattern(b.dataset.pattern)));
+  wireHelpers(els.patternGroups);
   applySearch();
+}
+
+/* 접힘·펼침 한 칸 */
+function accordion(title, meta, bodyHtml, open = false) {
+  return `<div class="pb-group pb-acc" data-open="${open}">
+    <button type="button" class="pb-acc-head" aria-expanded="${open}"><span class="pb-acc-caret" aria-hidden="true">▸</span><span class="pb-acc-title">${escapeHtml(title)}</span><small>${escapeHtml(meta)}</small></button>
+    <div class="pb-acc-body">${bodyHtml}</div>
+  </div>`;
+}
+function wireAccordions(scope) {
+  scope.querySelectorAll(".pb-acc-head").forEach((head) => head.addEventListener("click", () => {
+    const acc = head.closest(".pb-acc");
+    const open = acc.dataset.open !== "true";
+    acc.dataset.open = String(open);
+    head.setAttribute("aria-expanded", String(open));
+    if (open) acc.dispatchEvent(new CustomEvent("pb-open", { bubbles: true }));
+  }));
+}
+function wireHelpers(scope) {
+  scope.querySelectorAll("[data-helper]").forEach((b) => {
+    b.addEventListener("click", () => addBlock({ kind: b.dataset.helper }));
+    b.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); addBlock({ kind: b.dataset.helper }); } });
+    b.addEventListener("dragstart", (e) => startDrag(e, { kind: b.dataset.helper }));
+    b.addEventListener("dragend", endDrag);
+  });
 }
 
 function loadPattern(id) {
@@ -512,26 +550,26 @@ const HELPERS = [
   ["divider", "구분선", "1px 가는 선"],
   ["space", "빈 칸", "세로 간격"]
 ];
-function renderHelperList() {
-  els.helperList.innerHTML = HELPERS.map(([k, n, d]) => `<div class="pb-item pb-item-helper" data-helper="${k}" data-search="${escapeAttr(`${n} ${d} ${k}`)}" draggable="true" role="button" tabindex="0"><span>${n}</span><small>${d}</small></div>`).join("");
-  els.helperList.querySelectorAll("[data-helper]").forEach((b) => {
-    b.addEventListener("click", () => addBlock({ kind: b.dataset.helper }));
-    b.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); addBlock({ kind: b.dataset.helper }); } });
-    b.addEventListener("dragstart", (e) => startDrag(e, { kind: b.dataset.helper }));
-    b.addEventListener("dragend", endDrag);
-  });
-  applySearch();
-}
-
-/* ── 검색 — 패턴·레이아웃 보조·부품 이름으로 거른다 ── */
+/* ── 검색 — 탭마다 따로. 찾는 말이 있으면 해당 갈래를 자동으로 펼친다. ── */
 function applySearch() {
-  const q = (els.search?.value || "").trim().toLowerCase();
-  const items = document.querySelectorAll("#pb-pattern-list [data-search], #pb-helper-list [data-search], #pb-part-groups [data-search]");
-  items.forEach((el) => { el.hidden = Boolean(q) && !el.dataset.search.toLowerCase().includes(q); });
-  document.querySelectorAll("#pb-part-groups .pb-group").forEach((g) => {
-    g.hidden = [...g.querySelectorAll("[data-search]")].every((el) => el.hidden);
-  });
-  if (els.searchEmpty) els.searchEmpty.hidden = !q || [...items].some((el) => !el.hidden);
+  for (const pane of ["parts", "patterns"]) {
+    const box = document.querySelector(`#pb-${pane === "parts" ? "part" : "pattern"}-groups`);
+    if (!box) continue;
+    const q = (els[`search_${pane}`]?.value || "").trim().toLowerCase();
+    const items = box.querySelectorAll("[data-search]");
+    items.forEach((el) => { el.hidden = Boolean(q) && !el.dataset.search.toLowerCase().includes(q); });
+    box.querySelectorAll(".pb-group").forEach((g) => {
+      const all = [...g.querySelectorAll("[data-search]")];
+      g.hidden = all.length > 0 && all.every((el) => el.hidden);
+      if (q && !g.hidden && g.classList.contains("pb-acc") && g.dataset.open !== "true") {  // 찾는 말이 있으면 펼쳐서 보여준다
+        g.dataset.open = "true";
+        g.querySelector(".pb-acc-head")?.setAttribute("aria-expanded", "true");
+        g.dispatchEvent(new CustomEvent("pb-open", { bubbles: true }));   // 그 안의 미리보기 그림을 그리게 알린다
+      }
+    });
+    const empty = els[`empty_${pane}`];
+    if (empty) empty.hidden = !q || [...items].some((el) => !el.hidden);
+  }
 }
 
 /* ── 드래그 앤 드롭 — 팔레트 카드·캔버스 요소를 줄이나 줄 사이로 끌어 놓는다 ── */
@@ -612,8 +650,7 @@ function renderPartGroups() {
   els.partGroups.innerHTML = sorted.map(([cat, list]) => {
     const visible = list.filter((id) => availableOn(id, brk));   // 이 플랫폼 배포본이 없는 부품은 목록에서 뺀다
     if (!visible.length) return "";
-    return `<div class="pb-group"><p class="pb-group-label">${categoryLabel(cat)}</p>
-    <div class="pb-list">${visible.map((id) => {
+    return accordion(categoryTitle(cat), `${visible.length}개`, `<div class="pb-list">${visible.map((id) => {
       const sizes = sizeAxis(id, brk), variants = variantAxis(id);
       const c = chosenAxis[id] = { size: sizes.includes(chosenAxis[id]?.size) ? chosenAxis[id].size : sizes[0], variant: variants.includes(chosenAxis[id]?.variant) ? chosenAxis[id].variant : variants[0] };
       return `<div class="pb-card" data-part="${id}" data-search="${escapeAttr(searchText(id))}" draggable="true" role="button" tabindex="0" aria-label="${escapeAttr(registryName(id))} 놓기">
@@ -622,11 +659,15 @@ function renderPartGroups() {
         <div class="pb-thumb" aria-hidden="true"></div>
         ${chips(id, "variant", variants, c.variant)}${chips(id, "size", sizes, c.size)}
       </div>`;
-    }).join("")}</div></div>`;
+    }).join("")}</div>`);
   }).join("");
+  wireAccordions(els.partGroups);
   els.partGroups.querySelectorAll("[data-part]").forEach((card) => {
     const id = card.dataset.part;
-    renderThumb(card.querySelector(".pb-thumb"), id, brk);
+    let drawn = false;
+    const draw = () => { if (!drawn) { drawn = true; renderThumb(card.querySelector(".pb-thumb"), id, brk); } };
+    const acc = card.closest(".pb-acc");
+    if (acc?.dataset.open === "true") draw(); else acc?.addEventListener("pb-open", draw);
     card.addEventListener("click", (e) => { if (e.target.closest("[data-chip]")) return; addComponent(id, chosenAxis[id]); });
     card.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); addComponent(id, chosenAxis[id]); } });
     card.addEventListener("dragstart", (e) => startDrag(e, { component: id, ...chosenAxis[id] }));
@@ -636,7 +677,7 @@ function renderPartGroups() {
       const axis = chip.closest("[data-axis]").dataset.axis;
       chosenAxis[id][axis] = chip.dataset.chip;
       chip.parentElement.querySelectorAll("[data-chip]").forEach((c) => c.setAttribute("aria-pressed", String(c === chip)));
-      renderThumb(card.querySelector(".pb-thumb"), id, brk);
+      drawn = false; draw();
     }));
   });
   applySearch();
@@ -994,9 +1035,10 @@ function escapeAttr(v) { return escapeHtml(v).replaceAll('"', "&quot;"); }
 async function main() {
   Object.assign(els, {
     name: $("#pb-name"), service: $("#pb-service"), platform: $("#pb-platform"), role: $("#pb-role"), theme: $("#pb-theme"),
-    distVersion: $("#pb-dist-version"), patternList: $("#pb-pattern-list"), helperList: $("#pb-helper-list"), partGroups: $("#pb-part-groups"),
+    distVersion: $("#pb-dist-version"), patternGroups: $("#pb-pattern-groups"), partGroups: $("#pb-part-groups"),
     canvas: $("#pb-canvas"), canvasWrap: $("#pb-canvas-wrap"), frameLabel: $("#pb-frame-label"), frameInfo: $("#pb-frame-info"), props: $("#pb-props"), toast: $("#pb-toast"),
-    search: $("#pb-search"), searchEmpty: $("#pb-search-empty"),
+    search_parts: $("#pb-search-parts"), search_patterns: $("#pb-search-patterns"),
+    empty_parts: $("#pb-empty-parts"), empty_patterns: $("#pb-empty-patterns"),
     requestDialog: $("#pb-request-dialog"), reqName: $("#pb-req-name"), reqPurpose: $("#pb-req-purpose"), reqNotes: $("#pb-req-notes"), reqPreview: $("#pb-req-preview")
   });
   try { await loadAll(); }
@@ -1007,10 +1049,18 @@ async function main() {
   }
   if (!restoreFromHash() && !restore()) state = freshState();
 
-  renderToolbar(); renderPatternList(); renderHelperList(); renderPartGroups();
+  renderToolbar(); renderPatternList(); renderPartGroups();
   await update();
 
-  els.search.addEventListener("input", applySearch);
+  els.search_parts.addEventListener("input", applySearch);
+  els.search_patterns.addEventListener("input", applySearch);
+  document.querySelectorAll("[data-tab]").forEach((tab) => tab.addEventListener("click", () => {
+    document.querySelectorAll("[data-tab]").forEach((t) => {
+      const on = t === tab;
+      t.setAttribute("aria-selected", String(on));
+      document.querySelector(`#pb-pane-${t.dataset.tab}`).hidden = !on;
+    });
+  }));
   window.addEventListener("resize", fitCanvas);
   if (window.ResizeObserver) new ResizeObserver(() => fitCanvas()).observe(els.canvasWrap.parentElement);
   els.name.addEventListener("input", () => { state.meta.name = els.name.value; persist(); });

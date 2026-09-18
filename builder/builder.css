@@ -46,7 +46,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 /* 왼쪽: 패턴 · 부품 */
 .pb-place { display: flex; gap: 6px; }
-.pb-place .pb-btn { flex: 1; }
+.pb-place .pb-btn { flex: 0 0 auto; }
 .pb-place .pb-btn[aria-checked="true"] { background: var(--color-button-bg-primary--default); border-color: var(--color-button-border-primary--default); color: var(--color-button-label-primary--default); }
 .pb-list { display: flex; flex-direction: column; gap: 4px; }
 .pb-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 7px 10px; border: 1px solid var(--color-line-gray-subtle); border-radius: var(--radius-8); background: var(--color-bg-level-0); cursor: pointer; font-size: 12px; color: var(--color-text-body-primary); text-align: left; }
@@ -55,6 +55,28 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .pb-item small { color: var(--color-text-body-tertiary); font-size: 11px; }
 .pb-search { width: 100%; font-size: 12px; padding: 7px 10px; border: 1px solid var(--color-line-gray-subtle); border-radius: var(--radius-8); background: var(--color-bg-level-0); color: var(--color-text-body-primary); margin-bottom: 8px; }
 .pb-search:focus { outline: 2px solid var(--color-line-blue); outline-offset: 1px; }
+
+/* 컴포넌트 / 패턴 탭 */
+.pb-tabs { display: flex; border-bottom: 1px solid var(--color-line-gray-subtle); }
+.pb-tab { flex: 1; font-size: 12px; font-weight: 600; padding: 10px 8px; border: 0; border-bottom: 2px solid transparent; background: none; color: var(--color-text-body-tertiary); cursor: pointer; }
+.pb-tab:hover { color: var(--color-text-body-primary); }
+.pb-tab[aria-selected="true"] { color: var(--color-text-state-accent); border-bottom-color: var(--color-line-blue); }
+
+/* 접힘·펼침 목록 */
+.pb-acc + .pb-acc { margin-top: 6px; }
+.pb-acc-head { display: flex; align-items: center; gap: 8px; width: 100%; padding: 9px 10px; border: 1px solid var(--color-line-gray-subtle); border-radius: var(--radius-8); background: var(--color-bg-level-0); color: var(--color-text-body-primary); font-size: 12px; font-weight: 600; cursor: pointer; text-align: left; }
+.pb-acc-head:hover { background: var(--color-bg-level-1); }
+.pb-acc-title { flex: 1; }
+.pb-acc-head small { font-size: 10px; font-weight: 500; color: var(--color-text-body-tertiary); }
+.pb-acc-caret { display: inline-block; font-size: 10px; color: var(--color-text-body-tertiary); transition: transform .15s; }
+.pb-acc[data-open="true"] .pb-acc-caret { transform: rotate(90deg); }
+.pb-acc[data-open="true"] .pb-acc-head { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.pb-acc-body { display: none; padding: 8px; border: 1px solid var(--color-line-gray-subtle); border-top: 0; border-radius: 0 0 var(--radius-8) var(--radius-8); }
+.pb-acc[data-open="true"] .pb-acc-body { display: block; }
+
+/* 미리보기 도구줄 */
+.pb-stage-tools { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 8px 14px; border-bottom: 1px solid var(--color-line-gray-subtle); }
+.pb-tools-label { font-size: 11px; font-weight: 700; color: var(--color-text-body-tertiary); }
 
 /* 부품 카드 — 미리보기 + 크기/변형 선택 + 드래그 */
 .pb-card { border: 1px solid var(--color-line-gray-subtle); border-radius: var(--radius-8); background: var(--color-bg-level-0); padding: 8px; cursor: grab; }
@@ -99,7 +121,6 @@ body[data-pb-dragging] .pb-gap { height: 28px; margin: 4px 0; border-color: var(
 .pb-canvas .s1-block[data-pb-block]:hover { outline-color: var(--color-line-gray-subtle); }
 .pb-canvas .s1-block[data-pb-selected="true"] { outline: 2px solid var(--color-line-blue); }
 .pb-canvas .s1-divider { border: 0; border-top: 1px solid var(--color-line-gray-subtle); margin: 0; width: 100%; }
-.pb-row-add { display: flex; justify-content: center; padding: 12px 0 0; }
 .pb-canvas-empty { padding: 60px 24px; text-align: center; color: var(--color-text-body-tertiary); font-size: 13px; line-height: 1.7; }
 
 /* 오른쪽: 속성 */
