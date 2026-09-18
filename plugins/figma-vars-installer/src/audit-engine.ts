@@ -19,9 +19,13 @@ import {
   SEMANTIC_NUMBER_COLLECTION,
   SEMANTIC_SHADOW_COLLECTION,
   SEMANTIC_SHADOW,
+  FOUNDATION_NUMBER,
+  LIGHT_MODE,
+  DARK_MODE,
 } from "./vars-data";
 import { TEXT_STYLES, TEXT_STYLE_FONT_FAMILY } from "./textstyles-data";
 import { parseCssShadow } from "./shadow-parse";
+import { LEGACY_MAP, LegacyMapEntry } from "./legacy-map-data";
 import ALLOWED_REMOTE_KEYS from "../../../registry/figma/allowed-remote-keys.json";
 import DUMMY_CHROME from "../../../registry/governance/dummy-chrome-parts.json";
 
@@ -43,12 +47,18 @@ const V2_COLLECTION_NAMES = [
 ];
 
 // 설치기가 만드는 정본 컴포넌트 이름 집합(정규화). 문서 전체에서 기준 풀을 모을 때
+// 이름을 맞대 볼 때 쓰는 열쇠 — **담는 쪽과 찾는 쪽이 이 함수 하나만 쓴다.**
+// 손으로 옮겨 적으면 한쪽만 바뀌어 조용히 어긋난다(🤖 독립 검증 2026-09-18).
+function refNameKey(name?: string | null): string {
+  return (name || "").toLowerCase().replace(/[\s_\-\/]+/g, "");
+}
+
 // 이 목록에 있는 이름만 "정본"으로 인정해, 파일 내 다른 레거시 세트가 정본으로 둔갑하는 것을 막는다.
 const CANONICAL_NAME_SET: { [norm: string]: true } = (() => {
   const m: { [norm: string]: true } = {};
   for (const cat of COMPONENT_CATEGORIES) {
     for (const name of cat.members) {
-      m[(name || "").toLowerCase().replace(/[\s_\-\/]+/g, "")] = true;
+      m[refNameKey(name)] = true;
     }
   }
   return m;
@@ -116,6 +126,11 @@ type V2Var = {
   collectionName: string;
   // mode별 resolved hex
   hexByMode: { [modeId: string]: string };
+  // 모드 '이름'별 값 — 화면이 라이트인지 다크인지 알고 나서 그 모드 값으로만 대조하기 위한 것.
+  // 단일 모드 컬렉션(Foundation·Number)은 그 하나의 값을 모든 이름에 넣지 않고 fallbackHex 로 둔다.
+  hexByModeName: { [modeName: string]: string };
+  fallbackHex: string;
+  modeCount: number;
 };
 
 type NodeKind = "text" | "icon" | "shape";
@@ -160,7 +175,7 @@ type ChecklistItemResult = {
 type ChecklistDetailIssue = {
   id: string;
   checklistId: number;
-  category: "color" | "text" | "shadow";
+  category: "color" | "text" | "shadow" | "mode" | "platform";
   nodeId: string;
   nodeName: string;
   detail: string;
@@ -171,6 +186,8 @@ type ChecklistFacts = {
   colorDetails: ChecklistDetailIssue[];
   textIssues: ChecklistDetailIssue[];
   shadowIssues: ChecklistDetailIssue[];
+  modeIssues: ChecklistDetailIssue[];
+  platformIssues: ChecklistDetailIssue[];
 };
 
 // "가이드에 없는 색" 판정 임계값(ΔRGB 유클리드). 12 미만은 반올림 오차 수준으로 흡수.
@@ -210,6 +227,7 @@ async function loadV2Vars(): Promise<{
       const v = await figma.variables.getVariableByIdAsync(variableId);
       if (!v || v.resolvedType !== "COLOR") continue;
       const hexByMode: { [modeId: string]: string } = {};
+      const hexByModeName: { [modeName: string]: string } = {};
       for (const m of col.modes) {
         try {
           // resolveForConsumer 사용을 피하고 valuesByMode를 직접 해석
@@ -233,12 +251,20 @@ async function loadV2Vars(): Promise<{
           } else if (val && typeof val === "object" && "r" in val) {
             hex = rgbToHex(val as RGB);
           }
-          if (hex) hexByMode[m.modeId] = hex;
+          if (hex) {
+            hexByMode[m.modeId] = hex;
+            hexByModeName[m.name] = hex;
+          }
         } catch {
           // skip
         }
       }
-      v2.push({ id: v.id, name: v.name, collectionName: col.name, hexByMode });
+      const modeIds = Object.keys(hexByMode);
+      v2.push({
+        id: v.id, name: v.name, collectionName: col.name, hexByMode, hexByModeName,
+        fallbackHex: modeIds.length ? hexByMode[modeIds[0]] : "",
+        modeCount: col.modes.length,
+      });
     }
   }
 
@@ -252,6 +278,165 @@ async function loadV2Vars(): Promise<{
   }
 
   return { v2, v2CollectionIds, byHex };
+}
+
+// 한 번의 검수 동안 변수 목록을 다시 읽지 않는다 — 화면 판정과 색 대조가 같은 목록을 쓴다.
+let v2Cache: { v2: V2Var[]; v2CollectionIds: Set<string>; byHex: { [hex: string]: V2Var[] } } | null = null;
+
+async function loadV2VarsCached() {
+  if (!v2Cache) v2Cache = await loadV2Vars();
+  return v2Cache;
+}
+
+let collectionsCache: VariableCollection[] | null = null;
+
+async function loadCollectionsCached(): Promise<VariableCollection[]> {
+  if (!collectionsCache) collectionsCache = await figma.variables.getLocalVariableCollectionsAsync();
+  return collectionsCache;
+}
+
+function clearV2Cache(): void {
+  v2Cache = null;
+  collectionsCache = null;
+}
+
+// 화면이 라이트인지 다크인지 알고 난 뒤, **그 모드 값**으로만 hex 색인을 만든다.
+// 종전에는 모든 모드 값을 한 바구니에 담아, 다크 화면인데 라이트 값이 같다는 이유로
+// 엉뚱한 토큰을 "정확히 일치"로 권하는 일이 있었다.
+function buildByHexForMode(v2: V2Var[], modeName: string): { [hex: string]: V2Var[] } {
+  const byHex: { [hex: string]: V2Var[] } = {};
+  for (const v of v2) {
+    // 모드가 둘 이상인 컬렉션은 그 모드 값이 없으면 넘어간다 —
+    // 여기서 반대쪽 모드 값을 끌어오면 고치려던 오제안이 그대로 되살아난다(🤖 검증 지적).
+    const hex = v.modeCount > 1 ? v.hexByModeName[modeName] : (v.hexByModeName[modeName] || v.fallbackHex);
+    if (!hex) continue;
+    if (!byHex[hex]) byHex[hex] = [];
+    if (byHex[hex].indexOf(v) === -1) byHex[hex].push(v);
+  }
+  return byHex;
+}
+
+// ── 화면 판정 (river 지시 2026-09-17) ──────────────────────────────────────
+// 검사 결과를 내놓기 전에 "무엇을 보고 있는지"부터 정한다:
+//   ① 화면 종류 — 선택한 틀의 가로 크기를 정본 breakpoint 토큰과 대조 (PC / 모바일)
+//   ② 모드 — 그 틀에 실제로 걸리는 Semantic Color 모드 (Light / Dark)
+//   ③ 톤 — 틀의 배경색이 정본 배경 토큰의 라이트 값인지 다크 값인지
+// 셋 중 확인이 안 되는 것은 추측하지 않고 '미확인'으로 남긴다.
+type ScreenContext = {
+  rootId: string;
+  rootName: string;
+  width: number;
+  platform: "PC" | "Mobile" | "unknown";
+  platformReason: string;
+  mode: string;                       // "Light" | "Dark" | "" (미확인)
+  modeReason: string;
+  tone: "light" | "dark" | "unknown";
+  toneHex: string;
+  toneMismatch: boolean;
+  label: string;
+};
+
+const MOBILE_BREAKPOINT = FOUNDATION_NUMBER["breakpoint/md"];   // 정본 값(768) — 여기서 새로 정하지 않는다.
+
+// 이 노드에 실제로 걸리는 모드 — 자기 고정 → 조상 고정 → 페이지 고정 → 컬렉션 기본값.
+function pinnedModeId(node: BaseNode, collectionId: string, includeSelf: boolean): string | null {
+  let cur: BaseNode | null = includeSelf ? node : node.parent;
+  while (cur) {
+    const pins = (cur as any).explicitVariableModes as { [collectionId: string]: string } | undefined;
+    if (pins && pins[collectionId]) return pins[collectionId];
+    if (cur.type === "PAGE" || cur.type === "DOCUMENT") break;
+    cur = cur.parent;
+  }
+  return null;
+}
+
+// 틀의 배경색 — 맨 위에 보이는 단색 칠. 토큰에 연결된 칠인지도 함께 돌려준다.
+//   토큰에 연결된 배경은 모드에 따라 값이 달라지므로, 그 값으로 톤을 판정하지 않는다.
+//   (연결돼 있으면 모드는 이미 정확히 알고 있어 톤 판정이 더할 것이 없다.)
+function backgroundPaintOf(node: SceneNode): { hex: string; bound: boolean } {
+  if (!("fills" in node)) return { hex: "", bound: false };
+  const fills = (node as any).fills;
+  if (!Array.isArray(fills)) return { hex: "", bound: false };
+  for (let i = fills.length - 1; i >= 0; i--) {
+    const paint = fills[i];
+    if (paint && paint.type === "SOLID" && paint.visible !== false) {
+      const bound = !!(paint.boundVariables && paint.boundVariables.color);
+      return { hex: rgbToHex(paint.color), bound };
+    }
+  }
+  return { hex: "", bound: false };
+}
+
+async function detectScreenContext(rootsOverride?: readonly SceneNode[]): Promise<ScreenContext[]> {
+  const roots = rootsOverride ? normalizeSelectionRoots(rootsOverride) : selectedRoots();
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  const semantic = collections.filter((col) => col.name === SEMANTIC_COLOR_COLLECTION)[0] || null;
+  const { v2 } = await loadV2VarsCached();
+
+  // 배경 역할 토큰의 모드별 값 — 톤 판정표. 정본에 있는 값만 쓴다(밝기 어림짐작 금지).
+  const lightBg: { [hex: string]: true } = {};
+  const darkBg: { [hex: string]: true } = {};
+  for (const v of v2) {
+    if (v.collectionName !== SEMANTIC_COLOR_COLLECTION) continue;
+    if (v.name.toLowerCase().indexOf("color/bg/") !== 0) continue;
+    const light = v.hexByModeName[LIGHT_MODE];
+    const dark = v.hexByModeName[DARK_MODE];
+    if (light) lightBg[light] = true;
+    if (dark) darkBg[dark] = true;
+  }
+
+  const out: ScreenContext[] = [];
+  for (const root of roots) {
+    const width = "width" in root ? Math.round((root as any).width) : 0;
+    // 화면 한 장을 통째로 골랐을 때만 종류를 말한다 — 버튼 하나를 골라 놓고
+    // "모바일 화면"이라고 단정하지 않는다(🤖 검증 지적 2026-09-17).
+    const parentType = root.parent ? root.parent.type : "";
+    const isWholeScreen = (parentType === "PAGE" || parentType === "SECTION")
+      && (root.type === "FRAME" || root.type === "COMPONENT" || root.type === "INSTANCE");
+    let platform: ScreenContext["platform"] = "unknown";
+    let platformReason = "가로 크기를 읽을 수 없어 화면 종류를 정하지 못했습니다";
+    if (!isWholeScreen) {
+      platformReason = "화면 한 장이 아니라 그 안의 일부를 골라, 화면 종류는 판정하지 않았습니다";
+    } else if (width > 0) {
+      platform = width >= MOBILE_BREAKPOINT ? "PC" : "Mobile";
+      platformReason = `가로 ${width} — 정본 기준선 ${MOBILE_BREAKPOINT}(breakpoint/md) ${width >= MOBILE_BREAKPOINT ? "이상" : "미만"}`;
+    }
+
+    let mode = "";
+    let modeReason = "Semantic Color 컬렉션이 이 파일에 없어 모드를 정하지 못했습니다";
+    if (semantic) {
+      const pinned = pinnedModeId(root, semantic.id, true);
+      const effective = pinned || semantic.defaultModeId;
+      const found = semantic.modes.filter((m) => m.modeId === effective)[0];
+      mode = found ? found.name : "";
+      modeReason = pinned
+        ? `이 틀에 '${mode}' 모드가 지정돼 있습니다`
+        : `따로 지정한 모드가 없어 기본값 '${mode}'로 봅니다`;
+    }
+
+    const bg = backgroundPaintOf(root);
+    const toneHex = bg.bound ? "" : bg.hex;   // 토큰에 연결된 배경은 톤으로 판정하지 않는다.
+    let tone: ScreenContext["tone"] = "unknown";
+    if (toneHex) {
+      const isLight = !!lightBg[toneHex];
+      const isDark = !!darkBg[toneHex];
+      if (isDark && !isLight) tone = "dark";
+      else if (isLight && !isDark) tone = "light";
+    }
+    const toneMismatch = tone !== "unknown" && !!mode && tone !== mode.toLowerCase();
+
+    const platformLabel = platform === "PC" ? "PC" : platform === "Mobile" ? "모바일"
+      : isWholeScreen ? "화면 종류 미확인" : "화면 일부";
+    const modeLabel = mode === DARK_MODE ? "다크" : mode === LIGHT_MODE ? "라이트" : "모드 미확인";
+    out.push({
+      rootId: root.id, rootName: root.name, width, platform, platformReason,
+      mode, modeReason, tone, toneHex, toneMismatch,
+      label: platform === "unknown" && !isWholeScreen
+        ? `화면 일부 · ${modeLabel} 모드`
+        : `${platformLabel} · ${modeLabel} 화면`,
+    });
+  }
+  return out;
 }
 
 function isFrameLike(n: BaseNode): n is FrameNode | ComponentNode | ComponentSetNode | InstanceNode | GroupNode {
@@ -542,7 +727,7 @@ function pickSuggestions(
   return result;
 }
 
-async function audit(rootOverride?: SceneNode | readonly SceneNode[]): Promise<{ issues: Issue[]; stats: { scanned: number; issuesCount: number; highCount: number } }> {
+async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?: string): Promise<{ issues: Issue[]; stats: { scanned: number; issuesCount: number; highCount: number } }> {
   // rootOverride 를 주면 해당 노드들(예: 검사 시작 시점 선택 스냅샷)을 대상으로, 없으면 현재 선택 영역.
   const sel: readonly SceneNode[] = rootOverride
     ? (Array.isArray(rootOverride) ? rootOverride : [rootOverride as SceneNode])
@@ -551,7 +736,9 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[]): Promise<{
     return { issues: [], stats: { scanned: 0, issuesCount: 0, highCount: 0 } };
   }
 
-  const { v2, v2CollectionIds, byHex } = await loadV2Vars();
+  const { v2, v2CollectionIds, byHex: byHexAllModes } = await loadV2VarsCached();
+  // 화면 모드를 알아냈으면 그 모드 값으로 만든 색인을 쓴다(모르면 종전대로 전 모드).
+  const byHex = modeName ? buildByHexForMode(v2, modeName) : byHexAllModes;
 
   // 모든 자손 수집
   const allNodes = collectUniqueSelectedNodes(sel);
@@ -654,7 +841,7 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[]): Promise<{
 
 // 1차 체크리스트의 토큰·텍스트·그림자 사실을 읽기 전용으로 수집한다.
 // 컴포넌트 항목은 별도 교체 후보 스캐너가 담당하므로 여기서는 1~9번만 반환한다.
-async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonly SceneNode[]): Promise<ChecklistFacts> {
+async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonly SceneNode[], context?: ScreenContext | null): Promise<ChecklistFacts> {
   const nodes = collectUniqueSelectedNodes(rootsOverride);
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const collectionById = new Map(collections.map((c) => [c.id, c.name]));
@@ -789,7 +976,101 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
     }
   }
 
-  const allDetails = [...colorDetails, ...textIssues, ...shadowIssues];
+  // 10. 모드 고정 — 선택 영역 **안쪽** 노드에 라이트/다크 모드가 박혀 있으면,
+  //     화면을 통째로 뒤집어도 그 부분만 따라오지 않는다(river 결정 2026-09-17 — 고정 먼저 잡기).
+  //     선택한 최상위 노드 자신의 고정은 "이 화면을 다크로 본다"는 정상 사용이라 제외한다.
+  const modeIssues: ChecklistDetailIssue[] = [];
+  {
+    const rootIds = new Set((rootsOverride ? normalizeSelectionRoots(rootsOverride) : selectedRoots()).map((node) => node.id));
+    // 모드가 2개 이상인 V2 컬렉션만 본다 — 단일 Default 모드(Foundation)는 고정해도 바뀔 것이 없다.
+    const themedCols = collections.filter((col) => V2_COLLECTION_NAMES.indexOf(col.name) >= 0 && col.modes.length > 1);
+    const modeNameOf = (col: VariableCollection, modeId: string | null) => {
+      if (!modeId) return "";
+      const found = col.modes.filter((m) => m.modeId === modeId)[0];
+      return found ? found.name : "";
+    };
+    // 이 노드가 고정을 걷어냈을 때 따라갔을 모드 — 가장 가까운 조상의 고정, 없으면 컬렉션 기본값.
+    const inheritedModeId = (node: SceneNode, collectionId: string): string | null => pinnedModeId(node, collectionId, false);
+    // 화면 모드를 알면 문구를 그 기준으로 쓴다 — "이 화면은 다크인데 이 부분만 라이트".
+    const screenModeLabel = context && context.mode === DARK_MODE ? "다크" : context && context.mode === LIGHT_MODE ? "라이트" : "";
+    const conflicting: ChecklistDetailIssue[] = [];
+    const silent: ChecklistDetailIssue[] = [];
+    let modeSeq = 0;
+    for (const node of nodes) {
+      if (rootIds.has(node.id)) continue;
+      if (isDummyChromePart(node)) continue;
+      const pins = (node as any).explicitVariableModes as { [collectionId: string]: string } | undefined;
+      if (!pins) continue;
+      // 한 노드가 컬렉션 두 곳에 고정돼 있을 수 있다. 보고는 한 번만 하되,
+      // 바깥과 어긋난 고정이 있으면 그것을 고른다 — 먼저 걸린 컬렉션이 아니라(🤖 검증 지적 2026-09-17).
+      let pickedDetail = "";
+      let pickedDiffers = false;
+      for (const col of themedCols) {
+        const pinned = pins[col.id];
+        if (!pinned) continue;
+        const inherited = inheritedModeId(node, col.id) || col.defaultModeId;
+        const pinnedName = modeNameOf(col, pinned) || "고정";
+        const inheritedName = modeNameOf(col, inherited) || "바깥";
+        const differs = pinned !== inherited;
+        if (pickedDetail && !differs) continue;
+        const pinnedLabel = pinnedName === DARK_MODE ? "다크" : pinnedName === LIGHT_MODE ? "라이트" : pinnedName;
+        pickedDetail = differs
+          ? (screenModeLabel
+            ? `이 화면은 ${screenModeLabel}인데 이 부분만 ${pinnedLabel}로 박혀 있어 안 바뀝니다`
+            : `'${pinnedName}' 모드로 고정 — 바깥은 '${inheritedName}'이라 이 부분만 안 바뀝니다`)
+          : `${pinnedLabel}로 고정 — 지금은 같아 보여도 모드를 바꾸면 안 따라옵니다`;
+        pickedDiffers = differs;
+        if (differs) break;
+      }
+      if (!pickedDetail) continue;
+      (pickedDiffers ? conflicting : silent).push({
+        id: `c10-${++modeSeq}`, checklistId: 10, category: "mode",
+        nodeId: node.id, nodeName: node.name, detail: pickedDetail,
+      });
+    }
+    for (const issue of conflicting) modeIssues.push(issue);
+    for (const issue of silent) modeIssues.push(issue);
+  }
+
+  // 11. 화면 종류에 맞는 변형 — 모바일 화면인데 PC용 변형을 쓰고 있는(또는 그 반대) 부품.
+  //     화면 종류를 못 정했으면 판정하지 않는다(추측 금지).
+  const platformIssues: ChecklistDetailIssue[] = [];
+  if (context && (context.platform === "PC" || context.platform === "Mobile")) {
+    const screenLabel = context.platform === "PC" ? "PC" : "모바일";
+    // 세트에 그 화면 종류의 변형이 실제로 있는지 — 없으면 "바꿔라"가 아니라 "전용 부품"이다.
+    const setHasPlatform = new Map<string, boolean>();
+    for (const node of nodes) {
+      if (node.type !== "INSTANCE") continue;
+      if (isDummyChromePart(node)) continue;
+      const vp = (node as InstanceNode).variantProperties || {};
+      const used = vp["Platform"];
+      if (used !== "PC" && used !== "Mobile") continue;   // App·Web(기기 크롬) 축은 화면 종류와 다른 축이다.
+      if (used === context.platform) continue;
+      const main = await (node as InstanceNode).getMainComponentAsync();
+      const set = main && main.parent && main.parent.type === "COMPONENT_SET" ? (main.parent as ComponentSetNode) : null;
+      let hasTarget = false;
+      if (set) {
+        const cacheKey = `${set.id}|${context.platform}`;
+        if (setHasPlatform.has(cacheKey)) {
+          hasTarget = !!setHasPlatform.get(cacheKey);
+        } else {
+          hasTarget = set.children.some((child) =>
+            child.type === "COMPONENT" && ((child as ComponentNode).variantProperties || {})["Platform"] === context.platform);
+          setHasPlatform.set(cacheKey, hasTarget);
+        }
+      }
+      const usedLabel = used === "PC" ? "PC" : "모바일";
+      platformIssues.push({
+        id: `c11-${platformIssues.length + 1}`, checklistId: 11, category: "platform",
+        nodeId: node.id, nodeName: node.name,
+        detail: hasTarget
+          ? `${screenLabel} 화면인데 ${usedLabel}용 변형을 쓰고 있습니다 — ${screenLabel}용 변형이 있습니다`
+          : `${usedLabel} 전용 부품입니다 — ${screenLabel} 화면에 쓰는 것이 맞는지 확인하세요`,
+      });
+    }
+  }
+
+  const allDetails = [...colorDetails, ...textIssues, ...shadowIssues, ...modeIssues, ...platformIssues];
   const count = (id: number) => allDetails.filter((issue) => issue.checklistId === id).length;
   const items: ChecklistItemResult[] = [
     { id: 1, count: count(1), status: count(1) ? "fail" : "pass", coverage: "full" },
@@ -801,8 +1082,17 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
     { id: 7, count: count(7), status: count(7) ? "fail" : "pass", coverage: "partial" },
     { id: 8, count: count(8), status: count(8) ? "fail" : "pass", coverage: "full" },
     { id: 9, count: count(9), status: count(9) ? "fail" : "pass", coverage: "partial" },
+    { id: 10, count: count(10), status: count(10) ? "warning" : "pass", coverage: "full" },
+    {
+      id: 11,
+      count: count(11),
+      status: context && (context.platform === "PC" || context.platform === "Mobile")
+        ? (count(11) ? "warning" : "pass")
+        : "unjudged",
+      coverage: "full",
+    },
   ];
-  return { items, colorDetails, textIssues, shadowIssues };
+  return { items, colorDetails, textIssues, shadowIssues, modeIssues, platformIssues };
 }
 
 async function applyOne(issue: Issue, suggestionIndex: number): Promise<boolean> {
@@ -940,6 +1230,12 @@ async function setVariablesMode(mode: "light" | "dark" | "clear"): Promise<{ cou
 
 // ─── 컴포넌트 swap 기능 ──────────────────────────────────────
 
+// 이 파일 안에 정본과 **이름이 같은 세트가 둘 이상** 있던 것들(검수가 헷갈릴 수 있는 자리).
+let REFERENCE_NAME_CLASHES: string[] = [];
+function isClashingName(name?: string | null): boolean {
+  return REFERENCE_NAME_CLASHES.indexOf(refNameKey(name)) >= 0;
+}
+
 type ReferenceComponent = {
   id: string;       // 등록 시점의 파일 내 ID (같은 파일에서만 유효)
   key: string;      // component key (publish된 경우 다른 파일에서도 유효)
@@ -1006,6 +1302,8 @@ function collectInstances(root: BaseNode): InstanceNode[] {
 }
 
 type SwapDiagnostics = {
+  medium?: ScreenMedium;      // 이 검수 자료가 모바일 화면인가 PC 화면인가
+  mediumWhy?: string;         // 그렇게 본 까닭(사람 말)
   selectionCount: number;
   instanceCount: number;
   referencePoolSize: number;
@@ -1096,7 +1394,7 @@ function scoreNameSimilarity(legacy: string, canon: string): number {
   if (ln.indexOf(cn) >= 0 || cn.indexOf(ln) >= 0) score = Math.max(score, 0.6);
   return score;
 }
-type MappingSuggestion = { id: string; key: string; type: "COMPONENT" | "COMPONENT_SET"; name: string; source?: string; score: number };
+type MappingSuggestion = { id: string; key: string; type: "COMPONENT" | "COMPONENT_SET"; name: string; source?: string; score: number; decided?: boolean };
 // 여러 부품이 뭉친 큰 모듈의 보조 판정 임계. 핵심 판정은 아래의
 // "같은 최신 부품이 2개 이상 들어 있는가"이며, 이름(m_button 등)은 예외로 쓰지 않는다.
 const MODULE_NESTED_THRESHOLD = 5;
@@ -1115,6 +1413,9 @@ type ModulePart = {
   path: number[];                    // 모듈 루트 기준 자식 순번 — 묶음을 푼 뒤 같은 부품을 다시 찾는 길
   suggestions: MappingSuggestion[];  // auto 면 [0] 이 자동 선정된 정본
   note?: string;
+  decision?: LegacyVerdict;          // 결정표가 무어라 답했나
+  decidedMissing?: boolean;          // 결정된 정본이 아직 이 파일에 없다
+  needsCheck?: string;               // 한 번에 돌리면 안 되는 사유(이름 겹침 등) — 있으면 «모두 교체»에서 뺀다
 };
 type ModuleFlag = { id: string; instanceId: string; instanceName: string; currentMainName: string; currentMainPath: string; nestedCount: number; repeatedPartName?: string; repeatedPartCount?: number; multiPartNote?: string; parts: ModulePart[]; detached?: boolean };
 
@@ -1170,6 +1471,172 @@ function countSimilarSizedParts(inst: InstanceNode): number {
   }
   return best;
 }
+// ─── 검수 자료의 매체(모바일/PC) 판정 ──────────────────────────────────
+// 모바일 화면을 검수하는데 PC 전용 크기까지 목록에 늘어놓으면 고르기만 어려워진다(river 2026-09-17).
+// 판정 근거는 두 가지뿐이다:
+//   ① 화면 안 부품들에 걸린 **river 결정**이 Break(PC/Mobile) 를 정해 두었나 — 가장 확실한 근거
+//   ② 그것이 없으면 **고른 프레임의 폭** — 정본 모바일 프레임이 360 이므로 그 언저리는 모바일로 본다
+// 어느 쪽으로도 알 수 없으면 **감추지 않는다**(잘못 감추는 것이 더 나쁘다).
+type ScreenMedium = "mobile" | "pc" | null;
+type MediumGuess = { medium: ScreenMedium; why: string };
+const MOBILE_MAX_WIDTH = 600;   // 이보다 좁으면 모바일 화면으로 본다(정본 모바일 폭 360 기준)
+
+function mediumFromAxes(axes: { [k: string]: string }): ScreenMedium {
+  for (const [axis, value] of Object.entries(axes || {})) {
+    if (normAxisName(axis) !== "break") continue;
+    const v = (value || "").toLowerCase();
+    if (v === "mobile") return "mobile";
+    if (v === "pc") return "pc";
+  }
+  return null;
+}
+
+function detectMedium(roots: readonly BaseNode[], votes: ScreenMedium[]): MediumGuess {
+  let mobile = 0, pc = 0;
+  for (const v of votes) { if (v === "mobile") mobile++; else if (v === "pc") pc++; }
+  // 한 표로 뒤집히지 않게 — 이긴 쪽이 2표 이상이고 진 쪽의 두 배는 되어야 «표» 로 친다.
+  let byVote: ScreenMedium = null;
+  if (mobile >= 2 && mobile >= pc * 2) byVote = "mobile";
+  else if (pc >= 2 && pc >= mobile * 2) byVote = "pc";
+
+  let width = 0;
+  for (const r of roots) {
+    const w = (r as SceneNode & LayoutMixin).width;
+    if (typeof w === "number" && w > width) width = w;
+  }
+  const byWidth: ScreenMedium = width ? (width <= MOBILE_MAX_WIDTH ? "mobile" : "pc") : null;
+
+  // 둘이 어긋나면 **감추지 않는다**. 잘못 감추는 것이 조금 어수선한 것보다 나쁘다.
+  if (byVote && byWidth && byVote !== byWidth) return { medium: null, why: "" };
+  const medium = byVote || byWidth;
+  if (!medium) return { medium: null, why: "" };
+  const label = medium === "mobile" ? "모바일" : "PC";
+  if (byVote) return { medium, why: `화면 안 부품 ${medium === "mobile" ? mobile : pc}개에 걸린 결정이 ${label} 을 가리킵니다` };
+  return { medium, why: `고른 화면 폭이 ${Math.round(width)} 이라 ${label} 로 봤습니다` };
+}
+
+// ─── 레거시 이름 결정표 판독 ───────────────────────────────────────────
+// river 결정 23건(+ 레거시 속성표)을 구워 실은 표를 **글자 유사도보다 먼저** 본다.
+// 유사도는 "비슷해 보인다"는 짐작이고, 이 표는 "사람이 정했다"는 사실이다.
+// 표에 답이 없으면 지어내지 않는다 — 그대로 «아직 안 정함» 으로 사람에게 올린다(하드룰 H6②).
+type LegacyVerdictKind = "decided" | "undecided" | "not-a-part" | "ambiguous";
+type LegacyVerdict = {
+  kind: LegacyVerdictKind;
+  legacy: string;                              // 사람이 읽는 레거시 표기 (예: "A:pc_button")
+  role: string;
+  canonSets: string[];                         // 정해진 정본 세트(여럿이면 그 안에서 사람이 고른다)
+  axes: { [canonAxis: string]: string };       // 이 인스턴스의 변형에서 정해진 정본 축 값
+  basis: { id: string; what: string; quote: string }[];
+  notes: { from: string; then: { [canonAxis: string]: string } }[];   // 조건을 몰라 자동으로 걸지 않는 결정 메모
+  why: string;
+  choices?: { source: string; set: string; setId: string | null; canonSets: string[] }[];  // 이름이 겹칠 때
+};
+
+const LEGACY_INDEX: { [norm: string]: LegacyMapEntry[] } = (() => {
+  const m: { [norm: string]: LegacyMapEntry[] } = {};
+  for (const e of LEGACY_MAP) {
+    const k = normalizeName(e.set);
+    if (!k) continue;
+    (m[k] = m[k] || []).push(e);
+  }
+  return m;
+})();
+
+function sameLegacyValue(a: string, b: string): boolean {
+  return (a || "").trim().toLowerCase() === (b || "").trim().toLowerCase();
+}
+
+// 규칙 하나가 이 인스턴스에 걸리는가. 조건이 비어 있으면 그 세트에는 언제나 걸린다.
+function legacyRuleHits(rule: LegacyMapEntry["rules"][number], vp: { [k: string]: string } | null): boolean {
+  // 조건이 없는 규칙은 «언제나 걸린다» 가 아니라 «걸리지 않는다» 로 읽는다.
+  // 조건을 모르는 것을 모두에 걸면 안 눌린 라디오가 «선택됨» 이 된다(🤖 독립 검증 2026-09-17).
+  if (!rule.when.length) return false;
+  if (!vp) return false;
+  return rule.when.every((cond) => {
+    if (cond.axis) {
+      const key = Object.keys(vp).find((a) => normAxisName(a) === normAxisName(cond.axis as string));
+      return !!key && sameLegacyValue(vp[key], cond.value);
+    }
+    return Object.keys(vp).some((a) => sameLegacyValue(vp[a], cond.value));
+  });
+}
+
+// 걸리는 규칙을 모아 정본 축 값을 정한다. 조건이 많이 맞는 규칙이 이긴다(구체적인 것이 우선).
+function applyLegacyRules(entry: LegacyMapEntry, vp: { [k: string]: string } | null): { axes: { [k: string]: string }; set: string | null } {
+  const hits = (entry.rules || []).filter((r) => legacyRuleHits(r, vp)).sort((a, b) => a.when.length - b.when.length);
+  const axes: { [k: string]: string } = {};
+  let set: string | null = null;
+  for (const r of hits) {
+    for (const [axis, value] of Object.entries(r.then)) axes[axis] = value;
+    if (r.set) set = r.set;
+  }
+  if (!set && entry.canonSets.length === 1) set = entry.canonSets[0];
+  return { axes, set };
+}
+
+/**
+ * 레거시 이름 하나를 결정표에 물어본다. 이름이 표에 없으면 null(= 표가 다루지 않는 것).
+ * 같은 이름이 여러 줄인데 붙는 곳이 다르면 조용히 첫 것을 고르지 않는다 — 노드 id 로 되묻는다.
+ */
+function lookupLegacyDecision(names: string[], vp: { [k: string]: string } | null): LegacyVerdict | null {
+  for (const name of names) {
+    const rows = LEGACY_INDEX[normalizeName(name || "")];
+    if (!rows || !rows.length) continue;
+
+    const signature = (e: LegacyMapEntry) => `${e.kind}|${e.canonSets.join("+")}`;
+    const distinct = rows.filter((e, i) => rows.findIndex((o) => signature(o) === signature(e)) === i);
+    if (distinct.length > 1) {
+      return {
+        kind: "ambiguous",
+        legacy: rows.map((e) => `${e.source}:${e.set}`)[0],
+        role: rows[0].role || "",
+        canonSets: [],
+        axes: {},
+        basis: [],
+        notes: [],
+        why: "같은 이름의 레거시 부품이 여러 개이고 붙는 곳이 다릅니다 — 어느 것인지 밝혀야 합니다.",
+        choices: rows.map((e) => ({ source: e.source, set: e.set, setId: e.setId, canonSets: e.canonSets })),
+      };
+    }
+
+    const entry = rows[0];
+    const applied = entry.kind === "decided" ? applyLegacyRules(entry, vp) : { axes: {}, set: null };
+    const canonSets = applied.set ? [applied.set] : entry.canonSets;
+    return {
+      kind: entry.kind,
+      legacy: `${entry.source}:${entry.set}`,
+      role: entry.role || "",
+      canonSets,
+      axes: applied.axes,
+      basis: entry.basis || [],
+      notes: (entry.notes || []).map((n) => ({ from: n.from, then: n.then })),
+      why: entry.why || entry.note || "",
+    };
+  }
+  return null;
+}
+
+// 인스턴스가 지금 어떤 변형 값을 쓰고 있나(레거시 축 이름 그대로).
+function legacyVariantProps(inst: InstanceNode): { [k: string]: string } | null {
+  const vp = (inst as InstanceNode).variantProperties;
+  return vp && Object.keys(vp).length ? (vp as { [k: string]: string }) : null;
+}
+
+/**
+ * 결정이 가리키는 정본을 제안 목록 맨 앞에 못박는다.
+ * 결정이 있어도 목록 자체는 남긴다 — river 결정(2026-09-17): 접어 두되 펼치면 바꿀 수 있게.
+ */
+function pinDecidedSuggestion(verdict: LegacyVerdict | null, ranked: MappingSuggestion[], pool: ReferenceComponent[]): MappingSuggestion[] {
+  if (!verdict || verdict.kind !== "decided" || !verdict.canonSets.length) return ranked;
+  const wanted = verdict.canonSets.map((n) => normalizeName(n));
+  const decided = pool.filter((p) => wanted.indexOf(normalizeName(p.name)) >= 0);
+  if (!decided.length) return ranked;
+  const head: MappingSuggestion[] = decided.map((p) => ({ id: p.id, key: p.key, type: p.type, name: p.name, source: p.sourceFileName, score: 1, decided: true }));
+  const headIds: { [id: string]: true } = {};
+  for (const h of head) headIds[h.id] = true;
+  return head.concat(ranked.filter((r) => !headIds[r.id]));
+}
+
 // 미매칭 레거시 인스턴스 1건 + 유사도 내림차순 정본 제안 목록(최상위=가장 유사)
 type ManualMapCandidate = {
   id: string;
@@ -1178,6 +1645,8 @@ type ManualMapCandidate = {
   currentMainName: string;
   currentMainPath: string;
   suggestions: MappingSuggestion[];
+  decision?: LegacyVerdict;        // 결정표가 무어라 답했나 (없으면 표가 다루지 않는 이름)
+  decidedMissing?: boolean;        // 결정된 정본이 아직 이 파일에 없다 → 설치 먼저
 };
 function rankSuggestions(legacyName: string, pool: ReferenceComponent[]): MappingSuggestion[] {
   return pool
@@ -1199,8 +1668,9 @@ function containsInstanceNode(n: SceneNode): boolean {
 // 부품 목록을 만든다. 인스턴스를 만나면 그 부품 자체를 1건으로 기록하고 **안쪽으로는 들어가지 않는다**
 // (그 안은 그 컴포넌트의 내부 구조이지 이 모듈의 부품이 아니다).
 // 인스턴스가 아닌데 채움·텍스트를 가진 가지는 "교체 불가 조각(raw)"으로 1건 기록한다.
-async function collectModuleParts(root: SceneNode, pool: ReferenceComponent[]): Promise<ModulePart[]> {
+async function collectModuleParts(root: SceneNode, pool: ReferenceComponent[], mediumVote?: (m: ScreenMedium) => void): Promise<ModulePart[]> {
   const parts: ModulePart[] = [];
+  const vote = mediumVote || function () {};
   const partId = (nodeId: string) => `p-${nodeId.replace(/[^a-zA-Z0-9]/g, "_")}`;
   const walk = async (node: SceneNode, path: number[]): Promise<void> => {
     if (node.visible === false) return;
@@ -1220,7 +1690,32 @@ async function collectModuleParts(root: SceneNode, pool: ReferenceComponent[]): 
       }
       let found = findReferenceMatch(compareName, pool);
       if (!found.match && inst.name && inst.name !== compareName) found = findReferenceMatch(inst.name, pool);
-      const ranked = rankSuggestions(inst.name && inst.name !== compareName ? `${compareName} ${inst.name}` : compareName, pool);
+      let ranked = rankSuggestions(inst.name && inst.name !== compareName ? `${compareName} ${inst.name}` : compareName, pool);
+      // 글자 유사도보다 먼저 — 사람이 정해 둔 답이 있나.
+      // 단, 이미 정본인 부품(신원이 후보 풀에 있는 것)에는 묻지 않는다 — 이름이 같은 레거시가 있다.
+      const isCanonAlready = pool.some((pc) => pc.id === currentTopId);
+      const verdict = isCanonAlready ? null : lookupLegacyDecision([compareName, inst.name], legacyVariantProps(inst));
+      if (verdict && verdict.kind === "decided") vote(mediumFromAxes(verdict.axes));
+      if (verdict && verdict.kind === "not-a-part") {
+        parts.push({
+          id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName,
+          kind: "manual", path, suggestions: [], decision: verdict,
+          note: verdict.why || "정본으로 바꿀 대상이 아닙니다.",
+        });
+        return;
+      }
+      if (verdict && verdict.kind === "decided") {
+        ranked = pinDecidedSuggestion(verdict, ranked, pool);
+        const wanted = verdict.canonSets.map((n) => normalizeName(n));
+        const decidedMissing = !pool.some((pc) => wanted.indexOf(normalizeName(pc.name)) >= 0);
+        // 이미 정본인 부품은 위에서 신원으로 걸러졌으므로 여기 오는 것은 모두 «사람이 볼 것» 이다.
+        parts.push({
+          id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName,
+          kind: "manual", path, suggestions: ranked,
+          decision: verdict, decidedMissing,
+        });
+        return;
+      }
       if (found.match && found.match.id === currentTopId) {
         parts.push({ id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "canonical", path, suggestions: [] });
       } else if (found.match) {
@@ -1228,9 +1723,16 @@ async function collectModuleParts(root: SceneNode, pool: ReferenceComponent[]): 
         const picked = found.match;
         const rest = ranked.filter((r) => r.id !== picked.id);
         const head: MappingSuggestion = { id: picked.id, key: picked.key, type: picked.type, name: picked.name, source: picked.sourceFileName, score: 1 };
-        parts.push({ id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "auto", path, suggestions: [head].concat(rest) });
+        parts.push({
+          id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "auto", path,
+          suggestions: [head].concat(rest),
+          // 위 자동 교체와 같은 잣대 — 이름이 겹치면 한 번에 돌리지 않고 사람이 보고 누르게 남긴다.
+          needsCheck: isClashingName(picked.name)
+            ? "이 파일에 같은 이름의 부품이 둘 이상이라 어느 것이 기준인지 가릴 수 없습니다 — 바뀔 모습을 보고 바꿔주세요."
+            : undefined,
+        });
       } else {
-        parts.push({ id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "manual", path, suggestions: ranked });
+        parts.push({ id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "manual", path, suggestions: ranked, decision: verdict || undefined });
       }
       return;
     }
@@ -1346,6 +1848,7 @@ async function scanSwapCandidates(
   const sel: readonly BaseNode[] = roots && roots.length
     ? normalizeSelectionRoots(roots.filter((root): root is SceneNode => "id" in root && root.type !== "PAGE" && root.type !== "DOCUMENT") as SceneNode[])
     : selectedRoots();
+  const mediumVotes: ScreenMedium[] = [];
   const diag: SwapDiagnostics = {
     selectionCount: sel.length,
     instanceCount: 0,
@@ -1390,8 +1893,12 @@ async function scanSwapCandidates(
         found = findReferenceMatch(inst.name, pool);
       }
       const target = found.match;
-      // 신뢰도: 정확/정규화 일치 = high, 부분 일치 = ambiguous(사용자 확인 필요)
-      const confidence: "high" | "ambiguous" = found.matchType === "partial" ? "ambiguous" : "high";
+      // 이 파일에 같은 이름의 세트가 둘 이상이면 어느 것이 기준인지 가릴 수 없다 —
+      // 먼저 만난 것으로 조용히 바꾸지 않고 «확인필요»로 내려 사람이 보게 한다.
+      // (예전에는 화면 위 배너로 알렸는데, 배너를 걷어낸 자리를 결과 자체로 막는다. river 지시 2026-09-18)
+      const clashed = !!target && isClashingName(target.name);
+      // 신뢰도: 정확/정규화 일치 = high, 부분 일치·이름 겹침 = ambiguous(사용자 확인 필요)
+      const confidence: "high" | "ambiguous" = (found.matchType === "partial" || clashed) ? "ambiguous" : "high";
       const matched = !!target;
       const sameAsTarget = !!target && target.id === currentTopId;
 
@@ -1435,11 +1942,44 @@ async function scanSwapCandidates(
             multiPartNote: isStructuralModule
               ? `채움·텍스트를 가진 부품 모양 ${similarParts}개가 나란히 들어 있어 하나의 컴포넌트로 교체하지 않습니다. 내부 부품 단위로 재구성하세요.`
               : undefined,
-            parts: await collectModuleParts(inst, pool),
+            parts: await collectModuleParts(inst, pool, (m) => mediumVotes.push(m)),
           });
         }
         continue;
       }
+      // 사람이 정해 둔 답이 있으면 **이름이 딱 맞더라도** 그것이 먼저다.
+      // 종전에는 이름 매칭이 성공하면 결정표를 아예 보지 않아, 결정과 다른 정본으로
+      // 조용히 자동 교체되거나 «만들지 않기로 한 것» 이 후보로 되살아났다(🤖 독립 검증 2026-09-17).
+      // **이미 정본인 부품에는 결정표를 묻지 않는다.** 레거시 파일에도 정본과 **이름이 같은** 세트가 있어
+      // (체크박스·칩·라디오·토글·표 등 11건), 이름으로 가르면 정본이 레거시로 오인되거나
+      // 레거시가 «이미 정본» 으로 묻힌다(🤖 독립 검증 2026-09-17 2차). 신원(노드 id)으로만 가른다.
+      const isCanonAlready = pool.some((pc) => pc.id === currentTopId);
+      const verdict = isCanonAlready ? null : lookupLegacyDecision([compareName, inst.name], legacyVariantProps(inst));
+      if (verdict && (verdict.kind === "decided" || verdict.kind === "not-a-part")) {
+        if (verdict.kind === "decided") mediumVotes.push(mediumFromAxes(verdict.axes));
+        const wanted = verdict.canonSets.map((n) => normalizeName(n));
+        if (!manualSeen.has(inst.id)) {
+          manualSeen.add(inst.id);
+          let ranked: MappingSuggestion[] = [];
+          let decidedMissing = false;
+          if (verdict.kind === "decided") {
+            ranked = pinDecidedSuggestion(verdict, rankSuggestions(inst.name && inst.name !== compareName ? `${compareName} ${inst.name}` : compareName, pool), pool);
+            decidedMissing = !pool.some((pc) => wanted.indexOf(normalizeName(pc.name)) >= 0);
+          }
+          manualCandidates.push({
+            id: candidateId("m", inst.id),
+            instanceId: inst.id,
+            instanceName: inst.name,
+            currentMainName: compareName,
+            currentMainPath: await describeComponentLocation(main),
+            suggestions: ranked,
+            decision: verdict,
+            decidedMissing,
+          });
+        }
+        continue;
+      }
+
       if (matched) diag.matchedNameCount++;
       if (sameAsTarget) diag.sameIdSkippedCount++;
       if (diag.instancesPreview.length < 8) {
@@ -1462,10 +2002,11 @@ async function scanSwapCandidates(
               currentMainName: compareName,
               currentMainPath: await describeComponentLocation(main),
               nestedCount,
-              parts: await collectModuleParts(inst, pool),
+              parts: await collectModuleParts(inst, pool, (m) => mediumVotes.push(m)),
             });
           } else {
-            // 단순(부품 적은) 미매칭 → "가장 비슷한 정본"을 상위 제안하는 수동 매핑 후보(최종 선택은 사용자).
+            // 여기까지 온 것은 «아직 안 정함» 이거나 이름이 겹쳐 되물어야 하는 것뿐이다
+            // (정해진 것·교체 대상 아닌 것은 위에서 이미 갈라 나갔다).
             manualCandidates.push({
               id: candidateId("m", inst.id),
               instanceId: inst.id,
@@ -1473,6 +2014,7 @@ async function scanSwapCandidates(
               currentMainName: compareName,
               currentMainPath: await describeComponentLocation(main),
               suggestions: rankSuggestions(inst.name && inst.name !== compareName ? `${compareName} ${inst.name}` : compareName, pool),
+              decision: verdict || undefined,
             });
           }
         }
@@ -1496,10 +2038,16 @@ async function scanSwapCandidates(
         suggestedName: target!.name,
         suggestedSource: target!.sourceFileName,
         confidence,
+        demoteReason: clashed
+          ? "이 파일에 같은 이름의 부품이 둘 이상이라 어느 것이 기준인지 가릴 수 없습니다 — 바뀔 모습을 보고 바꿔주세요."
+          : undefined,
       });
     }
   }
   diag.candidateCount = candidates.length;
+  const guess = detectMedium(sel, mediumVotes);
+  diag.medium = guess.medium;
+  diag.mediumWhy = guess.why;
   return { candidates, diagnostics: diag, manualCandidates, modules };
 }
 
@@ -1542,19 +2090,25 @@ async function loadSuggestedNode(candidate: SwapCandidate): Promise<BaseNode | n
 // ─── 변형(variant) 고르기 — 이름만 맞추고 끝내지 않는다 ───────────────────────
 // 이름이 같은 정본을 찾아도 **어느 변형으로 바꿀지**를 정하지 않으면
 // secondary 버튼이 primary 로, 글자 헤더가 체크박스 헤더로 바뀐다(river 보고 2026-09-03).
-// 그래서 ①레거시가 가진 변형값 ②레거시 이름에 적힌 값 두 가지로만 후보를 좁히고,
-// **못 좁히면 조용히 기본값을 쓰지 않고 "모름"으로 돌려준다** — 최종 선택은 사용자가 화면에서 한다.
+// 좁히는 근거는 세 가지다: ①river 가 정해 둔 축(결정표) ②레거시가 가진 변형값 ③레거시 이름에 적힌 값.
+// 남은 축은 정본 기본값으로 채워 **화면에는 언제나 하나가 골라진 채로** 내보낸다(river 지시 2026-09-18).
+// 다만 무엇을 무엇으로 정했는지(axisSource)를 함께 돌려줘 화면이 «정한 것/짐작한 것»을 구분해 보여준다.
+// 자동 교체(strict)는 이 완화를 쓰지 않는다 — pickVariantTarget 은 그대로 엄격하다.
 type VariantOption = { id: string; key: string; label: string; values: { [axis: string]: string } };
 type VariantInfo = {
+  hiddenByMedium?: number;   // 다른 매체 전용이라 감춘 변형 수
   ok: boolean;
   reason?: string;
   setId: string;
   setName: string;
   hasVariants: boolean;
   options: VariantOption[];
-  pickedId: string | null;      // null = 자동으로 못 정함(사용자가 골라야 함)
+  pickedId: string | null;      // null = 세트를 못 읽은 때만. 변형이 있으면 언제나 하나를 고른다.
   matchedAxes: string[];
   unmatchedAxes: string[];
+  axisSource?: { [axis: string]: "decision" | "legacy" | "name" | "default" | "only" };
+  guessedAxes?: string[];       // 근거 없이 기본값으로 채운 축
+  confident?: boolean;          // 모든 축에 근거가 있었나 — 일괄 교체는 이것만 자동으로 돈다
 };
 
 function variantLabel(vp: { [k: string]: string } | null): string {
@@ -1564,7 +2118,9 @@ function variantLabel(vp: { [k: string]: string } | null): string {
 
 async function getVariantOptions(
   ref: { id: string; key?: string; type: "COMPONENT" | "COMPONENT_SET" },
-  legacyInstanceId: string
+  legacyInstanceId: string,
+  medium?: ScreenMedium,
+  decidedAxes?: { [axis: string]: string } | null
 ): Promise<VariantInfo> {
   const node = await loadReferenceNode(ref);
   if (!node) {
@@ -1575,7 +2131,17 @@ async function getVariantOptions(
     return { ok: true, setId: c.id, setName: c.name, hasVariants: false, options: [{ id: c.id, key: c.key, label: c.name, values: {} }], pickedId: c.id, matchedAxes: [], unmatchedAxes: [] };
   }
   const set = node as ComponentSetNode;
-  const variants = set.children.filter((c) => c.type === "COMPONENT") as ComponentNode[];
+  let variants = set.children.filter((c) => c.type === "COMPONENT") as ComponentNode[];
+  // 모바일 화면이면 PC 전용 변형을, PC 화면이면 모바일 전용 변형을 감춘다.
+  // 근거는 정본 세트 자신이 가진 Break 축뿐이다 — 없으면 감추지 않는다. 전부 사라지면 되돌린다.
+  let hiddenByMedium = 0;
+  if (medium) {
+    const kept = variants.filter((v) => {
+      const m = mediumFromAxes((v.variantProperties || {}) as { [k: string]: string });
+      return !m || m === medium;
+    });
+    if (kept.length) { hiddenByMedium = variants.length - kept.length; variants = kept; }
+  }
   const options: VariantOption[] = variants.map((v) => ({ id: v.id, key: v.key, label: variantLabel(v.variantProperties) || v.name, values: v.variantProperties || {} }));
   if (variants.length === 0) {
     return { ok: false, reason: "정본 세트에 변형이 없습니다.", setId: set.id, setName: set.name, hasVariants: false, options: [], pickedId: null, matchedAxes: [], unmatchedAxes: [] };
@@ -1590,40 +2156,73 @@ async function getVariantOptions(
   }
   const nameTokens = tokenizeName(legacyNames.replace(/=/g, " ")).map(normVariantValue);
 
-  const def = (set.defaultVariant || variants[0]) as ComponentNode;
-  const axes = Object.keys(def.variantProperties || {});
+  // 축 이름은 세트 기본값에서 읽되, **기본값이 매체 필터에 걸려 사라졌으면 근거로 쓰지 않는다**
+  // (PC 기본값을 모바일 화면에 들이밀지 않기 위해서다).
+  const setDefault = (set.defaultVariant || variants[0]) as ComponentNode;
+  const axes = Object.keys(setDefault.variantProperties || {});
+  const defaultSurvived = variants.some((v) => v.id === setDefault.id);
   const legacyByNorm: { [norm: string]: string } = {};
   for (const k of Object.keys(legacyVP)) legacyByNorm[normAxisName(k)] = legacyVP[k];
+
+  // river 결정이 적어 둔 축을 같은 방식으로 정규화해 둔다 — 이것이 1순위다.
+  const decidedByNorm: { [norm: string]: string } = {};
+  for (const k of Object.keys(decidedAxes || {})) decidedByNorm[normAxisName(k)] = (decidedAxes as { [k: string]: string })[k];
 
   const want: { [axis: string]: string } = {};
   const matchedAxes: string[] = [];
   const unmatchedAxes: string[] = [];
+  const axisSource: { [axis: string]: "decision" | "legacy" | "name" | "default" | "only" } = {};
   for (const axis of axes) {
     const values = Array.from(new Set(variants.map((v) => (v.variantProperties || {})[axis]).filter(Boolean)));
+    // ① river 가 정해 둔 값 (결정표)
+    const fromDecision = decidedByNorm[normAxisName(axis)];
+    if (fromDecision) {
+      const hit = values.find((v) => normVariantValue(v) === normVariantValue(fromDecision));
+      if (hit) { want[axis] = hit; matchedAxes.push(axis); axisSource[axis] = "decision"; continue; }
+    }
+    // ② 레거시가 같은 축을 가지고 있으면 그 값
     const fromVP = legacyByNorm[normAxisName(axis)];
-    // ① 레거시가 같은 축을 가지고 있으면 그 값
     if (fromVP) {
       const hit = values.find((v) => normVariantValue(v) === normVariantValue(fromVP));
-      if (hit) { want[axis] = hit; matchedAxes.push(axis); continue; }
+      if (hit) { want[axis] = hit; matchedAxes.push(axis); axisSource[axis] = "legacy"; continue; }
     }
-    // ② 레거시 이름에 그 축의 값이 적혀 있으면 그 값 (예: "btn_secondary_xsm")
+    // ③ 레거시 이름에 그 축의 값이 적혀 있으면 그 값 (예: "btn_secondary_xsm")
     const byName = values.filter((v) => nameTokens.indexOf(normVariantValue(v)) >= 0);
-    if (byName.length === 1) { want[axis] = byName[0]; matchedAxes.push(axis); continue; }
+    if (byName.length === 1) { want[axis] = byName[0]; matchedAxes.push(axis); axisSource[axis] = "name"; continue; }
     unmatchedAxes.push(axis);
   }
 
-  let picked: ComponentNode | null = null;
-  if (variants.length === 1) {
-    picked = variants[0];
-  } else if (matchedAxes.length > 0) {
-    const narrowed = variants.filter((v) => matchedAxes.every((a) => (v.variantProperties || {})[a] === want[a]));
-    if (narrowed.length === 1) picked = narrowed[0];
-    else if (narrowed.length > 1) {
-      // 남은 축은 정본 기본값으로만 좁힌다. 그래도 하나로 안 좁혀지면 "모름"으로 둔다.
-      const byDefault = narrowed.filter((v) => unmatchedAxes.every((a) => (v.variantProperties || {})[a] === (def.variantProperties || {})[a]));
-      picked = byDefault.length === 1 ? byDefault[0] : null;
-    }
+  // 근거가 센 순서로 하나씩 좁힌다: 결정 → 원본 → 이름.
+  // **좁히다가 남는 게 없어지면 그 축의 근거를 버리고 «짐작»으로 내린다** — 버린 근거를
+  // 그대로 «정한 대로 골랐다»고 말하지 않기 위해서다.
+  const defVP = (defaultSurvived ? setDefault.variantProperties || {} : {}) as { [k: string]: string };
+  const rank = { decision: 0, legacy: 1, name: 2, default: 3 } as { [k: string]: number };
+  const ordered = matchedAxes.slice().sort((a, b) => rank[axisSource[a]] - rank[axisSource[b]]);
+  const guessedAxes: string[] = [];
+  const keptAxes: string[] = [];
+  let pool = variants.slice();
+  for (const axis of ordered) {
+    const next = pool.filter((v) => (v.variantProperties || {})[axis] === want[axis]);
+    if (next.length > 0) { pool = next; keptAxes.push(axis); continue; }
+    // 이 근거는 이 세트에서 성립하지 않는다 — 근거에서 빼고 짐작으로 기록한다.
+    delete want[axis];
+    axisSource[axis] = "default";
+    guessedAxes.push(axis);
   }
+  // 남은 축은 **살아남은 정본 기본값**으로만 채운다. 기본값이 없으면 좁히지 않는다.
+  // 남은 후보에서 그 축의 값이 하나뿐이면 «고를 것이 없다»는 뜻이므로 짐작으로 세지 않는다.
+  for (const axis of axes) {
+    if (keptAxes.indexOf(axis) >= 0) continue;
+    const distinct = Array.from(new Set(pool.map((v) => (v.variantProperties || {})[axis]).filter(Boolean)));
+    if (distinct.length <= 1) { axisSource[axis] = "only"; continue; }
+    const byDefault = defVP[axis] ? pool.filter((v) => (v.variantProperties || {})[axis] === defVP[axis]) : [];
+    if (byDefault.length > 0) { pool = byDefault; want[axis] = defVP[axis]; }
+    axisSource[axis] = "default";
+    if (guessedAxes.indexOf(axis) < 0) guessedAxes.push(axis);
+  }
+  // 그래도 여럿이면 **정본 세트가 적어 둔 차례대로** 첫 번째를 보여 준다(우리가 만든 순서가 아니다).
+  const picked: ComponentNode | null = pool.length > 0 ? pool[0] : null;
+  const confident = guessedAxes.length === 0 && pool.length === 1;
   return {
     ok: true,
     setId: set.id,
@@ -1631,8 +2230,12 @@ async function getVariantOptions(
     hasVariants: true,
     options,
     pickedId: picked ? picked.id : null,
-    matchedAxes,
+    matchedAxes: keptAxes,
     unmatchedAxes,
+    axisSource,
+    guessedAxes,
+    confident,
+    hiddenByMedium,
   };
 }
 
@@ -1843,7 +2446,7 @@ async function restoreTextOverrides(inst: InstanceNode, captured: Map<string, st
 async function applySwap(
   candidate: SwapCandidate,
   mode: SwapMode = "lenient"
-): Promise<{ ok: boolean; result: SwapOutcome; reason?: string; variantReset?: boolean; axisLoss?: number; unpreserved?: string[]; rollback?: SwapRollback }> {
+): Promise<{ ok: boolean; result: SwapOutcome; reason?: string; variantReset?: boolean; axisLoss?: number; unpreserved?: string[]; rollback?: SwapRollback; modeFitted?: string }> {
   const inst = await figma.getNodeByIdAsync(candidate.instanceId);
   if (!inst || inst.type !== "INSTANCE") {
     return { ok: false, result: "failed", reason: "인스턴스를 찾을 수 없음" };
@@ -1893,7 +2496,61 @@ async function applySwap(
     const pres = await restoreTextOverrides(inst as InstanceNode, captured);
     unpreserved = pres.unpreserved;
   } catch (e) { /* 복원 실패해도 교체 자체는 성공 — 보존만 부분적 */ }
-  return { ok: true, result: "swapped", variantReset: res.variantReset, axisLoss: res.axisLoss, unpreserved, rollback };
+  const fitted = await fitInstanceToMode(inst as InstanceNode);
+  return { ok: true, result: "swapped", variantReset: res.variantReset, axisLoss: res.axisLoss, unpreserved, rollback, modeFitted: fitted.changed ? fitted.mode : undefined };
+}
+
+// ─── 교체한 부품을 화면 모드에 맞추기 (river 결정 2026-09-17 — "교체할 때 화면 모드에 맞춰줘") ───
+// 정본 부품에는 라이트가 박혀 있다(build-components 의 setLightMode). 그대로 갈아 끼우면
+// 다크 화면에서 그 자리만 라이트로 남는다. 그래서 교체 직후:
+//   ① 박힌 고정을 풀어 놓인 자리를 따라가게 하고
+//   ② 그래도 원하는 모드가 아니면 그 모드를 직접 지정한다(안쪽 부품까지).
+// 고정을 먼저 푸는 이유: 풀어서 맞으면 고정이 하나도 남지 않아, 나중에 화면을 통째로
+// 뒤집을 때도 따라온다(검사 10번이 잡는 상태를 우리가 새로 만들지 않는다).
+async function fitInstanceToMode(
+  target: InstanceNode,
+  contextNode?: SceneNode
+): Promise<{ changed: number; mode: string }> {
+  const collections = await loadCollectionsCached();
+  const semantic = collections.filter((col) => col.name === SEMANTIC_COLOR_COLLECTION)[0];
+  if (!semantic) return { changed: 0, mode: "" };
+  const wantModeId = contextNode
+    ? (pinnedModeId(contextNode, semantic.id, true) || semantic.defaultModeId)
+    : (pinnedModeId(target, semantic.id, false) || semantic.defaultModeId);
+  const found = semantic.modes.filter((m) => m.modeId === wantModeId)[0];
+  const wantName = found ? found.name : "";
+
+  const nodes: SceneNode[] = [target];
+  try { (target.findAll((n) => n.type === "INSTANCE") as SceneNode[]).forEach((n) => nodes.push(n)); } catch (e) { /* */ }
+
+  let changed = 0;
+  for (const node of nodes) {
+    const pins = (node as any).explicitVariableModes as { [collectionId: string]: string } | undefined;
+    const pinned = pins ? pins[semantic.id] : undefined;
+    if (pinned === wantModeId) continue;
+    if (pinned) {
+      try {
+        (node as any).clearExplicitVariableModeForCollection(semantic.id);
+        changed++;
+      } catch (e) { /* */ }
+    }
+    // 푼 뒤에도(또는 애초에 고정이 없었어도) 실제로 따라가는 모드가 다르면 직접 지정한다.
+    let resolved: string | undefined;
+    try {
+      const table = (node as any).resolvedVariableModes as { [collectionId: string]: string } | undefined;
+      resolved = table ? table[semantic.id] : undefined;
+    } catch (e) { /* 구버전 API — 아래 fallback */ }
+    if (resolved === undefined) {
+      resolved = pinnedModeId(node, semantic.id, true) || semantic.defaultModeId;
+    }
+    if (resolved !== wantModeId) {
+      try {
+        (node as any).setExplicitVariableModeForCollection(semantic.id, wantModeId);
+        changed++;
+      } catch (e) { /* */ }
+    }
+  }
+  return { changed, mode: wantName };
 }
 
 // ─── 모듈 하위 부품 교체 ────────────────────────────────────────────────
@@ -1903,7 +2560,7 @@ async function swapInstanceTo(
   inst: InstanceNode,
   candidate: SwapCandidate,
   mode: SwapMode
-): Promise<{ ok: boolean; result: SwapOutcome; reason?: string; variantReset?: boolean; axisLoss?: number; unpreserved?: string[] }> {
+): Promise<{ ok: boolean; result: SwapOutcome; reason?: string; variantReset?: boolean; axisLoss?: number; unpreserved?: string[]; modeFitted?: string }> {
   const res = await resolveSwapTarget(candidate, mode, inst.variantProperties || null);
   if (!res.target) {
     if (res.reason === "no-variant-match") {
@@ -1919,7 +2576,8 @@ async function swapInstanceTo(
   }
   let unpreserved: string[] = [];
   try { unpreserved = (await restoreTextOverrides(inst, captured)).unpreserved; } catch {}
-  return { ok: true, result: "swapped", variantReset: res.variantReset, axisLoss: res.axisLoss, unpreserved };
+  const fitted = await fitInstanceToMode(inst);
+  return { ok: true, result: "swapped", variantReset: res.variantReset, axisLoss: res.axisLoss, unpreserved, modeFitted: fitted.changed ? fitted.mode : undefined };
 }
 
 /**
@@ -1979,6 +2637,7 @@ type ModulePartSwapResult = {
   detached?: boolean;
   moduleNodeId?: string;
   parts?: ModulePart[];
+  modeFitted?: string;
 };
 
 /**
@@ -2001,12 +2660,12 @@ async function applyModulePartSwap(args: {
   }
   if (!hasInstanceAncestor(part)) {
     const r = await applySwap(args.candidate, "lenient");
-    return { ok: r.ok, result: r.result, reason: r.reason, variantReset: r.variantReset, axisLoss: r.axisLoss, unpreserved: r.unpreserved, rollback: r.rollback };
+    return { ok: r.ok, result: r.result, reason: r.reason, variantReset: r.variantReset, axisLoss: r.axisLoss, unpreserved: r.unpreserved, rollback: r.rollback, modeFitted: r.modeFitted };
   }
 
   if (!args.allowDetach) {
     const attempt = await swapInstanceTo(part as InstanceNode, args.candidate, "lenient");
-    if (attempt.ok) return { ok: true, result: "swapped", variantReset: attempt.variantReset, axisLoss: attempt.axisLoss, unpreserved: attempt.unpreserved };
+    if (attempt.ok) return { ok: true, result: "swapped", variantReset: attempt.variantReset, axisLoss: attempt.axisLoss, unpreserved: attempt.unpreserved, modeFitted: attempt.modeFitted };
     if (attempt.result === "demoted") return { ok: false, result: "demoted", reason: attempt.reason };
     return { ok: false, result: "blocked", reason: attempt.reason || "묶음 안에 있는 부품이라 그대로는 교체되지 않습니다." };
   }
@@ -2036,6 +2695,7 @@ async function applyModulePartSwap(args: {
     variantReset: swapped.variantReset,
     axisLoss: swapped.axisLoss,
     unpreserved: swapped.unpreserved,
+    modeFitted: swapped.modeFitted,
     detached: true,
     moduleNodeId: frame.id,
     rollback: rollbackAfterDetach,
@@ -2079,6 +2739,10 @@ async function importComponentCopy(
     ? res.target.parent.name
     : res.target.name;
   copy.name = `${setName} (가져옴)`;
+  // 원본이 놓인 화면의 모드로 보여준다 — 다크 화면 옆에 라이트 부품이 놓이지 않게.
+  if (inst && "type" in inst) {
+    try { await fitInstanceToMode(copy, inst as SceneNode); } catch (e) { /* */ }
+  }
   page.selection = [copy];
   figma.viewport.scrollAndZoomIntoView([copy]);
   return { ok: true, nodeId: copy.id, name: copy.name, variantReset: res.variantReset };
@@ -2127,11 +2791,18 @@ function collectPageReference(preferredPage?: PageNode): ReferenceComponent[] {
   const fileName = figma.root.name;
   const seen: { [k: string]: boolean } = {};
   const out: ReferenceComponent[] = [];
+  REFERENCE_NAME_CLASHES = [];
   const push = (list: ReferenceComponent[]) => {
     for (const c of list) {
-      const norm = (c.name || "").toLowerCase().replace(/[\s_\-\/]+/g, "");
+      const norm = refNameKey(c.name);
       if (!CANONICAL_NAME_SET[norm]) continue;  // 정본 목록에 없는 이름은 기준에서 제외
       if (!seen[norm]) { seen[norm] = true; out.push(c); }
+      // 같은 이름이 이 파일에 둘 이상 있으면 여기 적어 둔다. 레거시 파일에도 정본과 이름이 같은
+      // 세트가 있어(체크박스·칩·표 등) 그것이 기준 자리를 차지하면 검수가 거꾸로 돈다.
+      // 적어 둔 이름은 자동 교체에서 «확인필요»로 내려 조용히 바뀌지 않게 한다(scanSwapCandidates).
+      // **열쇠는 담을 때도 찾을 때도 정규화 이름이다** — 원문으로 담으면 'Check Box' 와 'checkbox' 가
+      // 서로를 못 찾아 강등이 조용히 불발된다(🤖 독립 검증 2026-09-18).
+      else if (REFERENCE_NAME_CLASHES.indexOf(norm) < 0) REFERENCE_NAME_CLASHES.push(norm);
     }
   };
   const firstPage = preferredPage || figma.currentPage;
@@ -2155,11 +2826,16 @@ type ImprovedSummary = {
   skippedNested: number;   // 인스턴스 내부라 대상에서 제외된 수
   alreadyCanonical: number;// 이미 정본이라 바꿀 필요가 없던 수
   noMatch: number;         // 기준에 대응 컴포넌트가 없어 그대로 둔 수
-  manualNeeded: number;    // 이름이 안 맞아 수동 매핑이 필요한(제안과 함께 제시되는) 컴포넌트 수
+  manualNeeded: number;    // 이름이 안 맞아 사람이 봐야 하는 컴포넌트 수(아래 세 갈래의 합)
+  decidedCount: number;    // 결정으로 정해진 수 (사람이 이미 정해 둔 것)
+  undecidedCount: number;  // 아직 안 정한 수 (이번 한 번의 선택)
+  notAPartCount: number;   // 교체 대상이 아닌 수 (배치 규칙·레거시에만 있는 것)
   moduleNeeded: number;    // 여러 부품이 뭉쳐 재구성이 필요한(교체 부적절) 모듈 수
   textUnpreserved: number; // 자동교체 시 정본에 대응 위치가 없어 보존 못 한 입력 텍스트 수
   totalInstances: number;
   referencePoolSize: number;
+  medium?: ScreenMedium;
+  mediumWhy?: string;
 };
 
 type BuildImprovedResult =
@@ -2198,7 +2874,7 @@ async function buildImprovedCopy(): Promise<BuildImprovedResult> {
       // 자동 교체 조건: 이름 신뢰도 high AND strict 변형 매칭 성공
       if (c.confidence !== "high") {
         ambiguous++;
-        ambiguousList.push({ ...c, demoteReason: "이름이 부분적으로만 일치해 확인이 필요합니다." });
+        ambiguousList.push({ ...c, demoteReason: c.demoteReason || "이름이 부분적으로만 일치해 확인이 필요합니다." });
         continue;
       }
       const r = await applySwap(c, "strict");
@@ -2226,12 +2902,17 @@ async function buildImprovedCopy(): Promise<BuildImprovedResult> {
         sourceName: src.name,
         autoSwapped, ambiguous, failed, axisLoss, textUnpreserved,
         manualNeeded: manualCandidates.length,
+        decidedCount: manualCandidates.filter((c) => c.decision && c.decision.kind === "decided").length,
+        undecidedCount: manualCandidates.filter((c) => !c.decision || c.decision.kind === "undecided" || c.decision.kind === "ambiguous").length,
+        notAPartCount: manualCandidates.filter((c) => c.decision && c.decision.kind === "not-a-part").length,
         moduleNeeded: modules.length,
         skippedNested: diagnostics.skippedNestedCount,
         alreadyCanonical: diagnostics.sameIdSkippedCount,
         noMatch: diagnostics.noMatchCount,
         totalInstances: diagnostics.instanceCount,
         referencePoolSize: pool.length,
+        medium: diagnostics.medium,
+        mediumWhy: diagnostics.mediumWhy,
       },
       ambiguousCandidates: ambiguousList,
       failedCandidates: failedList,
@@ -2312,8 +2993,9 @@ export {
   collectPageReference,
   buildImprovedCopy,
   auditChecklistFacts,
+  detectScreenContext,
+  clearV2Cache,
 };
 export type {
   Issue, Suggestion, ReferenceComponent, SwapCandidate, SwapDiagnostics, SavedReference, NodeKind,
-  SwapMode, SwapOutcome, SwapRollback, ModulePart, ModuleFlag, ModulePartSwapResult, VariantOption, VariantInfo, ImprovedSummary, BuildImprovedResult, ChecklistItemResult, ChecklistDetailIssue, ChecklistFacts,
-};
+  SwapMode, SwapOutcome, SwapRollback, ModulePart, ModuleFlag, ModulePartSwapResult, VariantOption, VariantInfo, ImprovedSummary, BuildImprovedResult, ChecklistItemResult, ChecklistDetailIssue, ChecklistFacts, ScreenContext };

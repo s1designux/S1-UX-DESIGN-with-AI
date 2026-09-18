@@ -1,0 +1,29 @@
+{
+  "id": "R-7",
+  "name": "12px 글자는 자간 0",
+  "statement": "S1 의 12px 스타일은 body/12M·body/12R 둘뿐이고 둘 다 자간 0이다. title 계열에는 12px 자체가 없다.",
+  "status": "already-canon",
+  "enforcedBy": "텍스트 스타일 정본이 이미 값을 갖고 있다. 이 낱장은 '언제 이 사실을 확인했나'만 남긴다.",
+  "decidedBy": "river",
+  "decidedAt": "2026-06-10",
+  "sightings": [
+    {
+      "at": "2026-09-16",
+      "screen": "장비 상태 요약 패널",
+      "screenKind": "앱에서 흔히 쓰는 목록·요약 화면",
+      "service": "없음 — 실험용으로 만든 신규 유형",
+      "medium": "pc-web",
+      "density": "normal",
+      "quote": "보조 글자도 자간 0으로 맞춰줘",
+      "evidence": "reports/composition-rules/2026-09-16-status-summary-panel.md"
+    }
+  ],
+  "contextCount": 1,
+  "canonSource": "plugins/figma-vars-installer/src/textstyles-data.ts:61-62",
+  "note": "자간은 Figma 텍스트 스타일 패널에 없던 값이고 2026-06-10 river 지정값이 정본이 되었다(정본 파일 머리 주석). '가이드에 적혀 있다'기보다 'river 가 정한 것이 가이드가 됐다'가 정확하다.",
+  "axisSuspicion": "크기 축에 딸린 값이다 — 12px 이라는 조건이 곧 규칙이다. 매체·서비스와 무관하다.",
+  "promotion": {
+    "rule": "이미 정본이라 승격 대상이 아니다.",
+    "current": "규칙 축적 실험의 기준점으로 남긴다 — '이미 정해져 있던 것을 내가 몰라서 틀린' 사례다."
+  }
+}

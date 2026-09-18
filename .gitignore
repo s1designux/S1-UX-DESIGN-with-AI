@@ -55,3 +55,7 @@ reports/legacy-crosswalk-board/board.html
 .claude/cache/
 reports/pattern-builder/inventory/*/.embeddings.json
 reports/pattern-builder/inventory/*/shots/
+reports/pattern-builder/inventory/*/.embeddings-order.json
+
+# 렌더 확인용 임시 하네스(플러그인 화면을 Figma 없이 눈으로 볼 때) — 커밋하지 않는다
+.tmp-preview/

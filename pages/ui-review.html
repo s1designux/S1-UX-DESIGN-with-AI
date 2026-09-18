@@ -2028,7 +2028,12 @@
 
     /* ── Time Picker — 정본 buildTimePicker(트리거)·buildTimePickerDropdown(패널)·buildTimePickerCell(칸).
        정적 표본은 init 하지 않으므로 목록을 마크업이 직접 든다. Focus 칸만 패널을 편다. ── */
-    const tpSample = { hour: ["08", "09", "10", "11"], minute: ["00", "15", "30", "45"], ampm: ["오전", "오후"] };
+    /* 표본 목록은 정본 간격을 그대로 따른다 — 분은 24h 1분 · 12h 5분, 시는 24h 두 자리 · 12h 한 자리다. */
+    const tpSample = {
+      "24h": { hour: ["08", "09", "10", "11"], minute: ["28", "29", "30", "31"] },
+      "12h": { hour: ["8", "9", "10", "11"], minute: ["20", "25", "30", "35"] },
+      ampm: ["오전", "오후"]
+    };
 
     /* 칸에는 반드시 data-value 를 준다 — 확인 버튼이 이 값으로 트리거 문구와 change 이벤트를
        만든다. 빠뜨리면 확인을 눌러도 조용히 아무 일도 안 한다(독립 검증 F-1). */
@@ -2056,11 +2061,15 @@
       const value = filled ? (type === "12h" ? "오전 09:30" : "09:30") : "시간 선택";
       const pick = tpPanelStates[panelState];
       const div = '<div data-s1-part="divider"></div>';
-      const hour = timePickerColumn("hour", "시", tpSample.hour, { selected: pick.hour, hover: pick.hourHover });
-      const minute = timePickerColumn("minute", "분", tpSample.minute, { selected: pick.minute, hover: pick.minuteHover });
-      const ampm = timePickerColumn("ampm", "오전오후", tpSample.ampm, { selected: type === "12h" ? "오전" : null });
+      /* 살아 있는 표본은 목록을 비워 낸다 — 배포본 init 은 칸이 이미 있으면 채우기를 건너뛰므로
+         표본 네 줄을 들고 있으면 전 구간(00~23 · 00~59)이 만들어지지 않고 스크롤도 없다. */
+      const sample = tpSample[type === "12h" ? "12h" : "24h"];
+      const asHour = (v) => (v == null ? null : type === "12h" ? String(Number(v)) : v);
+      const hour = timePickerColumn("hour", "시", statik ? sample.hour : [], { selected: asHour(pick.hour), hover: asHour(pick.hourHover) });
+      const minute = timePickerColumn("minute", "분", statik ? sample.minute : [], { selected: pick.minute, hover: pick.minuteHover });
+      const ampm = timePickerColumn("ampm", "오전오후", statik ? tpSample.ampm : [], { selected: statik && type === "12h" ? "오전" : null });
       const columns = type === "12h" ? [ampm, hour, minute].join(div) : [hour, minute].join(div);
-      const complete = Boolean(pick.hour && pick.minute);
+      const complete = statik && Boolean(pick.hour && pick.minute);
       const panelHidden = statik ? (open ? "" : " hidden") : " hidden";
       const staticAttrs = statik ? ` data-review-static="true"${allowHover ? "" : ' class="review-static"'}` : "";
       return `<div data-s1-component="time-picker" data-size="${size}" data-break="${breakName}" data-type="${type}" data-minute-step="${type === "12h" ? "5" : "1"}"${staticAttrs}>

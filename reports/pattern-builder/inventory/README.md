@@ -8,6 +8,7 @@
 
 ```
 inventory/<service>/raw/*.json   기계가 읽은 원자료 (손대지 않는다)
+inventory/<service>/order/*.json 화면마다 "위→아래 차례" (손대지 않는다)
 inventory/<service>/*.md         사람이 보는 판독표 (원자료에서 자동 생성)
 inventory/<service>/index.html   한눈표 (페이지별 화면 수 · 부품 빈도)
 inventory/<service>/STATUS.md    어디까지 읽었고 무엇이 막혔는지

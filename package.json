@@ -56,6 +56,8 @@
     "ui:runtime": "node ui-library/scripts/runtime-check.mjs",
     "ui:keyboard": "node scripts/gnb-keyboard-order-check.js",
     "ui:keyboard:selftest": "node scripts/gnb-keyboard-order-check.js --selftest",
+    "ui:liveness": "node scripts/guide-sample-liveness-check.js",
+    "ui:liveness:selftest": "node scripts/guide-sample-liveness-check.js --selftest",
     "ui:version": "node scripts/ui-library-version.js",
     "ui:bump": "node scripts/ui-library-version.js --bump && npm run ui:build && node scripts/ui-library-version.js --record",
     "ui:bump:minor": "node scripts/ui-library-version.js --bump --minor && npm run ui:build && node scripts/ui-library-version.js --record",
@@ -165,7 +167,11 @@
     "pattern:fetch": "node scripts/pattern-fetch.js",
     "pattern:measure": "node scripts/pattern-measure.js",
     "pattern:shots": "node scripts/pattern-shots.js",
-    "screen:import": "node scripts/screen-import.js"
+    "screen:import": "node scripts/screen-import.js",
+    "pattern:order": "node scripts/pattern-order.js",
+    "pattern:import": "node scripts/pattern-screen-import.js",
+    "builder": "node scripts/builder-serve.js",
+    "legacy:bake": "node scripts/build-legacy-map-data.js"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.138.0",

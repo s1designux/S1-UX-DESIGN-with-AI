@@ -11,6 +11,7 @@
  *
  * 사용:
  *   node scripts/pattern-similar.js <service> --cluster            갈래 후보 만들기
+ *   node scripts/pattern-similar.js <service> --cluster --by order  **차례**로 묶기(위→아래 순서)
  *   node scripts/pattern-similar.js <service> --similar "검색 결과가 없을 때"
  *   node scripts/pattern-similar.js <service> --cluster --threshold 0.82
  *
@@ -27,13 +28,21 @@ const argv = process.argv.slice(2);
 const service = argv.find((a) => !a.startsWith('--')) || 'modu-app';
 const mode = argv.includes('--similar') ? 'similar' : 'cluster';
 const query = mode === 'similar' ? argv[argv.indexOf('--similar') + 1] : null;
-const threshold = Number(argv[argv.indexOf('--threshold') + 1]) || 0.86;
+const thresholdArg = Number(argv[argv.indexOf('--threshold') + 1]) || 0;
+/* --by order = "이 화면에 무엇이 쓰였나" 가 아니라 "위에서 아래로 어떤 차례로 놓였나" 로 묶는다.
+   같은 부품을 써도 차례가 다르면 다른 화면이고, 차례가 같으면 같은 틀이다. */
+const by = argv.includes('--by') ? argv[argv.indexOf('--by') + 1] : 'parts';
+if (!['parts', 'order'].includes(by)) { console.error("❌ --by 는 parts 또는 order 입니다."); process.exit(1); }
+/* 차례 문장은 부품 목록보다 서로 닮아 보이므로 기준을 더 높게 잡는다(1004장 실측: 0.86→109묶음이라 너무 뭉친다). */
+const threshold = thresholdArg || (by === 'order' ? 0.92 : 0.86);
 const topN = Number(argv[argv.indexOf('--top') + 1]) || 10;
 
 const base = path.join('reports/pattern-builder/inventory', service);
-const rawDir = path.join(base, 'raw');
+const rawDir = path.join(base, by === 'order' ? 'order' : 'raw');
 if (!fs.existsSync(rawDir)) {
-  console.error(`❌ 판독 원자료가 없습니다: ${rawDir}`);
+  console.error(by === 'order'
+    ? `❌ 차례 자료가 없습니다: ${rawDir}  → 먼저 \`npm run pattern:order -- ${service} --from-raw\``
+    : `❌ 판독 원자료가 없습니다: ${rawDir}`);
   process.exit(1);
 }
 
@@ -45,6 +54,21 @@ for (const f of fs.readdirSync(rawDir).filter((x) => x.endsWith('.json')).sort()
   for (const s of j.screens) {
     const [w, h] = s.size.split('x').map(Number);
     if (h < 400 || w < 300 || noise.test(s.name)) continue;
+    if (by === 'order') {
+      const seq = s.orderText || '';
+      if (!seq) continue;
+      screens.push({
+        id: s.id,
+        name: s.name,
+        page: j._meta.page.name,
+        size: s.size,
+        rowCount: s.rowCount,
+        orderText: seq,
+        // 이름을 빼고 **차례만** 넣는다 — 이름이 비슷해서 묶이는 것을 막는다.
+        text: `차례: ${seq}`,
+      });
+      continue;
+    }
     screens.push({
       id: s.id,
       name: s.name,
@@ -57,7 +81,7 @@ for (const f of fs.readdirSync(rawDir).filter((x) => x.endsWith('.json')).sort()
 }
 
 // ── 임베딩 (캐시) ────────────────────────────────────────────────────────
-const cachePath = path.join(base, '.embeddings.json');
+const cachePath = path.join(base, by === 'order' ? '.embeddings-order.json' : '.embeddings.json');
 const cache = fs.existsSync(cachePath) ? JSON.parse(fs.readFileSync(cachePath, 'utf8')) : { model: MODEL, vectors: {} };
 if (cache.model !== MODEL) { cache.model = MODEL; cache.vectors = {}; }
 
@@ -91,6 +115,7 @@ const cos = (a, b) => a.reduce((s, x, i) => s + x * b[i], 0);
     console.log(`🖥️ ${MODEL} — "${query}" 와 닮은 화면 ${ranked.length}장\n`);
     for (const { s, score } of ranked) {
       console.log(`  ${score.toFixed(3)}  ${s.name}  [${s.page}]  ${s.size}  ${s.id}`);
+      if (by === 'order') console.log(`          ${String(s.orderText).slice(0, 140)}`);
     }
     console.log(`\nPATTERNSIM_SUMMARY screens=${screens.length} clusters=0 cached=${hits} sec=${((Date.now() - t0) / 1000).toFixed(1)}`);
     return;
@@ -114,24 +139,48 @@ const cos = (a, b) => a.reduce((s, x, i) => s + x * b[i], 0);
   }
   clusters.sort((a, b) => b.members.length - a.members.length);
 
-  const lines = [
-    `# ${service} — 닮은 화면 묶음 (기계 제안)`,
-    '',
-    `> 🖥️ \`${MODEL}\` 이 화면 이름과 쓰인 부품만 보고 닮은 것끼리 묶은 **후보**다.`,
-    `> 이 묶음이 곧 패턴이라는 뜻이 아니다. 사람이 보고 갈래를 정한다.`,
-    `> 화면 ${screens.length}장 · 묶음 ${clusters.length}개 · 닮음 기준 ${threshold}`,
-    '',
-    '| # | 크기 | 대표 이름 | 같이 묶인 화면 |',
-    '|---|---|---|---|',
-    ...clusters.filter((c) => c.members.length > 1).map((c, i) =>
-      `| ${i + 1} | ${c.members.length} | ${c.members[0].name.replace(/\|/g, '/')} | ${c.members.slice(1, 6).map((m) => m.name.replace(/\|/g, '/')).join(' · ')}${c.members.length > 6 ? ` … 외 ${c.members.length - 6}` : ''} |`),
-    '',
-    `## 혼자인 화면 ${clusters.filter((c) => c.members.length === 1).length}장`,
-    '',
-    clusters.filter((c) => c.members.length === 1).map((c) => c.members[0].name).join(' · '),
-    '',
-  ];
-  const out = path.join(base, 'similar-clusters.md');
+  const esc = (t) => String(t || '').replace(/\|/g, '/');
+  const many = clusters.filter((c) => c.members.length > 1);
+  const alone = clusters.filter((c) => c.members.length === 1);
+
+  const lines = by === 'order'
+    ? [
+      `# ${service} — 되풀이되는 **차례** 묶음 (기계 제안)`,
+      '',
+      `> 🖥️ \`${MODEL}\` 이 **위에서 아래로 놓인 차례**만 보고 닮은 것끼리 묶은 **후보**다.`,
+      `> 화면 이름은 넣지 않았다 — 이름이 비슷해서 묶이는 것을 막으려고.`,
+      `> 이 묶음이 곧 패턴이라는 뜻이 아니다. 사람이 보고 갈래를 정한다.`,
+      `> 칸 이름은 **레거시 그대로**이며 정본 이름이 아니다.`,
+      `> 화면 ${screens.length}장 · 묶음 ${clusters.length}개 · 닮음 기준 ${threshold}`,
+      '',
+      '| # | 몇 장 | 대표 차례 | 대표 화면 | 같이 묶인 화면 |',
+      '|---|---|---|---|---|',
+      ...many.map((c, i) =>
+        `| ${i + 1} | ${c.members.length} | ${esc(c.members[0].orderText).slice(0, 120)} | ${esc(c.members[0].name)} | ${c.members.slice(1, 5).map((m) => esc(m.name)).join(' · ')}${c.members.length > 5 ? ` … 외 ${c.members.length - 5}` : ''} |`),
+      '',
+      `## 혼자인 화면 ${alone.length}장`,
+      '',
+      alone.map((c) => esc(c.members[0].name)).join(' · '),
+      '',
+    ]
+    : [
+      `# ${service} — 닮은 화면 묶음 (기계 제안)`,
+      '',
+      `> 🖥️ \`${MODEL}\` 이 화면 이름과 쓰인 부품만 보고 닮은 것끼리 묶은 **후보**다.`,
+      `> 이 묶음이 곧 패턴이라는 뜻이 아니다. 사람이 보고 갈래를 정한다.`,
+      `> 화면 ${screens.length}장 · 묶음 ${clusters.length}개 · 닮음 기준 ${threshold}`,
+      '',
+      '| # | 크기 | 대표 이름 | 같이 묶인 화면 |',
+      '|---|---|---|---|',
+      ...many.map((c, i) =>
+        `| ${i + 1} | ${c.members.length} | ${esc(c.members[0].name)} | ${c.members.slice(1, 6).map((m) => esc(m.name)).join(' · ')}${c.members.length > 6 ? ` … 외 ${c.members.length - 6}` : ''} |`),
+      '',
+      `## 혼자인 화면 ${alone.length}장`,
+      '',
+      alone.map((c) => esc(c.members[0].name)).join(' · '),
+      '',
+    ];
+  const out = path.join(base, by === 'order' ? 'order-clusters.md' : 'similar-clusters.md');
   fs.writeFileSync(out, lines.join('\n'));
   console.log(`🖥️ ${MODEL} — 화면 ${screens.length}장을 묶음 ${clusters.length}개로. → ${out}`);
   console.log(`PATTERNSIM_SUMMARY screens=${screens.length} clusters=${clusters.length} cached=${hits} sec=${((Date.now() - t0) / 1000).toFixed(1)}`);
