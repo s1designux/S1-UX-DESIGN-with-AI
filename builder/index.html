@@ -45,6 +45,12 @@
     <section class="pb-panel" aria-label="패턴과 부품">
       <div class="pb-panel-head"><h2 class="pb-panel-title">패턴 · 부품</h2></div>
       <div class="pb-panel-body">
+        <p class="pb-group-label">놓는 방식</p>
+        <div class="pb-place" role="radiogroup" aria-label="부품을 놓는 방식">
+          <button type="button" class="pb-btn pb-btn-sm" data-place="below" aria-checked="true" role="radio">↓ 아래 새 줄</button>
+          <button type="button" class="pb-btn pb-btn-sm" data-place="beside" aria-checked="false" role="radio">→ 선택한 줄 옆</button>
+        </div>
+        <p class="pb-note">부품을 누르면 기본으로 새 줄에 내려가고, "옆"을 고르면 지금 선택한 줄에 나란히 들어갑니다.</p>
         <p class="pb-group-label">패턴</p>
         <div class="pb-list" id="pb-pattern-list"></div>
         <p class="pb-group-label">레이아웃 보조</p>

@@ -375,12 +375,24 @@ function renderPartGroups() {
   });
 }
 
-function targetRow() {
+/* 놓는 방식 — below: 선택한 줄 바로 아래 새 줄(기본) · beside: 선택한 줄 옆에 나란히 */
+let placeMode = "below";
+function currentRow() {
   let row = selection.rowId ? findRow(selection.rowId) : null;
   if (!row && selection.blockId) row = findBlock(selection.blockId)?.row || null;
-  if (!row) row = state.rows[state.rows.length - 1];
-  if (!row) { row = newRow(); state.rows.push(row); }
-  return row;
+  return row || state.rows[state.rows.length - 1] || null;
+}
+function insertRowAfter(row) {
+  const r = newRow();
+  const i = row ? state.rows.indexOf(row) : -1;
+  state.rows.splice(i + 1, 0, r);
+  return r;
+}
+function targetRow() {
+  const cur = currentRow();
+  if (placeMode === "beside" && cur) return cur;
+  if (cur && !cur.blocks.length) return cur;          // 비어 있는 줄이면 그 줄을 채운다
+  return insertRowAfter(cur);
 }
 
 function addComponent(id) {
@@ -414,10 +426,16 @@ function moveBlock(blockId, dir) {
     const j = dir === "left" ? i - 1 : i + 1;
     if (j < 0 || j >= hit.row.blocks.length) return;
     [hit.row.blocks[i], hit.row.blocks[j]] = [hit.row.blocks[j], hit.row.blocks[i]];
+  } else if (dir === "split") {
+    hit.row.blocks.splice(i, 1);
+    const r = insertRowAfter(hit.row);
+    r.blocks.push(hit.block);
+    selection.rowId = r.id;
   } else {
     const ri = state.rows.indexOf(hit.row);
-    const rj = dir === "up" ? ri - 1 : ri + 1;
-    if (rj < 0 || rj >= state.rows.length) return;
+    let rj = dir === "up" ? ri - 1 : ri + 1;
+    if (rj < 0) return;
+    if (rj >= state.rows.length) { insertRowAfter(hit.row); rj = ri + 1; }   // 아래 줄이 없으면 새로 만든다
     hit.row.blocks.splice(i, 1);
     state.rows[rj].blocks.push(hit.block);
     selection.rowId = state.rows[rj].id;
@@ -485,6 +503,7 @@ function renderProps() {
       <button type="button" class="pb-btn pb-btn-sm" data-act="right">오른쪽 →</button>
       <button type="button" class="pb-btn pb-btn-sm" data-act="up">↑ 윗행</button>
       <button type="button" class="pb-btn pb-btn-sm" data-act="down">↓ 아랫행</button>
+      <button type="button" class="pb-btn pb-btn-sm" data-act="split">↵ 새 줄로 분리</button>
       <button type="button" class="pb-btn pb-btn-sm" data-act="dup">복제</button>
       <button type="button" class="pb-btn pb-btn-sm" data-act="del">삭제</button>
     </div>`);
@@ -509,7 +528,7 @@ function renderProps() {
 
   parts.push(`<p class="pb-section-title">화면</p>`);
   parts.push(propRow("안쪽 여백", selectHtml("screen.padding", spacingOpts, state.screen.padding)));
-  if (!hit && !row) parts.push(`<p class="pb-note">캔버스에서 요소나 행을 누르면 여기서 고칩니다. 왼쪽 부품을 누르면 마지막 행에 들어갑니다.</p>`);
+  if (!hit && !row) parts.push(`<p class="pb-note">캔버스에서 요소나 줄을 누르면 여기서 고칩니다. 왼쪽 부품을 누르면 새 줄로 내려가고, "선택한 줄 옆"을 고르면 나란히 들어갑니다.</p>`);
 
   els.props.innerHTML = parts.join("");
 
@@ -521,7 +540,7 @@ function renderProps() {
   els.props.querySelectorAll("[data-act]").forEach((btn) => btn.addEventListener("click", () => {
     const act = btn.dataset.act;
     const id = selection.blockId;
-    if (act === "left" || act === "right" || act === "up" || act === "down") moveBlock(id, act);
+    if (act === "left" || act === "right" || act === "up" || act === "down" || act === "split") moveBlock(id, act);
     else if (act === "dup") duplicateBlock(id);
     else if (act === "del") removeBlock(id);
     else if (act === "row-up") moveRow(row.id, "up");
@@ -701,6 +720,10 @@ async function main() {
   els.role.addEventListener("change", () => { state.meta.role = els.role.value; update(); });
   els.theme.addEventListener("change", () => { state.meta.theme = els.theme.value; update(); });
 
+  document.querySelectorAll("[data-place]").forEach((btn) => btn.addEventListener("click", () => {
+    placeMode = btn.dataset.place;
+    document.querySelectorAll("[data-place]").forEach((b) => b.setAttribute("aria-checked", String(b === btn)));
+  }));
   $("#pb-add-row").addEventListener("click", () => { const r = newRow(); state.rows.push(r); selection = { rowId: r.id, blockId: null }; update(); });
   $("#pb-new").addEventListener("click", () => {
     if (state.rows.length && !confirm("지금 화면을 비우고 새로 시작할까요? (저장하지 않은 구성은 사라집니다)")) return;
