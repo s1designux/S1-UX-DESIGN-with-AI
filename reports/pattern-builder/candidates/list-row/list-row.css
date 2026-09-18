@@ -6,8 +6,9 @@
    · 앞 체크 18, 글과 사이 12 · 화살표 24, 글과 사이 4
    · 구분선 #EBEBEB ≒ 우리 gray-100, 화면 폭 360 전체
    · 앞 아이콘 32×32, 왼쪽 16, 글 시작 56 (권한 화면)
-   ※ 줄 간격만 다르다 — 레거시는 글자 크기와 같은 간격(16/14)이라 줄이 74,
-     우리 정본 글꼴은 130% 라 두 줄짜리가 83 이 된다. 우리 정본 글꼴을 따른다.
+   ※ 줄 간격은 레거시 그대로 글자 크기와 같게 간다(100%) — river 결정 2026-09-18 "레거시 그대로".
+     그래서 두 줄짜리도 74 로 떨어진다. 우리 글꼴 기본 130% 를 이 부품 안에서만 100% 로 덮는다.
+     (간격 100% 토큰이 아직 없다 — 정본 등록할 때 함께 만든다.)
    색·글꼴은 전부 토큰/타이포 클래스. HEX 없음. */
 
 [data-s1-component="list-row"] {
@@ -56,8 +57,8 @@
   gap: var(--spacing-8);
   min-width: 0;
 }
-[data-s1-component="list-row"] [data-s1-part="title"] { color: var(--color-text-title-primary); margin: 0; }
-[data-s1-component="list-row"] [data-s1-part="description"] { color: var(--color-text-body-tertiary); margin: 0; }
+[data-s1-component="list-row"] [data-s1-part="title"] { color: var(--color-text-title-primary); line-height: 1; margin: 0; }
+[data-s1-component="list-row"] [data-s1-part="description"] { color: var(--color-text-body-tertiary); line-height: 1; margin: 0; }
 
 /* 줄 끝 자리 — 상태 글자 · 화살표 · 토글 */
 [data-s1-component="list-row"] [data-s1-part="trail"] {
@@ -66,7 +67,7 @@
   flex: none;
   gap: var(--spacing-4);
 }
-[data-s1-component="list-row"] [data-s1-part="trail-text"] { color: var(--color-text-body-secondary); }
+[data-s1-component="list-row"] [data-s1-part="trail-text"] { color: var(--color-text-body-secondary); line-height: 1; }
 [data-s1-component="list-row"] [data-s1-part="arrow"] {
   background-color: var(--color-icon-gray);
   display: block;
