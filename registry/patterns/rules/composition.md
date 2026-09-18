@@ -4,8 +4,10 @@
 
 ## 화면에 직접 놓는 부품
 
-- **확정 · 위 틀·아래 틀은 정본 부품 하나씩만 놓는다.** 위 = `mobile-header`, 아래 = `mobile-bottom-nav`.
-  화면이 상태표시줄·앱바를 따로 그리지 않는다. 근거: `registry/patterns/rules/screen-skeleton.md`.
+- **확정 · 위 틀은 정본 `mobile-header` 하나만 놓는다.** 화면이 상태표시줄·앱바를 따로 그리지 않는다.
+- **확정 · 앱 탭바를 쓸 때는 정본 `mobile-bottom-nav` 를 쓴다.** 다만 **기기 자체의 시스템 버튼 바는 우리 부품이 아니다** —
+  화면에 그리지 않는다. 레거시 모두앱 화면 아래에 보이는 바가 그것이고(`phone_navi`), 앱 탭바가 아니다.
+  근거: `registry/patterns/rules/screen-skeleton.md` 「맨 아래 영역」.
 
 ## 화면에 직접 놓지 않는 것(오버레이·부속)
 

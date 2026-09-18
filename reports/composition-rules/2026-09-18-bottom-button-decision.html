@@ -37,7 +37,10 @@ td.n{text-align:right;font-variant-numeric:tabular-nums}
 .band{padding:20px;background:var(--color-surface-default,#fff);border-top:0}
 .band.two{display:flex;gap:8px}
 .band.two>*{flex:1}
-.navbar{display:flex;justify-content:space-around;background:var(--color-navigation-bg,#fff);border-top:1px solid var(--color-border-subtle,#eee)}
+.osbar{display:flex;justify-content:space-around;align-items:center;height:48px;background:#f4f5f6;color:#8b8d93;font-size:15px;letter-spacing:.1em}
+.osbar span{opacity:.75}
+.osbar span:first-child{letter-spacing:.22em}
+.kb{background:#e8eaed;color:#8b8d93;font-size:12px;text-align:center;padding:26px 0;letter-spacing:.02em}
 /* 치수 표시 */
 .dim{position:relative}
 .dim::after{content:attr(data-dim);position:absolute;right:4px;top:3px;font-size:10px;font-weight:700;color:var(--pg-ok);font-variant-numeric:tabular-nums;letter-spacing:.02em}
@@ -54,22 +57,27 @@ td.n{text-align:right;font-variant-numeric:tabular-nums}
 <div class="pick" style="margin-bottom:8px">
 <h3 style="margin-top:14px">✅ 정해졌습니다 — (A) 규칙으로 적는다</h3>
 <p>river 결정 2026-09-18 — <b>"내비가 있어도 바로위 20*20 두른상태에서 놓는거지? 그렇다면 다 맞아"</b></p>
-<p>버튼 위 20 · 아래 20 을 두른 칸에 담고, <b>내비가 있으면 그 칸의 아래끝을 내비 위끝에 딱 붙인다</b>(사이를 더 띄우지 않는다).
-내비가 없으면 칸 아래끝이 화면 바닥. 버튼 좌우는 화면 여백과 같은 20. 칸 전체 높이는 <b>88</b>(위 20 + 버튼 48 + 아래 20).</p>
+<p>버튼 위 20 · 아래 20 을 두른 칸에 담고, <b>아래에 바가 있으면 그 칸의 아래끝을 바 위끝에 딱 붙인다</b>(사이를 더 띄우지 않는다).
+기기 바가 없으면 칸 아래끝이 화면 바닥. 버튼 좌우는 화면 여백과 같은 20. 칸 전체 높이는 <b>88</b>(위 20 + 버튼 48 + 아래 20).</p>
 <p style="font-size:13px;color:var(--pg-dim);margin-bottom:6px">새 부품을 만들지 않았습니다 — 놓는 자리만 정했습니다.
 적은 곳: 뼈대 규칙 「맨 아래 영역」 · 조립 규칙 낱장 R-9.</p>
 </div>
+
+<div class="note"><b>바로잡습니다 — 아래 회색 바는 우리 부품이 아닙니다.</b>
+처음 보여드린 그림에서 칸 아래에 «홈·검색·알림·설정» 탭바를 그렸는데, 잘못이었습니다.
+레거시 화면 아래에 있던 것은 <b>안드로이드 기기의 시스템 버튼 바</b>였습니다. 모두앱에는 앱 탭바가 아예 없었습니다(대신 햄버거 메뉴를 씁니다).
+그래서 이 그림도 기기 바로 고쳐 그렸습니다. 다만 <b>“칸 아래끝을 그 바 위끝에 딱 붙인다”는 규칙 자체는 그대로</b>입니다 — 잰 값이 바뀐 게 아닙니다.</div>
 
 <div class="note"><b>새로 만든 부품은 없습니다.</b> 버튼은 원래 있었고, 없던 것은
 <b>“버튼을 화면 맨 아래에 어떻게 붙이나”</b>라는 약속뿐이었습니다. 그 약속만 적었습니다.</div>
 
 <h2>1. 어떤 모양인지</h2>
-<p class="sub">아래 셋은 실제 배포본 부품(제목줄·버튼·내비)을 그대로 올려 만든 것입니다. 레거시 화면에서 잰 자리에 놓았고, 버튼 높이는 우리 부품 값(48)입니다 — 레거시는 50이었습니다.</p>
+<p class="sub">아래 셋은 실제 배포본 부품(제목줄·버튼)을 그대로 올려 만든 것입니다. 맨 아래 회색 바는 기기 것이라 부품이 아닙니다. 레거시 화면에서 잰 자리에 놓았고, 버튼 높이는 우리 부품 값(48)입니다 — 레거시는 50이었습니다.</p>
 
 <div class="shelf">
 
   <figure class="case">
-    <figcaption><b>가장 흔한 모양 — 158개 화면</b>본문 아래, 내비 위에 버튼 하나가 가로로 꽉 찹니다.</figcaption>
+    <figcaption><b>가장 흔한 모양 — 158개 화면</b>본문 아래, 기기 바 위에 버튼 하나가 가로로 꽉 찹니다.</figcaption>
     <div class="phone">
       <header data-s1-component="mobile-header" data-variant="standard-title">
         <button type="button" data-s1-part="back" aria-label="이전"><span data-s1-part="back-icon" aria-hidden="true"></span></button>
@@ -85,12 +93,7 @@ td.n{text-align:right;font-variant-numeric:tabular-nums}
           <span data-s1-part="label">인증 요청</span>
         </button>
       </div>
-      <nav class="navbar" aria-label="주요 메뉴" role="tablist">
-        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="home" role="tab" aria-selected="true"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">홈</span></button>
-        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="search" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">검색</span></button>
-        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="notification" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">알림</span></button>
-        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="settings" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">설정</span></button>
-      </nav>
+      <div class="osbar" aria-hidden="true"><span>&#9475;&#9475;&#9475;</span><span>&#9633;</span><span>&#8249;</span></div>
     </div>
     <p class="legend"><i>점선 칸</i> = 정해진 칸. 위 20 + 버튼 48 + 아래 20 = <b>88</b></p>
   </figure>
@@ -111,18 +114,13 @@ td.n{text-align:right;font-variant-numeric:tabular-nums}
         <button type="button" data-s1-component="button" data-variant="blue-line" data-size="lg"><span data-s1-part="label">1544-7000</span></button>
         <button type="button" data-s1-component="button" data-variant="primary" data-size="lg"><span data-s1-part="label">카드 신청하기</span></button>
       </div>
-      <nav class="navbar" aria-label="주요 메뉴" role="tablist">
-        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="home" role="tab" aria-selected="true"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">홈</span></button>
-        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="search" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">검색</span></button>
-        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="notification" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">알림</span></button>
-        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="settings" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">설정</span></button>
-      </nav>
+      <div class="osbar" aria-hidden="true"><span>&#9475;&#9475;&#9475;</span><span>&#9633;</span><span>&#8249;</span></div>
     </div>
     <p class="legend"><i>점선 칸</i> = 같은 칸(88), 버튼만 둘</p>
   </figure>
 
   <figure class="case">
-    <figcaption><b>내비가 없는 경우 — 4개 화면</b>덮는 화면(팝업·시트)에서는 버튼 칸이 화면 맨 아래에 그대로 붙습니다.</figcaption>
+    <figcaption><b>기기 바가 없는 경우 — 4개 화면</b>덮는 화면(팝업·시트)에서는 버튼 칸이 화면 맨 아래에 그대로 붙습니다.</figcaption>
     <div class="phone">
       <header data-s1-component="mobile-header" data-variant="standard-title">
         <button type="button" data-s1-part="back" aria-label="이전"><span data-s1-part="back-icon" aria-hidden="true"></span></button>
@@ -139,7 +137,7 @@ td.n{text-align:right;font-variant-numeric:tabular-nums}
         </button>
       </div>
     </div>
-    <p class="legend"><i>점선 칸</i> = 같은 칸(88), 내비 없이 화면 바닥에 붙음</p>
+    <p class="legend"><i>점선 칸</i> = 같은 칸(88), 기기 바 없이 화면 바닥에 붙음</p>
   </figure>
 
 </div>
@@ -154,7 +152,7 @@ td.n{text-align:right;font-variant-numeric:tabular-nums}
 <tr><td>칸 아래쪽 여백</td><td><b>20</b></td><td class="n">157</td><td>25 (2건) · 3 (2건)</td></tr>
 <tr><td>버튼 크기</td><td><b>320 × 50</b></td><td class="n">158 / 164</td><td>156 폭 (6건, 버튼 둘일 때)</td></tr>
 <tr><td>버튼 왼쪽 자리</td><td><b>20</b></td><td class="n">159</td><td>184 (3건, 오른쪽 버튼)</td></tr>
-<tr><td>칸 아래에 내비가 있음</td><td><b>있음</b></td><td class="n">165</td><td>없음 (4건)</td></tr>
+<tr><td>칸 아래에 기기 바가 있음</td><td><b>있음</b></td><td class="n">165</td><td>없음 (4건)</td></tr>
 </tbody>
 </table>
 <p class="sub">즉 <b>90 = 위 20 + 버튼 50 + 아래 20</b> 입니다. 160장 중 158장이 이 한 모양입니다.</p>
@@ -176,7 +174,7 @@ td.n{text-align:right;font-variant-numeric:tabular-nums}
 <h2>4. 정한 내용이 뜻하는 것</h2>
 <div class="pick">
 <h3>규칙으로 적었습니다 (A)</h3>
-<p>“화면 맨 아래 버튼 칸은 위 20 · 아래 20, 내비가 있으면 그 바로 위에 딱 붙인다”가 뼈대 규칙에 들어갔습니다.
+<p>“화면 맨 아래 버튼 칸은 위 20 · 아래 20, 아래에 바가 있으면 그 바로 위에 딱 붙인다”가 뼈대 규칙에 들어갔습니다.
 새 부품을 만드는 게 아니라 놓는 자리만 정한 것이라, 빌더가 바로 이 칸을 만들 수 있습니다.</p>
 
 <h3>고르지 않은 것</h3>
@@ -184,6 +182,50 @@ td.n{text-align:right;font-variant-numeric:tabular-nums}
 <b>(C) 그냥 두기</b> — 해당 없음.</p>
 </div>
 
+<h2>5. 키보드가 올라오면 — 같은 자리가 다르게 쓰인다</h2>
+<p class="sub">river 가 Figma 에서 골라 주신 화면이 이 경우입니다. 키보드가 있는 화면 19장을 다 재봤습니다.</p>
+
+<div class="shelf">
+  <figure class="case">
+    <figcaption><b>키보드가 올라온 화면</b>20/20 칸이 사라지고, 버튼이 가로로 완전히 꽉 차서 키보드에 딱 붙습니다.</figcaption>
+    <div class="phone">
+      <header data-s1-component="mobile-header" data-variant="standard-title">
+        <button type="button" data-s1-part="back" aria-label="이전"><span data-s1-part="back-icon" aria-hidden="true"></span></button>
+        <h1 data-s1-part="title">권한 신청</h1>
+        <span data-s1-part="spacer" aria-hidden="true"></span>
+      </header>
+      <div class="body" style="min-height:120px">
+        <div class="row m"></div><div class="row"></div><div class="row s"></div>
+      </div>
+      <div class="band mark" style="padding:0" data-dim="">
+        <button type="button" data-s1-component="button" data-variant="primary" data-size="lg" style="width:100%;border-radius:0">
+          <span data-s1-part="label">검색</span>
+        </button>
+      </div>
+      <div class="kb" aria-hidden="true">키보드</div>
+      <div class="osbar" aria-hidden="true"><span>&#9475;&#9475;&#9475;</span><span>&#9633;</span><span>&#8249;</span></div>
+    </div>
+    <p class="legend"><i>점선 칸</i> = 여백 0. 버튼이 360 을 꽉 채우고 키보드에 붙음</p>
+  </figure>
+</div>
+
+<table>
+<thead><tr><th>무엇</th><th>값</th><th>몇 건</th></tr></thead>
+<tbody>
+<tr><td>키보드가 올라온 화면</td><td>—</td><td class="n">19</td></tr>
+<tr><td>그중 맨 아래 버튼이 있는 화면</td><td>—</td><td class="n">11</td></tr>
+<tr><td>그 버튼의 크기·자리</td><td><b>360 × 50, 왼쪽 0</b></td><td class="n">11 / 11</td></tr>
+<tr><td>버튼과 키보드 사이</td><td><b>0</b> (딱 붙음)</td><td class="n">11 / 11</td></tr>
+<tr><td>키보드 높이 — 앱</td><td>341 (기기 바 없음)</td><td class="n">3</td></tr>
+<tr><td>키보드 높이 — 모바일 웹</td><td>292 (아래에 기기 바 48)</td><td class="n">8</td></tr>
+</tbody>
+</table>
+
+<div class="note"><b>정할 것 하나 더.</b> 키보드가 올라오면 <b>버튼이 좌우 여백 20 을 버리고 화면 끝까지 꽉 찹니다.</b>
+레거시 11장이 예외 없이 그랬습니다. 이걸 우리 규칙으로 가져올지 정해주세요 —
+(A) 그대로 가져온다 / (B) 키보드가 올라와도 20/20 칸을 유지한다.
+안 정하면 이 자리는 «미작성»으로 남습니다.</div>
+
 <p class="sub">잰 자료: 모두앱 레거시 Figma 10개 페이지 · 폭 360 화면 593장 중 맨 아래 버튼이 있는 160장.
-화면 모형은 실제 배포본 부품(제목줄·버튼·내비)을 그대로 올린 것이고, 본문의 회색 줄만 자리 채움입니다.</p>
+화면 모형은 실제 배포본 부품(제목줄·버튼)을 그대로 올린 것이고, 본문의 회색 줄과 맨 아래 기기 바는 자리 채움입니다.</p>
 </div></body></html>
