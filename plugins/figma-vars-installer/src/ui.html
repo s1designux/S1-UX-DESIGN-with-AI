@@ -34,11 +34,9 @@
      끊어 창 밖으로 밀지 않는다. */
   .header > div { min-width: 0; }
   .header-title { font-size: 12.5px; font-weight: 700; color: #111827; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  /* 버전 배지 — 손으로 올린다(빌드 스탬프 .header-build 와 별개) */
+  /* 버전 배지 — 손으로 올린다 */
   .header-ver { font-size: 10px; font-weight: 600; color: #1d6ceb; margin-left: 5px; vertical-align: 1px; }
   .header-sub   { font-size: 11px; color: #9ca3af; margin-top: 2px; }
-  .header-build { margin-left: auto; flex-shrink: 0; text-align: right; font-size: 9.5px; color: #9ca3af; line-height: 1.5; white-space: nowrap; }
-  .header-build strong { display: block; color: #2563eb; font-weight: 700; font-size: 11px; }
 
   /* ── 선택 리스트 ── */
   .select-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
@@ -455,7 +453,6 @@
   #audit-root .medium-banner span { flex:1; }
   #audit-root .medium-banner b { color:var(--fg); }
   #audit-root .medium-banner button { font:inherit; font-size:10.5px; padding:2px 8px; border-radius:4px; border:1px solid var(--line); background:transparent; color:var(--fg); cursor:pointer; }
-  #audit-root .medium-hint { font-size:10px; color:var(--muted); margin-top:3px; }
   #audit-root .verdict-group { font-size:11px; font-weight:600; color:var(--fg); margin:12px 2px 4px; }
   #audit-root .verdict-group small { font-weight:400; color:var(--muted); margin-left:4px; }
   #audit-root .pick-fold { margin-top:6px; }
@@ -483,11 +480,10 @@
 <div class="header">
   <div class="header-icon">🎨</div>
   <div>
-    <!-- 버전(0.2Ver)은 손으로 올린다. 자동 스탬프는 우측 .header-build(빌드 시각)뿐. -->
+    <!-- 버전(0.2Ver)은 손으로 올린다. -->
     <div class="header-title">S-1 S/W UX Guide 설치/검수기 <span class="header-ver">0.2Ver</span></div>
     <div class="header-sub">Variables 설치 · GUI 검수</div>
   </div>
-  <div class="header-build" title="이 설치 패키지가 빌드된 시각">업데이트<strong>{{BUILD_TIME}}</strong></div>
 </div>
 
 <!-- ── 가이드설치 탭 (옛 '설치' 탭 — 내용 그대로) ── -->
@@ -1419,7 +1415,7 @@ function renderChecklistResults(items) {
       result.textContent = item.count + '건';
       result.classList.add(item.status);
     } else {
-      result.textContent = item.coverage === 'partial' ? '0건 · 일부 판정' : '통과';
+      result.textContent = '통과';
     }
   });
 }
@@ -1556,21 +1552,14 @@ function renderImprovedSummary(payload) {
 
 // 매체 안내 한 줄 — 무엇을 감췄는지 숨기지 않고 알리고, 한 번에 되돌릴 수 있게 한다.
 // 이 파일에 정본과 이름이 같은 세트가 둘 이상 있으면 검수가 거꾸로 돌 수 있다 — 숨기지 않고 알린다.
-let auditNameClashes = [];
-function nameClashHtml() {
-  if (!auditNameClashes.length) return '';
-  return '<div class="medium-banner" style="background:#fdf3dc;color:#8a6100;">' +
-    '<span>이 파일에 <b>같은 이름의 세트가 둘 이상</b> 있습니다(' + escape(auditNameClashes.slice(0, 4).join(' · ')) +
-    (auditNameClashes.length > 4 ? ' 외 ' + (auditNameClashes.length - 4) + '개' : '') +
-    '). 어느 것이 정본인지 검수기가 가릴 수 없어, 이 이름들은 답이 뒤바뀔 수 있습니다.</span></div>';
-}
+// 같은 이름의 세트가 둘 이상인 경고는 화면에서 뺐다 — 검수기가 가릴 문제이지 작업자가 풀 문제가 아니다(river 지시 2026-09-18).
 function mediumBannerHtml() {
   if (!auditMedium) return '';
   const label = auditMedium === 'mobile' ? '모바일 화면' : 'PC 화면';
   return '<div class="medium-banner">' +
     (showAllMediums
       ? '<span>' + label + '입니다. 지금은 다른 매체 것까지 모두 보여주는 중입니다.</span><button data-action="medium-filter">다시 걸러 보기</button>'
-      : '<span><b>' + label + '</b>으로 보고 다른 매체 전용은 목록에서 뺐습니다' + (auditMediumWhy ? ' — ' + escape(auditMediumWhy) : '') + '</span><button data-action="medium-all">전부 보기</button>') +
+      : '<span><b>' + label + '</b>으로 보고 다른 매체 전용은 목록에서 뺐습니다</span><button data-action="medium-all">전부 보기</button>') +
     '</div>';
 }
 function toggleMediumFilter(showAll) {
@@ -1594,16 +1583,13 @@ const VERDICT_BADGE = {
   undecided: '아직 안 정함',
   none: '교체 대상 아님',
 };
-function decisionAxesText(d) {
-  if (!d || !d.axes) return '';
-  return Object.keys(d.axes).map(function (k) { return k + '=' + d.axes[k]; }).join(' · ');
-}
 // 근거는 번호만 던지지 않는다 — 무슨 결정이었는지 한 줄로 푼다.
 function decisionBasisLine(d) {
   const b = (d && d.basis && d.basis[0]) || null;
   if (!b) return '';
   if (!b.id || b.id === '표') return '레거시 속성표에 적힌 짝';
-  return b.what + (b.quote ? ' — “' + b.quote + '”' : '') + ' (' + b.id + ')';
+  // 결정 번호(D-12 등)는 우리 장부 번호라 화면에 내보내지 않는다(river 지시 2026-09-18).
+  return b.what + (b.quote ? ' — “' + b.quote + '”' : '');
 }
 // 조건을 몰라 자동으로 걸지 않는 결정 메모 — 사람이 고를 때 쓰라고 한 줄로 보여준다.
 function decisionMemoLine(d) {
@@ -1619,10 +1605,9 @@ function decisionMemoLine(d) {
 function verdictNoteHtml(d, decidedMissing) {
   const kind = verdictKind(d);
   if (kind === 'decided') {
-    const axes = decisionAxesText(d);
+    // 레거시 코드 이름·축 나열은 검수기 사정이라 화면에 내보내지 않는다(river 지시 2026-09-18).
     const basis = decisionBasisLine(d);
-    let html = '<div class="verdict-note is-answer">' + escape(d.legacy) + ' → <b>' + escape((d.canonSets || []).join(' 또는 ')) + '</b>' +
-      (axes ? ' · ' + escape(axes) : '') + '</div>';
+    let html = '<div class="verdict-note is-answer">바꿀 것: <b>' + escape((d.canonSets || []).join(' 또는 ')) + '</b></div>';
     if (basis) html += '<div class="verdict-note">근거: ' + escape(basis) + '</div>';
     html += decisionMemoLine(d);
     if (decidedMissing) html += '<div class="verdict-note">정해진 부품이 이 파일에 아직 없습니다 — [설치] 탭을 먼저 실행하세요.</div>';
@@ -1713,7 +1698,7 @@ function renderManualList(list) {
   ];
   for (const c of list) groups.filter((g) => g.key === verdictKind(c.decision))[0].rows.push(c);
 
-  let html = nameClashHtml() + mediumBannerHtml();
+  let html = mediumBannerHtml();
   for (const g of groups) {
     if (!g.rows.length) continue;
     html += '<div class="verdict-group">' + g.title + ' ' + g.rows.length + '건' + (g.hint ? '<small>' + g.hint + '</small>' : '') + '</div>';
@@ -1723,7 +1708,7 @@ function renderManualList(list) {
       if (kind === 'decided' && c.decision && c.decision.axes) decisionAxesById[c.id] = c.decision.axes;
       const opts = c.suggestions.map((s, i) =>
         '<option value="' + i + '">' + escape(s.name) +
-        (s.decided ? ' (결정)' : (kind === 'undecided' && s.score > 0 ? ' · ' + Math.round(s.score * 100) + '%' : '')) + '</option>'
+        (s.decided ? ' (결정)' : '') + '</option>'
       ).join('');
       html += '<div class="swap-card is-' + kind + '" data-manual-id="' + escape(c.id) + '">';
       html += '<div class="swap-card-head"><div class="iname">' + escape(c.instanceName) + '</div>';
@@ -1747,7 +1732,6 @@ function renderManualList(list) {
       html += foldable
         ? '<details class="pick-fold"><summary>정본·변형 직접 고르기</summary>' + selects + '</details>'
         : selects;
-      html += '<div class="medium-hint" data-role="medium-hint"></div>';
       html += '<div class="apply-row">';
       html += '<button data-action="import-component">컴포넌트 가져오기</button>';
       html += '<button data-action="manual-swap" class="primary">교체</button>';
@@ -1868,6 +1852,7 @@ function modulePartsHtml(c) {
       : '<span class="part-badge" style="color:' + badge[1] + ';">' + badge[0] + '</span></div>';
     html += '<div class="part-meta">현재: ' + escape(p.currentMainName) + '</div>';
     if (verdict) html += verdictNoteHtml(p.decision, p.decidedMissing);
+    if (p.needsCheck) html += '<div class="verdict-note">사유: ' + escape(p.needsCheck) + '</div>';
     if (p.kind === 'canonical') { html += '</div>'; continue; }
     if (p.suggestions && p.suggestions.length) {
       // 지금 모습 → 바뀔 모습 (이름을 몰라도 그림으로 고를 수 있게)
@@ -1879,7 +1864,7 @@ function modulePartsHtml(c) {
       const partSelects = '<div class="part-selects">' +
         '<select class="ds-select" data-role="part-pick" data-part-id="' + escape(p.id) + '">' + p.suggestions.map((s, i) =>
           '<option value="' + i + '">' + escape(s.name) +
-          (s.decided ? ' (결정)' : (verdict !== 'decided' && s.score > 0 ? ' · ' + Math.round(s.score * 100) + '%' : '')) + '</option>'
+          (s.decided ? ' (결정)' : '') + '</option>'
         ).join('') + '</select>' +
         '<select class="ds-select grow" data-role="variant-pick" data-part-id="' + escape(p.id) + '" disabled><option>변형 읽는 중…</option></select>' +
         '</div>';
@@ -1888,7 +1873,6 @@ function modulePartsHtml(c) {
       html += partFoldable
         ? '<details class="pick-fold"><summary>정본·변형 직접 고르기</summary>' + partSelects + '</details>'
         : partSelects;
-      html += '<div class="medium-hint" data-role="medium-hint"></div>';
       html += '<div class="part-actions">';
       if (p.kind !== 'raw' && blockedParts[p.id]) {
         // 묶음을 먼저 풀어야 하는 상태 — 가져오기·교체는 감추고 [묶음 풀기] 하나만 낸다.
@@ -1911,7 +1895,8 @@ function modulePartsHtml(c) {
 function moduleCardHtml(c) {
   const parts = c.parts || [];
   // 교체 대상이 아니라고 답한 부품(후보 없음)은 세지 않는다.
-  const swappableParts = parts.filter((p) => (p.kind === 'auto' || p.kind === 'manual') && (p.suggestions || []).length);
+  // 한 번에 도는 버튼의 숫자는 «실제로 도는 것» 만 센다 — 확인이 필요한 부품은 빠진다.
+  const swappableParts = parts.filter((p) => (p.kind === 'auto' || p.kind === 'manual') && !p.needsCheck && (p.suggestions || []).length);
   const swappable = swappableParts.length;
   const decidedHere = swappableParts.filter((p) => verdictKind(p.decision) === 'decided' && p.decision).length;
   let html = '<div class="swap-card-head"><div class="iname">' + escape(c.instanceName) + '</div><span class="module-badge">모듈 · 부품 ' + (parts.length || c.nestedCount || 0) + '개</span></div>';
@@ -2033,7 +2018,6 @@ function updatePartSwapEnabled(moduleId, partId) { updateSwapEnabled(partId); }
 
 // 검수 자료가 모바일 화면인지 PC 화면인지 — 다른 매체 전용 변형을 목록에서 감출 때 쓴다.
 let auditMedium = null;       // 'mobile' · 'pc' · null(모름)
-let auditMediumWhy = '';
 let showAllMediums = false;   // river 가 [전부 보기] 를 누르면 감추지 않는다
 
 function loadVariantsFor(id, instanceId, sug) {
@@ -2154,11 +2138,6 @@ function applyVariantInfo(id, info) {
     else { thumb.removeAttribute('src'); thumb.classList.add('empty'); syncPreviewRow(thumb); }
   }
   syncVariantSummary(partId);
-  const hint = row.querySelector('[data-role="medium-hint"]');
-  if (hint) {
-    const n = (info && info.hiddenByMedium) || 0;
-    hint.textContent = n ? (auditMedium === 'mobile' ? 'PC 전용 ' : '모바일 전용 ') + n + '개는 목록에서 뺐습니다' : '';
-  }
   updateSwapEnabled(partId);
 }
 
@@ -2318,7 +2297,8 @@ function startModuleQueue(moduleId, allowDetach) {
 }
 function nextQueuePart(c) {
   // 변형이 정해진 것만 자동으로 돈다 — 못 고른 건 사용자가 직접 고르도록 남긴다
-  return (c.parts || []).find((p) => (p.kind === 'auto' || p.kind === 'manual') && !blockedParts[p.id] && chosenVariant(p.id) && isConfidentPick(p.id));
+  // 「부품 모두 교체」도 «확인이 필요한 것» 은 건너뛴다 — 위 「전체 교체」와 같은 잣대.
+  return (c.parts || []).find((p) => (p.kind === 'auto' || p.kind === 'manual') && !blockedParts[p.id] && !p.needsCheck && chosenVariant(p.id) && isConfidentPick(p.id));
 }
 function advanceModuleQueue() {
   if (!moduleQueue) return;
@@ -2351,12 +2331,15 @@ $("#btn-apply-swap-all").addEventListener("click", () => {
   let skipped = 0;
   swapCandidates.forEach((c) => {
     const cand = autoCandidate(c);
-    if (!cand || !isConfidentPick(c.id)) { skipped++; return; }
+    // 카드가 «확인필요» 라고 말하는데 버튼이 그것을 무시하면, 경고가 오히려 안심을 준다.
+    // 강등된 것(이름 겹침·부분 일치 등)은 한 번에 돌지 않고 카드에서 직접 누르게 남긴다.
+    const demoted = c.confidence !== 'high' || !!c.demoteReason;
+    if (!cand || demoted || !isConfidentPick(c.id)) { skipped++; return; }
     ready.push(cand);
     pendingSwapUi[c.id] = { instanceId: c.instanceId, instanceName: c.instanceName, currentName: c.currentMainName, suggestedName: cand.suggestedName, kind: 'auto' };
   });
   if (ready.length === 0) { showToast('바꿀 변형이 정해진 항목이 없습니다 · 카드에서 변형을 골라주세요'); return; }
-  if (skipped) showToast(skipped + '건은 변형을 짐작으로 골라 건너뜁니다 · 카드에서 보고 직접 눌러주세요');
+  if (skipped) showToast(skipped + '건은 확인이 필요해 건너뜁니다 · 카드에서 보고 직접 눌러주세요');
   $("#btn-apply-swap-all").disabled = true;
   $("#btn-apply-swap-all").textContent = "교체 중…";
   send("apply-swap-multi", { candidates: ready });
@@ -2429,7 +2412,7 @@ function renderSwapList(diag) {
         ${badge}
       </div>
       <div class="swap-card-meta">
-        <span class="from">현재: ${escape(c.currentMainName)} · ${escape(c.currentMainPath)}</span>
+        <span class="from">현재: ${escape(c.currentMainName)}</span>
         <span class="swap-arrow">→</span>
         <span class="to">교체: ${escape(c.suggestedName)} (기준)</span>
       </div>
@@ -2633,7 +2616,7 @@ function rerenderTab() {
         ${issue.offGuide ? '<span class="kind offguide">팔레트 외</span>' : ''}
       </div>
       <div class="issue-meta">
-        ${issue.property} · ${escape(issue.sourceLabel)} · <span class="hex">${issue.hex}</span>${issue.offGuide ? ` · <span class="offguide-note">가이드에 없는 색 · 최근접 Δ${Math.round(issue.nearestDistance)}</span>` : ''}
+        ${issue.property} · ${escape(issue.sourceLabel)} · <span class="hex">${issue.hex}</span>${issue.offGuide ? ` · <span class="offguide-note">가이드에 없는 색</span>` : ''}
       </div>
       <div class="cat-chips">${chipsHtml}</div>
       <div class="sugs">${sugsHtml}</div>
@@ -2710,8 +2693,6 @@ function renderInspectionResult(payload) {
   const component = payload.component || {};
   const diag = component.diagnostics || {};
   auditMedium = diag.medium || null;
-  auditMediumWhy = diag.mediumWhy || '';
-  auditNameClashes = diag.nameClashes || [];
   swapCandidates = component.candidates || [];
   swapCandidateHistory = {};
   const manual = component.manualCandidates || [];
@@ -2753,12 +2734,11 @@ function renderInspectionResult(payload) {
   $('#cnt-shadow').textContent = shadowCount;
 
   const passCount = checklist.filter((item) => item.status === 'pass' && item.count === 0).length;
-  const partialCount = checklist.filter((item) => item.coverage === 'partial').length;
   const selection = payload.selection || {};
   // 검수가 끝나면 모든 항목을 연다 — 컴포넌트를 먼저 교체해야 나머지가 열리던 잠금은 없앴다(river 지시 2026-09-03).
   const scopeLabel = auditScreenTypeLabel || selection.label || '선택 영역';
   $('#audit-result-summary').textContent =
-    `${scopeLabel} · ${checklist.length}개 중 ${passCount}개 통과${partialCount ? ` · 일부 판정 ${partialCount}개` : ''}`;
+    `${scopeLabel} · ${checklist.length}개 중 ${passCount}개 통과`;
   document.querySelectorAll('#result-chips button').forEach((btn) => {
     btn.disabled = false;
     btn.classList.toggle('active', btn.dataset.bucket === 'all');
@@ -2892,8 +2872,6 @@ function handleAuditUiMessage(msg) {
     renderImprovedSummary(msg.payload);
     if (msg.payload.ok) {
       auditMedium = (msg.payload.summary && msg.payload.summary.medium) || null;
-      auditMediumWhy = (msg.payload.summary && msg.payload.summary.mediumWhy) || '';
-      auditNameClashes = (msg.payload.summary && msg.payload.summary.nameClashes) || [];
       // ── 컴포넌트 버킷: 교체 가능한 항목 ──
       swapCandidates = msg.payload.candidates || [];
       swapCandidateHistory = {};

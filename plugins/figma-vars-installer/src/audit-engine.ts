@@ -47,12 +47,18 @@ const V2_COLLECTION_NAMES = [
 ];
 
 // 설치기가 만드는 정본 컴포넌트 이름 집합(정규화). 문서 전체에서 기준 풀을 모을 때
+// 이름을 맞대 볼 때 쓰는 열쇠 — **담는 쪽과 찾는 쪽이 이 함수 하나만 쓴다.**
+// 손으로 옮겨 적으면 한쪽만 바뀌어 조용히 어긋난다(🤖 독립 검증 2026-09-18).
+function refNameKey(name?: string | null): string {
+  return (name || "").toLowerCase().replace(/[\s_\-\/]+/g, "");
+}
+
 // 이 목록에 있는 이름만 "정본"으로 인정해, 파일 내 다른 레거시 세트가 정본으로 둔갑하는 것을 막는다.
 const CANONICAL_NAME_SET: { [norm: string]: true } = (() => {
   const m: { [norm: string]: true } = {};
   for (const cat of COMPONENT_CATEGORIES) {
     for (const name of cat.members) {
-      m[(name || "").toLowerCase().replace(/[\s_\-\/]+/g, "")] = true;
+      m[refNameKey(name)] = true;
     }
   }
   return m;
@@ -1226,6 +1232,9 @@ async function setVariablesMode(mode: "light" | "dark" | "clear"): Promise<{ cou
 
 // 이 파일 안에 정본과 **이름이 같은 세트가 둘 이상** 있던 것들(검수가 헷갈릴 수 있는 자리).
 let REFERENCE_NAME_CLASHES: string[] = [];
+function isClashingName(name?: string | null): boolean {
+  return REFERENCE_NAME_CLASHES.indexOf(refNameKey(name)) >= 0;
+}
 
 type ReferenceComponent = {
   id: string;       // 등록 시점의 파일 내 ID (같은 파일에서만 유효)
@@ -1293,7 +1302,6 @@ function collectInstances(root: BaseNode): InstanceNode[] {
 }
 
 type SwapDiagnostics = {
-  nameClashes?: string[];     // 이 파일에 이름이 겹치는 정본 후보가 있었나
   medium?: ScreenMedium;      // 이 검수 자료가 모바일 화면인가 PC 화면인가
   mediumWhy?: string;         // 그렇게 본 까닭(사람 말)
   selectionCount: number;
@@ -1407,6 +1415,7 @@ type ModulePart = {
   note?: string;
   decision?: LegacyVerdict;          // 결정표가 무어라 답했나
   decidedMissing?: boolean;          // 결정된 정본이 아직 이 파일에 없다
+  needsCheck?: string;               // 한 번에 돌리면 안 되는 사유(이름 겹침 등) — 있으면 «모두 교체»에서 뺀다
 };
 type ModuleFlag = { id: string; instanceId: string; instanceName: string; currentMainName: string; currentMainPath: string; nestedCount: number; repeatedPartName?: string; repeatedPartCount?: number; multiPartNote?: string; parts: ModulePart[]; detached?: boolean };
 
@@ -1714,7 +1723,14 @@ async function collectModuleParts(root: SceneNode, pool: ReferenceComponent[], m
         const picked = found.match;
         const rest = ranked.filter((r) => r.id !== picked.id);
         const head: MappingSuggestion = { id: picked.id, key: picked.key, type: picked.type, name: picked.name, source: picked.sourceFileName, score: 1 };
-        parts.push({ id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "auto", path, suggestions: [head].concat(rest) });
+        parts.push({
+          id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "auto", path,
+          suggestions: [head].concat(rest),
+          // 위 자동 교체와 같은 잣대 — 이름이 겹치면 한 번에 돌리지 않고 사람이 보고 누르게 남긴다.
+          needsCheck: isClashingName(picked.name)
+            ? "이 파일에 같은 이름의 부품이 둘 이상이라 어느 것이 기준인지 가릴 수 없습니다 — 바뀔 모습을 보고 바꿔주세요."
+            : undefined,
+        });
       } else {
         parts.push({ id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "manual", path, suggestions: ranked, decision: verdict || undefined });
       }
@@ -1877,8 +1893,12 @@ async function scanSwapCandidates(
         found = findReferenceMatch(inst.name, pool);
       }
       const target = found.match;
-      // 신뢰도: 정확/정규화 일치 = high, 부분 일치 = ambiguous(사용자 확인 필요)
-      const confidence: "high" | "ambiguous" = found.matchType === "partial" ? "ambiguous" : "high";
+      // 이 파일에 같은 이름의 세트가 둘 이상이면 어느 것이 기준인지 가릴 수 없다 —
+      // 먼저 만난 것으로 조용히 바꾸지 않고 «확인필요»로 내려 사람이 보게 한다.
+      // (예전에는 화면 위 배너로 알렸는데, 배너를 걷어낸 자리를 결과 자체로 막는다. river 지시 2026-09-18)
+      const clashed = !!target && isClashingName(target.name);
+      // 신뢰도: 정확/정규화 일치 = high, 부분 일치·이름 겹침 = ambiguous(사용자 확인 필요)
+      const confidence: "high" | "ambiguous" = (found.matchType === "partial" || clashed) ? "ambiguous" : "high";
       const matched = !!target;
       const sameAsTarget = !!target && target.id === currentTopId;
 
@@ -2018,6 +2038,9 @@ async function scanSwapCandidates(
         suggestedName: target!.name,
         suggestedSource: target!.sourceFileName,
         confidence,
+        demoteReason: clashed
+          ? "이 파일에 같은 이름의 부품이 둘 이상이라 어느 것이 기준인지 가릴 수 없습니다 — 바뀔 모습을 보고 바꿔주세요."
+          : undefined,
       });
     }
   }
@@ -2025,7 +2048,6 @@ async function scanSwapCandidates(
   const guess = detectMedium(sel, mediumVotes);
   diag.medium = guess.medium;
   diag.mediumWhy = guess.why;
-  diag.nameClashes = REFERENCE_NAME_CLASHES.slice();
   return { candidates, diagnostics: diag, manualCandidates, modules };
 }
 
@@ -2772,13 +2794,15 @@ function collectPageReference(preferredPage?: PageNode): ReferenceComponent[] {
   REFERENCE_NAME_CLASHES = [];
   const push = (list: ReferenceComponent[]) => {
     for (const c of list) {
-      const norm = (c.name || "").toLowerCase().replace(/[\s_\-\/]+/g, "");
+      const norm = refNameKey(c.name);
       if (!CANONICAL_NAME_SET[norm]) continue;  // 정본 목록에 없는 이름은 기준에서 제외
       if (!seen[norm]) { seen[norm] = true; out.push(c); }
-      // 같은 이름이 이 파일에 둘 이상 있으면 **먼저 만난 것을 조용히 고르지 않는다.**
-      // 레거시 파일에도 정본과 이름이 같은 세트가 있어(체크박스·칩·표 등), 그것이 기준 자리를
-      // 차지하면 검수가 거꾸로 돈다. 삼키지 말고 사람에게 알린다(🤖 독립 검증 2026-09-17 3차).
-      else if (REFERENCE_NAME_CLASHES.indexOf(c.name) < 0) REFERENCE_NAME_CLASHES.push(c.name);
+      // 같은 이름이 이 파일에 둘 이상 있으면 여기 적어 둔다. 레거시 파일에도 정본과 이름이 같은
+      // 세트가 있어(체크박스·칩·표 등) 그것이 기준 자리를 차지하면 검수가 거꾸로 돈다.
+      // 적어 둔 이름은 자동 교체에서 «확인필요»로 내려 조용히 바뀌지 않게 한다(scanSwapCandidates).
+      // **열쇠는 담을 때도 찾을 때도 정규화 이름이다** — 원문으로 담으면 'Check Box' 와 'checkbox' 가
+      // 서로를 못 찾아 강등이 조용히 불발된다(🤖 독립 검증 2026-09-18).
+      else if (REFERENCE_NAME_CLASHES.indexOf(norm) < 0) REFERENCE_NAME_CLASHES.push(norm);
     }
   };
   const firstPage = preferredPage || figma.currentPage;
@@ -2812,7 +2836,6 @@ type ImprovedSummary = {
   referencePoolSize: number;
   medium?: ScreenMedium;
   mediumWhy?: string;
-  nameClashes?: string[];
 };
 
 type BuildImprovedResult =
@@ -2851,7 +2874,7 @@ async function buildImprovedCopy(): Promise<BuildImprovedResult> {
       // 자동 교체 조건: 이름 신뢰도 high AND strict 변형 매칭 성공
       if (c.confidence !== "high") {
         ambiguous++;
-        ambiguousList.push({ ...c, demoteReason: "이름이 부분적으로만 일치해 확인이 필요합니다." });
+        ambiguousList.push({ ...c, demoteReason: c.demoteReason || "이름이 부분적으로만 일치해 확인이 필요합니다." });
         continue;
       }
       const r = await applySwap(c, "strict");
@@ -2890,7 +2913,6 @@ async function buildImprovedCopy(): Promise<BuildImprovedResult> {
         referencePoolSize: pool.length,
         medium: diagnostics.medium,
         mediumWhy: diagnostics.mediumWhy,
-        nameClashes: diagnostics.nameClashes,
       },
       ambiguousCandidates: ambiguousList,
       failedCandidates: failedList,

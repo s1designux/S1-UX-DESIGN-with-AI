@@ -360,6 +360,8 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
       let modeFittedCount = 0;
       let modeFittedLabel = "";
       for (const c of list) {
+        // 한 번에 바꾸는 길로는 «확인이 필요하다» 고 표시된 것을 들이지 않는다(화면이 막아도 여기서 한 번 더).
+        if (c.confidence !== "high" || c.demoteReason) { failures.push({ id: c.id, reason: "확인이 필요한 항목이라 일괄 교체에서 제외했습니다." }); continue; }
         const r = await applySwap(c, "lenient");
         if (r.ok) {
           applied.push(c.id);
