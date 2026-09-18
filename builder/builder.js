@@ -506,13 +506,7 @@ async function renderScreen(target, editor) {
     if (editor) {
       rowEl.dataset.pbRow = row.id;
       if (selection.rowId === row.id && !selection.blockId) rowEl.dataset.pbSelected = "true";
-      if (!row.blocks.length) {
-        const hint = document.createElement("p");
-        hint.className = "s1-text typo-body-12r";
-        hint.style.margin = "0"; hint.style.color = "var(--color-text-body-tertiary)";
-        hint.textContent = "빈 줄 — 부품을 끌어다 놓거나 왼쪽에서 누르면 여기에 들어갑니다";
-        rowEl.appendChild(hint);
-      }
+      if (!row.blocks.length) rowEl.dataset.pbEmpty = "true";   // 글자 없이 자리만 남긴다(놓을 수 있게)
       wireDropZone(rowEl, () => ({ row }));
     }
     for (const block of row.blocks) {
@@ -561,12 +555,21 @@ function platformInfo() {
      앱  — 위: 상태바 27           · 아래: 안드로이드 내비 45
      웹  — 위: 상태바 27 + 주소창 50(=77) · 아래: 브라우저 툴바 50 + 안드로이드 내비 45(=95)
    배포 부품이 아니라 OS·브라우저 껍데기 소품이므로(D5 · dummy-chrome-parts.json) 미리보기에만 얹고 내보내지 않는다. */
+/* 맨 윗줄이 Home 유형 Mobile Header 인가 — 위쪽 크롬·본문 배경을 bg/home 으로 잇는 조건. */
+function homeHeaderFirst() {
+  const first = state.rows[0]?.blocks?.[0];
+  return first?.component === "mobile-header" && String(first.variant || "").startsWith("home-");
+}
+
 function paintShell() {
   els.canvas.querySelectorAll(".pb-shell-top, .pb-shell-bottom").forEach((n) => n.remove());
   const on = platformInfo().id === "mobile" && state.screen.shell !== "none";
   els.canvas.dataset.shell = on ? (state.screen.shell || "app") : "none";
   if (!on) return;
   const web = (state.screen.shell || "app") === "web";
+  /* Home 유형 헤더면 위쪽 크롬과 본문 배경까지 bg/home 한 색으로 잇는다.
+     정본 buildMobileHeaderVariant 의 isHome 분기(build-components.ts:3107·3132) · river 지시 2026-09-02. */
+  els.canvas.dataset.headerBg = homeHeaderFirst() ? "home" : "level-0";
   const add = (cls, html, where) => {
     const box = document.createElement("div");
     box.className = cls;
@@ -576,7 +579,8 @@ function paintShell() {
   };
   /* 상태바와 AppBar 사이 16 — 정본 Mobile Header 합성물의 itemSpacing(build-components.ts:3487).
      맨 윗줄이 헤더이고 앱 유형일 때만(웹은 주소창이 그 자리를 채운다). */
-  const headerFirst = state.rows[0]?.blocks?.[0]?.component === "mobile-header";
+  const first = state.rows[0]?.blocks?.[0];
+  const headerFirst = first?.component === "mobile-header";
   add("pb-shell-top", statusBarHtml() + (web ? urlBarHtml() : (headerFirst ? `<div class="pb-statusbar-gap"></div>` : "")), "top");
   add("pb-shell-bottom", (web ? browserToolbarHtml() : "") + androidNavHtml(), "bottom");
 }
@@ -1088,6 +1092,7 @@ async function update() {
 /* ── 내보내기 ───────────────────────────────────────────────── */
 const EXPORT_CSS = `
 .s1-screen { box-sizing: border-box; margin: 0 auto; background: var(--color-bg-level-0); color: var(--color-text-body-primary); font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+.s1-screen[data-s1-header-bg="home"] { background: var(--color-bg-home); }   /* Home 유형 헤더 화면은 상단부터 본문까지 한 배경 */
 .s1-row { display: flex; flex-wrap: wrap; align-items: flex-start; }
 .s1-row[data-s1-bleed="true"] { flex-wrap: nowrap; }
 .s1-block { min-width: 0; }
@@ -1101,6 +1106,7 @@ async function buildExportHtml() {
   const p = platformInfo();
   screen.style.maxWidth = `${p.width}px`;
   screen.style.minHeight = `${p.height}px`;
+  if (homeHeaderFirst()) screen.setAttribute("data-s1-header-bg", "home");
   screen.setAttribute("data-s1-service", state.meta.service);
   screen.setAttribute("data-s1-platform", state.meta.platform);
   screen.setAttribute("data-s1-role", state.meta.role);

@@ -116,6 +116,12 @@ button, input, select, textarea { font: inherit; color: inherit; }
   font-size: var(--font-size-12); font-weight: var(--font-weight-medium);
 }
 .pb-statusbar-gap { background: var(--color-bg-level-0); height: var(--spacing-16); }
+
+/* Home 유형 헤더 — 위쪽 크롬과 본문 배경을 헤더와 같은 bg/home 으로 잇는다(정본 isHome 분기 :3107·3132). */
+.pb-canvas[data-header-bg="home"],
+.pb-canvas[data-header-bg="home"] .pb-statusbar,
+.pb-canvas[data-header-bg="home"] .pb-statusbar-gap,
+.pb-canvas[data-header-bg="home"] > .s1-screen { background: var(--color-bg-home); }
 .pb-statusbar-right { align-items: center; display: flex; gap: 6px; }
 .pb-statusbar-signal { display: block; height: 12px; position: relative; width: 17px; }
 .pb-statusbar-signal i { background: var(--color-icon-gray-dark); border-radius: 0.5px; position: absolute; }
@@ -166,6 +172,10 @@ body[data-pb-dragging] .pb-gap { height: 28px; margin: 4px 0; border: 1px dashed
 .pb-frame-label { text-align: center; font-size: 11px; color: var(--color-text-body-tertiary); margin: 0 0 8px; }
 .pb-canvas .s1-row[data-pb-row] { position: relative; outline: 1px dashed transparent; outline-offset: 4px; border-radius: var(--radius-4); }
 .pb-canvas .s1-row[data-pb-row]:hover { outline-color: var(--color-line-gray-subtle); }
+/* 빈 줄 — 안내 글자 없이 자리만 남긴다(끌어다 놓을 수 있게). 고를 때·끌 때만 보인다. */
+.pb-canvas .s1-row[data-pb-empty="true"] { min-height: 24px; }
+.pb-canvas .s1-row[data-pb-empty="true"][data-pb-selected="true"],
+body[data-pb-dragging] .pb-canvas .s1-row[data-pb-empty="true"] { outline-color: var(--color-line-gray-subtle); }
 .pb-canvas .s1-row[data-pb-selected="true"] { outline: 1px dashed var(--color-line-blue); }
 .pb-canvas .s1-block[data-pb-block] { position: relative; outline: 1px solid transparent; outline-offset: 2px; border-radius: var(--radius-4); cursor: pointer; }
 .pb-canvas .s1-block[data-pb-block]:hover { outline-color: var(--color-line-gray-subtle); }
