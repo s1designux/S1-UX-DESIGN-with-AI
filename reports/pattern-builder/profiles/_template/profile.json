@@ -1,0 +1,12 @@
+{
+  "id": "<매체>-<서비스>",
+  "medium": "app | mweb | pcweb | console",
+  "mediumLabel": "사람이 읽는 매체 이름",
+  "service": "서비스 이름",
+  "kind": "legacy | new",
+  "canonPolicy": "separate | feeds-canon",
+  "note": "이 묶음을 왜 따로 두는지 한 줄",
+  "source": { "figmaFileKey": "", "readAt": "", "screens": 0 },
+  "inventory": "reports/pattern-builder/inventory/<service>/",
+  "chapters": ["screen-skeleton.md", "composition.md", "states.md", "content.md", "naming.md"]
+}

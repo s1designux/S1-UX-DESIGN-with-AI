@@ -5,7 +5,7 @@
 >
 > ⛔ **레거시 서비스 패턴은 정본에 합치지 않는다** (river 결정 2026-09-18). 이미 운영 중이고 레거시
 > 가이드라인이 적용된 서비스(모두앱 등)에 최신 부품을 억지로 끼워 넣거나, 그 서비스 패턴을 최신
-> 가이드에 병합하면 안 된다. 서비스별 자료는 `reports/pattern-builder/legacy/<service>/` 에 따로 보관한다.
+> 가이드에 병합하면 안 된다. 서비스별 자료는 `reports/pattern-builder/profiles/<매체>-<서비스>/` 에 따로 보관한다.
 
 ## 구성
 
@@ -15,7 +15,7 @@
 | 패턴 목록(정본) | `registry/patterns/builder/catalog.json` | 빌더가 읽는 패턴 정의. 레거시 판독 → 검증 → 승인된 것만 `verified/approved`. (`registry/patterns/*.json` 바로 아래는 Gate 의 패턴 사양 자리라 하위 폴더에 둔다) |
 | 요청 접수함 | `reports/pattern-builder/requests/` | 빌더 "새 패턴 요청" 이 만든 `pattern-request-*.json` 을 두는 곳 |
 | 레거시 판독표 | `reports/pattern-builder/inventory/<service>/` | 레거시 화면을 읽어 정리한 "어느 서비스 · 어떤 화면 유형 · 어떤 부품" 표와 원자료 |
-| 레거시 서비스 전용 규칙 | `reports/pattern-builder/legacy/<service>/` | 그 서비스에서만 쓰는 규칙·부품. **정본과 분리** |
+| 레거시 서비스 전용 규칙 | `reports/pattern-builder/profiles/<매체>-<서비스>/` | 그 서비스에서만 쓰는 규칙·부품. **정본과 분리** |
 
 ## 흐름
 
@@ -106,3 +106,27 @@ river 지적: "헤더가 제대로 생성 안 되어 있고 일부만 만들어�
 
 - 구조: `.pb-canvas` > `.pb-shell-top` · **`.pb-scroll`**(본문) · `.pb-shell-bottom`. 기기처럼일 때만 `.pb-scroll` 이 스크롤한다.
 - 내보낸 HTML 에는 이 보기 장치가 들어가지 않는다(브라우저가 알아서 스크롤한다). 화면은 `min-height` 로 기기 높이만 지킨다.
+
+## 🖥️ 로컬 모델 쓰는 자리
+
+이 맥 안에서 도는 모델을 쓴다. 클라우드 토큰이 들지 않고, 파일이 밖으로 나가지 않는다.
+**판정에는 쓰지 않는다** — 후보를 좁혀주는 데까지다. 규칙을 정하는 것은 사람과 Claude 의 몫이다.
+
+| 쓰는 곳 | 모델 | 지금 상태 |
+|---|---|---|
+| 닮은 화면 묶기 · 비슷한 화면 찾기 | `qwen3-embedding:0.6b` | ✅ `npm run pattern:similar` |
+| 긴 문서에서 어느 대목인지 찾기 | `qwen3-embedding:0.6b` | ✅ 이미 있음 (`npm run docs:find`) |
+| 화면 캡처를 보고 무슨 유형인지 훑기 | `qwen2.5vl:7b` | 후보 — Figma 조회가 막혔을 때 캡처로 대신 읽는 길 |
+| 문구 다듬기 초안 | — | 쓰지 않는다. 문구는 사람이 정한다 |
+
+### 닮은 화면 묶기
+
+```
+npm run pattern:similar -- <service> --cluster
+npm run pattern:similar -- <service> --similar "검색 결과가 하나도 없을 때"
+```
+
+화면 이름과 쓰인 부품만 벡터로 바꿔 닮은 것끼리 묶는다. 결과는 `inventory/<service>/similar-clusters.md`.
+모두앱 547장 → 묶음 154개, 16초, 클라우드 토큰 0.
+
+준비물은 `ollama serve` 하나다. 안 떠 있으면 스크립트가 그렇게 알려준다.
