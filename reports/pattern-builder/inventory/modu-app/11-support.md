@@ -1,0 +1,91 @@
+# 11. 고객센터 — 레거시 판독표 (modu-app)
+
+> 원본: Figma 페이지 `2218:26276` · 읽은 날 2026-09-18
+> 기계 판독 원자료: `raw/11-support.json`. 이 표는 그 자료를 사람이 보게 편 것이고, **해석·규칙은 여기에 쓰지 않는다.**
+
+## 요약
+
+| 항목 | 값 |
+|---|---|
+| 캔버스 위 노드 | 63개 |
+| 화면으로 볼 것(360폭·400높이 이상) | 39개 |
+| 쓰인 부품 종류 | 30종 |
+
+## 화면 목록
+
+| # | 화면 이름 | 크기 | 쓰인 부품 | 노드 |
+|---|---|---|---|---|
+| 1 | 11.1 1:1 문의_1 가입상담 | 360x1099 | m_Input box×4, m_checkbox×4, m_button×2, phone_navi, m_StatusBar, appbar_sub, m_tab_mid, icon/combobox_arrow, More, tabel_bar | `2250:26111` |
+| 2 | 11.1 1:1 문의_1 가입상담 | 360x870 | m_Input box×4, m_checkbox×4, m_bar×3, m_StatusBar, appbar_sub, m_tab_mid, m_button, close, ok | `24674:31102` |
+| 3 | 11.1 1:1 문의_2 가입상담(약관동의 펼침) | 360x1351 | m_Input box×4, m_checkbox×4, m_button×2, m_StatusBar, appbar_sub, m_tab_mid, icon/combobox_arrow, More, tabel_bar, phone_navi | `2250:26168` |
+| 4 | 11.2 방문점검 신청_4 방문점검 신청 | 360x1120 | m_Input box×4, m_button×2, m_StatusBar, appbar_sub, icon/combobox_arrow, m_calendar_input, phone_navi | `2250:26235` |
+| 5 | 11.1 1:1 문의_3 일반문의 | 360x1083 | m_Input box×3, m_StatusBar, appbar_sub, m_email_input, tabel_bar, More, m_button, phone_navi | `2250:26276` |
+| 6 | 11.1 1:1 문의_4 일반문의(약관동의 펼침) | 360x1313 | m_Input box×3, m_StatusBar, appbar_sub, m_email_input, tabel_bar, More, m_button, phone_navi | `2250:26320` |
+| 7 | 11.2 방문점검 신청_1 메인 | 360x1238 | menu_arrow_right×10, m_bar×10, m_button×2, phone_navi×2, m_combobox, building control, m_StatusBar, appbar_sub | `2250:28053` |
+| 8 | 11.2 방문점검 신청_5 신청내역 없음 | 360x780 | m_StatusBar, appbar_sub, m_combobox, m_button, phone_navi, building control | `2316:28453` |
+| 9 | 11.8 미권한_3 권한 없는 일반 관리자 | 360x781 | m_StatusBar, appbar_sub, m_combobox, m_subbutton, phone_navi | `5680:58275` |
+| 10 | 11.8 미권한_2 계약 없는 마스터 관리자 | 360x781 | m_StatusBar, appbar_sub, m_combobox, m_subbutton, m_button, phone_navi | `9507:45747` |
+| 11 | 11.2 방문점검 신청_3 신청내역 | 360x780 | m_StatusBar, appbar_sub, m_button, phone_navi | `2250:28183` |
+| 12 | 11.2 방문점검 신청_2 검색 | 360x780 | menu_arrow_right×6, m_bar×6, m_button×4, calendar×2, m_combobox, building control, m_StatusBar, appbar_sub, phone_navi, close | `2250:28211` |
+| 13 | 11.3 자주하는 질문_1 메인 | 360x1131 | m_chips×10, More×10, m_bar×10, phone_navi, m_StatusBar, appbar_sub, search | `2250:30485` |
+| 14 | 11.4 자료실_2 메인(각 서비스) | 361x1191 | m_chips×10, menu_arrow_right×10, m_bar×10, phone_navi, m_StatusBar, appbar_sub, m_combobox, search | `2755:45268` |
+| 15 | 11.4 자료실_1 메인(전체) | 360x1151 | m_chips×10, menu_arrow_right×10, m_bar×10, phone_navi, m_StatusBar, appbar_sub, search | `2491:39078` |
+| 16 | 11.4 자료실_3 상세 내용 | 360x780 | download×2, m_button, phone_navi, m_StatusBar, appbar_sub, m_bar | `2250:31186` |
+| 17 | 11.3 자주하는 질문_5 메인(없음) | 360x780 | m_chips×10, phone_navi, m_StatusBar, appbar_sub, search | `2250:31234` |
+| 18 | 11.4 자료실_4 메인(없음) | 360x780 | m_chips×10, phone_navi, m_StatusBar, appbar_sub, search | `2250:31262` |
+| 19 | 11.3 자주하는 질문_2 메인(답변 - 텍스트) | 360x1290 | m_chips×10, More×10, m_bar×10, phone_navi, m_StatusBar, appbar_sub, search, m_subbutton | `2250:31418` |
+| 20 | 11.3 자주하는 질문_3 메인(답변 - 이미지) | 360x1405 | m_chips×10, More×10, m_bar×10, phone_navi, m_StatusBar, appbar_sub, search | `2250:31654` |
+| 21 | 11.3 자주하는 질문_4 메인(답변 - 영상) | 360x1394 | m_chips×10, More×10, m_bar×10, phone_navi, m_StatusBar, appbar_sub, search | `2250:31903` |
+| 22 | 11.5 고마워요 에스원_1 메인 | 360x1245 | tabel_bar×5, m_StatusBar, appbar_sub, phone_navi, m_button, slider | `2491:36272` |
+| 23 | 11.5 고마워요 에스원_4 메인(없음) | 360x780 | m_StatusBar, appbar_sub, m_button, phone_navi | `2519:42142` |
+| 24 | 11.6 궁금해요 에스원_7 나의 질문내역(없음) | 360x780 | m_StatusBar, appbar_sub, phone_navi, m_subbutton | `7140:69915` |
+| 25 | 11.5 고마워요 에스원_2 상세 내용 | 360x788 | m_bar, m_button, phone_navi, m_StatusBar, appbar_sub | `2491:36751` |
+| 26 | 11.6 궁금해요 에스원_1 메인 | 361x1643 | m_chips×10, tabel_bar×10, best×10, m_StatusBar, appbar_sub, search, m_button, phone_navi | `2491:36817` |
+| 27 | 11.6 궁금해요 에스원_2 메인(글 없음) | 360x780 | m_chips×10, m_StatusBar, appbar_sub, search, m_button, phone_navi | `2491:37213` |
+| 28 | 11.6 궁금해요 에스원_3 메인(검색결과 없음) | 360x780 | m_chips×10, m_button×2, m_StatusBar, appbar_sub, search, phone_navi | `2491:37243` |
+| 29 | 11.6 궁금해요 에스원_4 상세 내용 | 360x1233 | m_bar×2, m_StatusBar, appbar_sub, S1 logo, best, m_button, phone_navi | `2491:37275` |
+| 30 | 11.6 궁금해요 에스원_5 상세 내용(추천) | 360x1233 | m_bar×2, m_StatusBar, appbar_sub, S1 logo, best, m_button, phone_navi | `2491:37312` |
+| 31 | 11.7 뉴스공지_1 메인 | 360x1110 | m_bar×10, menu_arrow_right×9, attached×4, m_chips×3, phone_navi, m_StatusBar, appbar_sub, search, ic_화살표, 더보기 | `2885:47021` |
+| 32 | 11.7 뉴스공지_2 메인(검색 결과) | 360x780 | menu_arrow_right×5, m_bar×5, m_chips×3, attached×3, phone_navi, m_StatusBar, appbar_sub, search, new | `2491:37479` |
+| 33 | 11.7 뉴스공지_3 상세 내용 | 360x780 | m_StatusBar, appbar_sub, m_button, phone_navi, m_bar, download | `2491:37554` |
+| 34 | 11.5 고마워요 에스원_3 내용 등록 | 360x1292 | m_radiobutton×9, m_Input box×5, m_StatusBar, appbar_sub, m_email_input, m_button, phone_navi | `2491:37576` |
+| 35 | 11.6 궁금해요 에스원_6 내용 등록 | 360x1220 | m_checkbox×7, m_Input box×4, m_StatusBar, appbar_sub, m_email_input, m_button, phone_navi | `2491:37655` |
+| 36 | 11.6 궁금해요 에스원_7 나의 질문내역 | 360x1499 | tabel_bar×10, m_StatusBar, appbar_sub, m_subbutton, phone_navi | `2491:37708` |
+| 37 | 11.7 뉴스공지_4 메인(없음) | 360x780 | m_chips×3, phone_navi, m_StatusBar, appbar_sub, search | `2491:37872` |
+| 38 | 11.8 미권한_1 웹회원 | 360x780 | m_StatusBar, appbar_sub, m_button, phone_navi | `5680:58167` |
+| 39 | 11.3 자주하는 질문_1 메인 | 360x780 | ic_화살표, 더보기×6, m_bar×6, phone_navi, m_StatusBar, appbar_sub, search | `24679:54709` |
+
+## 이 페이지에서 많이 쓰인 부품
+
+| 부품 | 횟수 |
+|---|---|
+| m_chips | 119 |
+| m_bar | 107 |
+| menu_arrow_right | 50 |
+| More | 44 |
+| phone_navi | 39 |
+| m_StatusBar | 39 |
+| appbar_sub | 39 |
+| m_button | 32 |
+| m_Input box | 31 |
+| tabel_bar | 29 |
+| m_checkbox | 19 |
+| search | 15 |
+| best | 12 |
+| m_radiobutton | 9 |
+| attached | 7 |
+| ic_화살표, 더보기 | 7 |
+| m_combobox | 6 |
+| m_subbutton | 5 |
+| m_email_input | 4 |
+| m_tab_mid | 3 |
+| icon/combobox_arrow | 3 |
+| building control | 3 |
+| download | 3 |
+| close | 2 |
+| calendar | 2 |
+| S1 logo | 2 |
+| ok | 1 |
+| m_calendar_input | 1 |
+| slider | 1 |
+| new | 1 |
