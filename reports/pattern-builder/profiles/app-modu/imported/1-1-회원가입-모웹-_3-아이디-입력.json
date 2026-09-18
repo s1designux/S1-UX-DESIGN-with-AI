@@ -52,13 +52,67 @@
           "legacy": "m_Input box",
           "status": "matched",
           "canonSets": [
-            "input"
+            "Input"
           ]
         },
         {
           "legacy": "Remove",
           "status": "unknown",
           "canonSets": []
+        }
+      ],
+      "items": [
+        {
+          "kind": "text",
+          "text": "m.s1.co.kr",
+          "size": 16,
+          "weight": 500,
+          "x": 140,
+          "y": 39,
+          "w": 74,
+          "h": 19
+        },
+        {
+          "kind": "part",
+          "name": "appbar_sub",
+          "x": 0,
+          "y": 75,
+          "w": 360,
+          "h": 72,
+          "texts": [
+            "회원가입"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "아이디를 입력해 주세요",
+          "size": 24,
+          "weight": 700,
+          "x": 20,
+          "y": 163,
+          "w": 320,
+          "h": 52
+        },
+        {
+          "kind": "part",
+          "name": "m_Input box",
+          "x": 20,
+          "y": 255,
+          "w": 320,
+          "h": 50,
+          "texts": [
+            "s1design"
+          ]
+        },
+        {
+          "kind": "text",
+          "text": "영어 소문자, 숫자를 조합하여 4~12자 입력해 주세요.",
+          "size": 12,
+          "weight": 400,
+          "x": 20,
+          "y": 313,
+          "w": 320,
+          "h": 12
         }
       ]
     },
@@ -74,7 +128,20 @@
       "depth": 1,
       "image": "img/1-1-회원가입-모웹-_3-아이디-입력/01.png",
       "parts": {},
-      "canon": []
+      "canon": [],
+      "items": [
+        {
+          "kind": "part",
+          "name": "m_btn_full",
+          "x": 0,
+          "y": 0,
+          "w": 360,
+          "h": 50,
+          "texts": [
+            "확인"
+          ]
+        }
+      ]
     },
     {
       "i": 2,
@@ -88,7 +155,18 @@
       "depth": 1,
       "image": "img/1-1-회원가입-모웹-_3-아이디-입력/02.png",
       "parts": {},
-      "canon": []
+      "canon": [],
+      "items": [
+        {
+          "kind": "part",
+          "name": "keyboard",
+          "x": 0,
+          "y": 0,
+          "w": 360,
+          "h": 292,
+          "texts": []
+        }
+      ]
     },
     {
       "i": 3,
@@ -102,7 +180,18 @@
       "depth": 1,
       "image": "img/1-1-회원가입-모웹-_3-아이디-입력/03.png",
       "parts": {},
-      "canon": []
+      "canon": [],
+      "items": [
+        {
+          "kind": "part",
+          "name": "phone_navi",
+          "x": 0,
+          "y": 0,
+          "w": 360,
+          "h": 48,
+          "texts": []
+        }
+      ]
     }
   ]
 }

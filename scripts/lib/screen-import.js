@@ -196,7 +196,7 @@ async function importScreen(o = {}) {
   const b = node.absoluteBoundingBox;
   if (!b) { const e = new Error('고른 것이 화면(프레임)이 아닙니다. 화면 전체를 고르고 링크를 복사해 주세요.'); e.code = 'not-frame'; throw e; }
 
-  const order = extractOrder(node);
+  const order = extractOrder(node, { items: true });
   const rows = order.filter((r) => r.kind !== 'body');
   if (!rows.length) { const e = new Error('이 화면에서 칸을 하나도 찾지 못했습니다.'); e.code = 'empty'; throw e; }
 
@@ -245,6 +245,8 @@ async function importScreen(o = {}) {
       image: r.image || null,
       parts: r.parts || {},
       canon: canonNote(Object.keys(r.parts || {})),   // 참고 표시 — 바꿔치기하지 않는다
+      // 칸 안의 알맹이 — 빌더가 「새로 그린 화면」을 조립할 때 쓴다(레거시 그림은 그대로 둔 채 옆에 그린다)
+      items: r.items || [],
     })),
   };
   fs.writeFileSync(path.join(outDir, `${sl}.json`), JSON.stringify(payload, null, 2) + '\n');

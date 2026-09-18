@@ -2,6 +2,7 @@
   "_meta": {
     "source": "figma:rest",
     "fileKey": "aLxh458o9BRXklRFM3YYzk",
+    "link": null,
     "generatedAt": "2026-09-18",
     "note": "가져온 레거시 화면. 칸 이름·그림은 레거시 원본 그대로이며 정본 부품이 아니다. 정본 패턴 목록에 넣지 않는다."
   },
@@ -48,6 +49,47 @@
           "legacy": "push new",
           "status": "unknown",
           "canonSets": []
+        }
+      ],
+      "items": [
+        {
+          "kind": "part",
+          "name": "m_StatusBar ",
+          "x": 0,
+          "y": 0,
+          "w": 360,
+          "h": 24,
+          "texts": [
+            "12:30"
+          ]
+        },
+        {
+          "kind": "part",
+          "name": "push new",
+          "x": 312,
+          "y": 52,
+          "w": 32,
+          "h": 32,
+          "texts": []
+        },
+        {
+          "kind": "part",
+          "name": "More",
+          "x": 67,
+          "y": 56,
+          "w": 24,
+          "h": 24,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "홍길동",
+          "size": 18,
+          "weight": 700,
+          "x": 20,
+          "y": 59,
+          "w": 47,
+          "h": 18
         }
       ]
     },
@@ -113,6 +155,269 @@
           "status": "unknown",
           "canonSets": []
         }
+      ],
+      "items": [
+        {
+          "kind": "text",
+          "text": "내 경비 구역",
+          "size": 20,
+          "weight": 700,
+          "x": 0,
+          "y": 0,
+          "w": 96,
+          "h": 20
+        },
+        {
+          "kind": "part",
+          "name": "refresh",
+          "x": 300,
+          "y": 0,
+          "w": 20,
+          "h": 20,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "2023.04.20 08:32:47",
+          "size": 12,
+          "weight": 400,
+          "x": 183,
+          "y": 4,
+          "w": 115,
+          "h": 12
+        },
+        {
+          "kind": "part",
+          "name": "More",
+          "x": 276,
+          "y": 52,
+          "w": 24,
+          "h": 24,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "1층 회의실",
+          "size": 16,
+          "weight": 500,
+          "x": 20,
+          "y": 56,
+          "w": 67,
+          "h": 16
+        },
+        {
+          "kind": "text",
+          "text": "에스원 본사ㆍN1234567",
+          "size": 12,
+          "weight": 400,
+          "x": 20,
+          "y": 80,
+          "w": 280,
+          "h": 12
+        },
+        {
+          "kind": "part",
+          "name": "security",
+          "x": 12,
+          "y": 106,
+          "w": 32,
+          "h": 32,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "경비중",
+          "size": 22,
+          "weight": 700,
+          "x": 44,
+          "y": 111,
+          "w": 58,
+          "h": 22
+        },
+        {
+          "kind": "text",
+          "text": "해제",
+          "size": 16,
+          "weight": 500,
+          "x": 248,
+          "y": 114,
+          "w": 28,
+          "h": 16
+        },
+        {
+          "kind": "text",
+          "text": "서비스 지원 요청",
+          "size": 14,
+          "weight": 400,
+          "x": 114,
+          "y": 162,
+          "w": 92,
+          "h": 14
+        },
+        {
+          "kind": "part",
+          "name": "More",
+          "x": 276,
+          "y": 220,
+          "w": 24,
+          "h": 24,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "2층 회의실",
+          "size": 16,
+          "weight": 500,
+          "x": 20,
+          "y": 224,
+          "w": 248,
+          "h": 16
+        },
+        {
+          "kind": "text",
+          "text": "에스원 본사ㆍN1234567",
+          "size": 12,
+          "weight": 400,
+          "x": 20,
+          "y": 248,
+          "w": 280,
+          "h": 12
+        },
+        {
+          "kind": "part",
+          "name": "release",
+          "x": 12,
+          "y": 274,
+          "w": 32,
+          "h": 32,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "해제중",
+          "size": 22,
+          "weight": 700,
+          "x": 44,
+          "y": 279,
+          "w": 58,
+          "h": 22
+        },
+        {
+          "kind": "text",
+          "text": "재택",
+          "size": 16,
+          "weight": 500,
+          "x": 164,
+          "y": 282,
+          "w": 28,
+          "h": 16
+        },
+        {
+          "kind": "text",
+          "text": "경비",
+          "size": 16,
+          "weight": 500,
+          "x": 248,
+          "y": 282,
+          "w": 28,
+          "h": 16
+        },
+        {
+          "kind": "text",
+          "text": "서비스 지원 요청",
+          "size": 14,
+          "weight": 400,
+          "x": 114,
+          "y": 330,
+          "w": 92,
+          "h": 14
+        },
+        {
+          "kind": "text",
+          "text": "3층 회의실",
+          "size": 16,
+          "weight": 500,
+          "x": 20,
+          "y": 388,
+          "w": 280,
+          "h": 24
+        },
+        {
+          "kind": "text",
+          "text": "문의사항은 고객센터 (1588-3112)로 문의해 주세요.",
+          "size": 12,
+          "weight": 400,
+          "x": 116,
+          "y": 393,
+          "w": 100,
+          "h": 48
+        },
+        {
+          "kind": "part",
+          "name": "close",
+          "x": 222,
+          "y": 393,
+          "w": 16,
+          "h": 16,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "에스원 본사ㆍN1234567",
+          "size": 12,
+          "weight": 400,
+          "x": 20,
+          "y": 416,
+          "w": 280,
+          "h": 12
+        },
+        {
+          "kind": "part",
+          "name": "tools",
+          "x": 12,
+          "y": 442,
+          "w": 32,
+          "h": 32,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "점검중",
+          "size": 22,
+          "weight": 700,
+          "x": 44,
+          "y": 447,
+          "w": 58,
+          "h": 22
+        },
+        {
+          "kind": "part",
+          "name": "caution 2",
+          "x": 106,
+          "y": 448,
+          "w": 20,
+          "h": 20,
+          "texts": []
+        },
+        {
+          "kind": "part",
+          "name": "setting",
+          "x": 102,
+          "y": 514,
+          "w": 20,
+          "h": 20,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "내 경비 구역 편집",
+          "size": 14,
+          "weight": 500,
+          "x": 124,
+          "y": 517,
+          "w": 95,
+          "h": 14
+        }
       ]
     },
     {
@@ -134,6 +439,105 @@
           "legacy": "menu_arrow_right",
           "status": "unknown",
           "canonSets": []
+        }
+      ],
+      "items": [
+        {
+          "kind": "text",
+          "text": "최근 본 영상",
+          "size": 20,
+          "weight": 700,
+          "x": 0,
+          "y": 0,
+          "w": 96,
+          "h": 20
+        },
+        {
+          "kind": "text",
+          "text": "가나다라마바사아자차카타파하...",
+          "size": 16,
+          "weight": 700,
+          "x": 66,
+          "y": 53,
+          "w": 208,
+          "h": 16
+        },
+        {
+          "kind": "part",
+          "name": "menu_arrow_right",
+          "x": 282,
+          "y": 60,
+          "w": 24,
+          "h": 24,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "가나다라마바사아자카...ㆍ방금 전",
+          "size": 14,
+          "weight": 400,
+          "x": 66,
+          "y": 77,
+          "w": 184,
+          "h": 14
+        },
+        {
+          "kind": "text",
+          "text": "OO 공장 1구역ㆍ2시간 전",
+          "size": 14,
+          "weight": 400,
+          "x": 66,
+          "y": 125,
+          "w": 143,
+          "h": 14
+        },
+        {
+          "kind": "part",
+          "name": "menu_arrow_right",
+          "x": 282,
+          "y": 132,
+          "w": 24,
+          "h": 24,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "카메라 01",
+          "size": 16,
+          "weight": 700,
+          "x": 66,
+          "y": 147,
+          "w": 208,
+          "h": 16
+        },
+        {
+          "kind": "text",
+          "text": "카메라 02",
+          "size": 16,
+          "weight": 700,
+          "x": 66,
+          "y": 197,
+          "w": 208,
+          "h": 16
+        },
+        {
+          "kind": "part",
+          "name": "menu_arrow_right",
+          "x": 282,
+          "y": 204,
+          "w": 24,
+          "h": 24,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "1층 사무실ㆍ3시간 전",
+          "size": 14,
+          "weight": 400,
+          "x": 66,
+          "y": 221,
+          "w": 208,
+          "h": 14
         }
       ]
     },
@@ -157,6 +561,135 @@
           "status": "unknown",
           "canonSets": []
         }
+      ],
+      "items": [
+        {
+          "kind": "text",
+          "text": "권한 신청 현황",
+          "size": 20,
+          "weight": 700,
+          "x": 0,
+          "y": 0,
+          "w": 113,
+          "h": 20
+        },
+        {
+          "kind": "text",
+          "text": "강*호",
+          "size": 16,
+          "weight": 700,
+          "x": 20,
+          "y": 53,
+          "w": 192,
+          "h": 16
+        },
+        {
+          "kind": "part",
+          "name": "menu_arrow_right",
+          "x": 276,
+          "y": 60,
+          "w": 24,
+          "h": 24,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "승인대기",
+          "size": 16,
+          "weight": 400,
+          "x": 220,
+          "y": 64,
+          "w": 56,
+          "h": 16
+        },
+        {
+          "kind": "text",
+          "text": "에스원 본사ㆍN1234567",
+          "size": 14,
+          "weight": 400,
+          "x": 20,
+          "y": 77,
+          "w": 192,
+          "h": 14
+        },
+        {
+          "kind": "text",
+          "text": "강*호",
+          "size": 16,
+          "weight": 700,
+          "x": 20,
+          "y": 125,
+          "w": 192,
+          "h": 16
+        },
+        {
+          "kind": "part",
+          "name": "menu_arrow_right",
+          "x": 276,
+          "y": 132,
+          "w": 24,
+          "h": 24,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "승인대기",
+          "size": 16,
+          "weight": 400,
+          "x": 220,
+          "y": 136,
+          "w": 56,
+          "h": 16
+        },
+        {
+          "kind": "text",
+          "text": "에스원 본사ㆍN1234567",
+          "size": 14,
+          "weight": 400,
+          "x": 20,
+          "y": 149,
+          "w": 192,
+          "h": 14
+        },
+        {
+          "kind": "text",
+          "text": "강*호",
+          "size": 16,
+          "weight": 700,
+          "x": 20,
+          "y": 197,
+          "w": 192,
+          "h": 16
+        },
+        {
+          "kind": "part",
+          "name": "menu_arrow_right",
+          "x": 276,
+          "y": 204,
+          "w": 24,
+          "h": 24,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "승인대기",
+          "size": 16,
+          "weight": 400,
+          "x": 220,
+          "y": 208,
+          "w": 56,
+          "h": 16
+        },
+        {
+          "kind": "text",
+          "text": "에스원 본사ㆍN1234567",
+          "size": 14,
+          "weight": 400,
+          "x": 20,
+          "y": 221,
+          "w": 192,
+          "h": 14
+        }
       ]
     },
     {
@@ -178,6 +711,135 @@
           "legacy": "menu_arrow_right",
           "status": "unknown",
           "canonSets": []
+        }
+      ],
+      "items": [
+        {
+          "kind": "text",
+          "text": "카드 신청 현황",
+          "size": 20,
+          "weight": 700,
+          "x": 0,
+          "y": 2,
+          "w": 113,
+          "h": 20
+        },
+        {
+          "kind": "text",
+          "text": "일반형 111개",
+          "size": 16,
+          "weight": 700,
+          "x": 20,
+          "y": 57,
+          "w": 82,
+          "h": 16
+        },
+        {
+          "kind": "part",
+          "name": "menu_arrow_right",
+          "x": 276,
+          "y": 64,
+          "w": 24,
+          "h": 24,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "신청중",
+          "size": 16,
+          "weight": 400,
+          "x": 234,
+          "y": 68,
+          "w": 42,
+          "h": 16
+        },
+        {
+          "kind": "text",
+          "text": "에스원 본사ㆍN1234567",
+          "size": 14,
+          "weight": 400,
+          "x": 20,
+          "y": 81,
+          "w": 206,
+          "h": 14
+        },
+        {
+          "kind": "text",
+          "text": "일반형 111개",
+          "size": 16,
+          "weight": 700,
+          "x": 20,
+          "y": 129,
+          "w": 206,
+          "h": 16
+        },
+        {
+          "kind": "part",
+          "name": "menu_arrow_right",
+          "x": 276,
+          "y": 136,
+          "w": 24,
+          "h": 24,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "발급중",
+          "size": 16,
+          "weight": 400,
+          "x": 234,
+          "y": 140,
+          "w": 42,
+          "h": 16
+        },
+        {
+          "kind": "text",
+          "text": "에스원 본사ㆍN1234567",
+          "size": 14,
+          "weight": 400,
+          "x": 20,
+          "y": 153,
+          "w": 206,
+          "h": 14
+        },
+        {
+          "kind": "text",
+          "text": "주문형",
+          "size": 16,
+          "weight": 700,
+          "x": 20,
+          "y": 201,
+          "w": 206,
+          "h": 16
+        },
+        {
+          "kind": "part",
+          "name": "menu_arrow_right",
+          "x": 276,
+          "y": 208,
+          "w": 24,
+          "h": 24,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "발급중",
+          "size": 16,
+          "weight": 400,
+          "x": 234,
+          "y": 212,
+          "w": 42,
+          "h": 16
+        },
+        {
+          "kind": "text",
+          "text": "에스원 본사ㆍN1234567",
+          "size": 14,
+          "weight": 400,
+          "x": 20,
+          "y": 225,
+          "w": 206,
+          "h": 14
         }
       ]
     },
@@ -201,6 +863,58 @@
           "status": "unknown",
           "canonSets": []
         }
+      ],
+      "items": [
+        {
+          "kind": "text",
+          "text": "추천・혜택",
+          "size": 20,
+          "weight": 700,
+          "x": 0,
+          "y": 0,
+          "w": 88,
+          "h": 20
+        },
+        {
+          "kind": "text",
+          "text": "지인을 소개하고 안심을 나누세요",
+          "size": 12,
+          "weight": 400,
+          "x": 26,
+          "y": 61,
+          "w": 147,
+          "h": 16
+        },
+        {
+          "kind": "text",
+          "text": "에스원 서비스 소개하고 상품권 받아가세요!",
+          "size": 17,
+          "weight": 700,
+          "x": 26,
+          "y": 79,
+          "w": 155,
+          "h": 40
+        },
+        {
+          "kind": "text",
+          "text": "기업용 보안 클라우드 출시 기념 혜택",
+          "size": 12,
+          "weight": 400,
+          "x": 26,
+          "y": 177,
+          "w": 163,
+          "h": 16
+        },
+        {
+          "kind": "text",
+          "text": "클라우드로 더 안전하게! 용량 20% UP!",
+          "size": 17,
+          "weight": 700,
+          "x": 26,
+          "y": 198,
+          "w": 214,
+          "h": 35
+        }
       ]
     },
     {
@@ -215,7 +929,8 @@
       "depth": 1,
       "image": "img/7-1-홈_1-경비-구역-여러개/06.png",
       "parts": {},
-      "canon": []
+      "canon": [],
+      "items": []
     },
     {
       "i": 7,
@@ -258,8 +973,95 @@
         },
         {
           "legacy": "phone_navi",
-          "status": "no-canon",
+          "status": "undecided",
           "canonSets": []
+        }
+      ],
+      "items": [
+        {
+          "kind": "part",
+          "name": "home",
+          "x": 29,
+          "y": 8,
+          "w": 32,
+          "h": 32,
+          "texts": []
+        },
+        {
+          "kind": "part",
+          "name": "under security",
+          "x": 119,
+          "y": 8,
+          "w": 32,
+          "h": 32,
+          "texts": []
+        },
+        {
+          "kind": "part",
+          "name": "dome camera",
+          "x": 209,
+          "y": 8,
+          "w": 32,
+          "h": 32,
+          "texts": []
+        },
+        {
+          "kind": "part",
+          "name": "menu(hamburger)",
+          "x": 299,
+          "y": 8,
+          "w": 32,
+          "h": 32,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "홈",
+          "size": 12,
+          "weight": 500,
+          "x": 39,
+          "y": 40,
+          "w": 11,
+          "h": 14
+        },
+        {
+          "kind": "text",
+          "text": "경비",
+          "size": 12,
+          "weight": 500,
+          "x": 124,
+          "y": 40,
+          "w": 21,
+          "h": 14
+        },
+        {
+          "kind": "text",
+          "text": "영상",
+          "size": 12,
+          "weight": 500,
+          "x": 215,
+          "y": 40,
+          "w": 21,
+          "h": 14
+        },
+        {
+          "kind": "text",
+          "text": "전체",
+          "size": 12,
+          "weight": 500,
+          "x": 304,
+          "y": 40,
+          "w": 21,
+          "h": 14
+        },
+        {
+          "kind": "part",
+          "name": "phone_navi",
+          "x": 0,
+          "y": 61,
+          "w": 360,
+          "h": 48,
+          "texts": []
         }
       ]
     }
