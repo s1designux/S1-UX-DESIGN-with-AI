@@ -1,0 +1,5600 @@
+{
+  "_meta": {
+    "source": "figma:rest",
+    "page": {
+      "name": "10. 카드",
+      "nodeId": "2805:45355"
+    },
+    "generatedAt": "2026-09-18",
+    "note": "기계 판독 원자료. 사람이 해석한 판독표는 같은 폴더의 md 에 쓴다."
+  },
+  "screenCount": 187,
+  "screens": [
+    {
+      "id": "2805:45360",
+      "name": "10.2 카드 신청",
+      "section": null,
+      "size": "178x30",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "5696:57337",
+      "name": "회원가입만 하고 계약 체결 하지 않은 회원이 접근 시(웹회원)",
+      "section": null,
+      "size": "339x68",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "5696:57482",
+      "name": "마스터 관리자 - 계약 체결했으나 해당 서비스에 대한 계약 미체결",
+      "section": null,
+      "size": "303x68",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "5696:57513",
+      "name": "일반 관리자 - 계약 체결했으나 해당 서비스에 대한 권한 없음",
+      "section": null,
+      "size": "282x68",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25536:39621",
+      "name": "모바일카드 미가입",
+      "section": null,
+      "size": "172x34",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "2805:45615",
+      "name": "10.2 카드 신청_1 일반형 카드",
+      "section": null,
+      "size": "360x1707",
+      "nodeCount": 40,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 10
+        },
+        {
+          "name": "m_bar",
+          "count": 10
+        },
+        {
+          "name": "tabel_bar",
+          "count": 10
+        },
+        {
+          "name": "m_chips",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "2805:45752",
+      "name": "10.2 카드 신청_2 주문형 카드",
+      "section": null,
+      "size": "360x1657",
+      "nodeCount": 39,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 10
+        },
+        {
+          "name": "m_bar",
+          "count": 10
+        },
+        {
+          "name": "tabel_bar",
+          "count": 10
+        },
+        {
+          "name": "m_chips",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "2805:45886",
+      "name": "10.2 카드 신청_3 모바일카드",
+      "section": null,
+      "size": "360x995",
+      "nodeCount": 11,
+      "components": [
+        {
+          "name": "m_chips",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "2805:45917",
+      "name": "10.1 카드관리_14 카드정보(없음)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 6,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "2805:45928",
+      "name": "10.1 카드관리_3 카드정보(구세대 - 사용중)",
+      "section": null,
+      "size": "360x1207",
+      "nodeCount": 17,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 8
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_bar",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "2805:45952",
+      "name": "10.1 카드관리_5 카드정보(차세대 - 사용중, 미등록)",
+      "section": null,
+      "size": "360x1311",
+      "nodeCount": 18,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 6
+        },
+        {
+          "name": "m_combobox",
+          "count": 2
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_bar",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "2805:45994",
+      "name": "10.1 카드관리_6 카드정보(차세대 - 사용중, 경비 구역 단수)",
+      "section": null,
+      "size": "360x1332",
+      "nodeCount": 20,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 7
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_combobox",
+          "count": 2
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_bar",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "2805:46036",
+      "name": "10.1 카드관리_9 카드정보(차세대 - 사용중, 카드 미권한, 경비 구역 다수)",
+      "section": null,
+      "size": "360x1331",
+      "nodeCount": 17,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 5
+        },
+        {
+          "name": "m_combobox",
+          "count": 2
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_bar",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "3513:52758",
+      "name": "10.1 카드관리_10 카드정보(차세대 - 사용중, 모바일카드)",
+      "section": null,
+      "size": "360x1216",
+      "nodeCount": 14,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 5
+        },
+        {
+          "name": "m_combobox",
+          "count": 2
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:5010",
+      "name": "10.1 카드관리_8 카드정보(차세대 - 사용중, 카드 미권한)",
+      "section": null,
+      "size": "360x1331",
+      "nodeCount": 18,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 6
+        },
+        {
+          "name": "m_combobox",
+          "count": 2
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_bar",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "2805:46084",
+      "name": "10.1 카드관리_4 카드정보(구세대 - 정지)",
+      "section": null,
+      "size": "360x1092",
+      "nodeCount": 12,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 7
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "20917:3531",
+      "name": "10.2 카드 신청_4 일반형 카드 신청(무료 발급 카드 남음)",
+      "section": null,
+      "size": "360x1347",
+      "nodeCount": 12,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 4
+        },
+        {
+          "name": "m_button",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18276:20235",
+      "name": "10.2 카드 신청_4 일반형 카드 신청(무료 발급 카드 남음)",
+      "section": null,
+      "size": "360x1338",
+      "nodeCount": 14,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 3
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "plus",
+          "count": 1
+        },
+        {
+          "name": "minus",
+          "count": 1
+        },
+        {
+          "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18290:5501",
+      "name": "10.2 카드 신청_4 일반형 카드 신청(무료 발급 카드 없음)",
+      "section": null,
+      "size": "360x1338",
+      "nodeCount": 14,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 3
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "plus",
+          "count": 1
+        },
+        {
+          "name": "minus",
+          "count": 1
+        },
+        {
+          "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18290:5047",
+      "name": "Frame 318",
+      "section": null,
+      "size": "320x109",
+      "nodeCount": 2,
+      "components": [
+        {
+          "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18290:2216",
+      "name": "Frame 34887",
+      "section": null,
+      "size": "320x80",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "18290:5055",
+      "name": "10.2 카드 신청_4 일반형 카드 신청(무료 발급 카드 남음)",
+      "section": null,
+      "size": "360x1368",
+      "nodeCount": 14,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 3
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "plus",
+          "count": 1
+        },
+        {
+          "name": "minus",
+          "count": 1
+        },
+        {
+          "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18290:2618",
+      "name": "총 3개의 서비스를 이용하고 계세요",
+      "section": null,
+      "size": "229x34",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "18278:44567",
+      "name": "10.2 카드 신청_4 일반형 카드 신청(무료 발급 카드 남음)",
+      "section": null,
+      "size": "360x1507",
+      "nodeCount": 13,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 3
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "plus",
+          "count": 1
+        },
+        {
+          "name": "minus",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18280:3247",
+      "name": "10.2 카드 신청_4 일반형 카드 신청(무료 발급 카드 남음)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 13,
+      "components": [
+        {
+          "name": "plus",
+          "count": 2
+        },
+        {
+          "name": "minus",
+          "count": 2
+        },
+        {
+          "name": "close",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "m_basic_button",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18280:3469",
+      "name": "10.2 카드 신청_4 일반형 카드 신청(무료 발급 카드 남음)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 17,
+      "components": [
+        {
+          "name": "close",
+          "count": 3
+        },
+        {
+          "name": "plus",
+          "count": 2
+        },
+        {
+          "name": "minus",
+          "count": 2
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_checkbox",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "m_basic_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18281:2174",
+      "name": "10.2 카드 신청_4 일반형 카드 신청(무료 발급 카드 남음)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 15,
+      "components": [
+        {
+          "name": "close",
+          "count": 3
+        },
+        {
+          "name": "plus",
+          "count": 2
+        },
+        {
+          "name": "minus",
+          "count": 2
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "m_basic_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18281:2072",
+      "name": "Frame 34798",
+      "section": null,
+      "size": "70x56",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "18281:2077",
+      "name": "Frame 34886",
+      "section": null,
+      "size": "70x56",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "18281:2083",
+      "name": "Frame 34887",
+      "section": null,
+      "size": "70x56",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "18276:27424",
+      "name": "10.2 카드 신청_4 일반형 카드 신청(무료 발급 카드 남음)",
+      "section": null,
+      "size": "360x1224",
+      "nodeCount": 10,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 3
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "20917:3584",
+      "name": "10.2 카드 신청_5 일반형 카드 신청(무료 발급 카드 없음)",
+      "section": null,
+      "size": "360x1363",
+      "nodeCount": 12,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 4
+        },
+        {
+          "name": "m_button",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "2805:46186",
+      "name": "10.2 카드 신청_6 일반형 카드 신청(신청 내용 확인)",
+      "section": null,
+      "size": "360x897",
+      "nodeCount": 6,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "3477:52149",
+      "name": "10.1 카드관리_13 카드정보(경비 구역 전체 보기)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 14,
+      "components": [
+        {
+          "name": "m_bar",
+          "count": 4
+        },
+        {
+          "name": "tabel_bar",
+          "count": 4
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "2805:46216",
+      "name": "10.2 카드 신청_7 일반형 카드 신청(신청 내역)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 5,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4444:54588",
+      "name": "10.2 카드 신청_8 일반형 카드 신청(신청 내역 - 카드 여러 유형 신청)",
+      "section": null,
+      "size": "360x877",
+      "nodeCount": 5,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "2805:46241",
+      "name": "10.2 카드 신청_9 주문형 카드(신청 내역)",
+      "section": null,
+      "size": "360x1062",
+      "nodeCount": 5,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "3592:51763",
+      "name": "10.1 카드관리_11 카드정보(권한 설정)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 6,
+      "components": [
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "ok",
+          "count": 1
+        },
+        {
+          "name": "m_bar",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "20923:12188",
+      "name": "10.1 카드관리_11카드유형",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 6,
+      "components": [
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "ok",
+          "count": 1
+        },
+        {
+          "name": "m_bar",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "20911:3381",
+      "name": "10.1 카드관리_사용경비구역 지정",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 6,
+      "components": [
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "ok",
+          "count": 1
+        },
+        {
+          "name": "m_bar",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "3592:52342",
+      "name": "10.1 카드관리_12 카드정보(차세대 - 경비 구역 추가)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 6,
+      "components": [
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_checkbox",
+          "count": 2
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4427:54604",
+      "name": "10.2 카드 신청_10 일반형 카드 신청(신청 내역 없음)",
+      "section": null,
+      "size": "360x1173",
+      "nodeCount": 10,
+      "components": [
+        {
+          "name": "m_chips",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4427:54656",
+      "name": "10.2 카드 신청_11 주문형 카드 신청(신청 내역 없음)",
+      "section": null,
+      "size": "360x1123",
+      "nodeCount": 9,
+      "components": [
+        {
+          "name": "m_chips",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "5696:57266",
+      "name": "10.3 권한 없음_1 웹회원 접근 시",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 5,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "5696:57385",
+      "name": "10.3 권한 없음_2 마스터 관리자 미계약",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 9,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 1
+        },
+        {
+          "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "5696:57514",
+      "name": "10.3 권한 없음_3 일반 관리자 미권한",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 8,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 1
+        },
+        {
+          "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "20933:12506",
+      "name": "설계서컴포넌트/장표명",
+      "section": null,
+      "size": "7884x208",
+      "nodeCount": 1,
+      "components": [
+        {
+          "name": "Header / Status",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "20933:12511",
+      "name": "설계서컴포넌트/장표명",
+      "section": null,
+      "size": "5228x208",
+      "nodeCount": 1,
+      "components": [
+        {
+          "name": "Header / Status",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:40161",
+      "name": "설계서컴포넌트/장표명",
+      "section": null,
+      "size": "5228x208",
+      "nodeCount": 1,
+      "components": [
+        {
+          "name": "Header / Status",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "20933:12515",
+      "name": "설계서컴포넌트/장표명",
+      "section": null,
+      "size": "7884x208",
+      "nodeCount": 1,
+      "components": [
+        {
+          "name": "Header / Status",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:38869",
+      "name": "설계서컴포넌트/장표명",
+      "section": null,
+      "size": "7884x208",
+      "nodeCount": 1,
+      "components": [
+        {
+          "name": "Header / Status",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:43774",
+      "name": "설계서컴포넌트/장표명",
+      "section": null,
+      "size": "7884x208",
+      "nodeCount": 1,
+      "components": [
+        {
+          "name": "Header / Status",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18276:27145",
+      "name": "6.4 납입방법 변경_2 지로 변경(전)",
+      "section": null,
+      "size": "360x1020",
+      "nodeCount": 8,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18280:2502",
+      "name": "menu_list",
+      "section": null,
+      "size": "360x68",
+      "nodeCount": 2,
+      "components": [
+        {
+          "name": "btn_Minus",
+          "count": 1
+        },
+        {
+          "name": "btn_Plus",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18280:3592",
+      "name": "IMG_9662",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "18280:3593",
+      "name": "IMG_9663",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "18281:2088",
+      "name": "-",
+      "section": null,
+      "size": "10x24",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "18281:2089",
+      "name": "=",
+      "section": null,
+      "size": "15x24",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "18290:2428",
+      "name": "10.2 카드 신청_4 일반형 카드 신청(무료 발급 카드 남음)",
+      "section": null,
+      "size": "360x1507",
+      "nodeCount": 13,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 3
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "plus",
+          "count": 1
+        },
+        {
+          "name": "minus",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18290:5650",
+      "name": "10.2 카드 신청_4 일반형 카드 신청(무료 발급 카드 남음)",
+      "section": null,
+      "size": "360x948",
+      "nodeCount": 10,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 3
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18290:25857",
+      "name": "Frame 1321318131",
+      "section": null,
+      "size": "2787x50",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "18290:6037",
+      "name": "카드 신청_일반형 카드 신청(무료 발급 카드 남음)",
+      "section": null,
+      "size": "360x1338",
+      "nodeCount": 14,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 3
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "plus",
+          "count": 1
+        },
+        {
+          "name": "minus",
+          "count": 1
+        },
+        {
+          "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18290:5828",
+      "name": "카드 신청_일반형 카드 신청(무료 발급 카드 없음)",
+      "section": null,
+      "size": "360x1338",
+      "nodeCount": 14,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 3
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "plus",
+          "count": 1
+        },
+        {
+          "name": "minus",
+          "count": 1
+        },
+        {
+          "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18290:6317",
+      "name": "카드 신청_카드 신청(신청 내용 확인)",
+      "section": null,
+      "size": "360x1111",
+      "nodeCount": 6,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18290:6462",
+      "name": "카드 신청_카드 신청(신청 내용 확인)",
+      "section": null,
+      "size": "360x1111",
+      "nodeCount": 6,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18290:6221",
+      "name": " 카드 신청_일반형 카드 신청(카드 유형 선택 전)",
+      "section": null,
+      "size": "360x948",
+      "nodeCount": 10,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 3
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18312:2564",
+      "name": "카드 신청_일반형 카드 신청(신청 내역 상세)",
+      "section": null,
+      "size": "360x954",
+      "nodeCount": 5,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "20162:9519",
+      "name": "10.1 카드관리_14 카드정보(없음)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 6,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "20162:9903",
+      "name": "클라우드 매니저 사용 시 조회불가 안내 / 등록카드 MAX 200장 이상일때 조회불가(‘25.3.7) 기획서 업데이트 完",
+      "section": null,
+      "size": "579x32",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "20560:8539",
+      "name": "10.1 카드관리_14 카드정보(없음)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 10,
+      "components": [
+        {
+          "name": "m_combobox",
+          "count": 2
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "search",
+          "count": 1
+        },
+        {
+          "name": "building control",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "20933:12474",
+      "name": "Rectangle 34626289",
+      "section": null,
+      "size": "6699x11496",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "20933:12475",
+      "name": "AS-IS",
+      "section": null,
+      "size": "558x122",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25536:5630",
+      "name": "실물카드(구세대)",
+      "section": null,
+      "size": "410x60",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25536:5631",
+      "name": "실물카드(차세대)",
+      "section": null,
+      "size": "410x60",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25536:5632",
+      "name": "모바일카드",
+      "section": null,
+      "size": "260x60",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25532:34972",
+      "name": "카드조회관리 > 카드정보 상세 > 권한정보 변경안내(출입정보삭제)",
+      "section": null,
+      "size": "360x732",
+      "nodeCount": 3,
+      "components": [
+        {
+          "name": "m_basic_button",
+          "count": 2
+        },
+        {
+          "name": "m_button variation",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25532:34978",
+      "name": "카드조회관리 > 카드정보 상세 > 카드삭제 팝업",
+      "section": null,
+      "size": "360x732",
+      "nodeCount": 3,
+      "components": [
+        {
+          "name": "m_basic_button",
+          "count": 2
+        },
+        {
+          "name": "m_button variation",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25532:34984",
+      "name": "카드조회관리 > 카드정보 상세 > 권한정보 변경안내(출입권한변경)",
+      "section": null,
+      "size": "360x732",
+      "nodeCount": 3,
+      "components": [
+        {
+          "name": "m_basic_button",
+          "count": 2
+        },
+        {
+          "name": "m_button variation",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:31920",
+      "name": "카드조회관리 > 카드정보 상세 > 권한정보 변경안내(출입권한변경)",
+      "section": null,
+      "size": "360x732",
+      "nodeCount": 3,
+      "components": [
+        {
+          "name": "m_basic_button",
+          "count": 2
+        },
+        {
+          "name": "m_button variation",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25532:34990",
+      "name": "카드조회관리 > 카드정보 상세 > 정보확인 팝업",
+      "section": null,
+      "size": "360x732",
+      "nodeCount": 3,
+      "components": [
+        {
+          "name": "m_basic_button",
+          "count": 2
+        },
+        {
+          "name": "m_button variation",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:5134",
+      "name": "10.1 카드관리_10 카드정보(차세대 - 사용중, 모바일카드)",
+      "section": null,
+      "size": "360x1286",
+      "nodeCount": 17,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 10
+        },
+        {
+          "name": "m_basic_button",
+          "count": 2
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:5156",
+      "name": "10.1 카드관리_10 카드정보(차세대 - 사용중, 모바일카드)",
+      "section": null,
+      "size": "360x1386",
+      "nodeCount": 20,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 11
+        },
+        {
+          "name": "m_basic_button",
+          "count": 2
+        },
+        {
+          "name": "calendar",
+          "count": 2
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:5179",
+      "name": "카드 조회·관리 > 카드정보 상세(모바일카드) 카드정지",
+      "section": null,
+      "size": "360x1212",
+      "nodeCount": 16,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 10
+        },
+        {
+          "name": "m_basic_button",
+          "count": 2
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:5197",
+      "name": "카드 조회·관리 > 카드정보 상세(모바일카드) 카드정지",
+      "section": null,
+      "size": "360x1312",
+      "nodeCount": 19,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 11
+        },
+        {
+          "name": "m_basic_button",
+          "count": 2
+        },
+        {
+          "name": "calendar",
+          "count": 2
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25532:40126",
+      "name": "10.1 카드관리_2 메인(차세대)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 22,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 5
+        },
+        {
+          "name": "m_bar",
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "search",
+          "count": 1
+        },
+        {
+          "name": "building control",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25532:40233",
+      "name": "Frame 2087327263",
+      "section": null,
+      "size": "40x18",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25532:40235",
+      "name": "모바일",
+      "section": null,
+      "size": "37x17",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25532:40236",
+      "name": "[뱃지 종류]",
+      "section": null,
+      "size": "63x17",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25532:40237",
+      "name": "Frame 2087327264",
+      "section": null,
+      "size": "31x18",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25532:40239",
+      "name": "단기카드 기간 N일 전",
+      "section": null,
+      "size": "117x17",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25532:40240",
+      "name": "사용중 (블루), 사용완료(블랙), 승인거절/발급실패(레드)",
+      "section": null,
+      "size": "306x17",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25532:40241",
+      "name": "10.1 카드관리_2 메인(차세대)",
+      "section": null,
+      "size": "360x779",
+      "nodeCount": 28,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 5
+        },
+        {
+          "name": "m_bar",
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
+          "name": "m_button",
+          "count": 3
+        },
+        {
+          "name": "close",
+          "count": 2
+        },
+        {
+          "name": "m_combobox",
+          "count": 2
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 2
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "search",
+          "count": 1
+        },
+        {
+          "name": "building control",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:5633",
+      "name": "정보조회실패 팝업",
+      "section": null,
+      "size": "360x781",
+      "nodeCount": 2,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:5641",
+      "name": "정보조회불가 팝업",
+      "section": null,
+      "size": "360x781",
+      "nodeCount": 2,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25532:40363",
+      "name": "10.1 카드관리_1메인(구세대)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 25,
+      "components": [
+        {
+          "name": "m_bar",
+          "count": 6
+        },
+        {
+          "name": "tabel_bar",
+          "count": 6
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 5
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "search",
+          "count": 1
+        },
+        {
+          "name": "building control",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25532:40441",
+      "name": "10.1 카드관리_1메인(구세대)_필터",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 26,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 5
+        },
+        {
+          "name": "m_bar",
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
+          "name": "m_button",
+          "count": 3
+        },
+        {
+          "name": "close",
+          "count": 2
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "search",
+          "count": 1
+        },
+        {
+          "name": "building control",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25532:39647",
+      "name": "경비구역 추가가 경비만 됨. 출입은 복사안됨 으로 문구 수정 (5)",
+      "section": null,
+      "size": "949x126",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25532:39648",
+      "name": "경비구역 추가는 ‘경비’ 가능한 구역만 추가합니다. 출입 권한은 적용되지 않습니다.",
+      "section": null,
+      "size": "1065x126",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25536:4550",
+      "name": "10.1 카드관리_7 카드정보(차세대 - 사용중, 경비 구역 다수)",
+      "section": null,
+      "size": "360x1332",
+      "nodeCount": 20,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 6
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_combobox",
+          "count": 2
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_bar",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:4594",
+      "name": "10.1 카드관리_9 카드정보(차세대 - 사용중, 카드 미권한, 경비 구역 다수)",
+      "section": null,
+      "size": "360x1332",
+      "nodeCount": 18,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 5
+        },
+        {
+          "name": "m_combobox",
+          "count": 2
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_bar",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:4644",
+      "name": "10.1 카드관리_10 카드정보(차세대 - 사용중)",
+      "section": null,
+      "size": "360x1217",
+      "nodeCount": 15,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 5
+        },
+        {
+          "name": "m_combobox",
+          "count": 2
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:4687",
+      "name": "10.1 카드관리_8 카드정보(차세대 - 사용중, 카드 미권한)",
+      "section": null,
+      "size": "360x1332",
+      "nodeCount": 19,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 6
+        },
+        {
+          "name": "m_combobox",
+          "count": 2
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_bar",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25532:39843",
+      "name": "경비 권한만 추가되고 출입 권한은 미적용되요. 경비 권한만 추가되고 출입 권한은 제외되요.",
+      "section": null,
+      "size": "254x28",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25532:39844",
+      "name": "경비 권한만 추가되요. (출입 권한은 미적용) 경비 권한만 추가되요. (출입 권한은 제외)",
+      "section": null,
+      "size": "240x28",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25536:5124",
+      "name": "m_Input box",
+      "section": null,
+      "size": "320x72",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25536:5131",
+      "name": "경비구역명 6자 이상 말줄임",
+      "section": null,
+      "size": "152x14",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25536:5132",
+      "name": "Arrow 51",
+      "section": null,
+      "size": "0x55",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25536:31930",
+      "name": "10.1 카드관리_1 메인(구세대)",
+      "section": null,
+      "size": "360x1038",
+      "nodeCount": 36,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 10
+        },
+        {
+          "name": "m_bar",
+          "count": 10
+        },
+        {
+          "name": "tabel_bar",
+          "count": 10
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:32043",
+      "name": "10.1 카드관리_2 메인(차세대)",
+      "section": null,
+      "size": "360x1038",
+      "nodeCount": 36,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 10
+        },
+        {
+          "name": "m_bar",
+          "count": 10
+        },
+        {
+          "name": "tabel_bar",
+          "count": 10
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:32156",
+      "name": "10.1 카드관리_2 메인(차세대)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 23,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 5
+        },
+        {
+          "name": "m_bar",
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "search",
+          "count": 1
+        },
+        {
+          "name": "building control",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:32229",
+      "name": "10.1 카드관리_2 메인(차세대)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 29,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 5
+        },
+        {
+          "name": "m_bar",
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
+          "name": "m_button",
+          "count": 3
+        },
+        {
+          "name": "m_combobox",
+          "count": 2
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "search",
+          "count": 1
+        },
+        {
+          "name": "building control",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:32323",
+      "name": "링크PRo 사용처 CRT 검색기능 적용(‘25.3.7) 기획서 업데이트 完",
+      "section": null,
+      "size": "292x32",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25536:38243",
+      "name": "10.2 카드 신청_1 일반형 카드",
+      "section": null,
+      "size": "360x1308",
+      "nodeCount": 18,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 3
+        },
+        {
+          "name": "m_bar",
+          "count": 3
+        },
+        {
+          "name": "tabel_bar",
+          "count": 3
+        },
+        {
+          "name": "m_chips",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:38358",
+      "name": "10.2 카드 신청_2 주문형 카드",
+      "section": null,
+      "size": "360x1657",
+      "nodeCount": 38,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 10
+        },
+        {
+          "name": "m_bar",
+          "count": 10
+        },
+        {
+          "name": "tabel_bar",
+          "count": 10
+        },
+        {
+          "name": "m_chips",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:38497",
+      "name": "10.2 카드 신청_10 일반형 카드 신청(신청 내역 없음)",
+      "section": null,
+      "size": "360x1173",
+      "nodeCount": 9,
+      "components": [
+        {
+          "name": "m_chips",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:38595",
+      "name": "10.2 카드 신청_11 주문형 카드 신청(신청 내역 없음)",
+      "section": null,
+      "size": "360x1123",
+      "nodeCount": 8,
+      "components": [
+        {
+          "name": "m_chips",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:38868",
+      "name": "원복됨",
+      "section": null,
+      "size": "78x36",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25536:38873",
+      "name": "모바일카드 초대/승인",
+      "section": null,
+      "size": "503x60",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25536:38874",
+      "name": "상세",
+      "section": null,
+      "size": "104x60",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25536:38875",
+      "name": "모바일카드 초대∙승인_목록",
+      "section": null,
+      "size": "360x876",
+      "nodeCount": 32,
+      "components": [
+        {
+          "name": "list",
+          "count": 5
+        },
+        {
+          "name": "m_checkbox",
+          "count": 5
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 5
+        },
+        {
+          "name": "m_bar",
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:38899",
+      "name": "경비구역/권한 확인 팝업",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 3,
+      "components": [
+        {
+          "name": "m_basic_button",
+          "count": 2
+        },
+        {
+          "name": "m_button variation",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:38905",
+      "name": "경비구역/권한 변경 팝업",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 3,
+      "components": [
+        {
+          "name": "m_basic_button",
+          "count": 2
+        },
+        {
+          "name": "m_button variation",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:38911",
+      "name": "모바일카드 초대∙승인_모바일 카드 승인 상세",
+      "section": null,
+      "size": "360x1036",
+      "nodeCount": 11,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 5
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:38947",
+      "name": "모바일카드 초대∙승인_초대 방법",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 59,
+      "components": [
+        {
+          "name": "list",
+          "count": 10
+        },
+        {
+          "name": "m_checkbox",
+          "count": 10
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 10
+        },
+        {
+          "name": "m_bar",
+          "count": 10
+        },
+        {
+          "name": "tabel_bar",
+          "count": 10
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "phone_navi",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:38991",
+      "name": "모바일카드 초대∙승인_초대 링크 복사하기",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 3,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:39001",
+      "name": "모바일카드 초대∙승인_승인이력이 없을 때",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 6,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:39033",
+      "name": "모바일카드 승인거절 팝업",
+      "section": null,
+      "size": "360x781",
+      "nodeCount": 2,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:39041",
+      "name": "모바일카드 승인 팝업",
+      "section": null,
+      "size": "360x781",
+      "nodeCount": 2,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:39550",
+      "name": "10.3 권한 없음_1 웹회원 접근 시",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 7,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:39681",
+      "name": "경비구역권한 설정",
+      "section": null,
+      "size": "429x60",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25536:39682",
+      "name": "10.1 카드관리_13 카드정보(경비 구역 전체 보기)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 14,
+      "components": [
+        {
+          "name": "m_checkbox",
+          "count": 5
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 4
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:39753",
+      "name": "경비구역권한 팝업",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 33,
+      "components": [
+        {
+          "name": "m_checkbox",
+          "count": 6
+        },
+        {
+          "name": "list",
+          "count": 5
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 5
+        },
+        {
+          "name": "m_bar",
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:39780",
+      "name": "경비구역권한 팝업_권한 설정",
+      "section": null,
+      "size": "360x732",
+      "nodeCount": 35,
+      "components": [
+        {
+          "name": "m_checkbox",
+          "count": 6
+        },
+        {
+          "name": "list",
+          "count": 5
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 5
+        },
+        {
+          "name": "m_bar",
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
+          "name": "close",
+          "count": 2
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:40195",
+      "name": "모바일카드 발급_가입한 경우",
+      "section": null,
+      "size": "360x1426",
+      "nodeCount": 28,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 7
+        },
+        {
+          "name": "m_bar",
+          "count": 7
+        },
+        {
+          "name": "tabel_bar",
+          "count": 7
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 1
+        },
+        {
+          "name": "m_button variation",
+          "count": 1
+        },
+        {
+          "name": "m_basic_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:40332",
+      "name": "모바일카드 발급_모바일 카드발급_배송기사카드 선택 시",
+      "section": null,
+      "size": "360x1399",
+      "nodeCount": 18,
+      "components": [
+        {
+          "name": "m_combobox",
+          "count": 2
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 2
+        },
+        {
+          "name": "title_",
+          "count": 2
+        },
+        {
+          "name": "m_Input box",
+          "count": 2
+        },
+        {
+          "name": "ic_주소록, 연락처",
+          "count": 2
+        },
+        {
+          "name": "m_basic_button",
+          "count": 2
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "Remove",
+          "count": 1
+        },
+        {
+          "name": "plus",
+          "count": 1
+        },
+        {
+          "name": "m_button variation",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:40389",
+      "name": "모바일카드 발급_모바일 카드발급_단기카드 선택 시",
+      "section": null,
+      "size": "360x1280",
+      "nodeCount": 18,
+      "components": [
+        {
+          "name": "menu_arrow_down",
+          "count": 2
+        },
+        {
+          "name": "m_Input box",
+          "count": 2
+        },
+        {
+          "name": "calendar",
+          "count": 2
+        },
+        {
+          "name": "title_",
+          "count": 2
+        },
+        {
+          "name": "m_basic_button",
+          "count": 2
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "Remove",
+          "count": 1
+        },
+        {
+          "name": "ic_주소록, 연락처",
+          "count": 1
+        },
+        {
+          "name": "m_button variation",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "plus",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:40437",
+      "name": "모바일카드 발급_모바일 카드발급_단기카드 선택 시_발급 가능한 매수가 없을때",
+      "section": null,
+      "size": "360x1200",
+      "nodeCount": 17,
+      "components": [
+        {
+          "name": "menu_arrow_down",
+          "count": 2
+        },
+        {
+          "name": "m_Input box",
+          "count": 2
+        },
+        {
+          "name": "calendar",
+          "count": 2
+        },
+        {
+          "name": "title_",
+          "count": 2
+        },
+        {
+          "name": "m_basic_button",
+          "count": 2
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "ic_주소록, 연락처",
+          "count": 1
+        },
+        {
+          "name": "m_button variation",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "plus",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:40485",
+      "name": "모바일카드 발급_모바일 카드발급",
+      "section": null,
+      "size": "360x1116",
+      "nodeCount": 12,
+      "components": [
+        {
+          "name": "icon/combobox_arrow",
+          "count": 4
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "Remove",
+          "count": 1
+        },
+        {
+          "name": "ic_주소록, 연락처",
+          "count": 1
+        },
+        {
+          "name": "plus",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:40560",
+      "name": "1/22 명칭원복",
+      "section": null,
+      "size": "394x80",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25536:42984",
+      "name": "모바일카드 발급_모바일 카드발급_카드유형 미선택(df) 미선택 시 발급버튼 비활성",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 21,
+      "components": [
+        {
+          "name": "m_basic_button",
+          "count": 4
+        },
+        {
+          "name": "m_combobox",
+          "count": 2
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 2
+        },
+        {
+          "name": "m_button variation",
+          "count": 2
+        },
+        {
+          "name": "phone_navi",
+          "count": 2
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "Remove",
+          "count": 1
+        },
+        {
+          "name": "ic_주소록, 연락처",
+          "count": 1
+        },
+        {
+          "name": "plus",
+          "count": 1
+        },
+        {
+          "name": "bottom_sheet",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "ok",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:43017",
+      "name": "모바일카드 발급_모바일 카드발급_단기카드 선택 시_유효기간 선택",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 24,
+      "components": [
+        {
+          "name": "m_basic_button",
+          "count": 4
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 2
+        },
+        {
+          "name": "m_Input box",
+          "count": 2
+        },
+        {
+          "name": "calendar",
+          "count": 2
+        },
+        {
+          "name": "Remove",
+          "count": 2
+        },
+        {
+          "name": "m_button variation",
+          "count": 2
+        },
+        {
+          "name": "phone_navi",
+          "count": 2
+        },
+        {
+          "name": "More",
+          "count": 2
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "plus",
+          "count": 1
+        },
+        {
+          "name": "bottom_sheet",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:43058",
+      "name": "모바일카드 발급_모바일 카드발급_발급 내역 확인",
+      "section": null,
+      "size": "360x969",
+      "nodeCount": 9,
+      "components": [
+        {
+          "name": "title_",
+          "count": 4
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:43106",
+      "name": "모바일카드 발급_모바일카드 발급 이력 No Data Case",
+      "section": null,
+      "size": "360x1090",
+      "nodeCount": 7,
+      "components": [
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 1
+        },
+        {
+          "name": "m_button variation",
+          "count": 1
+        },
+        {
+          "name": "m_basic_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:43180",
+      "name": "모바일카드 발급_이력 _이력 상세",
+      "section": null,
+      "size": "360x930",
+      "nodeCount": 7,
+      "components": [
+        {
+          "name": "title_",
+          "count": 3
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:43232",
+      "name": "10.1 카드관리_11카드유형",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 5,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "ok",
+          "count": 1
+        },
+        {
+          "name": "m_bar",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:43255",
+      "name": "Rectangle 268384951",
+      "section": null,
+      "size": "361x25",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25536:43256",
+      "name": "1/22 명칭원복",
+      "section": null,
+      "size": "394x80",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25536:43801",
+      "name": "정보확인 팝업",
+      "section": null,
+      "size": "360x732",
+      "nodeCount": 3,
+      "components": [
+        {
+          "name": "m_basic_button",
+          "count": 2
+        },
+        {
+          "name": "m_button variation",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:43807",
+      "name": "방문자 모바일카드 승인 - 방문자 모바일카드 승인 상세",
+      "section": null,
+      "size": "360x1366",
+      "nodeCount": 17,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 6
+        },
+        {
+          "name": "calendar",
+          "count": 2
+        },
+        {
+          "name": "clock",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:43844",
+      "name": "방문자 모바일카드 조회·관리_목록",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 23,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 5
+        },
+        {
+          "name": "m_bar",
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 1
+        },
+        {
+          "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "search",
+          "count": 1
+        },
+        {
+          "name": "title_",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:43913",
+      "name": "방문자 모바일카드 조회·관리_카드상세정보-발급완료 상태일때 아직 시작일 전일때 시작일 수정 가능",
+      "section": null,
+      "size": "360x1108",
+      "nodeCount": 16,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 6
+        },
+        {
+          "name": "calendar",
+          "count": 2
+        },
+        {
+          "name": "clock",
+          "count": 2
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "m_basic_button",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:43937",
+      "name": "방문자 모바일카드 조회·관리_카드상세정보",
+      "section": null,
+      "size": "360x1108",
+      "nodeCount": 16,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 6
+        },
+        {
+          "name": "calendar",
+          "count": 2
+        },
+        {
+          "name": "clock",
+          "count": 2
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "m_basic_button",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:43961",
+      "name": "방문자 모바일카드 조회·관리_목록 없을때",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 8,
+      "components": [
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 1
+        },
+        {
+          "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "search",
+          "count": 1
+        },
+        {
+          "name": "title_",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:43990",
+      "name": "방문자카드 발급_날짜선택",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 14,
+      "components": [
+        {
+          "name": "More",
+          "count": 3
+        },
+        {
+          "name": "m_chips",
+          "count": 2
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 2
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "ok",
+          "count": 1
+        },
+        {
+          "name": "dome camera trouble",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_tab_mid",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:44133",
+      "name": "방문자카드 발급_시간선택",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 11,
+      "components": [
+        {
+          "name": "m_chips",
+          "count": 2
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 2
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "ok",
+          "count": 1
+        },
+        {
+          "name": "dome camera trouble",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:44847",
+      "name": "방문자 모바일카드 조회·관리_목록",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 21,
+      "components": [
+        {
+          "name": "m_checkbox",
+          "count": 3
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 3
+        },
+        {
+          "name": "m_bar",
+          "count": 3
+        },
+        {
+          "name": "tabel_bar",
+          "count": 3
+        },
+        {
+          "name": "list",
+          "count": 2
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 1
+        },
+        {
+          "name": "title_",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:44880",
+      "name": "방문자 모바일카드 승인_목록(승인대기)",
+      "section": null,
+      "size": "360x1634",
+      "nodeCount": 18,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 9
+        },
+        {
+          "name": "calendar",
+          "count": 2
+        },
+        {
+          "name": "clock",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:44923",
+      "name": "방문자 모바일카드 승인_목록(승인완료)",
+      "section": null,
+      "size": "360x1764",
+      "nodeCount": 19,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 9
+        },
+        {
+          "name": "calendar",
+          "count": 2
+        },
+        {
+          "name": "clock",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:44971",
+      "name": "방문자 모바일카드 승인_목록 없을때",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 6,
+      "components": [
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "previous",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 1
+        },
+        {
+          "name": "title_",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:45002",
+      "name": "모바일카드 승인거절 팝업",
+      "section": null,
+      "size": "360x781",
+      "nodeCount": 2,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:45010",
+      "name": "모바일카드 승인 팝업",
+      "section": null,
+      "size": "360x781",
+      "nodeCount": 2,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:48282",
+      "name": "10.2 카드 신청_1 일반형 카드",
+      "section": null,
+      "size": "360x1707",
+      "nodeCount": 10,
+      "components": [
+        {
+          "name": "m_chips",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "25536:48318",
+      "name": "Group 765",
+      "section": null,
+      "size": "300x221",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25536:48345",
+      "name": "10.2 카드 신청_2 주문형 카드",
+      "section": null,
+      "size": "360x1657",
+      "nodeCount": 39,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 10
+        },
+        {
+          "name": "m_bar",
+          "count": 10
+        },
+        {
+          "name": "tabel_bar",
+          "count": 10
+        },
+        {
+          "name": "m_chips",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "26000:34054",
+      "name": "초대링크 매세지 배너",
+      "section": null,
+      "size": "495x60",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34055",
+      "name": "초대링크 복사",
+      "section": null,
+      "size": "325x60",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34056",
+      "name": "모바일카드 앱 아이콘     - 파일 형식 : JPG, GIF, PNG / 권장 사이즈 : 128px / 최대 크기 : 250KB",
+      "section": null,
+      "size": "1198x120",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34057",
+      "name": "일러스트 이미지     - 파일 형식 : JPG, GIF, PNG / 권장 사이즈 : 800px * 800px",
+      "section": null,
+      "size": "1034x80",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34058",
+      "name": "Group 767",
+      "section": null,
+      "size": "360x781",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34064",
+      "name": "Group 766",
+      "section": null,
+      "size": "352x583",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34067",
+      "name": "Rectangle 34627014",
+      "section": null,
+      "size": "65x16",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34068",
+      "name": "image 2",
+      "section": null,
+      "size": "190x336",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34069",
+      "name": "launcher_and",
+      "section": null,
+      "size": "12x12",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34089",
+      "name": "Rectangle 34627015",
+      "section": null,
+      "size": "190x193",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34090",
+      "name": "Rectangle 34627016",
+      "section": null,
+      "size": "190x77",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34091",
+      "name": "Rectangle 34627017",
+      "section": null,
+      "size": "133x19",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34092",
+      "name": "로그인하고 카드신청하기",
+      "section": null,
+      "size": "88x11",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34093",
+      "name": "모바일카드 사용자 초대",
+      "section": null,
+      "size": "92x12",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34094",
+      "name": "모바일카드 신청을 위해 에스원 계정에 가입하고 로그인해 주세요.",
+      "section": null,
+      "size": "134x22",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34095",
+      "name": "Rectangle 34627018",
+      "section": null,
+      "size": "101x17",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34096",
+      "name": "모바일카드 App",
+      "section": null,
+      "size": "51x9",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34097",
+      "name": "카카오톡 초대링크 이미지_800*800",
+      "section": null,
+      "size": "800x800",
+      "nodeCount": 23,
+      "components": [
+        {
+          "name": "More",
+          "count": 4
+        },
+        {
+          "name": "card",
+          "count": 3
+        },
+        {
+          "name": "nav",
+          "count": 3
+        },
+        {
+          "name": "close",
+          "count": 2
+        },
+        {
+          "name": "card box",
+          "count": 2
+        },
+        {
+          "name": "card_thumnail",
+          "count": 2
+        },
+        {
+          "name": "id",
+          "count": 1
+        },
+        {
+          "name": "push new",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 1
+        },
+        {
+          "name": "home",
+          "count": 1
+        },
+        {
+          "name": "card registration",
+          "count": 1
+        },
+        {
+          "name": "ic_작업목록확인",
+          "count": 1
+        },
+        {
+          "name": "menu(hamburger)",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "26000:34168",
+      "name": "카카오톡 초대링크 복사_1200*630",
+      "section": null,
+      "size": "1200x630",
+      "nodeCount": 23,
+      "components": [
+        {
+          "name": "More",
+          "count": 4
+        },
+        {
+          "name": "card",
+          "count": 3
+        },
+        {
+          "name": "nav",
+          "count": 3
+        },
+        {
+          "name": "close",
+          "count": 2
+        },
+        {
+          "name": "card box",
+          "count": 2
+        },
+        {
+          "name": "card_thumnail",
+          "count": 2
+        },
+        {
+          "name": "id",
+          "count": 1
+        },
+        {
+          "name": "push new",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 1
+        },
+        {
+          "name": "home",
+          "count": 1
+        },
+        {
+          "name": "card registration",
+          "count": 1
+        },
+        {
+          "name": "ic_작업목록확인",
+          "count": 1
+        },
+        {
+          "name": "menu(hamburger)",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "26000:34239",
+      "name": "Rectangle 268384934",
+      "section": null,
+      "size": "217x44",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34240",
+      "name": "카카오톡 초대링크 이미지_800*800",
+      "section": null,
+      "size": "190x190",
+      "nodeCount": 23,
+      "components": [
+        {
+          "name": "More",
+          "count": 4
+        },
+        {
+          "name": "card",
+          "count": 3
+        },
+        {
+          "name": "nav",
+          "count": 3
+        },
+        {
+          "name": "close",
+          "count": 2
+        },
+        {
+          "name": "card box",
+          "count": 2
+        },
+        {
+          "name": "card_thumnail",
+          "count": 2
+        },
+        {
+          "name": "id",
+          "count": 1
+        },
+        {
+          "name": "push new",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 1
+        },
+        {
+          "name": "home",
+          "count": 1
+        },
+        {
+          "name": "card registration",
+          "count": 1
+        },
+        {
+          "name": "ic_작업목록확인",
+          "count": 1
+        },
+        {
+          "name": "menu(hamburger)",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "26000:34311",
+      "name": "1200*630 1MB 미만의 PNG 또는 JPG",
+      "section": null,
+      "size": "458x28",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "26000:34342",
+      "name": "launcher_ios_1024",
+      "section": null,
+      "size": "128x128",
+      "nodeCount": 0,
+      "components": []
+    }
+  ],
+  "componentUsage": [
+    {
+      "name": "m_Input box",
+      "count": 202
+    },
+    {
+      "name": "menu_arrow_right",
+      "count": 153
+    },
+    {
+      "name": "tabel_bar",
+      "count": 151
+    },
+    {
+      "name": "m_bar",
+      "count": 150
+    },
+    {
+      "name": "m_button",
+      "count": 109
+    },
+    {
+      "name": "phone_navi",
+      "count": 101
+    },
+    {
+      "name": "m_StatusBar ",
+      "count": 69
+    },
+    {
+      "name": "icon/combobox_arrow",
+      "count": 68
+    },
+    {
+      "name": "appbar_sub",
+      "count": 67
+    },
+    {
+      "name": "icon/arrow",
+      "count": 67
+    },
+    {
+      "name": "m_combobox",
+      "count": 59
+    },
+    {
+      "name": "close",
+      "count": 53
+    },
+    {
+      "name": "m_basic_button",
+      "count": 45
+    },
+    {
+      "name": "m_checkbox",
+      "count": 39
+    },
+    {
+      "name": "m_chips",
+      "count": 33
+    },
+    {
+      "name": "More",
+      "count": 27
+    },
+    {
+      "name": "list",
+      "count": 27
+    },
+    {
+      "name": "previous",
+      "count": 24
+    },
+    {
+      "name": "menu_arrow_down",
+      "count": 23
+    },
+    {
+      "name": "header",
+      "count": 21
+    },
+    {
+      "name": "calendar",
+      "count": 20
+    },
+    {
+      "name": "plus",
+      "count": 19
+    },
+    {
+      "name": "m_button variation",
+      "count": 17
+    },
+    {
+      "name": "title_",
+      "count": 17
+    },
+    {
+      "name": "minus",
+      "count": 13
+    },
+    {
+      "name": "clock",
+      "count": 10
+    },
+    {
+      "name": "m_subbutton",
+      "count": 9
+    },
+    {
+      "name": "search",
+      "count": 9
+    },
+    {
+      "name": "card",
+      "count": 9
+    },
+    {
+      "name": "nav",
+      "count": 9
+    },
+    {
+      "name": "ok",
+      "count": 7
+    },
+    {
+      "name": "building control",
+      "count": 7
+    },
+    {
+      "name": "Header / Status",
+      "count": 6
+    },
+    {
+      "name": "ic_주소록, 연락처",
+      "count": 6
+    },
+    {
+      "name": "Remove",
+      "count": 6
+    },
+    {
+      "name": "card box",
+      "count": 6
+    },
+    {
+      "name": "card_thumnail",
+      "count": 6
+    },
+    {
+      "name": "id",
+      "count": 3
+    },
+    {
+      "name": "push new",
+      "count": 3
+    },
+    {
+      "name": "home",
+      "count": 3
+    },
+    {
+      "name": "card registration",
+      "count": 3
+    },
+    {
+      "name": "ic_작업목록확인",
+      "count": 3
+    },
+    {
+      "name": "menu(hamburger)",
+      "count": 3
+    },
+    {
+      "name": "bottom_sheet",
+      "count": 2
+    },
+    {
+      "name": "dome camera trouble",
+      "count": 2
+    },
+    {
+      "name": "btn_Minus",
+      "count": 1
+    },
+    {
+      "name": "btn_Plus",
+      "count": 1
+    },
+    {
+      "name": "m_tab_mid",
+      "count": 1
+    }
+  ]
+}

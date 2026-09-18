@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "source": "figma:get_metadata",
+    "source": "figma:rest",
     "page": {
       "name": "3~6. 내 정보, 권한, 계약, 청구/입금",
       "nodeId": "10928:13547"
@@ -8,25 +8,33 @@
     "generatedAt": "2026-09-18",
     "note": "기계 판독 원자료. 사람이 해석한 판독표는 같은 폴더의 md 에 쓴다."
   },
-  "screenCount": 197,
+  "screenCount": 223,
   "screens": [
     {
       "id": "10928:13548",
       "name": "3.1 내 정보_1 메인",
       "section": null,
       "size": "360x800",
-      "nodeCount": 21,
+      "nodeCount": 18,
       "components": [
         {
           "name": "m_Input box",
-          "count": 3
+          "count": 5
+        },
+        {
+          "name": "m_button",
+          "count": 2
         },
         {
           "name": "m_subbutton",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "More",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -34,21 +42,25 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_email_input",
           "count": 1
         },
         {
-          "name": "m_button",
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "휴대전화번호를 수정하려면 본인 인증을 해주세요.",
-        "입력하신 이메일로 ID 또는 비밀번호를 찾을 수 있습니다."
       ]
     },
     {
@@ -56,10 +68,14 @@
       "name": "3.1 내 정보_4 긴급연락처 외 사람이 휴대전화번호 변경 시",
       "section": null,
       "size": "360x780",
-      "nodeCount": 29,
+      "nodeCount": 20,
       "components": [
         {
           "name": "m_Input box",
+          "count": 5
+        },
+        {
+          "name": "m_button",
           "count": 3
         },
         {
@@ -67,11 +83,11 @@
           "count": 2
         },
         {
-          "name": "m_button",
+          "name": "More",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -79,7 +95,19 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_email_input",
+          "count": 1
+        },
+        {
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -90,11 +118,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "휴대전화번호를 수정하려면 본인 인증을 해주세요.",
-        "입력하신 이메일로 ID 또는 비밀번호를 찾을 수 있습니다.",
-        "가입 승인 후 이용가능합니다."
       ]
     },
     {
@@ -102,22 +125,38 @@
       "name": "3.1 내 정보_2 휴대전화번호 변경",
       "section": null,
       "size": "360x780",
-      "nodeCount": 16,
+      "nodeCount": 18,
       "components": [
         {
           "name": "m_Input box",
-          "count": 3
+          "count": 5
         },
         {
           "name": "m_subbutton",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "More",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "Remove",
+          "count": 1
+        },
+        {
+          "name": "m_button",
           "count": 1
         },
         {
@@ -125,12 +164,17 @@
           "count": 1
         },
         {
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
           "name": "keyboard",
           "count": 1
         }
-      ],
-      "texts": [
-        "휴대전화번호를 수정하려면 본인 인증을 해주세요."
       ]
     },
     {
@@ -138,18 +182,22 @@
       "name": "2.2 비밀번호 변경_2 비밀번호 변경",
       "section": null,
       "size": "360x780",
-      "nodeCount": 24,
+      "nodeCount": 7,
       "components": [
         {
           "name": "pw off",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -160,15 +208,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "항목명 copy 2",
-        "비밀번호 조건",
-        "플레이스 홀더 텍스트",
-        "영문, 숫자, 특수문자를 조합하여 8자 이상 입력해 주세요.",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트"
       ]
     },
     {
@@ -176,14 +215,18 @@
       "name": "2.3 회원 탈퇴_1 비밀번호 입력 및 동의",
       "section": null,
       "size": "360x780",
-      "nodeCount": 23,
+      "nodeCount": 7,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -202,14 +245,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "탈퇴를 신청하시면 즉시 처리가 되며, 고객 정보를 포함한 모든 데이터는 자동 파기됩니다. 탈퇴 시 서비스 부정 이용 방지를 위해 탈퇴일 기준 동일 ID로 7일 동안 재가입이 불가합니다.",
-        "서비스약관에 동의해 주세요",
-        "(1) 회사는 본 약관의 내용을 회원",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트"
       ]
     },
     {
@@ -217,14 +252,18 @@
       "name": "2.3 회원 탈퇴_1 비밀번호 입력 및 동의",
       "section": null,
       "size": "360x780",
-      "nodeCount": 23,
+      "nodeCount": 7,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -243,14 +282,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "탈퇴를 신청하시면 즉시 처리가 되며, 고객 정보를 포함한 모든 데이터는 자동 파기됩니다. 탈퇴 시 서비스 부정 이용 방지를 위해 탈퇴일 기준 동일 ID로 7일 동안 재가입이 불가합니다.",
-        "서비스약관에 동의해 주세요",
-        "(1) 회사는 본 약관의 내용을 회원",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트"
       ]
     },
     {
@@ -258,14 +289,18 @@
       "name": "2.3 회원 탈퇴_1 비밀번호 입력 및 동의_수정",
       "section": null,
       "size": "360x780",
-      "nodeCount": 23,
+      "nodeCount": 7,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -284,14 +319,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "탈퇴하면 고객 정보를 포함한 모든 데이터는 즉시 파기되고서비스 부정 이용 방지를 위해 탈퇴일 기준 동일 ID로 7일 동안 재가입이 불가해요. 탈퇴 후 더 이상 에스원계정으로 로그인 할 수 없고 에스원계정을 사용하는 모든 App 서비스를 사용할 수 없으니 신중하게 탈퇴해 주세요.",
-        "서비스약관에 동의해 주세요",
-        "(1) 회사는 본 약관의 내용을 회원",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트"
       ]
     },
     {
@@ -300,8 +327,7 @@
       "section": null,
       "size": "295x95",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "10928:13667",
@@ -309,8 +335,7 @@
       "section": null,
       "size": "229x95",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "10928:13668",
@@ -318,8 +343,7 @@
       "section": null,
       "size": "131x36",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "10928:13669",
@@ -327,8 +351,7 @@
       "section": null,
       "size": "98x36",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "10928:13670",
@@ -336,8 +359,7 @@
       "section": null,
       "size": "164x36",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "10928:13671",
@@ -345,8 +367,7 @@
       "section": null,
       "size": "190x36",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "10928:13672",
@@ -354,8 +375,7 @@
       "section": null,
       "size": "191x36",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "10928:13673",
@@ -363,8 +383,7 @@
       "section": null,
       "size": "215x36",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "10928:13674",
@@ -372,18 +391,17 @@
       "section": null,
       "size": "164x36",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "10928:13675",
       "name": "4.2 권한 신청_2 계약 검색(계약번호)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 16,
+      "nodeCount": 9,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -391,11 +409,23 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
           "count": 1
         },
         {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
           "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "search",
           "count": 1
         },
         {
@@ -406,10 +436,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "계약번호를 모르시나요?"
       ]
     },
     {
@@ -417,10 +443,10 @@
       "name": "4.2 권한 신청_3 계약 검색 조건 선택",
       "section": null,
       "size": "360x780",
-      "nodeCount": 28,
+      "nodeCount": 10,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -428,7 +454,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -451,13 +485,6 @@
           "name": "ok",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "계약번호를 모르시나요?",
-        "검색 조건",
-        "마스터 관리자 이름, 휴대전화번호",
-        "계약번호"
       ]
     },
     {
@@ -465,10 +492,10 @@
       "name": "4.2 권한 신청_계약번호를 모르시나요 팝업",
       "section": null,
       "size": "360x780",
-      "nodeCount": 23,
+      "nodeCount": 10,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -476,7 +503,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -494,13 +529,11 @@
         {
           "name": "m_button variation",
           "count": 1
+        },
+        {
+          "name": "m_basic_button",
+          "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "계약번호를 모르시나요?",
-        "제목",
-        "입력 정보와 일치하는 임직원 정보를"
       ]
     },
     {
@@ -508,14 +541,18 @@
       "name": "4.2 권한 신청_8 권한 신청 완료",
       "section": null,
       "size": "360x780",
-      "nodeCount": 13,
+      "nodeCount": 5,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -526,10 +563,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "담당자가 신청 내용을 확인한 후 권한을 승인합니다. 오랫동안 승인이 되지 않는다면 담당자에게 연락해 주세요."
       ]
     },
     {
@@ -537,14 +570,18 @@
       "name": "2.3 회원 탈퇴_2 탈퇴 완료",
       "section": null,
       "size": "360x780",
-      "nodeCount": 12,
+      "nodeCount": 5,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -555,10 +592,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "정상적으로 탈퇴되었습니다. 늘 행복한 일만 가득하시길 바랍니다."
       ]
     },
     {
@@ -566,14 +599,14 @@
       "name": "4.2 권한 신청_4 검색어 입력(마스터 관리자 이름, 휴대전화번호)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 14,
+      "nodeCount": 10,
       "components": [
         {
           "name": "m_Input box",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -581,7 +614,19 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "Remove",
           "count": 1
         },
         {
@@ -592,9 +637,6 @@
           "name": "keyboard",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -602,10 +644,10 @@
       "name": "4.2 권한 신청_5 검색어 입력(계약번호)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 14,
+      "nodeCount": 10,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -613,11 +655,27 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
           "count": 1
         },
         {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
           "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "Remove",
+          "count": 1
+        },
+        {
+          "name": "search",
           "count": 1
         },
         {
@@ -628,10 +686,6 @@
           "name": "keyboard",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "계약번호를 모르시나요?"
       ]
     },
     {
@@ -639,18 +693,22 @@
       "name": "4.2 권한 신청_1 계약 검색(마스터 관리자 이름, 휴대전화번호)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 16,
+      "nodeCount": 9,
       "components": [
         {
           "name": "m_Input box",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -658,6 +716,10 @@
           "count": 1
         },
         {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
           "name": "m_button",
           "count": 1
         },
@@ -665,9 +727,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -675,10 +734,26 @@
       "name": "4.3 관리자 초대_4 관리자 초대 목록",
       "section": null,
       "size": "360x780",
-      "nodeCount": 35,
+      "nodeCount": 31,
       "components": [
         {
+          "name": "m_checkbox",
+          "count": 5
+        },
+        {
           "name": "list",
+          "count": 4
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 4
+        },
+        {
+          "name": "m_bar",
+          "count": 4
+        },
+        {
+          "name": "tabel_bar",
           "count": 4
         },
         {
@@ -690,7 +765,7 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -698,23 +773,17 @@
           "count": 1
         },
         {
-          "name": "icon/combobox_arrow",
+          "name": "icon/arrow",
           "count": 1
         },
         {
-          "name": "m_checkbox",
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "초대 멤버가 가입하면 권한을 부여할 수 있습니다.",
-        "개인",
-        "개인"
       ]
     },
     {
@@ -722,10 +791,26 @@
       "name": "4.3 관리자 초대_10 알림톡 전송 안내(거절)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 41,
+      "nodeCount": 32,
       "components": [
         {
+          "name": "m_checkbox",
+          "count": 5
+        },
+        {
           "name": "list",
+          "count": 4
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 4
+        },
+        {
+          "name": "m_bar",
+          "count": 4
+        },
+        {
+          "name": "tabel_bar",
           "count": 4
         },
         {
@@ -737,7 +822,7 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -745,11 +830,11 @@
           "count": 1
         },
         {
-          "name": "icon/combobox_arrow",
+          "name": "icon/arrow",
           "count": 1
         },
         {
-          "name": "m_checkbox",
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -760,13 +845,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "초대 멤버가 가입하면 권한을 부여할 수 있습니다.",
-        "개인",
-        "개인",
-        "가입 승인 후 이용가능합니다."
       ]
     },
     {
@@ -774,10 +852,26 @@
       "name": "4.3 관리자 초대_9 알림톡 전송 안내(승인)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 41,
+      "nodeCount": 32,
       "components": [
         {
+          "name": "m_checkbox",
+          "count": 5
+        },
+        {
           "name": "list",
+          "count": 4
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 4
+        },
+        {
+          "name": "m_bar",
+          "count": 4
+        },
+        {
+          "name": "tabel_bar",
           "count": 4
         },
         {
@@ -789,7 +883,7 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -797,11 +891,11 @@
           "count": 1
         },
         {
-          "name": "icon/combobox_arrow",
+          "name": "icon/arrow",
           "count": 1
         },
         {
-          "name": "m_checkbox",
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -812,13 +906,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "초대 멤버가 가입하면 권한을 부여할 수 있습니다.",
-        "개인",
-        "개인",
-        "가입 승인 후 이용가능합니다."
       ]
     },
     {
@@ -826,7 +913,7 @@
       "name": "dialog",
       "section": null,
       "size": "360x732",
-      "nodeCount": 7,
+      "nodeCount": 2,
       "components": [
         {
           "name": "close",
@@ -836,9 +923,6 @@
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "가입 승인 후 이용가능합니다."
       ]
     },
     {
@@ -846,10 +930,26 @@
       "name": "4.3 관리자 초대_8 권한 선택 완료",
       "section": null,
       "size": "360x780",
-      "nodeCount": 34,
+      "nodeCount": 30,
       "components": [
         {
+          "name": "m_checkbox",
+          "count": 5
+        },
+        {
           "name": "list",
+          "count": 4
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 4
+        },
+        {
+          "name": "m_bar",
+          "count": 4
+        },
+        {
+          "name": "tabel_bar",
           "count": 4
         },
         {
@@ -861,7 +961,7 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -869,23 +969,17 @@
           "count": 1
         },
         {
-          "name": "icon/combobox_arrow",
+          "name": "icon/arrow",
           "count": 1
         },
         {
-          "name": "m_checkbox",
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "초대 멤버가 가입하면 권한을 부여할 수 있습니다.",
-        "개인",
-        "개인"
       ]
     },
     {
@@ -894,22 +988,25 @@
       "section": null,
       "size": "119x13",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "10928:13974",
       "name": "4.3 관리자 초대_1 가입 멤버 없음",
       "section": null,
       "size": "360x780",
-      "nodeCount": 19,
+      "nodeCount": 6,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -924,11 +1021,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "초대 멤버가 가입하면 권한을 부여할 수 있습니다.",
-        "가입한 멤버가 없어요."
       ]
     },
     {
@@ -936,18 +1028,26 @@
       "name": "4.3 관리자 초대_2 계약 정보",
       "section": null,
       "size": "360x780",
-      "nodeCount": 42,
+      "nodeCount": 15,
       "components": [
         {
           "name": "m_bar",
           "count": 3
         },
         {
-          "name": "m_StatusBar",
+          "name": "tabel_bar",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -974,19 +1074,6 @@
           "name": "ok",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "초대 멤버가 가입하면 권한을 부여할 수 있습니다.",
-        "가입한 멤버가 없어요",
-        "계약 정보",
-        "에스원 본사(N1234567)",
-        "에스원 본사(N1234567)",
-        "에스원 본사(N1234567)",
-        "에스원 본사(N1234567)",
-        "에스원 본사(N1234567)",
-        "에스원 본사(N1234567)",
-        "에스원 본사(N1234567)"
       ]
     },
     {
@@ -994,10 +1081,14 @@
       "name": "6.1 청구입금_4 납입 상세 내역",
       "section": null,
       "size": "360x922",
-      "nodeCount": 91,
+      "nodeCount": 16,
       "components": [
         {
           "name": "m_bar",
+          "count": 4
+        },
+        {
+          "name": "tabel_bar",
           "count": 4
         },
         {
@@ -1009,11 +1100,15 @@
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1028,45 +1123,6 @@
           "name": "ok",
           "count": 1
         }
-      ],
-      "texts": [
-        "청구/납입 내역",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "2023.03.01 ~ 03.31",
-        "이번달 납입 금액",
-        "77,000원",
-        "미납금액",
-        "0원",
-        "월별 기간",
-        "2023년 03월",
-        "2023년 02월",
-        "2023년 01월",
-        "2022년 12월",
-        "2022년 11월",
-        "2022년 10월"
       ]
     },
     {
@@ -1074,7 +1130,7 @@
       "name": "6.1 청구입금_4 납입 상세 내역",
       "section": null,
       "size": "360x922",
-      "nodeCount": 68,
+      "nodeCount": 8,
       "components": [
         {
           "name": "m_button",
@@ -1085,11 +1141,15 @@
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1099,39 +1159,11 @@
         {
           "name": "m_bar",
           "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
         }
-      ],
-      "texts": [
-        "청구/납입 내역",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "2023.03.01 ~ 03.31",
-        "이번달 납입 금액",
-        "77,000원",
-        "미납금액",
-        "0원"
       ]
     },
     {
@@ -1139,14 +1171,18 @@
       "name": "4.3 관리자 초대_3 관리자 초대 방법 선택",
       "section": null,
       "size": "360x780",
-      "nodeCount": 28,
+      "nodeCount": 8,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1169,14 +1205,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "초대 멤버가 가입하면 권한을 부여할 수 있습니다.",
-        "가입한 멤버가 없어요",
-        "관리자 초대 방법",
-        "카카오톡으로 초대 링크 보내기",
-        "초대 링크 복사하기"
       ]
     },
     {
@@ -1184,48 +1212,58 @@
       "name": "Group 615",
       "section": null,
       "size": "360x780",
-      "nodeCount": 2,
-      "components": [],
-      "texts": [
-        "홍길동"
-      ]
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "10928:14084",
       "name": "Group 616",
       "section": null,
       "size": "360x780",
-      "nodeCount": 18,
-      "components": [],
-      "texts": [
-        "홍길동",
-        "이지은",
-        "박연희",
-        "강민수",
-        "박수진",
-        "권우찬",
-        "이민호",
-        "김철수",
-        "이영희"
-      ]
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "10928:14112",
       "name": "4.4 관리자 현황_2 관리자 있음",
       "section": null,
       "size": "360x780",
-      "nodeCount": 19,
+      "nodeCount": 36,
       "components": [
+        {
+          "name": "m_checkbox",
+          "count": 6
+        },
         {
           "name": "list",
           "count": 5
         },
         {
-          "name": "m_StatusBar",
+          "name": "menu_arrow_right",
+          "count": 5
+        },
+        {
+          "name": "m_bar",
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1233,7 +1271,11 @@
           "count": 1
         },
         {
-          "name": "m_checkbox",
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -1244,18 +1286,17 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": []
+      ]
     },
     {
       "id": "10928:14132",
       "name": "4.4 관리자 현황_1 관리자 없음",
       "section": null,
       "size": "360x780",
-      "nodeCount": 12,
+      "nodeCount": 7,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1263,7 +1304,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -1274,9 +1323,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "관리자가 없어요."
       ]
     },
     {
@@ -1284,26 +1330,34 @@
       "name": "4.4 관리자 현황_6 서비스 해지",
       "section": null,
       "size": "360x780",
-      "nodeCount": 63,
+      "nodeCount": 33,
       "components": [
         {
           "name": "m_checkbox",
-          "count": 4
+          "count": 6
         },
         {
           "name": "menu_arrow_right",
-          "count": 3
+          "count": 5
         },
         {
           "name": "m_bar",
-          "count": 3
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 2
         },
         {
           "name": "list",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1311,7 +1365,19 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "filter",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -1322,21 +1388,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "제목",
-        "010-5578-***4",
-        "전체 권한",
-        "부가 상세정보",
-        "해지",
-        "제목",
-        "010-5578-***4",
-        "카드, 매니저 외 1개",
-        "부가 상세정보",
-        "제목",
-        "010-5578-***4",
-        "텍스트",
-        "부가 상세정보"
       ]
     },
     {
@@ -1344,14 +1395,34 @@
       "name": "4.4 관리자 현황_9 정렬, 필터링 적용",
       "section": null,
       "size": "360x780",
-      "nodeCount": 16,
+      "nodeCount": 21,
       "components": [
+        {
+          "name": "m_checkbox",
+          "count": 3
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 2
+        },
         {
           "name": "list",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "menu_arrow_right",
+          "count": 2
+        },
+        {
+          "name": "m_bar",
+          "count": 2
+        },
+        {
+          "name": "tabel_bar",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1359,11 +1430,19 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "filter",
           "count": 1
         },
         {
-          "name": "m_checkbox",
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -1374,26 +1453,45 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": []
+      ]
     },
     {
       "id": "10928:14238",
       "name": "4.4 관리자 현황_7 정렬",
       "section": null,
       "size": "360x780",
-      "nodeCount": 41,
+      "nodeCount": 38,
       "components": [
+        {
+          "name": "m_checkbox",
+          "count": 6
+        },
         {
           "name": "list",
           "count": 5
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 5
+        },
+        {
+          "name": "m_bar",
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 2
         },
         {
           "name": "m_button",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1401,11 +1499,19 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "filter",
           "count": 1
         },
         {
-          "name": "m_checkbox",
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -1416,12 +1522,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "정렬",
-        "이름순",
-        "최신순",
-        "과거순"
       ]
     },
     {
@@ -1429,18 +1529,38 @@
       "name": "4.4 관리자 현황_7 정렬",
       "section": null,
       "size": "360x780",
-      "nodeCount": 41,
+      "nodeCount": 38,
       "components": [
+        {
+          "name": "m_checkbox",
+          "count": 6
+        },
         {
           "name": "list",
           "count": 5
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 5
+        },
+        {
+          "name": "m_bar",
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 2
         },
         {
           "name": "m_button",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1448,11 +1568,19 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "filter",
           "count": 1
         },
         {
-          "name": "m_checkbox",
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -1463,12 +1591,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "정렬",
-        "과거순",
-        "최신순",
-        "최신순"
       ]
     },
     {
@@ -1476,22 +1598,38 @@
       "name": "4.4 관리자 현황_8 필터링",
       "section": null,
       "size": "360x780",
-      "nodeCount": 51,
+      "nodeCount": 44,
       "components": [
         {
           "name": "m_checkbox",
-          "count": 7
+          "count": 12
         },
         {
           "name": "list",
           "count": 5
         },
         {
+          "name": "menu_arrow_right",
+          "count": 5
+        },
+        {
+          "name": "m_bar",
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 2
+        },
+        {
           "name": "m_button",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1499,7 +1637,19 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "filter",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -1510,15 +1660,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "관리자 권한",
-        "전체 권한",
-        "계약",
-        "시스템 경비",
-        "영상",
-        "카드",
-        "클라우드매니저"
       ]
     },
     {
@@ -1526,22 +1667,38 @@
       "name": "4.4 관리자 현황_8 필터링",
       "section": null,
       "size": "360x780",
-      "nodeCount": 51,
+      "nodeCount": 44,
       "components": [
         {
           "name": "m_checkbox",
-          "count": 7
+          "count": 12
         },
         {
           "name": "list",
           "count": 5
         },
         {
+          "name": "menu_arrow_right",
+          "count": 5
+        },
+        {
+          "name": "m_bar",
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 2
+        },
+        {
           "name": "m_button",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1549,7 +1706,19 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "filter",
+          "count": 1
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -1560,15 +1729,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "관리자 권한",
-        "전체 권한",
-        "계약",
-        "방범",
-        "카드",
-        "영상",
-        "매니저"
       ]
     },
     {
@@ -1576,14 +1736,34 @@
       "name": "4.4 관리자 현황_4 삭제할 관리자(권한) 선택",
       "section": null,
       "size": "360x780",
-      "nodeCount": 19,
+      "nodeCount": 36,
       "components": [
+        {
+          "name": "m_checkbox",
+          "count": 6
+        },
         {
           "name": "list",
           "count": 5
         },
         {
-          "name": "m_StatusBar",
+          "name": "menu_arrow_right",
+          "count": 5
+        },
+        {
+          "name": "m_bar",
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1591,11 +1771,19 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "filter",
           "count": 1
         },
         {
-          "name": "m_checkbox",
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -1606,26 +1794,45 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": []
+      ]
     },
     {
       "id": "10928:14361",
       "name": "4.4 관리자 현황_5 알림톡 전송 안내(삭제)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 27,
+      "nodeCount": 38,
       "components": [
+        {
+          "name": "m_checkbox",
+          "count": 6
+        },
         {
           "name": "list",
           "count": 5
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 5
+        },
+        {
+          "name": "m_bar",
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 2
         },
         {
           "name": "m_button",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1633,11 +1840,19 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "filter",
           "count": 1
         },
         {
-          "name": "m_checkbox",
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -1648,9 +1863,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "가입 승인 후 이용가능합니다."
       ]
     },
     {
@@ -1658,18 +1870,26 @@
       "name": "3.1 내 정보_5 긴급연락처 반영중(인증 비활성화)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 19,
+      "nodeCount": 18,
       "components": [
         {
           "name": "m_Input box",
-          "count": 3
+          "count": 5
+        },
+        {
+          "name": "m_button",
+          "count": 2
         },
         {
           "name": "m_subbutton",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "More",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1677,20 +1897,25 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_email_input",
           "count": 1
         },
         {
-          "name": "m_button",
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "휴대폰 번호를 수정하려면 본인 인증을 해주세요."
       ]
     },
     {
@@ -1698,10 +1923,14 @@
       "name": "3.1 내 정보_3 긴급연락처 내 사람이 휴대전화번호 변경 시",
       "section": null,
       "size": "360x780",
-      "nodeCount": 32,
+      "nodeCount": 20,
       "components": [
         {
           "name": "m_Input box",
+          "count": 5
+        },
+        {
+          "name": "m_button",
           "count": 3
         },
         {
@@ -1709,11 +1938,11 @@
           "count": 2
         },
         {
-          "name": "m_button",
+          "name": "More",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1721,7 +1950,19 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_email_input",
+          "count": 1
+        },
+        {
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -1732,13 +1973,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "휴대폰 번호를 수정하려면 본인 인증을 해주세요.",
-        "고객센터 앱 원격 경비/해제 요청 서",
-        "입력 정보와 일치하는 임직원 정보를",
-        "1. 서비스 내용 - 본 서비스는 고",
-        "1. 서비스 내용 - 본 서비스는 고"
       ]
     },
     {
@@ -1746,22 +1980,34 @@
       "name": "3.1 내 정보_6 긴급연락처 반영 후(인증 활성화)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 19,
+      "nodeCount": 18,
       "components": [
         {
           "name": "m_Input box",
-          "count": 3
+          "count": 5
+        },
+        {
+          "name": "m_button",
+          "count": 2
         },
         {
           "name": "m_subbutton",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "More",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1769,16 +2015,17 @@
           "count": 1
         },
         {
-          "name": "m_button",
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "휴대폰 번호를 수정하려면 본인 인증을 해주세요."
       ]
     },
     {
@@ -1786,14 +2033,18 @@
       "name": "4.2 권한 신청_7 검색 결과 없음",
       "section": null,
       "size": "360x780",
-      "nodeCount": 10,
+      "nodeCount": 5,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1804,9 +2055,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "검색된 계약이 없어요."
       ]
     },
     {
@@ -1814,14 +2062,18 @@
       "name": "4.2 권한 신청_7 검색 결과 없음",
       "section": null,
       "size": "360x780",
-      "nodeCount": 10,
+      "nodeCount": 5,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1832,9 +2084,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "내 정보로 계약 검색을 할 수 없습니다."
       ]
     },
     {
@@ -1842,10 +2091,10 @@
       "name": "4.1 권한_ 2 일반 관리자",
       "section": null,
       "size": "360x780",
-      "nodeCount": 36,
+      "nodeCount": 11,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1853,7 +2102,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -1880,20 +2137,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "항목명 copy 2",
-        "일반 관리자",
-        "계약",
-        "계약 정보 조회, 수정 요청",
-        "시스템 경비",
-        "원격 경비, 열쇠 지원, 출입문 제어 등",
-        "카드",
-        "카드 정보 조회/신청/수정",
-        "영상",
-        "영상 조회/기기 등록, 원격 지원 요청",
-        "출입/근태 관리",
-        "‘클라우드 매니저’ 정보 접근"
       ]
     },
     {
@@ -1901,10 +2144,10 @@
       "name": "4.1 권한_ 2 일반 관리자",
       "section": null,
       "size": "360x780",
-      "nodeCount": 36,
+      "nodeCount": 11,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1912,7 +2155,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -1939,20 +2190,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "항목명 copy 2",
-        "일반 관리자",
-        "계약",
-        "계약 정보 조회, 수정 요청",
-        "시스템 경비",
-        "원격 경비, 열쇠 지원, 출입문 제어 등",
-        "카드",
-        "카드 정보 조회/신청/수정",
-        "영상",
-        "영상 조회/기기 등록, 원격 지원 요청",
-        "출입/근태 관리",
-        "‘클라우드 매니저’ 정보 접근"
       ]
     },
     {
@@ -1960,10 +2197,10 @@
       "name": "4.1 권한_ 2 일반 관리자",
       "section": null,
       "size": "360x780",
-      "nodeCount": 38,
+      "nodeCount": 12,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1971,7 +2208,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -2002,20 +2247,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "항목명 copy 2",
-        "일반 관리자",
-        "계약",
-        "계약 정보 조회, 수정 요청",
-        "시스템 경비",
-        "원격 경비, 열쇠 지원, 출입문 제어 등",
-        "카드",
-        "카드 정보 조회/신청/수정",
-        "영상",
-        "영상 조회/기기 등록, 원격 지원 요청",
-        "출입/근태 관리",
-        "‘클라우드 매니저’ 정보 접근"
       ]
     },
     {
@@ -2023,10 +2254,10 @@
       "name": "4.1 권한_ 2 일반 관리자",
       "section": null,
       "size": "360x780",
-      "nodeCount": 38,
+      "nodeCount": 12,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2034,7 +2265,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -2065,20 +2304,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "항목명 copy 2",
-        "일반 관리자",
-        "계약",
-        "계약 정보 조회, 수정 요청",
-        "시스템 경비",
-        "원격 경비, 열쇠 지원, 출입문 제어 등",
-        "카드",
-        "카드 정보 조회/신청/수정",
-        "영상",
-        "영상 조회/기기 등록, 원격 지원 요청",
-        "출입/근태 관리",
-        "‘클라우드 매니저’ 정보 접근"
       ]
     },
     {
@@ -2086,14 +2311,18 @@
       "name": "4.1 권한_ 2 일반 관리자",
       "section": null,
       "size": "360x780",
-      "nodeCount": 35,
+      "nodeCount": 9,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -2120,20 +2349,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "항목명 copy 2",
-        "일반 관리자",
-        "계약",
-        "계약 정보 조회, 수정 요청",
-        "시스템 경비",
-        "원격 경비, 열쇠 지원, 출입문 제어 등",
-        "카드",
-        "카드 정보 조회/신청/수정",
-        "영상",
-        "영상 조회/기기 등록, 원격 지원 요청",
-        "출입/근태 관리",
-        "‘클라우드 매니저’ 정보 접근"
       ]
     },
     {
@@ -2141,14 +2356,18 @@
       "name": "4.2 권한 신청_11 다른 계약처 권한 신청",
       "section": null,
       "size": "360x780",
-      "nodeCount": 56,
+      "nodeCount": 20,
       "components": [
         {
           "name": "m_bar",
           "count": 3
         },
         {
-          "name": "m_StatusBar",
+          "name": "tabel_bar",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2156,7 +2375,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -2195,25 +2422,6 @@
           "name": "ok",
           "count": 1
         }
-      ],
-      "texts": [
-        "항목명 copy 2",
-        "일반 관리자",
-        "계약",
-        "계약 정보 조회, 수정 요청",
-        "시스템 경비",
-        "원격 경비, 열쇠 지원, 출입문 제어 등",
-        "카드",
-        "카드 정보 조회/신청/수정",
-        "영상",
-        "영상 조회/기기 등록, 원격 지원 요청",
-        "출입/근태 관리",
-        "‘클라우드 매니저’ 정보 접근",
-        "계약처",
-        "다른 계약처 권한 신청",
-        "에스원 본사(N1234567)",
-        "에스원 본사(N1234567)",
-        "에스원 본사(N1234567)"
       ]
     },
     {
@@ -2221,14 +2429,26 @@
       "name": "4.1 권한_ 3 마스터 관리자",
       "section": null,
       "size": "360x780",
-      "nodeCount": 19,
+      "nodeCount": 15,
       "components": [
         {
           "name": "m_list",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "menu_arrow_right",
+          "count": 2
+        },
+        {
+          "name": "m_bar",
+          "count": 2
+        },
+        {
+          "name": "tabel_bar",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2236,7 +2456,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -2247,11 +2475,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "항목명 copy 2",
-        "마스터 관리자",
-        "관리자 초대, 권한 관리, 원격 경비 해제, 시스템 경비 서비스 리포트 조회 포함 전체 권한"
       ]
     },
     {
@@ -2259,7 +2482,7 @@
       "name": "4.1 권한_ 3 마스터 관리자",
       "section": null,
       "size": "360x780",
-      "nodeCount": 21,
+      "nodeCount": 16,
       "components": [
         {
           "name": "m_button",
@@ -2270,7 +2493,19 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "menu_arrow_right",
+          "count": 2
+        },
+        {
+          "name": "m_bar",
+          "count": 2
+        },
+        {
+          "name": "tabel_bar",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2278,18 +2513,21 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "항목명 copy 2",
-        "마스터 관리자",
-        "관리자 초대, 권한 관리, 원격 경비 해제, 시스템 경비 서비스 리포트 조회 포함 전체 권한"
       ]
     },
     {
@@ -2297,10 +2535,26 @@
       "name": "4.1 권한_ 3 마스터 관리자",
       "section": null,
       "size": "360x858",
-      "nodeCount": 49,
+      "nodeCount": 30,
       "components": [
         {
+          "name": "m_checkbox",
+          "count": 5
+        },
+        {
           "name": "list",
+          "count": 4
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 4
+        },
+        {
+          "name": "m_bar",
+          "count": 4
+        },
+        {
+          "name": "tabel_bar",
           "count": 4
         },
         {
@@ -2312,7 +2566,7 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2320,24 +2574,13 @@
           "count": 1
         },
         {
-          "name": "m_checkbox",
+          "name": "icon/arrow",
           "count": 1
         },
         {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "항목명 copy 2",
-        "마스터 관리자",
-        "관리자 초대, 권한 관리, 원격 경비 해제, 서비스 리포트 등 전체 권한",
-        "사업자 고객",
-        "4",
-        "개인",
-        "11",
-        "개인",
-        "개인"
       ]
     },
     {
@@ -2345,14 +2588,18 @@
       "name": "4.1 권한_ 3 마스터 관리자",
       "section": null,
       "size": "360x780",
-      "nodeCount": 34,
+      "nodeCount": 7,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -2364,19 +2611,13 @@
           "count": 1
         },
         {
+          "name": "More",
+          "count": 1
+        },
+        {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "서비스약관에 동의해 주세요",
-        "전체 권한",
-        "관리자 초대, 권한 관리, 원격 제어, 서비스 리포트",
-        "사업자 고객",
-        "개인",
-        "관리자가 없어요."
       ]
     },
     {
@@ -2384,14 +2625,18 @@
       "name": "4.1 권한_ 3 마스터 관리자",
       "section": null,
       "size": "360x780",
-      "nodeCount": 34,
+      "nodeCount": 6,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -2406,16 +2651,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "관리자 초대",
-        "마스터 관리자",
-        "관리자 초대, 권한 관리, 원격 경비 해제, 서비스 리포트 등 전체 권한",
-        "사업자 고객",
-        "개인",
-        "관리자가 없어요."
       ]
     },
     {
@@ -2423,10 +2658,26 @@
       "name": "4.1 권한_ 3 마스터 관리자",
       "section": null,
       "size": "360x858",
-      "nodeCount": 51,
+      "nodeCount": 30,
       "components": [
         {
+          "name": "m_checkbox",
+          "count": 5
+        },
+        {
           "name": "list",
+          "count": 4
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 4
+        },
+        {
+          "name": "m_bar",
+          "count": 4
+        },
+        {
+          "name": "tabel_bar",
           "count": 4
         },
         {
@@ -2434,11 +2685,15 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -2446,7 +2701,7 @@
           "count": 1
         },
         {
-          "name": "m_checkbox",
+          "name": "More",
           "count": 1
         },
         {
@@ -2457,18 +2712,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "항목명 copy 2",
-        "서비스약관에 동의해 주세요",
-        "전체 권한",
-        "관리자 초대, 권한 관리, 원격 제어, 서비스 리포트",
-        "개인",
-        "4",
-        "사업자 고객",
-        "11",
-        "개인",
-        "개인"
       ]
     },
     {
@@ -2476,16 +2719,12 @@
       "name": "Frame 626",
       "section": null,
       "size": "320x94",
-      "nodeCount": 5,
+      "nodeCount": 1,
       "components": [
         {
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "전체 권한",
-        "관리자 초대, 권한 관리, 원격 경비 해제, 시스템 경비 서비스 리포트 조회"
       ]
     },
     {
@@ -2493,14 +2732,30 @@
       "name": "4.1 권한_ 3 마스터 관리자",
       "section": null,
       "size": "360x780",
-      "nodeCount": 17,
+      "nodeCount": 27,
       "components": [
         {
           "name": "list",
           "count": 4
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_checkbox",
+          "count": 4
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 4
+        },
+        {
+          "name": "m_bar",
+          "count": 4
+        },
+        {
+          "name": "tabel_bar",
+          "count": 4
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2508,7 +2763,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -2519,9 +2782,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "항목명 copy 2"
       ]
     },
     {
@@ -2529,7 +2789,7 @@
       "name": "4.4 관리자 현황_3 권한 변경",
       "section": null,
       "size": "360x780",
-      "nodeCount": 49,
+      "nodeCount": 12,
       "components": [
         {
           "name": "m_checkbox",
@@ -2540,11 +2800,15 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -2555,22 +2819,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "마스터 관리자",
-        "일반 관리자",
-        "*권한 복수 선택 가능",
-        "계약",
-        "계약 정보 조회, 수정 요청",
-        "시스템 경비",
-        "원격 경비, 열쇠 지원, 출입문 제어 등",
-        "카드",
-        "카드 정보 조회/신청/수정",
-        "영상",
-        "해지",
-        "영상 조회/기기 등록, 원격 지원 요청",
-        "클라우드매니저",
-        "‘클라우드 매니저’ 정보 접근"
       ]
     },
     {
@@ -2578,18 +2826,22 @@
       "name": "4.3 관리자 초대_6 권한 선택(마스터 관리자)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 24,
+      "nodeCount": 8,
       "components": [
         {
           "name": "m_radiobutton",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -2604,12 +2856,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "마스터 관리자",
-        "관리자 초대, 권한 관리, 원격 경비 해제, 방범 서비스 리포트 조회 포함 전체 권한",
-        "일반 관리자",
-        "*권한 복수 선택 가능"
       ]
     },
     {
@@ -2617,18 +2863,22 @@
       "name": "4.3 관리자 초대_6 권한 선택(마스터 관리자)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 24,
+      "nodeCount": 8,
       "components": [
         {
           "name": "m_radiobutton",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -2643,12 +2893,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "마스터 관리자",
-        "관리자 초대, 권한 관리, 원격 경비 해제, 방범 서비스 리포트 조회 포함 전체 권한",
-        "일반 관리자",
-        "*권한 복수 선택 가능"
       ]
     },
     {
@@ -2656,10 +2900,26 @@
       "name": "4.3 관리자 초대_5 관리자 초대 목록(더보기)",
       "section": null,
       "size": "360x1309",
-      "nodeCount": 47,
+      "nodeCount": 62,
       "components": [
         {
+          "name": "m_checkbox",
+          "count": 11
+        },
+        {
           "name": "list",
+          "count": 10
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 10
+        },
+        {
+          "name": "m_bar",
+          "count": 10
+        },
+        {
+          "name": "tabel_bar",
           "count": 10
         },
         {
@@ -2671,7 +2931,7 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2679,11 +2939,11 @@
           "count": 1
         },
         {
-          "name": "icon/combobox_arrow",
+          "name": "icon/arrow",
           "count": 1
         },
         {
-          "name": "m_checkbox",
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -2694,13 +2954,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "초대 멤버가 가입하면 권한을 지정할 수 있습니다.",
-        "개인",
-        "개인",
-        "더보기 (1/10)"
       ]
     },
     {
@@ -2708,14 +2961,18 @@
       "name": "2.2 비밀번호 변경_1 비밀번호 확인",
       "section": null,
       "size": "360x780",
-      "nodeCount": 17,
+      "nodeCount": 6,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -2730,11 +2987,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트"
       ]
     },
     {
@@ -2742,14 +2994,18 @@
       "name": "4.1 권한_ 1 권한 없음",
       "section": null,
       "size": "360x780",
-      "nodeCount": 14,
+      "nodeCount": 5,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -2760,10 +3016,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "항목명 copy 2",
-        "총 3개의 서비스를 이용하고 계세요"
       ]
     },
     {
@@ -2771,14 +3023,18 @@
       "name": "4.2 권한 신청_9 권한 신청 내역",
       "section": null,
       "size": "360x780",
-      "nodeCount": 26,
+      "nodeCount": 6,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -2793,14 +3049,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "총 3개의 서비스를 이용하고 계세요",
-        "항목명 copy 2",
-        "2023.01.04 신청",
-        "신청 취소"
       ]
     },
     {
@@ -2808,10 +3056,14 @@
       "name": "4.2 권한 신청_10 권한 신청 취소",
       "section": null,
       "size": "360x780",
-      "nodeCount": 27,
+      "nodeCount": 8,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2819,11 +3071,11 @@
           "count": 1
         },
         {
-          "name": "icon/combobox_arrow",
+          "name": "icon/arrow",
           "count": 1
         },
         {
-          "name": "m_button",
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -2834,14 +3086,6 @@
           "name": "dialog",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "총 3개의 서비스를 이용하고 계세요",
-        "항목명 copy 2",
-        "2023.01.04 신청",
-        "신청 취소"
       ]
     },
     {
@@ -2849,27 +3093,35 @@
       "name": "dialog",
       "section": null,
       "size": "360x732",
-      "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "nodeCount": 1,
+      "components": [
+        {
+          "name": "m_button",
+          "count": 1
+        }
+      ]
     },
     {
       "id": "10928:14814",
       "name": "4.2 권한 신청_6 검색 결과 있음",
       "section": null,
       "size": "360x780",
-      "nodeCount": 36,
+      "nodeCount": 9,
       "components": [
         {
           "name": "m_checkbox",
           "count": 4
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -2880,17 +3132,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "에스원 본사",
-        "N1234567 / 서울 중구",
-        "에스원 본사",
-        "N1234567 / 서울 중구",
-        "에스원 본사",
-        "N1234567 / 서울 중구",
-        "에스원 본사",
-        "N1234567 / 서울 중구"
       ]
     },
     {
@@ -2898,14 +3139,14 @@
       "name": "5.3 우편물 주소_1 메인",
       "section": null,
       "size": "360x780",
-      "nodeCount": 24,
+      "nodeCount": 13,
       "components": [
         {
           "name": "m_chips",
           "count": 6
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2913,7 +3154,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -2924,13 +3173,6 @@
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "수취인",
-        "홍길동",
-        "주소",
-        "04511 서울 중구 세종대로7길 25 (순화동, 에스원빌딩)",
-        "우편물 주소 정보"
       ]
     },
     {
@@ -2938,14 +3180,14 @@
       "name": "5.4 종합안심플랜_1 메인",
       "section": null,
       "size": "360x2019",
-      "nodeCount": 104,
+      "nodeCount": 13,
       "components": [
         {
           "name": "m_chips",
           "count": 6
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2953,7 +3195,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -2964,54 +3214,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "1. 스페셜보상플랜",
-        "불법침입, 절도 등 도난 손해에 대해 보상",
-        "보상지원금",
-        "1천만원",
-        "화재복구지원금",
-        "1천만원",
-        "※ 실손해를 근거로 계약한 금액 한도 내 지급",
-        "2. 화재안심플랜",
-        "화재안심",
-        "1천만원",
-        "※ 3천만원 이상 플랜은 유리/전기급배수누출 추가 (각 한도 5백만원)",
-        "• 화재 안심 : 우연한 화재(낙뢰포함)로 인하여 발생한 손해",
-        "• 유리 손해 : 돌발적인 사고로 건물에 부착되어 있는 판유리에 생긴 파손 손해",
-        "• 전기적 손해 : 전기 기기 또는 장치 중 일부 또는 전부를 보험의 목적으로 한 경우, 그 전기 기기 또는 장치에 전기적 사고로 발생한 손해(화재손해 제외)",
-        "• 급배수누출 손해 : 수조, 급배수 설비 또는 수관이 우연한 사고로 인해 누수 또는 방수되어 발생한 직접적인 손해",
-        "이웃배상",
-        "1.5천만원",
-        "가입자가 소유, 사용, 관리하는 시설 및 그 시설의 용도에 따른 업무 수행으로 생긴 화재로 인하여 제 3자에 발생한 손해에 대한 법률상 배상 책임 담보",
-        "매출안심",
-        "6만원/1일당(최대 2개월까지 지급)",
-        "화재 사고로 인해 휴업을 하게된 경우 명시한 보상금액을 일당으로 지급",
-        "풍수재",
-        "5백만원",
-        "태풍, 회오리 바람, 폭풍, 홍수, 해일, 범람 및 이와 비슷한 풍재 또는 수재로 인해 발생한 직접적인 손해를 보상",
-        "3. 재난보상플랜",
-        "재난 취약시설 내 화재/붕괴/폭발 등으로 인한 제 3자의 신체 또는 재산피해를 보상",
-        "※ [재난 및 안전관리 기본법 시행령] 제 83조의 2 해당 시설",
-        "재난보상",
-        "면적 200m2",
-        "※ 건축물 대장 기준",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "서비스약관에 동의해 주세요",
-        "서비스약관에 동의해 주세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -3019,14 +3221,14 @@
       "name": "5.4 종합안심플랜_2 메인(없음)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 16,
+      "nodeCount": 12,
       "components": [
         {
           "name": "m_chips",
           "count": 6
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -3034,16 +3236,21 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "종합안심플랜 상품에 가입한 정보가 없습니다."
       ]
     },
     {
@@ -3051,7 +3258,7 @@
       "name": "6.2 세금계산서_1 메인",
       "section": null,
       "size": "360x1154",
-      "nodeCount": 63,
+      "nodeCount": 15,
       "components": [
         {
           "name": "m_chips",
@@ -3062,7 +3269,11 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "tabel_bar",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -3070,7 +3281,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -3081,31 +3300,6 @@
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "• 스마트빌(www.smartbill.co.kr) 이용고객 : www.s1.co.kr로 접속하신 후 “My 에스원 &gt;요금정보 &gt; 세금계산서” 에서 조회 및 재발행 서비스 신청을 하실 수 있습니다.",
-        "• 스마트빌 외 이용 고객 : www.esero.co.kr로 접속 후 조회 및 재발행 서비스를 신청 하실 수 있습니다.",
-        "• 세금계산서는 사업자 고객만 신청 및 조회가 가능합니다.",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "수신담당자 1",
-        "신형만ㆍshm@samsung.com",
-        "수신담당자 2",
-        "봉미선ㆍshm@samsung.com",
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -3113,14 +3307,14 @@
       "name": "6.2 세금계산서_5 메인(수신담당자 없음)",
       "section": null,
       "size": "360x1206",
-      "nodeCount": 49,
+      "nodeCount": 11,
       "components": [
         {
           "name": "m_chips",
           "count": 4
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -3128,7 +3322,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -3139,28 +3341,6 @@
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "• 스마트빌(www.smartbill.co.kr) 이용고객 : www.s1.co.kr로 접속하신 후 “My 에스원 &gt;요금정보 &gt; 세금계산서” 에서 조회 및 재발행 서비스 신청을 하실 수 있습니다.",
-        "• 스마트빌 외 이용 고객 : www.esero.co.kr로 접속 후 조회 및 재발행 서비스를 신청 하실 수 있습니다.",
-        "• 세금계산서는 사업자 고객만 신청 및 조회가 가능합니다.",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "서비스약관에 동의해 주세요",
-        "지정된 수신담당자가 없습니다."
       ]
     },
     {
@@ -3168,14 +3348,14 @@
       "name": "6.2 세금계산서_4 메인(개인 고객)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 15,
+      "nodeCount": 10,
       "components": [
         {
           "name": "m_chips",
           "count": 4
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -3183,16 +3363,21 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "세금계산서는 사업자 고객만 신청 및 조회가 가능한 서비스입니다."
       ]
     },
     {
@@ -3200,7 +3385,7 @@
       "name": "6.1 청구입금_2 메인(0원)",
       "section": null,
       "size": "360x955",
-      "nodeCount": 64,
+      "nodeCount": 25,
       "components": [
         {
           "name": "menu_arrow_right",
@@ -3211,11 +3396,15 @@
           "count": 5
         },
         {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
           "name": "m_chips",
           "count": 4
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -3223,27 +3412,21 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "2023년 02월",
-        "2023년 01월",
-        "2022년 12월",
-        "2022년 11월",
-        "2022년 10월",
-        "• 최대 6개월까지의 데이터를 조회하실 수 있습니다.",
-        "• 해당 계약번호의 청구 및 입금내역을 조회 하실 수 있습니다.",
-        "2023.03.01 ~ 03.31",
-        "이번달 납입 금액",
-        "0원",
-        "미납금액",
-        "0원"
       ]
     },
     {
@@ -3251,7 +3434,7 @@
       "name": "6.1 청구입금_1 메인",
       "section": null,
       "size": "360x955",
-      "nodeCount": 67,
+      "nodeCount": 26,
       "components": [
         {
           "name": "menu_arrow_right",
@@ -3262,11 +3445,15 @@
           "count": 5
         },
         {
+          "name": "tabel_bar",
+          "count": 5
+        },
+        {
           "name": "m_chips",
           "count": 4
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -3274,7 +3461,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -3285,20 +3480,6 @@
           "name": "More",
           "count": 1
         }
-      ],
-      "texts": [
-        "2023년 02월",
-        "2023년 01월",
-        "2022년 12월",
-        "2022년 11월",
-        "2022년 10월",
-        "• 최대 6개월까지의 데이터를 조회하실 수 있습니다.",
-        "• 해당 계약번호의 청구 및 입금내역을 조회 하실 수 있습니다.",
-        "2023.03.01 ~ 03.31",
-        "이번달 납입 금액",
-        "77,000원",
-        "미납금액",
-        "0원"
       ]
     },
     {
@@ -3306,14 +3487,14 @@
       "name": "6.1 청구입금_3 메인(없음)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 14,
+      "nodeCount": 10,
       "components": [
         {
           "name": "m_chips",
           "count": 4
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -3321,16 +3502,21 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "납입 내역이 없습니다."
       ]
     },
     {
@@ -3338,7 +3524,7 @@
       "name": "5.1 기본 정보_1 메인",
       "section": null,
       "size": "360x870",
-      "nodeCount": 56,
+      "nodeCount": 15,
       "components": [
         {
           "name": "m_chips",
@@ -3349,11 +3535,19 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "More",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -3361,36 +3555,13 @@
           "count": 1
         },
         {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "계약 기본 정보",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "서비스약관에 동의해 주세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요"
       ]
     },
     {
@@ -3398,10 +3569,10 @@
       "name": "5.1 기본 정보_2 계약정보 변경 이력",
       "section": null,
       "size": "360x916",
-      "nodeCount": 59,
+      "nodeCount": 4,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -3409,43 +3580,13 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "에스원본사(N1234567)",
-        "총 429건",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요"
       ]
     },
     {
@@ -3453,10 +3594,10 @@
       "name": "5.1 기본 정보_3 계약정보 변경 이력(없음)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 9,
+      "nodeCount": 4,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -3464,13 +3605,13 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "에스원본사(N1234567)",
-        "변경 이력이 없습니다."
       ]
     },
     {
@@ -3478,7 +3619,7 @@
       "name": "5.1 기본 정보_4 계약처 정보 변경(전)",
       "section": null,
       "size": "360x1100",
-      "nodeCount": 33,
+      "nodeCount": 11,
       "components": [
         {
           "name": "m_Input box",
@@ -3489,7 +3630,7 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -3497,19 +3638,13 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "신청자 정보",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "마스터 관리자 정보(계약 담당자)"
       ]
     },
     {
@@ -3517,7 +3652,7 @@
       "name": "5.1 기본 정보_5 계약처 정보 변경(후)",
       "section": null,
       "size": "360x1169",
-      "nodeCount": 35,
+      "nodeCount": 11,
       "components": [
         {
           "name": "m_Input box",
@@ -3528,7 +3663,7 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -3536,20 +3671,13 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "• 변경된 정보를 반영 중입니다. 반영 완료 후 다시 변경 신청을 하실 수 있습니다.",
-        "• 변경 완료 이전 정보 변경을 원하시면 고객센터 (1588-3112)로 연락해 주세요.",
-        "신청자 정보",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "마스터 관리자 정보(계약 담당자)"
       ]
     },
     {
@@ -3557,7 +3685,7 @@
       "name": "5.3 우편물 주소_2 주소 변경(전)",
       "section": null,
       "size": "360x874",
-      "nodeCount": 29,
+      "nodeCount": 10,
       "components": [
         {
           "name": "m_Input box",
@@ -3568,7 +3696,7 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -3576,17 +3704,13 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "신청자 정보",
-        "우편물 주소 정보",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "다음달 우편물 발송부터 적용 됩니다."
       ]
     },
     {
@@ -3594,7 +3718,7 @@
       "name": "5.3 우편물 주소_3 주소 변경(후)",
       "section": null,
       "size": "360x1015",
-      "nodeCount": 31,
+      "nodeCount": 10,
       "components": [
         {
           "name": "m_Input box",
@@ -3605,7 +3729,7 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -3613,19 +3737,13 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "신청자 정보",
-        "우편물 주소 정보",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "다음달 우편물 발송부터 적용 됩니다.",
-        "• 변경된 정보를 반영 중입니다. 반영 완료 후 다시 변경 신청을 하실 수 있습니다.",
-        "• 변경 완료 이전 정보 변경을 원하시면 고객센터 (1588-3112)로 연락해 주세요."
       ]
     },
     {
@@ -3634,8 +3752,7 @@
       "section": null,
       "size": "156x30",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "24582:29581",
@@ -3643,8 +3760,7 @@
       "section": null,
       "size": "403x30",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "10928:15775",
@@ -3652,8 +3768,7 @@
       "section": null,
       "size": "189x30",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "10928:15778",
@@ -3661,8 +3776,7 @@
       "section": null,
       "size": "209x30",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "10928:15779",
@@ -3670,8 +3784,7 @@
       "section": null,
       "size": "182x30",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "10928:15781",
@@ -3679,8 +3792,7 @@
       "section": null,
       "size": "161x30",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "10928:15853",
@@ -3688,18 +3800,21 @@
       "section": null,
       "size": "182x30",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "10928:15854",
       "name": "6.3 현금영수증_1 메인",
       "section": null,
       "size": "360x1058",
-      "nodeCount": 84,
+      "nodeCount": 23,
       "components": [
         {
           "name": "m_bar",
+          "count": 6
+        },
+        {
+          "name": "tabel_bar",
           "count": 6
         },
         {
@@ -3707,11 +3822,15 @@
           "count": 4
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -3725,32 +3844,11 @@
         {
           "name": "m_combobox",
           "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "현금영수증은 개인 고객만 신청이 가능합니다.",
-        "서비스약관에 동의해 주세요",
-        "취소",
-        "홍길동",
-        "2023.02.23",
-        "취소",
-        "홍길동",
-        "2023.02.21",
-        "신청",
-        "홍길동",
-        "2023.01.17",
-        "취소",
-        "홍길동",
-        "2023.02.23",
-        "취소",
-        "홍길동",
-        "2023.02.21",
-        "신청",
-        "홍길동",
-        "2023.01.17",
-        "서비스약관에 동의해 주세요",
-        "매월 14일 이전 신청 시 당월 적용 가능합니다."
       ]
     },
     {
@@ -3758,18 +3856,22 @@
       "name": "6.3 현금영수증_3 메인(정보 없음)",
       "section": null,
       "size": "360x812",
-      "nodeCount": 27,
+      "nodeCount": 11,
       "components": [
         {
           "name": "m_chips",
           "count": 4
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -3783,15 +3885,11 @@
         {
           "name": "m_combobox",
           "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "현금영수증은 개인 고객만 신청이 가능합니다.",
-        "서비스약관에 동의해 주세요",
-        "서비스약관에 동의해 주세요",
-        "매월 14일 이전 신청 시 당월 적용 가능합니다.",
-        "조회된 정보가 없습니다."
       ]
     },
     {
@@ -3799,10 +3897,14 @@
       "name": "6.3 현금영수증_2 메인(유의사항 펼침)",
       "section": null,
       "size": "360x1406",
-      "nodeCount": 91,
+      "nodeCount": 23,
       "components": [
         {
           "name": "m_bar",
+          "count": 6
+        },
+        {
+          "name": "tabel_bar",
           "count": 6
         },
         {
@@ -3810,11 +3912,15 @@
           "count": 4
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -3828,38 +3934,11 @@
         {
           "name": "m_combobox",
           "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "현금영수증은 개인 고객만 신청이 가능합니다.",
-        "서비스약관에 동의해 주세요",
-        "본 약관은 &#39;주식회사 에스원(이하 &quot;",
-        "본 약관은 &#39;주식회사 에스원(이하 &quot;",
-        "본 약관은 &#39;주식회사 에스원(이하 &quot;",
-        "본 약관은 &#39;주식회사 에스원(이하 &quot;",
-        "본 약관은 &#39;주식회사 에스원(이하 &quot;",
-        "본 약관은 &#39;주식회사 에스원(이하 &quot;",
-        "취소",
-        "홍길동",
-        "2023.02.23",
-        "취소",
-        "홍길동",
-        "2023.02.21",
-        "신청",
-        "홍길동",
-        "2023.01.17",
-        "취소",
-        "홍길동",
-        "2023.02.23",
-        "취소",
-        "홍길동",
-        "2023.02.21",
-        "신청",
-        "홍길동",
-        "2023.01.17",
-        "서비스약관에 동의해 주세요",
-        "매월 14일 이전 신청 시 당월 적용 가능합니다."
       ]
     },
     {
@@ -3867,14 +3946,14 @@
       "name": "6.3 현금영수증_4 메인(사업자 고객)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 18,
+      "nodeCount": 10,
       "components": [
         {
           "name": "m_chips",
           "count": 4
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -3882,16 +3961,21 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "현금영수증은 개인 고객만 신청이 가능한 서비스입니다."
       ]
     },
     {
@@ -3899,14 +3983,14 @@
       "name": "6.4 납입방법 변경_1 메인",
       "section": null,
       "size": "360x780",
-      "nodeCount": 29,
+      "nodeCount": 11,
       "components": [
         {
           "name": "m_chips",
           "count": 4
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -3914,7 +3998,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -3925,16 +4017,6 @@
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "이름",
-        "홍길동",
-        "휴대전화번호",
-        "01012345678",
-        "납입방법",
-        "지로",
-        "청구수령방법",
-        "우편"
       ]
     },
     {
@@ -3943,26 +4025,29 @@
       "section": null,
       "size": "216x30",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "10928:16138",
       "name": "6.4 납입방법 변경_2 지로 변경(전)",
       "section": null,
       "size": "360x1020",
-      "nodeCount": 49,
+      "nodeCount": 8,
       "components": [
         {
           "name": "m_Input box",
           "count": 3
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -3973,20 +4058,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "신청자 정보",
-        "납입방법 선택",
-        "지로의 경우 우편물 주소처 정보로 발송됩니다. 우편물 주소가 다를 경우 우편물 주소 변경해 주세요.",
-        "지로",
-        "자동이체",
-        "신용카드",
-        "지로로 변경 시 납입일은 25일입니다.",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "청구수령 방법",
-        "이메일",
-        "우편"
       ]
     },
     {
@@ -3994,18 +4065,22 @@
       "name": "6.4 납입방법 변경_3 지로 변경(후)",
       "section": null,
       "size": "360x1145",
-      "nodeCount": 51,
+      "nodeCount": 8,
       "components": [
         {
           "name": "m_Input box",
           "count": 3
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -4016,22 +4091,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "신청자 정보",
-        "납입방법 선택",
-        "지로의 경우 우편물 주소처 정보로 발송됩니다. 우편물 주소가 다를 경우 우편물 주소 변경해 주세요.",
-        "지로",
-        "자동이체",
-        "신용카드",
-        "지로로 변경 시 납입일은 25일입니다.",
-        "청구수령 방법",
-        "이메일",
-        "우편",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "• 변경된 정보를 반영 중입니다. 반영 완료 후 다시 변경 신청을 하실 수 있습니다.",
-        "• 변경 완료 이전 정보 변경을 원하시면 고객센터 (1588-3112)로 연락해 주세요."
       ]
     },
     {
@@ -4039,7 +4098,7 @@
       "name": "6.4 납입방법 변경_4 자동이체 사업자 고객 변경(전)",
       "section": null,
       "size": "360x1390",
-      "nodeCount": 79,
+      "nodeCount": 11,
       "components": [
         {
           "name": "m_Input box",
@@ -4050,11 +4109,15 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -4065,30 +4128,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "신청자 정보",
-        "납입방법 선택",
-        "지로의 경우 우편물 주소처 정보로 발송됩니다. 우편물 주소가 다를 경우 우편물 주소 변경해 주세요.",
-        "지로",
-        "자동이체",
-        "신용카드",
-        "자동이체로 변경 시 에스원 고객센터에서 확인전화 후 최종 반영됩니다.",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "사업자번호",
-        "생년월일",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "이메일",
-        "우편",
-        "청구수령 방법"
       ]
     },
     {
@@ -4096,22 +4135,26 @@
       "name": "6.4 납입방법 변경_5 자동이체 사업자 고객 변경(후)",
       "section": null,
       "size": "360x1647",
-      "nodeCount": 84,
+      "nodeCount": 16,
       "components": [
         {
           "name": "m_Input box",
-          "count": 4
+          "count": 6
         },
         {
           "name": "icon/combobox_arrow",
-          "count": 2
+          "count": 3
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -4119,6 +4162,10 @@
           "count": 1
         },
         {
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
           "name": "m_button",
           "count": 1
         },
@@ -4126,32 +4173,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "신청자 정보",
-        "납입방법 선택",
-        "지로의 경우 우편물 주소처 정보로 발송됩니다. 우편물 주소가 다를 경우 우편물 주소 변경해 주세요.",
-        "지로",
-        "자동이체",
-        "신용카드",
-        "자동이체로 변경 시 에스원 고객센터에서 확인전화 후 최종 반영됩니다.",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "사업자번호",
-        "생년월일",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "청구수령 방법",
-        "이메일",
-        "우편",
-        "• 변경된 정보를 반영 중입니다. 반영 완료 후 다시 변경 신청을 하실 수 있습니다.",
-        "• 변경 완료 이전 정보 변경을 원하시면 고객센터 (1588-3112)로 연락해 주세요."
       ]
     },
     {
@@ -4159,7 +4180,7 @@
       "name": "6.4 납입방법 변경_6 자동이체 개인 고객 변경(전)",
       "section": null,
       "size": "360x1390",
-      "nodeCount": 72,
+      "nodeCount": 11,
       "components": [
         {
           "name": "m_Input box",
@@ -4170,11 +4191,15 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -4185,26 +4210,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "신청자 정보",
-        "납입방법 선택",
-        "지로의 경우 우편물 주소처 정보로 발송됩니다. 우편물 주소가 다를 경우 우편물 주소 변경해 주세요.",
-        "지로",
-        "자동이체",
-        "신용카드",
-        "자동이체로 변경 시 에스원 고객센터에서 확인전화 후 최종 반영됩니다.",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "사업자번호",
-        "생년월일",
-        "플레이스 홀더 텍스트",
-        "이메일",
-        "우편",
-        "청구수령 방법"
       ]
     },
     {
@@ -4212,7 +4217,7 @@
       "name": "6.4 납입방법 변경_7 자동이체 개인 고객 변경(후)",
       "section": null,
       "size": "360x1703",
-      "nodeCount": 84,
+      "nodeCount": 12,
       "components": [
         {
           "name": "m_Input box",
@@ -4223,11 +4228,15 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -4238,30 +4247,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "신청자 정보",
-        "납입방법 선택",
-        "지로의 경우 우편물 주소처 정보로 발송됩니다. 우편물 주소가 다를 경우 우편물 주소 변경해 주세요.",
-        "지로",
-        "자동이체",
-        "신용카드",
-        "자동이체로 변경 시 에스원 고객센터에서 확인전화 후 최종 반영됩니다.",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "사업자번호",
-        "생년월일",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "청구수령 방법",
-        "이메일",
-        "우편",
-        "• 변경된 정보를 반영 중입니다. 반영 완료 후 다시 변경 신청을 하실 수 있습니다.",
-        "• 변경 완료 이전 정보 변경을 원하시면 고객센터 (1588-3112)로 연락해 주세요."
       ]
     },
     {
@@ -4269,7 +4254,7 @@
       "name": "6.4 납입방법 변경_8 신용카드(기본)",
       "section": null,
       "size": "360x1202",
-      "nodeCount": 83,
+      "nodeCount": 11,
       "components": [
         {
           "name": "icon/combobox_arrow",
@@ -4280,11 +4265,15 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -4295,32 +4284,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "신청자 정보",
-        "납입방법 선택",
-        "지로의 경우 우편물 주소처 정보로 발송됩니다. 우편물 주소가 다를 경우 우편물 주소 변경해 주세요.",
-        "지로",
-        "자동이체",
-        "신용카드",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 4",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "이메일",
-        "우편",
-        "청구수령 방법"
       ]
     },
     {
@@ -4328,22 +4291,26 @@
       "name": "6.4 납입방법 변경_8 신용카드 변경(후)",
       "section": null,
       "size": "360x1443",
-      "nodeCount": 88,
+      "nodeCount": 16,
       "components": [
         {
           "name": "icon/combobox_arrow",
-          "count": 4
+          "count": 5
         },
         {
           "name": "m_Input box",
-          "count": 2
+          "count": 4
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -4357,35 +4324,11 @@
         {
           "name": "m_email_input",
           "count": 1
+        },
+        {
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
         }
-      ],
-      "texts": [
-        "신청자 정보",
-        "납입방법 선택",
-        "지로의 경우 우편물 주소처 정보로 발송됩니다. 우편물 주소가 다를 경우 우편물 주소 변경해 주세요.",
-        "지로",
-        "자동이체",
-        "신용카드",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 4",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "청구수령 방법",
-        "이메일",
-        "우편",
-        "• 변경된 정보를 반영 중입니다. 반영 완료 후 다시 변경 신청을 하실 수 있습니다.",
-        "• 변경 완료 이전 정보 변경을 원하시면 고객센터 (1588-3112)로 연락해 주세요."
       ]
     },
     {
@@ -4393,18 +4336,18 @@
       "name": "6.4 납입방법 변경_8 신용카드(이메일)",
       "section": null,
       "size": "360x1318",
-      "nodeCount": 84,
+      "nodeCount": 16,
       "components": [
         {
           "name": "icon/combobox_arrow",
-          "count": 4
+          "count": 5
         },
         {
           "name": "m_Input box",
-          "count": 2
+          "count": 4
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -4412,7 +4355,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_email_input",
+          "count": 1
+        },
+        {
+          "name": "m_combobox/off/off/off/Default",
           "count": 1
         },
         {
@@ -4423,32 +4374,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "신청자 정보",
-        "납입방법 선택",
-        "지로의 경우 우편물 주소처 정보로 발송됩니다. 우편물 주소가 다를 경우 우편물 주소 변경해 주세요.",
-        "지로",
-        "자동이체",
-        "신용카드",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 4",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "청구수령 방법",
-        "이메일",
-        "우편"
       ]
     },
     {
@@ -4456,7 +4381,7 @@
       "name": "6.4 납입방법 변경_8 신용카드(우편)",
       "section": null,
       "size": "360x1374",
-      "nodeCount": 91,
+      "nodeCount": 12,
       "components": [
         {
           "name": "icon/combobox_arrow",
@@ -4467,11 +4392,15 @@
           "count": 3
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -4482,34 +4411,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "신청자 정보",
-        "납입방법 선택",
-        "지로의 경우 우편물 주소처 정보로 발송됩니다. 우편물 주소가 다를 경우 우편물 주소 변경해 주세요.",
-        "지로",
-        "자동이체",
-        "신용카드",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 4",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "청구수령 방법",
-        "이메일",
-        "우편",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트"
       ]
     },
     {
@@ -4518,22 +4419,29 @@
       "section": null,
       "size": "182x30",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "10928:16947",
       "name": "6.2 세금계산서_2 수신담당자 변경",
       "section": null,
       "size": "360x796",
-      "nodeCount": 24,
+      "nodeCount": 13,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_Input box",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -4545,11 +4453,15 @@
           "count": 1
         },
         {
-          "name": "m_Input box",
+          "name": "m_email_input",
           "count": 1
         },
         {
-          "name": "m_email_input",
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -4560,13 +4472,6 @@
           "name": "tabel_bar",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "서비스약관에 동의해 주세요",
-        "수신담당자 추가",
-        "항목"
       ]
     },
     {
@@ -4574,22 +4479,34 @@
       "name": "6.2 세금계산서_3 수신담당자 변경(2명)",
       "section": null,
       "size": "360x1017",
-      "nodeCount": 26,
+      "nodeCount": 18,
       "components": [
         {
           "name": "m_Input box",
-          "count": 2
+          "count": 6
         },
         {
           "name": "m_email_input",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_combobox/off/off/off/Default",
+          "count": 2
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -4604,13 +4521,6 @@
           "name": "tabel_bar",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "서비스약관에 동의해 주세요",
-        "서비스약관에 동의해 주세요",
-        "항목"
       ]
     },
     {
@@ -4618,14 +4528,14 @@
       "name": "5.5 부가서비스_1 메인",
       "section": null,
       "size": "360x780",
-      "nodeCount": 31,
+      "nodeCount": 16,
       "components": [
         {
           "name": "m_chips",
           "count": 7
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -4633,7 +4543,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -4647,15 +4565,11 @@
         {
           "name": "m_subbutton",
           "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
         }
-      ],
-      "texts": [
-        "시스템 경비",
-        "이상통보",
-        "종합안심플랜",
-        "영상",
-        "영상 기기 렌탈",
-        "총 3개의 서비스를 이용하고 계세요"
       ]
     },
     {
@@ -4663,14 +4577,14 @@
       "name": "5.5 부가서비스_2 메인(변경정보 반영중)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 34,
+      "nodeCount": 17,
       "components": [
         {
           "name": "m_chips",
           "count": 7
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -4678,7 +4592,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -4694,18 +4616,13 @@
           "count": 1
         },
         {
+          "name": "More",
+          "count": 1
+        },
+        {
           "name": "caution 2",
           "count": 1
         }
-      ],
-      "texts": [
-        "시스템 경비",
-        "이상통보",
-        "종합안심플랜",
-        "영상",
-        "영상 기기 렌탈",
-        "총 3개의 서비스를 이용하고 계세요",
-        "변경된 정보를 반영 중입니다."
       ]
     },
     {
@@ -4713,14 +4630,14 @@
       "name": "5.5 부가서비스_3 메인(없음)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 19,
+      "nodeCount": 14,
       "components": [
         {
           "name": "m_chips",
           "count": 7
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -4728,7 +4645,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -4739,9 +4664,6 @@
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "현재 이용중인 부가서비스가 없습니다. 신청 후 다양한 서비스를 이용해 보세요."
       ]
     },
     {
@@ -4749,7 +4671,7 @@
       "name": "5.5 부가서비스_4 신청내역",
       "section": null,
       "size": "360x980",
-      "nodeCount": 136,
+      "nodeCount": 34,
       "components": [
         {
           "name": "menu_arrow_right",
@@ -4760,7 +4682,11 @@
           "count": 10
         },
         {
-          "name": "m_StatusBar",
+          "name": "tabel_bar",
+          "count": 10
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -4768,52 +4694,13 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "해지",
-        "설비연동 외 1건",
-        "2023.02.01",
-        "신청",
-        "신청",
-        "영상기기렌탈",
-        "2023.02.01",
-        "신청",
-        "해지",
-        "시스템 경비, 영상기기렌... 외 2건",
-        "2023.02.01",
-        "접수",
-        "해지",
-        "설비연동 외 1건",
-        "2023.02.01",
-        "신청",
-        "해지",
-        "설비연동 외 1건",
-        "2023.02.01",
-        "신청",
-        "해지",
-        "설비연동 외 1건",
-        "2023.02.01",
-        "완료",
-        "해지",
-        "설비연동 외 1건",
-        "2023.02.01",
-        "완료",
-        "해지",
-        "설비연동 외 1건",
-        "2023.02.01",
-        "완료",
-        "해지",
-        "설비연동 외 1건",
-        "2023.02.01",
-        "완료",
-        "해지",
-        "설비연동 외 1건",
-        "2023.02.01",
-        "완료",
-        "총 30건"
       ]
     },
     {
@@ -4821,10 +4708,10 @@
       "name": "5.5 부가서비스_5 신청내역(없음)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 7,
+      "nodeCount": 4,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -4832,12 +4719,13 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "부가서비스 신청 내역이 없습니다."
       ]
     },
     {
@@ -4845,7 +4733,7 @@
       "name": "5.5 부가서비스_7 해지 신청",
       "section": null,
       "size": "360x1065",
-      "nodeCount": 42,
+      "nodeCount": 10,
       "components": [
         {
           "name": "m_checkbox",
@@ -4856,11 +4744,15 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -4871,20 +4763,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "해지할 서비스",
-        "이상통보",
-        "종합안심플랜",
-        "시스템 경비",
-        "신청자 정보",
-        "영상 기기 렌탈",
-        "영상",
-        "항목명 copy 2",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트"
       ]
     },
     {
@@ -4892,18 +4770,22 @@
       "name": "5.5 부가서비스_9 신규 신청(정보 입력)",
       "section": null,
       "size": "360x878",
-      "nodeCount": 28,
+      "nodeCount": 8,
       "components": [
         {
           "name": "m_Input box",
           "count": 3
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -4914,15 +4796,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "신청자 정보",
-        "서비스약관에 동의해 주세요",
-        "항목명 copy 2",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트"
       ]
     },
     {
@@ -4930,14 +4803,18 @@
       "name": "5.5 부가서비스_6 신청내역 확인",
       "section": null,
       "size": "360x934",
-      "nodeCount": 39,
+      "nodeCount": 5,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -4948,27 +4825,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "신청자 정보",
-        "이름",
-        "강백호",
-        "휴대전화번호",
-        "01012345678",
-        "부가서비스 신청 정보",
-        "구분",
-        "신청",
-        "신규 신청 부가서비스",
-        "설비연동 및 제어, 종합안심플랜",
-        "신청일자",
-        "2023.01.03",
-        "접수번호",
-        "1043979891",
-        "내용",
-        "신규 부가서비스 신청합니다.",
-        "처리상태",
-        "신청",
-        "요청사항을 에스원 고객센터에 전달하였습니다."
       ]
     },
     {
@@ -4976,7 +4832,7 @@
       "name": "4.3 관리자 초대_7 권한 선택(일반 관리자)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 46,
+      "nodeCount": 12,
       "components": [
         {
           "name": "m_checkbox",
@@ -4987,11 +4843,15 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -5002,21 +4862,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "마스터 관리자",
-        "일반 관리자",
-        "*권한 복수개 선택 가능",
-        "계약",
-        "계약 정보 조회, 수정 요청",
-        "시스템 경비",
-        "원격 경비, 열쇠 지원, 출입문 제어 등",
-        "카드",
-        "카드 정보 조회/신청/수정",
-        "영상",
-        "영상 조회/기기 등록, 원격 지원 요청",
-        "클라우드매니저",
-        "‘클라우드 매니저’ 정보 접근"
       ]
     },
     {
@@ -5024,10 +4869,10 @@
       "name": "6.1 청구입금_5 권한 없음",
       "section": null,
       "size": "360x780",
-      "nodeCount": 16,
+      "nodeCount": 6,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -5035,18 +4880,21 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "More",
           "count": 1
         },
         {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -5054,10 +4902,10 @@
       "name": "6.1 청구입금_5 권한 없음",
       "section": null,
       "size": "360x780",
-      "nodeCount": 18,
+      "nodeCount": 9,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -5065,7 +4913,19 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_down",
           "count": 1
         },
         {
@@ -5073,13 +4933,13 @@
           "count": 1
         },
         {
+          "name": "More",
+          "count": 1
+        },
+        {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "경비구역/권한을 기본설정하여 간편하게 카드 발급하세요.",
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -5087,10 +4947,10 @@
       "name": "6.1 청구입금_6 서비스 미계약",
       "section": null,
       "size": "360x780",
-      "nodeCount": 19,
+      "nodeCount": 7,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -5098,7 +4958,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "More",
           "count": 1
         },
         {
@@ -5109,11 +4977,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -5121,14 +4984,22 @@
       "name": "6.1 청구입금_6 서비스 미계약",
       "section": null,
       "size": "360x780",
-      "nodeCount": 21,
+      "nodeCount": 10,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
           "count": 1
         },
         {
@@ -5136,7 +5007,15 @@
           "count": 1
         },
         {
+          "name": "menu_arrow_down",
+          "count": 1
+        },
+        {
           "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "More",
           "count": 1
         },
         {
@@ -5147,11 +5026,15 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "경비구역/권한을 기본설정하여 간편하게 카드 발급하세요.",
-        "서비스약관에 동의해 주세요"
       ]
+    },
+    {
+      "id": "14948:16270",
+      "name": "Rectangle 383",
+      "section": null,
+      "size": "360x40",
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "14948:16271",
@@ -5159,8 +5042,23 @@
       "section": null,
       "size": "292x22",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
+    },
+    {
+      "id": "15598:14459",
+      "name": "Rectangle 384",
+      "section": null,
+      "size": "1169x40",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "15618:7253",
+      "name": "Rectangle 387",
+      "section": null,
+      "size": "2415x40",
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "15598:14460",
@@ -5168,8 +5066,7 @@
       "section": null,
       "size": "339x25",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "15618:7254",
@@ -5177,24 +5074,19 @@
       "section": null,
       "size": "282x25",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "15618:11300",
       "name": "Frame 918",
       "section": null,
       "size": "360x115",
-      "nodeCount": 6,
+      "nodeCount": 1,
       "components": [
         {
           "name": "icon/combobox_arrow",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "초대 멤버가 가입하면 권한을 부여할 수 있습니다."
       ]
     },
     {
@@ -5202,17 +5094,12 @@
       "name": "Frame 223",
       "section": null,
       "size": "320x72",
-      "nodeCount": 8,
+      "nodeCount": 1,
       "components": [
         {
           "name": "menu_arrow_right",
           "count": 1
         }
-      ],
-      "texts": [
-        "2층 회의실",
-        "CRT010101010",
-        "관리자 초대"
       ]
     },
     {
@@ -5220,17 +5107,12 @@
       "name": "Frame 34789",
       "section": null,
       "size": "320x64",
-      "nodeCount": 6,
+      "nodeCount": 1,
       "components": [
         {
           "name": "menu_arrow_right",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "관리자 초대"
       ]
     },
     {
@@ -5238,18 +5120,22 @@
       "name": "5.5 부가서비스_8 신규 신청(상품 선택)",
       "section": null,
       "size": "360x1946",
-      "nodeCount": 91,
+      "nodeCount": 19,
       "components": [
         {
           "name": "m_checkbox",
           "count": 14
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -5260,41 +5146,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "시스템 경비",
-        "시스템 경비/이상통보/비상통보",
-        "기기에 감지된 침입, 화재 등 이상 상황을 알려주거나 긴급 상황 발생 시 통보하는 서비스 *필요 시 경찰서 및 소방서에 통보",
-        "SMS 통보",
-        "경비/해제 현황 및 이상 내역을 휴대폰으로 알려주는 서비스",
-        "기타",
-        "그 외 시스템 경비 관련 부가서비스",
-        "영상",
-        "영상기기렌탈",
-        "고화질 영상 저장, 실시간 영상 조회, 신속한 A/S를 제공하는 서비스",
-        "클라우드CCTV",
-        "영상 손실이 적고 설치가 편한 클라우드 기반 CCTV 서비스",
-        "지능형 영상감시",
-        "CCTV 영상을 자동 분석하여 실시간 이상 감지/통보하는 서비스",
-        "영상기기 이상 모니터링",
-        "영상기기 이상 발생 시 알림 제공 및 기기 상태 모니터링서비스",
-        "출입 관리",
-        "출입관리/엘리베이터 출입제어",
-        "카드, 지문, 얼굴 등 다양한 옵션과 S/W 프로그램을 통해 출입 통제/관리하는 서비스",
-        "발열감지",
-        "발열감지리더로 출입자의 발열/마스크 착용 여부를 확인, 출입 통제하는 서비스",
-        "모바일카드",
-        "스마트폰 앱으로 편리하게 방범/출입 제어하는 서비스",
-        "안심배송관리, 안심방문관리",
-        "오피스 내방객, 매장 배송기사용 출입 권한을 관리하는 모바일카드 서비스 (모바일카드 전용)",
-        "공용부 모바일카드 관리",
-        "여러 회사가 공용부를 함께 사용하는 경우, 각 회사에서 독자적으로 모바일카드를 관리하는 서비스 (모바일카드 전용)",
-        "대량 모바일카드 관리",
-        "100명 이상의 대규모 인원의 모바일카드 관리 서비스 (모바일카드 전용)",
-        "생활안심",
-        "AED 렌탈",
-        "자동심장충격기 렌탈, 설치 기기의 상태를 관리하는 서비스",
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -5303,15 +5154,14 @@
       "section": null,
       "size": "0x16",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "21522:24172",
       "name": "10.1 카드관리_1 메인(구세대)",
       "section": null,
       "size": "360x1038",
-      "nodeCount": 112,
+      "nodeCount": 36,
       "components": [
         {
           "name": "menu_arrow_right",
@@ -5322,11 +5172,19 @@
           "count": 10
         },
         {
-          "name": "m_StatusBar",
+          "name": "tabel_bar",
+          "count": 10
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -5334,45 +5192,30 @@
           "count": 1
         },
         {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 429건",
-        "홍길동",
-        "모바일",
-        "주문형(123456-1234567)",
-        "정지",
-        "사용자",
-        "주문형(123456-1234567)",
-        "전달",
-        "사용자",
-        "주문형(123456-1234567)",
-        "발송",
-        "홍길동",
-        "주문형(123456-1234567)",
-        "정지",
-        "홍길동",
-        "주문형(123456-1234567)",
-        "정지",
-        "홍길동",
-        "모바일",
-        "주문형(123456-1234567)",
-        "수령",
-        "홍길동",
-        "주문형(123456-1234567)",
-        "정지",
-        "홍길동",
-        "주문형(123456-1234567)",
-        "정지",
-        "홍길동",
-        "주문형(123456-1234567)",
-        "정지",
-        "홍길동",
-        "주문형(123456-1234567)",
-        "전달"
       ]
+    },
+    {
+      "id": "21522:24358",
+      "name": "Rectangle 388",
+      "section": null,
+      "size": "235x87",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "21522:24359",
+      "name": "Rectangle 389",
+      "section": null,
+      "size": "235x87",
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "21522:24360",
@@ -5380,8 +5223,7 @@
       "section": null,
       "size": "315x22",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "21522:24361",
@@ -5389,8 +5231,31 @@
       "section": null,
       "size": "225x44",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
+    },
+    {
+      "id": "22178:9980",
+      "name": "image 1",
+      "section": null,
+      "size": "1125x556",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "22178:9983",
+      "name": "image 2",
+      "section": null,
+      "size": "1123x627",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "22178:9986",
+      "name": "image 3",
+      "section": null,
+      "size": "907x148",
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "22444:23857",
@@ -5398,8 +5263,7 @@
       "section": null,
       "size": "138x16",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "24301:22998",
@@ -5407,8 +5271,7 @@
       "section": null,
       "size": "133x16",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "22444:23858",
@@ -5416,8 +5279,7 @@
       "section": null,
       "size": "172x48",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "22444:23859",
@@ -5425,8 +5287,7 @@
       "section": null,
       "size": "478x56",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "24851:30105",
@@ -5434,8 +5295,15 @@
       "section": null,
       "size": "878x56",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
+    },
+    {
+      "id": "23232:10038",
+      "name": "내정보",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "23232:10040",
@@ -5443,15 +5311,22 @@
       "section": null,
       "size": "198x30",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
+    },
+    {
+      "id": "24279:22329",
+      "name": "Rectangle 390",
+      "section": null,
+      "size": "4376x5008",
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "24401:24584",
       "name": "4.3 관리자 초대_7 권한 선택(일반 관리자)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 46,
+      "nodeCount": 12,
       "components": [
         {
           "name": "m_checkbox",
@@ -5462,11 +5337,15 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -5477,21 +5356,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "마스터 관리자",
-        "일반 관리자",
-        "*권한 복수개 선택 가능",
-        "계약",
-        "계약 정보 조회, 수정 요청",
-        "시스템 경비",
-        "원격 경비, 열쇠 지원, 출입문 제어 등",
-        "카드",
-        "카드 정보 조회/신청/수정",
-        "영상",
-        "영상 조회/기기 등록, 원격 지원 요청",
-        "클라우드매니저",
-        "‘클라우드 매니저’ 정보 접근"
       ]
     },
     {
@@ -5499,7 +5363,7 @@
       "name": "4.3 관리자 초대_6 권한 선택(마스터 관리자)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 32,
+      "nodeCount": 10,
       "components": [
         {
           "name": "m_radiobutton",
@@ -5510,11 +5374,15 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -5529,13 +5397,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "마스터 관리자",
-        "관리자 초대, 권한 관리, 원격 경비 해제, 방범 서비스 리포트 조회 포함 전체 권한",
-        "일반 관리자",
-        "*권한 복수 선택 가능",
-        "가입 승인 후 이용가능합니다."
       ]
     },
     {
@@ -5543,7 +5404,7 @@
       "name": "4.4 관리자 현황_3 권한 변경",
       "section": null,
       "size": "360x780",
-      "nodeCount": 57,
+      "nodeCount": 14,
       "components": [
         {
           "name": "m_checkbox",
@@ -5558,11 +5419,15 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -5573,23 +5438,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "마스터 관리자",
-        "일반 관리자",
-        "*권한 복수 선택 가능",
-        "계약",
-        "계약 정보 조회, 수정 요청",
-        "시스템 경비",
-        "원격 경비, 열쇠 지원, 출입문 제어 등",
-        "카드",
-        "카드 정보 조회/신청/수정",
-        "영상",
-        "해지",
-        "영상 조회/기기 등록, 원격 지원 요청",
-        "클라우드매니저",
-        "‘클라우드 매니저’ 정보 접근",
-        "가입 승인 후 이용가능합니다."
       ]
     },
     {
@@ -5597,7 +5445,7 @@
       "name": "5.1 기본 정보_1 메인",
       "section": null,
       "size": "360x870",
-      "nodeCount": 55,
+      "nodeCount": 15,
       "components": [
         {
           "name": "m_chips",
@@ -5608,7 +5456,11 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "More",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -5616,39 +5468,21 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "계약 기본 정보",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "서비스약관에 동의해 주세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요"
       ]
     },
     {
@@ -5657,26 +5491,29 @@
       "section": null,
       "size": "202x17",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "24652:27537",
       "name": "5.5 부가서비스_8 신규 신청(상품 선택)",
       "section": null,
       "size": "360x1328",
-      "nodeCount": 61,
+      "nodeCount": 13,
       "components": [
         {
           "name": "m_checkbox",
           "count": 8
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -5687,29 +5524,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "시스템 경비",
-        "시스템 경비/이상통보/비상통보",
-        "기기에 감지된 침입, 화재 등 이상 상황을 알려주거나 긴급 상황 발생 시 통보하는 서비스 *필요 시 경찰서 및 소방서에 통보",
-        "SMS 통보",
-        "경비/해제 현황 및 이상 내역을 휴대폰으로 알려주는 서비스",
-        "기타",
-        "그 외 시스템 경비 관련 부가서비스",
-        "영상",
-        "영상기기렌탈",
-        "고화질 영상 저장, 실시간 영상 조회, 신속한 A/S를 제공하는 서비스",
-        "클라우드CCTV",
-        "영상 손실이 적고 설치가 편한 클라우드 기반 CCTV 서비스",
-        "출입 관리",
-        "출입관리/엘리베이터 출입제어",
-        "카드, 지문, 얼굴 등 다양한 옵션과 S/W 프로그램을 통해 출입 통제/관리하는 서비스",
-        "발열감지",
-        "발열감지리더로 출입자의 발열/마스크 착용 여부를 확인, 출입 통제하는 서비스",
-        "생활안심",
-        "AED 렌탈",
-        "자동심장충격기 렌탈, 설치 기기의 상태를 관리하는 서비스",
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -5717,18 +5531,22 @@
       "name": "5.5 부가서비스_8 신규 신청(상품 선택)",
       "section": null,
       "size": "360x1704",
-      "nodeCount": 81,
+      "nodeCount": 17,
       "components": [
         {
           "name": "m_checkbox",
           "count": 12
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -5739,37 +5557,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "시스템 경비",
-        "시스템 경비/이상통보/비상통보",
-        "기기에 감지된 침입, 화재 등 이상 상황을 알려주거나 긴급 상황 발생 시 통보하는 서비스 *필요 시 경찰서 및 소방서에 통보",
-        "SMS 통보",
-        "경비/해제 현황 및 이상 내역을 휴대폰으로 알려주는 서비스",
-        "기타",
-        "그 외 시스템 경비 관련 부가서비스",
-        "영상",
-        "영상기기렌탈",
-        "고화질 영상 저장, 실시간 영상 조회, 신속한 A/S를 제공하는 서비스",
-        "클라우드CCTV",
-        "영상 손실이 적고 설치가 편한 클라우드 기반 CCTV 서비스",
-        "지능형 영상감시",
-        "CCTV 영상을 자동 분석하여 실시간 이상 감지/통보하는 서비스",
-        "영상기기 이상 모니터링",
-        "영상기기 이상 발생 시 알림 제공 및 기기 상태 모니터링서비스",
-        "출입 관리",
-        "출입관리/엘리베이터 출입제어",
-        "카드, 지문, 얼굴 등 다양한 옵션과 S/W 프로그램을 통해 출입 통제/관리하는 서비스",
-        "발열감지",
-        "발열감지리더로 출입자의 발열/마스크 착용 여부를 확인, 출입 통제하는 서비스",
-        "모바일카드",
-        "스마트폰 앱으로 편리하게 방범/출입 제어하는 서비스",
-        "안심배송관리, 안심방문관리",
-        "오피스 내방객, 매장 배송기사용 출입 권한을 관리하는 모바일카드 서비스",
-        "생활안심",
-        "AED 렌탈",
-        "자동심장충격기 렌탈, 설치 기기의 상태를 관리하는 서비스",
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -5777,7 +5564,7 @@
       "name": "6.1 청구입금_4 납입 상세 내역",
       "section": null,
       "size": "360x922",
-      "nodeCount": 68,
+      "nodeCount": 8,
       "components": [
         {
           "name": "m_button",
@@ -5788,11 +5575,15 @@
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -5802,39 +5593,11 @@
         {
           "name": "m_bar",
           "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
         }
-      ],
-      "texts": [
-        "청구/납입 내역",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 3개의 서비스를 이용하고 계세요",
-        "2023.03.01 ~ 03.31",
-        "이번달 납입 금액",
-        "77,000원",
-        "미납금액",
-        "0원"
       ]
     },
     {
@@ -5842,10 +5605,14 @@
       "name": "6.4 납입방법 변경_4 자동이체 사업자 고객 변경(전)",
       "section": null,
       "size": "360x870",
-      "nodeCount": 80,
+      "nodeCount": 12,
       "components": [
         {
           "name": "m_bar",
+          "count": 3
+        },
+        {
+          "name": "tabel_bar",
           "count": 3
         },
         {
@@ -5864,33 +5631,6 @@
           "name": "ok",
           "count": 1
         }
-      ],
-      "texts": [
-        "납입방법 선택",
-        "지로의 경우 우편물 주소처 정보로 발송됩니다. 우편물 주소가 다를 경우 우편물 주소 변경해 주세요.",
-        "지로",
-        "자동이체",
-        "신용카드",
-        "자동이체로 변경 시 에스원 고객센터에서 확인전화 후 최종 반영됩니다.",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "사업자번호",
-        "생년월일",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "이체일 선택",
-        "5일",
-        "10일",
-        "15일",
-        "18일",
-        "21일",
-        "25일"
       ]
     },
     {
@@ -5898,10 +5638,14 @@
       "name": "6.4 납입방법 변경_4 자동이체 사업자 고객 변경(전)",
       "section": null,
       "size": "360x870",
-      "nodeCount": 80,
+      "nodeCount": 12,
       "components": [
         {
           "name": "m_bar",
+          "count": 3
+        },
+        {
+          "name": "tabel_bar",
           "count": 3
         },
         {
@@ -5920,33 +5664,6 @@
           "name": "ok",
           "count": 1
         }
-      ],
-      "texts": [
-        "납입방법 선택",
-        "지로의 경우 우편물 주소처 정보로 발송됩니다. 우편물 주소가 다를 경우 우편물 주소 변경해 주세요.",
-        "지로",
-        "자동이체",
-        "신용카드",
-        "자동이체로 변경 시 에스원 고객센터에서 확인전화 후 최종 반영됩니다.",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "사업자번호",
-        "생년월일",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "은행 선택",
-        "산업은행",
-        "기업은행",
-        "국민은행",
-        "외환은행",
-        "수협중앙회",
-        "수출입은행"
       ]
     },
     {
@@ -5954,7 +5671,7 @@
       "name": "6.4 납입방법 변경_4 자동이체 사업자 고객 변경(전)",
       "section": null,
       "size": "360x870",
-      "nodeCount": 81,
+      "nodeCount": 12,
       "components": [
         {
           "name": "icon/combobox_arrow",
@@ -5965,6 +5682,10 @@
           "count": 3
         },
         {
+          "name": "tabel_bar",
+          "count": 3
+        },
+        {
           "name": "close",
           "count": 1
         },
@@ -5972,34 +5693,6 @@
           "name": "ok",
           "count": 1
         }
-      ],
-      "texts": [
-        "납입방법 선택",
-        "지로의 경우 우편물 주소처 정보로 발송됩니다. 우편물 주소가 다를 경우 우편물 주소 변경해 주세요.",
-        "지로",
-        "자동이체",
-        "신용카드",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 4",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "카드사 선택",
-        "현대카드",
-        "롯데카드",
-        "외환카드",
-        "NH채움카드",
-        "하나SK카드"
       ]
     },
     {
@@ -6007,7 +5700,7 @@
       "name": "6.4 납입방법 변경_4 자동이체 사업자 고객 변경(전)",
       "section": null,
       "size": "360x870",
-      "nodeCount": 81,
+      "nodeCount": 12,
       "components": [
         {
           "name": "icon/combobox_arrow",
@@ -6018,6 +5711,10 @@
           "count": 3
         },
         {
+          "name": "tabel_bar",
+          "count": 3
+        },
+        {
           "name": "close",
           "count": 1
         },
@@ -6025,34 +5722,6 @@
           "name": "ok",
           "count": 1
         }
-      ],
-      "texts": [
-        "납입방법 선택",
-        "지로의 경우 우편물 주소처 정보로 발송됩니다. 우편물 주소가 다를 경우 우편물 주소 변경해 주세요.",
-        "지로",
-        "자동이체",
-        "신용카드",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 4",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "월 선택",
-        "01",
-        "02",
-        "03",
-        "04",
-        "05"
       ]
     },
     {
@@ -6060,7 +5729,7 @@
       "name": "6.4 납입방법 변경_4 자동이체 사업자 고객 변경(전)",
       "section": null,
       "size": "360x870",
-      "nodeCount": 81,
+      "nodeCount": 12,
       "components": [
         {
           "name": "icon/combobox_arrow",
@@ -6071,6 +5740,10 @@
           "count": 3
         },
         {
+          "name": "tabel_bar",
+          "count": 3
+        },
+        {
           "name": "close",
           "count": 1
         },
@@ -6078,34 +5751,6 @@
           "name": "ok",
           "count": 1
         }
-      ],
-      "texts": [
-        "납입방법 선택",
-        "지로의 경우 우편물 주소처 정보로 발송됩니다. 우편물 주소가 다를 경우 우편물 주소 변경해 주세요.",
-        "지로",
-        "자동이체",
-        "신용카드",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 4",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "연도 선택",
-        "2025",
-        "2026",
-        "2027",
-        "2028",
-        "2029"
       ]
     },
     {
@@ -6114,8 +5759,7 @@
       "section": null,
       "size": "325x60",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "25277:35901",
@@ -6123,8 +5767,7 @@
       "section": null,
       "size": "1198x120",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "25277:35902",
@@ -6132,28 +5775,39 @@
       "section": null,
       "size": "1034x80",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "25277:35903",
       "name": "Group 765",
       "section": null,
-      "size": "360x781.3333129882812",
-      "nodeCount": 2,
-      "components": [],
-      "texts": [
-        "강민수"
-      ]
+      "size": "360x781",
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "25277:35909",
       "name": "Group 766",
       "section": null,
-      "size": "352.1739196777344x582.9033813476562",
+      "size": "352x583",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
+    },
+    {
+      "id": "25277:35912",
+      "name": "Rectangle 34627014",
+      "section": null,
+      "size": "65x16",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25277:35913",
+      "name": "image 4",
+      "section": null,
+      "size": "190x336",
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "25277:35914",
@@ -6161,8 +5815,31 @@
       "section": null,
       "size": "12x12",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
+    },
+    {
+      "id": "25277:35934",
+      "name": "Rectangle 34627015",
+      "section": null,
+      "size": "190x193",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25277:35935",
+      "name": "Rectangle 34627016",
+      "section": null,
+      "size": "190x77",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25277:35936",
+      "name": "Rectangle 34627017",
+      "section": null,
+      "size": "133x19",
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "25277:35937",
@@ -6170,8 +5847,7 @@
       "section": null,
       "size": "88x11",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "25277:35938",
@@ -6179,8 +5855,7 @@
       "section": null,
       "size": "92x12",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "25277:35939",
@@ -6188,8 +5863,15 @@
       "section": null,
       "size": "134x22",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
+    },
+    {
+      "id": "25277:35940",
+      "name": "Rectangle 34627018",
+      "section": null,
+      "size": "101x17",
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "25277:35941",
@@ -6197,19 +5879,22 @@
       "section": null,
       "size": "58x9",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "25277:35942",
       "name": "카카오톡 초대링크 이미지_800*800",
       "section": null,
       "size": "800x800",
-      "nodeCount": 54,
+      "nodeCount": 23,
       "components": [
         {
           "name": "More",
           "count": 4
+        },
+        {
+          "name": "card",
+          "count": 3
         },
         {
           "name": "nav",
@@ -6221,6 +5906,10 @@
         },
         {
           "name": "card box",
+          "count": 2
+        },
+        {
+          "name": "card_thumnail",
           "count": 2
         },
         {
@@ -6236,25 +5925,21 @@
           "count": 1
         },
         {
+          "name": "home",
+          "count": 1
+        },
+        {
           "name": "card registration",
           "count": 1
         },
         {
           "name": "ic_작업목록확인",
           "count": 1
+        },
+        {
+          "name": "menu(hamburger)",
+          "count": 1
         }
-      ],
-      "texts": [
-        "홍길동님",
-        "보안카드",
-        "개인",
-        "유재석",
-        "에*원*용*ㆍN222222",
-        "승인대기",
-        "방문자카드 발급 현황",
-        "추천 · 혜택",
-        "카드신청",
-        "카드관리"
       ]
     },
     {
@@ -6262,11 +5947,15 @@
       "name": "카카오톡 초대링크 이미지_800*800",
       "section": null,
       "size": "800x800",
-      "nodeCount": 54,
+      "nodeCount": 23,
       "components": [
         {
           "name": "More",
           "count": 4
+        },
+        {
+          "name": "card",
+          "count": 3
         },
         {
           "name": "nav",
@@ -6278,6 +5967,10 @@
         },
         {
           "name": "card box",
+          "count": 2
+        },
+        {
+          "name": "card_thumnail",
           "count": 2
         },
         {
@@ -6293,25 +5986,21 @@
           "count": 1
         },
         {
+          "name": "home",
+          "count": 1
+        },
+        {
           "name": "card registration",
           "count": 1
         },
         {
           "name": "ic_작업목록확인",
           "count": 1
+        },
+        {
+          "name": "menu(hamburger)",
+          "count": 1
         }
-      ],
-      "texts": [
-        "홍길동님",
-        "보안카드",
-        "개인",
-        "유재석",
-        "에*원*용*ㆍN222222",
-        "승인대기",
-        "방문자카드 발급 현황",
-        "추천 · 혜택",
-        "카드신청",
-        "카드관리"
       ]
     },
     {
@@ -6319,11 +6008,15 @@
       "name": "카카오톡 초대링크 이미지_800*800",
       "section": null,
       "size": "190x190",
-      "nodeCount": 54,
+      "nodeCount": 23,
       "components": [
         {
           "name": "More",
           "count": 4
+        },
+        {
+          "name": "card",
+          "count": 3
         },
         {
           "name": "nav",
@@ -6335,6 +6028,10 @@
         },
         {
           "name": "card box",
+          "count": 2
+        },
+        {
+          "name": "card_thumnail",
           "count": 2
         },
         {
@@ -6350,25 +6047,21 @@
           "count": 1
         },
         {
+          "name": "home",
+          "count": 1
+        },
+        {
           "name": "card registration",
           "count": 1
         },
         {
           "name": "ic_작업목록확인",
           "count": 1
+        },
+        {
+          "name": "menu(hamburger)",
+          "count": 1
         }
-      ],
-      "texts": [
-        "홍길동님",
-        "보안카드",
-        "개인",
-        "유재석",
-        "에*원*용*ㆍN222222",
-        "승인대기",
-        "방문자카드 발급 현황",
-        "추천 · 혜택",
-        "카드신청",
-        "카드관리"
       ]
     },
     {
@@ -6376,20 +6069,23 @@
       "name": "카카오톡 초대링크 이미지_800*800",
       "section": null,
       "size": "800x800",
-      "nodeCount": 79,
-      "components": [],
-      "texts": []
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "25277:36013",
       "name": "카카오톡 초대링크 복사_1200*630",
       "section": null,
       "size": "1200x630",
-      "nodeCount": 54,
+      "nodeCount": 23,
       "components": [
         {
           "name": "More",
           "count": 4
+        },
+        {
+          "name": "card",
+          "count": 3
         },
         {
           "name": "nav",
@@ -6401,6 +6097,10 @@
         },
         {
           "name": "card box",
+          "count": 2
+        },
+        {
+          "name": "card_thumnail",
           "count": 2
         },
         {
@@ -6416,25 +6116,21 @@
           "count": 1
         },
         {
+          "name": "home",
+          "count": 1
+        },
+        {
           "name": "card registration",
           "count": 1
         },
         {
           "name": "ic_작업목록확인",
           "count": 1
+        },
+        {
+          "name": "menu(hamburger)",
+          "count": 1
         }
-      ],
-      "texts": [
-        "홍길동님",
-        "보안카드",
-        "개인",
-        "유재석",
-        "에*원*용*ㆍN222222",
-        "승인대기",
-        "방문자카드 발급 현황",
-        "추천 · 혜택",
-        "카드신청",
-        "카드관리"
       ]
     },
     {
@@ -6442,11 +6138,15 @@
       "name": "카카오톡 초대링크 복사_1200*630",
       "section": null,
       "size": "1200x630",
-      "nodeCount": 54,
+      "nodeCount": 23,
       "components": [
         {
           "name": "More",
           "count": 4
+        },
+        {
+          "name": "card",
+          "count": 3
         },
         {
           "name": "nav",
@@ -6458,6 +6158,10 @@
         },
         {
           "name": "card box",
+          "count": 2
+        },
+        {
+          "name": "card_thumnail",
           "count": 2
         },
         {
@@ -6473,25 +6177,21 @@
           "count": 1
         },
         {
+          "name": "home",
+          "count": 1
+        },
+        {
           "name": "card registration",
           "count": 1
         },
         {
           "name": "ic_작업목록확인",
           "count": 1
+        },
+        {
+          "name": "menu(hamburger)",
+          "count": 1
         }
-      ],
-      "texts": [
-        "홍길동님",
-        "보안카드",
-        "개인",
-        "유재석",
-        "에*원*용*ㆍN222222",
-        "승인대기",
-        "방문자카드 발급 현황",
-        "추천 · 혜택",
-        "카드신청",
-        "카드관리"
       ]
     },
     {
@@ -6499,20 +6199,31 @@
       "name": "카카오톡 초대링크 복사_1200*630",
       "section": null,
       "size": "1200x630",
-      "nodeCount": 79,
-      "components": [],
-      "texts": []
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25277:36084",
+      "name": "Rectangle 268384934",
+      "section": null,
+      "size": "217x44",
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "25277:36085",
       "name": "카카오톡 초대링크 이미지_800*800",
       "section": null,
       "size": "190x190",
-      "nodeCount": 108,
+      "nodeCount": 46,
       "components": [
         {
           "name": "More",
           "count": 8
+        },
+        {
+          "name": "card",
+          "count": 6
         },
         {
           "name": "nav",
@@ -6527,6 +6238,10 @@
           "count": 4
         },
         {
+          "name": "card_thumnail",
+          "count": 4
+        },
+        {
           "name": "id",
           "count": 2
         },
@@ -6539,47 +6254,37 @@
           "count": 2
         },
         {
+          "name": "home",
+          "count": 2
+        },
+        {
           "name": "card registration",
           "count": 2
         },
         {
           "name": "ic_작업목록확인",
           "count": 2
+        },
+        {
+          "name": "menu(hamburger)",
+          "count": 2
         }
-      ],
-      "texts": [
-        "홍길동님",
-        "보안카드",
-        "개인",
-        "유재석",
-        "에*원*용*ㆍN222222",
-        "승인대기",
-        "방문자카드 발급 현황",
-        "추천 · 혜택",
-        "카드신청",
-        "카드관리",
-        "홍길동님",
-        "보안카드",
-        "개인",
-        "유재석",
-        "에*원*용*ㆍN222222",
-        "승인대기",
-        "방문자카드 발급 현황",
-        "추천 · 혜택",
-        "카드신청",
-        "카드관리"
       ]
     },
     {
       "id": "25758:37700",
       "name": "Group 2085674855",
       "section": null,
-      "size": "360x781.3333129882812",
-      "nodeCount": 174,
+      "size": "360x781",
+      "nodeCount": 69,
       "components": [
         {
           "name": "More",
           "count": 12
+        },
+        {
+          "name": "card",
+          "count": 9
         },
         {
           "name": "nav",
@@ -6594,6 +6299,10 @@
           "count": 6
         },
         {
+          "name": "card_thumnail",
+          "count": 6
+        },
+        {
           "name": "id",
           "count": 3
         },
@@ -6606,50 +6315,21 @@
           "count": 3
         },
         {
+          "name": "home",
+          "count": 3
+        },
+        {
           "name": "card registration",
           "count": 3
         },
         {
           "name": "ic_작업목록확인",
           "count": 3
+        },
+        {
+          "name": "menu(hamburger)",
+          "count": 3
         }
-      ],
-      "texts": [
-        "홍길동",
-        "본인인증 하기",
-        "에스원 MoDU(모두) App 초대 인증 요청",
-        "서비스 이용을 위한 본인 확인을 위해 인증을 진행해 주세요.",
-        "MoDU(모두) App",
-        "홍길동님",
-        "보안카드",
-        "개인",
-        "유재석",
-        "에*원*용*ㆍN222222",
-        "승인대기",
-        "방문자카드 발급 현황",
-        "추천 · 혜택",
-        "카드신청",
-        "카드관리",
-        "홍길동님",
-        "보안카드",
-        "개인",
-        "유재석",
-        "에*원*용*ㆍN222222",
-        "승인대기",
-        "방문자카드 발급 현황",
-        "추천 · 혜택",
-        "카드신청",
-        "카드관리",
-        "홍길동님",
-        "보안카드",
-        "개인",
-        "유재석",
-        "에*원*용*ㆍN222222",
-        "승인대기",
-        "방문자카드 발급 현황",
-        "추천 · 혜택",
-        "카드신청",
-        "카드관리"
       ]
     },
     {
@@ -6658,8 +6338,7 @@
       "section": null,
       "size": "458x28",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "25277:36157",
@@ -6667,17 +6346,39 @@
       "section": null,
       "size": "128x128",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "25282:39689",
       "name": "_?댁뼱_1",
       "section": null,
       "size": "1005x2730",
-      "nodeCount": 82,
-      "components": [],
-      "texts": []
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25282:39826",
+      "name": "IMG_2700",
+      "section": null,
+      "size": "1428x3332",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25282:39828",
+      "name": "CI_에스원_국문_슬로건조합_중앙정렬형_RGB 1",
+      "section": null,
+      "size": "474x321",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25282:39829",
+      "name": "CI_에스원_국문_슬로건조합_중앙정렬형_흰색_RGB 1",
+      "section": null,
+      "size": "474x321",
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "25282:40900",
@@ -6685,39 +6386,55 @@
       "section": null,
       "size": "128x128",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "25282:41200",
       "name": "01_1242*2208",
       "section": null,
       "size": "1242x2208",
-      "nodeCount": 2,
-      "components": [],
-      "texts": [
-        "에스원 APP이 더 쉽고 간편해 졌어요"
-      ]
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "25758:37701",
       "name": "Group 2085674856",
       "section": null,
-      "size": "360x781.3333129882812",
-      "nodeCount": 2,
-      "components": [],
-      "texts": [
-        "강민수"
-      ]
+      "size": "360x781",
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "25758:37707",
       "name": "Group 165",
       "section": null,
-      "size": "352.1739196777344x582.9033813476562",
+      "size": "352x583",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
+    },
+    {
+      "id": "25758:37710",
+      "name": "Rectangle 504",
+      "section": null,
+      "size": "65x16",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25758:37711",
+      "name": "image 5",
+      "section": null,
+      "size": "190x336",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25758:37712",
+      "name": "Rectangle 34625936",
+      "section": null,
+      "size": "190x193",
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "25758:37713",
@@ -6725,8 +6442,23 @@
       "section": null,
       "size": "99x19",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
+    },
+    {
+      "id": "25758:37714",
+      "name": "Rectangle 34626992",
+      "section": null,
+      "size": "190x77",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "25758:37715",
+      "name": "Rectangle 34626993",
+      "section": null,
+      "size": "133x19",
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "25758:37716",
@@ -6734,8 +6466,7 @@
       "section": null,
       "size": "49x11",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "25758:37717",
@@ -6743,8 +6474,7 @@
       "section": null,
       "size": "163x12",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "25758:37718",
@@ -6752,8 +6482,15 @@
       "section": null,
       "size": "128x22",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
+    },
+    {
+      "id": "25758:37719",
+      "name": "Rectangle 34627013",
+      "section": null,
+      "size": "101x17",
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "25758:37720",
@@ -6761,8 +6498,7 @@
       "section": null,
       "size": "58x9",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "26133:41332",
@@ -6770,45 +6506,56 @@
       "section": null,
       "size": "237x14",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "30025:54828",
       "name": "설계서컴포넌트/장표명",
       "section": null,
       "size": "6205x208",
-      "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "nodeCount": 1,
+      "components": [
+        {
+          "name": "Header / Status",
+          "count": 1
+        }
+      ]
     },
     {
       "id": "30025:54833",
       "name": "설계서컴포넌트/장표명",
       "section": null,
       "size": "6205x208",
-      "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "nodeCount": 1,
+      "components": [
+        {
+          "name": "Header / Status",
+          "count": 1
+        }
+      ]
     },
     {
       "id": "30025:54838",
       "name": "설계서컴포넌트/장표명",
       "section": null,
       "size": "6205x208",
-      "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "nodeCount": 1,
+      "components": [
+        {
+          "name": "Header / Status",
+          "count": 1
+        }
+      ]
     },
     {
       "id": "32035:52331",
       "name": "11.8 미권한_2 계약 없는 마스터 관리자",
       "section": null,
       "size": "360x781",
-      "nodeCount": 19,
+      "nodeCount": 10,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -6816,11 +6563,27 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
           "count": 1
         },
         {
+          "name": "menu_arrow_down",
+          "count": 1
+        },
+        {
           "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "More",
           "count": 1
         },
         {
@@ -6831,20 +6594,32 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "경비구역/권한을 기본설정하여 간편하게 카드 발급하세요.",
-        "서비스약관에 동의해 주세요"
       ]
     }
   ],
   "componentUsage": [
     {
-      "name": "m_button",
-      "count": 118
+      "name": "m_checkbox",
+      "count": 175
     },
     {
-      "name": "m_StatusBar",
+      "name": "tabel_bar",
+      "count": 157
+    },
+    {
+      "name": "m_bar",
+      "count": 155
+    },
+    {
+      "name": "menu_arrow_right",
+      "count": 134
+    },
+    {
+      "name": "m_button",
+      "count": 126
+    },
+    {
+      "name": "m_StatusBar ",
       "count": 117
     },
     {
@@ -6852,48 +6627,48 @@
       "count": 117
     },
     {
+      "name": "icon/arrow",
+      "count": 117
+    },
+    {
       "name": "phone_navi",
       "count": 114
     },
     {
-      "name": "m_checkbox",
-      "count": 98
+      "name": "m_Input box",
+      "count": 112
+    },
+    {
+      "name": "icon/combobox_arrow",
+      "count": 107
     },
     {
       "name": "m_chips",
       "count": 93
     },
     {
-      "name": "m_Input box",
-      "count": 88
-    },
-    {
       "name": "list",
       "count": 77
     },
     {
-      "name": "m_bar",
-      "count": 74
-    },
-    {
-      "name": "menu_arrow_right",
-      "count": 53
-    },
-    {
-      "name": "icon/combobox_arrow",
-      "count": 51
-    },
-    {
-      "name": "close",
-      "count": 42
-    },
-    {
       "name": "More",
-      "count": 42
+      "count": 67
     },
     {
       "name": "m_combobox",
-      "count": 38
+      "count": 47
+    },
+    {
+      "name": "close",
+      "count": 45
+    },
+    {
+      "name": "card",
+      "count": 36
+    },
+    {
+      "name": "menu_arrow_down",
+      "count": 35
     },
     {
       "name": "nav",
@@ -6908,8 +6683,8 @@
       "count": 20
     },
     {
-      "name": "menu_arrow_down",
-      "count": 14
+      "name": "card_thumnail",
+      "count": 20
     },
     {
       "name": "m_radiobutton",
@@ -6917,6 +6692,10 @@
     },
     {
       "name": "m_email_input",
+      "count": 12
+    },
+    {
+      "name": "m_combobox/off/off/off/Default",
       "count": 12
     },
     {
@@ -6928,11 +6707,19 @@
       "count": 10
     },
     {
+      "name": "home",
+      "count": 10
+    },
+    {
       "name": "card registration",
       "count": 10
     },
     {
       "name": "ic_작업목록확인",
+      "count": 10
+    },
+    {
+      "name": "menu(hamburger)",
       "count": 10
     },
     {
@@ -6956,10 +6743,6 @@
       "count": 6
     },
     {
-      "name": "card",
-      "count": 6
-    },
-    {
       "name": "dome camera",
       "count": 6
     },
@@ -6972,8 +6755,20 @@
       "count": 4
     },
     {
+      "name": "Remove",
+      "count": 3
+    },
+    {
       "name": "keyboard",
       "count": 3
+    },
+    {
+      "name": "Header / Status",
+      "count": 3
+    },
+    {
+      "name": "search",
+      "count": 2
     },
     {
       "name": "m_btn_full",
@@ -6988,11 +6783,11 @@
       "count": 2
     },
     {
-      "name": "tabel_bar",
-      "count": 2
+      "name": "m_button variation",
+      "count": 1
     },
     {
-      "name": "m_button variation",
+      "name": "m_basic_button",
       "count": 1
     },
     {

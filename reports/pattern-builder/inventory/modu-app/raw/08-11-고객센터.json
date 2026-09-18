@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "source": "figma:get_metadata",
+    "source": "figma:rest",
     "page": {
       "name": "11. 고객센터",
       "nodeId": "2218:26276"
@@ -16,8 +16,7 @@
       "section": null,
       "size": "224x30",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "5680:57304",
@@ -25,8 +24,7 @@
       "section": null,
       "size": "334x68",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "5680:57395",
@@ -34,8 +32,7 @@
       "section": null,
       "size": "251x68",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "9507:45826",
@@ -43,8 +40,7 @@
       "section": null,
       "size": "339x68",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "2250:26103",
@@ -52,15 +48,14 @@
       "section": null,
       "size": "150x30",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "2250:26111",
       "name": "11.1 1:1 문의_1 가입상담",
       "section": null,
       "size": "360x1099",
-      "nodeCount": 56,
+      "nodeCount": 20,
       "components": [
         {
           "name": "m_Input box",
@@ -72,18 +67,26 @@
         },
         {
           "name": "m_button",
-          "count": 2
+          "count": 3
         },
         {
           "name": "phone_navi",
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
           "count": 1
         },
         {
@@ -102,16 +105,6 @@
           "name": "tabel_bar",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "항목명 copy 2",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목",
-        "*표기된 항목은 필수 입력 사항입니다."
       ]
     },
     {
@@ -119,7 +112,7 @@
       "name": "11.1 1:1 문의_1 가입상담",
       "section": null,
       "size": "360x870",
-      "nodeCount": 62,
+      "nodeCount": 23,
       "components": [
         {
           "name": "m_Input box",
@@ -134,7 +127,19 @@
           "count": 3
         },
         {
-          "name": "m_StatusBar",
+          "name": "tabel_bar",
+          "count": 3
+        },
+        {
+          "name": "close",
+          "count": 2
+        },
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -142,35 +147,17 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_tab_mid",
-          "count": 1
-        },
-        {
-          "name": "m_button",
-          "count": 1
-        },
-        {
-          "name": "close",
           "count": 1
         },
         {
           "name": "ok",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "항목명 copy 2",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "*표기된 항목은 필수 입력 사항입니다.",
-        "상담 희망 시간",
-        "9시 ~ 11시",
-        "11시~ 13시",
-        "13시 ~ 15시",
-        "15시 ~ 17시",
-        "17시 ~ 18시"
       ]
     },
     {
@@ -178,7 +165,7 @@
       "name": "11.1 1:1 문의_2 가입상담(약관동의 펼침)",
       "section": null,
       "size": "360x1351",
-      "nodeCount": 68,
+      "nodeCount": 20,
       "components": [
         {
           "name": "m_Input box",
@@ -190,14 +177,22 @@
         },
         {
           "name": "m_button",
-          "count": 2
+          "count": 3
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
           "count": 1
         },
         {
@@ -220,23 +215,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "항목명 copy 2",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목",
-        "제 1조(목적)",
-        "본 약관은 &#39;주식회사 에스원(이하 &quot;",
-        "제 2조(약관효력 및 변경)",
-        "(1) 회사는 본 약관의 내용을 회원",
-        "제 2조(약관효력 및 변경)",
-        "(1) 회사는 본 약관의 내용을 회원",
-        "제 2조(약관효력 및 변경)",
-        "*표기된 항목은 필수 입력 사항입니다."
       ]
     },
     {
@@ -245,15 +223,14 @@
       "section": null,
       "size": "291x60",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "2250:26235",
       "name": "11.2 방문점검 신청_4 방문점검 신청",
       "section": null,
       "size": "360x1120",
-      "nodeCount": 43,
+      "nodeCount": 16,
       "components": [
         {
           "name": "m_Input box",
@@ -261,14 +238,26 @@
         },
         {
           "name": "m_button",
+          "count": 3
+        },
+        {
+          "name": "calendar",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
           "count": 1
         },
         {
@@ -283,18 +272,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "보다 자세한 점검사항을 기입해 주시면 빠르게 점검 및 수리가 가능합니다."
       ]
     },
     {
@@ -302,14 +279,14 @@
       "name": "11.1 1:1 문의_3 일반문의",
       "section": null,
       "size": "360x1083",
-      "nodeCount": 43,
+      "nodeCount": 16,
       "components": [
         {
           "name": "m_Input box",
-          "count": 3
+          "count": 5
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -317,7 +294,23 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
           "name": "m_email_input",
+          "count": 1
+        },
+        {
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -336,19 +329,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "개인",
-        "사업자 고객",
-        "서비스약관에 동의해 주세요",
-        "서비스 가입 문의는 ‘가입상담’을 이용해 주세요.",
-        "등록하신 휴대전화번호로 연락을 드립니다.",
-        "항목명 copy 2",
-        "항목명 copy 3",
-        "항목명 copy 2",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목"
       ]
     },
     {
@@ -356,14 +336,14 @@
       "name": "11.1 1:1 문의_4 일반문의(약관동의 펼침)",
       "section": null,
       "size": "360x1313",
-      "nodeCount": 54,
+      "nodeCount": 16,
       "components": [
         {
           "name": "m_Input box",
-          "count": 3
+          "count": 5
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -371,7 +351,23 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
           "name": "m_email_input",
+          "count": 1
+        },
+        {
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -390,26 +386,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "개인",
-        "사업자 고객",
-        "서비스약관에 동의해 주세요",
-        "서비스 가입 문의는 ‘가입상담’을 이용해 주세요.",
-        "등록하신 휴대전화번호로 연락을 드립니다.",
-        "항목명 copy 2",
-        "항목명 copy 3",
-        "항목명 copy 2",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목",
-        "제 1조(목적)",
-        "본 약관은 &#39;주식회사 에스원(이하 &quot;",
-        "제 2조(약관효력 및 변경)",
-        "(1) 회사는 본 약관의 내용을 회원",
-        "제 2조(약관효력 및 변경)",
-        "(1) 회사는 본 약관의 내용을 회원",
-        "제 2조(약관효력 및 변경)"
       ]
     },
     {
@@ -417,7 +393,7 @@
       "name": "11.2 방문점검 신청_1 메인",
       "section": null,
       "size": "360x1238",
-      "nodeCount": 132,
+      "nodeCount": 41,
       "components": [
         {
           "name": "menu_arrow_right",
@@ -425,6 +401,10 @@
         },
         {
           "name": "m_bar",
+          "count": 10
+        },
+        {
+          "name": "tabel_bar",
           "count": 10
         },
         {
@@ -440,51 +420,29 @@
           "count": 1
         },
         {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
           "name": "building control",
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
           "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "방문점검 신청",
-        "신청",
-        "아주 매우 너무 심하게 빠른 방문 요청...",
-        "시스템 경비(세콤)ㆍ2023.02.01",
-        "취소",
-        "빠른 방문 요청드립니다.",
-        "시스템 경비(세콤)ㆍ2023.02.01",
-        "완료",
-        "빠른 방문 요청드립니다.",
-        "시스템 경비(세콤)ㆍ2023.02.01",
-        "접수",
-        "빠른 방문 요청드립니다.",
-        "영상(CCTV)ㆍ2023.02.01",
-        "신청",
-        "빠른 방문 요청드립니다.",
-        "시스템 경비(세콤)ㆍ2023.02.01",
-        "접수",
-        "빠른 방문 요청드립니다.",
-        "영상(CCTV)ㆍ2023.02.01",
-        "접수",
-        "빠른 방문 요청드립니다.",
-        "영상(CCTV)ㆍ2023.02.01",
-        "접수",
-        "빠른 방문 요청드립니다.",
-        "영상(CCTV)ㆍ2023.02.01",
-        "접수",
-        "빠른 방문 요청드립니다.",
-        "영상(CCTV)ㆍ2023.02.01",
-        "접수",
-        "빠른 방문 요청드립니다.",
-        "영상(CCTV)ㆍ2023.02.01"
       ]
     },
     {
@@ -492,10 +450,10 @@
       "name": "11.2 방문점검 신청_5 신청내역 없음",
       "section": null,
       "size": "360x780",
-      "nodeCount": 18,
+      "nodeCount": 9,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -503,7 +461,19 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -518,22 +488,17 @@
           "name": "building control",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "방문점검 신청",
-        "방문점검 신청 이력이 없습니다."
       ]
     },
     {
       "id": "5680:58275",
-      "name": "11.8 미권한_3 권한 없는 일반 관리자",
+      "name": "11.8 미권한_3 권한 없는 일반 관리자 ",
       "section": null,
       "size": "360x781",
-      "nodeCount": 17,
+      "nodeCount": 9,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -541,7 +506,19 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
           "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "menu_arrow_down",
           "count": 1
         },
         {
@@ -549,13 +526,13 @@
           "count": 1
         },
         {
+          "name": "More",
+          "count": 1
+        },
+        {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "경비구역/권한을 기본설정하여 간편하게 카드 발급하세요.",
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -563,14 +540,22 @@
       "name": "11.8 미권한_2 계약 없는 마스터 관리자",
       "section": null,
       "size": "360x781",
-      "nodeCount": 19,
+      "nodeCount": 10,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
           "count": 1
         },
         {
@@ -578,7 +563,15 @@
           "count": 1
         },
         {
+          "name": "menu_arrow_down",
+          "count": 1
+        },
+        {
           "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "More",
           "count": 1
         },
         {
@@ -589,10 +582,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "경비구역/권한을 기본설정하여 간편하게 카드 발급하세요.",
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -600,14 +589,22 @@
       "name": "11.2 방문점검 신청_3 신청내역",
       "section": null,
       "size": "360x780",
-      "nodeCount": 27,
+      "nodeCount": 6,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
           "count": 1
         },
         {
@@ -618,20 +615,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "이름",
-        "강백호",
-        "휴대전화번호",
-        "01012345678",
-        "주소",
-        "04511 서울 중구 세종대로7길 25 (순화동, 에스원빌딩)",
-        "신청서비스",
-        "영상(CCTV)",
-        "방문요청일",
-        "2023.02.27",
-        "요청내용",
-        "빠른 방문 요청드립니다. 빠른 방문 요청드립니다. 빠른 방문 요청드립니다. 빠른 방문 요청드립니다. 빠른 방문 요청드립니다. 빠른 방문 요청드립니다. 빠른 방문 요청드립니다. 빠른 방문 요청드립니다"
       ]
     },
     {
@@ -639,7 +622,7 @@
       "name": "11.2 방문점검 신청_2 검색",
       "section": null,
       "size": "360x780",
-      "nodeCount": 108,
+      "nodeCount": 33,
       "components": [
         {
           "name": "menu_arrow_right",
@@ -650,8 +633,16 @@
           "count": 6
         },
         {
+          "name": "tabel_bar",
+          "count": 6
+        },
+        {
           "name": "m_button",
           "count": 4
+        },
+        {
+          "name": "close",
+          "count": 2
         },
         {
           "name": "calendar",
@@ -662,11 +653,15 @@
           "count": 1
         },
         {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
           "name": "building control",
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -674,40 +669,13 @@
           "count": 1
         },
         {
-          "name": "phone_navi",
+          "name": "icon/arrow",
           "count": 1
         },
         {
-          "name": "close",
+          "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "방문점검 신청",
-        "신청",
-        "빠른 방문 요청드립니다.",
-        "시스템 경비(세콤)ㆍ2023.02.01",
-        "신청",
-        "빠른 방문 요청드립니다.",
-        "시스템 경비(세콤)ㆍ2023.02.01",
-        "신청",
-        "빠른 방문 요청드립니다.",
-        "시스템 경비(세콤)ㆍ2023.02.01",
-        "접수",
-        "빠른 방문 요청드립니다.",
-        "영상(CCTV)ㆍ2023.02.01",
-        "신청",
-        "빠른 방문 요청드립니다.",
-        "시스템 경비(세콤)ㆍ2023.02.01",
-        "신청",
-        "빠른 방문 요청드립니다.",
-        "시스템경비ㆍ2023.02.01",
-        "신청일자",
-        "1개월",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트"
       ]
     },
     {
@@ -716,8 +684,7 @@
       "section": null,
       "size": "224x30",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "2250:30356",
@@ -725,15 +692,14 @@
       "section": null,
       "size": "140x30",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "2250:30485",
       "name": "11.3 자주하는 질문_1 메인",
       "section": null,
       "size": "360x1131",
-      "nodeCount": 116,
+      "nodeCount": 46,
       "components": [
         {
           "name": "m_chips",
@@ -748,11 +714,15 @@
           "count": 10
         },
         {
+          "name": "tabel_bar",
+          "count": 10
+        },
+        {
           "name": "phone_navi",
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -760,33 +730,17 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
           "name": "search",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 137건",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "영상(CCTV)",
-        "어린이 통학버스 프로모션은 언제 진행하며어디서 확인 가능하나요?",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법"
       ]
     },
     {
@@ -794,7 +748,7 @@
       "name": "11.4 자료실_2 메인(각 서비스)",
       "section": null,
       "size": "361x1191",
-      "nodeCount": 119,
+      "nodeCount": 48,
       "components": [
         {
           "name": "m_chips",
@@ -809,15 +763,27 @@
           "count": 10
         },
         {
+          "name": "tabel_bar",
+          "count": 10
+        },
+        {
           "name": "phone_navi",
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
           "count": 1
         },
         {
@@ -825,33 +791,13 @@
           "count": 1
         },
         {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
           "name": "search",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 137건",
-        "[사용설명서] 녹화기(TSD10122(R)) IDIS H.265 DVR",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01",
-        "[사용설명서] 클라우드 CCTV",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01",
-        "[사용설명서] 클라우드 CCTV",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01",
-        "[사용설명서] 클라우드 CCTV",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01",
-        "[사용설명서] 클라우드 CCTV",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01",
-        "[사용설명서] 클라우드 CCTV",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01",
-        "[사용설명서] 클라우드 CCTV",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01",
-        "[사용설명서] 클라우드 CCTV",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01",
-        "[사용설명서] 클라우드 CCTV",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01",
-        "[사용설명서] 클라우드 CCTV",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01"
       ]
     },
     {
@@ -859,7 +805,7 @@
       "name": "11.4 자료실_1 메인(전체)",
       "section": null,
       "size": "360x1151",
-      "nodeCount": 119,
+      "nodeCount": 46,
       "components": [
         {
           "name": "m_chips",
@@ -874,11 +820,15 @@
           "count": 10
         },
         {
+          "name": "tabel_bar",
+          "count": 10
+        },
+        {
           "name": "phone_navi",
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -886,34 +836,17 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
           "name": "search",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 137건",
-        "[사용설명서] 녹화기(TSD10122(R)) IDIS H.265 DVR",
-        "시스템 경비(세콤) &gt; 카드리더/지문리더/인터폰ㆍ",
-        "2023.02.01",
-        "[사용설명서] 클라우드 CCTV",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01",
-        "[사용설명서] 클라우드 CCTV",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01",
-        "[사용설명서] 클라우드 CCTV",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01",
-        "[사용설명서] 클라우드 CCTV",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01",
-        "[사용설명서] 클라우드 CCTV",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01",
-        "[사용설명서] 클라우드 CCTV",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01",
-        "[사용설명서] 클라우드 CCTV",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01",
-        "[사용설명서] 클라우드 CCTV",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01",
-        "[사용설명서] 클라우드 CCTV",
-        "영상(CCTV) &gt; 클라우드 CCTVㆍ2023.02.01"
       ]
     },
     {
@@ -921,7 +854,7 @@
       "name": "11.4 자료실_3 상세 내용",
       "section": null,
       "size": "360x780",
-      "nodeCount": 24,
+      "nodeCount": 10,
       "components": [
         {
           "name": "download",
@@ -936,7 +869,7 @@
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -944,16 +877,21 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
           "name": "m_bar",
           "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "서비스약관에 동의해 주세요",
-        "서비스약관에 동의해 주세요",
-        "서비스약관에 동의해 주세요",
-        "영상(CCTV) &gt; 아날로그 CCTVㆍ2023.02.01"
       ]
     },
     {
@@ -961,7 +899,7 @@
       "name": "11.3 자주하는 질문_5 메인(없음)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 29,
+      "nodeCount": 16,
       "components": [
         {
           "name": "m_chips",
@@ -972,7 +910,7 @@
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -980,14 +918,17 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
           "name": "search",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 0건",
-        "등록된 게시글이 없습니다."
       ]
     },
     {
@@ -995,7 +936,7 @@
       "name": "11.4 자료실_4 메인(없음)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 29,
+      "nodeCount": 16,
       "components": [
         {
           "name": "m_chips",
@@ -1006,7 +947,7 @@
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1014,14 +955,17 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
           "name": "search",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 0건",
-        "등록된 게시글이 없습니다."
       ]
     },
     {
@@ -1029,14 +973,14 @@
       "name": "11.3 자주하는 질문_2 메인(답변 - 텍스트)",
       "section": null,
       "size": "360x1290",
-      "nodeCount": 111,
+      "nodeCount": 48,
       "components": [
         {
-          "name": "m_chips",
-          "count": 10
+          "name": "More",
+          "count": 11
         },
         {
-          "name": "More",
+          "name": "m_chips",
           "count": 10
         },
         {
@@ -1044,15 +988,27 @@
           "count": 10
         },
         {
+          "name": "tabel_bar",
+          "count": 10
+        },
+        {
           "name": "phone_navi",
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
           "count": 1
         },
         {
@@ -1063,31 +1019,6 @@
           "name": "m_subbutton",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 137건",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "서비스약관에 동의해 주세요",
-        "영상(CCTV)",
-        "어린이 통학버스 프로모션은 어디서 확인 가능하나요?",
-        "차량운행관리",
-        "어린이 통학버스 프로모션은 어디서 확인 가능하나요?",
-        "채용/입사지원",
-        "어린이 통학버스 프로모션은 어디서 확인 가능하나요?",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법"
       ]
     },
     {
@@ -1095,7 +1026,7 @@
       "name": "11.3 자주하는 질문_3 메인(답변 - 이미지)",
       "section": null,
       "size": "360x1405",
-      "nodeCount": 118,
+      "nodeCount": 46,
       "components": [
         {
           "name": "m_chips",
@@ -1110,11 +1041,15 @@
           "count": 10
         },
         {
+          "name": "tabel_bar",
+          "count": 10
+        },
+        {
           "name": "phone_navi",
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1122,34 +1057,17 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
           "name": "search",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 137건",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "차량운행관리",
-        "어린이 통학버스 프로모션은 언제 진행하며어디서 확인 가능하나요?",
-        "가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파하가나다라마바사아자차카타파",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법"
       ]
     },
     {
@@ -1157,7 +1075,7 @@
       "name": "11.3 자주하는 질문_4 메인(답변 - \b영상)",
       "section": null,
       "size": "360x1394",
-      "nodeCount": 116,
+      "nodeCount": 46,
       "components": [
         {
           "name": "m_chips",
@@ -1172,11 +1090,15 @@
           "count": 10
         },
         {
+          "name": "tabel_bar",
+          "count": 10
+        },
+        {
           "name": "phone_navi",
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1184,33 +1106,17 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
           "name": "search",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 137건",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "영상(CCTV)",
-        "어린이 통학버스 프로모션은 언제 진행하며어 디서 확인 가능하나요?",
-        "차량운행관리",
-        "어린이 통학버스 프로모션은 언제 진행하며어디서 확인 가능하나요?",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법",
-        "시스템 경비(세콤)",
-        "[PC프로그램] 자동 로그인 설정하는 방법"
       ]
     },
     {
@@ -1219,8 +1125,7 @@
       "section": null,
       "size": "250x30",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "2491:36268",
@@ -1228,17 +1133,15 @@
       "section": null,
       "size": "250x30",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "2491:36271",
-      "name": "11.7 뉴스 &amp; 공지",
+      "name": "11.7 뉴스 & 공지",
       "section": null,
       "size": "196x30",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "11026:27908",
@@ -1246,26 +1149,29 @@
       "section": null,
       "size": "139x30",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "2491:36272",
       "name": "11.5 고마워요 에스원_1 메인",
       "section": null,
       "size": "360x1245",
-      "nodeCount": 95,
+      "nodeCount": 11,
       "components": [
         {
           "name": "tabel_bar",
           "count": 5
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1280,35 +1186,6 @@
           "name": "slider",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 137건",
-        "금주의 칭찬 BEST3",
-        "[한국도레이R&amp;D센터] 항상 감사하고 감사하고 감사하고 감사하고 감사하고 감사합니다..",
-        "[한국도레이R&amp;D센터] 에스원과 함께 3년 시간동안 당사(본사) 사옥의 보안 취약지역 및 주요 유틸리티 시설물의 잠재재해를 사전에 발굴하고 적극적인 ….",
-        "박*조ㆍ2023.02.02",
-        "#시스템 경비(세콤)",
-        "#매장",
-        "[한국도레이R&amp;D센터] 항상 감사하고 감사하고 감사하고 감사하고 감사하고 감사합니다..",
-        "박*조ㆍ2023.02.02",
-        "#시스템 경비(세콤)",
-        "#매장",
-        "[한국도레이R&amp;D센터] 항상 감사합니다.",
-        "박*조ㆍ2023.02.02",
-        "#시스템 경비(세콤)",
-        "#매장",
-        "[한국도레이R&amp;D센터] 항상 감사하고 감사하고 감사하고 감사하고 감사하고 감사합니다..",
-        "박*조ㆍ2023.02.02",
-        "#시스템 경비(세콤)",
-        "#매장",
-        "[한국도레이R&amp;D센터] 항상 감사하고 감사하고 감사하고 감사하고 감사하고 감사합니다..",
-        "박*조ㆍ2023.02.02",
-        "#시스템 경비(세콤)",
-        "#매장",
-        "[한국도레이R&amp;D센터] 항상 감사하고 감사하고 감사하고 감사하고 감사하고 감사합니다..",
-        "박*조ㆍ2023.02.02",
-        "#시스템 경비(세콤)",
-        "#매장"
       ]
     },
     {
@@ -1316,14 +1193,18 @@
       "name": "11.5 고마워요 에스원_4 메인(없음)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 12,
+      "nodeCount": 5,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1334,10 +1215,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 0건",
-        "등록된 게시글이 없습니다"
       ]
     },
     {
@@ -1345,14 +1222,18 @@
       "name": "11.6 궁금해요 에스원_7 나의 질문내역(없음)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 13,
+      "nodeCount": 6,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1362,11 +1243,11 @@
         {
           "name": "m_subbutton",
           "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
         }
-      ],
-      "texts": [
-        "등록된 게시글이 없습니다",
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -1374,10 +1255,14 @@
       "name": "11.5 고마워요 에스원_2 상세 내용",
       "section": null,
       "size": "360x788",
-      "nodeCount": 19,
+      "nodeCount": 7,
       "components": [
         {
           "name": "m_bar",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
           "count": 1
         },
         {
@@ -1389,20 +1274,17 @@
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
           "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "박*조ㆍ2023.02.02",
-        "서비스약관에 동의해 주세요",
-        "#시스템 경비(세콤)",
-        "#매장"
       ]
     },
     {
@@ -1410,7 +1292,7 @@
       "name": "11.6 궁금해요 에스원_1 메인",
       "section": null,
       "size": "361x1643",
-      "nodeCount": 201,
+      "nodeCount": 36,
       "components": [
         {
           "name": "m_chips",
@@ -1425,11 +1307,15 @@
           "count": 10
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1444,70 +1330,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 137건",
-        "[한국도레이R&amp;D센터] 항상 감사하고 감사하고 감사하고 감사하고 감사하고 감사합니다..",
-        "06.01 16:10",
-        "2023.02.02",
-        "#시스템 경비(세콤)",
-        "#차량운행관리",
-        "#부동산종합서비스",
-        "[한국도레이R&amp;D센터] 항상 감사하고 감사하고 감사하고 감사하고 감사하고 감사합니다..",
-        "06.01 16:10",
-        "2023.02.02",
-        "#정보보안",
-        "#차량운행관리",
-        "#부동산종합서비스",
-        "[한국도레이R&amp;D센터] 항상 감사합니다.",
-        "06.01 16:10",
-        "2023.02.02",
-        "#정보보안",
-        "#차량운행관리",
-        "#부동산종합서비스",
-        "[한국도레이R&amp;D센터] 항상 감사하고 감사하고 감사하고 감사하고 감사하고 감사합니다..",
-        "06.01 16:10",
-        "2023.02.02",
-        "#정보보안",
-        "#차량운행관리",
-        "#부동산종합서비스",
-        "[한국도레이R&amp;D센터] 항상 감사합니다.",
-        "06.01 16:10",
-        "2023.02.02",
-        "#정보보안",
-        "#차량운행관리",
-        "#부동산종합서비스",
-        "[한국도레이R&amp;D센터] 항상 감사합니다.",
-        "06.01 16:10",
-        "2023.02.02",
-        "#정보보안",
-        "#차량운행관리",
-        "#부동산종합서비스",
-        "[한국도레이R&amp;D센터] 항상 감사합니다.",
-        "06.01 16:10",
-        "2023.02.02",
-        "#정보보안",
-        "#차량운행관리",
-        "#부동산종합서비스",
-        "[한국도레이R&amp;D센터] 항상 감사합니다.",
-        "06.01 16:10",
-        "2023.02.02",
-        "#정보보안",
-        "#차량운행관리",
-        "#부동산종합서비스",
-        "[한국도레이R&amp;D센터] 항상 감사합니다.",
-        "06.01 16:10",
-        "2023.02.02",
-        "#정보보안",
-        "#차량운행관리",
-        "#부동산종합서비스",
-        "[한국도레이R&amp;D센터] 항상 감사합니다.",
-        "06.01 16:10",
-        "2023.02.02",
-        "#정보보안",
-        "#차량운행관리",
-        "#부동산종합서비스"
       ]
     },
     {
@@ -1515,18 +1337,22 @@
       "name": "11.6 궁금해요 에스원_2 메인(글 없음)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 31,
+      "nodeCount": 16,
       "components": [
         {
           "name": "m_chips",
           "count": 10
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1541,11 +1367,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 0건",
-        "등록된 게시글이 없습니다"
       ]
     },
     {
@@ -1553,7 +1374,7 @@
       "name": "11.6 궁금해요 에스원_3 메인(검색결과 없음)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 33,
+      "nodeCount": 17,
       "components": [
         {
           "name": "m_chips",
@@ -1564,11 +1385,15 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1579,11 +1404,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 0건",
-        "검색결과가 없습니다"
       ]
     },
     {
@@ -1591,18 +1411,26 @@
       "name": "11.6 궁금해요 에스원_4 상세 내용",
       "section": null,
       "size": "360x1233",
-      "nodeCount": 39,
+      "nodeCount": 11,
       "components": [
         {
           "name": "m_bar",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "tabel_bar",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1621,18 +1449,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "2023.02.01",
-        "서비스약관에 동의해 주세요",
-        "#시스템 경비(세콤)",
-        "#영상(CCTV)",
-        "인사담당자의 답변",
-        "2023.02.10",
-        "서비스약관에 동의해 주세요",
-        "개인",
-        "항목"
       ]
     },
     {
@@ -1640,18 +1456,26 @@
       "name": "11.6 궁금해요 에스원_5 상세 내용(추천)",
       "section": null,
       "size": "360x1233",
-      "nodeCount": 39,
+      "nodeCount": 11,
       "components": [
         {
           "name": "m_bar",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "tabel_bar",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1670,18 +1494,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "2023.02.01",
-        "서비스약관에 동의해 주세요",
-        "#시스템 경비(세콤)",
-        "#영상(CCTV)",
-        "인사담당자의 답변",
-        "2023.02.10",
-        "서비스약관에 동의해 주세요",
-        "개인",
-        "항목"
       ]
     },
     {
@@ -1689,10 +1501,14 @@
       "name": "11.7 뉴스공지_1 메인",
       "section": null,
       "size": "360x1110",
-      "nodeCount": 146,
+      "nodeCount": 42,
       "components": [
         {
           "name": "m_bar",
+          "count": 10
+        },
+        {
+          "name": "tabel_bar",
           "count": 10
         },
         {
@@ -1712,11 +1528,15 @@
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1727,33 +1547,6 @@
           "name": "ic_화살표, 더보기",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 429건",
-        "BEST",
-        "[공지] 삼성CSR 공모사업 공지",
-        "2023.02.06",
-        "BEST",
-        "[공지] 삼성CSR 공모사업 공지",
-        "2023.02.06",
-        "BEST",
-        "[뉴스] 삼성CSR 공모사업 공지",
-        "2023.02.06",
-        "[공지] 안전사고 경각심 커지며 ‘AED’ 관심",
-        "2023.02.06",
-        "[공지] ‘22년 연간 경영실적발표 후 국내미N...",
-        "2023.02.06",
-        "[뉴스] ‘22년 연간 경영실적발표 후국 미...",
-        "2023.02.06",
-        "[뉴스] 개인정보 유출, 외부인 무단침입 도난...",
-        "2023.02.06",
-        "[공지] 안전사고 경각심 커지며 ‘AED’ 관심",
-        "2023.02.06",
-        "[공지] 안전사고 경각심 커지며 ‘AED’ 관심",
-        "2023.02.06",
-        "[공지] 안전사고 경각심 커지며 ‘AED’ 관심",
-        "2023.02.06"
       ]
     },
     {
@@ -1761,7 +1554,7 @@
       "name": "11.7 뉴스공지_2 메인(검색 결과)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 88,
+      "nodeCount": 27,
       "components": [
         {
           "name": "menu_arrow_right",
@@ -1769,6 +1562,10 @@
         },
         {
           "name": "m_bar",
+          "count": 5
+        },
+        {
+          "name": "tabel_bar",
           "count": 5
         },
         {
@@ -1784,11 +1581,15 @@
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1799,22 +1600,6 @@
           "name": "new",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 5건",
-        "BEST",
-        "[뉴스] 삼성CSR 공모사업",
-        "2023.02.06",
-        "BEST",
-        "[뉴스] 삼성CSR 공모사업 공지",
-        "2023.02.06",
-        "[공지] 안전사고 경각심 커지며 ‘AED’ 관심",
-        "2023.02.06",
-        "[공지] ‘22년 연간 경영실적발표 후 국내미N...",
-        "2023.02.06",
-        "[뉴스] ‘22년 연간 경영실적발표 후국 미...",
-        "2023.02.06"
       ]
     },
     {
@@ -1822,14 +1607,18 @@
       "name": "11.7 뉴스공지_3 상세 내용",
       "section": null,
       "size": "360x780",
-      "nodeCount": 21,
+      "nodeCount": 8,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1845,16 +1634,13 @@
           "count": 1
         },
         {
+          "name": "tabel_bar",
+          "count": 1
+        },
+        {
           "name": "download",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "서비스약관에 동의해 주세요",
-        "2023.02.06",
-        "공지",
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -1862,7 +1648,7 @@
       "name": "11.5 고마워요 에스원_3 내용 등록",
       "section": null,
       "size": "360x1292",
-      "nodeCount": 60,
+      "nodeCount": 26,
       "components": [
         {
           "name": "m_radiobutton",
@@ -1870,10 +1656,14 @@
         },
         {
           "name": "m_Input box",
-          "count": 5
+          "count": 7
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_button",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1881,32 +1671,25 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_email_input",
           "count": 1
         },
         {
-          "name": "m_button",
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "*표기된 항목은 필수 입력 사항입니다.",
-        "항목명 copy 3",
-        "문의 등록 시 삭제, 수정이 불가능 합니다.",
-        "항목명 copy 2",
-        "항목명 copy 4",
-        "항목명 copy 3",
-        "항목명 copy 2",
-        "항목명 copy 4",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "이미지첨부",
-        "5MB 이하의 PNG, JPG 파일 1장까지 첨부 가능합니다."
       ]
     },
     {
@@ -1914,7 +1697,7 @@
       "name": "11.6 궁금해요 에스원_6 내용 등록",
       "section": null,
       "size": "360x1220",
-      "nodeCount": 54,
+      "nodeCount": 22,
       "components": [
         {
           "name": "m_checkbox",
@@ -1922,14 +1705,22 @@
         },
         {
           "name": "m_Input box",
-          "count": 4
+          "count": 6
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1937,29 +1728,17 @@
           "count": 1
         },
         {
-          "name": "m_button",
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "*표기된 항목은 필수 입력 사항입니다.",
-        "항목명 copy 3",
-        "항목명 copy 4",
-        "문의 등록 시 삭제, 수정이 불가능 합니다.",
-        "항목명 copy 2",
-        "항목명 copy 4",
-        "항목명 copy 3",
-        "항목명 copy 2",
-        "항목명 copy 4",
-        "항목명 copy 3",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "이미지첨부",
-        "5MB 이하의 PNG, JPG 파일 1장까지 첨부 가능합니다."
       ]
     },
     {
@@ -1967,14 +1746,14 @@
       "name": "11.6 궁금해요 에스원_7 나의 질문내역",
       "section": null,
       "size": "360x1499",
-      "nodeCount": 164,
+      "nodeCount": 16,
       "components": [
         {
           "name": "tabel_bar",
           "count": 10
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1982,67 +1761,21 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "More",
           "count": 1
         },
         {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "대기",
-        "에스원 상품 중 가장 사람들이 많이 사용하는 제품에는 어떤 것들이 있나요??",
-        "2023.02.02",
-        "#시스템 경비(세콤)",
-        "#영상(CCTV)",
-        "대기",
-        "에스원 상품 중 가장 사람들이 많이 사용하는 제품에는 어떤 것들이 있나요??",
-        "2023.02.02",
-        "#시스템 경비(세콤)",
-        "#영상(CCTV)",
-        "완료",
-        "부동산 관련해서는 어디에 문의하면 되나요?",
-        "2023.02.02",
-        "#시스템 경비(세콤)",
-        "#영상(CCTV)",
-        "완료",
-        "부동산 관련해서는 어디에 문의하면 되나요?",
-        "2023.02.02",
-        "#시스템 경비(세콤)",
-        "#영상(CCTV)",
-        "완료",
-        "부동산 관련해서는 어디에 문의하면 되나요?",
-        "2023.02.02",
-        "#시스템 경비(세콤)",
-        "#영상(CCTV)",
-        "완료",
-        "부동산 관련해서는 어디에 문의하면 되나요?",
-        "2023.02.02",
-        "#시스템 경비(세콤)",
-        "#영상(CCTV)",
-        "완료",
-        "부동산 관련해서는 어디에 문의하면 되나요?",
-        "2023.02.02",
-        "#시스템 경비(세콤)",
-        "#영상(CCTV)",
-        "완료",
-        "부동산 관련해서는 어디에 문의하면 되나요?",
-        "2023.02.02",
-        "#시스템 경비(세콤)",
-        "#영상(CCTV)",
-        "완료",
-        "부동산 관련해서는 어디에 문의하면 되나요?",
-        "2023.02.02",
-        "#시스템 경비(세콤)",
-        "#영상(CCTV)",
-        "완료",
-        "부동산 관련해서는 어디에 문의하면 되나요?",
-        "2023.02.02",
-        "#시스템 경비(세콤)",
-        "#영상(CCTV)",
-        "총 137건"
       ]
     },
     {
@@ -2050,7 +1783,7 @@
       "name": "11.7 뉴스공지_4 메인(없음)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 22,
+      "nodeCount": 8,
       "components": [
         {
           "name": "m_chips",
@@ -2061,7 +1794,7 @@
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2069,14 +1802,13 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "search",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 0건",
-        "등록된 게시글이 없습니다",
-        "총 3개의 서비스를 이용하고 계세요"
       ]
     },
     {
@@ -2084,14 +1816,22 @@
       "name": "11.8 미권한_1 웹회원",
       "section": null,
       "size": "360x780",
-      "nodeCount": 13,
+      "nodeCount": 6,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
           "count": 1
         },
         {
@@ -2102,9 +1842,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -2113,17 +1850,15 @@
       "section": null,
       "size": "579x54",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "22477:16765",
-      "name": "**방문점검신청 &gt;&gt;서비스신청조회? 방문점검신청에 대한 세부화",
+      "name": "**방문점검신청 >>서비스신청조회? 방문점검신청에 대한 세부화",
       "section": null,
       "size": "332x54",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "22477:16766",
@@ -2131,8 +1866,7 @@
       "section": null,
       "size": "621x54",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "22477:16769",
@@ -2140,8 +1874,7 @@
       "section": null,
       "size": "408x27",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "22477:16770",
@@ -2149,17 +1882,15 @@
       "section": null,
       "size": "237x54",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "22495:6787",
-      "name": "도어캠 D2C 참고 보험청구 영역 &gt; 리스트영역",
+      "name": "도어캠 D2C 참고 보험청구 영역 > 리스트영역",
       "section": null,
       "size": "256x54",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "22477:16771",
@@ -2167,8 +1898,7 @@
       "section": null,
       "size": "175x51",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "22477:16768",
@@ -2176,8 +1906,7 @@
       "section": null,
       "size": "215x27",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "23648:2429",
@@ -2185,17 +1914,15 @@
       "section": null,
       "size": "795x40",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "23648:2430",
-      "name": "검색 후 검색결과 없을때 검색결과가 없어요. &gt;&gt;개발도 반영 필요",
+      "name": "검색 후 검색결과 없을때 검색결과가 없어요. >>개발도 반영 필요",
       "section": null,
       "size": "319x160",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "24575:29444",
@@ -2203,8 +1930,7 @@
       "section": null,
       "size": "0x336",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "24575:29445",
@@ -2212,15 +1938,14 @@
       "section": null,
       "size": "207x17",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "24679:54709",
       "name": "11.3 자주하는 질문_1 메인",
       "section": null,
       "size": "360x780",
-      "nodeCount": 62,
+      "nodeCount": 24,
       "components": [
         {
           "name": "ic_화살표, 더보기",
@@ -2231,11 +1956,15 @@
           "count": 6
         },
         {
+          "name": "tabel_bar",
+          "count": 6
+        },
+        {
           "name": "phone_navi",
           "count": 1
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2243,23 +1972,25 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
           "name": "search",
           "count": 1
         }
-      ],
-      "texts": [
-        "총 3개의 서비스를 이용하고 계세요",
-        "총 137건",
-        "모바일카드App에서 카드발급 절차 궁금해요.",
-        "스마트폰을 잃어버렸어요. 여러 계약처가 있는데 한번에 모두 삭제해 주세요.",
-        "카드발급 신청 후 얼마정도 있다가 카드가 발급되나요?",
-        "MoDU App에서도 카드 발급이 되나요?",
-        "모바일카드 발급 가격이 궁금해요.",
-        "부가서비스 신청은 어디서 하나요?"
       ]
     }
   ],
   "componentUsage": [
+    {
+      "name": "tabel_bar",
+      "count": 136
+    },
     {
       "name": "m_chips",
       "count": 119
@@ -2274,14 +2005,22 @@
     },
     {
       "name": "More",
-      "count": 44
+      "count": 49
+    },
+    {
+      "name": "m_Input box",
+      "count": 39
+    },
+    {
+      "name": "m_button",
+      "count": 39
     },
     {
       "name": "phone_navi",
       "count": 39
     },
     {
-      "name": "m_StatusBar",
+      "name": "m_StatusBar ",
       "count": 39
     },
     {
@@ -2289,16 +2028,12 @@
       "count": 39
     },
     {
-      "name": "m_button",
-      "count": 32
+      "name": "icon/arrow",
+      "count": 39
     },
     {
-      "name": "m_Input box",
-      "count": 31
-    },
-    {
-      "name": "tabel_bar",
-      "count": 29
+      "name": "close",
+      "count": 25
     },
     {
       "name": "m_checkbox",
@@ -2311,6 +2046,10 @@
     {
       "name": "best",
       "count": 12
+    },
+    {
+      "name": "icon/combobox_arrow",
+      "count": 11
     },
     {
       "name": "m_radiobutton",
@@ -2333,15 +2072,19 @@
       "count": 5
     },
     {
+      "name": "calendar",
+      "count": 4
+    },
+    {
       "name": "m_email_input",
       "count": 4
     },
     {
-      "name": "m_tab_mid",
-      "count": 3
+      "name": "m_combobox/off/off/off/Default",
+      "count": 4
     },
     {
-      "name": "icon/combobox_arrow",
+      "name": "m_tab_mid",
       "count": 3
     },
     {
@@ -2353,11 +2096,7 @@
       "count": 3
     },
     {
-      "name": "close",
-      "count": 2
-    },
-    {
-      "name": "calendar",
+      "name": "menu_arrow_down",
       "count": 2
     },
     {
