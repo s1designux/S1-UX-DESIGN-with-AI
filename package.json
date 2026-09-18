@@ -165,9 +165,13 @@
     "legacy:selftest": "node scripts/legacy-map-selftest.js",
     "pattern:similar": "node scripts/pattern-similar.js",
     "pattern:fetch": "node scripts/pattern-fetch.js",
+    "pattern:measure": "node scripts/pattern-measure.js",
+    "pattern:shots": "node scripts/pattern-shots.js",
+    "screen:import": "node scripts/screen-import.js",
     "pattern:order": "node scripts/pattern-order.js",
     "pattern:import": "node scripts/pattern-screen-import.js",
     "builder": "node scripts/builder-serve.js",
+    "pattern:suggest": "node scripts/pattern-suggest-build.js",
     "legacy:bake": "node scripts/build-legacy-map-data.js"
   },
   "devDependencies": {

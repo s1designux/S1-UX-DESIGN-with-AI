@@ -239,3 +239,24 @@ body[data-pb-dragging] .pb-canvas .s1-row[data-pb-empty="true"] { outline-color:
 .pb-canvas .s1-block[data-s1-legacy="true"]:hover::after { opacity: 1; }
 .pb-legacy-canon { margin: var(--spacing-4) 0 0; padding-left: var(--spacing-16); }
 .pb-legacy-canon li { margin: var(--spacing-2) 0; }
+
+/* ── 다음에 올 만한 것 ───────────────────────────────────────
+   모두앱 레거시에서 센 참고 제안(가이드 규칙 아님). 조각 자체는 정본 Assist Button 이고,
+   여기서는 그 조각들이 놓이는 줄만 잡는다. */
+.pb-suggest { padding: var(--spacing-8) var(--spacing-14); border-bottom: var(--border-width-1) solid var(--color-line-gray-subtle); background: var(--color-bg-level-1); }
+.pb-suggest-head { display: flex; align-items: baseline; gap: var(--spacing-8); flex-wrap: wrap; }
+.pb-suggest-src { font-size: var(--font-size-10); color: var(--color-text-body-tertiary); }
+.pb-suggest-line { display: flex; align-items: center; flex-wrap: wrap; gap: var(--spacing-6); margin-top: var(--spacing-6); }
+.pb-suggest-line:empty { display: none; }
+.pb-suggest-kind { font-size: var(--font-size-10); font-weight: var(--font-weight-bold); color: var(--color-text-body-tertiary); margin-right: var(--spacing-2); }
+
+/* ── 묶음 표시 (편집 화면에서만) ─────────────────────────────
+   라벨+부품처럼 한 덩어리로 읽히는 줄들을 왼쪽 세로선으로 묶어 보여준다. */
+.pb-canvas .s1-row[data-s1-group] { position: relative; }
+.pb-canvas .s1-row[data-s1-group]::before {
+  content: ""; position: absolute; left: calc(var(--spacing-10) * -1); top: -2px; bottom: -2px;
+  width: var(--border-width-2); border-radius: var(--radius-2); background: var(--color-line-gray-subtle);
+}
+.pb-canvas .s1-row[data-s1-group="start"]::before { top: 0; border-radius: var(--radius-2) var(--radius-2) 0 0; }
+.pb-canvas .s1-row[data-s1-group="end"]::before { bottom: 0; border-radius: 0 0 var(--radius-2) var(--radius-2); }
+.pb-canvas .s1-row[data-s1-group="mid"]::before { border-radius: 0; }

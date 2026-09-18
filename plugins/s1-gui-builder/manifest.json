@@ -1,0 +1,13 @@
+{
+  "name": "S-1 GUI Builder",
+  "id": "s1-gui-builder",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": ["none"],
+    "reasoning": "바깥으로 아무것도 보내지 않는다. 고른 화면을 파일 한 장으로 내려받기만 한다."
+  }
+}

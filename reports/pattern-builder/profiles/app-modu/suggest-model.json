@@ -1,0 +1,1368 @@
+{
+  "_meta": {
+    "title": "모두앱 레거시에서 센 「다음에 올 만한 것」",
+    "profile": "app-modu",
+    "status": "candidate",
+    "generatedBy": "scripts/pattern-suggest-build.js",
+    "generatedAt": "2026-09-18",
+    "source": "reports/pattern-builder/inventory/modu-app/order/*.json",
+    "partMap": "reports/pattern-builder/profiles/app-modu/part-map.json",
+    "warning": "⛔ 레거시 관찰이다. 정본(가이드) 규칙이 아니며 정본에 합치지 않는다 — river 결정 2026-09-18.",
+    "screens": 2009,
+    "usableScreens": 1285,
+    "rows": 6472,
+    "mappedRows": 2441,
+    "textRows": 1706,
+    "chromeRows": 156,
+    "minCount": 3,
+    "top": 6
+  },
+  "groups": {
+    "helper:text": {
+      "items": [
+        "helper:text"
+      ],
+      "count": 1706
+    },
+    "component:mobile-bottom-nav": {
+      "items": [
+        "component:mobile-bottom-nav"
+      ],
+      "count": 481
+    },
+    "component:mobile-header": {
+      "items": [
+        "component:mobile-header"
+      ],
+      "count": 376
+    },
+    "helper:divider": {
+      "items": [
+        "helper:divider"
+      ],
+      "count": 369
+    },
+    "component:chip": {
+      "items": [
+        "component:chip"
+      ],
+      "count": 261
+    },
+    "component:button+component:mobile-bottom-nav": {
+      "items": [
+        "component:button",
+        "component:mobile-bottom-nav"
+      ],
+      "count": 244
+    },
+    "component:button": {
+      "items": [
+        "component:button"
+      ],
+      "count": 206
+    },
+    "component:input": {
+      "items": [
+        "component:input"
+      ],
+      "count": 72
+    },
+    "component:text-button": {
+      "items": [
+        "component:text-button"
+      ],
+      "count": 64
+    },
+    "component:input+component:select": {
+      "items": [
+        "component:input",
+        "component:select"
+      ],
+      "count": 51
+    },
+    "component:button+component:input": {
+      "items": [
+        "component:button",
+        "component:input"
+      ],
+      "count": 42
+    },
+    "component:checkbox": {
+      "items": [
+        "component:checkbox"
+      ],
+      "count": 30
+    },
+    "component:chip+component:mobile-header": {
+      "items": [
+        "component:chip",
+        "component:mobile-header"
+      ],
+      "count": 24
+    },
+    "component:checkbox+helper:divider": {
+      "items": [
+        "component:checkbox",
+        "helper:divider"
+      ],
+      "count": 21
+    },
+    "component:select": {
+      "items": [
+        "component:select"
+      ],
+      "count": 17
+    },
+    "component:mobile-header+component:select": {
+      "items": [
+        "component:mobile-header",
+        "component:select"
+      ],
+      "count": 13
+    },
+    "component:mobile-header+helper:divider": {
+      "items": [
+        "component:mobile-header",
+        "helper:divider"
+      ],
+      "count": 12
+    },
+    "component:button+component:mobile-header": {
+      "items": [
+        "component:button",
+        "component:mobile-header"
+      ],
+      "count": 10
+    },
+    "component:input+component:mobile-header+component:select": {
+      "items": [
+        "component:input",
+        "component:mobile-header",
+        "component:select"
+      ],
+      "count": 10
+    },
+    "component:button+component:checkbox": {
+      "items": [
+        "component:button",
+        "component:checkbox"
+      ],
+      "count": 10
+    },
+    "component:toggle": {
+      "items": [
+        "component:toggle"
+      ],
+      "count": 10
+    },
+    "component:button+component:select": {
+      "items": [
+        "component:button",
+        "component:select"
+      ],
+      "count": 8
+    },
+    "component:input+component:tab": {
+      "items": [
+        "component:input",
+        "component:tab"
+      ],
+      "count": 7
+    },
+    "component:checkbox+component:radio": {
+      "items": [
+        "component:checkbox",
+        "component:radio"
+      ],
+      "count": 7
+    },
+    "component:button+component:input+component:select+component:text-button": {
+      "items": [
+        "component:button",
+        "component:input",
+        "component:select",
+        "component:text-button"
+      ],
+      "count": 6
+    },
+    "component:button+component:checkbox+component:mobile-bottom-nav": {
+      "items": [
+        "component:button",
+        "component:checkbox",
+        "component:mobile-bottom-nav"
+      ],
+      "count": 6
+    },
+    "component:text-button+helper:divider": {
+      "items": [
+        "component:text-button",
+        "helper:divider"
+      ],
+      "count": 6
+    },
+    "component:text-button+component:toggle+helper:divider": {
+      "items": [
+        "component:text-button",
+        "component:toggle",
+        "helper:divider"
+      ],
+      "count": 6
+    },
+    "component:checkbox+component:chip+helper:divider": {
+      "items": [
+        "component:checkbox",
+        "component:chip",
+        "helper:divider"
+      ],
+      "count": 5
+    },
+    "component:checkbox+component:text-button+helper:divider": {
+      "items": [
+        "component:checkbox",
+        "component:text-button",
+        "helper:divider"
+      ],
+      "count": 5
+    },
+    "component:input+component:text-button": {
+      "items": [
+        "component:input",
+        "component:text-button"
+      ],
+      "count": 5
+    },
+    "component:button+component:input+helper:divider": {
+      "items": [
+        "component:button",
+        "component:input",
+        "helper:divider"
+      ],
+      "count": 5
+    },
+    "component:input+helper:divider": {
+      "items": [
+        "component:input",
+        "helper:divider"
+      ],
+      "count": 4
+    },
+    "component:input+component:mobile-header": {
+      "items": [
+        "component:input",
+        "component:mobile-header"
+      ],
+      "count": 4
+    },
+    "component:button+helper:divider": {
+      "items": [
+        "component:button",
+        "helper:divider"
+      ],
+      "count": 4
+    },
+    "component:checkbox+component:mobile-header+component:select+helper:divider": {
+      "items": [
+        "component:checkbox",
+        "component:mobile-header",
+        "component:select",
+        "helper:divider"
+      ],
+      "count": 4
+    },
+    "component:chip+component:select": {
+      "items": [
+        "component:chip",
+        "component:select"
+      ],
+      "count": 4
+    },
+    "component:button+component:input+component:mobile-header+component:select": {
+      "items": [
+        "component:button",
+        "component:input",
+        "component:mobile-header",
+        "component:select"
+      ],
+      "count": 3
+    },
+    "component:button+component:tab": {
+      "items": [
+        "component:button",
+        "component:tab"
+      ],
+      "count": 3
+    },
+    "component:mobile-header+component:tab": {
+      "items": [
+        "component:mobile-header",
+        "component:tab"
+      ],
+      "count": 3
+    },
+    "component:chip+component:mobile-header+component:select": {
+      "items": [
+        "component:chip",
+        "component:mobile-header",
+        "component:select"
+      ],
+      "count": 2
+    },
+    "component:button+component:checkbox+component:select": {
+      "items": [
+        "component:button",
+        "component:checkbox",
+        "component:select"
+      ],
+      "count": 2
+    },
+    "component:chip+component:mobile-header+helper:divider": {
+      "items": [
+        "component:chip",
+        "component:mobile-header",
+        "helper:divider"
+      ],
+      "count": 2
+    },
+    "component:tab": {
+      "items": [
+        "component:tab"
+      ],
+      "count": 2
+    },
+    "component:button+component:checkbox+component:input+helper:divider": {
+      "items": [
+        "component:button",
+        "component:checkbox",
+        "component:input",
+        "helper:divider"
+      ],
+      "count": 2
+    },
+    "component:button+component:checkbox+component:input": {
+      "items": [
+        "component:button",
+        "component:checkbox",
+        "component:input"
+      ],
+      "count": 2
+    },
+    "component:button+component:checkbox+helper:divider": {
+      "items": [
+        "component:button",
+        "component:checkbox",
+        "helper:divider"
+      ],
+      "count": 1
+    },
+    "component:button+component:checkbox+component:text-button+helper:divider": {
+      "items": [
+        "component:button",
+        "component:checkbox",
+        "component:text-button",
+        "helper:divider"
+      ],
+      "count": 1
+    },
+    "component:button+component:checkbox+component:mobile-header+helper:divider": {
+      "items": [
+        "component:button",
+        "component:checkbox",
+        "component:mobile-header",
+        "helper:divider"
+      ],
+      "count": 1
+    },
+    "component:checkbox+component:mobile-header+component:select+component:text-button+helper:divider": {
+      "items": [
+        "component:checkbox",
+        "component:mobile-header",
+        "component:select",
+        "component:text-button",
+        "helper:divider"
+      ],
+      "count": 1
+    },
+    "component:mobile-bottom-nav+helper:divider": {
+      "items": [
+        "component:mobile-bottom-nav",
+        "helper:divider"
+      ],
+      "count": 1
+    },
+    "component:input+component:mobile-header+component:tab": {
+      "items": [
+        "component:input",
+        "component:mobile-header",
+        "component:tab"
+      ],
+      "count": 1
+    },
+    "component:button+component:input+component:mobile-header": {
+      "items": [
+        "component:button",
+        "component:input",
+        "component:mobile-header"
+      ],
+      "count": 1
+    },
+    "component:button+component:input+component:radio+component:select": {
+      "items": [
+        "component:button",
+        "component:input",
+        "component:radio",
+        "component:select"
+      ],
+      "count": 1
+    },
+    "component:mobile-header+component:text-button": {
+      "items": [
+        "component:mobile-header",
+        "component:text-button"
+      ],
+      "count": 1
+    },
+    "component:mobile-header+component:text-button+component:toggle+helper:divider": {
+      "items": [
+        "component:mobile-header",
+        "component:text-button",
+        "component:toggle",
+        "helper:divider"
+      ],
+      "count": 1
+    },
+    "component:mobile-header+component:text-button+helper:divider": {
+      "items": [
+        "component:mobile-header",
+        "component:text-button",
+        "helper:divider"
+      ],
+      "count": 1
+    }
+  },
+  "nextGroups": {
+    "__start__": [
+      {
+        "key": "helper:text",
+        "count": 378,
+        "share": 29
+      },
+      {
+        "key": "component:mobile-header",
+        "count": 370,
+        "share": 29
+      },
+      {
+        "key": "component:chip",
+        "count": 228,
+        "share": 18
+      },
+      {
+        "key": "component:button",
+        "count": 61,
+        "share": 5
+      },
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 45,
+        "share": 4
+      },
+      {
+        "key": "component:text-button",
+        "count": 24,
+        "share": 2
+      }
+    ],
+    "component:mobile-header": [
+      {
+        "key": "helper:text",
+        "count": 159,
+        "share": 44
+      },
+      {
+        "key": "component:chip",
+        "count": 33,
+        "share": 9
+      },
+      {
+        "key": "component:input+component:select",
+        "count": 33,
+        "share": 9
+      },
+      {
+        "key": "component:button",
+        "count": 31,
+        "share": 8
+      },
+      {
+        "key": "helper:divider",
+        "count": 20,
+        "share": 5
+      },
+      {
+        "key": "component:input",
+        "count": 19,
+        "share": 5
+      }
+    ],
+    "helper:text": [
+      {
+        "key": "helper:text",
+        "count": 825,
+        "share": 62
+      },
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 246,
+        "share": 19
+      },
+      {
+        "key": "component:button+component:mobile-bottom-nav",
+        "count": 83,
+        "share": 6
+      },
+      {
+        "key": "helper:divider",
+        "count": 47,
+        "share": 4
+      },
+      {
+        "key": "component:button",
+        "count": 36,
+        "share": 3
+      },
+      {
+        "key": "component:button+component:input",
+        "count": 20,
+        "share": 2
+      }
+    ],
+    "component:text-button": [
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 30,
+        "share": 49
+      },
+      {
+        "key": "helper:text",
+        "count": 15,
+        "share": 25
+      },
+      {
+        "key": "component:button+component:mobile-bottom-nav",
+        "count": 13,
+        "share": 21
+      }
+    ],
+    "component:chip": [
+      {
+        "key": "helper:text",
+        "count": 209,
+        "share": 80
+      },
+      {
+        "key": "helper:divider",
+        "count": 22,
+        "share": 8
+      },
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 10,
+        "share": 4
+      },
+      {
+        "key": "component:button",
+        "count": 8,
+        "share": 3
+      },
+      {
+        "key": "component:button+component:checkbox",
+        "count": 3,
+        "share": 1
+      },
+      {
+        "key": "component:button+component:select",
+        "count": 3,
+        "share": 1
+      }
+    ],
+    "component:button": [
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 56,
+        "share": 50
+      },
+      {
+        "key": "helper:text",
+        "count": 18,
+        "share": 16
+      },
+      {
+        "key": "component:button+component:mobile-bottom-nav",
+        "count": 16,
+        "share": 14
+      },
+      {
+        "key": "component:button",
+        "count": 13,
+        "share": 12
+      },
+      {
+        "key": "component:text-button",
+        "count": 3,
+        "share": 3
+      }
+    ],
+    "component:button+component:mobile-header": [
+      {
+        "key": "component:checkbox+helper:divider",
+        "count": 5,
+        "share": 50
+      },
+      {
+        "key": "helper:text",
+        "count": 3,
+        "share": 30
+      }
+    ],
+    "component:input+helper:divider": [
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 3,
+        "share": 75
+      }
+    ],
+    "component:input": [
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 18,
+        "share": 26
+      },
+      {
+        "key": "helper:text",
+        "count": 18,
+        "share": 26
+      },
+      {
+        "key": "component:button+component:mobile-bottom-nav",
+        "count": 12,
+        "share": 18
+      },
+      {
+        "key": "component:input",
+        "count": 12,
+        "share": 18
+      },
+      {
+        "key": "component:button",
+        "count": 3,
+        "share": 4
+      }
+    ],
+    "component:checkbox": [
+      {
+        "key": "component:checkbox",
+        "count": 18,
+        "share": 67
+      },
+      {
+        "key": "component:button+component:mobile-bottom-nav",
+        "count": 6,
+        "share": 22
+      }
+    ],
+    "component:checkbox+helper:divider": [
+      {
+        "key": "component:button+component:mobile-bottom-nav",
+        "count": 11,
+        "share": 61
+      },
+      {
+        "key": "component:button",
+        "count": 7,
+        "share": 39
+      }
+    ],
+    "component:input+component:mobile-header+component:select": [
+      {
+        "key": "helper:divider",
+        "count": 7,
+        "share": 88
+      }
+    ],
+    "component:input+component:select": [
+      {
+        "key": "component:button+component:mobile-bottom-nav",
+        "count": 21,
+        "share": 45
+      },
+      {
+        "key": "component:button",
+        "count": 10,
+        "share": 21
+      },
+      {
+        "key": "helper:divider",
+        "count": 7,
+        "share": 15
+      },
+      {
+        "key": "helper:text",
+        "count": 5,
+        "share": 11
+      }
+    ],
+    "component:button+component:input": [
+      {
+        "key": "component:button+component:mobile-bottom-nav",
+        "count": 14,
+        "share": 35
+      },
+      {
+        "key": "helper:text",
+        "count": 10,
+        "share": 25
+      },
+      {
+        "key": "component:button",
+        "count": 7,
+        "share": 18
+      },
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 6,
+        "share": 15
+      }
+    ],
+    "component:mobile-bottom-nav": [
+      {
+        "key": "helper:text",
+        "count": 6,
+        "share": 50
+      },
+      {
+        "key": "component:button",
+        "count": 3,
+        "share": 25
+      }
+    ],
+    "component:button+component:input+component:select+component:text-button": [
+      {
+        "key": "component:button+component:mobile-bottom-nav",
+        "count": 3,
+        "share": 60
+      }
+    ],
+    "helper:divider": [
+      {
+        "key": "helper:divider",
+        "count": 231,
+        "share": 69
+      },
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 56,
+        "share": 17
+      },
+      {
+        "key": "component:button+component:mobile-bottom-nav",
+        "count": 29,
+        "share": 9
+      },
+      {
+        "key": "helper:text",
+        "count": 13,
+        "share": 4
+      }
+    ],
+    "component:mobile-header+helper:divider": [
+      {
+        "key": "component:input+component:select",
+        "count": 6,
+        "share": 50
+      },
+      {
+        "key": "helper:text",
+        "count": 3,
+        "share": 25
+      }
+    ],
+    "component:mobile-header+component:select": [
+      {
+        "key": "component:text-button",
+        "count": 7,
+        "share": 54
+      },
+      {
+        "key": "helper:text",
+        "count": 4,
+        "share": 31
+      }
+    ],
+    "component:button+component:checkbox": [
+      {
+        "key": "component:button+component:mobile-bottom-nav",
+        "count": 3,
+        "share": 30
+      }
+    ],
+    "component:checkbox+component:radio": [
+      {
+        "key": "component:button+component:mobile-bottom-nav",
+        "count": 5,
+        "share": 71
+      }
+    ],
+    "component:button+component:select": [
+      {
+        "key": "component:button",
+        "count": 3,
+        "share": 38
+      }
+    ],
+    "component:select": [
+      {
+        "key": "helper:text",
+        "count": 8,
+        "share": 50
+      },
+      {
+        "key": "component:text-button",
+        "count": 3,
+        "share": 19
+      }
+    ],
+    "component:checkbox+component:chip+helper:divider": [
+      {
+        "key": "component:checkbox+component:chip+helper:divider",
+        "count": 4,
+        "share": 100
+      }
+    ],
+    "component:checkbox+component:text-button+helper:divider": [
+      {
+        "key": "component:checkbox+component:text-button+helper:divider",
+        "count": 4,
+        "share": 100
+      }
+    ],
+    "component:input+component:text-button": [
+      {
+        "key": "helper:text",
+        "count": 5,
+        "share": 100
+      }
+    ],
+    "component:button+component:tab": [
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 3,
+        "share": 100
+      }
+    ],
+    "component:toggle": [
+      {
+        "key": "component:button",
+        "count": 5,
+        "share": 56
+      }
+    ],
+    "component:chip+component:mobile-header": [
+      {
+        "key": "helper:text",
+        "count": 15,
+        "share": 88
+      }
+    ],
+    "component:button+component:input+helper:divider": [
+      {
+        "key": "component:button+component:mobile-bottom-nav",
+        "count": 5,
+        "share": 100
+      }
+    ],
+    "component:text-button+component:toggle+helper:divider": [
+      {
+        "key": "component:text-button",
+        "count": 6,
+        "share": 100
+      }
+    ]
+  },
+  "nextParts": {
+    "__start__": [
+      {
+        "key": "component:mobile-header",
+        "count": 401,
+        "share": 31
+      },
+      {
+        "key": "helper:text",
+        "count": 378,
+        "share": 29
+      },
+      {
+        "key": "component:chip",
+        "count": 252,
+        "share": 20
+      },
+      {
+        "key": "component:button",
+        "count": 104,
+        "share": 8
+      },
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 45,
+        "share": 4
+      },
+      {
+        "key": "component:input",
+        "count": 42,
+        "share": 3
+      }
+    ],
+    "component:mobile-header": [
+      {
+        "key": "helper:text",
+        "count": 177,
+        "share": 39
+      },
+      {
+        "key": "component:button",
+        "count": 60,
+        "share": 13
+      },
+      {
+        "key": "component:input",
+        "count": 57,
+        "share": 13
+      },
+      {
+        "key": "component:chip",
+        "count": 39,
+        "share": 9
+      },
+      {
+        "key": "helper:divider",
+        "count": 37,
+        "share": 8
+      },
+      {
+        "key": "component:select",
+        "count": 35,
+        "share": 8
+      }
+    ],
+    "helper:text": [
+      {
+        "key": "helper:text",
+        "count": 825,
+        "share": 62
+      },
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 246,
+        "share": 19
+      },
+      {
+        "key": "component:button",
+        "count": 145,
+        "share": 11
+      },
+      {
+        "key": "helper:divider",
+        "count": 47,
+        "share": 4
+      },
+      {
+        "key": "component:input",
+        "count": 24,
+        "share": 2
+      },
+      {
+        "key": "component:text-button",
+        "count": 15,
+        "share": 1
+      }
+    ],
+    "component:text-button": [
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 30,
+        "share": 32
+      },
+      {
+        "key": "helper:text",
+        "count": 21,
+        "share": 23
+      },
+      {
+        "key": "component:button",
+        "count": 18,
+        "share": 19
+      },
+      {
+        "key": "helper:divider",
+        "count": 15,
+        "share": 16
+      },
+      {
+        "key": "component:toggle",
+        "count": 7,
+        "share": 8
+      }
+    ],
+    "component:button": [
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 301,
+        "share": 65
+      },
+      {
+        "key": "component:input",
+        "count": 59,
+        "share": 13
+      },
+      {
+        "key": "component:button",
+        "count": 29,
+        "share": 6
+      },
+      {
+        "key": "component:checkbox",
+        "count": 25,
+        "share": 5
+      },
+      {
+        "key": "helper:text",
+        "count": 18,
+        "share": 4
+      },
+      {
+        "key": "component:mobile-header",
+        "count": 11,
+        "share": 2
+      }
+    ],
+    "component:chip": [
+      {
+        "key": "helper:text",
+        "count": 209,
+        "share": 70
+      },
+      {
+        "key": "component:mobile-header",
+        "count": 28,
+        "share": 9
+      },
+      {
+        "key": "helper:divider",
+        "count": 27,
+        "share": 9
+      },
+      {
+        "key": "component:button",
+        "count": 18,
+        "share": 6
+      },
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 10,
+        "share": 3
+      },
+      {
+        "key": "component:select",
+        "count": 4,
+        "share": 1
+      }
+    ],
+    "component:input": [
+      {
+        "key": "component:select",
+        "count": 57,
+        "share": 27
+      },
+      {
+        "key": "component:button",
+        "count": 40,
+        "share": 19
+      },
+      {
+        "key": "helper:text",
+        "count": 28,
+        "share": 13
+      },
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 24,
+        "share": 11
+      },
+      {
+        "key": "component:mobile-header",
+        "count": 19,
+        "share": 9
+      },
+      {
+        "key": "component:input",
+        "count": 16,
+        "share": 8
+      }
+    ],
+    "helper:divider": [
+      {
+        "key": "helper:divider",
+        "count": 233,
+        "share": 58
+      },
+      {
+        "key": "component:button",
+        "count": 68,
+        "share": 17
+      },
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 61,
+        "share": 15
+      },
+      {
+        "key": "helper:text",
+        "count": 16,
+        "share": 4
+      },
+      {
+        "key": "component:text-button",
+        "count": 10,
+        "share": 2
+      },
+      {
+        "key": "component:checkbox",
+        "count": 8,
+        "share": 2
+      }
+    ],
+    "component:checkbox": [
+      {
+        "key": "helper:divider",
+        "count": 24,
+        "share": 25
+      },
+      {
+        "key": "component:checkbox",
+        "count": 19,
+        "share": 20
+      },
+      {
+        "key": "component:button",
+        "count": 11,
+        "share": 12
+      },
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 8,
+        "share": 8
+      },
+      {
+        "key": "component:radio",
+        "count": 7,
+        "share": 7
+      },
+      {
+        "key": "component:mobile-header",
+        "count": 6,
+        "share": 6
+      }
+    ],
+    "component:select": [
+      {
+        "key": "component:button",
+        "count": 40,
+        "share": 36
+      },
+      {
+        "key": "helper:divider",
+        "count": 24,
+        "share": 22
+      },
+      {
+        "key": "helper:text",
+        "count": 21,
+        "share": 19
+      },
+      {
+        "key": "component:text-button",
+        "count": 18,
+        "share": 16
+      },
+      {
+        "key": "component:input",
+        "count": 5,
+        "share": 5
+      }
+    ],
+    "component:mobile-bottom-nav": [
+      {
+        "key": "component:button",
+        "count": 8,
+        "share": 47
+      },
+      {
+        "key": "helper:text",
+        "count": 6,
+        "share": 35
+      }
+    ],
+    "component:radio": [
+      {
+        "key": "component:button",
+        "count": 7,
+        "share": 88
+      }
+    ],
+    "component:tab": [
+      {
+        "key": "component:button",
+        "count": 5,
+        "share": 45
+      },
+      {
+        "key": "component:mobile-bottom-nav",
+        "count": 3,
+        "share": 27
+      }
+    ],
+    "component:toggle": [
+      {
+        "key": "helper:divider",
+        "count": 7,
+        "share": 44
+      },
+      {
+        "key": "component:button",
+        "count": 5,
+        "share": 31
+      }
+    ]
+  },
+  "unmappedTop": [
+    {
+      "name": "More",
+      "count": 595
+    },
+    {
+      "name": "icon/arrow",
+      "count": 481
+    },
+    {
+      "name": "close",
+      "count": 394
+    },
+    {
+      "name": "menu(hamburger)",
+      "count": 324
+    },
+    {
+      "name": "dome camera",
+      "count": 304
+    },
+    {
+      "name": "under security",
+      "count": 303
+    },
+    {
+      "name": "home",
+      "count": 301
+    },
+    {
+      "name": "menu_arrow_right",
+      "count": 267
+    },
+    {
+      "name": "m_bar",
+      "count": 253
+    },
+    {
+      "name": "menu_arrow_down",
+      "count": 219
+    },
+    {
+      "name": "ok",
+      "count": 193
+    },
+    {
+      "name": "icon/combobox_arrow",
+      "count": 154
+    },
+    {
+      "name": "dome camera trouble",
+      "count": 90
+    },
+    {
+      "name": "refresh",
+      "count": 86
+    },
+    {
+      "name": "setting",
+      "count": 85
+    },
+    {
+      "name": "security",
+      "count": 78
+    },
+    {
+      "name": "search",
+      "count": 77
+    },
+    {
+      "name": "view rotate",
+      "count": 75
+    },
+    {
+      "name": "push new",
+      "count": 72
+    },
+    {
+      "name": "Remove",
+      "count": 71
+    },
+    {
+      "name": "release",
+      "count": 67
+    },
+    {
+      "name": "plus",
+      "count": 66
+    },
+    {
+      "name": "caution 2",
+      "count": 65
+    },
+    {
+      "name": "etc_vertical",
+      "count": 64
+    },
+    {
+      "name": "tools",
+      "count": 60
+    },
+    {
+      "name": "camera",
+      "count": 56
+    },
+    {
+      "name": "pw off",
+      "count": 45
+    },
+    {
+      "name": "FF",
+      "count": 42
+    },
+    {
+      "name": "rewind",
+      "count": 42
+    },
+    {
+      "name": "pause",
+      "count": 40
+    }
+  ]
+}
