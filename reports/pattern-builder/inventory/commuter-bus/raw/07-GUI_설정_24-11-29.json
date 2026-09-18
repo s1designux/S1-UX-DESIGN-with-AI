@@ -1,0 +1,406 @@
+{
+  "_meta": {
+    "source": "figma:rest",
+    "page": {
+      "name": "GUI_설정_24.11.29",
+      "nodeId": "2045:88083"
+    },
+    "generatedAt": "2026-09-18",
+    "note": "기계 판독 원자료. 사람이 해석한 판독표는 같은 폴더의 md 에 쓴다."
+  },
+  "screenCount": 10,
+  "screens": [
+    {
+      "id": "4904:1240",
+      "name": "설정",
+      "section": null,
+      "size": "360x812",
+      "nodeCount": 13,
+      "components": [
+        {
+          "name": "M/Setting/toggle",
+          "count": 4
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 3
+        },
+        {
+          "name": "M/Header/Title",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "M/phone_navi",
+          "count": 1
+        },
+        {
+          "name": "M/StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Home/Table-btn/more",
+          "count": 1
+        },
+        {
+          "name": "M/BTN/Update",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "13152:418607",
+      "name": "설정_게스트 로그인 Case",
+      "section": null,
+      "size": "360x812",
+      "nodeCount": 8,
+      "components": [
+        {
+          "name": "C/List/tabel_bar",
+          "count": 2
+        },
+        {
+          "name": "M/Header/Title",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "M/phone_navi",
+          "count": 1
+        },
+        {
+          "name": "M/StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "M/Setting/toggle",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Home/Table-btn/more",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "2160:144454",
+      "name": "설정_버전정보_최신 버전 아닐 시 case",
+      "section": null,
+      "size": "360x812",
+      "nodeCount": 13,
+      "components": [
+        {
+          "name": "M/Setting/toggle",
+          "count": 4
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 3
+        },
+        {
+          "name": "M/Header/Title",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "M/phone_navi",
+          "count": 1
+        },
+        {
+          "name": "M/StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Home/Table-btn/more",
+          "count": 1
+        },
+        {
+          "name": "M/BTN/Update",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4853:401179",
+      "name": "설정_버전정보_최신 버전 case",
+      "section": null,
+      "size": "360x812",
+      "nodeCount": 12,
+      "components": [
+        {
+          "name": "M/Setting/toggle",
+          "count": 4
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 3
+        },
+        {
+          "name": "M/Header/Title",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "M/phone_navi",
+          "count": 1
+        },
+        {
+          "name": "M/StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Home/Table-btn/more",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "17331:292512",
+      "name": "설정_버전정보_최신 버전 case_영문",
+      "section": null,
+      "size": "360x812",
+      "nodeCount": 12,
+      "components": [
+        {
+          "name": "M/Setting/toggle",
+          "count": 4
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 3
+        },
+        {
+          "name": "M/Header/Title",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "M/phone_navi",
+          "count": 1
+        },
+        {
+          "name": "M/StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Home/Table-btn/more",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4904:1441",
+      "name": "설정_언어설정 바텀시트",
+      "section": null,
+      "size": "360x812",
+      "nodeCount": 17,
+      "components": [
+        {
+          "name": "M/Setting/toggle",
+          "count": 4
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 3
+        },
+        {
+          "name": "W/ICON/Home/Table-btn/more",
+          "count": 2
+        },
+        {
+          "name": "M/Header/Title",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "M/phone_navi",
+          "count": 1
+        },
+        {
+          "name": "M/StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "M/BTN/Update",
+          "count": 1
+        },
+        {
+          "name": "C/BOTTOM-SHEET",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "2119:66509",
+      "name": "이용약관 화면 default",
+      "section": null,
+      "size": "360x812",
+      "nodeCount": 4,
+      "components": [
+        {
+          "name": "M/phone_navi",
+          "count": 1
+        },
+        {
+          "name": "M/StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "M/Header/Title",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/Header",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "2119:66514",
+      "name": "이용약관 화면_상/하 스크롤",
+      "section": null,
+      "size": "360x812",
+      "nodeCount": 4,
+      "components": [
+        {
+          "name": "M/phone_navi",
+          "count": 1
+        },
+        {
+          "name": "M/StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "M/Header/Title",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/Header",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "2119:66593",
+      "name": "위치기반 서비스 이용약관 화면 Default",
+      "section": null,
+      "size": "360x812",
+      "nodeCount": 4,
+      "components": [
+        {
+          "name": "M/phone_navi",
+          "count": 1
+        },
+        {
+          "name": "M/StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "M/Header/Title",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/Header",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "2119:66598",
+      "name": "위치기반 서비스 이용약관 화면_상/하 스크롤 Case",
+      "section": null,
+      "size": "360x812",
+      "nodeCount": 4,
+      "components": [
+        {
+          "name": "M/phone_navi",
+          "count": 1
+        },
+        {
+          "name": "M/StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "M/Header/Title",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/Header",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "componentUsage": [
+    {
+      "name": "M/Setting/toggle",
+      "count": 21
+    },
+    {
+      "name": "C/List/tabel_bar",
+      "count": 17
+    },
+    {
+      "name": "M/Header/Title",
+      "count": 10
+    },
+    {
+      "name": "M/ICON/Header",
+      "count": 10
+    },
+    {
+      "name": "M/phone_navi",
+      "count": 10
+    },
+    {
+      "name": "M/StatusBar ",
+      "count": 10
+    },
+    {
+      "name": "W/ICON/Home/Table-btn/more",
+      "count": 7
+    },
+    {
+      "name": "M/BTN/Update",
+      "count": 3
+    },
+    {
+      "name": "C/BOTTOM-SHEET",
+      "count": 1
+    },
+    {
+      "name": "C/ICON/Bottomsheet",
+      "count": 1
+    },
+    {
+      "name": "C/BTN/basic_L",
+      "count": 1
+    }
+  ]
+}

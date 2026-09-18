@@ -1,0 +1,7228 @@
+{
+  "_meta": {
+    "source": "figma:rest",
+    "page": {
+      "name": "GUI_귀성버스 신청_24.11.29",
+      "nodeId": "3972:212669"
+    },
+    "generatedAt": "2026-09-18",
+    "note": "기계 판독 원자료. 사람이 해석한 판독표는 같은 폴더의 md 에 쓴다."
+  },
+  "screenCount": 66,
+  "screens": [
+    {
+      "id": "4461:63702",
+      "name": "귀성버스 신청_예약하기_최소 인원 안내 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 77,
+      "components": [
+        {
+          "name": "W/INPUT-FIELD/Board/regitration/sub",
+          "count": 18
+        },
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/INPUT-FIELD/Board",
+          "count": 4
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 4
+        },
+        {
+          "name": "C/ICON/Detail/List/delete",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4004:31999",
+      "name": "귀성버스신청_신청안내",
+      "section": null,
+      "size": "1920x1355",
+      "nodeCount": 34,
+      "components": [
+        {
+          "name": "W/TAB/timetable",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "W/TAB/timetable_case",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Request/card",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Board/registration/filter",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4904:51940",
+      "name": "귀성버스신청_Default_운행계획",
+      "section": null,
+      "size": "1920x1355",
+      "nodeCount": 34,
+      "components": [
+        {
+          "name": "W/TAB/timetable",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "W/TAB/timetable_case",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Request/card",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Board/registration/filter",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "12893:407242",
+      "name": "귀성버스신청_접수 기간 확인 안내 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 37,
+      "components": [
+        {
+          "name": "W/TAB/timetable",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "W/TAB/timetable_case",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Request/card",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Board/registration/filter",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "12893:407401",
+      "name": "귀성버스신청_추가 접수 기간 확인 안내 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 37,
+      "components": [
+        {
+          "name": "W/TAB/timetable",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "W/TAB/timetable_case",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Request/card",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Board/registration/filter",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "12893:407559",
+      "name": "귀성버스신청_예약 불가 안내 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 37,
+      "components": [
+        {
+          "name": "W/TAB/timetable",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "W/TAB/timetable_case",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Request/card",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Board/registration/filter",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "12893:407717",
+      "name": "귀성버스신청_예약 내역 확인 불가 안내 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 37,
+      "components": [
+        {
+          "name": "W/TAB/timetable",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "W/TAB/timetable_case",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Request/card",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Board/registration/filter",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "8103:83173",
+      "name": "귀성버스신청_Default_운행계획_사업장 선택 드롭박스",
+      "section": null,
+      "size": "1920x1355",
+      "nodeCount": 49,
+      "components": [
+        {
+          "name": "W/DROPDOWN/Dropdown_L/list",
+          "count": 13
+        },
+        {
+          "name": "W/TAB/timetable",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "W/DROPDOWN/Board/registration/filter",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "W/TAB/timetable_case",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Request/card",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "8103:83343",
+      "name": "귀성버스신청_Default_운행계획_사업장 선택 드롭박스_삼성디스플레이 아산",
+      "section": null,
+      "size": "1920x1355",
+      "nodeCount": 49,
+      "components": [
+        {
+          "name": "W/DROPDOWN/Dropdown_L/list",
+          "count": 13
+        },
+        {
+          "name": "W/TAB/timetable",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "W/DROPDOWN/Board/registration/filter",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "W/TAB/timetable_case",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Request/card",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "7161:237960",
+      "name": "귀성버스신청_Default_운행계획_등록된 이미지 없는 경우 case",
+      "section": null,
+      "size": "1920x1355",
+      "nodeCount": 33,
+      "components": [
+        {
+          "name": "W/TAB/timetable",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/emoji",
+          "count": 1
+        },
+        {
+          "name": "W/TAB/timetable_case",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Request/card",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Board/registration/filter",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "6176:205363",
+      "name": "귀성버스신청_Default_사업장 미노출 case",
+      "section": null,
+      "size": "1920x1355",
+      "nodeCount": 32,
+      "components": [
+        {
+          "name": "W/TAB/timetable",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "W/TAB/timetable_case",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Request/card",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4004:32131",
+      "name": "귀성버스신청_이용요금표",
+      "section": null,
+      "size": "1920x1355",
+      "nodeCount": 34,
+      "components": [
+        {
+          "name": "W/TAB/timetable",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "W/TAB/timetable_case",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Request/card",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Board/registration/filter",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4004:32263",
+      "name": "귀성버스신청_귀사차량 출발시간",
+      "section": null,
+      "size": "1920x1355",
+      "nodeCount": 34,
+      "components": [
+        {
+          "name": "W/TAB/timetable",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "W/TAB/timetable_case",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Request/card",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Board/registration/filter",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4004:32395",
+      "name": "귀성버스신청_귀사 탑승위치",
+      "section": null,
+      "size": "1920x1355",
+      "nodeCount": 34,
+      "components": [
+        {
+          "name": "W/TAB/timetable",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "W/TAB/timetable_case",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Request/card",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Board/registration/filter",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4004:32779",
+      "name": "귀성버스 신청_노선선택_기흥화성",
+      "section": null,
+      "size": "1920x1941",
+      "nodeCount": 102,
+      "components": [
+        {
+          "name": "C/BTN/basic_S",
+          "count": 17
+        },
+        {
+          "name": "W/Reservation/list",
+          "count": 15
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L/list",
+          "count": 13
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 6
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L",
+          "count": 1
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "18043:164267",
+      "name": "귀성버스 신청_노선선택_영문",
+      "section": null,
+      "size": "1920x1959",
+      "nodeCount": 101,
+      "components": [
+        {
+          "name": "C/BTN/basic_S",
+          "count": 17
+        },
+        {
+          "name": "W/Reservation/list",
+          "count": 15
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L/list",
+          "count": 13
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 6
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "14691:278605",
+      "name": "C/BTN/basic_S",
+      "section": null,
+      "size": "88x34",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "12892:34791",
+      "name": "귀성버스 신청_노선선택_평택",
+      "section": null,
+      "size": "1920x1941",
+      "nodeCount": 102,
+      "components": [
+        {
+          "name": "C/BTN/basic_S",
+          "count": 17
+        },
+        {
+          "name": "W/Reservation/list",
+          "count": 15
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L/list",
+          "count": 13
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 6
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4255:18158",
+      "name": "귀성버스 신청_보기개수 리스트_펼침",
+      "section": null,
+      "size": "1920x1941",
+      "nodeCount": 102,
+      "components": [
+        {
+          "name": "C/BTN/basic_S",
+          "count": 17
+        },
+        {
+          "name": "W/Reservation/list",
+          "count": 15
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L/list",
+          "count": 13
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 6
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "12990:418670",
+      "name": "귀성버스 신청_검색 결과 없음",
+      "section": null,
+      "size": "1920x1362",
+      "nodeCount": 74,
+      "components": [
+        {
+          "name": "W/DROPDOWN/Dropdown_L/list",
+          "count": 13
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 6
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/emoji",
+          "count": 1
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4255:14265",
+      "name": "귀성버스 신청_노선선택_귀성 선택 드롭박스 리스트",
+      "section": null,
+      "size": "1920x1941",
+      "nodeCount": 117,
+      "components": [
+        {
+          "name": "W/DROPDOWN/Dropdown_L/list",
+          "count": 26
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 17
+        },
+        {
+          "name": "W/Reservation/list",
+          "count": 15
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 7
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4255:15480",
+      "name": "귀성버스 신청_노선선택_사업장 선택 드롭박스 리스트",
+      "section": null,
+      "size": "1920x1941",
+      "nodeCount": 117,
+      "components": [
+        {
+          "name": "W/DROPDOWN/Dropdown_L/list",
+          "count": 26
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 17
+        },
+        {
+          "name": "W/Reservation/list",
+          "count": 15
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 7
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4255:15882",
+      "name": "귀성버스 신청_노선선택_버스 선택 드롭박스 리스트",
+      "section": null,
+      "size": "1920x1941",
+      "nodeCount": 117,
+      "components": [
+        {
+          "name": "W/DROPDOWN/Dropdown_L/list",
+          "count": 26
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 17
+        },
+        {
+          "name": "W/Reservation/list",
+          "count": 15
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 7
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4255:16081",
+      "name": "귀성버스 신청_노선선택_귀성 출발일자 드롭박스 리스트",
+      "section": null,
+      "size": "1920x1941",
+      "nodeCount": 117,
+      "components": [
+        {
+          "name": "W/DROPDOWN/Dropdown_L/list",
+          "count": 26
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 17
+        },
+        {
+          "name": "W/Reservation/list",
+          "count": 15
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 7
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4004:59950",
+      "name": "귀성버스 신청_개인정보 수집 및 이용 동의",
+      "section": null,
+      "size": "1920x2030",
+      "nodeCount": 43,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 12
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 1
+        },
+        {
+          "name": "C/SELECT-CONTROL/checkbox",
+          "count": 1
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "15388:433770",
+      "name": "귀성버스 신청_개인정보 수집 및 이용 동의_영문",
+      "section": null,
+      "size": "1920x2030",
+      "nodeCount": 42,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 12
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 1
+        },
+        {
+          "name": "C/SELECT-CONTROL/checkbox",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4255:21504",
+      "name": "귀성버스 신청_개인정보 수집 및 이용 동의_휴대전화번호 입력완료",
+      "section": null,
+      "size": "1920x3261",
+      "nodeCount": 72,
+      "components": [
+        {
+          "name": "W/INPUT-FIELD/Board/regitration/sub",
+          "count": 18
+        },
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/INPUT-FIELD/Board",
+          "count": 4
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/List/delete",
+          "count": 1
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "15880:120378",
+      "name": "귀성버스 신청_개인정보 수집 및 이용 동의_휴대전화번호 입력완료_영문",
+      "section": null,
+      "size": "1920x3261",
+      "nodeCount": 71,
+      "components": [
+        {
+          "name": "W/INPUT-FIELD/Board/regitration/sub",
+          "count": 18
+        },
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/INPUT-FIELD/Board",
+          "count": 4
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/List/delete",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "8502:187560",
+      "name": "귀성버스 신청_개인정보 수집 및 이용 동의_휴대전화번호 입력중",
+      "section": null,
+      "size": "1920x3261",
+      "nodeCount": 75,
+      "components": [
+        {
+          "name": "W/INPUT-FIELD/Board/regitration/sub",
+          "count": 18
+        },
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 6
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/INPUT-FIELD/Board",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "C/Icon/Account/Password",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4255:20574",
+      "name": "귀성버스 신청_예약하기_도착지 선택 드롭박스 리스트+탑승자 정보입력 인풋필드 영역 공통",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 93,
+      "components": [
+        {
+          "name": "W/INPUT-FIELD/Board/regitration/sub",
+          "count": 18
+        },
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L/list",
+          "count": 13
+        },
+        {
+          "name": "W/INPUT-FIELD/Board",
+          "count": 4
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 4
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/ICON/Detail/List/delete",
+          "count": 3
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "C/Icon/Account/Password",
+          "count": 2
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4255:21067",
+      "name": "귀성버스 신청_예약하기_예약 완료 안내 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 77,
+      "components": [
+        {
+          "name": "W/INPUT-FIELD/Board/regitration/sub",
+          "count": 18
+        },
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/INPUT-FIELD/Board",
+          "count": 4
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 4
+        },
+        {
+          "name": "C/ICON/Detail/List/delete",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "12893:408412",
+      "name": "귀성버스 신청_예약하기_이름 입력 안내 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 77,
+      "components": [
+        {
+          "name": "W/INPUT-FIELD/Board/regitration/sub",
+          "count": 18
+        },
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/INPUT-FIELD/Board",
+          "count": 4
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 4
+        },
+        {
+          "name": "C/ICON/Detail/List/delete",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "12893:408790",
+      "name": "귀성버스 신청_예약하기_생년월일 입력 안내 팝업_미입력 시",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 77,
+      "components": [
+        {
+          "name": "W/INPUT-FIELD/Board/regitration/sub",
+          "count": 18
+        },
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/INPUT-FIELD/Board",
+          "count": 4
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 4
+        },
+        {
+          "name": "C/ICON/Detail/List/delete",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "12893:409168",
+      "name": "귀성버스 신청_예약하기_생년월일 입력 안내 팝업_6자리 미만 입력 시",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 77,
+      "components": [
+        {
+          "name": "W/INPUT-FIELD/Board/regitration/sub",
+          "count": 18
+        },
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/INPUT-FIELD/Board",
+          "count": 4
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 4
+        },
+        {
+          "name": "C/ICON/Detail/List/delete",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "12893:409546",
+      "name": "귀성버스 신청_예약하기_휴대전화번호 입력 안내 팝업_유효한 자리수  미만 입력 시",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 77,
+      "components": [
+        {
+          "name": "W/INPUT-FIELD/Board/regitration/sub",
+          "count": 18
+        },
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/INPUT-FIELD/Board",
+          "count": 4
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 4
+        },
+        {
+          "name": "C/ICON/Detail/List/delete",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4461:63320",
+      "name": "귀성버스 신청_예약하기_휴대전화번호 입력 안내 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 77,
+      "components": [
+        {
+          "name": "W/INPUT-FIELD/Board/regitration/sub",
+          "count": 18
+        },
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/INPUT-FIELD/Board",
+          "count": 4
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 4
+        },
+        {
+          "name": "C/ICON/Detail/List/delete",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4461:63954",
+      "name": "귀성버스 신청_예약하기_입력 안내 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 77,
+      "components": [
+        {
+          "name": "W/INPUT-FIELD/Board/regitration/sub",
+          "count": 18
+        },
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/INPUT-FIELD/Board",
+          "count": 4
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 4
+        },
+        {
+          "name": "C/ICON/Detail/List/delete",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "7246:27297",
+      "name": "귀성버스 신청_예약하기_이전 페이지 이동 안내 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 78,
+      "components": [
+        {
+          "name": "W/INPUT-FIELD/Board/regitration/sub",
+          "count": 18
+        },
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/INPUT-FIELD/Board",
+          "count": 4
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 4
+        },
+        {
+          "name": "C/ICON/Detail/List/delete",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4243:4794",
+      "name": "귀성버스_상세보기_예약 수정",
+      "section": null,
+      "size": "1920x3244",
+      "nodeCount": 72,
+      "components": [
+        {
+          "name": "W/INPUT-FIELD/Board/regitration/sub",
+          "count": 18
+        },
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 8
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/INPUT-FIELD/Board",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/List/delete",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4279:7891",
+      "name": "귀성버스_상세보기_예약 수정_수정 확인 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 78,
+      "components": [
+        {
+          "name": "W/INPUT-FIELD/Board/regitration/sub",
+          "count": 18
+        },
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/INPUT-FIELD/Board",
+          "count": 4
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 4
+        },
+        {
+          "name": "C/ICON/Detail/List/delete",
+          "count": 4
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4279:8270",
+      "name": "귀성버스_상세보기_예약 수정_수정 완료 안내 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 78,
+      "components": [
+        {
+          "name": "W/INPUT-FIELD/Board/regitration/sub",
+          "count": 18
+        },
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/INPUT-FIELD/Board",
+          "count": 4
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 4
+        },
+        {
+          "name": "C/ICON/Detail/List/delete",
+          "count": 4
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4175:186475",
+      "name": "귀성버스 신청_예약하기(STEP4예약완료)",
+      "section": null,
+      "size": "1920x2708",
+      "nodeCount": 55,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 23
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 6
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "17098:257369",
+      "name": "귀성버스 신청_예약하기(STEP4예약완료)_영문",
+      "section": null,
+      "size": "1920x2712",
+      "nodeCount": 52,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 23
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4243:4209",
+      "name": "귀성버스_예약확인/취소_상세보기_영문",
+      "section": null,
+      "size": "1920x2559",
+      "nodeCount": 50,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 23
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "16014:433303",
+      "name": "귀성버스_예약확인/취소_상세보기",
+      "section": null,
+      "size": "1920x2559",
+      "nodeCount": 50,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 23
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4243:4498",
+      "name": "귀성버스_예약확인/취소_상세보기_예약취소확인팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 54,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 23
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 4
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 3
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4279:7293",
+      "name": "귀성버스_예약확인/취소_상세보기_예약취소안내팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 53,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 23
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 3
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 3
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4279:7590",
+      "name": "귀성버스_예약확인/취소_상세보기_수정불가안내팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 53,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 23
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 3
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 3
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4175:192954",
+      "name": "귀성버스_예약확인/취소_예약 내역 있는 case",
+      "section": null,
+      "size": "1920x1207",
+      "nodeCount": 38,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "15880:121122",
+      "name": "귀성버스_예약확인/취소_예약 내역 있는 case_영문",
+      "section": null,
+      "size": "1920x1207",
+      "nodeCount": 38,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "17518:104885",
+      "name": "귀성버스_예약확인/취소_예약 내역 있는 case_영문",
+      "section": null,
+      "size": "1920x1223",
+      "nodeCount": 38,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4175:193872",
+      "name": "귀성버스_예약확인/취소_예약 내역 없음 Case",
+      "section": null,
+      "size": "1920x1166",
+      "nodeCount": 39,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 15
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/emoji",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "13152:410636",
+      "name": "귀성버스 신청_예약 확인_예약 상세_승차권 발송_승차권 발송 확인 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 35,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/SELECT-CONTROL/checkbox",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "15337:157880",
+      "name": "귀성버스 신청_예약 확인_예약 상세_승차권 발송_승차권 탑승자 체크 안내 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 34,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/SELECT-CONTROL/checkbox",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "15337:158080",
+      "name": "귀성버스 신청_예약 확인_예약 상세_승차권 발송_승차권 발송 불가 안내 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 34,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/SELECT-CONTROL/checkbox",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "13152:410874",
+      "name": "귀성버스 신청_예약 확인_예약 상세_승차권 발송_승차권 발송 완료 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 34,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/SELECT-CONTROL/checkbox",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "13152:410294",
+      "name": "귀성버스 신청_예약 확인_예약 상세_승차권 발송",
+      "section": null,
+      "size": "1920x1166",
+      "nodeCount": 31,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "C/SELECT-CONTROL/checkbox",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "17596:105367",
+      "name": "귀성버스 신청_예약 확인_예약 상세_승차권 발송_승차권 리스트_발송내역 영역_발송 내역이 2회인 경우",
+      "section": null,
+      "size": "1920x1166",
+      "nodeCount": 31,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 5
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 2
+        },
+        {
+          "name": "C/SELECT-CONTROL/checkbox",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4129:228677",
+      "name": "귀성버스 신청_개인정보 수집 및 이용 동의_귀성버스 발권 예약 안내 팝업_default",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 46,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 12
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 1
+        },
+        {
+          "name": "C/SELECT-CONTROL/checkbox",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "6349:117650",
+      "name": "귀성버스 신청_개인정보 수집 및 이용 동의_귀성버스 발권 예약 안내 팝업_안내 이미지 노출",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 45,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 12
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 1
+        },
+        {
+          "name": "C/SELECT-CONTROL/checkbox",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4255:20304",
+      "name": "귀성버스 신청_개인정보 수집 및 이용 동의_개인정보 수집 및 이용동의 안내 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 43,
+      "components": [
+        {
+          "name": "W/Board/table/form_label_title",
+          "count": 12
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "M/ICON/caution",
+          "count": 1
+        },
+        {
+          "name": "C/SELECT-CONTROL/checkbox",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4004:59643",
+      "name": "귀성버스 신청_노선선택_신청 불가 안내 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 103,
+      "components": [
+        {
+          "name": "C/BTN/basic_S",
+          "count": 16
+        },
+        {
+          "name": "W/Reservation/list",
+          "count": 15
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L/list",
+          "count": 13
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 6
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 5
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "12892:34356",
+      "name": "귀성버스 신청_노선선택_예약 가능 장수 초과 안내 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 103,
+      "components": [
+        {
+          "name": "C/BTN/basic_S",
+          "count": 16
+        },
+        {
+          "name": "W/Reservation/list",
+          "count": 15
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L/list",
+          "count": 13
+        },
+        {
+          "name": "W/DROPDOWN/combobox/timetable",
+          "count": 6
+        },
+        {
+          "name": "W/BTN/Detail/Pagination/page_num",
+          "count": 6
+        },
+        {
+          "name": "Btn/Page/Num/Normal Copy",
+          "count": 6
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 5
+        },
+        {
+          "name": "\bW/Request/registration/step_ic",
+          "count": 4
+        },
+        {
+          "name": "W/BTN/Deatail/Pagination/page_arrow",
+          "count": 4
+        },
+        {
+          "name": "W/ICON/Detail/Pagination/arrow",
+          "count": 4
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "\bW/Request/registration/step_4",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/PAGINATION/Detail",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "4461:74214",
+      "name": "웹_귀성버스 신청_1119",
+      "section": null,
+      "size": "13470x1121",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "7607:91785",
+      "name": "전체_기본 정보 수정_저장 완료 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 84,
+      "components": [
+        {
+          "name": "W/DROPDOWN/Dropdown_L/list",
+          "count": 26
+        },
+        {
+          "name": "W/INPUT-FIELD/Board",
+          "count": 8
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 7
+        },
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/DROPDOWN/Board/registration/filter",
+          "count": 4
+        },
+        {
+          "name": "W/SELECT-CONTROL/Board/registration/radio",
+          "count": 4
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 3
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 2
+        },
+        {
+          "name": "W/DROPDOWN/Dropdown_L",
+          "count": 2
+        },
+        {
+          "name": "C/SELECT-CONTROL/checkbox",
+          "count": 2
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/List/delete",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Board/registration_tooltip",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bM/Button/all/more_textbtn",
+          "count": 1
+        },
+        {
+          "name": "C/INPUT-FIELD/Certification-Number",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "7902:158199",
+      "name": "게시글 등록_공통_내가 쓴 글 수정 Case_수정 완료 안내 팝업",
+      "section": null,
+      "size": "1920x1080",
+      "nodeCount": 37,
+      "components": [
+        {
+          "name": "W/GNB/topbar/tab",
+          "count": 4
+        },
+        {
+          "name": "W/INPUT-FIELD/Board",
+          "count": 2
+        },
+        {
+          "name": "C/Icon/Input/search",
+          "count": 2
+        },
+        {
+          "name": "ic_more_w",
+          "count": 2
+        },
+        {
+          "name": "W/SELECT-CONTROL/Board/registration/radio",
+          "count": 2
+        },
+        {
+          "name": "C/BTN/basic_L",
+          "count": 2
+        },
+        {
+          "name": "W/DROPDOWN/Board/registration/filter",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Detail/Filter/arrow",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Board/registration_tooltip",
+          "count": 1
+        },
+        {
+          "name": "W/Footer",
+          "count": 1
+        },
+        {
+          "name": "C/List/tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/S1_g",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/Header",
+          "count": 1
+        },
+        {
+          "name": "W/DROPDOWN/Header/language",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Header/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "W/BTN/Header/myaccount",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB",
+          "count": 1
+        },
+        {
+          "name": "C/IMG/Logo/Samung+bus",
+          "count": 1
+        },
+        {
+          "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/GNB",
+          "count": 1
+        },
+        {
+          "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+          "count": 1
+        },
+        {
+          "name": "C/INPUT-FIELD/Board/registration/context",
+          "count": 1
+        },
+        {
+          "name": "W/List/Popup/buscompany",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Popup/no-list",
+          "count": 1
+        },
+        {
+          "name": "W/ICON/Board/registration/input/size-control",
+          "count": 1
+        },
+        {
+          "name": "W/POPUP/Detail/popup",
+          "count": 1
+        },
+        {
+          "name": "C/ICON/Bottomsheet",
+          "count": 1
+        },
+        {
+          "name": "C/BTN/basic_S",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "componentUsage": [
+    {
+      "name": "W/Board/table/form_label_title",
+      "count": 551
+    },
+    {
+      "name": "C/BTN/basic_S",
+      "count": 290
+    },
+    {
+      "name": "W/INPUT-FIELD/Board/regitration/sub",
+      "count": 288
+    },
+    {
+      "name": "W/DROPDOWN/Dropdown_L/list",
+      "count": 260
+    },
+    {
+      "name": "W/GNB/topbar/tab",
+      "count": 256
+    },
+    {
+      "name": "W/Reservation/list",
+      "count": 150
+    },
+    {
+      "name": "\bW/Request/registration/step_ic",
+      "count": 128
+    },
+    {
+      "name": "ic_more_w",
+      "count": 128
+    },
+    {
+      "name": "C/BTN/basic_L",
+      "count": 115
+    },
+    {
+      "name": "W/DROPDOWN/combobox/timetable",
+      "count": 87
+    },
+    {
+      "name": "C/ICON/Detail/Filter/arrow",
+      "count": 86
+    },
+    {
+      "name": "W/INPUT-FIELD/Board",
+      "count": 74
+    },
+    {
+      "name": "M/ICON/caution",
+      "count": 67
+    },
+    {
+      "name": "C/List/tabel_bar",
+      "count": 67
+    },
+    {
+      "name": "W/BTN/Detail/Pagination/page_num",
+      "count": 66
+    },
+    {
+      "name": "Btn/Page/Num/Normal Copy",
+      "count": 66
+    },
+    {
+      "name": "W/TAB/timetable",
+      "count": 65
+    },
+    {
+      "name": "\bW/TOP-MENU/Header",
+      "count": 64
+    },
+    {
+      "name": "W/DROPDOWN/Header/language",
+      "count": 64
+    },
+    {
+      "name": "W/ICON/Header",
+      "count": 64
+    },
+    {
+      "name": "W/ICON/Header/combobox_arrow",
+      "count": 64
+    },
+    {
+      "name": "W/BTN/Header/myaccount",
+      "count": 64
+    },
+    {
+      "name": "\bW/TOP-MENU/GNB",
+      "count": 64
+    },
+    {
+      "name": "C/IMG/Logo/Samung+bus",
+      "count": 64
+    },
+    {
+      "name": "Samsung_Orig_Wordmark_BLACK_RGB 2",
+      "count": 64
+    },
+    {
+      "name": "W/ICON/GNB",
+      "count": 64
+    },
+    {
+      "name": "\bW/TOP-MENU/GNB/breadcrumbs",
+      "count": 64
+    },
+    {
+      "name": "W/Footer",
+      "count": 64
+    },
+    {
+      "name": "C/IMG/Logo/S1_g",
+      "count": 64
+    },
+    {
+      "name": "C/Icon/Input/search",
+      "count": 57
+    },
+    {
+      "name": "W/BTN/Deatail/Pagination/page_arrow",
+      "count": 44
+    },
+    {
+      "name": "W/ICON/Detail/Pagination/arrow",
+      "count": 44
+    },
+    {
+      "name": "C/ICON/Detail/List/delete",
+      "count": 42
+    },
+    {
+      "name": "W/POPUP/Detail/popup",
+      "count": 29
+    },
+    {
+      "name": "C/ICON/Bottomsheet",
+      "count": 29
+    },
+    {
+      "name": "\bW/Request/registration/step_4",
+      "count": 27
+    },
+    {
+      "name": "W/DROPDOWN/Dropdown_L",
+      "count": 20
+    },
+    {
+      "name": "W/DROPDOWN/Board/registration/filter",
+      "count": 19
+    },
+    {
+      "name": "C/SELECT-CONTROL/checkbox",
+      "count": 19
+    },
+    {
+      "name": "W/List/Popup/buscompany",
+      "count": 16
+    },
+    {
+      "name": "W/ICON/Popup/no-list",
+      "count": 14
+    },
+    {
+      "name": "W/TAB/timetable_case",
+      "count": 13
+    },
+    {
+      "name": "W/ICON/Request/card",
+      "count": 13
+    },
+    {
+      "name": "\bW/PAGINATION/Detail",
+      "count": 11
+    },
+    {
+      "name": "W/SELECT-CONTROL/Board/registration/radio",
+      "count": 6
+    },
+    {
+      "name": "C/Icon/Account/Password",
+      "count": 4
+    },
+    {
+      "name": "C/IMG/emoji",
+      "count": 3
+    },
+    {
+      "name": "W/ICON/Board/registration_tooltip",
+      "count": 2
+    },
+    {
+      "name": "\bM/Button/all/more_textbtn",
+      "count": 1
+    },
+    {
+      "name": "C/INPUT-FIELD/Certification-Number",
+      "count": 1
+    },
+    {
+      "name": "C/INPUT-FIELD/Board/registration/context",
+      "count": 1
+    },
+    {
+      "name": "W/ICON/Board/registration/input/size-control",
+      "count": 1
+    }
+  ]
+}

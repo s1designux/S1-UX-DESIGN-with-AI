@@ -61,6 +61,8 @@
         </div>
         <div id="pb-pane-imported" role="tabpanel" aria-labelledby="pb-tab-imported" hidden>
           <button type="button" class="pb-btn pb-btn-primary pb-btn-block" id="pb-import-open">＋ Figma 화면 가져오기</button>
+          <label class="pb-btn pb-btn-block" for="pb-load-screen" id="pb-load-screen-btn">📂 기존화면 불러오기<input type="file" id="pb-load-screen" accept="application/json" hidden></label>
+          <p class="pb-note">Figma 플러그인 <strong>S-1 GUI Builder</strong> 에서 내려받은 화면 파일을 엽니다. 열쇠도 서버도 필요 없어 어느 컴퓨터에서나 됩니다.</p>
           <p class="pb-note pb-note-offline" id="pb-import-offline" hidden>이 주소에서는 <strong>이미 가져다 둔 화면만</strong> 열 수 있습니다. 새로 가져오려면 내 컴퓨터에서 빌더를 띄워야 합니다(Figma 읽기 열쇠가 내 컴퓨터에만 있기 때문입니다).</p>
           <input type="search" class="pb-search" id="pb-search-imported" placeholder="가져온 화면 검색 (예: 홈, 로그인)" aria-label="가져온 화면 검색">
           <p class="pb-note">이미 만들어 둔 화면을 그대로 올려 놓고, 그 위에 이어서 만듭니다. 원본 부품은 바꿔치기하지 않습니다.</p>
@@ -96,6 +98,14 @@
           </select>
         </label>
         <button type="button" class="pb-btn pb-btn-sm" id="pb-add-row">+ 행 추가</button>
+      </div>
+      <div class="pb-suggest" id="pb-suggest" hidden>
+        <div class="pb-suggest-head">
+          <span class="pb-tools-label">다음에 올 만한 것</span>
+          <small class="pb-suggest-src" id="pb-suggest-src"></small>
+        </div>
+        <div class="pb-suggest-line" id="pb-suggest-groups"></div>
+        <div class="pb-suggest-line pb-suggest-line-sub" id="pb-suggest-parts"></div>
       </div>
       <div class="pb-stage">
         <p class="pb-frame-label" id="pb-frame-label"></p>

@@ -255,6 +255,15 @@
           "36"
         ]
       },
+      "composition-rules.json": {
+        "role": "묶음 규칙(조합 규칙) — 라벨·간격 등 부품을 붙이는 규칙. 값이 아니라 규칙이다.",
+        "consumers": [
+          "builder/builder.js"
+        ],
+        "status": "candidate",
+        "effective": "빌더에만 적용. 값 3건은 후보 상태로, 빌더에서 써 보고 확정한다.",
+        "promotion": "간격·라벨 값 확정 + Figma 쪽 반영 경로 신설 후 stable"
+      },
       "component-geometry-map.json": {
         "role": "정본 세트 ↔ 웹 CSS 클래스 선언(수치 대조용)",
         "gates": [

@@ -15,7 +15,9 @@ const URLS = {
   designManifest: url("../design/design.manifest.json"),
   registryIndex: url("../registry/components/index.json"),
   catalog: url("../registry/patterns/builder/catalog.json"),
+  compositionRules: url("../registry/governance/composition-rules.json"),
   imported: url("../reports/pattern-builder/imported/index.json"),
+  suggest: url("../reports/pattern-builder/profiles/app-modu/suggest-model.json"),
   importedBase: url("../reports/pattern-builder/"),
   componentManifest: (id) => url(`../ui-library/dist/components/${id}.manifest.json`),
   componentSpec: (id) => url(`../registry/components/${id}.json`),
@@ -29,6 +31,28 @@ const SUBPART_IDS = new Set(["dropdown", "gnb-sub-menu", "gnb-sub-menu-item", "b
 const SPACING = ["0", "4", "8", "12", "16", "20", "24", "32", "40", "48", "64"];
 const TYPO = ["typo-title-32b", "typo-title-24b", "typo-title-20b", "typo-title-18b", "typo-title-16b", "typo-title-14b",
   "typo-body-16r", "typo-body-14r", "typo-body-14m", "typo-body-12r", "typo-body-12m"];
+/* ── 묶음 규칙 (조합 규칙) ─────────────────────────────────────
+   부품 하나로는 표현이 안 되고 화면마다 달라지지도 않는 "붙이는 규칙"이다.
+   **정본은 registry/governance/composition-rules.json** (river 승인 2026-09-18).
+   빌더는 자기 값을 갖지 않는다 — 아래는 정본을 못 읽었을 때의 최후 대비값이고,
+   loadAll() 이 정본을 읽어 덮어쓴다. 값을 바꾸려면 정본을 고친다. */
+const GROUP_RULES = {
+  insideGap: "8",                 // 한 묶음 안 줄 사이 (라벨 ↔ 인풋 등)
+  betweenGap: "24",               // 묶음과 묶음 사이
+  rowGap: "12",                   // 한 줄 안에서 부품끼리
+  labelTypo: "typo-body-14m",     // 라벨 글자
+  labelColor: "body-primary"
+};
+function applyCompositionRules(rules) {
+  if (!rules) return;
+  const sp = rules.spacing || {};
+  if (sp.insideGroup?.value) GROUP_RULES.insideGap = String(sp.insideGroup.value);
+  if (sp.betweenGroups?.value) GROUP_RULES.betweenGap = String(sp.betweenGroups.value);
+  if (sp.insideRow?.value) GROUP_RULES.rowGap = String(sp.insideRow.value);
+  if (rules.label?.typography) GROUP_RULES.labelTypo = rules.label.typography;
+  if (rules.label?.color) GROUP_RULES.labelColor = rules.label.color;
+}
+
 const TEXT_COLORS = [
   ["title-primary", "제목 기본"], ["title-secondary", "제목 보조"],
   ["body-primary", "본문 기본"], ["body-secondary", "본문 보조"], ["body-tertiary", "본문 3차"]
@@ -44,7 +68,7 @@ const PLATFORM_BREAK = { pc: "pc", mobile: "mobile", web: "pc", app: "pc" };
 const STORAGE_KEY = "s1-pattern-builder-state";
 
 /* ── 데이터 ─────────────────────────────────────────────────── */
-const data = { dist: null, design: null, registry: null, catalog: null, imported: null, manifests: {}, examples: {} };
+const data = { dist: null, design: null, registry: null, catalog: null, imported: null, suggest: null, manifests: {}, examples: {} };
 
 async function fetchText(u) {
   const r = await fetch(u);
@@ -54,11 +78,15 @@ async function fetchText(u) {
 const fetchJson = async (u) => JSON.parse(await fetchText(u));
 
 async function loadAll() {
-  const [dist, design, registry, catalog] = await Promise.all([
+  const [dist, design, registry, catalog, suggest] = await Promise.all([
     fetchJson(URLS.distManifest), fetchJson(URLS.designManifest), fetchJson(URLS.registryIndex),
-    fetchJson(URLS.catalog).catch(() => ({ patterns: [] }))
+    fetchJson(URLS.catalog).catch(() => ({ patterns: [] })),
+    fetchJson(URLS.suggest).catch(() => null)          // 제안표가 없으면 제안 칸을 숨긴다
   ]);
-  Object.assign(data, { dist, design, registry, catalog });
+  Object.assign(data, { dist, design, registry, catalog, suggest });
+  /* 묶음 규칙은 정본에서 읽는다 — 빌더가 자기 값을 갖지 않게 한다. */
+  data.compositionRules = await fetchJson(URLS.compositionRules).catch(() => null);
+  applyCompositionRules(data.compositionRules);
   // 가져온 화면 목록은 없을 수도 있다(아직 아무것도 안 가져왔을 때) — 없으면 빈 목록으로 둔다.
   data.imported = await fetchJson(URLS.imported).catch(() => ({ screens: [] }));
   const ids = (dist.components || []).map((c) => (typeof c === "string" ? c : c.id));
@@ -173,7 +201,7 @@ function freshState() {
   return {
     version: 1,
     meta: { name: "", service: d.service || "core", platform: "pc", role: d.role || "user", theme: d.theme || "light" },
-    screen: { padding: "24" },
+    screen: { padding: "24", groupGap: GROUP_RULES.insideGap, betweenGap: GROUP_RULES.betweenGap },
     rows: []
   };
 }
@@ -185,7 +213,19 @@ function findBlock(blockId) {
   for (const r of state.rows) { const b = r.blocks.find((x) => x.id === blockId); if (b) return { row: r, block: b }; }
   return null;
 }
-function newRow() { return { id: nextId("r"), gap: "12", align: "start", marginBottom: "16", blocks: [] }; }
+function newRow() { return { id: nextId("r"), gap: GROUP_RULES.rowGap, align: "start", marginBottom: "16", blocks: [] }; }
+
+/* 줄이 어느 묶음에 속하는지 — row.attached 는 "윗줄과 한 묶음" 표시다.
+   묶음 안이면 좁은 간격, 묶음이 끝나는 줄이면 넓은 간격을 쓴다(줄마다 손으로 맞추지 않는다). */
+function groupRoleOf(index) {
+  const row = state.rows[index];
+  if (!row) return null;
+  const next = state.rows[index + 1];
+  const inGroup = !!row.attached || !!(next && next.attached);
+  if (!inGroup) return null;
+  if (next && next.attached) return row.attached ? "mid" : "start";
+  return "end";
+}
 
 function persist() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch { /* 저장 불가 환경 */ } }
 function restore() {
@@ -513,10 +553,20 @@ async function renderScreen(target, editor) {
     rowEl.style.alignItems = "flex-start";
     rowEl.style.gap = `var(--spacing-${row.gap || "12"})`;
     rowEl.style.justifyContent = ALIGN_CSS[row.align] || "flex-start";
-    /* 가져온 화면은 원본 간격(px)을 그대로 쓴다 — 토큰 눈금에 맞춰 반올림하면 원본 모습이 아니다. */
-    rowEl.style.marginBottom = row.marginBottomPx != null
-      ? `${row.marginBottomPx}px`
-      : `var(--spacing-${row.marginBottom || "16"})`;
+    /* 묶음에 든 줄은 묶음 규칙이 간격을 정한다 — 줄마다 손으로 맞추지 않는다.
+       묶음이 아니면 예전대로(가져온 화면은 원본 px 그대로 — 토큰 눈금에 반올림하면 원본 모습이 아니다). */
+    const groupRole = groupRoleOf(ri);
+    if (groupRole) {
+      const gapToken = groupRole === "end"
+        ? (state.screen.betweenGap || GROUP_RULES.betweenGap)
+        : (state.screen.groupGap || GROUP_RULES.insideGap);
+      rowEl.style.marginBottom = `var(--spacing-${gapToken})`;
+      rowEl.dataset.s1Group = groupRole;
+    } else {
+      rowEl.style.marginBottom = row.marginBottomPx != null
+        ? `${row.marginBottomPx}px`
+        : `var(--spacing-${row.marginBottom || "16"})`;
+    }
     /* 가져온 화면 위에 새로 놓은 줄은 원본 본문과 같은 좌우 자리에 맞춘다(레거시 그림 줄은 이미 제 자리다). */
     const inset = Number(state.screen.importedInset) || 0;
     if (inset && !row.blocks.some((b) => b.kind === "legacy" || b.bleed)) {
@@ -741,8 +791,9 @@ function renderImportedList() {
   const box = els.importedGroups;
   if (!box) return;
   const list = (data.imported?.screens || []);
-  els.empty_imported.hidden = list.length > 0;
-  if (!list.length) {
+  const fileList = (data.fileScreens || []);
+  els.empty_imported.hidden = list.length + fileList.length > 0;
+  if (!list.length && !fileList.length) {
     box.innerHTML = "";
     return;
   }
@@ -763,12 +814,75 @@ function renderImportedList() {
       </button>`).join("");
     html += accordion(service, `${items.length}장`, cards);
   }
+  /* 파일로 불러온 화면 — 저장소에 없고 이 브라우저 안에만 있다(플러그인이 내려준 파일). */
+  const byFile = new Map();
+  for (const it of fileList) {
+    if (!byFile.has(it.fileLabel)) byFile.set(it.fileLabel, []);
+    byFile.get(it.fileLabel).push(it);
+  }
+  for (const [label, items] of byFile) {
+    const cards = items.map((it) => `
+      <button type="button" class="pb-card pb-card-imported" data-filescreen="${escapeAttr(it.key)}"
+        data-search="${escapeAttr(`${it.name} ${label}`)}">
+        <span class="pb-card-name">${escapeHtml(it.name)}</span>
+        <span class="pb-card-meta">${it.width}×${it.height} · 칸 ${it.rows}</span>
+        <span class="pb-card-meta pb-card-mode">불러온 파일</span>
+      </button>`).join("");
+    html += accordion(`📂 ${label}`, `${items.length}장`, cards, true);
+  }
   box.innerHTML = html;
   wireAccordions(box);
   box.querySelectorAll("[data-imported]").forEach((b) => b.addEventListener("click", () => loadImportedScreen(b.dataset.imported)));
+  box.querySelectorAll("[data-filescreen]").forEach((b) => b.addEventListener("click", () => loadFileScreen(b.dataset.filescreen)));
 }
 
 const MEDIUM_KO = { app: "휴대폰 앱", mweb: "모바일 웹", pcweb: "PC 웹", console: "관제/콘솔" };
+
+/** 왼쪽 칸의 탭을 바꾼다(컴포넌트 · 패턴 · 가져온 화면). */
+function switchTab(name) {
+  document.querySelectorAll("[data-tab]").forEach((t) => {
+    const on = t.dataset.tab === name;
+    t.setAttribute("aria-selected", String(on));
+    const pane = document.querySelector(`#pb-pane-${t.dataset.tab}`);
+    if (pane) pane.hidden = !on;
+  });
+}
+
+/* ── 플러그인이 내려준 화면 파일 읽기 ───────────────────────────
+   S-1 GUI Builder 플러그인은 화면마다 「칸(rows)」과 칸 그림을 함께 담는다.
+   빌더가 저장소에서 읽던 것과 같은 모양이라, 주소만 그림 자체로 바뀐다.
+   ⛔ 레거시 칸을 정본 부품으로 바꿔치기하지 않는다 — 가져오기와 같은 경계선. */
+function readScreenPack(pack) {
+  if (!pack || !pack._meta || pack._meta.source !== "figma:plugin:s1-gui-builder") {
+    throw new Error("S-1 GUI Builder 가 내려준 파일이 아닙니다");
+  }
+  const out = [];
+  for (const sc of pack.screens || []) {
+    if (!Array.isArray(sc.rows) || !sc.rows.length) continue;
+    out.push({
+      mode: "legacy-as-is",
+      service: pack._meta.file?.name || "",
+      screen: {
+        id: sc.id,
+        name: sc.name,
+        width: Math.round(sc.box?.w || 0),
+        height: Math.round(sc.box?.h || 0),
+        orderText: sc.orderText || ""
+      },
+      rows: sc.rows.map((r, i) => ({
+        i,
+        label: r.label,
+        name: r.name,
+        type: r.type,
+        x: r.x, y: r.y, w: r.w, h: r.h, depth: r.depth,
+        image: r.image || "",
+        parts: r.parts || {},
+        canon: []                      // 이름 대응은 저장소 쪽 결정표의 몫 — 브라우저에서 지어내지 않는다
+      }))
+    });
+  }
+  return out;
+}
 
 /* ── Figma 링크로 바로 가져오기 ────────────────────────────────
    링크만 이 맥 안의 빌더 서버(npm run builder)에 넘긴다. Figma 읽기 열쇠는 브라우저에 두지 않는다.
@@ -850,6 +964,20 @@ async function loadImportedScreen(key) {
   catch (e) { toast("가져온 화면을 읽지 못했습니다"); console.error(e); return; }
 
   const base = new URL(it.imgBase, URLS.importedBase);
+  await placeImportedDoc(doc, (img) => (img ? new URL(img, base).href : ""),
+    { profile: it.profile, slug: it.slug, screenId: doc.screen.id, mode: doc.mode, name: doc.screen.name });
+}
+
+/* 파일로 불러온 화면을 캔버스에 올린다 — 그림이 파일 안에 들어 있어 주소를 붙일 필요가 없다. */
+async function loadFileScreen(key) {
+  const it = (data.fileScreens || []).find((x) => x.key === key);
+  if (!it) return;
+  await placeImportedDoc(it.doc, (img) => img || "",
+    { profile: null, slug: null, screenId: it.doc.screen.id, mode: it.doc.mode, name: it.doc.screen.name, fromFile: it.fileLabel });
+}
+
+/* 가져온 화면 한 장을 캔버스에 올리는 한 갈래 — 저장소에서 온 것도, 파일에서 온 것도 여기로 모인다. */
+async function placeImportedDoc(doc, imgUrl, meta) {
   const rows = doc.rows.map((r, i) => {
     const next = doc.rows[i + 1];
     const gap = next ? Math.max(0, next.y - (r.y + r.h)) : 0;
@@ -862,7 +990,7 @@ async function loadImportedScreen(key) {
       blocks: [{
         id: nextId("b"),
         kind: "legacy",
-        image: r.image ? new URL(r.image, base).href : "",
+        image: imgUrl(r.image),
         widthPx: r.w,
         heightPx: r.h,
         xPx: r.x || 0,
@@ -886,7 +1014,7 @@ async function loadImportedScreen(key) {
     ? [...tally.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0])[0][0]
     : 0;
   state.screen.shell = "none";     // 원본에 상태바·내비가 들어 있으면 겹치므로 기기 크롬은 끈 채로 시작한다
-  state.imported = { profile: it.profile, slug: it.slug, screenId: doc.screen.id, mode: doc.mode, name: doc.screen.name };
+  state.imported = meta;
   state.rows = rows;
   selection = { rowId: null, blockId: null };
   renderToolbar();
@@ -1113,6 +1241,30 @@ function moveBlock(blockId, dir) {
   }
   update();
 }
+/* 라벨 붙이기 — 고른 부품 바로 윗줄에 라벨 글자를 넣고 둘을 한 묶음으로 묶는다.
+   라벨 글자 규격과 부품과의 간격은 묶음 규칙(GROUP_RULES)이 정한다 — 매번 사람이 고르지 않는다. */
+function attachLabel(blockId) {
+  const hit = findBlock(blockId); if (!hit) return;
+  const ri = state.rows.indexOf(hit.row);
+  const above = state.rows[ri - 1];
+  if (above && above.blocks.length === 1 && above.blocks[0].kind === "text" && hit.row.attached) {
+    selection = { rowId: above.id, blockId: above.blocks[0].id };   // 이미 붙어 있으면 그 라벨을 고른다
+    update();
+    return;
+  }
+  const labelRow = newRow();
+  const label = {
+    id: nextId("b"), kind: "text", width: "auto",
+    text: "라벨", typo: GROUP_RULES.labelTypo, color: GROUP_RULES.labelColor
+  };
+  labelRow.blocks.push(label);
+  labelRow.attached = hit.row.attached || false;   // 윗묶음에 이어 붙던 줄이면 그 자리를 라벨이 물려받는다
+  state.rows.splice(ri, 0, labelRow);
+  hit.row.attached = true;
+  selection = { rowId: labelRow.id, blockId: label.id };
+  update();
+}
+
 function duplicateBlock(blockId) {
   const hit = findBlock(blockId); if (!hit) return;
   const copy = { ...JSON.parse(JSON.stringify(hit.block)), id: nextId("b") };
@@ -1210,6 +1362,7 @@ function renderProps() {
       <button type="button" class="pb-btn pb-btn-sm" data-act="up">↑ 윗행</button>
       <button type="button" class="pb-btn pb-btn-sm" data-act="down">↓ 아랫행</button>
       <button type="button" class="pb-btn pb-btn-sm" data-act="split">↵ 새 줄로 분리</button>
+      ${b.kind === "component" ? `<button type="button" class="pb-btn pb-btn-sm" data-act="label">＋ 라벨 붙이기</button>` : ""}
       <button type="button" class="pb-btn pb-btn-sm" data-act="dup">복제</button>
       <button type="button" class="pb-btn pb-btn-sm" data-act="del">삭제</button>
     </div>`);
@@ -1224,7 +1377,11 @@ function renderProps() {
     parts.push(`<p class="pb-section-title">행</p>`);
     parts.push(propRow("정렬", selectHtml("row.align", [["start", "왼쪽"], ["center", "가운데"], ["end", "오른쪽"], ["between", "양끝"]], row.align)));
     parts.push(propRow("요소 간격", selectHtml("row.gap", spacingOpts, row.gap)));
-    parts.push(propRow("아래 여백", selectHtml("row.marginBottom", spacingOpts, row.marginBottom)));
+    const rowIndex = state.rows.indexOf(row);
+    const role = groupRoleOf(rowIndex);
+    if (rowIndex > 0) parts.push(propRow("윗줄과 한 묶음", selectHtml("row.attached", [["false", "아니오"], ["true", "예"]], String(!!row.attached))));
+    if (role) parts.push(`<p class="pb-note">묶음에 들어 있어 아래 여백은 <strong>묶음 규칙</strong>이 정합니다 — ${role === "end" ? "묶음 사이" : "묶음 안"} 간격.</p>`);
+    else parts.push(propRow("아래 여백", selectHtml("row.marginBottom", spacingOpts, row.marginBottom)));
     parts.push(`<div class="pb-prop-actions">
       <button type="button" class="pb-btn pb-btn-sm" data-act="row-up">행 위로</button>
       <button type="button" class="pb-btn pb-btn-sm" data-act="row-down">행 아래로</button>
@@ -1234,6 +1391,8 @@ function renderProps() {
 
   parts.push(`<p class="pb-section-title">화면</p>`);
   parts.push(propRow("안쪽 여백", selectHtml("screen.padding", spacingOpts, state.screen.padding)));
+  parts.push(propRow("묶음 안 간격", selectHtml("screen.groupGap", spacingOpts, state.screen.groupGap || GROUP_RULES.insideGap)));
+  parts.push(propRow("묶음 사이 간격", selectHtml("screen.betweenGap", spacingOpts, state.screen.betweenGap || GROUP_RULES.betweenGap)));
   if (!hit && !row) parts.push(`<p class="pb-note">캔버스에서 요소나 줄을 누르면 여기서 고칩니다. 왼쪽 부품을 누르면 새 줄로 내려가고, "선택한 줄 옆"을 고르면 나란히 들어갑니다.</p>`);
 
   els.props.innerHTML = parts.join("");
@@ -1247,6 +1406,7 @@ function renderProps() {
     const act = btn.dataset.act;
     const id = selection.blockId;
     if (act === "left" || act === "right" || act === "up" || act === "down" || act === "split") moveBlock(id, act);
+    else if (act === "label") attachLabel(id);
     else if (act === "dup") duplicateBlock(id);
     else if (act === "del") removeBlock(id);
     else if (act === "col-add") { hit.block.table.columns.push({ label: `열 ${hit.block.table.columns.length + 1}` }); update(); }
@@ -1261,7 +1421,10 @@ function renderProps() {
 function setProp(name, value) {
   if (name.startsWith("row.")) {
     const row = selection.blockId ? findBlock(selection.blockId)?.row : findRow(selection.rowId);
-    if (row) row[name.slice(4)] = value;
+    if (!row) return;
+    const key = name.slice(4);
+    if (key === "attached") row.attached = value === "true";
+    else row[key] = value;
   } else if (name.startsWith("screen.")) {
     state.screen[name.slice(7)] = value;
   } else {
@@ -1321,9 +1484,87 @@ let rendering = false, queued = false;
 async function update() {
   persist();
   renderProps();
+  renderSuggest();
   if (rendering) { queued = true; return; }
   rendering = true;
   try { await renderCanvas(); } finally { rendering = false; if (queued) { queued = false; update(); } }
+}
+
+
+/* ── 다음에 올 만한 것 ───────────────────────────────────────
+   모두앱 레거시 화면에서 「무엇 다음에 무엇이 왔는지」를 세어 둔 표(suggest-model.json)를 읽어
+   지금 캔버스 마지막 줄 다음에 올 만한 것을 보여준다.
+   ⛔ 레거시 관찰일 뿐 가이드 규칙이 아니다 — 화면에도 그렇게 적는다(river 2026-09-18).
+   ⛔ 레거시 칸을 바꿔치기하는 것이 아니라, 놓는 것은 언제나 정본 부품이다. */
+const SUGGEST_START = "__start__";
+const HELPER_KO = Object.fromEntries(HELPERS.map(([k, n]) => [k, n]));
+
+function suggestKeyOfBlock(block) {
+  if (block.kind === "component") return `component:${block.component}`;
+  if (block.kind === "text") return "helper:text";
+  if (block.kind === "divider") return "helper:divider";
+  return null;
+}
+/* 지금 어디까지 놓았나 — 마지막으로 채워진 줄의 구성이 다음 제안의 근거가 된다 */
+function suggestContext() {
+  const row = [...state.rows].reverse().find((r) => r.blocks.length);
+  if (!row) return { group: SUGGEST_START, part: SUGGEST_START };
+  const keys = [...new Set(row.blocks.map(suggestKeyOfBlock).filter(Boolean))].sort();
+  const last = [...row.blocks].reverse().map(suggestKeyOfBlock).find(Boolean);
+  return { group: keys.length ? keys.join("+") : SUGGEST_START, part: last || SUGGEST_START };
+}
+/* 이 플랫폼에서 실제로 놓을 수 있는 것만 제안한다 */
+function suggestUsable(key) {
+  const [kind, id] = key.split(":");
+  if (kind === "helper") return Boolean(HELPER_KO[id]);
+  const brk = PLATFORM_BREAK[state.meta.platform] || "pc";
+  return Boolean(data.manifests[id]) && isPlaceable(id) && availableOn(id, brk);
+}
+const suggestLabel = (key) => {
+  const [kind, id] = key.split(":");
+  return kind === "helper" ? HELPER_KO[id] || id : registryName(id);
+};
+
+function renderSuggest() {
+  const box = els.suggest;
+  if (!box) return;
+  const model = data.suggest;
+  const isMobile = (PLATFORM_BREAK[state.meta.platform] || "pc") === "mobile";
+  if (!model || !isMobile) { box.hidden = true; return; }   // 지금 셈해 둔 것은 모두앱(휴대폰 앱)뿐이다
+
+  const ctx = suggestContext();
+  const groups = (model.nextGroups?.[ctx.group] || []).filter((c) => c.key.split("+").every(suggestUsable));
+  const parts = (model.nextParts?.[ctx.part] || []).filter((c) => suggestUsable(c.key));
+  if (!groups.length && !parts.length) { box.hidden = true; return; }
+  box.hidden = false;
+
+  const chip = (c, type) => `<button type="button" class="pb-suggest-chip${type === "group" ? " pb-suggest-chip-group" : ""}" data-suggest="${escapeAttr(c.key)}" data-suggest-type="${type}">
+    <span>${escapeHtml(c.key.split("+").map(suggestLabel).join(" + "))}</span><small>${c.share}%</small></button>`;
+
+  els.suggestGroups.innerHTML = groups.length ? `<span class="pb-suggest-kind">묶음으로</span>${groups.map((c) => chip(c, "group")).join("")}` : "";
+  els.suggestParts.innerHTML = parts.length ? `<span class="pb-suggest-kind">하나씩</span>${parts.map((c) => chip(c, "part")).join("")}` : "";
+  const base = ctx.group === SUGGEST_START ? "빈 화면에서 맨 처음 놓은 것" : `「${ctx.group.split("+").map(suggestLabel).join(" + ")}」 다음에 놓은 것`;
+  els.suggestSrc.textContent = `모두앱 레거시 화면 ${(model._meta?.usableScreens || 0).toLocaleString()}장에서 ${base} · 가이드 규칙이 아니라 참고입니다`;
+
+  box.querySelectorAll("[data-suggest]").forEach((b) => b.addEventListener("click", () =>
+    (b.dataset.suggestType === "group" ? placeSuggestGroup : placeSuggestPart)(b.dataset.suggest)));
+}
+
+async function suggestBlock(key) {
+  const [kind, id] = key.split(":");
+  if (kind === "component") return makeComponentBlock(id, chosenAxis[id] || {});
+  return { kind: id };
+}
+/* 묶음 제안 — 한 줄을 통째로 놓는다 */
+async function placeSuggestGroup(key) {
+  const keys = key.split("+");
+  const row = targetRow();
+  for (const k of keys) addBlock(await suggestBlock(k), { row });
+  toast(`「${keys.map(suggestLabel).join(" + ")}」 줄을 놓았습니다`);
+}
+/* 부품 제안 — 하나만 놓는다(놓는 방식을 그대로 따른다) */
+async function placeSuggestPart(key) {
+  addBlock(await suggestBlock(key));
 }
 
 /* ── 내보내기 ───────────────────────────────────────────────── */
@@ -1332,6 +1573,8 @@ const EXPORT_CSS = `
 .s1-screen[data-s1-header-bg="home"] { background: var(--color-bg-home); }   /* Home 유형 헤더 화면은 상단부터 본문까지 한 배경 */
 .s1-row { display: flex; flex-wrap: wrap; align-items: flex-start; }
 .s1-row[data-s1-bleed="true"] { flex-wrap: nowrap; }
+/* 묶음(data-s1-group) — 라벨+부품처럼 한 덩어리로 읽히는 줄들.
+   간격은 묶음 규칙이 정한 값이 각 줄에 인라인으로 박혀 나가므로 여기 규칙은 없다. */
 .s1-block { min-width: 0; }
 .s1-text { margin: 0; }
 .s1-divider { border: 0; border-top: 1px solid var(--color-line-gray-subtle); margin: 0; width: 100%; }
@@ -1449,6 +1692,7 @@ async function main() {
     search_parts: $("#pb-search-parts"), search_patterns: $("#pb-search-patterns"), search_imported: $("#pb-search-imported"),
     empty_parts: $("#pb-empty-parts"), empty_patterns: $("#pb-empty-patterns"), empty_imported: $("#pb-empty-imported"),
     importedGroups: $("#pb-imported-groups"),
+    suggest: $("#pb-suggest"), suggestGroups: $("#pb-suggest-groups"), suggestParts: $("#pb-suggest-parts"), suggestSrc: $("#pb-suggest-src"),
     importDialog: $("#pb-import-dialog"), importLink: $("#pb-import-link"), importStatus: $("#pb-import-status"), importGo: $("#pb-import-go"),
     requestDialog: $("#pb-request-dialog"), reqName: $("#pb-req-name"), reqPurpose: $("#pb-req-purpose"), reqNotes: $("#pb-req-notes"), reqPreview: $("#pb-req-preview")
   });
@@ -1473,13 +1717,7 @@ async function main() {
   els.importDialog.addEventListener("click", (e) => { if (e.target === els.importDialog) closeImport(); });
   els.importGo.addEventListener("click", runImport);
   els.importLink.addEventListener("keydown", (e) => { if (e.key === "Enter") runImport(); });
-  document.querySelectorAll("[data-tab]").forEach((tab) => tab.addEventListener("click", () => {
-    document.querySelectorAll("[data-tab]").forEach((t) => {
-      const on = t === tab;
-      t.setAttribute("aria-selected", String(on));
-      document.querySelector(`#pb-pane-${t.dataset.tab}`).hidden = !on;
-    });
-  }));
+  document.querySelectorAll("[data-tab]").forEach((tab) => tab.addEventListener("click", () => switchTab(tab.dataset.tab)));
   window.addEventListener("resize", fitCanvas);
   if (window.ResizeObserver) new ResizeObserver(() => fitCanvas()).observe(els.canvasWrap.parentElement);
   els.name.addEventListener("input", () => { state.meta.name = els.name.value; persist(); });
@@ -1522,6 +1760,38 @@ async function main() {
       state = s; reseedIds(); selection = { rowId: null, blockId: null }; renderToolbar(); renderPartGroups(); update(); toast("불러왔습니다");
     } catch (err) { toast(`불러오기 실패: ${err.message}`); }
     e.target.value = "";
+  });
+  /* 기존화면 불러오기 — Figma 플러그인(S-1 GUI Builder)이 내려준 파일을 연다.
+     열쇠도 서버도 쓰지 않는다. 읽은 화면은 이 브라우저 안에만 있고 저장소에는 남지 않는다. */
+  $("#pb-load-screen").addEventListener("change", async (e) => {
+    const f = e.target.files[0];
+    e.target.value = "";
+    if (!f) return;
+    try {
+      const pack = JSON.parse(await f.text());
+      const screens = readScreenPack(pack);
+      if (!screens.length) throw new Error("화면이 들어 있지 않습니다");
+      const label = f.name.replace(/\.json$/i, "");
+      data.fileScreens = (data.fileScreens || []).filter((x) => x.fileLabel !== label);
+      screens.forEach((doc, i) => {
+        data.fileScreens.push({
+          key: `${label}#${i}`,
+          fileLabel: label,
+          name: doc.screen.name,
+          width: doc.screen.width,
+          height: doc.screen.height,
+          rows: doc.rows.length,
+          doc
+        });
+      });
+      switchTab("imported");
+      renderImportedList();
+      await loadFileScreen(`${label}#0`);
+      if (screens.length > 1) toast(`화면 ${screens.length}장을 불러왔습니다 — 목록에서 고르세요`);
+    } catch (err) {
+      toast(`불러오기 실패: ${err.message}`);
+      console.error(err);
+    }
   });
   $("#pb-export").addEventListener("click", async () => {
     if (!state.rows.length) { toast("내보낼 요소가 없습니다"); return; }

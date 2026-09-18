@@ -1,0 +1,52 @@
+{
+  "_role": "묶음 규칙(조합 규칙) 정본 — 부품 하나로는 표현되지 않고 서비스가 달라져도 변하지 않는 '부품을 붙이는 규칙'을 담는다. 값이 아니라 규칙이므로 policyCanon 에 둔다.",
+  "_why": "라벨+인풋 간격, 같은 묶음/다른 묶음 사이 간격 같은 것은 컴포넌트 정본(build-components.ts)에 넣을 자리가 없고, 그렇다고 화면마다 다른 패턴도 아니다. 정본에 자리가 없어 빌더가 자기 값을 갖게 되면 정본과 어긋난다 — 그래서 여기 한 곳에 두고 빌더는 읽기만 한다(2026-09-18 river 결정).",
+  "_notCanonFor": "화면 뼈대 수치(폭·헤더 높이·하단 버튼칸 등)는 서비스마다 다르므로 여기에 넣지 않는다 — registry/patterns/rules/screen-skeleton.md 소관.",
+  "_updated": "2026-09-18",
+  "version": 1,
+  "approval": {
+    "by": "river",
+    "date": "2026-09-18",
+    "quote": "묶음규칙 칸에 넣고 본 폴더에 합쳐줘",
+    "context": "빌더에서 라벨·간격 규칙이 필요한데 정본에 자리가 없다는 논의 끝에, 앞쪽(서비스 불변) 항목만 정본의 「묶음 규칙」 칸으로 승격하기로 결정."
+  },
+  "spacing": {
+    "insideGroup": {
+      "value": "8",
+      "unit": "spacing-token",
+      "role": "한 묶음 안 줄 사이 — 라벨과 인풋처럼 한 덩어리로 읽혀야 하는 것들",
+      "status": "candidate",
+      "_note": "빌더에서 실제로 화면을 만들어 보고 확정한다. 화면 설정에서 눈으로 바꿔 볼 수 있다."
+    },
+    "betweenGroups": {
+      "value": "24",
+      "unit": "spacing-token",
+      "role": "묶음과 묶음 사이 — 다른 덩어리임이 보여야 하는 간격",
+      "status": "candidate"
+    },
+    "insideRow": {
+      "value": "12",
+      "unit": "spacing-token",
+      "role": "한 줄 안에서 부품끼리 나란히 놓일 때의 간격",
+      "status": "candidate"
+    }
+  },
+  "label": {
+    "typography": "typo-body-14m",
+    "color": "body-primary",
+    "placement": "above",
+    "role": "인풋·셀렉트박스 등 입력 부품 위에 붙는 라벨 글자. 부품 안에 들어 있지 않고 화면에서 별도 글자로 조합한다(river 결정 — Input 라벨 축 제거).",
+    "status": "candidate",
+    "_gapToControl": "spacing.insideGroup 을 따른다 — 라벨만의 별도 간격을 두지 않는다."
+  },
+  "consumers": [
+    {
+      "path": "builder/builder.js",
+      "how": "loadAll() 에서 이 파일을 읽어 GROUP_RULES 에 채운다. 빌더는 자기 값을 갖지 않는다."
+    }
+  ],
+  "openDecisions": [
+    "필수 표시·도움말·에러 글자의 자리와 간격 — 아직 규칙 없음",
+    "라벨을 입력 부품 안으로 넣을지 여부 — 현재는 바깥 글자로 조합"
+  ]
+}
