@@ -2,6 +2,10 @@
 
 > river 목표(2026-09-18): 회사 부품·토큰·디자인 문법을 기반으로, 웹·앱·S/W·서비스 유형별로 패턴을 조합하는 빌더.
 > 레거시 화면은 레거시 가이드로 두고, 새 화면은 신규 가이드 부품으로 조합한다. 1차 범위는 **HTML/CSS 까지**(개발 소스 구조 연동은 뒤로).
+>
+> ⛔ **레거시 서비스 패턴은 정본에 합치지 않는다** (river 결정 2026-09-18). 이미 운영 중이고 레거시
+> 가이드라인이 적용된 서비스(모두앱 등)에 최신 부품을 억지로 끼워 넣거나, 그 서비스 패턴을 최신
+> 가이드에 병합하면 안 된다. 서비스별 자료는 `reports/pattern-builder/legacy/<service>/` 에 따로 보관한다.
 
 ## 구성
 
@@ -10,7 +14,8 @@
 | 빌더 사이트(별도) | `builder/index.html` + `builder.css` + `builder.js` | 가이드 사이트와 분리된 독립 웹사이트(river 결정 2026-09-18). 배포본(ui-library/dist)·registry·design 매니페스트를 상대경로로 읽는다. 조립 → 미리보기 → HTML 내보내기 |
 | 패턴 목록(정본) | `registry/patterns/builder/catalog.json` | 빌더가 읽는 패턴 정의. 레거시 판독 → 검증 → 승인된 것만 `verified/approved`. (`registry/patterns/*.json` 바로 아래는 Gate 의 패턴 사양 자리라 하위 폴더에 둔다) |
 | 요청 접수함 | `reports/pattern-builder/requests/` | 빌더 "새 패턴 요청" 이 만든 `pattern-request-*.json` 을 두는 곳 |
-| 레거시 판독표 | `reports/pattern-builder/inventory/<service>.md` | figma-inspector 가 레거시 화면을 읽어 정리한 "어느 서비스 · 어떤 화면 유형 · 어떤 부품" 표 |
+| 레거시 판독표 | `reports/pattern-builder/inventory/<service>/` | 레거시 화면을 읽어 정리한 "어느 서비스 · 어떤 화면 유형 · 어떤 부품" 표와 원자료 |
+| 레거시 서비스 전용 규칙 | `reports/pattern-builder/legacy/<service>/` | 그 서비스에서만 쓰는 규칙·부품. **정본과 분리** |
 
 ## 흐름
 

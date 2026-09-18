@@ -1,4 +1,4 @@
-/* 목록 한 줄 (list-row) — 검수용 후보. 아직 정본이 아니다.
+/* 목록 한 줄 (list-row) — 모두앱 전용. 정본에 합치지 않는다(river 결정 2026-09-18).
    수치 근거: MoDU APP 레거시 547장 판독 (reports/pattern-builder/inventory/modu-app/)
    2026-09-18 river 가 Figma 에서 원본 줄(`list` 10928:14704)을 골라줘서 실제 값을 읽었다.
    · 줄 74 + 구분선 1 = 75 · 폭 360 · 안쪽 여백 위아래 18, 왼쪽 20, 오른쪽 16
@@ -72,8 +72,8 @@
   background-color: var(--color-icon-gray);
   display: block;
   height: var(--sizing-24);
-  -webkit-mask: url("../../../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
-  mask: url("../../../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
+  -webkit-mask: url("../../../../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
+  mask: url("../../../../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
   width: var(--sizing-24);
 }
 
