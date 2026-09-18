@@ -168,6 +168,7 @@
     "pattern:order": "node scripts/pattern-order.js",
     "pattern:import": "node scripts/pattern-screen-import.js",
     "builder": "node scripts/builder-serve.js",
+    "pattern:suggest": "node scripts/pattern-suggest-build.js",
     "legacy:bake": "node scripts/build-legacy-map-data.js"
   },
   "devDependencies": {
