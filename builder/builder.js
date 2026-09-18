@@ -16,6 +16,7 @@ const URLS = {
   registryIndex: url("../registry/components/index.json"),
   catalog: url("../registry/patterns/builder/catalog.json"),
   componentManifest: (id) => url(`../ui-library/dist/components/${id}.manifest.json`),
+  componentSpec: (id) => url(`../registry/components/${id}.json`),
   distFile: (file) => url(`../ui-library/dist/${file}`)
 };
 
@@ -58,6 +59,10 @@ async function loadAll() {
   Object.assign(data, { dist, design, registry, catalog });
   const ids = (dist.components || []).map((c) => (typeof c === "string" ? c : c.id));
   await Promise.all(ids.map(async (id) => { data.manifests[id] = await fetchJson(URLS.componentManifest(id)); }));
+  data.specs = {};
+  await Promise.all(ids.map(async (id) => {
+    try { data.specs[id] = await fetchJson(URLS.componentSpec(id)); } catch { data.specs[id] = {}; }
+  }));
 }
 
 async function exampleHtml(id, brk) {
@@ -78,6 +83,46 @@ function registryName(id) {
 function registryCategory(id) {
   return data.registry?.components?.find((c) => c.id === id)?.category || "etc";
 }
+/* 빌더 화면에서만 쓰는 한글 찾기말 — **정본 이름이 아니다.**
+   정본에는 부품의 한글 이름이 없어서(legacy:resolve 도 "모름") 검색이 안 되던 것을 메우는 화면용 낱말이다.
+   카드에 보이는 이름은 정본 영문 이름 그대로 두고, 이 낱말은 검색에만 쓴다. 정본 승격은 river 결정 사항. */
+const SEARCH_KO = {
+  button: ["버튼", "확인 저장 취소 액션"],
+  "assist-button": ["보조 버튼", "아이콘 버튼 작은 동작"],
+  "text-button": ["텍스트 버튼", "링크 더보기 자세히"],
+  checkbox: ["체크박스", "다중 선택 동의"],
+  radio: ["라디오", "단일 선택 하나만"],
+  toggle: ["토글", "스위치 켜기 끄기"],
+  "multi-toggle": ["멀티 토글", "분절 선택 정렬 기간"],
+  chip: ["칩", "태그 라벨"],
+  "filter-chip": ["필터 칩", "조건 필터 검색 조건"],
+  input: ["입력창", "텍스트 필드 검색창 비밀번호"],
+  select: ["셀렉트 박스", "선택 상자 고르기 목록"],
+  textarea: ["여러 줄 입력창", "메모 설명 긴 글"],
+  "date-picker": ["날짜 선택", "달력 캘린더 기간"],
+  "time-picker": ["시간 선택", "시 분 시각"],
+  table: ["표", "테이블 목록 행 열 데이터"],
+  pagination: ["페이지 이동", "페이지네이션 쪽번호"],
+  tab: ["탭", "라인 탭 화면 전환"],
+  gnb: ["상단 메뉴", "전역 내비게이션 지엔비 헤더"],
+  "mobile-header": ["모바일 상단 헤더", "앱바 뒤로가기 제목"],
+  "mobile-bottom-nav": ["모바일 하단 메뉴", "하단 탭바 내비"],
+  dropdown: ["드롭다운", "목록 옵션 펼침"],
+  modal: ["모달", "팝업 확인창 알림"],
+  "modal-content": ["내용 모달", "큰 팝업 본문"],
+  "bottom-sheet": ["바텀시트", "하단 시트"],
+  "bottom-sheet-option": ["바텀시트 항목", "옵션 줄"],
+  "gnb-sub-menu": ["하위 메뉴 패널", "서브 메뉴"],
+  "gnb-sub-menu-item": ["하위 메뉴 항목", "서브 메뉴 줄"]
+};
+const koLabel = (id) => SEARCH_KO[id]?.[0] || "";
+/* 검색 대상 글 — 정본 이름·id·분류 + registry 의 한글 사용맥락 + 위 화면용 찾기말 */
+function searchText(id) {
+  const spec = data.specs?.[id] || {};
+  const bits = [registryName(id), id, categoryLabel(registryCategory(id)), (SEARCH_KO[id] || []).join(" "),
+    JSON.stringify(spec.usage || ""), JSON.stringify(spec.summary || ""), spec._meta?.title || ""];
+  return bits.join(" ").replace(/[{}\[\]"\\]/g, " ");
+}
 function categoryLabel(catId) {
   return data.registry?.categories?.find((c) => c.id === catId)?.label || catId;
 }
@@ -88,10 +133,14 @@ function isPlaceable(id) {
   if (SUBPART_IDS.has(id)) return false;
   return true;
 }
+/* 배포본 manifest 에 breaks(플랫폼별 크기 축)가 없는 부품의 플랫폼 — 이름·가이드 설명이 플랫폼을 명시한 것만 적는다.
+   (GNB 는 PC 웹 상단 메뉴, Mobile Header·Mobile Bottom Nav 는 모바일 전용. 나머지 breaks 없는 부품은 양쪽 공통으로 본다 — river 확인 대상) */
+const PLATFORM_ONLY = { gnb: ["pc"], "mobile-header": ["mobile"], "mobile-bottom-nav": ["mobile"] };
 function availableOn(id, brk) {
   const m = data.manifests[id];
-  if (!m?.breaks) return true;
-  return Object.prototype.hasOwnProperty.call(m.breaks, brk);
+  if (m?.breaks) return Object.prototype.hasOwnProperty.call(m.breaks, brk);
+  if (PLATFORM_ONLY[id]) return PLATFORM_ONLY[id].includes(brk);
+  return true;
 }
 function sizeAxis(id, brk) {
   const m = data.manifests[id];
@@ -334,7 +383,16 @@ async function renderScreen(target, editor) {
   const screen = document.createElement("div");
   screen.className = "s1-screen";
   screen.style.padding = `var(--spacing-${state.screen.padding || "24"})`;
-  for (const row of state.rows) {
+  const gapAt = (index) => {                             // 줄 사이 놓을 자리(편집 모드에서만)
+    const gap = document.createElement("div");
+    gap.className = "pb-gap"; gap.dataset.pbGap = String(index);
+    gap.innerHTML = `<span>여기에 새 줄</span>`;
+    wireDropZone(gap, () => ({ index }));
+    return gap;
+  };
+  for (let ri = 0; ri < state.rows.length; ri++) {
+    const row = state.rows[ri];
+    if (editor) screen.appendChild(gapAt(ri));
     const rowEl = document.createElement("div");
     rowEl.className = "s1-row";
     rowEl.style.display = "flex";
@@ -350,20 +408,26 @@ async function renderScreen(target, editor) {
         const hint = document.createElement("p");
         hint.className = "s1-text typo-body-12r";
         hint.style.margin = "0"; hint.style.color = "var(--color-text-body-tertiary)";
-        hint.textContent = "빈 행 — 왼쪽에서 부품을 누르면 이 행에 들어갑니다";
+        hint.textContent = "빈 줄 — 부품을 끌어다 놓거나 왼쪽에서 누르면 여기에 들어갑니다";
         rowEl.appendChild(hint);
       }
+      wireDropZone(rowEl, () => ({ row }));
     }
     for (const block of row.blocks) {
       const el = await blockElement(block, brk);
       if (editor) {
         el.dataset.pbBlock = block.id;
+        if (block.kind === "component" && !availableOn(block.component, brk)) el.dataset.pbOffPlatform = "true";
+        el.draggable = true;
+        el.addEventListener("dragstart", (e) => { e.stopPropagation(); startDrag(e, { blockId: block.id }); });
+        el.addEventListener("dragend", endDrag);
         if (selection.blockId === block.id) el.dataset.pbSelected = "true";
       }
       rowEl.appendChild(el);
     }
     screen.appendChild(rowEl);
   }
+  if (editor) screen.appendChild(gapAt(state.rows.length));
   target.appendChild(screen);
   return screen;
 }
@@ -427,8 +491,9 @@ function renderPatternList() {
     list.innerHTML = `<div class="pb-empty">아직 등록된 패턴이 없습니다.<br>레거시 화면을 읽어 검증을 마친 패턴이 여기에 올라옵니다.</div>`;
     return;
   }
-  list.innerHTML = items.map((p) => `<button type="button" class="pb-item" data-pattern="${p.id}"><span>${p.name}</span><small>${p.service || "core"} · ${p.platform || ""}</small></button>`).join("");
+  list.innerHTML = items.map((p) => `<button type="button" class="pb-item" data-pattern="${p.id}" data-search="${escapeAttr(`${p.name} ${p.id} ${p.description || ""}`)}"><span>${p.name}</span><small>${p.service || "core"} · ${p.platform || ""}</small></button>`).join("");
   list.querySelectorAll("[data-pattern]").forEach((b) => b.addEventListener("click", () => loadPattern(b.dataset.pattern)));
+  applySearch();
 }
 
 function loadPattern(id) {
@@ -442,13 +507,93 @@ function loadPattern(id) {
   toast(`패턴 "${p.name}" 을 불러왔습니다`);
 }
 
+const HELPERS = [
+  ["text", "글자", "제목·본문 글자"],
+  ["divider", "구분선", "1px 가는 선"],
+  ["space", "빈 칸", "세로 간격"]
+];
 function renderHelperList() {
-  els.helperList.innerHTML = [
-    ["text", "글자", "제목·본문 글자"],
-    ["divider", "구분선", "1px 가는 선"],
-    ["space", "빈 칸", "세로 간격"]
-  ].map(([k, n, d]) => `<button type="button" class="pb-item" data-helper="${k}"><span>${n}</span><small>${d}</small></button>`).join("");
-  els.helperList.querySelectorAll("[data-helper]").forEach((b) => b.addEventListener("click", () => addBlock({ kind: b.dataset.helper })));
+  els.helperList.innerHTML = HELPERS.map(([k, n, d]) => `<div class="pb-item pb-item-helper" data-helper="${k}" data-search="${escapeAttr(`${n} ${d} ${k}`)}" draggable="true" role="button" tabindex="0"><span>${n}</span><small>${d}</small></div>`).join("");
+  els.helperList.querySelectorAll("[data-helper]").forEach((b) => {
+    b.addEventListener("click", () => addBlock({ kind: b.dataset.helper }));
+    b.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); addBlock({ kind: b.dataset.helper }); } });
+    b.addEventListener("dragstart", (e) => startDrag(e, { kind: b.dataset.helper }));
+    b.addEventListener("dragend", endDrag);
+  });
+  applySearch();
+}
+
+/* ── 검색 — 패턴·레이아웃 보조·부품 이름으로 거른다 ── */
+function applySearch() {
+  const q = (els.search?.value || "").trim().toLowerCase();
+  const items = document.querySelectorAll("#pb-pattern-list [data-search], #pb-helper-list [data-search], #pb-part-groups [data-search]");
+  items.forEach((el) => { el.hidden = Boolean(q) && !el.dataset.search.toLowerCase().includes(q); });
+  document.querySelectorAll("#pb-part-groups .pb-group").forEach((g) => {
+    g.hidden = [...g.querySelectorAll("[data-search]")].every((el) => el.hidden);
+  });
+  if (els.searchEmpty) els.searchEmpty.hidden = !q || [...items].some((el) => !el.hidden);
+}
+
+/* ── 드래그 앤 드롭 — 팔레트 카드·캔버스 요소를 줄이나 줄 사이로 끌어 놓는다 ── */
+const DRAG_MIME = "application/x-s1-builder";
+let dragPayload = null;
+function startDrag(e, payload) {
+  dragPayload = payload;
+  try { e.dataTransfer.setData(DRAG_MIME, JSON.stringify(payload)); e.dataTransfer.setData("text/plain", payload.component || payload.kind || "block"); } catch { /* 일부 브라우저 */ }
+  e.dataTransfer.effectAllowed = payload.blockId ? "move" : "copy";
+  document.body.dataset.pbDragging = "true";
+}
+function endDrag() { dragPayload = null; delete document.body.dataset.pbDragging; document.querySelectorAll("[data-pb-over]").forEach((el) => delete el.dataset.pbOver); }
+function readDrag(e) {
+  if (dragPayload) return dragPayload;
+  try { const raw = e.dataTransfer.getData(DRAG_MIME); return raw ? JSON.parse(raw) : null; } catch { return null; }
+}
+async function dropInto(payload, target) {           // target: { row } | { index }(줄 사이) | {}(빈 캔버스)
+  if (!payload) return;
+  if (payload.blockId) {                               // 캔버스 안 이동
+    const hit = findBlock(payload.blockId); if (!hit) return;
+    hit.row.blocks.splice(hit.row.blocks.indexOf(hit.block), 1);
+    if (target.row && target.row !== hit.row) target.row.blocks.push(hit.block);
+    else if (target.row === hit.row) target.row.blocks.push(hit.block);
+    else { const r = newRow(); state.rows.splice(target.index ?? state.rows.length, 0, r); r.blocks.push(hit.block); target = { row: r }; }
+    if (!hit.row.blocks.length && target.row !== hit.row) state.rows = state.rows.filter((r) => r !== hit.row);
+    selection = { rowId: target.row.id, blockId: hit.block.id };
+    update();
+    return;
+  }
+  const block = payload.component ? await makeComponentBlock(payload.component, payload) : { kind: payload.kind };
+  if (target.row) addBlock(block, { row: target.row });
+  else addBlock(block, { index: target.index });
+}
+function wireDropZone(el, targetOf) {
+  el.addEventListener("dragover", (e) => { if (!readDrag(e)) return; e.preventDefault(); e.dataTransfer.dropEffect = dragPayload?.blockId ? "move" : "copy"; el.dataset.pbOver = "true"; });
+  el.addEventListener("dragleave", () => { delete el.dataset.pbOver; });
+  el.addEventListener("drop", (e) => { const p = readDrag(e); if (!p) return; e.preventDefault(); e.stopPropagation(); delete el.dataset.pbOver; dropInto(p, targetOf()); endDrag(); });
+}
+
+/* ── 부품 카드 미리보기(썸네일) — 배포 예제 마크업을 그대로 작게 그린다 ── */
+const chosenAxis = {};                                 // id → { size, variant } 카드에서 고른 값
+async function renderThumb(box, id, brk) {
+  const html = await exampleHtml(id, brk);
+  let frag = pickFragment(html, id);
+  if (!frag) { box.textContent = "미리보기 없음"; return; }
+  frag = frag.cloneNode(true);
+  const choice = chosenAxis[id] || {};
+  applyAxes(frag, { component: id, size: choice.size, variant: choice.variant }, brk);
+  uniquifyIds(frag, `thumb-${id}`);
+  frag.querySelectorAll("[hidden]").forEach((n) => { if (n.matches('[data-s1-part="panel"], [data-s1-component="gnb-sub-menu"]')) n.remove(); });
+  const inner = document.createElement("div");
+  inner.className = "pb-thumb-inner";
+  inner.appendChild(frag);
+  box.innerHTML = "";
+  box.appendChild(inner);
+  requestAnimationFrame(() => {
+    const w = inner.scrollWidth || 1, h = inner.scrollHeight || 1;
+    const scale = Math.min(1, (box.clientWidth - 12) / w, (box.clientHeight - 12) / h);
+    inner.style.transform = `scale(${scale})`;
+    inner.style.left = `${Math.max(0, (box.clientWidth - w * scale) / 2)}px`;
+    inner.style.top = `${Math.max(0, (box.clientHeight - h * scale) / 2)}px`;
+  });
 }
 
 function renderPartGroups() {
@@ -462,17 +607,39 @@ function renderPartGroups() {
   }
   const order = (data.registry?.categories || []).map((c) => c.id);
   const sorted = [...groups.entries()].sort((a, b) => order.indexOf(a[0]) - order.indexOf(b[0]));
-  els.partGroups.innerHTML = sorted.map(([cat, list]) => `
-    <p class="pb-group-label">${categoryLabel(cat)}</p>
-    <div class="pb-list">${list.map((id) => {
-      const ok = availableOn(id, brk);
-      const axes = [variantAxis(id).length ? `변형 ${variantAxis(id).length}` : "", sizeAxis(id, brk).length ? `크기 ${sizeAxis(id, brk).length}` : ""].filter(Boolean).join(" · ");
-      return `<button type="button" class="pb-item" data-part="${id}" data-unavailable="${!ok}" ${ok ? "" : 'title="이 플랫폼 배포본이 없습니다"'}><span>${registryName(id)}</span><small>${ok ? axes : "이 플랫폼 없음"}</small></button>`;
-    }).join("")}</div>`).join("");
-  els.partGroups.querySelectorAll("[data-part]").forEach((b) => {
-    if (b.dataset.unavailable === "true") return;
-    b.addEventListener("click", () => addComponent(b.dataset.part));
+  const chips = (id, axis, values, current) => values.length
+    ? `<div class="pb-chips" data-axis="${axis}">${values.map((v) => `<button type="button" class="pb-chip-btn" data-chip="${v}" aria-pressed="${v === current}">${v}</button>`).join("")}</div>` : "";
+  els.partGroups.innerHTML = sorted.map(([cat, list]) => {
+    const visible = list.filter((id) => availableOn(id, brk));   // 이 플랫폼 배포본이 없는 부품은 목록에서 뺀다
+    if (!visible.length) return "";
+    return `<div class="pb-group"><p class="pb-group-label">${categoryLabel(cat)}</p>
+    <div class="pb-list">${visible.map((id) => {
+      const sizes = sizeAxis(id, brk), variants = variantAxis(id);
+      const c = chosenAxis[id] = { size: sizes.includes(chosenAxis[id]?.size) ? chosenAxis[id].size : sizes[0], variant: variants.includes(chosenAxis[id]?.variant) ? chosenAxis[id].variant : variants[0] };
+      return `<div class="pb-card" data-part="${id}" data-search="${escapeAttr(searchText(id))}" draggable="true" role="button" tabindex="0" aria-label="${escapeAttr(registryName(id))} 놓기">
+        <div class="pb-card-head"><span class="pb-card-name">${registryName(id)}</span><small>${[variants.length ? `변형 ${variants.length}` : "", sizes.length ? `크기 ${sizes.length}` : ""].filter(Boolean).join(" · ") || "축 없음"}</small></div>
+        <p class="pb-card-ko">${escapeHtml(koLabel(id))}</p>
+        <div class="pb-thumb" aria-hidden="true"></div>
+        ${chips(id, "variant", variants, c.variant)}${chips(id, "size", sizes, c.size)}
+      </div>`;
+    }).join("")}</div></div>`;
+  }).join("");
+  els.partGroups.querySelectorAll("[data-part]").forEach((card) => {
+    const id = card.dataset.part;
+    renderThumb(card.querySelector(".pb-thumb"), id, brk);
+    card.addEventListener("click", (e) => { if (e.target.closest("[data-chip]")) return; addComponent(id, chosenAxis[id]); });
+    card.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); addComponent(id, chosenAxis[id]); } });
+    card.addEventListener("dragstart", (e) => startDrag(e, { component: id, ...chosenAxis[id] }));
+    card.addEventListener("dragend", endDrag);
+    card.querySelectorAll("[data-chip]").forEach((chip) => chip.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const axis = chip.closest("[data-axis]").dataset.axis;
+      chosenAxis[id][axis] = chip.dataset.chip;
+      chip.parentElement.querySelectorAll("[data-chip]").forEach((c) => c.setAttribute("aria-pressed", String(c === chip)));
+      renderThumb(card.querySelector(".pb-thumb"), id, brk);
+    }));
   });
+  applySearch();
 }
 
 /* 놓는 방식 — below: 선택한 줄 바로 아래 새 줄(기본) · beside: 선택한 줄 옆에 나란히 */
@@ -495,24 +662,25 @@ function targetRow() {
   return insertRowAfter(cur);
 }
 
-function addComponent(id) {
+async function makeComponentBlock(id, opts = {}) {
   const brk = PLATFORM_BREAK[state.meta.platform] || "pc";
   const block = { id: nextId("b"), kind: "component", component: id, width: "auto" };
-  const v = variantAxis(id); if (v.length) block.variant = v[0];
-  const s = sizeAxis(id, brk); if (s.length) block.size = s[0];
-  if (id === "table") {
-    block.width = "fill";
-    exampleHtml("table", brk).then((html) => { block.table = tableModelFromExample(html); addBlock(block); });
-    return;
-  }
-  addBlock(block);
+  const v = variantAxis(id); if (v.length) block.variant = v.includes(opts.variant) ? opts.variant : v[0];
+  const s = sizeAxis(id, brk); if (s.length) block.size = s.includes(opts.size) ? opts.size : s[0];
+  if (id === "table") { block.width = "fill"; block.table = tableModelFromExample(await exampleHtml("table", brk)); }
+  return block;
 }
+function addComponent(id, opts) { makeComponentBlock(id, opts).then((block) => addBlock(block)); }
 
-function addBlock(partial) {
+/* target: 없으면 '놓는 방식' 기준 · { row } 그 줄 끝 · { index } 그 자리에 새 줄 */
+function addBlock(partial, target) {
   const block = { id: partial.id || nextId("b"), width: "auto", ...partial };
   if (block.kind === "text") { block.text = block.text || "제목"; block.typo = block.typo || "typo-title-20b"; block.color = block.color || "title-primary"; }
   if (block.kind === "space") block.height = block.height || "16";
-  const row = targetRow();
+  let row;
+  if (target?.row) row = target.row;
+  else if (target && target.index != null) { row = newRow(); state.rows.splice(target.index, 0, row); }
+  else row = targetRow();
   row.blocks.push(block);
   selection = { rowId: row.id, blockId: block.id };
   update();
@@ -586,6 +754,7 @@ function renderProps() {
     if (b.kind === "component") {
       const m = data.manifests[b.component];
       parts.push(`<p class="pb-note"><strong>${registryName(b.component)}</strong> · 배포본 ${m?.version || ""}${m?.jsRequired ? " · JS 필요" : ""}</p>`);
+      if (!availableOn(b.component, brk)) parts.push(`<p class="pb-warn">이 부품은 지금 고른 플랫폼 배포본이 없습니다. 지우거나 플랫폼을 바꾸세요.</p>`);
       const v = variantAxis(b.component);
       if (v.length) parts.push(propRow("변형", selectHtml("variant", v.map((x) => [x, x]), b.variant)));
       const s = sizeAxis(b.component, brk);
@@ -705,7 +874,8 @@ async function renderCanvas() {
   els.canvas.dataset.theme = state.meta.theme;
   els.frameInfo.textContent = state.rows.length ? `행 ${state.rows.length} · 요소 ${state.rows.reduce((n, r) => n + r.blocks.length, 0)}` : "";
   if (!state.rows.length) {
-    els.canvas.innerHTML = `<div class="pb-canvas-empty">아직 비어 있습니다.<br>왼쪽에서 패턴을 고르거나 부품을 눌러 놓아 보세요.</div>`;
+    els.canvas.innerHTML = `<div class="pb-canvas-empty">아직 비어 있습니다.<br>왼쪽 부품을 이리로 끌어다 놓거나, 눌러서 놓아 보세요.</div>`;
+    wireDropZone(els.canvas.firstElementChild, () => ({ index: 0 }));
     fitCanvas();
     return;
   }
@@ -826,6 +996,7 @@ async function main() {
     name: $("#pb-name"), service: $("#pb-service"), platform: $("#pb-platform"), role: $("#pb-role"), theme: $("#pb-theme"),
     distVersion: $("#pb-dist-version"), patternList: $("#pb-pattern-list"), helperList: $("#pb-helper-list"), partGroups: $("#pb-part-groups"),
     canvas: $("#pb-canvas"), canvasWrap: $("#pb-canvas-wrap"), frameLabel: $("#pb-frame-label"), frameInfo: $("#pb-frame-info"), props: $("#pb-props"), toast: $("#pb-toast"),
+    search: $("#pb-search"), searchEmpty: $("#pb-search-empty"),
     requestDialog: $("#pb-request-dialog"), reqName: $("#pb-req-name"), reqPurpose: $("#pb-req-purpose"), reqNotes: $("#pb-req-notes"), reqPreview: $("#pb-req-preview")
   });
   try { await loadAll(); }
@@ -839,6 +1010,7 @@ async function main() {
   renderToolbar(); renderPatternList(); renderHelperList(); renderPartGroups();
   await update();
 
+  els.search.addEventListener("input", applySearch);
   window.addEventListener("resize", fitCanvas);
   if (window.ResizeObserver) new ResizeObserver(() => fitCanvas()).observe(els.canvasWrap.parentElement);
   els.name.addEventListener("input", () => { state.meta.name = els.name.value; persist(); });

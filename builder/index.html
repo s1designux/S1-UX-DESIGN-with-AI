@@ -45,6 +45,9 @@
     <section class="pb-panel" aria-label="패턴과 부품">
       <div class="pb-panel-head"><h2 class="pb-panel-title">패턴 · 부품</h2></div>
       <div class="pb-panel-body">
+        <input type="search" class="pb-search" id="pb-search" placeholder="패턴·부품 검색 (예: 버튼, 표, 탭)" aria-label="패턴과 부품 검색">
+        <p class="pb-empty" id="pb-search-empty" hidden>찾는 이름이 없습니다.</p>
+        <p class="pb-note">카드를 <strong>끌어다</strong> 미리보기의 줄이나 줄 사이에 놓으세요. 누르면 "놓는 방식"대로 들어갑니다. 크기·변형은 카드에서 미리 고릅니다.</p>
         <p class="pb-group-label">놓는 방식</p>
         <div class="pb-place" role="radiogroup" aria-label="부품을 놓는 방식">
           <button type="button" class="pb-btn pb-btn-sm" data-place="below" aria-checked="true" role="radio">↓ 아래 새 줄</button>
