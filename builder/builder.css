@@ -77,6 +77,27 @@ button, input, select, textarea { font: inherit; color: inherit; }
 /* 미리보기 도구줄 */
 .pb-stage-tools { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 8px 14px; border-bottom: 1px solid var(--color-line-gray-subtle); }
 .pb-tools-label { font-size: 11px; font-weight: 700; color: var(--color-text-body-tertiary); }
+.pb-tools-check { gap: 4px; font-size: 11px; }
+
+/* 모바일 상태바 — 정본 StatusBar(App 360×27)를 옮긴 그림. 배포 부품이 아니라 화면 틀의 크롬이다(D5). */
+.pb-statusbar {
+  position: sticky; top: 0; z-index: 3;
+  align-items: center; display: flex; flex: none;
+  height: 27px; justify-content: space-between;
+  padding-left: var(--spacing-20); padding-right: var(--spacing-16);
+  background: var(--color-bg-level-0); color: var(--color-text-body-secondary);
+  font-size: var(--font-size-12); font-weight: var(--font-weight-medium);
+}
+.pb-statusbar-gap { background: var(--color-bg-level-0); height: var(--spacing-16); }
+.pb-statusbar-right { align-items: center; display: flex; gap: 6px; }
+.pb-statusbar-signal { display: block; height: 12px; position: relative; width: 17px; }
+.pb-statusbar-signal i { background: var(--color-icon-gray-dark); border-radius: 0.5px; position: absolute; }
+.pb-statusbar-wifi { align-items: center; color: var(--color-icon-gray-dark); display: flex; height: 12px; width: 16px; }
+.pb-statusbar-battery { display: block; height: 12px; position: relative; width: 24px; }
+.pb-statusbar-battery i { position: absolute; }
+.pb-statusbar-battery-shell { border: 1px solid var(--color-icon-gray-dark); border-radius: 2.5px; height: 11px; left: 0; top: 0.5px; width: 20px; }
+.pb-statusbar-battery-tip { background: var(--color-icon-gray-dark); border-radius: 1px; height: 4px; left: 20.4px; top: 4px; width: 1.6px; }
+.pb-statusbar-battery-fill { background: var(--color-icon-gray-dark); border-radius: 1px; height: 7px; left: 2px; top: 2.5px; width: 14.5px; }
 
 /* 부품 카드 — 미리보기 + 크기/변형 선택 + 드래그 */
 .pb-card { border: 1px solid var(--color-line-gray-subtle); border-radius: var(--radius-8); background: var(--color-bg-level-0); padding: 8px; cursor: grab; }
@@ -97,8 +118,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .pb-item-helper { cursor: grab; }
 
 /* 놓을 자리 — 끄는 동안만 보인다 */
-.pb-gap { height: 0; overflow: hidden; margin: 0; border-radius: var(--radius-4); border: 1px dashed transparent; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--color-text-body-tertiary); transition: height .12s; }
-body[data-pb-dragging] .pb-gap { height: 28px; margin: 4px 0; border-color: var(--color-line-gray-subtle); }
+/* 접혀 있을 때는 테두리도 없어야 한다 — border 가 남으면 줄마다 2px 씩 벌어진다(2026-09-18 실측). */
+.pb-gap { height: 0; overflow: hidden; margin: 0; border: 0; border-radius: var(--radius-4); display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--color-text-body-tertiary); transition: height .12s; }
+body[data-pb-dragging] .pb-gap { height: 28px; margin: 4px 0; border: 1px dashed var(--color-line-gray-subtle); }
 .pb-gap[data-pb-over="true"], .pb-canvas .s1-row[data-pb-over="true"] { border-color: var(--color-line-blue) !important; outline: 2px dashed var(--color-line-blue) !important; background: var(--color-bg-level-1); }
 .pb-canvas-empty[data-pb-over="true"] { outline: 2px dashed var(--color-line-blue); border-radius: var(--radius-8); }
 .pb-canvas .s1-block[data-pb-block] { cursor: grab; }

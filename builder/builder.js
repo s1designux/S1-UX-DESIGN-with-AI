@@ -312,6 +312,30 @@ async function blockElement(block, brk) {
   return wrap;
 }
 
+/* ── 모바일 상태바(StatusBar) ────────────────────────────────────────────────
+   정본(build-components.ts buildStatusBar · populateStatusRow)의 App 상태바 360×27 을 그대로 옮긴 그림이다.
+   **배포 부품이 아니다** — river 결정 D5 로 배포본에서 뺐고(OS·브라우저가 그리는 영역),
+   registry/governance/dummy-chrome-parts.json 이 "우리 부품이 아닌 OS 껍데기 소품"으로 선언한다.
+   그래서 부품 목록에 넣지 않고 **미리보기 틀 위쪽에 고정**으로만 얹는다(river 지시 2026-09-18).
+   수치·색은 가이드 사이트의 같은 그림(assets/css/ui-library-guide.css .uilg-phone-status)과 같다:
+   높이 27 · 좌 20 / 우 16 패딩 · 12 Medium · 오른쪽 묶음 간격 6 · 아이콘색 icon/gray-dark. */
+let statusWifiSeq = 0;
+function statusBarHtml() {
+  const uid = `pb-sw${++statusWifiSeq}`;                    // 마스크 id 는 인스턴스마다 새로 — 겹치면 호가 뭉개진다
+  const wifi = `<svg width="16" height="12" viewBox="0 0 16 12" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="${uid}a" fill="white"><path d="M2.34315 4.34315C3.84344 2.84286 5.87827 2 8 2C10.1217 2 12.1566 2.84285 13.6569 4.34314L8 10L2.34315 4.34315Z"/></mask><path d="M2.34315 4.34315C3.84344 2.84286 5.87827 2 8 2C10.1217 2 12.1566 2.84285 13.6569 4.34314L8 10L2.34315 4.34315Z" stroke="currentColor" stroke-width="3.2" mask="url(#${uid}a)"/><mask id="${uid}b" fill="white"><path d="M4.46447 6.46447C5.40215 5.52678 6.67392 5 8 5C9.32608 5 10.5979 5.52678 11.5355 6.46447L8 10L4.46447 6.46447Z"/></mask><path d="M4.46447 6.46447C5.40215 5.52678 6.67392 5 8 5C9.32608 5 10.5979 5.52678 11.5355 6.46447L8 10L4.46447 6.46447Z" stroke="currentColor" stroke-width="3.2" mask="url(#${uid}b)"/><circle cx="7.9998" cy="10.2" r="1.2" fill="currentColor"/></svg>`;
+  const bars = [[0, 8, 3, 4], [4.5, 6, 3, 6], [9, 4, 3, 8], [13.5, 1, 3, 11]]
+    .map(([x, y, w, h]) => `<i style="left:${x}px;top:${y}px;width:${w}px;height:${h}px"></i>`).join("");
+  return `<div class="pb-statusbar" aria-hidden="true">
+    <span class="pb-statusbar-time">12:30</span>
+    <span class="pb-statusbar-right">
+      <span class="pb-statusbar-signal">${bars}</span>
+      <span class="pb-statusbar-wifi">${wifi}</span>
+      <span class="pb-statusbar-battery"><i class="pb-statusbar-battery-shell"></i><i class="pb-statusbar-battery-tip"></i><i class="pb-statusbar-battery-fill"></i></span>
+      <span class="pb-statusbar-pct">78%</span>
+    </span>
+  </div>`;
+}
+
 /* ── 변형마다 뼈대가 다른 부품 ─────────────────────────────────────────────
    대부분의 부품은 data-variant 만 바꾸면 CSS 가 모습을 바꾼다. 그런데 배포본 manifest 의
    htmlContract.perVariantParts 가 선언된 부품(mobile-header · gnb)은 **변형마다 들어가는 부품(part)이 다르다.**
@@ -446,6 +470,9 @@ async function renderScreen(target, editor) {
       rowEl.style.marginLeft = `calc(${pad} * -1)`;
       rowEl.style.marginRight = `calc(${pad} * -1)`;
       rowEl.style.width = `calc(100% + ${pad} + ${pad})`;
+      // 맨 윗줄·맨 아랫줄이면 위아래 여백도 없앤다 — 상단 헤더·하단 메뉴가 화면 끝에 닿아야 한다
+      if (ri === 0) rowEl.style.marginTop = `calc(${pad} * -1)`;
+      if (ri === state.rows.length - 1) rowEl.style.marginBottom = `calc(${pad} * -1)`;
       rowEl.dataset.s1Bleed = "true";
     }
     if (editor) {
@@ -501,6 +528,25 @@ function platformInfo() {
 }
 
 /* 캔버스를 프레임 실제 크기(1920 등)로 그리고, 무대 폭에 맞춰 축소해 보여준다. */
+/* 모바일 미리보기 맨 위에 상태바를 고정으로 얹는다(기본 켜짐 — river 지시 2026-09-18). */
+function paintStatusBar() {
+  els.canvas.querySelector(".pb-statusbar")?.remove();
+  const on = platformInfo().id === "mobile" && state.screen.statusBar !== false;
+  els.canvas.dataset.statusbar = String(on);
+  if (!on) return;
+  const tpl = document.createElement("template");
+  tpl.innerHTML = statusBarHtml().trim();
+  els.canvas.prepend(tpl.content.firstElementChild);
+  /* 상태바와 AppBar 사이 16 — 정본 Mobile Header 합성물의 itemSpacing(build-components.ts:3487).
+     가이드 사이트 목업도 같은 간격을 둔다(.uilg-phone-chrome-gap). 맨 윗줄이 헤더일 때만. */
+  const first = state.rows[0]?.blocks?.[0];
+  if (first?.component === "mobile-header") {
+    const gap = document.createElement("div");
+    gap.className = "pb-statusbar-gap";
+    els.canvas.querySelector(".pb-statusbar").after(gap);
+  }
+}
+
 function fitCanvas() {
   const p = platformInfo();
   const stage = els.canvasWrap.parentElement;            // .pb-stage (무대) — 래퍼가 아니라 무대 폭을 기준으로 잰다
@@ -524,6 +570,8 @@ function renderToolbar() {
   fillSelect(els.platform, PLATFORMS.map((p) => [p.id, p.label]), state.meta.platform);
   fillSelect(els.role, (data.design?.profiles?.role || []).map((r) => [r.id, `${r.id} · ${r.density}`]), state.meta.role);
   els.theme.value = state.meta.theme;
+  els.statusBarField.hidden = platformInfo().id !== "mobile";      // 상태바는 모바일 틀에서만 쓴다
+  els.statusBar.checked = state.screen.statusBar !== false;
   els.name.value = state.meta.name || "";
   els.distVersion.textContent = `s1-ui ${data.dist?.version || ""}`;
 }
@@ -969,12 +1017,14 @@ async function renderCanvas() {
   els.frameInfo.textContent = state.rows.length ? `행 ${state.rows.length} · 요소 ${state.rows.reduce((n, r) => n + r.blocks.length, 0)}` : "";
   if (!state.rows.length) {
     els.canvas.innerHTML = `<div class="pb-canvas-empty">아직 비어 있습니다.<br>왼쪽 부품을 이리로 끌어다 놓거나, 눌러서 놓아 보세요.</div>`;
-    wireDropZone(els.canvas.firstElementChild, () => ({ index: 0 }));
+    wireDropZone(els.canvas.lastElementChild, () => ({ index: 0 }));
+    paintStatusBar();
     fitCanvas();
     return;
   }
   const screen = await renderScreen(els.canvas, true);
   try { autoInit(screen); } catch (e) { console.warn("autoInit", e); }
+  paintStatusBar();
   fitCanvas();
   screen.querySelectorAll("[data-pb-block]").forEach((el) => el.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -1091,6 +1141,7 @@ async function main() {
     name: $("#pb-name"), service: $("#pb-service"), platform: $("#pb-platform"), role: $("#pb-role"), theme: $("#pb-theme"),
     distVersion: $("#pb-dist-version"), patternGroups: $("#pb-pattern-groups"), partGroups: $("#pb-part-groups"),
     canvas: $("#pb-canvas"), canvasWrap: $("#pb-canvas-wrap"), frameLabel: $("#pb-frame-label"), frameInfo: $("#pb-frame-info"), props: $("#pb-props"), toast: $("#pb-toast"),
+    statusBar: $("#pb-statusbar"), statusBarField: $("#pb-statusbar-field"),
     search_parts: $("#pb-search-parts"), search_patterns: $("#pb-search-patterns"),
     empty_parts: $("#pb-empty-parts"), empty_patterns: $("#pb-empty-patterns"),
     requestDialog: $("#pb-request-dialog"), reqName: $("#pb-req-name"), reqPurpose: $("#pb-req-purpose"), reqNotes: $("#pb-req-notes"), reqPreview: $("#pb-req-preview")
@@ -1106,6 +1157,7 @@ async function main() {
   renderToolbar(); renderPatternList(); renderPartGroups();
   await update();
 
+  els.statusBar.addEventListener("change", () => { state.screen.statusBar = els.statusBar.checked; update(); });
   els.search_parts.addEventListener("input", applySearch);
   els.search_patterns.addEventListener("input", applySearch);
   document.querySelectorAll("[data-tab]").forEach((tab) => tab.addEventListener("click", () => {
@@ -1128,6 +1180,7 @@ async function main() {
       if (s.length && !s.includes(b.size)) b.size = s[0];
       if (!s.length) delete b.size;
     }
+    els.statusBarField.hidden = platformInfo().id !== "mobile";
     renderPatternList(); renderPartGroups(); update();
   });
   els.role.addEventListener("change", () => { state.meta.role = els.role.value; update(); });
