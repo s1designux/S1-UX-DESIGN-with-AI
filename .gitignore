@@ -53,3 +53,6 @@ reports/legacy-crosswalk-board/board.html
 
 # 로컬 임베딩 색인 캐시 (지우고 npm run docs:index 로 재생성)
 .claude/cache/
+
+# 렌더 확인용 임시 하네스(플러그인 화면을 Figma 없이 눈으로 볼 때) — 커밋하지 않는다
+.tmp-preview/

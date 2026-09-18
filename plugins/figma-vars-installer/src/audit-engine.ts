@@ -2068,8 +2068,10 @@ async function loadSuggestedNode(candidate: SwapCandidate): Promise<BaseNode | n
 // ─── 변형(variant) 고르기 — 이름만 맞추고 끝내지 않는다 ───────────────────────
 // 이름이 같은 정본을 찾아도 **어느 변형으로 바꿀지**를 정하지 않으면
 // secondary 버튼이 primary 로, 글자 헤더가 체크박스 헤더로 바뀐다(river 보고 2026-09-03).
-// 그래서 ①레거시가 가진 변형값 ②레거시 이름에 적힌 값 두 가지로만 후보를 좁히고,
-// **못 좁히면 조용히 기본값을 쓰지 않고 "모름"으로 돌려준다** — 최종 선택은 사용자가 화면에서 한다.
+// 좁히는 근거는 세 가지다: ①river 가 정해 둔 축(결정표) ②레거시가 가진 변형값 ③레거시 이름에 적힌 값.
+// 남은 축은 정본 기본값으로 채워 **화면에는 언제나 하나가 골라진 채로** 내보낸다(river 지시 2026-09-18).
+// 다만 무엇을 무엇으로 정했는지(axisSource)를 함께 돌려줘 화면이 «정한 것/짐작한 것»을 구분해 보여준다.
+// 자동 교체(strict)는 이 완화를 쓰지 않는다 — pickVariantTarget 은 그대로 엄격하다.
 type VariantOption = { id: string; key: string; label: string; values: { [axis: string]: string } };
 type VariantInfo = {
   hiddenByMedium?: number;   // 다른 매체 전용이라 감춘 변형 수
@@ -2079,9 +2081,12 @@ type VariantInfo = {
   setName: string;
   hasVariants: boolean;
   options: VariantOption[];
-  pickedId: string | null;      // null = 자동으로 못 정함(사용자가 골라야 함)
+  pickedId: string | null;      // null = 세트를 못 읽은 때만. 변형이 있으면 언제나 하나를 고른다.
   matchedAxes: string[];
   unmatchedAxes: string[];
+  axisSource?: { [axis: string]: "decision" | "legacy" | "name" | "default" | "only" };
+  guessedAxes?: string[];       // 근거 없이 기본값으로 채운 축
+  confident?: boolean;          // 모든 축에 근거가 있었나 — 일괄 교체는 이것만 자동으로 돈다
 };
 
 function variantLabel(vp: { [k: string]: string } | null): string {
@@ -2092,7 +2097,8 @@ function variantLabel(vp: { [k: string]: string } | null): string {
 async function getVariantOptions(
   ref: { id: string; key?: string; type: "COMPONENT" | "COMPONENT_SET" },
   legacyInstanceId: string,
-  medium?: ScreenMedium
+  medium?: ScreenMedium,
+  decidedAxes?: { [axis: string]: string } | null
 ): Promise<VariantInfo> {
   const node = await loadReferenceNode(ref);
   if (!node) {
@@ -2128,40 +2134,73 @@ async function getVariantOptions(
   }
   const nameTokens = tokenizeName(legacyNames.replace(/=/g, " ")).map(normVariantValue);
 
-  const def = (set.defaultVariant || variants[0]) as ComponentNode;
-  const axes = Object.keys(def.variantProperties || {});
+  // 축 이름은 세트 기본값에서 읽되, **기본값이 매체 필터에 걸려 사라졌으면 근거로 쓰지 않는다**
+  // (PC 기본값을 모바일 화면에 들이밀지 않기 위해서다).
+  const setDefault = (set.defaultVariant || variants[0]) as ComponentNode;
+  const axes = Object.keys(setDefault.variantProperties || {});
+  const defaultSurvived = variants.some((v) => v.id === setDefault.id);
   const legacyByNorm: { [norm: string]: string } = {};
   for (const k of Object.keys(legacyVP)) legacyByNorm[normAxisName(k)] = legacyVP[k];
+
+  // river 결정이 적어 둔 축을 같은 방식으로 정규화해 둔다 — 이것이 1순위다.
+  const decidedByNorm: { [norm: string]: string } = {};
+  for (const k of Object.keys(decidedAxes || {})) decidedByNorm[normAxisName(k)] = (decidedAxes as { [k: string]: string })[k];
 
   const want: { [axis: string]: string } = {};
   const matchedAxes: string[] = [];
   const unmatchedAxes: string[] = [];
+  const axisSource: { [axis: string]: "decision" | "legacy" | "name" | "default" | "only" } = {};
   for (const axis of axes) {
     const values = Array.from(new Set(variants.map((v) => (v.variantProperties || {})[axis]).filter(Boolean)));
+    // ① river 가 정해 둔 값 (결정표)
+    const fromDecision = decidedByNorm[normAxisName(axis)];
+    if (fromDecision) {
+      const hit = values.find((v) => normVariantValue(v) === normVariantValue(fromDecision));
+      if (hit) { want[axis] = hit; matchedAxes.push(axis); axisSource[axis] = "decision"; continue; }
+    }
+    // ② 레거시가 같은 축을 가지고 있으면 그 값
     const fromVP = legacyByNorm[normAxisName(axis)];
-    // ① 레거시가 같은 축을 가지고 있으면 그 값
     if (fromVP) {
       const hit = values.find((v) => normVariantValue(v) === normVariantValue(fromVP));
-      if (hit) { want[axis] = hit; matchedAxes.push(axis); continue; }
+      if (hit) { want[axis] = hit; matchedAxes.push(axis); axisSource[axis] = "legacy"; continue; }
     }
-    // ② 레거시 이름에 그 축의 값이 적혀 있으면 그 값 (예: "btn_secondary_xsm")
+    // ③ 레거시 이름에 그 축의 값이 적혀 있으면 그 값 (예: "btn_secondary_xsm")
     const byName = values.filter((v) => nameTokens.indexOf(normVariantValue(v)) >= 0);
-    if (byName.length === 1) { want[axis] = byName[0]; matchedAxes.push(axis); continue; }
+    if (byName.length === 1) { want[axis] = byName[0]; matchedAxes.push(axis); axisSource[axis] = "name"; continue; }
     unmatchedAxes.push(axis);
   }
 
-  let picked: ComponentNode | null = null;
-  if (variants.length === 1) {
-    picked = variants[0];
-  } else if (matchedAxes.length > 0) {
-    const narrowed = variants.filter((v) => matchedAxes.every((a) => (v.variantProperties || {})[a] === want[a]));
-    if (narrowed.length === 1) picked = narrowed[0];
-    else if (narrowed.length > 1) {
-      // 남은 축은 정본 기본값으로만 좁힌다. 그래도 하나로 안 좁혀지면 "모름"으로 둔다.
-      const byDefault = narrowed.filter((v) => unmatchedAxes.every((a) => (v.variantProperties || {})[a] === (def.variantProperties || {})[a]));
-      picked = byDefault.length === 1 ? byDefault[0] : null;
-    }
+  // 근거가 센 순서로 하나씩 좁힌다: 결정 → 원본 → 이름.
+  // **좁히다가 남는 게 없어지면 그 축의 근거를 버리고 «짐작»으로 내린다** — 버린 근거를
+  // 그대로 «정한 대로 골랐다»고 말하지 않기 위해서다.
+  const defVP = (defaultSurvived ? setDefault.variantProperties || {} : {}) as { [k: string]: string };
+  const rank = { decision: 0, legacy: 1, name: 2, default: 3 } as { [k: string]: number };
+  const ordered = matchedAxes.slice().sort((a, b) => rank[axisSource[a]] - rank[axisSource[b]]);
+  const guessedAxes: string[] = [];
+  const keptAxes: string[] = [];
+  let pool = variants.slice();
+  for (const axis of ordered) {
+    const next = pool.filter((v) => (v.variantProperties || {})[axis] === want[axis]);
+    if (next.length > 0) { pool = next; keptAxes.push(axis); continue; }
+    // 이 근거는 이 세트에서 성립하지 않는다 — 근거에서 빼고 짐작으로 기록한다.
+    delete want[axis];
+    axisSource[axis] = "default";
+    guessedAxes.push(axis);
   }
+  // 남은 축은 **살아남은 정본 기본값**으로만 채운다. 기본값이 없으면 좁히지 않는다.
+  // 남은 후보에서 그 축의 값이 하나뿐이면 «고를 것이 없다»는 뜻이므로 짐작으로 세지 않는다.
+  for (const axis of axes) {
+    if (keptAxes.indexOf(axis) >= 0) continue;
+    const distinct = Array.from(new Set(pool.map((v) => (v.variantProperties || {})[axis]).filter(Boolean)));
+    if (distinct.length <= 1) { axisSource[axis] = "only"; continue; }
+    const byDefault = defVP[axis] ? pool.filter((v) => (v.variantProperties || {})[axis] === defVP[axis]) : [];
+    if (byDefault.length > 0) { pool = byDefault; want[axis] = defVP[axis]; }
+    axisSource[axis] = "default";
+    if (guessedAxes.indexOf(axis) < 0) guessedAxes.push(axis);
+  }
+  // 그래도 여럿이면 **정본 세트가 적어 둔 차례대로** 첫 번째를 보여 준다(우리가 만든 순서가 아니다).
+  const picked: ComponentNode | null = pool.length > 0 ? pool[0] : null;
+  const confident = guessedAxes.length === 0 && pool.length === 1;
   return {
     ok: true,
     setId: set.id,
@@ -2169,8 +2208,11 @@ async function getVariantOptions(
     hasVariants: true,
     options,
     pickedId: picked ? picked.id : null,
-    matchedAxes,
+    matchedAxes: keptAxes,
     unmatchedAxes,
+    axisSource,
+    guessedAxes,
+    confident,
     hiddenByMedium,
   };
 }
