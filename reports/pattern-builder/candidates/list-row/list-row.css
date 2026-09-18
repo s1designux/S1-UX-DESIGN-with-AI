@@ -1,7 +1,10 @@
 /* 목록 한 줄 (list-row) — 검수용 후보. 아직 정본이 아니다.
    수치 근거: MoDU APP 레거시 547장 판독 (reports/pattern-builder/inventory/modu-app/)
-   · 줄 높이 72 (두 줄짜리 269건) · 좌우 여백 20 · 화살표 24×24 (326건)
-   · 구분선 1px 이며 줄보다 넓게 화면 폭 전체로 긋는다 (360폭 357건 ↔ 320폭 14건)
+   레거시에 이미 `m_list` 라는 이름의 줄 부품이 있었고, 그 크기가 360×75 로 152건 일치한다.
+   · 줄 높이 74 + 구분선 1 = 75 (m_list 360×75 152건) · 폭은 화면 전체 360
+   · 좌우 여백 20 · 화살표 24×24 (326건) · 오른쪽 끝 여백 20
+   · 글 묶음 높이 38 = 제목 16 + 사이 8 + 설명 14, 위 17 아래 19
+   · 앞 체크·라디오 18×18, 왼쪽 20 (76건)
    · 앞 아이콘 32×32, 왼쪽 16, 글 시작 56 (권한 화면)
    색·글꼴은 전부 토큰/타이포 클래스. HEX 없음. */
 
@@ -13,8 +16,8 @@
   cursor: pointer;
   display: flex;
   gap: var(--spacing-8);
-  min-height: 72px;
-  padding: var(--spacing-16) var(--spacing-20);
+  min-height: 74px;
+  padding: 17px var(--spacing-20) 19px;
   text-align: left;
   width: 100%;
 }

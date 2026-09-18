@@ -22,7 +22,7 @@
   th,td{border:1px solid var(--color-line-gray-subtle);padding:7px 10px;text-align:left}
   th{background:var(--color-bg-level-1);font-weight:600}
   .ruler{position:relative}
-  .ruler::after{content:"72";position:absolute;right:-26px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--color-text-state-caption)}
+  .ruler::after{content:"74";position:absolute;right:-26px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--color-text-state-caption)}
 </style>
 </head>
 <body>
@@ -33,12 +33,13 @@
 <h2>무엇을 근거로 이 수치를 정했나</h2>
 <table>
   <tr><th>정한 것</th><th>값</th><th>근거 (레거시에서 몇 건)</th></tr>
-  <tr><td>줄 높이</td><td>72</td><td>두 줄짜리 줄 269건이 72 · 위아래 여백 17 + 제목 16 + 사이 8 + 설명 14 + 17 = 72</td></tr>
+  <tr><td>줄 높이</td><td>74 (+구분선 1 = 75)</td><td>레거시에 이미 있던 줄 부품이 360×75 로 152건 일치 · 위 17 + 글 38 + 아래 19</td></tr>
   <tr><td>좌우 여백</td><td>20</td><td>글 시작 x=20 · 본문 폭 320이 압도적</td></tr>
   <tr><td>화살표</td><td>24 × 24</td><td>326건 전부 24각형</td></tr>
-  <tr><td>구분선</td><td>1px · 줄 전체 폭</td><td>폭 360 짜리 357건 ↔ 폭 320 짜리 14건</td></tr>
+  <tr><td>구분선</td><td>1px · 화면 폭 360 전체</td><td>줄 부품 안에 들어 있다(185건)</td></tr>
   <tr><td>제목 / 설명</td><td>16 중간 / 14 보통</td><td>제목 16 · 설명 14 가 반복</td></tr>
   <tr><td>앞 아이콘</td><td>32, 왼쪽 16, 글 시작 56</td><td>권한 화면의 아이콘 줄</td></tr>
+  <tr><td>앞 체크·라디오</td><td>18, 왼쪽 20</td><td>76건</td></tr>
 </table>
 
 <h2>변형</h2>
@@ -170,13 +171,14 @@
 
 </div>
 
-<h2>봐주실 것</h2>
+<h2>검수 결과</h2>
+<p class="sub">river 지시에 따라 <b>레거시가 한 값으로 일치하는 것만 그대로 가져왔다.</b></p>
 <table>
-  <tr><th>물음</th><th>지금 안</th></tr>
-  <tr><td>줄 높이 72가 손가락으로 누르기에 맞나요?</td><td>레거시 그대로 72</td></tr>
-  <tr><td>설명 글자 색이 너무 옅지 않나요?</td><td>가장 옅은 본문색</td></tr>
-  <tr><td>토글 줄은 줄 전체를 눌러도 켜지게 할까요?</td><td>지금은 토글만 눌림</td></tr>
-  <tr><td>고르는 줄에서 체크를 앞에 둘지 뒤에 둘지</td><td>레거시대로 앞</td></tr>
+  <tr><th>물음</th><th>레거시가 답하나</th><th>결정</th></tr>
+  <tr><td>줄 높이</td><td>일치 — 줄 부품 360×75, 152건</td><td>74 + 구분선 1</td></tr>
+  <tr><td>좌우 여백 · 화살표 · 체크 자리</td><td>일치</td><td>20 · 24 · 앞 18</td></tr>
+  <tr><td>글자 크기·색</td><td>지금 원본을 읽을 수 없음(조회 한도)</td><td>우리 정본 글꼴·색을 쓴다</td></tr>
+  <tr><td>토글 줄을 줄 전체로 누를지</td><td>그림만으로는 알 수 없음</td><td>토글만 누름</td></tr>
 </table>
 <script src="../../../../ui-library/dist/s1-ui.auto.js"></script>
 </body>
