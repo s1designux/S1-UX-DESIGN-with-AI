@@ -1,0 +1,42 @@
+{
+  "id": "R-8",
+  "name": "위 틀에서 본문까지는 20",
+  "statement": "모바일 화면에서 위 틀(mobile-header)이 끝난 자리부터 본문 첫 글자·부품까지 20 을 띄운다. 좌우 여백도 20 이다.",
+  "status": "candidate",
+  "enforcedBy": "none",
+  "decidedBy": "river",
+  "sightings": [
+    {
+      "at": "2026-09-18",
+      "screen": "모두앱 레거시 전 화면 (폭 360 화면 593장 실측)",
+      "screenKind": "모바일 앱 전반 — 목록·폼·상세·설정이 섞여 있다",
+      "service": "MoDU APP",
+      "medium": "app",
+      "density": "normal",
+      "quote": "20으로 통일하고 나머지도 다 정해줘",
+      "evidence": "reports/composition-rules/2026-09-18-skeleton-measure.json · reports/composition-rules/2026-09-18-legacy-counts.html 2-b절"
+    }
+  ],
+  "contextCount": 1,
+  "measurement": {
+    "note": "레거시에는 기준이 없었다. river 가 한 값으로 통일하도록 결정했다.",
+    "topToBody": { "20": 73, "없음": 58, "28": 39, "16": 25, "24": 15 },
+    "leftGap": { "20": 252, "16": 16, "24": 9, "30": 5, "0": 4 },
+    "rightGap": { "20": 185, "0": 32, "16": 15 },
+    "basis": "바탕 크기 360x780 화면 341장. 오른쪽 여백의 0·음수는 화면 밖으로 삐져나간 부품이라 여백이 아니다.",
+    "scope": "Figma 10개 페이지 전부 · 폭 360 화면 593장 (바탕 780 은 341장)"
+  },
+  "relatedRules": {
+    "R-6": "R-6(여백은 값이 아니라 보이는 것으로 맞춘다)과 충돌하지 않는다. 20 은 선언값이고, 꼬리에 아이콘이 있는 줄은 아이콘이 자기 안에 비워 둔 공간만큼 빼서 '보이는 여백'이 20 이 되게 한다."
+  },
+  "notAppliedTo": [
+    "위 틀 자체의 높이 — 정본 mobile-header 가 이미 갖는다(앱 99 · 웹 149, 상태표시줄과 앱바 사이 16).",
+    "아래 틀 높이 — 정본 mobile-bottom-nav 가 이미 갖는다(탭 1칸 60x60).",
+    "PC — 이 규칙은 모바일에서 나왔다. PC 값이 다르면 새 규칙인지부터 의심한다(_index.json mediumFirstSuspicion)."
+  ],
+  "promotion": {
+    "rule": "서로 다른 맥락 3곳에서 나오면 공통 규칙 후보로 올린다.",
+    "ifOnlyOne": "한 자리에서만 계속 나오면 그 화면 종류 전용으로 굳힌다.",
+    "current": "1곳 — 모바일 앱에서 나왔다. PC 에서 같은 규칙이 나오면 sightings 에 한 줄 더한다."
+  }
+}
