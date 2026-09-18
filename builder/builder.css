@@ -260,3 +260,26 @@ body[data-pb-dragging] .pb-canvas .s1-row[data-pb-empty="true"] { outline-color:
 .pb-canvas .s1-row[data-s1-group="start"]::before { top: 0; border-radius: var(--radius-2) var(--radius-2) 0 0; }
 .pb-canvas .s1-row[data-s1-group="end"]::before { bottom: 0; border-radius: 0 0 var(--radius-2) var(--radius-2); }
 .pb-canvas .s1-row[data-s1-group="mid"]::before { border-radius: 0; }
+
+/* ── 원본 ↔ 새로 그린 화면 나란히 보기 ─────────────────────────
+   가져온 화면을 열면 왼쪽이 원본(레거시 그림), 오른쪽이 우리 부품으로 새로 그린 화면이다.
+   왼쪽은 보기 전용 대조판이라 놓을 수도 고칠 수도 없다. */
+.pb-compare { display: flex; align-items: flex-start; justify-content: center; gap: 24px; }
+.pb-side { display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.pb-canvas-ref { overflow: hidden; }
+.pb-canvas-ref .pb-ref-screen { position: relative; }
+.pb-canvas-ref .pb-ref-screen img { position: absolute; display: block; max-width: none; }
+
+/* 대응 부품이 없어 못 채운 자리 — 원본 크기만큼 빈 칸으로 두고 무엇이었는지 적는다.
+   ⛔ 추측으로 비슷한 부품을 끼워 넣지 않는다(river 결정 2026-09-18). */
+.s1-block[data-s1-placeholder="true"] {
+  box-sizing: border-box; display: flex; align-items: center; justify-content: center; text-align: center;
+  border: 1px dashed var(--color-line-gray-subtle); border-radius: var(--radius-4);
+  background: var(--color-bg-level-1); color: var(--color-text-body-tertiary);
+  font-size: 11px; line-height: 1.4; padding: 4px 6px; overflow: hidden;
+}
+
+/* 하단 메뉴 바 — 배포 부품은 탭 1칸(60×60)뿐이고 바(가로 배치·배경)는 화면이 소유한다.
+   근거: registry/components/mobile-bottom-nav.json(bar-background = --color-navigation-bg) · s1-ui.css D1. */
+.s1-block [role="tablist"]:has(> [data-s1-component="mobile-bottom-nav"]) { display: flex; width: 100%; background: var(--color-navigation-bg); }
+.s1-block [role="tablist"]:has(> [data-s1-component="mobile-bottom-nav"]) > [data-s1-component="mobile-bottom-nav"] { flex: 1 1 0; }

@@ -20,6 +20,7 @@ const URLS = {
   compositionRules: url("../registry/governance/composition-rules.json"),
   suggest: url("../reports/pattern-builder/profiles/app-modu/suggest-model.json"),
   imported: url("../reports/pattern-builder/imported/index.json"),
+  partMap: (profile) => url(`../reports/pattern-builder/profiles/${profile}/part-map.json`),
   importedBase: url("../reports/pattern-builder/"),
   componentManifest: (id) => url(`../ui-library/dist/components/${id}.manifest.json`),
   componentSpec: (id) => url(`../registry/components/${id}.json`),
@@ -204,6 +205,7 @@ function freshState() {
     version: 1,
     meta: { name: "", service: d.service || "core", platform: "pc", role: d.role || "user", theme: d.theme || "light" },
     screen: { padding: "24", groupGap: GROUP_RULES.insideGap, betweenGap: GROUP_RULES.betweenGap },
+    reference: null,      // 왼쪽 대조판(가져온 원본 그림) — 보기 전용이라 내보내지 않는다
     rows: []
   };
 }
@@ -332,6 +334,16 @@ async function blockElement(block, brk) {
     wrap.style.width = `${Number(block.widthPx) || 0}px`;
     if (Number(block.xPx)) wrap.style.marginLeft = `${Number(block.xPx)}px`;
     wrap.appendChild(img);
+    return wrap;
+  }
+  /* 대응 부품이 없어 못 채운 자리 — 원본 크기만큼 빈 칸을 두고 무엇이었는지만 적는다.
+     ⛔ 비슷해 보이는 부품을 추측으로 끼워 넣지 않는다(river 결정 2026-09-18). */
+  if (block.kind === "placeholder") {
+    wrap.dataset.s1Placeholder = "true";
+    wrap.style.width = `${Number(block.widthPx) || 120}px`;
+    wrap.style.height = `${Number(block.heightPx) || 24}px`;
+    wrap.textContent = block.legacyName ? `대응 부품 없음 · ${block.legacyName}` : "대응 부품 없음";
+    wrap.title = "이 자리에 해당하는 정본 부품이 아직 없습니다.";
     return wrap;
   }
   if (block.kind === "divider") {
@@ -649,6 +661,46 @@ function homeHeaderFirst() {
   return first?.component === "mobile-header" && String(first.variant || "").startsWith("home-");
 }
 
+/* 왼쪽 대조판 — 가져온 원본 그림을 원본 좌표 그대로 겹쳐 올린다. 보기 전용이라 놓을 수도 고칠 수도 없다. */
+function renderReference() {
+  const ref = state.reference;
+  if (!els.refSide) return;
+  els.refSide.hidden = !ref;
+  if (!ref) return;
+  els.refCanvas.innerHTML = "";
+  const box = document.createElement("div");
+  box.className = "pb-ref-screen";
+  box.style.width = `${ref.width}px`;
+  box.style.height = `${ref.height}px`;
+  for (const r of ref.rows || []) {
+    if (!r.image) continue;
+    const img = document.createElement("img");
+    img.src = r.image;
+    img.alt = r.label || "가져온 원본 칸";
+    img.loading = "lazy";
+    img.style.left = `${r.x || 0}px`;
+    img.style.top = `${r.y || 0}px`;
+    img.style.width = `${r.w}px`;
+    img.style.height = `${r.h}px`;
+    box.appendChild(img);
+  }
+  els.refCanvas.appendChild(box);
+}
+function fitReference(avail) {
+  const ref = state.reference;
+  if (!els.refSide || !ref) return;
+  const scale = Math.min(1, avail / ref.width);
+  els.refCanvas.style.width = `${ref.width}px`;
+  els.refCanvas.style.height = `${ref.height}px`;
+  els.refCanvas.style.minHeight = "0";
+  els.refCanvas.style.transform = `scale(${scale})`;
+  els.refCanvas.style.transformOrigin = "top left";
+  els.refWrap.style.width = `${Math.ceil(ref.width * scale)}px`;
+  els.refWrap.style.height = `${Math.ceil(ref.height * scale)}px`;
+  els.refLabel.textContent = `원본 그대로 · ${ref.name} · 보기 전용`
+    + (scale < 1 ? ` · ${Math.round(scale * 100)}%` : "");
+}
+
 function paintShell() {
   els.canvas.querySelectorAll(".pb-shell-top, .pb-shell-bottom").forEach((n) => n.remove());
   const on = platformInfo().id === "mobile" && state.screen.shell !== "none";
@@ -682,8 +734,10 @@ const viewModeOf = () => (state.screen.view === "full" ? "full" : "device");
 function fitCanvas() {
   const p = platformInfo();
   const mode = viewModeOf();
-  const stage = els.canvasWrap.parentElement;            // .pb-stage (무대) — 래퍼가 아니라 무대 폭을 기준으로 잰다
-  const avail = Math.max(200, stage.clientWidth - 48);
+  const stage = els.canvasWrap.closest(".pb-stage");     // 무대 폭을 기준으로 잰다(래퍼가 아니라)
+  /* 왼쪽에 원본 대조판이 서 있으면 무대를 둘로 나눠 쓴다 — 두 화면이 같은 배율로 나란히 보이게. */
+  const refOn = Boolean(state.reference);
+  const avail = Math.max(200, (stage.clientWidth - 48 - (refOn ? 24 : 0)) / (refOn ? 2 : 1));
   const scale = Math.min(1, avail / p.width);
   els.canvas.dataset.view = mode;
   els.canvas.style.width = `${p.width}px`;
@@ -697,8 +751,9 @@ function fitCanvas() {
   paintFoldLine(p, mode);
   const overflow = mode === "device" && els.canvas.querySelector(".pb-scroll")
     ? (() => { const s = els.canvas.querySelector(".pb-scroll"); return s.scrollHeight > s.clientHeight + 1 ? " · 스크롤 있음" : ""; })() : "";
-  els.frameLabel.textContent = `${p.label} · ${state.meta.role} · ${state.meta.theme}`
+  els.frameLabel.textContent = (refOn ? "새로 그린 화면 · " : "") + `${p.label} · ${state.meta.role} · ${state.meta.theme}`
     + (scale < 1 ? ` · 미리보기 ${Math.round(scale * 100)}%` : "") + overflow;
+  fitReference(avail);
 }
 
 /* 한눈에 보기에서 "여기까지가 첫 화면" 선 — 기기 높이만큼 내려온 자리에 긋는다. */
@@ -1021,31 +1076,135 @@ async function loadFileScreen(key) {
     { profile: null, slug: null, screenId: it.doc.screen.id, mode: it.doc.mode, name: it.doc.screen.name, fromFile: it.fileLabel });
 }
 
+
+/* ── 가져온 화면을 우리 부품으로 「새로 그리기」 ───────────────────
+   왼쪽에 원본 그림을 두고, 오른쪽에 같은 차례로 정본 부품을 놓아 화면을 다시 그린다.
+   원칙 셋 (river 결정 2026-09-18):
+     ① 원본은 손대지 않는다 — 왼쪽은 보기 전용 대조판이다.
+     ② 대응 부품이 없는 자리는 회색 빈 칸 + 이름표로 남긴다. 비슷해 보이는 것을 추측으로 끼워 넣지 않는다.
+     ③ 이름 대응표는 레거시 관찰 자료(part-map.json)이고 정본 규칙이 아니다 — 정본에 합치지 않는다.  */
+const partMapCache = {};
+async function partMapFor(profile) {
+  if (!profile) return null;
+  if (!(profile in partMapCache)) {
+    partMapCache[profile] = await fetchJson(URLS.partMap(profile)).catch(() => null);
+  }
+  return partMapCache[profile];
+}
+const normName = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+/* 정본 세트 이름("Mobile Header") → 배포본 부품 id("mobile-header"). 배포본에 없으면 쓰지 않는다. */
+function distIdByCanonName(name) {
+  const hit = (data.registry?.components || []).find((c) => normName(c.name) === normName(name));
+  const id = hit ? hit.id : normName(name);
+  return data.manifests[id] ? id : null;
+}
+/* 이 칸의 canon 메모(가져오기가 적어 둔 이름 대응 결과) → 레거시 이름별 부품 id */
+function canonMapOf(legacyRow) {
+  const m = new Map();
+  for (const c of legacyRow.canon || []) {
+    if (c.status !== "matched") continue;
+    const id = (c.canonSets || []).map(distIdByCanonName).find(Boolean);
+    if (id) m.set(String(c.legacy).trim(), id);
+  }
+  return m;
+}
+function resolvePart(name, partMap, canonById) {
+  const raw = String(name || "");
+  for (const k of [raw, raw.trim(), raw.split("/")[0].trim()]) {
+    const m = partMap?.map?.[k];
+    if (!m) continue;
+    if (m.kind === "component") return data.manifests[m.id] ? { kind: "component", id: m.id } : null;
+    if (m.kind === "helper") return { kind: "helper", id: m.id };
+    if (m.kind === "chrome") return { kind: "chrome" };
+    return null;                                   // unmapped — 대응 부품이 아직 없다
+  }
+  const byCanon = canonById.get(raw.trim());
+  return byCanon ? { kind: "component", id: byCanon } : null;
+}
+/* 원본 글자 크기·굵기에 가장 가까운 정본 타이포 토큰을 고른다(새 값을 만들지 않는다). */
+function typoFor(item) {
+  const size = Number(item.size) || 14;
+  const w = Number(item.weight) || 400;
+  if (size >= 30) return "typo-title-32b";
+  if (size >= 22) return "typo-title-24b";
+  if (size >= 19) return "typo-title-20b";
+  if (size >= 17) return w >= 500 ? "typo-title-18b" : "typo-body-16r";
+  if (size >= 15) return w >= 500 ? "typo-title-16b" : "typo-body-16r";
+  if (size >= 13) return w >= 700 ? "typo-title-14b" : (w >= 500 ? "typo-body-14m" : "typo-body-14r");
+  return w >= 500 ? "typo-body-12m" : "typo-body-12r";
+}
+const placeholderBlock = (o) => ({
+  id: nextId("b"), kind: "placeholder", width: "auto",
+  widthPx: Math.max(24, Number(o.w) || 120), heightPx: Math.max(16, Number(o.h) || 24),
+  legacyName: o.name || ""
+});
+/* 한 칸 안에서 위아래로 겹치는 알맹이들은 같은 줄에 나란히 놓는다. */
+function groupLines(items) {
+  const lines = [];
+  for (const it of items) {
+    const cur = lines[lines.length - 1];
+    if (cur && it.y < cur.bottom - 6) { cur.items.push(it); cur.bottom = Math.max(cur.bottom, it.y + it.h); }
+    else lines.push({ top: it.y, bottom: it.y + it.h, items: [it] });
+  }
+  for (const l of lines) l.items.sort((x, y) => x.x - y.x);   // 한 줄 안에서는 왼쪽부터
+  return lines;
+}
+async function blockForItem(it, doc, partMap, canonById, notes) {
+  if (it.kind === "text") {
+    const big = (Number(it.size) || 14) >= 16 || (Number(it.weight) || 400) >= 700;
+    return { id: nextId("b"), kind: "text", width: "auto", text: it.text, typo: typoFor(it), color: big ? "title-primary" : "body-primary" };
+  }
+  const r = resolvePart(it.name, partMap, canonById);
+  if (!r) { notes.unknown.push(String(it.name || "").trim()); return placeholderBlock({ name: it.name, w: it.w, h: it.h }); }
+  if (r.kind === "chrome") { notes.chrome.push(String(it.name || "").trim()); return "chrome"; }
+  if (r.kind === "helper") return { id: nextId("b"), kind: r.id, width: "auto" };
+  const block = await makeComponentBlock(r.id, {});
+  const label = (it.texts || [])[0];
+  if (label) block.text = label;
+  if (!block.bleed && it.w >= doc.screen.width - 8) block.width = "fill";
+  notes.made.push(r.id);
+  return block;
+}
+const newImportedRow = (blocks, gapPx) => ({
+  id: nextId("r"), gap: String(GROUP_RULES.rowGap), align: "start",
+  marginBottom: "0", marginBottomPx: Math.max(0, Math.round(gapPx || 0)), blocks
+});
+/* 가져온 화면 한 장 → 우리 부품으로 다시 그린 줄들 */
+async function rebuildRows(doc, partMap) {
+  const rows = [];
+  const notes = { made: [], unknown: [], chrome: [], emptyRows: [] };
+  for (let i = 0; i < doc.rows.length; i += 1) {
+    const lr = doc.rows[i];
+    const next = doc.rows[i + 1];
+    const tailGap = next ? Math.max(0, next.y - (lr.y + lr.h)) : 0;
+    const canonById = canonMapOf(lr);
+    const lines = groupLines(lr.items || []);
+    const made = [];
+    for (const line of lines) {
+      const blocks = [];
+      for (const it of line.items) {
+        const b = await blockForItem(it, doc, partMap, canonById, notes);
+        if (b && b !== "chrome") blocks.push(b);
+      }
+      if (blocks.length) made.push({ line, blocks });
+    }
+    if (!made.length) {
+      // 알맹이를 하나도 못 읽었거나 전부 기기 크롬인 칸 — 빈 칸으로 자리만 남긴다
+      if (!(lr.items || []).length) notes.emptyRows.push(lr.label);
+      if ((lr.items || []).length) continue;               // 크롬만 있던 칸은 빌더가 화면 틀로 그린다
+      rows.push(newImportedRow([placeholderBlock({ name: lr.label, w: lr.w, h: lr.h })], tailGap));
+      continue;
+    }
+    made.forEach((m, j) => {
+      const nx = made[j + 1];
+      rows.push(newImportedRow(m.blocks, nx ? Math.max(0, nx.line.top - m.line.bottom) : tailGap));
+    });
+  }
+  return { rows, notes };
+}
+
 /* 가져온 화면 한 장을 캔버스에 올리는 한 갈래 — 저장소에서 온 것도, 파일에서 온 것도 여기로 모인다. */
 async function placeImportedDoc(doc, imgUrl, meta) {
-  const rows = doc.rows.map((r, i) => {
-    const next = doc.rows[i + 1];
-    const gap = next ? Math.max(0, next.y - (r.y + r.h)) : 0;
-    return {
-      id: nextId("r"),
-      gap: "0",
-      align: "start",
-      marginBottom: "0",
-      marginBottomPx: gap,
-      blocks: [{
-        id: nextId("b"),
-        kind: "legacy",
-        image: imgUrl(r.image),
-        widthPx: r.w,
-        heightPx: r.h,
-        xPx: r.x || 0,
-        legacyLabel: r.label,
-        legacyName: r.name,
-        canon: r.canon || []
-      }]
-    };
-  });
-
   state = freshState();
   state.meta.name = doc.screen.name;
   state.meta.platform = doc.screen.width <= 480 ? "mobile" : "pc";
@@ -1058,13 +1217,26 @@ async function placeImportedDoc(doc, imgUrl, meta) {
   state.screen.importedInset = insets.length
     ? [...tally.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0])[0][0]
     : 0;
-  state.screen.shell = "none";     // 원본에 상태바·내비가 들어 있으면 겹치므로 기기 크롬은 끈 채로 시작한다
+  state.screen.shell = "none";     // 위아래 크롬은 왼쪽 원본이 이미 갖고 있다 — 겹치지 않게 끈 채로 시작한다
   state.imported = meta;
+
+  /* 왼쪽 — 원본 그대로(보기 전용 대조판). 자리·크기는 원본 좌표 그대로 겹쳐 올린다. */
+  state.reference = {
+    name: doc.screen.name,
+    width: doc.screen.width,
+    height: doc.screen.height,
+    rows: doc.rows.map((r) => ({ image: imgUrl(r.image), x: r.x || 0, y: r.y || 0, w: r.w, h: r.h, label: r.label }))
+  };
+
+  /* 오른쪽 — 같은 차례로 우리 부품을 놓아 새로 그린 화면. 여기가 고치고 내보내는 쪽이다. */
+  const { rows, notes } = await rebuildRows(doc, await partMapFor(meta.profile));
   state.rows = rows;
   selection = { rowId: null, blockId: null };
   renderToolbar();
   await update();
-  toast(`"${doc.screen.name}" 을 올렸습니다 — 칸 ${rows.length}개`);
+  const holes = new Set(notes.unknown.filter(Boolean));
+  toast(`"${doc.screen.name}" — 왼쪽은 원본, 오른쪽은 새로 그린 화면입니다`
+    + (holes.size ? ` · 아직 부품이 없는 자리 ${holes.size}종` : ""));
 }
 
 const HELPERS = [
@@ -1381,12 +1553,15 @@ function renderProps() {
           `<li>${escapeHtml(c.legacy)} → ${c.status === "matched" && c.canonSets.length ? escapeHtml(c.canonSets.join(" + ")) : (LABEL[c.status] || c.status)}</li>`).join("")}</ul>`);
         parts.push(`<p class="pb-note">「정해짐」이라도 <strong>자동으로 바꾸지 않습니다</strong> — 이 묶음은 레거시 모습 그대로가 규칙입니다.</p>`);
       }
+    } else if (b.kind === "placeholder") {
+      parts.push(`<p class="pb-note"><strong>${escapeHtml(b.legacyName || "원본 자리")}</strong> · ${b.widthPx}×${b.heightPx}</p>`);
+      parts.push(`<p class="pb-note">원본의 이 자리에 해당하는 <strong>정본 부품이 아직 없습니다.</strong> 비슷해 보이는 부품을 임의로 끼워 넣지 않고 자리만 비워 두었습니다. 지우고 직접 부품을 놓거나, 부품이 생길 때까지 그대로 두세요.</p>`);
     } else if (b.kind === "space") {
       parts.push(propRow("높이", selectHtml("height", spacingOpts, b.height, "높이")));
     } else {
       parts.push(`<p class="pb-note">구분선 — 행 폭을 채웁니다.</p>`);
     }
-    if (b.kind !== "divider" && b.kind !== "space") {
+    if (b.kind !== "divider" && b.kind !== "space" && b.kind !== "placeholder") {
       const w = ["auto", "fill", "custom"].includes(b.width) ? b.width : "custom";
       if (w === "custom" && !b.widthPx) b.widthPx = Number(b.width) || 320;
       parts.push(propRow("폭", selectHtml("width", [["auto", "내용만큼"], ["fill", "남은 폭 채우기"], ["custom", "직접 입력(px)"]], w, "폭")));
@@ -1504,6 +1679,7 @@ async function renderCanvas() {
   els.frameInfo.textContent = state.rows.length ? `행 ${state.rows.length} · 요소 ${state.rows.reduce((n, r) => n + r.blocks.length, 0)}` : "";
   /* 본문은 스크롤 칸 안에 둔다 — 기기처럼 보기에서 위아래 크롬은 붙어 있고 내용만 스크롤된다. */
   els.canvas.innerHTML = "";
+  renderReference();
   const scroll = document.createElement("div");
   scroll.className = "pb-scroll";
   els.canvas.appendChild(scroll);
@@ -1635,6 +1811,12 @@ const EXPORT_CSS = `
 .s1-block { min-width: 0; }
 .s1-text { margin: 0; }
 .s1-divider { border: 0; border-top: 1px solid var(--color-line-gray-subtle); margin: 0; width: 100%; }
+/* 하단 메뉴 바 — 배포 부품은 탭 1칸(60×60)뿐이고 바(가로 배치·배경)는 화면이 소유한다.
+   근거: registry/components/mobile-bottom-nav.json(bar-background = --color-navigation-bg) · s1-ui.css D1. */
+.s1-block [role="tablist"]:has(> [data-s1-component="mobile-bottom-nav"]) { display: flex; width: 100%; background: var(--color-navigation-bg); }
+.s1-block [role="tablist"]:has(> [data-s1-component="mobile-bottom-nav"]) > [data-s1-component="mobile-bottom-nav"] { flex: 1 1 0; }
+/* 대응 부품이 아직 없어 비워 둔 자리 — 채운 척하지 않는다. */
+.s1-block[data-s1-placeholder="true"] { box-sizing: border-box; display: flex; align-items: center; justify-content: center; text-align: center; border: 1px dashed var(--color-line-gray-subtle); border-radius: var(--radius-4); background: var(--color-bg-level-1); color: var(--color-text-body-tertiary); font-size: 11px; line-height: 1.4; padding: 4px 6px; overflow: hidden; }
 /* 가져온 레거시 칸 — 원본 화면을 찍은 그림이다. 우리 부품이 아니고 토큰도 타지 않는다. */
 .s1-block[data-s1-legacy="true"] { line-height: 0; }
 .s1-block[data-s1-legacy="true"] img { display: block; max-width: none; }
@@ -1751,6 +1933,7 @@ async function main() {
     search_parts: $("#pb-search-parts"), search_patterns: $("#pb-search-patterns"), search_imported: $("#pb-search-imported"),
     empty_parts: $("#pb-empty-parts"), empty_patterns: $("#pb-empty-patterns"), empty_imported: $("#pb-empty-imported"),
     importedGroups: $("#pb-imported-groups"),
+    refSide: $("#pb-ref-side"), refWrap: $("#pb-ref-wrap"), refCanvas: $("#pb-ref-canvas"), refLabel: $("#pb-ref-label"),
     suggest: $("#pb-suggest"), suggestGroups: $("#pb-suggest-groups"), suggestParts: $("#pb-suggest-parts"), suggestSrc: $("#pb-suggest-src"),
     importDialog: $("#pb-import-dialog"), importLink: $("#pb-import-link"), importStatus: $("#pb-import-status"), importGo: $("#pb-import-go"),
     requestDialog: $("#pb-request-dialog"), reqName: $("#pb-req-name"), reqPurpose: $("#pb-req-purpose"), reqNotes: $("#pb-req-notes"), reqPreview: $("#pb-req-preview")

@@ -1300,6 +1300,29 @@ try {
   fail(`Gate 53 실행 실패: ${e.message}`);
 }
 
+// ── Gate 54: Audit Glossary Coverage (검수 사전 덮임) ────────────────
+// 검수 화면은 변형을 «크기 가장 작음 · 상태 기본» 처럼 우리말로 보여준다(river 지시 2026-09-18).
+// 그 사전은 손으로 적은 것이라, 정본에 값이 하나 늘면 그 자리만 조용히 영어로 샌다.
+// 사람이 눈으로 지킬 일이 아니라 여기서 기계가 본다 — 정본(component-facts)에 있는데
+// 사전에 없는 축·값이 하나라도 있으면 막는다.
+gateHeader('[Gate 54] 검수사전 검사기 (Audit Glossary Coverage)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync(process.execPath, [path.join(ROOT, 'scripts/audit-glossary-check.js')], { encoding: 'utf-8' });
+  const out = `${r.stdout || ''}${r.stderr || ''}`;
+  if (r.status === 0) {
+    pass(out.match(/✅ (검수 사전.*)/)?.[1] || '검수 사전 덮임 확인');
+    const w = out.match(/⚠️\s+(검수 사전.*)/);
+    if (w) warn(`Gate 54: ${w[1]}`);
+  } else {
+    for (const l of out.split('\n').filter((l) => l.includes('❌') || l.trim().startsWith('·'))) {
+      fail(l.replace(/^\s*❌\s*/, '').trim());
+    }
+  }
+} catch (e) {
+  fail(`Gate 54 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 if (VERBOSE || errors > 0 || warnings > 0) console.log('\n─────────────────────────────────────────────────────');
 const tally = `게이트 ${gates}개 · ✅ ${passes}건${VERBOSE ? '' : ' (상세: --verbose)'}`;

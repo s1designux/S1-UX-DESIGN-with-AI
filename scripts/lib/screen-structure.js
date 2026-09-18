@@ -76,13 +76,58 @@ function labelOf(node) {
 }
 
 /**
+ * 한 칸 안에 실제로 무엇이 놓여 있는지 — 부품 하나하나와 글자 하나하나를 차례대로 뽑는다.
+ * 왜: 칸 그림(png)만으로는 "그 칸을 우리 부품으로 다시 그리는 것"을 할 수 없다.
+ *     칸 안의 알맹이(무슨 부품이 어디에 얼마 크기로, 무슨 글자가 적혀 있는지)가 있어야 다시 그릴 수 있다.
+ * 경계선: 여기서도 읽기만 한다 — 레거시 이름을 정본 이름으로 바꾸지 않는다.
+ */
+function extractItems(node, limit = 60) {
+  const rb = box(node);
+  const ox = rb ? rb.x : 0;
+  const oy = rb ? rb.y : 0;
+  const out = [];
+  /* 칸 자체가 부품 하나이거나 글자 하나인 경우 — 자식만 훑으면 그 칸이 무엇인지 놓친다. */
+  if (node.type === 'INSTANCE') {
+    return [{ kind: 'part', name: node.name, x: 0, y: 0, w: round(rb && rb.width), h: round(rb && rb.height), texts: textsIn(node, [], 3) }];
+  }
+  if (node.type === 'TEXT') {
+    const t = (node.characters || '').replace(/\s+/g, ' ').trim();
+    return t ? [{ kind: 'text', text: t.slice(0, 80), size: round((node.style || {}).fontSize), weight: (node.style || {}).fontWeight || null, x: 0, y: 0, w: round(rb && rb.width), h: round(rb && rb.height) }] : [];
+  }
+  const walk = (n) => {
+    for (const c of n.children || []) {
+      if (out.length >= limit) return;
+      const b = box(c);
+      if (!b || c.visible === false) continue;
+      if (NOISE.test(c.name) && !(c.children || []).length) continue;
+      const at = { x: round(b.x - ox), y: round(b.y - oy), w: round(b.width), h: round(b.height) };
+      if (c.type === 'INSTANCE') {
+        out.push({ kind: 'part', name: c.name, ...at, texts: textsIn(c, [], 3) });
+        continue;
+      }
+      if (c.type === 'TEXT') {
+        const t = (c.characters || '').replace(/\s+/g, ' ').trim();
+        if (t) out.push({ kind: 'text', text: t.slice(0, 80), size: round((c.style || {}).fontSize), weight: (c.style || {}).fontWeight || null, ...at });
+        continue;
+      }
+      walk(c);
+    }
+  };
+  walk(node);
+  out.sort((a, b2) => (a.y - b2.y) || (a.x - b2.x));
+  return out;
+}
+
+/**
  * 화면 프레임 → 세로 차례.
  * @param {object} frame  Figma 프레임 노드(children 포함)
  * @param {object} opts   { expandBody: true } — 가장 큰 본문 칸은 한 겹 더 펼친다
+ *                        { items: true } — 칸마다 알맹이(부품·글자)까지 같이 뽑는다(가져오기용)
  * @returns {Array} [{ i, y, h, kind, label, name, type, id, depth, parts }]
  */
 function extractOrder(frame, opts = {}) {
   const expandBody = opts.expandBody !== false;
+  const wantItems = opts.items === true;
   const root = unwrap(frame);
   const rb = box(root);
   const rows = [];
@@ -121,6 +166,7 @@ function extractOrder(frame, opts = {}) {
       kind: l.kind,
       label: l.label,
       ...(l.parts && Object.keys(l.parts).length ? { parts: l.parts } : {}),
+      ...(wantItems ? { items: extractItems(node) } : {}),
     });
   };
 
@@ -152,4 +198,4 @@ function orderSentence(rows) {
   return rows.filter((r) => r.kind !== 'body').map((r) => r.label).join(' → ');
 }
 
-module.exports = { extractOrder, orderSentence, unwrap, instancesIn, textsIn, labelOf };
+module.exports = { extractOrder, orderSentence, unwrap, instancesIn, textsIn, labelOf, extractItems };

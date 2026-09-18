@@ -2,7 +2,7 @@
   "_meta": {
     "source": "figma:rest",
     "fileKey": "aLxh458o9BRXklRFM3YYzk",
-    "link": "https://www.figma.com/design/aLxh458o9BRXklRFM3YYzk/MoDU-APP-20240327?node-id=7160-72270&t=abc",
+    "link": null,
     "generatedAt": "2026-09-18",
     "note": "가져온 레거시 화면. 칸 이름·그림은 레거시 원본 그대로이며 정본 부품이 아니다. 정본 패턴 목록에 넣지 않는다."
   },
@@ -64,6 +64,42 @@
           "status": "unknown",
           "canonSets": []
         }
+      ],
+      "items": [
+        {
+          "kind": "part",
+          "name": "m_StatusBar ",
+          "x": 0,
+          "y": 0,
+          "w": 360,
+          "h": 24,
+          "texts": [
+            "12:30"
+          ]
+        },
+        {
+          "kind": "part",
+          "name": "appbar_sub",
+          "x": 0,
+          "y": 40,
+          "w": 360,
+          "h": 72,
+          "texts": [
+            "회원가입"
+          ]
+        },
+        {
+          "kind": "part",
+          "name": "title/signup",
+          "x": 0,
+          "y": 112,
+          "w": 360,
+          "h": 102,
+          "texts": [
+            "기존 간편번호 6자리를 입력해 주세요",
+            "서비스 이용 중 간편하게 본인 인증할 수 있"
+          ]
+        }
       ]
     },
     {
@@ -78,7 +114,8 @@
       "depth": 1,
       "image": "img/13-설정_5-간편번호-변경-기존-번호/01.png",
       "parts": {},
-      "canon": []
+      "canon": [],
+      "items": []
     },
     {
       "i": 2,
@@ -92,7 +129,109 @@
       "depth": 1,
       "image": "img/13-설정_5-간편번호-변경-기존-번호/02.png",
       "parts": {},
-      "canon": []
+      "canon": [],
+      "items": [
+        {
+          "kind": "text",
+          "text": "0",
+          "size": 30,
+          "weight": 700,
+          "x": 50,
+          "y": 10,
+          "w": 20,
+          "h": 32
+        },
+        {
+          "kind": "text",
+          "text": "1",
+          "size": 30,
+          "weight": 700,
+          "x": 173,
+          "y": 10,
+          "w": 15,
+          "h": 32
+        },
+        {
+          "kind": "text",
+          "text": "7",
+          "size": 30,
+          "weight": 700,
+          "x": 291,
+          "y": 10,
+          "w": 18,
+          "h": 32
+        },
+        {
+          "kind": "text",
+          "text": "9",
+          "size": 30,
+          "weight": 700,
+          "x": 50,
+          "y": 70,
+          "w": 20,
+          "h": 32
+        },
+        {
+          "kind": "text",
+          "text": "6",
+          "size": 30,
+          "weight": 700,
+          "x": 170,
+          "y": 70,
+          "w": 20,
+          "h": 32
+        },
+        {
+          "kind": "text",
+          "text": "5",
+          "size": 30,
+          "weight": 700,
+          "x": 291,
+          "y": 70,
+          "w": 19,
+          "h": 32
+        },
+        {
+          "kind": "text",
+          "text": "8",
+          "size": 30,
+          "weight": 700,
+          "x": 50,
+          "y": 130,
+          "w": 20,
+          "h": 32
+        },
+        {
+          "kind": "text",
+          "text": "3",
+          "size": 30,
+          "weight": 700,
+          "x": 170,
+          "y": 130,
+          "w": 20,
+          "h": 32
+        },
+        {
+          "kind": "text",
+          "text": "2",
+          "size": 30,
+          "weight": 700,
+          "x": 291,
+          "y": 130,
+          "w": 19,
+          "h": 32
+        },
+        {
+          "kind": "text",
+          "text": "4",
+          "size": 30,
+          "weight": 700,
+          "x": 170,
+          "y": 190,
+          "w": 20,
+          "h": 32
+        }
+      ]
     },
     {
       "i": 3,
@@ -106,7 +245,19 @@
       "depth": 0,
       "image": "img/13-설정_5-간편번호-변경-기존-번호/03.png",
       "parts": {},
-      "canon": []
+      "canon": [],
+      "items": [
+        {
+          "kind": "text",
+          "text": "간편번호를 잊었나요?",
+          "size": 14,
+          "weight": 400,
+          "x": 120,
+          "y": 12,
+          "w": 120,
+          "h": 14
+        }
+      ]
     },
     {
       "i": 4,
@@ -120,7 +271,18 @@
       "depth": 0,
       "image": "img/13-설정_5-간편번호-변경-기존-번호/04.png",
       "parts": {},
-      "canon": []
+      "canon": [],
+      "items": [
+        {
+          "kind": "part",
+          "name": "phone_navi",
+          "x": 0,
+          "y": 0,
+          "w": 360,
+          "h": 48,
+          "texts": []
+        }
+      ]
     }
   ]
 }

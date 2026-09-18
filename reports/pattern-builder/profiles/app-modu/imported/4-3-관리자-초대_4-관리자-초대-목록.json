@@ -1,0 +1,356 @@
+{
+  "_meta": {
+    "source": "figma:rest",
+    "fileKey": "aLxh458o9BRXklRFM3YYzk",
+    "link": null,
+    "generatedAt": "2026-09-18",
+    "note": "가져온 레거시 화면. 칸 이름·그림은 레거시 원본 그대로이며 정본 부품이 아니다. 정본 패턴 목록에 넣지 않는다."
+  },
+  "profile": "app-modu",
+  "service": "모두앱",
+  "medium": "app",
+  "mode": "legacy-as-is",
+  "screen": {
+    "id": "10928:13819",
+    "name": "4.3 관리자 초대_4 관리자 초대 목록",
+    "width": 360,
+    "height": 780,
+    "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_checkbox×5, list×4, menu_arrow_right×4) → 묶음(m_button×2, phone_navi)"
+  },
+  "rows": [
+    {
+      "i": 0,
+      "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+      "name": "Frame 625",
+      "type": "FRAME",
+      "x": 0,
+      "y": 0,
+      "h": 227,
+      "w": 360,
+      "depth": 1,
+      "image": "img/4-3-관리자-초대_4-관리자-초대-목록/00.png",
+      "parts": {
+        "m_StatusBar ": 1,
+        "appbar_sub": 1,
+        "icon/arrow": 1,
+        "icon/combobox_arrow": 1,
+        "m_button": 1
+      },
+      "canon": [
+        {
+          "legacy": "m_StatusBar ",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "appbar_sub",
+          "status": "matched",
+          "canonSets": [
+            "Mobile Header"
+          ]
+        },
+        {
+          "legacy": "icon/arrow",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "icon/combobox_arrow",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "m_button",
+          "status": "matched",
+          "canonSets": [
+            "Button"
+          ]
+        }
+      ],
+      "items": [
+        {
+          "kind": "part",
+          "name": "m_StatusBar ",
+          "x": 0,
+          "y": 0,
+          "w": 360,
+          "h": 24,
+          "texts": [
+            "12:30"
+          ]
+        },
+        {
+          "kind": "part",
+          "name": "appbar_sub",
+          "x": 0,
+          "y": 40,
+          "w": 360,
+          "h": 72,
+          "texts": [
+            "관리자 초대"
+          ]
+        },
+        {
+          "kind": "part",
+          "name": "m_button",
+          "x": 283,
+          "y": 132,
+          "w": 57,
+          "h": 50,
+          "texts": [
+            "초대"
+          ]
+        },
+        {
+          "kind": "part",
+          "name": "icon/combobox_arrow",
+          "x": 241,
+          "y": 145,
+          "w": 24,
+          "h": 24,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "에스원 본사(N1234567)",
+          "size": 14,
+          "weight": 400,
+          "x": 36,
+          "y": 149,
+          "w": 133,
+          "h": 17
+        },
+        {
+          "kind": "text",
+          "text": "초대 멤버가 가입하면 권한을 부여할 수 있습니다.",
+          "size": 14,
+          "weight": 400,
+          "x": 20,
+          "y": 190,
+          "w": 320,
+          "h": 17
+        }
+      ]
+    },
+    {
+      "i": 1,
+      "label": "묶음(m_checkbox×5, list×4, menu_arrow_right×4)",
+      "name": "Frame 836",
+      "type": "FRAME",
+      "x": 0,
+      "y": 251,
+      "h": 374,
+      "w": 360,
+      "depth": 1,
+      "image": "img/4-3-관리자-초대_4-관리자-초대-목록/01.png",
+      "parts": {
+        "menu_arrow_down": 2,
+        "m_checkbox": 5,
+        "list": 4,
+        "menu_arrow_right": 4,
+        "m_bar": 4,
+        "tabel_bar": 4
+      },
+      "canon": [
+        {
+          "legacy": "menu_arrow_down",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "m_checkbox",
+          "status": "matched",
+          "canonSets": [
+            "Checkbox"
+          ]
+        },
+        {
+          "legacy": "list",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "menu_arrow_right",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "m_bar",
+          "status": "undecided",
+          "canonSets": []
+        },
+        {
+          "legacy": "tabel_bar",
+          "status": "unknown",
+          "canonSets": []
+        }
+      ],
+      "items": [
+        {
+          "kind": "part",
+          "name": "menu_arrow_down",
+          "x": 73,
+          "y": 5,
+          "w": 24,
+          "h": 24,
+          "texts": []
+        },
+        {
+          "kind": "part",
+          "name": "menu_arrow_down",
+          "x": 181,
+          "y": 5,
+          "w": 24,
+          "h": 24,
+          "texts": []
+        },
+        {
+          "kind": "text",
+          "text": "최신순",
+          "size": 14,
+          "weight": 500,
+          "x": 36,
+          "y": 9,
+          "w": 37,
+          "h": 17
+        },
+        {
+          "kind": "text",
+          "text": "전체 권한",
+          "size": 14,
+          "weight": 500,
+          "x": 129,
+          "y": 9,
+          "w": 52,
+          "h": 17
+        },
+        {
+          "kind": "part",
+          "name": "m_checkbox",
+          "x": 20,
+          "y": 56,
+          "w": 49,
+          "h": 18,
+          "texts": [
+            "전체"
+          ]
+        },
+        {
+          "kind": "part",
+          "name": "list",
+          "x": 0,
+          "y": 74,
+          "w": 360,
+          "h": 75,
+          "texts": [
+            "홍*동",
+            "010-5578-***4",
+            "권한을 선택해 주세요"
+          ]
+        },
+        {
+          "kind": "part",
+          "name": "list",
+          "x": 0,
+          "y": 149,
+          "w": 360,
+          "h": 75,
+          "texts": [
+            "홍*동",
+            "010-5578-***4",
+            "권한을 선택해 주세요"
+          ]
+        },
+        {
+          "kind": "part",
+          "name": "list",
+          "x": 0,
+          "y": 224,
+          "w": 360,
+          "h": 75,
+          "texts": [
+            "홍*동",
+            "010-5578-***4",
+            "권한을 선택해 주세요"
+          ]
+        },
+        {
+          "kind": "part",
+          "name": "list",
+          "x": 0,
+          "y": 299,
+          "w": 360,
+          "h": 75,
+          "texts": [
+            "홍*동",
+            "010-5578-***4",
+            "권한을 선택해 주세요"
+          ]
+        }
+      ]
+    },
+    {
+      "i": 2,
+      "label": "묶음(m_button×2, phone_navi)",
+      "name": "Frame 861",
+      "type": "FRAME",
+      "x": 0,
+      "y": 642,
+      "h": 138,
+      "w": 360,
+      "depth": 0,
+      "image": "img/4-3-관리자-초대_4-관리자-초대-목록/02.png",
+      "parts": {
+        "m_button": 2,
+        "phone_navi": 1
+      },
+      "canon": [
+        {
+          "legacy": "m_button",
+          "status": "matched",
+          "canonSets": [
+            "Button"
+          ]
+        },
+        {
+          "legacy": "phone_navi",
+          "status": "undecided",
+          "canonSets": []
+        }
+      ],
+      "items": [
+        {
+          "kind": "part",
+          "name": "m_button",
+          "x": 20,
+          "y": 20,
+          "w": 156,
+          "h": 50,
+          "texts": [
+            "거절"
+          ]
+        },
+        {
+          "kind": "part",
+          "name": "m_button",
+          "x": 184,
+          "y": 20,
+          "w": 156,
+          "h": 50,
+          "texts": [
+            "승인"
+          ]
+        },
+        {
+          "kind": "part",
+          "name": "phone_navi",
+          "x": 0,
+          "y": 90,
+          "w": 360,
+          "h": 48,
+          "texts": []
+        }
+      ]
+    }
+  ]
+}
