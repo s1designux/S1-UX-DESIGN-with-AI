@@ -79,6 +79,22 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .pb-tools-label { font-size: 11px; font-weight: 700; color: var(--color-text-body-tertiary); }
 .pb-tools-check { gap: 4px; font-size: 11px; }
 
+/* 다음에 올 만한 것 — 모두앱 레거시에서 센 참고 제안(가이드 규칙 아님) */
+.pb-suggest { padding: 8px 14px; border-bottom: 1px solid var(--color-line-gray-subtle); background: var(--color-bg-level-1); }
+.pb-suggest-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.pb-suggest-src { font-size: 11px; color: var(--color-text-body-tertiary); }
+.pb-suggest-line { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.pb-suggest-kind { font-size: 11px; font-weight: 700; color: var(--color-text-body-tertiary); margin-right: 2px; }
+.pb-suggest-chip {
+  display: inline-flex; align-items: baseline; gap: 6px; cursor: pointer;
+  font-size: 12px; font-weight: 600; padding: 5px 10px; border-radius: var(--radius-full);
+  border: 1px solid var(--color-line-gray-subtle); background: var(--color-bg-level-0); color: var(--color-text-body-primary);
+}
+.pb-suggest-chip small { font-size: 10px; font-weight: 500; color: var(--color-text-body-tertiary); }
+.pb-suggest-chip:hover { border-color: var(--color-button-border-primary--default); color: var(--color-text-title-primary); }
+.pb-suggest-chip-group { border-style: solid; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04); }
+.pb-suggest-line-sub .pb-suggest-chip { font-size: 11px; font-weight: 500; padding: 3px 8px; }
+
 /* 모바일 기기 크롬 — 정본 StatusBar·NavBar 의 App/Web 변형을 옮긴 그림.
    배포 부품이 아니라 화면 틀의 OS·브라우저 껍데기다(D5 · dummy-chrome-parts.json). */
 .pb-shell-top, .pb-shell-bottom { flex: none; z-index: 3; }
@@ -244,3 +260,14 @@ body[data-pb-dragging] .pb-canvas .s1-row[data-pb-empty="true"] { outline-color:
 #pb-import-link { width: 100%; }
 .pb-note-offline { color: var(--color-text-state-caution); margin: -4px 0 8px; }
 .pb-btn:disabled { opacity: .45; cursor: not-allowed; }
+
+/* ── 묶음 표시 (편집 화면에서만) ─────────────────────────────
+   라벨+부품처럼 한 덩어리로 읽히는 줄들을 왼쪽 세로선으로 묶어 보여준다. */
+.s1-row[data-s1-group] { position: relative; }
+.s1-row[data-s1-group]::before {
+  content: ""; position: absolute; left: -10px; top: -2px; bottom: -2px;
+  width: 2px; border-radius: 2px; background: var(--color-line-gray-subtle, #d9d9d9);
+}
+.s1-row[data-s1-group="start"]::before { top: 0; border-radius: 2px 2px 0 0; }
+.s1-row[data-s1-group="end"]::before { bottom: 0; border-radius: 0 0 2px 2px; }
+.s1-row[data-s1-group="mid"]::before { border-radius: 0; }
