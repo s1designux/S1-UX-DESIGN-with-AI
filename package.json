@@ -164,7 +164,8 @@
     "pattern:similar": "node scripts/pattern-similar.js",
     "pattern:fetch": "node scripts/pattern-fetch.js",
     "pattern:order": "node scripts/pattern-order.js",
-    "pattern:import": "node scripts/pattern-screen-import.js"
+    "pattern:import": "node scripts/pattern-screen-import.js",
+    "builder": "node scripts/builder-serve.js"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.138.0",

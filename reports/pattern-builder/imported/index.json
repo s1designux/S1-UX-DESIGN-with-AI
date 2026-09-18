@@ -1,9 +1,35 @@
 {
   "_meta": {
-    "note": "빌더 「가져온 화면」 목록. pattern-screen-import 가 다시 쓴다. 손편집하지 않는다.",
+    "note": "빌더 「가져온 화면」 목록. 가져오기가 다시 쓴다. 손편집하지 않는다.",
     "generatedAt": "2026-09-18"
   },
   "screens": [
+    {
+      "profile": "app-modu",
+      "service": "모두앱",
+      "medium": "app",
+      "mode": "legacy-as-is",
+      "slug": "1-1-회원가입-모웹-_3-아이디-입력",
+      "name": "1.1 회원가입(모웹)_3 아이디 입력",
+      "width": 360,
+      "height": 780,
+      "rows": 4,
+      "path": "profiles/app-modu/imported/1-1-회원가입-모웹-_3-아이디-입력.json",
+      "imgBase": "profiles/app-modu/imported/"
+    },
+    {
+      "profile": "app-modu",
+      "service": "모두앱",
+      "medium": "app",
+      "mode": "legacy-as-is",
+      "slug": "13-설정_5-간편번호-변경-기존-번호",
+      "name": "13. 설정_5 간편번호 변경(기존 번호)",
+      "width": 360,
+      "height": 780,
+      "rows": 5,
+      "path": "profiles/app-modu/imported/13-설정_5-간편번호-변경-기존-번호.json",
+      "imgBase": "profiles/app-modu/imported/"
+    },
     {
       "profile": "app-modu",
       "service": "모두앱",

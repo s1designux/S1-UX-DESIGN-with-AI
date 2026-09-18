@@ -150,8 +150,8 @@ npm run pattern:similar -- <service> --similar "검색 결과가 하나도 없�
 가져오는 규칙은 **묶음마다 다르다** — `profile.json` 의 `import.mode`. 모두앱은 `legacy-as-is`(레거시 모습 그대로).
 
 ```
+npm run builder                                          빌더 띄우기 → 「가져온 화면」 탭 → Figma 링크 붙여넣기
 npm run pattern:order  -- <service> --from-raw           화면마다 "위→아래 차례" 뽑기
-npm run pattern:import -- <profile> --screen <노드id>     그 화면 가져오기
 npm run pattern:similar -- <service> --cluster --by order 되풀이되는 차례 묶기 (🖥️ qwen3-embedding:0.6b)
 ```
 

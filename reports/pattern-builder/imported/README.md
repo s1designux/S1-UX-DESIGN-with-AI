@@ -10,6 +10,11 @@
 원본 화면을 **위에서 아래로 칸 단위로 잘라** 빌더 캔버스에 그대로 올린다.
 그 사이·그 아래에 정본 부품을 끼워 넣으면 「기존 화면 + 새 기능」이 된다.
 
+## 링크가 어느 묶음인지는 파일 열쇠로 가른다
+
+링크의 Figma 파일 열쇠를 `profile.json` 의 `source.figmaFileKey` 와 맞춰 본다.
+**맞는 묶음이 없으면 멈추고 그렇게 말한다** — 어느 서비스인지, 어떤 규칙으로 가져올지는 사람이 정한다.
+
 ## 가져오는 규칙은 묶음마다 다르다
 
 `profiles/<매체>-<서비스>/profile.json` 의 `import.mode` 가 정한다. **정하지 않으면 가져오기가 멈춘다**(임의 판단 금지).
@@ -19,15 +24,28 @@
 | `legacy-as-is` | 칸마다 **원본 그림을 그대로** 올린다. 대응이 정해진 이름이라도 **바꿔치기하지 않는다** | `app-modu`(모두앱) |
 | `canon-swap` | 대응이 정해진 칸을 정본 부품으로 갈아 끼운다 | 아직 없음 — 무엇을 어떻게 바꿀지가 결정되지 않았다(needs-decision) |
 
-## 쓰는 법
+## 쓰는 법 — 빌더 화면에서
 
 ```
-npm run pattern:order  -- <service> --from-raw          화면마다 "위→아래 차례" 를 뽑아 둔다(한 번)
-npm run pattern:import -- <profile> --find "홈"          가져올 화면 찾기
-npm run pattern:import -- <profile> --screen 23065:17941 그 화면 가져오기
+npm run builder
 ```
 
-가져오면 빌더 왼쪽 「가져온 화면」 탭에 뜬다. 누르면 캔버스에 올라간다.
+`http://localhost:8787/builder/` 를 열고 → 왼쪽 **「가져온 화면」** 탭 → **「＋ Figma 화면 가져오기」** →
+Figma 에서 화면(프레임)을 고르고 **Copy link to selection** 으로 복사한 링크를 붙여 넣는다.
+바로 읽어서 캔버스에 올라간다. 그 다음 「컴포넌트」 탭에서 부품을 끌어다 놓으면 된다.
+
+> **Figma 읽기 열쇠는 브라우저에 두지 않는다.** 링크만 이 맥 안의 빌더 서버에 넘기고, 열쇠는 `.env` 밖으로 나가지 않는다.
+> 그래서 빌더는 `npm run builder` 로 띄운 주소에서 열어야 이 버튼이 돈다.
+
+### 뒷문 — 터미널
+
+여러 장을 한꺼번에 하거나 확인할 때만 쓴다.
+
+```
+npm run pattern:order  -- <service> --from-raw           화면마다 "위→아래 차례" 를 뽑아 둔다(한 번)
+npm run pattern:import -- <profile> --find "홈"           가져올 화면 찾기
+npm run pattern:import -- --link "<Figma 링크>"           링크로 바로
+```
 
 ## 올릴 때 빌더가 하는 것
 

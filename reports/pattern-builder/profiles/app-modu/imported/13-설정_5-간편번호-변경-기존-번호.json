@@ -1,0 +1,126 @@
+{
+  "_meta": {
+    "source": "figma:rest",
+    "fileKey": "aLxh458o9BRXklRFM3YYzk",
+    "link": "https://www.figma.com/design/aLxh458o9BRXklRFM3YYzk/MoDU-APP-20240327?node-id=7160-72270&t=abc",
+    "generatedAt": "2026-09-18",
+    "note": "가져온 레거시 화면. 칸 이름·그림은 레거시 원본 그대로이며 정본 부품이 아니다. 정본 패턴 목록에 넣지 않는다."
+  },
+  "profile": "app-modu",
+  "service": "모두앱",
+  "medium": "app",
+  "mode": "legacy-as-is",
+  "screen": {
+    "id": "7160:72270",
+    "name": "13. 설정_5 간편번호 변경(기존 번호)",
+    "width": 360,
+    "height": 780,
+    "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음 → 묶음(글자: 0 / 1) → 묶음(글자: 간편번호를 잊었나요?) → phone_navi"
+  },
+  "rows": [
+    {
+      "i": 0,
+      "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+      "name": "Frame 466",
+      "type": "FRAME",
+      "x": 0,
+      "y": 0,
+      "h": 214,
+      "w": 360,
+      "depth": 1,
+      "image": "img/13-설정_5-간편번호-변경-기존-번호/00.png",
+      "parts": {
+        "m_StatusBar ": 1,
+        "appbar_sub": 1,
+        "icon/arrow": 1,
+        "title/signup": 1,
+        "step": 1
+      },
+      "canon": [
+        {
+          "legacy": "m_StatusBar ",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "appbar_sub",
+          "status": "matched",
+          "canonSets": [
+            "Mobile Header"
+          ]
+        },
+        {
+          "legacy": "icon/arrow",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "title/signup",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "step",
+          "status": "unknown",
+          "canonSets": []
+        }
+      ]
+    },
+    {
+      "i": 1,
+      "label": "묶음",
+      "name": "Group 15",
+      "type": "GROUP",
+      "x": 86,
+      "y": 262,
+      "h": 18,
+      "w": 188,
+      "depth": 1,
+      "image": "img/13-설정_5-간편번호-변경-기존-번호/01.png",
+      "parts": {},
+      "canon": []
+    },
+    {
+      "i": 2,
+      "label": "묶음(글자: 0 / 1)",
+      "name": "Frame 640",
+      "type": "FRAME",
+      "x": 0,
+      "y": 328,
+      "h": 232,
+      "w": 360,
+      "depth": 1,
+      "image": "img/13-설정_5-간편번호-변경-기존-번호/02.png",
+      "parts": {},
+      "canon": []
+    },
+    {
+      "i": 3,
+      "label": "묶음(글자: 간편번호를 잊었나요?)",
+      "name": "Frame 286",
+      "type": "FRAME",
+      "x": 0,
+      "y": 619,
+      "h": 39,
+      "w": 360,
+      "depth": 0,
+      "image": "img/13-설정_5-간편번호-변경-기존-번호/03.png",
+      "parts": {},
+      "canon": []
+    },
+    {
+      "i": 4,
+      "label": "phone_navi",
+      "name": "phone_navi",
+      "type": "INSTANCE",
+      "x": 0,
+      "y": 732,
+      "h": 48,
+      "w": 360,
+      "depth": 0,
+      "image": "img/13-설정_5-간편번호-변경-기존-번호/04.png",
+      "parts": {},
+      "canon": []
+    }
+  ]
+}

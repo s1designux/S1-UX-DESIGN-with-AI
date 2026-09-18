@@ -770,6 +770,61 @@ function renderImportedList() {
 
 const MEDIUM_KO = { app: "휴대폰 앱", mweb: "모바일 웹", pcweb: "PC 웹", console: "관제/콘솔" };
 
+/* ── Figma 링크로 바로 가져오기 ────────────────────────────────
+   링크만 이 맥 안의 빌더 서버(npm run builder)에 넘긴다. Figma 읽기 열쇠는 브라우저에 두지 않는다. */
+function openImport() {
+  els.importStatus.hidden = true;
+  els.importStatus.textContent = "";
+  els.importDialog.dataset.open = "true";
+  els.importLink.value = "";
+  els.importLink.focus();
+}
+function closeImport() { els.importDialog.dataset.open = "false"; }
+
+function importSay(msg, tone) {
+  els.importStatus.hidden = false;
+  els.importStatus.textContent = msg;
+  els.importStatus.dataset.tone = tone || "info";
+}
+
+async function runImport() {
+  const link = els.importLink.value.trim();
+  if (!link) { importSay("링크를 붙여 넣어 주세요.", "warn"); return; }
+  els.importGo.disabled = true;
+  importSay("원본을 읽는 중입니다… 칸이 많으면 십여 초 걸립니다.", "info");
+  let r;
+  try {
+    const res = await fetch("/api/import", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ link })
+    });
+    if (!res.ok) throw new Error(String(res.status));
+    r = await res.json();
+  } catch {
+    els.importGo.disabled = false;
+    importSay("빌더 서버에 닿지 못했습니다. 터미널에서 npm run builder 로 띄운 주소로 열어 주세요.", "warn");
+    return;
+  }
+  els.importGo.disabled = false;
+
+  if (!r.ok) {
+    if (r.code === "no-profile") {
+      importSay(`${r.message} 이 서비스의 묶음을 먼저 만들고, 가져오기 규칙(레거시 모습 그대로 / 최신 부품으로)을 정해야 합니다.`, "warn");
+    } else {
+      importSay(r.message, "warn");
+    }
+    return;
+  }
+
+  // 목록을 새로 받아 다시 그리고, 방금 가져온 화면을 캔버스에 올린다
+  data.imported = await fetchJson(URLS.imported).catch(() => ({ screens: [] }));
+  renderImportedList();
+  closeImport();
+  if (r.warnings && r.warnings.length) toast(`${r.name} — 칸 ${r.rows}개 중 ${r.warnings.length}개는 그림을 못 받았습니다`);
+  await loadImportedScreen(`${r.profile}/${r.entry.slug}`);
+}
+
 async function loadImportedScreen(key) {
   const it = (data.imported?.screens || []).find((x) => `${x.profile}/${x.slug}` === key);
   if (!it) return;
@@ -1377,6 +1432,7 @@ async function main() {
     search_parts: $("#pb-search-parts"), search_patterns: $("#pb-search-patterns"), search_imported: $("#pb-search-imported"),
     empty_parts: $("#pb-empty-parts"), empty_patterns: $("#pb-empty-patterns"), empty_imported: $("#pb-empty-imported"),
     importedGroups: $("#pb-imported-groups"),
+    importDialog: $("#pb-import-dialog"), importLink: $("#pb-import-link"), importStatus: $("#pb-import-status"), importGo: $("#pb-import-go"),
     requestDialog: $("#pb-request-dialog"), reqName: $("#pb-req-name"), reqPurpose: $("#pb-req-purpose"), reqNotes: $("#pb-req-notes"), reqPreview: $("#pb-req-preview")
   });
   try { await loadAll(); }
@@ -1394,6 +1450,11 @@ async function main() {
   els.search_parts.addEventListener("input", applySearch);
   els.search_patterns.addEventListener("input", applySearch);
   els.search_imported.addEventListener("input", applySearch);
+  $("#pb-import-open").addEventListener("click", openImport);
+  $("#pb-import-cancel").addEventListener("click", closeImport);
+  els.importDialog.addEventListener("click", (e) => { if (e.target === els.importDialog) closeImport(); });
+  els.importGo.addEventListener("click", runImport);
+  els.importLink.addEventListener("keydown", (e) => { if (e.key === "Enter") runImport(); });
   document.querySelectorAll("[data-tab]").forEach((tab) => tab.addEventListener("click", () => {
     document.querySelectorAll("[data-tab]").forEach((t) => {
       const on = t === tab;

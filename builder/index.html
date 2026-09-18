@@ -60,6 +60,7 @@
           <div id="pb-pattern-groups"></div>
         </div>
         <div id="pb-pane-imported" role="tabpanel" aria-labelledby="pb-tab-imported" hidden>
+          <button type="button" class="pb-btn pb-btn-primary pb-btn-block" id="pb-import-open">＋ Figma 화면 가져오기</button>
           <input type="search" class="pb-search" id="pb-search-imported" placeholder="가져온 화면 검색 (예: 홈, 로그인)" aria-label="가져온 화면 검색">
           <p class="pb-note">이미 만들어 둔 화면을 그대로 올려 놓고, 그 위에 이어서 만듭니다. 원본 부품은 바꿔치기하지 않습니다.</p>
           <p class="pb-empty" id="pb-empty-imported" hidden>가져온 화면이 없습니다.</p>
@@ -110,6 +111,22 @@
 </main>
 
 <!-- 새 패턴 요청 -->
+<div class="pb-dialog" id="pb-import-dialog" role="dialog" aria-modal="true" aria-labelledby="pb-import-title">
+  <div class="pb-dialog-card">
+    <h3 id="pb-import-title">Figma 화면 가져오기</h3>
+    <p class="pb-note">Figma 에서 <strong>화면(프레임)을 고르고</strong> 오른쪽 버튼 → <strong>Copy link to selection</strong> 으로 복사한 링크를 붙여 넣으세요.</p>
+    <div class="pb-prop">
+      <label for="pb-import-link">Figma 링크</label>
+      <input type="url" id="pb-import-link" placeholder="https://www.figma.com/design/…?node-id=23065-17941" autocomplete="off">
+    </div>
+    <p class="pb-note" id="pb-import-status" hidden></p>
+    <div class="pb-dialog-actions">
+      <button type="button" class="pb-btn" id="pb-import-cancel">닫기</button>
+      <button type="button" class="pb-btn pb-btn-primary" id="pb-import-go">가져오기</button>
+    </div>
+  </div>
+</div>
+
 <div class="pb-dialog" id="pb-request-dialog" role="dialog" aria-modal="true" aria-labelledby="pb-request-title">
   <div class="pb-dialog-card">
     <h3 id="pb-request-title">새 패턴 요청</h3>
