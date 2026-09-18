@@ -8,6 +8,8 @@
    - 플랫폼·역할·테마 축은 design/design.manifest.json 을 읽는다.
    ============================================================ */
 import { autoInit } from "../ui-library/dist/s1-ui.auto.js";
+import * as UI from "./ui.js";
+import { variantMarkup, hasVariantMarkup } from "./variant-markup.js";
 
 const url = (rel) => new URL(rel, import.meta.url);
 const URLS = {
@@ -16,8 +18,8 @@ const URLS = {
   registryIndex: url("../registry/components/index.json"),
   catalog: url("../registry/patterns/builder/catalog.json"),
   compositionRules: url("../registry/governance/composition-rules.json"),
-  imported: url("../reports/pattern-builder/imported/index.json"),
   suggest: url("../reports/pattern-builder/profiles/app-modu/suggest-model.json"),
+  imported: url("../reports/pattern-builder/imported/index.json"),
   partMap: (profile) => url(`../reports/pattern-builder/profiles/${profile}/part-map.json`),
   importedBase: url("../reports/pattern-builder/"),
   componentManifest: (id) => url(`../ui-library/dist/components/${id}.manifest.json`),
@@ -365,9 +367,9 @@ async function blockElement(block, brk) {
   } else if (block.component === "table" && block.table) {
     root = buildTableElement(block);
     applyAxes(root, block, brk);
-  } else if (VARIANT_MARKUP[block.component]) {
+  } else if (hasVariantMarkup(block.component) && variantHtml(block.component, { variant: block.variant, size: block.size, text: block.text })) {
     const tpl = document.createElement("template");
-    tpl.innerHTML = VARIANT_MARKUP[block.component](block.variant || variantAxis(block.component)[0], block.text, block.size).trim();
+    tpl.innerHTML = variantHtml(block.component, { variant: block.variant, size: block.size, text: block.text }).trim();
     root = tpl.content.firstElementChild;
   } else {
     root = pickFragment(await exampleHtml(block.component, brk), block.component);
@@ -442,31 +444,10 @@ function statusBarHtml() {
    대부분의 부품은 data-variant 만 바꾸면 CSS 가 모습을 바꾼다. 그런데 배포본 manifest 의
    htmlContract.perVariantParts 가 선언된 부품(mobile-header · gnb)은 **변형마다 들어가는 부품(part)이 다르다.**
    배포본 예제는 한 변형만 담고 있어서 attribute 만 바꾸면 틀린 모습이 나온다(river 지적 2026-09-18).
-   아래 뼈대는 perVariantParts·relations 선언과 가이드 사이트의 같은 생성기(assets/js/ui-library-guide.js
-   mobileHeaderMarkup)를 그대로 따른다 — 새 구조를 지어내지 않는다. */
-const VARIANT_MARKUP = {
-  "mobile-header": (variant, text) => {
-    const back = `<button type="button" data-s1-part="back" aria-label="이전"><span data-s1-part="back-icon" aria-hidden="true"></span></button>`;
-    const close = `<button type="button" data-s1-part="close" aria-label="닫기"><span data-s1-part="close-icon" aria-hidden="true"></span></button>`;
-    const spacer = `<span data-s1-part="spacer" aria-hidden="true"></span>`;
-    const noti = `<button type="button" data-s1-part="notification" aria-label="알림"><span data-s1-part="notification-icon" aria-hidden="true"></span></button>`;
-    const head = (v, inner) => `<header data-s1-component="mobile-header" data-variant="${v}">${inner}</header>`;
-    if (variant === "home-title") return head(variant, `<h1 data-s1-part="title">${escapeHtml(text || "홈 타이틀")}</h1>`);
-    if (variant === "home-title-subtitle") return head(variant,
-      `<div data-s1-part="stack"><div data-s1-part="title-row"><h1 data-s1-part="title">${escapeHtml(text || "홈 타이틀")}</h1><span data-s1-part="arrow-icon" aria-hidden="true"></span></div><p data-s1-part="subtitle">홈 서브타이틀</p></div>${noti}`);
-    const hasClose = variant.endsWith("-close");
-    const hasTitle = !variant.includes("no-title");
-    return head(variant, `${back}${hasTitle ? `<h1 data-s1-part="title">${escapeHtml(text || "스탠다드형 타이틀")}</h1>` : `<span data-s1-part="title" aria-hidden="true"></span>`}${hasClose ? close : spacer}`);
-  },
-  gnb: (variant, text, size) => {
-    const menus = `<ul data-s1-part="menus"><li><a data-s1-part="menu" href="#" aria-current="page">메뉴 1</a></li><li><a data-s1-part="menu" href="#">메뉴 2</a></li><li><a data-s1-part="menu" href="#">메뉴 3</a></li></ul>`;
-    const logo = `<a data-s1-part="logo" href="#">${escapeHtml(text || "SAMPLE LOGO")}</a>`;
-    const util = `<div data-s1-part="util"><button type="button" data-s1-part="lang"><span data-s1-part="lang-icon" aria-hidden="true"></span><span data-s1-part="lang-label">한국어</span></button><button type="button" data-s1-part="account" aria-label="계정"><span data-s1-part="account-icon" aria-hidden="true"></span></button><button type="button" data-s1-part="menu-toggle" aria-label="전체 메뉴"><span data-s1-part="menu-icon" aria-hidden="true"></span></button></div>`;
-    // center-between = 로고·메뉴·유틸이 nav 직계 3형제 · start = 로고+메뉴를 leading 으로 묶음(manifest relations)
-    const inner = variant === "center-between" ? `${logo}${menus}${util}` : `<div data-s1-part="leading">${logo}${menus}</div>${util}`;
-    return `<nav data-s1-component="gnb" data-size="${size || "md"}" data-variant="${variant}" aria-label="주 메뉴">${inner}</nav>`;
-  }
-};
+   뼈대는 variant-markup.js 가 **manifest 선언을 읽어** 조립한다 — 빌더가 새 구조를 지어내지 않는다. */
+function variantHtml(id, { variant, size, text } = {}) {
+  return variantMarkup(id, data.manifests[id], { variant: variant || variantAxis(id)[0], size, text });
+}
 
 /* ── 표(table) 모델 — 배포 예제의 구조(htmlContract)를 그대로 지키면서 열·행 수만 화면에서 정한다 ── */
 function tableModelFromExample(html) {
@@ -476,7 +457,7 @@ function tableModelFromExample(html) {
   root.querySelectorAll('thead th[data-s1-part="header-cell"]').forEach((th) => {
     if (th.hasAttribute("data-selection")) { model.selection = true; return; }
     const col = { label: th.textContent.trim() };
-    if (th.dataset.align) col.align = th.dataset.align;
+    if (th.dataset.align === "center") col.align = "center";
     model.columns.push(col);
   });
   model.rows = root.querySelectorAll('tbody tr[data-s1-part="row"]').length || 3;
@@ -509,7 +490,7 @@ function buildTableElement(block) {
   t.columns.forEach((col) => {
     const th = document.createElement("th");
     th.setAttribute("data-s1-part", "header-cell"); th.setAttribute("scope", "col");
-    if (col.align) th.setAttribute("data-align", col.align);
+    if (col.align === "center") th.setAttribute("data-align", "center");   // 배포본이 구현한 정렬은 center 뿐이다
     if (Number(col.width)) th.style.width = `${Number(col.width)}px`;
     th.textContent = col.label || "";
     hr.appendChild(th);
@@ -528,7 +509,7 @@ function buildTableElement(block) {
     t.columns.forEach((col, ci) => {
       const td = document.createElement("td");
       td.setAttribute("data-s1-part", "cell");
-      if (col.align) td.setAttribute("data-align", col.align);
+      if (col.align === "center") td.setAttribute("data-align", "center");
       const custom = (t.cells && t.cells[i - 1] && t.cells[i - 1][ci]);
       td.textContent = custom != null && custom !== "" ? custom : `${col.label || "내용"} ${i}`;
       tr.appendChild(td);
@@ -561,7 +542,7 @@ async function renderScreen(target, editor) {
     const rowEl = document.createElement("div");
     rowEl.className = "s1-row";
     rowEl.style.display = "flex";
-    rowEl.style.flexWrap = "wrap";
+    rowEl.style.flexWrap = row.blocks.some((b) => b.bleed) ? "nowrap" : "wrap";
     rowEl.style.alignItems = "flex-start";
     rowEl.style.gap = `var(--spacing-${row.gap || "12"})`;
     rowEl.style.justifyContent = ALIGN_CSS[row.align] || "flex-start";
@@ -634,10 +615,34 @@ function toast(msg) {
   toast.t = setTimeout(() => { els.toast.dataset.show = "false"; }, 1800);
 }
 
-function fillSelect(sel, options, value) {
-  sel.innerHTML = options.map(([v, l]) => `<option value="${v}">${l}</option>`).join("");
-  if (value != null) sel.value = value;
+/* 배포본 Select 를 칸 안에 심는다. 값이 바뀌면 onChange 로 알려준다(네이티브 select 를 대신한다). */
+function mountSelect(box, { options, value, label, onChange, size = "xxsm" }) {
+  if (!box) return null;
+  box.innerHTML = UI.selectHtml({ options, value, label, size });
+  UI.mount(box);
+  const root = box.firstElementChild;
+  if (onChange) UI.onSelectChange(root, onChange);
+  return root;
 }
+/* 배포본 Input 을 칸 안에 심고, 안의 control 을 돌려준다. */
+function mountInput(box, { value = "", placeholder = "", label = "", size = "xxsm", onInput } = {}) {
+  if (!box) return null;
+  box.innerHTML = UI.inputHtml({ value, placeholder, label, size });
+  UI.mount(box);
+  const control = UI.controlOf(box.firstElementChild);
+  if (onInput && control) control.addEventListener("input", () => onInput(control.value));
+  return control;
+}
+/* Multi Toggle(놓는 방식·보기) 의 선택을 맞춘다 — 값 쓰기는 배포본 계약(aria-checked)으로 한다. */
+function setToggle(root, value) {
+  if (!root) return;
+  root.querySelectorAll('[data-s1-part="cell"]').forEach((cell) => {
+    const on = cell.dataset.value === value;
+    cell.setAttribute("aria-checked", String(on));
+    cell.tabIndex = on ? 0 : -1;
+  });
+}
+const onToggleChange = (root, fn) => root?.addEventListener("s1:multi-toggle:change", (e) => fn(e.detail?.value, e));
 
 function platformInfo() {
   const id = PLATFORM_ALIAS[state.meta.platform] || state.meta.platform;
@@ -700,11 +705,12 @@ function paintShell() {
   els.canvas.querySelectorAll(".pb-shell-top, .pb-shell-bottom").forEach((n) => n.remove());
   const on = platformInfo().id === "mobile" && state.screen.shell !== "none";
   els.canvas.dataset.shell = on ? (state.screen.shell || "app") : "none";
+  /* Home 유형 헤더면 위쪽 크롬과 본문 배경까지 bg/home 한 색으로 잇는다.
+     정본 buildMobileHeaderVariant 의 isHome 분기(build-components.ts:3107·3132) · river 지시 2026-09-02.
+     크롬을 끄더라도 본문 배경 판단은 같아야 한다 — 내보내기(data-s1-header-bg)와 어긋나지 않게 먼저 맞춘다. */
+  els.canvas.dataset.headerBg = homeHeaderFirst() ? "home" : "level-0";
   if (!on) return;
   const web = (state.screen.shell || "app") === "web";
-  /* Home 유형 헤더면 위쪽 크롬과 본문 배경까지 bg/home 한 색으로 잇는다.
-     정본 buildMobileHeaderVariant 의 isHome 분기(build-components.ts:3107·3132) · river 지시 2026-09-02. */
-  els.canvas.dataset.headerBg = homeHeaderFirst() ? "home" : "level-0";
   const add = (cls, html, where) => {
     const box = document.createElement("div");
     box.className = cls;
@@ -765,16 +771,52 @@ function paintFoldLine(p, mode) {
 function renderToolbar() {
   const services = [["core", "공통(core)"], ...Object.keys(data.design?.services || {}).map((s) => [s, s]),
     ...(data.design?.servicesPlanned || []).map((s) => [s, `${s} (예정)`])];
-  fillSelect(els.service, services, state.meta.service);
   state.meta.platform = PLATFORM_ALIAS[state.meta.platform] || state.meta.platform;
-  fillSelect(els.platform, PLATFORMS.map((p) => [p.id, p.label]), state.meta.platform);
-  fillSelect(els.role, (data.design?.profiles?.role || []).map((r) => [r.id, `${r.id} · ${r.density}`]), state.meta.role);
-  els.theme.value = state.meta.theme;
+
+  els.name = mountInput(els.nameBox, {
+    value: state.meta.name || "", label: "화면 이름", placeholder: "예: 목록 조회",
+    onInput: (v) => { state.meta.name = v; persist(); }
+  });
+  mountSelect(els.service, {
+    options: services, value: state.meta.service, label: "서비스",
+    onChange: (v) => { state.meta.service = v; renderPatternList(); update(); }
+  });
+  mountSelect(els.platform, {
+    options: PLATFORMS.map((p) => [p.id, p.label]), value: state.meta.platform, label: "플랫폼",
+    onChange: (v) => changePlatform(v)
+  });
+  mountSelect(els.role, {
+    options: (data.design?.profiles?.role || []).map((r) => [r.id, `${r.id} · ${r.density}`]), value: state.meta.role, label: "역할",
+    onChange: (v) => { state.meta.role = v; update(); }
+  });
+  mountSelect(els.theme, {
+    options: [["light", "라이트"], ["dark", "다크"]], value: state.meta.theme, label: "테마",
+    onChange: (v) => { state.meta.theme = v; update(); }
+  });
   els.shellField.hidden = platformInfo().id !== "mobile";          // 기기 크롬은 모바일 틀에서만 쓴다
-  els.shell.value = state.screen.shell || "app";
-  document.querySelectorAll(".pb-stage-tools [data-view]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.view === viewModeOf())));
-  els.name.value = state.meta.name || "";
+  mountSelect(els.shell, {
+    options: [["app", "앱 — 상태바 · 안드로이드 내비"], ["web", "웹 — 상태바+주소창 · 브라우저 툴바+내비"], ["none", "없음"]],
+    value: state.screen.shell || "app", label: "기기 크롬",
+    onChange: (v) => { state.screen.shell = v; update(); }
+  });
+  setToggle(els.view, viewModeOf());
+  setToggle(els.place, placeMode);
+  UI.linkSelectLabels(document);
   els.distVersion.textContent = `s1-ui ${data.dist?.version || ""}`;
+}
+
+/* 플랫폼을 바꾸면 각 부품의 크기 축을 그 플랫폼 배포본에 맞춰 다시 맞춘다. */
+function changePlatform(value) {
+  state.meta.platform = value;
+  const brk = PLATFORM_BREAK[state.meta.platform] || "pc";
+  for (const r of state.rows) for (const b of r.blocks) {
+    if (b.kind !== "component") continue;
+    const s = sizeAxis(b.component, brk);
+    if (s.length && !s.includes(b.size)) b.size = s[0];
+    if (!s.length) delete b.size;
+  }
+  els.shellField.hidden = platformInfo().id !== "mobile";
+  renderPatternList(); renderPartGroups(); update();
 }
 
 /* 패턴 탭 — 최상위 갈래(화면 종류)만 접힌 채로 보이고, 펼치면 그 안의 패턴이 나온다. */
@@ -838,6 +880,7 @@ function loadPattern(id) {
   toast(`패턴 "${p.name}" 을 불러왔습니다`);
 }
 
+
 /* ── 가져온 화면 ──────────────────────────────────────────────
    이미 만들어 둔 Figma 화면을 빌더 캔버스에 그대로 올린다.
    가져오기 규칙은 묶음(profile)마다 다르다 — 지금은 모두앱만 있고 「레거시 모습 그대로」다.
@@ -893,12 +936,13 @@ function renderImportedList() {
 
 const MEDIUM_KO = { app: "휴대폰 앱", mweb: "모바일 웹", pcweb: "PC 웹", console: "관제/콘솔" };
 
-/** 왼쪽 칸의 탭을 바꾼다(컴포넌트 · 패턴 · 가져온 화면). */
+/** 왼쪽 칸의 탭을 바꾼다(컴포넌트 · 패턴 · 가져온 화면) — 배포본 Tab 계약(aria-selected)대로. */
 function switchTab(name) {
-  document.querySelectorAll("[data-tab]").forEach((t) => {
-    const on = t.dataset.tab === name;
+  els.tabs.querySelectorAll('[data-s1-part="tab"]').forEach((t) => {
+    const on = t.dataset.value === name;
     t.setAttribute("aria-selected", String(on));
-    const pane = document.querySelector(`#pb-pane-${t.dataset.tab}`);
+    t.tabIndex = on ? 0 : -1;
+    const pane = document.querySelector(`#pb-pane-${t.dataset.value}`);
     if (pane) pane.hidden = !on;
   });
 }
@@ -944,6 +988,7 @@ function readScreenPack(pack) {
    그래서 **웹에 올린 주소(GitHub Pages)에서는 가져오기가 되지 않는다** — 거기서는 버튼을 잠그고 그 이유를 적는다.
    이미 가져다 둔 화면은 웹 주소에서도 그대로 열린다(파일로 올라가 있으니까). */
 let canImport = false;
+let importModal = null;
 async function checkImportAvailable() {
   try {
     const res = await fetch("/api/ping", { cache: "no-store" });
@@ -961,11 +1006,11 @@ function openImport() {
   if (!canImport) { toast("가져오기는 내 컴퓨터에서 띄운 빌더에서만 됩니다"); return; }
   els.importStatus.hidden = true;
   els.importStatus.textContent = "";
-  els.importDialog.dataset.open = "true";
   els.importLink.value = "";
+  importModal?.open();
   els.importLink.focus();
 }
-function closeImport() { els.importDialog.dataset.open = "false"; }
+function closeImport() { importModal?.close(); }
 
 function importSay(msg, tone) {
   els.importStatus.hidden = false;
@@ -1266,14 +1311,16 @@ async function renderThumb(box, id, brk) {
   let frag = pickFragment(html, id);
   if (!frag) { box.textContent = "미리보기 없음"; return; }
   const choice = chosenAxis[id] || {};
-  if (VARIANT_MARKUP[id]) {                                  // 변형마다 뼈대가 다른 부품은 그 변형 뼈대로 그린다
+  const skeleton = hasVariantMarkup(id) ? variantHtml(id, { variant: choice.variant, size: choice.size }) : null;
+  if (skeleton) {                                            // 변형마다 뼈대가 다른 부품은 그 변형 뼈대로 그린다
     const tpl = document.createElement("template");
-    tpl.innerHTML = VARIANT_MARKUP[id](choice.variant || variantAxis(id)[0], null, choice.size).trim();
+    tpl.innerHTML = skeleton.trim();
     frag = tpl.content.firstElementChild;
   } else {
     frag = frag.cloneNode(true);
     applyAxes(frag, { component: id, size: choice.size, variant: choice.variant }, brk);
   }
+  if (!frag) { box.textContent = "미리보기 없음"; return; }
   uniquifyIds(frag, `thumb-${id}`);
   frag.querySelectorAll("[hidden]").forEach((n) => { if (n.matches('[data-s1-part="panel"], [data-s1-component="gnb-sub-menu"]')) n.remove(); });
   const inner = document.createElement("div");
@@ -1302,7 +1349,7 @@ function renderPartGroups() {
   const order = (data.registry?.categories || []).map((c) => c.id);
   const sorted = [...groups.entries()].sort((a, b) => order.indexOf(a[0]) - order.indexOf(b[0]));
   const chips = (id, axis, values, current) => values.length
-    ? `<div class="pb-chips" data-axis="${axis}">${values.map((v) => `<button type="button" class="pb-chip-btn" data-chip="${v}" aria-pressed="${v === current}">${v}</button>`).join("")}</div>` : "";
+    ? `<div class="pb-chips" data-axis="${axis}">${values.map((v) => UI.chipHtml(v, { pressed: v === current, "data-chip": v })).join("")}</div>` : "";
   els.partGroups.innerHTML = sorted.map(([cat, list]) => {
     const visible = list.filter((id) => availableOn(id, brk));   // 이 플랫폼 배포본이 없는 부품은 목록에서 뺀다
     if (!visible.length) return "";
@@ -1317,6 +1364,7 @@ function renderPartGroups() {
       </div>`;
     }).join("")}</div>`);
   }).join("");
+  UI.mount(els.partGroups);                                  // 카드 안의 축 칩에 배포본 동작을 물린다
   wireAccordions(els.partGroups);
   els.partGroups.querySelectorAll("[data-part]").forEach((card) => {
     const id = card.dataset.part;
@@ -1458,9 +1506,16 @@ function moveRow(rowId, dir) {
 }
 
 /* ── 속성 패널 ───────────────────────────────────────────────── */
-function propRow(label, control) { return `<div class="pb-prop"><label>${label}</label>${control}</div>`; }
-function selectHtml(name, options, value) {
-  return `<select data-prop="${name}">${options.map(([v, l]) => `<option value="${v}" ${String(v) === String(value) ? "selected" : ""}>${l}</option>`).join("")}</select>`;
+function propRow(label, control) { return `<div class="pb-prop"><span class="pb-prop-label">${label}</span>${control}</div>`; }
+/* 아래 세 도구가 속성 패널의 컨트롤을 모두 만든다 — 전부 배포본 부품이다. */
+function selectHtml(name, options, value, label) {
+  return UI.selectHtml({ options, value, label: label || name, "data-prop": name });
+}
+function textFieldHtml(name, value, { label = name, placeholder = "", type = "text" } = {}) {
+  return UI.inputHtml({ value, placeholder, label, type, control: { "data-prop": name } });
+}
+function actionButtonHtml(label, act, extra = {}) {
+  return UI.buttonHtml(label, { "data-act": act, ...extra });
 }
 const spacingOpts = SPACING.map((s) => [s, `${s}px`]);
 
@@ -1478,14 +1533,14 @@ function renderProps() {
       parts.push(`<p class="pb-note"><strong>${registryName(b.component)}</strong> · 배포본 ${m?.version || ""}${m?.jsRequired ? " · JS 필요" : ""}</p>`);
       if (!availableOn(b.component, brk)) parts.push(`<p class="pb-warn">이 부품은 지금 고른 플랫폼 배포본이 없습니다. 지우거나 플랫폼을 바꾸세요.</p>`);
       const v = variantAxis(b.component);
-      if (v.length) parts.push(propRow("변형", selectHtml("variant", v.map((x) => [x, x]), b.variant)));
+      if (v.length) parts.push(propRow("변형", selectHtml("variant", v.map((x) => [x, x]), b.variant, "변형")));
       const s = sizeAxis(b.component, brk);
-      if (s.length) parts.push(propRow("크기", selectHtml("size", s.map((x) => [x, x]), b.size)));
-      parts.push(propRow("글자", `<input type="text" data-prop="text" value="${escapeAttr(b.text || "")}" placeholder="첫 라벨/제목 바꾸기">`));
+      if (s.length) parts.push(propRow("크기", selectHtml("size", s.map((x) => [x, x]), b.size, "크기")));
+      parts.push(propRow("글자", textFieldHtml("text", b.text || "", { label: "글자", placeholder: "첫 라벨/제목 바꾸기" })));
     } else if (b.kind === "text") {
-      parts.push(propRow("내용", `<input type="text" data-prop="text" value="${escapeAttr(b.text || "")}">`));
-      parts.push(propRow("글꼴", selectHtml("typo", TYPO.map((t) => [t, t.replace("typo-", "")]), b.typo)));
-      parts.push(propRow("색", selectHtml("color", TEXT_COLORS, b.color)));
+      parts.push(propRow("내용", textFieldHtml("text", b.text || "", { label: "내용" })));
+      parts.push(propRow("글꼴", selectHtml("typo", TYPO.map((t) => [t, t.replace("typo-", "")]), b.typo, "글꼴")));
+      parts.push(propRow("색", selectHtml("color", TEXT_COLORS, b.color, "글자색")));
     } else if (b.kind === "legacy") {
       /* 레거시 칸 — 고칠 수 있는 값이 없다. 무엇이 원본에 있었고 정본에 대응이 있는지만 보여 준다. */
       const LABEL = { matched: "정해짐", pattern: "부품이 아니라 배치 규칙", "legacy-only": "레거시에만 있음", undecided: "아직 안 정함", "no-canon": "교체 대상 아님", unknown: "모름" };
@@ -1502,77 +1557,76 @@ function renderProps() {
       parts.push(`<p class="pb-note"><strong>${escapeHtml(b.legacyName || "원본 자리")}</strong> · ${b.widthPx}×${b.heightPx}</p>`);
       parts.push(`<p class="pb-note">원본의 이 자리에 해당하는 <strong>정본 부품이 아직 없습니다.</strong> 비슷해 보이는 부품을 임의로 끼워 넣지 않고 자리만 비워 두었습니다. 지우고 직접 부품을 놓거나, 부품이 생길 때까지 그대로 두세요.</p>`);
     } else if (b.kind === "space") {
-      parts.push(propRow("높이", selectHtml("height", spacingOpts, b.height)));
+      parts.push(propRow("높이", selectHtml("height", spacingOpts, b.height, "높이")));
     } else {
       parts.push(`<p class="pb-note">구분선 — 행 폭을 채웁니다.</p>`);
     }
     if (b.kind !== "divider" && b.kind !== "space" && b.kind !== "placeholder") {
       const w = ["auto", "fill", "custom"].includes(b.width) ? b.width : "custom";
       if (w === "custom" && !b.widthPx) b.widthPx = Number(b.width) || 320;
-      parts.push(propRow("폭", selectHtml("width", [["auto", "내용만큼"], ["fill", "남은 폭 채우기"], ["custom", "직접 입력(px)"]], w)));
-      if (w === "custom") parts.push(propRow("폭(px)", `<input type="number" min="40" step="10" data-prop="widthPx" value="${escapeAttr(b.widthPx || 320)}">`));
-      parts.push(propRow("가장자리", selectHtml("bleed", [["false", "화면 여백 안쪽"], ["true", "화면 끝까지"]], String(!!b.bleed))));
+      parts.push(propRow("폭", selectHtml("width", [["auto", "내용만큼"], ["fill", "남은 폭 채우기"], ["custom", "직접 입력(px)"]], w, "폭")));
+      if (w === "custom") parts.push(propRow("폭(px)", textFieldHtml("widthPx", b.widthPx || 320, { label: "폭(px)", type: "number" })));
+      parts.push(propRow("가장자리", selectHtml("bleed", [["false", "화면 여백 안쪽"], ["true", "화면 끝까지"]], String(!!b.bleed), "가장자리")));
     }
     if (b.kind === "component" && b.component === "table" && !b.table && !b.html) {
       exampleHtml("table", brk).then((html) => { b.table = tableModelFromExample(html); update(); });
     }
     if (b.kind === "component" && b.component === "table" && b.table) {
       parts.push(`<p class="pb-section-title">표 구성</p>`);
-      parts.push(propRow("행 수", `<input type="number" min="0" max="50" data-prop="table.rows" value="${escapeAttr(b.table.rows)}">`));
-      parts.push(propRow("선택 칸", selectHtml("table.selection", [["true", "체크박스 열 있음"], ["false", "없음"]], String(!!b.table.selection))));
+      parts.push(propRow("행 수", textFieldHtml("table.rows", b.table.rows, { label: "행 수", type: "number" })));
+      parts.push(propRow("선택 칸", selectHtml("table.selection", [["true", "체크박스 열 있음"], ["false", "없음"]], String(!!b.table.selection), "선택 칸")));
       parts.push(`<p class="pb-note">열 — 이름 · 정렬 · 폭(px, 비우면 자동)</p>`);
       b.table.columns.forEach((col, i) => {
         parts.push(`<div class="pb-col">
-          <input type="text" data-prop="table.columns.${i}.label" value="${escapeAttr(col.label || "")}" placeholder="열 이름" aria-label="열 ${i + 1} 이름">
-          ${selectHtml(`table.columns.${i}.align`, [["", "왼쪽"], ["center", "가운데"], ["right", "오른쪽"]], col.align || "")}
-          <input type="number" min="0" step="10" data-prop="table.columns.${i}.width" value="${escapeAttr(col.width || "")}" placeholder="폭" aria-label="열 ${i + 1} 폭">
-          <button type="button" class="pb-btn pb-btn-sm" data-act="col-del" data-col="${i}" aria-label="열 ${i + 1} 삭제">×</button>
+          <div class="pb-col-head"><span class="pb-col-title">열 ${i + 1}</span>${UI.assistButtonHtml("삭제", { "data-act": "col-del", "data-col": i, "aria-label": `열 ${i + 1} 삭제` })}</div>
+          ${propRow("이름", textFieldHtml(`table.columns.${i}.label`, col.label || "", { label: `열 ${i + 1} 이름`, placeholder: "열 이름" }))}
+          ${propRow("정렬", selectHtml(`table.columns.${i}.align`, [["", "왼쪽"], ["center", "가운데"]], col.align === "center" ? "center" : "", `열 ${i + 1} 정렬`))}
+          ${propRow("폭", textFieldHtml(`table.columns.${i}.width`, col.width || "", { label: `열 ${i + 1} 폭`, placeholder: "폭(px, 비우면 자동)", type: "number" }))}
         </div>`);
       });
-      parts.push(`<div class="pb-prop-actions"><button type="button" class="pb-btn pb-btn-sm" data-act="col-add">+ 열 추가</button></div>`);
+      parts.push(`<div class="pb-prop-actions">${actionButtonHtml("+ 열 추가", "col-add")}</div>`);
     }
     parts.push(`<div class="pb-prop-actions">
-      <button type="button" class="pb-btn pb-btn-sm" data-act="left">← 왼쪽</button>
-      <button type="button" class="pb-btn pb-btn-sm" data-act="right">오른쪽 →</button>
-      <button type="button" class="pb-btn pb-btn-sm" data-act="up">↑ 윗행</button>
-      <button type="button" class="pb-btn pb-btn-sm" data-act="down">↓ 아랫행</button>
-      <button type="button" class="pb-btn pb-btn-sm" data-act="split">↵ 새 줄로 분리</button>
-      ${b.kind === "component" ? `<button type="button" class="pb-btn pb-btn-sm" data-act="label">＋ 라벨 붙이기</button>` : ""}
-      <button type="button" class="pb-btn pb-btn-sm" data-act="dup">복제</button>
-      <button type="button" class="pb-btn pb-btn-sm" data-act="del">삭제</button>
+      ${actionButtonHtml("← 왼쪽", "left")}${actionButtonHtml("오른쪽 →", "right")}
+      ${actionButtonHtml("↑ 윗행", "up")}${actionButtonHtml("↓ 아랫행", "down")}
+      ${actionButtonHtml("↵ 새 줄로 분리", "split")}${b.kind === "component" ? actionButtonHtml("＋ 라벨 붙이기", "label") : ""}
+      ${actionButtonHtml("복제", "dup")}${actionButtonHtml("삭제", "del")}
     </div>`);
     if (b.kind === "component") {
-      parts.push(`<details><summary class="pb-note" style="cursor:pointer">마크업 직접 수정 (고급)</summary>
-        <div class="pb-prop"><textarea data-prop="html" placeholder="비우면 배포 예제로 되돌립니다">${escapeHtml(b.html || "")}</textarea></div>
-        <button type="button" class="pb-btn pb-btn-sm" data-act="apply-html">적용</button></details>`);
+      parts.push(`<details class="pb-details"><summary class="pb-note">마크업 직접 수정 (고급)</summary>
+        <div class="pb-prop">${UI.textareaHtml({ value: b.html || "", label: "마크업", placeholder: "비우면 배포 예제로 되돌립니다", control: { "data-prop": "html" } })}</div>
+        <div class="pb-prop-actions">${actionButtonHtml("적용", "apply-html")}</div></details>`);
     }
   }
 
   if (row) {
     parts.push(`<p class="pb-section-title">행</p>`);
-    parts.push(propRow("정렬", selectHtml("row.align", [["start", "왼쪽"], ["center", "가운데"], ["end", "오른쪽"], ["between", "양끝"]], row.align)));
-    parts.push(propRow("요소 간격", selectHtml("row.gap", spacingOpts, row.gap)));
+    parts.push(propRow("정렬", selectHtml("row.align", [["start", "왼쪽"], ["center", "가운데"], ["end", "오른쪽"], ["between", "양끝"]], row.align, "행 정렬")));
+    parts.push(propRow("요소 간격", selectHtml("row.gap", spacingOpts, row.gap, "요소 간격")));
     const rowIndex = state.rows.indexOf(row);
     const role = groupRoleOf(rowIndex);
-    if (rowIndex > 0) parts.push(propRow("윗줄과 한 묶음", selectHtml("row.attached", [["false", "아니오"], ["true", "예"]], String(!!row.attached))));
+    if (rowIndex > 0) parts.push(propRow("윗줄과 한 묶음", selectHtml("row.attached", [["false", "아니오"], ["true", "예"]], String(!!row.attached), "윗줄과 한 묶음")));
     if (role) parts.push(`<p class="pb-note">묶음에 들어 있어 아래 여백은 <strong>묶음 규칙</strong>이 정합니다 — ${role === "end" ? "묶음 사이" : "묶음 안"} 간격.</p>`);
-    else parts.push(propRow("아래 여백", selectHtml("row.marginBottom", spacingOpts, row.marginBottom)));
+    else parts.push(propRow("아래 여백", selectHtml("row.marginBottom", spacingOpts, row.marginBottom, "아래 여백")));
     parts.push(`<div class="pb-prop-actions">
-      <button type="button" class="pb-btn pb-btn-sm" data-act="row-up">행 위로</button>
-      <button type="button" class="pb-btn pb-btn-sm" data-act="row-down">행 아래로</button>
-      <button type="button" class="pb-btn pb-btn-sm" data-act="row-del">행 삭제</button>
+      ${actionButtonHtml("행 위로", "row-up")}${actionButtonHtml("행 아래로", "row-down")}${actionButtonHtml("행 삭제", "row-del")}
     </div>`);
   }
 
   parts.push(`<p class="pb-section-title">화면</p>`);
-  parts.push(propRow("안쪽 여백", selectHtml("screen.padding", spacingOpts, state.screen.padding)));
-  parts.push(propRow("묶음 안 간격", selectHtml("screen.groupGap", spacingOpts, state.screen.groupGap || GROUP_RULES.insideGap)));
-  parts.push(propRow("묶음 사이 간격", selectHtml("screen.betweenGap", spacingOpts, state.screen.betweenGap || GROUP_RULES.betweenGap)));
+  parts.push(propRow("안쪽 여백", selectHtml("screen.padding", spacingOpts, state.screen.padding, "화면 안쪽 여백")));
+  parts.push(propRow("묶음 안 간격", selectHtml("screen.groupGap", spacingOpts, state.screen.groupGap || GROUP_RULES.insideGap, "묶음 안 간격")));
+  parts.push(propRow("묶음 사이 간격", selectHtml("screen.betweenGap", spacingOpts, state.screen.betweenGap || GROUP_RULES.betweenGap, "묶음 사이 간격")));
   if (!hit && !row) parts.push(`<p class="pb-note">캔버스에서 요소나 줄을 누르면 여기서 고칩니다. 왼쪽 부품을 누르면 새 줄로 내려가고, "선택한 줄 옆"을 고르면 나란히 들어갑니다.</p>`);
 
   els.props.innerHTML = parts.join("");
 
-  els.props.querySelectorAll("[data-prop]").forEach((ctl) => {
+  UI.mount(els.props);
+  UI.linkSelectLabels(els.props);
+  els.props.querySelectorAll('[data-s1-component="select"][data-prop]').forEach((root) => {
+    UI.onSelectChange(root, (value) => setProp(root.dataset.prop, value));
+  });
+  els.props.querySelectorAll("input[data-prop], textarea[data-prop]").forEach((ctl) => {
     if (ctl.dataset.prop === "html") return;
     ctl.addEventListener("change", () => setProp(ctl.dataset.prop, ctl.value));
     if (ctl.tagName === "INPUT") ctl.addEventListener("keydown", (e) => { if (e.key === "Enter") setProp(ctl.dataset.prop, ctl.value); });
@@ -1671,7 +1725,9 @@ async function update() {
    모두앱 레거시 화면에서 「무엇 다음에 무엇이 왔는지」를 세어 둔 표(suggest-model.json)를 읽어
    지금 캔버스 마지막 줄 다음에 올 만한 것을 보여준다.
    ⛔ 레거시 관찰일 뿐 가이드 규칙이 아니다 — 화면에도 그렇게 적는다(river 2026-09-18).
-   ⛔ 레거시 칸을 바꿔치기하는 것이 아니라, 놓는 것은 언제나 정본 부품이다. */
+   ⛔ 레거시 칸을 바꿔치기하는 것이 아니라, 놓는 것은 언제나 정본 부품이다.
+   제안 조각은 **정본 Assist Button**(좁은 자리의 보조 동작)으로 그린다 — 누르면 그 부품을 놓는
+   '동작'이지 켜고 끄는 토글이 아니라서 Chip 을 쓰지 않는다. */
 const SUGGEST_START = "__start__";
 const HELPER_KO = Object.fromEntries(HELPERS.map(([k, n]) => [k, n]));
 
@@ -1714,8 +1770,9 @@ function renderSuggest() {
   if (!groups.length && !parts.length) { box.hidden = true; return; }
   box.hidden = false;
 
-  const chip = (c, type) => `<button type="button" class="pb-suggest-chip${type === "group" ? " pb-suggest-chip-group" : ""}" data-suggest="${escapeAttr(c.key)}" data-suggest-type="${type}">
-    <span>${escapeHtml(c.key.split("+").map(suggestLabel).join(" + "))}</span><small>${c.share}%</small></button>`;
+  const chip = (c, type) => UI.assistButtonHtml(
+    `${c.key.split("+").map(suggestLabel).join(" + ")} · ${c.share}%`,
+    { "data-suggest": c.key, "data-suggest-type": type });
 
   els.suggestGroups.innerHTML = groups.length ? `<span class="pb-suggest-kind">묶음으로</span>${groups.map((c) => chip(c, "group")).join("")}` : "";
   els.suggestParts.innerHTML = parts.length ? `<span class="pb-suggest-kind">하나씩</span>${parts.map((c) => chip(c, "part")).join("")}` : "";
@@ -1852,13 +1909,14 @@ function requestPayload() {
     distVersion: data.dist?.version || null
   };
 }
+let requestModal = null;
 function openRequest() {
   els.reqName.value = state.meta.name || "";
   els.reqPreview.hidden = true;
-  els.requestDialog.dataset.open = "true";
+  requestModal?.open();
   els.reqName.focus();
 }
-function closeRequest() { els.requestDialog.dataset.open = "false"; }
+function closeRequest() { requestModal?.close(); }
 
 /* ── 유틸 ───────────────────────────────────────────────────── */
 function escapeHtml(v) { return String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;"); }
@@ -1867,7 +1925,8 @@ function escapeAttr(v) { return escapeHtml(v).replaceAll('"', "&quot;"); }
 /* ── 시작 ───────────────────────────────────────────────────── */
 async function main() {
   Object.assign(els, {
-    name: $("#pb-name"), service: $("#pb-service"), platform: $("#pb-platform"), role: $("#pb-role"), theme: $("#pb-theme"),
+    nameBox: $("#pb-name-box"), service: $("#pb-service"), platform: $("#pb-platform"), role: $("#pb-role"), theme: $("#pb-theme"),
+    tabs: $("#pb-tabs"), place: $("#pb-place"), view: $("#pb-view"),
     distVersion: $("#pb-dist-version"), patternGroups: $("#pb-pattern-groups"), partGroups: $("#pb-part-groups"),
     canvas: $("#pb-canvas"), canvasWrap: $("#pb-canvas-wrap"), frameLabel: $("#pb-frame-label"), frameInfo: $("#pb-frame-info"), props: $("#pb-props"), toast: $("#pb-toast"),
     shell: $("#pb-shell"), shellField: $("#pb-shell-field"),
@@ -1887,63 +1946,37 @@ async function main() {
   }
   if (!restoreFromHash() && !restore()) state = freshState();
 
+  UI.mount(document);                       // 정적으로 적어 둔 도구 UI 부품(탭·검색칸·멀티토글·버튼)
+  UI.keepOpenPanelVisible(document);        // 스크롤 칸 안에서 드롭다운이 잘리지 않게
+  requestModal = UI.mountModal(els.requestDialog);
+  importModal = UI.mountModal(els.importDialog);
   renderToolbar(); renderPatternList(); renderPartGroups(); renderImportedList();
   checkImportAvailable();
   await update();
 
-  els.shell.addEventListener("change", () => { state.screen.shell = els.shell.value; update(); });
   els.search_parts.addEventListener("input", applySearch);
   els.search_patterns.addEventListener("input", applySearch);
   els.search_imported.addEventListener("input", applySearch);
   $("#pb-import-open").addEventListener("click", openImport);
-  $("#pb-import-cancel").addEventListener("click", closeImport);
-  els.importDialog.addEventListener("click", (e) => { if (e.target === els.importDialog) closeImport(); });
   els.importGo.addEventListener("click", runImport);
   els.importLink.addEventListener("keydown", (e) => { if (e.key === "Enter") runImport(); });
-  document.querySelectorAll("[data-tab]").forEach((tab) => tab.addEventListener("click", () => switchTab(tab.dataset.tab)));
+  /* 탭 — 패널은 탭 묶음 바깥에 있으므로 화면이 직접 여닫는다(ui.js 주석 참조). */
+  els.tabs.addEventListener("s1:tab:change", (e) => {
+    const value = e.detail?.value;
+    for (const pane of ["parts", "patterns", "imported"]) document.querySelector(`#pb-pane-${pane}`).hidden = pane !== value;
+  });
   window.addEventListener("resize", fitCanvas);
   if (window.ResizeObserver) new ResizeObserver(() => fitCanvas()).observe(els.canvasWrap.parentElement);
-  els.name.addEventListener("input", () => { state.meta.name = els.name.value; persist(); });
-  els.service.addEventListener("change", () => { state.meta.service = els.service.value; renderPatternList(); update(); });
-  els.platform.addEventListener("change", () => {
-    state.meta.platform = els.platform.value;
-    const brk = PLATFORM_BREAK[state.meta.platform] || "pc";
-    for (const r of state.rows) for (const b of r.blocks) {
-      if (b.kind !== "component") continue;
-      const s = sizeAxis(b.component, brk);
-      if (s.length && !s.includes(b.size)) b.size = s[0];
-      if (!s.length) delete b.size;
-    }
-    els.shellField.hidden = platformInfo().id !== "mobile";
-    renderPatternList(); renderPartGroups(); update();
-  });
-  els.role.addEventListener("change", () => { state.meta.role = els.role.value; update(); });
-  els.theme.addEventListener("change", () => { state.meta.theme = els.theme.value; update(); });
-
-  document.querySelectorAll("[data-place]").forEach((btn) => btn.addEventListener("click", () => {
-    placeMode = btn.dataset.place;
-    document.querySelectorAll("[data-place]").forEach((b) => b.setAttribute("aria-checked", String(b === btn)));
-  }));
-  document.querySelectorAll(".pb-stage-tools [data-view]").forEach((btn) => btn.addEventListener("click", () => {
-    state.screen.view = btn.dataset.view;
-    document.querySelectorAll(".pb-stage-tools [data-view]").forEach((b) => b.setAttribute("aria-checked", String(b === btn)));
-    update();
-  }));
+  onToggleChange(els.place, (value) => { placeMode = value; });
+  onToggleChange(els.view, (value) => { state.screen.view = value; update(); });
   $("#pb-add-row").addEventListener("click", () => { const r = newRow(); state.rows.push(r); selection = { rowId: r.id, blockId: null }; update(); });
   $("#pb-new").addEventListener("click", () => {
     if (state.rows.length && !confirm("지금 화면을 비우고 새로 시작할까요? (저장하지 않은 구성은 사라집니다)")) return;
     state = freshState(); selection = { rowId: null, blockId: null }; renderToolbar(); update();
   });
   $("#pb-save").addEventListener("click", () => download(`screen-${slug(state.meta.name)}.json`, JSON.stringify(state, null, 2), "application/json"));
-  $("#pb-load-file").addEventListener("change", async (e) => {
-    const f = e.target.files[0]; if (!f) return;
-    try {
-      const s = JSON.parse(await f.text());
-      if (s.version !== 1 || !Array.isArray(s.rows)) throw new Error("형식이 다릅니다");
-      state = s; reseedIds(); selection = { rowId: null, blockId: null }; renderToolbar(); renderPartGroups(); update(); toast("불러왔습니다");
-    } catch (err) { toast(`불러오기 실패: ${err.message}`); }
-    e.target.value = "";
-  });
+  $("#pb-load").addEventListener("click", () => $("#pb-load-file").click());
+  $("#pb-load-screen-btn").addEventListener("click", () => $("#pb-load-screen").click());
   /* 기존화면 불러오기 — Figma 플러그인(S-1 GUI Builder)이 내려준 파일을 연다.
      열쇠도 서버도 쓰지 않는다. 읽은 화면은 이 브라우저 안에만 있고 저장소에는 남지 않는다. */
   $("#pb-load-screen").addEventListener("change", async (e) => {
@@ -1976,6 +2009,15 @@ async function main() {
       console.error(err);
     }
   });
+  $("#pb-load-file").addEventListener("change", async (e) => {
+    const f = e.target.files[0]; if (!f) return;
+    try {
+      const s = JSON.parse(await f.text());
+      if (s.version !== 1 || !Array.isArray(s.rows)) throw new Error("형식이 다릅니다");
+      state = s; reseedIds(); selection = { rowId: null, blockId: null }; renderToolbar(); renderPartGroups(); update(); toast("불러왔습니다");
+    } catch (err) { toast(`불러오기 실패: ${err.message}`); }
+    e.target.value = "";
+  });
   $("#pb-export").addEventListener("click", async () => {
     if (!state.rows.length) { toast("내보낼 요소가 없습니다"); return; }
     download(`${slug(state.meta.name)}.html`, await buildExportHtml(), "text/html");
@@ -1987,8 +2029,6 @@ async function main() {
     try { await navigator.clipboard.writeText(link); toast("이 화면의 링크를 복사했습니다"); } catch { toast("주소창의 링크를 복사해 주세요"); }
   });
   $("#pb-request").addEventListener("click", openRequest);
-  $("#pb-req-cancel").addEventListener("click", closeRequest);
-  els.requestDialog.addEventListener("click", (e) => { if (e.target === els.requestDialog) closeRequest(); });
   $("#pb-req-copy").addEventListener("click", async () => {
     const text = JSON.stringify(requestPayload(), null, 2);
     els.reqPreview.textContent = text; els.reqPreview.hidden = false;
@@ -2001,7 +2041,6 @@ async function main() {
     toast("요청 파일을 저장했습니다 — reports/pattern-builder/requests/ 에 두면 됩니다");
   });
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeRequest();
     if ((e.key === "Delete" || e.key === "Backspace") && selection.blockId && !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName) && !document.activeElement?.isContentEditable) {
       e.preventDefault(); removeBlock(selection.blockId);
     }
