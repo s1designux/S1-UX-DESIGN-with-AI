@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "source": "figma:get_metadata",
+    "source": "figma:rest",
     "page": {
       "name": "1~2. 회원가입, 로그인",
       "nodeId": "2449:30232"
@@ -15,9 +15,21 @@
       "name": "filter",
       "section": null,
       "size": "400x202",
-      "nodeCount": 1,
-      "components": [],
-      "texts": []
+      "nodeCount": 4,
+      "components": [
+        {
+          "name": "menu_arrow_down",
+          "count": 2
+        },
+        {
+          "name": "m_combobox",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        }
+      ]
     },
     {
       "id": "2449:30244",
@@ -25,26 +37,49 @@
       "section": null,
       "size": "400x703",
       "nodeCount": 5,
-      "components": [],
-      "texts": []
+      "components": [
+        {
+          "name": "step/Default",
+          "count": 3
+        },
+        {
+          "name": "step",
+          "count": 2
+        }
+      ]
     },
     {
       "id": "2449:30262",
       "name": "step",
       "section": null,
       "size": "100x116",
-      "nodeCount": 4,
-      "components": [],
-      "texts": []
+      "nodeCount": 0,
+      "components": []
     },
     {
       "id": "2449:30283",
       "name": "list",
       "section": null,
       "size": "400x203",
-      "nodeCount": 2,
-      "components": [],
-      "texts": []
+      "nodeCount": 8,
+      "components": [
+        {
+          "name": "m_checkbox",
+          "count": 2
+        },
+        {
+          "name": "menu_arrow_right",
+          "count": 2
+        },
+        {
+          "name": "m_bar",
+          "count": 2
+        },
+        {
+          "name": "tabel_bar",
+          "count": 2
+        }
+      ]
     },
     {
       "id": "2449:30701",
@@ -52,8 +87,7 @@
       "section": null,
       "size": "350x95",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "2449:30702",
@@ -61,30 +95,27 @@
       "section": null,
       "size": "295x95",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "2449:31009",
       "name": "1.1 회원가입(모웹)_9 가입 완료",
       "section": "Section 1",
       "size": "360x780",
-      "nodeCount": 15,
+      "nodeCount": 3,
       "components": [
         {
           "name": "appbar_sub",
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "m.s1.co.kr",
-        "앱 아이콘",
-        "서비스약관에 동의해 주세요",
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -92,7 +123,7 @@
       "name": "1.1 회원가입(모웹)_1 약관 동의",
       "section": "Section 1",
       "size": "360x780",
-      "nodeCount": 33,
+      "nodeCount": 11,
       "components": [
         {
           "name": "m_checkbox",
@@ -107,22 +138,21 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_bar",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
           "count": 1
         },
         {
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "m.s1.co.kr",
-        "서비스약관에 동의해 주세요",
-        "전체 동의하기",
-        "회원약관동의",
-        "회원약관동의",
-        "회원약관동의",
-        "회원약관, 개인정보 수집 및 이용동의"
       ]
     },
     {
@@ -130,14 +160,22 @@
       "name": "1.1 회원가입(모웹)_3 아이디 입력",
       "section": "Section 1",
       "size": "360x780",
-      "nodeCount": 16,
+      "nodeCount": 7,
       "components": [
         {
           "name": "appbar_sub",
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "Remove",
           "count": 1
         },
         {
@@ -152,11 +190,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "m.s1.co.kr",
-        "서비스약관에 동의해 주세요",
-        "영어 소문자, 숫자를 조합하여 4~12자 입력해 주세요."
       ]
     },
     {
@@ -164,14 +197,22 @@
       "name": "1.1 회원가입(모웹)_4 기존 아이디 사용 여부 선택",
       "section": "Section 1",
       "size": "360x780",
-      "nodeCount": 48,
+      "nodeCount": 18,
       "components": [
         {
           "name": "m_bar",
           "count": 4
         },
         {
+          "name": "tabel_bar",
+          "count": 4
+        },
+        {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -179,6 +220,10 @@
           "count": 1
         },
         {
+          "name": "Remove",
+          "count": 1
+        },
+        {
           "name": "m_btn_full",
           "count": 1
         },
@@ -202,17 +247,6 @@
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "m.s1.co.kr",
-        "서비스약관에 동의해 주세요",
-        "영어 소문자, 숫자를 조합하여 4~12자 입력해 주세요.",
-        "기존 아이디를 사용하시겠어요?",
-        "입력 정보와 일치하는 임직원 정보를",
-        "s1secom1",
-        "s1secom2",
-        "s1secom3",
-        "s1secom4(이미 사용중인 아이디)"
       ]
     },
     {
@@ -220,7 +254,7 @@
       "name": "1.1 회원가입(모웹)_5 비밀번호 입력",
       "section": "Section 1",
       "size": "360x780",
-      "nodeCount": 28,
+      "nodeCount": 7,
       "components": [
         {
           "name": "pw off",
@@ -228,6 +262,10 @@
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -242,15 +280,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "m.s1.co.kr",
-        "서비스약관에 동의해 주세요",
-        "항목명 copy 2",
-        "비밀번호 조건",
-        "영문, 숫자, 특수문자를 조합하여 8자 이상 입력해 주세요.",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트"
       ]
     },
     {
@@ -258,7 +287,7 @@
       "name": "1.1 회원가입(모웹)_6 비밀번호 조건",
       "section": "Section 1",
       "size": "360x780",
-      "nodeCount": 36,
+      "nodeCount": 9,
       "components": [
         {
           "name": "pw off",
@@ -266,6 +295,10 @@
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -288,17 +321,6 @@
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "m.s1.co.kr",
-        "서비스약관에 동의해 주세요",
-        "항목명 copy 2",
-        "비밀번호 조건",
-        "영문, 숫자, 특수문자를 조합하여 8자 이상 입력해 주세요.",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "제목",
-        "입력 정보와 일치하는 임직원 정보를"
       ]
     },
     {
@@ -306,20 +328,20 @@
       "name": "1.1 회원가입(모웹)_2 약관 상세",
       "section": "Section 1",
       "size": "360x780",
-      "nodeCount": 13,
+      "nodeCount": 3,
       "components": [
         {
           "name": "appbar_sub",
           "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
         }
-      ],
-      "texts": [
-        "m.s1.co.kr",
-        "서비스약관에 동의해 주세요",
-        "제 1조(목적)",
-        "본 약관은 &#39;주식회사 에스원(이하 &quot;",
-        "제 2조(약관효력 및 변경)",
-        "(1) 회사는 본 약관의 내용을 회원"
       ]
     },
     {
@@ -327,14 +349,34 @@
       "name": "1.1 회원가입(모웹)_7 이메일 입력",
       "section": "Section 1",
       "size": "360x780",
-      "nodeCount": 16,
+      "nodeCount": 11,
       "components": [
+        {
+          "name": "m_Input box",
+          "count": 2
+        },
         {
           "name": "appbar_sub",
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_email_input",
+          "count": 1
+        },
+        {
+          "name": "Remove",
+          "count": 1
+        },
+        {
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -349,11 +391,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "m.s1.co.kr",
-        "서비스약관에 동의해 주세요",
-        "입력하신 이메일로 비밀번호를 찾을 수 있습니다."
       ]
     },
     {
@@ -361,18 +398,42 @@
       "name": "1.1 회원가입(모웹)_8 이메일 도메인 선택",
       "section": "Section 1",
       "size": "360x780",
-      "nodeCount": 43,
+      "nodeCount": 21,
       "components": [
         {
           "name": "m_bar",
           "count": 4
         },
         {
+          "name": "tabel_bar",
+          "count": 4
+        },
+        {
+          "name": "m_Input box",
+          "count": 2
+        },
+        {
           "name": "appbar_sub",
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_email_input",
+          "count": 1
+        },
+        {
+          "name": "Remove",
+          "count": 1
+        },
+        {
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -395,17 +456,6 @@
           "name": "ok",
           "count": 1
         }
-      ],
-      "texts": [
-        "m.s1.co.kr",
-        "서비스약관에 동의해 주세요",
-        "입력하신 이메일로 비밀번호를 찾을 수 있습니다.",
-        "이메일",
-        "naver.com",
-        "kakao.com",
-        "gmail.com",
-        "nate.com",
-        "직접 입력"
       ]
     },
     {
@@ -414,26 +464,29 @@
       "section": null,
       "size": "156x36",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "8403:59480",
       "name": "2.3 아이디 찾기_1 휴대전화번호",
       "section": null,
       "size": "360x780",
-      "nodeCount": 11,
+      "nodeCount": 8,
       "components": [
         {
           "name": "m_Input box",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -441,21 +494,28 @@
           "count": 1
         },
         {
+          "name": "Remove",
+          "count": 1
+        },
+        {
           "name": "keyboard",
           "count": 1
         }
-      ],
-      "texts": []
+      ]
     },
     {
       "id": "8403:59492",
       "name": "2.3 아이디 찾기_2 이메일",
       "section": null,
       "size": "360x780",
-      "nodeCount": 15,
+      "nodeCount": 11,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_Input box",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -463,7 +523,11 @@
           "count": 1
         },
         {
-          "name": "m_Input box",
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "Remove",
           "count": 1
         },
         {
@@ -471,13 +535,17 @@
           "count": 1
         },
         {
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
           "name": "keyboard",
           "count": 1
         }
-      ],
-      "texts": [
-        "개인",
-        "사업자 고객"
       ]
     },
     {
@@ -485,14 +553,22 @@
       "name": "2.3 아이디 찾기_3 이메일 도메인 선택",
       "section": null,
       "size": "360x780",
-      "nodeCount": 42,
+      "nodeCount": 21,
       "components": [
         {
           "name": "m_bar",
           "count": 4
         },
         {
-          "name": "m_StatusBar",
+          "name": "tabel_bar",
+          "count": 4
+        },
+        {
+          "name": "m_Input box",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -500,11 +576,23 @@
           "count": 1
         },
         {
-          "name": "m_Input box",
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "Remove",
           "count": 1
         },
         {
           "name": "m_email_input",
+          "count": 1
+        },
+        {
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -519,16 +607,6 @@
           "name": "ok",
           "count": 1
         }
-      ],
-      "texts": [
-        "개인",
-        "사업자 고객",
-        "이메일",
-        "naver.com",
-        "kakao.com",
-        "gmail.com",
-        "nate.com",
-        "직접 입력"
       ]
     },
     {
@@ -536,51 +614,26 @@
       "name": "2.3 아이디 찾기_4 이메일 도메인 선택 시",
       "section": null,
       "size": "360x780",
-      "nodeCount": 16,
-      "components": [
-        {
-          "name": "m_StatusBar",
-          "count": 1
-        },
-        {
-          "name": "appbar_sub",
-          "count": 1
-        },
-        {
-          "name": "m_Input box",
-          "count": 1
-        },
-        {
-          "name": "m_email_input",
-          "count": 1
-        },
-        {
-          "name": "keyboard",
-          "count": 1
-        }
-      ],
-      "texts": [
-        "개인",
-        "사업자 고객"
-      ]
-    },
-    {
-      "id": "8403:59575",
-      "name": "2.3 아이디 찾기_5 입력 완료",
-      "section": null,
-      "size": "360x780",
-      "nodeCount": 25,
+      "nodeCount": 10,
       "components": [
         {
           "name": "m_Input box",
           "count": 3
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_email_input",
           "count": 1
         },
         {
@@ -588,6 +641,47 @@
           "count": 1
         },
         {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "keyboard",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "8403:59575",
+      "name": "2.3 아이디 찾기_5 입력 완료",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 10,
+      "components": [
+        {
+          "name": "m_Input box",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
           "name": "m_button",
           "count": 1
         },
@@ -595,12 +689,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "개인",
-        "사업자 고객",
-        "항목명 copy 2",
-        "항목명 copy 3"
       ]
     },
     {
@@ -608,14 +696,18 @@
       "name": "2.3 아이디 찾기_6 인증 번호 입력(휴대전화번호)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 24,
+      "nodeCount": 6,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -630,13 +722,6 @@
           "name": "keyboard",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "입력하신 휴대전화번호로 인증 번호를 보냈어요.",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "인증 문자가 오지 않나요?"
       ]
     },
     {
@@ -644,14 +729,18 @@
       "name": "2.3 아이디 찾기_7 인증 번호 입력(이메일)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 23,
+      "nodeCount": 6,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -666,13 +755,6 @@
           "name": "keyboard",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "입력하신 이메일로 인증 번호를 보냈어요.",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "인증 메일이 오지 않나요?"
       ]
     },
     {
@@ -680,14 +762,14 @@
       "name": "2.3 아이디 찾기_8 인증 번호 입력 완료",
       "section": null,
       "size": "360x780",
-      "nodeCount": 24,
+      "nodeCount": 6,
       "components": [
         {
           "name": "m_button",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -695,16 +777,13 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "입력하신 이메일로 인증 번호를 보냈어요.",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "인증 메일이 오지 않나요?"
       ]
     },
     {
@@ -712,18 +791,22 @@
       "name": "2.3 아이디 찾기_11 계정 없음",
       "section": null,
       "size": "360x780",
-      "nodeCount": 32,
+      "nodeCount": 8,
       "components": [
         {
           "name": "m_button",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -738,14 +821,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "입력하신 이메일로 인증 번호를 보냈어요.",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "인증 메일이 오지 않나요?",
-        "가입 승인 후 이용가능합니다."
       ]
     },
     {
@@ -753,14 +828,18 @@
       "name": "2.4 비밀번호 찾기_4 인증 번호(이메일)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 23,
+      "nodeCount": 6,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -775,13 +854,6 @@
           "name": "keyboard",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "입력하신 이메일로 인증 번호를 보냈어요.",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "인증 메일이 오지 않나요?"
       ]
     },
     {
@@ -789,14 +861,18 @@
       "name": "2.4 비밀번호 찾기_5 인증 번호 불일치",
       "section": null,
       "size": "360x780",
-      "nodeCount": 24,
+      "nodeCount": 6,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -811,14 +887,6 @@
           "name": "keyboard",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "입력하신 이메일로 인증 번호를 보냈어요.",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "인증 번호가 일치하지 않습니다. 확인하신 후 다시 입력해 주세요.",
-        "인증 메일이 오지 않나요?"
       ]
     },
     {
@@ -826,18 +894,22 @@
       "name": "2.4 비밀번호 찾기_1 휴대전화번호",
       "section": null,
       "size": "360x780",
-      "nodeCount": 11,
+      "nodeCount": 8,
       "components": [
         {
           "name": "m_Input box",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -845,21 +917,28 @@
           "count": 1
         },
         {
+          "name": "Remove",
+          "count": 1
+        },
+        {
           "name": "keyboard",
           "count": 1
         }
-      ],
-      "texts": []
+      ]
     },
     {
       "id": "8403:59776",
       "name": "2.4 비밀번호 찾기_2 이메일",
       "section": null,
       "size": "360x780",
-      "nodeCount": 16,
+      "nodeCount": 11,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_Input box",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -867,7 +946,11 @@
           "count": 1
         },
         {
-          "name": "m_Input box",
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "Remove",
           "count": 1
         },
         {
@@ -875,13 +958,17 @@
           "count": 1
         },
         {
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
           "name": "keyboard",
           "count": 1
         }
-      ],
-      "texts": [
-        "개인",
-        "사업자 고객"
       ]
     },
     {
@@ -889,18 +976,22 @@
       "name": "2.3 아이디 찾기_10 인증 메일 미수신 시 안내",
       "section": null,
       "size": "360x780",
-      "nodeCount": 32,
+      "nodeCount": 8,
       "components": [
         {
           "name": "m_button",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -915,15 +1006,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "입력하신 이메일로 인증 번호를 보냈어요.",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "인증 문자가 오지 않나요?",
-        "제목",
-        "입력 정보와 일치하는 임직원 정보를"
       ]
     },
     {
@@ -931,18 +1013,22 @@
       "name": "2.3 아이디 찾기_9 인증 문자 미수신 시 안내",
       "section": null,
       "size": "360x780",
-      "nodeCount": 32,
+      "nodeCount": 8,
       "components": [
         {
           "name": "m_button",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -957,15 +1043,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "입력하신 이메일로 인증 번호를 보냈어요.",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "인증 문자가 오지 않나요?",
-        "제목",
-        "입력 정보와 일치하는 임직원 정보를"
       ]
     },
     {
@@ -973,18 +1050,26 @@
       "name": "2.5 비번 변경 권장_1 최초 진입",
       "section": null,
       "size": "360x780",
-      "nodeCount": 29,
+      "nodeCount": 9,
       "components": [
         {
           "name": "pw off",
           "count": 3
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
           "count": 1
         },
         {
@@ -995,17 +1080,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "비밀번호 조건",
-        "플레이스 홀더 텍스트",
-        "영문, 숫자, 특수문자를 조합하여 8자 이상 입력해 주세요.",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트"
       ]
     },
     {
@@ -1013,18 +1087,22 @@
       "name": "2.5 비번 변경 권장_3 비번 조건",
       "section": null,
       "size": "360x780",
-      "nodeCount": 37,
+      "nodeCount": 11,
       "components": [
         {
           "name": "pw off",
           "count": 3
         },
         {
+          "name": "close",
+          "count": 2
+        },
+        {
           "name": "m_button",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1032,26 +1110,13 @@
           "count": 1
         },
         {
-          "name": "phone_navi",
+          "name": "icon/arrow",
           "count": 1
         },
         {
-          "name": "close",
+          "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "항목명 copy 2",
-        "비밀번호 조건",
-        "플레이스 홀더 텍스트",
-        "영문, 숫자, 특수문자를 조합하여 8자 이상 입력해 주세요.",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "제목",
-        "입력 정보와 일치하는 임직원 정보를"
       ]
     },
     {
@@ -1059,18 +1124,26 @@
       "name": "2.5 비번 변경 권장_2 입력",
       "section": null,
       "size": "360x780",
-      "nodeCount": 29,
+      "nodeCount": 8,
       "components": [
         {
           "name": "pw off",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
           "count": 1
         },
         {
@@ -1081,16 +1154,6 @@
           "name": "keyboard",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "항목명 copy 2",
-        "항목명 copy 2",
-        "비밀번호 조건",
-        "플레이스 홀더 텍스트",
-        "영문, 숫자, 특수문자를 조합하여 8자 이상 입력해 주세요.",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트"
       ]
     },
     {
@@ -1099,8 +1162,7 @@
       "section": null,
       "size": "189x36",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "8403:59964",
@@ -1108,8 +1170,7 @@
       "section": null,
       "size": "274x36",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "8403:59965",
@@ -1117,8 +1178,7 @@
       "section": null,
       "size": "222x36",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "8403:59966",
@@ -1126,22 +1186,29 @@
       "section": null,
       "size": "216x36",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "8403:59967",
       "name": "2.6 휴면_1 휴면 안내",
       "section": null,
       "size": "360x780",
-      "nodeCount": 12,
+      "nodeCount": 6,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
           "count": 1
         },
         {
@@ -1152,10 +1219,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "1년 이상 로그인하지 않아 현재 휴면 상태입니다. 서비스를 다시 이용하시려면 본인 인증을 해주세요."
       ]
     },
     {
@@ -1163,14 +1226,22 @@
       "name": "2.6 휴면_2 휴면 해제 완료",
       "section": null,
       "size": "360x780",
-      "nodeCount": 12,
+      "nodeCount": 6,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
           "count": 1
         },
         {
@@ -1181,10 +1252,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "휴면 해제되었습니다. 다시 로그인하여 서비스를 이용하실 수 있습니다. 앞으로 많은 이용 부탁드립니다."
       ]
     },
     {
@@ -1192,14 +1259,18 @@
       "name": "2.3 아이디 찾기_12 아이디 찾기 결과",
       "section": null,
       "size": "360x780",
-      "nodeCount": 10,
+      "nodeCount": 5,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1210,9 +1281,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -1220,14 +1288,18 @@
       "name": "2.4 비밀번호 찾기_3 인증 번호(휴대전화번호)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 24,
+      "nodeCount": 6,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1242,13 +1314,6 @@
           "name": "keyboard",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "입력하신 휴대전화번호로 인증 번호를 보냈어요.",
-        "플레이스 홀더 텍스트",
-        "플레이스 홀더 텍스트",
-        "인증 문자가 오지 않나요?"
       ]
     },
     {
@@ -1256,14 +1321,14 @@
       "name": "2.4 비밀번호 찾기_6 비밀번호 변경",
       "section": null,
       "size": "360x780",
-      "nodeCount": 25,
+      "nodeCount": 6,
       "components": [
         {
           "name": "pw off",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1271,17 +1336,13 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "keyboard",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "항목명 copy 2",
-        "비밀번호 조건",
-        "영문, 숫자, 특수문자를 조합하여 8~15자 입력해 주세요.",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트"
       ]
     },
     {
@@ -1289,18 +1350,22 @@
       "name": "2.4 비밀번호 찾기_7 비밀번호 변경 완료",
       "section": null,
       "size": "360x780",
-      "nodeCount": 35,
+      "nodeCount": 8,
       "components": [
         {
           "name": "pw off",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1315,16 +1380,6 @@
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "항목명 copy 2",
-        "비밀번호 조건",
-        "플레이스 홀더 텍스트",
-        "영문, 숫자, 특수문자를 조합하여 8~15자 입력해 주세요.",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "가입 승인 후 이용가능합니다."
       ]
     },
     {
@@ -1332,14 +1387,14 @@
       "name": "2.2 간편인증_1 간편인증 등록 안내",
       "section": null,
       "size": "360x780",
-      "nodeCount": 32,
+      "nodeCount": 10,
       "components": [
         {
           "name": "m_button",
           "count": 3
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1366,15 +1421,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "개인정보처리방침 copy 2",
-        "개인정보처리방침 copy 2",
-        "개인정보수집˙이용동의 copy 2",
-        "Copyright©S1 Corp. A Copy 2",
-        "제목",
-        "입력 정보와 일치하는 임직원 정보를"
       ]
     },
     {
@@ -1382,7 +1428,7 @@
       "name": "2.1 로그인_6 로그아웃 확인",
       "section": null,
       "size": "360x780",
-      "nodeCount": 82,
+      "nodeCount": 21,
       "components": [
         {
           "name": "menu_arrow_right",
@@ -1393,7 +1439,7 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1428,30 +1474,6 @@
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "상위 메뉴 1",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "상위 메뉴 1",
-        "하위 메뉴 3",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "홈",
-        "경비",
-        "영상",
-        "전체",
-        "개인정보처리방침 copy 2",
-        "개인정보처리방침 copy 2",
-        "개인정보수집˙이용동의 copy 2",
-        "Copyright©S1 Corp. A Copy 2",
-        "제목",
-        "입력 정보와 일치하는 임직원 정보를"
       ]
     },
     {
@@ -1459,7 +1481,7 @@
       "name": "2.1 로그인_6 로그아웃 확인",
       "section": null,
       "size": "360x780",
-      "nodeCount": 80,
+      "nodeCount": 20,
       "components": [
         {
           "name": "menu_arrow_right",
@@ -1470,7 +1492,7 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1501,29 +1523,6 @@
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "상위 메뉴 1",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "상위 메뉴 1",
-        "하위 메뉴 3",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "홈",
-        "경비",
-        "영상",
-        "전체",
-        "개인정보처리방침 copy 2",
-        "개인정보처리방침 copy 2",
-        "개인정보수집˙이용동의 copy 2",
-        "Copyright©S1 Corp. A Copy 2",
-        "가입 승인 후 이용가능합니다."
       ]
     },
     {
@@ -1531,10 +1530,10 @@
       "name": "2.2 간편인증_6 간편번호 변경(입력)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 38,
+      "nodeCount": 7,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1542,26 +1541,25 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
           "name": "title/signup",
+          "count": 1
+        },
+        {
+          "name": "step",
           "count": 1
         },
         {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요"
       ]
     },
     {
@@ -1569,14 +1567,22 @@
       "name": "2.2 간편인증_7 간편번호 변경(확인)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 38,
+      "nodeCount": 7,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
           "count": 1
         },
         {
@@ -1584,22 +1590,13 @@
           "count": 1
         },
         {
+          "name": "step",
+          "count": 1
+        },
+        {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요"
       ]
     },
     {
@@ -1607,10 +1604,10 @@
       "name": "2.2 간편인증_2 간편번호 입력",
       "section": null,
       "size": "360x780",
-      "nodeCount": 38,
+      "nodeCount": 4,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1618,23 +1615,13 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "서비스 이용 중 간편하게 본인 인증할 수 있어요.",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요"
       ]
     },
     {
@@ -1642,14 +1629,18 @@
       "name": "2.2 간편인증_3 간편번호 확인",
       "section": null,
       "size": "360x780",
-      "nodeCount": 40,
+      "nodeCount": 5,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1660,20 +1651,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "서비스 이용 중 간편하게 본인 인증할 수 있어요.",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요"
       ]
     },
     {
@@ -1681,14 +1658,18 @@
       "name": "2.2 간편인증_9 얼굴 인증",
       "section": null,
       "size": "360x780",
-      "nodeCount": 18,
+      "nodeCount": 5,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1699,13 +1680,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "로그인할 때 사용하실 번호에요.",
-        "PIN 번호를 입력해 주세요",
-        "숫자 6자리를 입력해 주세요.",
-        "숫자 6자리를 입력해 주세요."
       ]
     },
     {
@@ -1713,14 +1687,18 @@
       "name": "2.2 간편인증_8 지문 인증",
       "section": null,
       "size": "360x780",
-      "nodeCount": 19,
+      "nodeCount": 5,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1731,13 +1709,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "서비스 이용 중 간편하게 본인 인증할 수 있어요.",
-        "PIN 번호를 입력해 주세요",
-        "숫자 6자리를 입력해 주세요.",
-        "숫자 6자리를 입력해 주세요."
       ]
     },
     {
@@ -1745,14 +1716,18 @@
       "name": "2.2 간편인증_4 간편번호 오류(불일치)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 40,
+      "nodeCount": 5,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1763,20 +1738,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "입력하신 간편번호와 일치하지 않습니다.",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요"
       ]
     },
     {
@@ -1784,14 +1745,18 @@
       "name": "2.2 간편인증_5 간편번호 오류(불가능한 번호)",
       "section": null,
       "size": "360x780",
-      "nodeCount": 40,
+      "nodeCount": 5,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1802,20 +1767,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "생년월일, 전화번호 뒤 4자리는 사용할 수 없습니다.",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요",
-        "PIN 번호를 입력해 주세요"
       ]
     },
     {
@@ -1823,14 +1774,18 @@
       "name": "1.2 회원가입(모앱)_10 가입 완료",
       "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
       "size": "360x780",
-      "nodeCount": 12,
+      "nodeCount": 5,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1841,10 +1796,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -1852,14 +1803,18 @@
       "name": "1.2 회원가입(모앱)_11 가입 완료",
       "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
       "size": "360x780",
-      "nodeCount": 13,
+      "nodeCount": 5,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1870,10 +1825,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "서비스약관에 동의해 주세요"
       ]
     },
     {
@@ -1881,18 +1832,26 @@
       "name": "1.2 회원가입(모앱)_5 기존 아이디 사용 여부 선택",
       "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
       "size": "360x780",
-      "nodeCount": 43,
+      "nodeCount": 20,
       "components": [
         {
           "name": "m_bar",
           "count": 4
         },
         {
-          "name": "m_StatusBar",
+          "name": "tabel_bar",
+          "count": 4
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -1900,7 +1859,15 @@
           "count": 1
         },
         {
+          "name": "step/Default",
+          "count": 1
+        },
+        {
           "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "Remove",
           "count": 1
         },
         {
@@ -1923,15 +1890,6 @@
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "영어 소문자, 숫자를 조합하여 4~12자 입력해 주세요.",
-        "기존 아이디를 사용하시겠어요?",
-        "입력 정보와 일치하는 임직원 정보를",
-        "s1secom1",
-        "s1secom2",
-        "s1secom3",
-        "s1secom4(이미 사용중인 아이디)"
       ]
     },
     {
@@ -1939,7 +1897,7 @@
       "name": "1.2 회원가입(모앱)_1 약관 동의",
       "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
       "size": "360x780",
-      "nodeCount": 33,
+      "nodeCount": 13,
       "components": [
         {
           "name": "m_checkbox",
@@ -1950,7 +1908,7 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1958,7 +1916,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_bar",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
           "count": 1
         },
         {
@@ -1969,14 +1935,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "전체 동의하기",
-        "회원약관동의",
-        "회원약관동의",
-        "회원약관동의",
-        "회원약관, 개인정보 수집 및 이용동의"
       ]
     },
     {
@@ -1984,10 +1942,10 @@
       "name": "1.2 회원가입(모앱)_2 약관 상세",
       "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
       "size": "360x780",
-      "nodeCount": 12,
+      "nodeCount": 5,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -1995,16 +1953,17 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "제 1조(목적)",
-        "본 약관은 &#39;주식회사 에스원(이하 &quot;",
-        "제 2조(약관효력 및 변경)",
-        "(1) 회사는 본 약관의 내용을 회원"
       ]
     },
     {
@@ -2012,14 +1971,18 @@
       "name": "1.2 회원가입(모앱)_6 비밀번호 입력",
       "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
       "size": "360x780",
-      "nodeCount": 25,
+      "nodeCount": 7,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -2038,14 +2001,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "항목명 copy 2",
-        "비밀번호 조건",
-        "영문, 숫자, 특수문자를 조합하여 8~15자 입력해 주세요.",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트"
       ]
     },
     {
@@ -2053,14 +2008,22 @@
       "name": "1.2 회원가입(모앱)_9 이메일 도메인 선택",
       "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
       "size": "360x780",
-      "nodeCount": 40,
+      "nodeCount": 22,
       "components": [
         {
           "name": "m_bar",
           "count": 4
         },
         {
-          "name": "m_StatusBar",
+          "name": "tabel_bar",
+          "count": 4
+        },
+        {
+          "name": "m_Input box",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2068,7 +2031,23 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_email_input",
+          "count": 1
+        },
+        {
+          "name": "Remove",
+          "count": 1
+        },
+        {
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -2091,16 +2070,6 @@
           "name": "ok",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "입력하신 이메일로 ID 또는 비밀번호를 찾을 수 있습니다.",
-        "이메일",
-        "naver.com",
-        "kakao.com",
-        "gmail.com",
-        "nate.com",
-        "직접 입력"
       ]
     },
     {
@@ -2108,10 +2077,14 @@
       "name": "1.2 회원가입(모앱)_8 이메일 입력",
       "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
       "size": "360x780",
-      "nodeCount": 12,
+      "nodeCount": 11,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_Input box",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2119,7 +2092,23 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_email_input",
+          "count": 1
+        },
+        {
+          "name": "Remove",
+          "count": 1
+        },
+        {
+          "name": "m_combobox/off/off/off/Default",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
           "count": 1
         },
         {
@@ -2130,10 +2119,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "입력하신 이메일로 ID 또는 비밀번호를 찾을 수 있습니다."
       ]
     },
     {
@@ -2141,14 +2126,18 @@
       "name": "1.2 회원가입(모앱)_7 비밀번호 조건",
       "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
       "size": "360x780",
-      "nodeCount": 34,
+      "nodeCount": 10,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
           "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
           "count": 1
         },
         {
@@ -2179,16 +2168,6 @@
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "항목명 copy 2",
-        "비밀번호 조건",
-        "영문, 숫자, 특수문자를 조합하여 8~15자 입력해 주세요.",
-        "항목명 copy 2",
-        "플레이스 홀더 텍스트",
-        "제목",
-        "입력 정보와 일치하는 임직원 정보를"
       ]
     },
     {
@@ -2196,7 +2175,7 @@
       "name": "1.2 회원가입(모앱)_3 이미 가입한 회원",
       "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
       "size": "360x780",
-      "nodeCount": 41,
+      "nodeCount": 15,
       "components": [
         {
           "name": "m_checkbox",
@@ -2211,7 +2190,7 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2219,7 +2198,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_bar",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
           "count": 1
         },
         {
@@ -2230,15 +2217,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "전체 동의하기",
-        "회원약관동의",
-        "회원약관동의",
-        "회원약관동의",
-        "회원약관, 개인정보 수집 및 이용동의",
-        "가입 승인 후 이용가능합니다."
       ]
     },
     {
@@ -2246,10 +2224,10 @@
       "name": "1.2 회원가입(모앱)_4 이메일 입력",
       "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
       "size": "360x780",
-      "nodeCount": 14,
+      "nodeCount": 7,
       "components": [
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2257,7 +2235,15 @@
           "count": 1
         },
         {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
           "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "Remove",
           "count": 1
         },
         {
@@ -2268,10 +2254,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "서비스약관에 동의해 주세요",
-        "영어 소문자, 숫자를 조합하여 4~12자 입력해 주세요."
       ]
     },
     {
@@ -2280,22 +2262,21 @@
       "section": null,
       "size": "100x100",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "8403:60128",
       "name": "2.1 로그인_1 최초 진입",
       "section": "2.1 로그인",
       "size": "360x780",
-      "nodeCount": 24,
+      "nodeCount": 8,
       "components": [
         {
           "name": "m_button",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2318,13 +2299,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "개인정보처리방침 copy 2",
-        "개인정보처리방침 copy 2",
-        "개인정보수집˙이용동의 copy 2",
-        "Copyright©S1 Corp. A Copy 2"
       ]
     },
     {
@@ -2332,7 +2306,7 @@
       "name": "2.1 로그인_2 입력",
       "section": "2.1 로그인",
       "size": "360x780",
-      "nodeCount": 21,
+      "nodeCount": 12,
       "components": [
         {
           "name": "m_button",
@@ -2343,7 +2317,7 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2355,6 +2329,10 @@
           "count": 1
         },
         {
+          "name": "Remove",
+          "count": 1
+        },
+        {
           "name": "pw off",
           "count": 1
         },
@@ -2362,9 +2340,6 @@
           "name": "keyboard",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트"
       ]
     },
     {
@@ -2372,7 +2347,7 @@
       "name": "2.1 로그인_2 입력",
       "section": "2.1 로그인",
       "size": "360x780",
-      "nodeCount": 24,
+      "nodeCount": 12,
       "components": [
         {
           "name": "m_button",
@@ -2383,7 +2358,7 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2406,9 +2381,6 @@
           "name": "keyboard",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트"
       ]
     },
     {
@@ -2416,14 +2388,14 @@
       "name": "2.1 로그인_7 자동 로그인 선택",
       "section": "2.1 로그인",
       "size": "360x780",
-      "nodeCount": 34,
+      "nodeCount": 11,
       "components": [
         {
           "name": "m_button",
           "count": 3
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2454,14 +2426,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "개인정보처리방침 copy 2",
-        "개인정보처리방침 copy 2",
-        "개인정보수집˙이용동의 copy 2",
-        "Copyright©S1 Corp. A Copy 2",
-        "가입 승인 후 이용가능합니다."
       ]
     },
     {
@@ -2469,14 +2433,14 @@
       "name": "2.1 로그인_6 새로운 기기로 로그인(1)",
       "section": "2.1 로그인",
       "size": "360x780",
-      "nodeCount": 26,
+      "nodeCount": 9,
       "components": [
         {
           "name": "m_button",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2503,13 +2467,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "개인정보처리방침 copy 2",
-        "개인정보처리방침 copy 2",
-        "개인정보수집˙이용동의 copy 2",
-        "Copyright©S1 Corp. A Copy 2"
       ]
     },
     {
@@ -2517,7 +2474,7 @@
       "name": "2.1 로그인_6 로그아웃 확인",
       "section": "2.1 로그인",
       "size": "360x780",
-      "nodeCount": 82,
+      "nodeCount": 21,
       "components": [
         {
           "name": "menu_arrow_right",
@@ -2528,7 +2485,7 @@
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2563,30 +2520,6 @@
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "상위 메뉴 1",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "상위 메뉴 1",
-        "하위 메뉴 3",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "하위 메뉴 7",
-        "홈",
-        "경비",
-        "영상",
-        "전체",
-        "개인정보처리방침 copy 2",
-        "개인정보처리방침 copy 2",
-        "개인정보수집˙이용동의 copy 2",
-        "Copyright©S1 Corp. A Copy 2",
-        "제목",
-        "입력 정보와 일치하는 임직원 정보를"
       ]
     },
     {
@@ -2594,14 +2527,14 @@
       "name": "2.1 로그인_3 아이디 미입력",
       "section": "2.1 로그인",
       "size": "360x780",
-      "nodeCount": 29,
+      "nodeCount": 7,
       "components": [
         {
           "name": "m_button",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2620,14 +2553,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "암호가 일치하지 않습니다.",
-        "개인정보처리방침 copy 2",
-        "개인정보처리방침 copy 2",
-        "개인정보수집˙이용동의 copy 2",
-        "Copyright©S1 Corp. A Copy 2"
       ]
     },
     {
@@ -2635,14 +2560,14 @@
       "name": "2.1 로그인_4 비번 미입력",
       "section": "2.1 로그인",
       "size": "360x780",
-      "nodeCount": 25,
+      "nodeCount": 8,
       "components": [
         {
           "name": "m_button",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2665,13 +2590,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "암호가 일치하지 않습니다.",
-        "개인정보처리방침 copy 2",
-        "개인정보처리방침 copy 2",
-        "개인정보수집˙이용동의 copy 2",
-        "Copyright©S1 Corp. A Copy 2"
       ]
     },
     {
@@ -2679,14 +2597,14 @@
       "name": "2.1 로그인_5 잘못된 아이디비번",
       "section": "2.1 로그인",
       "size": "360x780",
-      "nodeCount": 28,
+      "nodeCount": 8,
       "components": [
         {
           "name": "m_button",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2709,14 +2627,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "암호가 일치하지 않습니다.",
-        "개인정보처리방침 copy 2",
-        "개인정보처리방침 copy 2",
-        "개인정보수집˙이용동의 copy 2",
-        "Copyright©S1 Corp. A Copy 2"
       ]
     },
     {
@@ -2724,14 +2634,14 @@
       "name": "2.1 로그인_6 새로운 기기로 로그인(2)",
       "section": "2.1 로그인",
       "size": "360x780",
-      "nodeCount": 26,
+      "nodeCount": 8,
       "components": [
         {
           "name": "m_button",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2754,13 +2664,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "개인정보처리방침 copy 2",
-        "개인정보처리방침 copy 2",
-        "개인정보수집˙이용동의 copy 2",
-        "Copyright©S1 Corp. A Copy 2"
       ]
     },
     {
@@ -2768,14 +2671,14 @@
       "name": "2.1 로그인_7 자동 로그인 선택",
       "section": "2.1 로그인",
       "size": "360x780",
-      "nodeCount": 39,
+      "nodeCount": 8,
       "components": [
         {
           "name": "m_button",
           "count": 2
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2798,16 +2701,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "개인정보처리방침 copy 2",
-        "개인정보처리방침 copy 2",
-        "개인정보수집˙이용동의 copy 2",
-        "Copyright©S1 Corp. A Copy 2",
-        "가입 승인 후 이용가능합니다.",
-        "취소",
-        "확인"
       ]
     },
     {
@@ -2815,14 +2708,14 @@
       "name": "2.1 로그인_6 새로운 기기로 로그인",
       "section": "2.1 로그인",
       "size": "360x780",
-      "nodeCount": 34,
+      "nodeCount": 11,
       "components": [
         {
           "name": "m_button",
           "count": 3
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2853,15 +2746,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "개인정보처리방침 copy 2",
-        "개인정보처리방침 copy 2",
-        "개인정보수집˙이용동의 copy 2",
-        "Copyright©S1 Corp. A Copy 2",
-        "제목",
-        "입력 정보와 일치하는 임직원 정보를"
       ]
     },
     {
@@ -2869,14 +2753,14 @@
       "name": "2.1 로그인_6 새로운 기기로 로그인",
       "section": "2.1 로그인",
       "size": "360x780",
-      "nodeCount": 33,
+      "nodeCount": 10,
       "components": [
         {
           "name": "m_button",
           "count": 3
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2903,15 +2787,6 @@
           "name": "phone_navi",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "개인정보처리방침 copy 2",
-        "개인정보처리방침 copy 2",
-        "개인정보수집˙이용동의 copy 2",
-        "Copyright©S1 Corp. A Copy 2",
-        "제목",
-        "입력 정보와 일치하는 임직원 정보를"
       ]
     },
     {
@@ -2919,14 +2794,14 @@
       "name": "2.1 로그인_6 새로운 기기로 로그인",
       "section": "2.1 로그인",
       "size": "360x780",
-      "nodeCount": 34,
+      "nodeCount": 10,
       "components": [
         {
           "name": "m_button",
           "count": 3
         },
         {
-          "name": "m_StatusBar",
+          "name": "m_StatusBar ",
           "count": 1
         },
         {
@@ -2953,15 +2828,6 @@
           "name": "close",
           "count": 1
         }
-      ],
-      "texts": [
-        "플레이스 홀더 텍스트",
-        "개인정보처리방침 copy 2",
-        "개인정보처리방침 copy 2",
-        "개인정보수집˙이용동의 copy 2",
-        "Copyright©S1 Corp. A Copy 2",
-        "제목",
-        "입력 정보와 일치하는 임직원 정보를"
       ]
     },
     {
@@ -2970,15 +2836,14 @@
       "section": "2.1 로그인",
       "size": "118x39",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "21446:2881",
       "name": "dialog",
       "section": null,
       "size": "360x732",
-      "nodeCount": 7,
+      "nodeCount": 2,
       "components": [
         {
           "name": "close",
@@ -2988,10 +2853,6 @@
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "제목",
-        "입력 정보와 일치하는 임직원 정보를"
       ]
     },
     {
@@ -2999,7 +2860,7 @@
       "name": "dialog",
       "section": null,
       "size": "360x732",
-      "nodeCount": 7,
+      "nodeCount": 2,
       "components": [
         {
           "name": "close",
@@ -3009,10 +2870,6 @@
           "name": "m_button",
           "count": 1
         }
-      ],
-      "texts": [
-        "제목",
-        "입력 정보와 일치하는 임직원 정보를"
       ]
     },
     {
@@ -3021,8 +2878,7 @@
       "section": null,
       "size": "331x32",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     },
     {
       "id": "30803:41400",
@@ -3030,8 +2886,7 @@
       "section": null,
       "size": "325x32",
       "nodeCount": 0,
-      "components": [],
-      "texts": []
+      "components": []
     }
   ],
   "componentUsage": [
@@ -3040,7 +2895,7 @@
       "count": 74
     },
     {
-      "name": "m_StatusBar",
+      "name": "m_StatusBar ",
       "count": 60
     },
     {
@@ -3048,40 +2903,48 @@
       "count": 52
     },
     {
+      "name": "icon/arrow",
+      "count": 52
+    },
+    {
       "name": "phone_navi",
       "count": 50
+    },
+    {
+      "name": "m_Input box",
+      "count": 44
+    },
+    {
+      "name": "menu_arrow_right",
+      "count": 32
     },
     {
       "name": "pw off",
       "count": 32
     },
     {
+      "name": "Remove",
+      "count": 31
+    },
+    {
       "name": "keyboard",
       "count": 30
     },
     {
-      "name": "menu_arrow_right",
-      "count": 30
-    },
-    {
-      "name": "m_Input box",
-      "count": 28
+      "name": "close",
+      "count": 29
     },
     {
       "name": "m_bar",
-      "count": 23
+      "count": 25
     },
     {
-      "name": "close",
-      "count": 20
-    },
-    {
-      "name": "Remove",
-      "count": 17
+      "name": "tabel_bar",
+      "count": 25
     },
     {
       "name": "m_checkbox",
-      "count": 15
+      "count": 17
     },
     {
       "name": "S1 logo",
@@ -3092,7 +2955,15 @@
       "count": 13
     },
     {
+      "name": "icon/combobox_arrow",
+      "count": 10
+    },
+    {
       "name": "m_btn_full",
+      "count": 9
+    },
+    {
+      "name": "m_combobox/off/off/off/Default",
       "count": 9
     },
     {
@@ -3106,6 +2977,14 @@
     {
       "name": "ok",
       "count": 5
+    },
+    {
+      "name": "step/Default",
+      "count": 4
+    },
+    {
+      "name": "step",
+      "count": 4
     },
     {
       "name": "hide",
@@ -3140,11 +3019,15 @@
       "count": 3
     },
     {
+      "name": "menu_arrow_down",
+      "count": 2
+    },
+    {
       "name": "m_tab_mid",
       "count": 2
     },
     {
-      "name": "m_combobox/off/off/off/Default",
+      "name": "m_combobox",
       "count": 1
     },
     {
