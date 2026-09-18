@@ -741,8 +741,9 @@ function renderImportedList() {
   const box = els.importedGroups;
   if (!box) return;
   const list = (data.imported?.screens || []);
-  els.empty_imported.hidden = list.length > 0;
-  if (!list.length) {
+  const fileList = (data.fileScreens || []);
+  els.empty_imported.hidden = list.length + fileList.length > 0;
+  if (!list.length && !fileList.length) {
     box.innerHTML = "";
     return;
   }
@@ -763,12 +764,75 @@ function renderImportedList() {
       </button>`).join("");
     html += accordion(service, `${items.length}장`, cards);
   }
+  /* 파일로 불러온 화면 — 저장소에 없고 이 브라우저 안에만 있다(플러그인이 내려준 파일). */
+  const byFile = new Map();
+  for (const it of fileList) {
+    if (!byFile.has(it.fileLabel)) byFile.set(it.fileLabel, []);
+    byFile.get(it.fileLabel).push(it);
+  }
+  for (const [label, items] of byFile) {
+    const cards = items.map((it) => `
+      <button type="button" class="pb-card pb-card-imported" data-filescreen="${escapeAttr(it.key)}"
+        data-search="${escapeAttr(`${it.name} ${label}`)}">
+        <span class="pb-card-name">${escapeHtml(it.name)}</span>
+        <span class="pb-card-meta">${it.width}×${it.height} · 칸 ${it.rows}</span>
+        <span class="pb-card-meta pb-card-mode">불러온 파일</span>
+      </button>`).join("");
+    html += accordion(`📂 ${label}`, `${items.length}장`, cards, true);
+  }
   box.innerHTML = html;
   wireAccordions(box);
   box.querySelectorAll("[data-imported]").forEach((b) => b.addEventListener("click", () => loadImportedScreen(b.dataset.imported)));
+  box.querySelectorAll("[data-filescreen]").forEach((b) => b.addEventListener("click", () => loadFileScreen(b.dataset.filescreen)));
 }
 
 const MEDIUM_KO = { app: "휴대폰 앱", mweb: "모바일 웹", pcweb: "PC 웹", console: "관제/콘솔" };
+
+/** 왼쪽 칸의 탭을 바꾼다(컴포넌트 · 패턴 · 가져온 화면). */
+function switchTab(name) {
+  document.querySelectorAll("[data-tab]").forEach((t) => {
+    const on = t.dataset.tab === name;
+    t.setAttribute("aria-selected", String(on));
+    const pane = document.querySelector(`#pb-pane-${t.dataset.tab}`);
+    if (pane) pane.hidden = !on;
+  });
+}
+
+/* ── 플러그인이 내려준 화면 파일 읽기 ───────────────────────────
+   S-1 GUI Builder 플러그인은 화면마다 「칸(rows)」과 칸 그림을 함께 담는다.
+   빌더가 저장소에서 읽던 것과 같은 모양이라, 주소만 그림 자체로 바뀐다.
+   ⛔ 레거시 칸을 정본 부품으로 바꿔치기하지 않는다 — 가져오기와 같은 경계선. */
+function readScreenPack(pack) {
+  if (!pack || !pack._meta || pack._meta.source !== "figma:plugin:s1-gui-builder") {
+    throw new Error("S-1 GUI Builder 가 내려준 파일이 아닙니다");
+  }
+  const out = [];
+  for (const sc of pack.screens || []) {
+    if (!Array.isArray(sc.rows) || !sc.rows.length) continue;
+    out.push({
+      mode: "legacy-as-is",
+      service: pack._meta.file?.name || "",
+      screen: {
+        id: sc.id,
+        name: sc.name,
+        width: Math.round(sc.box?.w || 0),
+        height: Math.round(sc.box?.h || 0),
+        orderText: sc.orderText || ""
+      },
+      rows: sc.rows.map((r, i) => ({
+        i,
+        label: r.label,
+        name: r.name,
+        type: r.type,
+        x: r.x, y: r.y, w: r.w, h: r.h, depth: r.depth,
+        image: r.image || "",
+        parts: r.parts || {},
+        canon: []                      // 이름 대응은 저장소 쪽 결정표의 몫 — 브라우저에서 지어내지 않는다
+      }))
+    });
+  }
+  return out;
+}
 
 /* ── Figma 링크로 바로 가져오기 ────────────────────────────────
    링크만 이 맥 안의 빌더 서버(npm run builder)에 넘긴다. Figma 읽기 열쇠는 브라우저에 두지 않는다.
@@ -850,6 +914,20 @@ async function loadImportedScreen(key) {
   catch (e) { toast("가져온 화면을 읽지 못했습니다"); console.error(e); return; }
 
   const base = new URL(it.imgBase, URLS.importedBase);
+  await placeImportedDoc(doc, (img) => (img ? new URL(img, base).href : ""),
+    { profile: it.profile, slug: it.slug, screenId: doc.screen.id, mode: doc.mode, name: doc.screen.name });
+}
+
+/* 파일로 불러온 화면을 캔버스에 올린다 — 그림이 파일 안에 들어 있어 주소를 붙일 필요가 없다. */
+async function loadFileScreen(key) {
+  const it = (data.fileScreens || []).find((x) => x.key === key);
+  if (!it) return;
+  await placeImportedDoc(it.doc, (img) => img || "",
+    { profile: null, slug: null, screenId: it.doc.screen.id, mode: it.doc.mode, name: it.doc.screen.name, fromFile: it.fileLabel });
+}
+
+/* 가져온 화면 한 장을 캔버스에 올리는 한 갈래 — 저장소에서 온 것도, 파일에서 온 것도 여기로 모인다. */
+async function placeImportedDoc(doc, imgUrl, meta) {
   const rows = doc.rows.map((r, i) => {
     const next = doc.rows[i + 1];
     const gap = next ? Math.max(0, next.y - (r.y + r.h)) : 0;
@@ -862,7 +940,7 @@ async function loadImportedScreen(key) {
       blocks: [{
         id: nextId("b"),
         kind: "legacy",
-        image: r.image ? new URL(r.image, base).href : "",
+        image: imgUrl(r.image),
         widthPx: r.w,
         heightPx: r.h,
         xPx: r.x || 0,
@@ -886,7 +964,7 @@ async function loadImportedScreen(key) {
     ? [...tally.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0])[0][0]
     : 0;
   state.screen.shell = "none";     // 원본에 상태바·내비가 들어 있으면 겹치므로 기기 크롬은 끈 채로 시작한다
-  state.imported = { profile: it.profile, slug: it.slug, screenId: doc.screen.id, mode: doc.mode, name: doc.screen.name };
+  state.imported = meta;
   state.rows = rows;
   selection = { rowId: null, blockId: null };
   renderToolbar();
@@ -1473,13 +1551,7 @@ async function main() {
   els.importDialog.addEventListener("click", (e) => { if (e.target === els.importDialog) closeImport(); });
   els.importGo.addEventListener("click", runImport);
   els.importLink.addEventListener("keydown", (e) => { if (e.key === "Enter") runImport(); });
-  document.querySelectorAll("[data-tab]").forEach((tab) => tab.addEventListener("click", () => {
-    document.querySelectorAll("[data-tab]").forEach((t) => {
-      const on = t === tab;
-      t.setAttribute("aria-selected", String(on));
-      document.querySelector(`#pb-pane-${t.dataset.tab}`).hidden = !on;
-    });
-  }));
+  document.querySelectorAll("[data-tab]").forEach((tab) => tab.addEventListener("click", () => switchTab(tab.dataset.tab)));
   window.addEventListener("resize", fitCanvas);
   if (window.ResizeObserver) new ResizeObserver(() => fitCanvas()).observe(els.canvasWrap.parentElement);
   els.name.addEventListener("input", () => { state.meta.name = els.name.value; persist(); });
@@ -1522,6 +1594,38 @@ async function main() {
       state = s; reseedIds(); selection = { rowId: null, blockId: null }; renderToolbar(); renderPartGroups(); update(); toast("불러왔습니다");
     } catch (err) { toast(`불러오기 실패: ${err.message}`); }
     e.target.value = "";
+  });
+  /* 기존화면 불러오기 — Figma 플러그인(S-1 GUI Builder)이 내려준 파일을 연다.
+     열쇠도 서버도 쓰지 않는다. 읽은 화면은 이 브라우저 안에만 있고 저장소에는 남지 않는다. */
+  $("#pb-load-screen").addEventListener("change", async (e) => {
+    const f = e.target.files[0];
+    e.target.value = "";
+    if (!f) return;
+    try {
+      const pack = JSON.parse(await f.text());
+      const screens = readScreenPack(pack);
+      if (!screens.length) throw new Error("화면이 들어 있지 않습니다");
+      const label = f.name.replace(/\.json$/i, "");
+      data.fileScreens = (data.fileScreens || []).filter((x) => x.fileLabel !== label);
+      screens.forEach((doc, i) => {
+        data.fileScreens.push({
+          key: `${label}#${i}`,
+          fileLabel: label,
+          name: doc.screen.name,
+          width: doc.screen.width,
+          height: doc.screen.height,
+          rows: doc.rows.length,
+          doc
+        });
+      });
+      switchTab("imported");
+      renderImportedList();
+      await loadFileScreen(`${label}#0`);
+      if (screens.length > 1) toast(`화면 ${screens.length}장을 불러왔습니다 — 목록에서 고르세요`);
+    } catch (err) {
+      toast(`불러오기 실패: ${err.message}`);
+      console.error(err);
+    }
   });
   $("#pb-export").addEventListener("click", async () => {
     if (!state.rows.length) { toast("내보낼 요소가 없습니다"); return; }

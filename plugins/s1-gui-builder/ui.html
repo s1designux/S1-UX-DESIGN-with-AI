@@ -120,6 +120,10 @@
       try {
         꾸러미.screens.forEach(function (s) {
           if (s.그림 && s.그림.png) { s.그림.base64 = 예순넷(s.그림.png); delete s.그림.png; }
+          (s.rows || []).forEach(function (r) {
+            // 빌더가 바로 화면에 띄울 수 있게 그림 주소 모양으로 바꾼다
+            if (r.png) { r.image = 'data:image/png;base64,' + 예순넷(r.png); delete r.png; }
+          });
         });
         var 글 = JSON.stringify(꾸러미, null, 2);
         var 때 = new Date();

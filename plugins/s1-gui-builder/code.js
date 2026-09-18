@@ -208,6 +208,117 @@ async function 인스턴스정체(node) {
   return { name: String(주.name || ''), set: 세트, props: props };
 }
 
+// ── 세로 차례(칸) 나누기 ───────────────────────────────────────────────
+// 빌더가 화면을 "위에서 아래로 쌓인 칸"으로 받아 쓰기 때문에, 저장소 쪽 판독기와 같은 방식으로 나눈다.
+// (정본: scripts/lib/screen-structure.js — 규칙이 바뀌면 둘을 같이 고친다)
+var 잡음이름 = /^(Rectangle|Ellipse|Vector|Union|Line|Arrow|Subtract|Intersect|Exclude|Mask|bg|Bg|BG)\b/;
+var 뜻없는이름 = /^(Frame|Group|Rectangle|Ellipse|Vector|Union|Component|Instance|Slice|Line|Container|Auto layout)\s*\d*$/i;
+
+function 껍데기벗기기(node) {
+  var cur = node;
+  for (var i = 0; i < 4; i += 1) {
+    var kids = (cur.children || []).filter(function (c) { return c.absoluteBoundingBox; });
+    if (kids.length !== 1) break;
+    var k = kids[0], a = cur.absoluteBoundingBox, b = k.absoluteBoundingBox;
+    if (!a || !b) break;
+    var 비슷 = Math.abs(a.width - b.width) < 8 && Math.abs(a.height - b.height) < 24;
+    if (!비슷 || !(k.children || []).length) break;
+    cur = k;
+  }
+  return cur;
+}
+
+function 속인스턴스(node, out) {
+  out = out || [];
+  (node.children || []).forEach(function (c) {
+    if (c.type === 'INSTANCE') out.push(c.name);
+    속인스턴스(c, out);
+  });
+  return out;
+}
+
+function 속글자(node, out, 한도) {
+  out = out || []; 한도 = 한도 || 4;
+  var kids = node.children || [];
+  for (var i = 0; i < kids.length; i++) {
+    if (out.length >= 한도) return out;
+    var c = kids[i];
+    if (c.type === 'TEXT' && c.characters) out.push(String(c.characters).replace(/\s+/g, ' ').trim().slice(0, 24));
+    속글자(c, out, 한도);
+  }
+  return out;
+}
+
+function 칸이름(node) {
+  if (node.type === 'INSTANCE') return { kind: 'part', label: node.name };
+  if (node.type === 'TEXT') {
+    var t = String(node.characters || '').replace(/\s+/g, ' ').trim().slice(0, 24);
+    return { kind: 'text', label: t ? '글자"' + t + '"' : '글자' };
+  }
+  var 제이름 = node.name && !뜻없는이름.test(String(node.name).trim()) ? String(node.name).trim().slice(0, 40) : '';
+  var 인스 = 속인스턴스(node);
+  if (인스.length) {
+    var 셈 = {};
+    인스.forEach(function (n) { 셈[n] = (셈[n] || 0) + 1; });
+    var 위 = Object.keys(셈).sort(function (a, b) { return 셈[b] - 셈[a]; }).slice(0, 3)
+      .map(function (n) { return 셈[n] > 1 ? n + '×' + 셈[n] : n; });
+    return { kind: 'group', label: (제이름 ? 제이름 + '(' + 위.join(', ') + ')' : '묶음(' + 위.join(', ') + ')'), parts: 셈 };
+  }
+  var 글 = 속글자(node, [], 2);
+  if (제이름) return { kind: 'group', label: 글.length ? 제이름 + '(글자: ' + 글.join(' / ') + ')' : 제이름, parts: {} };
+  if (글.length) return { kind: 'group', label: '묶음(글자: ' + 글.join(' / ') + ')', parts: {} };
+  return { kind: 'group', label: '묶음', parts: {} };
+}
+
+function 칸나누기(frame) {
+  var root = 껍데기벗기기(frame);
+  var rb = root.absoluteBoundingBox;
+  var rows = [];
+  var kids = (root.children || [])
+    .filter(function (c) { return c.absoluteBoundingBox && c.visible !== false; })
+    .filter(function (c) { return !(잡음이름.test(c.name || '') && !(c.children || []).length); })
+    .sort(function (a, b) { return a.absoluteBoundingBox.y - b.absoluteBoundingBox.y; });
+
+  // 본문 = 화면 높이의 35% 넘게 차지하면서 자식이 2개 이상인 칸 중 가장 큰 것 — 한 겹 더 펼친다
+  var 본문 = null;
+  if (rb) {
+    kids.forEach(function (c) {
+      if (!c.children || c.children.length < 2) return;
+      if (c.absoluteBoundingBox.height < rb.height * 0.35) return;
+      if (!본문 || c.absoluteBoundingBox.height > 본문.absoluteBoundingBox.height) 본문 = c;
+    });
+  }
+
+  function 담기(node, depth) {
+    var b = node.absoluteBoundingBox, l = 칸이름(node);
+    var 한칸 = {
+      i: rows.length, id: node.id, name: node.name, type: node.type,
+      x: Math.round(b.x - (rb ? rb.x : 0)), y: Math.round(b.y - (rb ? rb.y : 0)),
+      h: Math.round(b.height), w: Math.round(b.width),
+      depth: depth, kind: l.kind, label: l.label, node: node
+    };
+    if (l.parts && Object.keys(l.parts).length) 한칸.parts = l.parts;
+    rows.push(한칸);
+  }
+
+  for (var i = 0; i < kids.length; i++) {
+    var c = kids[i];
+    if (본문 && c.id === 본문.id) {
+      var 속 = 껍데기벗기기(c);
+      var 아래 = (속.children || [])
+        .filter(function (x) { return x.absoluteBoundingBox && x.visible !== false; })
+        .filter(function (x) { return !(잡음이름.test(x.name || '') && !(x.children || []).length); })
+        .sort(function (a, b) { return a.absoluteBoundingBox.y - b.absoluteBoundingBox.y; });
+      if (아래.length >= 2) {
+        for (var j = 0; j < 아래.length; j++) 담기(아래[j], 1);
+        continue;
+      }
+    }
+    담기(c, 0);
+  }
+  return rows;
+}
+
 // ── 화면 한 장 훑기 ────────────────────────────────────────────────────
 function 요소하나(node, 틀, depth, parentId) {
   var bb = node.absoluteBoundingBox;
@@ -342,6 +453,25 @@ figma.ui.onmessage = async function (msg) {
         한장.그림못담음 = String(e && e.message ? e.message : e);
       }
     }
+
+    // 빌더가 바로 올릴 수 있게 — 위에서 아래로 쌓인 칸과 칸마다의 그림
+    var 칸들 = 칸나누기(n);
+    한장.orderText = 칸들.map(function (r) { return r.label; }).join(' → ');
+    한장.rows = [];
+    for (var k = 0; k < 칸들.length; k++) {
+      var r = 칸들[k];
+      var 칸 = { i: 한장.rows.length, label: r.label, name: r.name, type: r.type,
+                 x: r.x, y: r.y, w: r.w, h: r.h, depth: r.depth, kind: r.kind };
+      if (r.parts) 칸.parts = r.parts;
+      if (그림담기) {
+        try {
+          var 칸그림 = await r.node.exportAsync({ format: 'PNG', constraint: { type: 'SCALE', value: 2 } });
+          칸.png = Array.from(칸그림);     // UI 에서 그림 주소로 바꾼다
+        } catch (e2) { 칸.그림못담음 = String(e2 && e2.message ? e2.message : e2); }
+      }
+      한장.rows.push(칸);
+    }
+
     화면들.push(한장);
   }
 

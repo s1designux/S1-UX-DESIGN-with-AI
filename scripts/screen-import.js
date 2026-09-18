@@ -68,13 +68,28 @@ fs.mkdirSync(rawDir, { recursive: true });
 let shots = 0;
 const screens = pack.screens.map((s, i) => {
   const { 그림, ...나머지 } = s;
-  const 파일 = `${String(i + 1).padStart(2, '0')}-${slug(s.name)}.png`;
+  const 이름 = `${String(i + 1).padStart(2, '0')}-${slug(s.name)}`;
   if (그림 && 그림.base64) {
     fs.mkdirSync(shotDir, { recursive: true });
-    fs.writeFileSync(path.join(shotDir, 파일), Buffer.from(그림.base64, 'base64'));
+    fs.writeFileSync(path.join(shotDir, `${이름}.png`), Buffer.from(그림.base64, 'base64'));
     shots += 1;
-    나머지.그림파일 = path.posix.join('shots', 파일);
+    나머지.그림파일 = path.posix.join('shots', `${이름}.png`);
     나머지.그림배율 = 그림.배율;
+  }
+  // 칸 그림은 파일로 빼고 원자료에는 경로만 남긴다 — 원자료가 그림 덩어리로 부풀지 않게.
+  if (Array.isArray(나머지.rows)) {
+    const 칸방 = path.join(shotDir, 이름);
+    나머지.rows = 나머지.rows.map((r, k) => {
+      const { image, ...칸 } = r;
+      if (typeof image === 'string' && image.startsWith('data:image/png;base64,')) {
+        fs.mkdirSync(칸방, { recursive: true });
+        const f = `${String(k).padStart(2, '0')}.png`;
+        fs.writeFileSync(path.join(칸방, f), Buffer.from(image.slice('data:image/png;base64,'.length), 'base64'));
+        칸.image = path.posix.join('shots', 이름, f);
+        shots += 1;
+      }
+      return 칸;
+    });
   }
   return 나머지;
 });
