@@ -1,0 +1,154 @@
+<!-- S-1 GUI Builder — 고른 화면을 파일 한 장으로 내려받는 창 -->
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: Inter, 'Pretendard', -apple-system, sans-serif;
+    font-size: 12px; color: #1f1f1f; background: #fff;
+    display: flex; flex-direction: column; height: 100vh;
+  }
+  header { padding: 14px 16px 10px; border-bottom: 1px solid #ececec; }
+  header h1 { margin: 0; font-size: 13px; font-weight: 600; }
+  header p { margin: 4px 0 0; font-size: 11px; color: #8c8c8c; line-height: 1.5; }
+  .body { flex: 1 1 auto; min-height: 0; overflow: auto; padding: 12px 16px; }
+  .where { font-size: 11px; color: #8c8c8c; margin-bottom: 8px; }
+  .where b { color: #1f1f1f; font-weight: 600; }
+  .hint {
+    background: #f6f8fc; border: 1px solid #e3e9f5; border-radius: 6px;
+    padding: 8px 10px; font-size: 11px; color: #56616f; line-height: 1.55; margin-bottom: 10px;
+  }
+  ul.list { list-style: none; margin: 0; padding: 0; border: 1px solid #ececec; border-radius: 6px; }
+  ul.list li {
+    display: flex; justify-content: space-between; gap: 8px;
+    padding: 7px 10px; border-bottom: 1px solid #f2f2f2;
+  }
+  ul.list li:last-child { border-bottom: 0; }
+  ul.list .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  ul.list .sz { color: #9a9a9a; flex: 0 0 auto; font-variant-numeric: tabular-nums; }
+  .empty { color: #9a9a9a; padding: 18px 0; text-align: center; }
+  .opts { margin-top: 12px; display: flex; flex-direction: column; gap: 7px; }
+  .opts label { display: flex; align-items: center; gap: 7px; color: #56616f; }
+  footer { border-top: 1px solid #ececec; padding: 10px 16px 12px; }
+  button {
+    width: 100%; height: 34px; border: 0; border-radius: 6px;
+    background: #1d6ceb; color: #fff; font-size: 12px; font-weight: 600; cursor: pointer;
+    font-family: inherit;
+  }
+  button:disabled { background: #d4d4d4; cursor: default; }
+  .msg { margin-top: 8px; font-size: 11px; color: #56616f; line-height: 1.5; min-height: 16px; }
+  .msg.ok { color: #1a7f45; }
+  .msg.bad { color: #c8372d; }
+</style>
+
+<header>
+  <h1>화면 보내기</h1>
+  <p>고른 화면의 그림과 숫자를 파일 한 장으로 내려받습니다. 바깥으로 나가지 않습니다.</p>
+</header>
+
+<div class="body">
+  <div class="where" id="where"></div>
+  <div class="hint" id="hint">캔버스에서 화면(또는 묶음 상자)을 골라 주세요.</div>
+  <ul class="list" id="list"></ul>
+  <div class="empty" id="empty" style="display:none">담을 화면이 없습니다.</div>
+
+  <div class="opts">
+    <label><input type="checkbox" id="opt-img" checked> 화면 그림(PNG)도 같이 담기</label>
+    <label><input type="checkbox" id="opt-deep"> 속까지 깊게 훑기 (느림 · 파일이 커짐)</label>
+  </div>
+</div>
+
+<footer>
+  <button id="go">파일로 내려받기</button>
+  <div class="msg" id="msg"></div>
+</footer>
+
+<script>
+  var 화면수 = 0;
+  var $ = function (id) { return document.getElementById(id); };
+
+  function 말(글, 갈래) {
+    var m = $('msg');
+    m.textContent = 글 || '';
+    m.className = 'msg' + (갈래 ? ' ' + 갈래 : '');
+  }
+
+  function 이름씻기(s) {
+    return String(s || '').replace(/[\\/:*?"<>|]+/g, '-').replace(/\s+/g, '-').slice(0, 40);
+  }
+
+  function 바이트글(n) {
+    if (n < 1024 * 1024) return Math.round(n / 1024) + 'KB';
+    return (n / 1024 / 1024).toFixed(1) + 'MB';
+  }
+
+  // 숫자 배열(PNG) → base64 — 파일 크기를 3분의 1 남짓으로 줄인다.
+  function 예순넷(arr) {
+    var 덩이 = 0x8000, 글 = '';
+    for (var i = 0; i < arr.length; i += 덩이) {
+      글 += String.fromCharCode.apply(null, arr.slice(i, i + 덩이));
+    }
+    return btoa(글);
+  }
+
+  onmessage = function (e) {
+    var msg = e.data.pluginMessage;
+    if (!msg) return;
+
+    if (msg.갈래 === '고른것') {
+      화면수 = msg.화면들.length;
+      $('where').innerHTML = '<b>' + msg.파일이름 + '</b> · ' + msg.페이지;
+      $('hint').textContent = msg.스스로
+        ? '아무것도 고르지 않아서 이 페이지의 화면 전부(' + 화면수 + '개)를 담습니다.'
+        : '고른 화면 ' + 화면수 + '개를 담습니다. 묶음 상자를 고르면 그 안의 화면까지 펼칩니다.';
+      $('list').innerHTML = msg.화면들.map(function (s) {
+        return '<li><span class="nm">' + s.이름.replace(/</g, '&lt;') + '</span>' +
+               '<span class="sz">' + s.폭 + '×' + s.높이 + '</span></li>';
+      }).join('');
+      $('empty').style.display = 화면수 ? 'none' : 'block';
+      $('go').disabled = !화면수;
+      return;
+    }
+
+    if (msg.갈래 === '진행') {
+      말('담는 중 ' + msg.지금 + '/' + msg.전부 + ' — ' + msg.이름);
+      return;
+    }
+
+    if (msg.갈래 === '알림') { 말(msg.글, 'bad'); $('go').disabled = false; return; }
+
+    if (msg.갈래 === '내려받기') {
+      var 꾸러미 = msg.꾸러미;
+      try {
+        꾸러미.screens.forEach(function (s) {
+          if (s.그림 && s.그림.png) { s.그림.base64 = 예순넷(s.그림.png); delete s.그림.png; }
+        });
+        var 글 = JSON.stringify(꾸러미, null, 2);
+        var 때 = new Date();
+        var 날 = 때.getFullYear() + String(때.getMonth() + 1).padStart(2, '0') + String(때.getDate()).padStart(2, '0') +
+                 '-' + String(때.getHours()).padStart(2, '0') + String(때.getMinutes()).padStart(2, '0');
+        var 파일이름 = 's1-screens_' + 이름씻기(꾸러미._meta.file.name) + '_' + 이름씻기(꾸러미._meta.page.name) + '_' + 날 + '.json';
+        var blob = new Blob([글], { type: 'application/json' });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 파일이름;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
+        말('내려받았습니다 — 화면 ' + 꾸러미.screenCount + '개 · ' + 바이트글(blob.size) + '\n' + 파일이름, 'ok');
+      } catch (err) {
+        말('파일을 만들지 못했습니다: ' + (err && err.message ? err.message : err), 'bad');
+      }
+      $('go').disabled = false;
+      return;
+    }
+  };
+
+  $('go').onclick = function () {
+    $('go').disabled = true;
+    말('담는 중…');
+    parent.postMessage({ pluginMessage: {
+      갈래: '담기',
+      그림: $('opt-img').checked,
+      깊이: $('opt-deep').checked ? 14 : 8
+    } }, '*');
+  };
+</script>
