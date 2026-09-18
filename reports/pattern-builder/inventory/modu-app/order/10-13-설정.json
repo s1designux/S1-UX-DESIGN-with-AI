@@ -1,0 +1,4731 @@
+{
+  "_meta": {
+    "source": "figma:rest",
+    "page": {
+      "name": "13. 설정",
+      "nodeId": "1878:23793"
+    },
+    "fileKey": "aLxh458o9BRXklRFM3YYzk",
+    "generatedAt": "2026-09-18",
+    "note": "세로 차례 원자료. order = 위에서 아래로의 칸 목록(y 순). 레거시 이름 그대로이며 정본 이름이 아니다."
+  },
+  "screenCount": 67,
+  "screens": [
+    {
+      "id": "2218:26348",
+      "name": "13. 설정_12 첫 화면 사용",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(tabel_bar×6, m_toggle×3, More×3) → 묶음(close, m_button) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7160:72531",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 708,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(tabel_bar×6, m_toggle×3, More×3)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "m_toggle": 3,
+            "tabel_bar": 6,
+            "More": 3,
+            "m_subbutton": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2218:26454",
+          "name": "Frame 1199",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(close, m_button)",
+          "parts": {
+            "close": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "2218:26350",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "1878:24370",
+      "name": "13. 설정",
+      "section": null,
+      "size": "198x60",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "7160:72270",
+      "name": "13. 설정_5 간편번호 변경(기존 번호)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음 → 묶음(글자: 0 / 1) → 묶음(글자: 간편번호를 잊었나요?) → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "7160:72271",
+          "name": "Frame 678",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 544,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "7160:72272",
+          "name": "Frame 466",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 214,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "title/signup": 1,
+            "step": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8034:59434",
+          "name": "Group 15",
+          "type": "GROUP",
+          "x": 86,
+          "y": 262,
+          "h": 18,
+          "w": 188,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음"
+        },
+        {
+          "i": 3,
+          "id": "8034:59441",
+          "name": "Frame 640",
+          "type": "FRAME",
+          "x": 0,
+          "y": 328,
+          "h": 232,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 0 / 1)"
+        },
+        {
+          "i": 4,
+          "id": "7576:55386",
+          "name": "Frame 286",
+          "type": "FRAME",
+          "x": 0,
+          "y": 619,
+          "h": 39,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 간편번호를 잊었나요?)"
+        },
+        {
+          "i": 5,
+          "id": "7160:72308",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "7160:72356",
+      "name": "13. 설정_6 간편번호 변경(새 번호)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음 → 묶음(글자: 0 / 1) → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "7160:72357",
+          "name": "Frame 678",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 544,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "7160:72358",
+          "name": "Frame 466",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 214,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "title/signup": 1,
+            "step": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8034:59364",
+          "name": "Group 15",
+          "type": "GROUP",
+          "x": 86,
+          "y": 254,
+          "h": 18,
+          "w": 188,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음"
+        },
+        {
+          "i": 3,
+          "id": "8034:59371",
+          "name": "Frame 640",
+          "type": "FRAME",
+          "x": 0,
+          "y": 312,
+          "h": 232,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 0 / 1)"
+        },
+        {
+          "i": 4,
+          "id": "7160:72394",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "7160:72442",
+      "name": "13. 설정_7 간편번호 변경(새 번호 재입력)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음 → 묶음(글자: 0 / 1) → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "7160:72443",
+          "name": "Frame 678",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 544,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "7160:72444",
+          "name": "Frame 466",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 214,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "title/signup": 1,
+            "step": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8034:59399",
+          "name": "Group 15",
+          "type": "GROUP",
+          "x": 86,
+          "y": 254,
+          "h": 18,
+          "w": 188,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음"
+        },
+        {
+          "i": 3,
+          "id": "8034:59406",
+          "name": "Frame 640",
+          "type": "FRAME",
+          "x": 0,
+          "y": 312,
+          "h": 232,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 0 / 1)"
+        },
+        {
+          "i": 4,
+          "id": "7160:72480",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "3284:51940",
+      "name": "13. 설정_14 약관(개인정보처리방침)",
+      "section": null,
+      "size": "360x2522",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(tabel_bar, icon/combobox_arrow) → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "7160:73365",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 2434,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "3284:52065",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "7160:73364",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 20,
+          "y": 136,
+          "h": 2298,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar, icon/combobox_arrow)",
+          "parts": {
+            "tabel_bar": 1,
+            "icon/combobox_arrow": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "3284:52079",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 2474,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "3284:52080",
+      "name": "13. 설정_15 약관(영상정보처리방침)",
+      "section": null,
+      "size": "360x2105",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 영상정보처리방침 / 주식회사 에스원(이하 회사라 함)은 영상정보) → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "7160:73360",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 2017,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "3284:52082",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "7160:73359",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 20,
+          "y": 136,
+          "h": 1881,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 영상정보처리방침 / 주식회사 에스원(이하 회사라 함)은 영상정보)"
+        },
+        {
+          "i": 3,
+          "id": "3284:52087",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 2057,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "3284:52200",
+      "name": "13. 설정_13 약관(회원약관)",
+      "section": null,
+      "size": "360x2415",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 회원 약관 / 제1조(목적)) → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "7160:73369",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 2327,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "3284:52299",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "3284:52202",
+          "name": "Frame 1201",
+          "type": "FRAME",
+          "x": 20,
+          "y": 136,
+          "h": 2191,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 회원 약관 / 제1조(목적))"
+        },
+        {
+          "i": 3,
+          "id": "3284:52201",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 2367,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "3639:51806",
+      "name": "13. 설정_16 약관(서비스 약관)",
+      "section": null,
+      "size": "360x3875",
+      "rowCount": 12,
+      "orderText": "글자\"본문바로가기\" → 묶음(m_StatusBar , appbar_sub, icon/arrow) → 글자\"제1장 총칙\" → 글자\"회원 약관\" → 묶음(글자: 제1조(목적) / 본 약관은 '주식회사 에스원(이하 \"회사\")) → 묶음(글자: 제2조(약관효력 및 변경) / (1)) → 묶음(글자: 제3조(약관 외 준칙) / 현 약관에 규정되지 않은 사항과 본 약관의 ) → 묶음(글자: 제4조(용어의 정의) / 이 약관에 사용하는 용어의 정의는 다음과 같) → 묶음(글자: 제5조(회원가입 및 정보변경) / (1)) → 묶음(글자: 제6조(회원 탈퇴 및 자격정지) / ①) → 묶음(글자: 제3장 화재복구 지원금 특별약관 / ※) → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "3639:51905",
+          "name": "본문바로가기",
+          "type": "TEXT",
+          "x": 0,
+          "y": -800,
+          "h": 27,
+          "w": 102,
+          "depth": 0,
+          "kind": "text",
+          "label": "글자\"본문바로가기\""
+        },
+        {
+          "i": 1,
+          "id": "3639:51906",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "3639:51808",
+          "name": "Frame 1201",
+          "type": "FRAME",
+          "x": 20,
+          "y": 120,
+          "h": 2247,
+          "w": 320,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "3639:51809",
+          "name": "서비스약관에 동의해 주세요",
+          "type": "TEXT",
+          "x": 20,
+          "y": 120,
+          "h": 24,
+          "w": 100,
+          "depth": 1,
+          "kind": "text",
+          "label": "글자\"제1장 총칙\""
+        },
+        {
+          "i": 4,
+          "id": "3639:51810",
+          "name": "서비스약관에 동의해 주세요",
+          "type": "TEXT",
+          "x": 20,
+          "y": 176,
+          "h": 20,
+          "w": 74,
+          "depth": 1,
+          "kind": "text",
+          "label": "글자\"회원 약관\""
+        },
+        {
+          "i": 5,
+          "id": "3639:51811",
+          "name": "Frame 699",
+          "type": "FRAME",
+          "x": 20,
+          "y": 228,
+          "h": 104,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 제1조(목적) / 본 약관은 '주식회사 에스원(이하 \"회사\"))"
+        },
+        {
+          "i": 6,
+          "id": "3639:51814",
+          "name": "Frame 699",
+          "type": "FRAME",
+          "x": 20,
+          "y": 364,
+          "h": 518,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 제2조(약관효력 및 변경) / (1))"
+        },
+        {
+          "i": 7,
+          "id": "3639:51832",
+          "name": "Frame 699",
+          "type": "FRAME",
+          "x": 20,
+          "y": 914,
+          "h": 62,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 제3조(약관 외 준칙) / 현 약관에 규정되지 않은 사항과 본 약관의 )"
+        },
+        {
+          "i": 8,
+          "id": "3639:51835",
+          "name": "Frame 700",
+          "type": "FRAME",
+          "x": 20,
+          "y": 1008,
+          "h": 559,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 제4조(용어의 정의) / 이 약관에 사용하는 용어의 정의는 다음과 같)"
+        },
+        {
+          "i": 9,
+          "id": "3639:51857",
+          "name": "Group 702",
+          "type": "GROUP",
+          "x": 20,
+          "y": 1599,
+          "h": 327,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 제5조(회원가입 및 정보변경) / (1))"
+        },
+        {
+          "i": 10,
+          "id": "3639:51879",
+          "name": "Group 700",
+          "type": "GROUP",
+          "x": 20,
+          "y": 1958,
+          "h": 409,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 제6조(회원 탈퇴 및 자격정지) / ①)"
+        },
+        {
+          "i": 11,
+          "id": "7160:73357",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 20,
+          "y": 2407,
+          "h": 1380,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 제3장 화재복구 지원금 특별약관 / ※)"
+        },
+        {
+          "i": 12,
+          "id": "3639:51807",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 3827,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "3639:52038",
+      "name": "13. 설정_17 약관(종합안심플랜 약관)",
+      "section": null,
+      "size": "360x920",
+      "rowCount": 5,
+      "orderText": "글자\"본문바로가기\" → 묶음(m_StatusBar , appbar_sub, icon/arrow) → 글자\"제7장 유리손해 특별약관 (실손보상)\" → 묶음(글자: 제37조 지급보험금의 계산 / ①) → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "3639:52040",
+          "name": "본문바로가기",
+          "type": "TEXT",
+          "x": 0,
+          "y": -800,
+          "h": 27,
+          "w": 102,
+          "depth": 0,
+          "kind": "text",
+          "label": "글자\"본문바로가기\""
+        },
+        {
+          "i": 1,
+          "id": "3639:52041",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "3639:52044",
+          "name": "Frame 845",
+          "type": "FRAME",
+          "x": 20,
+          "y": 120,
+          "h": 712,
+          "w": 320,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "3639:52045",
+          "name": "서비스약관에 동의해 주세요",
+          "type": "TEXT",
+          "x": 20,
+          "y": 120,
+          "h": 56,
+          "w": 320,
+          "depth": 1,
+          "kind": "text",
+          "label": "글자\"제7장 유리손해 특별약관 (실손보상)\""
+        },
+        {
+          "i": 4,
+          "id": "3639:52046",
+          "name": "Frame 699",
+          "type": "FRAME",
+          "x": 20,
+          "y": 208,
+          "h": 624,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 제37조 지급보험금의 계산 / ①)"
+        },
+        {
+          "i": 5,
+          "id": "3639:52039",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 872,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "5618:56569",
+      "name": "설정 토글버튼 사이즈 ios 개발용",
+      "section": null,
+      "size": "305x24",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "7680:55665",
+      "name": "m_toggle",
+      "section": null,
+      "size": "90x286",
+      "rowCount": 4,
+      "orderText": "on/off=on, disabled=off → on/off=off, disabled=off → on/off=on, disabled=on → on/off=off, disabled=on",
+      "order": [
+        {
+          "i": 0,
+          "id": "7680:55666",
+          "name": "on/off=on, disabled=off",
+          "type": "COMPONENT",
+          "x": 20,
+          "y": 20,
+          "h": 24,
+          "w": 50,
+          "depth": 0,
+          "kind": "group",
+          "label": "on/off=on, disabled=off"
+        },
+        {
+          "i": 1,
+          "id": "7680:55669",
+          "name": "on/off=off, disabled=off",
+          "type": "COMPONENT",
+          "x": 20,
+          "y": 94,
+          "h": 24,
+          "w": 50,
+          "depth": 0,
+          "kind": "group",
+          "label": "on/off=off, disabled=off"
+        },
+        {
+          "i": 2,
+          "id": "7680:55672",
+          "name": "on/off=on, disabled=on",
+          "type": "COMPONENT",
+          "x": 20,
+          "y": 168,
+          "h": 24,
+          "w": 50,
+          "depth": 0,
+          "kind": "group",
+          "label": "on/off=on, disabled=on"
+        },
+        {
+          "i": 3,
+          "id": "7680:55675",
+          "name": "on/off=off, disabled=on",
+          "type": "COMPONENT",
+          "x": 20,
+          "y": 242,
+          "h": 24,
+          "w": 50,
+          "depth": 0,
+          "kind": "group",
+          "label": "on/off=off, disabled=on"
+        }
+      ]
+    },
+    {
+      "id": "11490:6159",
+      "name": "Rectangle 388",
+      "section": null,
+      "size": "6x2",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "15604:20491",
+      "name": "Rectangle 390",
+      "section": null,
+      "size": "1133x48",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "15604:20492",
+      "name": "2024.03.12 App 서비스 해지, 재시작 화면",
+      "section": null,
+      "size": "416x29",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "15604:20418",
+      "name": "13. App 서비스 해지",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 해지 전 안내 사항을 꼭 확인해 주세요. / App 서비스를 해지하면 서비스 설정 정보와) → 묶음(m_checkbox, m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "15604:20419",
+          "name": "Frame 977",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 409,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "15604:20420",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "15604:20424",
+          "name": "Frame 976",
+          "type": "FRAME",
+          "x": 20,
+          "y": 144,
+          "h": 265,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 해지 전 안내 사항을 꼭 확인해 주세요. / App 서비스를 해지하면 서비스 설정 정보와)"
+        },
+        {
+          "i": 3,
+          "id": "15604:20436",
+          "name": "Frame 873",
+          "type": "FRAME",
+          "x": 0,
+          "y": 608,
+          "h": 172,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_checkbox, m_button, phone_navi)",
+          "parts": {
+            "m_checkbox": 1,
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "15652:24345",
+      "name": "13. App 서비스 재시작",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: MoDU App 서비스를 다시 시작합니다. / 에스원 MoDU App 서비스를 이용해 주셔) → 묶음(m_checkbox, m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "15652:24346",
+          "name": "Frame 977",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 389,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "15652:24347",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "15652:24351",
+          "name": "Frame 976",
+          "type": "FRAME",
+          "x": 20,
+          "y": 144,
+          "h": 245,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: MoDU App 서비스를 다시 시작합니다. / 에스원 MoDU App 서비스를 이용해 주셔)"
+        },
+        {
+          "i": 3,
+          "id": "15652:24358",
+          "name": "Frame 873",
+          "type": "FRAME",
+          "x": 0,
+          "y": 608,
+          "h": 172,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_checkbox, m_button, phone_navi)",
+          "parts": {
+            "m_checkbox": 1,
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "21433:4837",
+      "name": "13. App 서비스 해지_완료 안내 팝업",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_checkbox, m_button, phone_navi) → 앱 업데이트 1(강제)(m_button)",
+      "order": [
+        {
+          "i": 0,
+          "id": "15604:20493",
+          "name": "13. App 서비스 해지_완료 안내 팝업",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 780,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "15604:20494",
+          "name": "Frame 977",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 409,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "15604:20506",
+          "name": "Frame 873",
+          "type": "FRAME",
+          "x": 0,
+          "y": 608,
+          "h": 172,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_checkbox, m_button, phone_navi)",
+          "parts": {
+            "m_checkbox": 1,
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "15604:20555",
+          "name": "앱 업데이트 1(강제)",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "앱 업데이트 1(강제)(m_button)",
+          "parts": {
+            "m_button": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30803:37508",
+      "name": "13. 설정_모바일기기관리_기기삭제 완료 팝업",
+      "section": null,
+      "size": "360x732",
+      "rowCount": 1,
+      "orderText": "묶음(m_button)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30803:37509",
+          "name": "Frame 199",
+          "type": "FRAME",
+          "x": 30,
+          "y": 264,
+          "h": 204,
+          "w": 300,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button)",
+          "parts": {
+            "m_button": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30803:37516",
+      "name": "13. 설정_모바일기기관리_기기삭제 완료 팝업",
+      "section": null,
+      "size": "360x732",
+      "rowCount": 1,
+      "orderText": "묶음(m_button)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30803:37517",
+          "name": "Frame 199",
+          "type": "FRAME",
+          "x": 30,
+          "y": 252,
+          "h": 228,
+          "w": 300,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button)",
+          "parts": {
+            "m_button": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "15881:7492",
+      "name": "13. App 서비스 해지_확인팝업",
+      "section": null,
+      "size": "339x732",
+      "rowCount": 1,
+      "orderText": "묶음(글자: 서비스 사용 해지 / App 서비스를 해지할까요?)",
+      "order": [
+        {
+          "i": 0,
+          "id": "15881:7522",
+          "name": "Frame 199",
+          "type": "FRAME",
+          "x": 30,
+          "y": 282,
+          "h": 167,
+          "w": 279,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 서비스 사용 해지 / App 서비스를 해지할까요?)"
+        }
+      ]
+    },
+    {
+      "id": "30041:28791",
+      "name": "13. 설정_모바일기기관리_메인 기기삭제 팝업",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 2,
+      "orderText": "묶음(글자: 메인 기기 삭제 / 메인 기기를 삭제하려면 등록된 서브 기기를 ) → m_button(글자: 아니오 / 네)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30041:28792",
+          "name": "Frame 199",
+          "type": "FRAME",
+          "x": 32,
+          "y": 253,
+          "h": 274,
+          "w": 296,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30041:28793",
+          "name": "Frame 198",
+          "type": "FRAME",
+          "x": 56,
+          "y": 276,
+          "h": 154,
+          "w": 249,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 메인 기기 삭제 / 메인 기기를 삭제하려면 등록된 서브 기기를 )"
+        },
+        {
+          "i": 2,
+          "id": "30041:28798",
+          "name": "m_button",
+          "type": "FRAME",
+          "x": 56,
+          "y": 454,
+          "h": 49,
+          "w": 249,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_button(글자: 아니오 / 네)"
+        }
+      ]
+    },
+    {
+      "id": "30041:28803",
+      "name": "13. 설정_모바일기기관리_기기변경 팝업",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 2,
+      "orderText": "묶음(글자: 기기 변경 / 서브 기기로 변경하면 원격 경비 및 출입문 ) → m_button(글자: 아니오 / 네)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30041:28804",
+          "name": "Frame 199",
+          "type": "FRAME",
+          "x": 32,
+          "y": 253,
+          "h": 275,
+          "w": 296,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30041:28805",
+          "name": "Frame 198",
+          "type": "FRAME",
+          "x": 56,
+          "y": 277,
+          "h": 154,
+          "w": 249,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 기기 변경 / 서브 기기로 변경하면 원격 경비 및 출입문 )"
+        },
+        {
+          "i": 2,
+          "id": "30041:28810",
+          "name": "m_button",
+          "type": "FRAME",
+          "x": 56,
+          "y": 454,
+          "h": 49,
+          "w": 249,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_button(글자: 아니오 / 네)"
+        }
+      ]
+    },
+    {
+      "id": "15881:7491",
+      "name": "홍길동님",
+      "section": null,
+      "size": "131x20",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "30025:66976",
+      "name": "9.3 실시간 영상(세로)_8 상세 설정(서비스 장소)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 8,
+      "orderText": "묶음(글자: 12:30 / 기기 상세 정보) → 글자\"정보 확인하고 기기 변경 및 삭제할 수 있어\" → 묶음(글자: 전체 서비스 이용 가능 *영상 동시 접속은  / [메인] 모바일 기기) → 묶음(글자: 모델명 / I Phone14 pro) → Box(글자: 등록된 기기를 해제할까요? / 메인 기기로 사용할 서브 기기를 선택한 후 ) → 묶음(글자: 서브 기기로 변경) → 묶음(글자: 취소 / 저장) → 묶음",
+      "order": [
+        {
+          "i": 0,
+          "id": "30025:66997",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 12:30 / 기기 상세 정보)"
+        },
+        {
+          "i": 1,
+          "id": "30025:67057",
+          "name": "서비스약관에 동의해 주세요",
+          "type": "TEXT",
+          "x": 20,
+          "y": 116,
+          "h": 16,
+          "w": 280,
+          "depth": 0,
+          "kind": "text",
+          "label": "글자\"정보 확인하고 기기 변경 및 삭제할 수 있어\""
+        },
+        {
+          "i": 2,
+          "id": "30025:67054",
+          "name": "Group 1321317721",
+          "type": "GROUP",
+          "x": 20,
+          "y": 152,
+          "h": 69,
+          "w": 203,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 전체 서비스 이용 가능 *영상 동시 접속은  / [메인] 모바일 기기)"
+        },
+        {
+          "i": 3,
+          "id": "30025:67046",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 20,
+          "y": 241,
+          "h": 84,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 모델명 / I Phone14 pro)"
+        },
+        {
+          "i": 4,
+          "id": "30025:67058",
+          "name": "Box",
+          "type": "FRAME",
+          "x": 20,
+          "y": 365,
+          "h": 124,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "Box(글자: 등록된 기기를 해제할까요? / 메인 기기로 사용할 서브 기기를 선택한 후 )"
+        },
+        {
+          "i": 5,
+          "id": "30025:67028",
+          "name": "Frame 34866",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 서브 기기로 변경)"
+        },
+        {
+          "i": 6,
+          "id": "30025:66977",
+          "name": "Frame 861",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 90,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 취소 / 저장)"
+        },
+        {
+          "i": 7,
+          "id": "30025:66984",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음"
+        }
+      ]
+    },
+    {
+      "id": "30025:67067",
+      "name": "9.3 실시간 영상(세로)_8 상세 설정(서비스 장소)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 9,
+      "orderText": "appbar_main(글자: 12:30 / 기기 상세 정보) → 글자\"정보 확인하고 기기 변경 및 삭제할 수 있어\" → 묶음(글자: MoDU(모두) App 서비스 중 원격 경비 / [서브] 모바일 기기) → View Input → 기기상세정보(글자: 모델명 / I Pad Air(M3)) → Box(글자: 등록된 기기를 해제할까요? / 삭제 시 기기에서 자동 로그아웃되요.) → 묶음(글자: 메인 기기로 변경) → 묶음(글자: 취소 / 저장) → 묶음",
+      "order": [
+        {
+          "i": 0,
+          "id": "30025:67088",
+          "name": "All Menu / 사용자관리 / 기기 상세 설정 01",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 780,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30025:67112",
+          "name": "appbar_main",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "appbar_main(글자: 12:30 / 기기 상세 정보)"
+        },
+        {
+          "i": 2,
+          "id": "30025:67111",
+          "name": "서비스약관에 동의해 주세요",
+          "type": "TEXT",
+          "x": 20,
+          "y": 116,
+          "h": 16,
+          "w": 280,
+          "depth": 1,
+          "kind": "text",
+          "label": "글자\"정보 확인하고 기기 변경 및 삭제할 수 있어\""
+        },
+        {
+          "i": 3,
+          "id": "30025:67108",
+          "name": "Group 1321317721",
+          "type": "GROUP",
+          "x": 20,
+          "y": 152,
+          "h": 95,
+          "w": 296,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: MoDU(모두) App 서비스 중 원격 경비 / [서브] 모바일 기기)"
+        },
+        {
+          "i": 4,
+          "id": "30025:67089",
+          "name": "View Input",
+          "type": "FRAME",
+          "x": 20,
+          "y": 200,
+          "h": 14,
+          "w": 92,
+          "depth": 1,
+          "kind": "group",
+          "label": "View Input"
+        },
+        {
+          "i": 5,
+          "id": "30025:67090",
+          "name": "기기상세정보",
+          "type": "FRAME",
+          "x": 20,
+          "y": 267,
+          "h": 84,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "기기상세정보(글자: 모델명 / I Pad Air(M3))"
+        },
+        {
+          "i": 6,
+          "id": "30025:67099",
+          "name": "Box",
+          "type": "FRAME",
+          "x": 20,
+          "y": 391,
+          "h": 106,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "Box(글자: 등록된 기기를 해제할까요? / 삭제 시 기기에서 자동 로그아웃되요.)"
+        },
+        {
+          "i": 7,
+          "id": "30025:67143",
+          "name": "Frame 34866",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 메인 기기로 변경)"
+        },
+        {
+          "i": 8,
+          "id": "30025:67068",
+          "name": "Frame 861",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 90,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 취소 / 저장)"
+        },
+        {
+          "i": 9,
+          "id": "30025:67075",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음"
+        }
+      ]
+    },
+    {
+      "id": "30041:28380",
+      "name": "13. 설정_모바일기기관리_기기상세정보(메인)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 8,
+      "orderText": "묶음(글자: 12:30 / 기기 상세 정보) → 글자\"정보 확인하고 기기 변경 및 삭제할 수 있어\" → 묶음(글자: 전체 서비스 이용 가능 *영상 동시 접속은  / [메인] 모바일 기기) → 묶음(글자: 모델명 / I Phone14 pro) → Box(글자: 등록된 기기를 해제할까요? / 메인 기기로 사용할 서브 기기를 선택한 후 ) → 묶음(글자: 서브 기기로 변경) → 묶음(글자: 취소 / 저장) → 묶음",
+      "order": [
+        {
+          "i": 0,
+          "id": "30041:28401",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 12:30 / 기기 상세 정보)"
+        },
+        {
+          "i": 1,
+          "id": "30041:28461",
+          "name": "서비스약관에 동의해 주세요",
+          "type": "TEXT",
+          "x": 20,
+          "y": 116,
+          "h": 16,
+          "w": 280,
+          "depth": 0,
+          "kind": "text",
+          "label": "글자\"정보 확인하고 기기 변경 및 삭제할 수 있어\""
+        },
+        {
+          "i": 2,
+          "id": "30041:28458",
+          "name": "Group 1321317721",
+          "type": "GROUP",
+          "x": 20,
+          "y": 152,
+          "h": 69,
+          "w": 203,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 전체 서비스 이용 가능 *영상 동시 접속은  / [메인] 모바일 기기)"
+        },
+        {
+          "i": 3,
+          "id": "30041:28450",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 20,
+          "y": 241,
+          "h": 84,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 모델명 / I Phone14 pro)"
+        },
+        {
+          "i": 4,
+          "id": "30041:28462",
+          "name": "Box",
+          "type": "FRAME",
+          "x": 20,
+          "y": 365,
+          "h": 124,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "Box(글자: 등록된 기기를 해제할까요? / 메인 기기로 사용할 서브 기기를 선택한 후 )"
+        },
+        {
+          "i": 5,
+          "id": "30041:28432",
+          "name": "Frame 34866",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 서브 기기로 변경)"
+        },
+        {
+          "i": 6,
+          "id": "30041:28381",
+          "name": "Frame 861",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 90,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 취소 / 저장)"
+        },
+        {
+          "i": 7,
+          "id": "30041:28388",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음"
+        }
+      ]
+    },
+    {
+      "id": "30041:28471",
+      "name": "13. 설정_모바일기기관리_기기상세정보(서브)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 9,
+      "orderText": "appbar_main(글자: 12:30 / 기기 상세 정보) → 글자\"정보 확인하고 기기 변경 및 삭제할 수 있어\" → 묶음(글자: MoDU(모두) App 서비스 중 원격 경비 / [서브] 모바일 기기) → View Input → 기기상세정보(글자: 모델명 / I Pad Air(M3)) → Box(글자: 등록된 기기를 해제할까요? / 삭제 시 기기에서 자동 로그아웃되요.) → 묶음(글자: 메인 기기로 변경) → 묶음(글자: 취소 / 저장) → 묶음",
+      "order": [
+        {
+          "i": 0,
+          "id": "30041:28492",
+          "name": "All Menu / 사용자관리 / 기기 상세 설정 01",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 780,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30041:28516",
+          "name": "appbar_main",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "appbar_main(글자: 12:30 / 기기 상세 정보)"
+        },
+        {
+          "i": 2,
+          "id": "30041:28515",
+          "name": "서비스약관에 동의해 주세요",
+          "type": "TEXT",
+          "x": 20,
+          "y": 116,
+          "h": 16,
+          "w": 280,
+          "depth": 1,
+          "kind": "text",
+          "label": "글자\"정보 확인하고 기기 변경 및 삭제할 수 있어\""
+        },
+        {
+          "i": 3,
+          "id": "30041:28512",
+          "name": "Group 1321317721",
+          "type": "GROUP",
+          "x": 20,
+          "y": 152,
+          "h": 95,
+          "w": 296,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: MoDU(모두) App 서비스 중 원격 경비 / [서브] 모바일 기기)"
+        },
+        {
+          "i": 4,
+          "id": "30041:28493",
+          "name": "View Input",
+          "type": "FRAME",
+          "x": 20,
+          "y": 200,
+          "h": 14,
+          "w": 92,
+          "depth": 1,
+          "kind": "group",
+          "label": "View Input"
+        },
+        {
+          "i": 5,
+          "id": "30041:28494",
+          "name": "기기상세정보",
+          "type": "FRAME",
+          "x": 20,
+          "y": 267,
+          "h": 84,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "기기상세정보(글자: 모델명 / I Pad Air(M3))"
+        },
+        {
+          "i": 6,
+          "id": "30041:28503",
+          "name": "Box",
+          "type": "FRAME",
+          "x": 20,
+          "y": 391,
+          "h": 106,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "Box(글자: 등록된 기기를 해제할까요? / 삭제 시 기기에서 자동 로그아웃되요.)"
+        },
+        {
+          "i": 7,
+          "id": "30041:28547",
+          "name": "Frame 34866",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 메인 기기로 변경)"
+        },
+        {
+          "i": 8,
+          "id": "30041:28472",
+          "name": "Frame 861",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 90,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 취소 / 저장)"
+        },
+        {
+          "i": 9,
+          "id": "30041:28479",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음"
+        }
+      ]
+    },
+    {
+      "id": "30025:67161",
+      "name": "4.2 권한 신청_6 검색 결과 있음",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "appbar_main(글자: 12:30 / 기기 선택) → 묶음(글자: 메인으로 설정할 기기를 선택해 주세요) → 묶음(글자: 전*영 / 010-5578-***4) → 묶음(글자: 취소 / 확인)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30025:67162",
+          "name": "appbar_main",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 359,
+          "depth": 0,
+          "kind": "group",
+          "label": "appbar_main(글자: 12:30 / 기기 선택)"
+        },
+        {
+          "i": 1,
+          "id": "30025:67193",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 546,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "30025:67194",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 20,
+          "y": 96,
+          "h": 82,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 메인으로 설정할 기기를 선택해 주세요)"
+        },
+        {
+          "i": 3,
+          "id": "30025:67197",
+          "name": "Frame 900",
+          "type": "FRAME",
+          "x": 0,
+          "y": 178,
+          "h": 349,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 전*영 / 010-5578-***4)"
+        },
+        {
+          "i": 4,
+          "id": "30025:67253",
+          "name": "Frame 861",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 359,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 취소 / 확인)"
+        }
+      ]
+    },
+    {
+      "id": "30025:67273",
+      "name": "4.2 권한 신청_6 검색 결과 있음",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "appbar_main(글자: 12:30 / 기기 선택) → 묶음(글자: 변경할 기기를 선택해 주세요.) → 묶음(글자: 전*영 / 010-5578-***4) → 묶음(글자: 취소 / 확인)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30025:67274",
+          "name": "appbar_main",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 359,
+          "depth": 0,
+          "kind": "group",
+          "label": "appbar_main(글자: 12:30 / 기기 선택)"
+        },
+        {
+          "i": 1,
+          "id": "30025:67305",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 546,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "30025:67306",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 20,
+          "y": 96,
+          "h": 51,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 변경할 기기를 선택해 주세요.)"
+        },
+        {
+          "i": 3,
+          "id": "30025:67309",
+          "name": "Frame 900",
+          "type": "FRAME",
+          "x": 0,
+          "y": 147,
+          "h": 349,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 전*영 / 010-5578-***4)"
+        },
+        {
+          "i": 4,
+          "id": "30025:67365",
+          "name": "Frame 861",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 359,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 취소 / 확인)"
+        }
+      ]
+    },
+    {
+      "id": "30025:67447",
+      "name": "13. 설정_1 메인",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(More×3, ic_모바일×2, tabel_bar) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30025:67450",
+          "name": "Frame 1321318216",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 421,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30025:67451",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "30025:67455",
+          "name": "Frame 977",
+          "type": "FRAME",
+          "x": 0,
+          "y": 132,
+          "h": 421,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(More×3, ic_모바일×2, tabel_bar)",
+          "parts": {
+            "ic_모바일": 2,
+            "More": 3,
+            "tabel_bar": 1,
+            "ic_노트북": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "30025:67448",
+          "name": "Frame 873",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 361,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30025:67523",
+      "name": "13. 설정_1 메인",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(ic_모바일, More, tabel_bar) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30025:67526",
+          "name": "Frame 1321318215",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 461,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30025:67527",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "30025:67531",
+          "name": "Frame 977",
+          "type": "FRAME",
+          "x": 0,
+          "y": 132,
+          "h": 329,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(ic_모바일, More, tabel_bar)",
+          "parts": {
+            "ic_모바일": 1,
+            "More": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "30025:67524",
+          "name": "Frame 873",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 361,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30025:67565",
+      "name": "GUI 디자인",
+      "section": null,
+      "size": "263x69",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "30025:67567",
+      "name": "9.3 실시간 영상(세로)_8 상세 설정(서비스 장소)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 8,
+      "orderText": "묶음(글자: 12:30 / 기기 상세 정보) → 글자\"정보 확인하고 기기 변경 및 삭제할 수 있어\" → 묶음(글자: 전체 서비스 이용 가능 *영상 동시 접속은  / [메인] 모바일 기기) → 묶음(글자: 모델명 / I Phone14 pro) → Box(글자: 등록된 기기를 해제할까요? / 메인 기기로 사용할 서브 기기를 선택한 후 ) → 묶음(글자: 서브 기기로 변경) → 묶음(글자: 취소 / 저장) → 묶음",
+      "order": [
+        {
+          "i": 0,
+          "id": "30025:67588",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 12:30 / 기기 상세 정보)"
+        },
+        {
+          "i": 1,
+          "id": "30025:67648",
+          "name": "서비스약관에 동의해 주세요",
+          "type": "TEXT",
+          "x": 20,
+          "y": 116,
+          "h": 16,
+          "w": 280,
+          "depth": 0,
+          "kind": "text",
+          "label": "글자\"정보 확인하고 기기 변경 및 삭제할 수 있어\""
+        },
+        {
+          "i": 2,
+          "id": "30025:67645",
+          "name": "Group 1321317721",
+          "type": "GROUP",
+          "x": 20,
+          "y": 152,
+          "h": 69,
+          "w": 203,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 전체 서비스 이용 가능 *영상 동시 접속은  / [메인] 모바일 기기)"
+        },
+        {
+          "i": 3,
+          "id": "30025:67637",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 20,
+          "y": 241,
+          "h": 84,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 모델명 / I Phone14 pro)"
+        },
+        {
+          "i": 4,
+          "id": "30025:67649",
+          "name": "Box",
+          "type": "FRAME",
+          "x": 20,
+          "y": 365,
+          "h": 124,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "Box(글자: 등록된 기기를 해제할까요? / 메인 기기로 사용할 서브 기기를 선택한 후 )"
+        },
+        {
+          "i": 5,
+          "id": "30025:67619",
+          "name": "Frame 34866",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 서브 기기로 변경)"
+        },
+        {
+          "i": 6,
+          "id": "30025:67568",
+          "name": "Frame 861",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 90,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 취소 / 저장)"
+        },
+        {
+          "i": 7,
+          "id": "30025:67575",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음"
+        }
+      ]
+    },
+    {
+      "id": "30025:67658",
+      "name": "4.2 권한 신청_6 검색 결과 있음",
+      "section": null,
+      "size": "360x727",
+      "rowCount": 4,
+      "orderText": "appbar_main(글자: 12:30 / 기기 선택) → 묶음(글자: 메인으로 설정할 기기를 선택해 주세요) → 묶음(글자: 전*영 / 010-5578-***4) → 묶음(글자: 취소 / 확인)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30025:67659",
+          "name": "appbar_main",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 359,
+          "depth": 0,
+          "kind": "group",
+          "label": "appbar_main(글자: 12:30 / 기기 선택)"
+        },
+        {
+          "i": 1,
+          "id": "30025:67690",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 492,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "30025:67691",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 20,
+          "y": 96,
+          "h": 82,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 메인으로 설정할 기기를 선택해 주세요)"
+        },
+        {
+          "i": 3,
+          "id": "30025:67694",
+          "name": "Frame 900",
+          "type": "FRAME",
+          "x": 0,
+          "y": 178,
+          "h": 349,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 전*영 / 010-5578-***4)"
+        },
+        {
+          "i": 4,
+          "id": "30025:67750",
+          "name": "Frame 861",
+          "type": "FRAME",
+          "x": 0,
+          "y": 588,
+          "h": 138,
+          "w": 359,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 취소 / 확인)"
+        }
+      ]
+    },
+    {
+      "id": "30025:67782",
+      "name": "4.2 권한 신청_6 검색 결과 있음",
+      "section": null,
+      "size": "360x727",
+      "rowCount": 4,
+      "orderText": "appbar_main(글자: 12:30 / 기기 선택) → 묶음(글자: 변경할 기기를 선택해 주세요.) → 묶음(글자: 전*영 / 010-5578-***4) → 묶음(글자: 취소 / 확인)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30025:67783",
+          "name": "appbar_main",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 359,
+          "depth": 0,
+          "kind": "group",
+          "label": "appbar_main(글자: 12:30 / 기기 선택)"
+        },
+        {
+          "i": 1,
+          "id": "30025:67814",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 492,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "30025:67815",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 20,
+          "y": 96,
+          "h": 51,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 변경할 기기를 선택해 주세요.)"
+        },
+        {
+          "i": 3,
+          "id": "30025:67818",
+          "name": "Frame 900",
+          "type": "FRAME",
+          "x": 0,
+          "y": 147,
+          "h": 349,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 전*영 / 010-5578-***4)"
+        },
+        {
+          "i": 4,
+          "id": "30025:67874",
+          "name": "Frame 861",
+          "type": "FRAME",
+          "x": 0,
+          "y": 588,
+          "h": 138,
+          "w": 359,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 취소 / 확인)"
+        }
+      ]
+    },
+    {
+      "id": "30025:67906",
+      "name": "9.3 실시간 영상(세로)_8 상세 설정(서비스 장소)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 9,
+      "orderText": "appbar_main(글자: 12:30 / 기기 상세 정보) → 글자\"정보 확인하고 기기 변경 및 삭제할 수 있어\" → 묶음(글자: MoDU(모두) App 서비스 중 원격 경비 / [서브] 모바일 기기) → View Input → 기기상세정보(글자: 모델명 / I Pad Air(M3)) → Box(글자: 등록된 기기를 해제할까요? / 삭제 시 기기에서 자동 로그아웃되요.) → 묶음(글자: 메인 기기로 변경) → 묶음(글자: 취소 / 저장) → 묶음",
+      "order": [
+        {
+          "i": 0,
+          "id": "30025:67927",
+          "name": "All Menu / 사용자관리 / 기기 상세 설정 01",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 780,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30025:67951",
+          "name": "appbar_main",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "appbar_main(글자: 12:30 / 기기 상세 정보)"
+        },
+        {
+          "i": 2,
+          "id": "30025:67950",
+          "name": "서비스약관에 동의해 주세요",
+          "type": "TEXT",
+          "x": 20,
+          "y": 116,
+          "h": 16,
+          "w": 280,
+          "depth": 1,
+          "kind": "text",
+          "label": "글자\"정보 확인하고 기기 변경 및 삭제할 수 있어\""
+        },
+        {
+          "i": 3,
+          "id": "30025:67947",
+          "name": "Group 1321317721",
+          "type": "GROUP",
+          "x": 20,
+          "y": 152,
+          "h": 95,
+          "w": 296,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: MoDU(모두) App 서비스 중 원격 경비 / [서브] 모바일 기기)"
+        },
+        {
+          "i": 4,
+          "id": "30025:67928",
+          "name": "View Input",
+          "type": "FRAME",
+          "x": 20,
+          "y": 200,
+          "h": 14,
+          "w": 92,
+          "depth": 1,
+          "kind": "group",
+          "label": "View Input"
+        },
+        {
+          "i": 5,
+          "id": "30025:67929",
+          "name": "기기상세정보",
+          "type": "FRAME",
+          "x": 20,
+          "y": 267,
+          "h": 84,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "기기상세정보(글자: 모델명 / I Pad Air(M3))"
+        },
+        {
+          "i": 6,
+          "id": "30025:67938",
+          "name": "Box",
+          "type": "FRAME",
+          "x": 20,
+          "y": 391,
+          "h": 106,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "Box(글자: 등록된 기기를 해제할까요? / 삭제 시 기기에서 자동 로그아웃되요.)"
+        },
+        {
+          "i": 7,
+          "id": "30025:67982",
+          "name": "Frame 34866",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 메인 기기로 변경)"
+        },
+        {
+          "i": 8,
+          "id": "30025:67907",
+          "name": "Frame 861",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 90,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 취소 / 저장)"
+        },
+        {
+          "i": 9,
+          "id": "30025:67914",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음"
+        }
+      ]
+    },
+    {
+      "id": "30025:68000",
+      "name": "13. 설정_1 메인",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(More×3, ic_모바일×2, tabel_bar) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30025:68003",
+          "name": "Frame 1321318216",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 421,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30025:68004",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "30025:68008",
+          "name": "Frame 977",
+          "type": "FRAME",
+          "x": 0,
+          "y": 132,
+          "h": 405,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(More×3, ic_모바일×2, tabel_bar)",
+          "parts": {
+            "ic_모바일": 2,
+            "More": 3,
+            "tabel_bar": 1,
+            "ic_노트북": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "30025:68001",
+          "name": "Frame 873",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 361,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30041:28159",
+      "name": "13. 설정_모바일기기관리",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(More×3, ic_모바일×2, tabel_bar) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30041:28162",
+          "name": "Frame 1321318216",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 421,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30041:28163",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "30041:28167",
+          "name": "Frame 977",
+          "type": "FRAME",
+          "x": 0,
+          "y": 132,
+          "h": 405,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(More×3, ic_모바일×2, tabel_bar)",
+          "parts": {
+            "ic_모바일": 2,
+            "More": 3,
+            "tabel_bar": 1,
+            "ic_노트북": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "30041:28160",
+          "name": "Frame 873",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 361,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30025:68076",
+      "name": "13. 설정_1 메인",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(ic_모바일, More, tabel_bar) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30025:68079",
+          "name": "Frame 1321318215",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 445,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30025:68080",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "30025:68084",
+          "name": "Frame 977",
+          "type": "FRAME",
+          "x": 0,
+          "y": 132,
+          "h": 313,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(ic_모바일, More, tabel_bar)",
+          "parts": {
+            "ic_모바일": 1,
+            "More": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "30025:68077",
+          "name": "Frame 873",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 361,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30041:28235",
+      "name": "13. 설정_모바일기기관리",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(ic_모바일, More, tabel_bar) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30041:28238",
+          "name": "Frame 1321318215",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 445,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30041:28239",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "30041:28243",
+          "name": "Frame 977",
+          "type": "FRAME",
+          "x": 0,
+          "y": 132,
+          "h": 313,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(ic_모바일, More, tabel_bar)",
+          "parts": {
+            "ic_모바일": 1,
+            "More": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "30041:28236",
+          "name": "Frame 873",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 361,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30041:28566",
+      "name": "13. 설정_모바일기기관리_기기선택",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "appbar_main(글자: 12:30 / 기기 선택) → 묶음(글자: 메인으로 설정할 기기를 선택해 주세요) → 묶음(글자: 전*영 / 010-5578-***4) → 묶음(글자: 취소 / 확인)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30041:28567",
+          "name": "appbar_main",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 359,
+          "depth": 0,
+          "kind": "group",
+          "label": "appbar_main(글자: 12:30 / 기기 선택)"
+        },
+        {
+          "i": 1,
+          "id": "30041:28598",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 543,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "30041:28599",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 20,
+          "y": 96,
+          "h": 82,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 메인으로 설정할 기기를 선택해 주세요)"
+        },
+        {
+          "i": 3,
+          "id": "30041:28602",
+          "name": "Frame 900",
+          "type": "FRAME",
+          "x": 0,
+          "y": 178,
+          "h": 349,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 전*영 / 010-5578-***4)"
+        },
+        {
+          "i": 4,
+          "id": "30041:28658",
+          "name": "Frame 861",
+          "type": "FRAME",
+          "x": 0,
+          "y": 639,
+          "h": 138,
+          "w": 359,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 취소 / 확인)"
+        }
+      ]
+    },
+    {
+      "id": "30041:28678",
+      "name": "13. 설정_모바일기기관리_기기선택",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "appbar_main(글자: 12:30 / 기기 선택) → 묶음(글자: 변경할 기기를 선택해 주세요.) → 묶음(글자: 전*영 / 010-5578-***4) → 묶음(글자: 취소 / 확인)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30041:28679",
+          "name": "appbar_main",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 359,
+          "depth": 0,
+          "kind": "group",
+          "label": "appbar_main(글자: 12:30 / 기기 선택)"
+        },
+        {
+          "i": 1,
+          "id": "30041:28710",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 543,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "30041:28711",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 20,
+          "y": 96,
+          "h": 51,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 변경할 기기를 선택해 주세요.)"
+        },
+        {
+          "i": 3,
+          "id": "30041:28714",
+          "name": "Frame 900",
+          "type": "FRAME",
+          "x": 0,
+          "y": 147,
+          "h": 349,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 전*영 / 010-5578-***4)"
+        },
+        {
+          "i": 4,
+          "id": "30041:28770",
+          "name": "Frame 861",
+          "type": "FRAME",
+          "x": 0,
+          "y": 639,
+          "h": 138,
+          "w": 359,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 취소 / 확인)"
+        }
+      ]
+    },
+    {
+      "id": "30863:34125",
+      "name": "13. 설정_2 메인(휴대폰 알림 OFF)",
+      "section": null,
+      "size": "360x1159",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(tabel_bar×8, More×6, m_subbutton×5) → 묶음(m_subbutton, More) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:34127",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "30863:34130",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 1063,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "30863:34131",
+          "name": "Frame 264",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 891,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar×8, More×6, m_subbutton×5)",
+          "parts": {
+            "m_toggle": 4,
+            "tabel_bar": 8,
+            "More": 6,
+            "m_subbutton": 5
+          }
+        },
+        {
+          "i": 3,
+          "id": "30863:34194",
+          "name": "Frame 273",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1023,
+          "h": 52,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_subbutton, More)",
+          "parts": {
+            "m_subbutton": 1,
+            "More": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "30863:34204",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1111,
+          "h": 48,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30863:34206",
+      "name": "13. 설정_2 메인(휴대폰 알림 OFF)",
+      "section": null,
+      "size": "360x1159",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(tabel_bar×8, More×6, m_subbutton×5) → 묶음(m_subbutton, More) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:34208",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "30863:34211",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 1063,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "30863:34212",
+          "name": "Frame 264",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 891,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar×8, More×6, m_subbutton×5)",
+          "parts": {
+            "tabel_bar": 8,
+            "More": 6,
+            "m_subbutton": 5
+          }
+        },
+        {
+          "i": 3,
+          "id": "30863:34287",
+          "name": "Frame 273",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1023,
+          "h": 52,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_subbutton, More)",
+          "parts": {
+            "m_subbutton": 1,
+            "More": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "30863:34297",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1111,
+          "h": 48,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30863:34299",
+      "name": "13. 설정_2 메인(휴대폰 알림 OFF)",
+      "section": null,
+      "size": "360x1159",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(tabel_bar×8, More×7, m_subbutton×6) → 묶음(m_subbutton, More) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:34301",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "30863:34304",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 1063,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "30863:34305",
+          "name": "Frame 264",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 943,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar×8, More×7, m_subbutton×6)",
+          "parts": {
+            "tabel_bar": 8,
+            "More": 7,
+            "m_subbutton": 6
+          }
+        },
+        {
+          "i": 3,
+          "id": "30863:34386",
+          "name": "Frame 273",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1049,
+          "h": 52,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_subbutton, More)",
+          "parts": {
+            "m_subbutton": 1,
+            "More": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "30863:34396",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1111,
+          "h": 48,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30863:34398",
+      "name": "13. 설정_1 메인",
+      "section": null,
+      "size": "360x1059",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(tabel_bar×8, More×5, m_toggle×4) → 묶음(m_subbutton, More) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:34399",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "30863:34402",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 761,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "30863:34403",
+          "name": "Frame 264",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 783,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar×8, More×5, m_toggle×4)",
+          "parts": {
+            "m_toggle": 4,
+            "tabel_bar": 8,
+            "More": 5,
+            "m_subbutton": 3
+          }
+        },
+        {
+          "i": 3,
+          "id": "30863:34458",
+          "name": "Frame 273",
+          "type": "FRAME",
+          "x": 0,
+          "y": 919,
+          "h": 52,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_subbutton, More)",
+          "parts": {
+            "m_subbutton": 1,
+            "More": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "30863:34468",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1011,
+          "h": 48,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30863:34800",
+      "name": "추천혜택(마케팅) 정보 알림",
+      "section": null,
+      "size": "360x732",
+      "rowCount": 1,
+      "orderText": "묶음(글자: 마케팅 정보 수신 동의 해제 / 마케팅 정보 수신 동의를 해제할까요? 해제 )",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:34801",
+          "name": "Frame 1321317481",
+          "type": "FRAME",
+          "x": 30,
+          "y": 252,
+          "h": 228,
+          "w": 300,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 마케팅 정보 수신 동의 해제 / 마케팅 정보 수신 동의를 해제할까요? 해제 )"
+        }
+      ]
+    },
+    {
+      "id": "30863:34824",
+      "name": "탭 3개로 변경",
+      "section": null,
+      "size": "173x14",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "30863:34825",
+      "name": "m_tab_mid",
+      "section": null,
+      "size": "360x50",
+      "rowCount": 3,
+      "orderText": "m_tab_mid(글자: 시스템 경비) → m_tab_mid(글자: 영상) → m_tab_mid(글자: 추천·혜택)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:34826",
+          "name": "Frame 259",
+          "type": "FRAME",
+          "x": 20,
+          "y": 10,
+          "h": 30,
+          "w": 320,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30863:34827",
+          "name": "m_tab_mid",
+          "type": "FRAME",
+          "x": 20,
+          "y": 10,
+          "h": 30,
+          "w": 107,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_tab_mid(글자: 시스템 경비)"
+        },
+        {
+          "i": 2,
+          "id": "30863:34830",
+          "name": "m_tab_mid",
+          "type": "FRAME",
+          "x": 127,
+          "y": 10,
+          "h": 30,
+          "w": 107,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_tab_mid(글자: 영상)"
+        },
+        {
+          "i": 3,
+          "id": "30863:34833",
+          "name": "m_tab_mid",
+          "type": "FRAME",
+          "x": 234,
+          "y": 10,
+          "h": 30,
+          "w": 107,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_tab_mid(글자: 추천·혜택)"
+        }
+      ]
+    },
+    {
+      "id": "30863:34836",
+      "name": "m_tab_mid",
+      "section": null,
+      "size": "360x50",
+      "rowCount": 3,
+      "orderText": "m_tab_mid(글자: 시스템 경비) → m_tab_mid(글자: 영상) → m_tab_mid(글자: 추천·혜택)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:34837",
+          "name": "Frame 259",
+          "type": "FRAME",
+          "x": 20,
+          "y": 10,
+          "h": 30,
+          "w": 320,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30863:34838",
+          "name": "m_tab_mid",
+          "type": "FRAME",
+          "x": 20,
+          "y": 10,
+          "h": 30,
+          "w": 107,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_tab_mid(글자: 시스템 경비)"
+        },
+        {
+          "i": 2,
+          "id": "30863:34841",
+          "name": "m_tab_mid",
+          "type": "FRAME",
+          "x": 127,
+          "y": 10,
+          "h": 30,
+          "w": 107,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_tab_mid(글자: 영상)"
+        },
+        {
+          "i": 3,
+          "id": "30863:34844",
+          "name": "m_tab_mid",
+          "type": "FRAME",
+          "x": 234,
+          "y": 10,
+          "h": 30,
+          "w": 107,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_tab_mid(글자: 추천·혜택)"
+        }
+      ]
+    },
+    {
+      "id": "30863:34847",
+      "name": "m_tab_mid",
+      "section": null,
+      "size": "360x50",
+      "rowCount": 3,
+      "orderText": "m_tab_mid(글자: 시스템 경비) → m_tab_mid(글자: 영상) → m_tab_mid(글자: 추천·혜택)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:34848",
+          "name": "Frame 259",
+          "type": "FRAME",
+          "x": 20,
+          "y": 10,
+          "h": 30,
+          "w": 320,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30863:34849",
+          "name": "m_tab_mid",
+          "type": "FRAME",
+          "x": 20,
+          "y": 10,
+          "h": 30,
+          "w": 107,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_tab_mid(글자: 시스템 경비)"
+        },
+        {
+          "i": 2,
+          "id": "30863:34852",
+          "name": "m_tab_mid",
+          "type": "FRAME",
+          "x": 127,
+          "y": 10,
+          "h": 30,
+          "w": 107,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_tab_mid(글자: 영상)"
+        },
+        {
+          "i": 3,
+          "id": "30863:34855",
+          "name": "m_tab_mid",
+          "type": "FRAME",
+          "x": 234,
+          "y": 10,
+          "h": 30,
+          "w": 107,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_tab_mid(글자: 추천·혜택)"
+        }
+      ]
+    },
+    {
+      "id": "30863:34867",
+      "name": "13. 설정_9 알림 설정(영상)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 글자\"실시간 경비 상태 알림을 받아 보세요. 계약\" → 묶음(m_toggle×4) → 묶음(글자: [에스원] 2023.03.02 알림 수신에 ) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:34868",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "30863:34883",
+          "name": "서비스약관에 동의해 주세요",
+          "type": "TEXT",
+          "x": 20,
+          "y": 184,
+          "h": 36,
+          "w": 320,
+          "depth": 0,
+          "kind": "text",
+          "label": "글자\"실시간 경비 상태 알림을 받아 보세요. 계약\""
+        },
+        {
+          "i": 2,
+          "id": "30863:34884",
+          "name": "Frame 1139",
+          "type": "FRAME",
+          "x": 20,
+          "y": 254,
+          "h": 219,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_toggle×4)",
+          "parts": {
+            "m_toggle": 4
+          }
+        },
+        {
+          "i": 3,
+          "id": "30863:34916",
+          "name": "Frame 1200",
+          "type": "FRAME",
+          "x": 20,
+          "y": 643,
+          "h": 69,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: [에스원] 2023.03.02 알림 수신에 )"
+        },
+        {
+          "i": 4,
+          "id": "30863:34914",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30863:34918",
+      "name": "13. 설정_8 알림 설정(시스템 경비)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 글자\"실시간 경비 상태 알림을 받아 보세요. 계약\" → 묶음(m_toggle×4)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:34919",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "30863:34934",
+          "name": "서비스약관에 동의해 주세요",
+          "type": "TEXT",
+          "x": 20,
+          "y": 184,
+          "h": 36,
+          "w": 320,
+          "depth": 0,
+          "kind": "text",
+          "label": "글자\"실시간 경비 상태 알림을 받아 보세요. 계약\""
+        },
+        {
+          "i": 2,
+          "id": "30863:34935",
+          "name": "Frame 1139",
+          "type": "FRAME",
+          "x": 20,
+          "y": 254,
+          "h": 219,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_toggle×4)",
+          "parts": {
+            "m_toggle": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "30863:34965",
+      "name": "13. 설정_8 알림 설정(추천혜택)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 글자\"맞춤형 혜택, 추천 프로모션 정보 알림을 받\" → 묶음(m_toggle) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:34966",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "30863:34981",
+          "name": "서비스약관에 동의해 주세요",
+          "type": "TEXT",
+          "x": 20,
+          "y": 184,
+          "h": 36,
+          "w": 320,
+          "depth": 0,
+          "kind": "text",
+          "label": "글자\"맞춤형 혜택, 추천 프로모션 정보 알림을 받\""
+        },
+        {
+          "i": 2,
+          "id": "30863:34982",
+          "name": "Frame 1139",
+          "type": "FRAME",
+          "x": 20,
+          "y": 254,
+          "h": 24,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_toggle)",
+          "parts": {
+            "m_toggle": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "30863:34989",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30863:34991",
+      "name": "13. 설정_10 알림 설정(시스템 경비 - 미권한)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → m_tab_mid(글자: 시스템 경비 / 영상) → 묶음(글자: 서비스 권한이 없어요.) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:34992",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "30863:35010",
+          "name": "m_tab_mid",
+          "type": "FRAME",
+          "x": 0,
+          "y": 112,
+          "h": 50,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "m_tab_mid(글자: 시스템 경비 / 영상)"
+        },
+        {
+          "i": 2,
+          "id": "30863:34998",
+          "name": "Frame 34880",
+          "type": "FRAME",
+          "x": 20,
+          "y": 368,
+          "h": 92,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 서비스 권한이 없어요.)"
+        },
+        {
+          "i": 3,
+          "id": "30863:34996",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30863:35021",
+      "name": "13. 설정_11 알림 설정(영상 - 미권한)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → m_tab_mid(글자: 시스템 경비 / 영상) → 묶음(글자: 서비스 권한이 없어요.) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:35022",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "30863:35040",
+          "name": "m_tab_mid",
+          "type": "FRAME",
+          "x": 0,
+          "y": 112,
+          "h": 50,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "m_tab_mid(글자: 시스템 경비 / 영상)"
+        },
+        {
+          "i": 2,
+          "id": "30863:35028",
+          "name": "Frame 34880",
+          "type": "FRAME",
+          "x": 20,
+          "y": 368,
+          "h": 92,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 서비스 권한이 없어요.)"
+        },
+        {
+          "i": 3,
+          "id": "30863:35026",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30863:32374",
+      "name": "13. 설정_2 메인(휴대폰 알림 OFF)",
+      "section": "백업",
+      "size": "360x1017",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(tabel_bar×7, More×5, m_subbutton×4) → 묶음(m_subbutton, More) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:32376",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "30863:32379",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 921,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "30863:32380",
+          "name": "Frame 264",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 764,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar×7, More×5, m_subbutton×4)",
+          "parts": {
+            "m_toggle": 3,
+            "tabel_bar": 7,
+            "More": 5,
+            "m_subbutton": 4
+          }
+        },
+        {
+          "i": 3,
+          "id": "30863:32433",
+          "name": "Frame 273",
+          "type": "FRAME",
+          "x": 0,
+          "y": 889,
+          "h": 52,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_subbutton, More)",
+          "parts": {
+            "m_subbutton": 1,
+            "More": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "30863:32443",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 969,
+          "h": 48,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30863:32445",
+      "name": "13. 설정_4 메인(지문 없음 - AOS)",
+      "section": "백업",
+      "size": "360x1092",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(tabel_bar×7, More×6, m_subbutton×5) → 묶음(m_subbutton, More) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:32447",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "30863:32450",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 996,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "30863:32451",
+          "name": "Frame 264",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 816,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar×7, More×6, m_subbutton×5)",
+          "parts": {
+            "m_toggle": 3,
+            "tabel_bar": 7,
+            "More": 6,
+            "m_subbutton": 5
+          }
+        },
+        {
+          "i": 3,
+          "id": "30863:32510",
+          "name": "Frame 273",
+          "type": "FRAME",
+          "x": 0,
+          "y": 952,
+          "h": 52,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_subbutton, More)",
+          "parts": {
+            "m_subbutton": 1,
+            "More": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "30863:32520",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1044,
+          "h": 48,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30863:32522",
+      "name": "13. 설정_5 메인(Face ID 없음 - iOS)",
+      "section": "백업",
+      "size": "360x1017",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(tabel_bar×7, More×6, m_subbutton×5) → 묶음(m_subbutton, More) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:32524",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "30863:32527",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 996,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "30863:32528",
+          "name": "Frame 264",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 816,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar×7, More×6, m_subbutton×5)",
+          "parts": {
+            "m_toggle": 3,
+            "tabel_bar": 7,
+            "More": 6,
+            "m_subbutton": 5
+          }
+        },
+        {
+          "i": 3,
+          "id": "30863:32587",
+          "name": "Frame 273",
+          "type": "FRAME",
+          "x": 0,
+          "y": 952,
+          "h": 52,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_subbutton, More)",
+          "parts": {
+            "m_subbutton": 1,
+            "More": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "30863:32597",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1044,
+          "h": 48,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30863:32599",
+      "name": "13. 설정_3 메인(휴대폰 알림 OFF - iOS)",
+      "section": "백업",
+      "size": "360x1056",
+      "rowCount": 3,
+      "orderText": "묶음(tabel_bar×7, More×5, m_subbutton×4) → 묶음(m_subbutton, More) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:32601",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 1056,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30863:32602",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 876,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar×7, More×5, m_subbutton×4)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "tabel_bar": 7,
+            "More": 5,
+            "m_subbutton": 4
+          }
+        },
+        {
+          "i": 2,
+          "id": "30863:32668",
+          "name": "Frame 273",
+          "type": "FRAME",
+          "x": 0,
+          "y": 916,
+          "h": 52,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_subbutton, More)",
+          "parts": {
+            "m_subbutton": 1,
+            "More": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "30863:32678",
+          "name": "Frame 1127",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1008,
+          "h": 48,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30863:32680",
+      "name": "13. 설정_1 메인",
+      "section": "백업",
+      "size": "360x857",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(tabel_bar×7, More×4, m_toggle×3) → 묶음(m_subbutton, More) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:32681",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "30863:32684",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 761,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "30863:32685",
+          "name": "Frame 264",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 656,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar×7, More×4, m_toggle×3)",
+          "parts": {
+            "m_toggle": 3,
+            "tabel_bar": 7,
+            "More": 4,
+            "m_subbutton": 2
+          }
+        },
+        {
+          "i": 3,
+          "id": "30863:32730",
+          "name": "Frame 273",
+          "type": "FRAME",
+          "x": 0,
+          "y": 792,
+          "h": 52,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_subbutton, More)",
+          "parts": {
+            "m_subbutton": 1,
+            "More": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "30863:32740",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 884,
+          "h": 48,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30863:35250",
+      "name": "13. 설정_8 알림 설정(시스템 경비)",
+      "section": "백업",
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 글자\"실시간 경비 상태 알림을 받아 보세요. 계약\" → 묶음(m_toggle×4) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:35251",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "30863:35263",
+          "name": "서비스약관에 동의해 주세요",
+          "type": "TEXT",
+          "x": 20,
+          "y": 168,
+          "h": 36,
+          "w": 320,
+          "depth": 0,
+          "kind": "text",
+          "label": "글자\"실시간 경비 상태 알림을 받아 보세요. 계약\""
+        },
+        {
+          "i": 2,
+          "id": "30863:35264",
+          "name": "Frame 1139",
+          "type": "FRAME",
+          "x": 20,
+          "y": 238,
+          "h": 219,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_toggle×4)",
+          "parts": {
+            "m_toggle": 4
+          }
+        },
+        {
+          "i": 3,
+          "id": "30863:35294",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30863:35296",
+      "name": "13. 설정_10 알림 설정(시스템 경비 - 미권한)",
+      "section": "백업",
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 서비스 권한이 없어요.) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:35297",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "30863:35311",
+          "name": "Frame 34880",
+          "type": "FRAME",
+          "x": 20,
+          "y": 368,
+          "h": 92,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 서비스 권한이 없어요.)"
+        },
+        {
+          "i": 2,
+          "id": "30863:35309",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30863:35323",
+      "name": "13. 설정_9 알림 설정(영상)",
+      "section": "백업",
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 글자\"실시간 경비 상태 알림을 받아 보세요. 계약\" → 묶음(m_toggle×4) → 묶음(글자: [에스원] 2023.03.02 알림 수신 동) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:35324",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "30863:35336",
+          "name": "서비스약관에 동의해 주세요",
+          "type": "TEXT",
+          "x": 20,
+          "y": 168,
+          "h": 36,
+          "w": 320,
+          "depth": 0,
+          "kind": "text",
+          "label": "글자\"실시간 경비 상태 알림을 받아 보세요. 계약\""
+        },
+        {
+          "i": 2,
+          "id": "30863:35337",
+          "name": "Frame 1139",
+          "type": "FRAME",
+          "x": 20,
+          "y": 238,
+          "h": 219,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_toggle×4)",
+          "parts": {
+            "m_toggle": 4
+          }
+        },
+        {
+          "i": 3,
+          "id": "30863:35369",
+          "name": "Frame 1200",
+          "type": "FRAME",
+          "x": 20,
+          "y": 643,
+          "h": 69,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: [에스원] 2023.03.02 알림 수신 동)"
+        },
+        {
+          "i": 4,
+          "id": "30863:35367",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30863:35371",
+      "name": "13. 설정_11 알림 설정(영상 - 미권한)",
+      "section": "백업",
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → m_tab_mid(글자: 시스템 경비 / 영상) → 묶음(글자: 서비스 권한이 없어요.) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30863:35372",
+          "name": "Frame 862",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "30863:35390",
+          "name": "m_tab_mid",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 50,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "m_tab_mid(글자: 시스템 경비 / 영상)"
+        },
+        {
+          "i": 2,
+          "id": "30863:35378",
+          "name": "Frame 34880",
+          "type": "FRAME",
+          "x": 20,
+          "y": 368,
+          "h": 92,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 서비스 권한이 없어요.)"
+        },
+        {
+          "i": 3,
+          "id": "30863:35376",
+          "name": "Frame 1126",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "33306:51870",
+      "name": "13. 설정_15 약관(마케팅정보수집이용약관)",
+      "section": null,
+      "size": "360x1018",
+      "rowCount": 2,
+      "orderText": "묶음(글자: 12:30 / 마케팅 정보 수집·이용 약관) → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "33306:51871",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 1103,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "33306:51872",
+          "name": "Frame 844",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 930,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 12:30 / 마케팅 정보 수집·이용 약관)"
+        },
+        {
+          "i": 2,
+          "id": "33306:51942",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 970,
+          "h": 48,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    }
+  ]
+}

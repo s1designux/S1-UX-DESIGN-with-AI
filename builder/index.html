@@ -46,6 +46,7 @@
       <div class="pb-tabs" role="tablist" aria-label="컴포넌트와 패턴 전환">
         <button type="button" class="pb-tab" id="pb-tab-parts" role="tab" aria-selected="true" aria-controls="pb-pane-parts" data-tab="parts">컴포넌트</button>
         <button type="button" class="pb-tab" id="pb-tab-patterns" role="tab" aria-selected="false" aria-controls="pb-pane-patterns" data-tab="patterns">패턴</button>
+        <button type="button" class="pb-tab" id="pb-tab-imported" role="tab" aria-selected="false" aria-controls="pb-pane-imported" data-tab="imported">가져온 화면</button>
       </div>
       <div class="pb-panel-body">
         <div id="pb-pane-parts" role="tabpanel" aria-labelledby="pb-tab-parts">
@@ -57,6 +58,12 @@
           <input type="search" class="pb-search" id="pb-search-patterns" placeholder="패턴 검색" aria-label="패턴 검색">
           <p class="pb-empty" id="pb-empty-patterns" hidden>찾는 패턴이 없습니다.</p>
           <div id="pb-pattern-groups"></div>
+        </div>
+        <div id="pb-pane-imported" role="tabpanel" aria-labelledby="pb-tab-imported" hidden>
+          <input type="search" class="pb-search" id="pb-search-imported" placeholder="가져온 화면 검색 (예: 홈, 로그인)" aria-label="가져온 화면 검색">
+          <p class="pb-note">이미 만들어 둔 화면을 그대로 올려 놓고, 그 위에 이어서 만듭니다. 원본 부품은 바꿔치기하지 않습니다.</p>
+          <p class="pb-empty" id="pb-empty-imported" hidden>가져온 화면이 없습니다.</p>
+          <div id="pb-imported-groups"></div>
         </div>
       </div>
     </section>

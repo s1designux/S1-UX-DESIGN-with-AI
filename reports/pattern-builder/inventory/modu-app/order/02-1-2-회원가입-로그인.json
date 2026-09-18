@@ -1,0 +1,6331 @@
+{
+  "_meta": {
+    "source": "figma:rest",
+    "page": {
+      "name": "1~2. 회원가입, 로그인",
+      "nodeId": "2449:30232"
+    },
+    "fileKey": "aLxh458o9BRXklRFM3YYzk",
+    "generatedAt": "2026-09-18",
+    "note": "세로 차례 원자료. order = 위에서 아래로의 칸 목록(y 순). 레거시 이름 그대로이며 정본 이름이 아니다."
+  },
+  "screenCount": 86,
+  "screens": [
+    {
+      "id": "2449:30233",
+      "name": "filter",
+      "section": null,
+      "size": "400x202",
+      "rowCount": 1,
+      "orderText": "Type=Default(menu_arrow_down×2, m_combobox, icon/combobox_arrow)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2449:30234",
+          "name": "Type=Default",
+          "type": "COMPONENT",
+          "x": 20,
+          "y": 20,
+          "h": 162,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "Type=Default(menu_arrow_down×2, m_combobox, icon/combobox_arrow)",
+          "parts": {
+            "m_combobox": 1,
+            "icon/combobox_arrow": 1,
+            "menu_arrow_down": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "2449:30244",
+      "name": "title/signup",
+      "section": null,
+      "size": "400x703",
+      "rowCount": 5,
+      "orderText": "Step=1, Sub txt=off(step) → Step=2, Sub txt=off(step/Default) → Step=3, Sub txt=off(step/Default) → Step=4, Sub txt=off(step/Default) → Step=1, Sub txt=on(step)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2449:30245",
+          "name": "Step=1, Sub txt=off",
+          "type": "COMPONENT",
+          "x": 20,
+          "y": 20,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "Step=1, Sub txt=off(step)",
+          "parts": {
+            "step": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2449:30253",
+          "name": "Step=2, Sub txt=off",
+          "type": "COMPONENT",
+          "x": 20,
+          "y": 142,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "Step=2, Sub txt=off(step/Default)",
+          "parts": {
+            "step/Default": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "2449:30256",
+          "name": "Step=3, Sub txt=off",
+          "type": "COMPONENT",
+          "x": 20,
+          "y": 264,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "Step=3, Sub txt=off(step/Default)",
+          "parts": {
+            "step/Default": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "2449:30259",
+          "name": "Step=4, Sub txt=off",
+          "type": "COMPONENT",
+          "x": 20,
+          "y": 386,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "Step=4, Sub txt=off(step/Default)",
+          "parts": {
+            "step/Default": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "2449:30248",
+          "name": "Step=1, Sub txt=on",
+          "type": "COMPONENT",
+          "x": 20,
+          "y": 508,
+          "h": 126,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "Step=1, Sub txt=on(step)",
+          "parts": {
+            "step": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2449:30262",
+      "name": "step",
+      "section": null,
+      "size": "100x116",
+      "rowCount": 4,
+      "orderText": "Step=1 → Step=2 → Step=3 → Step=4",
+      "order": [
+        {
+          "i": 0,
+          "id": "2449:30263",
+          "name": "Step=1",
+          "type": "COMPONENT",
+          "x": 20,
+          "y": 20,
+          "h": 4,
+          "w": 60,
+          "depth": 0,
+          "kind": "group",
+          "label": "Step=1"
+        },
+        {
+          "i": 1,
+          "id": "2449:30268",
+          "name": "Step=2",
+          "type": "COMPONENT",
+          "x": 20,
+          "y": 44,
+          "h": 4,
+          "w": 60,
+          "depth": 0,
+          "kind": "group",
+          "label": "Step=2"
+        },
+        {
+          "i": 2,
+          "id": "2449:30273",
+          "name": "Step=3",
+          "type": "COMPONENT",
+          "x": 20,
+          "y": 68,
+          "h": 4,
+          "w": 60,
+          "depth": 0,
+          "kind": "group",
+          "label": "Step=3"
+        },
+        {
+          "i": 3,
+          "id": "2449:30278",
+          "name": "Step=4",
+          "type": "COMPONENT",
+          "x": 20,
+          "y": 92,
+          "h": 4,
+          "w": 60,
+          "depth": 0,
+          "kind": "group",
+          "label": "Step=4"
+        }
+      ]
+    },
+    {
+      "id": "2449:30283",
+      "name": "list",
+      "section": null,
+      "size": "400x203",
+      "rowCount": 3,
+      "orderText": "묶음(m_checkbox, menu_arrow_right) → m_bar → Type=Red(m_checkbox, menu_arrow_right, m_bar)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2449:30284",
+          "name": "Type=Default",
+          "type": "COMPONENT",
+          "x": 20,
+          "y": 20,
+          "h": 75,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "2449:30285",
+          "name": "Frame 274",
+          "type": "FRAME",
+          "x": 20,
+          "y": 20,
+          "h": 74,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_checkbox, menu_arrow_right)",
+          "parts": {
+            "m_checkbox": 1,
+            "menu_arrow_right": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "2449:30297",
+          "name": "m_bar",
+          "type": "INSTANCE",
+          "x": 20,
+          "y": 94,
+          "h": 1,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_bar"
+        },
+        {
+          "i": 3,
+          "id": "2449:30298",
+          "name": "Type=Red",
+          "type": "COMPONENT",
+          "x": 20,
+          "y": 108,
+          "h": 75,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "Type=Red(m_checkbox, menu_arrow_right, m_bar)",
+          "parts": {
+            "m_checkbox": 1,
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2449:30701",
+      "name": "1. 회원가입",
+      "section": null,
+      "size": "350x95",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "2449:30702",
+      "name": "2. 로그인",
+      "section": null,
+      "size": "295x95",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "2449:31009",
+      "name": "1.1 회원가입(모웹)_9 가입 완료",
+      "section": "Section 1",
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(appbar_sub, icon/arrow) → 묶음(글자: 앱 아이콘 / 홍길동님, 환영합니다!) → 묶음(m_button)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2449:31010",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 147,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(appbar_sub, icon/arrow)",
+          "parts": {
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2449:31016",
+          "name": "Frame 521",
+          "type": "FRAME",
+          "x": 0,
+          "y": 269,
+          "h": 204,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 앱 아이콘 / 홍길동님, 환영합니다!)"
+        },
+        {
+          "i": 2,
+          "id": "2449:31024",
+          "name": "Frame 569",
+          "type": "FRAME",
+          "x": 0,
+          "y": 595,
+          "h": 185,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button)",
+          "parts": {
+            "m_button": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2449:31028",
+      "name": "1.1 회원가입(모웹)_1 약관 동의",
+      "section": "Section 1",
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(appbar_sub, icon/arrow) → 묶음(m_checkbox×4, More×2, m_bar) → 묶음(m_button)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2449:31029",
+          "name": "Frame 515",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 471,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "2449:31030",
+          "name": "Frame 514",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 215,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(appbar_sub, icon/arrow)",
+          "parts": {
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "2449:31037",
+          "name": "Frame 517",
+          "type": "FRAME",
+          "x": 0,
+          "y": 255,
+          "h": 216,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_checkbox×4, More×2, m_bar)",
+          "parts": {
+            "m_checkbox": 4,
+            "m_bar": 1,
+            "tabel_bar": 1,
+            "More": 2
+          }
+        },
+        {
+          "i": 3,
+          "id": "2449:31064",
+          "name": "Frame 402",
+          "type": "FRAME",
+          "x": 0,
+          "y": 594,
+          "h": 186,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button)",
+          "parts": {
+            "m_button": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2449:31151",
+      "name": "1.1 회원가입(모웹)_3 아이디 입력",
+      "section": "Section 1",
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(appbar_sub, icon/arrow, m_Input box) → m_btn_full → keyboard → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "2449:31152",
+          "name": "Frame 465",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 325,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(appbar_sub, icon/arrow, m_Input box)",
+          "parts": {
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "m_Input box": 1,
+            "Remove": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2449:31164",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 390,
+          "h": 390,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "2449:31165",
+          "name": "m_btn_full",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 390,
+          "h": 50,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_btn_full"
+        },
+        {
+          "i": 3,
+          "id": "2449:31166",
+          "name": "keyboard",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 440,
+          "h": 292,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "keyboard"
+        },
+        {
+          "i": 4,
+          "id": "2449:31167",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "2449:31168",
+      "name": "1.1 회원가입(모웹)_4 기존 아이디 사용 여부 선택",
+      "section": "Section 1",
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(appbar_sub, icon/arrow, m_Input box) → 묶음(m_bar×4, tabel_bar×4, close) → 묶음(m_btn_full, keyboard, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2449:31169",
+          "name": "Frame 465",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 325,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(appbar_sub, icon/arrow, m_Input box)",
+          "parts": {
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "m_Input box": 1,
+            "Remove": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2449:31185",
+          "name": "Group 190",
+          "type": "GROUP",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_bar×4, tabel_bar×4, close)",
+          "parts": {
+            "close": 1,
+            "ok": 1,
+            "m_bar": 4,
+            "tabel_bar": 4,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "2449:31181",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 390,
+          "h": 390,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_btn_full, keyboard, phone_navi)",
+          "parts": {
+            "m_btn_full": 1,
+            "keyboard": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2449:31218",
+      "name": "1.1 회원가입(모웹)_5 비밀번호 입력",
+      "section": "Section 1",
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(글자: m.s1.co.kr) → appbar_sub → 묶음(pw off×2) → 묶음(m_btn_full, keyboard, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2449:31219",
+          "name": "Frame 465",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 443,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "2449:31220",
+          "name": "Group 84",
+          "type": "GROUP",
+          "x": 0,
+          "y": 0,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: m.s1.co.kr)"
+        },
+        {
+          "i": 2,
+          "id": "2449:31224",
+          "name": "appbar_sub",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 75,
+          "h": 72,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "appbar_sub"
+        },
+        {
+          "i": 3,
+          "id": "2449:31225",
+          "name": "Frame 527",
+          "type": "FRAME",
+          "x": 0,
+          "y": 147,
+          "h": 296,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(pw off×2)",
+          "parts": {
+            "pw off": 2
+          }
+        },
+        {
+          "i": 4,
+          "id": "2449:31244",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 390,
+          "h": 390,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_btn_full, keyboard, phone_navi)",
+          "parts": {
+            "m_btn_full": 1,
+            "keyboard": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2449:31278",
+      "name": "1.1 회원가입(모웹)_6 비밀번호 조건",
+      "section": "Section 1",
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(글자: m.s1.co.kr) → appbar_sub → 묶음(pw off×2) → dialog(close, m_button) → 묶음(m_btn_full, keyboard, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2449:31279",
+          "name": "Frame 465",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 443,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "2449:31280",
+          "name": "Group 84",
+          "type": "GROUP",
+          "x": 0,
+          "y": 0,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: m.s1.co.kr)"
+        },
+        {
+          "i": 2,
+          "id": "2449:31284",
+          "name": "appbar_sub",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 75,
+          "h": 72,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "appbar_sub"
+        },
+        {
+          "i": 3,
+          "id": "2449:31285",
+          "name": "Frame 527",
+          "type": "FRAME",
+          "x": 0,
+          "y": 147,
+          "h": 296,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(pw off×2)",
+          "parts": {
+            "pw off": 2
+          }
+        },
+        {
+          "i": 4,
+          "id": "2449:31308",
+          "name": "dialog",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "dialog(close, m_button)",
+          "parts": {
+            "close": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "2449:31304",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 390,
+          "h": 390,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_btn_full, keyboard, phone_navi)",
+          "parts": {
+            "m_btn_full": 1,
+            "keyboard": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2449:31402",
+      "name": "1.1 회원가입(모웹)_2 약관 상세",
+      "section": "Section 1",
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(글자: m.s1.co.kr) → appbar_sub → 글자\"회원 약관 동의\" → 묶음(글자: 제 1조(목적) / 본 약관은 '주식회사 에스원(이하 \"회사\")) → KakaoTalk_Photo_2022-10-18-15-05-49 2",
+      "order": [
+        {
+          "i": 0,
+          "id": "2449:31403",
+          "name": "Group 85",
+          "type": "GROUP",
+          "x": 0,
+          "y": 0,
+          "h": 75,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: m.s1.co.kr)"
+        },
+        {
+          "i": 1,
+          "id": "2449:31407",
+          "name": "appbar_sub",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 75,
+          "h": 72,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "appbar_sub"
+        },
+        {
+          "i": 2,
+          "id": "2449:31408",
+          "name": "Frame 318",
+          "type": "FRAME",
+          "x": 0,
+          "y": 147,
+          "h": 538,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "2449:31409",
+          "name": "서비스약관에 동의해 주세요",
+          "type": "TEXT",
+          "x": 20,
+          "y": 147,
+          "h": 20,
+          "w": 113,
+          "depth": 1,
+          "kind": "text",
+          "label": "글자\"회원 약관 동의\""
+        },
+        {
+          "i": 4,
+          "id": "2449:31410",
+          "name": "Frame 393",
+          "type": "FRAME",
+          "x": 20,
+          "y": 191,
+          "h": 478,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 제 1조(목적) / 본 약관은 '주식회사 에스원(이하 \"회사\"))"
+        },
+        {
+          "i": 5,
+          "id": "2449:31417",
+          "name": "KakaoTalk_Photo_2022-10-18-15-05-49 2",
+          "type": "RECTANGLE",
+          "x": 0,
+          "y": 685,
+          "h": 95,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "KakaoTalk_Photo_2022-10-18-15-05-49 2"
+        }
+      ]
+    },
+    {
+      "id": "2449:31418",
+      "name": "1.1 회원가입(모웹)_7 이메일 입력",
+      "section": "Section 1",
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_Input box×2, appbar_sub, icon/arrow) → m_btn_full → keyboard → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "2449:31419",
+          "name": "Frame 459",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 383,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_Input box×2, appbar_sub, icon/arrow)",
+          "parts": {
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "m_email_input": 1,
+            "m_Input box": 2,
+            "Remove": 1,
+            "m_combobox/off/off/off/Default": 1,
+            "icon/combobox_arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2449:31431",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 390,
+          "h": 390,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "2449:31432",
+          "name": "m_btn_full",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 390,
+          "h": 50,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_btn_full"
+        },
+        {
+          "i": 3,
+          "id": "2449:31433",
+          "name": "keyboard",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 440,
+          "h": 292,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "keyboard"
+        },
+        {
+          "i": 4,
+          "id": "2449:31434",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "2449:31435",
+      "name": "1.1 회원가입(모웹)_8 이메일 도메인 선택",
+      "section": "Section 1",
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_Input box×2, appbar_sub, icon/arrow) → 묶음(m_bar×4, tabel_bar×4, close) → m_btn_full → keyboard → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "2449:31436",
+          "name": "Frame 459",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 383,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_Input box×2, appbar_sub, icon/arrow)",
+          "parts": {
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "m_email_input": 1,
+            "m_Input box": 2,
+            "Remove": 1,
+            "m_combobox/off/off/off/Default": 1,
+            "icon/combobox_arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2449:31452",
+          "name": "Frame 1029",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_bar×4, tabel_bar×4, close)",
+          "parts": {
+            "close": 1,
+            "m_bar": 4,
+            "tabel_bar": 4,
+            "ok": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "2449:31448",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 390,
+          "h": 390,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "2449:31449",
+          "name": "m_btn_full",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 390,
+          "h": 50,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_btn_full"
+        },
+        {
+          "i": 4,
+          "id": "2449:31450",
+          "name": "keyboard",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 440,
+          "h": 292,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "keyboard"
+        },
+        {
+          "i": 5,
+          "id": "2449:31451",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "10583:19376",
+      "name": "2.2 간편인증",
+      "section": null,
+      "size": "156x36",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "8403:59480",
+      "name": "2.3 아이디 찾기_1 휴대전화번호",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_Input box×2, m_tab_mid, Remove) → 묶음(keyboard)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59481",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 378,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59482",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59485",
+          "name": "Frame 613",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 282,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_Input box×2, m_tab_mid, Remove)",
+          "parts": {
+            "m_tab_mid": 1,
+            "m_Input box": 2,
+            "Remove": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:59490",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 439,
+          "h": 341,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(keyboard)",
+          "parts": {
+            "keyboard": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:59492",
+      "name": "2.3 아이디 찾기_2 이메일",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_Input box×3, Remove, m_email_input) → keyboard",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59493",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 414,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59494",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59497",
+          "name": "Frame 613",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 318,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_Input box×3, Remove, m_email_input)",
+          "parts": {
+            "m_Input box": 3,
+            "Remove": 1,
+            "m_email_input": 1,
+            "m_combobox/off/off/off/Default": 1,
+            "icon/combobox_arrow": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:59510",
+          "name": "keyboard",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 439,
+          "h": 341,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "keyboard"
+        }
+      ]
+    },
+    {
+      "id": "8403:59511",
+      "name": "2.3 아이디 찾기_3 이메일 도메인 선택",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_Input box×3, Remove, m_email_input) → 묶음(m_bar×4, tabel_bar×4, close) → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59512",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 414,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59513",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59516",
+          "name": "Frame 613",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 318,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_Input box×3, Remove, m_email_input)",
+          "parts": {
+            "m_Input box": 3,
+            "Remove": 1,
+            "m_email_input": 1,
+            "m_combobox/off/off/off/Default": 1,
+            "icon/combobox_arrow": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:59529",
+          "name": "Frame 1029",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_bar×4, tabel_bar×4, close)",
+          "parts": {
+            "close": 1,
+            "m_bar": 4,
+            "tabel_bar": 4,
+            "ok": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:59528",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "8403:59556",
+      "name": "2.3 아이디 찾기_4 이메일 도메인 선택 시",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_Input box×3, m_email_input, m_combobox/off/off/off/Default) → 묶음(keyboard)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59557",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 414,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59558",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59561",
+          "name": "Frame 613",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 318,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_Input box×3, m_email_input, m_combobox/off/off/off/Default)",
+          "parts": {
+            "m_Input box": 3,
+            "m_email_input": 1,
+            "m_combobox/off/off/off/Default": 1,
+            "icon/combobox_arrow": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:59573",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 439,
+          "h": 341,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(keyboard)",
+          "parts": {
+            "keyboard": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:59575",
+      "name": "2.3 아이디 찾기_5 입력 완료",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_Input box×3, m_combobox/off/off/off/Default, icon/combobox_arrow) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59576",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 414,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59577",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59580",
+          "name": "Frame 613",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 318,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_Input box×3, m_combobox/off/off/off/Default, icon/combobox_arrow)",
+          "parts": {
+            "m_Input box": 3,
+            "m_combobox/off/off/off/Default": 1,
+            "icon/combobox_arrow": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:59592",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:59596",
+      "name": "2.3 아이디 찾기_6 인증 번호 입력(휴대전화번호)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → title/signup(글자: 인증 번호 6자리를 입력해 주세요 / 입력하신 휴대전화번호로 인증 번호를 보냈어요) → 묶음(Remove, m_button) → keyboard",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59597",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 328,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59598",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59601",
+          "name": "title/signup",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 104,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "title/signup(글자: 인증 번호 6자리를 입력해 주세요 / 입력하신 휴대전화번호로 인증 번호를 보냈어요)"
+        },
+        {
+          "i": 3,
+          "id": "8403:59607",
+          "name": "Frame 948",
+          "type": "FRAME",
+          "x": 0,
+          "y": 200,
+          "h": 128,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(Remove, m_button)",
+          "parts": {
+            "Remove": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:59622",
+          "name": "keyboard",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 439,
+          "h": 341,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "keyboard"
+        }
+      ]
+    },
+    {
+      "id": "8403:59623",
+      "name": "2.3 아이디 찾기_7 인증 번호 입력(이메일)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 인증 번호 6자리를 입력해 주세요 / 입력하신 이메일로 인증 번호를 보냈어요.) → 묶음(Remove, m_button) → keyboard",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59624",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 328,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59625",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59628",
+          "name": "Frame 528",
+          "type": "FRAME",
+          "x": 20,
+          "y": 96,
+          "h": 104,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 인증 번호 6자리를 입력해 주세요 / 입력하신 이메일로 인증 번호를 보냈어요.)"
+        },
+        {
+          "i": 3,
+          "id": "8403:59633",
+          "name": "Frame 948",
+          "type": "FRAME",
+          "x": 0,
+          "y": 200,
+          "h": 128,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(Remove, m_button)",
+          "parts": {
+            "Remove": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:59648",
+          "name": "keyboard",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 439,
+          "h": 341,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "keyboard"
+        }
+      ]
+    },
+    {
+      "id": "8403:59649",
+      "name": "2.3 아이디 찾기_8 인증 번호 입력 완료",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 인증 번호 6자리를 입력해 주세요 / 입력하신 이메일로 인증 번호를 보냈어요.) → 묶음(m_button) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59650",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 328,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59651",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59654",
+          "name": "Frame 528",
+          "type": "FRAME",
+          "x": 20,
+          "y": 96,
+          "h": 104,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 인증 번호 6자리를 입력해 주세요 / 입력하신 이메일로 인증 번호를 보냈어요.)"
+        },
+        {
+          "i": 3,
+          "id": "8403:59659",
+          "name": "Frame 948",
+          "type": "FRAME",
+          "x": 0,
+          "y": 200,
+          "h": 128,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_button)",
+          "parts": {
+            "m_button": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:59673",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:59677",
+      "name": "2.3 아이디 찾기_11 계정 없음",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 인증 번호 6자리를 입력해 주세요 / 입력하신 이메일로 인증 번호를 보냈어요.) → 묶음(Remove, m_button) → dialog(close, m_button) → 묶음(keyboard)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59678",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 328,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59679",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59682",
+          "name": "Frame 528",
+          "type": "FRAME",
+          "x": 20,
+          "y": 96,
+          "h": 104,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 인증 번호 6자리를 입력해 주세요 / 입력하신 이메일로 인증 번호를 보냈어요.)"
+        },
+        {
+          "i": 3,
+          "id": "8403:59687",
+          "name": "Frame 948",
+          "type": "FRAME",
+          "x": 0,
+          "y": 200,
+          "h": 128,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(Remove, m_button)",
+          "parts": {
+            "Remove": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:59703",
+          "name": "dialog",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "dialog(close, m_button)",
+          "parts": {
+            "close": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "8403:59701",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 439,
+          "h": 341,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(keyboard)",
+          "parts": {
+            "keyboard": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:59711",
+      "name": "2.4 비밀번호 찾기_4 인증 번호(이메일)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 인증 번호 6자리를 입력해 주세요 / 입력하신 이메일로 인증 번호를 보냈어요.) → 묶음(Remove, m_button) → keyboard",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59712",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 328,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59713",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59716",
+          "name": "Frame 528",
+          "type": "FRAME",
+          "x": 20,
+          "y": 96,
+          "h": 104,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 인증 번호 6자리를 입력해 주세요 / 입력하신 이메일로 인증 번호를 보냈어요.)"
+        },
+        {
+          "i": 3,
+          "id": "8403:59721",
+          "name": "Frame 948",
+          "type": "FRAME",
+          "x": 0,
+          "y": 200,
+          "h": 128,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(Remove, m_button)",
+          "parts": {
+            "Remove": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:59736",
+          "name": "keyboard",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 439,
+          "h": 341,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "keyboard"
+        }
+      ]
+    },
+    {
+      "id": "8403:59737",
+      "name": "2.4 비밀번호 찾기_5 인증 번호 불일치",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 인증 번호 6자리를 입력해 주세요 / 입력하신 이메일로 인증 번호를 보냈어요.) → 묶음(Remove, m_button) → keyboard",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59738",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 348,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59739",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59742",
+          "name": "Frame 528",
+          "type": "FRAME",
+          "x": 20,
+          "y": 96,
+          "h": 104,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 인증 번호 6자리를 입력해 주세요 / 입력하신 이메일로 인증 번호를 보냈어요.)"
+        },
+        {
+          "i": 3,
+          "id": "8403:59747",
+          "name": "Frame 948",
+          "type": "FRAME",
+          "x": 0,
+          "y": 200,
+          "h": 148,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(Remove, m_button)",
+          "parts": {
+            "Remove": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:59763",
+          "name": "keyboard",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 439,
+          "h": 341,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "keyboard"
+        }
+      ]
+    },
+    {
+      "id": "8403:59764",
+      "name": "2.4 비밀번호 찾기_1 휴대전화번호",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_Input box×2, m_tab_mid, Remove) → 묶음(keyboard)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59765",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 378,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59766",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59769",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 282,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_Input box×2, m_tab_mid, Remove)",
+          "parts": {
+            "m_tab_mid": 1,
+            "m_Input box": 2,
+            "Remove": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:59774",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 439,
+          "h": 341,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(keyboard)",
+          "parts": {
+            "keyboard": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:59776",
+      "name": "2.4 비밀번호 찾기_2 이메일",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_Input box×3, Remove, m_email_input) → 묶음(keyboard)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59777",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 414,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59778",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59781",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 318,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_Input box×3, Remove, m_email_input)",
+          "parts": {
+            "m_Input box": 3,
+            "Remove": 1,
+            "m_email_input": 1,
+            "m_combobox/off/off/off/Default": 1,
+            "icon/combobox_arrow": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:59793",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 439,
+          "h": 341,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(keyboard)",
+          "parts": {
+            "keyboard": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:59795",
+      "name": "2.3 아이디 찾기_10 인증 메일 미수신 시 안내",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 인증 번호 6자리를 입력해 주세요 / 입력하신 이메일로 인증 번호를 보냈어요.) → 묶음(Remove, m_button) → dialog(close, m_button) → 묶음(keyboard)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59796",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 336,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59797",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59800",
+          "name": "Frame 528",
+          "type": "FRAME",
+          "x": 20,
+          "y": 96,
+          "h": 104,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 인증 번호 6자리를 입력해 주세요 / 입력하신 이메일로 인증 번호를 보냈어요.)"
+        },
+        {
+          "i": 3,
+          "id": "8403:59805",
+          "name": "Frame 949",
+          "type": "FRAME",
+          "x": 0,
+          "y": 200,
+          "h": 136,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(Remove, m_button)",
+          "parts": {
+            "Remove": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:59821",
+          "name": "dialog",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "dialog(close, m_button)",
+          "parts": {
+            "close": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "8403:59819",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 439,
+          "h": 341,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(keyboard)",
+          "parts": {
+            "keyboard": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:59829",
+      "name": "2.3 아이디 찾기_9 인증 문자 미수신 시 안내",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 인증 번호 6자리를 입력해 주세요 / 입력하신 이메일로 인증 번호를 보냈어요.) → 묶음(Remove, m_button) → dialog(close, m_button) → 묶음(keyboard)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59830",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 336,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59831",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59834",
+          "name": "Frame 528",
+          "type": "FRAME",
+          "x": 20,
+          "y": 96,
+          "h": 104,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 인증 번호 6자리를 입력해 주세요 / 입력하신 이메일로 인증 번호를 보냈어요.)"
+        },
+        {
+          "i": 3,
+          "id": "8403:59839",
+          "name": "Frame 949",
+          "type": "FRAME",
+          "x": 0,
+          "y": 200,
+          "h": 136,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(Remove, m_button)",
+          "parts": {
+            "Remove": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:59855",
+          "name": "dialog",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "dialog(close, m_button)",
+          "parts": {
+            "close": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "8403:59853",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 439,
+          "h": 341,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(keyboard)",
+          "parts": {
+            "keyboard": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:59863",
+      "name": "2.5 비번 변경 권장_1 최초 진입",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(pw off×3) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59864",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 505,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59865",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 165,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59870",
+          "name": "Frame 318",
+          "type": "FRAME",
+          "x": 0,
+          "y": 165,
+          "h": 340,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(pw off×3)",
+          "parts": {
+            "pw off": 3
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:59889",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:59893",
+      "name": "2.5 비번 변경 권장_3 비번 조건",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(pw off×3) → dialog(close, m_button) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59894",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 505,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59895",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 165,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59900",
+          "name": "Frame 318",
+          "type": "FRAME",
+          "x": 0,
+          "y": 165,
+          "h": 340,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(pw off×3)",
+          "parts": {
+            "pw off": 3
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:59923",
+          "name": "dialog",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "dialog(close, m_button)",
+          "parts": {
+            "close": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:59919",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:59931",
+      "name": "2.5 비번 변경 권장_2 입력",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(pw off×2, hide) → 묶음(keyboard)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59932",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 507,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59933",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 165,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59938",
+          "name": "Frame 318",
+          "type": "FRAME",
+          "x": 0,
+          "y": 165,
+          "h": 342,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(pw off×2, hide)",
+          "parts": {
+            "pw off": 2,
+            "hide": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:59960",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 439,
+          "h": 341,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(keyboard)",
+          "parts": {
+            "keyboard": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:59963",
+      "name": "2.3 아이디 찾기",
+      "section": null,
+      "size": "189x36",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "8403:59964",
+      "name": "2.5 비밀번호 변경 권장",
+      "section": null,
+      "size": "274x36",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "8403:59965",
+      "name": "2.6 휴면 상태 해제",
+      "section": null,
+      "size": "222x36",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "8403:59966",
+      "name": "2.4 비밀번호 찾기",
+      "section": null,
+      "size": "216x36",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "8403:59967",
+      "name": "2.6 휴면_1 휴면 안내",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 홍길동님, 오랜만이에요! / 1년 이상 로그인하지 않아 현재 휴면 상태입) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59968",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "8403:59971",
+          "name": "Frame 316",
+          "type": "FRAME",
+          "x": 0,
+          "y": 275,
+          "h": 188,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 홍길동님, 오랜만이에요! / 1년 이상 로그인하지 않아 현재 휴면 상태입)"
+        },
+        {
+          "i": 2,
+          "id": "8403:59984",
+          "name": "Frame 873",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:59988",
+      "name": "2.6 휴면_2 휴면 해제 완료",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 돌아오신 걸 환영해요 / 휴면 해제되었습니다. 다시 로그인하여 서비스) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59989",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "8403:59992",
+          "name": "Frame 316",
+          "type": "FRAME",
+          "x": 0,
+          "y": 279,
+          "h": 180,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 돌아오신 걸 환영해요 / 휴면 해제되었습니다. 다시 로그인하여 서비스)"
+        },
+        {
+          "i": 2,
+          "id": "8403:60010",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:60014",
+      "name": "2.3 아이디 찾기_12 아이디 찾기 결과",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 고객님의 아이디는 s1design입니다) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:60015",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "8403:60018",
+          "name": "Frame 607",
+          "type": "FRAME",
+          "x": 30,
+          "y": 302,
+          "h": 134,
+          "w": 300,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 고객님의 아이디는 s1design입니다)"
+        },
+        {
+          "i": 2,
+          "id": "8403:60033",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:60037",
+      "name": "2.4 비밀번호 찾기_3 인증 번호(휴대전화번호)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → title/signup(글자: 인증 번호 6자리를 입력해 주세요 / 입력하신 휴대전화번호로 인증 번호를 보냈어요) → 묶음(Remove, m_button) → keyboard",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:60038",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 328,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:60039",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:60042",
+          "name": "title/signup",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 104,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "title/signup(글자: 인증 번호 6자리를 입력해 주세요 / 입력하신 휴대전화번호로 인증 번호를 보냈어요)"
+        },
+        {
+          "i": 3,
+          "id": "8403:60048",
+          "name": "Frame 949",
+          "type": "FRAME",
+          "x": 0,
+          "y": 200,
+          "h": 128,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(Remove, m_button)",
+          "parts": {
+            "Remove": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:60063",
+          "name": "keyboard",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 439,
+          "h": 341,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "keyboard"
+        }
+      ]
+    },
+    {
+      "id": "8403:60064",
+      "name": "2.4 비밀번호 찾기_6 비밀번호 변경",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(pw off×2) → keyboard",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:60065",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 401,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:60066",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 170,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:60074",
+          "name": "Frame 318",
+          "type": "FRAME",
+          "x": 0,
+          "y": 170,
+          "h": 231,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(pw off×2)",
+          "parts": {
+            "pw off": 2
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:60091",
+          "name": "keyboard",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 439,
+          "h": 341,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "keyboard"
+        }
+      ]
+    },
+    {
+      "id": "8403:60092",
+      "name": "2.4 비밀번호 찾기_7 비밀번호 변경 완료",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(pw off×2) → dialog(close, m_button) → 묶음(keyboard)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:60093",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 401,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:60094",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 170,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:60102",
+          "name": "Frame 318",
+          "type": "FRAME",
+          "x": 0,
+          "y": 170,
+          "h": 231,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(pw off×2)",
+          "parts": {
+            "pw off": 2
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:60120",
+          "name": "dialog",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "dialog(close, m_button)",
+          "parts": {
+            "close": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:60118",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 439,
+          "h": 341,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(keyboard)",
+          "parts": {
+            "keyboard": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "10583:19377",
+      "name": "2.2 간편인증_1 간편인증 등록 안내",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "m_StatusBar  → 묶음(S1 logo) → 묶음(m_button×2, m_Input box, pw off) → dialog(m_button) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "10583:19378",
+          "name": "Frame 687",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 492,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "10583:19379",
+          "name": "m_StatusBar ",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 0,
+          "h": 27,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_StatusBar "
+        },
+        {
+          "i": 2,
+          "id": "10583:19380",
+          "name": "Frame 280",
+          "type": "FRAME",
+          "x": 0,
+          "y": 27,
+          "h": 161,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(S1 logo)",
+          "parts": {
+            "S1 logo": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "10583:19382",
+          "name": "Frame 285",
+          "type": "FRAME",
+          "x": 0,
+          "y": 188,
+          "h": 304,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_button×2, m_Input box, pw off)",
+          "parts": {
+            "m_Input box": 1,
+            "pw off": 1,
+            "Remove": 1,
+            "m_button": 2,
+            "m_login_bottom": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "10583:19486",
+          "name": "dialog",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "dialog(m_button)",
+          "parts": {
+            "m_button": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "10583:19395",
+          "name": "Group 618",
+          "type": "GROUP",
+          "x": 0,
+          "y": 638,
+          "h": 142,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30812:3530",
+      "name": "2.1 로그인_6 로그아웃 확인",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_StatusBar ) → 묶음(menu_arrow_right×10, talk, helpdesk) → 묶음(home, under security, dome camera) → dialog(close, m_button) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30812:3531",
+          "name": "전체 메뉴",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 780,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30812:3532",
+          "name": "Frame 34706",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 24,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar )",
+          "parts": {
+            "m_StatusBar ": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "30812:3534",
+          "name": "Frame 264",
+          "type": "FRAME",
+          "x": 0,
+          "y": 24,
+          "h": 633,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(menu_arrow_right×10, talk, helpdesk)",
+          "parts": {
+            "talk": 1,
+            "menu_arrow_right": 10,
+            "helpdesk": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "30812:3578",
+          "name": "Frame 1127",
+          "type": "FRAME",
+          "x": 0,
+          "y": 672,
+          "h": 108,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(home, under security, dome camera)",
+          "parts": {
+            "home": 1,
+            "under security": 1,
+            "dome camera": 1,
+            "menu(hamburger)": 1,
+            "phone_navi": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "30812:3608",
+          "name": "dialog",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "dialog(close, m_button)",
+          "parts": {
+            "close": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "30812:3597",
+          "name": "Group 618",
+          "type": "GROUP",
+          "x": 0,
+          "y": 638,
+          "h": 142,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30812:3616",
+      "name": "2.1 로그인_6 로그아웃 확인",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_StatusBar ) → 묶음(menu_arrow_right×10, talk, helpdesk) → 묶음(home, under security, dome camera) → dialog(m_button) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30812:3617",
+          "name": "전체 메뉴",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 780,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30812:3618",
+          "name": "Frame 34706",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 24,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar )",
+          "parts": {
+            "m_StatusBar ": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "30812:3620",
+          "name": "Frame 264",
+          "type": "FRAME",
+          "x": 0,
+          "y": 24,
+          "h": 633,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(menu_arrow_right×10, talk, helpdesk)",
+          "parts": {
+            "talk": 1,
+            "menu_arrow_right": 10,
+            "helpdesk": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "30812:3664",
+          "name": "Frame 1127",
+          "type": "FRAME",
+          "x": 0,
+          "y": 672,
+          "h": 108,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(home, under security, dome camera)",
+          "parts": {
+            "home": 1,
+            "under security": 1,
+            "dome camera": 1,
+            "menu(hamburger)": 1,
+            "phone_navi": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "30812:3694",
+          "name": "dialog",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "dialog(m_button)",
+          "parts": {
+            "m_button": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "30812:3683",
+          "name": "Group 618",
+          "type": "GROUP",
+          "x": 0,
+          "y": 638,
+          "h": 142,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:60357",
+      "name": "2.2 간편인증_6 간편번호 변경(입력)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음 → 묶음(글자: 0 / 1) → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:60358",
+          "name": "Frame 678",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 641,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:60359",
+          "name": "Frame 466",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 303,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1,
+            "title/signup": 1,
+            "step": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:60366",
+          "name": "Group 15",
+          "type": "GROUP",
+          "x": 86,
+          "y": 347,
+          "h": 18,
+          "w": 188,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음"
+        },
+        {
+          "i": 3,
+          "id": "8403:60373",
+          "name": "Frame 640",
+          "type": "FRAME",
+          "x": 0,
+          "y": 409,
+          "h": 232,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 0 / 1)"
+        },
+        {
+          "i": 4,
+          "id": "8403:60401",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "8403:60402",
+      "name": "2.2 간편인증_7 간편번호 변경(확인)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음 → 묶음(글자: 0 / 1) → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:60403",
+          "name": "Frame 678",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 641,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:60404",
+          "name": "Frame 466",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 303,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1,
+            "title/signup": 1,
+            "step": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:60411",
+          "name": "Group 15",
+          "type": "GROUP",
+          "x": 86,
+          "y": 347,
+          "h": 18,
+          "w": 188,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음"
+        },
+        {
+          "i": 3,
+          "id": "8403:60418",
+          "name": "Frame 641",
+          "type": "FRAME",
+          "x": 0,
+          "y": 409,
+          "h": 232,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 0 / 1)"
+        },
+        {
+          "i": 4,
+          "id": "8403:60446",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "10587:19541",
+      "name": "2.2 간편인증_2 간편번호 입력",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음 → 묶음(글자: 0 / 1) → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "10587:19542",
+          "name": "Frame 678",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 544,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "10587:19543",
+          "name": "Frame 466",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 198,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "10587:19550",
+          "name": "Group 15",
+          "type": "GROUP",
+          "x": 86,
+          "y": 246,
+          "h": 18,
+          "w": 188,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음"
+        },
+        {
+          "i": 3,
+          "id": "10587:19557",
+          "name": "Frame 640",
+          "type": "FRAME",
+          "x": 0,
+          "y": 312,
+          "h": 232,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 0 / 1)"
+        },
+        {
+          "i": 4,
+          "id": "10587:19585",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "10587:19494",
+      "name": "2.2 간편인증_3 간편번호 확인",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음 → 묶음(글자: 0 / 1) → m_checkbox(m_checkbox) → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "10587:19495",
+          "name": "Frame 678",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 544,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "10587:19496",
+          "name": "Frame 466",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 198,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "10587:19503",
+          "name": "Group 15",
+          "type": "GROUP",
+          "x": 86,
+          "y": 246,
+          "h": 18,
+          "w": 188,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음"
+        },
+        {
+          "i": 3,
+          "id": "10587:19510",
+          "name": "Frame 641",
+          "type": "FRAME",
+          "x": 0,
+          "y": 312,
+          "h": 232,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 0 / 1)"
+        },
+        {
+          "i": 4,
+          "id": "10587:19538",
+          "name": "m_checkbox",
+          "type": "FRAME",
+          "x": 128,
+          "y": 629,
+          "h": 18,
+          "w": 104,
+          "depth": 0,
+          "kind": "group",
+          "label": "m_checkbox(m_checkbox)",
+          "parts": {
+            "m_checkbox": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "10587:19540",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "8403:60450",
+      "name": "2.2 간편인증_9 얼굴 인증",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → face check → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:60451",
+          "name": "Frame 478",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 398,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:60452",
+          "name": "Frame 475",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 198,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:60459",
+          "name": "face check",
+          "type": "INSTANCE",
+          "x": 130,
+          "y": 298,
+          "h": 100,
+          "w": 100,
+          "depth": 1,
+          "kind": "part",
+          "label": "face check"
+        },
+        {
+          "i": 3,
+          "id": "8403:60460",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "10587:19681",
+      "name": "2.2 간편인증_8 지문 인증",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(fingerprint) → ptn_m_login_etc(글자: 본인 인증 / 지문으로 인증해 주세요.) → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "10587:19682",
+          "name": "Frame 478",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 398,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "10587:19683",
+          "name": "Frame 475",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 198,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "10587:19690",
+          "name": "Frame 294",
+          "type": "FRAME",
+          "x": 130,
+          "y": 298,
+          "h": 100,
+          "w": 100,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(fingerprint)",
+          "parts": {
+            "fingerprint": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "10587:19778",
+          "name": "ptn_m_login_etc",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "ptn_m_login_etc(글자: 본인 인증 / 지문으로 인증해 주세요.)"
+        },
+        {
+          "i": 4,
+          "id": "10587:19692",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "8403:60497",
+      "name": "2.2 간편인증_4 간편번호 오류(불일치)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음 → 묶음(글자: 0 / 1) → m_checkbox(m_checkbox) → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:60498",
+          "name": "Frame 678",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 544,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:60499",
+          "name": "Frame 466",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 198,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:60506",
+          "name": "Group 15",
+          "type": "GROUP",
+          "x": 86,
+          "y": 246,
+          "h": 18,
+          "w": 188,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음"
+        },
+        {
+          "i": 3,
+          "id": "8403:60513",
+          "name": "Frame 641",
+          "type": "FRAME",
+          "x": 0,
+          "y": 312,
+          "h": 232,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 0 / 1)"
+        },
+        {
+          "i": 4,
+          "id": "8403:60541",
+          "name": "m_checkbox",
+          "type": "FRAME",
+          "x": 128,
+          "y": 629,
+          "h": 18,
+          "w": 104,
+          "depth": 0,
+          "kind": "group",
+          "label": "m_checkbox(m_checkbox)",
+          "parts": {
+            "m_checkbox": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "8403:60543",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "8412:64420",
+      "name": "2.2 간편인증_5 간편번호 오류(불가능한 번호)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음 → 묶음(글자: 0 / 1) → m_checkbox(m_checkbox) → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "8412:64421",
+          "name": "Frame 678",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 544,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8412:64422",
+          "name": "Frame 466",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 198,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8412:64429",
+          "name": "Group 15",
+          "type": "GROUP",
+          "x": 86,
+          "y": 246,
+          "h": 18,
+          "w": 188,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음"
+        },
+        {
+          "i": 3,
+          "id": "8412:64436",
+          "name": "Frame 641",
+          "type": "FRAME",
+          "x": 0,
+          "y": 312,
+          "h": 232,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 0 / 1)"
+        },
+        {
+          "i": 4,
+          "id": "8412:64464",
+          "name": "m_checkbox",
+          "type": "FRAME",
+          "x": 128,
+          "y": 629,
+          "h": 18,
+          "w": 104,
+          "depth": 0,
+          "kind": "group",
+          "label": "m_checkbox(m_checkbox)",
+          "parts": {
+            "m_checkbox": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "8412:64466",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "8403:59290",
+      "name": "1.2 회원가입(모앱)_10 가입 완료",
+      "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 홍길동님, 환영합니다! / 회원가입이 완료되었습니다.) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59291",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "8403:59294",
+          "name": "Frame 316",
+          "type": "FRAME",
+          "x": 0,
+          "y": 295,
+          "h": 148,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 홍길동님, 환영합니다! / 회원가입이 완료되었습니다.)"
+        },
+        {
+          "i": 2,
+          "id": "8403:59312",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8405:64247",
+      "name": "1.2 회원가입(모앱)_11 가입 완료",
+      "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 홍길동님, 환영합니다! / 회원가입이 완료되었습니다. 회원가입 하신 정) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8405:64248",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 96,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "8405:64312",
+          "name": "Frame 569",
+          "type": "FRAME",
+          "x": 0,
+          "y": 263,
+          "h": 212,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 홍길동님, 환영합니다! / 회원가입이 완료되었습니다. 회원가입 하신 정)"
+        },
+        {
+          "i": 2,
+          "id": "8405:64269",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:59316",
+      "name": "1.2 회원가입(모앱)_5 기존 아이디 사용 여부 선택",
+      "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_bar×4, tabel_bar×4, close) → 묶음(m_btn_full, keyboard)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59317",
+          "name": "Frame 459",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 279,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "title/signup": 1,
+            "step/Default": 1,
+            "m_Input box": 1,
+            "Remove": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "8403:59328",
+          "name": "Group 190",
+          "type": "GROUP",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_bar×4, tabel_bar×4, close)",
+          "parts": {
+            "close": 1,
+            "ok": 1,
+            "m_bar": 4,
+            "tabel_bar": 4,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59325",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 389,
+          "h": 391,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_btn_full, keyboard)",
+          "parts": {
+            "m_btn_full": 1,
+            "keyboard": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "10580:18724",
+      "name": "1.2 회원가입(모앱)_1 약관 동의",
+      "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_checkbox×4, More×2, m_bar) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "10580:18725",
+          "name": "Frame 515",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 424,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "10580:18726",
+          "name": "Frame 518",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 168,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "10580:18732",
+          "name": "Frame 517",
+          "type": "FRAME",
+          "x": 0,
+          "y": 208,
+          "h": 216,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_checkbox×4, More×2, m_bar)",
+          "parts": {
+            "m_checkbox": 4,
+            "m_bar": 1,
+            "tabel_bar": 1,
+            "More": 2
+          }
+        },
+        {
+          "i": 3,
+          "id": "10580:18759",
+          "name": "Frame 402",
+          "type": "FRAME",
+          "x": 0,
+          "y": 641,
+          "h": 139,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "10580:19147",
+      "name": "1.2 회원가입(모앱)_2 약관 상세",
+      "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "m_StatusBar  → appbar_sub → 글자\"회원 약관 동의\" → 묶음(글자: 제 1조(목적) / 본 약관은 '주식회사 에스원(이하 \"회사\")) → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "10580:19148",
+          "name": "m_StatusBar ",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 0,
+          "h": 24,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "m_StatusBar "
+        },
+        {
+          "i": 1,
+          "id": "10580:19149",
+          "name": "appbar_sub",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 24,
+          "h": 72,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "appbar_sub"
+        },
+        {
+          "i": 2,
+          "id": "10580:19150",
+          "name": "Frame 318",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 636,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "10580:19151",
+          "name": "서비스약관에 동의해 주세요",
+          "type": "TEXT",
+          "x": 20,
+          "y": 96,
+          "h": 20,
+          "w": 113,
+          "depth": 1,
+          "kind": "text",
+          "label": "글자\"회원 약관 동의\""
+        },
+        {
+          "i": 4,
+          "id": "10580:19152",
+          "name": "Frame 393",
+          "type": "FRAME",
+          "x": 20,
+          "y": 140,
+          "h": 478,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 제 1조(목적) / 본 약관은 '주식회사 에스원(이하 \"회사\"))"
+        },
+        {
+          "i": 5,
+          "id": "10580:19159",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "8403:59363",
+      "name": "1.2 회원가입(모앱)_6 비밀번호 입력",
+      "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "m_StatusBar  → appbar_sub → 묶음(pw off, hide) → 묶음(keyboard, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59364",
+          "name": "Frame 465",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 398,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59365",
+          "name": "m_StatusBar ",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 0,
+          "h": 26,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_StatusBar "
+        },
+        {
+          "i": 2,
+          "id": "8403:59366",
+          "name": "appbar_sub",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 26,
+          "h": 72,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "appbar_sub"
+        },
+        {
+          "i": 3,
+          "id": "8403:59367",
+          "name": "Frame 527",
+          "type": "FRAME",
+          "x": 0,
+          "y": 98,
+          "h": 300,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(pw off, hide)",
+          "parts": {
+            "pw off": 1,
+            "hide": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:59387",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 440,
+          "h": 340,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(keyboard, phone_navi)",
+          "parts": {
+            "keyboard": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:59390",
+      "name": "1.2 회원가입(모앱)_9 이메일 도메인 선택",
+      "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_Input box×2, m_StatusBar , appbar_sub) → 묶음(m_bar×4, tabel_bar×4, close) → m_btn_full → keyboard → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59391",
+          "name": "Frame 459",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 336,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_Input box×2, m_StatusBar , appbar_sub)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "m_email_input": 1,
+            "m_Input box": 2,
+            "Remove": 1,
+            "m_combobox/off/off/off/Default": 1,
+            "icon/combobox_arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "8403:59404",
+          "name": "Frame 1029",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_bar×4, tabel_bar×4, close)",
+          "parts": {
+            "close": 1,
+            "m_bar": 4,
+            "tabel_bar": 4,
+            "ok": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:59400",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 390,
+          "h": 390,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "8403:59401",
+          "name": "m_btn_full",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 390,
+          "h": 50,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_btn_full"
+        },
+        {
+          "i": 4,
+          "id": "8403:59402",
+          "name": "keyboard",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 440,
+          "h": 292,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "keyboard"
+        },
+        {
+          "i": 5,
+          "id": "8403:59403",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "8403:59431",
+      "name": "1.2 회원가입(모앱)_8 이메일 입력",
+      "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_Input box×2, m_StatusBar , appbar_sub) → keyboard → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59432",
+          "name": "Frame 459",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 336,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_Input box×2, m_StatusBar , appbar_sub)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "m_email_input": 1,
+            "m_Input box": 2,
+            "Remove": 1,
+            "m_combobox/off/off/off/Default": 1,
+            "icon/combobox_arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "8403:59441",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 440,
+          "h": 340,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "8403:59442",
+          "name": "keyboard",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 440,
+          "h": 292,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "keyboard"
+        },
+        {
+          "i": 3,
+          "id": "8403:59443",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "8403:59444",
+      "name": "1.2 회원가입(모앱)_7 비밀번호 조건",
+      "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "m_StatusBar  → appbar_sub → 묶음(pw off, hide) → dialog(close, m_button) → 묶음(m_btn_full, keyboard, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:59445",
+          "name": "Frame 465",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 398,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:59446",
+          "name": "m_StatusBar ",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 0,
+          "h": 26,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_StatusBar "
+        },
+        {
+          "i": 2,
+          "id": "8403:59447",
+          "name": "appbar_sub",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 26,
+          "h": 72,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "appbar_sub"
+        },
+        {
+          "i": 3,
+          "id": "8403:59448",
+          "name": "Frame 528",
+          "type": "FRAME",
+          "x": 0,
+          "y": 98,
+          "h": 300,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(pw off, hide)",
+          "parts": {
+            "pw off": 1,
+            "hide": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:59472",
+          "name": "dialog",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "dialog(close, m_button)",
+          "parts": {
+            "close": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "8403:59468",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 390,
+          "h": 390,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_btn_full, keyboard, phone_navi)",
+          "parts": {
+            "m_btn_full": 1,
+            "keyboard": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "10580:19015",
+      "name": "1.2 회원가입(모앱)_3 이미 가입한 회원",
+      "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_checkbox×4, More×2, m_bar) → dialog(close, m_button) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "10580:19016",
+          "name": "Frame 515",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 424,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "10580:19017",
+          "name": "Frame 518",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 168,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "10580:19023",
+          "name": "Frame 517",
+          "type": "FRAME",
+          "x": 0,
+          "y": 208,
+          "h": 216,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_checkbox×4, More×2, m_bar)",
+          "parts": {
+            "m_checkbox": 4,
+            "m_bar": 1,
+            "tabel_bar": 1,
+            "More": 2
+          }
+        },
+        {
+          "i": 3,
+          "id": "10580:19131",
+          "name": "dialog",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "dialog(close, m_button)",
+          "parts": {
+            "close": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "10580:19050",
+          "name": "Frame 402",
+          "type": "FRAME",
+          "x": 0,
+          "y": 641,
+          "h": 139,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "10580:19198",
+      "name": "1.2 회원가입(모앱)_4 이메일 입력",
+      "section": "1.2 모바일 앱(만 14세 미만 가입 불가)",
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → keyboard → phone_navi",
+      "order": [
+        {
+          "i": 0,
+          "id": "10580:19199",
+          "name": "Frame 465",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 278,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "m_Input box": 1,
+            "Remove": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "10580:19210",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 440,
+          "h": 340,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "10580:19211",
+          "name": "keyboard",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 440,
+          "h": 292,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "keyboard"
+        },
+        {
+          "i": 3,
+          "id": "10580:19212",
+          "name": "phone_navi",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "phone_navi"
+        }
+      ]
+    },
+    {
+      "id": "11704:9454",
+      "name": "Vector 1",
+      "section": null,
+      "size": "100x100",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "8403:60128",
+      "name": "2.1 로그인_1 최초 진입",
+      "section": "2.1 로그인",
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "m_StatusBar  → 묶음(S1 logo) → 묶음(m_button×2, m_Input box, pw off) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:60129",
+          "name": "Frame 687",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 492,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:60130",
+          "name": "m_StatusBar ",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 0,
+          "h": 27,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_StatusBar "
+        },
+        {
+          "i": 2,
+          "id": "8403:60131",
+          "name": "Frame 280",
+          "type": "FRAME",
+          "x": 0,
+          "y": 27,
+          "h": 161,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(S1 logo)",
+          "parts": {
+            "S1 logo": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:60133",
+          "name": "Frame 285",
+          "type": "FRAME",
+          "x": 0,
+          "y": 188,
+          "h": 304,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_button×2, m_Input box, pw off)",
+          "parts": {
+            "m_Input box": 1,
+            "pw off": 1,
+            "m_button": 2,
+            "m_login_bottom": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:60144",
+          "name": "Group 617",
+          "type": "GROUP",
+          "x": 0,
+          "y": 638,
+          "h": 142,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:60155",
+      "name": "2.1 로그인_2 입력",
+      "section": "2.1 로그인",
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "m_StatusBar  → 묶음(S1 logo) → 묶음(m_button×4, m_login_bottom×2, m_Input box) → 묶음(keyboard)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:60156",
+          "name": "Frame 687",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 492,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:60157",
+          "name": "m_StatusBar ",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 0,
+          "h": 27,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_StatusBar "
+        },
+        {
+          "i": 2,
+          "id": "8403:60158",
+          "name": "Frame 280",
+          "type": "FRAME",
+          "x": 0,
+          "y": 27,
+          "h": 161,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(S1 logo)",
+          "parts": {
+            "S1 logo": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:60160",
+          "name": "Frame 285",
+          "type": "FRAME",
+          "x": 0,
+          "y": 188,
+          "h": 304,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_button×4, m_login_bottom×2, m_Input box)",
+          "parts": {
+            "m_Input box": 1,
+            "Remove": 1,
+            "pw off": 1,
+            "m_button": 4,
+            "m_login_bottom": 2
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:60179",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 439,
+          "h": 341,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(keyboard)",
+          "parts": {
+            "keyboard": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30812:3889",
+      "name": "2.1 로그인_2 입력",
+      "section": "2.1 로그인",
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "m_StatusBar  → 묶음(S1 logo) → 묶음(m_button×4, m_login_bottom×2, m_Input box) → 묶음(keyboard)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30812:3890",
+          "name": "Frame 687",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 492,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30812:3891",
+          "name": "m_StatusBar ",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 0,
+          "h": 27,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_StatusBar "
+        },
+        {
+          "i": 2,
+          "id": "30812:3892",
+          "name": "Frame 280",
+          "type": "FRAME",
+          "x": 0,
+          "y": 27,
+          "h": 161,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(S1 logo)",
+          "parts": {
+            "S1 logo": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "30812:3894",
+          "name": "Frame 285",
+          "type": "FRAME",
+          "x": 0,
+          "y": 188,
+          "h": 304,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_button×4, m_login_bottom×2, m_Input box)",
+          "parts": {
+            "m_Input box": 1,
+            "pw off": 1,
+            "Remove": 1,
+            "m_button": 4,
+            "m_login_bottom": 2
+          }
+        },
+        {
+          "i": 4,
+          "id": "30812:3913",
+          "name": "Frame 464",
+          "type": "FRAME",
+          "x": 0,
+          "y": 439,
+          "h": 341,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(keyboard)",
+          "parts": {
+            "keyboard": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:60181",
+      "name": "2.1 로그인_7 자동 로그인 선택",
+      "section": "2.1 로그인",
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "m_StatusBar  → 묶음(S1 logo) → 묶음(m_button×2, m_Input box, pw off) → dialog(close, m_button) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:60182",
+          "name": "Frame 687",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 492,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:60183",
+          "name": "m_StatusBar ",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 0,
+          "h": 27,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_StatusBar "
+        },
+        {
+          "i": 2,
+          "id": "8403:60184",
+          "name": "Frame 280",
+          "type": "FRAME",
+          "x": 0,
+          "y": 27,
+          "h": 161,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(S1 logo)",
+          "parts": {
+            "S1 logo": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:60186",
+          "name": "Frame 285",
+          "type": "FRAME",
+          "x": 0,
+          "y": 188,
+          "h": 304,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_button×2, m_Input box, pw off)",
+          "parts": {
+            "m_Input box": 1,
+            "pw off": 1,
+            "Remove": 1,
+            "m_button": 2,
+            "m_login_bottom": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:60210",
+          "name": "dialog",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "dialog(close, m_button)",
+          "parts": {
+            "close": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "8403:60199",
+          "name": "Group 618",
+          "type": "GROUP",
+          "x": 0,
+          "y": 638,
+          "h": 142,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:60218",
+      "name": "2.1 로그인_6 새로운 기기로 로그인(1)",
+      "section": "2.1 로그인",
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "m_StatusBar  → 묶음(S1 logo) → 묶음(m_button×2, m_Input box, pw off) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:60219",
+          "name": "Frame 687",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 492,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:60220",
+          "name": "m_StatusBar ",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 0,
+          "h": 27,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_StatusBar "
+        },
+        {
+          "i": 2,
+          "id": "8403:60221",
+          "name": "Frame 280",
+          "type": "FRAME",
+          "x": 0,
+          "y": 27,
+          "h": 161,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(S1 logo)",
+          "parts": {
+            "S1 logo": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:60223",
+          "name": "Frame 285",
+          "type": "FRAME",
+          "x": 0,
+          "y": 188,
+          "h": 304,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_button×2, m_Input box, pw off)",
+          "parts": {
+            "m_Input box": 1,
+            "pw off": 1,
+            "Remove": 1,
+            "m_button": 2,
+            "m_login_bottom": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:60236",
+          "name": "Group 618",
+          "type": "GROUP",
+          "x": 0,
+          "y": 638,
+          "h": 142,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "21505:5461",
+      "name": "2.1 로그인_6 로그아웃 확인",
+      "section": "2.1 로그인",
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_StatusBar ) → 묶음(menu_arrow_right×10, talk, helpdesk) → 묶음(home, under security, dome camera) → dialog(close, m_button) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "21505:5936",
+          "name": "전체 메뉴",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 780,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "21505:5937",
+          "name": "Frame 34706",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 24,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar )",
+          "parts": {
+            "m_StatusBar ": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "21505:5939",
+          "name": "Frame 264",
+          "type": "FRAME",
+          "x": 0,
+          "y": 24,
+          "h": 633,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(menu_arrow_right×10, talk, helpdesk)",
+          "parts": {
+            "talk": 1,
+            "menu_arrow_right": 10,
+            "helpdesk": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "21505:5983",
+          "name": "Frame 1127",
+          "type": "FRAME",
+          "x": 0,
+          "y": 672,
+          "h": 108,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(home, under security, dome camera)",
+          "parts": {
+            "home": 1,
+            "under security": 1,
+            "dome camera": 1,
+            "menu(hamburger)": 1,
+            "phone_navi": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "21505:5490",
+          "name": "dialog",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "dialog(close, m_button)",
+          "parts": {
+            "close": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "21505:5479",
+          "name": "Group 618",
+          "type": "GROUP",
+          "x": 0,
+          "y": 638,
+          "h": 142,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:60255",
+      "name": "2.1 로그인_3 아이디 미입력",
+      "section": "2.1 로그인",
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "m_StatusBar  → 묶음(S1 logo) → 묶음(m_button×2, pw off, m_login_bottom) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:60256",
+          "name": "Frame 687",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 512,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:60257",
+          "name": "m_StatusBar ",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 0,
+          "h": 27,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_StatusBar "
+        },
+        {
+          "i": 2,
+          "id": "8403:60258",
+          "name": "Frame 280",
+          "type": "FRAME",
+          "x": 0,
+          "y": 27,
+          "h": 161,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(S1 logo)",
+          "parts": {
+            "S1 logo": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:60260",
+          "name": "Frame 285",
+          "type": "FRAME",
+          "x": 0,
+          "y": 188,
+          "h": 324,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_button×2, pw off, m_login_bottom)",
+          "parts": {
+            "pw off": 1,
+            "m_button": 2,
+            "m_login_bottom": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:60276",
+          "name": "Group 618",
+          "type": "GROUP",
+          "x": 0,
+          "y": 638,
+          "h": 142,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:60287",
+      "name": "2.1 로그인_4 비번 미입력",
+      "section": "2.1 로그인",
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "m_StatusBar  → 묶음(S1 logo) → 묶음(m_button×2, m_Input box, pw off) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:60288",
+          "name": "Frame 687",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 512,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:60289",
+          "name": "m_StatusBar ",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 0,
+          "h": 27,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_StatusBar "
+        },
+        {
+          "i": 2,
+          "id": "8403:60290",
+          "name": "Frame 280",
+          "type": "FRAME",
+          "x": 0,
+          "y": 27,
+          "h": 161,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(S1 logo)",
+          "parts": {
+            "S1 logo": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:60292",
+          "name": "Frame 285",
+          "type": "FRAME",
+          "x": 0,
+          "y": 188,
+          "h": 324,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_button×2, m_Input box, pw off)",
+          "parts": {
+            "m_Input box": 1,
+            "pw off": 1,
+            "m_button": 2,
+            "m_login_bottom": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:60304",
+          "name": "Group 618",
+          "type": "GROUP",
+          "x": 0,
+          "y": 638,
+          "h": 142,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:60315",
+      "name": "2.1 로그인_5 잘못된 아이디비번",
+      "section": "2.1 로그인",
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "m_StatusBar  → 묶음(S1 logo) → 묶음(m_button×2, m_Input box, pw off) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:60316",
+          "name": "Frame 687",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 530,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:60317",
+          "name": "m_StatusBar ",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 0,
+          "h": 27,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_StatusBar "
+        },
+        {
+          "i": 2,
+          "id": "8403:60318",
+          "name": "Frame 280",
+          "type": "FRAME",
+          "x": 0,
+          "y": 27,
+          "h": 161,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(S1 logo)",
+          "parts": {
+            "S1 logo": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "8403:60320",
+          "name": "Frame 285",
+          "type": "FRAME",
+          "x": 0,
+          "y": 188,
+          "h": 342,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_button×2, m_Input box, pw off)",
+          "parts": {
+            "m_Input box": 1,
+            "pw off": 1,
+            "m_button": 2,
+            "m_login_bottom": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "8403:60335",
+          "name": "Group 618",
+          "type": "GROUP",
+          "x": 0,
+          "y": 638,
+          "h": 142,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "21446:2852",
+      "name": "2.1 로그인_6 새로운 기기로 로그인(2)",
+      "section": "2.1 로그인",
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "m_StatusBar  → 묶음(S1 logo) → 묶음(m_button×2, m_Input box, pw off) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "21446:2853",
+          "name": "Frame 687",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 492,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "21446:2854",
+          "name": "m_StatusBar ",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 0,
+          "h": 27,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_StatusBar "
+        },
+        {
+          "i": 2,
+          "id": "25843:41962",
+          "name": "Frame 286",
+          "type": "FRAME",
+          "x": 0,
+          "y": 27,
+          "h": 161,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(S1 logo)",
+          "parts": {
+            "S1 logo": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "21446:2857",
+          "name": "Frame 285",
+          "type": "FRAME",
+          "x": 0,
+          "y": 188,
+          "h": 304,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_button×2, m_Input box, pw off)",
+          "parts": {
+            "m_Input box": 1,
+            "pw off": 1,
+            "Remove": 1,
+            "m_button": 2
+          }
+        },
+        {
+          "i": 4,
+          "id": "21446:2870",
+          "name": "Group 618",
+          "type": "GROUP",
+          "x": 0,
+          "y": 638,
+          "h": 142,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "21446:2889",
+      "name": "2.1 로그인_7 자동 로그인 선택",
+      "section": "2.1 로그인",
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "m_StatusBar  → 묶음(S1 logo) → 묶음(m_button×2, m_Input box, pw off) → dialog(글자: 자동 로그인 설정 되었습니다. / 취소) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "21446:2890",
+          "name": "Frame 687",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 492,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "21446:2891",
+          "name": "m_StatusBar ",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 0,
+          "h": 27,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_StatusBar "
+        },
+        {
+          "i": 2,
+          "id": "25843:41946",
+          "name": "Frame 286",
+          "type": "FRAME",
+          "x": 0,
+          "y": 27,
+          "h": 161,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(S1 logo)",
+          "parts": {
+            "S1 logo": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "21446:2894",
+          "name": "Frame 285",
+          "type": "FRAME",
+          "x": 0,
+          "y": 188,
+          "h": 304,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_button×2, m_Input box, pw off)",
+          "parts": {
+            "m_Input box": 1,
+            "pw off": 1,
+            "Remove": 1,
+            "m_button": 2
+          }
+        },
+        {
+          "i": 4,
+          "id": "21446:2918",
+          "name": "dialog",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "dialog(글자: 자동 로그인 설정 되었습니다. / 취소)"
+        },
+        {
+          "i": 5,
+          "id": "21446:2907",
+          "name": "Group 618",
+          "type": "GROUP",
+          "x": 0,
+          "y": 638,
+          "h": 142,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30812:3215",
+      "name": "2.1 로그인_6 새로운 기기로 로그인",
+      "section": "2.1 로그인",
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "m_StatusBar  → 묶음(S1 logo) → 묶음(m_button×2, m_Input box, pw off) → dialog(close, m_button) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30812:3216",
+          "name": "Frame 687",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 492,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30812:3217",
+          "name": "m_StatusBar ",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 0,
+          "h": 27,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_StatusBar "
+        },
+        {
+          "i": 2,
+          "id": "30812:3218",
+          "name": "Frame 280",
+          "type": "FRAME",
+          "x": 0,
+          "y": 27,
+          "h": 161,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(S1 logo)",
+          "parts": {
+            "S1 logo": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "30812:3220",
+          "name": "Frame 285",
+          "type": "FRAME",
+          "x": 0,
+          "y": 188,
+          "h": 304,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_button×2, m_Input box, pw off)",
+          "parts": {
+            "m_Input box": 1,
+            "pw off": 1,
+            "Remove": 1,
+            "m_button": 2,
+            "m_login_bottom": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "30812:3244",
+          "name": "dialog",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "dialog(close, m_button)",
+          "parts": {
+            "close": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "30812:3233",
+          "name": "Group 618",
+          "type": "GROUP",
+          "x": 0,
+          "y": 638,
+          "h": 142,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30812:3252",
+      "name": "2.1 로그인_6 새로운 기기로 로그인",
+      "section": "2.1 로그인",
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "m_StatusBar  → 묶음(S1 logo) → 묶음(m_button×2, m_Input box, pw off) → dialog(m_button) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30812:3253",
+          "name": "Frame 687",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 492,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30812:3254",
+          "name": "m_StatusBar ",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 0,
+          "h": 27,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_StatusBar "
+        },
+        {
+          "i": 2,
+          "id": "30812:3255",
+          "name": "Frame 280",
+          "type": "FRAME",
+          "x": 0,
+          "y": 27,
+          "h": 161,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(S1 logo)",
+          "parts": {
+            "S1 logo": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "30812:3257",
+          "name": "Frame 285",
+          "type": "FRAME",
+          "x": 0,
+          "y": 188,
+          "h": 304,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_button×2, m_Input box, pw off)",
+          "parts": {
+            "m_Input box": 1,
+            "pw off": 1,
+            "Remove": 1,
+            "m_button": 2,
+            "m_login_bottom": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "30812:3281",
+          "name": "dialog",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "dialog(m_button)",
+          "parts": {
+            "m_button": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "30812:3270",
+          "name": "Group 618",
+          "type": "GROUP",
+          "x": 0,
+          "y": 638,
+          "h": 142,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30812:3288",
+      "name": "2.1 로그인_6 새로운 기기로 로그인",
+      "section": "2.1 로그인",
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "m_StatusBar  → 묶음(S1 logo) → 묶음(m_button×2, m_Input box, pw off) → dialog(close, m_button) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "30812:3289",
+          "name": "Frame 687",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 492,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "30812:3290",
+          "name": "m_StatusBar ",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 0,
+          "h": 27,
+          "w": 360,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_StatusBar "
+        },
+        {
+          "i": 2,
+          "id": "30812:3291",
+          "name": "Frame 286",
+          "type": "FRAME",
+          "x": 0,
+          "y": 27,
+          "h": 161,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(S1 logo)",
+          "parts": {
+            "S1 logo": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "30812:3293",
+          "name": "Frame 285",
+          "type": "FRAME",
+          "x": 0,
+          "y": 188,
+          "h": 304,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_button×2, m_Input box, pw off)",
+          "parts": {
+            "m_Input box": 1,
+            "pw off": 1,
+            "Remove": 1,
+            "m_button": 2
+          }
+        },
+        {
+          "i": 4,
+          "id": "30812:3317",
+          "name": "dialog",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 732,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "dialog(close, m_button)",
+          "parts": {
+            "close": 1,
+            "m_button": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "30812:3306",
+          "name": "Group 618",
+          "type": "GROUP",
+          "x": 0,
+          "y": 638,
+          "h": 142,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "30812:3326",
+      "name": "시안최종",
+      "section": "2.1 로그인",
+      "size": "118x39",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "21446:2881",
+      "name": "dialog",
+      "section": null,
+      "size": "360x732",
+      "rowCount": 1,
+      "orderText": "묶음(close, m_button)",
+      "order": [
+        {
+          "i": 0,
+          "id": "21446:2882",
+          "name": "Frame 199",
+          "type": "FRAME",
+          "x": 30,
+          "y": 261,
+          "h": 210,
+          "w": 300,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(close, m_button)",
+          "parts": {
+            "close": 1,
+            "m_button": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "8403:60247",
+      "name": "dialog",
+      "section": null,
+      "size": "360x732",
+      "rowCount": 2,
+      "orderText": "묶음(close) → m_button",
+      "order": [
+        {
+          "i": 0,
+          "id": "8403:60248",
+          "name": "Frame 199",
+          "type": "FRAME",
+          "x": 30,
+          "y": 213,
+          "h": 306,
+          "w": 300,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "8403:60249",
+          "name": "Frame 198",
+          "type": "FRAME",
+          "x": 54,
+          "y": 237,
+          "h": 184,
+          "w": 252,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(close)",
+          "parts": {
+            "close": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "8403:60254",
+          "name": "m_button",
+          "type": "INSTANCE",
+          "x": 54,
+          "y": 445,
+          "h": 50,
+          "w": 252,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_button"
+        }
+      ]
+    },
+    {
+      "id": "30812:3700",
+      "name": "현재 이걸로 반영되어 있음. 변경 필요",
+      "section": null,
+      "size": "331x32",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "30803:41400",
+      "name": "멀티 디바이스 개발로 해당 사양 삭제",
+      "section": null,
+      "size": "325x32",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    }
+  ]
+}

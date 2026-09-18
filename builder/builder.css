@@ -220,3 +220,22 @@ body[data-pb-dragging] .pb-canvas .s1-row[data-pb-empty="true"] { outline-color:
 .pb-dialog-card h3 { margin: 0 0 6px; font-size: 15px; color: var(--color-text-title-primary); }
 .pb-dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
 .pb-code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; white-space: pre-wrap; word-break: break-all; background: var(--color-bg-level-1); border-radius: var(--radius-8); padding: 10px; max-height: 200px; overflow: auto; color: var(--color-text-body-primary); }
+
+/* ── 가져온 화면 ─────────────────────────────────────────────
+   이미 만들어 둔 원본 화면을 그대로 올린 칸. 우리 부품이 아니라는 것이 보여야 한다. */
+.pb-card-imported { text-align: left; display: grid; gap: 2px; }
+.pb-card-imported .pb-card-name { font-weight: 600; }
+.pb-card-imported .pb-card-meta { font-size: 12px; color: var(--color-text-body-tertiary); }
+.pb-card-imported .pb-card-mode { color: var(--color-text-state-caution); }
+
+.pb-canvas .s1-block[data-s1-legacy="true"] { position: relative; outline: 1px dashed var(--color-line-gray-subtle); outline-offset: -1px; }
+.pb-canvas .s1-block[data-s1-legacy="true"][data-pb-selected="true"] { outline: 2px solid var(--color-action-primary-bg-default); }
+.pb-canvas .s1-block[data-s1-legacy="true"]::after {
+  content: "원본"; position: absolute; top: 0; left: 0;
+  font-size: 10px; line-height: 1; padding: 2px 4px;
+  background: var(--color-bg-level-2); color: var(--color-text-body-tertiary);
+  opacity: 0; transition: opacity .12s;
+}
+.pb-canvas .s1-block[data-s1-legacy="true"]:hover::after { opacity: 1; }
+.pb-legacy-canon { margin: 4px 0 0; padding-left: 16px; }
+.pb-legacy-canon li { margin: 2px 0; }

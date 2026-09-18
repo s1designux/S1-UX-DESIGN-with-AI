@@ -6,7 +6,22 @@
   "kind": "legacy | new",
   "canonPolicy": "separate | feeds-canon",
   "note": "이 묶음을 왜 따로 두는지 한 줄",
-  "source": { "figmaFileKey": "", "readAt": "", "screens": 0 },
+  "source": {
+    "figmaFileKey": "",
+    "readAt": "",
+    "screens": 0
+  },
   "inventory": "reports/pattern-builder/inventory/<service>/",
-  "chapters": ["screen-skeleton.md", "composition.md", "states.md", "content.md", "naming.md"]
+  "chapters": [
+    "screen-skeleton.md",
+    "composition.md",
+    "states.md",
+    "content.md",
+    "naming.md"
+  ],
+  "import": {
+    "mode": "legacy-as-is | canon-swap — 묶음마다 다르다. 정하기 전에는 가져오기가 멈춘다",
+    "why": "누가 언제 정했는지 한 줄(river 발화 그대로)",
+    "note": ""
+  }
 }
