@@ -162,7 +162,9 @@
     "legacy:check": "node scripts/legacy-map-apply.js --check",
     "legacy:selftest": "node scripts/legacy-map-selftest.js",
     "pattern:similar": "node scripts/pattern-similar.js",
-    "pattern:fetch": "node scripts/pattern-fetch.js"
+    "pattern:fetch": "node scripts/pattern-fetch.js",
+    "pattern:measure": "node scripts/pattern-measure.js",
+    "pattern:shots": "node scripts/pattern-shots.js"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.138.0",
