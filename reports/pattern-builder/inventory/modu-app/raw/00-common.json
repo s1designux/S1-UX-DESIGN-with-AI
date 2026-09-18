@@ -1,0 +1,4288 @@
+{
+  "_meta": {
+    "source": "figma:get_metadata",
+    "page": {
+      "name": "0. 공통",
+      "nodeId": "1878:23794"
+    },
+    "generatedAt": "2026-09-18",
+    "note": "기계 판독 원자료. 사람이 해석한 판독표는 같은 폴더의 md 에 쓴다."
+  },
+  "screenCount": 145,
+  "screens": [
+    {
+      "id": "21564:12153",
+      "name": "알림함(시스템 경비)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 11,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스약관에 동의해 주세요",
+        "새 알림이 없어요."
+      ]
+    },
+    {
+      "id": "21564:12388",
+      "name": "알림함(시스템 경비)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 20,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스약관에 동의해 주세요",
+        "경비/해제 이력",
+        "02월 02일 13:00 ‘에스원본사 11층’정상 세트 되었습니다.",
+        "경비/해제 이력",
+        "02월 02일 13:00 ‘에스원본사 11층’정상 세트 되었습니다.",
+        "경비/해제 이력",
+        "02월 02일 13:00 ‘에스원본사 11층’정상 세트 되었습니다."
+      ]
+    },
+    {
+      "id": "21564:12316",
+      "name": "알림_PUSH 알림 설정이 OFF일 경우",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 18,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "알림",
+        "서비스약관에 동의해 주세요",
+        "서비스약관에 동의해 주세요",
+        "새 알림이 없어요."
+      ]
+    },
+    {
+      "id": "1878:25282",
+      "name": "알림",
+      "section": null,
+      "size": "104x60",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "1943:24801",
+      "name": "전체 메뉴",
+      "section": null,
+      "size": "222x60",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "30866:45189",
+      "name": "추천혜택(마케팅) 정보 수신동의 팝업",
+      "section": null,
+      "size": "867x60",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "3140:50395",
+      "name": "로딩",
+      "section": null,
+      "size": "104x60",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "3140:50552",
+      "name": "날짜/시간 선택",
+      "section": null,
+      "size": "348x60",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "3140:50763",
+      "name": "다이얼로그(구버전)",
+      "section": null,
+      "size": "462x60",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "3140:51135",
+      "name": "바텀시트",
+      "section": null,
+      "size": "208x60",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "3140:51722",
+      "name": "토스트 팝업",
+      "section": null,
+      "size": "274x60",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "3140:51949",
+      "name": "툴팁",
+      "section": null,
+      "size": "104x60",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "3140:52010",
+      "name": "에러",
+      "section": null,
+      "size": "104x60",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "21626:12747",
+      "name": "하단 확인버튼 추가 25/5/8",
+      "section": null,
+      "size": "272x25",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "24741:24132",
+      "name": "하단 확인버튼 추가 25/5/8",
+      "section": null,
+      "size": "272x25",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "3140:52022",
+      "name": "에러 1",
+      "section": null,
+      "size": "360x740",
+      "nodeCount": 10,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스약관에 동의해 주세요",
+        "관리자로부터 최종 승인을 받으신 후"
+      ]
+    },
+    {
+      "id": "3140:52031",
+      "name": "에러 2",
+      "section": null,
+      "size": "360x740",
+      "nodeCount": 10,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스약관에 동의해 주세요",
+        "관리자로부터 최종 승인을 받으신 후"
+      ]
+    },
+    {
+      "id": "8102:60003",
+      "name": "에러 4",
+      "section": null,
+      "size": "360x740",
+      "nodeCount": 10,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스약관에 동의해 주세요",
+        "관리자로부터 최종 승인을 받으신 후"
+      ]
+    },
+    {
+      "id": "3140:51950",
+      "name": "툴팁 1",
+      "section": null,
+      "size": "320x126",
+      "nodeCount": 12,
+      "components": [
+        {
+          "name": "tools",
+          "count": 1
+        },
+        {
+          "name": "caution 2",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "총 3개의 서비스를 이용하고 계세요",
+        "총 3개의 서비스를 이용하고 계세요",
+        "총 3개의 서비스를 이용하고 계세요",
+        "한 번에 최대 3명 신청하실 수 있습"
+      ]
+    },
+    {
+      "id": "3140:51963",
+      "name": "툴팁 2",
+      "section": null,
+      "size": "320x126",
+      "nodeCount": 16,
+      "components": [
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "house",
+          "count": 1
+        },
+        {
+          "name": "caution 2",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "총 3개의 서비스를 이용하고 계세요",
+        "총 3개의 서비스를 이용하고 계세요",
+        "총 3개의 서비스를 이용하고 계세요",
+        "일시해제",
+        "해제"
+      ]
+    },
+    {
+      "id": "3140:51980",
+      "name": "Group 14 Copy 2",
+      "section": null,
+      "size": "191x80",
+      "nodeCount": 2,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "한 번에 최대 3명 신청하실 수 있습"
+      ]
+    },
+    {
+      "id": "3140:50553",
+      "name": "날짜시간 선택",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 132,
+      "components": [
+        {
+          "name": "More",
+          "count": 3
+        },
+        {
+          "name": "m_chips",
+          "count": 2
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 2
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "ok",
+          "count": 1
+        },
+        {
+          "name": "dome camera trouble",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "홍길동님",
+        "에스원 본사ㆍN1234567",
+        "항목명 copy 2",
+        "항목명 copy 3",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 3",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "날짜 선택",
+        "초기화",
+        "2021.12",
+        "4",
+        "11",
+        "18",
+        "25",
+        "3",
+        "10",
+        "17",
+        "24",
+        "31",
+        "2",
+        "9",
+        "16",
+        "23",
+        "30",
+        "1",
+        "8",
+        "15",
+        "22",
+        "29",
+        "7",
+        "14",
+        "21",
+        "28",
+        "6",
+        "13",
+        "20",
+        "27",
+        "5",
+        "12",
+        "19",
+        "26",
+        "S",
+        "F",
+        "T",
+        "W",
+        "T",
+        "M",
+        "S"
+      ]
+    },
+    {
+      "id": "3140:50396",
+      "name": "기본 로딩",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 86,
+      "components": [
+        {
+          "name": "m_chips",
+          "count": 2
+        },
+        {
+          "name": "dome camera trouble",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "home",
+          "count": 1
+        },
+        {
+          "name": "under security",
+          "count": 1
+        },
+        {
+          "name": "dome camera",
+          "count": 1
+        },
+        {
+          "name": "menu(hamburger)",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "항목명 copy 2",
+        "항목명 copy 3",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 3",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "홍길동님",
+        "에스원 본사ㆍN1234567",
+        "홈",
+        "경비",
+        "영상",
+        "전체"
+      ]
+    },
+    {
+      "id": "8207:59248",
+      "name": "긴 로딩",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 9,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스약관에 동의해 주세요",
+        "잠시만 기다려 주세요."
+      ]
+    },
+    {
+      "id": "13029:22953",
+      "name": "긴 로딩_서비스 정보 업데이트 중이예요",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 9,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스약관에 동의해 주세요",
+        "잠시만 기다려 주세요."
+      ]
+    },
+    {
+      "id": "15533:26532",
+      "name": "전체 메뉴",
+      "section": null,
+      "size": "360x1938",
+      "nodeCount": 155,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 24
+        },
+        {
+          "name": "close",
+          "count": 2
+        },
+        {
+          "name": "under security",
+          "count": 2
+        },
+        {
+          "name": "dome camera",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "refresh",
+          "count": 1
+        },
+        {
+          "name": "push new",
+          "count": 1
+        },
+        {
+          "name": "setting",
+          "count": 1
+        },
+        {
+          "name": "card",
+          "count": 1
+        },
+        {
+          "name": "event",
+          "count": 1
+        },
+        {
+          "name": "healing environment",
+          "count": 1
+        },
+        {
+          "name": "talk",
+          "count": 1
+        },
+        {
+          "name": "helpdesk",
+          "count": 1
+        },
+        {
+          "name": "home",
+          "count": 1
+        },
+        {
+          "name": "menu(hamburger)",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "홍길동님",
+        "상위 메뉴 1",
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "상위 메뉴 1",
+        "하위 메뉴 3",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "상위 메뉴 1",
+        "하위 메뉴 3",
+        "상위 메뉴 1",
+        "하위 메뉴 3",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "상위 메뉴 1",
+        "하위 메뉴 3",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "상위 메뉴 1",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "상위 메뉴 1",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "상위 메뉴 1",
+        "하위 메뉴 3",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "홈",
+        "경비",
+        "영상",
+        "전체"
+      ]
+    },
+    {
+      "id": "2517:43063",
+      "name": "아이콘 1",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 12,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스약관에 동의해 주세요",
+        "휴면 해제되었습니다. 다시 로그인하여 서비스를 이용하실 수 있습니다. 앞으로 많은 이용 부탁드립니다."
+      ]
+    },
+    {
+      "id": "2517:43119",
+      "name": "아이콘 2",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 10,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스약관에 동의해 주세요"
+      ]
+    },
+    {
+      "id": "2517:43166",
+      "name": "아이콘 3",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 13,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스약관에 동의해 주세요",
+        "담당자가 신청 내용을 확인한 후 권한을 승인합니다. 오랫동안 승인이 되지 않는다면 담당자에게 연락해 주세요."
+      ]
+    },
+    {
+      "id": "2517:43217",
+      "name": "아이콘 4",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 12,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스약관에 동의해 주세요",
+        "정상적으로 탈퇴되었습니다. 늘 행복한 일만 가득하시길 바랍니다."
+      ]
+    },
+    {
+      "id": "2517:43281",
+      "name": "아이콘 5",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 14,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스약관에 동의해 주세요",
+        "서비스 이용을 원하실 경우 담당 마스터에게 권한신청 해 주세요.",
+        "권한 신청하기"
+      ]
+    },
+    {
+      "id": "2517:43369",
+      "name": "아이콘 6",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 20,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "플레이스 홀더 텍스트",
+        "초대 멤버가 가입하면 권한을 부여할 수 있습니다.",
+        "가입한 멤버가 없어요"
+      ]
+    },
+    {
+      "id": "10580:7730",
+      "name": "아이콘 모음",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 8,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "2517:44410",
+      "name": "아이콘",
+      "section": null,
+      "size": "156x60",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "8814:60416",
+      "name": "퀵메뉴",
+      "section": null,
+      "size": "156x60",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "9247:45420",
+      "name": "웹뷰 공통 닫기 버튼",
+      "section": null,
+      "size": "457x60",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "3140:50975",
+      "name": "다이얼로그2",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 38,
+      "components": [
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "플레이스 홀더 텍스트",
+        "항목명 copy 2",
+        "총 3개의 서비스를 이용하고 계세요",
+        "항목명 copy 2",
+        "서비스 권한이 신청되어 마스터 관리자가 권한을 부여중입니다.",
+        "신청 취소",
+        "2023.01.04",
+        "가입 승인 후 이용가능합니다."
+      ]
+    },
+    {
+      "id": "3140:51054",
+      "name": "다이얼로그1",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 38,
+      "components": [
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "플레이스 홀더 텍스트",
+        "항목명 copy 2",
+        "총 3개의 서비스를 이용하고 계세요",
+        "항목명 copy 2",
+        "서비스 권한이 신청되어 마스터 관리자가 권한을 부여중입니다.",
+        "신청 취소",
+        "2023.01.04",
+        "가입 승인 후 이용가능합니다."
+      ]
+    },
+    {
+      "id": "3140:51553",
+      "name": "기본 토스트팝업",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 83,
+      "components": [
+        {
+          "name": "m_chips",
+          "count": 2
+        },
+        {
+          "name": "ok",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "home",
+          "count": 1
+        },
+        {
+          "name": "under security",
+          "count": 1
+        },
+        {
+          "name": "dome camera",
+          "count": 1
+        },
+        {
+          "name": "menu(hamburger)",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "etc_vertical",
+          "count": 1
+        },
+        {
+          "name": "prz",
+          "count": 1
+        },
+        {
+          "name": "view rotate",
+          "count": 1
+        },
+        {
+          "name": "camera",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "항목명 copy 2",
+        "항목명 copy 3",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 3",
+        "항목명 copy 3",
+        "홍길동님",
+        "에스원 본사ㆍN1234567",
+        "홈",
+        "경비",
+        "영상",
+        "전체",
+        "항목명 copy 2",
+        "항목명 copy 2"
+      ]
+    },
+    {
+      "id": "3140:51723",
+      "name": "실시간 토스트팝업",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 119,
+      "components": [
+        {
+          "name": "m_chips",
+          "count": 2
+        },
+        {
+          "name": "menu_arrow_down",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "ok",
+          "count": 1
+        },
+        {
+          "name": "dome camera trouble",
+          "count": 1
+        },
+        {
+          "name": "etc_vertical",
+          "count": 1
+        },
+        {
+          "name": "view rotate",
+          "count": 1
+        },
+        {
+          "name": "pause",
+          "count": 1
+        },
+        {
+          "name": "play",
+          "count": 1
+        },
+        {
+          "name": "FF",
+          "count": 1
+        },
+        {
+          "name": "rewind",
+          "count": 1
+        },
+        {
+          "name": "home",
+          "count": 1
+        },
+        {
+          "name": "under security",
+          "count": 1
+        },
+        {
+          "name": "dome camera",
+          "count": 1
+        },
+        {
+          "name": "menu(hamburger)",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "홍길동님",
+        "에스원 본사ㆍN1234567",
+        "항목명 copy 2",
+        "항목명 copy 3",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 3",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "30",
+        "30",
+        "항목명 copy 3",
+        "홈",
+        "경비",
+        "영상",
+        "전체"
+      ]
+    },
+    {
+      "id": "3140:51947",
+      "name": "일반적인 버튼에 의한 액션",
+      "section": null,
+      "size": "245x34",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "3140:51948",
+      "name": "슬라이드바, 핀치 인/아웃 등의 실시간 조작 시 알림",
+      "section": null,
+      "size": "281x68",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "7087:65797",
+      "name": "추가인증",
+      "section": null,
+      "size": "208x60",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "7140:70011",
+      "name": "m_button",
+      "section": null,
+      "size": "152x50",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "7140:70012",
+      "name": "m_button",
+      "section": null,
+      "size": "152x50",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "7140:70013",
+      "name": "m_button",
+      "section": null,
+      "size": "320x50",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "7140:70014",
+      "name": "m_button",
+      "section": null,
+      "size": "320x50",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "7140:70034",
+      "name": "on pressed",
+      "section": null,
+      "size": "315x72",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "7140:70035",
+      "name": "m_button",
+      "section": null,
+      "size": "152x50",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "7140:70036",
+      "name": "m_button",
+      "section": null,
+      "size": "152x50",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "7140:70037",
+      "name": "m_button",
+      "section": null,
+      "size": "320x50",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "7140:70038",
+      "name": "m_button",
+      "section": null,
+      "size": "320x50",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "7140:70057",
+      "name": "on Pressed",
+      "section": null,
+      "size": "106x24",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "7140:70061",
+      "name": "default",
+      "section": null,
+      "size": "67x24",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "7140:70063",
+      "name": "default",
+      "section": null,
+      "size": "67x24",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "7160:70644",
+      "name": "default",
+      "section": null,
+      "size": "67x24",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "7160:70645",
+      "name": "on Pressed",
+      "section": null,
+      "size": "106x24",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "7140:70059",
+      "name": "on Pressed",
+      "section": null,
+      "size": "106x24",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "7160:70630",
+      "name": "Frame 220",
+      "section": null,
+      "size": "360x62",
+      "nodeCount": 3,
+      "components": [
+        {
+          "name": "m_chips",
+          "count": 2
+        }
+      ],
+      "texts": []
+    },
+    {
+      "id": "7160:70806",
+      "name": "Frame 1222",
+      "section": null,
+      "size": "360x62",
+      "nodeCount": 3,
+      "components": [
+        {
+          "name": "m_chips",
+          "count": 2
+        }
+      ],
+      "texts": []
+    },
+    {
+      "id": "7160:70636",
+      "name": "Radio Button",
+      "section": null,
+      "size": "95x30",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "7160:70637",
+      "name": "Radio Button",
+      "section": null,
+      "size": "53x30",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "8466:60490",
+      "name": "추가인증(간편번호)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 38,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "title/signup",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "PIN 번호를 입력해 주세요",
+        "PIN 번호를 입력해 주세요",
+        "PIN 번호를 입력해 주세요",
+        "PIN 번호를 입력해 주세요",
+        "PIN 번호를 입력해 주세요",
+        "PIN 번호를 입력해 주세요",
+        "PIN 번호를 입력해 주세요",
+        "PIN 번호를 입력해 주세요",
+        "PIN 번호를 입력해 주세요",
+        "PIN 번호를 입력해 주세요",
+        "다른 로그인 방식 선택"
+      ]
+    },
+    {
+      "id": "8814:60364",
+      "name": "퀵메뉴",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 19,
+      "components": [
+        {
+          "name": "home",
+          "count": 1
+        },
+        {
+          "name": "under security",
+          "count": 1
+        },
+        {
+          "name": "dome camera",
+          "count": 1
+        },
+        {
+          "name": "menu(hamburger)",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "홈",
+        "경비",
+        "영상",
+        "전체"
+      ]
+    },
+    {
+      "id": "9247:45368",
+      "name": "웹뷰 공통 닫기 버튼",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 7,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "텍스트"
+      ]
+    },
+    {
+      "id": "10968:38691",
+      "name": "긴급공지",
+      "section": null,
+      "size": "208x60",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "10968:38692",
+      "name": "긴급공지 1",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 15,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "시스템 점검 안내",
+        "긴급 시스템 점검으로 인하여 아래의 기간에 일시적으로 서비스가 중단될 수 있음을 알려드립니다.",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "오늘 하루 보지 않기"
+      ]
+    },
+    {
+      "id": "24741:29047",
+      "name": "긴급공지 7",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 13,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "시스템 장애 안내",
+        "이용에 불편을 드려 죄송합니다. 시스템 장애로 인하여 사이트 접속이 일시적으로 중단되었습니다.",
+        "입력 정보와 일치하는 임직원 정보를",
+        "오늘 하루 보지 않기"
+      ]
+    },
+    {
+      "id": "24741:29109",
+      "name": "긴급공지 9",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 14,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "시스템 장애 안내",
+        "시스템 장애 안내",
+        "이용에 불편을 드려 죄송합니다. 시스템 장애로 인하여 사이트 접속이 일시적으로 중단되었습니다.",
+        "입력 정보와 일치하는 임직원 정보를",
+        "오늘 하루 보지 않기"
+      ]
+    },
+    {
+      "id": "24741:29079",
+      "name": "긴급공지 8",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 13,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "시스템 점검 안내",
+        "이용에 불편을 드려 죄송합니다. 시스템 점검으로 인하여 사이트 접속이 일시적으로 중단되었습니다.",
+        "입력 정보와 일치하는 임직원 정보를",
+        "오늘 하루 보지 않기"
+      ]
+    },
+    {
+      "id": "13689:4516",
+      "name": "긴급공지 4",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 15,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "모두앱 서버 점검 및 업데이트 안내",
+        "보다 안정적이고 편리한 서비스 제공을 위해 모두앱 서버 점검 및 업데이트를 실시합니다. 점검시간 동안 일시적으로 모바일앱 접속이 중단되거나 원할하지 않을 수 있으니 양해 부탁드립니다.",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "오늘 하루 보지 않기"
+      ]
+    },
+    {
+      "id": "13696:4548",
+      "name": "긴급공지 5",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 14,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스 업데이트를 위한 작업 안내",
+        "모두앱 서비스 업데이트를 위해 아래의 기간에 일시적으로(약 1분간) 서비스 이용이 제한 될 수 있으니 양해 부탁드립니다.",
+        "입력 정보와 일치하는 임직원 정보를",
+        "오늘 하루 보지 않기"
+      ]
+    },
+    {
+      "id": "13696:14620",
+      "name": "긴급공지 6",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 14,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "MoDU App 업데이트 작업 안내",
+        "MoDU App 업데이트를 위한 서버 작업으로 아래 기간 동안 일시적으로(약 1분간) 서비스 이용이 제한 될 수 있으니 양해 부탁드립니다.",
+        "입력 정보와 일치하는 임직원 정보를",
+        "오늘 하루 보지 않기"
+      ]
+    },
+    {
+      "id": "10968:38709",
+      "name": "긴급공지 2",
+      "section": null,
+      "size": "360x784",
+      "nodeCount": 13,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "타이틀",
+        "친구추천 할때마다 월 서비스료 100% 상당 상품권 증정",
+        "오늘 하루 보지 않기"
+      ]
+    },
+    {
+      "id": "10968:38725",
+      "name": "긴급공지 3(UT용)",
+      "section": null,
+      "size": "360x784",
+      "nodeCount": 15,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "타이틀",
+        "사용성 테스트에 참여해 주셔서 감사합니다",
+        "에스원 신서비스 APP",
+        "오늘 하루 보지 않기"
+      ]
+    },
+    {
+      "id": "10968:38746",
+      "name": "앱 접근 권한 허용 안내",
+      "section": null,
+      "size": "523x60",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "30023:32425",
+      "name": "26/6 반영본",
+      "section": null,
+      "size": "153x30",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "10968:38747",
+      "name": "앱 업데이트",
+      "section": null,
+      "size": "274x60",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "10968:38821",
+      "name": "앱 업데이트 1(강제)",
+      "section": null,
+      "size": "360x732",
+      "nodeCount": 5,
+      "components": [
+        {
+          "name": "m_button",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "제목",
+        "입력 정보와 일치하는 임직원 정보를"
+      ]
+    },
+    {
+      "id": "10968:38827",
+      "name": "앱 업데이트 2(선택)",
+      "section": null,
+      "size": "360x732",
+      "nodeCount": 10,
+      "components": [
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "제목",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를"
+      ]
+    },
+    {
+      "id": "11308:10042",
+      "name": "9.3 실시간 영상(세로)_2 로딩",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 84,
+      "components": [
+        {
+          "name": "m_chips",
+          "count": 2
+        },
+        {
+          "name": "home",
+          "count": 1
+        },
+        {
+          "name": "under security",
+          "count": 1
+        },
+        {
+          "name": "dome camera",
+          "count": 1
+        },
+        {
+          "name": "menu(hamburger)",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "dome camera trouble",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "홈",
+        "경비",
+        "영상",
+        "전체",
+        "항목명 copy 2",
+        "항목명 copy 3",
+        "홍길동님",
+        "에스원 본사ㆍN1234567",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 3",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "숫자 6자리를 입력해 주세요."
+      ]
+    },
+    {
+      "id": "15533:27181",
+      "name": "2024.03.08 메뉴 위치 변경",
+      "section": null,
+      "size": "216x24",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "15597:5795",
+      "name": "Arrow 5",
+      "section": null,
+      "size": "64x0",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "15597:5796",
+      "name": "Arrow 6",
+      "section": null,
+      "size": "64x0",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "15597:5791",
+      "name": "Arrow 1",
+      "section": null,
+      "size": "64x0",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "15597:5792",
+      "name": "Arrow 2",
+      "section": null,
+      "size": "64x0",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "15597:5793",
+      "name": "Arrow 3",
+      "section": null,
+      "size": "64x0",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "15597:5794",
+      "name": "Arrow 4",
+      "section": null,
+      "size": "64x0",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "17801:12204",
+      "name": "알림함(영상)",
+      "section": null,
+      "size": "360x881",
+      "nodeCount": 52,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "개인",
+        "사업자 고객",
+        "서비스약관에 동의해 주세요",
+        "카메라 연결 상태 이상",
+        "02월 02일 13:00 ‘서비스 장소명’ ‘카메라명’ 영상 신호가 없습니다.",
+        "저장공간 부족",
+        "02월 02일 13:00 ‘서비스 장소명’ 사용 가능한 디스크 저장공간이 부족합니다.",
+        "영상기기 정기상태 알림",
+        "02월 02일 13:00 ‘서비스 장소명’ 기기에 이상이 있습니다.",
+        "총 3개의 서비스를 이용하고 계세요",
+        "총 3개의 서비스를 이용하고 계세요",
+        "총 3개의 서비스를 이용하고 계세요",
+        "총 3개의 서비스를 이용하고 계세요",
+        "총 3개의 서비스를 이용하고 계세요",
+        "총 3개의 서비스를 이용하고 계세요",
+        "총 3개의 서비스를 이용하고 계세요",
+        "총 3개의 서비스를 이용하고 계세요",
+        "총 3개의 서비스를 이용하고 계세요",
+        "총 3개의 서비스를 이용하고 계세요",
+        "총 3개의 서비스를 이용하고 계세요",
+        "총 3개의 서비스를 이용하고 계세요",
+        "총 3개의 서비스를 이용하고 계세요",
+        "총 3개의 서비스를 이용하고 계세요",
+        "알림"
+      ]
+    },
+    {
+      "id": "21505:6629",
+      "name": "알림함(시스템경비)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 29,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "사업자 고객",
+        "개인",
+        "서비스약관에 동의해 주세요",
+        "경비/해제 이력",
+        "02월 02일 13:00 ‘에스원본사 11층’정상 세트 되었습니다.",
+        "경비/해제 이력",
+        "02월 02일 13:00 ‘에스원본사 11층’정상 세트 되었습니다.",
+        "경비/해제 이력",
+        "02월 02일 13:00 ‘에스원본사 11층’정상 세트 되었습니다.",
+        "알림"
+      ]
+    },
+    {
+      "id": "21564:12244",
+      "name": "이게 최종인것같음",
+      "section": null,
+      "size": "301x42",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "21564:12446",
+      "name": "알림함(시스템 경비)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 28,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "알림",
+        "서비스약관에 동의해 주세요",
+        "서비스약관에 동의해 주세요",
+        "경비/해제 이력",
+        "02월 02일 13:00 [모바일카드] “에스원 본사 11층” 홍길동대표이사님이 경비했습니다.",
+        "경비/해제 이력",
+        "02월 02일 13:00 [App] “애드캡슐소프트” 홍길동님이 해제했습니다.",
+        "경비/해제 이력",
+        "02월 02일 13:00 “애드캡슐소프트” 홍길동님이 경비했습니다."
+      ]
+    },
+    {
+      "id": "21569:12193",
+      "name": "알림함(시스템 경비)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 25,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "알림",
+        "서비스약관에 동의해 주세요",
+        "경비/해제 이력",
+        "02월 02일 13:00 [모바일카드] “에스원 본사 11층” 홍길동대표이사님이 경비했습니다.",
+        "경비/해제 이력",
+        "02월 02일 13:00 [App] “애드캡슐소프트” 홍길동님이 해제했습니다.",
+        "경비/해제 이력",
+        "02월 02일 13:00 “애드캡슐소프트” 재택경비 되었습니다."
+      ]
+    },
+    {
+      "id": "21626:12686",
+      "name": "에러 5",
+      "section": null,
+      "size": "360x740",
+      "nodeCount": 13,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스약관에 동의해 주세요",
+        "관리자로부터 최종 승인을 받으신 후",
+        "관리자로부터 최종 승인을 받으신 후",
+        "관리자로부터 최종 승인을 받으신 후"
+      ]
+    },
+    {
+      "id": "24741:29014",
+      "name": "현재 에스원 시스템 장애로 모두App 사용이 일시적으로 중단되었습니다. 현재 복구를 진행중이며 신속히 정상화 하겠습니다. 서비스 이용에 불편을 드려 죄송합니다.",
+      "section": null,
+      "size": "436x275",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "24741:29015",
+      "name": "현재 에스원 시스템 점검으로 모두App 사용이 일시적으로 중단되었습니다. 점검을 완료하는대로 신속히 정상화 하겠습니다. 서비스 이용에 불편을 드려 죄송합니다.",
+      "section": null,
+      "size": "447x275",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "28398:43877",
+      "name": "계약처 검색_df",
+      "section": null,
+      "size": "360x779",
+      "nodeCount": 33,
+      "components": [
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "ok",
+          "count": 1
+        },
+        {
+          "name": "m_bar",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "계약처",
+        "총 5건",
+        "에스원 본사(N1234567)",
+        "에스원 사옥(N12222222)",
+        "에스원 사옥(N12222222)",
+        "에스원 사옥(N12222222)",
+        "에스원 사옥(N12223333)"
+      ]
+    },
+    {
+      "id": "28398:45036",
+      "name": "계약처 검색_MAX",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 39,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "ok",
+          "count": 1
+        },
+        {
+          "name": "m_bar",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "계약처",
+        "총 8건",
+        "에스원 본사(N1234567)",
+        "에스원 사옥(N12222222)",
+        "에스원 사옥(N12222222)",
+        "에스원 사옥(N12222222)",
+        "에스원 사옥(N12222222)",
+        "에스원 사옥(N12222222)",
+        "에스원 사옥(N12222222)",
+        "에스원 사옥(N12223333)"
+      ]
+    },
+    {
+      "id": "28398:45078",
+      "name": "계약처 검색_키보드 호출",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 39,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "ok",
+          "count": 1
+        },
+        {
+          "name": "m_bar",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "계약처",
+        "총 8건",
+        "에스원 본사(N1234567)",
+        "에스원 사옥(N12222222)",
+        "에스원 사옥(N12222222)",
+        "에스원 사옥(N12222222)",
+        "에스원 사옥(N12222222)",
+        "에스원 사옥(N12222222)",
+        "에스원 사옥(N12222222)",
+        "에스원 사옥(N12223333)"
+      ]
+    },
+    {
+      "id": "28398:45120",
+      "name": "계약처 검색_검색 후",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 30,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "ok",
+          "count": 1
+        },
+        {
+          "name": "m_bar",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "계약처",
+        "총 8건",
+        "에스원 본사(N1234567)",
+        "에스원 사옥(N12222222)",
+        "에스원 사옥2(N12222222)",
+        "에스원 강남지사(N12222222)",
+        "에스원 강남지사(N12222222)"
+      ]
+    },
+    {
+      "id": "28398:45152",
+      "name": "계약처 검색_검색결과 없음",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 16,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_Input box",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "계약처",
+        "총 0건",
+        "검색 결과가 없어요."
+      ]
+    },
+    {
+      "id": "28398:49550",
+      "name": "기기 로그인_서비스 장소 선택",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 39,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "ok",
+          "count": 1
+        },
+        {
+          "name": "lock",
+          "count": 1
+        },
+        {
+          "name": "plus",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스 장소",
+        "총 2건",
+        "서비스약관에 동의해 주세요",
+        "제목",
+        "06.01 16:10",
+        "제목",
+        "06.01 16:10",
+        "기기 등록"
+      ]
+    },
+    {
+      "id": "28398:49626",
+      "name": "기기 로그인_서비스 장소 선택_검색 결과",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 27,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "ok",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스 장소",
+        "총 1건",
+        "서비스약관에 동의해 주세요",
+        "제목",
+        "06.01 16:10"
+      ]
+    },
+    {
+      "id": "28398:49670",
+      "name": "기기 로그인_서비스 장소 선택_키패드",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 63,
+      "components": [
+        {
+          "name": "ok",
+          "count": 2
+        },
+        {
+          "name": "lock",
+          "count": 2
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "plus",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스 장소",
+        "총 1건",
+        "서비스약관에 동의해 주세요",
+        "제목",
+        "06.01 16:10",
+        "제목",
+        "06.01 16:10",
+        "제목",
+        "06.01 16:10",
+        "서비스약관에 동의해 주세요",
+        "제목",
+        "06.01 16:10",
+        "제목",
+        "06.01 16:10",
+        "기기 등록"
+      ]
+    },
+    {
+      "id": "28398:49814",
+      "name": "기기 로그인_서비스 장소 선택_키패드",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 63,
+      "components": [
+        {
+          "name": "ok",
+          "count": 2
+        },
+        {
+          "name": "lock",
+          "count": 2
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "plus",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스 장소",
+        "총 1건",
+        "서비스약관에 동의해 주세요",
+        "제목",
+        "06.01 16:10",
+        "제목",
+        "06.01 16:10",
+        "제목",
+        "06.01 16:10",
+        "서비스약관에 동의해 주세요",
+        "제목",
+        "06.01 16:10",
+        "제목",
+        "06.01 16:10",
+        "기기 등록"
+      ]
+    },
+    {
+      "id": "28398:49958",
+      "name": "기기 로그인_서비스 장소 선택_키패드",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 19,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_Input box",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스 장소",
+        "총 0건",
+        "검색 결과가 없어요."
+      ]
+    },
+    {
+      "id": "28398:49992",
+      "name": "Group 519",
+      "section": null,
+      "size": "1109x951",
+      "nodeCount": 26,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 2
+        }
+      ],
+      "texts": [
+        "바텀시트 스크롤 규정",
+        "(안드로이드 기준) 하단 조작바를 제외한 화면 높이의 80%를 최대 높이로 지정한다. 콘텐츠 길이가 그 이상이면 스크롤이 생성된다.",
+        "a",
+        "a",
+        "0.8a",
+        "0.8a"
+      ]
+    },
+    {
+      "id": "28398:50021",
+      "name": "기기 로그인_서비스 장소 선택(화면 높이 최대)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 66,
+      "components": [
+        {
+          "name": "lock",
+          "count": 4
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "ok",
+          "count": 1
+        },
+        {
+          "name": "plus",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스 장소",
+        "총 20건",
+        "서비스약관에 동의해 주세요",
+        "제목",
+        "06.01 16:10",
+        "제목",
+        "06.01 16:10",
+        "제목",
+        "06.01 16:10",
+        "서비스약관에 동의해 주세요",
+        "제목",
+        "06.01 16:10",
+        "제목",
+        "06.01 16:10",
+        "기기 등록"
+      ]
+    },
+    {
+      "id": "28398:50167",
+      "name": "기기 로그인_서비스 장소 선택_검색 결과 없음",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 16,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_Input box",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스 장소",
+        "총 0건",
+        "검색 결과가 없어요."
+      ]
+    },
+    {
+      "id": "28398:50197",
+      "name": "기기 로그인_서비스 장소 선택(화면 높이 최대)_검색 결과",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 73,
+      "components": [
+        {
+          "name": "lock",
+          "count": 4
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_Input box",
+          "count": 1
+        },
+        {
+          "name": "ok",
+          "count": 1
+        },
+        {
+          "name": "plus",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스 장소",
+        "총 6건",
+        "서비스약관에 동의해 주세요",
+        "제목",
+        "06.01 16:10",
+        "서비스약관에 동의해 주세요",
+        "제목",
+        "06.01 16:10",
+        "제목",
+        "06.01 16:10",
+        "제목",
+        "06.01 16:10",
+        "제목",
+        "06.01 16:10",
+        "기기 등록"
+      ]
+    },
+    {
+      "id": "28398:50364",
+      "name": "키보드 호출 시 바텀시트 사이즈 최대사이즈 적용",
+      "section": null,
+      "size": "515x96",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "28398:50972",
+      "name": "계약처 검색",
+      "section": null,
+      "size": "194x48",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "28398:50973",
+      "name": "서비스 장소 선택 (영상)",
+      "section": null,
+      "size": "389x48",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "28398:50365",
+      "name": "바텀시트(가로)",
+      "section": null,
+      "size": "780x360",
+      "nodeCount": 101,
+      "components": [
+        {
+          "name": "menu_arrow_down",
+          "count": 2
+        },
+        {
+          "name": "More",
+          "count": 2
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 3",
+        "날짜",
+        "2021.12",
+        "S",
+        "F",
+        "T",
+        "W",
+        "T",
+        "M",
+        "S",
+        "4",
+        "3",
+        "2",
+        "1",
+        "4",
+        "3",
+        "2",
+        "1",
+        "30",
+        "29",
+        "28",
+        "4",
+        "3",
+        "2",
+        "1",
+        "30",
+        "29",
+        "28",
+        "4",
+        "3",
+        "2",
+        "1",
+        "30",
+        "29",
+        "28",
+        "4",
+        "3",
+        "2",
+        "8",
+        "7",
+        "29",
+        "28"
+      ]
+    },
+    {
+      "id": "28398:50472",
+      "name": "바텀시트(세로)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 86,
+      "components": [
+        {
+          "name": "m_chips",
+          "count": 2
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "dome camera trouble",
+          "count": 1
+        },
+        {
+          "name": "etc_vertical",
+          "count": 1
+        },
+        {
+          "name": "view rotate",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "항목명 copy 2",
+        "항목명 copy 3",
+        "홍길동님",
+        "에스원 본사ㆍN1234567",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 3",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "항목명 copy 2",
+        "더보기",
+        "상세 설정",
+        "부가정보",
+        "원격 지원 요청",
+        "부가정보",
+        "방문 점검 신청",
+        "부가정보"
+      ]
+    },
+    {
+      "id": "30023:31896",
+      "name": "전체 메뉴",
+      "section": null,
+      "size": "360x1938",
+      "nodeCount": 172,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 28
+        },
+        {
+          "name": "close",
+          "count": 2
+        },
+        {
+          "name": "under security",
+          "count": 2
+        },
+        {
+          "name": "dome camera",
+          "count": 2
+        },
+        {
+          "name": "card",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "refresh",
+          "count": 1
+        },
+        {
+          "name": "push new",
+          "count": 1
+        },
+        {
+          "name": "setting",
+          "count": 1
+        },
+        {
+          "name": "event",
+          "count": 1
+        },
+        {
+          "name": "healing environment",
+          "count": 1
+        },
+        {
+          "name": "talk",
+          "count": 1
+        },
+        {
+          "name": "helpdesk",
+          "count": 1
+        },
+        {
+          "name": "home",
+          "count": 1
+        },
+        {
+          "name": "menu(hamburger)",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "홍길동님",
+        "상위 메뉴 1",
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "상위 메뉴 1",
+        "하위 메뉴 3",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "상위 메뉴 1",
+        "하위 메뉴 3",
+        "상위 메뉴 1",
+        "하위 메뉴 3",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "상위 메뉴 1",
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "상위 메뉴 1",
+        "하위 메뉴 3",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "상위 메뉴 1",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "상위 메뉴 1",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "상위 메뉴 1",
+        "하위 메뉴 3",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "홈",
+        "경비",
+        "영상",
+        "전체"
+      ]
+    },
+    {
+      "id": "30803:37439",
+      "name": "알림함(시스템경비-서브기기일때)",
+      "section": null,
+      "size": "360x779",
+      "nodeCount": 20,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "사업자 고객",
+        "개인",
+        "서비스약관에 동의해 주세요",
+        "알림",
+        "시스템 경비 알림은 메인 기기에서만 확인할수 있어요."
+      ]
+    },
+    {
+      "id": "30866:45164",
+      "name": "추천혜택(마케팅) 정보 알림",
+      "section": null,
+      "size": "360x732",
+      "nodeCount": 10,
+      "components": [
+        {
+          "name": "m_subbutton",
+          "count": 2
+        },
+        {
+          "name": "m_button variation",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "제목",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를"
+      ]
+    },
+    {
+      "id": "18353:12689",
+      "name": "Footer",
+      "section": "히스토리 파악안됨.. 시안만 만든것 같음",
+      "size": "360x448",
+      "nodeCount": 89,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "개인정보처리방침 copy 3",
+        "개인정보처리방침 copy 4",
+        "고객센터",
+        "1588-3112",
+        "(24시간 연중무휴)",
+        "(주)에스원",
+        "04511 서울특별시 중구 세종대로 7길 25 대표이사 : 남궁범 사업자등록번호 : 208-81-13302 사업자정보확인 통신판매업 신고 : 제2010-서울중구-0051호 호스팅서비스 사업자 : 카페24(주)",
+        "Copyright©S1 Corp. A Copy 3",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "고객센터",
+        "1588-3112",
+        "(24시간 연중무휴)",
+        "(주)에스원",
+        "04511 서울특별시 중구 세종대로 7길 25 대표이사 : 남궁범 사업자등록번호 : 208-81-13302 사업자정보확인 통신판매업 신고 : 제2010-서울중구-0051호 호스팅서비스 사업자 : 카페24(주)",
+        "Copyright©S1 Corp. A Copy 3",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "고객센터",
+        "1588-3112",
+        "(24시간 연중무휴)",
+        "(주)에스원",
+        "04511 서울특별시 중구 세종대로 7길 25 대표이사 : 남궁범 사업자등록번호 : 208-81-13302 사업자정보확인 통신판매업 신고 : 제2010-서울중구-0051호 호스팅서비스 사업자 : 카페24(주)",
+        "Copyright©S1 Corp. A Copy 3"
+      ]
+    },
+    {
+      "id": "18353:12785",
+      "name": "Footer",
+      "section": "히스토리 파악안됨.. 시안만 만든것 같음",
+      "size": "360x467",
+      "nodeCount": 90,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 3",
+        "고객센터",
+        "1588-3112",
+        "(24시간 연중무휴)",
+        "(주)에스원",
+        "04511 서울특별시 중구 세종대로 7길 25 대표이사 : 남궁범 사업자등록번호 : 208-81-13302 사업자정보확인 통신판매업 신고 : 제2010-서울중구-0051호 호스팅서비스 사업자 : 카페24(주)",
+        "Copyright©S1 Corp. A Copy 3",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "고객센터",
+        "1588-3112",
+        "(24시간 연중무휴)",
+        "(주)에스원",
+        "04511 서울특별시 중구 세종대로 7길 25 대표이사 : 남궁범 사업자등록번호 : 208-81-13302 사업자정보확인 통신판매업 신고 : 제2010-서울중구-0051호 호스팅서비스 사업자 : 카페24(주)",
+        "Copyright©S1 Corp. A Copy 3",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "고객센터",
+        "1588-3112",
+        "(24시간 연중무휴)",
+        "(주)에스원",
+        "04511 서울특별시 중구 세종대로 7길 25 대표이사 : 남궁범 사업자등록번호 : 208-81-13302 사업자정보확인 통신판매업 신고 : 제2010-서울중구-0051호 호스팅서비스 사업자 : 카페24(주)",
+        "Copyright©S1 Corp. A Copy 3"
+      ]
+    },
+    {
+      "id": "18353:12946",
+      "name": "Footer",
+      "section": "히스토리 파악안됨.. 시안만 만든것 같음",
+      "size": "360x466",
+      "nodeCount": 91,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 3",
+        "고객센터",
+        "1588-3112",
+        "(24시간 연중무휴)",
+        "(주)에스원",
+        "04511 서울특별시 중구 세종대로 7길 25 대표이사 : 남궁범 사업자등록번호 : 208-81-13302 사업자정보확인 통신판매업 신고 : 제2010-서울중구-0051호 호스팅서비스 사업자 : 카페24(주)",
+        "Copyright©S1 Corp. A Copy 3",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "고객센터",
+        "1588-3112",
+        "(24시간 연중무휴)",
+        "(주)에스원",
+        "04511 서울특별시 중구 세종대로 7길 25 대표이사 : 남궁범 사업자등록번호 : 208-81-13302 사업자정보확인 통신판매업 신고 : 제2010-서울중구-0051호 호스팅서비스 사업자 : 카페24(주)",
+        "Copyright©S1 Corp. A Copy 3",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "고객센터",
+        "1588-3112",
+        "(24시간 연중무휴)",
+        "(주)에스원",
+        "04511 서울특별시 중구 세종대로 7길 25 대표이사 : 남궁범 사업자등록번호 : 208-81-13302 사업자정보확인 통신판매업 신고 : 제2010-서울중구-0051호 호스팅서비스 사업자 : 카페24(주)",
+        "Copyright©S1 Corp. A Copy 3"
+      ]
+    },
+    {
+      "id": "18353:13149",
+      "name": "Footer",
+      "section": "히스토리 파악안됨.. 시안만 만든것 같음",
+      "size": "360x502",
+      "nodeCount": 91,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 3",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "고객센터",
+        "1588-3112",
+        "(24시간 연중무휴)",
+        "(주)에스원",
+        "04511 서울특별시 중구 세종대로 7길 25 대표이사 : 남궁범 사업자등록번호 : 208-81-13302 사업자정보확인 통신판매업 신고 : 제2010-서울중구-0051호 호스팅서비스 사업자 : 카페24(주)",
+        "Copyright©S1 Corp. A Copy 3",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "고객센터",
+        "1588-3112",
+        "(24시간 연중무휴)",
+        "(주)에스원",
+        "04511 서울특별시 중구 세종대로 7길 25 대표이사 : 남궁범 사업자등록번호 : 208-81-13302 사업자정보확인 통신판매업 신고 : 제2010-서울중구-0051호 호스팅서비스 사업자 : 카페24(주)",
+        "Copyright©S1 Corp. A Copy 3",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "고객센터",
+        "1588-3112",
+        "(24시간 연중무휴)",
+        "(주)에스원",
+        "04511 서울특별시 중구 세종대로 7길 25 대표이사 : 남궁범 사업자등록번호 : 208-81-13302 사업자정보확인 통신판매업 신고 : 제2010-서울중구-0051호 호스팅서비스 사업자 : 카페24(주)",
+        "Copyright©S1 Corp. A Copy 3"
+      ]
+    },
+    {
+      "id": "18380:13832",
+      "name": "삼성에스원_06마이페이지_01주문내역_00index",
+      "section": "히스토리 파악안됨.. 시안만 만든것 같음",
+      "size": "360x1013",
+      "nodeCount": 35,
+      "components": [
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "header_1",
+          "count": 1
+        },
+        {
+          "name": "title_",
+          "count": 1
+        },
+        {
+          "name": "document",
+          "count": 1
+        },
+        {
+          "name": "Estimate",
+          "count": 1
+        },
+        {
+          "name": "under security",
+          "count": 1
+        },
+        {
+          "name": "calendar",
+          "count": 1
+        },
+        {
+          "name": "card",
+          "count": 1
+        },
+        {
+          "name": "employee card",
+          "count": 1
+        },
+        {
+          "name": "Footer",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "주문관리",
+        "주문/취소 내역",
+        "정기결제 관리",
+        "정기결제 카드관리/신청내역/해지내역 등",
+        "COUPON",
+        "쿠폰 관리",
+        "내 쿠폰 등록/조회",
+        "내 정보",
+        "등록 된 내 정보 조회"
+      ]
+    },
+    {
+      "id": "18380:13985",
+      "name": "삼성에스원_06마이페이지_01주문내역_00index",
+      "section": "히스토리 파악안됨.. 시안만 만든것 같음",
+      "size": "360x1041",
+      "nodeCount": 109,
+      "components": [
+        {
+          "name": "More",
+          "count": 4
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "header_1",
+          "count": 1
+        },
+        {
+          "name": "title_",
+          "count": 1
+        },
+        {
+          "name": "Estimate",
+          "count": 1
+        },
+        {
+          "name": "calendar",
+          "count": 1
+        },
+        {
+          "name": "employee card",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "COUPON",
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "개인정보처리방침 copy 3",
+        "개인정보처리방침 copy 4",
+        "고객센터",
+        "1588-3112",
+        "(24시간 연중무휴)",
+        "(주)에스원",
+        "04511 서울특별시 중구 세종대로 7길 25 대표이사 : 남궁범 사업자등록번호 : 208-81-13302 사업자정보확인 통신판매업 신고 : 제2010-서울중구-0051호 호스팅서비스 사업자 : 카페24(주)",
+        "Copyright©S1 Corp. A Copy 3",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "고객센터",
+        "1588-3112",
+        "(24시간 연중무휴)",
+        "(주)에스원",
+        "04511 서울특별시 중구 세종대로 7길 25 대표이사 : 남궁범 사업자등록번호 : 208-81-13302 사업자정보확인 통신판매업 신고 : 제2010-서울중구-0051호 호스팅서비스 사업자 : 카페24(주)",
+        "Copyright©S1 Corp. A Copy 3",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "고객센터",
+        "1588-3112",
+        "(24시간 연중무휴)",
+        "(주)에스원",
+        "04511 서울특별시 중구 세종대로 7길 25 대표이사 : 남궁범 사업자등록번호 : 208-81-13302 사업자정보확인 통신판매업 신고 : 제2010-서울중구-0051호 호스팅서비스 사업자 : 카페24(주)",
+        "Copyright©S1 Corp. A Copy 3"
+      ]
+    },
+    {
+      "id": "18380:14197",
+      "name": "삼성에스원_06마이페이지_01주문내역_00index",
+      "section": "히스토리 파악안됨.. 시안만 만든것 같음",
+      "size": "360x1008",
+      "nodeCount": 73,
+      "components": [
+        {
+          "name": "More",
+          "count": 4
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "header_1",
+          "count": 1
+        },
+        {
+          "name": "title_",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "하위 메뉴 3",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 3",
+        "고객센터",
+        "1588-3112",
+        "(24시간 연중무휴)",
+        "(주)에스원",
+        "04511 서울특별시 중구 세종대로 7길 25 대표이사 : 남궁범 사업자등록번호 : 208-81-13302 사업자정보확인 통신판매업 신고 : 제2010-서울중구-0051호 호스팅서비스 사업자 : 카페24(주)",
+        "Copyright©S1 Corp. A Copy 3"
+      ]
+    },
+    {
+      "id": "18380:14401",
+      "name": "삼성에스원_06마이페이지_01주문내역_00index",
+      "section": "히스토리 파악안됨.. 시안만 만든것 같음",
+      "size": "360x1058",
+      "nodeCount": 65,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 4
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "header_1",
+          "count": 1
+        },
+        {
+          "name": "title_",
+          "count": 1
+        },
+        {
+          "name": "Footer",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "하위 메뉴 3",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 3",
+        "고객센터",
+        "1588-3112",
+        "(24시간 연중무휴)",
+        "(주)에스원",
+        "04511 서울특별시 중구 세종대로 7길 25 대표이사 : 남궁범 사업자등록번호 : 208-81-13302 사업자정보확인 통신판매업 신고 : 제2010-서울중구-0051호 호스팅서비스 사업자 : 카페24(주)",
+        "Copyright©S1 Corp. A Copy 3"
+      ]
+    },
+    {
+      "id": "18381:5023",
+      "name": "삼성에스원_06마이페이지_01주문내역_00index",
+      "section": "히스토리 파악안됨.. 시안만 만든것 같음",
+      "size": "360x1096",
+      "nodeCount": 65,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 4
+        },
+        {
+          "name": "header",
+          "count": 1
+        },
+        {
+          "name": "header_1",
+          "count": 1
+        },
+        {
+          "name": "title_",
+          "count": 1
+        },
+        {
+          "name": "Footer",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "하위 메뉴 3",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 3",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보처리방침 copy 2",
+        "개인정보수집˙이용동의 copy 2",
+        "고객센터",
+        "1588-3112",
+        "(24시간 연중무휴)",
+        "(주)에스원",
+        "04511 서울특별시 중구 세종대로 7길 25 대표이사 : 남궁범 사업자등록번호 : 208-81-13302 사업자정보확인 통신판매업 신고 : 제2010-서울중구-0051호 호스팅서비스 사업자 : 카페24(주)",
+        "Copyright©S1 Corp. A Copy 3"
+      ]
+    },
+    {
+      "id": "3140:52128",
+      "name": "알림함(시스템 경비)",
+      "section": "백업",
+      "size": "360x780",
+      "nodeCount": 20,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스약관에 동의해 주세요",
+        "경비/해제 이력",
+        "02월 02일 13:00 ‘에스원본사 11층’정상 세트 되었습니다.",
+        "경비/해제 이력",
+        "02월 02일 13:00 ‘에스원본사 11층’정상 세트 되었습니다.",
+        "경비/해제 이력",
+        "02월 02일 13:00 ‘에스원본사 11층’정상 세트 되었습니다."
+      ]
+    },
+    {
+      "id": "16063:5389",
+      "name": "알림함(시스템 경비)",
+      "section": "백업",
+      "size": "360x780",
+      "nodeCount": 20,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스약관에 동의해 주세요",
+        "경비/해제 이력",
+        "02월 02일 13:00 ‘에스원본사 11층’정상 세트 되었습니다.",
+        "경비/해제 이력",
+        "02월 02일 13:00 ‘에스원본사 11층’정상 세트 되었습니다.",
+        "경비/해제 이력",
+        "02월 02일 13:00 ‘에스원본사 11층’정상 세트 되었습니다."
+      ]
+    },
+    {
+      "id": "1878:25258",
+      "name": "알림_PUSH 알림 설정이 OFF일 경우",
+      "section": "백업",
+      "size": "360x780",
+      "nodeCount": 15,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "알림",
+        "서비스약관에 동의해 주세요",
+        "서비스약관에 동의해 주세요"
+      ]
+    },
+    {
+      "id": "1878:25271",
+      "name": "알림_No Data Case",
+      "section": "백업",
+      "size": "360x780",
+      "nodeCount": 12,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "알림",
+        "새 알림이 없어요."
+      ]
+    },
+    {
+      "id": "3140:52011",
+      "name": "에러 3",
+      "section": "백업",
+      "size": "360x740",
+      "nodeCount": 10,
+      "components": [
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "서비스약관에 동의해 주세요",
+        "관리자로부터 최종 승인을 받으신 후",
+        "관리자로부터 최종 승인을 받으신 후",
+        "관리자로부터 최종 승인을 받으신 후"
+      ]
+    },
+    {
+      "id": "4090:54265",
+      "name": "전체 메뉴",
+      "section": "백업",
+      "size": "360x1791",
+      "nodeCount": 143,
+      "components": [
+        {
+          "name": "menu_arrow_right",
+          "count": 23
+        },
+        {
+          "name": "m_chips",
+          "count": 3
+        },
+        {
+          "name": "close",
+          "count": 2
+        },
+        {
+          "name": "under security",
+          "count": 2
+        },
+        {
+          "name": "dome camera",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "refresh",
+          "count": 1
+        },
+        {
+          "name": "push new",
+          "count": 1
+        },
+        {
+          "name": "setting",
+          "count": 1
+        },
+        {
+          "name": "card",
+          "count": 1
+        },
+        {
+          "name": "event",
+          "count": 1
+        },
+        {
+          "name": "healing environment",
+          "count": 1
+        },
+        {
+          "name": "talk",
+          "count": 1
+        },
+        {
+          "name": "helpdesk",
+          "count": 1
+        },
+        {
+          "name": "home",
+          "count": 1
+        },
+        {
+          "name": "menu(hamburger)",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "홍길동님",
+        "상위 메뉴 1",
+        "하위 메뉴 3",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "상위 메뉴 1",
+        "하위 메뉴 3",
+        "상위 메뉴 1",
+        "하위 메뉴 3",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "상위 메뉴 1",
+        "하위 메뉴 3",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "상위 메뉴 1",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "상위 메뉴 1",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "상위 메뉴 1",
+        "하위 메뉴 3",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "하위 메뉴 7",
+        "홈",
+        "경비",
+        "영상",
+        "전체"
+      ]
+    },
+    {
+      "id": "16063:5447",
+      "name": "재택이력 표시 추가 필요(24.03.26)",
+      "section": "백업",
+      "size": "289x20",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "21569:12261",
+      "name": "AS-IS",
+      "section": "백업",
+      "size": "301x42",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "30871:86020",
+      "name": "앱 접근 권한 허용 안내 1(안드로이드)",
+      "section": "백업",
+      "size": "360x780",
+      "nodeCount": 50,
+      "components": [
+        {
+          "name": "smartphone",
+          "count": 1
+        },
+        {
+          "name": "img",
+          "count": 1
+        },
+        {
+          "name": "ic_전화",
+          "count": 1
+        },
+        {
+          "name": "camera",
+          "count": 1
+        },
+        {
+          "name": "contact",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "제목",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를"
+      ]
+    },
+    {
+      "id": "30871:86075",
+      "name": "앱 접근 권한 허용 안내 2(iOS)",
+      "section": "백업",
+      "size": "360x780",
+      "nodeCount": 44,
+      "components": [
+        {
+          "name": "smartphone",
+          "count": 1
+        },
+        {
+          "name": "camera",
+          "count": 1
+        },
+        {
+          "name": "img",
+          "count": 1
+        },
+        {
+          "name": "contact",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "제목",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를"
+      ]
+    },
+    {
+      "id": "30871:85722",
+      "name": "앱 접근 권한 허용 안내",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 58,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "dual view",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "제목",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "확인"
+      ]
+    },
+    {
+      "id": "30871:85813",
+      "name": "Group 1321317703",
+      "section": null,
+      "size": "37x732",
+      "nodeCount": 5,
+      "components": [],
+      "texts": [
+        "a"
+      ]
+    },
+    {
+      "id": "30871:85819",
+      "name": "0.8a",
+      "section": null,
+      "size": "59x44",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "30871:85820",
+      "name": "Group 515",
+      "section": null,
+      "size": "20x586",
+      "nodeCount": 3,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "30871:85824",
+      "name": "Line 480",
+      "section": null,
+      "size": "138x0.000012064343536621891",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "30871:85825",
+      "name": "스크롤 영역",
+      "section": null,
+      "size": "145x44",
+      "nodeCount": 0,
+      "components": [],
+      "texts": []
+    },
+    {
+      "id": "30871:85843",
+      "name": "앱 접근 권한 허용 안내 1(안드로이드)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 50,
+      "components": [
+        {
+          "name": "smartphone",
+          "count": 1
+        },
+        {
+          "name": "img",
+          "count": 1
+        },
+        {
+          "name": "ic_전화",
+          "count": 1
+        },
+        {
+          "name": "camera",
+          "count": 1
+        },
+        {
+          "name": "contact",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "제목",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를"
+      ]
+    },
+    {
+      "id": "30871:85898",
+      "name": "앱 접근 권한 허용 안내 2(iOS)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 44,
+      "components": [
+        {
+          "name": "smartphone",
+          "count": 1
+        },
+        {
+          "name": "img",
+          "count": 1
+        },
+        {
+          "name": "camera",
+          "count": 1
+        },
+        {
+          "name": "contact",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ],
+      "texts": [
+        "제목",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를",
+        "입력 정보와 일치하는 임직원 정보를"
+      ]
+    }
+  ],
+  "componentUsage": [
+    {
+      "name": "menu_arrow_right",
+      "count": 83
+    },
+    {
+      "name": "phone_navi",
+      "count": 77
+    },
+    {
+      "name": "close",
+      "count": 45
+    },
+    {
+      "name": "m_StatusBar",
+      "count": 38
+    },
+    {
+      "name": "m_button",
+      "count": 22
+    },
+    {
+      "name": "More",
+      "count": 22
+    },
+    {
+      "name": "m_chips",
+      "count": 19
+    },
+    {
+      "name": "ok",
+      "count": 15
+    },
+    {
+      "name": "appbar_sub",
+      "count": 13
+    },
+    {
+      "name": "m_Input box",
+      "count": 13
+    },
+    {
+      "name": "lock",
+      "count": 13
+    },
+    {
+      "name": "under security",
+      "count": 12
+    },
+    {
+      "name": "dome camera",
+      "count": 11
+    },
+    {
+      "name": "icon/arrow",
+      "count": 9
+    },
+    {
+      "name": "home",
+      "count": 8
+    },
+    {
+      "name": "menu(hamburger)",
+      "count": 8
+    },
+    {
+      "name": "menu_arrow_down",
+      "count": 6
+    },
+    {
+      "name": "m_subbutton",
+      "count": 5
+    },
+    {
+      "name": "dome camera trouble",
+      "count": 5
+    },
+    {
+      "name": "card",
+      "count": 5
+    },
+    {
+      "name": "camera",
+      "count": 5
+    },
+    {
+      "name": "plus",
+      "count": 5
+    },
+    {
+      "name": "header",
+      "count": 5
+    },
+    {
+      "name": "header_1",
+      "count": 5
+    },
+    {
+      "name": "title_",
+      "count": 5
+    },
+    {
+      "name": "m_bar",
+      "count": 4
+    },
+    {
+      "name": "smartphone",
+      "count": 4
+    },
+    {
+      "name": "img",
+      "count": 4
+    },
+    {
+      "name": "contact",
+      "count": 4
+    },
+    {
+      "name": "refresh",
+      "count": 3
+    },
+    {
+      "name": "push new",
+      "count": 3
+    },
+    {
+      "name": "setting",
+      "count": 3
+    },
+    {
+      "name": "event",
+      "count": 3
+    },
+    {
+      "name": "healing environment",
+      "count": 3
+    },
+    {
+      "name": "talk",
+      "count": 3
+    },
+    {
+      "name": "helpdesk",
+      "count": 3
+    },
+    {
+      "name": "icon/combobox_arrow",
+      "count": 3
+    },
+    {
+      "name": "etc_vertical",
+      "count": 3
+    },
+    {
+      "name": "view rotate",
+      "count": 3
+    },
+    {
+      "name": "Footer",
+      "count": 3
+    },
+    {
+      "name": "caution 2",
+      "count": 2
+    },
+    {
+      "name": "Estimate",
+      "count": 2
+    },
+    {
+      "name": "calendar",
+      "count": 2
+    },
+    {
+      "name": "employee card",
+      "count": 2
+    },
+    {
+      "name": "ic_전화",
+      "count": 2
+    },
+    {
+      "name": "tools",
+      "count": 1
+    },
+    {
+      "name": "house",
+      "count": 1
+    },
+    {
+      "name": "prz",
+      "count": 1
+    },
+    {
+      "name": "pause",
+      "count": 1
+    },
+    {
+      "name": "play",
+      "count": 1
+    },
+    {
+      "name": "FF",
+      "count": 1
+    },
+    {
+      "name": "rewind",
+      "count": 1
+    },
+    {
+      "name": "title/signup",
+      "count": 1
+    },
+    {
+      "name": "m_button variation",
+      "count": 1
+    },
+    {
+      "name": "document",
+      "count": 1
+    },
+    {
+      "name": "dual view",
+      "count": 1
+    }
+  ]
+}

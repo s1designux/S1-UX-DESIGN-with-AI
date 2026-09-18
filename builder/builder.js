@@ -30,7 +30,14 @@ const TEXT_COLORS = [
   ["title-primary", "제목 기본"], ["title-secondary", "제목 보조"],
   ["body-primary", "본문 기본"], ["body-secondary", "본문 보조"], ["body-tertiary", "본문 3차"]
 ];
-const PLATFORM_BREAK = { web: "pc", app: "pc", mobile: "mobile" };
+/* 화면 틀(프레임) — river 결정 2026-09-18: PC 1920×1080 · 모바일 360×780.
+   break 는 배포본 manifest 의 breaks 키(pc | mobile)와 잇는다. 옛 저장본의 web/app 값은 pc 로 읽는다. */
+const PLATFORMS = [
+  { id: "pc", label: "PC · 1920×1080", width: 1920, height: 1080, break: "pc" },
+  { id: "mobile", label: "모바일 · 360×780", width: 360, height: 780, break: "mobile" }
+];
+const PLATFORM_ALIAS = { web: "pc", app: "pc" };
+const PLATFORM_BREAK = { pc: "pc", mobile: "mobile", web: "pc", app: "pc" };
 const STORAGE_KEY = "s1-pattern-builder-state";
 
 /* ── 데이터 ─────────────────────────────────────────────────── */
@@ -107,7 +114,7 @@ function freshState() {
   const d = data.design?.defaults || {};
   return {
     version: 1,
-    meta: { name: "", service: d.service || "core", platform: d.platform || "web", role: d.role || "user", theme: d.theme || "light" },
+    meta: { name: "", service: d.service || "core", platform: "pc", role: d.role || "user", theme: d.theme || "light" },
     screen: { padding: "24" },
     rows: []
   };
@@ -197,6 +204,7 @@ async function blockElement(block, brk) {
   const wrap = document.createElement("div");
   wrap.className = "s1-block";
   if (block.width === "fill") wrap.style.flex = "1 1 0";
+  else if (block.width === "custom") wrap.style.width = `${Number(block.widthPx) || 320}px`;
   else if (block.width && block.width !== "auto") wrap.style.width = `${block.width}px`;
 
   if (block.kind === "text") {
@@ -226,6 +234,9 @@ async function blockElement(block, brk) {
     const tpl = document.createElement("template");
     tpl.innerHTML = block.html.trim();
     root = tpl.content.firstElementChild;
+  } else if (block.component === "table" && block.table) {
+    root = buildTableElement(block);
+    applyAxes(root, block, brk);
   } else {
     root = pickFragment(await exampleHtml(block.component, brk), block.component);
     if (root) { root = root.cloneNode(true); applyAxes(root, block, brk); }
@@ -241,6 +252,78 @@ async function blockElement(block, brk) {
   uniquifyIds(root, block.id);
   wrap.appendChild(root);
   return wrap;
+}
+
+/* ── 표(table) 모델 — 배포 예제의 구조(htmlContract)를 그대로 지키면서 열·행 수만 화면에서 정한다 ── */
+function tableModelFromExample(html) {
+  const root = pickFragment(html, "table");
+  const model = { selection: false, rows: 3, columns: [] };
+  if (!root) { model.columns = [{ label: "항목명" }, { label: "카테고리" }, { label: "수량", align: "center" }, { label: "상태", align: "center" }]; return model; }
+  root.querySelectorAll('thead th[data-s1-part="header-cell"]').forEach((th) => {
+    if (th.hasAttribute("data-selection")) { model.selection = true; return; }
+    const col = { label: th.textContent.trim() };
+    if (th.dataset.align) col.align = th.dataset.align;
+    model.columns.push(col);
+  });
+  model.rows = root.querySelectorAll('tbody tr[data-s1-part="row"]').length || 3;
+  return model;
+}
+
+function buildTableElement(block) {
+  const t = block.table;
+  const root = document.createElement("div");
+  root.setAttribute("data-s1-component", "table");
+  root.setAttribute("data-size", block.size || "md");
+  const table = document.createElement("table");
+  table.setAttribute("data-s1-part", "table");
+  const thead = document.createElement("thead");
+  const hr = document.createElement("tr");
+  const checkbox = (label) => {
+    const box = document.createElement("div");
+    box.setAttribute("data-s1-component", "checkbox");
+    const input = document.createElement("input");
+    input.type = "checkbox"; input.setAttribute("data-s1-part", "control"); input.setAttribute("aria-label", label);
+    box.appendChild(input);
+    return box;
+  };
+  if (t.selection) {
+    const th = document.createElement("th");
+    th.setAttribute("data-s1-part", "header-cell"); th.setAttribute("data-selection", ""); th.setAttribute("scope", "col");
+    th.appendChild(checkbox("전체 선택"));
+    hr.appendChild(th);
+  }
+  t.columns.forEach((col) => {
+    const th = document.createElement("th");
+    th.setAttribute("data-s1-part", "header-cell"); th.setAttribute("scope", "col");
+    if (col.align) th.setAttribute("data-align", col.align);
+    if (Number(col.width)) th.style.width = `${Number(col.width)}px`;
+    th.textContent = col.label || "";
+    hr.appendChild(th);
+  });
+  thead.appendChild(hr);
+  const tbody = document.createElement("tbody");
+  for (let i = 1; i <= (Number(t.rows) || 0); i++) {
+    const tr = document.createElement("tr");
+    tr.setAttribute("data-s1-part", "row");
+    if (t.selection) {
+      const td = document.createElement("td");
+      td.setAttribute("data-s1-part", "cell"); td.setAttribute("data-selection", "");
+      td.appendChild(checkbox(`항목 ${i} 선택`));
+      tr.appendChild(td);
+    }
+    t.columns.forEach((col, ci) => {
+      const td = document.createElement("td");
+      td.setAttribute("data-s1-part", "cell");
+      if (col.align) td.setAttribute("data-align", col.align);
+      const custom = (t.cells && t.cells[i - 1] && t.cells[i - 1][ci]);
+      td.textContent = custom != null && custom !== "" ? custom : `${col.label || "내용"} ${i}`;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  }
+  table.appendChild(thead); table.appendChild(tbody);
+  root.appendChild(table);
+  return root;
 }
 
 const ALIGN_CSS = { start: "flex-start", center: "center", end: "flex-end", between: "space-between" };
@@ -302,15 +385,32 @@ function fillSelect(sel, options, value) {
 }
 
 function platformInfo() {
-  const p = data.design?.profiles?.platform?.find((x) => x.id === state.meta.platform);
-  return p || { id: state.meta.platform, container: "1200px", columns: 12 };
+  const id = PLATFORM_ALIAS[state.meta.platform] || state.meta.platform;
+  return PLATFORMS.find((x) => x.id === id) || PLATFORMS[0];
+}
+
+/* 캔버스를 프레임 실제 크기(1920 등)로 그리고, 무대 폭에 맞춰 축소해 보여준다. */
+function fitCanvas() {
+  const p = platformInfo();
+  const stage = els.canvasWrap.parentElement;            // .pb-stage (무대) — 래퍼가 아니라 무대 폭을 기준으로 잰다
+  const avail = Math.max(200, stage.clientWidth - 48);
+  const scale = Math.min(1, avail / p.width);
+  els.canvas.style.width = `${p.width}px`;
+  els.canvas.style.minHeight = `${p.height}px`;
+  els.canvas.style.transform = `scale(${scale})`;
+  els.canvas.style.transformOrigin = "top left";
+  els.canvas.style.marginLeft = scale < 1 ? "0" : "auto";
+  els.canvasWrap.style.height = `${Math.ceil(els.canvas.offsetHeight * scale)}px`;
+  els.canvasWrap.style.width = scale < 1 ? `${Math.ceil(p.width * scale)}px` : `${p.width}px`;
+  els.frameLabel.textContent = `${p.label} · ${state.meta.role} · ${state.meta.theme}${scale < 1 ? ` · 미리보기 ${Math.round(scale * 100)}%` : ""}`;
 }
 
 function renderToolbar() {
   const services = [["core", "공통(core)"], ...Object.keys(data.design?.services || {}).map((s) => [s, s]),
     ...(data.design?.servicesPlanned || []).map((s) => [s, `${s} (예정)`])];
   fillSelect(els.service, services, state.meta.service);
-  fillSelect(els.platform, (data.design?.profiles?.platform || []).map((p) => [p.id, `${p.id} · ${p.container}`]), state.meta.platform);
+  state.meta.platform = PLATFORM_ALIAS[state.meta.platform] || state.meta.platform;
+  fillSelect(els.platform, PLATFORMS.map((p) => [p.id, p.label]), state.meta.platform);
   fillSelect(els.role, (data.design?.profiles?.role || []).map((r) => [r.id, `${r.id} · ${r.density}`]), state.meta.role);
   els.theme.value = state.meta.theme;
   els.name.value = state.meta.name || "";
@@ -400,6 +500,11 @@ function addComponent(id) {
   const block = { id: nextId("b"), kind: "component", component: id, width: "auto" };
   const v = variantAxis(id); if (v.length) block.variant = v[0];
   const s = sizeAxis(id, brk); if (s.length) block.size = s[0];
+  if (id === "table") {
+    block.width = "fill";
+    exampleHtml("table", brk).then((html) => { block.table = tableModelFromExample(html); addBlock(block); });
+    return;
+  }
   addBlock(block);
 }
 
@@ -496,7 +601,28 @@ function renderProps() {
       parts.push(`<p class="pb-note">구분선 — 행 폭을 채웁니다.</p>`);
     }
     if (b.kind !== "divider" && b.kind !== "space") {
-      parts.push(propRow("폭", selectHtml("width", [["auto", "내용만큼"], ["fill", "남은 폭 채우기"], ["200", "200px"], ["320", "320px"], ["480", "480px"]], b.width || "auto")));
+      const w = ["auto", "fill", "custom"].includes(b.width) ? b.width : "custom";
+      if (w === "custom" && !b.widthPx) b.widthPx = Number(b.width) || 320;
+      parts.push(propRow("폭", selectHtml("width", [["auto", "내용만큼"], ["fill", "남은 폭 채우기"], ["custom", "직접 입력(px)"]], w)));
+      if (w === "custom") parts.push(propRow("폭(px)", `<input type="number" min="40" step="10" data-prop="widthPx" value="${escapeAttr(b.widthPx || 320)}">`));
+    }
+    if (b.kind === "component" && b.component === "table" && !b.table && !b.html) {
+      exampleHtml("table", brk).then((html) => { b.table = tableModelFromExample(html); update(); });
+    }
+    if (b.kind === "component" && b.component === "table" && b.table) {
+      parts.push(`<p class="pb-section-title">표 구성</p>`);
+      parts.push(propRow("행 수", `<input type="number" min="0" max="50" data-prop="table.rows" value="${escapeAttr(b.table.rows)}">`));
+      parts.push(propRow("선택 칸", selectHtml("table.selection", [["true", "체크박스 열 있음"], ["false", "없음"]], String(!!b.table.selection))));
+      parts.push(`<p class="pb-note">열 — 이름 · 정렬 · 폭(px, 비우면 자동)</p>`);
+      b.table.columns.forEach((col, i) => {
+        parts.push(`<div class="pb-col">
+          <input type="text" data-prop="table.columns.${i}.label" value="${escapeAttr(col.label || "")}" placeholder="열 이름" aria-label="열 ${i + 1} 이름">
+          ${selectHtml(`table.columns.${i}.align`, [["", "왼쪽"], ["center", "가운데"], ["right", "오른쪽"]], col.align || "")}
+          <input type="number" min="0" step="10" data-prop="table.columns.${i}.width" value="${escapeAttr(col.width || "")}" placeholder="폭" aria-label="열 ${i + 1} 폭">
+          <button type="button" class="pb-btn pb-btn-sm" data-act="col-del" data-col="${i}" aria-label="열 ${i + 1} 삭제">×</button>
+        </div>`);
+      });
+      parts.push(`<div class="pb-prop-actions"><button type="button" class="pb-btn pb-btn-sm" data-act="col-add">+ 열 추가</button></div>`);
     }
     parts.push(`<div class="pb-prop-actions">
       <button type="button" class="pb-btn pb-btn-sm" data-act="left">← 왼쪽</button>
@@ -543,6 +669,8 @@ function renderProps() {
     if (act === "left" || act === "right" || act === "up" || act === "down" || act === "split") moveBlock(id, act);
     else if (act === "dup") duplicateBlock(id);
     else if (act === "del") removeBlock(id);
+    else if (act === "col-add") { hit.block.table.columns.push({ label: `열 ${hit.block.table.columns.length + 1}` }); update(); }
+    else if (act === "col-del") { hit.block.table.columns.splice(Number(btn.dataset.col), 1); update(); }
     else if (act === "row-up") moveRow(row.id, "up");
     else if (act === "row-down") moveRow(row.id, "down");
     else if (act === "row-del") removeRow(row.id);
@@ -560,6 +688,13 @@ function setProp(name, value) {
     const hit = findBlock(selection.blockId);
     if (!hit) return;
     if (name === "html") { if (value) hit.block.html = value; else delete hit.block.html; }
+    else if (name.startsWith("table.")) {
+      const path = name.slice(6).split(".");
+      let obj = hit.block.table;
+      while (path.length > 1) obj = obj[path.shift()];
+      const key = path[0];
+      obj[key] = key === "selection" ? value === "true" : key === "rows" ? Math.max(0, Number(value) || 0) : value;
+    }
     else hit.block[name] = value;
   }
   update();
@@ -567,17 +702,16 @@ function setProp(name, value) {
 
 /* ── 렌더·갱신 ─────────────────────────────────────────────── */
 async function renderCanvas() {
-  const p = platformInfo();
-  els.canvas.style.maxWidth = p.container;
   els.canvas.dataset.theme = state.meta.theme;
-  els.frameLabel.textContent = `${p.id} · ${p.container} · ${p.columns}열 · ${state.meta.role} · ${state.meta.theme}`;
   els.frameInfo.textContent = state.rows.length ? `행 ${state.rows.length} · 요소 ${state.rows.reduce((n, r) => n + r.blocks.length, 0)}` : "";
   if (!state.rows.length) {
     els.canvas.innerHTML = `<div class="pb-canvas-empty">아직 비어 있습니다.<br>왼쪽에서 패턴을 고르거나 부품을 눌러 놓아 보세요.</div>`;
+    fitCanvas();
     return;
   }
   const screen = await renderScreen(els.canvas, true);
   try { autoInit(screen); } catch (e) { console.warn("autoInit", e); }
+  fitCanvas();
   screen.querySelectorAll("[data-pb-block]").forEach((el) => el.addEventListener("click", (e) => {
     e.stopPropagation();
     const row = el.closest("[data-pb-row]");
@@ -616,7 +750,8 @@ async function buildExportHtml() {
   const holder = document.createElement("div");
   const screen = await renderScreen(holder, false);
   const p = platformInfo();
-  screen.style.maxWidth = p.container;
+  screen.style.maxWidth = `${p.width}px`;
+  screen.style.minHeight = `${p.height}px`;
   screen.setAttribute("data-s1-service", state.meta.service);
   screen.setAttribute("data-s1-platform", state.meta.platform);
   screen.setAttribute("data-s1-role", state.meta.role);
@@ -690,7 +825,7 @@ async function main() {
   Object.assign(els, {
     name: $("#pb-name"), service: $("#pb-service"), platform: $("#pb-platform"), role: $("#pb-role"), theme: $("#pb-theme"),
     distVersion: $("#pb-dist-version"), patternList: $("#pb-pattern-list"), helperList: $("#pb-helper-list"), partGroups: $("#pb-part-groups"),
-    canvas: $("#pb-canvas"), frameLabel: $("#pb-frame-label"), frameInfo: $("#pb-frame-info"), props: $("#pb-props"), toast: $("#pb-toast"),
+    canvas: $("#pb-canvas"), canvasWrap: $("#pb-canvas-wrap"), frameLabel: $("#pb-frame-label"), frameInfo: $("#pb-frame-info"), props: $("#pb-props"), toast: $("#pb-toast"),
     requestDialog: $("#pb-request-dialog"), reqName: $("#pb-req-name"), reqPurpose: $("#pb-req-purpose"), reqNotes: $("#pb-req-notes"), reqPreview: $("#pb-req-preview")
   });
   try { await loadAll(); }
@@ -704,6 +839,8 @@ async function main() {
   renderToolbar(); renderPatternList(); renderHelperList(); renderPartGroups();
   await update();
 
+  window.addEventListener("resize", fitCanvas);
+  if (window.ResizeObserver) new ResizeObserver(() => fitCanvas()).observe(els.canvasWrap.parentElement);
   els.name.addEventListener("input", () => { state.meta.name = els.name.value; persist(); });
   els.service.addEventListener("change", () => { state.meta.service = els.service.value; renderPatternList(); update(); });
   els.platform.addEventListener("change", () => {

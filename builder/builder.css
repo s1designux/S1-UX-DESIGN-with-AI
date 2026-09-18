@@ -59,7 +59,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 /* 가운데: 캔버스 */
 .pb-stage { background: var(--color-bg-level-1); padding: 24px; overflow: auto; flex: 1; border-radius: 0 0 var(--radius-12) var(--radius-12); }
-.pb-canvas { margin: 0 auto; background: var(--color-bg-level-0); box-shadow: var(--shadow-raised); min-height: 480px; transition: max-width .2s; color: var(--color-text-body-primary); }
+.pb-canvas-wrap { margin: 0 auto; position: relative; overflow: visible; }
+.pb-canvas { background: var(--color-bg-level-0); box-shadow: var(--shadow-raised); min-height: 480px; color: var(--color-text-body-primary); }
 .pb-canvas[data-theme="dark"] { color-scheme: dark; }
 .pb-frame-label { text-align: center; font-size: 11px; color: var(--color-text-body-tertiary); margin: 0 0 8px; }
 .pb-canvas .s1-row[data-pb-row] { position: relative; outline: 1px dashed transparent; outline-offset: 4px; border-radius: var(--radius-4); }
@@ -78,6 +79,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .pb-prop select, .pb-prop input, .pb-prop textarea { font-size: 12px; padding: 5px 8px; border: 1px solid var(--color-line-gray-subtle); border-radius: var(--radius-6); background: var(--color-bg-level-0); color: var(--color-text-body-primary); width: 100%; }
 .pb-prop textarea { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; min-height: 120px; grid-column: 1 / -1; }
 .pb-prop-actions { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 14px; }
+.pb-col { display: grid; grid-template-columns: 1fr 72px 56px 26px; gap: 4px; align-items: center; margin-bottom: 6px; }
+.pb-col input, .pb-col select { font-size: 12px; padding: 5px 6px; border: 1px solid var(--color-line-gray-subtle); border-radius: var(--radius-6); background: var(--color-bg-level-0); color: var(--color-text-body-primary); width: 100%; min-width: 0; }
+.pb-col .pb-btn { padding: 4px 0; }
 .pb-section-title { font-size: 11px; font-weight: 700; color: var(--color-text-title-secondary); margin: 14px 0 8px; padding-top: 12px; border-top: 1px solid var(--color-line-gray-subtle); }
 .pb-section-title:first-child { margin-top: 0; padding-top: 0; border-top: none; }
 .pb-note { font-size: 11px; line-height: 1.6; color: var(--color-text-body-tertiary); margin: 4px 0 10px; }

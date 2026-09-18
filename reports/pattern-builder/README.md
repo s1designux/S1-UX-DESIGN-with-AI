@@ -31,3 +31,5 @@
 - 오버레이(모달·바텀시트) 와 부속(드롭다운·GNB 하위메뉴) 은 화면 안 배치 대상이 아니라 팔레트에서 뺀다(manifest placement 기준).
 - 색·간격·글꼴은 tokens.css / typography.css 의 토큰·클래스만 쓴다(HEX 없음).
 - 내보낸 HTML 은 `./s1-ui/` 아래에 dist 를 그대로 둔다는 전제(tokens.css · typography.css · s1-ui.css · s1-ui.auto.js).
+
+- 화면 틀(프레임) — **PC 1920×1080 · 모바일 360×780**(river 결정 2026-09-18). 캔버스는 실제 크기로 그리고 무대 폭에 맞춰 축소해 보여준다. 가이드의 소비 프로파일(web 1200/12열 등)과는 별개 값.

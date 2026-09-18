@@ -20,7 +20,7 @@
       "id": "kebab-case 고유 id",
       "name": "사람이 읽는 이름",
       "service": "design.manifest.json services 키 또는 core",
-      "platform": "web | app | mobile (design.manifest.json profiles.platform)",
+      "platform": "pc | mobile — 화면 틀은 PC 1920×1080 · 모바일 360×780 (river 결정 2026-09-18). 배포본 breaks 키(pc|mobile)와 1:1",
       "role": "admin | user",
       "description": "한 줄 설명",
       "status": "candidate | verified | approved",
