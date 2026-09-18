@@ -1,0 +1,82 @@
+/* 목록 한 줄 (list-row) — 모두앱 전용. 정본에 합치지 않는다(river 결정 2026-09-18).
+   수치 근거: MoDU APP 레거시 547장 판독 (reports/pattern-builder/inventory/modu-app/)
+   2026-09-18 river 가 Figma 에서 원본 줄(`list` 10928:14704)을 골라줘서 실제 값을 읽었다.
+   · 줄 74 + 구분선 1 = 75 · 폭 360 · 안쪽 여백 위아래 18, 왼쪽 20, 오른쪽 16
+   · 제목 16 Medium 검정 · 설명 14 Regular 회색(#7F7F7F ≒ 우리 gray-500) · 둘 사이 8
+   · 앞 체크 18, 글과 사이 12 · 화살표 24, 글과 사이 4
+   · 구분선 #EBEBEB ≒ 우리 gray-100, 화면 폭 360 전체
+   · 앞 아이콘 32×32, 왼쪽 16, 글 시작 56 (권한 화면)
+   ※ 줄 간격은 레거시 그대로 글자 크기와 같게 간다(100%) — river 결정 2026-09-18 "레거시 그대로".
+     그래서 두 줄짜리도 74 로 떨어진다. 우리 글꼴 기본 130% 를 이 부품 안에서만 100% 로 덮는다.
+     (간격 100% 토큰이 아직 없다 — 정본 등록할 때 함께 만든다.)
+   색·글꼴은 전부 토큰/타이포 클래스. HEX 없음. */
+
+[data-s1-component="list-row"] {
+  align-items: center;
+  background: var(--color-bg-level-0);
+  border: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  gap: var(--spacing-8);
+  min-height: 74px;
+  /* 위아래 18 — 우리 간격 토큰에 18 이 없다. 토큰 신설은 승인 사항이라 값으로 두고 needs-decision 으로 올린다. */
+  padding: 18px var(--spacing-16) 18px var(--spacing-20);
+  text-align: left;
+  width: 100%;
+}
+
+[data-s1-component="list-row"]:hover { background: var(--color-bg-level-1); }
+[data-s1-component="list-row"]:active { background: var(--color-bg-level-2); }
+[data-s1-component="list-row"]:focus-visible { outline: 2px solid var(--color-line-blue); outline-offset: -2px; }
+[data-s1-component="list-row"][aria-disabled="true"] { cursor: default; pointer-events: none; }
+[data-s1-component="list-row"][aria-disabled="true"] [data-s1-part="title"] { color: var(--color-text-state-disabled); }
+[data-s1-component="list-row"][aria-disabled="true"] [data-s1-part="description"] { color: var(--color-text-state-disabled); }
+[data-s1-component="list-row"][aria-disabled="true"] [data-s1-part="arrow"] { background-color: var(--color-icon-gray-light); }
+
+/* 줄 앞 자리 — 아이콘 32 또는 선택 컨트롤 */
+[data-s1-component="list-row"] [data-s1-part="lead"] {
+  align-items: center;
+  display: flex;
+  flex: none;
+  justify-content: center;
+  margin-right: var(--spacing-12);
+}
+[data-s1-component="list-row"] [data-s1-part="lead-icon"] {
+  background-color: var(--color-icon-gray-dark);
+  display: block;
+  height: 32px;
+  width: 32px;
+}
+
+/* 글 자리 */
+[data-s1-component="list-row"] [data-s1-part="text"] {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  min-width: 0;
+}
+[data-s1-component="list-row"] [data-s1-part="title"] { color: var(--color-text-title-primary); line-height: 1; margin: 0; }
+[data-s1-component="list-row"] [data-s1-part="description"] { color: var(--color-text-body-tertiary); line-height: 1; margin: 0; }
+
+/* 줄 끝 자리 — 상태 글자 · 화살표 · 토글 */
+[data-s1-component="list-row"] [data-s1-part="trail"] {
+  align-items: center;
+  display: flex;
+  flex: none;
+  gap: var(--spacing-4);
+}
+[data-s1-component="list-row"] [data-s1-part="trail-text"] { color: var(--color-text-body-secondary); line-height: 1; }
+[data-s1-component="list-row"] [data-s1-part="arrow"] {
+  background-color: var(--color-icon-gray);
+  display: block;
+  height: var(--sizing-24);
+  -webkit-mask: url("../../../../../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
+  mask: url("../../../../../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
+  width: var(--sizing-24);
+}
+
+/* 줄과 줄 사이 구분선 — 줄보다 넓게 화면 폭 전체 */
+[data-s1-part="list"] { list-style: none; margin: 0; padding: 0; }
+[data-s1-part="list"] > li + li { border-top: 1px solid var(--color-line-gray-subtle); }

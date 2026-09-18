@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>S1 Pattern Builder</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="../ui-library/dist/assets/css/tokens.css">
+  <link rel="stylesheet" href="../ui-library/dist/assets/css/typography.css">
+  <link rel="stylesheet" href="../ui-library/dist/s1-ui.css">
+  <link rel="stylesheet" href="builder.css">
+</head>
+<body>
+
+<header class="pb-top">
+  <div class="pb-brand">
+    <span class="pb-brand-dot" aria-hidden="true"></span>
+    <span class="pb-brand-name">S1 Pattern Builder</span>
+    <span class="pb-brand-sub">배포 중인 부품을 서비스·플랫폼에 맞게 조합해 그대로 쓰는 HTML/CSS 로 내보냅니다</span>
+  </div>
+  <div class="pb-top-right">
+    <span class="pb-chip" id="pb-dist-version">s1-ui</span>
+    <button type="button" class="pb-btn pb-btn-sm" id="pb-site-theme" aria-label="화면 테마 전환">🌗 테마</button>
+  </div>
+</header>
+
+<main class="pb-main">
+  <div class="pb-toolbar" id="pb-toolbar">
+    <label class="pb-field">화면 이름 <input type="text" id="pb-name" placeholder="예: 목록 조회"></label>
+    <label class="pb-field">서비스 <select id="pb-service"></select></label>
+    <label class="pb-field">플랫폼 <select id="pb-platform"></select></label>
+    <label class="pb-field">역할 <select id="pb-role"></select></label>
+    <label class="pb-field">테마 <select id="pb-theme"><option value="light">라이트</option><option value="dark">다크</option></select></label>
+    <span class="pb-spacer"></span>
+    <button type="button" class="pb-btn" id="pb-new">새 화면</button>
+    <button type="button" class="pb-btn" id="pb-save">화면 저장(JSON)</button>
+    <label class="pb-btn" for="pb-load-file">불러오기<input type="file" id="pb-load-file" accept="application/json" hidden></label>
+    <button type="button" class="pb-btn" id="pb-share">링크 복사</button>
+    <button type="button" class="pb-btn" id="pb-request">새 패턴 요청</button>
+    <button type="button" class="pb-btn pb-btn-primary" id="pb-export">HTML 내보내기</button>
+  </div>
+
+  <div class="pb">
+    <!-- 왼쪽: 컴포넌트 / 패턴 -->
+    <section class="pb-panel" aria-label="컴포넌트와 패턴">
+      <div class="pb-tabs" role="tablist" aria-label="컴포넌트와 패턴 전환">
+        <button type="button" class="pb-tab" id="pb-tab-parts" role="tab" aria-selected="true" aria-controls="pb-pane-parts" data-tab="parts">컴포넌트</button>
+        <button type="button" class="pb-tab" id="pb-tab-patterns" role="tab" aria-selected="false" aria-controls="pb-pane-patterns" data-tab="patterns">패턴</button>
+        <button type="button" class="pb-tab" id="pb-tab-imported" role="tab" aria-selected="false" aria-controls="pb-pane-imported" data-tab="imported">가져온 화면</button>
+      </div>
+      <div class="pb-panel-body">
+        <div id="pb-pane-parts" role="tabpanel" aria-labelledby="pb-tab-parts">
+          <input type="search" class="pb-search" id="pb-search-parts" placeholder="컴포넌트 검색 (예: 버튼, 표, 탭)" aria-label="컴포넌트 검색">
+          <p class="pb-empty" id="pb-empty-parts" hidden>찾는 컴포넌트가 없습니다.</p>
+          <div id="pb-part-groups"></div>
+        </div>
+        <div id="pb-pane-patterns" role="tabpanel" aria-labelledby="pb-tab-patterns" hidden>
+          <input type="search" class="pb-search" id="pb-search-patterns" placeholder="패턴 검색" aria-label="패턴 검색">
+          <p class="pb-empty" id="pb-empty-patterns" hidden>찾는 패턴이 없습니다.</p>
+          <div id="pb-pattern-groups"></div>
+        </div>
+        <div id="pb-pane-imported" role="tabpanel" aria-labelledby="pb-tab-imported" hidden>
+          <button type="button" class="pb-btn pb-btn-primary pb-btn-block" id="pb-import-open">＋ Figma 화면 가져오기</button>
+          <p class="pb-note pb-note-offline" id="pb-import-offline" hidden>이 주소에서는 <strong>이미 가져다 둔 화면만</strong> 열 수 있습니다. 새로 가져오려면 내 컴퓨터에서 빌더를 띄워야 합니다(Figma 읽기 열쇠가 내 컴퓨터에만 있기 때문입니다).</p>
+          <input type="search" class="pb-search" id="pb-search-imported" placeholder="가져온 화면 검색 (예: 홈, 로그인)" aria-label="가져온 화면 검색">
+          <p class="pb-note">이미 만들어 둔 화면을 그대로 올려 놓고, 그 위에 이어서 만듭니다. 원본 부품은 바꿔치기하지 않습니다.</p>
+          <p class="pb-empty" id="pb-empty-imported" hidden>가져온 화면이 없습니다.</p>
+          <div id="pb-imported-groups"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 가운데: 캔버스 -->
+    <section class="pb-panel" aria-label="화면 미리보기">
+      <div class="pb-panel-head">
+        <h2 class="pb-panel-title">미리보기</h2>
+        <span class="pb-note pb-note-inline" id="pb-frame-info"></span>
+      </div>
+      <div class="pb-stage-tools">
+        <span class="pb-tools-label">놓는 방식</span>
+        <div class="pb-place" role="radiogroup" aria-label="부품을 놓는 방식">
+          <button type="button" class="pb-btn pb-btn-sm" data-place="below" aria-checked="true" role="radio">↓ 아래 새 줄</button>
+          <button type="button" class="pb-btn pb-btn-sm" data-place="beside" aria-checked="false" role="radio">→ 선택한 줄 옆</button>
+        </div>
+        <span class="pb-tools-label">보기</span>
+        <div class="pb-place" role="radiogroup" aria-label="미리보기 보기 방식">
+          <button type="button" class="pb-btn pb-btn-sm" data-view="device" aria-checked="true" role="radio">기기처럼</button>
+          <button type="button" class="pb-btn pb-btn-sm" data-view="full" aria-checked="false" role="radio">한눈에</button>
+        </div>
+        <span class="pb-spacer"></span>
+        <label class="pb-field" id="pb-shell-field" hidden>기기 크롬
+          <select id="pb-shell">
+            <option value="app">앱 — 상태바 · 안드로이드 내비</option>
+            <option value="web">웹 — 상태바+주소창 · 브라우저 툴바+내비</option>
+            <option value="none">없음</option>
+          </select>
+        </label>
+        <button type="button" class="pb-btn pb-btn-sm" id="pb-add-row">+ 행 추가</button>
+      </div>
+      <div class="pb-stage">
+        <p class="pb-frame-label" id="pb-frame-label"></p>
+        <div class="pb-canvas-wrap" id="pb-canvas-wrap"><div class="pb-canvas" id="pb-canvas"></div></div>
+      </div>
+    </section>
+
+    <!-- 오른쪽: 속성 -->
+    <section class="pb-panel" aria-label="속성">
+      <div class="pb-panel-head"><h2 class="pb-panel-title">속성</h2></div>
+      <div class="pb-panel-body" id="pb-props"></div>
+    </section>
+  </div>
+</main>
+
+<!-- 새 패턴 요청 -->
+<div class="pb-dialog" id="pb-import-dialog" role="dialog" aria-modal="true" aria-labelledby="pb-import-title">
+  <div class="pb-dialog-card">
+    <h3 id="pb-import-title">Figma 화면 가져오기</h3>
+    <p class="pb-note">Figma 에서 <strong>화면(프레임)을 고르고</strong> 오른쪽 버튼 → <strong>Copy link to selection</strong> 으로 복사한 링크를 붙여 넣으세요.</p>
+    <div class="pb-prop">
+      <label for="pb-import-link">Figma 링크</label>
+      <input type="url" id="pb-import-link" placeholder="https://www.figma.com/design/…?node-id=23065-17941" autocomplete="off">
+    </div>
+    <p class="pb-note" id="pb-import-status" hidden></p>
+    <div class="pb-dialog-actions">
+      <button type="button" class="pb-btn" id="pb-import-cancel">닫기</button>
+      <button type="button" class="pb-btn pb-btn-primary" id="pb-import-go">가져오기</button>
+    </div>
+  </div>
+</div>
+
+<div class="pb-dialog" id="pb-request-dialog" role="dialog" aria-modal="true" aria-labelledby="pb-request-title">
+  <div class="pb-dialog-card">
+    <h3 id="pb-request-title">새 패턴 요청</h3>
+    <p class="pb-note">지금 캔버스에 놓인 구성이 함께 담깁니다. 저장된 요청 파일을 Claude 에게 주면 디자인 문법에 맞는 패턴을 제안하고, 검증을 거쳐 이 빌더의 패턴 목록에 올립니다.</p>
+    <div class="pb-prop"><label for="pb-req-name">패턴 이름</label><input type="text" id="pb-req-name" placeholder="예: 목록 조회 + 검색"></div>
+    <div class="pb-prop"><label for="pb-req-purpose">어디에 쓰나</label><input type="text" id="pb-req-purpose" placeholder="예: 관리자가 장비 목록을 검색하고 상세로 들어간다"></div>
+    <div class="pb-prop"><label for="pb-req-notes">요청 내용</label><textarea id="pb-req-notes" placeholder="필요한 요소, 참고 화면(Figma 링크), 꼭 지켜야 할 것"></textarea></div>
+    <pre class="pb-code" id="pb-req-preview" hidden></pre>
+    <div class="pb-dialog-actions">
+      <button type="button" class="pb-btn" id="pb-req-cancel">닫기</button>
+      <button type="button" class="pb-btn" id="pb-req-copy">내용 복사</button>
+      <button type="button" class="pb-btn pb-btn-primary" id="pb-req-download">요청 파일 저장</button>
+    </div>
+  </div>
+</div>
+
+<div class="pb-toast" id="pb-toast" role="status"></div>
+
+<script>
+  (function () {
+    var key = "s1-pattern-builder-site-theme";
+    try { var t = localStorage.getItem(key); if (t) document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+    document.addEventListener("DOMContentLoaded", function () {
+      var btn = document.getElementById("pb-site-theme");
+      if (!btn) return;
+      btn.addEventListener("click", function () {
+        var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", next);
+        try { localStorage.setItem(key, next); } catch (e) {}
+      });
+    });
+  })();
+</script>
+<script type="module" src="builder.js"></script>
+</body>
+</html>

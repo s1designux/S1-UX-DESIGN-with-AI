@@ -1,0 +1,27 @@
+{
+  "id": "R-4",
+  "name": "표 아래 페이지네이션도 가운데",
+  "statement": "목록·표 아래의 페이지네이션은 가운데에 놓는다.",
+  "status": "candidate",
+  "enforcedBy": "none",
+  "decidedBy": "river",
+  "sightings": [
+    {
+      "at": "2026-09-16",
+      "screen": "출입 단말 목록 (비교 기준으로 쓴 표)",
+      "screenKind": "앱에서 흔히 쓰는 목록·요약 화면",
+      "service": "없음 — 실험용",
+      "medium": "pc-web",
+      "density": "normal",
+      "quote": "가운데 맞음",
+      "evidence": "reports/composition-rules/2026-09-16-status-summary-panel.md"
+    }
+  ],
+  "contextCount": 1,
+  "note": "R-3 과 같은 계열이다. 정본에는 위치 규칙이 없었다.",
+  "promotion": {
+    "rule": "서로 다른 맥락 3곳에서 나오면 공통 규칙 후보로 올린다.",
+    "ifOnlyOne": "한 자리에서만 계속 나오면 그 화면 종류 전용으로 굳힌다.",
+    "current": "1곳 — 아직 이 화면 종류의 규칙이다."
+  }
+}

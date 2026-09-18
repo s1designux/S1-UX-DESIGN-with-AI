@@ -1,0 +1,33 @@
+{
+  "_meta": {
+    "title": "Web Pattern Catalog — Pattern Builder 가 읽는 패턴 목록",
+    "status": "candidate",
+    "updatedAt": "2026-09-18",
+    "purpose": "pages/builder.html(Pattern Builder)이 읽는 웹 패턴 정의(registry/patterns/builder/catalog.json). 패턴 = 배포본 부품(ui-library/dist)만 조합한 화면 뼈대. 빌더는 이 파일을 읽기만 하고 쓰지 않는다.",
+    "howEntriesAreMade": [
+      "1) 레거시 화면을 figma-inspector 가 읽어 '어느 서비스·어떤 화면 유형·어떤 부품' 을 표로 정리한다.",
+      "2) 그 표를 근거로 layout(rows/blocks) 을 작성한다 — 부품은 ui-library/dist 배포본 id 만 쓴다.",
+      "3) component-verifier 가 정본 부품·토큰만 썼는지, 레거시 원본과 대응이 맞는지 검증한 뒤 status 를 verified 로 올린다.",
+      "4) river 승인 후 approved. 빌더 목록에는 verified·approved 만 보인다."
+    ],
+    "layoutSchema": {
+      "rows[]": "화면을 위에서 아래로 나눈 행. { id, gap: spacing 토큰 숫자, align: start|center|end|between, marginBottom: spacing 토큰 숫자, blocks[] }",
+      "blocks[] (component)": "{ kind:'component', component:<dist id>, variant?, size?, width: auto|fill|<px>, text?: 첫 라벨/제목 글자, html?: 마크업 직접 수정본 }",
+      "blocks[] (text)": "{ kind:'text', text, typo: typography.css 클래스, color: title-primary|title-secondary|body-primary|body-secondary|body-tertiary }",
+      "blocks[] (divider|space)": "{ kind:'divider' } · { kind:'space', height: spacing 토큰 숫자 }"
+    },
+    "entrySchema": {
+      "id": "kebab-case 고유 id",
+      "name": "사람이 읽는 이름",
+      "service": "design.manifest.json services 키 또는 core",
+      "platform": "pc | mobile — 화면 틀은 PC 1920×1080 · 모바일 360×780 (river 결정 2026-09-18). 배포본 breaks 키(pc|mobile)와 1:1",
+      "role": "admin | user",
+      "description": "한 줄 설명",
+      "status": "candidate | verified | approved",
+      "legacy": "{ fileKey, nodeId, screenName } — 읽은 레거시 원본",
+      "evidence": "{ inventory, verification } — 판독표·검증 보고 경로",
+      "layout": "위 layoutSchema"
+    }
+  },
+  "patterns": []
+}

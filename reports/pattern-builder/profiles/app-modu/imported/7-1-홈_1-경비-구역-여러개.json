@@ -1,0 +1,267 @@
+{
+  "_meta": {
+    "source": "figma:rest",
+    "fileKey": "aLxh458o9BRXklRFM3YYzk",
+    "generatedAt": "2026-09-18",
+    "note": "가져온 레거시 화면. 칸 이름·그림은 레거시 원본 그대로이며 정본 부품이 아니다. 정본 패턴 목록에 넣지 않는다."
+  },
+  "profile": "app-modu",
+  "service": "모두앱",
+  "medium": "app",
+  "mode": "legacy-as-is",
+  "screen": {
+    "id": "23065:17941",
+    "name": "7.1 홈_1 경비 구역 여러개",
+    "width": 360,
+    "height": 1975,
+    "orderText": "묶음(m_StatusBar , More, push new) → 묶음(More×2, refresh, security) → 묶음(menu_arrow_right×3) → 묶음(menu_arrow_right×3) → 묶음(menu_arrow_right×3) → 묶음(close) → 묶음 → 묶음(home, under security, dome camera)"
+  },
+  "rows": [
+    {
+      "i": 0,
+      "label": "묶음(m_StatusBar , More, push new)",
+      "name": "Frame 1159",
+      "type": "FRAME",
+      "x": 0,
+      "y": 0,
+      "h": 96,
+      "w": 360,
+      "depth": 0,
+      "image": "img/7-1-홈_1-경비-구역-여러개/00.png",
+      "parts": {
+        "m_StatusBar ": 1,
+        "More": 1,
+        "push new": 1
+      },
+      "canon": [
+        {
+          "legacy": "m_StatusBar ",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "More",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "push new",
+          "status": "unknown",
+          "canonSets": []
+        }
+      ]
+    },
+    {
+      "i": 1,
+      "label": "묶음(More×2, refresh, security)",
+      "name": "Frame 1168",
+      "type": "FRAME",
+      "x": 20,
+      "y": 112,
+      "h": 534,
+      "w": 320,
+      "depth": 1,
+      "image": "img/7-1-홈_1-경비-구역-여러개/01.png",
+      "parts": {
+        "refresh": 1,
+        "More": 2,
+        "security": 1,
+        "release": 1,
+        "tools": 1,
+        "caution 2": 1,
+        "close": 1,
+        "setting": 1
+      },
+      "canon": [
+        {
+          "legacy": "refresh",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "More",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "security",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "release",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "tools",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "caution 2",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "close",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "setting",
+          "status": "unknown",
+          "canonSets": []
+        }
+      ]
+    },
+    {
+      "i": 2,
+      "label": "묶음(menu_arrow_right×3)",
+      "name": "Frame 1167",
+      "type": "FRAME",
+      "x": 20,
+      "y": 686,
+      "h": 252,
+      "w": 320,
+      "depth": 1,
+      "image": "img/7-1-홈_1-경비-구역-여러개/02.png",
+      "parts": {
+        "menu_arrow_right": 3
+      },
+      "canon": [
+        {
+          "legacy": "menu_arrow_right",
+          "status": "unknown",
+          "canonSets": []
+        }
+      ]
+    },
+    {
+      "i": 3,
+      "label": "묶음(menu_arrow_right×3)",
+      "name": "Frame 1158",
+      "type": "FRAME",
+      "x": 20,
+      "y": 978,
+      "h": 252,
+      "w": 320,
+      "depth": 1,
+      "image": "img/7-1-홈_1-경비-구역-여러개/03.png",
+      "parts": {
+        "menu_arrow_right": 3
+      },
+      "canon": [
+        {
+          "legacy": "menu_arrow_right",
+          "status": "unknown",
+          "canonSets": []
+        }
+      ]
+    },
+    {
+      "i": 4,
+      "label": "묶음(menu_arrow_right×3)",
+      "name": "Group 632",
+      "type": "GROUP",
+      "x": 20,
+      "y": 1270,
+      "h": 256,
+      "w": 320,
+      "depth": 1,
+      "image": "img/7-1-홈_1-경비-구역-여러개/04.png",
+      "parts": {
+        "menu_arrow_right": 3
+      },
+      "canon": [
+        {
+          "legacy": "menu_arrow_right",
+          "status": "unknown",
+          "canonSets": []
+        }
+      ]
+    },
+    {
+      "i": 5,
+      "label": "묶음(close)",
+      "name": "Frame 1161",
+      "type": "FRAME",
+      "x": 20,
+      "y": 1566,
+      "h": 260,
+      "w": 320,
+      "depth": 1,
+      "image": "img/7-1-홈_1-경비-구역-여러개/05.png",
+      "parts": {
+        "close": 1
+      },
+      "canon": [
+        {
+          "legacy": "close",
+          "status": "unknown",
+          "canonSets": []
+        }
+      ]
+    },
+    {
+      "i": 6,
+      "label": "묶음",
+      "name": "Group 249",
+      "type": "GROUP",
+      "x": 284,
+      "y": 1838,
+      "h": 56,
+      "w": 56,
+      "depth": 1,
+      "image": "img/7-1-홈_1-경비-구역-여러개/06.png",
+      "parts": {},
+      "canon": []
+    },
+    {
+      "i": 7,
+      "label": "묶음(home, under security, dome camera)",
+      "name": "Frame 1169",
+      "type": "FRAME",
+      "x": 0,
+      "y": 1866,
+      "h": 109,
+      "w": 360,
+      "depth": 1,
+      "image": "img/7-1-홈_1-경비-구역-여러개/07.png",
+      "parts": {
+        "home": 1,
+        "under security": 1,
+        "dome camera": 1,
+        "menu(hamburger)": 1,
+        "phone_navi": 1
+      },
+      "canon": [
+        {
+          "legacy": "home",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "under security",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "dome camera",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "menu(hamburger)",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "phone_navi",
+          "status": "no-canon",
+          "canonSets": []
+        }
+      ]
+    }
+  ]
+}

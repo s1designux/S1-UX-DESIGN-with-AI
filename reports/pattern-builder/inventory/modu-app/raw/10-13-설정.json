@@ -1,0 +1,1555 @@
+{
+  "_meta": {
+    "source": "figma:rest",
+    "page": {
+      "name": "13. 설정",
+      "nodeId": "1878:23793"
+    },
+    "generatedAt": "2026-09-18",
+    "note": "기계 판독 원자료. 사람이 해석한 판독표는 같은 폴더의 md 에 쓴다."
+  },
+  "screenCount": 67,
+  "screens": [
+    {
+      "id": "2218:26348",
+      "name": "13. 설정_12 첫 화면 사용",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 19,
+      "components": [
+        {
+          "name": "tabel_bar",
+          "count": 6
+        },
+        {
+          "name": "m_toggle",
+          "count": 3
+        },
+        {
+          "name": "More",
+          "count": 3
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_subbutton",
+          "count": 1
+        },
+        {
+          "name": "close",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "1878:24370",
+      "name": "13. 설정",
+      "section": null,
+      "size": "198x60",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "7160:72270",
+      "name": "13. 설정_5 간편번호 변경(기존 번호)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 6,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "title/signup",
+          "count": 1
+        },
+        {
+          "name": "step",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "7160:72356",
+      "name": "13. 설정_6 간편번호 변경(새 번호)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 6,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "title/signup",
+          "count": 1
+        },
+        {
+          "name": "step",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "7160:72442",
+      "name": "13. 설정_7 간편번호 변경(새 번호 재입력)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 6,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "title/signup",
+          "count": 1
+        },
+        {
+          "name": "step",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "3284:51940",
+      "name": "13. 설정_14 약관(개인정보처리방침)",
+      "section": null,
+      "size": "360x2522",
+      "nodeCount": 6,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "icon/combobox_arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "3284:52080",
+      "name": "13. 설정_15 약관(영상정보처리방침)",
+      "section": null,
+      "size": "360x2105",
+      "nodeCount": 4,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "3284:52200",
+      "name": "13. 설정_13 약관(회원약관)",
+      "section": null,
+      "size": "360x2415",
+      "nodeCount": 4,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "3639:51806",
+      "name": "13. 설정_16 약관(서비스 약관)",
+      "section": null,
+      "size": "360x3875",
+      "nodeCount": 4,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "3639:52038",
+      "name": "13. 설정_17 약관(종합안심플랜 약관)",
+      "section": null,
+      "size": "360x920",
+      "nodeCount": 4,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "5618:56569",
+      "name": "설정 토글버튼 사이즈 ios 개발용",
+      "section": null,
+      "size": "305x24",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "7680:55665",
+      "name": "m_toggle",
+      "section": null,
+      "size": "90x286",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "11490:6159",
+      "name": "Rectangle 388",
+      "section": null,
+      "size": "6x2",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "15604:20491",
+      "name": "Rectangle 390",
+      "section": null,
+      "size": "1133x48",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "15604:20492",
+      "name": "2024.03.12 App 서비스 해지, 재시작 화면",
+      "section": null,
+      "size": "416x29",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "15604:20418",
+      "name": "13. App 서비스 해지",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 6,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_checkbox",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "15652:24345",
+      "name": "13. App 서비스 재시작",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 6,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_checkbox",
+          "count": 1
+        },
+        {
+          "name": "m_button",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "21433:4837",
+      "name": "13. App 서비스 해지_완료 안내 팝업",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 7,
+      "components": [
+        {
+          "name": "m_button",
+          "count": 2
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_checkbox",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30803:37508",
+      "name": "13. 설정_모바일기기관리_기기삭제 완료 팝업",
+      "section": null,
+      "size": "360x732",
+      "nodeCount": 1,
+      "components": [
+        {
+          "name": "m_button",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30803:37516",
+      "name": "13. 설정_모바일기기관리_기기삭제 완료 팝업",
+      "section": null,
+      "size": "360x732",
+      "nodeCount": 1,
+      "components": [
+        {
+          "name": "m_button",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "15881:7492",
+      "name": "13. App 서비스 해지_확인팝업",
+      "section": null,
+      "size": "339x732",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30041:28791",
+      "name": "13. 설정_모바일기기관리_메인 기기삭제 팝업",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30041:28803",
+      "name": "13. 설정_모바일기기관리_기기변경 팝업",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "15881:7491",
+      "name": "홍길동님",
+      "section": null,
+      "size": "131x20",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30025:66976",
+      "name": "9.3 실시간 영상(세로)_8 상세 설정(서비스 장소)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30025:67067",
+      "name": "9.3 실시간 영상(세로)_8 상세 설정(서비스 장소)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30041:28380",
+      "name": "13. 설정_모바일기기관리_기기상세정보(메인)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30041:28471",
+      "name": "13. 설정_모바일기기관리_기기상세정보(서브)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30025:67161",
+      "name": "4.2 권한 신청_6 검색 결과 있음",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30025:67273",
+      "name": "4.2 권한 신청_6 검색 결과 있음",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30025:67447",
+      "name": "13. 설정_1 메인",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 11,
+      "components": [
+        {
+          "name": "More",
+          "count": 3
+        },
+        {
+          "name": "ic_모바일",
+          "count": 2
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "ic_노트북",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30025:67523",
+      "name": "13. 설정_1 메인",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 7,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "ic_모바일",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30025:67565",
+      "name": "GUI 디자인",
+      "section": null,
+      "size": "263x69",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30025:67567",
+      "name": "9.3 실시간 영상(세로)_8 상세 설정(서비스 장소)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30025:67658",
+      "name": "4.2 권한 신청_6 검색 결과 있음",
+      "section": null,
+      "size": "360x727",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30025:67782",
+      "name": "4.2 권한 신청_6 검색 결과 있음",
+      "section": null,
+      "size": "360x727",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30025:67906",
+      "name": "9.3 실시간 영상(세로)_8 상세 설정(서비스 장소)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30025:68000",
+      "name": "13. 설정_1 메인",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 11,
+      "components": [
+        {
+          "name": "More",
+          "count": 3
+        },
+        {
+          "name": "ic_모바일",
+          "count": 2
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "ic_노트북",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30041:28159",
+      "name": "13. 설정_모바일기기관리",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 11,
+      "components": [
+        {
+          "name": "More",
+          "count": 3
+        },
+        {
+          "name": "ic_모바일",
+          "count": 2
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        },
+        {
+          "name": "ic_노트북",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30025:68076",
+      "name": "13. 설정_1 메인",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 7,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "ic_모바일",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30041:28235",
+      "name": "13. 설정_모바일기기관리",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 7,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "ic_모바일",
+          "count": 1
+        },
+        {
+          "name": "More",
+          "count": 1
+        },
+        {
+          "name": "tabel_bar",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30041:28566",
+      "name": "13. 설정_모바일기기관리_기기선택",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30041:28678",
+      "name": "13. 설정_모바일기기관리_기기선택",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30863:34125",
+      "name": "13. 설정_2 메인(휴대폰 알림 OFF)",
+      "section": null,
+      "size": "360x1159",
+      "nodeCount": 29,
+      "components": [
+        {
+          "name": "tabel_bar",
+          "count": 8
+        },
+        {
+          "name": "More",
+          "count": 7
+        },
+        {
+          "name": "m_subbutton",
+          "count": 6
+        },
+        {
+          "name": "m_toggle",
+          "count": 4
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30863:34206",
+      "name": "13. 설정_2 메인(휴대폰 알림 OFF)",
+      "section": null,
+      "size": "360x1159",
+      "nodeCount": 25,
+      "components": [
+        {
+          "name": "tabel_bar",
+          "count": 8
+        },
+        {
+          "name": "More",
+          "count": 7
+        },
+        {
+          "name": "m_subbutton",
+          "count": 6
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30863:34299",
+      "name": "13. 설정_2 메인(휴대폰 알림 OFF)",
+      "section": null,
+      "size": "360x1159",
+      "nodeCount": 27,
+      "components": [
+        {
+          "name": "tabel_bar",
+          "count": 8
+        },
+        {
+          "name": "More",
+          "count": 8
+        },
+        {
+          "name": "m_subbutton",
+          "count": 7
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30863:34398",
+      "name": "13. 설정_1 메인",
+      "section": null,
+      "size": "360x1059",
+      "nodeCount": 26,
+      "components": [
+        {
+          "name": "tabel_bar",
+          "count": 8
+        },
+        {
+          "name": "More",
+          "count": 6
+        },
+        {
+          "name": "m_toggle",
+          "count": 4
+        },
+        {
+          "name": "m_subbutton",
+          "count": 4
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30863:34800",
+      "name": "추천혜택(마케팅) 정보 알림",
+      "section": null,
+      "size": "360x732",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30863:34824",
+      "name": "탭 3개로 변경",
+      "section": null,
+      "size": "173x14",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30863:34825",
+      "name": "m_tab_mid",
+      "section": null,
+      "size": "360x50",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30863:34836",
+      "name": "m_tab_mid",
+      "section": null,
+      "size": "360x50",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30863:34847",
+      "name": "m_tab_mid",
+      "section": null,
+      "size": "360x50",
+      "nodeCount": 0,
+      "components": []
+    },
+    {
+      "id": "30863:34867",
+      "name": "13. 설정_9 알림 설정(영상)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 8,
+      "components": [
+        {
+          "name": "m_toggle",
+          "count": 4
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30863:34918",
+      "name": "13. 설정_8 알림 설정(시스템 경비)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 7,
+      "components": [
+        {
+          "name": "m_toggle",
+          "count": 4
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30863:34965",
+      "name": "13. 설정_8 알림 설정(추천혜택)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 5,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "m_toggle",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30863:34991",
+      "name": "13. 설정_10 알림 설정(시스템 경비 - 미권한)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 4,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30863:35021",
+      "name": "13. 설정_11 알림 설정(영상 - 미권한)",
+      "section": null,
+      "size": "360x780",
+      "nodeCount": 4,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30863:32374",
+      "name": "13. 설정_2 메인(휴대폰 알림 OFF)",
+      "section": "백업",
+      "size": "360x1017",
+      "nodeCount": 25,
+      "components": [
+        {
+          "name": "tabel_bar",
+          "count": 7
+        },
+        {
+          "name": "More",
+          "count": 6
+        },
+        {
+          "name": "m_subbutton",
+          "count": 5
+        },
+        {
+          "name": "m_toggle",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30863:32445",
+      "name": "13. 설정_4 메인(지문 없음 - AOS)",
+      "section": "백업",
+      "size": "360x1092",
+      "nodeCount": 27,
+      "components": [
+        {
+          "name": "tabel_bar",
+          "count": 7
+        },
+        {
+          "name": "More",
+          "count": 7
+        },
+        {
+          "name": "m_subbutton",
+          "count": 6
+        },
+        {
+          "name": "m_toggle",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30863:32522",
+      "name": "13. 설정_5 메인(Face ID 없음 - iOS)",
+      "section": "백업",
+      "size": "360x1017",
+      "nodeCount": 27,
+      "components": [
+        {
+          "name": "tabel_bar",
+          "count": 7
+        },
+        {
+          "name": "More",
+          "count": 7
+        },
+        {
+          "name": "m_subbutton",
+          "count": 6
+        },
+        {
+          "name": "m_toggle",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30863:32599",
+      "name": "13. 설정_3 메인(휴대폰 알림 OFF - iOS)",
+      "section": "백업",
+      "size": "360x1056",
+      "nodeCount": 22,
+      "components": [
+        {
+          "name": "tabel_bar",
+          "count": 7
+        },
+        {
+          "name": "More",
+          "count": 6
+        },
+        {
+          "name": "m_subbutton",
+          "count": 5
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30863:32680",
+      "name": "13. 설정_1 메인",
+      "section": "백업",
+      "size": "360x857",
+      "nodeCount": 22,
+      "components": [
+        {
+          "name": "tabel_bar",
+          "count": 7
+        },
+        {
+          "name": "More",
+          "count": 5
+        },
+        {
+          "name": "m_toggle",
+          "count": 3
+        },
+        {
+          "name": "m_subbutton",
+          "count": 3
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30863:35250",
+      "name": "13. 설정_8 알림 설정(시스템 경비)",
+      "section": "백업",
+      "size": "360x780",
+      "nodeCount": 8,
+      "components": [
+        {
+          "name": "m_toggle",
+          "count": 4
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30863:35296",
+      "name": "13. 설정_10 알림 설정(시스템 경비 - 미권한)",
+      "section": "백업",
+      "size": "360x780",
+      "nodeCount": 4,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30863:35323",
+      "name": "13. 설정_9 알림 설정(영상)",
+      "section": "백업",
+      "size": "360x780",
+      "nodeCount": 8,
+      "components": [
+        {
+          "name": "m_toggle",
+          "count": 4
+        },
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "30863:35371",
+      "name": "13. 설정_11 알림 설정(영상 - 미권한)",
+      "section": "백업",
+      "size": "360x780",
+      "nodeCount": 4,
+      "components": [
+        {
+          "name": "m_StatusBar ",
+          "count": 1
+        },
+        {
+          "name": "appbar_sub",
+          "count": 1
+        },
+        {
+          "name": "icon/arrow",
+          "count": 1
+        },
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "33306:51870",
+      "name": "13. 설정_15 약관(마케팅정보수집이용약관)",
+      "section": null,
+      "size": "360x1018",
+      "nodeCount": 1,
+      "components": [
+        {
+          "name": "phone_navi",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "componentUsage": [
+    {
+      "name": "tabel_bar",
+      "count": 80
+    },
+    {
+      "name": "More",
+      "count": 74
+    },
+    {
+      "name": "m_subbutton",
+      "count": 49
+    },
+    {
+      "name": "m_toggle",
+      "count": 40
+    },
+    {
+      "name": "phone_navi",
+      "count": 36
+    },
+    {
+      "name": "m_StatusBar ",
+      "count": 36
+    },
+    {
+      "name": "appbar_sub",
+      "count": 36
+    },
+    {
+      "name": "icon/arrow",
+      "count": 36
+    },
+    {
+      "name": "ic_모바일",
+      "count": 9
+    },
+    {
+      "name": "m_button",
+      "count": 7
+    },
+    {
+      "name": "title/signup",
+      "count": 3
+    },
+    {
+      "name": "step",
+      "count": 3
+    },
+    {
+      "name": "m_checkbox",
+      "count": 3
+    },
+    {
+      "name": "ic_노트북",
+      "count": 3
+    },
+    {
+      "name": "close",
+      "count": 1
+    },
+    {
+      "name": "icon/combobox_arrow",
+      "count": 1
+    }
+  ]
+}

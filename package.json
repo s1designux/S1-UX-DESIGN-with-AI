@@ -163,6 +163,11 @@
     "legacy:apply": "node scripts/legacy-map-apply.js",
     "legacy:check": "node scripts/legacy-map-apply.js --check",
     "legacy:selftest": "node scripts/legacy-map-selftest.js",
+    "pattern:similar": "node scripts/pattern-similar.js",
+    "pattern:fetch": "node scripts/pattern-fetch.js",
+    "pattern:order": "node scripts/pattern-order.js",
+    "pattern:import": "node scripts/pattern-screen-import.js",
+    "builder": "node scripts/builder-serve.js",
     "legacy:bake": "node scripts/build-legacy-map-data.js"
   },
   "devDependencies": {

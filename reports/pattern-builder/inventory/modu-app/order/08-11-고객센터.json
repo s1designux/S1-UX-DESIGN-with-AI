@@ -1,0 +1,5138 @@
+{
+  "_meta": {
+    "source": "figma:rest",
+    "page": {
+      "name": "11. 고객센터",
+      "nodeId": "2218:26276"
+    },
+    "fileKey": "aLxh458o9BRXklRFM3YYzk",
+    "generatedAt": "2026-09-18",
+    "note": "세로 차례 원자료. order = 위에서 아래로의 칸 목록(y 순). 레거시 이름 그대로이며 정본 이름이 아니다."
+  },
+  "screenCount": 63,
+  "screens": [
+    {
+      "id": "2250:26100",
+      "name": "11.2 방문점검 신청",
+      "section": null,
+      "size": "224x30",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "5680:57304",
+      "name": "회원가입만 하고 계약 미체결 회원이 방문점검신청 메뉴 접근 시",
+      "section": null,
+      "size": "334x68",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "5680:57395",
+      "name": "권한이 없는 일반 관리자가 방문점검신청 메뉴 접근 시",
+      "section": null,
+      "size": "251x68",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "9507:45826",
+      "name": "서비스 계약이 없는 마스터 관리자가 방문점검신청 메뉴 접근 시",
+      "section": null,
+      "size": "339x68",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "2250:26103",
+      "name": "11.1 1:1 문의",
+      "section": null,
+      "size": "150x30",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "2250:26111",
+      "name": "11.1 1:1 문의_1 가입상담",
+      "section": null,
+      "size": "360x1099",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_Input box×4, m_checkbox×4, m_button×2) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2250:26112",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 957,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "7160:73371",
+          "name": "Frame 764",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 162,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1,
+            "m_tab_mid": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "7160:73370",
+          "name": "Frame 764",
+          "type": "FRAME",
+          "x": 20,
+          "y": 184,
+          "h": 773,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_Input box×4, m_checkbox×4, m_button×2)",
+          "parts": {
+            "m_Input box": 4,
+            "m_button": 2,
+            "m_checkbox": 4,
+            "icon/combobox_arrow": 1,
+            "More": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "2250:26164",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 961,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "24674:31102",
+      "name": "11.1 1:1 문의_1 가입상담",
+      "section": null,
+      "size": "360x870",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_Input box×4, m_checkbox×4, m_button×2) → 묶음(m_bar×3, tabel_bar×3, close)",
+      "order": [
+        {
+          "i": 0,
+          "id": "24674:31108",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 818,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "24674:31109",
+          "name": "Frame 764",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 162,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1,
+            "m_tab_mid": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "24674:31114",
+          "name": "Frame 764",
+          "type": "FRAME",
+          "x": 20,
+          "y": 184,
+          "h": 634,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_Input box×4, m_checkbox×4, m_button×2)",
+          "parts": {
+            "m_Input box": 4,
+            "m_button": 2,
+            "m_checkbox": 4
+          }
+        },
+        {
+          "i": 3,
+          "id": "24674:31238",
+          "name": "Frame 1028",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 870,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_bar×3, tabel_bar×3, close)",
+          "parts": {
+            "close": 1,
+            "ok": 1,
+            "m_bar": 3,
+            "tabel_bar": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "2250:26168",
+      "name": "11.1 1:1 문의_2 가입상담(약관동의 펼침)",
+      "section": null,
+      "size": "360x1351",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_Input box×4, m_checkbox×4, m_button×2) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2250:26169",
+          "name": "Frame 614",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 1209,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 1,
+          "id": "7160:73372",
+          "name": "Frame 764",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 162,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1,
+            "m_tab_mid": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "7160:73373",
+          "name": "Frame 764",
+          "type": "FRAME",
+          "x": 20,
+          "y": 184,
+          "h": 1025,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_Input box×4, m_checkbox×4, m_button×2)",
+          "parts": {
+            "m_Input box": 4,
+            "m_button": 2,
+            "m_checkbox": 4,
+            "icon/combobox_arrow": 1,
+            "More": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "2250:26231",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1213,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "11014:27906",
+      "name": "11. 고객센터",
+      "section": null,
+      "size": "291x60",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "2250:26235",
+      "name": "11.2 방문점검 신청_4 방문점검 신청",
+      "section": null,
+      "size": "360x1120",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 글자\"방문점검 신청 후 방문까지 영업일 기준 3일\" → 묶음(m_Input box×4, m_button×2, calendar×2) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "24679:55031",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "7210:55821",
+          "name": "Frame 767",
+          "type": "FRAME",
+          "x": 20,
+          "y": 132,
+          "h": 830,
+          "w": 320,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "2250:26239",
+          "name": "서비스약관에 동의해 주세요",
+          "type": "TEXT",
+          "x": 20,
+          "y": 132,
+          "h": 36,
+          "w": 320,
+          "depth": 1,
+          "kind": "text",
+          "label": "글자\"방문점검 신청 후 방문까지 영업일 기준 3일\""
+        },
+        {
+          "i": 3,
+          "id": "7210:55820",
+          "name": "Frame 767",
+          "type": "FRAME",
+          "x": 20,
+          "y": 204,
+          "h": 758,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_Input box×4, m_button×2, calendar×2)",
+          "parts": {
+            "m_Input box": 4,
+            "m_button": 2,
+            "icon/combobox_arrow": 1,
+            "m_calendar_input": 1,
+            "calendar": 2
+          }
+        },
+        {
+          "i": 4,
+          "id": "2250:26272",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 982,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2250:26276",
+      "name": "11.1 1:1 문의_3 일반문의",
+      "section": null,
+      "size": "360x1083",
+      "rowCount": 5,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 궁금한 점을 남겨주시면 전문 상담사가 빠른  / 서비스 가입 문의는 ‘가입상담’을 이용해 주) → 묶음(m_Input box×5, m_email_input, m_combobox/off/off/off/Default) → 묶음(tabel_bar, More) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7160:73374",
+          "name": "Frame 764",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 162,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "7210:55592",
+          "name": "Frame 764",
+          "type": "FRAME",
+          "x": 20,
+          "y": 168,
+          "h": 62,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 궁금한 점을 남겨주시면 전문 상담사가 빠른  / 서비스 가입 문의는 ‘가입상담’을 이용해 주)"
+        },
+        {
+          "i": 2,
+          "id": "2250:26289",
+          "name": "Frame 257",
+          "type": "FRAME",
+          "x": 20,
+          "y": 254,
+          "h": 590,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_Input box×5, m_email_input, m_combobox/off/off/off/Default)",
+          "parts": {
+            "m_Input box": 5,
+            "m_email_input": 1,
+            "m_combobox/off/off/off/Default": 1,
+            "icon/combobox_arrow": 1
+          }
+        },
+        {
+          "i": 3,
+          "id": "2250:26307",
+          "name": "Frame 702",
+          "type": "FRAME",
+          "x": 20,
+          "y": 868,
+          "h": 57,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(tabel_bar, More)",
+          "parts": {
+            "tabel_bar": 1,
+            "More": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "2250:26316",
+          "name": "Frame 34730",
+          "type": "FRAME",
+          "x": 0,
+          "y": 945,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2250:26320",
+      "name": "11.1 1:1 문의_4 일반문의(약관동의 펼침)",
+      "section": null,
+      "size": "360x1313",
+      "rowCount": 10,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → m_tab_mid(글자: 가입상담 / 일반문의) → 묶음(글자: 궁금한 점을 남겨주시면 전문 상담사가 빠른  / 서비스 가입 문의는 ‘가입상담’을 이용해 주) → m_Input box → 묶음(m_Input box) → m_email_input → 묶음(m_Input box) → 묶음(글자: 내용 / (0/500)) → 묶음(tabel_bar, More) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "24679:55288",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2250:26324",
+          "name": "m_tab_mid",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 50,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "m_tab_mid(글자: 가입상담 / 일반문의)"
+        },
+        {
+          "i": 2,
+          "id": "7210:55593",
+          "name": "Frame 764",
+          "type": "FRAME",
+          "x": 20,
+          "y": 168,
+          "h": 62,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 궁금한 점을 남겨주시면 전문 상담사가 빠른  / 서비스 가입 문의는 ‘가입상담’을 이용해 주)"
+        },
+        {
+          "i": 3,
+          "id": "2250:26334",
+          "name": "Frame 991",
+          "type": "FRAME",
+          "x": 20,
+          "y": 254,
+          "h": 590,
+          "w": 320,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 4,
+          "id": "2250:26335",
+          "name": "m_Input box",
+          "type": "INSTANCE",
+          "x": 20,
+          "y": 254,
+          "h": 72,
+          "w": 320,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_Input box"
+        },
+        {
+          "i": 5,
+          "id": "2250:26336",
+          "name": "Frame 34735",
+          "type": "FRAME",
+          "x": 20,
+          "y": 350,
+          "h": 92,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_Input box)",
+          "parts": {
+            "m_Input box": 1
+          }
+        },
+        {
+          "i": 6,
+          "id": "2250:26339",
+          "name": "m_email_input",
+          "type": "INSTANCE",
+          "x": 20,
+          "y": 466,
+          "h": 128,
+          "w": 320,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_email_input"
+        },
+        {
+          "i": 7,
+          "id": "2250:26340",
+          "name": "Frame 34731",
+          "type": "FRAME",
+          "x": 20,
+          "y": 618,
+          "h": 72,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_Input box)",
+          "parts": {
+            "m_Input box": 1
+          }
+        },
+        {
+          "i": 8,
+          "id": "2250:26345",
+          "name": "Frame 34729",
+          "type": "FRAME",
+          "x": 20,
+          "y": 714,
+          "h": 130,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 내용 / (0/500))"
+        },
+        {
+          "i": 9,
+          "id": "2250:26351",
+          "name": "Frame 703",
+          "type": "FRAME",
+          "x": 20,
+          "y": 868,
+          "h": 287,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(tabel_bar, More)",
+          "parts": {
+            "tabel_bar": 1,
+            "More": 1
+          }
+        },
+        {
+          "i": 10,
+          "id": "2250:26372",
+          "name": "Frame 34730",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1175,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2250:28053",
+      "name": "11.2 방문점검 신청_1 메인",
+      "section": null,
+      "size": "360x1238",
+      "rowCount": 6,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → m_combobox → 묶음(building control) → list(menu_arrow_right×10, m_bar×10, tabel_bar×10) → 묶음(m_button, phone_navi) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "24679:54833",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2250:28057",
+          "name": "m_combobox",
+          "type": "INSTANCE",
+          "x": 20,
+          "y": 116,
+          "h": 50,
+          "w": 320,
+          "depth": 0,
+          "kind": "part",
+          "label": "m_combobox"
+        },
+        {
+          "i": 2,
+          "id": "7210:55597",
+          "name": "Frame 34790",
+          "type": "FRAME",
+          "x": 0,
+          "y": 198,
+          "h": 882,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "7210:55596",
+          "name": "Group 765",
+          "type": "GROUP",
+          "x": 0,
+          "y": 198,
+          "h": 100,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(building control)",
+          "parts": {
+            "building control": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "2250:28072",
+          "name": "list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 330,
+          "h": 750,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "list(menu_arrow_right×10, m_bar×10, tabel_bar×10)",
+          "parts": {
+            "menu_arrow_right": 10,
+            "m_bar": 10,
+            "tabel_bar": 10
+          }
+        },
+        {
+          "i": 5,
+          "id": "2250:28058",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1100,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        },
+        {
+          "i": 6,
+          "id": "13287:12358",
+          "name": "Frame 34791",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1100,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2316:28453",
+      "name": "11.2 방문점검 신청_5 신청내역 없음",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 6,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → m_combobox → 글자\"방문점검 신청\" → 묶음(building control) → 묶음(글자: 방문점검 신청 이력이 없습니다.) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "24679:55063",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2316:28457",
+          "name": "m_combobox",
+          "type": "INSTANCE",
+          "x": 20,
+          "y": 116,
+          "h": 50,
+          "w": 320,
+          "depth": 0,
+          "kind": "part",
+          "label": "m_combobox"
+        },
+        {
+          "i": 2,
+          "id": "2316:28468",
+          "name": "방문점검 신청",
+          "type": "TEXT",
+          "x": 20,
+          "y": 198,
+          "h": 20,
+          "w": 109,
+          "depth": 0,
+          "kind": "text",
+          "label": "글자\"방문점검 신청\""
+        },
+        {
+          "i": 3,
+          "id": "2316:28462",
+          "name": "Frame 265",
+          "type": "FRAME",
+          "x": 0,
+          "y": 238,
+          "h": 60,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(building control)",
+          "parts": {
+            "building control": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "2316:28694",
+          "name": "Frame 1176",
+          "type": "FRAME",
+          "x": 20,
+          "y": 364,
+          "h": 246,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 방문점검 신청 이력이 없습니다.)"
+        },
+        {
+          "i": 5,
+          "id": "2316:28458",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "5680:58275",
+      "name": "11.8 미권한_3 권한 없는 일반 관리자 ",
+      "section": null,
+      "size": "360x781",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_subbutton, More) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7210:55823",
+          "name": "Frame 767",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 202,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1,
+            "m_combobox": 1,
+            "menu_arrow_down": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "5714:57759",
+          "name": "Frame 768",
+          "type": "FRAME",
+          "x": 30,
+          "y": 379,
+          "h": 177,
+          "w": 300,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_subbutton, More)",
+          "parts": {
+            "m_subbutton": 1,
+            "More": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "7210:55824",
+          "name": "Frame 767",
+          "type": "FRAME",
+          "x": 0,
+          "y": 733,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "9507:45747",
+      "name": "11.8 미권한_2 계약 없는 마스터 관리자",
+      "section": null,
+      "size": "360x781",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_subbutton, More) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "28494:60983",
+          "name": "Frame 767",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 202,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1,
+            "m_combobox": 1,
+            "menu_arrow_down": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "9507:45756",
+          "name": "Frame 768",
+          "type": "FRAME",
+          "x": 30,
+          "y": 334,
+          "h": 177,
+          "w": 300,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_subbutton, More)",
+          "parts": {
+            "m_subbutton": 1,
+            "More": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "9507:45777",
+          "name": "Frame 767",
+          "type": "FRAME",
+          "x": 0,
+          "y": 643,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2250:28183",
+      "name": "11.2 방문점검 신청_3 신청내역",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 이름 / 강백호) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2250:28184",
+          "name": "Frame 1080",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2250:28187",
+          "name": "Frame 198",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 518,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 이름 / 강백호)"
+        },
+        {
+          "i": 2,
+          "id": "2250:28207",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2250:28211",
+      "name": "11.2 방문점검 신청_2 검색",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 6,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_button×4, calendar×2, close) → m_combobox → 묶음(building control) → list(menu_arrow_right×6, m_bar×6, tabel_bar×6) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "24679:54988",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2250:28284",
+          "name": "Frame 1199",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 780,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button×4, calendar×2, close)",
+          "parts": {
+            "close": 1,
+            "m_button": 4,
+            "calendar": 2
+          }
+        },
+        {
+          "i": 2,
+          "id": "2250:28215",
+          "name": "m_combobox",
+          "type": "INSTANCE",
+          "x": 20,
+          "y": 116,
+          "h": 50,
+          "w": 320,
+          "depth": 0,
+          "kind": "part",
+          "label": "m_combobox"
+        },
+        {
+          "i": 3,
+          "id": "7210:55598",
+          "name": "Group 766",
+          "type": "GROUP",
+          "x": 0,
+          "y": 198,
+          "h": 100,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(building control)",
+          "parts": {
+            "building control": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "2250:28226",
+          "name": "list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 330,
+          "h": 450,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "list(menu_arrow_right×6, m_bar×6, tabel_bar×6)",
+          "parts": {
+            "menu_arrow_right": 6,
+            "m_bar": 6,
+            "tabel_bar": 6
+          }
+        },
+        {
+          "i": 5,
+          "id": "2250:28282",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2250:30355",
+      "name": "11.3 자주하는 질문",
+      "section": null,
+      "size": "224x30",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "2250:30356",
+      "name": "11.4 자료실",
+      "section": null,
+      "size": "140x30",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "2250:30485",
+      "name": "11.3 자주하는 질문_1 메인",
+      "section": null,
+      "size": "360x1131",
+      "rowCount": 4,
+      "orderText": "묶음(m_chips×10, m_StatusBar , appbar_sub) → 묶음(글자: 총 137건) → list(More×10, m_bar×10, tabel_bar×10) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7210:55833",
+          "name": "Frame 768",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 234,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_chips×10, m_StatusBar , appbar_sub)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1,
+            "m_chips": 10,
+            "search": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "7210:55825",
+          "name": "Group 767",
+          "type": "GROUP",
+          "x": 0,
+          "y": 250,
+          "h": 793,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "2250:30508",
+          "name": "Frame 218",
+          "type": "FRAME",
+          "x": 20,
+          "y": 250,
+          "h": 14,
+          "w": 52,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 총 137건)"
+        },
+        {
+          "i": 3,
+          "id": "2250:30510",
+          "name": "list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 272,
+          "h": 771,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "list(More×10, m_bar×10, tabel_bar×10)",
+          "parts": {
+            "More": 10,
+            "m_bar": 10,
+            "tabel_bar": 10
+          }
+        },
+        {
+          "i": 4,
+          "id": "2250:30501",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1083,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2755:45268",
+      "name": "11.4 자료실_2 메인(각 서비스)",
+      "section": null,
+      "size": "361x1191",
+      "rowCount": 13,
+      "orderText": "묶음(m_chips×10, m_StatusBar , appbar_sub) → 묶음(글자: 총 137건) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7210:55846",
+          "name": "Frame 768",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 294,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_chips×10, m_StatusBar , appbar_sub)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1,
+            "m_chips": 10,
+            "m_combobox": 1,
+            "icon/combobox_arrow": 1,
+            "search": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2755:45291",
+          "name": "Frame 218",
+          "type": "FRAME",
+          "x": 20,
+          "y": 310,
+          "h": 14,
+          "w": 52,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 총 137건)"
+        },
+        {
+          "i": 2,
+          "id": "2755:45293",
+          "name": "list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 332,
+          "h": 771,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "2755:45294",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 332,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "2755:45303",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 428,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "2755:45312",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 503,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 6,
+          "id": "2755:45321",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 578,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 7,
+          "id": "2755:45330",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 653,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 8,
+          "id": "2755:45339",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 728,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 9,
+          "id": "2755:45348",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 803,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 10,
+          "id": "2755:45357",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 878,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 11,
+          "id": "2755:45366",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 953,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 12,
+          "id": "2755:45375",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1028,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 13,
+          "id": "2755:45284",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1143,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2491:39078",
+      "name": "11.4 자료실_1 메인(전체)",
+      "section": null,
+      "size": "360x1151",
+      "rowCount": 13,
+      "orderText": "묶음(m_chips×10, m_StatusBar , appbar_sub) → 묶음(글자: 총 137건) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7210:55840",
+          "name": "Frame 768",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 234,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_chips×10, m_StatusBar , appbar_sub)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1,
+            "m_chips": 10,
+            "search": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2491:39101",
+          "name": "Frame 218",
+          "type": "FRAME",
+          "x": 20,
+          "y": 250,
+          "h": 14,
+          "w": 52,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 총 137건)"
+        },
+        {
+          "i": 2,
+          "id": "2491:39103",
+          "name": "list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 272,
+          "h": 791,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "2491:39104",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 272,
+          "h": 116,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "2491:39113",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 388,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "2491:39122",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 463,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 6,
+          "id": "2491:39131",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 538,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 7,
+          "id": "2491:39140",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 613,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 8,
+          "id": "2491:39149",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 688,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 9,
+          "id": "2491:39158",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 763,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 10,
+          "id": "2491:39167",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 838,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 11,
+          "id": "2491:39176",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 913,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 12,
+          "id": "2491:39185",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 988,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 13,
+          "id": "2491:39094",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1103,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2250:31186",
+      "name": "11.4 자료실_3 상세 내용",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(download×2) → 글자\"상세설명서(사용자 매뉴얼) 4 채널 - VR\" → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7210:55850",
+          "name": "Frame 768",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 215,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2250:31188",
+          "name": "Frame 34706",
+          "type": "FRAME",
+          "x": 20,
+          "y": 219,
+          "h": 128,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(download×2)",
+          "parts": {
+            "download": 2
+          }
+        },
+        {
+          "i": 2,
+          "id": "2250:31197",
+          "name": "서비스약관에 동의해 주세요",
+          "type": "TEXT",
+          "x": 20,
+          "y": 379,
+          "h": 132,
+          "w": 320,
+          "depth": 0,
+          "kind": "text",
+          "label": "글자\"상세설명서(사용자 매뉴얼) 4 채널 - VR\""
+        },
+        {
+          "i": 3,
+          "id": "2250:31201",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2250:31234",
+      "name": "11.3 자주하는 질문_5 메인(없음)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_chips×10, m_StatusBar , appbar_sub) → 묶음(글자: 총 0건) → worry → 글자\"등록된 게시글이 없습니다.\" → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7210:55838",
+          "name": "Frame 768",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 234,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_chips×10, m_StatusBar , appbar_sub)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1,
+            "m_chips": 10,
+            "search": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2250:31257",
+          "name": "Frame 218",
+          "type": "FRAME",
+          "x": 20,
+          "y": 250,
+          "h": 14,
+          "w": 52,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 총 0건)"
+        },
+        {
+          "i": 2,
+          "id": "2250:31259",
+          "name": "Frame 1176",
+          "type": "FRAME",
+          "x": 20,
+          "y": 264,
+          "h": 468,
+          "w": 320,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "3111:48908",
+          "name": "worry",
+          "type": "GROUP",
+          "x": 148,
+          "y": 452,
+          "h": 64,
+          "w": 64,
+          "depth": 1,
+          "kind": "group",
+          "label": "worry"
+        },
+        {
+          "i": 4,
+          "id": "2250:31261",
+          "name": "등록된 게시글이 없습니다.",
+          "type": "TEXT",
+          "x": 20,
+          "y": 528,
+          "h": 16,
+          "w": 320,
+          "depth": 1,
+          "kind": "text",
+          "label": "글자\"등록된 게시글이 없습니다.\""
+        },
+        {
+          "i": 5,
+          "id": "2250:31250",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2250:31262",
+      "name": "11.4 자료실_4 메인(없음)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_chips×10, m_StatusBar , appbar_sub) → 묶음(글자: 총 0건) → worry → 글자\"등록된 게시글이 없습니다.\" → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7210:55852",
+          "name": "Frame 768",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 234,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_chips×10, m_StatusBar , appbar_sub)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1,
+            "m_chips": 10,
+            "search": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2250:31287",
+          "name": "Frame 218",
+          "type": "FRAME",
+          "x": 20,
+          "y": 250,
+          "h": 14,
+          "w": 52,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 총 0건)"
+        },
+        {
+          "i": 2,
+          "id": "2250:31289",
+          "name": "Frame 1176",
+          "type": "FRAME",
+          "x": 20,
+          "y": 264,
+          "h": 468,
+          "w": 320,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "3111:48934",
+          "name": "worry",
+          "type": "GROUP",
+          "x": 148,
+          "y": 452,
+          "h": 64,
+          "w": 64,
+          "depth": 1,
+          "kind": "group",
+          "label": "worry"
+        },
+        {
+          "i": 4,
+          "id": "2250:31291",
+          "name": "등록된 게시글이 없습니다.",
+          "type": "TEXT",
+          "x": 20,
+          "y": 528,
+          "h": 16,
+          "w": 320,
+          "depth": 1,
+          "kind": "text",
+          "label": "글자\"등록된 게시글이 없습니다.\""
+        },
+        {
+          "i": 5,
+          "id": "2250:31278",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2250:31418",
+      "name": "11.3 자주하는 질문_2 메인(답변 - 텍스트)",
+      "section": null,
+      "size": "360x1290",
+      "rowCount": 7,
+      "orderText": "묶음(m_chips×10, m_StatusBar , appbar_sub) → 묶음(글자: 총 137건) → m_list(More×2, m_subbutton, m_bar) → m_list(More, m_bar, tabel_bar) → m_list(More, m_bar, tabel_bar) → m_list(More×7, m_bar×7, tabel_bar×7) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7210:55832",
+          "name": "Frame 768",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 234,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_chips×10, m_StatusBar , appbar_sub)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1,
+            "m_chips": 10,
+            "search": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2250:31441",
+          "name": "Frame 218",
+          "type": "FRAME",
+          "x": 20,
+          "y": 250,
+          "h": 14,
+          "w": 52,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 총 137건)"
+        },
+        {
+          "i": 2,
+          "id": "2250:31443",
+          "name": "list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 272,
+          "h": 930,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "2250:31444",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 272,
+          "h": 192,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More×2, m_subbutton, m_bar)",
+          "parts": {
+            "More": 2,
+            "m_subbutton": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "2250:31456",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 464,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More, m_bar, tabel_bar)",
+          "parts": {
+            "More": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "2250:31464",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 560,
+          "h": 96,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More, m_bar, tabel_bar)",
+          "parts": {
+            "More": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 6,
+          "id": "2250:31472",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 656,
+          "h": 546,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More×7, m_bar×7, tabel_bar×7)",
+          "parts": {
+            "More": 7,
+            "m_bar": 7,
+            "tabel_bar": 7
+          }
+        },
+        {
+          "i": 7,
+          "id": "2250:31434",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1242,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2250:31654",
+      "name": "11.3 자주하는 질문_3 메인(답변 - 이미지)",
+      "section": null,
+      "size": "360x1405",
+      "rowCount": 12,
+      "orderText": "묶음(m_chips×10, m_StatusBar , appbar_sub) → 묶음(글자: 총 137건) → m_list(More×2, m_bar×2, tabel_bar×2) → m_list(More, m_bar, tabel_bar) → m_list(More, m_bar, tabel_bar) → m_list(More, m_bar, tabel_bar) → m_list(More, m_bar, tabel_bar) → m_list(More, m_bar, tabel_bar) → m_list(More, m_bar, tabel_bar) → m_list(More, m_bar, tabel_bar) → m_list(More, m_bar, tabel_bar) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7210:55831",
+          "name": "Frame 768",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 234,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_chips×10, m_StatusBar , appbar_sub)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1,
+            "m_chips": 10,
+            "search": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2250:31677",
+          "name": "Frame 218",
+          "type": "FRAME",
+          "x": 20,
+          "y": 250,
+          "h": 14,
+          "w": 52,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 총 137건)"
+        },
+        {
+          "i": 2,
+          "id": "2250:31679",
+          "name": "list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 272,
+          "h": 1045,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "2250:31680",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 272,
+          "h": 445,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More×2, m_bar×2, tabel_bar×2)",
+          "parts": {
+            "More": 2,
+            "m_bar": 2,
+            "tabel_bar": 2
+          }
+        },
+        {
+          "i": 4,
+          "id": "2250:31700",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 717,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More, m_bar, tabel_bar)",
+          "parts": {
+            "More": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "2332:29433",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 792,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More, m_bar, tabel_bar)",
+          "parts": {
+            "More": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 6,
+          "id": "2332:29447",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 867,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More, m_bar, tabel_bar)",
+          "parts": {
+            "More": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 7,
+          "id": "2332:29461",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 942,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More, m_bar, tabel_bar)",
+          "parts": {
+            "More": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 8,
+          "id": "2332:29475",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1017,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More, m_bar, tabel_bar)",
+          "parts": {
+            "More": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 9,
+          "id": "2332:29489",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1092,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More, m_bar, tabel_bar)",
+          "parts": {
+            "More": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 10,
+          "id": "2332:29503",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1167,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More, m_bar, tabel_bar)",
+          "parts": {
+            "More": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 11,
+          "id": "2332:29517",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1242,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More, m_bar, tabel_bar)",
+          "parts": {
+            "More": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 12,
+          "id": "2250:31670",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1357,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2250:31903",
+      "name": "11.3 자주하는 질문_4 메인(답변 - \b영상)",
+      "section": null,
+      "size": "360x1394",
+      "rowCount": 11,
+      "orderText": "묶음(m_chips×10, m_StatusBar , appbar_sub) → 묶음(글자: 총 137건) → m_list(More×3, m_bar×3, tabel_bar×3) → m_list(More, m_bar, tabel_bar) → m_list(More, m_bar, tabel_bar) → m_list(More, m_bar, tabel_bar) → m_list(More, m_bar, tabel_bar) → m_list(More, m_bar, tabel_bar) → m_list(More, m_bar, tabel_bar) → m_list(More, m_bar, tabel_bar) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7210:55836",
+          "name": "Frame 768",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 234,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_chips×10, m_StatusBar , appbar_sub)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1,
+            "m_chips": 10,
+            "search": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2250:31926",
+          "name": "Frame 218",
+          "type": "FRAME",
+          "x": 20,
+          "y": 250,
+          "h": 14,
+          "w": 52,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 총 137건)"
+        },
+        {
+          "i": 2,
+          "id": "2250:31928",
+          "name": "list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 272,
+          "h": 1034,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "2250:31929",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 272,
+          "h": 509,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More×3, m_bar×3, tabel_bar×3)",
+          "parts": {
+            "More": 3,
+            "m_bar": 3,
+            "tabel_bar": 3
+          }
+        },
+        {
+          "i": 4,
+          "id": "2390:31291",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 781,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More, m_bar, tabel_bar)",
+          "parts": {
+            "More": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "2390:31303",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 856,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More, m_bar, tabel_bar)",
+          "parts": {
+            "More": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 6,
+          "id": "2390:31315",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 931,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More, m_bar, tabel_bar)",
+          "parts": {
+            "More": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 7,
+          "id": "2390:31327",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1006,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More, m_bar, tabel_bar)",
+          "parts": {
+            "More": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 8,
+          "id": "2390:31339",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1081,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More, m_bar, tabel_bar)",
+          "parts": {
+            "More": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 9,
+          "id": "2390:31351",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1156,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More, m_bar, tabel_bar)",
+          "parts": {
+            "More": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 10,
+          "id": "2390:31363",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1231,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(More, m_bar, tabel_bar)",
+          "parts": {
+            "More": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 11,
+          "id": "2250:31919",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1346,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2491:36267",
+      "name": "11.5 고마워요 에스원",
+      "section": null,
+      "size": "250x30",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "2491:36268",
+      "name": "11.6 궁금해요 에스원",
+      "section": null,
+      "size": "250x30",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "2491:36271",
+      "name": "11.7 뉴스 & 공지",
+      "section": null,
+      "size": "196x30",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "11026:27908",
+      "name": "11.8 미권한",
+      "section": null,
+      "size": "139x30",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "2491:36272",
+      "name": "11.5 고마워요 에스원_1 메인",
+      "section": null,
+      "size": "360x1245",
+      "rowCount": 9,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(slider) → 글자\"총 137건\" → 묶음(tabel_bar) → 묶음(tabel_bar) → 묶음(tabel_bar) → 묶음(tabel_bar) → 묶음(tabel_bar) → 묶음(phone_navi, m_button)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2491:36273",
+          "name": "Frame 1080",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "7210:55854",
+          "name": "Frame 768",
+          "type": "FRAME",
+          "x": 20,
+          "y": 119,
+          "h": 277,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(slider)",
+          "parts": {
+            "slider": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "2491:36280",
+          "name": "총 137건",
+          "type": "TEXT",
+          "x": 20,
+          "y": 436,
+          "h": 14,
+          "w": 52,
+          "depth": 0,
+          "kind": "text",
+          "label": "글자\"총 137건\""
+        },
+        {
+          "i": 3,
+          "id": "2491:36321",
+          "name": "list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 458,
+          "h": 629,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 4,
+          "id": "2491:36322",
+          "name": "Group 720",
+          "type": "GROUP",
+          "x": 0,
+          "y": 458,
+          "h": 130,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar)",
+          "parts": {
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "2491:36350",
+          "name": "Group 721",
+          "type": "GROUP",
+          "x": 0,
+          "y": 588,
+          "h": 109,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar)",
+          "parts": {
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 6,
+          "id": "2491:36378",
+          "name": "Group 722",
+          "type": "GROUP",
+          "x": 0,
+          "y": 697,
+          "h": 130,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar)",
+          "parts": {
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 7,
+          "id": "2491:36406",
+          "name": "Group 723",
+          "type": "GROUP",
+          "x": 0,
+          "y": 827,
+          "h": 130,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar)",
+          "parts": {
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 8,
+          "id": "2491:36434",
+          "name": "Group 724",
+          "type": "GROUP",
+          "x": 0,
+          "y": 957,
+          "h": 130,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar)",
+          "parts": {
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 9,
+          "id": "7210:55856",
+          "name": "Group 768",
+          "type": "GROUP",
+          "x": 0,
+          "y": 1107,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi, m_button)",
+          "parts": {
+            "phone_navi": 1,
+            "m_button": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2519:42142",
+      "name": "11.5 고마워요 에스원_4 메인(없음)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 글자\"총 0건\" → worry → 글자\"등록된 게시글이 없습니다\" → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2519:42143",
+          "name": "Frame 1080",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2519:42148",
+          "name": "총 0건",
+          "type": "TEXT",
+          "x": 20,
+          "y": 128,
+          "h": 14,
+          "w": 52,
+          "depth": 0,
+          "kind": "text",
+          "label": "글자\"총 0건\""
+        },
+        {
+          "i": 2,
+          "id": "2519:42291",
+          "name": "Frame 1178",
+          "type": "FRAME",
+          "x": 20,
+          "y": 150,
+          "h": 484,
+          "w": 320,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "3111:48947",
+          "name": "worry",
+          "type": "GROUP",
+          "x": 148,
+          "y": 346,
+          "h": 64,
+          "w": 64,
+          "depth": 1,
+          "kind": "group",
+          "label": "worry"
+        },
+        {
+          "i": 4,
+          "id": "2519:42293",
+          "name": "등록된 게시글이 없습니다",
+          "type": "TEXT",
+          "x": 20,
+          "y": 422,
+          "h": 16,
+          "w": 320,
+          "depth": 1,
+          "kind": "text",
+          "label": "글자\"등록된 게시글이 없습니다\""
+        },
+        {
+          "i": 5,
+          "id": "7210:55863",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "7140:69915",
+      "name": "11.6 궁금해요 에스원_7 나의 질문내역(없음)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_subbutton, More) → worry → 글자\"등록된 게시글이 없습니다\" → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7140:69916",
+          "name": "Frame 1080",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "7140:69980",
+          "name": "Frame 1128",
+          "type": "FRAME",
+          "x": 0,
+          "y": 96,
+          "h": 149,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_subbutton, More)",
+          "parts": {
+            "m_subbutton": 1,
+            "More": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "7140:69920",
+          "name": "Frame 1178",
+          "type": "FRAME",
+          "x": 20,
+          "y": 225,
+          "h": 500,
+          "w": 320,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "7140:69921",
+          "name": "worry",
+          "type": "GROUP",
+          "x": 148,
+          "y": 429,
+          "h": 64,
+          "w": 64,
+          "depth": 1,
+          "kind": "group",
+          "label": "worry"
+        },
+        {
+          "i": 4,
+          "id": "7140:69934",
+          "name": "등록된 게시글이 없습니다",
+          "type": "TEXT",
+          "x": 20,
+          "y": 505,
+          "h": 16,
+          "w": 320,
+          "depth": 1,
+          "kind": "text",
+          "label": "글자\"등록된 게시글이 없습니다\""
+        },
+        {
+          "i": 5,
+          "id": "7140:69935",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2491:36751",
+      "name": "11.5 고마워요 에스원_2 상세 내용",
+      "section": null,
+      "size": "360x788",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_bar, tabel_bar) → 묶음(글자: 안녕하세요 오늘 서비스 받은 인천 동구 송림 / #시스템 경비(세콤)) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2491:36781",
+          "name": "Frame 1080",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "7210:55858",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 0,
+          "y": 116,
+          "h": 83,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_bar, tabel_bar)",
+          "parts": {
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "7210:55860",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 20,
+          "y": 219,
+          "h": 411,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 안녕하세요 오늘 서비스 받은 인천 동구 송림 / #시스템 경비(세콤))"
+        },
+        {
+          "i": 3,
+          "id": "2491:36777",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 650,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2491:36817",
+      "name": "11.6 궁금해요 에스원_1 메인",
+      "section": null,
+      "size": "361x1643",
+      "rowCount": 13,
+      "orderText": "묶음(m_chips×10, m_StatusBar , appbar_sub) → 묶음(글자: 총 137건) → 묶음(tabel_bar, best) → 묶음(tabel_bar, best) → 묶음(tabel_bar, best) → 묶음(tabel_bar, best) → 묶음(tabel_bar, best) → 묶음(tabel_bar, best) → 묶음(tabel_bar, best) → 묶음(tabel_bar, best) → 묶음(tabel_bar, best) → 묶음(tabel_bar, best) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7210:55865",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 234,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_chips×10, m_StatusBar , appbar_sub)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "m_chips": 10,
+            "search": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2491:36838",
+          "name": "Frame 218",
+          "type": "FRAME",
+          "x": 20,
+          "y": 250,
+          "h": 14,
+          "w": 52,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 총 137건)"
+        },
+        {
+          "i": 2,
+          "id": "2491:36840",
+          "name": "Frame 737",
+          "type": "FRAME",
+          "x": 0,
+          "y": 272,
+          "h": 1213,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "2491:36841",
+          "name": "Group 724",
+          "type": "GROUP",
+          "x": 0,
+          "y": 272,
+          "h": 154,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar, best)",
+          "parts": {
+            "tabel_bar": 1,
+            "best": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "2491:36858",
+          "name": "Group 725",
+          "type": "GROUP",
+          "x": 0,
+          "y": 426,
+          "h": 134,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar, best)",
+          "parts": {
+            "tabel_bar": 1,
+            "best": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "2491:36875",
+          "name": "Group 726",
+          "type": "GROUP",
+          "x": 0,
+          "y": 560,
+          "h": 113,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar, best)",
+          "parts": {
+            "tabel_bar": 1,
+            "best": 1
+          }
+        },
+        {
+          "i": 6,
+          "id": "2491:36892",
+          "name": "Group 727",
+          "type": "GROUP",
+          "x": 0,
+          "y": 673,
+          "h": 134,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar, best)",
+          "parts": {
+            "tabel_bar": 1,
+            "best": 1
+          }
+        },
+        {
+          "i": 7,
+          "id": "2491:36909",
+          "name": "Group 728",
+          "type": "GROUP",
+          "x": 0,
+          "y": 807,
+          "h": 113,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar, best)",
+          "parts": {
+            "tabel_bar": 1,
+            "best": 1
+          }
+        },
+        {
+          "i": 8,
+          "id": "2491:36926",
+          "name": "Group 729",
+          "type": "GROUP",
+          "x": 0,
+          "y": 920,
+          "h": 113,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar, best)",
+          "parts": {
+            "tabel_bar": 1,
+            "best": 1
+          }
+        },
+        {
+          "i": 9,
+          "id": "2491:36943",
+          "name": "Group 730",
+          "type": "GROUP",
+          "x": 0,
+          "y": 1033,
+          "h": 113,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar, best)",
+          "parts": {
+            "tabel_bar": 1,
+            "best": 1
+          }
+        },
+        {
+          "i": 10,
+          "id": "2491:36960",
+          "name": "Group 731",
+          "type": "GROUP",
+          "x": 0,
+          "y": 1146,
+          "h": 113,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar, best)",
+          "parts": {
+            "tabel_bar": 1,
+            "best": 1
+          }
+        },
+        {
+          "i": 11,
+          "id": "2491:36977",
+          "name": "Group 732",
+          "type": "GROUP",
+          "x": 0,
+          "y": 1259,
+          "h": 113,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar, best)",
+          "parts": {
+            "tabel_bar": 1,
+            "best": 1
+          }
+        },
+        {
+          "i": 12,
+          "id": "2491:36994",
+          "name": "Group 733",
+          "type": "GROUP",
+          "x": 0,
+          "y": 1372,
+          "h": 113,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar, best)",
+          "parts": {
+            "tabel_bar": 1,
+            "best": 1
+          }
+        },
+        {
+          "i": 13,
+          "id": "2491:37011",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1505,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2491:37213",
+      "name": "11.6 궁금해요 에스원_2 메인(글 없음)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_chips×10, m_StatusBar , appbar_sub) → 묶음(글자: 총 0건) → worry → 글자\"등록된 게시글이 없습니다\" → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7210:55869",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 234,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_chips×10, m_StatusBar , appbar_sub)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "m_chips": 10,
+            "search": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2491:37234",
+          "name": "Frame 218",
+          "type": "FRAME",
+          "x": 20,
+          "y": 250,
+          "h": 14,
+          "w": 52,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 총 0건)"
+        },
+        {
+          "i": 2,
+          "id": "2491:37236",
+          "name": "Frame 1178",
+          "type": "FRAME",
+          "x": 20,
+          "y": 272,
+          "h": 362,
+          "w": 320,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "3111:48960",
+          "name": "worry",
+          "type": "GROUP",
+          "x": 148,
+          "y": 407,
+          "h": 64,
+          "w": 64,
+          "depth": 1,
+          "kind": "group",
+          "label": "worry"
+        },
+        {
+          "i": 4,
+          "id": "2491:37238",
+          "name": "등록된 게시글이 없습니다",
+          "type": "TEXT",
+          "x": 20,
+          "y": 483,
+          "h": 16,
+          "w": 320,
+          "depth": 1,
+          "kind": "text",
+          "label": "글자\"등록된 게시글이 없습니다\""
+        },
+        {
+          "i": 5,
+          "id": "2491:37239",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2491:37243",
+      "name": "11.6 궁금해요 에스원_3 메인(검색결과 없음)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_chips×10, m_StatusBar , appbar_sub) → 묶음(글자: 총 0건) → 묶음(글자: 검색결과가 없습니다) → m_button → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7210:55871",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 234,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_chips×10, m_StatusBar , appbar_sub)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "m_chips": 10,
+            "search": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2491:37264",
+          "name": "Frame 218",
+          "type": "FRAME",
+          "x": 20,
+          "y": 250,
+          "h": 14,
+          "w": 52,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 총 0건)"
+        },
+        {
+          "i": 2,
+          "id": "2491:37266",
+          "name": "Frame 1178",
+          "type": "FRAME",
+          "x": 20,
+          "y": 272,
+          "h": 362,
+          "w": 320,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "2491:37267",
+          "name": "Frame 34751",
+          "type": "FRAME",
+          "x": 20,
+          "y": 370,
+          "h": 92,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 검색결과가 없습니다)"
+        },
+        {
+          "i": 4,
+          "id": "2491:37270",
+          "name": "m_button",
+          "type": "INSTANCE",
+          "x": 104,
+          "y": 486,
+          "h": 50,
+          "w": 152,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_button"
+        },
+        {
+          "i": 5,
+          "id": "2491:37271",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2491:37275",
+      "name": "11.6 궁금해요 에스원_4 상세 내용",
+      "section": null,
+      "size": "360x1233",
+      "rowCount": 6,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_bar, tabel_bar) → 묶음(글자: 제가 에스원 CCTV를 저희 매장에서 사용  / #시스템 경비(세콤)) → m_bar → 묶음(S1 logo, best) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2491:37276",
+          "name": "Frame 1080",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "7210:55872",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 0,
+          "y": 132,
+          "h": 83,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_bar, tabel_bar)",
+          "parts": {
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "7210:55876",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 0,
+          "y": 235,
+          "h": 840,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "7210:55873",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 20,
+          "y": 235,
+          "h": 411,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 제가 에스원 CCTV를 저희 매장에서 사용  / #시스템 경비(세콤))"
+        },
+        {
+          "i": 4,
+          "id": "2491:37307",
+          "name": "m_bar",
+          "type": "INSTANCE",
+          "x": 20,
+          "y": 670,
+          "h": 1,
+          "w": 320,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_bar"
+        },
+        {
+          "i": 5,
+          "id": "7210:55875",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 0,
+          "y": 695,
+          "h": 380,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(S1 logo, best)",
+          "parts": {
+            "S1 logo": 1,
+            "best": 1
+          }
+        },
+        {
+          "i": 6,
+          "id": "2491:37308",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1095,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2491:37312",
+      "name": "11.6 궁금해요 에스원_5 상세 내용(추천)",
+      "section": null,
+      "size": "360x1233",
+      "rowCount": 6,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(m_bar, tabel_bar) → 묶음(글자: 제가 에스원 CCTV를 저희 매장에서 사용  / #시스템 경비(세콤)) → m_bar → 묶음(S1 logo, best) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2491:37313",
+          "name": "Frame 1080",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "7210:55877",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 0,
+          "y": 132,
+          "h": 83,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_bar, tabel_bar)",
+          "parts": {
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 2,
+          "id": "7242:55881",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 0,
+          "y": 235,
+          "h": 840,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "7210:55878",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 20,
+          "y": 235,
+          "h": 411,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 제가 에스원 CCTV를 저희 매장에서 사용  / #시스템 경비(세콤))"
+        },
+        {
+          "i": 4,
+          "id": "2491:37344",
+          "name": "m_bar",
+          "type": "INSTANCE",
+          "x": 20,
+          "y": 670,
+          "h": 1,
+          "w": 320,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_bar"
+        },
+        {
+          "i": 5,
+          "id": "7242:55880",
+          "name": "Frame 34792",
+          "type": "FRAME",
+          "x": 0,
+          "y": 695,
+          "h": 380,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(S1 logo, best)",
+          "parts": {
+            "S1 logo": 1,
+            "best": 1
+          }
+        },
+        {
+          "i": 6,
+          "id": "2491:37345",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1095,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2885:47021",
+      "name": "11.7 뉴스공지_1 메인",
+      "section": null,
+      "size": "360x1110",
+      "rowCount": 13,
+      "orderText": "묶음(m_chips×3, m_StatusBar , appbar_sub) → 묶음(글자: 총 429건) → m_list(attached, ic_화살표, 더보기, m_bar) → m_list(attached, menu_arrow_right, m_bar) → m_list(attached, menu_arrow_right, m_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(attached, menu_arrow_right, m_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → m_list(menu_arrow_right, m_bar, tabel_bar) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7242:55887",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 234,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_chips×3, m_StatusBar , appbar_sub)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "m_chips": 3,
+            "search": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2885:47037",
+          "name": "Frame 218",
+          "type": "FRAME",
+          "x": 20,
+          "y": 250,
+          "h": 14,
+          "w": 55,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 총 429건)"
+        },
+        {
+          "i": 2,
+          "id": "2885:47039",
+          "name": "list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 272,
+          "h": 750,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "3139:48489",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 272,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(attached, ic_화살표, 더보기, m_bar)",
+          "parts": {
+            "attached": 1,
+            "ic_화살표, 더보기": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "3140:52272",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 347,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(attached, menu_arrow_right, m_bar)",
+          "parts": {
+            "attached": 1,
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "3140:52295",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 422,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(attached, menu_arrow_right, m_bar)",
+          "parts": {
+            "attached": 1,
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 6,
+          "id": "2885:47777",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 497,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 7,
+          "id": "2885:47803",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 572,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 8,
+          "id": "2885:47842",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 647,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(attached, menu_arrow_right, m_bar)",
+          "parts": {
+            "attached": 1,
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 9,
+          "id": "2885:47866",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 722,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 10,
+          "id": "3140:52258",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 797,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 11,
+          "id": "3140:52318",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 872,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 12,
+          "id": "3140:52332",
+          "name": "m_list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 947,
+          "h": 75,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "m_list(menu_arrow_right, m_bar, tabel_bar)",
+          "parts": {
+            "menu_arrow_right": 1,
+            "m_bar": 1,
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 13,
+          "id": "2885:47030",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1062,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2491:37479",
+      "name": "11.7 뉴스공지_2 메인(검색 결과)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_chips×3, m_StatusBar , appbar_sub) → 묶음(글자: 총 5건) → 묶음(menu_arrow_right×5, m_bar×5, tabel_bar×5) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7242:55890",
+          "name": "Frame 770",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 234,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_chips×3, m_StatusBar , appbar_sub)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "m_chips": 3,
+            "search": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "7242:55888",
+          "name": "Group 769",
+          "type": "GROUP",
+          "x": 0,
+          "y": 250,
+          "h": 397,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "2491:37495",
+          "name": "Frame 218",
+          "type": "FRAME",
+          "x": 20,
+          "y": 250,
+          "h": 14,
+          "w": 37,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 총 5건)"
+        },
+        {
+          "i": 3,
+          "id": "2491:37497",
+          "name": "Frame 34748",
+          "type": "FRAME",
+          "x": 0,
+          "y": 272,
+          "h": 375,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(menu_arrow_right×5, m_bar×5, tabel_bar×5)",
+          "parts": {
+            "new": 1,
+            "attached": 3,
+            "menu_arrow_right": 5,
+            "m_bar": 5,
+            "tabel_bar": 5
+          }
+        },
+        {
+          "i": 4,
+          "id": "2491:37488",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2491:37554",
+      "name": "11.7 뉴스공지_3 상세 내용",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 6,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 2023.02.06 / 공지) → m_bar → 묶음(download) → 묶음(글자: 공지사항 내용이 기입됩니다. 공지사항 내용이) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2491:37555",
+          "name": "Frame 1080",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "7242:55898",
+          "name": "Frame 34793",
+          "type": "FRAME",
+          "x": 20,
+          "y": 114,
+          "h": 44,
+          "w": 340,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 2023.02.06 / 공지)"
+        },
+        {
+          "i": 2,
+          "id": "2491:37565",
+          "name": "m_bar",
+          "type": "INSTANCE",
+          "x": 0,
+          "y": 178,
+          "h": 1,
+          "w": 360,
+          "depth": 0,
+          "kind": "part",
+          "label": "m_bar"
+        },
+        {
+          "i": 3,
+          "id": "2491:37566",
+          "name": "Group 744",
+          "type": "GROUP",
+          "x": 20,
+          "y": 199,
+          "h": 56,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(download)",
+          "parts": {
+            "download": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "2491:37558",
+          "name": "Frame 34749",
+          "type": "FRAME",
+          "x": 20,
+          "y": 287,
+          "h": 304,
+          "w": 320,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 공지사항 내용이 기입됩니다. 공지사항 내용이)"
+        },
+        {
+          "i": 5,
+          "id": "2491:37561",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2491:37576",
+      "name": "11.5 고마워요 에스원_3 내용 등록",
+      "section": null,
+      "size": "360x1292",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 글자\"*표기된 항목은 필수 입력 사항입니다.\" → 묶음(m_radiobutton×9, m_Input box×7, m_button×2) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2491:37577",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "7210:55862",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 20,
+          "y": 132,
+          "h": 1002,
+          "w": 320,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "2491:37580",
+          "name": "*표기된 항목은 필수 입력 사항입니다.",
+          "type": "TEXT",
+          "x": 20,
+          "y": 132,
+          "h": 14,
+          "w": 206,
+          "depth": 1,
+          "kind": "text",
+          "label": "글자\"*표기된 항목은 필수 입력 사항입니다.\""
+        },
+        {
+          "i": 3,
+          "id": "7210:55861",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 20,
+          "y": 170,
+          "h": 964,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_radiobutton×9, m_Input box×7, m_button×2)",
+          "parts": {
+            "m_Input box": 7,
+            "m_email_input": 1,
+            "m_combobox/off/off/off/Default": 1,
+            "icon/combobox_arrow": 1,
+            "m_button": 2,
+            "m_radiobutton": 9
+          }
+        },
+        {
+          "i": 4,
+          "id": "2491:37603",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1154,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2491:37655",
+      "name": "11.6 궁금해요 에스원_6 내용 등록",
+      "section": null,
+      "size": "360x1220",
+      "rowCount": 10,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 글자\"*표기된 항목은 필수 입력 사항입니다.\" → m_Input box → m_Input box → 묶음(m_Input box×2, m_email_input, m_combobox/off/off/off/Default) → 묶음(m_checkbox×7, m_Input box, m_button) → 묶음(m_Input box) → 묶음(글자: 내용 / *) → 묶음(글자: 이미지첨부 / 이미지첨부) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "2491:37656",
+          "name": "Frame 568",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "7242:55883",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 20,
+          "y": 132,
+          "h": 930,
+          "w": 320,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "2491:37659",
+          "name": "*표기된 항목은 필수 입력 사항입니다.",
+          "type": "TEXT",
+          "x": 20,
+          "y": 132,
+          "h": 14,
+          "w": 206,
+          "depth": 1,
+          "kind": "text",
+          "label": "글자\"*표기된 항목은 필수 입력 사항입니다.\""
+        },
+        {
+          "i": 3,
+          "id": "2491:37660",
+          "name": "m_Input box",
+          "type": "INSTANCE",
+          "x": 20,
+          "y": 170,
+          "h": 72,
+          "w": 320,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_Input box"
+        },
+        {
+          "i": 4,
+          "id": "2491:37661",
+          "name": "m_Input box",
+          "type": "INSTANCE",
+          "x": 20,
+          "y": 266,
+          "h": 72,
+          "w": 320,
+          "depth": 1,
+          "kind": "part",
+          "label": "m_Input box"
+        },
+        {
+          "i": 5,
+          "id": "2491:37680",
+          "name": "Group 747",
+          "type": "GROUP",
+          "x": 20,
+          "y": 362,
+          "h": 148,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_Input box×2, m_email_input, m_combobox/off/off/off/Default)",
+          "parts": {
+            "m_email_input": 1,
+            "m_Input box": 2,
+            "m_combobox/off/off/off/Default": 1,
+            "icon/combobox_arrow": 1
+          }
+        },
+        {
+          "i": 6,
+          "id": "2491:37666",
+          "name": "Frame 1044",
+          "type": "FRAME",
+          "x": 20,
+          "y": 534,
+          "h": 162,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_checkbox×7, m_Input box, m_button)",
+          "parts": {
+            "m_Input box": 1,
+            "m_button": 1,
+            "m_checkbox": 7
+          }
+        },
+        {
+          "i": 7,
+          "id": "2491:37684",
+          "name": "Frame 34731",
+          "type": "FRAME",
+          "x": 20,
+          "y": 720,
+          "h": 72,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(m_Input box)",
+          "parts": {
+            "m_Input box": 1
+          }
+        },
+        {
+          "i": 8,
+          "id": "2491:37691",
+          "name": "Frame 34732",
+          "type": "FRAME",
+          "x": 20,
+          "y": 816,
+          "h": 130,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 내용 / *)"
+        },
+        {
+          "i": 9,
+          "id": "2491:37699",
+          "name": "Group 746",
+          "type": "GROUP",
+          "x": 20,
+          "y": 970,
+          "h": 92,
+          "w": 320,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 이미지첨부 / 이미지첨부)"
+        },
+        {
+          "i": 10,
+          "id": "2491:37662",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1082,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2491:37708",
+      "name": "11.6 궁금해요 에스원_7 나의 질문내역",
+      "section": null,
+      "size": "360x1499",
+      "rowCount": 13,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 총 137건) → 묶음(tabel_bar) → 묶음(tabel_bar) → 묶음(tabel_bar) → 묶음(tabel_bar) → 묶음(tabel_bar) → 묶음(tabel_bar) → 묶음(tabel_bar) → 묶음(tabel_bar) → 묶음(tabel_bar) → 묶음(tabel_bar) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7242:55885",
+          "name": "Frame 769",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 261,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "m_subbutton": 1,
+            "More": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2491:37868",
+          "name": "Frame 218",
+          "type": "FRAME",
+          "x": 20,
+          "y": 257,
+          "h": 14,
+          "w": 52,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 총 137건)"
+        },
+        {
+          "i": 2,
+          "id": "2491:37717",
+          "name": "Frame 737",
+          "type": "FRAME",
+          "x": 0,
+          "y": 279,
+          "h": 1132,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "2491:37718",
+          "name": "Group 724",
+          "type": "GROUP",
+          "x": 0,
+          "y": 279,
+          "h": 130,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar)",
+          "parts": {
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 4,
+          "id": "2491:37733",
+          "name": "Group 726",
+          "type": "GROUP",
+          "x": 0,
+          "y": 409,
+          "h": 130,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar)",
+          "parts": {
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 5,
+          "id": "2491:37748",
+          "name": "Group 725",
+          "type": "GROUP",
+          "x": 0,
+          "y": 539,
+          "h": 109,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar)",
+          "parts": {
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 6,
+          "id": "2491:37763",
+          "name": "Group 727",
+          "type": "GROUP",
+          "x": 0,
+          "y": 648,
+          "h": 109,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar)",
+          "parts": {
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 7,
+          "id": "2491:37778",
+          "name": "Group 728",
+          "type": "GROUP",
+          "x": 0,
+          "y": 757,
+          "h": 109,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar)",
+          "parts": {
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 8,
+          "id": "2491:37793",
+          "name": "Group 729",
+          "type": "GROUP",
+          "x": 0,
+          "y": 866,
+          "h": 109,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar)",
+          "parts": {
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 9,
+          "id": "2491:37808",
+          "name": "Group 730",
+          "type": "GROUP",
+          "x": 0,
+          "y": 975,
+          "h": 109,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar)",
+          "parts": {
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 10,
+          "id": "2491:37823",
+          "name": "Group 731",
+          "type": "GROUP",
+          "x": 0,
+          "y": 1084,
+          "h": 109,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar)",
+          "parts": {
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 11,
+          "id": "2491:37838",
+          "name": "Group 732",
+          "type": "GROUP",
+          "x": 0,
+          "y": 1193,
+          "h": 109,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar)",
+          "parts": {
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 12,
+          "id": "2491:37853",
+          "name": "Group 733",
+          "type": "GROUP",
+          "x": 0,
+          "y": 1302,
+          "h": 109,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(tabel_bar)",
+          "parts": {
+            "tabel_bar": 1
+          }
+        },
+        {
+          "i": 13,
+          "id": "2491:37870",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 1451,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "2491:37872",
+      "name": "11.7 뉴스공지_4 메인(없음)",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 5,
+      "orderText": "묶음(m_chips×3, m_StatusBar , appbar_sub) → 묶음(글자: 총 0건) → worry → 글자\"등록된 게시글이 없습니다\" → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "7242:55900",
+          "name": "Frame 770",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 234,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_chips×3, m_StatusBar , appbar_sub)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "m_chips": 3,
+            "search": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "2491:37880",
+          "name": "Frame 218",
+          "type": "FRAME",
+          "x": 20,
+          "y": 250,
+          "h": 14,
+          "w": 52,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 총 0건)"
+        },
+        {
+          "i": 2,
+          "id": "2491:37882",
+          "name": "Frame 1178",
+          "type": "FRAME",
+          "x": 20,
+          "y": 272,
+          "h": 452,
+          "w": 320,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 3,
+          "id": "3111:48986",
+          "name": "worry",
+          "type": "GROUP",
+          "x": 148,
+          "y": 452,
+          "h": 64,
+          "w": 64,
+          "depth": 1,
+          "kind": "group",
+          "label": "worry"
+        },
+        {
+          "i": 4,
+          "id": "2491:37884",
+          "name": "등록된 게시글이 없습니다",
+          "type": "TEXT",
+          "x": 20,
+          "y": 528,
+          "h": 16,
+          "w": 320,
+          "depth": 1,
+          "kind": "text",
+          "label": "글자\"등록된 게시글이 없습니다\""
+        },
+        {
+          "i": 5,
+          "id": "2491:37873",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "5680:58167",
+      "name": "11.8 미권한_1 웹회원",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 3,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 시스템 경비 또는 영상 서비스 이용 회원만 ) → 묶음(m_button, phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "24679:57130",
+          "name": "Frame 1080",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 112,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "5680:58171",
+          "name": "Frame 316",
+          "type": "FRAME",
+          "x": 0,
+          "y": 311,
+          "h": 133,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(글자: 시스템 경비 또는 영상 서비스 이용 회원만 )"
+        },
+        {
+          "i": 2,
+          "id": "5714:57750",
+          "name": "Frame 768",
+          "type": "FRAME",
+          "x": 0,
+          "y": 642,
+          "h": 138,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_button, phone_navi)",
+          "parts": {
+            "m_button": 1,
+            "phone_navi": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "22477:16764",
+      "name": "방문점검 신청VOC 코드정보만 보내줌 CRM 에서 내용을 확인하고 구분값을 나눠서 접수코드를 적용함",
+      "section": null,
+      "size": "579x54",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "22477:16765",
+      "name": "**방문점검신청 >>서비스신청조회? 방문점검신청에 대한 세부화",
+      "section": null,
+      "size": "332x54",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "22477:16766",
+      "name": "조회기간 최대 6개월 요청일, 요청시간, 요청자, 담당자, 접수코드명, 처리상태, 다음약속일",
+      "section": null,
+      "size": "621x54",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "22477:16769",
+      "name": "신청 후 진행상태, 완료된 정보까지 내용 적용",
+      "section": null,
+      "size": "408x27",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "22477:16770",
+      "name": "일정 전달 (퍼블리싱 제외) 퍼블리싱 비용 발생",
+      "section": null,
+      "size": "237x54",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "22495:6787",
+      "name": "도어캠 D2C 참고 보험청구 영역 > 리스트영역",
+      "section": null,
+      "size": "256x54",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "22477:16771",
+      "name": "8월 배포?",
+      "section": null,
+      "size": "175x51",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "22477:16768",
+      "name": "필터와 리스트는 그대로",
+      "section": null,
+      "size": "215x27",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "23648:2429",
+      "name": "검색어 입력 시 엑스 버튼 없음(시안상) 개발엔 반영되어 있음",
+      "section": null,
+      "size": "795x40",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "23648:2430",
+      "name": "검색 후 검색결과 없을때 검색결과가 없어요. >>개발도 반영 필요",
+      "section": null,
+      "size": "319x160",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "24575:29444",
+      "name": "Arrow 1",
+      "section": null,
+      "size": "0x336",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "24575:29445",
+      "name": "아이콘 변경됨. 반영가능할때 적용하기",
+      "section": null,
+      "size": "207x17",
+      "rowCount": 0,
+      "orderText": "",
+      "order": []
+    },
+    {
+      "id": "24679:54709",
+      "name": "11.3 자주하는 질문_1 메인",
+      "section": null,
+      "size": "360x780",
+      "rowCount": 4,
+      "orderText": "묶음(m_StatusBar , appbar_sub, icon/arrow) → 묶음(글자: 총 137건) → list(ic_화살표, 더보기×6, m_bar×6, tabel_bar×6) → 묶음(phone_navi)",
+      "order": [
+        {
+          "i": 0,
+          "id": "24679:54712",
+          "name": "Frame 768",
+          "type": "FRAME",
+          "x": 0,
+          "y": 0,
+          "h": 172,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(m_StatusBar , appbar_sub, icon/arrow)",
+          "parts": {
+            "m_StatusBar ": 1,
+            "appbar_sub": 1,
+            "icon/arrow": 1,
+            "close": 1,
+            "search": 1
+          }
+        },
+        {
+          "i": 1,
+          "id": "24679:54722",
+          "name": "Group 767",
+          "type": "GROUP",
+          "x": 0,
+          "y": 188,
+          "h": 409,
+          "w": 360,
+          "depth": 0,
+          "kind": "body",
+          "label": "본문"
+        },
+        {
+          "i": 2,
+          "id": "24679:54723",
+          "name": "Frame 218",
+          "type": "FRAME",
+          "x": 20,
+          "y": 188,
+          "h": 14,
+          "w": 52,
+          "depth": 1,
+          "kind": "group",
+          "label": "묶음(글자: 총 137건)"
+        },
+        {
+          "i": 3,
+          "id": "24679:54725",
+          "name": "list",
+          "type": "FRAME",
+          "x": 0,
+          "y": 210,
+          "h": 387,
+          "w": 360,
+          "depth": 1,
+          "kind": "group",
+          "label": "list(ic_화살표, 더보기×6, m_bar×6, tabel_bar×6)",
+          "parts": {
+            "ic_화살표, 더보기": 6,
+            "m_bar": 6,
+            "tabel_bar": 6
+          }
+        },
+        {
+          "i": 4,
+          "id": "24679:54710",
+          "name": "Frame 470",
+          "type": "FRAME",
+          "x": 0,
+          "y": 732,
+          "h": 48,
+          "w": 360,
+          "depth": 0,
+          "kind": "group",
+          "label": "묶음(phone_navi)",
+          "parts": {
+            "phone_navi": 1
+          }
+        }
+      ]
+    }
+  ]
+}

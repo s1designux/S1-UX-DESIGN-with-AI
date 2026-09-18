@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>모두앱 전용 — 목록 화면</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="../../../../../ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="../../../../../ui-library/dist/assets/css/typography.css">
+<link rel="stylesheet" href="../../../../../ui-library/dist/s1-ui.css">
+<style>
+  body{margin:0;padding:32px;background:var(--color-bg-level-1);font-family:Pretendard,sans-serif}
+  h1{font-size:20px;margin:0 0 4px;color:var(--color-text-title-primary)}
+  p.sub{margin:0 0 24px;color:var(--color-text-body-secondary);font-size:13px}
+  .row{display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start}
+  .case{width:360px}
+  .case > h2{font-size:14px;margin:0 0 8px;color:var(--color-text-title-secondary)}
+  /* 휴대폰 화면 틀 — 판독한 뼈대: 360 폭 · 780 높이 · 위에서 아래 다섯 칸 */
+  .screen{width:360px;height:780px;display:flex;flex-direction:column;
+          background:var(--color-bg-level-0);border:1px solid var(--color-line-gray-subtle);overflow:hidden}
+  .statusbar{height:24px;flex:none;background:var(--color-bg-level-2)}
+  .body{flex:1;overflow:auto}
+  .actionbar{flex:none;padding:var(--spacing-20) var(--spacing-20)}
+  .tabbar{flex:none;display:flex;border-top:1px solid var(--color-line-gray-subtle)}
+  .tabbar > *{flex:1}
+  /* 목록 한 줄 — 아직 부품이 없어 패턴이 토큰으로 직접 그린다(needs-decision) */
+  .list{list-style:none;margin:0;padding:0}
+  .list li + li{border-top:1px solid var(--color-line-gray-subtle)}
+  .list button{width:100%;display:flex;align-items:center;gap:var(--spacing-8);
+               padding:var(--spacing-16) var(--spacing-20);background:none;border:0;cursor:pointer;text-align:left}
+  .list .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+  .list .t b{font-weight:500;color:var(--color-text-title-primary)}
+  .list .t span{color:var(--color-text-body-tertiary)}
+  .chev{width:8px;height:8px;flex:none;border-right:1.5px solid var(--color-icon-gray);
+        border-bottom:1.5px solid var(--color-icon-gray);transform:rotate(-45deg)}
+  /* 빈 상태 덩어리 — 역시 부품 없음(needs-decision) */
+  .empty{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--spacing-16)}
+  .empty .mark{width:64px;height:64px;border-radius:var(--radius-full);background:var(--color-bg-level-2)}
+  .empty p{margin:0;color:var(--color-text-body-secondary)}
+  .note{margin-top:12px;font-size:12px;color:var(--color-text-state-caption)}
+</style>
+</head>
+<body>
+<h1>모두앱 전용 — 목록 화면</h1>
+<p class="sub"><b>모두앱 전용입니다. 최신 가이드에 합치지 않습니다.</b> 모두앱 화면 43장에서 되풀이된 뼈대를 다시 세운 것. 머리·탭바·버튼은 배포본 부품 그대로이고, 목록 줄과 빈 상태는 아직 부품이 없어 패턴이 토큰으로 직접 그렸다.</p>
+
+<div class="row">
+  <div class="case">
+    <h2>기본 — 항목이 있을 때</h2>
+    <div class="screen">
+      <div class="statusbar"></div>
+      <header data-s1-component="mobile-header" data-variant="standard-title">
+        <button type="button" data-s1-part="back" aria-label="이전"><span data-s1-part="back-icon" aria-hidden="true"></span></button>
+        <h1 data-s1-part="title">관리자 현황</h1>
+        <span data-s1-part="spacer" aria-hidden="true"></span>
+      </header>
+      <div class="body">
+        <ul class="list">
+          <li><button type="button"><span class="t"><b class="typo-body-16m">김에스원</b><span class="typo-body-12r">마스터 관리자 · 010-0000-0000</span></span><span class="chev"></span></button></li>
+          <li><button type="button"><span class="t"><b class="typo-body-16m">박보안</b><span class="typo-body-12r">일반 관리자 · 010-0000-0000</span></span><span class="chev"></span></button></li>
+          <li><button type="button"><span class="t"><b class="typo-body-16m">이관제</b><span class="typo-body-12r">일반 관리자 · 010-0000-0000</span></span><span class="chev"></span></button></li>
+          <li><button type="button"><span class="t"><b class="typo-body-16m">최운영</b><span class="typo-body-12r">일반 관리자 · 010-0000-0000</span></span><span class="chev"></span></button></li>
+        </ul>
+      </div>
+      <div class="actionbar">
+        <button type="button" data-s1-component="button" data-variant="primary" data-size="lg" style="width:100%">관리자 초대</button>
+      </div>
+      <nav class="tabbar" aria-label="주요 메뉴" role="tablist">
+        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="home" role="tab" aria-selected="true"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">홈</span></button>
+        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="search" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">검색</span></button>
+        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="notification" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">알림</span></button>
+        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="settings" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">설정</span></button>
+      </nav>
+    </div>
+  </div>
+
+  <div class="case">
+    <h2>빈 상태 — 항목이 없을 때</h2>
+    <div class="screen">
+      <div class="statusbar"></div>
+      <header data-s1-component="mobile-header" data-variant="standard-title">
+        <button type="button" data-s1-part="back" aria-label="이전"><span data-s1-part="back-icon" aria-hidden="true"></span></button>
+        <h1 data-s1-part="title">관리자 현황</h1>
+        <span data-s1-part="spacer" aria-hidden="true"></span>
+      </header>
+      <div class="body">
+        <div class="empty">
+          <div class="mark" aria-hidden="true"></div>
+          <p class="typo-body-14r">등록된 관리자가 없어요.</p>
+        </div>
+      </div>
+      <div class="actionbar">
+        <button type="button" data-s1-component="button" data-variant="primary" data-size="lg" style="width:100%">관리자 초대</button>
+      </div>
+      <nav class="tabbar" aria-label="주요 메뉴" role="tablist">
+        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="home" role="tab" aria-selected="true"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">홈</span></button>
+        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="search" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">검색</span></button>
+        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="notification" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">알림</span></button>
+        <button type="button" data-s1-component="mobile-bottom-nav" data-icon="settings" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">설정</span></button>
+      </nav>
+    </div>
+  </div>
+</div>
+<p class="note">상태표시줄은 휴대폰 운영체제 자리라 회색 칸으로만 비워 두었다.</p>
+<script src="../../../../../ui-library/dist/s1-ui.auto.js"></script>
+</body>
+</html>
