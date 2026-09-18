@@ -139,6 +139,8 @@ function isPlaceable(id) {
 /* 배포본 manifest 에 breaks(플랫폼별 크기 축)가 없는 부품의 플랫폼 — 이름·가이드 설명이 플랫폼을 명시한 것만 적는다.
    (GNB 는 PC 웹 상단 메뉴, Mobile Header·Mobile Bottom Nav 는 모바일 전용. 나머지 breaks 없는 부품은 양쪽 공통으로 본다 — river 확인 대상) */
 const PLATFORM_ONLY = { gnb: ["pc"], "mobile-header": ["mobile"], "mobile-bottom-nav": ["mobile"] };
+/* 화면 크롬 — 상·하단에 화면 끝까지 붙는 부품. 화면 안쪽 여백 바깥으로 빼서 그린다(river 지적 2026-09-18). */
+const CHROME_BLEED = new Set(["mobile-header", "mobile-bottom-nav", "gnb"]);
 function availableOn(id, brk) {
   const m = data.manifests[id];
   if (m?.breaks) return Object.prototype.hasOwnProperty.call(m.breaks, brk);
@@ -289,6 +291,10 @@ async function blockElement(block, brk) {
   } else if (block.component === "table" && block.table) {
     root = buildTableElement(block);
     applyAxes(root, block, brk);
+  } else if (VARIANT_MARKUP[block.component]) {
+    const tpl = document.createElement("template");
+    tpl.innerHTML = VARIANT_MARKUP[block.component](block.variant || variantAxis(block.component)[0], block.text, block.size).trim();
+    root = tpl.content.firstElementChild;
   } else {
     root = pickFragment(await exampleHtml(block.component, brk), block.component);
     if (root) { root = root.cloneNode(true); applyAxes(root, block, brk); }
@@ -305,6 +311,36 @@ async function blockElement(block, brk) {
   wrap.appendChild(root);
   return wrap;
 }
+
+/* ── 변형마다 뼈대가 다른 부품 ─────────────────────────────────────────────
+   대부분의 부품은 data-variant 만 바꾸면 CSS 가 모습을 바꾼다. 그런데 배포본 manifest 의
+   htmlContract.perVariantParts 가 선언된 부품(mobile-header · gnb)은 **변형마다 들어가는 부품(part)이 다르다.**
+   배포본 예제는 한 변형만 담고 있어서 attribute 만 바꾸면 틀린 모습이 나온다(river 지적 2026-09-18).
+   아래 뼈대는 perVariantParts·relations 선언과 가이드 사이트의 같은 생성기(assets/js/ui-library-guide.js
+   mobileHeaderMarkup)를 그대로 따른다 — 새 구조를 지어내지 않는다. */
+const VARIANT_MARKUP = {
+  "mobile-header": (variant, text) => {
+    const back = `<button type="button" data-s1-part="back" aria-label="이전"><span data-s1-part="back-icon" aria-hidden="true"></span></button>`;
+    const close = `<button type="button" data-s1-part="close" aria-label="닫기"><span data-s1-part="close-icon" aria-hidden="true"></span></button>`;
+    const spacer = `<span data-s1-part="spacer" aria-hidden="true"></span>`;
+    const noti = `<button type="button" data-s1-part="notification" aria-label="알림"><span data-s1-part="notification-icon" aria-hidden="true"></span></button>`;
+    const head = (v, inner) => `<header data-s1-component="mobile-header" data-variant="${v}">${inner}</header>`;
+    if (variant === "home-title") return head(variant, `<h1 data-s1-part="title">${escapeHtml(text || "홈 타이틀")}</h1>`);
+    if (variant === "home-title-subtitle") return head(variant,
+      `<div data-s1-part="stack"><div data-s1-part="title-row"><h1 data-s1-part="title">${escapeHtml(text || "홈 타이틀")}</h1><span data-s1-part="arrow-icon" aria-hidden="true"></span></div><p data-s1-part="subtitle">홈 서브타이틀</p></div>${noti}`);
+    const hasClose = variant.endsWith("-close");
+    const hasTitle = !variant.includes("no-title");
+    return head(variant, `${back}${hasTitle ? `<h1 data-s1-part="title">${escapeHtml(text || "스탠다드형 타이틀")}</h1>` : `<span data-s1-part="title" aria-hidden="true"></span>`}${hasClose ? close : spacer}`);
+  },
+  gnb: (variant, text, size) => {
+    const menus = `<ul data-s1-part="menus"><li><a data-s1-part="menu" href="#" aria-current="page">메뉴 1</a></li><li><a data-s1-part="menu" href="#">메뉴 2</a></li><li><a data-s1-part="menu" href="#">메뉴 3</a></li></ul>`;
+    const logo = `<a data-s1-part="logo" href="#">${escapeHtml(text || "SAMPLE LOGO")}</a>`;
+    const util = `<div data-s1-part="util"><button type="button" data-s1-part="lang"><span data-s1-part="lang-icon" aria-hidden="true"></span><span data-s1-part="lang-label">한국어</span></button><button type="button" data-s1-part="account" aria-label="계정"><span data-s1-part="account-icon" aria-hidden="true"></span></button><button type="button" data-s1-part="menu-toggle" aria-label="전체 메뉴"><span data-s1-part="menu-icon" aria-hidden="true"></span></button></div>`;
+    // center-between = 로고·메뉴·유틸이 nav 직계 3형제 · start = 로고+메뉴를 leading 으로 묶음(manifest relations)
+    const inner = variant === "center-between" ? `${logo}${menus}${util}` : `<div data-s1-part="leading">${logo}${menus}</div>${util}`;
+    return `<nav data-s1-component="gnb" data-size="${size || "md"}" data-variant="${variant}" aria-label="주 메뉴">${inner}</nav>`;
+  }
+};
 
 /* ── 표(table) 모델 — 배포 예제의 구조(htmlContract)를 그대로 지키면서 열·행 수만 화면에서 정한다 ── */
 function tableModelFromExample(html) {
@@ -404,6 +440,14 @@ async function renderScreen(target, editor) {
     rowEl.style.gap = `var(--spacing-${row.gap || "12"})`;
     rowEl.style.justifyContent = ALIGN_CSS[row.align] || "flex-start";
     rowEl.style.marginBottom = `var(--spacing-${row.marginBottom || "16"})`;
+    /* 화면 끝까지 붙는 줄 — 화면 안쪽 여백만큼 바깥으로 빼서 헤더·하단바가 가장자리에 닿게 한다. */
+    if (row.blocks.some((b) => b.bleed)) {
+      const pad = `var(--spacing-${state.screen.padding || "24"})`;
+      rowEl.style.marginLeft = `calc(${pad} * -1)`;
+      rowEl.style.marginRight = `calc(${pad} * -1)`;
+      rowEl.style.width = `calc(100% + ${pad} + ${pad})`;
+      rowEl.dataset.s1Bleed = "true";
+    }
     if (editor) {
       rowEl.dataset.pbRow = row.id;
       if (selection.rowId === row.id && !selection.blockId) rowEl.dataset.pbSelected = "true";
@@ -615,9 +659,15 @@ async function renderThumb(box, id, brk) {
   const html = await exampleHtml(id, brk);
   let frag = pickFragment(html, id);
   if (!frag) { box.textContent = "미리보기 없음"; return; }
-  frag = frag.cloneNode(true);
   const choice = chosenAxis[id] || {};
-  applyAxes(frag, { component: id, size: choice.size, variant: choice.variant }, brk);
+  if (VARIANT_MARKUP[id]) {                                  // 변형마다 뼈대가 다른 부품은 그 변형 뼈대로 그린다
+    const tpl = document.createElement("template");
+    tpl.innerHTML = VARIANT_MARKUP[id](choice.variant || variantAxis(id)[0], null, choice.size).trim();
+    frag = tpl.content.firstElementChild;
+  } else {
+    frag = frag.cloneNode(true);
+    applyAxes(frag, { component: id, size: choice.size, variant: choice.variant }, brk);
+  }
   uniquifyIds(frag, `thumb-${id}`);
   frag.querySelectorAll("[hidden]").forEach((n) => { if (n.matches('[data-s1-part="panel"], [data-s1-component="gnb-sub-menu"]')) n.remove(); });
   const inner = document.createElement("div");
@@ -709,6 +759,7 @@ async function makeComponentBlock(id, opts = {}) {
   const v = variantAxis(id); if (v.length) block.variant = v.includes(opts.variant) ? opts.variant : v[0];
   const s = sizeAxis(id, brk); if (s.length) block.size = s.includes(opts.size) ? opts.size : s[0];
   if (id === "table") { block.width = "fill"; block.table = tableModelFromExample(await exampleHtml("table", brk)); }
+  if (CHROME_BLEED.has(id)) { block.width = "fill"; block.bleed = true; }
   return block;
 }
 function addComponent(id, opts) { makeComponentBlock(id, opts).then((block) => addBlock(block)); }
@@ -815,6 +866,7 @@ function renderProps() {
       if (w === "custom" && !b.widthPx) b.widthPx = Number(b.width) || 320;
       parts.push(propRow("폭", selectHtml("width", [["auto", "내용만큼"], ["fill", "남은 폭 채우기"], ["custom", "직접 입력(px)"]], w)));
       if (w === "custom") parts.push(propRow("폭(px)", `<input type="number" min="40" step="10" data-prop="widthPx" value="${escapeAttr(b.widthPx || 320)}">`));
+      parts.push(propRow("가장자리", selectHtml("bleed", [["false", "화면 여백 안쪽"], ["true", "화면 끝까지"]], String(!!b.bleed))));
     }
     if (b.kind === "component" && b.component === "table" && !b.table && !b.html) {
       exampleHtml("table", brk).then((html) => { b.table = tableModelFromExample(html); update(); });
@@ -905,6 +957,7 @@ function setProp(name, value) {
       const key = path[0];
       obj[key] = key === "selection" ? value === "true" : key === "rows" ? Math.max(0, Number(value) || 0) : value;
     }
+    else if (name === "bleed") hit.block.bleed = value === "true";
     else hit.block[name] = value;
   }
   update();
@@ -952,6 +1005,7 @@ async function update() {
 const EXPORT_CSS = `
 .s1-screen { box-sizing: border-box; margin: 0 auto; background: var(--color-bg-level-0); color: var(--color-text-body-primary); font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
 .s1-row { display: flex; flex-wrap: wrap; align-items: flex-start; }
+.s1-row[data-s1-bleed="true"] { flex-wrap: nowrap; }
 .s1-block { min-width: 0; }
 .s1-text { margin: 0; }
 .s1-divider { border: 0; border-top: 1px solid var(--color-line-gray-subtle); margin: 0; width: 100%; }
