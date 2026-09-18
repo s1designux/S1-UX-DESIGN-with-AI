@@ -65,8 +65,24 @@ const server = http.createServer(async (req, res) => {
   fs.createReadStream(file).pipe(res);
 });
 
-server.listen(PORT, '127.0.0.1', () => {
-  console.log(`\n🧩 빌더가 떴습니다 →  http://localhost:${PORT}/builder/\n`);
+/* 그 자리가 이미 쓰이고 있으면(앞서 띄운 게 남아 있거나 다른 프로그램이 쓰는 중) 옆자리로 비켜 앉는다.
+   "EADDRINUSE" 같은 말을 사람이 읽을 일이 없게 한다. */
+server.on('listening', () => {
+  const port = server.address().port;
+  console.log(`\n🧩 빌더가 떴습니다 →  http://localhost:${port}/builder/\n`);
   console.log('   「가져온 화면」 탭의 「Figma 화면 가져오기」 버튼에 링크를 붙여 넣으면 바로 올라옵니다.');
   console.log('   멈추려면 Ctrl+C.\n');
 });
+
+function listen(port, tries = 0) {
+  server.once('error', (e) => {
+    if (e.code !== 'EADDRINUSE' || tries >= 10) {
+      console.error(`\n❌ 빌더를 띄우지 못했습니다 — ${e.message}\n`);
+      process.exit(1);
+    }
+    console.log(`   (${port} 자리는 이미 쓰는 중이라 ${port + 1} 로 옮깁니다)`);
+    listen(port + 1, tries + 1);
+  });
+  server.listen(port, '127.0.0.1');
+}
+listen(PORT);
