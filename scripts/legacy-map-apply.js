@@ -15,9 +15,38 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
-const { ROOT, MAP, readJson, parseRef, norm, loadFacts, loadDecisions, validateMachine } = require('./lib/legacy-name-map');
+const { ROOT, MAP, readJson, parseRef, norm, loadFacts, loadDecisions, validateMachine, loadIdToSets, loadMap, canonAxisValue } = require('./lib/legacy-name-map');
+const BASELINE = 'registry/governance/legacy-name-baseline.json';
 
 const CHECK = process.argv.includes('--check');
+const REBASE = process.argv.includes('--rebase-baseline');
+
+/**
+ * 자동추출 경로(결정 없이 confidence=high 로 쓰이는 줄)도 정본 이름에 닿는지 본다.
+ * 2026-09-17 독립 검증에서 여기가 통째로 검사 밖이었다(파일 id 를 정본 이름으로 답하던 것 27건).
+ * 기존 부채는 baseline 에 동결하고 **새로 생기는 것만** 막는다(래칫).
+ */
+function autoExtractProblems() {
+  const axes = loadFacts();
+  const idToSets = loadIdToSets();
+  const { entries } = loadMap();
+  const out = [];
+  for (const e of entries) {
+    if (e.confidence !== 'high') continue;
+    const cands = idToSets.get(e.canonComponent) || [];
+    if (!cands.length && e.canonComponent) {
+      out.push({ key: `${e.source}:${e.set}(${e.setId || "id없음"})::세트`, msg: `${e.source}:${e.set} — "${e.canonComponent}" 가 정본 세트 이름으로 이어지지 않습니다` });
+      continue;
+    }
+    for (const [bucket, table] of [['stateMap', e.stateMap], ['sizeMap', e.sizeMap], ['variantMap', e.variantMap]]) {
+      for (const [legacyValue, canonValue] of Object.entries(table || {})) {
+        if (cands.some((c) => canonAxisValue(axes, c, null, canonValue))) continue;
+        out.push({ key: `${e.source}:${e.set}(${e.setId || "id없음"})::${bucket}::${legacyValue}`, msg: `${e.source}:${e.set} ${bucket} "${legacyValue}" → "${canonValue}" 가 정본 축 값에 없습니다` });
+      }
+    }
+  }
+  return out;
+}
 const AXIS_BUCKET = { State: 'stateMap', Size: 'sizeMap' };
 
 function applyAll() {
@@ -101,6 +130,21 @@ function applyAll() {
 
 (function main() {
   const { lm, errors } = applyAll();
+  const problems = autoExtractProblems();
+
+  if (REBASE) {
+    const doc = readJson(BASELINE);
+    doc._meta.count = problems.length;
+    doc._meta.updatedAt = new Date().toISOString().slice(0, 10);
+    doc.items = problems.map((p) => ({ key: p.key, why: p.msg }));
+    fs.writeFileSync(path.join(ROOT, BASELINE), JSON.stringify(doc, null, 2) + '\n');
+    console.log(`✅ 동결 목록 갱신 — ${problems.length}건`);
+    return;
+  }
+
+  const frozen = new Set((readJson(BASELINE).items || []).map((i) => i.key));
+  const fresh = problems.filter((p) => !frozen.has(p.key));
+  for (const p of fresh) errors.push(`${p.msg} (새로 생긴 것 — 동결 목록에 없음)`);
   const target = path.isAbsolute(MAP) ? MAP : path.join(ROOT, MAP);
   const next = JSON.stringify(lm, null, 2) + '\n';
   const current = fs.readFileSync(target, 'utf8');
@@ -113,7 +157,7 @@ function applyAll() {
       for (const e of errors) console.log(`  ❌ ${e}`);
       process.exit(1);
     }
-    console.log('✅ 레거시 이름 자동 붙이기 — 결정과 표가 같고, 정본에 없는 이름도 없습니다');
+    console.log(`✅ 레거시 이름 자동 붙이기 — 결정과 표가 같고, 새로 생긴 이름 어긋남 0건 (옛 부채 ${problems.length}건은 동결돼 있고 조회기가 답으로 쓰지 않습니다)`);
     return;
   }
 

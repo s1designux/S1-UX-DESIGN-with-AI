@@ -43,7 +43,7 @@ import { PATTERNS } from "./pattern-data";
 import { buildPattern } from "./build-patterns";
 import type { PatternMaps } from "./build-patterns";
 import {
-  audit, applyOne, applyHighConfidence, applyMulti, setVariablesMode,
+  audit, applyOne, applyHighConfidence, applyMulti, setVariablesMode, detectScreenContext, clearV2Cache,
   collectComponents, saveReference, loadReference, clearReference,
   scanSwapCandidates, applySwap, applyModulePartSwap, detachModule, getVariantOptions, exportNodePreview, exportReferencePreview, importComponentCopy, rollbackSwap, cleanupSwapBackups, buildImprovedCopy, collectPageReference, auditChecklistFacts,
 } from "./audit-engine";
@@ -131,7 +131,8 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
       }
       if (requestedPhase === "component") auditSessionRootIds = selected.map((node) => node.id);
 
-      await figma.ui.postMessage({ type: "audit:inspection-progress", payload: { current: 0, completed: [], total: 10, pct: 4 } });
+      await figma.ui.postMessage({ type: "audit:inspection-progress", payload: { current: 0, completed: [], total: 12, pct: 4 } });
+      clearV2Cache();
       const installState = await getAuditInstallState();
       const guidePage = await getStampedGuidePage();
       const pool = collectPageReference(guidePage || undefined);
@@ -151,22 +152,30 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
       // 컴포넌트 교체가 남아 있어도 다른 검사를 잠그지 않는다 —
       // 검수 직후 색·텍스트·그림자까지 모두 열어 두고, 무엇부터 손댈지는 사용자가 고른다(river 지시 2026-09-03).
 
-      await figma.ui.postMessage({ type: "audit:inspection-progress", payload: { current: 1, completed: [0], total: 10, pct: 18 } });
-      const color = await audit(selected);
-      await figma.ui.postMessage({ type: "audit:inspection-progress", payload: { current: 2, completed: [0, 1], total: 10, pct: 34, scanned: color.stats.scanned } });
-      const facts = await auditChecklistFacts(color.issues, selected);
+      await figma.ui.postMessage({ type: "audit:inspection-progress", payload: { current: 1, completed: [0], total: 12, pct: 18 } });
+      // 무엇을 보고 있는지부터 정한다 — 화면 종류(가로 크기)·모드(라이트/다크)·배경 톤.
+      // 그 뒤의 색 대조와 항목 판정은 전부 이 기준 위에서 돈다(river 지시 2026-09-17).
+      const contexts = await detectScreenContext(selected);
+      const context = contexts[0] || null;
+      // 고른 틀들의 모드가 서로 다르면 어느 한쪽으로 색 대조를 좁히지 않는다 —
+      // 라이트 화면과 다크 화면을 함께 골랐을 때 한쪽 기준으로 재단하면 오제안이 된다.
+      const modeMixed = contexts.length > 1 && contexts.some((c) => c.mode !== contexts[0].mode);
+      const narrowMode = !modeMixed && context && context.mode ? context.mode : undefined;
+      const color = await audit(selected, narrowMode);
+      await figma.ui.postMessage({ type: "audit:inspection-progress", payload: { current: 2, completed: [0, 1], total: 12, pct: 34, scanned: color.stats.scanned } });
+      const facts = await auditChecklistFacts(color.issues, selected, context);
 
       // 사실 수집은 한 번에 하지만 UI에는 체크리스트 순서대로 완료 상태를 전달한다.
-      for (let current = 3; current < 10; current++) {
+      for (let current = 3; current < 12; current++) {
         const completed = Array.from({ length: current }, (_, i) => i);
         await figma.ui.postMessage({
           type: "audit:inspection-progress",
-          payload: { current, completed, total: 10, pct: Math.min(96, 34 + current * 7), scanned: color.stats.scanned },
+          payload: { current, completed, total: 12, pct: Math.min(96, 34 + current * 5), scanned: color.stats.scanned },
         });
         await new Promise<void>((resolve) => setTimeout(resolve, 60));
       }
 
-      await figma.ui.postMessage({ type: "audit:inspection-progress", payload: { current: null, completed: [0,1,2,3,4,5,6,7,8,9], total: 10, pct: 100, scanned: color.stats.scanned } });
+      await figma.ui.postMessage({ type: "audit:inspection-progress", payload: { current: null, completed: [0,1,2,3,4,5,6,7,8,9,10,11], total: 12, pct: 100, scanned: color.stats.scanned } });
       figma.ui.postMessage({
         type: "audit:inspection-result",
         payload: {
@@ -179,6 +188,11 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
           colorDetails: facts.colorDetails,
           textIssues: facts.textIssues,
           shadowIssues: facts.shadowIssues,
+          modeIssues: facts.modeIssues,
+          platformIssues: facts.platformIssues,
+          screen: context,
+          screenAll: contexts,
+          modeMixed,
           stats: color.stats,
         },
       });
@@ -261,7 +275,9 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
       const res = await applySwap(payload.candidate, "lenient");
       if (res.ok && res.rollback) swapRollbackById.set(payload.candidate.id, res.rollback);
       const unpreservedCount = res.unpreserved ? res.unpreserved.length : 0;
-      figma.ui.postMessage({ type: "audit:apply-swap-result", payload: { id: payload.candidate.id, ok: res.ok, result: res.result, reason: res.reason, variantReset: res.variantReset, axisLoss: res.axisLoss, unpreservedCount } });
+      const fittedLabel = res.modeFitted === "Dark" ? "다크" : res.modeFitted === "Light" ? "라이트" : "";
+      if (res.ok && fittedLabel) figma.notify(`교체 후 ${fittedLabel} 화면에 맞췄습니다`);
+      figma.ui.postMessage({ type: "audit:apply-swap-result", payload: { id: payload.candidate.id, ok: res.ok, result: res.result, reason: res.reason, variantReset: res.variantReset, axisLoss: res.axisLoss, unpreservedCount, modeFitted: fittedLabel } });
     } else if (type === "apply-part-swap") {
       // 묶음(모듈) 안 부품 1건 교체. 먼저 그대로 시도하고, Figma 가 막으면 blocked 로 돌려준다.
       // 사용자가 [묶음 풀고 교체]를 누르면 allowDetach=true 로 다시 들어온다.
@@ -279,6 +295,8 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
       if (res.detached && res.moduleNodeId) {
         auditSessionRootIds = auditSessionRootIds.map((id) => (id === payload.moduleInstanceId ? res.moduleNodeId! : id));
       }
+      const partFitted = res.modeFitted === "Dark" ? "다크" : res.modeFitted === "Light" ? "라이트" : "";
+      if (res.ok && partFitted) figma.notify(`교체 후 ${partFitted} 화면에 맞췄습니다`);
       figma.ui.postMessage({
         type: "audit:apply-part-swap-result",
         payload: {
@@ -309,7 +327,7 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
       });
     } else if (type === "variant-options") {
       // 이름이 맞는 정본을 찾은 다음 "어느 변형(크기·유형·상태)으로 바꿀지"를 돌려준다.
-      const info = await getVariantOptions(payload.ref, payload.instanceId);
+      const info = await getVariantOptions(payload.ref, payload.instanceId, payload.medium || null);
       figma.ui.postMessage({ type: "audit:variant-options-result", payload: { requestId: payload.requestId, ...info } });
     } else if (type === "preview") {
       // 지금 모습(node) 또는 바뀔 모습(ref) 을 PNG 로 내보낸다 — UI 가 blob 으로 그린다.
@@ -339,6 +357,8 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
       const failures: { id: string; reason: string }[] = [];
       let resetCount = 0;
       let unpreservedTotal = 0;
+      let modeFittedCount = 0;
+      let modeFittedLabel = "";
       for (const c of list) {
         const r = await applySwap(c, "lenient");
         if (r.ok) {
@@ -346,11 +366,15 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
           if (r.rollback) swapRollbackById.set(c.id, r.rollback);
           if (r.variantReset) resetCount++;
           if (r.unpreserved) unpreservedTotal += r.unpreserved.length;
+          if (r.modeFitted) {
+            modeFittedCount++;
+            modeFittedLabel = r.modeFitted === "Dark" ? "다크" : "라이트";
+          }
         }
         else failures.push({ id: c.id, reason: r.reason || "unknown" });
       }
-      figma.notify(`${applied.length}건 교체 완료${resetCount ? ` · ${resetCount}건 상태 리셋` : ""}${unpreservedTotal ? ` · 텍스트 ${unpreservedTotal}건 보존안됨` : ""}${failures.length ? ` · ${failures.length}건 실패` : ""}`);
-      figma.ui.postMessage({ type: "audit:apply-swap-multi-result", payload: { applied, fail: failures.length, failures, variantResetCount: resetCount, unpreservedTotal } });
+      figma.notify(`${applied.length}건 교체 완료${resetCount ? ` · ${resetCount}건 상태 리셋` : ""}${modeFittedCount ? ` · ${modeFittedCount}건 ${modeFittedLabel} 화면에 맞춤` : ""}${unpreservedTotal ? ` · 텍스트 ${unpreservedTotal}건 보존안됨` : ""}${failures.length ? ` · ${failures.length}건 실패` : ""}`);
+      figma.ui.postMessage({ type: "audit:apply-swap-multi-result", payload: { applied, fail: failures.length, failures, variantResetCount: resetCount, unpreservedTotal, modeFittedCount, modeFittedLabel } });
     } else if (type === "resize") {
       const w = Math.max(420, Math.min(1400, Math.round(payload.w)));
       const h = Math.max(480, Math.min(1200, Math.round(payload.h)));
