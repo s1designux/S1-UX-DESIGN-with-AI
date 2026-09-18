@@ -771,8 +771,25 @@ function renderImportedList() {
 const MEDIUM_KO = { app: "휴대폰 앱", mweb: "모바일 웹", pcweb: "PC 웹", console: "관제/콘솔" };
 
 /* ── Figma 링크로 바로 가져오기 ────────────────────────────────
-   링크만 이 맥 안의 빌더 서버(npm run builder)에 넘긴다. Figma 읽기 열쇠는 브라우저에 두지 않는다. */
+   링크만 이 맥 안의 빌더 서버(npm run builder)에 넘긴다. Figma 읽기 열쇠는 브라우저에 두지 않는다.
+   그래서 **웹에 올린 주소(GitHub Pages)에서는 가져오기가 되지 않는다** — 거기서는 버튼을 잠그고 그 이유를 적는다.
+   이미 가져다 둔 화면은 웹 주소에서도 그대로 열린다(파일로 올라가 있으니까). */
+let canImport = false;
+async function checkImportAvailable() {
+  try {
+    const res = await fetch("/api/ping", { cache: "no-store" });
+    canImport = res.ok && (await res.json()).canImport === true;
+  } catch { canImport = false; }
+  const btn = $("#pb-import-open");
+  if (!btn) return;
+  btn.disabled = !canImport;
+  btn.title = canImport ? "" : "가져오기는 내 컴퓨터에서 띄운 빌더에서만 됩니다";
+  const note = $("#pb-import-offline");
+  if (note) note.hidden = canImport;
+}
+
 function openImport() {
+  if (!canImport) { toast("가져오기는 내 컴퓨터에서 띄운 빌더에서만 됩니다"); return; }
   els.importStatus.hidden = true;
   els.importStatus.textContent = "";
   els.importDialog.dataset.open = "true";
@@ -1444,6 +1461,7 @@ async function main() {
   if (!restoreFromHash() && !restore()) state = freshState();
 
   renderToolbar(); renderPatternList(); renderPartGroups(); renderImportedList();
+  checkImportAvailable();
   await update();
 
   els.shell.addEventListener("change", () => { state.screen.shell = els.shell.value; update(); });

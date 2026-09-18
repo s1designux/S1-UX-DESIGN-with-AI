@@ -35,6 +35,10 @@ const send = (res, code, body, type = 'application/json; charset=utf-8') => {
 const server = http.createServer(async (req, res) => {
   const u = new URL(req.url, `http://localhost:${PORT}`);
 
+  // ── 여기가 "가져오기를 할 수 있는 주소"인지 알려 준다 ──────────────────
+  //    GitHub Pages 같은 그냥 웹주소에는 이 서버가 없다. 빌더가 그걸 알고 버튼을 잠근다.
+  if (u.pathname === '/api/ping') return send(res, 200, JSON.stringify({ ok: true, canImport: true }));
+
   // ── 화면 가져오기 ────────────────────────────────────────────────────────
   if (req.method === 'POST' && u.pathname === '/api/import') {
     let raw = '';

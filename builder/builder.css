@@ -242,3 +242,5 @@ body[data-pb-dragging] .pb-canvas .s1-row[data-pb-empty="true"] { outline-color:
 .pb-btn-block { width: 100%; margin-bottom: 8px; }
 #pb-import-status[data-tone="warn"] { color: var(--color-text-state-caution); }
 #pb-import-link { width: 100%; }
+.pb-note-offline { color: var(--color-text-state-caution); margin: -4px 0 8px; }
+.pb-btn:disabled { opacity: .45; cursor: not-allowed; }
