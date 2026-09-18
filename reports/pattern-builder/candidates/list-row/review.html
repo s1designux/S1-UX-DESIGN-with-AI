@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>검수 — 목록 한 줄</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="../../../../ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="../../../../ui-library/dist/assets/css/typography.css">
+<link rel="stylesheet" href="../../../../ui-library/dist/s1-ui.css">
+<link rel="stylesheet" href="list-row.css">
+<style>
+  body{margin:0;padding:32px;background:var(--color-bg-level-1);font-family:Pretendard,sans-serif;color:var(--color-text-body-primary)}
+  h1{font-size:22px;margin:0 0 4px;color:var(--color-text-title-primary)}
+  p.sub{margin:0 0 28px;color:var(--color-text-body-secondary);font-size:13px;max-width:760px;line-height:1.6}
+  h2{font-size:15px;margin:36px 0 10px;color:var(--color-text-title-primary)}
+  .cases{display:flex;flex-wrap:wrap;gap:28px}
+  .case{width:360px}
+  .case h3{font-size:13px;margin:0 0 6px;color:var(--color-text-title-secondary);font-weight:600}
+  .case .why{font-size:12px;margin:0 0 8px;color:var(--color-text-state-caption)}
+  .frame{width:360px;background:var(--color-bg-level-0);border:1px solid var(--color-line-gray-subtle)}
+  table{border-collapse:collapse;background:var(--color-bg-level-0);font-size:13px;max-width:760px;width:100%}
+  th,td{border:1px solid var(--color-line-gray-subtle);padding:7px 10px;text-align:left}
+  th{background:var(--color-bg-level-1);font-weight:600}
+  .ruler{position:relative}
+  .ruler::after{content:"72";position:absolute;right:-26px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--color-text-state-caption)}
+</style>
+</head>
+<body>
+<h1>검수 — 목록 한 줄</h1>
+<p class="sub">레거시 화면 547장에서 되풀이된 줄을, 우리 토큰과 글꼴로 다시 세운 것입니다. 아직 정본이 아니고 검수용입니다.
+색은 전부 토큰이라 다크모드가 따라오고, 화살표는 배포본 아이콘을 그대로 씁니다. 체크·라디오·토글은 이미 있는 부품을 그 자리에 끼웠습니다.</p>
+
+<h2>무엇을 근거로 이 수치를 정했나</h2>
+<table>
+  <tr><th>정한 것</th><th>값</th><th>근거 (레거시에서 몇 건)</th></tr>
+  <tr><td>줄 높이</td><td>72</td><td>두 줄짜리 줄 269건이 72 · 위아래 여백 17 + 제목 16 + 사이 8 + 설명 14 + 17 = 72</td></tr>
+  <tr><td>좌우 여백</td><td>20</td><td>글 시작 x=20 · 본문 폭 320이 압도적</td></tr>
+  <tr><td>화살표</td><td>24 × 24</td><td>326건 전부 24각형</td></tr>
+  <tr><td>구분선</td><td>1px · 줄 전체 폭</td><td>폭 360 짜리 357건 ↔ 폭 320 짜리 14건</td></tr>
+  <tr><td>제목 / 설명</td><td>16 중간 / 14 보통</td><td>제목 16 · 설명 14 가 반복</td></tr>
+  <tr><td>앞 아이콘</td><td>32, 왼쪽 16, 글 시작 56</td><td>권한 화면의 아이콘 줄</td></tr>
+</table>
+
+<h2>변형</h2>
+<div class="cases">
+
+  <div class="case">
+    <h3>1. 제목만 + 화살표</h3>
+    <p class="why">가장 흔한 형태. 눌러서 다음 화면으로.</p>
+    <div class="frame"><ul data-s1-part="list">
+      <li><button type="button" data-s1-component="list-row">
+        <span data-s1-part="text"><b data-s1-part="title" class="typo-body-16m">계약 정보</b></span>
+        <span data-s1-part="trail"><span data-s1-part="arrow" aria-hidden="true"></span></span>
+      </button></li>
+      <li><button type="button" data-s1-component="list-row">
+        <span data-s1-part="text"><b data-s1-part="title" class="typo-body-16m">청구·입금 내역</b></span>
+        <span data-s1-part="trail"><span data-s1-part="arrow" aria-hidden="true"></span></span>
+      </button></li>
+    </ul></div>
+  </div>
+
+  <div class="case">
+    <h3>2. 제목 + 설명 + 화살표</h3>
+    <p class="why">사람·기기·계약처럼 한 줄로 부족할 때.</p>
+    <div class="frame"><ul data-s1-part="list">
+      <li class="ruler"><button type="button" data-s1-component="list-row">
+        <span data-s1-part="text">
+          <b data-s1-part="title" class="typo-body-16m">강*호</b>
+          <span data-s1-part="description" class="typo-body-14r">에스원 본사 · N1234567</span>
+        </span>
+        <span data-s1-part="trail"><span data-s1-part="arrow" aria-hidden="true"></span></span>
+      </button></li>
+      <li><button type="button" data-s1-component="list-row">
+        <span data-s1-part="text">
+          <b data-s1-part="title" class="typo-body-16m">박*원</b>
+          <span data-s1-part="description" class="typo-body-14r">에스원 강남지사 · N7654321</span>
+        </span>
+        <span data-s1-part="trail"><span data-s1-part="arrow" aria-hidden="true"></span></span>
+      </button></li>
+    </ul></div>
+  </div>
+
+  <div class="case">
+    <h3>3. 오른쪽에 상태 글자</h3>
+    <p class="why">승인대기·신청중처럼 줄마다 상태가 있을 때.</p>
+    <div class="frame"><ul data-s1-part="list">
+      <li><button type="button" data-s1-component="list-row">
+        <span data-s1-part="text">
+          <b data-s1-part="title" class="typo-body-16m">강*호</b>
+          <span data-s1-part="description" class="typo-body-14r">에스원 본사 · N1234567</span>
+        </span>
+        <span data-s1-part="trail"><span data-s1-part="trail-text" class="typo-body-14r">승인대기</span><span data-s1-part="arrow" aria-hidden="true"></span></span>
+      </button></li>
+      <li><button type="button" data-s1-component="list-row">
+        <span data-s1-part="text">
+          <b data-s1-part="title" class="typo-body-16m">이*영</b>
+          <span data-s1-part="description" class="typo-body-14r">에스원 본사 · N1234568</span>
+        </span>
+        <span data-s1-part="trail"><span data-s1-part="trail-text" class="typo-body-14r">신청중</span><span data-s1-part="arrow" aria-hidden="true"></span></span>
+      </button></li>
+    </ul></div>
+  </div>
+
+  <div class="case">
+    <h3>4. 앞에 아이콘</h3>
+    <p class="why">권한·메뉴처럼 갈래를 그림으로 구분할 때. 아이콘은 화면이 끼운다.</p>
+    <div class="frame"><ul data-s1-part="list">
+      <li><button type="button" data-s1-component="list-row">
+        <span data-s1-part="lead"><span data-s1-part="lead-icon" aria-hidden="true" style="-webkit-mask:url(../../../../ui-library/dist/assets/icons/lock.svg) center/contain no-repeat;mask:url(../../../../ui-library/dist/assets/icons/lock.svg) center/contain no-repeat"></span></span>
+        <span data-s1-part="text">
+          <b data-s1-part="title" class="typo-body-16m">시스템 경비</b>
+          <span data-s1-part="description" class="typo-body-14r">원격 경비, 열쇠 지원, 출입문 제어</span>
+        </span>
+        <span data-s1-part="trail"><span data-s1-part="arrow" aria-hidden="true"></span></span>
+      </button></li>
+      <li><button type="button" data-s1-component="list-row">
+        <span data-s1-part="lead"><span data-s1-part="lead-icon" aria-hidden="true" style="-webkit-mask:url(../../../../ui-library/dist/assets/icons/calendar.svg) center/contain no-repeat;mask:url(../../../../ui-library/dist/assets/icons/calendar.svg) center/contain no-repeat"></span></span>
+        <span data-s1-part="text">
+          <b data-s1-part="title" class="typo-body-16m">계약</b>
+          <span data-s1-part="description" class="typo-body-14r">계약 정보 조회, 수정 요청</span>
+        </span>
+        <span data-s1-part="trail"><span data-s1-part="arrow" aria-hidden="true"></span></span>
+      </button></li>
+    </ul></div>
+  </div>
+
+  <div class="case">
+    <h3>5. 고르는 줄 (체크·라디오)</h3>
+    <p class="why">여러 개 고르기는 체크, 하나만 고르기는 라디오. 이미 있는 부품을 끼웠다.</p>
+    <div class="frame"><ul data-s1-part="list">
+      <li><div data-s1-component="list-row">
+        <span data-s1-part="lead"><span data-s1-component="checkbox"><input type="checkbox" id="lr-c1" data-s1-part="control" checked><label data-s1-part="label" for="lr-c1" aria-label="계약 선택"></label></span></span>
+        <span data-s1-part="text"><b data-s1-part="title" class="typo-body-16m">계약</b>
+        <span data-s1-part="description" class="typo-body-14r">계약 정보 조회, 수정 요청</span></span>
+      </div></li>
+      <li><div data-s1-component="list-row">
+        <span data-s1-part="lead"><span data-s1-component="radio"><input type="radio" id="lr-r1" name="lr-r" data-s1-part="control" checked><label data-s1-part="label" for="lr-r1" aria-label="마스터 관리자 선택"></label></span></span>
+        <span data-s1-part="text"><b data-s1-part="title" class="typo-body-16m">마스터 관리자</b></span>
+      </div></li>
+    </ul></div>
+  </div>
+
+  <div class="case">
+    <h3>6. 켜고 끄는 줄 (토글)</h3>
+    <p class="why">설정 화면. 화살표 대신 토글이 오고, 줄 전체가 아니라 토글만 누른다.</p>
+    <div class="frame"><ul data-s1-part="list">
+      <li><div data-s1-component="list-row" style="cursor:default">
+        <span data-s1-part="text"><b data-s1-part="title" class="typo-body-16m">푸시 알림</b>
+        <span data-s1-part="description" class="typo-body-14r">경비 상태가 바뀌면 알려드려요</span></span>
+        <span data-s1-part="trail"><button type="button" data-s1-component="toggle" role="switch" aria-checked="true" aria-label="푸시 알림"><span data-s1-part="knob" aria-hidden="true"></span></button></span>
+      </div></li>
+      <li><div data-s1-component="list-row" style="cursor:default">
+        <span data-s1-part="text"><b data-s1-part="title" class="typo-body-16m">야간 방해 금지</b></span>
+        <span data-s1-part="trail"><button type="button" data-s1-component="toggle" role="switch" aria-checked="false" aria-label="야간 방해 금지"><span data-s1-part="knob" aria-hidden="true"></span></button></span>
+      </div></li>
+    </ul></div>
+  </div>
+
+  <div class="case">
+    <h3>7. 누를 수 없는 줄</h3>
+    <p class="why">권한이 없거나 아직 열리지 않은 항목.</p>
+    <div class="frame"><ul data-s1-part="list">
+      <li><button type="button" data-s1-component="list-row" aria-disabled="true">
+        <span data-s1-part="text"><b data-s1-part="title" class="typo-body-16m">출입·근태 관리</b>
+        <span data-s1-part="description" class="typo-body-14r">권한이 없어 볼 수 없어요</span></span>
+        <span data-s1-part="trail"><span data-s1-part="arrow" aria-hidden="true"></span></span>
+      </button></li>
+    </ul></div>
+  </div>
+
+</div>
+
+<h2>봐주실 것</h2>
+<table>
+  <tr><th>물음</th><th>지금 안</th></tr>
+  <tr><td>줄 높이 72가 손가락으로 누르기에 맞나요?</td><td>레거시 그대로 72</td></tr>
+  <tr><td>설명 글자 색이 너무 옅지 않나요?</td><td>가장 옅은 본문색</td></tr>
+  <tr><td>토글 줄은 줄 전체를 눌러도 켜지게 할까요?</td><td>지금은 토글만 눌림</td></tr>
+  <tr><td>고르는 줄에서 체크를 앞에 둘지 뒤에 둘지</td><td>레거시대로 앞</td></tr>
+</table>
+<script src="../../../../ui-library/dist/s1-ui.auto.js"></script>
+</body>
+</html>

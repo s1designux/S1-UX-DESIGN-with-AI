@@ -1,0 +1,75 @@
+/* 목록 한 줄 (list-row) — 검수용 후보. 아직 정본이 아니다.
+   수치 근거: MoDU APP 레거시 547장 판독 (reports/pattern-builder/inventory/modu-app/)
+   · 줄 높이 72 (두 줄짜리 269건) · 좌우 여백 20 · 화살표 24×24 (326건)
+   · 구분선 1px 이며 줄보다 넓게 화면 폭 전체로 긋는다 (360폭 357건 ↔ 320폭 14건)
+   · 앞 아이콘 32×32, 왼쪽 16, 글 시작 56 (권한 화면)
+   색·글꼴은 전부 토큰/타이포 클래스. HEX 없음. */
+
+[data-s1-component="list-row"] {
+  align-items: center;
+  background: var(--color-bg-level-0);
+  border: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  gap: var(--spacing-8);
+  min-height: 72px;
+  padding: var(--spacing-16) var(--spacing-20);
+  text-align: left;
+  width: 100%;
+}
+
+[data-s1-component="list-row"]:hover { background: var(--color-bg-level-1); }
+[data-s1-component="list-row"]:active { background: var(--color-bg-level-2); }
+[data-s1-component="list-row"]:focus-visible { outline: 2px solid var(--color-line-blue); outline-offset: -2px; }
+[data-s1-component="list-row"][aria-disabled="true"] { cursor: default; pointer-events: none; }
+[data-s1-component="list-row"][aria-disabled="true"] [data-s1-part="title"] { color: var(--color-text-state-disabled); }
+[data-s1-component="list-row"][aria-disabled="true"] [data-s1-part="description"] { color: var(--color-text-state-disabled); }
+[data-s1-component="list-row"][aria-disabled="true"] [data-s1-part="arrow"] { background-color: var(--color-icon-gray-light); }
+
+/* 줄 앞 자리 — 아이콘 32 또는 선택 컨트롤 */
+[data-s1-component="list-row"] [data-s1-part="lead"] {
+  align-items: center;
+  display: flex;
+  flex: none;
+  justify-content: center;
+  margin-right: var(--spacing-16);
+}
+[data-s1-component="list-row"] [data-s1-part="lead-icon"] {
+  background-color: var(--color-icon-gray-dark);
+  display: block;
+  height: 32px;
+  width: 32px;
+}
+
+/* 글 자리 */
+[data-s1-component="list-row"] [data-s1-part="text"] {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  min-width: 0;
+}
+[data-s1-component="list-row"] [data-s1-part="title"] { color: var(--color-text-title-primary); margin: 0; }
+[data-s1-component="list-row"] [data-s1-part="description"] { color: var(--color-text-body-tertiary); margin: 0; }
+
+/* 줄 끝 자리 — 상태 글자 · 화살표 · 토글 */
+[data-s1-component="list-row"] [data-s1-part="trail"] {
+  align-items: center;
+  display: flex;
+  flex: none;
+  gap: var(--spacing-8);
+}
+[data-s1-component="list-row"] [data-s1-part="trail-text"] { color: var(--color-text-body-secondary); }
+[data-s1-component="list-row"] [data-s1-part="arrow"] {
+  background-color: var(--color-icon-gray);
+  display: block;
+  height: var(--sizing-24);
+  -webkit-mask: url("../../../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
+  mask: url("../../../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
+  width: var(--sizing-24);
+}
+
+/* 줄과 줄 사이 구분선 — 줄보다 넓게 화면 폭 전체 */
+[data-s1-part="list"] { list-style: none; margin: 0; padding: 0; }
+[data-s1-part="list"] > li + li { border-top: 1px solid var(--color-line-gray-subtle); }
