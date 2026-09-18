@@ -298,6 +298,17 @@
   #audit-root .issue { padding:10px 16px; border-bottom:1px solid var(--line); cursor:pointer; }
   #audit-root .issue:hover { background:var(--code-bg); }
   #audit-root .issue-head { display:flex; align-items:center; gap:8px; }
+  /* 판정 꼬리표(미바인딩·외부 변수·팔레트 외·역할·근접·정확·높음/보통·컬렉션)는 평소에 감춘다.
+     작업자는 «어떤 토큰으로 바꿀까» 만 고르면 되고, 저 표시는 우리가 어떻게 골랐는지의 설명이다.
+     [자세히] 를 누른 카드에서만 펴진다(river 지시 2026-09-18). */
+  #audit-root .issue:not(.show-detail) .issue-head .kind,
+  #audit-root .issue:not(.show-detail) .sug .mt,
+  #audit-root .issue:not(.show-detail) .sug .col,
+  #audit-root .issue:not(.show-detail) .sug .conf-high,
+  #audit-root .issue:not(.show-detail) .sug .conf-medium { display:none; }
+  /* «낮음» 은 감추지 않는다 — 접힌 상태에서 믿을 만한 후보와 짐작에 가까운 후보가 같아 보이면 안 된다. */
+  #audit-root .detail-toggle { flex-shrink:0; padding:1px 7px; font-size:10px; border-radius:10px;
+    border:1px solid var(--line); background:transparent; color:var(--muted); cursor:pointer; }
   #audit-root .issue-head .swatch { width:14px; height:14px; border-radius:3px; border:1px solid var(--line); }
   #audit-root .issue-head .name { font-weight:500; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   #audit-root .issue-head .kind { font-size:11px; padding:2px 6px; border-radius:4px; background:var(--code-bg); color:var(--muted); }
@@ -398,6 +409,19 @@
   #audit-root .check-row.unjudged .check-icon { border-radius:4px; background:var(--code-bg); }
   #audit-root .check-name { flex:1; font-size:11.5px; }
   #audit-root .check-result { color:var(--muted); font-size:10.5px; white-space:nowrap; }
+  #audit-root .audit-checklist.only-hits .check-row:not(.has-hit) { display:none; }
+  #audit-root .audit-checklist.only-hits .check-group { display:none; }
+  #audit-root .checklist-more { display:block; width:100%; padding:8px 16px; border:0; border-top:1px solid var(--line);
+    background:transparent; color:var(--muted); font-size:11px; cursor:pointer; text-align:left; }
+  #audit-root .checklist-more:hover { color:var(--btn-bg); }
+  #audit-root .checklist-none { padding:12px 16px; color:var(--muted); font-size:11.5px; }
+  #audit-root .audit-checklist:not(.only-hits) .checklist-none { display:none; }
+  #audit-root .why-fold { margin-top:2px; }
+  #audit-root .why-fold > summary { list-style:none; cursor:pointer; font-size:10.5px; color:var(--muted); padding:1px 0; }
+  #audit-root .why-fold > summary::-webkit-details-marker { display:none; }
+  #audit-root .why-fold > summary::before { content:'▸ '; }
+  #audit-root .why-fold[open] > summary::before { content:'▾ '; }
+  #audit-root .why-fold > summary:hover { color:var(--btn-bg); }
   #audit-root .check-result.fail { color:#d14343; font-weight:600; }
   #audit-root .check-result.warning, #audit-root .check-result.choice { color:var(--med); font-weight:600; }
   /* 검사 중 화면 = 설치·패턴 탭 로딩 화면과 같은 모양으로 통일(river 지시 2026-09-03).
@@ -1274,6 +1298,7 @@ let lastIssues = [];
 let activeTab = "component"; // component | generic
 let picks = {}; // { issueId: suggestionIndex }
 let activeCat = {}; // { issueId: 'tab' | 'button' | 'foundation' | ... }
+let detailOpen = {}; // { issueId: true } — 「자세히」로 펴 둔 카드. 다시 그려도 유지한다.
 let activeMode = "color"; // color | swap
 
 // 컴포넌트 교체 모드 상태
@@ -1401,6 +1426,8 @@ function renderChecklistResults(items) {
   const target = $('#checklist-result');
   target.innerHTML = CHECKLIST_HTML;
   target.querySelector('.audit-checklist-title').textContent = '항목별 결과';
+  // 통과한 항목은 접는다 — 작업자가 볼 것은 «걸린 것» 이다(river 지시 2026-09-18).
+  target.classList.add('only-hits');
   const byId = {};
   (items || []).forEach((item) => { byId[item.id] = item; });
   target.querySelectorAll('.check-row').forEach((row) => {
@@ -1408,16 +1435,37 @@ function renderChecklistResults(items) {
     const icon = row.querySelector('.check-icon');
     const result = row.querySelector('.check-result');
     if (!item || item.status === 'unjudged') {
-      row.classList.add('unjudged'); icon.textContent = '—'; result.textContent = '미판정'; return;
+      // 미판정은 «통과» 가 아니다 — 접힌 상태에서도 보여야 한다(못 본 자리를 숨기지 않는다).
+      row.classList.add('unjudged', 'has-hit'); icon.textContent = '—'; result.textContent = '미판정'; return;
     }
     row.classList.add('done'); icon.textContent = '✓';
     if (item.count > 0) {
       result.textContent = item.count + '건';
       result.classList.add(item.status);
+      row.classList.add('has-hit');
     } else {
       result.textContent = '통과';
     }
   });
+  // 접힌 상태에서도 «통과한 것도 보기» 로 펼 수 있게 한다.
+  if (target.querySelectorAll('.check-row.has-hit').length === 0) {
+    const none = document.createElement('div');
+    none.className = 'checklist-none';
+    none.textContent = '걸린 것 없습니다';
+    target.appendChild(none);
+  }
+  const passed = target.querySelectorAll('.check-row:not(.has-hit)').length;
+  if (passed > 0) {
+    const more = document.createElement('button');
+    more.className = 'checklist-more';
+    more.type = 'button';
+    more.textContent = '통과한 ' + passed + '개도 보기';
+    more.addEventListener('click', function () {
+      const open = target.classList.toggle('only-hits');
+      more.textContent = open ? '통과한 ' + passed + '개도 보기' : '통과한 것 접기';
+    });
+    target.appendChild(more);
+  }
 }
 
 function renderDetailList(selector, issues, emptyText) {
@@ -1491,7 +1539,7 @@ function startAuditInspection(phase) {
   const btn = $("#btn-audit");
   btn.disabled = true;
   btn.textContent = "검사 중…";
-  picks = {};
+  picks = {}; detailOpen = {};
   activeCat = {};
   updatePickedCount();
   resetAuditChecklist('running');
@@ -1608,7 +1656,8 @@ function verdictNoteHtml(d, decidedMissing) {
     // 레거시 코드 이름·축 나열은 검수기 사정이라 화면에 내보내지 않는다(river 지시 2026-09-18).
     const basis = decisionBasisLine(d);
     let html = '<div class="verdict-note is-answer">바꿀 것: <b>' + escape((d.canonSets || []).join(' 또는 ')) + '</b></div>';
-    if (basis) html += '<div class="verdict-note">근거: ' + escape(basis) + '</div>';
+    // 근거 인용문은 늘 펼쳐 둘 것이 아니라 «궁금할 때 여는 것»이다(river 지시 2026-09-18).
+    if (basis) html += '<details class="why-fold" data-role="why-fold"><summary>근거 보기</summary><div class="verdict-note">' + escape(basis) + '</div></details>';
     html += decisionMemoLine(d);
     if (decidedMissing) html += '<div class="verdict-note">정해진 부품이 이 파일에 아직 없습니다 — [설치] 탭을 먼저 실행하세요.</div>';
     return html;
@@ -1616,7 +1665,7 @@ function verdictNoteHtml(d, decidedMissing) {
   if (kind === 'none') {
     const basis = decisionBasisLine(d);
     return '<div class="verdict-note">' + escape((d && d.why) || '정본으로 바꿀 대상이 아닙니다.') + '</div>' +
-      (basis ? '<div class="verdict-note">근거: ' + escape(basis) + '</div>' : '');
+      (basis ? '<details class="why-fold" data-role="why-fold"><summary>근거 보기</summary><div class="verdict-note">' + escape(basis) + '</div></details>' : '');
   }
   if (d && d.kind === 'ambiguous') {
     const rows = (d.choices || []).map(function (c) { return c.source + ':' + c.set + (c.setId ? ' (' + c.setId + ')' : ''); }).join(' · ');
@@ -1780,6 +1829,8 @@ function renderManualList(list) {
       if (action !== "manual-swap") {
         // 드롭다운은 먼저 열리게 두고, 값이 바뀌는 순간 아래 change 핸들러가 선택한다.
         if (target.closest && target.closest('[data-role="manual-pick"]')) return;
+        // 읽기만 하는 접기(근거 보기·정본·변형 직접 고르기)는 캔버스를 움직이지 않는다.
+        if (target.closest && target.closest('summary')) return;
         // 제목·현재 정보 등 카드의 나머지 영역을 누르면 캔버스에서 함께 찾는다.
         send("select-node", { nodeId: c.instanceId });
         return;
@@ -2246,6 +2297,8 @@ function renderModuleList(list) {
         event.stopPropagation();
         return;
       }
+      // 읽기만 하는 접기는 캔버스를 움직이지 않는다.
+      if (target.closest && target.closest('summary')) return;
       if (target.closest && (target.closest('[data-role="part-pick"]') || target.closest('.part-row'))) {
         const row = target.closest('.part-row');
         const part = row && (c.parts || []).find((p) => p.id === row.dataset.partRow);
@@ -2544,7 +2597,7 @@ function rerenderTab() {
     : "";
   for (const issue of filtered) {
     const div = document.createElement("div");
-    div.className = "issue";
+    div.className = "issue" + (detailOpen[issue.id] ? " show-detail" : "");
     div.dataset.id = issue.id;
     const kindLabel = issue.reasonKind === "external-var" ? "외부 변수" : "미바인딩";
     const confLabelMap = { high: "높음", medium: "보통", low: "낮음" };
@@ -2614,6 +2667,7 @@ function rerenderTab() {
         <span class="node-kind ${issue.nodeKind}">${({text:'텍스트',icon:'아이콘',shape:'도형'}[issue.nodeKind] || issue.nodeKind)}</span>
         <span class="kind">${kindLabel}</span>
         ${issue.offGuide ? '<span class="kind offguide">팔레트 외</span>' : ''}
+        <button class="detail-toggle" data-action="toggle-detail" type="button">${detailOpen[issue.id] ? '접기' : '자세히'}</button>
       </div>
       <div class="issue-meta">
         ${issue.property} · ${escape(issue.sourceLabel)} · <span class="hex">${issue.hex}</span>${issue.offGuide ? ` · <span class="offguide-note">가이드에 없는 색</span>` : ''}
@@ -2634,6 +2688,14 @@ function rerenderTab() {
         return;
       }
       const action = t.dataset && t.dataset.action;
+      // 판정 꼬리표 펴기/접기 — 이 카드에만 적용된다
+      if (action === "toggle-detail") {
+        const open = div.classList.toggle('show-detail');
+        if (open) detailOpen[issue.id] = true; else delete detailOpen[issue.id];
+        t.textContent = open ? '접기' : '자세히';
+        e.stopPropagation();
+        return;
+      }
       // Apply 단건 버튼
       if (action === "apply") {
         if (t.classList.contains("applied")) {
@@ -2704,7 +2766,7 @@ function renderInspectionResult(payload) {
   renderRecentSwaps();
 
   lastIssues = payload.colorIssues || [];
-  picks = {}; activeCat = {}; updatePickedCount();
+  picks = {}; activeCat = {}; detailOpen = {}; updatePickedCount();
   rerenderTab();
   const extraColor = (payload.colorDetails || []).filter((issue) => issue.checklistId !== 1);
   if (extraColor.length) {
@@ -2884,7 +2946,7 @@ function handleAuditUiMessage(msg) {
       renderRecentSwaps();
       // ── 그 외 버킷: HEX 색상 → 시멘틱 토큰 제안 ──
       lastIssues = msg.payload.colorIssues || [];
-      picks = {}; activeCat = {}; updatePickedCount();
+      picks = {}; activeCat = {}; detailOpen = {}; updatePickedCount();
       rerenderTab();
       // ── 칩 카운트 + 결과 칩 노출 ──
       const compCount = swapCandidates.length + manual.length + modules.length;
