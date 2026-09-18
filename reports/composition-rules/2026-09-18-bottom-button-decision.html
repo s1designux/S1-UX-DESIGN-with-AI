@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>화면 맨 아래 붙는 버튼 — 정할까요?</title>
+<title>화면 맨 아래 붙는 버튼 — 정해짐</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="stylesheet" href="../../ui-library/dist/assets/css/tokens.css">
 <link rel="stylesheet" href="../../ui-library/dist/assets/css/typography.css">
@@ -46,13 +46,22 @@ td.n{text-align:right;font-variant-numeric:tabular-nums}
 .legend i{font-style:normal;border-bottom:2px dashed var(--pg-ok);padding-bottom:1px}
 </style></head><body><div class="wrap">
 
-<h1>화면 맨 아래 붙는 버튼 — 정할까요?</h1>
-<p class="lead">아래 그림의 <b style="color:#0b5fff">파란 점선 칸</b>이 정할 대상입니다.
-모두앱 레거시 <b>160개 화면</b>에 똑같은 모양으로 있었는데, 우리 부품 쪽에는 이 칸에 대한 약속이 없습니다.
+<h1>화면 맨 아래 붙는 버튼 — 정해짐</h1>
+<p class="lead">아래 그림의 <b style="color:#0b5fff">파란 점선 칸</b>이 정한 대상입니다.
+모두앱 레거시 <b>160개 화면</b>에 똑같은 모양으로 있었고, 이제 규칙으로 적혔습니다.
 <span style="color:var(--pg-dim)">(2026-09-18)</span></p>
 
-<div class="note"><b>미리 알려드릴 건 하나예요.</b> 버튼 자체는 이미 있습니다 — 새로 만들 게 아닙니다.
-없는 것은 <b>“버튼을 화면 맨 아래에 어떻게 붙이나”</b>라는 약속뿐입니다. 위아래로 얼마를 띄우고, 내비 바로 위에 두는지 같은 것.</div>
+<div class="pick" style="margin-bottom:8px">
+<h3 style="margin-top:14px">✅ 정해졌습니다 — (A) 규칙으로 적는다</h3>
+<p>river 결정 2026-09-18 — <b>"내비가 있어도 바로위 20*20 두른상태에서 놓는거지? 그렇다면 다 맞아"</b></p>
+<p>버튼 위 20 · 아래 20 을 두른 칸에 담고, <b>내비가 있으면 그 칸의 아래끝을 내비 위끝에 딱 붙인다</b>(사이를 더 띄우지 않는다).
+내비가 없으면 칸 아래끝이 화면 바닥. 버튼 좌우는 화면 여백과 같은 20. 칸 전체 높이는 <b>88</b>(위 20 + 버튼 48 + 아래 20).</p>
+<p style="font-size:13px;color:var(--pg-dim);margin-bottom:6px">새 부품을 만들지 않았습니다 — 놓는 자리만 정했습니다.
+적은 곳: 뼈대 규칙 「맨 아래 영역」 · 조립 규칙 낱장 R-9.</p>
+</div>
+
+<div class="note"><b>새로 만든 부품은 없습니다.</b> 버튼은 원래 있었고, 없던 것은
+<b>“버튼을 화면 맨 아래에 어떻게 붙이나”</b>라는 약속뿐이었습니다. 그 약속만 적었습니다.</div>
 
 <h2>1. 어떤 모양인지</h2>
 <p class="sub">아래 셋은 실제 배포본 부품(제목줄·버튼·내비)을 그대로 올려 만든 것입니다. 레거시 화면에서 잰 자리에 놓았고, 버튼 높이는 우리 부품 값(48)입니다 — 레거시는 50이었습니다.</p>
@@ -83,7 +92,7 @@ td.n{text-align:right;font-variant-numeric:tabular-nums}
         <button type="button" data-s1-component="mobile-bottom-nav" data-icon="settings" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">설정</span></button>
       </nav>
     </div>
-    <p class="legend"><i>점선 칸</i> = 정할 대상. 위 20 + 버튼 48 + 아래 20 = <b>88</b></p>
+    <p class="legend"><i>점선 칸</i> = 정해진 칸. 위 20 + 버튼 48 + 아래 20 = <b>88</b></p>
   </figure>
 
   <figure class="case">
@@ -164,17 +173,15 @@ td.n{text-align:right;font-variant-numeric:tabular-nums}
 </tbody>
 </table>
 
-<h2>4. 정해주실 것</h2>
+<h2>4. 정한 내용이 뜻하는 것</h2>
 <div class="pick">
-<h3>(A) 규칙으로 적는다 &nbsp;<span style="font-weight:400;color:var(--pg-dim);font-size:14px">— 권합니다</span></h3>
-<p>“화면 맨 아래 버튼 칸은 위 20 · 아래 20, 내비가 있으면 그 바로 위”를 뼈대 규칙에 적습니다.
-새 부품을 만드는 게 아니라 <b>놓는 자리만</b> 정하는 것이라 가볍습니다. 빌더가 바로 이 칸을 만들 수 있게 됩니다.</p>
+<h3>규칙으로 적었습니다 (A)</h3>
+<p>“화면 맨 아래 버튼 칸은 위 20 · 아래 20, 내비가 있으면 그 바로 위에 딱 붙인다”가 뼈대 규칙에 들어갔습니다.
+새 부품을 만드는 게 아니라 놓는 자리만 정한 것이라, 빌더가 바로 이 칸을 만들 수 있습니다.</p>
 
-<h3>(B) 부품으로도 만든다</h3>
-<p>칸 자체를 부품으로 등록합니다. 개발자가 한 덩어리로 가져다 쓸 수 있지만, 새 부품이라 원본 대조 검수를 거쳐야 하고 시간이 더 걸립니다.</p>
-
-<h3>(C) 그냥 둔다</h3>
-<p>지금처럼 «미작성»으로 비워 둡니다. 빌더가 이 자리를 만들 때 매번 사람에게 물어보거나, 스스로 값을 지어내게 됩니다.</p>
+<h3>고르지 않은 것</h3>
+<p><b>(B) 칸을 부품으로도 등록</b> — 나중에 필요해지면 그때 올립니다. 지금은 규칙만으로 충분합니다.<br>
+<b>(C) 그냥 두기</b> — 해당 없음.</p>
 </div>
 
 <p class="sub">잰 자료: 모두앱 레거시 Figma 10개 페이지 · 폭 360 화면 593장 중 맨 아래 버튼이 있는 160장.

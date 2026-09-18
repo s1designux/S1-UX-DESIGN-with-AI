@@ -1,0 +1,58 @@
+{
+  "id": "R-9",
+  "name": "화면 맨 아래 붙는 버튼은 위아래 20 을 두른 칸에 담아 내비 바로 위에 놓는다",
+  "statement": "화면의 주요 동작 버튼을 맨 아래에 고정할 때는, 버튼 위 20 · 아래 20 을 두른 칸에 담는다. 아래 내비가 있으면 그 칸의 아래끝을 내비 위끝에 딱 붙인다(사이를 더 띄우지 않는다). 내비가 없으면 칸의 아래끝이 화면 바닥이다. 버튼 좌우는 화면 여백과 같은 20.",
+  "status": "candidate",
+  "enforcedBy": "none",
+  "decidedBy": "river",
+  "sightings": [
+    {
+      "at": "2026-09-18",
+      "screen": "모두앱 레거시 — 맨 아래 버튼이 있는 화면 160장",
+      "screenKind": "폼·신청·검색 등 '완료 동작이 하나인' 화면 전반",
+      "service": "MoDU APP",
+      "medium": "app",
+      "density": "normal",
+      "quote": "내비가 있어도 바로위 20*20 두른상태에서 놓는거지? 그렇다면 다 맞아",
+      "evidence": "reports/composition-rules/2026-09-18-bottom-button.json · 판정 화면 2026-09-18-bottom-button-decision.html"
+    }
+  ],
+  "contextCount": 1,
+  "measurement": {
+    "scope": "폭 360 화면에서 맨 아래에 붙은 버튼 169건 · 화면 160장. 반올림 없음.",
+    "bandHeight": { "90": 158, "74": 6, "94": 1, "56": 1, "52": 1 },
+    "padTop": { "20": 156 },
+    "padBottom": { "20": 157 },
+    "buttonSize": { "320x50": 158, "156폭(버튼 둘)": 6 },
+    "buttonLeft": { "20": 159 },
+    "bandBottomTouchesNavTop": { "붙음": 157, "떨어짐": 6 },
+    "hasNav": { "있음": 165, "없음": 4 }
+  },
+  "canonValues": {
+    "note": "레거시 값을 그대로 쓰지 않는다. 버튼 높이는 정본 Button 의 모바일 lg = 48 이다(레거시 50).",
+    "padTop": 20,
+    "buttonHeight": 48,
+    "padBottom": 20,
+    "bandHeight": 88,
+    "sideGap": 20,
+    "source": "registry/components/button.json sizing.mobile[lg] = h48"
+  },
+  "variants": [
+    "버튼 하나 — 가로로 꽉 채운다(320). 158장.",
+    "버튼 둘 — 같은 칸 안에서 반씩 나눠 선다(각 156, 사이 8). 6장.",
+    "내비 없는 덮는 화면 — 칸이 화면 바닥에 붙는다. 4장."
+  ],
+  "relatedRules": {
+    "R-8": "좌우 여백 20 은 R-8 과 같은 값이다 — 화면 여백과 버튼 좌우가 어긋나지 않는다.",
+    "R-6": "칸 안 버튼은 꼬리 아이콘이 없으므로 R-6 의 시각 보정 대상이 아니다."
+  },
+  "scope": {
+    "decidedAs": "A — 규칙으로만 적는다. 칸 자체를 부품으로 등록하지 않는다.",
+    "why": "버튼은 이미 정본에 있고, 없던 것은 '어디에 어떻게 놓나' 뿐이었다. 새 부품 신설이 아니라 배치 규칙이므로 Gate 34(정본 신설 승인) 대상이 아니다."
+  },
+  "promotion": {
+    "rule": "서로 다른 맥락 3곳에서 나오면 공통 규칙 후보로 올린다.",
+    "ifOnlyOne": "한 자리에서만 계속 나오면 그 화면 종류 전용으로 굳힌다.",
+    "current": "1곳 — 모바일 앱에서 나왔다. PC 에서 같은 모양이 나오면 sightings 에 한 줄 더한다."
+  }
+}
