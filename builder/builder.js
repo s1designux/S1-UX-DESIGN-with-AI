@@ -585,19 +585,43 @@ function paintShell() {
   add("pb-shell-bottom", (web ? browserToolbarHtml() : "") + androidNavHtml(), "bottom");
 }
 
+/* 보기 방식(river 결정 2026-09-18)
+   device — 기기처럼: 틀을 그 기기 크기로 고정하고 넘치는 내용은 틀 안에서 스크롤. 크롬은 위아래에 붙어 있다(기본).
+   full   — 한눈에: 내용 길이만큼 틀을 늘려 전체를 본다. "여기까지가 첫 화면" 선을 그어 접히는 자리를 보여준다. */
+const viewModeOf = () => (state.screen.view === "full" ? "full" : "device");
+
 function fitCanvas() {
   const p = platformInfo();
+  const mode = viewModeOf();
   const stage = els.canvasWrap.parentElement;            // .pb-stage (무대) — 래퍼가 아니라 무대 폭을 기준으로 잰다
   const avail = Math.max(200, stage.clientWidth - 48);
   const scale = Math.min(1, avail / p.width);
+  els.canvas.dataset.view = mode;
   els.canvas.style.width = `${p.width}px`;
-  els.canvas.style.minHeight = `${p.height}px`;
+  if (mode === "device") { els.canvas.style.height = `${p.height}px`; els.canvas.style.minHeight = ""; }
+  else { els.canvas.style.height = ""; els.canvas.style.minHeight = `${p.height}px`; }
   els.canvas.style.transform = `scale(${scale})`;
   els.canvas.style.transformOrigin = "top left";
   els.canvas.style.marginLeft = scale < 1 ? "0" : "auto";
   els.canvasWrap.style.height = `${Math.ceil(els.canvas.offsetHeight * scale)}px`;
   els.canvasWrap.style.width = scale < 1 ? `${Math.ceil(p.width * scale)}px` : `${p.width}px`;
-  els.frameLabel.textContent = `${p.label} · ${state.meta.role} · ${state.meta.theme}${scale < 1 ? ` · 미리보기 ${Math.round(scale * 100)}%` : ""}`;
+  paintFoldLine(p, mode);
+  const overflow = mode === "device" && els.canvas.querySelector(".pb-scroll")
+    ? (() => { const s = els.canvas.querySelector(".pb-scroll"); return s.scrollHeight > s.clientHeight + 1 ? " · 스크롤 있음" : ""; })() : "";
+  els.frameLabel.textContent = `${p.label} · ${state.meta.role} · ${state.meta.theme}`
+    + (scale < 1 ? ` · 미리보기 ${Math.round(scale * 100)}%` : "") + overflow;
+}
+
+/* 한눈에 보기에서 "여기까지가 첫 화면" 선 — 기기 높이만큼 내려온 자리에 긋는다. */
+function paintFoldLine(p, mode) {
+  els.canvasWrap.querySelector(".pb-fold")?.remove();
+  if (mode !== "full") return;
+  if (els.canvas.offsetHeight <= p.height + 1) return;
+  const line = document.createElement("div");
+  line.className = "pb-fold";
+  line.style.top = `${p.height}px`;
+  line.innerHTML = `<span>여기까지가 첫 화면</span>`;
+  els.canvas.appendChild(line);
 }
 
 function renderToolbar() {
@@ -610,6 +634,7 @@ function renderToolbar() {
   els.theme.value = state.meta.theme;
   els.shellField.hidden = platformInfo().id !== "mobile";          // 기기 크롬은 모바일 틀에서만 쓴다
   els.shell.value = state.screen.shell || "app";
+  document.querySelectorAll(".pb-stage-tools [data-view]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.view === viewModeOf())));
   els.name.value = state.meta.name || "";
   els.distVersion.textContent = `s1-ui ${data.dist?.version || ""}`;
 }
@@ -1053,14 +1078,19 @@ function setProp(name, value) {
 async function renderCanvas() {
   els.canvas.dataset.theme = state.meta.theme;
   els.frameInfo.textContent = state.rows.length ? `행 ${state.rows.length} · 요소 ${state.rows.reduce((n, r) => n + r.blocks.length, 0)}` : "";
+  /* 본문은 스크롤 칸 안에 둔다 — 기기처럼 보기에서 위아래 크롬은 붙어 있고 내용만 스크롤된다. */
+  els.canvas.innerHTML = "";
+  const scroll = document.createElement("div");
+  scroll.className = "pb-scroll";
+  els.canvas.appendChild(scroll);
   if (!state.rows.length) {
-    els.canvas.innerHTML = `<div class="pb-canvas-empty">아직 비어 있습니다.<br>왼쪽 부품을 이리로 끌어다 놓거나, 눌러서 놓아 보세요.</div>`;
-    wireDropZone(els.canvas.lastElementChild, () => ({ index: 0 }));
+    scroll.innerHTML = `<div class="pb-canvas-empty">아직 비어 있습니다.<br>왼쪽 부품을 이리로 끌어다 놓거나, 눌러서 놓아 보세요.</div>`;
+    wireDropZone(scroll.lastElementChild, () => ({ index: 0 }));
     paintShell();
     fitCanvas();
     return;
   }
-  const screen = await renderScreen(els.canvas, true);
+  const screen = await renderScreen(scroll, true);
   try { autoInit(screen); } catch (e) { console.warn("autoInit", e); }
   paintShell();
   fitCanvas();
@@ -1229,6 +1259,11 @@ async function main() {
   document.querySelectorAll("[data-place]").forEach((btn) => btn.addEventListener("click", () => {
     placeMode = btn.dataset.place;
     document.querySelectorAll("[data-place]").forEach((b) => b.setAttribute("aria-checked", String(b === btn)));
+  }));
+  document.querySelectorAll(".pb-stage-tools [data-view]").forEach((btn) => btn.addEventListener("click", () => {
+    state.screen.view = btn.dataset.view;
+    document.querySelectorAll(".pb-stage-tools [data-view]").forEach((b) => b.setAttribute("aria-checked", String(b === btn)));
+    update();
   }));
   $("#pb-add-row").addEventListener("click", () => { const r = newRow(); state.rows.push(r); selection = { rowId: r.id, blockId: null }; update(); });
   $("#pb-new").addEventListener("click", () => {

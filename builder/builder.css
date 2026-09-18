@@ -81,8 +81,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 /* 모바일 기기 크롬 — 정본 StatusBar·NavBar 의 App/Web 변형을 옮긴 그림.
    배포 부품이 아니라 화면 틀의 OS·브라우저 껍데기다(D5 · dummy-chrome-parts.json). */
-.pb-shell-top { position: sticky; top: 0; z-index: 3; flex: none; }
-.pb-shell-bottom { position: sticky; bottom: 0; z-index: 3; flex: none; }
+.pb-shell-top, .pb-shell-bottom { flex: none; z-index: 3; }
 .pb-shell-icon { color: var(--color-icon-gray); display: inline-flex; flex: none; }
 .pb-shell-icon svg { display: block; }
 
@@ -121,7 +120,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .pb-canvas[data-header-bg="home"],
 .pb-canvas[data-header-bg="home"] .pb-statusbar,
 .pb-canvas[data-header-bg="home"] .pb-statusbar-gap,
-.pb-canvas[data-header-bg="home"] > .s1-screen { background: var(--color-bg-home); }
+.pb-canvas[data-header-bg="home"] .pb-scroll,
+.pb-canvas[data-header-bg="home"] .s1-screen { background: var(--color-bg-home); }
 .pb-statusbar-right { align-items: center; display: flex; gap: 6px; }
 .pb-statusbar-signal { display: block; height: 12px; position: relative; width: 17px; }
 .pb-statusbar-signal i { background: var(--color-icon-gray-dark); border-radius: 0.5px; position: absolute; }
@@ -166,8 +166,22 @@ body[data-pb-dragging] .pb-gap { height: 28px; margin: 4px 0; border: 1px dashed
 /* 가운데: 캔버스 */
 .pb-stage { background: var(--color-bg-level-1); padding: 24px; overflow: auto; flex: 1; border-radius: 0 0 var(--radius-12) var(--radius-12); }
 .pb-canvas-wrap { margin: 0 auto; position: relative; overflow: visible; }
-.pb-canvas { background: var(--color-bg-level-0); box-shadow: var(--shadow-raised); min-height: 480px; color: var(--color-text-body-primary); display: flex; flex-direction: column; }
-.pb-canvas > .s1-screen { flex: 1 1 auto; }   /* 본문이 남는 높이를 채워 아래 크롬이 화면 끝에 붙는다 */
+.pb-canvas { position: relative; background: var(--color-bg-level-0); box-shadow: var(--shadow-raised); min-height: 480px; color: var(--color-text-body-primary); display: flex; flex-direction: column; }
+/* 본문 칸 — 기기처럼 보기에서는 여기만 스크롤되고 위아래 크롬은 제자리에 붙어 있다. */
+.pb-scroll { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+.pb-canvas[data-view="device"] { overflow: hidden; }
+.pb-canvas[data-view="device"] .pb-scroll { overflow-y: auto; overflow-x: hidden; }
+.pb-canvas[data-view="full"] .pb-scroll { overflow: visible; }
+.pb-scroll > .s1-screen { flex: 1 1 auto; }   /* 본문이 남는 높이를 채워 아래 크롬이 화면 끝에 붙는다 */
+
+/* 한눈에 보기 — 첫 화면이 끝나는 자리 */
+.pb-fold { position: absolute; left: 0; right: 0; z-index: 4; border-top: 1px dashed var(--color-line-blue); pointer-events: none; }
+.pb-fold span {
+  position: absolute; right: 0; top: 0; transform: translateY(-100%);
+  padding: 2px 6px; border-radius: var(--radius-4) var(--radius-4) 0 0;
+  background: var(--color-line-blue); color: var(--color-base-white);
+  font-size: 10px; font-weight: 600; white-space: nowrap;
+}
 .pb-canvas[data-theme="dark"] { color-scheme: dark; }
 .pb-frame-label { text-align: center; font-size: 11px; color: var(--color-text-body-tertiary); margin: 0 0 8px; }
 .pb-canvas .s1-row[data-pb-row] { position: relative; outline: 1px dashed transparent; outline-offset: 4px; border-radius: var(--radius-4); }

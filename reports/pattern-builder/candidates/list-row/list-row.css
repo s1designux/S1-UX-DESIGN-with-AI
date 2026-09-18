@@ -1,11 +1,13 @@
 /* 목록 한 줄 (list-row) — 검수용 후보. 아직 정본이 아니다.
    수치 근거: MoDU APP 레거시 547장 판독 (reports/pattern-builder/inventory/modu-app/)
-   레거시에 이미 `m_list` 라는 이름의 줄 부품이 있었고, 그 크기가 360×75 로 152건 일치한다.
-   · 줄 높이 74 + 구분선 1 = 75 (m_list 360×75 152건) · 폭은 화면 전체 360
-   · 좌우 여백 20 · 화살표 24×24 (326건) · 오른쪽 끝 여백 20
-   · 글 묶음 높이 38 = 제목 16 + 사이 8 + 설명 14, 위 17 아래 19
-   · 앞 체크·라디오 18×18, 왼쪽 20 (76건)
+   2026-09-18 river 가 Figma 에서 원본 줄(`list` 10928:14704)을 골라줘서 실제 값을 읽었다.
+   · 줄 74 + 구분선 1 = 75 · 폭 360 · 안쪽 여백 위아래 18, 왼쪽 20, 오른쪽 16
+   · 제목 16 Medium 검정 · 설명 14 Regular 회색(#7F7F7F ≒ 우리 gray-500) · 둘 사이 8
+   · 앞 체크 18, 글과 사이 12 · 화살표 24, 글과 사이 4
+   · 구분선 #EBEBEB ≒ 우리 gray-100, 화면 폭 360 전체
    · 앞 아이콘 32×32, 왼쪽 16, 글 시작 56 (권한 화면)
+   ※ 줄 간격만 다르다 — 레거시는 글자 크기와 같은 간격(16/14)이라 줄이 74,
+     우리 정본 글꼴은 130% 라 두 줄짜리가 83 이 된다. 우리 정본 글꼴을 따른다.
    색·글꼴은 전부 토큰/타이포 클래스. HEX 없음. */
 
 [data-s1-component="list-row"] {
@@ -17,7 +19,8 @@
   display: flex;
   gap: var(--spacing-8);
   min-height: 74px;
-  padding: 17px var(--spacing-20) 19px;
+  /* 위아래 18 — 우리 간격 토큰에 18 이 없다. 토큰 신설은 승인 사항이라 값으로 두고 needs-decision 으로 올린다. */
+  padding: 18px var(--spacing-16) 18px var(--spacing-20);
   text-align: left;
   width: 100%;
 }
@@ -36,7 +39,7 @@
   display: flex;
   flex: none;
   justify-content: center;
-  margin-right: var(--spacing-16);
+  margin-right: var(--spacing-12);
 }
 [data-s1-component="list-row"] [data-s1-part="lead-icon"] {
   background-color: var(--color-icon-gray-dark);
@@ -61,7 +64,7 @@
   align-items: center;
   display: flex;
   flex: none;
-  gap: var(--spacing-8);
+  gap: var(--spacing-4);
 }
 [data-s1-component="list-row"] [data-s1-part="trail-text"] { color: var(--color-text-body-secondary); }
 [data-s1-component="list-row"] [data-s1-part="arrow"] {
