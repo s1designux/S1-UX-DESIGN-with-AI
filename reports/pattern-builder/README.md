@@ -7,7 +7,7 @@
 
 | 조각 | 위치 | 역할 |
 |---|---|---|
-| 빌더 화면 | `pages/builder.html` + `assets/js/builder.js` | 배포본(ui-library/dist) 부품을 서비스·플랫폼·역할·테마 축으로 조립 → 미리보기 → HTML 내보내기 |
+| 빌더 사이트(별도) | `builder/index.html` + `builder.css` + `builder.js` | 가이드 사이트와 분리된 독립 웹사이트(river 결정 2026-09-18). 배포본(ui-library/dist)·registry·design 매니페스트를 상대경로로 읽는다. 조립 → 미리보기 → HTML 내보내기 |
 | 패턴 목록(정본) | `registry/patterns/builder/catalog.json` | 빌더가 읽는 패턴 정의. 레거시 판독 → 검증 → 승인된 것만 `verified/approved`. (`registry/patterns/*.json` 바로 아래는 Gate 의 패턴 사양 자리라 하위 폴더에 둔다) |
 | 요청 접수함 | `reports/pattern-builder/requests/` | 빌더 "새 패턴 요청" 이 만든 `pattern-request-*.json` 을 두는 곳 |
 | 레거시 판독표 | `reports/pattern-builder/inventory/<service>.md` | figma-inspector 가 레거시 화면을 읽어 정리한 "어느 서비스 · 어떤 화면 유형 · 어떤 부품" 표 |

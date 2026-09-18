@@ -7,16 +7,16 @@
    - 패턴 목록은 registry/patterns/builder/catalog.json 을 읽기만 한다.
    - 플랫폼·역할·테마 축은 design/design.manifest.json 을 읽는다.
    ============================================================ */
-import { autoInit } from "../../ui-library/dist/s1-ui.auto.js";
+import { autoInit } from "../ui-library/dist/s1-ui.auto.js";
 
 const url = (rel) => new URL(rel, import.meta.url);
 const URLS = {
-  distManifest: url("../../ui-library/dist/manifest.json"),
-  designManifest: url("../../design/design.manifest.json"),
-  registryIndex: url("../../registry/components/index.json"),
-  catalog: url("../../registry/patterns/builder/catalog.json"),
-  componentManifest: (id) => url(`../../ui-library/dist/components/${id}.manifest.json`),
-  distFile: (file) => url(`../../ui-library/dist/${file}`)
+  distManifest: url("../ui-library/dist/manifest.json"),
+  designManifest: url("../design/design.manifest.json"),
+  registryIndex: url("../registry/components/index.json"),
+  catalog: url("../registry/patterns/builder/catalog.json"),
+  componentManifest: (id) => url(`../ui-library/dist/components/${id}.manifest.json`),
+  distFile: (file) => url(`../ui-library/dist/${file}`)
 };
 
 /* 오버레이·부속 부품은 화면 안에 놓는 것이 아니라 body 직계(placement) 또는 다른 부품의 부속이다.
