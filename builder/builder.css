@@ -215,3 +215,27 @@ body[data-pb-dragging] .pb-canvas .s1-row[data-pb-empty="true"] { outline-color:
    그 자리에 host 가 넣는 내용(여기서는 입력 양식)의 배치는 host 몫이라 여기서만 세로로 쌓는다. */
 #pb-request-dialog [data-s1-part="content"] { display: block; overflow: auto; padding: var(--spacing-16); }
 #pb-request-dialog .pb-prop:last-of-type { margin-bottom: 0; }
+
+/* ── 가져온 화면 ─────────────────────────────────────────────
+   이미 만들어 둔 원본 화면을 그대로 올린 칸. 우리 부품이 아니라는 것이 보여야 한다.
+   그림 크기·자리(px)는 원본 실측이라 토큰을 태우지 않는다. */
+.pb-block { width: 100%; margin-bottom: var(--spacing-8); }
+.pb-note-warn { color: var(--color-text-state-caution); margin: calc(var(--spacing-4) * -1) 0 var(--spacing-8); }
+#pb-import-status[data-tone="warn"] { color: var(--color-text-state-caution); }
+
+.pb-card-imported { text-align: left; display: grid; gap: var(--spacing-2); }
+.pb-card-imported .pb-card-name { font-weight: var(--font-weight-medium); }
+.pb-card-imported .pb-card-meta { font-size: var(--font-size-12); color: var(--color-text-body-tertiary); }
+.pb-card-imported .pb-card-mode { color: var(--color-text-state-caution); }
+
+.pb-canvas .s1-block[data-s1-legacy="true"] { position: relative; outline: var(--border-width-1) dashed var(--color-line-gray-subtle); outline-offset: -1px; }
+.pb-canvas .s1-block[data-s1-legacy="true"][data-pb-selected="true"] { outline: var(--border-width-2) solid var(--color-line-blue); }
+.pb-canvas .s1-block[data-s1-legacy="true"]::after {
+  content: "원본"; position: absolute; top: 0; left: 0;
+  font-size: var(--font-size-10); line-height: 1; padding: var(--spacing-2) var(--spacing-4);
+  background: var(--color-bg-level-2); color: var(--color-text-body-tertiary);
+  opacity: 0; transition: opacity .12s;
+}
+.pb-canvas .s1-block[data-s1-legacy="true"]:hover::after { opacity: 1; }
+.pb-legacy-canon { margin: var(--spacing-4) 0 0; padding-left: var(--spacing-16); }
+.pb-legacy-canon li { margin: var(--spacing-2) 0; }

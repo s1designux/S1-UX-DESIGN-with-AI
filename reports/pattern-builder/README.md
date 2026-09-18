@@ -143,3 +143,16 @@ npm run pattern:similar -- <service> --similar "검색 결과가 하나도 없�
 모두앱 1084장 → 묶음 210개, 32초, 클라우드 토큰 0.
 
 준비물은 `ollama serve` 하나다. 안 떠 있으면 스크립트가 그렇게 알려준다.
+
+## 가져온 화면 — 기존 화면 위에 이어 만들기 (river 요청 2026-09-18)
+
+이미 만들어 둔 Figma 화면을 빌더 캔버스에 그대로 올리고, 그 위에 정본 부품을 끼워 넣는다.
+가져오는 규칙은 **묶음마다 다르다** — `profile.json` 의 `import.mode`. 모두앱은 `legacy-as-is`(레거시 모습 그대로).
+
+```
+npm run builder                                          빌더 띄우기 → 「가져온 화면」 탭 → Figma 링크 붙여넣기
+npm run pattern:order  -- <service> --from-raw           화면마다 "위→아래 차례" 뽑기
+npm run pattern:similar -- <service> --cluster --by order 되풀이되는 차례 묶기 (🖥️ qwen3-embedding:0.6b)
+```
+
+전문 = `reports/pattern-builder/imported/README.md`.

@@ -17,6 +17,8 @@ const URLS = {
   designManifest: url("../design/design.manifest.json"),
   registryIndex: url("../registry/components/index.json"),
   catalog: url("../registry/patterns/builder/catalog.json"),
+  imported: url("../reports/pattern-builder/imported/index.json"),
+  importedBase: url("../reports/pattern-builder/"),
   componentManifest: (id) => url(`../ui-library/dist/components/${id}.manifest.json`),
   componentSpec: (id) => url(`../registry/components/${id}.json`),
   distFile: (file) => url(`../ui-library/dist/${file}`)
@@ -44,7 +46,7 @@ const PLATFORM_BREAK = { pc: "pc", mobile: "mobile", web: "pc", app: "pc" };
 const STORAGE_KEY = "s1-pattern-builder-state";
 
 /* ── 데이터 ─────────────────────────────────────────────────── */
-const data = { dist: null, design: null, registry: null, catalog: null, manifests: {}, examples: {} };
+const data = { dist: null, design: null, registry: null, catalog: null, imported: null, manifests: {}, examples: {} };
 
 async function fetchText(u) {
   const r = await fetch(u);
@@ -59,6 +61,8 @@ async function loadAll() {
     fetchJson(URLS.catalog).catch(() => ({ patterns: [] }))
   ]);
   Object.assign(data, { dist, design, registry, catalog });
+  // 가져온 화면 목록은 없을 수도 있다(아직 아무것도 안 가져왔을 때) — 없으면 빈 목록으로 둔다.
+  data.imported = await fetchJson(URLS.imported).catch(() => ({ screens: [] }));
   const ids = (dist.components || []).map((c) => (typeof c === "string" ? c : c.id));
   await Promise.all(ids.map(async (id) => { data.manifests[id] = await fetchJson(URLS.componentManifest(id)); }));
   data.specs = {};
@@ -272,6 +276,24 @@ async function blockElement(block, brk) {
     wrap.appendChild(p);
     return wrap;
   }
+  /* 가져온 레거시 칸 — 원본 그림을 그대로 올린다(river 결정 2026-09-18 "모두앱에서는 레거시 모습 그대로").
+     정본 부품이 아니다. 바꿔치기하지 않고, 어디가 레거시인지 보이게 표시만 한다. */
+  if (block.kind === "legacy") {
+    wrap.className += " s1-legacy";
+    wrap.dataset.s1Legacy = "true";
+    if (block.legacyLabel) wrap.dataset.s1LegacyLabel = block.legacyLabel;
+    const img = document.createElement("img");
+    img.src = block.image || "";
+    img.alt = block.legacyLabel || "가져온 레거시 칸";
+    img.loading = "lazy";
+    img.style.display = "block";
+    img.style.width = `${Number(block.widthPx) || 0}px`;
+    img.style.height = `${Number(block.heightPx) || 0}px`;
+    wrap.style.width = `${Number(block.widthPx) || 0}px`;
+    if (Number(block.xPx)) wrap.style.marginLeft = `${Number(block.xPx)}px`;
+    wrap.appendChild(img);
+    return wrap;
+  }
   if (block.kind === "divider") {
     const hr = document.createElement("hr");
     hr.className = "s1-divider";
@@ -472,7 +494,18 @@ async function renderScreen(target, editor) {
     rowEl.style.alignItems = "flex-start";
     rowEl.style.gap = `var(--spacing-${row.gap || "12"})`;
     rowEl.style.justifyContent = ALIGN_CSS[row.align] || "flex-start";
-    rowEl.style.marginBottom = `var(--spacing-${row.marginBottom || "16"})`;
+    /* 가져온 화면은 원본 간격(px)을 그대로 쓴다 — 토큰 눈금에 맞춰 반올림하면 원본 모습이 아니다. */
+    rowEl.style.marginBottom = row.marginBottomPx != null
+      ? `${row.marginBottomPx}px`
+      : `var(--spacing-${row.marginBottom || "16"})`;
+    /* 가져온 화면 위에 새로 놓은 줄은 원본 본문과 같은 좌우 자리에 맞춘다(레거시 그림 줄은 이미 제 자리다). */
+    const inset = Number(state.screen.importedInset) || 0;
+    if (inset && !row.blocks.some((b) => b.kind === "legacy" || b.bleed)) {
+      rowEl.style.paddingLeft = `${inset}px`;
+      rowEl.style.paddingRight = `${inset}px`;
+      rowEl.style.boxSizing = "border-box";
+      rowEl.style.width = "100%";
+    }
     /* 화면 끝까지 붙는 줄 — 화면 안쪽 여백만큼 바깥으로 빼서 헤더·하단바가 가장자리에 닿게 한다. */
     if (row.blocks.some((b) => b.bleed)) {
       const pad = `var(--spacing-${state.screen.padding || "24"})`;
@@ -742,6 +775,169 @@ function loadPattern(id) {
   toast(`패턴 "${p.name}" 을 불러왔습니다`);
 }
 
+
+/* ── 가져온 화면 ──────────────────────────────────────────────
+   이미 만들어 둔 Figma 화면을 빌더 캔버스에 그대로 올린다.
+   가져오기 규칙은 묶음(profile)마다 다르다 — 지금은 모두앱만 있고 「레거시 모습 그대로」다.
+   ⛔ 레거시 칸을 정본 부품으로 바꿔치기하지 않는다. 가져온 화면은 정본 패턴 목록과 섞이지 않는다. */
+function renderImportedList() {
+  const box = els.importedGroups;
+  if (!box) return;
+  const list = (data.imported?.screens || []);
+  els.empty_imported.hidden = list.length > 0;
+  if (!list.length) {
+    box.innerHTML = "";
+    return;
+  }
+  const byService = new Map();
+  for (const it of list) {
+    const key = `${it.service}${it.medium ? ` · ${MEDIUM_KO[it.medium] || it.medium}` : ""}`;
+    if (!byService.has(key)) byService.set(key, []);
+    byService.get(key).push(it);
+  }
+  let html = "";
+  for (const [service, items] of byService) {
+    const cards = items.map((it) => `
+      <button type="button" class="pb-card pb-card-imported" data-imported="${escapeAttr(it.profile + "/" + it.slug)}"
+        data-search="${escapeAttr(`${it.name} ${it.service} ${it.slug}`)}">
+        <span class="pb-card-name">${escapeHtml(it.name)}</span>
+        <span class="pb-card-meta">${it.width}×${it.height} · 칸 ${it.rows}</span>
+        <span class="pb-card-meta pb-card-mode">${it.mode === "legacy-as-is" ? "레거시 모습 그대로" : escapeHtml(it.mode)}</span>
+      </button>`).join("");
+    html += accordion(service, `${items.length}장`, cards);
+  }
+  box.innerHTML = html;
+  wireAccordions(box);
+  box.querySelectorAll("[data-imported]").forEach((b) => b.addEventListener("click", () => loadImportedScreen(b.dataset.imported)));
+}
+
+const MEDIUM_KO = { app: "휴대폰 앱", mweb: "모바일 웹", pcweb: "PC 웹", console: "관제/콘솔" };
+
+/* ── Figma 링크로 바로 가져오기 ────────────────────────────────
+   링크만 이 맥 안의 빌더 서버(npm run builder)에 넘긴다. Figma 읽기 열쇠는 브라우저에 두지 않는다.
+   그래서 **웹에 올린 주소(GitHub Pages)에서는 가져오기가 되지 않는다** — 거기서는 버튼을 잠그고 그 이유를 적는다.
+   이미 가져다 둔 화면은 웹 주소에서도 그대로 열린다(파일로 올라가 있으니까). */
+let canImport = false;
+let importModal = null;
+async function checkImportAvailable() {
+  try {
+    const res = await fetch("/api/ping", { cache: "no-store" });
+    canImport = res.ok && (await res.json()).canImport === true;
+  } catch { canImport = false; }
+  const btn = $("#pb-import-open");
+  if (!btn) return;
+  btn.disabled = !canImport;
+  btn.title = canImport ? "" : "가져오기는 내 컴퓨터에서 띄운 빌더에서만 됩니다";
+  const note = $("#pb-import-offline");
+  if (note) note.hidden = canImport;
+}
+
+function openImport() {
+  if (!canImport) { toast("가져오기는 내 컴퓨터에서 띄운 빌더에서만 됩니다"); return; }
+  els.importStatus.hidden = true;
+  els.importStatus.textContent = "";
+  els.importLink.value = "";
+  importModal?.open();
+  els.importLink.focus();
+}
+function closeImport() { importModal?.close(); }
+
+function importSay(msg, tone) {
+  els.importStatus.hidden = false;
+  els.importStatus.textContent = msg;
+  els.importStatus.dataset.tone = tone || "info";
+}
+
+async function runImport() {
+  const link = els.importLink.value.trim();
+  if (!link) { importSay("링크를 붙여 넣어 주세요.", "warn"); return; }
+  els.importGo.disabled = true;
+  importSay("원본을 읽는 중입니다… 칸이 많으면 십여 초 걸립니다.", "info");
+  let r;
+  try {
+    const res = await fetch("/api/import", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ link })
+    });
+    if (!res.ok) throw new Error(String(res.status));
+    r = await res.json();
+  } catch {
+    els.importGo.disabled = false;
+    importSay("빌더 서버에 닿지 못했습니다. 터미널에서 npm run builder 로 띄운 주소로 열어 주세요.", "warn");
+    return;
+  }
+  els.importGo.disabled = false;
+
+  if (!r.ok) {
+    if (r.code === "no-profile") {
+      importSay(`${r.message} 이 서비스의 묶음을 먼저 만들고, 가져오기 규칙(레거시 모습 그대로 / 최신 부품으로)을 정해야 합니다.`, "warn");
+    } else {
+      importSay(r.message, "warn");
+    }
+    return;
+  }
+
+  // 목록을 새로 받아 다시 그리고, 방금 가져온 화면을 캔버스에 올린다
+  data.imported = await fetchJson(URLS.imported).catch(() => ({ screens: [] }));
+  renderImportedList();
+  closeImport();
+  if (r.warnings && r.warnings.length) toast(`${r.name} — 칸 ${r.rows}개 중 ${r.warnings.length}개는 그림을 못 받았습니다`);
+  await loadImportedScreen(`${r.profile}/${r.entry.slug}`);
+}
+
+async function loadImportedScreen(key) {
+  const it = (data.imported?.screens || []).find((x) => `${x.profile}/${x.slug}` === key);
+  if (!it) return;
+  let doc;
+  try { doc = await fetchJson(new URL(it.path, URLS.importedBase)); }
+  catch (e) { toast("가져온 화면을 읽지 못했습니다"); console.error(e); return; }
+
+  const base = new URL(it.imgBase, URLS.importedBase);
+  const rows = doc.rows.map((r, i) => {
+    const next = doc.rows[i + 1];
+    const gap = next ? Math.max(0, next.y - (r.y + r.h)) : 0;
+    return {
+      id: nextId("r"),
+      gap: "0",
+      align: "start",
+      marginBottom: "0",
+      marginBottomPx: gap,
+      blocks: [{
+        id: nextId("b"),
+        kind: "legacy",
+        image: r.image ? new URL(r.image, base).href : "",
+        widthPx: r.w,
+        heightPx: r.h,
+        xPx: r.x || 0,
+        legacyLabel: r.label,
+        legacyName: r.name,
+        canon: r.canon || []
+      }]
+    };
+  });
+
+  state = freshState();
+  state.meta.name = doc.screen.name;
+  state.meta.platform = doc.screen.width <= 480 ? "mobile" : "pc";
+  state.screen.padding = "0";      // 원본 그림이 이미 제 자리·제 여백을 갖고 있다
+  /* 원본 본문이 좌우 어디서 시작하는지 재 둔다 — 새로 놓는 정본 부품이 원본과 같은 자리에 들어가게.
+     화면 폭을 꽉 채우지 않는 칸들 중 가장 흔한 시작 위치를 쓴다(예: 모두앱 홈 = 20). */
+  const insets = doc.rows.filter((r) => r.w < doc.screen.width - 8).map((r) => r.x || 0);
+  const tally = new Map();
+  for (const v of insets) tally.set(v, (tally.get(v) || 0) + 1);
+  state.screen.importedInset = insets.length
+    ? [...tally.entries()].sort((a, b) => b[1] - a[1] || a[0] - b[0])[0][0]
+    : 0;
+  state.screen.shell = "none";     // 원본에 상태바·내비가 들어 있으면 겹치므로 기기 크롬은 끈 채로 시작한다
+  state.imported = { profile: it.profile, slug: it.slug, screenId: doc.screen.id, mode: doc.mode, name: doc.screen.name };
+  state.rows = rows;
+  selection = { rowId: null, blockId: null };
+  renderToolbar();
+  await update();
+  toast(`"${doc.screen.name}" 을 올렸습니다 — 칸 ${rows.length}개`);
+}
+
 const HELPERS = [
   ["text", "글자", "제목·본문 글자"],
   ["divider", "구분선", "1px 가는 선"],
@@ -749,8 +945,9 @@ const HELPERS = [
 ];
 /* ── 검색 — 탭마다 따로. 찾는 말이 있으면 해당 갈래를 자동으로 펼친다. ── */
 function applySearch() {
-  for (const pane of ["parts", "patterns"]) {
-    const box = document.querySelector(`#pb-${pane === "parts" ? "part" : "pattern"}-groups`);
+  const GROUP_BOX = { parts: "#pb-part-groups", patterns: "#pb-pattern-groups", imported: "#pb-imported-groups" };
+  for (const pane of ["parts", "patterns", "imported"]) {
+    const box = document.querySelector(GROUP_BOX[pane]);
     if (!box) continue;
     const q = (els[`search_${pane}`]?.value || "").trim().toLowerCase();
     const items = box.querySelectorAll("[data-search]");
@@ -1019,6 +1216,18 @@ function renderProps() {
       parts.push(propRow("내용", textFieldHtml("text", b.text || "", { label: "내용" })));
       parts.push(propRow("글꼴", selectHtml("typo", TYPO.map((t) => [t, t.replace("typo-", "")]), b.typo, "글꼴")));
       parts.push(propRow("색", selectHtml("color", TEXT_COLORS, b.color, "글자색")));
+    } else if (b.kind === "legacy") {
+      /* 레거시 칸 — 고칠 수 있는 값이 없다. 무엇이 원본에 있었고 정본에 대응이 있는지만 보여 준다. */
+      const LABEL = { matched: "정해짐", pattern: "부품이 아니라 배치 규칙", "legacy-only": "레거시에만 있음", undecided: "아직 안 정함", "no-canon": "교체 대상 아님", unknown: "모름" };
+      parts.push(`<p class="pb-note"><strong>${escapeHtml(b.legacyLabel || "원본 칸")}</strong> · ${b.widthPx}×${b.heightPx}</p>`);
+      parts.push(`<p class="pb-note">원본 화면을 그대로 찍은 그림입니다. 우리 부품이 아니라서 변형·크기를 바꿀 수 없습니다. 지우고 그 자리에 새 부품을 놓을 수는 있습니다.</p>`);
+      const cn = (b.canon || []);
+      if (cn.length) {
+        parts.push(`<p class="pb-section-title">원본에 쓰인 이름</p>`);
+        parts.push(`<ul class="pb-note pb-legacy-canon">${cn.map((c) =>
+          `<li>${escapeHtml(c.legacy)} → ${c.status === "matched" && c.canonSets.length ? escapeHtml(c.canonSets.join(" + ")) : (LABEL[c.status] || c.status)}</li>`).join("")}</ul>`);
+        parts.push(`<p class="pb-note">「정해짐」이라도 <strong>자동으로 바꾸지 않습니다</strong> — 이 묶음은 레거시 모습 그대로가 규칙입니다.</p>`);
+      }
     } else if (b.kind === "space") {
       parts.push(propRow("높이", selectHtml("height", spacingOpts, b.height, "높이")));
     } else {
@@ -1179,11 +1388,35 @@ const EXPORT_CSS = `
 .s1-block { min-width: 0; }
 .s1-text { margin: 0; }
 .s1-divider { border: 0; border-top: 1px solid var(--color-line-gray-subtle); margin: 0; width: 100%; }
+/* 가져온 레거시 칸 — 원본 화면을 찍은 그림이다. 우리 부품이 아니고 토큰도 타지 않는다. */
+.s1-block[data-s1-legacy="true"] { line-height: 0; }
+.s1-block[data-s1-legacy="true"] img { display: block; max-width: none; }
 `.trim();
+
+/* 내보낼 때 레거시 그림은 파일 안에 넣는다 — 내보낸 HTML 하나만 열어도 보이게. */
+async function inlineLegacyImages(root) {
+  const imgs = [...root.querySelectorAll('[data-s1-legacy="true"] img')];
+  let failed = 0;
+  for (const img of imgs) {
+    try {
+      const res = await fetch(img.src);
+      if (!res.ok) throw new Error(String(res.status));
+      const blob = await res.blob();
+      img.src = await new Promise((ok, no) => {
+        const fr = new FileReader();
+        fr.onload = () => ok(fr.result);
+        fr.onerror = no;
+        fr.readAsDataURL(blob);
+      });
+    } catch { failed += 1; }
+  }
+  return { count: imgs.length, failed };
+}
 
 async function buildExportHtml() {
   const holder = document.createElement("div");
   const screen = await renderScreen(holder, false);
+  const legacy = await inlineLegacyImages(screen);
   const p = platformInfo();
   screen.style.maxWidth = `${p.width}px`;
   screen.style.minHeight = `${p.height}px`;
@@ -1193,9 +1426,12 @@ async function buildExportHtml() {
   screen.setAttribute("data-s1-role", state.meta.role);
   const base = "./s1-ui/";
   const title = state.meta.name || "S1 화면";
+  const legacyNote = legacy.count ? `
+     ⚠️ 이 화면에는 **가져온 레거시 칸 ${legacy.count}개**가 그림으로 들어 있습니다${legacy.failed ? ` (그 중 ${legacy.failed}개는 그림을 못 넣었습니다)` : ""}.
+     원본 화면(${escapeHtml(state.imported?.name || "")})을 그대로 찍은 그림이라 우리 부품도 토큰도 아닙니다 — 코드로 만들려면 따로 옮겨야 합니다.` : "";
   return `<!DOCTYPE html>
 <!-- Pattern Builder 내보내기 · s1-ui ${data.dist?.version || ""} · ${new Date().toISOString().slice(0, 10)}
-     부품 CSS/JS 는 ui-library/dist 배포본을 ${base} 아래에 그대로 두고 씁니다(tokens.css · typography.css · s1-ui.css · s1-ui.auto.js). -->
+     부품 CSS/JS 는 ui-library/dist 배포본을 ${base} 아래에 그대로 두고 씁니다(tokens.css · typography.css · s1-ui.css · s1-ui.auto.js).${legacyNote} -->
 <html lang="ko" data-theme="${state.meta.theme}">
 <head>
   <meta charset="UTF-8">
@@ -1265,8 +1501,10 @@ async function main() {
     distVersion: $("#pb-dist-version"), patternGroups: $("#pb-pattern-groups"), partGroups: $("#pb-part-groups"),
     canvas: $("#pb-canvas"), canvasWrap: $("#pb-canvas-wrap"), frameLabel: $("#pb-frame-label"), frameInfo: $("#pb-frame-info"), props: $("#pb-props"), toast: $("#pb-toast"),
     shell: $("#pb-shell"), shellField: $("#pb-shell-field"),
-    search_parts: $("#pb-search-parts"), search_patterns: $("#pb-search-patterns"),
-    empty_parts: $("#pb-empty-parts"), empty_patterns: $("#pb-empty-patterns"),
+    search_parts: $("#pb-search-parts"), search_patterns: $("#pb-search-patterns"), search_imported: $("#pb-search-imported"),
+    empty_parts: $("#pb-empty-parts"), empty_patterns: $("#pb-empty-patterns"), empty_imported: $("#pb-empty-imported"),
+    importedGroups: $("#pb-imported-groups"),
+    importDialog: $("#pb-import-dialog"), importLink: $("#pb-import-link"), importStatus: $("#pb-import-status"), importGo: $("#pb-import-go"),
     requestDialog: $("#pb-request-dialog"), reqName: $("#pb-req-name"), reqPurpose: $("#pb-req-purpose"), reqNotes: $("#pb-req-notes"), reqPreview: $("#pb-req-preview")
   });
   try { await loadAll(); }
@@ -1280,15 +1518,21 @@ async function main() {
   UI.mount(document);                       // 정적으로 적어 둔 도구 UI 부품(탭·검색칸·멀티토글·버튼)
   UI.keepOpenPanelVisible(document);        // 스크롤 칸 안에서 드롭다운이 잘리지 않게
   requestModal = UI.mountModal(els.requestDialog);
-  renderToolbar(); renderPatternList(); renderPartGroups();
+  importModal = UI.mountModal(els.importDialog);
+  renderToolbar(); renderPatternList(); renderPartGroups(); renderImportedList();
+  checkImportAvailable();
   await update();
 
   els.search_parts.addEventListener("input", applySearch);
   els.search_patterns.addEventListener("input", applySearch);
+  els.search_imported.addEventListener("input", applySearch);
+  $("#pb-import-open").addEventListener("click", openImport);
+  els.importGo.addEventListener("click", runImport);
+  els.importLink.addEventListener("keydown", (e) => { if (e.key === "Enter") runImport(); });
   /* 탭 — 패널은 탭 묶음 바깥에 있으므로 화면이 직접 여닫는다(ui.js 주석 참조). */
   els.tabs.addEventListener("s1:tab:change", (e) => {
     const value = e.detail?.value;
-    for (const pane of ["parts", "patterns"]) document.querySelector(`#pb-pane-${pane}`).hidden = pane !== value;
+    for (const pane of ["parts", "patterns", "imported"]) document.querySelector(`#pb-pane-${pane}`).hidden = pane !== value;
   });
   window.addEventListener("resize", fitCanvas);
   if (window.ResizeObserver) new ResizeObserver(() => fitCanvas()).observe(els.canvasWrap.parentElement);

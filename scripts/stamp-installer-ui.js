@@ -6,7 +6,7 @@
  * installer:build 에서 `cp ui.html` 대신 호출한다.
  *
  * 치환 대상:
- *   {{BUILD_TIME}}      빌드 시각(KST, 분까지) — 헤더 "업데이트"
+ *   (빌드 시각은 2026-09-18 부터 화면에 넣지 않는다 — 로그에만 남긴다)
  *   {{BUILD_DATE}}      빌드 일자(YYYY-MM-DD)  — Component Set 카드 "최신 업데이트"
  *   {{COMPONENT_COUNT}} 코어 컴포넌트 개수     — Component Set 카드 본문
  *
@@ -98,8 +98,9 @@ async function run() {
   const notes = await build();   // 실패 시 던짐
 
   let html = fs.readFileSync(SRC, "utf8");
+  // 빌드 시각은 화면에서 뺐다(river 지시 2026-09-18) — 검수 화면은 작업자용이라 우리 쪽 시각이 필요 없다.
+  // 로그에는 그대로 남기므로 배포본이 언제 구워졌는지는 여기서 확인한다.
   html = replaceAll(html, {
-    BUILD_TIME: label,
     COMPONENT_COUNT: String(count),
     UPDATE_DATE: htmlEscape(notes.date),
     UPDATE_NOTES: notes.lines.map(htmlEscape).join("<br>\n      "),

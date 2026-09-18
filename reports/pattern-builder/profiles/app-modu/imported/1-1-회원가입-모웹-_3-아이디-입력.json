@@ -1,0 +1,108 @@
+{
+  "_meta": {
+    "source": "figma:rest",
+    "fileKey": "aLxh458o9BRXklRFM3YYzk",
+    "link": null,
+    "generatedAt": "2026-09-18",
+    "note": "가져온 레거시 화면. 칸 이름·그림은 레거시 원본 그대로이며 정본 부품이 아니다. 정본 패턴 목록에 넣지 않는다."
+  },
+  "profile": "app-modu",
+  "service": "모두앱",
+  "medium": "app",
+  "mode": "legacy-as-is",
+  "screen": {
+    "id": "2449:31151",
+    "name": "1.1 회원가입(모웹)_3 아이디 입력",
+    "width": 360,
+    "height": 780,
+    "orderText": "묶음(appbar_sub, icon/arrow, m_Input box) → m_btn_full → keyboard → phone_navi"
+  },
+  "rows": [
+    {
+      "i": 0,
+      "label": "묶음(appbar_sub, icon/arrow, m_Input box)",
+      "name": "Frame 465",
+      "type": "FRAME",
+      "x": 0,
+      "y": 0,
+      "h": 325,
+      "w": 360,
+      "depth": 0,
+      "image": "img/1-1-회원가입-모웹-_3-아이디-입력/00.png",
+      "parts": {
+        "appbar_sub": 1,
+        "icon/arrow": 1,
+        "m_Input box": 1,
+        "Remove": 1
+      },
+      "canon": [
+        {
+          "legacy": "appbar_sub",
+          "status": "matched",
+          "canonSets": [
+            "Mobile Header"
+          ]
+        },
+        {
+          "legacy": "icon/arrow",
+          "status": "unknown",
+          "canonSets": []
+        },
+        {
+          "legacy": "m_Input box",
+          "status": "matched",
+          "canonSets": [
+            "input"
+          ]
+        },
+        {
+          "legacy": "Remove",
+          "status": "unknown",
+          "canonSets": []
+        }
+      ]
+    },
+    {
+      "i": 1,
+      "label": "m_btn_full",
+      "name": "m_btn_full",
+      "type": "INSTANCE",
+      "x": 0,
+      "y": 390,
+      "h": 50,
+      "w": 360,
+      "depth": 1,
+      "image": "img/1-1-회원가입-모웹-_3-아이디-입력/01.png",
+      "parts": {},
+      "canon": []
+    },
+    {
+      "i": 2,
+      "label": "keyboard",
+      "name": "keyboard",
+      "type": "INSTANCE",
+      "x": 0,
+      "y": 440,
+      "h": 292,
+      "w": 360,
+      "depth": 1,
+      "image": "img/1-1-회원가입-모웹-_3-아이디-입력/02.png",
+      "parts": {},
+      "canon": []
+    },
+    {
+      "i": 3,
+      "label": "phone_navi",
+      "name": "phone_navi",
+      "type": "INSTANCE",
+      "x": 0,
+      "y": 732,
+      "h": 48,
+      "w": 360,
+      "depth": 1,
+      "image": "img/1-1-회원가입-모웹-_3-아이디-입력/03.png",
+      "parts": {},
+      "canon": []
+    }
+  ]
+}

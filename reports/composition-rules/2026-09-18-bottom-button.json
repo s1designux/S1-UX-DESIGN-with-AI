@@ -1,0 +1,3760 @@
+{
+ "generatedAt": "2026-09-18",
+ "source": "reports/pattern-builder/inventory/modu-app/dumps",
+ "summary": {
+  "발견": 169,
+  "화면수": 160,
+  "버튼종류": [
+   [
+    "m_button",
+    165
+   ],
+   [
+    "m_subbutton",
+    4
+   ]
+  ],
+  "버튼폭": [
+   [
+    "320",
+    158
+   ],
+   [
+    "156",
+    6
+   ],
+   [
+    "80",
+    2
+   ],
+   [
+    "117",
+    1
+   ],
+   [
+    "158",
+    1
+   ],
+   [
+    "319.462158203125",
+    1
+   ]
+  ],
+  "버튼높이": [
+   [
+    "50",
+    164
+   ],
+   [
+    "24",
+    4
+   ],
+   [
+    "49.91596221923828",
+    1
+   ]
+  ],
+  "버튼왼쪽": [
+   [
+    "20",
+    159
+   ],
+   [
+    "184",
+    3
+   ],
+   [
+    "264",
+    2
+   ],
+   [
+    "162",
+    1
+   ],
+   [
+    "6769",
+    1
+   ],
+   [
+    "19.96613721625181",
+    1
+   ],
+   [
+    "19.455078125",
+    1
+   ],
+   [
+    "20.531982421875",
+    1
+   ]
+  ],
+  "아래틀까지": [
+   [
+    "20",
+    160
+   ],
+   [
+    "38",
+    2
+   ],
+   [
+    "20.000030517578125",
+    2
+   ],
+   [
+    "12",
+    1
+   ],
+   [
+    "19",
+    1
+   ],
+   [
+    "23",
+    1
+   ],
+   [
+    "19.966384887695312",
+    1
+   ],
+   [
+    "24.5",
+    1
+   ]
+  ],
+  "띠높이": [
+   [
+    "90",
+    158
+   ],
+   [
+    "74",
+    6
+   ],
+   [
+    "52",
+    1
+   ],
+   [
+    "56",
+    1
+   ],
+   [
+    "94",
+    1
+   ]
+  ],
+  "띠위여백": [
+   [
+    "20",
+    156
+   ],
+   [
+    "21",
+    2
+   ],
+   [
+    "25",
+    2
+   ],
+   [
+    "19.999969482421875",
+    2
+   ],
+   [
+    "0",
+    1
+   ],
+   [
+    "2",
+    1
+   ],
+   [
+    "17",
+    1
+   ],
+   [
+    "22",
+    1
+   ],
+   [
+    "24",
+    1
+   ]
+  ],
+  "띠아래여백": [
+   [
+    "20",
+    157
+   ],
+   [
+    "3",
+    2
+   ],
+   [
+    "25",
+    2
+   ],
+   [
+    "20.000030517578125",
+    2
+   ],
+   [
+    "2",
+    1
+   ],
+   [
+    "4",
+    1
+   ],
+   [
+    "7",
+    1
+   ],
+   [
+    "28",
+    1
+   ]
+  ],
+  "내비있음": 165
+ },
+ "items": [
+  {
+   "page": "0. 공통",
+   "screenId": "3140:52022",
+   "screen": "에러 1",
+   "screenH": 740,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 622,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 692,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 602,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "0. 공통",
+   "screenId": "3140:52031",
+   "screen": "에러 2",
+   "screenH": 740,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 622,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 692,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 602,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "0. 공통",
+   "screenId": "8102:60003",
+   "screen": "에러 4",
+   "screenH": 740,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 622,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 692,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 602,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "0. 공통",
+   "screenId": "3140:50553",
+   "screen": "날짜시간 선택",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 954",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "0. 공통",
+   "screenId": "2517:43063",
+   "screen": "아이콘 1",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "0. 공통",
+   "screenId": "2517:43119",
+   "screen": "아이콘 2",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "0. 공통",
+   "screenId": "2517:43166",
+   "screen": "아이콘 3",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 953",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "0. 공통",
+   "screenId": "2517:43217",
+   "screen": "아이콘 4",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "0. 공통",
+   "screenId": "3140:50975",
+   "screen": "다이얼로그2",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "0. 공통",
+   "screenId": "3140:51054",
+   "screen": "다이얼로그1",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "0. 공통",
+   "screenId": "21626:12686",
+   "screen": "에러 5",
+   "screenH": 740,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 622,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 692,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 602,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "0. 공통",
+   "screenId": "28398:43877",
+   "screen": "계약처 검색_df",
+   "screenH": 779,
+   "button": "m_button",
+   "btnX": 19.96613721625181,
+   "btnY": 660.8867950439453,
+   "btnW": 319.462158203125,
+   "btnH": 49.91596221923828,
+   "gapBelow": 19.966384887695312,
+   "navTop": 730.7691421508789,
+   "hasNav": true,
+   "band": null
+  },
+  {
+   "page": "1~2. 회원가입, 로그인",
+   "screenId": "8403:59575",
+   "screen": "2.3 아이디 찾기_5 입력 완료",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "1~2. 회원가입, 로그인",
+   "screenId": "8403:59649",
+   "screen": "2.3 아이디 찾기_8 인증 번호 입력 완료",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "1~2. 회원가입, 로그인",
+   "screenId": "8403:59863",
+   "screen": "2.5 비번 변경 권장_1 최초 진입",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "1~2. 회원가입, 로그인",
+   "screenId": "8403:59893",
+   "screen": "2.5 비번 변경 권장_3 비번 조건",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "1~2. 회원가입, 로그인",
+   "screenId": "8403:59967",
+   "screen": "2.6 휴면_1 휴면 안내",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "1~2. 회원가입, 로그인",
+   "screenId": "8403:59988",
+   "screen": "2.6 휴면_2 휴면 해제 완료",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "1~2. 회원가입, 로그인",
+   "screenId": "8403:60014",
+   "screen": "2.3 아이디 찾기_12 아이디 찾기 결과",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:13548",
+   "screen": "3.1 내 정보_1 메인",
+   "screenH": 800,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 682,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 752,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 662,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:13570",
+   "screen": "3.1 내 정보_4 긴급연락처 외 사람이 휴대전화번호 변경 시",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:13617",
+   "screen": "2.2 비밀번호 변경_2 비밀번호 변경",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:13642",
+   "screen": "2.3 회원 탈퇴_1 비밀번호 입력 및 동의",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "14533:12974",
+   "screen": "2.3 회원 탈퇴_1 비밀번호 입력 및 동의",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "14533:12828",
+   "screen": "2.3 회원 탈퇴_1 비밀번호 입력 및 동의_수정",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:13675",
+   "screen": "4.2 권한 신청_2 계약 검색(계약번호)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:13692",
+   "screen": "4.2 권한 신청_3 계약 검색 조건 선택",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 274",
+    "y": 660,
+    "h": 56,
+    "padTop": 2,
+    "padBottom": 4
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "24276:21975",
+   "screen": "4.2 권한 신청_계약번호를 모르시나요 팝업",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:13721",
+   "screen": "4.2 권한 신청_8 권한 신청 완료",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 953",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:13743",
+   "screen": "2.3 회원 탈퇴_2 탈퇴 완료",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:13802",
+   "screen": "4.2 권한 신청_1 계약 검색(마스터 관리자 이름, 휴대전화번호)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:13819",
+   "screen": "4.3 관리자 초대_4 관리자 초대 목록",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 156,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:13819",
+   "screen": "4.3 관리자 초대_4 관리자 초대 목록",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 184,
+   "btnY": 662,
+   "btnW": 156,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:13855",
+   "screen": "4.3 관리자 초대_10 알림톡 전송 안내(거절)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 953",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:13897",
+   "screen": "4.3 관리자 초대_9 알림톡 전송 안내(승인)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 953",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:13939",
+   "screen": "4.3 관리자 초대_8 권한 선택 완료",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 953",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "24652:35110",
+   "screen": "6.1 청구입금_4 납입 상세 내역",
+   "screenH": 922,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 804,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 874,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 957",
+    "y": 784,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "24652:35202",
+   "screen": "6.1 청구입금_4 납입 상세 내역",
+   "screenH": 922,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 804,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 874,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 957",
+    "y": 784,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14112",
+   "screen": "4.4 관리자 현황_2 관리자 있음",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14157",
+   "screen": "4.4 관리자 현황_6 서비스 해지",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14221",
+   "screen": "4.4 관리자 현황_9 정렬, 필터링 적용",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14238",
+   "screen": "4.4 관리자 현황_7 정렬",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "24400:27248",
+   "screen": "4.4 관리자 현황_7 정렬",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14288",
+   "screen": "4.4 관리자 현황_8 필터링",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14288",
+   "screen": "4.4 관리자 현황_8 필터링",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 661.9999694824219,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20.000030517578125,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 19.999969482421875,
+    "padBottom": 20.000030517578125
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "24400:27293",
+   "screen": "4.4 관리자 현황_8 필터링",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "24400:27293",
+   "screen": "4.4 관리자 현황_8 필터링",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 661.9999694824219,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20.000030517578125,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 19.999969482421875,
+    "padBottom": 20.000030517578125
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14341",
+   "screen": "4.4 관리자 현황_4 삭제할 관리자(권한) 선택",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 954",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14361",
+   "screen": "4.4 관리자 현황_5 알림톡 전송 안내(삭제)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 954",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14389",
+   "screen": "3.1 내 정보_5 긴급연락처 반영중(인증 비활성화)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14409",
+   "screen": "3.1 내 정보_3 긴급연락처 내 사람이 휴대전화번호 변경 시",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14442",
+   "screen": "3.1 내 정보_6 긴급연락처 반영 후(인증 활성화)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14462",
+   "screen": "4.2 권한 신청_7 검색 결과 없음",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "24276:22151",
+   "screen": "4.2 권한 신청_7 검색 결과 없음",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "15598:14268",
+   "screen": "4.1 권한_ 2 일반 관리자",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "24279:22330",
+   "screen": "4.1 권한_ 2 일반 관리자",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "15598:14307",
+   "screen": "4.1 권한_ 3 마스터 관리자",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "15618:7044",
+   "screen": "4.1 권한_ 3 마스터 관리자",
+   "screenH": 858,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 743,
+   "btnW": 156,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 813,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 957",
+    "y": 723,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "15618:7044",
+   "screen": "4.1 권한_ 3 마스터 관리자",
+   "screenH": 858,
+   "button": "m_button",
+   "btnX": 184,
+   "btnY": 743,
+   "btnW": 156,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 813,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 957",
+    "y": 723,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "15618:10805",
+   "screen": "4.1 권한_ 3 마스터 관리자",
+   "screenH": 858,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 748,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 12,
+   "navTop": 810,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 954",
+    "y": 724,
+    "h": 94,
+    "padTop": 24,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "15618:6781",
+   "screen": "4.1 권한_ 3 마스터 관리자",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14603",
+   "screen": "4.4 관리자 현황_3 권한 변경",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 953",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14653",
+   "screen": "4.3 관리자 초대_6 권한 선택(마스터 관리자)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 953",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "24304:22912",
+   "screen": "4.3 관리자 초대_6 권한 선택(마스터 관리자)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 953",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14678",
+   "screen": "4.3 관리자 초대_5 관리자 초대 목록(더보기)",
+   "screenH": 1309,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1191,
+   "btnW": 156,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1261,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1171,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14678",
+   "screen": "4.3 관리자 초대_5 관리자 초대 목록(더보기)",
+   "screenH": 1309,
+   "button": "m_button",
+   "btnX": 184,
+   "btnY": 1191,
+   "btnW": 156,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1261,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1171,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14726",
+   "screen": "2.2 비밀번호 변경_1 비밀번호 확인",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14744",
+   "screen": "4.1 권한_ 1 권한 없음",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14759",
+   "screen": "4.2 권한 신청_9 권한 신청 내역",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14786",
+   "screen": "4.2 권한 신청_10 권한 신청 취소",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14814",
+   "screen": "4.2 권한 신청_6 검색 결과 있음",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:14915",
+   "screen": "5.3 우편물 주소_1 메인",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:15145",
+   "screen": "6.2 세금계산서_1 메인",
+   "screenH": 1154,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 2052,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 2122,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 2032,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:15209",
+   "screen": "6.2 세금계산서_5 메인(수신담당자 없음)",
+   "screenH": 1206,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 2156,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 2226,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 2136,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:15632",
+   "screen": "5.1 기본 정보_4 계약처 정보 변경(전)",
+   "screenH": 1100,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 982,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1052,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 962,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:15666",
+   "screen": "5.1 기본 정보_5 계약처 정보 변경(후)",
+   "screenH": 1169,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1051,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1121,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1031,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:15703",
+   "screen": "5.3 우편물 주소_2 주소 변경(전)",
+   "screenH": 874,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 756,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 826,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 736,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:15734",
+   "screen": "5.3 우편물 주소_3 주소 변경(후)",
+   "screenH": 1015,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 897,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 967,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 877,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:16102",
+   "screen": "6.4 납입방법 변경_1 메인",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1304,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1374,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 1284,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:16138",
+   "screen": "6.4 납입방법 변경_2 지로 변경(전)",
+   "screenH": 1020,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 902,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 972,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 882,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:16188",
+   "screen": "6.4 납입방법 변경_3 지로 변경(후)",
+   "screenH": 1145,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1027,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1097,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 1007,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:16241",
+   "screen": "6.4 납입방법 변경_4 자동이체 사업자 고객 변경(전)",
+   "screenH": 1390,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1272,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1342,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1252,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:16324",
+   "screen": "6.4 납입방법 변경_5 자동이체 사업자 고객 변경(후)",
+   "screenH": 1647,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1529,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1599,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 1509,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:16413",
+   "screen": "6.4 납입방법 변경_6 자동이체 개인 고객 변경(전)",
+   "screenH": 1390,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1272,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1342,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1252,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:16489",
+   "screen": "6.4 납입방법 변경_7 자동이체 개인 고객 변경(후)",
+   "screenH": 1703,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1585,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1655,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 1565,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:16578",
+   "screen": "6.4 납입방법 변경_8 신용카드(기본)",
+   "screenH": 1202,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1084,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1154,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1064,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:16666",
+   "screen": "6.4 납입방법 변경_8 신용카드 변경(후)",
+   "screenH": 1443,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1325,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1395,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 1305,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:16760",
+   "screen": "6.4 납입방법 변경_8 신용카드(이메일)",
+   "screenH": 1318,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1200,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1270,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1180,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:16849",
+   "screen": "6.4 납입방법 변경_8 신용카드(우편)",
+   "screenH": 1374,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1256,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1326,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1236,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:16947",
+   "screen": "6.2 세금계산서_2 수신담당자 변경",
+   "screenH": 796,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 678,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 748,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 658,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:16975",
+   "screen": "6.2 세금계산서_3 수신담당자 변경(2명)",
+   "screenH": 1017,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 899,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 969,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 879,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:17008",
+   "screen": "5.5 부가서비스_1 메인",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:17040",
+   "screen": "5.5 부가서비스_2 메인(변경정보 반영중)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:17075",
+   "screen": "5.5 부가서비스_3 메인(없음)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:17264",
+   "screen": "5.5 부가서비스_7 해지 신청",
+   "screenH": 1065,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 947,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1017,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 927,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:17309",
+   "screen": "5.5 부가서비스_9 신규 신청(정보 입력)",
+   "screenH": 878,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 760,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 830,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 740,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:17401",
+   "screen": "5.5 부가서비스_6 신청내역 확인",
+   "screenH": 934,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 816,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 886,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 957",
+    "y": 796,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:17441",
+   "screen": "4.3 관리자 초대_7 권한 선택(일반 관리자)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 953",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "10928:17521",
+   "screen": "6.1 청구입금_6 서비스 미계약",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 953",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "32035:52450",
+   "screen": "6.1 청구입금_6 서비스 미계약",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 953",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "22627:21347",
+   "screen": "5.5 부가서비스_8 신규 신청(상품 선택)",
+   "screenH": 1946,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1828,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1898,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 1808,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "24401:24584",
+   "screen": "4.3 관리자 초대_7 권한 선택(일반 관리자)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 953",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "24414:32071",
+   "screen": "4.3 관리자 초대_6 권한 선택(마스터 관리자)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 953",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "24414:32104",
+   "screen": "4.4 관리자 현황_3 권한 변경",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 953",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "24652:27537",
+   "screen": "5.5 부가서비스_8 신규 신청(상품 선택)",
+   "screenH": 1328,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1210,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1280,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 1190,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "24652:27599",
+   "screen": "5.5 부가서비스_8 신규 신청(상품 선택)",
+   "screenH": 1704,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1586,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1656,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 1566,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "24652:35364",
+   "screen": "6.1 청구입금_4 납입 상세 내역",
+   "screenH": 922,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 804,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 874,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 957",
+    "y": 784,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "3~6. 내 정보, 권한, 계약, 청구/입금",
+   "screenId": "32035:52331",
+   "screen": "11.8 미권한_2 계약 없는 마스터 관리자",
+   "screenH": 781,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 663,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 733,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 643,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "7. 홈",
+   "screenId": "3188:49880",
+   "screen": "7.1 홈_14 경비구역 즐겨찾기",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 861",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "1878:26834",
+   "screen": "8.6 경비해제 이력_8 이력 정기 발송 신청",
+   "screenH": 1136,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1018,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1088,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 998,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "2157:24375",
+   "screen": "8.6 경비해제 이력_10 이력 정기 발송 신청(경비 구역 선택)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "2157:24375",
+   "screen": "8.6 경비해제 이력_10 이력 정기 발송 신청(경비 구역 선택)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "1878:27114",
+   "screen": "8.6 경비해제 이력_5 이력 정기 발송 신청 내역(월 1회)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "1878:27140",
+   "screen": "8.6 경비해제 이력_7 이력 정기 발송 신청 내역(없음)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "15671:33639",
+   "screen": "8.6 경비해제 이력_3 검색",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 663,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 19,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 285",
+    "y": 641,
+    "h": 74,
+    "padTop": 22,
+    "padBottom": 2
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "10082:18703",
+   "screen": "8.6 경비해제 이력_4 검색(날짜)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 285",
+    "y": 641,
+    "h": 74,
+    "padTop": 21,
+    "padBottom": 3
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "10082:18703",
+   "screen": "8.6 경비해제 이력_4 검색(날짜)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 285",
+    "y": 641,
+    "h": 74,
+    "padTop": 21,
+    "padBottom": 3
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "2218:26277",
+   "screen": "8.6 경비해제 이력_6 이력 정기 발송 신청 내역(월 2회)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 1128",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "3365:51475",
+   "screen": "8.6 경비해제 이력_9 이력 정기 발송 신청(경비 구역 없음)",
+   "screenH": 1102,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 984,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1054,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 964,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "15671:34126",
+   "screen": "8.8 경비설정_2 원격 경비/해제 권한 설정",
+   "screenH": 867,
+   "button": "m_subbutton",
+   "btnX": 264,
+   "btnY": 818.5,
+   "btnW": 80,
+   "btnH": 24,
+   "gapBelow": 24.5,
+   "navTop": null,
+   "hasNav": false,
+   "band": {
+    "name": "Frame 274",
+    "y": 793.5,
+    "h": 74,
+    "padTop": 25,
+    "padBottom": 25
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "15671:34491",
+   "screen": "8.8 경비설정_2 원격 경비/해제 권한 설정",
+   "screenH": 732,
+   "button": "m_subbutton",
+   "btnX": 264,
+   "btnY": 670,
+   "btnW": 80,
+   "btnH": 24,
+   "gapBelow": 38,
+   "navTop": null,
+   "hasNav": false,
+   "band": {
+    "name": "Frame 274",
+    "y": 645,
+    "h": 74,
+    "padTop": 25,
+    "padBottom": 25
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "15671:34491",
+   "screen": "8.8 경비설정_2 원격 경비/해제 권한 설정",
+   "screenH": 732,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": null,
+   "hasNav": false,
+   "band": {
+    "name": "Frame 274",
+    "y": 645,
+    "h": 74,
+    "padTop": 17,
+    "padBottom": 7
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "15618:23711",
+   "screen": "Group 843",
+   "screenH": 138,
+   "button": "m_button",
+   "btnX": 6769,
+   "btnY": 5910,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 5980,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 953",
+    "y": 5890,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "17801:9571",
+   "screen": "서비스 장소",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 1127",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "19331:26632",
+   "screen": "8.7 긴급연락처_긴급연락처 추가(전)",
+   "screenH": 1199,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1081,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1151,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 1061,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "19331:26665",
+   "screen": "8.7 긴급연락처_긴급연락처 추가(후)",
+   "screenH": 1242,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1124,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1194,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 952",
+    "y": 1104,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "19331:26768",
+   "screen": "8.7 긴급연락처_1 메인_리스트 최대 노출시",
+   "screenH": 1257,
+   "button": "m_subbutton",
+   "btnX": 162,
+   "btnY": 1162,
+   "btnW": 158,
+   "btnH": 24,
+   "gapBelow": 23,
+   "navTop": 1209,
+   "hasNav": true,
+   "band": null
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "20162:6726",
+   "screen": "10.1 카드관리_11 카드정보(권한 설정)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "20162:6750",
+   "screen": "10.1 카드관리_11 카드정보(권한 설정)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "8. 시스템 경비",
+   "screenId": "20846:8849",
+   "screen": "10.1 카드관리_11 카드정보(권한 설정)",
+   "screenH": 732,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "9. 영상(최종산출물정리중)",
+   "screenId": "21254:47528",
+   "screen": "클라우드 CCTV _기기 정보 수정",
+   "screenH": 1188,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1118,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": null,
+   "hasNav": false,
+   "band": {
+    "name": "Frame 861",
+    "y": 1098,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "10. 카드",
+   "screenId": "18290:6317",
+   "screen": "카드 신청_카드 신청(신청 내용 확인)",
+   "screenH": 1111,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 993,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1063,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 973,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "10. 카드",
+   "screenId": "18290:6462",
+   "screen": "카드 신청_카드 신청(신청 내용 확인)",
+   "screenH": 1111,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 993,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1063,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 973,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2250:26111",
+   "screen": "11.1 1:1 문의_1 가입상담",
+   "screenH": 1099,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 981,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1051,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 961,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2250:26168",
+   "screen": "11.1 1:1 문의_2 가입상담(약관동의 펼침)",
+   "screenH": 1351,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1233,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1303,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1213,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2250:26235",
+   "screen": "11.2 방문점검 신청_4 방문점검 신청",
+   "screenH": 1120,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1002,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1072,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 982,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2250:26276",
+   "screen": "11.1 1:1 문의_3 일반문의",
+   "screenH": 1083,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 965,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1035,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 945,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2250:26320",
+   "screen": "11.1 1:1 문의_4 일반문의(약관동의 펼침)",
+   "screenH": 1313,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1195,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1265,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1175,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2250:28053",
+   "screen": "11.2 방문점검 신청_1 메인",
+   "screenH": 1238,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1120,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1190,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1100,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2250:28053",
+   "screen": "11.2 방문점검 신청_1 메인",
+   "screenH": 1238,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1120,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1190,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1100,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2316:28453",
+   "screen": "11.2 방문점검 신청_5 신청내역 없음",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "9507:45747",
+   "screen": "11.8 미권한_2 계약 없는 마스터 관리자",
+   "screenH": 781,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 663,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 733,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 643,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2250:28183",
+   "screen": "11.2 방문점검 신청_3 신청내역",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2250:28211",
+   "screen": "11.2 방문점검 신청_2 검색",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2250:31186",
+   "screen": "11.4 자료실_3 상세 내용",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2491:36272",
+   "screen": "11.5 고마워요 에스원_1 메인",
+   "screenH": 1245,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 2233,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 2303,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 2213,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2519:42142",
+   "screen": "11.5 고마워요 에스원_4 메인(없음)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2491:36751",
+   "screen": "11.5 고마워요 에스원_2 상세 내용",
+   "screenH": 788,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 670,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 740,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 650,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2491:37213",
+   "screen": "11.6 궁금해요 에스원_2 메인(글 없음)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2491:37243",
+   "screen": "11.6 궁금해요 에스원_3 메인(검색결과 없음)",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2491:37275",
+   "screen": "11.6 궁금해요 에스원_4 상세 내용",
+   "screenH": 1233,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1115,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1185,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1095,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2491:37312",
+   "screen": "11.6 궁금해요 에스원_5 상세 내용(추천)",
+   "screenH": 1233,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1115,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1185,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1095,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2491:37554",
+   "screen": "11.7 뉴스공지_3 상세 내용",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2491:37576",
+   "screen": "11.5 고마워요 에스원_3 내용 등록",
+   "screenH": 1292,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1174,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1244,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1154,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "2491:37655",
+   "screen": "11.6 궁금해요 에스원_6 내용 등록",
+   "screenH": 1220,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1102,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1172,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1082,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "11. 고객센터",
+   "screenId": "5680:58167",
+   "screen": "11.8 미권한_1 웹회원",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "12. 혜택 및 이벤트",
+   "screenId": "2517:42693",
+   "screen": "12.2 제휴 카드_1 삼성카드",
+   "screenH": 1648,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1530,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1600,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 1510,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "12. 혜택 및 이벤트",
+   "screenId": "2517:42759",
+   "screen": "12.2 제휴 카드_2 신한카드",
+   "screenH": 1667,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1565,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1635,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 1545,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "12. 혜택 및 이벤트",
+   "screenId": "2517:42836",
+   "screen": "12.2 제휴 카드_3 버튼 고정",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 19.455078125,
+   "btnY": 1304,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1374,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 951",
+    "y": 1284,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "12. 혜택 및 이벤트",
+   "screenId": "3161:50252",
+   "screen": "12.3 제휴 혜택_6 제휴 혜택 신청",
+   "screenH": 1163,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1045,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1115,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1025,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "12. 혜택 및 이벤트",
+   "screenId": "3161:50301",
+   "screen": "12.3 제휴 혜택_7 제휴 혜택 신청(추천인 조회)",
+   "screenH": 1183,
+   "button": "m_button",
+   "btnX": 20.531982421875,
+   "btnY": 1065,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1135,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1045,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "12. 혜택 및 이벤트",
+   "screenId": "3253:51209",
+   "screen": "12.3 제휴 혜택_8 제휴 혜택 신청(추천인 조회 없음)",
+   "screenH": 1183,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1065,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1135,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1045,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "12. 혜택 및 이벤트",
+   "screenId": "3161:50353",
+   "screen": "12.3 제휴 혜택_9 제휴 혜택 신청(약관동의 펼침)",
+   "screenH": 1413,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1295,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1365,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1275,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "12. 혜택 및 이벤트",
+   "screenId": "3161:50419",
+   "screen": "12.3 제휴 혜택_10 제휴 혜택 신청(약관동의 펼침2)",
+   "screenH": 1413,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 1295,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 1365,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 1275,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "13. 설정",
+   "screenId": "2218:26348",
+   "screen": "13. 설정_12 첫 화면 사용",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "13. 설정",
+   "screenId": "15604:20418",
+   "screen": "13. App 서비스 해지",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "13. 설정",
+   "screenId": "15652:24345",
+   "screen": "13. App 서비스 재시작",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "13. 설정",
+   "screenId": "21433:4837",
+   "screen": "13. App 서비스 해지_완료 안내 팝업",
+   "screenH": 780,
+   "button": "m_button",
+   "btnX": 20,
+   "btnY": 662,
+   "btnW": 320,
+   "btnH": 50,
+   "gapBelow": 20,
+   "navTop": 732,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 956",
+    "y": 642,
+    "h": 90,
+    "padTop": 20,
+    "padBottom": 20
+   }
+  },
+  {
+   "page": "13. 설정",
+   "screenId": "30863:34299",
+   "screen": "13. 설정_2 메인(휴대폰 알림 OFF)",
+   "screenH": 1159,
+   "button": "m_subbutton",
+   "btnX": 20,
+   "btnY": 1049,
+   "btnW": 117,
+   "btnH": 24,
+   "gapBelow": 38,
+   "navTop": 1111,
+   "hasNav": true,
+   "band": {
+    "name": "Frame 273",
+    "y": 1049,
+    "h": 52,
+    "padTop": 0,
+    "padBottom": 28
+   }
+  }
+ ]
+}

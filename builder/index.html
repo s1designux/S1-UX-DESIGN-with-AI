@@ -55,6 +55,7 @@
         <div data-s1-component="tab" data-size="xsm" data-break="pc" role="tablist" aria-label="컴포넌트와 패턴 전환" id="pb-tabs">
           <button type="button" data-s1-part="tab" role="tab" aria-selected="true" data-value="parts" aria-controls="pb-pane-parts">컴포넌트</button>
           <button type="button" data-s1-part="tab" role="tab" aria-selected="false" data-value="patterns" aria-controls="pb-pane-patterns">패턴</button>
+          <button type="button" data-s1-part="tab" role="tab" aria-selected="false" data-value="imported" aria-controls="pb-pane-imported">가져온 화면</button>
         </div>
       </div>
       <div class="pb-panel-body">
@@ -77,6 +78,21 @@
           </div>
           <p class="pb-empty" id="pb-empty-patterns" hidden>찾는 패턴이 없습니다.</p>
           <div id="pb-pattern-groups"></div>
+        </div>
+        <div id="pb-pane-imported" role="tabpanel" aria-label="가져온 화면" hidden>
+          <button type="button" data-s1-component="button" data-variant="primary" data-size="xxsm" class="pb-block" id="pb-import-open">
+            <span data-s1-part="label">＋ Figma 화면 가져오기</span>
+          </button>
+          <p class="pb-note pb-note-warn" id="pb-import-offline" hidden>이 주소에서는 <strong>이미 가져다 둔 화면만</strong> 열 수 있습니다. 새로 가져오려면 내 컴퓨터에서 빌더를 띄워야 합니다(Figma 읽기 열쇠가 내 컴퓨터에만 있기 때문입니다).</p>
+          <div class="pb-search" data-s1-component="input" data-size="xxsm" data-break="pc">
+            <div data-s1-part="field">
+              <input type="text" data-s1-part="control" id="pb-search-imported" aria-label="가져온 화면 검색" placeholder="가져온 화면 검색 (예: 홈, 로그인)">
+              <button type="button" data-s1-part="action" data-action="clear" aria-label="입력 내용 지우기" hidden><span data-s1-part="action-icon" aria-hidden="true"></span></button>
+            </div>
+          </div>
+          <p class="pb-note">이미 만들어 둔 화면을 그대로 올려 놓고, 그 위에 이어서 만듭니다. 원본 부품은 바꿔치기하지 않습니다.</p>
+          <p class="pb-empty" id="pb-empty-imported" hidden>가져온 화면이 없습니다.</p>
+          <div id="pb-imported-groups"></div>
         </div>
       </div>
     </section>
@@ -118,6 +134,35 @@
     </section>
   </div>
 </main>
+
+<!-- Figma 화면 가져오기 — 배포본 Modal Content -->
+<div data-s1-component="modal-content" data-size="md" data-footer="dual" id="pb-import-dialog" hidden>
+  <div data-s1-part="overlay"></div>
+  <div data-s1-part="panel" role="dialog" aria-modal="true" aria-labelledby="pb-import-title" tabindex="-1">
+    <div data-s1-part="header">
+      <h2 data-s1-part="title" id="pb-import-title">Figma 화면 가져오기</h2>
+      <button type="button" data-s1-part="close" aria-label="닫기"></button>
+    </div>
+    <div data-s1-part="content-area">
+      <div data-s1-part="content">
+        <p class="pb-note">Figma 에서 <strong>화면(프레임)을 고르고</strong> 오른쪽 버튼 → <strong>Copy link to selection</strong> 으로 복사한 링크를 붙여 넣으세요.</p>
+        <div class="pb-prop">
+          <span class="pb-prop-label">Figma 링크</span>
+          <div data-s1-component="input" data-size="xsm" data-break="pc">
+            <div data-s1-part="field">
+              <input type="url" data-s1-part="control" id="pb-import-link" aria-label="Figma 링크" placeholder="https://www.figma.com/design/…?node-id=23065-17941" autocomplete="off">
+              <button type="button" data-s1-part="action" data-action="clear" aria-label="입력 내용 지우기" hidden><span data-s1-part="action-icon" aria-hidden="true"></span></button>
+            </div>
+          </div>
+        </div>
+        <p class="pb-note" id="pb-import-status" hidden></p>
+      </div>
+    </div>
+    <div data-s1-part="footer">
+      <button type="button" data-s1-component="button" data-variant="primary" data-size="xxsm" id="pb-import-go"><span data-s1-part="label">가져오기</span></button>
+    </div>
+  </div>
+</div>
 
 <!-- 새 패턴 요청 — 배포본 Modal Content(제목 + 본문 + 버튼 2개) -->
 <div data-s1-component="modal-content" data-size="md" data-footer="dual" id="pb-request-dialog" hidden>

@@ -1,0 +1,28 @@
+{
+  "id": "R-2",
+  "name": "행에서 상세로 들어가는 것은 버튼이 아니라 화살표",
+  "statement": "목록 행 끝에서 상세로 이동하는 자리는 '상세' 버튼이 아니라 오른쪽 화살표(더보기)를 쓴다.",
+  "status": "candidate",
+  "enforcedBy": "none",
+  "decidedBy": "river",
+  "sightings": [
+    {
+      "at": "2026-09-16",
+      "screen": "장비 상태 요약 패널",
+      "screenKind": "앱에서 흔히 쓰는 목록·요약 화면",
+      "service": "없음 — 실험용으로 만든 신규 유형",
+      "medium": "pc-web",
+      "density": "normal",
+      "quote": "상세 버튼 대신 더보기 > 화살표 버튼을 쓴다던가",
+      "evidence": "reports/composition-rules/2026-09-16-status-summary-panel.md"
+    }
+  ],
+  "contextCount": 1,
+  "shapePrecedent": "chevron 아이콘 24px, 오른쪽 방향. 표에는 선례가 없고 bottom-sheet-option 의 list 행에만 있다.",
+  "unconfirmed": "글자 없이 화살표만 쓰는 형태로 구현했다. '더보기' 글자가 함께 붙는 형태인지는 확인받지 않았다.",
+  "promotion": {
+    "rule": "서로 다른 맥락 3곳에서 나오면 공통 규칙 후보로 올린다.",
+    "ifOnlyOne": "한 자리에서만 계속 나오면 그 화면 종류 전용으로 굳힌다.",
+    "current": "1곳 — 아직 이 화면 종류의 규칙이다."
+  }
+}
