@@ -1,0 +1,33 @@
+# Pattern Builder — 작업 장부
+
+> river 목표(2026-09-18): 회사 부품·토큰·디자인 문법을 기반으로, 웹·앱·S/W·서비스 유형별로 패턴을 조합하는 빌더.
+> 레거시 화면은 레거시 가이드로 두고, 새 화면은 신규 가이드 부품으로 조합한다. 1차 범위는 **HTML/CSS 까지**(개발 소스 구조 연동은 뒤로).
+
+## 구성
+
+| 조각 | 위치 | 역할 |
+|---|---|---|
+| 빌더 화면 | `pages/builder.html` + `assets/js/builder.js` | 배포본(ui-library/dist) 부품을 서비스·플랫폼·역할·테마 축으로 조립 → 미리보기 → HTML 내보내기 |
+| 패턴 목록(정본) | `registry/patterns/builder/catalog.json` | 빌더가 읽는 패턴 정의. 레거시 판독 → 검증 → 승인된 것만 `verified/approved`. (`registry/patterns/*.json` 바로 아래는 Gate 의 패턴 사양 자리라 하위 폴더에 둔다) |
+| 요청 접수함 | `reports/pattern-builder/requests/` | 빌더 "새 패턴 요청" 이 만든 `pattern-request-*.json` 을 두는 곳 |
+| 레거시 판독표 | `reports/pattern-builder/inventory/<service>.md` | figma-inspector 가 레거시 화면을 읽어 정리한 "어느 서비스 · 어떤 화면 유형 · 어떤 부품" 표 |
+
+## 흐름
+
+1. **레거시 읽기** 🤖 figma-inspector — river 가 준 Figma 파일을 읽어 판독표 작성
+2. **패턴 등록** ⭐ — 판독표 근거로 `builder/catalog.json` 에 layout 작성(부품은 dist id 만)
+   ▸ 검문소 🤖 component-verifier — 정본 부품·토큰만 썼는지, 레거시 원본과 대응이 맞는지
+3. **빌더** — 목록에서 패턴 고르기 → 부품 옵션 → HTML 내보내기
+   ▸ 검문소 🔎 — 내보낸 코드가 배포본 부품·토큰만 쓰는지 + 렌더 확인
+4. **새 패턴 요청** — 빌더 요청서 → ⭐ 디자인 문법에 맞춰 제안 → 2번 검문소 → 목록에 등장. 기존 부품으로 안 되면 부품 신설은 needs-decision(H6②)
+
+## 상태
+
+- 2026-09-18 · 빌더 뼈대 + 빈 패턴 목록 + 요청서 흐름. 레거시 파일 대기 중(첫 서비스 미정).
+
+## 규칙(빌더가 지키는 것)
+
+- 부품·변형·크기 축은 dist manifest 에서만 읽는다. 빌더 안에서 새 이름·새 부품을 만들지 않는다.
+- 오버레이(모달·바텀시트) 와 부속(드롭다운·GNB 하위메뉴) 은 화면 안 배치 대상이 아니라 팔레트에서 뺀다(manifest placement 기준).
+- 색·간격·글꼴은 tokens.css / typography.css 의 토큰·클래스만 쓴다(HEX 없음).
+- 내보낸 HTML 은 `./s1-ui/` 아래에 dist 를 그대로 둔다는 전제(tokens.css · typography.css · s1-ui.css · s1-ui.auto.js).

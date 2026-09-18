@@ -26,6 +26,7 @@ const SITE_NAV = [
   { type: 'item', id: 'components-mobile', href: 'components.html?platform=mobile', rootHref: 'pages/components.html?platform=mobile', icon: '📱', text: 'Mobile Components', status: 'ready' },
   { type: 'item', id: 'icons', href: 'icons.html', rootHref: 'pages/icons.html', icon: '✦', text: 'Icons', status: 'ready' },
   { type: 'item', id: 'patterns', href: 'patterns.html', rootHref: 'pages/patterns.html', icon: '📐', text: 'Patterns', status: 'ready' },
+  { type: 'item', id: 'builder', href: 'builder.html', rootHref: 'pages/builder.html', icon: '🧩', text: 'Pattern Builder', status: 'new' },
 
   /* ── System ── */
   { type: 'label', text: 'System' },
