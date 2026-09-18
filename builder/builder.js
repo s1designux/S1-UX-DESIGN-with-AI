@@ -17,6 +17,7 @@ const URLS = {
   catalog: url("../registry/patterns/builder/catalog.json"),
   compositionRules: url("../registry/governance/composition-rules.json"),
   imported: url("../reports/pattern-builder/imported/index.json"),
+  suggest: url("../reports/pattern-builder/profiles/app-modu/suggest-model.json"),
   importedBase: url("../reports/pattern-builder/"),
   componentManifest: (id) => url(`../ui-library/dist/components/${id}.manifest.json`),
   componentSpec: (id) => url(`../registry/components/${id}.json`),
@@ -67,7 +68,7 @@ const PLATFORM_BREAK = { pc: "pc", mobile: "mobile", web: "pc", app: "pc" };
 const STORAGE_KEY = "s1-pattern-builder-state";
 
 /* ── 데이터 ─────────────────────────────────────────────────── */
-const data = { dist: null, design: null, registry: null, catalog: null, imported: null, manifests: {}, examples: {} };
+const data = { dist: null, design: null, registry: null, catalog: null, imported: null, suggest: null, manifests: {}, examples: {} };
 
 async function fetchText(u) {
   const r = await fetch(u);
@@ -77,11 +78,12 @@ async function fetchText(u) {
 const fetchJson = async (u) => JSON.parse(await fetchText(u));
 
 async function loadAll() {
-  const [dist, design, registry, catalog] = await Promise.all([
+  const [dist, design, registry, catalog, suggest] = await Promise.all([
     fetchJson(URLS.distManifest), fetchJson(URLS.designManifest), fetchJson(URLS.registryIndex),
-    fetchJson(URLS.catalog).catch(() => ({ patterns: [] }))
+    fetchJson(URLS.catalog).catch(() => ({ patterns: [] })),
+    fetchJson(URLS.suggest).catch(() => null)          // 제안표가 없으면 제안 칸을 숨긴다
   ]);
-  Object.assign(data, { dist, design, registry, catalog });
+  Object.assign(data, { dist, design, registry, catalog, suggest });
   /* 묶음 규칙은 정본에서 읽는다 — 빌더가 자기 값을 갖지 않게 한다. */
   data.compositionRules = await fetchJson(URLS.compositionRules).catch(() => null);
   applyCompositionRules(data.compositionRules);
@@ -1404,9 +1406,87 @@ let rendering = false, queued = false;
 async function update() {
   persist();
   renderProps();
+  renderSuggest();
   if (rendering) { queued = true; return; }
   rendering = true;
   try { await renderCanvas(); } finally { rendering = false; if (queued) { queued = false; update(); } }
+}
+
+
+/* ── 다음에 올 만한 것 ───────────────────────────────────────
+   모두앱 레거시 화면에서 「무엇 다음에 무엇이 왔는지」를 세어 둔 표(suggest-model.json)를 읽어
+   지금 캔버스 마지막 줄 다음에 올 만한 것을 보여준다.
+   ⛔ 레거시 관찰일 뿐 가이드 규칙이 아니다 — 화면에도 그렇게 적는다(river 2026-09-18).
+   ⛔ 레거시 칸을 바꿔치기하는 것이 아니라, 놓는 것은 언제나 정본 부품이다. */
+const SUGGEST_START = "__start__";
+const HELPER_KO = Object.fromEntries(HELPERS.map(([k, n]) => [k, n]));
+
+function suggestKeyOfBlock(block) {
+  if (block.kind === "component") return `component:${block.component}`;
+  if (block.kind === "text") return "helper:text";
+  if (block.kind === "divider") return "helper:divider";
+  return null;
+}
+/* 지금 어디까지 놓았나 — 마지막으로 채워진 줄의 구성이 다음 제안의 근거가 된다 */
+function suggestContext() {
+  const row = [...state.rows].reverse().find((r) => r.blocks.length);
+  if (!row) return { group: SUGGEST_START, part: SUGGEST_START };
+  const keys = [...new Set(row.blocks.map(suggestKeyOfBlock).filter(Boolean))].sort();
+  const last = [...row.blocks].reverse().map(suggestKeyOfBlock).find(Boolean);
+  return { group: keys.length ? keys.join("+") : SUGGEST_START, part: last || SUGGEST_START };
+}
+/* 이 플랫폼에서 실제로 놓을 수 있는 것만 제안한다 */
+function suggestUsable(key) {
+  const [kind, id] = key.split(":");
+  if (kind === "helper") return Boolean(HELPER_KO[id]);
+  const brk = PLATFORM_BREAK[state.meta.platform] || "pc";
+  return Boolean(data.manifests[id]) && isPlaceable(id) && availableOn(id, brk);
+}
+const suggestLabel = (key) => {
+  const [kind, id] = key.split(":");
+  return kind === "helper" ? HELPER_KO[id] || id : registryName(id);
+};
+
+function renderSuggest() {
+  const box = els.suggest;
+  if (!box) return;
+  const model = data.suggest;
+  const isMobile = (PLATFORM_BREAK[state.meta.platform] || "pc") === "mobile";
+  if (!model || !isMobile) { box.hidden = true; return; }   // 지금 셈해 둔 것은 모두앱(휴대폰 앱)뿐이다
+
+  const ctx = suggestContext();
+  const groups = (model.nextGroups?.[ctx.group] || []).filter((c) => c.key.split("+").every(suggestUsable));
+  const parts = (model.nextParts?.[ctx.part] || []).filter((c) => suggestUsable(c.key));
+  if (!groups.length && !parts.length) { box.hidden = true; return; }
+  box.hidden = false;
+
+  const chip = (c, type) => `<button type="button" class="pb-suggest-chip${type === "group" ? " pb-suggest-chip-group" : ""}" data-suggest="${escapeAttr(c.key)}" data-suggest-type="${type}">
+    <span>${escapeHtml(c.key.split("+").map(suggestLabel).join(" + "))}</span><small>${c.share}%</small></button>`;
+
+  els.suggestGroups.innerHTML = groups.length ? `<span class="pb-suggest-kind">묶음으로</span>${groups.map((c) => chip(c, "group")).join("")}` : "";
+  els.suggestParts.innerHTML = parts.length ? `<span class="pb-suggest-kind">하나씩</span>${parts.map((c) => chip(c, "part")).join("")}` : "";
+  const base = ctx.group === SUGGEST_START ? "빈 화면에서 맨 처음 놓은 것" : `「${ctx.group.split("+").map(suggestLabel).join(" + ")}」 다음에 놓은 것`;
+  els.suggestSrc.textContent = `모두앱 레거시 화면 ${(model._meta?.usableScreens || 0).toLocaleString()}장에서 ${base} · 가이드 규칙이 아니라 참고입니다`;
+
+  box.querySelectorAll("[data-suggest]").forEach((b) => b.addEventListener("click", () =>
+    (b.dataset.suggestType === "group" ? placeSuggestGroup : placeSuggestPart)(b.dataset.suggest)));
+}
+
+async function suggestBlock(key) {
+  const [kind, id] = key.split(":");
+  if (kind === "component") return makeComponentBlock(id, chosenAxis[id] || {});
+  return { kind: id };
+}
+/* 묶음 제안 — 한 줄을 통째로 놓는다 */
+async function placeSuggestGroup(key) {
+  const keys = key.split("+");
+  const row = targetRow();
+  for (const k of keys) addBlock(await suggestBlock(k), { row });
+  toast(`「${keys.map(suggestLabel).join(" + ")}」 줄을 놓았습니다`);
+}
+/* 부품 제안 — 하나만 놓는다(놓는 방식을 그대로 따른다) */
+async function placeSuggestPart(key) {
+  addBlock(await suggestBlock(key));
 }
 
 /* ── 내보내기 ───────────────────────────────────────────────── */
@@ -1534,6 +1614,7 @@ async function main() {
     search_parts: $("#pb-search-parts"), search_patterns: $("#pb-search-patterns"), search_imported: $("#pb-search-imported"),
     empty_parts: $("#pb-empty-parts"), empty_patterns: $("#pb-empty-patterns"), empty_imported: $("#pb-empty-imported"),
     importedGroups: $("#pb-imported-groups"),
+    suggest: $("#pb-suggest"), suggestGroups: $("#pb-suggest-groups"), suggestParts: $("#pb-suggest-parts"), suggestSrc: $("#pb-suggest-src"),
     importDialog: $("#pb-import-dialog"), importLink: $("#pb-import-link"), importStatus: $("#pb-import-status"), importGo: $("#pb-import-go"),
     requestDialog: $("#pb-request-dialog"), reqName: $("#pb-req-name"), reqPurpose: $("#pb-req-purpose"), reqNotes: $("#pb-req-notes"), reqPreview: $("#pb-req-preview")
   });

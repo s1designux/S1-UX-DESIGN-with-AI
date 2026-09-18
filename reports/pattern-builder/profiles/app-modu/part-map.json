@@ -1,0 +1,47 @@
+{
+  "_meta": {
+    "title": "모두앱 레거시 칸 이름 → 배포본 부품 대응표",
+    "status": "candidate",
+    "updatedAt": "2026-09-18",
+    "scope": "app-modu (휴대폰 앱 · 모두앱) 전용",
+    "warning": "⛔ 정본에 합치지 않는다(river 2026-09-18). 이 표는 레거시 화면을 읽어 '다음에 올 만한 부품'을 제안하는 데만 쓴다. 레거시 수치·이름을 정본 근거로 쓰지 않는다.",
+    "basis": "reports/pattern-builder/inventory/modu-app/patterns-found.md 의 「최신 가이드 부품과 생김새가 비슷한 것」 표 + screen-skeleton.md 관찰",
+    "kinds": {
+      "component": "ui-library/dist 배포본 부품 id",
+      "helper": "빌더 레이아웃 보조(text·divider·space)",
+      "chrome": "기기/브라우저 크롬 — 빌더가 화면 틀로 따로 그린다. 제안하지 않는다",
+      "unmapped": "대응되는 정본 부품이 아직 없다. 제안에서 빠진다"
+    }
+  },
+  "map": {
+    "appbar_sub":                      { "kind": "component", "id": "mobile-header", "note": "서브형 머리(뒤로가기+제목) 470" },
+    "phone_navi":                      { "kind": "component", "id": "mobile-bottom-nav", "note": "하단 탭바 732" },
+    "m_button":                        { "kind": "component", "id": "button", "note": "큰 버튼 587" },
+    "m_basic_button":                  { "kind": "component", "id": "button" },
+    "m_button variation":              { "kind": "component", "id": "button" },
+    "m_btn_full":                      { "kind": "component", "id": "button", "note": "꽉 찬 버튼" },
+    "m_login_bottom":                  { "kind": "component", "id": "button", "note": "로그인 하단 버튼 묶음" },
+    "m_subbutton":                     { "kind": "component", "id": "text-button", "note": "작은 버튼 179" },
+    "m_Input box":                     { "kind": "component", "id": "input", "note": "입력창 532" },
+    "m_email_input":                   { "kind": "component", "id": "input" },
+    "m_checkbox":                      { "kind": "component", "id": "checkbox" },
+    "m_radiobutton":                   { "kind": "component", "id": "radio" },
+    "m_toggle":                        { "kind": "component", "id": "toggle" },
+    "m_chips":                         { "kind": "component", "id": "chip", "note": "칩 1001" },
+    "m_combobox":                      { "kind": "component", "id": "select", "note": "드롭다운" },
+    "m_combobox/off/off/off/Default":  { "kind": "component", "id": "select" },
+    "m_tab_mid":                       { "kind": "component", "id": "tab" },
+    "line tab":                        { "kind": "component", "id": "tab" },
+    "tabel_bar":                       { "kind": "helper", "id": "divider", "note": "목록 구분선 878" },
+    "m_StatusBar":                     { "kind": "chrome", "note": "상태표시줄 — 빌더가 기기 크롬으로 그린다" },
+    "keyboard":                        { "kind": "chrome", "note": "키보드" },
+    "chrome tab":                      { "kind": "chrome", "note": "브라우저 탭" }
+  },
+  "unmappedNotable": [
+    { "name": "More", "count": 884, "why": "더보기 아이콘 — 아이콘 단독은 부품이 아니다" },
+    { "name": "m_bar", "count": 545, "why": "무엇인지 미확인" },
+    { "name": "menu_arrow_right", "count": 641, "why": "목록 줄 오른쪽 화살표 — 목록 줄 부품이 아직 없다" },
+    { "name": "list", "count": 109, "why": "목록 줄 — 대응 부품 없음" },
+    { "name": "m_list", "count": 4, "why": "레거시 목록 줄 부품 — 대응 부품 없음" }
+  ]
+}
