@@ -438,20 +438,28 @@ async function getStampedGuidePage(): Promise<PageNode | null> {
  *    **새 페이지에** 다시 깔게 했다. 그러면 이미 그 가이드로 만들어 둔 화면이 통째로 옛것이 된다.
  *    → 막는 기준은 **내용이 있는가**(색·수치·글자 스타일·부품)뿐이고,
  *      최신 여부는 **값을 실제로 대조해서**(getGuideValueDrift) 알려만 준다. */
+/** 가이드 현황(내용·값 대조) 캐시. 변수 수백 개를 매번 다시 읽으면 검수 탭이 몇 초씩 멈춘다 —
+ *  탭을 열 때마다 도는 검사라 한 번 읽어 두고 설치 후에만 지운다(river 보고 2026-09-21: 화면이
+ *  "가이드 현황을 확인하고 있습니다…"에서 안 넘어감). */
+let guideStateCache: { installed: boolean; missing: string[]; partial: string[]; currentGuide: boolean; valueDrift: string[] } | null = null;
+function clearGuideStateCache(): void { guideStateCache = null; }
+
 async function getAuditInstallState(): Promise<{
   installed: boolean; missing: string[]; partial: string[]; currentGuide: boolean; valueDrift: string[];
 }> {
+  if (guideStateCache) return guideStateCache;
   const content = await getGuideContentMissing();
   const stamped = await getStampedGuidePage();
   // 비교할 기준이 아예 없을 때만 값 대조를 건너뛴다.
   const valueDrift = content.blocking.length ? [] : await getGuideValueDrift();
-  return {
+  guideStateCache = {
     installed: content.blocking.length === 0,
     missing: content.blocking,
     partial: content.partial,
     currentGuide: !!stamped && valueDrift.length === 0 && content.partial.length === 0,
     valueDrift,
   };
+  return guideStateCache;
 }
 
 /** 파일에 깔린 색·수치 값이 **정본과 실제로 다른지** 대조한다.
@@ -530,6 +538,7 @@ async function getGuideValueDrift(): Promise<string[]> {
     return [];
   }
   return drift.slice(0, 40);
+  // ⚠️ 여기서 예외를 밖으로 던지지 않는다 — 던지면 검수 탭이 '확인 중'에서 멈춘다.
 }
 
 async function getGuideContentMissing(): Promise<{ blocking: string[]; partial: string[] }> {
@@ -1207,6 +1216,7 @@ async function runInstall(
     //   노드를 옮기는 게 아니라 **보는 위치만** 바꾼다 — 캔버스 내용은 건드리지 않는다.
     fitInstalledIntoView();
 
+    clearGuideStateCache();   // 방금 깔았으니 현황을 다시 읽는다
     post("progress", { step: "완료", pct: 100 });
     post("done", {
       foundationCount,
