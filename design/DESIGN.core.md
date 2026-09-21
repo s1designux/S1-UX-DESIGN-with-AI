@@ -2594,7 +2594,7 @@ _Don't_
 
 > ⚠️ 배포본에 아직 없는 컴포넌트입니다(codeStatus: `planned`). 아래 토큰은 `ui-library/dist` 로 값이 풀리지 않으니 이 절을 보고 구현하지 마세요.
 
-목록의 한 줄. 왼쪽 칸(비움·체크·그림) + 가운데 글(제목, 필요하면 설명) + 오른쪽 칸(비움·화살표·값·토글) 세 자리로 짜인다. 높이를 숫자로 고정하지 않고 위아래 여백 토큰과 글 자리가 높이를 정한다.
+모바일 목록의 한 줄. 왼쪽 칸(비움·체크·그림) + 가운데 글(제목, 필요하면 설명) + 오른쪽 칸(비움·화살표·값·토글) 세 자리로 짜인다. 높이를 숫자로 고정하지 않고 위아래 여백 토큰과 글 자리가 높이를 정한다.
 
 **언제 쓰나**
 - 같은 모양의 줄이 반복되는 목록을 만들 때.
@@ -2608,7 +2608,7 @@ _Don't_
 
 | 요소 | 역할 |
 | --- | --- |
-| 왼쪽 칸(선택) | 비움 · 체크 코어 인스턴스 18 · 그림 40(선례 Bottom Sheet Option 의 아바타와 같은 크기). |
+| 왼쪽 칸(선택) | 비움 · 체크 코어 인스턴스 18 · 그림 40(사진·아이콘이 들어갈 자리. 선례 Bottom Sheet Option 의 아바타와 같은 크기). |
 | 가운데 글 | 제목과 설명. 남는 폭을 차지하고 최소 높이 44 를 갖는다. |
 | 오른쪽 칸(선택) | 비움 · 화살표 24 · 값 글자 · 값+화살표 · 토글 코어 인스턴스. |
 | 구분선 | 줄과 줄 사이. 줄이 소유하지 않고 목록이 긋는다. |
@@ -2633,13 +2633,11 @@ agent:
       - "Thumb"
     State:
       - "Default"
-      - "Hover"
       - "Pressed"
       - "Disabled"
   states:
     builder:
       - "Default"
-      - "Hover"
       - "Pressed"
       - "Disabled"
     metadata: "unknown"
@@ -2716,7 +2714,6 @@ agent:
         - "thumb"
       state:
         - "default"
-        - "hover"
         - "pressed"
         - "disabled"
   icons:
@@ -5150,4 +5147,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 0bb439c4d2a3 · 손편집 금지 -->
+<!-- generated-stamp: c1f334ffaf77 · 손편집 금지 -->

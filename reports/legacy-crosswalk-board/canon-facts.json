@@ -611,7 +611,7 @@
     "list-row": {
       "id": "list-row",
       "status": "candidate",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "sizes": [],
       "breaks": {},
       "sizeBreakGrid": [],
@@ -627,18 +627,16 @@
       "types": null,
       "states": [
         "default",
-        "hover",
         "pressed",
         "disabled"
       ],
       "canonicalStateMap": {
         "State=Default": "default",
-        "State=Hover": "hover",
         "State=Pressed": "pressed",
         "State=Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "34bdf694f157541553f779b6a68402c8fa649e044a2922017d247b1f87d50afc"
+      "sourceFingerprint": "5ffe762d821e7dd8b84414fb67d27b6f7eba26eafbf6e285dd112fbf0513bdca"
     },
     "mobile-bottom-nav": {
       "id": "mobile-bottom-nav",

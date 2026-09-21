@@ -1,8 +1,8 @@
 {
   "id": "list-row",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "status": "candidate",
-  "canonicalFingerprint": "2cdc757d71970ee2a6be8f9fcc99ae6e81bb6632af3f613b736a12cdfcea1a4b",
+  "canonicalFingerprint": "0efb23d4974f60928164dada4f8b144741f7822a7aeaf853860b896143245bf9",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -52,13 +52,11 @@
   },
   "states": {
     "default": "속성 생략 또는 [data-state=\"default\"]",
-    "hover": "@media (hover: hover) 의 실제 :hover(button·a·label 루트), 또는 documented [data-state=\"hover\"]",
-    "pressed": "실제 :active(button 루트), 또는 documented [data-state=\"pressed\"]",
+    "pressed": "실제 :active(button 루트), 또는 documented [data-state=\"pressed\"] — 모바일 전용이라 Hover 가 없다(river 2026-09-21). 눌림 배경은 Hover 가 쓰던 한 단계(bg/level-1)를 그대로 쓴다.",
     "disabled": "button 의 native :disabled, 또는 [aria-disabled=\"true\"]/[data-state=\"disabled\"](div·label 루트)"
   },
   "canonicalStateMap": {
     "State=Default": "default",
-    "State=Hover": "hover",
     "State=Pressed": "pressed",
     "State=Disabled": "disabled"
   },
@@ -112,7 +110,6 @@
     "entry": "components/list-row.css",
     "rootScope": "[data-s1-component=list-row]",
     "nativeStates": [
-      ":hover",
       ":active",
       ":disabled"
     ],

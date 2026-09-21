@@ -4292,7 +4292,9 @@
 
 /* component:list-row */
 /* List Row — 정본 buildListRow(build-components.ts) 기준.
-   축 = Type(Nav·Value·Read·Pick·Agree·Switch·Thumb) × State(Default·Hover·Pressed·Disabled) = 28칸.
+   축 = Type(Nav·Value·Read·Pick·Agree·Switch·Thumb) × State(Default·Pressed·Disabled) = 21칸.
+   모바일 전용 부품이라 Hover 가 없다(river 2026-09-21) — 눌림(Pressed) 배경은 Hover 가 쓰던
+   한 단계(bg/level-1)를 그대로 쓴다. bg/level-2 는 썸네일 자리 채움에만 쓴다(배경 상태값으로는 쓰지 않는다).
    이 컴포넌트는 "줄 모양과 상태"만 소유한다 — 목록 구조(role·선택·이동)와 실제 동작은 쓰는 화면이 배선한다
    (registry/components/list-row.json webDistribution.note, bottom-sheet-option 과 같은 원칙).
 
@@ -4335,26 +4337,17 @@
   cursor: pointer;
 }
 
-/* ── State — Hover·Pressed 는 실제 상호작용(:hover/:active — Nav·Value·Pick·Agree 는 각자 클릭 가능한
-   루트/코어를 갖는다) 또는 검수·강제용 documented data-state 양쪽으로 켜진다(계약 states.priority).
+/* ── State — 모바일 전용이라 Hover 가 없다(river 2026-09-21). Pressed 는 실제 상호작용(:active —
+   Nav·Value·Pick·Agree 는 각자 클릭 가능한 루트/코어를 갖는다) 또는 검수·강제용 documented
+   data-state 양쪽으로 켜지며, Hover 가 쓰던 배경 한 단계(bg/level-1)를 그대로 쓴다.
    Disabled 는 button(Nav·Value) 의 native :disabled, 또는 상호작용 요소가 아닌 루트를 위한
    aria-disabled/data-state. ── */
-@media (hover: hover) {
-  [data-s1-component="list-row"]:is([data-type="nav"], [data-type="value"], [data-type="pick"], [data-type="agree"]):hover:not(:disabled):not([aria-disabled="true"]):not([data-state="disabled"]):not([data-state="pressed"]) {
-    background: var(--color-bg-level-1);
-  }
-}
-
-[data-s1-component="list-row"][data-state="hover"]:not(:disabled):not([aria-disabled="true"]) {
+[data-s1-component="list-row"]:is([data-type="nav"], [data-type="value"]):active:not(:disabled) {
   background: var(--color-bg-level-1);
 }
 
-[data-s1-component="list-row"]:is([data-type="nav"], [data-type="value"]):active:not(:disabled) {
-  background: var(--color-bg-level-2);
-}
-
 [data-s1-component="list-row"][data-state="pressed"]:not(:disabled):not([aria-disabled="true"]) {
-  background: var(--color-bg-level-2);
+  background: var(--color-bg-level-1);
 }
 
 [data-s1-component="list-row"]:is(:disabled, [aria-disabled="true"], [data-state="disabled"]) {
