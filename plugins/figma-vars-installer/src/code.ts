@@ -134,7 +134,7 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
       await figma.ui.postMessage({ type: "audit:inspection-progress", payload: { current: 0, completed: [], total: 12, pct: 4 } });
       clearV2Cache();
       const installState = await getAuditInstallState();
-      const guidePage = await getStampedGuidePage();
+      const guidePage = await getReferenceGuidePage();
       const pool = collectPageReference(guidePage || undefined);
       if (!installState.installed) {
         figma.ui.postMessage({ type: "audit:inspection-result", payload: { ok: false, code: "need-install", message: `검수 기준 설치가 필요합니다: ${installState.missing.join(" · ")}` } });
@@ -281,7 +281,7 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
     } else if (type === "apply-part-swap") {
       // 묶음(모듈) 안 부품 1건 교체. 먼저 그대로 시도하고, Figma 가 막으면 blocked 로 돌려준다.
       // 사용자가 [묶음 풀고 교체]를 누르면 allowDetach=true 로 다시 들어온다.
-      const guidePage = await getStampedGuidePage();
+      const guidePage = await getReferenceGuidePage();
       const pool = collectPageReference(guidePage || undefined);
       const res = await applyModulePartSwap({
         candidate: payload.candidate,
@@ -314,7 +314,7 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
       });
     } else if (type === "detach-module") {
       // 묶음 풀기만 — 교체는 하지 않는다. 풀고 나면 안쪽 부품이 각자 교체 가능해진다.
-      const guidePage = await getStampedGuidePage();
+      const guidePage = await getReferenceGuidePage();
       const pool = collectPageReference(guidePage || undefined);
       const res = await detachModule(payload.moduleInstanceId, pool);
       if (res.ok && res.rollback) swapRollbackById.set(payload.moduleId, res.rollback);
@@ -432,12 +432,103 @@ async function getStampedGuidePage(): Promise<PageNode | null> {
   return node as PageNode;
 }
 
-async function getAuditInstallState(): Promise<{ installed: boolean; missing: string[]; currentGuide: boolean }> {
-  const missing: string[] = [];
-  const guidePage = await getStampedGuidePage();
-  if (!guidePage) missing.push("최신 가이드 버전");
-  missing.push(...await getGuideContentMissing());
-  return { installed: missing.length === 0, missing, currentGuide: missing.length === 0 };
+/** 검수를 시작할 수 있는 상태인가.
+ *  ⚠️ **'최신 도장'은 더 이상 막지 않는다**(river 지시 2026-09-21).
+ *    종전에는 설치 기록(지문)이 지금 설치기와 다르면 값이 똑같아도 "최신 가이드가 아닙니다"로 막고
+ *    **새 페이지에** 다시 깔게 했다. 그러면 이미 그 가이드로 만들어 둔 화면이 통째로 옛것이 된다.
+ *    → 막는 기준은 **내용이 있는가**(색·수치·글자 스타일·부품)뿐이고,
+ *      최신 여부는 **값을 실제로 대조해서**(getGuideValueDrift) 알려만 준다. */
+async function getAuditInstallState(): Promise<{
+  installed: boolean; missing: string[]; currentGuide: boolean; valueDrift: string[];
+}> {
+  const missing = await getGuideContentMissing();
+  const stamped = await getStampedGuidePage();
+  // 내용이 없으면 값 대조는 의미가 없다(없는 것을 다르다고 적지 않는다).
+  const valueDrift = missing.length ? [] : await getGuideValueDrift();
+  return {
+    installed: missing.length === 0,
+    missing,
+    currentGuide: !!stamped && valueDrift.length === 0,
+    valueDrift,
+  };
+}
+
+/** 파일에 깔린 색·수치 값이 **정본과 실제로 다른지** 대조한다.
+ *  이름만 보는 getGuideContentMissing 과 달리 **값**을 본다 — 설치기 버전이 달라도 값이 같으면
+ *  업데이트할 것이 없다는 것을 말해 주기 위해서다(river 지시 2026-09-21).
+ *  다른 항목의 이름을 돌려준다(최대 40개). 읽지 못하는 자리는 '다르다'고 하지 않는다. */
+async function getGuideValueDrift(): Promise<string[]> {
+  const drift: string[] = [];
+  const near = (a: number, b: number) => Math.abs(a - b) <= 0.5 / 255;
+  const sameColor = (got: any, want: any): boolean => {
+    if (!got || !want || typeof got !== "object" || typeof want !== "object") return false;
+    if (got.type === "VARIABLE_ALIAS" || want.type === "VARIABLE_ALIAS") {
+      return got.type === "VARIABLE_ALIAS" && want.type === "VARIABLE_ALIAS" && got.id === want.id;
+    }
+    const ga = typeof got.a === "number" ? got.a : 1;
+    const wa = typeof want.a === "number" ? want.a : 1;
+    return near(got.r, want.r) && near(got.g, want.g) && near(got.b, want.b) && Math.abs(ga - wa) <= 0.01;
+  };
+  const sameNumber = (got: any, want: any): boolean => {
+    if (got && typeof got === "object") {
+      return got.type === "VARIABLE_ALIAS" && !!want && want.type === "VARIABLE_ALIAS" && got.id === want.id;
+    }
+    return typeof got === "number" && typeof want === "number" && Math.abs(got - want) < 0.001;
+  };
+  const modeIdByName = (col: VariableCollection, name: string): string | null => {
+    const hit = col.modes.filter((m) => m.name === name)[0];
+    return hit ? hit.modeId : null;
+  };
+  try {
+    const cols = await figma.variables.getLocalVariableCollectionsAsync();
+    const byName = new Map(cols.map((c) => [c.name, c]));
+    const foundation = byName.get(FOUNDATION_COLLECTION);
+    const semanticColor = byName.get(SEMANTIC_COLOR_COLLECTION);
+    const semanticNumber = byName.get(SEMANTIC_NUMBER_COLLECTION);
+    if (!foundation) return drift;
+    const fColor = await loadExistingVarMap(FOUNDATION_COLLECTION, "COLOR");
+    const fNumber = await loadExistingVarMap(FOUNDATION_COLLECTION, "FLOAT");
+    const fDefault = foundation.modes.length ? foundation.modes[0].modeId : null;
+    if (fDefault) {
+      for (const key of Object.keys(FOUNDATION_COLOR)) {
+        const v = fColor[key];
+        if (!v) continue;   // 없는 것은 getGuideContentMissing 소관
+        if (!sameColor(v.valuesByMode[fDefault], hexToRgb(FOUNDATION_COLOR[key]))) drift.push(key);
+      }
+      for (const key of Object.keys(FOUNDATION_NUMBER)) {
+        const v = fNumber[key];
+        if (!v) continue;
+        if (!sameNumber(v.valuesByMode[fDefault], FOUNDATION_NUMBER[key])) drift.push(key);
+      }
+    }
+    if (semanticColor) {
+      const lightId = modeIdByName(semanticColor, LIGHT_MODE);
+      const darkId = modeIdByName(semanticColor, DARK_MODE);
+      const sColor = await loadExistingVarMap(SEMANTIC_COLOR_COLLECTION, "COLOR");
+      for (const key of Object.keys(SEMANTIC_COLOR)) {
+        const v = sColor[key];
+        if (!v) continue;
+        const entry = SEMANTIC_COLOR[key];
+        if (lightId && !sameColor(v.valuesByMode[lightId], resolveColorRef(entry.light, fColor))) { drift.push(key); continue; }
+        if (darkId && !sameColor(v.valuesByMode[darkId], resolveColorRef(entry.dark, fColor))) drift.push(key);
+      }
+    }
+    if (semanticNumber) {
+      const defaultId = semanticNumber.modes.length ? semanticNumber.modes[0].modeId : null;
+      const sNumber = await loadExistingVarMap(SEMANTIC_NUMBER_COLLECTION, "FLOAT");
+      if (defaultId) {
+        for (const key of Object.keys(SEMANTIC_NUMBER)) {
+          const v = sNumber[key];
+          if (!v) continue;
+          if (!sameNumber(v.valuesByMode[defaultId], resolveNumberRef(SEMANTIC_NUMBER[key], fNumber))) drift.push(key);
+        }
+      }
+    }
+  } catch (e) {
+    console.warn("[installer] 값 대조 실패(검수는 그대로 진행):", e);
+    return [];
+  }
+  return drift.slice(0, 40);
 }
 
 async function getGuideContentMissing(): Promise<string[]> {
@@ -1157,7 +1248,7 @@ async function autoSwapPatternScreens(): Promise<{ applied: number; skipped: num
     await page.loadAsync();
     const roots = Array.from(page.children) as SceneNode[];
     if (!roots.length) return out;
-    const guidePage = await getStampedGuidePage();
+    const guidePage = await getReferenceGuidePage();
     const pool = collectPageReference(guidePage || undefined);
     const scan = await scanSwapCandidates(pool, roots);
     for (const c of scan.candidates) {
@@ -1178,10 +1269,46 @@ async function autoSwapPatternScreens(): Promise<{ applied: number; skipped: num
   return out;
 }
 
+/** 이 파일이 **쓰고 있던** 가이드 페이지. 도장(지문)이 옛것이어도 찾는다 —
+ *  업데이트는 새 페이지를 또 만드는 대신 **쓰던 자리를 제자리에서 갱신**해야
+ *  이미 만들어 둔 화면이 그 부품을 그대로 계속 쓴다(river 지시 2026-09-21). */
+async function getInstalledGuidePage(): Promise<PageNode | null> {
+  const pageId = figma.root.getPluginData(GUIDE_PAGE_KEY);
+  if (pageId) {
+    try {
+      const node = await figma.getNodeByIdAsync(pageId);
+      if (node && node.type === "PAGE") return node as PageNode;
+    } catch (e) { /* 지워진 페이지 — 이름으로 다시 찾는다 */ }
+  }
+  try {
+    for (const page of figma.root.children) {
+      if (page.name === GUIDE_PAGE_NAME) return page;
+    }
+    for (const page of figma.root.children) {
+      if (page.name.indexOf(GUIDE_PAGE_NAME) === 0) return page;
+    }
+  } catch (e) { /* mock */ }
+  return null;
+}
+
+/** 검수·패턴이 **기준으로 삼을** 가이드 페이지 — 최신 도장이 있으면 그것,
+ *  없으면 이 파일이 쓰던 가이드 페이지. 도장이 옛것이라고 기준을 잃지 않는다
+ *  (river 지시 2026-09-21). */
+async function getReferenceGuidePage(): Promise<PageNode | null> {
+  const stamped = await getStampedGuidePage();
+  if (stamped) return stamped;
+  return await getInstalledGuidePage();
+}
+
 async function installLatestGuideOnNewPage(): Promise<void> {
   const previousPage = figma.currentPage;
-  const page = figma.createPage();
-  page.name = uniqueGuidePageName();
+  // 쓰던 가이드 페이지가 있으면 **그 자리에서 갱신**한다. 색·수치·글자 스타일은 파일 전체가 쓰는 것이라
+  //   제자리에서 고치면 이미 만들어 둔 화면에 그대로 반영되고, 부품도 보던 것이 그대로 남는다.
+  //   새 페이지는 가이드가 아예 없을 때만 만든다.
+  const existingGuide = await getInstalledGuidePage();
+  const page = existingGuide || figma.createPage();
+  const createdPage = !existingGuide;
+  if (createdPage) page.name = uniqueGuidePageName();
   await page.loadAsync();
   figma.currentPage = page;
   const result = await runInstall(
@@ -1192,7 +1319,8 @@ async function installLatestGuideOnNewPage(): Promise<void> {
     // 실패든 중단이든 이번에 만든 '가이드 페이지'는 되돌린다.
     // (Variables·Text Styles 는 문서 단위라 남는다 — UI 가 그 사실을 그대로 알린다.)
     try { figma.currentPage = previousPage; } catch (e) { /* best-effort */ }
-    try { page.remove(); } catch (e) { /* best-effort */ }
+    // 이번에 만든 페이지만 되돌린다 — 쓰던 가이드 페이지를 지우면 그것으로 만든 화면이 다 깨진다.
+    if (createdPage) { try { page.remove(); } catch (e) { /* best-effort */ } }
     figma.ui.postMessage({
       type: result === "cancelled" ? "audit:guide-update-cancelled" : "audit:guide-update-failed",
       payload: {},
@@ -1203,7 +1331,10 @@ async function installLatestGuideOnNewPage(): Promise<void> {
   const swapped = await autoSwapPatternScreens();
   figma.ui.postMessage({
     type: "audit:guide-update-done",
-    payload: { pageName: page.name, swappedCount: swapped.applied, swapSkipped: swapped.skipped },
+    payload: {
+      pageName: page.name, swappedCount: swapped.applied, swapSkipped: swapped.skipped,
+      reusedPage: !createdPage,
+    },
   });
 }
 
@@ -1225,7 +1356,7 @@ async function collectComponentSets(names: string[]): Promise<Record<string, Com
     }
   };
 
-  const stamped = await getStampedGuidePage();
+  const stamped = await getReferenceGuidePage();
   if (stamped) await scan(stamped);
   for (const page of figma.root.children) {
     if (Object.keys(found).length === want.size) break;

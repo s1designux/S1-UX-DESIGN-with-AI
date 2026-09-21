@@ -744,8 +744,8 @@
       <button id="btn-guide-retry">다시 확인</button>
     </div>
     <div class="install-required" id="audit-install-required">
-      <b>최신 가이드가 아닙니다</b>
-      <p id="audit-install-missing">최신 기준을 새 페이지에 함께 설치한 뒤 검수할 수 있습니다.</p>
+      <b id="audit-install-title">검수 기준이 부족합니다</b>
+      <p id="audit-install-missing">쓰던 가이드 페이지에 이어서 설치한 뒤 검수할 수 있습니다.</p>
       <button id="btn-go-install">최신 가이드로 업데이트</button>
     </div>
     <div class="audit-scope">
@@ -2939,15 +2939,24 @@ function handleAuditUiMessage(msg) {
     $('#audit-screen-start').classList.toggle('guide-outdated', !auditInstalled);
     $('#audit-guide-checking').classList.remove('visible');
     $('#audit-guide-error').classList.remove('visible');
-    $('#audit-install-required').classList.toggle('visible', !auditInstalled);
     // '최신 가이드 버전' 은 내용이 아니라 **설치 기록(표식)** 이 없다는 뜻이다 —
     //   내용 부족과 뒤섞어 나열하면 있는 것도 없다고 읽힌다(river 보고 2026-09-03).
+    // 막는 기준은 **내용이 있는가**뿐이다. 설치 기록(도장)이 옛것이어도 값이 같으면 그대로 검수한다
+    //   (river 지시 2026-09-21 — 값이 같은데 매번 새로 깔게 하면 이미 만든 화면이 옛것이 된다).
     const missingContents = (p.missing || []).filter((m) => m !== '최신 가이드 버전');
+    const drift = p.valueDrift || [];
     $('#audit-install-missing').textContent = !auditInstalled
-      ? (missingContents.length
-          ? `이 파일에 부족한 최신 기준: ${missingContents.join(' · ')}. 새 가이드 페이지에 함께 설치합니다.`
-          : '이 파일에는 최신 가이드를 설치한 기록이 없습니다. 아래 버튼을 누르면 새 가이드 페이지에 최신 기준을 설치합니다.')
-      : '최신 기준을 새 페이지에 함께 설치한 뒤 검수할 수 있습니다.';
+      ? `이 파일에 부족한 기준: ${missingContents.join(' · ')}. 쓰던 가이드 페이지에 이어서 설치합니다(없으면 새로 만듭니다).`
+      : (drift.length
+          ? `가이드의 색·수치 ${drift.length}개가 정본과 다릅니다 (${esc(drift.slice(0, 4).join(' · '))}${drift.length > 4 ? ' …' : ''}). [최신 가이드로 업데이트]를 누르면 쓰던 가이드 페이지에서 그 값만 갱신합니다 — 만들어 둔 화면에 그대로 반영됩니다.`
+          : '색·수치 값은 정본과 같습니다. 다만 부품의 구성이 바뀌었을 수 있으니, 검수 결과의 컴포넌트 항목에서 확인하세요.');
+    // 설치 기록이 옛것이어도 값이 같으면 "업데이트하라"고 하지 않는다 — 부품 구성만 짚어 준다.
+    const stale = p.currentGuide === false;
+    $('#audit-install-title').textContent = !auditInstalled
+      ? '검수 기준이 부족합니다'
+      : (drift.length ? '가이드 값이 정본과 다릅니다' : '가이드 설치 기록이 옛것입니다');
+    // 값이 다르거나 기록이 옛것이면 알려만 준다 — 안내 줄만 보이고 시작 버튼은 잠그지 않는다.
+    $('#audit-install-required').classList.toggle('visible', !auditInstalled || drift.length > 0 || stale);
     applyAuditSelectionSummary(p);
   } else if (msg.type === "selection-summary") {
     applyAuditSelectionSummary(msg.payload || {});
@@ -2972,7 +2981,8 @@ function handleAuditUiMessage(msg) {
     const _swap = _p.swappedCount
       ? ` · 먼저 만든 화면의 부품 ${_p.swappedCount}개를 최신으로 교체${_p.swapSkipped ? ` (확인 필요 ${_p.swapSkipped}건)` : ''}`
       : '';
-    showToast(`✅ ${_p.pageName ? _p.pageName : '새 가이드 페이지'} 설치 완료${_swap}`);
+    const _where = _p.reusedPage ? '쓰던 가이드 페이지를 갱신했습니다' : '설치 완료';
+    showToast(`✅ ${_p.pageName ? _p.pageName : '가이드 페이지'} ${_where}${_swap}`);
   } else if (msg.type === "guide-update-failed") {
     // 설치 탭에 이미 오류 화면이 떠 있다 — 탭을 옮기지 않고 사유만 덧붙인다.
     resetGuideUpdateButton();
