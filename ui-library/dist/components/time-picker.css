@@ -67,8 +67,10 @@
   padding-left: var(--spacing-16);
   padding-right: var(--spacing-8);
 }
+/* Mobile 아이콘 끝 여백 12 — Input·Search 와 같은 자리로 통일(river 결정 2026-09-21). */
 [data-s1-component="time-picker"][data-size="md"][data-break="mobile"] [data-s1-part="trigger"] {
   height: var(--sizing-48);
+  padding-right: var(--spacing-12);
 }
 
 [data-s1-component="time-picker"] [data-s1-part="value"] {
@@ -445,6 +447,7 @@
 /* bridge:mobile 감싸기에 화면 구분을 적었으면 컴포넌트가 안 적어도 같은 규칙이 선다 */
 [data-s1-break="mobile"] [data-s1-component="time-picker"][data-size="md"]:not([data-break="pc"]) [data-s1-part="trigger"] {
   height: var(--sizing-48);
+  padding-right: var(--spacing-12);
 }
 
 /* density:mobile 모바일은 밀도 축이 없다 — 손가락 기준 높이 하나 */
@@ -464,4 +467,5 @@
 
 [data-s1-break="mobile"] [data-s1-component="time-picker"]:not([data-size]):not([data-break="pc"]) [data-s1-part="trigger"] {
   height: var(--sizing-48);
+  padding-right: var(--spacing-12);
 }

@@ -5,10 +5,82 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.8.3",
+  "version": "0.8.6",
   "releasedAt": "2026-09-21",
-  "canonicalFingerprint": "f7c1fc1df201c996212aaeb45aed3310fd5ed3fc8cc271017d7f9ff3241858c6",
+  "canonicalFingerprint": "2634c38fea9d96a128922aca3a5a758a12c6c61d9af1ffa630523862cb417fea",
   "releases": [
+    {
+      "version": "0.8.6",
+      "date": "2026-09-21",
+      "kind": "patch",
+      "canonicalFingerprint": "2634c38fea9d96a128922aca3a5a758a12c6c61d9af1ffa630523862cb417fea",
+      "components": [
+        {
+          "id": "select",
+          "from": "0.2.4",
+          "to": "0.2.5"
+        },
+        {
+          "id": "date-picker",
+          "from": "0.2.5",
+          "to": "0.2.6"
+        }
+      ],
+      "deliveryFingerprint": "9ff50771ed306b87f3a059679fa32dcf3ba6cc1ae1196ca5d6f235900c215390"
+    },
+    {
+      "version": "0.8.5",
+      "date": "2026-09-21",
+      "kind": "patch",
+      "canonicalFingerprint": "3100f67e79009f32bac53ece7e4a7a41d92bb7e6d965f116ae2e4cee3ec59edb",
+      "components": [
+        {
+          "id": "select",
+          "from": "0.2.3",
+          "to": "0.2.4"
+        },
+        {
+          "id": "time-picker",
+          "from": "0.3.5",
+          "to": "0.3.6"
+        },
+        {
+          "id": "date-picker",
+          "from": "0.2.4",
+          "to": "0.2.5"
+        }
+      ],
+      "deliveryFingerprint": "0d3a954aeab381c7c24bf68600d5b973bd792822e018cb1d12ea50f6263cd0b4"
+    },
+    {
+      "version": "0.8.4",
+      "date": "2026-09-21",
+      "kind": "patch",
+      "canonicalFingerprint": "32b75b994f69698ba46e702ec74df204c5a8b2e14e3db666570d833c18e1d0c1",
+      "components": [
+        {
+          "id": "input",
+          "from": "0.3.2",
+          "to": "0.3.3"
+        },
+        {
+          "id": "select",
+          "from": "0.2.2",
+          "to": "0.2.3"
+        },
+        {
+          "id": "time-picker",
+          "from": "0.3.4",
+          "to": "0.3.5"
+        },
+        {
+          "id": "date-picker",
+          "from": "0.2.3",
+          "to": "0.2.4"
+        }
+      ],
+      "deliveryFingerprint": "f272ddd3a7bfc8d38467852284a064274748ee14c5d2586fe18d788e707911aa"
+    },
     {
       "version": "0.8.3",
       "date": "2026-09-21",
@@ -790,5 +862,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "e64fe6113b9c2056889186a9905293132f504aa256be59f88cb3a11c29b03612"
+  "deliveryFingerprint": "9ff50771ed306b87f3a059679fa32dcf3ba6cc1ae1196ca5d6f235900c215390"
 }

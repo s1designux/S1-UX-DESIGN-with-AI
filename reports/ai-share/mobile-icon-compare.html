@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>모바일 아이콘 자리 비교</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="../../ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="../../ui-library/dist/assets/css/typography.css">
+<link rel="stylesheet" href="../../ui-library/dist/s1-ui.css">
+<style>
+  body { margin:0; background:#f6f7f9; color:#111827; font-family:Pretendard,-apple-system,sans-serif; }
+  .page { max-width:980px; margin:0 auto; padding:36px 24px 80px; }
+  h1 { font-size:22px; margin:0 0 6px; }
+  .lede { margin:0 0 28px; color:#6b7280; font-size:13px; line-height:1.7; }
+  section { background:#fff; border:1px solid #e5e7eb; border-radius:14px; margin-bottom:20px; overflow:hidden; }
+  section > h2 { margin:0; padding:14px 20px; font-size:15px; background:#fafafa; border-bottom:1px solid #e5e7eb; }
+  .note { margin:0; padding:12px 20px; font-size:12.5px; color:#6b7280; line-height:1.7; border-bottom:1px solid #f1f2f4; }
+  .cols { display:grid; grid-template-columns:1fr 1fr; gap:0; }
+  .col { padding:20px; }
+  .col + .col { border-left:1px dashed #e5e7eb; }
+  .col > h3 { margin:0 0 4px; font-size:13px; }
+  .col > p { margin:0 0 16px; font-size:12px; color:#9ca3af; }
+  .row { margin-bottom:18px; }
+  .row > span { display:block; font-size:11.5px; color:#9ca3af; margin-bottom:6px; }
+  .frame { width:260px; position:relative; }
+  /* 오른쪽 끝에서 얼마나 떨어졌는지 눈으로 재는 안내선 */
+  .guide .frame::after { content:""; position:absolute; top:0; bottom:0; right:12px; width:1px; background:rgba(239,68,68,.55); pointer-events:none; }
+  .bad .frame::after { background:rgba(239,68,68,.55); }
+  /* (A) 고치기 전 피그마 부품 재현 — 눈 그림이 칸 끝에 붙던 모습 */
+  .asWas [data-s1-component="input"][data-break="mobile"] [data-s1-part="action"] { justify-content:flex-end; }
+  /* (C) 통일안 — 셀렉트·달력·시간 칸 오른쪽 여백 8 → 12 */
+  .unify :is([data-s1-component="select"],[data-s1-component="date-picker"],[data-s1-component="time-picker"])[data-break="mobile"] [data-s1-part="trigger"] { padding-right:12px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>모바일 칸 아이콘 자리 — 눈으로 비교</h1>
+  <p class="lede">모두 실제 배포본 부품으로 그린 것입니다. 빨간 세로선은 <b>오른쪽 끝에서 12px</b> 자리입니다.</p>
+
+  <section>
+    <h2>1. 고친 것 — 비밀번호 눈 그림</h2>
+    <p class="note">피그마 설치기의 모바일 Input에서 눈 그림이 칸 테두리에 붙어 있었습니다. 옆에 지우기(×)가 같이 설 때만 안쪽으로 당기도록 고쳤습니다.</p>
+    <div class="cols guide">
+      <div class="col asWas">
+        <h3>고치기 전</h3>
+        <p>눈 그림이 테두리에 닿음</p>
+        <div class="row"><span>비밀번호 칸</span><div class="frame" data-ex="input.password-mobile"></div></div>
+      </div>
+      <div class="col">
+        <h3>고친 뒤 (현재)</h3>
+        <p>끝에서 12px</p>
+        <div class="row"><span>비밀번호 칸</span><div class="frame" data-ex="input.password-mobile"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>2. 정할 것 — 아이콘 끝 여백을 12px로 통일할까요?</h2>
+    <p class="note">입력칸·검색칸은 끝에서 12px, 셀렉트·달력·시간 칸은 8px입니다. 왼쪽이 지금 그대로, 오른쪽이 12px로 맞춘 모습입니다.</p>
+    <div class="cols guide">
+      <div class="col">
+        <h3>A. 지금 그대로</h3>
+        <p>입력·검색 12px · 셀렉트·달력·시간 8px</p>
+        <div class="row"><span>입력칸 (12px)</span><div class="frame" data-ex="input.password-mobile"></div></div>
+        <div class="row"><span>검색칸 (12px)</span><div class="frame" data-ex="input.search-mobile"></div></div>
+        <div class="row"><span>셀렉트 (8px)</span><div class="frame" data-ex="select.mobile"></div></div>
+        <div class="row"><span>달력 (8px)</span><div class="frame" data-ex="date-picker.mobile"></div></div>
+        <div class="row"><span>시간 (8px)</span><div class="frame" data-ex="time-picker.mobile"></div></div>
+      </div>
+      <div class="col unify">
+        <h3>B. 12px로 통일</h3>
+        <p>다섯 칸 모두 12px</p>
+        <div class="row"><span>입력칸</span><div class="frame" data-ex="input.password-mobile"></div></div>
+        <div class="row"><span>검색칸</span><div class="frame" data-ex="input.search-mobile"></div></div>
+        <div class="row"><span>셀렉트</span><div class="frame" data-ex="select.mobile"></div></div>
+        <div class="row"><span>달력</span><div class="frame" data-ex="date-picker.mobile"></div></div>
+        <div class="row"><span>시간</span><div class="frame" data-ex="time-picker.mobile"></div></div>
+      </div>
+    </div>
+  </section>
+</div>
+<script type="module">
+  const uniq = (() => { let n = 0; return () => `cmp${++n}`; })();
+  for (const host of document.querySelectorAll("[data-ex]")) {
+    const res = await fetch(`../../ui-library/dist/examples/${host.dataset.ex}.html`);
+    const html = await res.text();
+    const tpl = document.createElement("template");
+    tpl.innerHTML = html.trim();
+    // 예시 파일에 여러 벌이 들어있으면 첫 벌만 쓴다
+    const first = tpl.content.firstElementChild;
+    // id 중복 제거 (같은 예시를 두 번 그리므로)
+    first.querySelectorAll("[id]").forEach((el) => {
+      const old = el.id, next = `${old}-${uniq()}`;
+      first.querySelectorAll(`[for="${old}"],[aria-labelledby="${old}"]`).forEach((r) => {
+        if (r.getAttribute("for") === old) r.setAttribute("for", next);
+        if (r.getAttribute("aria-labelledby") === old) r.setAttribute("aria-labelledby", next);
+      });
+      el.id = next;
+    });
+    host.appendChild(first);
+  }
+  const { autoInit } = await import("../../ui-library/dist/s1-ui.auto.js");
+  autoInit();
+  // 비밀번호 칸은 눈 그림이 보여야 비교가 된다 — 예시 기본이 보임 상태라 별도 처리 없음
+</script>
+</body>
+</html>

@@ -1400,9 +1400,11 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           const actionHitSize = sc.brk === "Mobile" ? 48 : 28;
           const isMobile = sc.brk === "Mobile";
           // Mobile: 눈은 왼쪽 칸이라 그림을 안쪽(오른쪽) 끝으로 당긴다. hover 면은 두지 않는다.
+          // 눈 오른쪽에 삭제(×)가 설 때만 안쪽으로 당긴다. 눈이 맨 오른쪽이면(=Focus 외 전 상태)
+          //   당기면 칸 끝에 붙어 테두리에 닿는다 — Search Input 과 같은 규칙으로 가운데 정렬 유지.
           const passwordAction = wrapSuffixAction(eye, "password-action", actionHitSize, {
             hover: !isMobile,
-            pullInward: isMobile,
+            pullInward: isMobile && clearIcon !== null,
           });
           passwordAction.visible = false;
           // 트레일링 클러스터 [눈][×] — 눈↔삭제(×) 간격 = spacing/2(2px). lead↔클러스터는 0(밀착, field 기본 itemSpacing).
@@ -1889,7 +1891,8 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
       trigger.primaryAxisAlignItems = "SPACE_BETWEEN";
       trigger.counterAxisAlignItems = "CENTER";
       trigger.primaryAxisSizingMode = "FIXED"; trigger.counterAxisSizingMode = "FIXED";
-      trigger.paddingLeft = 16; trigger.paddingRight = 8; trigger.paddingTop = 0; trigger.paddingBottom = 0;
+      // Mobile 아이콘 끝 여백 12 — Input·Search 와 같은 자리로 통일(river 결정 2026-09-21).
+      trigger.paddingLeft = 16; trigger.paddingRight = sc.brk === "Mobile" ? 12 : 8; trigger.paddingTop = 0; trigger.paddingBottom = 0;
       trigger.cornerRadius = 4;
       trigger.fills = [boundPaint(scv(maps, fc(st.bg)))];
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))];
@@ -2869,7 +2872,8 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
     { size: "XXSM", brk: "PC",     h: 28, font: 12, padL: 10, padR: 6 },
     { size: "XSM",  brk: "PC",     h: 34, font: 14, padL: 12, padR: 8 },
     { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 16, padR: 8 },
-    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16, padR: 8 },
+    // Mobile 은 아이콘 끝 여백 12 — Input·Search 와 같은 자리(river 결정 2026-09-21).
+    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16, padR: 12 },
   ];
   // 12시간제 / 24시간제 축 — 웹 배포본의 `data-type="12h" | "24h"` 와 1:1 (river 지시 2026-09-09).
   //   Time Picker Dropdown 은 이미 Type 축을 갖고 있었는데 트리거에는 없어서, 설치기 결과만 보면
@@ -4807,7 +4811,8 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
       trigger.name = "trigger";
       trigger.layoutMode = "HORIZONTAL"; trigger.primaryAxisAlignItems = "SPACE_BETWEEN"; trigger.counterAxisAlignItems = "CENTER";
       trigger.primaryAxisSizingMode = "FIXED"; trigger.counterAxisSizingMode = "FIXED";
-      trigger.paddingLeft = 16; trigger.paddingRight = 8; trigger.paddingTop = 0; trigger.paddingBottom = 0;
+      // Mobile 아이콘 끝 여백 12 — Input·Search 와 같은 자리로 통일(river 결정 2026-09-21).
+      trigger.paddingLeft = 16; trigger.paddingRight = sc.brk === "Mobile" ? 12 : 8; trigger.paddingTop = 0; trigger.paddingBottom = 0;
       trigger.cornerRadius = 4;
       trigger.fills = [boundPaint(scv(maps, fc(st.bg)))];
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))]; trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";

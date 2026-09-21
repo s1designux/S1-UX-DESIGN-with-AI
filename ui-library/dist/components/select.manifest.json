@@ -1,8 +1,8 @@
 {
   "id": "select",
-  "version": "0.2.2",
+  "version": "0.2.5",
   "status": "approved",
-  "canonicalFingerprint": "da52c9665fc2abe093ade11fd6aca0e21658b27490fc5354fba2c43a2a921191",
+  "canonicalFingerprint": "06fea4877e2e0e1cae1736d0ea40a56f64c4e48dde9e437b1257bc72c8efc327",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -217,5 +217,5 @@
     "singleSelectNote": "select 는 단일 선택이라 조립한 dropdown 이 Type=Text 로 고정된다(정본이 Select Box·Filter Chip 에 항상 Type=Text 패널만 붙인다). 런타임은 s1:dropdown:change 의 detail.type이 \"text\" 일 때만 반응하고 checkbox 유형 변화(전체 선택 포함)는 의도적으로 무시한다 — select 자신이 체크박스 유형 패널을 조립하지 않기 때문이며 방어적 무시가 아니다.",
     "disableCloseContract": "registry/components/component-behavior.pc.json 의 \"Select Box\" 계약(on: disable → close and block trigger clicks, status=verified)을 그대로 구현한다. 클릭 차단은 open() 의 disabled 가드, 자동 닫힘은 trigger 의 disabled 속성 변화를 관찰하는 MutationObserver 가 담당한다(인스턴스마다 자기 trigger 하나만 관찰 — 누적 없음, destroy() 가 disconnect)."
   },
-  "sourceFingerprint": "d44b23b1dd6504dd671d16ffa16bcb0f48a51478cc0e89b1b27b0e84752451e7"
+  "sourceFingerprint": "50bd75bedfc3073deca23381e55954e1d061ed14900cfffe9333f8fa9499a7dd"
 }

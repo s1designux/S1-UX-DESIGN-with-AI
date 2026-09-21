@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:2c6902e598550258164c8de19788c464a1975921f9663e3ccf9ab32f1914b93d",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-21T04:18:53.205Z",
+  "notes": "Mobile 폼 칸 아이콘 끝 여백 12 통일(river 2026-09-21): Input password-action 당김을 clearIcon 존재 시로 한정(Search 규칙과 일치), Select·DatePicker trigger padR Mobile 12/PC 8, TimePicker Mobile MD padR 12. 1차 검증에서 잡은 주석 삼킴(Select 1894·DatePicker 4813, paddingTop/Bottom 사문화) 수정 확인. PC 무영향, ui-library CSS 대응 규칙 값 일치, hex 신규 0. 결정론 게이트 4종 재실행 EXIT=0. Figma 캔버스 렌더는 미검증(코드 레벨 한정)."
+}
