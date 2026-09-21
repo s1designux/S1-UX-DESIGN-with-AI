@@ -979,6 +979,9 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
   // 10. 모드 고정 — 선택 영역 **안쪽** 노드에 라이트/다크 모드가 박혀 있으면,
   //     화면을 통째로 뒤집어도 그 부분만 따라오지 않는다(river 결정 2026-09-17 — 고정 먼저 잡기).
   //     선택한 최상위 노드 자신의 고정은 "이 화면을 다크로 본다"는 정상 사용이라 제외한다.
+  //     **바깥과 실제로 어긋난 고정만 보고한다(river 결정 2026-09-21).** 바깥과 같은 모드로 박힌
+  //     것은 지금 어긋나 있지 않으므로 알리지 않는다 — 부품 세트가 라이트 기준이라 그런 고정이
+  //     대량으로 붙고, 그걸 전부 띄우면 진짜 어긋난 한 건이 목록에 묻힌다.
   const modeIssues: ChecklistDetailIssue[] = [];
   {
     const rootIds = new Set((rootsOverride ? normalizeSelectionRoots(rootsOverride) : selectedRoots()).map((node) => node.id));
@@ -993,43 +996,34 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
     const inheritedModeId = (node: SceneNode, collectionId: string): string | null => pinnedModeId(node, collectionId, false);
     // 화면 모드를 알면 문구를 그 기준으로 쓴다 — "이 화면은 다크인데 이 부분만 라이트".
     const screenModeLabel = context && context.mode === DARK_MODE ? "다크" : context && context.mode === LIGHT_MODE ? "라이트" : "";
-    const conflicting: ChecklistDetailIssue[] = [];
-    const silent: ChecklistDetailIssue[] = [];
     let modeSeq = 0;
     for (const node of nodes) {
       if (rootIds.has(node.id)) continue;
       if (isDummyChromePart(node)) continue;
       const pins = (node as any).explicitVariableModes as { [collectionId: string]: string } | undefined;
       if (!pins) continue;
-      // 한 노드가 컬렉션 두 곳에 고정돼 있을 수 있다. 보고는 한 번만 하되,
-      // 바깥과 어긋난 고정이 있으면 그것을 고른다 — 먼저 걸린 컬렉션이 아니라(🤖 검증 지적 2026-09-17).
+      // 한 노드가 컬렉션 두 곳에 고정돼 있을 수 있다. 보고는 한 번만 하고,
+      // 바깥과 어긋난 고정이 하나라도 있으면 그것을 고른다(🤖 검증 지적 2026-09-17).
       let pickedDetail = "";
-      let pickedDiffers = false;
       for (const col of themedCols) {
         const pinned = pins[col.id];
         if (!pinned) continue;
         const inherited = inheritedModeId(node, col.id) || col.defaultModeId;
+        if (pinned === inherited) continue; // 바깥과 같다 = 지금 어긋나 있지 않다
         const pinnedName = modeNameOf(col, pinned) || "고정";
         const inheritedName = modeNameOf(col, inherited) || "바깥";
-        const differs = pinned !== inherited;
-        if (pickedDetail && !differs) continue;
         const pinnedLabel = pinnedName === DARK_MODE ? "다크" : pinnedName === LIGHT_MODE ? "라이트" : pinnedName;
-        pickedDetail = differs
-          ? (screenModeLabel
-            ? `이 화면은 ${screenModeLabel}인데 이 부분만 ${pinnedLabel}로 박혀 있어 안 바뀝니다`
-            : `'${pinnedName}' 모드로 고정 — 바깥은 '${inheritedName}'이라 이 부분만 안 바뀝니다`)
-          : `${pinnedLabel}로 고정 — 지금은 같아 보여도 모드를 바꾸면 안 따라옵니다`;
-        pickedDiffers = differs;
-        if (differs) break;
+        pickedDetail = screenModeLabel
+          ? `이 화면은 ${screenModeLabel}인데 이 부분만 ${pinnedLabel}로 박혀 있어 안 바뀝니다`
+          : `'${pinnedName}' 모드로 고정 — 바깥은 '${inheritedName}'이라 이 부분만 안 바뀝니다`;
+        break;
       }
       if (!pickedDetail) continue;
-      (pickedDiffers ? conflicting : silent).push({
+      modeIssues.push({
         id: `c10-${++modeSeq}`, checklistId: 10, category: "mode",
         nodeId: node.id, nodeName: node.name, detail: pickedDetail,
       });
     }
-    for (const issue of conflicting) modeIssues.push(issue);
-    for (const issue of silent) modeIssues.push(issue);
   }
 
   // 11. 화면 종류에 맞는 변형 — 모바일 화면인데 PC용 변형을 쓰고 있는(또는 그 반대) 부품.
