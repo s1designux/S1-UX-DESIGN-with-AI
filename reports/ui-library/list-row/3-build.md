@@ -2,6 +2,8 @@
 
 작성자: 🧱 ui-library-builder · 2026-09-21
 
+> **최신 상태 요약(정정 3 반영 후, 이 문서 맨 아래 참조): Density 축은 없다.** 축 = Type 7종 × State 4종 = 28칸. 줄 높이는 전부 68(위아래 여백 12 + 글 자리 최소 44)로 통일. 아래 "무엇을 만들었나" 절의 Density 언급은 최초 구현 당시 기록이며 이후 정정 1~3에서 뒤집혔다 — 맨 아래 "정정 3"이 현재 정본과 일치하는 최종 상태다.
+
 ## 무엇을 만들었나
 
 `ui-library/src/components/list-row/`
@@ -58,6 +60,19 @@ Value 유형에서 화살표(chevron)를 빠뜨렸다 — 정본 buildListRow �
 **원인**: 정본 코드에서 왼쪽 칸 thumbnail 은 밀도와 무관하게 항상 고정 48×48(`box.resize(48,48)`, Compact 분기 없음)이다. `text.minHeight` 를 Compact=24 로 낮춰도 thumbnail(48)이 여전히 text(24)보다 커서 그 줄의 counterAxisSizingMode=AUTO 가 48 을 따라가고, 위아래 여백 12×2 를 더하면 72 가 된다 — Compact 밀도의 "가장 큰 부품"이 실제로는 화살표(24)가 아니라 thumbnail(48)이었다. 배포본은 이 canon 동작을 그대로 옮겼을 뿐이다(정확 대조 원칙 — 임의로 축소하지 않았다).
 
 **해소 — 썸네일이 밀도를 따라간다 (2026-09-21, 오케스트레이터 정정).** 정본 `buildListRow` 가 `thumbPx = d.name==="Default" ? 48 : 24`로 바뀌어(왼쪽 그림 = 그 밀도의 글 자리와 같은 크기, 새 숫자 아님) Thumb 도 Compact 에서 24×24 로 줄어든다. 배포본 `[data-s1-part="thumbnail"]` 을 `[data-density="default"]`/`[data-density="compact"]` 로 나눠 `--sizing-48`/`--sizing-24` 를 적용했고 manifest geometry.thumbnail 에 규칙을 적었다. 같은 canon 변경에 `BUILT_COMPS` Toggle 등록 추가가 또 딸려 있어(순수 등록, 시각 무변경) toggle 지문도 다시 갱신했다. 14칸(7유형×2밀도) 전부 http 헤드리스 렌더로 재확인: **default 전부 80 · compact 전부 48**. `ui:build:check`·`ui:contract`·`ui:test:check`·`ui:version` PASS, 배포본 0.10.1→0.10.2(값만 변경, patch).
+
+## 정정 3 (2026-09-21, 오케스트레이터 — Compact 폐기·수치 선례 재대조)
+
+river 결정("컴팩트 없이 디폴트만 있으면 돼")으로 Density 축을 완전히 걷어내고, 수치를 정본 선례(`buildBottomSheetOption` List 행·선택행)에서 다시 끌어왔다. 배포본 반영:
+
+- `list-row.css` — `data-density` 선택자·Compact 규칙 전부 삭제. 좌우 여백 `20/16`→**`20/20`**, 위아래 여백 `16`→**`12`**, 왼쪽 요소↔글 `16`→**`12`**, 오른쪽 칸 내부 `4`→**`8`**, 썸네일 `48`→**`40`**, 글 자리 최소 높이 `48`(밀도별)→**`44`(고정, `--sizing-44`)** 하나로. `text`에 `justify-content: center`를 더해 canon `text.primaryAxisAlignItems="CENTER"`와 맞췄다.
+- `manifest.json` — `densities` 필드 삭제, `requiredAttributes`에서 `data-density` 제거, `documentedDataStates`에서도 제거, geometry 전부 위 표대로 갱신 + `provenance` 필드로 선례 출처 명시, `contentSlots.description`을 밀도 무관 선택 슬롯으로 정정.
+- `list-row.example.html` — Compact 예시 행 삭제, 나머지 7유형·State 예시에서 `data-density` 속성 제거.
+- `registry/components/component-facts.json`은 오케스트레이터가 이미 최신 상태로 재생성해 둠(재실행 결과 "= 최신"). `canonicalFingerprint`는 새 facts·canon 코드로 재계산해 갱신했다.
+
+**실제 렌더로 28칸 대표(7유형 + Hover/Pressed/Disabled) 재확인** (http, dist/examples/list-row.html 그대로 fetch) — **전부 `h=68`**. 기대값과 일치.
+
+`ui:build:check`·`ui:contract`·`ui:test:check`·`ui:version` 전부 PASS. 공개 계약(속성 제거)이 바뀐 거라 minor로 올렸다(0.10.3→0.11.0, 28/28 일치). 다운로드 zip·개발자 패널도 재생성했다.
 
 ## 미해결 — 내가 판정·해소할 수 없는 항목
 

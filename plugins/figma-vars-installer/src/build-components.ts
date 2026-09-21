@@ -1243,15 +1243,13 @@ async function buildToggle(maps: BuildMaps, originY: number): Promise<{ set: Com
 //     보여주기만 하는 줄(Read)·고르는 줄(Pick)·동의 줄(Agree)·켜고 끄는 줄(Switch)·그림 줄(Thumb).
 //   ▸ 서비스별 실제 수치(모두앱 74·48 등)는 정본에 넣지 않는다 — 서비스 프로파일이 갖는다.
 async function buildListRow(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
-  const ROW_W = 360;
+  const ROW_W = 360;                       // 선례 buildBottomSheetOption 의 ROW_W 와 같다
   const numv = (k: string) => requireVar(maps.foundationNumber, k, "Foundation Number");
-  const chevRight = (c: string) =>
-    `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="${c}" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-
-  const densities = [
-    { name: "Default", padY: "spacing/16", desc: true },   // 제목 + 설명
-    { name: "Compact", padY: "spacing/12", desc: false },  // 제목만
-  ];
+  // 수치는 전부 **정본 선례에서 끌어온다**(마음대로 정하지 않는다) —
+  //   좌우 20 · 위아래 12 · 왼쪽 요소↔글 12 · 제목↔설명 2 · 오른쪽 칸 내부 8 · 그림 40 · 화살표 24
+  //   : buildBottomSheetOption 의 List 행(아바타 40 · 패딩 20/12 · left.itemSpacing 12 · col.itemSpacing 2 · chevron 24).
+  //   글 자리 최소 44(sizing/44) — 제목만 있는 줄과 설명이 붙은 줄(41)의 높이를 같게 만든다.
+  //   그래서 줄 높이는 12 + 44 + 12 = 68 로 **유형과 무관하게 같다**(river 2026-09-21).
   const types = ["Nav", "Value", "Read", "Pick", "Agree", "Switch", "Thumb"];
   const states = ["Default", "Hover", "Pressed", "Disabled"];
 
@@ -1263,145 +1261,142 @@ async function buildListRow(maps: BuildMaps, originY: number): Promise<{ set: Co
   const iconKey  = (st: string) => (st === "Disabled" ? "color/icon/gray-light" : "color/icon/gray");
 
   const comps: ComponentNode[] = [];
-  const cells: { comp: ComponentNode; type: string; density: string; state: string }[] = [];
+  const cells: { comp: ComponentNode; type: string; state: string }[] = [];
 
-  for (const d of densities) {
-    for (const t of types) {
-      for (const st of states) {
-        const comp = figma.createComponent();
-        comp.name = `Type=${t}, Density=${d.name}, State=${st}`;
-        comp.layoutMode = "HORIZONTAL";
-        comp.counterAxisAlignItems = "CENTER";
-        // ⚠️ resize() 를 **먼저** 부르고 sizing mode 를 뒤에 건다 — 오토레이아웃 프레임에 resize() 를
-        //    나중에 부르면 양 축이 FIXED 로 덮여 높이가 1px 로 굳는다(선례 buildTimePickerDropdown 의 fillPanel).
-        comp.resize(ROW_W, 1);
-        comp.primaryAxisSizingMode = "FIXED";   // 폭 360 고정
-        comp.counterAxisSizingMode = "AUTO";    // ★ 높이는 여백+글이 정한다(숫자 고정 없음)
-        comp.setBoundVariable("paddingLeft", numv("spacing/20"));
-        comp.setBoundVariable("paddingRight", numv("spacing/16"));
-        comp.setBoundVariable("paddingTop", numv(d.padY));
-        comp.setBoundVariable("paddingBottom", numv(d.padY));
-        comp.setBoundVariable("itemSpacing", numv("spacing/16"));
-        comp.fills = [boundPaint(scv(maps, bgKey(st)))];
+  for (const t of types) {
+    for (const st of states) {
+      const comp = figma.createComponent();
+      comp.name = `Type=${t}, State=${st}`;
+      comp.layoutMode = "HORIZONTAL";
+      comp.counterAxisAlignItems = "CENTER";
+      // ⚠️ resize() 를 **먼저** 부르고 sizing mode 를 뒤에 건다 — 오토레이아웃 프레임에 resize() 를
+      //    나중에 부르면 양 축이 FIXED 로 덮여 높이가 굳는다(선례 buildTimePickerDropdown 의 fillPanel).
+      comp.resize(ROW_W, 1);
+      comp.primaryAxisSizingMode = "FIXED";   // 폭 360 고정
+      comp.counterAxisSizingMode = "AUTO";    // ★ 높이는 여백 + 글 자리가 정한다(숫자 고정 없음)
+      comp.setBoundVariable("paddingLeft", numv("spacing/20"));
+      comp.setBoundVariable("paddingRight", numv("spacing/20"));
+      comp.setBoundVariable("paddingTop", numv("spacing/12"));
+      comp.setBoundVariable("paddingBottom", numv("spacing/12"));
+      comp.setBoundVariable("itemSpacing", numv("spacing/12"));
+      comp.fills = [boundPaint(scv(maps, bgKey(st)))];
 
-        // ── 왼쪽 칸 — 체크(Pick·Agree) · 그림(Thumb) ──────────────────────
-        if (t === "Pick" || t === "Agree") {
-          const chkState = st === "Disabled" ? "Disabled" : "Default";
-          const chk = await reuseVariant("Checkbox", `Checkbox:${chkState}`, [`State=${chkState}`]);
-          if (chk) {
-            const inst = chk.createInstance();
-            inst.name = "control";
-            comp.appendChild(inst);
-          } else {
-            // 선례 buildDropdownList 와 같은 자리 — 조용히 빈자리로 두지 않고 정본 buildCheckbox 와
-            //   같은 토큰으로 임시 도형을 그린다(체크박스 없이 단독 설치되는 경우).
-            console.warn(`[List Row] Checkbox 를 찾지 못해 임시 도형으로 그립니다 (State=${chkState}) — Checkbox 를 먼저 설치하면 인스턴스로 붙습니다.`);
-            const box = figma.createFrame();
-            box.name = "control"; box.resize(18, 18); box.cornerRadius = 2;
-            box.fills = [boundPaint(scv(maps, st === "Disabled" ? "color/control/bg/disabled" : "color/control/bg/default"))];
-            box.strokes = [boundPaint(scv(maps, st === "Disabled" ? "color/control/border/disabled" : "color/control/border/default"))];
-            box.strokeWeight = 1; box.strokeAlign = "INSIDE";
-            comp.appendChild(box);
-            box.layoutSizingHorizontal = "FIXED"; box.layoutSizingVertical = "FIXED";
-          }
-        } else if (t === "Thumb") {
-          // 왼쪽 그림은 **그 밀도의 글 자리와 같은 크기**로 둔다(Default 48 · Compact 24).
-          //   그림이 글 자리보다 크면 그 줄만 높이가 튀어 "같은 목록 = 같은 높이"가 깨진다.
-          const thumbPx = d.name === "Default" ? 48 : 24;
+      // ── 왼쪽 칸 — 체크(Pick·Agree) · 그림(Thumb) ──────────────────────
+      if (t === "Pick" || t === "Agree") {
+        const chkState = st === "Disabled" ? "Disabled" : "Default";
+        const chk = await reuseVariant("Checkbox", `Checkbox:${chkState}`, [`State=${chkState}`]);
+        if (chk) {
+          const inst = chk.createInstance();
+          inst.name = "control";
+          comp.appendChild(inst);
+        } else {
+          // 선례 buildDropdownList 와 같은 자리 — 조용히 빈자리로 두지 않고 정본 buildCheckbox 와
+          //   같은 토큰으로 임시 도형을 그린다(체크박스 없이 단독 설치되는 경우).
+          console.warn(`[List Row] Checkbox 를 찾지 못해 임시 도형으로 그립니다 (State=${chkState}) — Checkbox 를 먼저 설치하면 인스턴스로 붙습니다.`);
           const box = figma.createFrame();
-          box.name = "thumbnail";
-          box.resize(thumbPx, thumbPx);
-          box.setBoundVariable("width", numv(`sizing/${thumbPx}`));
-          box.setBoundVariable("height", numv(`sizing/${thumbPx}`));
-          box.fills = [boundPaint(scv(maps, "color/bg/level-2"))];
-          bindRadius(box, maps, "radius/4");
+          box.name = "control"; box.resize(18, 18); box.cornerRadius = 2;
+          box.fills = [boundPaint(scv(maps, st === "Disabled" ? "color/control/bg/disabled" : "color/control/bg/default"))];
+          box.strokes = [boundPaint(scv(maps, st === "Disabled" ? "color/control/border/disabled" : "color/control/border/default"))];
+          box.strokeWeight = 1; box.strokeAlign = "INSIDE";
           comp.appendChild(box);
-          box.layoutSizingHorizontal = "FIXED";
-          box.layoutSizingVertical = "FIXED";
+          box.layoutSizingHorizontal = "FIXED"; box.layoutSizingVertical = "FIXED";
         }
-
-        // ── 가운데 글 — 제목(+설명) ─────────────────────────────────────
-        const text = figma.createFrame();
-        text.name = "text";
-        text.layoutMode = "VERTICAL";
-        text.primaryAxisSizingMode = "AUTO";
-        text.counterAxisSizingMode = "AUTO";
-        text.fills = [];
-        text.setBoundVariable("itemSpacing", numv("spacing/2"));
-        // 글 자리 최소 높이 — 같은 목록 안에서 줄마다 높이가 갈리지 않게, 그 밀도에서 **가장 큰 부품**에
-        //   맞춘다(Default=썸네일 48 · Compact=화살표 24). 새 숫자를 만들지 않고 이미 있는 값을 쓴다.
-        text.minHeight = d.name === "Default" ? 48 : 24;
-        text.appendChild(await makeBoundText("제목", 16, "Medium", scv(maps, titleKey(st)), "title/16M"));
-        if (d.desc) text.appendChild(await makeBoundText("설명", 14, "Regular", scv(maps, descKey(st)), "body/14R"));
-        comp.appendChild(text);
-        text.layoutGrow = 1;                       // 가운데 글이 남는 폭을 차지한다
-        text.layoutSizingHorizontal = "FILL";
-
-        // ── 오른쪽 칸 — 값 · 화살표 · 토글 ──────────────────────────────
-        const needsTrail = t === "Nav" || t === "Value" || t === "Agree" || t === "Switch";
-        if (needsTrail) {
-          const trail = figma.createFrame();
-          trail.name = "trail";
-          trail.layoutMode = "HORIZONTAL";
-          trail.counterAxisAlignItems = "CENTER";
-          trail.primaryAxisSizingMode = "AUTO";
-          trail.counterAxisSizingMode = "AUTO";
-          trail.fills = [];
-          trail.setBoundVariable("itemSpacing", numv("spacing/4"));
-          if (t === "Value") {
-            trail.appendChild(await makeBoundText("값", 14, "Regular", scv(maps, valueKey(st)), "body/14R"));
-          }
-          if (t === "Switch") {
-            const tgState = st === "Disabled" ? "Disabled" : "Default";
-            const tg = await reuseVariant("Toggle", `Toggle:On:${tgState}`, ["Pressed=On", `State=${tgState}`]);
-            if (tg) {
-              const inst = tg.createInstance();
-              inst.name = "toggle";
-              trail.appendChild(inst);
-            } else {
-              // 정본 buildToggle 과 같은 치수·토큰으로 임시 도형(트랙 40×20 + 노브 16).
-              console.warn(`[List Row] Toggle 을 찾지 못해 임시 도형으로 그립니다 (State=${tgState}) — Toggle 을 먼저 설치하면 인스턴스로 붙습니다.`);
-              const track = figma.createFrame();
-              track.name = "toggle"; track.resize(40, 20); track.cornerRadius = 10;
-              track.fills = [boundPaint(scv(maps, st === "Disabled" ? "color/control/bg/disabled" : "color/control/bg/selected"))];
-              const knob = figma.createEllipse();
-              knob.resize(16, 16);
-              knob.fills = [boundPaint(scv(maps, st === "Disabled" ? "color/control/indicator/disabled" : "color/control/indicator/selected"))];
-              track.appendChild(knob); knob.x = 22; knob.y = 2;
-              trail.appendChild(track);
-              track.layoutSizingHorizontal = "FIXED"; track.layoutSizingVertical = "FIXED";
-            }
-          } else {
-            trail.appendChild(await makeIconInstance("chevron", scv(maps, iconKey(st)), 24, chevRight("#000"), 0, { wrap: false }));
-          }
-          comp.appendChild(trail);
-          trail.layoutSizingHorizontal = "HUG";
-        }
-
-        setLightMode(comp, maps);
-        comps.push(comp);
-        cells.push({ comp, type: t, density: d.name, state: st });
+      } else if (t === "Thumb") {
+        // 그림 40 — 선례 buildBottomSheetOption 의 아바타와 같은 크기. 글 자리(44)보다 작아
+        //   이 줄만 높이가 튀지 않는다. 모양은 사각(그림용)이라 radius 토큰만 다르게 쓴다.
+        const box = figma.createFrame();
+        box.name = "thumbnail";
+        box.resize(40, 40);
+        box.setBoundVariable("width", numv("sizing/40"));
+        box.setBoundVariable("height", numv("sizing/40"));
+        box.fills = [boundPaint(scv(maps, "color/bg/level-2"))];
+        bindRadius(box, maps, "radius/4");
+        comp.appendChild(box);
+        box.layoutSizingHorizontal = "FIXED";
+        box.layoutSizingVertical = "FIXED";
       }
+
+      // ── 가운데 글 — 제목 + 설명 ─────────────────────────────────────
+      const text = figma.createFrame();
+      text.name = "text";
+      text.layoutMode = "VERTICAL";
+      text.primaryAxisSizingMode = "AUTO";
+      text.counterAxisSizingMode = "AUTO";
+      text.primaryAxisAlignItems = "CENTER";
+      text.fills = [];
+      text.setBoundVariable("itemSpacing", numv("spacing/2"));
+      // 글 자리 최소 44 — 제목만 있는 줄도 설명이 붙은 줄과 같은 높이로 선다.
+      text.minHeight = 44;
+      try { text.setBoundVariable("minHeight", numv("sizing/44")); } catch (e) { /* 구버전 API */ }
+      text.appendChild(await makeBoundText("제목", 16, "Medium", scv(maps, titleKey(st)), "title/16M"));
+      text.appendChild(await makeBoundText("설명", 14, "Regular", scv(maps, descKey(st)), "body/14R"));
+      comp.appendChild(text);
+      text.layoutGrow = 1;
+      text.layoutSizingHorizontal = "FILL";
+
+      // ── 오른쪽 칸 — 값 · 화살표 · 토글 ──────────────────────────────
+      const needsTrail = t === "Nav" || t === "Value" || t === "Agree" || t === "Switch";
+      if (needsTrail) {
+        const trail = figma.createFrame();
+        trail.name = "trail";
+        trail.layoutMode = "HORIZONTAL";
+        trail.counterAxisAlignItems = "CENTER";
+        trail.primaryAxisSizingMode = "AUTO";
+        trail.counterAxisSizingMode = "AUTO";
+        trail.fills = [];
+        // 오른쪽 칸 내부(값↔화살표) 8 — 선례 buildBottomSheetOption 선택행의 itemSpacing 8.
+        trail.setBoundVariable("itemSpacing", numv("spacing/8"));
+        if (t === "Value") {
+          trail.appendChild(await makeBoundText("값", 14, "Regular", scv(maps, valueKey(st)), "body/14R"));
+        }
+        if (t === "Switch") {
+          const tgState = st === "Disabled" ? "Disabled" : "Default";
+          const tg = await reuseVariant("Toggle", `Toggle:On:${tgState}`, ["Pressed=On", `State=${tgState}`]);
+          if (tg) {
+            const inst = tg.createInstance();
+            inst.name = "toggle";
+            trail.appendChild(inst);
+          } else {
+            // 정본 buildToggle 과 같은 치수·토큰으로 임시 도형(트랙 40×20 + 노브 16).
+            console.warn(`[List Row] Toggle 을 찾지 못해 임시 도형으로 그립니다 (State=${tgState}) — Toggle 을 먼저 설치하면 인스턴스로 붙습니다.`);
+            const track = figma.createFrame();
+            track.name = "toggle"; track.resize(40, 20); track.cornerRadius = 10;
+            track.fills = [boundPaint(scv(maps, st === "Disabled" ? "color/control/bg/disabled" : "color/control/bg/selected"))];
+            const knob = figma.createEllipse();
+            knob.resize(16, 16);
+            knob.fills = [boundPaint(scv(maps, st === "Disabled" ? "color/control/indicator/disabled" : "color/control/indicator/selected"))];
+            track.appendChild(knob); knob.x = 22; knob.y = 2;
+            trail.appendChild(track);
+            track.layoutSizingHorizontal = "FIXED"; track.layoutSizingVertical = "FIXED";
+          }
+        } else {
+          // 폴백 SVG 도 정본 상수를 그대로 쓴다(사본을 만들지 않는다 — 선 굵기 같은 값이 갈리지 않게).
+          trail.appendChild(await makeIconInstance("chevron", scv(maps, iconKey(st)), 24, CHEVRON_RIGHT_SVG, 0, { wrap: false }));
+        }
+        comp.appendChild(trail);
+        trail.layoutSizingHorizontal = "HUG";
+      }
+
+      setLightMode(comp, maps);
+      comps.push(comp);
+      cells.push({ comp, type: t, state: st });
     }
   }
 
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "List Row";
   set.x = 0; set.y = originY;
-  BUILT_SETS["List Row"] = set;
-  cells.forEach((c) => { BUILT_COMPS[`ListRow:${c.type}:${c.density}:${c.state}`] = c.comp; });
+  cells.forEach((c) => { BUILT_COMPS[`ListRow:${c.type}:${c.state}`] = c.comp; });
 
-  const opts: GroupedSpecOpts = {
+  const opts: SpecOpts = {
     title: "List Row",
-    platforms: [{ name: "PC", sizes: densities.map((d) => d.name) }],
-    rowLabels: types,
     colHeaders: states,
-    cellAt: (_platName, size, ri, ci) =>
-      cells.find((x) => x.type === types[ri] && x.density === size && x.state === states[ci])?.comp ?? null,
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 380, cellH: 96, rowLabelW: 96,
+    rowLabels: types,
+    cellAt: (ri, ci) => cells.find((x) => x.type === types[ri] && x.state === states[ci])?.comp ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 380, cellH: 88, rowLabelW: 96,
   };
-  let bottomY = await decorateSetGrouped(set, opts, maps);
-  try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
   return { set, bottomY };
 }
 

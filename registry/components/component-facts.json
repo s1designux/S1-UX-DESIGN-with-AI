@@ -3,7 +3,7 @@
     "generated": true,
     "source": "plugins/figma-vars-installer/src/build-components.ts",
     "method": "mock-execution",
-    "sourceHash": "8f3b89798b51",
+    "sourceHash": "f6e9fa182c4e",
     "unknownValuePolicy": [
       "unknown",
       "not-defined",
@@ -2129,10 +2129,6 @@
           "Switch",
           "Thumb"
         ],
-        "Density": [
-          "Default",
-          "Compact"
-        ],
         "State": [
           "Default",
           "Hover",
@@ -2142,9 +2138,7 @@
       },
       "geometry": [
         {
-          "when": {
-            "Density": "Default"
-          },
+          "when": "all",
           "target": "root",
           "width": 360,
           "height": 1,
@@ -2152,26 +2146,9 @@
           "primaryAxisSizingMode": "FIXED",
           "counterAxisSizingMode": "AUTO",
           "counterAxisAlignItems": "CENTER",
-          "itemSpacing": "spacing/16",
-          "paddingTop": "spacing/16",
-          "paddingRight": "spacing/16",
-          "paddingBottom": "spacing/16",
-          "paddingLeft": "spacing/20"
-        },
-        {
-          "when": {
-            "Density": "Compact"
-          },
-          "target": "root",
-          "width": 360,
-          "height": 1,
-          "layoutMode": "HORIZONTAL",
-          "primaryAxisSizingMode": "FIXED",
-          "counterAxisSizingMode": "AUTO",
-          "counterAxisAlignItems": "CENTER",
-          "itemSpacing": "spacing/16",
+          "itemSpacing": "spacing/12",
           "paddingTop": "spacing/12",
-          "paddingRight": "spacing/16",
+          "paddingRight": "spacing/20",
           "paddingBottom": "spacing/12",
           "paddingLeft": "spacing/20"
         }
@@ -2198,13 +2175,12 @@
         "color/text/state/disabled",
         "color/text/title/primary",
         "radius/4",
-        "sizing/24",
-        "sizing/48",
+        "sizing/40",
+        "sizing/44",
         "spacing/12",
-        "spacing/16",
         "spacing/2",
         "spacing/20",
-        "spacing/4"
+        "spacing/8"
       ],
       "composition": {
         "buildDependencies": [

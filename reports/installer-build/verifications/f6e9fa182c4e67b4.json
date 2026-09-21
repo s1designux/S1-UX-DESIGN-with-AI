@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:f6e9fa182c4e67b484d3385192fdd1bee5962d1365aaa4ffc072de3d7fef1f73",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-21T06:22:40.747Z",
+  "notes": "buildListRow 6차 pass — Density 축 제거(Type7×State4=28칸), 수치 전면 재정렬(좌우20/위아래12/왼쪽12/오른칸8/그림40/화살표24 = buildBottomSheetOption 선례), 글 자리 최소 44 sizing/44 바인딩, 화살표 폴백은 정본 상수 재사용. 높이 68 전 유형 균일(프로브 실측 + 웹 배포본 렌더 교차). Figma 실물 캔버스 렌더 미검증."
+}

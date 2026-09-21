@@ -4291,25 +4291,20 @@
 }
 
 /* component:list-row */
-/* List Row — 정본 buildListRow(build-components.ts, 2026-09-21 신설) 기준.
-   축 = Type(Nav·Value·Read·Pick·Agree·Switch·Thumb) × Density(Default·Compact) × State(Default·Hover·Pressed·Disabled).
+/* List Row — 정본 buildListRow(build-components.ts) 기준.
+   축 = Type(Nav·Value·Read·Pick·Agree·Switch·Thumb) × State(Default·Hover·Pressed·Disabled) = 28칸.
    이 컴포넌트는 "줄 모양과 상태"만 소유한다 — 목록 구조(role·선택·이동)와 실제 동작은 쓰는 화면이 배선한다
    (registry/components/list-row.json webDistribution.note, bottom-sheet-option 과 같은 원칙).
 
-   높이는 숫자로 고정하지 않는다 — 위아래 여백(spacing 토큰) + 글 자리가 높이를 만든다
-   (river 2026-09-21: "간격을 패딩 토큰으로 적용하면 자연스럽게 전체 하이트가 잡히는거지").
+   Density(촘촘) 축은 없다 — river 2026-09-21 "컴팩트 없이 디폴트만 있으면 돼"로 한 벌만 쓴다.
+   필요해지면 그때 근거와 함께 다시 신설한다(2026-09-21 정정으로 Compact 걷어냄).
 
-   Density 는 "목록이 정한다" — 한 줄만 따로 바꾸는 길을 두지 않는다. 이 컴포넌트는 그 원칙을
-   data-density 를 뿌리(root)에 필수 속성으로 두어 표현한다: 쓰는 화면이 목록 안 모든 줄에 같은
-   값을 준다(개별 줄마다 다르게 주지 않는다 — 이 계약은 CSS 가 강제하지 못하는 사용 규칙이며
-   registry doDont 에 명시했다).
-
-   글 자리(text) min-height — 2026-09-21 정본 buildListRow 정정 반영(`text.minHeight = Default 48 ·
-   Compact 24`, 오케스트레이터 실측 지적): 그 밀도에서 가장 큰 부품(오른쪽 칸 화살표 24·트레일
-   아이콘 높이 포함 24, Thumb 왼쪽 썸네일 48)에 맞춘 고정 숫자다. 타이포에서 계산한 값이 아니다 —
-   화살표(24)가 있는 줄만 커지고 없는 줄은 제목 글자 키(20.8)로 줄어들어 같은 밀도 안에서 높이가
-   갈리던 문제(default 73~80·compact 44.8~48)를 고정 숫자로 막는다. 제목만 있는 줄도 이 최소값이
-   자리를 예약해 두 줄짜리와 같은 높이로 선다. */
+   높이는 숫자로 고정하지 않는다 — 위아래 여백 + 글 자리 최소 높이가 만든다. 수치는 전부 정본 선례
+   (buildBottomSheetOption 의 List 행·선택행)에서 끌어왔다: 좌우 20 · 위아래 12 · 왼쪽 요소↔글 12 ·
+   제목↔설명 2 · 오른쪽 칸 내부 8 · 그림 40 · 화살표 24. 글 자리 최소 44(sizing/44) 만 이 부품이
+   정한 값이다 — 제목만 있는 줄도 설명 붙은 줄과 같은 높이로 세우기 위한 것.
+   그림 40·화살표 24·체크 18·토글 20 모두 44 보다 작아 어떤 줄도 높이가 튀지 않는다 — 줄 높이는
+   12 + 44 + 12 = 68 로 일곱 유형 전부 같다(river 2026-09-21). */
 
 [data-s1-component="list-row"] {
   align-items: center;
@@ -4317,9 +4312,8 @@
   box-sizing: border-box;
   display: flex;
   font-family: "Pretendard", sans-serif;
-  gap: var(--spacing-16);
-  padding-left: var(--spacing-20);
-  padding-right: var(--spacing-16);
+  gap: var(--spacing-12);
+  padding: var(--spacing-12) var(--spacing-20);
   width: 100%;
 }
 
@@ -4339,17 +4333,6 @@
    Read·Thumb·Switch 는 루트 자신이 상호작용 요소가 아니라 손 커서를 주지 않는다. */
 [data-s1-component="list-row"]:is([data-type="nav"], [data-type="value"], [data-type="pick"], [data-type="agree"]) {
   cursor: pointer;
-}
-
-/* ── Density — 위아래 여백만 다르다(river 2026-09-21 D-5) ── */
-[data-s1-component="list-row"][data-density="default"] {
-  padding-bottom: var(--spacing-16);
-  padding-top: var(--spacing-16);
-}
-
-[data-s1-component="list-row"][data-density="compact"] {
-  padding-bottom: var(--spacing-12);
-  padding-top: var(--spacing-12);
 }
 
 /* ── State — Hover·Pressed 는 실제 상호작용(:hover/:active — Nav·Value·Pick·Agree 는 각자 클릭 가능한
@@ -4378,48 +4361,31 @@
   cursor: not-allowed;
 }
 
-/* ── 왼쪽 칸 — 그림(Thumb). 체크(Pick·Agree)는 checkbox 코어를 그대로 조립하므로 이 컴포넌트가
-   내부를 그리지 않는다 — 자리(flex-shrink)만 준다(계약 compositionOwner).
-   그림은 그 밀도의 글 자리와 같은 크기를 따라간다(Default 48 · Compact 24) — 정본 buildListRow
-   2026-09-21 정정: `thumbPx = d.name==="Default" ? 48 : 24`. 그림이 글 자리보다 크면 그 줄만
-   높이가 튀어 "같은 목록 = 같은 높이"가 깨진다(오케스트레이터 실측 Thumb×Compact=72 지적). ── */
+/* ── 왼쪽 칸 — 그림(Thumb, 40×40 — 선례 Bottom Sheet Option 아바타와 같은 크기). 체크(Pick·Agree)는
+   checkbox 코어를 그대로 조립하므로 이 컴포넌트가 내부를 그리지 않는다 — 자리(flex-shrink)만 준다
+   (계약 compositionOwner). 40 은 글 자리 최소 높이(44)보다 작아 이 줄만 높이가 튀지 않는다. ── */
 [data-s1-component="list-row"] [data-s1-part="thumbnail"] {
   background: var(--color-bg-level-2);
   border-radius: var(--radius-4);
   flex: none;
-}
-
-[data-s1-component="list-row"][data-density="default"] [data-s1-part="thumbnail"] {
-  height: var(--sizing-48);
-  width: var(--sizing-48);
-}
-
-[data-s1-component="list-row"][data-density="compact"] [data-s1-part="thumbnail"] {
-  height: var(--sizing-24);
-  width: var(--sizing-24);
+  height: var(--sizing-40);
+  width: var(--sizing-40);
 }
 
 [data-s1-component="list-row"] > [data-s1-component="checkbox"] {
   flex: none;
 }
 
-/* ── 가운데 글 — 제목(필수) + 설명(선택, Default 밀도에서만). 남는 폭을 차지한다. ── */
+/* ── 가운데 글 — 제목(필수) + 설명(선택). 남는 폭을 차지하고 최소 높이 44(sizing/44) 를 갖는다 —
+   설명 유무·다른 칸의 크기와 무관하게 일곱 유형의 줄 높이를 68 로 통일한다(정본 text.minHeight=44). ── */
 [data-s1-component="list-row"] [data-s1-part="text"] {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
   gap: var(--spacing-2);
+  justify-content: center;
+  min-height: var(--sizing-44);
   min-width: 0;
-}
-
-/* 같은 밀도 안 모든 줄이 같은 높이로 서게 한다 — 화살표·토글이 있는 줄과 없는 줄, 썸네일 줄까지
-   전부 이 고정값에 맞춘다(정본 text.minHeight, 2026-09-21 정정). 타이포 계산값이 아니다. */
-[data-s1-component="list-row"][data-density="default"] [data-s1-part="text"] {
-  min-height: var(--sizing-48);
-}
-
-[data-s1-component="list-row"][data-density="compact"] [data-s1-part="text"] {
-  min-height: var(--sizing-24);
 }
 
 [data-s1-component="list-row"] [data-s1-part="title"] {
@@ -4444,11 +4410,6 @@
   white-space: nowrap;
 }
 
-/* Compact 밀도는 정본에 설명 줄이 없다(제목만) — 마크업에 남아 있어도 표출하지 않는다. */
-[data-s1-component="list-row"][data-density="compact"] [data-s1-part="description"] {
-  display: none;
-}
-
 [data-s1-component="list-row"]:is(:disabled, [aria-disabled="true"], [data-state="disabled"]) [data-s1-part="title"] {
   color: var(--color-text-state-disabled);
 }
@@ -4457,13 +4418,14 @@
   color: var(--color-text-state-disabled);
 }
 
-/* ── 오른쪽 칸 — 화살표(Nav·Value·Agree) · 값+화살표(Value 는 값 글자와 화살표를 함께 받는다 —
-   정본 buildListRow 그대로, Switch 만 화살표 대신 toggle) · 토글(Switch). Pick·Read·Thumb 는 없다. ── */
+/* ── 오른쪽 칸 — 화살표(Nav·Agree) · 값+화살표(Value 는 값 글자와 화살표를 함께 받는다 — 정본
+   buildListRow 그대로, Switch 만 화살표 대신 toggle) · 토글(Switch). Pick·Read·Thumb 는 없다.
+   내부 간격 8 — 선례 Bottom Sheet Option 선택행의 itemSpacing. ── */
 [data-s1-component="list-row"] [data-s1-part="trail"] {
   align-items: center;
   display: flex;
   flex: none;
-  gap: var(--spacing-4);
+  gap: var(--spacing-8);
 }
 
 [data-s1-component="list-row"] [data-s1-part="value"] {
