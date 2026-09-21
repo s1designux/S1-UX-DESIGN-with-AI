@@ -234,7 +234,7 @@ function modal(
     // 안쪽 content 폭은 건드리지 않는다: 캡처 당시(옛 Modal)는 260, 지금 Modal 은 1px 테두리가
     // 생겨 258 이다. 2px 차이는 '정본 부품이 바뀐 결과'이므로 옛 숫자를 억지로 맞추지 않는다
     // (H6 — 부품이 바뀌면 파생이 따라간다). 2026-09-02 실측.
-    szOv: [["0.1", msgWidth, "HUG"]],
+    szOv: [["0.1.0", msgWidth, "HUG"]],
   };
 }
 
@@ -362,14 +362,14 @@ export const MOBILE_LOGIN: PatternDef = {
       filledBody(),
       [FOOTER, NAVBAR, modalOverlay(modal("Login Notice", 187, "Dual", [
         ["0.0", "자동 로그인 안내"],
-        ["0.1", "다음부터 자동으로 로그인할까요?"],
+        ["0.1.0", "다음부터 자동으로 로그인할까요?"],
       ]))]),
 
     screen("APP/LOGIN/4b2 · 자동 로그인 설정 완료 (모달)", 960, 1000, 656,
       filledBody(),
       [FOOTER, NAVBAR, modalOverlay(modal("Login Notice", 187, "Single", [
         ["0.0", "자동 로그인 설정 완료"],
-        ["0.1", "자동 로그인이 설정되었어요."],
+        ["0.1.0", "자동 로그인이 설정되었어요."],
         ["1.0.0", "확인"],
       ]))]),
 
@@ -378,7 +378,7 @@ export const MOBILE_LOGIN: PatternDef = {
       filledBody(),
       [FOOTER, NAVBAR, modalOverlay(modal("Login Notice", 229, "Single", [
         ["0.0", "본인 인증 안내"],
-        ["0.1", "서비스를 이용하려면 본인 인증을 진행해 주세요. 본인 인증 시 기존 기기는 인증이 해제돼요."],
+        ["0.1.0", "서비스를 이용하려면 본인 인증을 진행해 주세요. 본인 인증 시 기존 기기는 인증이 해제돼요."],
         ["1.0.0", "확인"],
       ], "FILL"))]),
 
@@ -386,7 +386,7 @@ export const MOBILE_LOGIN: PatternDef = {
       filledBody(),
       [FOOTER, NAVBAR, modalOverlay(modal("Login Notice", 208, "Single", [
         ["0.0", "기기 인증 완료"],
-        ["0.1", "사용 중인 기기로 인증이 완료됐어요.\n다시 로그인해 주세요."],
+        ["0.1.0", "사용 중인 기기로 인증이 완료됐어요.\n다시 로그인해 주세요."],
         ["1.0.0", "확인"],
       ]))]),
 
@@ -394,7 +394,7 @@ export const MOBILE_LOGIN: PatternDef = {
       filledBody(),
       [FOOTER, NAVBAR, modalOverlay(modal("Device Registration", 250, "Dual", [
         ["0.0", "기기 등록 안내"],
-        ["0.1", "에스원은 고객님의 소중한 정보를 보호하기 위해 인증 기기 등록 후 서비스를 제공하고 있어요.\n현재 인증한 기기로 등록 후 로그인할까요?"],
+        ["0.1.0", "에스원은 고객님의 소중한 정보를 보호하기 위해 인증 기기 등록 후 서비스를 제공하고 있어요.\n현재 인증한 기기로 등록 후 로그인할까요?"],
       ], "FILL"))]),
   ],
 };
@@ -709,10 +709,10 @@ export const MOBILE_WEB_SIGNUP: PatternDef = {
         pr: { Break: "Mobile", Footer: "Single" },
         ov: [
           ["0.0", "비밀번호 조건"],
-          ["0.1", "• 영문(대소문자 구분), 숫자, 특수문자 조합하여 8~15자\n• 특수문자 !@#$%^&* 사용 가능\n• 3자 이상 연속된 숫자·문자 사용(예: 123, abc) 불가\n• 생일, 전화번호, 아이디 사용 미권장"],
+          ["0.1.0", "• 영문(대소문자 구분), 숫자, 특수문자 조합하여 8~15자\n• 특수문자 !@#$%^&* 사용 가능\n• 3자 이상 연속된 숫자·문자 사용(예: 123, abc) 불가\n• 생일, 전화번호, 아이디 사용 미권장"],
           ["1.0.0", "확인"],
         ],
-        szOv: [["0.1", "FIXED", "HUG"]] },
+        szOv: [["0.1.0", "FIXED", "HUG"]] },
       closeIcon(282, 244),
     ]),
 
