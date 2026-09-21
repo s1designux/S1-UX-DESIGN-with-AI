@@ -608,6 +608,38 @@
       "absentCombinations": [],
       "sourceFingerprint": "16839ae4cc1e189e5f31ae7f22b2a70ec2e9637bbb0db1e3e8a9c7512e2bb3a1"
     },
+    "list-row": {
+      "id": "list-row",
+      "status": "candidate",
+      "version": "0.1.1",
+      "sizes": [],
+      "breaks": {},
+      "sizeBreakGrid": [],
+      "variants": [
+        "nav",
+        "value",
+        "read",
+        "pick",
+        "agree",
+        "switch",
+        "thumb"
+      ],
+      "types": null,
+      "states": [
+        "default",
+        "hover",
+        "pressed",
+        "disabled"
+      ],
+      "canonicalStateMap": {
+        "State=Default": "default",
+        "State=Hover": "hover",
+        "State=Pressed": "pressed",
+        "State=Disabled": "disabled"
+      },
+      "absentCombinations": [],
+      "sourceFingerprint": "af38a58609f36136b94fa2c5c7c6d7702fdd5c7f3668f4d41bfb45a9d740662a"
+    },
     "mobile-bottom-nav": {
       "id": "mobile-bottom-nav",
       "status": "approved",
@@ -1225,7 +1257,7 @@
         "Pressed=On, State=Disabled": "disabledOn"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "8405443de08cea038d0c35306cb2cc61c4e63034e9bab4435f245d99da60caba"
+      "sourceFingerprint": "1828cc298afc4281f9f3a1b9c7fc405adeef5a242199fdec6caec4eb1e7cc8b8"
     }
   }
 }

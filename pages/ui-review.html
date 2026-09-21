@@ -278,6 +278,13 @@
     [data-component-id="bottom-sheet"] .review-matrix { grid-template-columns: 1fr; }
     [data-component-id="bottom-sheet"] .review-component-slot { overflow-x: auto; }
     [data-component-id="bottom-sheet-option"] .review-matrix { grid-template-columns: 1fr; }
+    /* List Row — 전수 56칸(유형 7 × 밀도 2 × 상태 4)이라 2열(Light|Dark) 칸에 넣으면 줄이 눌린다.
+       시트·GNB 와 같은 결로 Light·Dark 를 위아래로 놓아 칸을 넓히고, 칸 안에서 자동으로 접는다.
+       줄은 폭 100% 부품이라 검수 표본만 모바일 목록 폭(360)으로 감싼다 — 이 CSS 는 이 페이지 것이고
+       색·크기·간격·높이는 전부 dist(s1-ui.css)가 그린다. */
+    [data-component-id="list-row"] .review-matrix { grid-template-columns: 1fr; }
+    [data-component-id="list-row"] .review-grid { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+    .review-list-row-box { max-width: 360px; width: 100%; }
 
     /* 바 6종은 한 줄에 하나씩(가로로 긴 요소), 메뉴 슬롯 9칸은 상태 3열로 나란히 본다. */
     .review-gnb-bar-grid { grid-template-columns: 1fr; }
@@ -786,6 +793,13 @@
         <p class="review-note">위 24번 시트의 본문에 넣어 쓰는 <strong>한 줄</strong>입니다. 단독으로 쓰지 않습니다. 유형 4가지(글자 · 체크박스 · 라디오 · 목록) × 상태 3가지 중 <strong>정본에 실재하는 9칸만</strong> 있습니다 — <strong>체크박스의 비활성, 라디오의 비활성, 목록의 고른 상태 세 칸은 정본에 없어 만들지 않았고</strong> 표에서 빈 칸으로 둡니다. <strong>고른 줄에 배경색을 칠하지 않습니다</strong> — 정본이 파란 글자색과 오른쪽 체크 표시로만 구분합니다. 체크박스·라디오는 <strong>이미 승인된 배포본(3번·4번)을 그대로 넣었고</strong> 줄의 글자는 이 부품이 냅니다. 글자·체크박스·라디오 줄은 높이 48로 같고, <strong>목록 줄은 동그란 그림과 두 줄 글자가 들어가 내용만큼 높아집니다</strong>(비활성 목록 줄 오른쪽은 자물쇠 표시). 고르는 동작과 목록의 뜻(무엇을 고른 목록인지)은 시트를 여는 화면이 맡습니다. 정본에 PC 규칙이 없어 <strong>모바일 전용</strong>입니다.</p>
       </div>
       <div class="review-matrix" id="bottom-sheet-option-review-matrix"></div>
+    </section>
+    <section class="review-section" aria-labelledby="list-row-review-title" data-component-id="list-row">
+      <div>
+        <h2 class="review-section-title" id="list-row-review-title">26. List Row — 목록 안 한 줄</h2>
+        <p class="review-note">목록에 들어가는 <strong>줄 한 개</strong>입니다. 유형 7가지(이동 · 값 · 읽기 · 선택 · 동의 · 토글 · 썸네일) × 촘촘함 2가지(기본 · 촘촘) × 상태 4가지(기본 · 올림 · 누름 · 비활성) <strong>56칸 전부</strong>를 보여 드립니다. <strong>높이를 숫자로 고정하지 않습니다</strong> — 위아래 여백 토큰과 글 자리가 높이를 만듭니다(river 2026-09-21). <strong>촘촘함은 줄이 아니라 목록이 정합니다</strong> — 목록이 모든 줄에 같은 값을 주기 때문에, 같은 목록 안에서는 제목만 있는 한 줄짜리와 설명까지 있는 두 줄짜리의 <strong>높이가 같습니다</strong>(제목만 있어도 글 자리를 두 줄만큼 잡아 둡니다). <strong>줄 사이 구분선은 이 부품이 긋지 않습니다</strong> — 목록을 그리는 화면이 긋습니다. 유형마다 <strong>바탕 요소가 다릅니다</strong>: 눌러서 넘어가는 이동 · 값은 버튼, 보여주기만 하는 읽기 · 썸네일은 누를 수 없는 칸, 고르는 선택 · 동의는 체크 상자를 감싸 클릭 영역을 넓힌 이름표, 토글은 토글 자체가 누르는 것입니다. <strong>체크와 토글은 이미 승인된 배포본(3번 · 5번)을 그대로 끼워 넣었고</strong>, 보이는 글자인 제목이 그 둘의 이름이 됩니다. <strong>줄이 비활성이면 그 안의 체크 · 토글도 함께 비활성입니다</strong> — 눌리지 않고 흐리게 보입니다. 올림 · 누름 칸은 마우스 없이도 보이도록 <strong>상태를 강제로 켜 둔 표본</strong>이고, 실제로는 마우스를 올리거나 눌러도 같은 모양이 됩니다. <strong>키보드 초점 표시는 브라우저 기본에 맡깁니다</strong> — 정본에 초점 모양이 없어 따로 만들지 않았습니다. 실제 이동 · 선택 반영 같은 동작은 목록을 그리는 화면이 맡습니다.</p>
+      </div>
+      <div class="review-matrix" id="list-row-review-matrix"></div>
     </section>
     </div>
 
@@ -2454,6 +2468,86 @@
         </article>`;
     }
 
+    /* ── List Row ─ 정본 buildListRow · dist examples/list-row.html 계약 그대로.
+       축 = Type 7(nav·value·read·pick·agree·switch·thumb) × Density 2 × State 4 = 56칸 전수.
+       루트 요소는 유형이 하는 일에 맞춘다(manifest htmlContract.typeStructure):
+         nav·value = button · read·thumb = div · pick·agree = label(체크 코어를 감싼다) · switch = div.
+       상태는 manifest states 표기대로 documented data-state 로 보인다. Disabled 는 button 이면
+       native disabled 를, button 이 아닌 루트면 aria-disabled 를 함께 단다(계약이 정한 두 길).
+       체크·토글은 승인된 코어 배포본을 그대로 조립한다 — 내부를 복제하지 않고 자리만 준다.
+       비활성인 줄에서는 안의 코어에도 각자 공개 API 인 native disabled 를 준다 — 코어의 내부 구조·
+       스타일을 덮어쓰는 것이 아니라 코어가 열어 둔 상태를 쓰는 것이다(계약이 금지한 것은 앞쪽이다).
+       마크업은 자리마다 새로 만든다 — 문자열을 두 곳에 붙이면 id 가 중복된다(배선표 §2 T5). */
+    const listRowContent = {
+      nav: { title: "설정", description: "환경설정 및 계정 관리" },
+      value: { title: "테마", description: "화면 표시 방식", value: "라이트" },
+      read: { title: "버전", description: "현재 설치된 버전 정보" },
+      pick: { title: "빠른 배송", description: "당일 도착 옵션" },
+      agree: { title: "이용약관 동의", description: "필수 동의 항목입니다" },
+      switch: { title: "알림", description: "새 소식 알림 받기" },
+      thumb: { title: "여행 사진", description: "2026년 9월 14일" }
+    };
+
+    function listRowMarkup({ type = "nav", density = "default", state = "default" } = {}) {
+      uniqueId += 1;
+      const uid = `review-list-row-${uniqueId}`;
+      const titleId = `${uid}-title`;
+      const content = listRowContent[type];
+      const isButton = type === "nav" || type === "value";
+      const isPickLike = type === "pick" || type === "agree";
+      const tag = isButton ? "button" : isPickLike ? "label" : "div";
+      const disabled = state === "disabled";
+      /* 코어(checkbox·toggle)에 이름을 넘겨야 하는 유형만 제목에 id 를 붙인다. */
+      const needsTitleId = isPickLike || type === "switch";
+      const root = [
+        isButton ? 'type="button" ' : "",
+        `data-s1-component="list-row" data-type="${type}" data-density="${density}" data-state="${state}"`,
+        disabled ? (isButton ? " disabled" : ' aria-disabled="true"') : ""
+      ].join("");
+      /* Compact 는 정본에 설명 줄이 없다 — 마크업에 넣지 않는다(dist 예시와 같은 처리). */
+      const text = `<div data-s1-part="text">
+            <span data-s1-part="title"${needsTitleId ? ` id="${titleId}"` : ""}>${content.title}</span>${density === "default" ? `
+            <span data-s1-part="description">${content.description}</span>` : ""}
+          </div>`;
+      const chevron = `<span data-s1-part="chevron" aria-hidden="true"></span>`;
+      const checkbox = `<div data-s1-component="checkbox">
+            <input type="checkbox" id="${uid}-control" data-s1-part="control" aria-labelledby="${titleId}"${disabled ? " disabled" : ""}>
+          </div>`;
+      let inner;
+      if (type === "nav") inner = `${text}<span data-s1-part="trail">${chevron}</span>`;
+      else if (type === "value") inner = `${text}<span data-s1-part="trail"><span data-s1-part="value">${content.value}</span>${chevron}</span>`;
+      else if (type === "read") inner = text;
+      else if (type === "pick") inner = `${checkbox}${text}`;
+      else if (type === "agree") inner = `${checkbox}${text}<span data-s1-part="trail">${chevron}</span>`;
+      else if (type === "switch") inner = `${text}<span data-s1-part="trail">
+            <button type="button" data-s1-component="toggle" role="switch" aria-checked="false" aria-labelledby="${titleId}"${disabled ? " disabled" : ""}>
+              <span data-s1-part="knob" aria-hidden="true"></span>
+            </button>
+          </span>`;
+      else inner = `<div data-s1-part="thumbnail" aria-hidden="true"></div>${text}`;
+      return `<${tag} ${root}>${inner}</${tag}>`;
+    }
+
+    function renderListRowPanel(combo) {
+      const types = [
+        ["nav", "Nav · 이동"], ["value", "Value · 값"], ["read", "Read · 읽기"], ["pick", "Pick · 선택"],
+        ["agree", "Agree · 동의"], ["switch", "Switch · 토글"], ["thumb", "Thumb · 썸네일"]
+      ];
+      const densities = [["default", "기본"], ["compact", "촘촘"]];
+      const states = [["default", "Default"], ["hover", "Hover"], ["pressed", "Pressed"], ["disabled", "Disabled"]];
+      const cells = types.flatMap(([type, typeLabel]) => densities.flatMap(([density, densityLabel]) => states.map(([state, stateLabel]) =>
+        sample(`${typeLabel} · ${densityLabel} · ${stateLabel}`,
+          `<div class="review-list-row-box">${listRowMarkup({ type, density, state })}</div>`)))).join("");
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">유형 7 × 촘촘함 2 × 상태 4 = 56칸 전수 · 크기 축 없음 · 줄 자체는 JavaScript 불필요</p></div>
+          <div class="review-group">
+            <p class="review-panel-description">각 칸은 목록 폭(최대 360) 상자 안에 넣어 보입니다. <strong>높이는 여백 토큰과 글 자리가 만듭니다</strong> — 같은 촘촘함끼리는 설명 유무와 상관없이 높이가 같아야 합니다. 선택 · 동의의 체크와 토글은 실제로 눌러 보세요. <strong>줄 사이 구분선은 이 부품이 긋지 않습니다.</strong></p>
+            <div class="review-grid">${cells}</div>
+          </div>
+        </article>`;
+    }
+
     document.querySelector("#date-picker-review-matrix").innerHTML = combinations.map(renderDatePickerPanel).join("");
     document.querySelector("#time-picker-review-matrix").innerHTML = combinations.map(renderTimePickerPanel).join("");
 
@@ -2464,6 +2558,7 @@
     document.querySelector("#gnb-sub-menu-review-matrix").innerHTML = controlThemes.map(renderGnbSubMenuPanel).join("");
     document.querySelector("#bottom-sheet-review-matrix").innerHTML = controlThemes.map(renderBottomSheetPanel).join("");
     document.querySelector("#bottom-sheet-option-review-matrix").innerHTML = controlThemes.map(renderBottomSheetOptionPanel).join("");
+    document.querySelector("#list-row-review-matrix").innerHTML = controlThemes.map(renderListRowPanel).join("");
     /* GNB 도 런타임이 없다(jsRequired:false) — CSS 의 :hover 와 네이티브 ARIA(aria-current)만으로 상태가 드러난다. */
     /* Mobile Bottom Nav · Mobile Header 는 런타임이 없다(jsRequired:false) — CSS·네이티브 ARIA만으로 상태가 반영된다. */
 

@@ -1,0 +1,123 @@
+<!-- 목록 형태로 묶어 실제 쓰임을 보인다(래퍼는 꾸미기 없는 div — gnb-sub-menu-item·bottom-sheet-option 선례).
+     일곱 유형(Nav·Value·Read·Pick·Agree·Switch·Thumb)을 Default 밀도로, Compact 밀도 1개, State 변형
+     (Hover·Pressed·Disabled)을 Nav 로 보인다. 전수 56칸 그리드는 이 예시가 아니라 검수 화면이 만든다.
+
+     루트 요소는 그 줄이 하는 일에 맞춘다(registry list-row.json a11y):
+       Nav·Value(눌러서 이동/편집) = button · Read·Thumb(보여주기만) = div(누르지 않음) ·
+       Pick·Agree(고르기) = label(체크 코어를 감싸 클릭 영역을 넓힌다) · Switch = div(토글 자체가 컨트롤).
+     체크·토글 코어는 그대로 조립한다(control 만, 코어 자신의 label 은 쓰지 않고 이 컴포넌트의
+     title 이 accessible name 을 aria-labelledby 로 준다 — bottom-sheet-option 과 같은 방식). -->
+<div>
+  <button type="button" data-s1-component="list-row" data-type="nav" data-density="default" data-state="default">
+    <div data-s1-part="text">
+      <span data-s1-part="title">설정</span>
+      <span data-s1-part="description">환경설정 및 계정 관리</span>
+    </div>
+    <span data-s1-part="trail">
+      <span data-s1-part="chevron" aria-hidden="true"></span>
+    </span>
+  </button>
+
+  <button type="button" data-s1-component="list-row" data-type="value" data-density="default" data-state="default">
+    <div data-s1-part="text">
+      <span data-s1-part="title">테마</span>
+      <span data-s1-part="description">화면 표시 방식</span>
+    </div>
+    <span data-s1-part="trail">
+      <span data-s1-part="value">라이트</span>
+      <span data-s1-part="chevron" aria-hidden="true"></span>
+    </span>
+  </button>
+
+  <div data-s1-component="list-row" data-type="read" data-density="default" data-state="default">
+    <div data-s1-part="text">
+      <span data-s1-part="title">버전</span>
+      <span data-s1-part="description">현재 설치된 버전 정보</span>
+    </div>
+  </div>
+
+  <label data-s1-component="list-row" data-type="pick" data-density="default" data-state="default">
+    <div data-s1-component="checkbox">
+      <input type="checkbox" id="lr-example-pick-control" data-s1-part="control" aria-labelledby="lr-example-pick-title">
+    </div>
+    <div data-s1-part="text">
+      <span data-s1-part="title" id="lr-example-pick-title">빠른 배송</span>
+      <span data-s1-part="description">당일 도착 옵션</span>
+    </div>
+  </label>
+
+  <label data-s1-component="list-row" data-type="agree" data-density="default" data-state="default">
+    <div data-s1-component="checkbox">
+      <input type="checkbox" id="lr-example-agree-control" data-s1-part="control" aria-labelledby="lr-example-agree-title">
+    </div>
+    <div data-s1-part="text">
+      <span data-s1-part="title" id="lr-example-agree-title">이용약관 동의</span>
+      <span data-s1-part="description">필수 동의 항목입니다</span>
+    </div>
+    <span data-s1-part="trail">
+      <span data-s1-part="chevron" aria-hidden="true"></span>
+    </span>
+  </label>
+
+  <div data-s1-component="list-row" data-type="switch" data-density="default" data-state="default">
+    <div data-s1-part="text">
+      <span data-s1-part="title" id="lr-example-switch-title">알림</span>
+      <span data-s1-part="description">새 소식 알림 받기</span>
+    </div>
+    <span data-s1-part="trail">
+      <button type="button" data-s1-component="toggle" role="switch" aria-checked="false" aria-labelledby="lr-example-switch-title">
+        <span data-s1-part="knob" aria-hidden="true"></span>
+      </button>
+    </span>
+  </div>
+
+  <div data-s1-component="list-row" data-type="thumb" data-density="default" data-state="default">
+    <div data-s1-part="thumbnail" aria-hidden="true"></div>
+    <div data-s1-part="text">
+      <span data-s1-part="title">여행 사진</span>
+      <span data-s1-part="description">2026년 9월 14일</span>
+    </div>
+  </div>
+
+  <!-- Compact 밀도 — 제목만, 여백 12. 설명을 마크업에 넣지 않는다(정본에 없다). -->
+  <button type="button" data-s1-component="list-row" data-type="nav" data-density="compact" data-state="default">
+    <div data-s1-part="text">
+      <span data-s1-part="title">고객센터</span>
+    </div>
+    <span data-s1-part="trail">
+      <span data-s1-part="chevron" aria-hidden="true"></span>
+    </span>
+  </button>
+
+  <!-- State 변형 — Hover·Pressed 는 검수용 documented data-state(실제 포인터가 없는 화면에서도
+       확인할 수 있게), Disabled 는 button 의 native disabled. -->
+  <button type="button" data-s1-component="list-row" data-type="nav" data-density="default" data-state="hover">
+    <div data-s1-part="text">
+      <span data-s1-part="title">Hover 상태 예시</span>
+      <span data-s1-part="description">실제로는 :hover 로 켜진다</span>
+    </div>
+    <span data-s1-part="trail">
+      <span data-s1-part="chevron" aria-hidden="true"></span>
+    </span>
+  </button>
+
+  <button type="button" data-s1-component="list-row" data-type="nav" data-density="default" data-state="pressed">
+    <div data-s1-part="text">
+      <span data-s1-part="title">Pressed 상태 예시</span>
+      <span data-s1-part="description">실제로는 :active 로 켜진다</span>
+    </div>
+    <span data-s1-part="trail">
+      <span data-s1-part="chevron" aria-hidden="true"></span>
+    </span>
+  </button>
+
+  <button type="button" data-s1-component="list-row" data-type="nav" data-density="default" data-state="default" disabled>
+    <div data-s1-part="text">
+      <span data-s1-part="title">Disabled 상태 예시</span>
+      <span data-s1-part="description">누를 수 없다</span>
+    </div>
+    <span data-s1-part="trail">
+      <span data-s1-part="chevron" aria-hidden="true"></span>
+    </span>
+  </button>
+</div>

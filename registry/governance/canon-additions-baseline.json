@@ -1,8 +1,8 @@
 {
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
-  "_updated": "2026-09-15",
-  "count": 657,
+  "_updated": "2026-09-21",
+  "count": 662,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -422,6 +422,7 @@
     "component:Language Icon",
     "component:Line Tab",
     "component:Line Tab Set",
+    "component:List Row",
     "component:LoginGNB",
     "component:Mobile Bottom Nav",
     "component:Mobile Header",
@@ -612,6 +613,10 @@
     "uistate:input.filled",
     "uistate:input.focus",
     "uistate:input.readOnly",
+    "uistate:list-row.default",
+    "uistate:list-row.disabled",
+    "uistate:list-row.hover",
+    "uistate:list-row.pressed",
     "uistate:mobile-bottom-nav.selected",
     "uistate:mobile-bottom-nav.unselected",
     "uistate:modal-content.closed",
@@ -1340,6 +1345,66 @@
       "evidence": {
         "transcript": "e899d4c6-3f84-4cee-941d-748a60750a53.jsonl",
         "at": "2026-09-15T05:40:47.657Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "component:List Row",
+      "by": "river",
+      "reason": "목록 줄을 공용 부품으로 정본화 — 뼈대(왼쪽칸+가운데글+오른쪽칸) + Density(목록이 정함) + Type 7종. 서비스 수치는 프로파일에 남긴다.",
+      "approvedAt": "2026-09-21T04:56:26.725Z",
+      "quote": "위의 제안은 AAA로 일단 진행 된 후에 수정이 필요하면 추가로 조정해보자",
+      "evidence": {
+        "transcript": "b22a85f4-da52-450b-9ea8-b1de552aafc1.jsonl",
+        "at": "2026-09-21T04:38:21.422Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:list-row.default",
+      "by": "river",
+      "reason": "List Row 정본 신설에 딸린 상태 4종(Default·Hover·Pressed·Disabled) — component:List Row 승인과 같은 근거",
+      "approvedAt": "2026-09-21T05:19:30.001Z",
+      "quote": "위의 제안은 AAA로 일단 진행 된 후에 수정이 필요하면 추가로 조정해보자",
+      "evidence": {
+        "transcript": "b22a85f4-da52-450b-9ea8-b1de552aafc1.jsonl",
+        "at": "2026-09-21T04:38:21.422Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:list-row.hover",
+      "by": "river",
+      "reason": "List Row 정본 신설에 딸린 상태 4종(Default·Hover·Pressed·Disabled) — component:List Row 승인과 같은 근거",
+      "approvedAt": "2026-09-21T05:19:31.495Z",
+      "quote": "위의 제안은 AAA로 일단 진행 된 후에 수정이 필요하면 추가로 조정해보자",
+      "evidence": {
+        "transcript": "b22a85f4-da52-450b-9ea8-b1de552aafc1.jsonl",
+        "at": "2026-09-21T04:38:21.422Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:list-row.pressed",
+      "by": "river",
+      "reason": "List Row 정본 신설에 딸린 상태 4종(Default·Hover·Pressed·Disabled) — component:List Row 승인과 같은 근거",
+      "approvedAt": "2026-09-21T05:19:32.983Z",
+      "quote": "위의 제안은 AAA로 일단 진행 된 후에 수정이 필요하면 추가로 조정해보자",
+      "evidence": {
+        "transcript": "b22a85f4-da52-450b-9ea8-b1de552aafc1.jsonl",
+        "at": "2026-09-21T04:38:21.422Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:list-row.disabled",
+      "by": "river",
+      "reason": "List Row 정본 신설에 딸린 상태 4종(Default·Hover·Pressed·Disabled) — component:List Row 승인과 같은 근거",
+      "approvedAt": "2026-09-21T05:19:34.485Z",
+      "quote": "위의 제안은 AAA로 일단 진행 된 후에 수정이 필요하면 추가로 조정해보자",
+      "evidence": {
+        "transcript": "b22a85f4-da52-450b-9ea8-b1de552aafc1.jsonl",
+        "at": "2026-09-21T04:38:21.422Z"
       },
       "recordedBy": "orchestrator"
     }

@@ -1,9 +1,9 @@
 {
   "id": "s1-ui",
-  "version": "0.8.6",
+  "version": "0.10.3",
   "releasedAt": "2026-09-21",
   "status": "approved",
-  "canonicalFingerprint": "2634c38fea9d96a128922aca3a5a758a12c6c61d9af1ffa630523862cb417fea",
+  "canonicalFingerprint": "1de380f7e3ae494f056902019dc30b259d3861d4de721c8aa689d8b1cd34dc13",
   "tokenMapFingerprint": "796fb798dd329910ba6c42a29fb4af9e0fd217446b3fa847e140bc70a0a8f4c7",
   "commonCssDependencies": [
     "assets/css/tokens.css",
@@ -729,8 +729,8 @@
       "version": "0.2.2",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "6142bf002ab4ac4eb4d53f0cb80dd3b0f238d2304aa2bb851aac32865ca8b80c",
-      "sourceFingerprint": "8405443de08cea038d0c35306cb2cc61c4e63034e9bab4435f245d99da60caba",
+      "canonicalFingerprint": "11a3eabc16dfc77a6f32af0d8346f9c4eec4008c2d288410b7b2a989ebd34a6d",
+      "sourceFingerprint": "1828cc298afc4281f9f3a1b9c7fc405adeef5a242199fdec6caec4eb1e7cc8b8",
       "css": "components/toggle.css",
       "js": "components/toggle.js",
       "example": "examples/toggle.html",
@@ -1053,6 +1053,20 @@
       "examples": {
         "pc": "examples/bottom-sheet.html"
       }
+    },
+    {
+      "id": "list-row",
+      "version": "0.1.1",
+      "status": "candidate",
+      "jsRequired": false,
+      "canonicalFingerprint": "fa6ba007e7bee764ce13e953a6bc8acf34db097673b2d57aff9f2b80b3688280",
+      "sourceFingerprint": "af38a58609f36136b94fa2c5c7c6d7702fdd5c7f3668f4d41bfb45a9d740662a",
+      "css": "components/list-row.css",
+      "js": "components/list-row.js",
+      "example": "examples/list-row.html",
+      "examples": {
+        "pc": "examples/list-row.html"
+      }
     }
   ],
   "bundleParity": {
@@ -1083,7 +1097,8 @@
       "text-button",
       "modal-content",
       "bottom-sheet-option",
-      "bottom-sheet"
+      "bottom-sheet",
+      "list-row"
     ],
     "source": "ui-library/src/components/*",
     "rule": "Full and individual outputs are generated in this build invocation from identical source strings."

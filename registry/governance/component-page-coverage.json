@@ -135,6 +135,10 @@
     {
       "name": "Mobile Header",
       "reason": "모바일 상단 앱바 shell — Figma·설치기 정본만 신설하며 손관리 components 페이지는 별도 웹 UI 라이브러리 작업 전까지 제외(2026-08-25 사용자 승인)."
+    },
+    {
+      "name": "List Row",
+      "reason": "정본 buildListRow 2026-09-21 신설, work-id list-row 3-build 완료(ui-library/dist 배포본 있음) — 손관리 components 페이지 섹션은 4-verification·river UX 승인 뒤 guide-builder 가 추가한다. HTML 섹션 생기면 sectionFor 로 이관."
     }
   ],
   "mobileOnly": [

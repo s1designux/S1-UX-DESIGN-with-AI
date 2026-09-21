@@ -1,6 +1,6 @@
 {
   "name": "@s1/ui",
-  "version": "0.8.6",
+  "version": "0.10.3",
   "private": true,
   "type": "module",
   "description": "S1 canonical web UI library",
@@ -104,7 +104,10 @@
     "./components/gnb-sub-menu": "./dist/components/gnb-sub-menu.js",
     "./components/gnb-sub-menu/css": "./dist/components/gnb-sub-menu.css",
     "./components/gnb-sub-menu/html": "./dist/examples/gnb-sub-menu.html",
-    "./components/date-picker/html/mobile": "./dist/examples/date-picker.mobile.html"
+    "./components/date-picker/html/mobile": "./dist/examples/date-picker.mobile.html",
+    "./components/list-row": "./dist/components/list-row.js",
+    "./components/list-row/css": "./dist/components/list-row.css",
+    "./components/list-row/html": "./dist/examples/list-row.html"
   },
   "scripts": {
     "build": "node scripts/build.mjs",

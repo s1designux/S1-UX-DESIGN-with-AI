@@ -60,7 +60,7 @@ const GEOMETRY_PROPS = [
   'layoutMode', 'primaryAxisSizingMode', 'counterAxisSizingMode',
   'primaryAxisAlignItems', 'counterAxisAlignItems', 'itemSpacing',
   'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft',
-  'minWidth', 'cornerRadius', 'topLeftRadius', 'topRightRadius',
+  'minWidth', 'minHeight', 'cornerRadius', 'topLeftRadius', 'topRightRadius',
   'bottomLeftRadius', 'bottomRightRadius', 'strokeWeight', 'strokeAlign',
 ];
 

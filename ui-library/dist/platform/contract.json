@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
     "purpose": "개발 툴과 검사기가 함께 읽는 허용목록. 여기 없는 variant·size·속성은 승인된 적이 없는 것이다.",
-    "canonicalFingerprint": "2634c38fea9d96a128922aca3a5a758a12c6c61d9af1ffa630523862cb417fea"
+    "canonicalFingerprint": "1de380f7e3ae494f056902019dc30b259d3861d4de721c8aa689d8b1cd34dc13"
   },
   "components": [
     {
@@ -216,8 +216,8 @@
       "jsRequired": true,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "6142bf002ab4ac4eb4d53f0cb80dd3b0f238d2304aa2bb851aac32865ca8b80c",
-      "sourceFingerprint": "8405443de08cea038d0c35306cb2cc61c4e63034e9bab4435f245d99da60caba"
+      "canonicalFingerprint": "11a3eabc16dfc77a6f32af0d8346f9c4eec4008c2d288410b7b2a989ebd34a6d",
+      "sourceFingerprint": "1828cc298afc4281f9f3a1b9c7fc405adeef5a242199fdec6caec4eb1e7cc8b8"
     },
     {
       "id": "chip",
@@ -1299,6 +1299,53 @@
       ],
       "canonicalFingerprint": "67b5ead01a0af7042d1beec803fe026340aa37553137c4bf28a61eb76e22c489",
       "sourceFingerprint": "71a4e862fe1b8b861b0fe1b9c3a79b39620d8b312425a9f84136faf5aa9e84fa"
+    },
+    {
+      "id": "list-row",
+      "status": "candidate",
+      "rootSelector": "[data-s1-component=\"list-row\"]",
+      "root": "요소는 유형(Type)이 하는 일에 맞춘다 — Nav·Value(눌러서 이동/편집)=button, Read·Thumb(보여주기만)=div(누르지 않는다), Pick·Agree(고르기)=label(체크 코어를 감싸 클릭 영역을 넓힌다), Switch=div(토글 컨트롤 자체가 상호작용 요소다). 공통 속성 data-s1-component=list-row, data-type, data-density(목록이 모든 줄에 동일하게 준다), 선택 data-state.",
+      "variants": [
+        "nav",
+        "value",
+        "read",
+        "pick",
+        "agree",
+        "switch",
+        "thumb"
+      ],
+      "sizes": [],
+      "breaks": null,
+      "states": [
+        "default",
+        "hover",
+        "pressed",
+        "disabled"
+      ],
+      "parts": [
+        "thumbnail",
+        "text",
+        "title",
+        "description",
+        "trail",
+        "value",
+        "chevron"
+      ],
+      "variantAttribute": "data-type",
+      "sizeAttribute": null,
+      "requiredAttributes": [
+        "data-type",
+        "data-density"
+      ],
+      "requiredParts": [
+        "text",
+        "title"
+      ],
+      "jsRequired": false,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "fa6ba007e7bee764ce13e953a6bc8acf34db097673b2d57aff9f2b80b3688280",
+      "sourceFingerprint": "af38a58609f36136b94fa2c5c7c6d7702fdd5c7f3668f4d41bfb45a9d740662a"
     }
   ]
 }

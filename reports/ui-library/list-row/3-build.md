@@ -1,0 +1,81 @@
+# 3-build — list-row
+
+작성자: 🧱 ui-library-builder · 2026-09-21
+
+## 무엇을 만들었나
+
+`ui-library/src/components/list-row/`
+- `list-row.css` — 정본 `buildListRow`(build-components.ts:1242, 2026-09-21 신설) 그대로: Type 7종(nav·value·read·pick·agree·switch·thumb) × Density 2종(default·compact) × State 4종(default·hover·pressed·disabled). 높이는 숫자로 고정하지 않고 여백 토큰(`--spacing-20/16/12`) + `text` 부품의 타이포 기반 `min-height`로 만든다. 제목만 있는 줄도 Default 밀도에서는 설명 유무와 무관하게 두 줄 높이를 예약한다(river D-5 반영).
+- `manifest.json` — `canonicalFingerprint` 는 `scripts/lib/canonical-fingerprint.js` 로 계산(공유 모듈, build.mjs·ui-library-version.js 와 동일 로직).
+- `list-row.example.html` — 7유형(Default 밀도) + Compact 1개 + Hover/Pressed/Disabled 상태 예시. 루트 요소는 유형별로 다르게: Nav·Value=button(이동/편집), Read·Thumb=div(누르지 않음), Pick·Agree=label(checkbox 코어를 감싼다), Switch=div(toggle 코어 자체가 컨트롤).
+- `list-row.js` — `jsRequired:false, runtime:null`(줄 모양·상태만 소유, 실제 이동·선택·이벤트는 쓰는 화면이 배선 — registry list-row.json webDistribution.note 그대로).
+
+## 빌드 배선(배선표 §1)
+
+- `ui-library/scripts/component-ids.mjs` · `ui-library/scripts/test.mjs` componentIds 에 `list-row` 추가
+- `ui-library/package.json` exports 에 `./components/list-row`, `/css`, `/html` 3줄 추가
+- `registry/governance/component-fingerprint-map.json` 에 `list-row → canonSets:["List Row"]` 등록(정본 지문 계산의 필수 전제)
+- `registry/components/component-facts.json` — `npm run components:facts:write` 로 List Row 실측 재생성(정본 build-components.ts 변경분 반영, 손편집 아님)
+- `registry/index.json` components 맵, `registry/components/index.json` — list-row 등록(Gate 30)
+- `registry/governance/component-page-coverage.json` — `noSectionNeeded`에 List Row 추가, 사유는 "4-verification·river 승인 후 guide-builder 가 components.html 섹션을 추가한다"(Gate 18). **pages/components.html·assets/js/ui-library-guide.js 는 건드리지 않았다** — 손관리 화면 자동 덮어쓰기 금지 원칙과, "Approved N guide" 테스트 화이트리스트에 list-row가 없어 지금 단계에서 필요하지 않다.
+- `registry/governance/component-presentation-policy.json` — **미등록.** 이유는 위와 동일(components.html 섹션이 아직 없어 managedBy 선언 대상 자체가 없다). components.html 섹션이 생기는 시점에 함께 추가해야 한다.
+- `registry/governance/ui-library-migration.json` — list-row 레코드 추가(`uiLibraryStatus: candidate`, `riverApproval: pending`)
+- `registry/governance/update-management.json` — list-row 항목 추가(`origin: tbd` — bottom-sheet-option과 같은 선례, Ⓐ/Ⓑ 분류는 river 결정 필요)
+- `plugins/figma-vars-installer/src/ui.html` AXIS_WORD·VALUE_WORD — density 축, type=nav/value/read/pick/agree/switch/thumb, density=default/compact 우리말 추가(Gate 54)
+- `design/DESIGN.core.md` — `npm run design:md:write` 재생성(Gate 24)
+- `assets/downloads/s1-ui-dev-package.zip`, 개발자 다운로드 패널 — `npm run ui:zip` · `npm run devpanel:gen` 재생성(Gate 46, 내 버전업에 종속된 파생물)
+- **배포본 번호**: `npm run ui:bump:minor` → 0.8.6 → 0.9.0 (부품 28종 전부 정본과 일치 확인, `npm run ui:version`)
+
+## 실행 명령과 결과
+
+```
+npm run ui:contract   → PASS (candidate)
+npm run ui:icons      → PASS (chevron 재사용, 기존 부채 2건은 list-row와 무관)
+npm run ui:build      → 278 files 생성
+npm run ui:test       → PASS
+npm run ui:version    → PASS, 0.9.0, 28/28 일치
+npm run ui:state -- reports/ui-library/list-row/workflow-state.json → PASS, 3-build
+npm run gate:check    → 시작 82 error → 종료 70 error (list-row 관련 3건 제외 전부 해소, 나머지는 아래 미해결 참조)
+```
+
+## 정정 (2026-09-21, 오케스트레이터 지적)
+
+Value 유형에서 화살표(chevron)를 빠뜨렸다 — 정본 buildListRow 코드를 `if (t==="Value"){값텍스트} if (t==="Switch"){토글} else {chevron}` 순차 두 문장이 아니라 `if/else` 한 묶음으로 잘못 읽어, Value 는 값 텍스트만 받는다고 오판했다. 실제로는 Value 도 두 번째 if 의 else 분기를 타서 **값 텍스트 + 화살표**를 함께 받는다(화살표가 없는 건 Switch 뿐). `list-row.example.html`(Value 행에 `span[data-s1-part="chevron"]` 추가) · `manifest.json`(`htmlContract.typeStructure.value`, icons[chevron].use 문구 정정) · `list-row.css`(오른쪽 칸 주석 정정)을 고치고 재빌드했다. CSS 선택자 자체는 유형별로 제한하지 않아 규칙 변경은 불필요했다. `ui:build:check`·`ui:contract`·`ui:test:check`·`ui:version` 전부 재확인 PASS, 배포본 번호는 공개 계약(html 파트 구성)이 바뀐 것으로 보고 0.9.0→0.10.0 으로 다시 올렸다(28/28 일치).
+
+## 정정 2 (2026-09-21, 오케스트레이터 실측 지적 — 밀도 안 줄 높이 갈림)
+
+정본 `buildListRow` 가 `text.minHeight = Default 48 · Compact 24` 로 정정됐다(오케스트레이터 실측: 화살표 있는 줄만 커지고 없는 줄은 제목 키(20.8)로 줄어 같은 밀도 안에서 73~80·44.8~48 로 갈렸다). 배포본 `[data-s1-part="text"]` 의 `min-height` 를 타이포 계산값 대신 **`--sizing-48`(Default) · `--sizing-24`(Compact)** 고정값으로 맞췄고, manifest geometry.text 에 이 규칙을 적었다.
+
+같은 canon 변경에 `BUILT_SETS["Toggle"] = set` 등록 누락 수정이 포함돼 있어 **toggle 의 canonicalFingerprint 도 재계산해 갱신**했다(toggle 자신의 CSS·HTML 계약은 무변경 — 순수 등록 문제라 list-row 가 reuseVariant 로 Toggle 을 찾게 해주는 수정). facts 생성기(`scripts/lib/figma-build-mock.js`·`scripts/gen-component-facts.js`)가 새 `minHeight` 속성을 몰라 죽던 것도 `minWidth` 옆에 나란히 등록해 고쳤다(기존 패턴 그대로 미분류 속성만 채움).
+
+`ui:build:check`·`ui:contract`·`ui:test:check`·`ui:version` 재확인 PASS. 배포본 번호는 값만 바뀐 거라 patch(0.10.0→0.10.1)로 올렸다.
+
+**헤드리스 렌더로 직접 재본 결과** (56칸 중 대표 14칸, http 로 확인 — T2 함정 회피):
+- Default 7유형 전부 `h=80` ✅ (기대값 일치)
+- Compact 중 nav·value·read·pick·agree·switch = `h=48` ✅
+- **Compact 중 thumb = `h=72`** ⚠️ — 기대(48)와 다르다
+
+**원인**: 정본 코드에서 왼쪽 칸 thumbnail 은 밀도와 무관하게 항상 고정 48×48(`box.resize(48,48)`, Compact 분기 없음)이다. `text.minHeight` 를 Compact=24 로 낮춰도 thumbnail(48)이 여전히 text(24)보다 커서 그 줄의 counterAxisSizingMode=AUTO 가 48 을 따라가고, 위아래 여백 12×2 를 더하면 72 가 된다 — Compact 밀도의 "가장 큰 부품"이 실제로는 화살표(24)가 아니라 thumbnail(48)이었다. 배포본은 이 canon 동작을 그대로 옮겼을 뿐이다(정확 대조 원칙 — 임의로 축소하지 않았다).
+
+**해소 — 썸네일이 밀도를 따라간다 (2026-09-21, 오케스트레이터 정정).** 정본 `buildListRow` 가 `thumbPx = d.name==="Default" ? 48 : 24`로 바뀌어(왼쪽 그림 = 그 밀도의 글 자리와 같은 크기, 새 숫자 아님) Thumb 도 Compact 에서 24×24 로 줄어든다. 배포본 `[data-s1-part="thumbnail"]` 을 `[data-density="default"]`/`[data-density="compact"]` 로 나눠 `--sizing-48`/`--sizing-24` 를 적용했고 manifest geometry.thumbnail 에 규칙을 적었다. 같은 canon 변경에 `BUILT_COMPS` Toggle 등록 추가가 또 딸려 있어(순수 등록, 시각 무변경) toggle 지문도 다시 갱신했다. 14칸(7유형×2밀도) 전부 http 헤드리스 렌더로 재확인: **default 전부 80 · compact 전부 48**. `ui:build:check`·`ui:contract`·`ui:test:check`·`ui:version` PASS, 배포본 0.10.1→0.10.2(값만 변경, patch).
+
+## 미해결 — 내가 판정·해소할 수 없는 항목
+
+1. **Gate 34(정본신설승인)** — `uistate:list-row.default/hover/pressed/disabled` 4건 미승인. `canon-additions-baseline.json`에 이미 `component:List Row` 승인 기록(river, 2026-09-21, 같은 세션 transcript)이 있으나 uistate는 별도 추적 종류라 개별 승인이 필요하다. 같은 결정의 연장선이라 오케스트레이터가 동일 근거로 `node scripts/canon-addition-check.js --approve` 4건을 기록하면 될 것으로 보인다 — 내가 자기신고로 기록할 수 없어 넘긴다.
+2. **Gate 13(설치기빌드검증)** — `build-components.ts` 변경(buildListRow 신설)에 대한 component-verifier 기록이 없다. 이건 Figma 플러그인 정본 쪽 검증이라 ui-library-builder 소관이 아니다.
+3. **Gate 38(컴포넌트 가이드 생성물)** — `scripts/gen-component-guide-model.js`가 "정본 grid 항목 49개"로 하드코딩돼 있는데 List Row 추가로 50개가 됐다. 이 카운트를 50으로 올리는 것도 build-components.ts 구조 변경의 연장이라 Gate 13과 같은 검증 트랙에서 처리하는 게 맞다고 보고 손대지 않았다.
+4. **components.html 등재** — 정본·배포본은 완성됐지만 손관리 안내 페이지 섹션은 아직 없다(river 승인 전 candidate 상태이므로 공개 가이드에 올리지 않는 게 맞다고 판단). 4-verification 통과 후 guide-builder가 섹션 작성 + `component-presentation-policy.json` managedBy 등록을 함께 진행해야 한다.
+5. **`ui-library/verification/empty-consumer.html` · `empty-consumer-individual.html`** — list-row 예시 블록을 추가하지 않았다(테스트는 이미 PASS이고, 고정 컴포넌트 화이트리스트 검사만 있어 필수는 아니었다). 배포본 완전성 데모 차원에서 필요하면 후속으로 추가할 수 있다.
+
+## 결정 근거로 남긴 것(river 승인 없이 내가 정한 메커니즘)
+
+- **Density를 data-density 속성으로 뿌리(root)에 직접 준다**(별도 "list" 래퍼 컴포넌트 없이). "목록이 정한다"는 사용 규칙을 registry doDont와 manifest에 문서화했지만 CSS가 개별 줄 편차를 기술적으로 차단하지는 않는다 — 같은 계약을 쓰는 `data-type`/`data-state`도 마찬가지 구조라 이 부품만 다르게 만들지 않았다.
+- **Value 유형은 화살표 없이 값 글자만** 표출한다(정본 buildListRow 코드 그대로 — Nav·Agree만 chevron을 받는다).
+- **Agree의 chevron은 장식**으로 뒀다(두 번째 클릭 영역 없음) — 체크와 별개로 "자세히 보기"가 필요한지는 이미지·정본 어디에도 없어 화면에 위임했다(needs-decision 수준까지는 아니라고 판단).
+- **Switch·Read·Thumb 루트는 상호작용 요소가 아닌 div**로 뒀다 — 토글 자체가 컨트롤이고, 나머지 두 유형은 정본에 상호작용 힌트가 없다.
+
+## 검증하지 않은 것 (⭐ 자가인증 — 4-verification에서 다시 봐야 함)
+
+- 실제 렌더(HTTP 스크린샷)로 Type×Density×State 56칸을 정본과 대조하지 않았다 — `ui:test`의 결정론 검사만 통과했다.
+- 다크모드 렌더 확인 안 함(토큰은 Semantic 경유라 자동으로 따라가야 하지만 육안 확인 전).
+- 체크박스·토글 코어와의 실제 조합 렌더(간격·정렬)를 브라우저에서 보지 않았다.

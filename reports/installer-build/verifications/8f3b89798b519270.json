@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:8f3b89798b5192700be864105f8bd1699148e6e3870ac6499b044295802ce77f",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-21T05:37:51.523Z",
+  "notes": "buildListRow 신설(Type7×Density2×State4=56칸) 4차 검증 pass — resize 순서·Toggle 변형 등록·밀도 따라가는 썸네일·글 자리 최소 높이·폴백 도형·계약 일치 전수 확인. 구조 프로브 실측 toggle 8/8·control 16/16·chevron 24/24, 행 높이 Default 80 균일·Compact 48 균일. Figma 실물 캔버스 렌더는 미검증."
+}
