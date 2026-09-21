@@ -140,16 +140,22 @@ type Suggestion = {
   variableName: string;
   collectionName: string;
   confidence: "high" | "medium" | "low";
+  exact?: boolean;      // 색이 정확히 같은 토큰인가(자동 적용 판정에 쓴다)
   matchType: "role+component" | "role" | "exact" | "near";
   matchInfo?: string;  // 'Δ12' 같은 부가 정보 (color distance)
   category: string;     // 'button' | 'tab' | 'text' | 'foundation' | ...
 };
+
+/** 이 도형이 무엇인지 **모양·크기·글자로 읽은** 추정. 그림을 보고 판단하는 것이 아니라
+ *  정본 부품의 생김새 규칙으로 가른다(river 지시 2026-09-21 — 제안이 너무 많다). */
+type PartGuess = { category: string; label: string; why: string };
 
 type Issue = {
   id: string;                       // unique
   nodeId: string;
   nodeName: string;
   nodeKind: NodeKind;
+  guess?: PartGuess;                // 무엇으로 봤는가(없으면 못 정한 것)
   property: "fills" | "strokes";
   paintIndex: number;
   reasonKind: "external-var" | "unbound-hex";
@@ -533,6 +539,69 @@ function classifyNode(node: SceneNode): NodeKind {
 // segment로 분해하여 반환. V2 정의 여부와 무관.
 //   예: 'Tab / Dark+1' → ['tab','dark','1']  /  'Button/Primary' → ['button','primary']
 // 컴포넌트에 속하지 않으면 [] 반환 (일반 토큰 탭으로 분류됨).
+/** 도형 하나를 보고 "이게 무엇인가"를 추정한다 — 제안을 그 부품 것만 앞세우기 위해서다.
+ *  ⚠️ **모양·크기·글자만 본다.** 못 정하면 null 을 돌려주고 종전처럼 전부 보여 준다(추측 금지).
+ *  판정 기준(river 승인 2026-09-21 "응 그렇게 해줘"):
+ *    · 채움 + 가운데 글자 1개 + 높이 24~60 + 너비 ≥ 높이×1.6 → 버튼
+ *    · 완전히 둥근(반경 ≥ 높이/2) 낮은 알약 + 글자 → 칩
+ *    · 테두리 + 왼쪽 정렬 글자(또는 글자 없음) + 높이 24~60 → 입력칸(form-control)
+ *    · 아주 큰 면(320×320 이상 또는 화면 폭에 가까운 큰 면) → 배경
+ *  글자·아이콘 노드는 **자기를 감싼 도형의 추정**을 물려받는다(버튼 안 글자 = 버튼 라벨). */
+function guessPartKind(node: SceneNode, depth = 0): PartGuess | null {
+  const num = (v: any): number | null => (typeof v === "number" && isFinite(v) ? v : null);
+  const self = (): PartGuess | null => {
+    let w = num((node as any).width), h = num((node as any).height);
+    if (w === null || h === null || h <= 0 || w <= 0) return null;
+    let radius = num((node as any).cornerRadius);
+    let fills: any = [], strokes: any = [];
+    try { fills = (node as any).fills; } catch (e) { fills = []; }
+    try { strokes = (node as any).strokes; } catch (e) { strokes = []; }
+    const hasFill = Array.isArray(fills) && fills.some((p: any) => p && p.visible !== false);
+    const hasStroke = Array.isArray(strokes) && strokes.some((p: any) => p && p.visible !== false);
+    // 안쪽 글자 — 바로 아래 2단까지만 본다(깊은 화면 전체를 세지 않기 위해).
+    const texts: TextNode[] = [];
+    const collect = (n: SceneNode, d: number): void => {
+      if (d > 2) return;
+      let kids: any;
+      try { kids = (n as any).children; } catch (e) { return; }
+      if (!Array.isArray(kids)) return;
+      for (const c of kids as SceneNode[]) {
+        if (c.type === "TEXT") texts.push(c as TextNode);
+        else collect(c, d + 1);
+      }
+    };
+    collect(node, 0);
+    const oneText = texts.length === 1 ? texts[0] : null;
+    const centered = !!oneText && (() => {
+      try { return oneText.textAlignHorizontal === "CENTER"; } catch (e) { return false; }
+    })();
+    const leftAligned = !!oneText && (() => {
+      try { return oneText.textAlignHorizontal === "LEFT"; } catch (e) { return false; }
+    })();
+    const pill = radius !== null && radius >= h / 2 - 1;
+    if (h >= 20 && h <= 40 && pill && oneText && hasFill) {
+      return { category: "chip", label: "칩", why: `${Math.round(w)}×${Math.round(h)} 둥근 알약에 글자 1개` };
+    }
+    if (hasFill && oneText && centered && h >= 24 && h <= 60 && w >= h * 1.6) {
+      return { category: "button", label: "버튼", why: `${Math.round(w)}×${Math.round(h)} 채움 + 가운데 글자` };
+    }
+    if (hasStroke && h >= 24 && h <= 60 && w >= h * 1.6 && (!oneText || leftAligned)) {
+      return { category: "form-control", label: "입력칸", why: `${Math.round(w)}×${Math.round(h)} 테두리 + 왼쪽 글자` };
+    }
+    if (hasFill && ((w >= 320 && h >= 320) || w * h >= 320 * 480 * 0.6)) {
+      return { category: "bg", label: "배경", why: `${Math.round(w)}×${Math.round(h)} 큰 면` };
+    }
+    return null;
+  };
+  const mine = self();
+  if (mine) return mine;
+  // 글자·아이콘·작은 조각은 자기를 감싼 도형의 정체를 물려받는다.
+  if (depth >= 3) return null;
+  const parent = node.parent;
+  if (!parent || !("id" in parent) || parent.type === "PAGE" || parent.type === "DOCUMENT") return null;
+  return guessPartKind(parent as SceneNode, depth + 1);
+}
+
 function getComponentContext(node: SceneNode): string[] {
   const isComponentLike = (n: BaseNode) =>
     n.type === "COMPONENT" || n.type === "COMPONENT_SET" || n.type === "INSTANCE";
@@ -621,7 +690,8 @@ function pickSuggestions(
   paintProp: "fills" | "strokes",
   nodeKind: NodeKind,
   contextSegments: string[],
-  externalVarName?: string
+  externalVarName?: string,
+  guess?: PartGuess | null
 ): Suggestion[] {
   const roles = decideRoles(nodeKind, paintProp, externalVarName);
   const exactList = byHex[hex] || [];
@@ -645,7 +715,9 @@ function pickSuggestions(
     if (!hasRoleMatch) continue;
 
     const cat = categoryOf(v.name);
-    const isComponentMatch = contextSegments.indexOf(cat) >= 0;
+    // 모양으로 읽은 정체도 '그 부품이 맞다'는 근거로 쓴다 — 인스턴스가 아니라 맨 도형이면
+    //   componentContext 가 비어 있어 종전에는 전 카테고리가 같은 값으로 늘어섰다.
+    const isComponentMatch = contextSegments.indexOf(cat) >= 0 || (!!guess && guess.category === cat);
     const isExact = exactIds.has(v.id);
 
     let matchType: Suggestion["matchType"];
@@ -664,6 +736,7 @@ function pickSuggestions(
       variableName: v.name,
       collectionName: v.collectionName,
       confidence,
+      exact: isExact,
       matchType,
       category: cat,
     });
@@ -678,6 +751,7 @@ function pickSuggestions(
       variableName: v.name,
       collectionName: v.collectionName,
       confidence: "medium",
+      exact: true,
       matchType: "exact",
       category: v.collectionName === FOUNDATION_COLLECTION ? "foundation" : categoryOf(v.name),
     });
@@ -712,7 +786,11 @@ function pickSuggestions(
 
   // 정렬: 컨텍스트 매칭 카테고리 → 점수순 (matchType 우선, exact 우선)
   const orderMap: Record<string, number> = { "role+component": 0, "role": 1, "exact": 2, "near": 3 };
+  // 모양으로 읽은 정체(버튼·칩·입력칸·배경)가 있으면 그 카테고리를 맨 앞에 세운다.
+  const guessRank = (cat: string): number => (guess && guess.category === cat ? 0 : 1);
   result.sort((a, b) => {
+    const ag = guessRank(a.category), bg = guessRank(b.category);
+    if (ag !== bg) return ag - bg;
     const aCtx = contextSegments.indexOf(a.category) >= 0 ? 0 : 1;
     const bCtx = contextSegments.indexOf(b.category) >= 0 ? 0 : 1;
     if (aCtx !== bCtx) return aCtx - bCtx;
@@ -798,7 +876,8 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?:
             externalVarName = vTemp.name;
           }
         }
-        const suggestions = pickSuggestions(hex, byHex, v2, prop, kind, ctx, externalVarName);
+        const guess = kind === "shape" || kind === "text" || kind === "icon" ? guessPartKind(n) : null;
+        const suggestions = pickSuggestions(hex, byHex, v2, prop, kind, ctx, externalVarName, guess);
         // 노드가 어떤 컴포넌트/인스턴스에 속하면 컴포넌트 매칭 탭으로 분류
         // (V2에 해당 컴포넌트 토큰이 정의되어 있는지 여부는 suggestion 점수에만 영향)
         const hasComponentMatch = ctx.length > 0;
@@ -812,6 +891,7 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?:
           if (v2CollectionIds.has(v.variableCollectionId)) continue;
           pushGroupedIssue(n, {
             nodeKind: kind,
+            guess: guess || undefined,
             property: prop,
             paintIndex: i,
             reasonKind: "external-var",
@@ -826,6 +906,7 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?:
         } else {
           pushGroupedIssue(n, {
             nodeKind: kind,
+            guess: guess || undefined,
             property: prop,
             paintIndex: i,
             reasonKind: "unbound-hex",
@@ -842,7 +923,7 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?:
     }
   }
 
-  const highCount = issues.filter((x) => x.suggestions.length === 1 && x.suggestions[0].confidence === "high").length;
+  const highCount = issues.filter((x) => autoPickIndex(x) !== null).length;
   return { issues, stats: { scanned: allNodes.length, issuesCount: issues.length, highCount } };
 }
 
@@ -1197,12 +1278,26 @@ async function applyOne(issue: Issue, suggestionIndex: number): Promise<boolean>
   return true;
 }
 
+/** 물어보지 않고 바꿔도 되는 자리 — **모양으로 읽은 정체 + 색이 정확히 같은 토큰**이 딱 하나일 때만.
+ *  (river 지시 2026-09-21 "확실하면 자동 교체". 애매하면 자동으로 안 바꾸고 그대로 묻는다.) */
+function autoPickIndex(issue: Issue): number | null {
+  // 종전 규칙 — 후보가 아예 하나뿐이고 확신도가 높으면 그대로.
+  if (issue.suggestions.length === 1 && issue.suggestions[0].confidence === "high") return 0;
+  if (!issue.guess) return null;
+  const hits: number[] = [];
+  for (let i = 0; i < issue.suggestions.length; i++) {
+    const s = issue.suggestions[i];
+    if (s.category === issue.guess.category && s.exact === true && s.matchType === "role+component") hits.push(i);
+  }
+  return hits.length === 1 ? hits[0] : null;
+}
+
 async function applyHighConfidence(issues: Issue[]): Promise<number> {
   let n = 0;
   for (const i of issues) {
-    if (i.suggestions.length === 1 && i.suggestions[0].confidence === "high") {
-      if (await applyOne(i, 0)) n++;
-    }
+    const pick = autoPickIndex(i);
+    if (pick === null) continue;
+    if (await applyOne(i, pick)) n++;
   }
   return n;
 }

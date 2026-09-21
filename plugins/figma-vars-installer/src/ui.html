@@ -2744,14 +2744,22 @@ function rerenderTab() {
       }
     }
     if (!curCat || !catGroups[curCat]) {
+      // 모양으로 읽은 정체(버튼·칩·입력칸·배경)가 있으면 그 카테고리를 먼저 편다.
+      const guessCat = issue.guess && catGroups[issue.guess.category] ? issue.guess.category : null;
       const ctxMatch = (issue.componentContext || []).find((c) => catGroups[c]);
-      curCat = ctxMatch || (catKeys[0] || "");
+      curCat = guessCat || ctxMatch || (catKeys[0] || "");
     }
     activeCat[issue.id] = curCat;
 
-    const chipsHtml = catKeys.length === 0 ? '' : catKeys.map((cat) => {
+    const guessCatKey = issue.guess ? issue.guess.category : null;
+    // 추정한 부품을 맨 앞으로 — 눌러야 할 칩을 찾아다니지 않게 한다.
+    const orderedCatKeys = guessCatKey && catGroups[guessCatKey]
+      ? [guessCatKey].concat(catKeys.filter((c) => c !== guessCatKey))
+      : catKeys;
+    const chipsHtml = orderedCatKeys.length === 0 ? '' : orderedCatKeys.map((cat) => {
       const isCtx = (issue.componentContext || []).indexOf(cat) >= 0;
-      return `<button class="cat-chip ${cat === curCat ? 'active' : ''}" data-cat="${cat}" data-issue-id="${issue.id}">${catLabel(cat)}${isCtx ? ' ●' : ''}<span class="ct">${catGroups[cat].length}</span></button>`;
+      const isGuess = cat === guessCatKey;
+      return `<button class="cat-chip ${cat === curCat ? 'active' : ''}" data-cat="${cat}" data-issue-id="${issue.id}">${catLabel(cat)}${isGuess ? ' ★' : (isCtx ? ' ●' : '')}<span class="ct">${catGroups[cat].length}</span></button>`;
     }).join("");
 
     const pickedIdx = picks[issue.id];
@@ -2785,6 +2793,7 @@ function rerenderTab() {
       <div class="issue-meta">
         ${escape(colorWhyText(issue))} · <span class="hex">${issue.hex}</span>${issue.offGuide ? ` · <span class="offguide-note">가이드에 없는 색</span>` : ''}
       </div>
+      ${issue.guess ? `<div class="issue-meta">이 도형을 <b>${escape(issue.guess.label)}</b>으로 봤습니다 (${escape(issue.guess.why)}) — 다르면 아래에서 다른 칩을 고르세요.</div>` : ''}
       <div class="cat-chips">${chipsHtml}</div>
       <div class="sugs">${sugsHtml}</div>
     `;
