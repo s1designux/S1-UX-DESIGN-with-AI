@@ -54,3 +54,12 @@ default 는 thumb(썸네일 48)만 예외이고 나머지는 73 으로 같다. c
 재검사: `ui:guide:render` ✅ · `ui:liveness` ✅ (검수 화면 380/380) · `ui:contract` ✅.
 
 관찰 1번(높이 갈림)은 조율자가 정본·배포본 쪽에서 고치는 중이라 이 화면은 손대지 않았다 — 배포본이 갱신되면 검수 화면이 그대로 따라온다.
+
+## 덧붙임 (2026-09-21 · 모바일 전용 계약으로 축 재편)
+river 지시("오늘 만든 리스트는 모바일에서만 사용하는 패턴이야. 호버는 삭제해주고 pressed의 배경을 hover배경값으로 교체하면돼")에 맞춰 검수 화면의 축을 **Type 7 × State 3(Default·Pressed·Disabled) = 21칸**으로 다시 짰다. Hover 칸과 Density(Compact) 칸을 걷어냈고, 마크업에서 `data-density` 속성과 "Compact 는 설명 줄이 없다" 분기도 함께 사라졌다 — 이제 일곱 유형 모두 제목 + 설명 한 벌만 그린다. 눌림 배경은 Hover 가 쓰던 한 단계 밝은 배경(`--color-bg-level-1`)이다. 이 화면은 여전히 시각·동작 코드를 갖지 않고 `ui-library/dist` 를 그대로 소비한다(색·간격·높이는 전부 `s1-ui.css` 가 그린다).
+
+설명문(review-note)도 새 계약대로 고쳤다: ①**모바일에서만 쓰는 줄**이라 Hover 가 없다 ②높이를 숫자로 고정하지 않고 여백 토큰(12)과 글 자리 최소 높이(44)가 68을 만든다 ③줄 사이 구분선은 목록을 그리는 화면이 긋는다 ④키보드 초점 표시는 브라우저 기본에 맡긴다. 비활성 줄 안의 체크·토글을 함께 끄는 앞선 처리는 그대로 유지했다.
+
+실제 렌더 확인(http://localhost, 1400×1000, 라이트·다크 두 패널): 패널마다 **21칸**, 상태 3종, `data-density` 잔존 0건, **줄 높이는 일곱 유형 전부 68 한 값**(이전 보고의 "높이 갈림" 관찰은 배포본 수정으로 해소됨). 눌림 배경은 라이트 `#FAFAFA`(level-1), 다크 `rgb(19,20,24)`(level-1)로 Default 대비 한 단계만 밝다. 배포본에도 `:hover` 규칙과 `bg/level-2` 눌림 배경이 남아 있지 않음을 확인했다(`ui-library/dist/components/list-row.css`, `s1-ui.css`).
+
+재검사: `ui:guide:render` ✅ (27종 × PC·Mobile) · `ui:liveness` ✅ (검수 화면 370/370) · `ui:contract` ✅ (errors=0). 합격 판정은 하지 않는다 — 시나리오 F(component-verifier)로 넘긴다.

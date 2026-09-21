@@ -1237,8 +1237,6 @@ async function buildToggle(maps: BuildMaps, originY: number): Promise<{ set: Com
 // ── List Row (목록 한 줄) — 왼쪽 칸 + 가운데 글 + 오른쪽 칸 ───────────────────
 //   ▸ 높이를 숫자로 고정하지 않는다. **위아래 여백(spacing 토큰) + 글 자리**로 높이가 잡힌다.
 //     (river 2026-09-21: "간격을 패딩 토큰으로 적용하면 자연스럽게 전체 하이트가 잡히는 거지")
-//   ▸ Density 는 **목록이 정한다** — 같은 목록 안에서 줄마다 높이가 달라지면 안 되므로
-//     Default(제목+설명·여백 16) / Compact(제목만·여백 12) 를 목록 단위로 고른다(river 2026-09-21).
 //   ▸ Type 은 "그 줄이 하는 일"로 가른다 — 눌러 들어가는 줄(Nav)·값을 보여주고 들어가는 줄(Value)·
 //     보여주기만 하는 줄(Read)·고르는 줄(Pick)·동의 줄(Agree)·켜고 끄는 줄(Switch)·그림 줄(Thumb).
 //   ▸ 서비스별 실제 수치(모두앱 74·48 등)는 정본에 넣지 않는다 — 서비스 프로파일이 갖는다.
@@ -1250,11 +1248,14 @@ async function buildListRow(maps: BuildMaps, originY: number): Promise<{ set: Co
   //   : buildBottomSheetOption 의 List 행(아바타 40 · 패딩 20/12 · left.itemSpacing 12 · col.itemSpacing 2 · chevron 24).
   //   글 자리 최소 44(sizing/44) — 제목만 있는 줄과 설명이 붙은 줄(41)의 높이를 같게 만든다.
   //   그래서 줄 높이는 12 + 44 + 12 = 68 로 **유형과 무관하게 같다**(river 2026-09-21).
+  //   ▸ 밀도 축은 두지 않는다 — 한 벌만 쓴다(river 2026-09-21 "컴팩트 없이 디폴트만 있으면 돼").
+  //   ▸ 모바일 전용이라 Hover 가 없다. 눌림 배경만 한 단계 밝은 bg/level-1 을 쓴다.
   const types = ["Nav", "Value", "Read", "Pick", "Agree", "Switch", "Thumb"];
-  const states = ["Default", "Hover", "Pressed", "Disabled"];
+  // 모바일 전용 부품이라 Hover 가 없다 — 손가락에는 마우스오버가 없다(river 2026-09-21).
+  //   눌림(Pressed) 배경은 Hover 가 쓰던 한 단계(level-1)를 그대로 쓴다.
+  const states = ["Default", "Pressed", "Disabled"];
 
-  const bgKey = (st: string) =>
-    st === "Hover" ? "color/bg/level-1" : st === "Pressed" ? "color/bg/level-2" : "color/bg/level-0";
+  const bgKey = (st: string) => (st === "Pressed" ? "color/bg/level-1" : "color/bg/level-0");
   const titleKey = (st: string) => (st === "Disabled" ? "color/text/state/disabled" : "color/text/title/primary");
   const descKey  = (st: string) => (st === "Disabled" ? "color/text/state/disabled" : "color/text/body/tertiary");
   const valueKey = (st: string) => (st === "Disabled" ? "color/text/state/disabled" : "color/text/body/primary");

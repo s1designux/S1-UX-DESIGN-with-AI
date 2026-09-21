@@ -783,3 +783,251 @@ trail.appendChild(await makeIconInstance("chevron", scv(maps, iconKey(st)), 24, 
 ## 6차 한 줄 판정 — **최종**
 
 **pass** — Gate 13 검증 기록을 실행해도 된다. 조건 없음(5차의 커밋 전 선행조치도 이미 `components:facts` 초록으로 해소).
+
+---
+---
+
+# 4-verification (정본) — **7차 재검증** (Hover 축 제거 델타)
+
+- 검증자: 🤖 component-verifier (시나리오 D) · 일자: 2026-09-21
+- 입력: 6차 보고서(pass) + **호출자 기계검사 표**(§검증 입력 계약 ① 충족) + 선캡처 렌더(`screens/matrix-pc-light.png`·`matrix-pc-dark.png`) + 6차 이후 변경분(`git diff`)
+- 범위: **델타 재검증** — 축 축소(State 4→3)가 닿은 범위 + 호출자 지정 7항목.
+  - **이번에 재확인하지 않음(6차 PASS 승계):** `minHeight`→`sizing/44` 바인딩 · 화살표 폴백 `CHEVRON_RIGHT_SVG` · `tokens.sizing` 2:2 정합 · 수치 선례 7/7 대조. 근거: 정본 diff 7줄이 전부 `states`/`bgKey` 두 곳이고 해당 코드의 지문이 동일하며, 검사 규칙도 강화되지 않았다.
+- 한계: **Figma 실물 캔버스 렌더는 7차에도 미검증**(figma-local ConnectionRefused · figma MCP 미인증).
+
+## 7-0. 결정론 게이트 — 검증자 재실행
+
+호출자 표 5건을 재실행해 종료코드만 확인했고, **축 축소가 건드리는 게이트 4건을 추가로 실행**했다.
+
+| 게이트 | 호출자 표 | 검증자 재실행 |
+|---|---|---|
+| `installer:check` / `components:keycheck` / `components:anatomy` / `components:iconpolicy` / `components:facts` | ✅ ×5 | ✅ exit 0 ×5 |
+| `ui:build:check` · `ui:contract` · `ui:test:check` | 표에 없음 | ✅ exit 0 ×3 |
+| **Gate 34 (정본신설승인)** | 표에 없음 | ⚠️ **경고 1건** — `uistate:list-row.hover` 미축소 (7-4 참조) |
+| `gate:check` 전체 | 표에 없음 | ❌ error 1건 = **Gate 13 자신**(이 검증 기록 대기). 그 외 error 0 |
+
+## 7-1. ① Hover 흔적 — ✅ **PASS**
+
+| 표면 | 확인 |
+|---|---|
+| 정본 `states` | `build-components.ts:1256` `["Default","Pressed","Disabled"]` |
+| 정본 `bgKey` | `:1258` 3항 연산자 → Pressed 단일 분기. `Hover` 문자열 분기 0건 |
+| 변형 이름 | `:1266` `Type=${t}, State=${st}` — mock 실행 결과 축 `State:["Default","Pressed","Disabled"]` |
+| spec 표 | `:1395` `colHeaders: states` — 열이 자동으로 3열. 하드코딩 라벨 없음 |
+| 주석 | `:1254-1255` 의 "Hover" 는 **없다는 사실의 설명문**이라 잔재가 아니다 |
+| 계약·facts·배포본 | `list-row.json` State 3 · `figma.propertyMap.state` 3 · `component-facts` 축 3 · manifest `states`/`canonicalStateMap`/`nativeStates` 에서 hover·`:hover` 0건 · `list-row.css` `:hover`·`@media (hover:hover)` **0건** · example `data-state="hover"` 0건 · `platform/contract.json` states 3 |
+
+남은 `data-state="hover"` 전수는 **Table 컴포넌트**(다른 부품)뿐이다.
+
+## 7-2. ② 눌림 배경 = `color/bg/level-1` — ✅ **PASS** / `level-2` 완전 소멸 — ❌ **FAIL(a)**
+
+```ts
+// build-components.ts:1258
+const bgKey = (st: string) => (st === "Pressed" ? "color/bg/level-1" : "color/bg/level-0");
+```
+
+- 눌림 배경은 정확히 `color/bg/level-1` 이다 — **PASS**. 배포본도 같다(`list-row.css:53,57` `var(--color-bg-level-1)`, 빌더 실측 `rgb(250,250,250)`).
+- **그러나 `color/bg/level-2` 는 이 부품에서 사라지지 않았다.** 썸네일 자리 채움으로 그대로 살아 있다:
+
+```ts
+// build-components.ts:1311  (Thumb 유형의 그림 자리)
+box.fills = [boundPaint(scv(maps, "color/bg/level-2"))];
+```
+
+기계 증거: `component-facts.json` 의 `List Row.tokenBindings` 에 **`color/bg/level-2` 가 그대로 있다**(mock 실행 산출물 = 정본이 실제로 바인딩한다는 뜻). facts diff 도 `sourceHash` + State 축 2줄뿐이라 이 바인딩은 건드려지지 않았다.
+
+**❌(a)-1 — 계약이 정본보다 적게 선언한다.** `registry/components/list-row.json:124-127` 의 `tokens.bg` 가 `["color/bg/level-0","color/bg/level-1"]` 로 줄어 `level-2` 를 뺐다. 상태 배경으로서의 `level-2` 는 사라진 게 맞지만 **부품이 바인딩하는 토큰 목록에서는 빠지면 안 된다**(썸네일이 쓴다). 파생(계약)이 정본을 못 따라간 것이므로 저울질 없이 계약을 고친다(H6).
+
+**❌(a)-2 — 배포본 주석이 사실과 다르다.**
+
+```css
+/* ui-library/src/components/list-row/list-row.css:4  (dist/components/list-row.css:4 동일) */
+   한 단계(bg/level-1)를 그대로 쓴다. bg/level-2 는 이 부품에서 더는 쓰지 않는다.
+```
+
+같은 파일 `:68` 이 `background: var(--color-bg-level-2);` 로 썸네일을 그린다. 배포되는 산출물 안에 **거짓 진술**이 남았다.
+
+## 7-3. ③ 정본·계약·배포본 3자 정합 — ⚠️ 상태·칸수 PASS / 모바일 표기 🟡
+
+| 항목 | 정본 | 계약(registry) | 배포본 |
+|---|---|---|---|
+| 상태 3종 | ✅ `:1256` | ✅ State 3 · propertyMap 3 | ✅ manifest states 3 · contract states 3 |
+| 21칸 | ✅ mock 축 7×3 | ✅ `figma.note` "21칸(7 × 3)" | ✅ css 머리말 "21칸" · 검수 패널 "21칸" |
+| 모바일 전용 | ✅ 주석 `:1254` | ✅ `_meta.platform`·`platformSupport{pc:false}` | 🟡 **필드 없음** — `states.pressed` 산문에만 적혔다 |
+
+🟡 배포본 manifest 에 플랫폼 필드가 없는 것은 이 저장소 전반의 관례다(`mobile-header` 도 산문 1줄뿐). 기계가 읽을 자리가 없으므로 ❌ 로 올리지 않고, 필드 신설은 river 결정 사항으로 남긴다.
+
+## 7-4. ④ 축 축소로 생긴 죽은 코드·끊긴 참조 — ⚠️ 코드 PASS / 장부 2건 ❌(a)
+
+- `BUILT_COMPS` 키 `ListRow:<Type>:<State>`(`:1390`) — **형태 무변경**. 외부 참조 0건(`grep 'ListRow:'` → 정의 1곳뿐).
+- `BUILT_SETS["List Row"]` 없음(3차에 제거) · `BUILD_DEPENDENCIES`(`:7215`) · `COMPONENT_CATEGORIES_GRID`(`:7169`) · runner(`:7472`) **무변경**.
+- `cellAt`·`colHeaders`·`rowLabels` 가 전부 `types`/`states` 배열에서 파생돼 하드코딩 잔재 없음.
+- `ui-library/scripts/test.mjs` 의 `componentIds` 에 `list-row` 그대로 등록.
+
+**❌(a)-3 — 이행 장부가 두 축이나 낡았다.**
+
+```
+registry/governance/ui-library-migration.json  (List Row 레코드)
+  "reverifyTrigger": "정본 buildListRow Type×Density×State 구성·geometry·…"
+  "promotionDecision": "… 56칸(Type 7 × Density 2 × State 4) 전부 구현 … Density 는 data-density 를 …"
+```
+
+`uiLibraryStatus: "candidate"` 인 **현재 상태 기록**이다(옛 결정의 보존본이 아니다). Density 는 5차에, State 4 는 이번에 사라졌는데 둘 다 반영되지 않아 56칸·2축·`data-density` 사용 규칙이 살아 있는 것처럼 읽힌다.
+
+**❌(a)-4 — Gate 34 가 직접 경고하는 미완 절차.**
+
+```
+⚠️  Gate 34: 정본에서 사라진 항목 1건 — 의도한 삭제면 --update-baseline 으로 축소하세요: uistate:list-row.hover
+```
+
+`registry/governance/canon-additions-baseline.json` 에 `uistate:list-row.hover`(items:618 · approvals:1376)가 남아 있다. 이 baseline 은 과거 기록이 아니라 **살아 있는 허용목록**이다(`canon-addition-check.js:168-173` — 여기 있는 항목은 승인 확인 없이 통과한다). 지금 상태로는 누군가 hover 를 다시 붙여도 Gate 34 가 새 승인을 요구하지 않는다. 게이트가 지정한 절차(`--update-baseline`, 축소 전용)가 아직 실행되지 않았다.
+
+## 7-5. ⑤ 높이 68 — ✅ **PASS**(도출 + 실측 교차)
+
+- mock 산출 geometry: `when:"all"` 하나 — 루트가 유형·상태와 무관하게 `counterAxisSizingMode:"AUTO"` · padding 상하 `spacing/12` 로 **동일**하다. 높이를 가르는 분기가 없다.
+- 자식 최대 높이 무변동(text 44 · thumbnail 40 · trail 24 · control 18 · toggle 20) → 12+44+12 = **68**.
+- 호출자 선캡처 http 실측 **21칸 + 제목만 7칸 = 28칸 전부 68.0**.
+- 선캡처 육안 대조(`matrix-pc-light.png`): 3열 × 7행 21칸 전부 같은 줄 높이, 제목만 줄 7칸도 같은 높이. 깨짐·줄바꿈·밀림 없음.
+- 🟡 (판정 아님) 눌림 배경 `#FAFAFA` 가 기본 `#FFF` 와 거의 구분되지 않아 선캡처에서는 눌림 열이 기본 열과 같아 보인다. **river 지시("pressed의 배경을 hover배경값으로 교체")대로의 결과**라 결함이 아니며, 빌더의 computed-style 실측으로 값 자체는 확인됐다.
+
+## 7-6. ⑥ `component-facts` tokenBindings — ✅ **PASS**(단, 호출자 기대가 틀렸다)
+
+- diff 는 `_meta.sourceHash` + `State` 축에서 `"Hover"` 1줄 제거 **뿐**. tokenBindings 21개는 한 줄도 변하지 않았다.
+- 호출자 요청은 "level-2 가 빠지고" 였으나 **빠지지 않는 것이 정답**이다 — 썸네일이 실제로 바인딩하기 때문이다(7-2). facts 는 mock 실행 산출물이라 정본을 그대로 비춘 것이고, 어긋난 쪽은 facts 가 아니라 **계약의 `tokens.bg`** 다.
+- 다른 컴포넌트 항목 0줄 변동.
+
+## 7-7. ⑦ 기존 코드 훼손 — ✅ **PASS**
+
+- 정본 diff 는 **7줄, 헝크 1개**(`:1254-1258`). `buildListRow` 안이고 그것도 `states`/`bgKey` 두 곳뿐. 다른 함수·러너·카테고리 무변경.
+- 🟡 **이월 지적(이번 델타가 만든 것이 아님)** — 함수 머리말 `build-components.ts:1240-1241` 이 아직 제거된 축을 설명한다: "Density 는 목록이 정한다 … Default(제목+설명·여백 16) / Compact(제목만·여백 12)". 계약의 "촘촘 밀도는 두지 않는다" 와 정면으로 어긋난다. 5차 축소 때 함께 지웠어야 했고 4~6차가 못 잡았다. 정본 파일 안의 거짓 설명이므로 이번에 함께 정리할 것을 권고한다.
+- 🟡 오타 — `pages/ui-review.html` List Row 설명문 "한 벌만 **쓴니다**" → "씁니다".
+
+---
+
+## 7차 항목별 판정 요약
+
+| # | 항목 | 판정 |
+|---|---|---|
+| ① | Hover 흔적(이름·bgKey·주석·spec 표·전 표면) | ✅ **PASS** |
+| ② | 눌림 배경 = `color/bg/level-1` | ✅ **PASS** |
+| ② | `color/bg/level-2` 완전 소멸 | ❌ **FAIL (a) 2건** — 썸네일이 여전히 쓴다. 계약 `tokens.bg` 누락 · css 주석 거짓 진술 |
+| ③ | 정본·계약·배포본 3자 정합(상태 3·21칸·모바일) | ✅ PASS (🟡 배포본 플랫폼 필드 없음 — 관례) |
+| ④ | 죽은 코드·끊긴 참조 | 코드 ✅ PASS / ❌ **FAIL (a) 2건** — 이행 장부 56칸·Density 잔존 · Gate 34 baseline 미축소 |
+| ⑤ | 높이 68 (21칸 + 제목만 7칸) | ✅ **PASS** |
+| ⑥ | facts tokenBindings | ✅ **PASS** (호출자 기대와 반대가 정답) |
+| ⑦ | 기존 코드 훼손 | ✅ **PASS** (🟡 이월: 머리말 Density 설명 · 오타) |
+| 0 | 결정론 게이트 | ✅ 9/9 exit 0 · Gate 34 ⚠️ 1 · gate:check error 는 Gate 13 자신뿐 |
+
+- ❌(a): **4건** · ❓(c): 0건 · 🟡(b): 4건 · BLOCKED: 0건
+- 승계(이번에 재확인하지 않음): 6차 ①`minHeight` 바인딩 · ②화살표 폴백 상수 · ③`tokens.sizing` · 5차 수치 선례 7/7
+- 미검증(정직 표기): **Figma 실물 캔버스 렌더** — 1~7차 내내 MCP 연결 불가
+
+## 7차 한 줄 판정
+
+**fail** — 축 축소 자체(Hover 제거·눌림 배경 level-1·21칸)는 정본부터 배포본까지 **전 표면 일치로 PASS** 다. 막는 것은 `level-2` 를 "완전히 없앴다"고 적은 두 곳(계약 `tokens.bg`·css 주석)과 따라오지 않은 장부 두 곳(이행 기록·Gate 34 baseline)뿐이며, 넷 다 한 줄짜리 정리다. Gate 13 검증 기록은 아직 실행하면 안 된다.
+
+---
+---
+
+# 4-verification (정본) — **8차 재검증** (7차 ❌ 4건 델타)
+
+- 검증자: 🤖 component-verifier (시나리오 D) · 일자: 2026-09-21
+- 입력: 7차 보고서 + **호출자 기계검사 표 10건**(§검증 입력 계약 ① 충족) + 7차 이후 변경분
+- 범위: **델타 재검증** — 7차 ❌ 4건 + 🟡 이월 2건 + 그 수정이 닿은 표면만.
+  - **이번에 재확인하지 않음(7차 PASS 승계):** ① Hover 흔적 전수 · ② 눌림 배경 `bg/level-1` · ⑤ 높이 68(21+7칸) · ⑥ facts tokenBindings 내용 · ⑦ 정본 헝크 범위. 근거: 8차 변경이 **주석·JSON 서술·baseline 축소뿐**이라 스타일 값·축·기하가 한 줄도 바뀌지 않았고(아래 8-5 로 실증), 검사 규칙도 강화되지 않았다. 7차 선캡처(`screens/matrix-*.png`)를 그대로 유효한 근거로 쓴다.
+- 한계: **Figma 실물 캔버스 렌더는 8차에도 미검증**(MCP 연결 불가 — 1~8차 동일).
+
+## 8-0. 결정론 게이트 — 검증자 재실행 **10/10**
+
+| 게이트 | 호출자 표 | 검증자 재실행 |
+|---|---|---|
+| `installer:check`·`components:keycheck`·`components:anatomy`·`components:iconpolicy`·`components:facts` | ✅ ×5 | ✅ exit 0 ×5 |
+| `ui:build:check`·`ui:contract`·`ui:test:check`·`ui:version` | ✅ ×4 | ✅ exit 0 ×4 |
+| **Gate 34** | ✅ 경고 0 | ✅ `정본 신설 0건 — 추적 661항목 전부 동결 목록과 일치` |
+| `gate:check` 전체 | 표에 없음 | ❌ **error 1건 = Gate 13 자신**(이 검증 기록 대기). 경고 21→**20**(Gate 34 경고 소멸). 그 외 error 0 |
+
+## 8-1. ❌(a)-1 계약 `tokens.bg` 복원 — ✅ **PASS**
+
+```json
+"bg": ["color/bg/level-0", "color/bg/level-1", "color/bg/level-2"],
+"_bgNote": "level-0 기본 · level-1 눌림 · level-2 는 썸네일 자리 채움. Hover 는 없다(모바일 전용)."
+```
+
+- 계약 3개 : `component-facts.json` 실측 bg 바인딩 3개(`level-0`·`level-1`·`level-2`) **정확히 일치**.
+- `_bgNote` 의 주장도 코드와 맞다 — `build-components.ts:1258`(상태 배경 level-0/1)·`:1311`(썸네일 level-2). **상태 배경으로서의 level-2 는 없고, 썸네일로서의 level-2 는 있다**는 구분이 정확히 서술됐다.
+
+## 8-2. ❌(a)-2 배포본 주석의 거짓 — ✅ **PASS**
+
+```css
+/* list-row.css:4 (src·dist·번들 s1-ui.css:4297 전부 동일)
+   … bg/level-2 는 썸네일 자리 채움에만 쓴다(배경 상태값으로는 쓰지 않는다). */
+```
+
+- 같은 파일 `:68` 의 `background: var(--color-bg-level-2)`(thumbnail)와 이제 일치한다.
+- **세 벌 모두 갱신 확인** — `src/components/list-row/list-row.css` · `dist/components/list-row.css` · 합본 `dist/s1-ui.css`. 합본에서 누락되는 흔한 실수가 없다.
+- `"더는 쓰지 않는다"` 문구 전수 검색 → **저장소 전체 0건**.
+
+## 8-3. ❌(a)-3 이행 장부 — ✅ **PASS**
+
+- `reverifyTrigger` : `Type×Density×State` → **`Type×State`**.
+- `promotionDecision` : 56칸 → **21칸(Type 7 × State 3)**, 모바일 전용·Hover 없음·눌림 `bg/level-1`·밀도 축 없음·높이 68·수치 선례 출처까지 명시. **`data-density` 사용 규칙 문장 삭제 확인**(전수 검색 0건).
+- 이 레코드의 모든 사실 주장을 코드·계약과 대조했고 **틀린 것 0건**이다(21칸·State 3·level-1·68·선례 6종·자체 결정 44 하나 — 전부 실재).
+
+## 8-4. ❌(a)-4 Gate 34 baseline 축소 — ✅ **PASS**
+
+| 확인 | 결과 |
+|---|---|
+| `items` 에서 제거 | ✅ `uistate:list-row.hover` 없음. 남은 것은 `default`·`pressed`·`disabled` 3종 |
+| `approvals` 에 기록 보존 | ✅ 남아 있음 — **올바르다.** `items` 는 살아 있는 허용목록, `approvals` 는 승인 이력이라 이력을 지우면 과거 근거가 사라진다 |
+| 과잉 축소 여부 | ✅ 없음 — `count 661 = items 661` 로 선언·실제 일치, 다른 컴포넌트 항목 손실 0 |
+| 재도입 차단 | ✅ 이제 hover 를 되붙이면 Gate 34 가 **미승인 신설**로 잡는다(7차 지적의 핵심이 해소) |
+
+## 8-5. 새로 어긋난 곳 — ✅ **없음**
+
+| 확인 대상 | 결과 |
+|---|---|
+| 정본 diff | 헝크 1개(`:1250-1258`) — 주석 2줄 추가 + `states`·`bgKey`. **실행 코드는 7차와 동일** |
+| facts | diff 가 `sourceHash` + `"Hover"` 1줄 제거뿐. tokenBindings 21개·geometry·anatomy 무변동 |
+| 계약 ↔ facts | State 3:3 · bg 3:3 · sizing 2:2 · propertyMap 3 · 21칸 — 전부 일치 |
+| 배포본 manifest ↔ 정본 | states 3 · canonicalStateMap 3 · `nativeStates` 에 `:hover` 없음 · variants 7 |
+| `platform/contract.json` | states `[default, pressed, disabled]` · variants 7 · `canonicalFingerprint` 가 컴포넌트 manifest 와 **동일**(지문 어긋남 없음) |
+| 버전 | 번들 `0.12.1`, 컴포넌트 manifest `0.3.0` — **정상.** 8차는 주석만 바꿔 공개 계약(variant·state·part·속성)이 그대로라 컴포넌트 판을 올릴 이유가 없고, `ui:version` 이 28종 정본 일치로 초록이다 |
+| 검수판 | `pages/ui-review.html` "21칸" 4곳 · 오타 `쓴니다` **0건** |
+| 렌더 | 스타일 **값** 변경 0(주석뿐) → 7차 선캡처 21+7칸 68.0 이 그대로 유효. `ui:build:check`(278 files)·`ui:contract`(errors=0)·`ui:test:check` 로 번들 동등성 확인 |
+
+## 8-6. 🟡 이월 건 — 1건은 해소, **1건은 보고와 달리 미해소**
+
+- ✅ `pages/ui-review.html` 오타 `쓴니다` → 해소(0건).
+- ⚠️ **정본 머리말의 Density 설명은 지워지지 않았다.** 호출자는 "Density 설명 잔재를 지웠고"라고 보고했으나, `git diff` 상 **추가 2줄뿐이고 삭제는 0줄**이다. 그 결과 같은 주석 블록이 자기모순에 빠졌다:
+
+```ts
+// build-components.ts:1240-1241   ← 남아 있는 옛 설명
+//   ▸ Density 는 **목록이 정한다** — … Default(제목+설명·여백 16) / Compact(제목만·여백 12) 를 목록 단위로 고른다
+// build-components.ts:1252        ← 이번에 추가된 정정
+//   ▸ 밀도 축은 두지 않는다 — 한 벌만 쓴다
+```
+
+  판정은 **7차와 같은 🟡 로 유지한다** — 주석이라 동작·파생·기계검사에 영향이 0 이고, 7차에 🟡 로 매긴 것을 사후에 ❌ 로 올리는 것은 판정 기준을 뒤에서 강화하는 것이라 하지 않는다. 다만 **"지웠다"는 보고는 사실과 다르므로** 기록에 남긴다. `:1240-1241` 두 줄 삭제 = 한 번의 편집이다.
+
+---
+
+## 8차 항목별 판정 요약
+
+| # | 7차 | 8차 |
+|---|---|---|
+| ❌(a)-1 계약 `tokens.bg` 에 level-2 복원 | ❌ | ✅ **PASS** — 계약 3 : facts 3 일치, `_bgNote` 서술도 정확 |
+| ❌(a)-2 배포본 주석 거짓 | ❌ | ✅ **PASS** — src·dist·합본 세 벌 모두 정정, 거짓 문구 0건 |
+| ❌(a)-3 이행 장부 56칸·Density | ❌ | ✅ **PASS** — 21칸·Type×State 로 갱신, `data-density` 문장 삭제, 사실 오류 0건 |
+| ❌(a)-4 Gate 34 baseline | ❌ | ✅ **PASS** — `items` 축소·`approvals` 이력 보존·경고 0·과잉 축소 없음 |
+| 새 어긋남(계약↔정본↔manifest↔facts↔장부↔지문) | — | ✅ **없음** |
+| 🟡 오타 | 🟡 | ✅ 해소 |
+| 🟡 정본 머리말 Density 설명 | 🟡 | 🟡 **미해소**(보고와 불일치 — 두 줄 삭제 남음) |
+| 결정론 게이트 | 9/9 + 경고 1 | ✅ **10/10 exit 0 · Gate 34 경고 0** |
+
+- ❌(a): **0건** · ❓(c): 0건 · 🟡(b): 1건 · BLOCKED: 0건
+- 승계(이번에 재확인하지 않음): 7차 ①Hover 전수 · ②눌림 배경 · ⑤높이 68 · ⑥facts 내용 · ⑦헝크 범위 (근거: 8차 변경에 실행 코드·스타일 값이 없음 — 8-5 로 실증)
+- 미검증(정직 표기): **Figma 실물 캔버스 렌더** — 1~8차 내내 MCP 연결 불가. 높이 68 은 도출 + 웹 배포본 http 실측 교차.
+
+## 8차 한 줄 판정 — **최종**
+
+**pass** — Gate 13 검증 기록을 실행해도 된다. 남은 것은 판정을 막지 않는 🟡 한 건(`build-components.ts:1240-1241` 옛 Density 설명 두 줄 삭제)뿐이며, 호출자 보고가 이 건만 사실과 달랐다는 점을 기록에 남긴다.

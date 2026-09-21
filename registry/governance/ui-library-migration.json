@@ -834,12 +834,12 @@
         "chevron.svg"
       ],
       "lastVerified": null,
-      "reverifyTrigger": "정본 buildListRow Type×Density×State 구성·geometry·토큰 변경, 또는 checkbox·toggle 코어 계약 변경",
+      "reverifyTrigger": "정본 buildListRow 의 Type×State 구성·geometry·토큰 변경, 또는 checkbox·toggle 코어 계약 변경",
       "evidence": [
         "reports/ui-library/list-row/3-build.md"
       ],
       "riverApproval": "pending — 4-verification·river UX 승인 전",
-      "promotionDecision": "candidate — 정본 buildListRow(2026-09-21 신설, Gate 34 승인) 56칸(Type 7 × Density 2 × State 4) 전부 구현. 왼쪽 체크(Pick·Agree)는 checkbox 코어, 오른쪽 토글(Switch)은 toggle 코어를 조립하며 내부를 복제하지 않았다. 제목만 있는 줄도 Default 밀도 목록에서 두 줄짜리와 같은 높이가 되도록 text 부품에 타이포 기반 min-height 를 줬다(river D-5). Density 는 data-density 를 목록 안 모든 줄에 동일하게 주는 사용 규칙으로 뒀다(CSS 가 개별 줄 편차를 강제 차단하지는 않는다 — needs-decision 아님, registry doDont 로 문서화).",
+      "promotionDecision": "candidate — 정본 buildListRow(2026-09-21 신설, Gate 34 승인) **21칸(Type 7 × State 3)** 전부 구현. 모바일 전용이라 Hover 가 없고(river 2026-09-21), 눌림 배경은 한 단계 밝은 bg/level-1 을 쓴다. 밀도 축은 두지 않는다 — 한 벌만 쓴다. 왼쪽 체크(Pick·Agree)는 checkbox 코어, 오른쪽 토글(Switch)은 toggle 코어를 조립하며 내부를 복제하지 않았다. 줄 높이는 숫자로 고정하지 않고 위아래 여백 12 + 글 자리 최소 44 로 68 이 되며, 제목만 있는 줄도 같은 68 로 선다. 수치는 전부 buildBottomSheetOption 선례에서 끌어왔고(좌우 20 · 위아래 12 · 왼쪽 12 · 오른쪽 칸 8 · 그림 40 · 화살표 24), 자체 결정은 글 자리 최소 44 하나다.",
       "jsRequired": false
     }
   ]

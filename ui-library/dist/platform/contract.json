@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
     "purpose": "개발 툴과 검사기가 함께 읽는 허용목록. 여기 없는 variant·size·속성은 승인된 적이 없는 것이다.",
-    "canonicalFingerprint": "9dcecbabec3faa1b12c454fdadc221a1f2841d398b5e1664aed8306b32100d9d"
+    "canonicalFingerprint": "b6e91d56062aa4148b53d4239e287056acf86641564d5a5f1a25e45e9e2cb1f9"
   },
   "components": [
     {
@@ -1318,7 +1318,6 @@
       "breaks": null,
       "states": [
         "default",
-        "hover",
         "pressed",
         "disabled"
       ],
@@ -1343,8 +1342,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "2cdc757d71970ee2a6be8f9fcc99ae6e81bb6632af3f613b736a12cdfcea1a4b",
-      "sourceFingerprint": "34bdf694f157541553f779b6a68402c8fa649e044a2922017d247b1f87d50afc"
+      "canonicalFingerprint": "0efb23d4974f60928164dada4f8b144741f7822a7aeaf853860b896143245bf9",
+      "sourceFingerprint": "5ffe762d821e7dd8b84414fb67d27b6f7eba26eafbf6e285dd112fbf0513bdca"
     }
   ]
 }

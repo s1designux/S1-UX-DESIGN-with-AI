@@ -94,3 +94,19 @@ river 결정("컴팩트 없이 디폴트만 있으면 돼")으로 Density 축을
 - 실제 렌더(HTTP 스크린샷)로 Type×Density×State 56칸을 정본과 대조하지 않았다 — `ui:test`의 결정론 검사만 통과했다.
 - 다크모드 렌더 확인 안 함(토큰은 Semantic 경유라 자동으로 따라가야 하지만 육안 확인 전).
 - 체크박스·토글 코어와의 실제 조합 렌더(간격·정렬)를 브라우저에서 보지 않았다.
+
+## 후속 — Hover 제거·Pressed 배경 교체 (2026-09-21, 🧱 ui-library-builder)
+
+river 지시("오늘 만든 리스트는 모바일에서만 사용하는 패턴이야. 호버는 삭제해주고 pressed의 배경을 hover배경값으로 교체하면돼") 반영. 정본은 이미 바뀌어 있었다(`buildListRow` states = Default·Pressed·Disabled, `bgKey` Pressed=`color/bg/level-1`) — 배포본만 맞췄다.
+
+- `list-row.css` — `@media (hover: hover)` 블록과 `[data-state="hover"]` 규칙을 통째로 삭제. `:active`·`[data-state="pressed"]` 배경을 `--color-bg-level-2` → **`--color-bg-level-1`**로 교체. 상단 축 주석을 `28칸(Type7×State4)` → **`21칸(Type7×State3)`**으로 정정.
+- `manifest.json` — `states.hover` 삭제, `canonicalStateMap`에서 `State=Hover` 제거, `cssContract.nativeStates`에서 `:hover` 제거. `states.pressed` 설명에 "모바일 전용이라 Hover 없음·눌림 배경=bg/level-1" 명시.
+- `list-row.example.html` — Hover 상태 예시 행(`data-state="hover"`) 삭제, 상단 주석에서 State 변형을 `Pressed·Disabled`로 정정.
+- `npm run ui:bump -- --minor` 실행 — 공개 상태값(Hover)이 빠지는 계약 변경이라 minor로 올림. **0.11.1 → 0.12.0**(list-row manifest 0.2.1 → 0.3.0). `ui:build` 재생성(278 files) 후 `ui:version -- --record` 기록.
+- `ui:build:check` · `ui:contract` · `ui:test:check` 전부 PASS.
+- 실제 dist(`s1-ui.css`+`tokens.css`+`typography.css`)를 http로 로드해 렌더 확인: Default·Disabled = `rgb(255,255,255)`(level-0), Pressed(`data-state="pressed"`) = `rgb(250,250,250)`(level-1), `data-state="hover"`를 강제로 줘도 배경 무반응(더 이상 계약에 없음 확인). 4칸 모두 높이 68px 유지.
+
+### 미해결 — 내가 손대지 않은 것
+- `pages/ui-review.html`의 List Row 검수 패널은 여전히 옛 계약(Density 2축·State 4종=56칸, Hover 라벨 포함)이다 — 오케스트레이터가 따로 맡기로 해 건드리지 않았다. 지금 상태로 열면 `data-state="hover"` 칸이 더 이상 배경이 바뀌지 않아(계약 변경 그대로 반영됨) 보이지만, 축 설명(56칸·Hover 라벨)은 갱신이 필요하다.
+- `registry/components/list-row.json`·`build-components.ts`는 오케스트레이터가 이미 갱신해 둔 정본이라 손대지 않았다.
+- `workflow-state.json`은 수정하지 않았다(오케스트레이터 소관).
