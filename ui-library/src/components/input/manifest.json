@@ -1,12 +1,12 @@
 {
   "id": "input",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "status": "approved",
   "statusNote": "Base Input 은 2026-09-04 river 승인. 이번에 얹은 Password·Search 옵션은 2026-09-07 river 직접 검수 후 승인(결정 D1~D16). 정본 buildSearch 구조 변경은 🤖 component-verifier 가 검증하고 Gate 13 에 기록했다.",
   "modes": [
     "search"
   ],
-  "canonicalFingerprint": "d438d3c260a3ff95d87b68dac8ff41855fef783e8662bacc5c1e7db5ba2ca93d",
+  "canonicalFingerprint": "896da6f7c31052156faab36ab631b0cfd68ec3114ae45ec90a1b15ff8ab00cc9",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",

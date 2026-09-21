@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:49a52cba83efd46e2a110c8bbd3e81ea0dd932d48531bccae07fc3c821b38bc2",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-21T03:58:17.207Z",
+  "notes": "마스터 모드 고정 제거(색·그림자) + 옛 마스터 고정 걷어내기(설치기 표식 있는 페이지 한정). 🤖 component-verifier 4차 PASS — 1~3차 적발 3건(그림자 누락·범위 과다·진행률 역행) 수정 반영. 캔버스 실측은 river 확인 예정."
+}

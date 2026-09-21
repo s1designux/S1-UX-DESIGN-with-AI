@@ -5,10 +5,154 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.8.2",
+  "version": "0.8.3",
   "releasedAt": "2026-09-21",
-  "canonicalFingerprint": "8409613d10720d9a7bf2c34eec04b0a6c53e3543b4926be4c8b5f355319c5612",
+  "canonicalFingerprint": "f7c1fc1df201c996212aaeb45aed3310fd5ed3fc8cc271017d7f9ff3241858c6",
   "releases": [
+    {
+      "version": "0.8.3",
+      "date": "2026-09-21",
+      "kind": "patch",
+      "canonicalFingerprint": "f7c1fc1df201c996212aaeb45aed3310fd5ed3fc8cc271017d7f9ff3241858c6",
+      "components": [
+        {
+          "id": "input",
+          "from": "0.3.1",
+          "to": "0.3.2"
+        },
+        {
+          "id": "button",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "checkbox",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "radio",
+          "from": "0.2.2",
+          "to": "0.2.3"
+        },
+        {
+          "id": "toggle",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "chip",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "dropdown",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "select",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "filter-chip",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "tab",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "pagination",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "textarea",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "multi-toggle",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "modal",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "table",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "mobile-bottom-nav",
+          "from": "0.3.1",
+          "to": "0.3.2"
+        },
+        {
+          "id": "mobile-header",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "time-picker",
+          "from": "0.3.3",
+          "to": "0.3.4"
+        },
+        {
+          "id": "date-picker",
+          "from": "0.2.2",
+          "to": "0.2.3"
+        },
+        {
+          "id": "gnb",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "gnb-sub-menu-item",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "gnb-sub-menu",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "assist-button",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "text-button",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "modal-content",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        },
+        {
+          "id": "bottom-sheet-option",
+          "from": "0.2.2",
+          "to": "0.2.3"
+        },
+        {
+          "id": "bottom-sheet",
+          "from": "0.2.2",
+          "to": "0.2.3"
+        }
+      ],
+      "deliveryFingerprint": "e64fe6113b9c2056889186a9905293132f504aa256be59f88cb3a11c29b03612"
+    },
     {
       "version": "0.8.2",
       "date": "2026-09-21",
@@ -646,5 +790,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "76ec8f679e2215708bc5ff114763b39a68b62cca10b3b6ac259a105da54786ac"
+  "deliveryFingerprint": "e64fe6113b9c2056889186a9905293132f504aa256be59f88cb3a11c29b03612"
 }

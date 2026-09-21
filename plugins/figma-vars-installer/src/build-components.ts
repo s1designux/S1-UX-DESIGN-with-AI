@@ -175,6 +175,77 @@ function setMode(node: SceneNode, maps: BuildMaps, modeId: string): void {
   }
 }
 
+/** 이미 깔려 있는 부품 마스터에 박혀 있던 모드 고정을 걷어낸다(2026-09-21).
+ *  설치기는 **같은 이름의 세트가 있으면 건너뛴다.** 그래서 마스터에 고정을 안 박도록 고쳐도,
+ *  이미 파일에 있던 옛 부품은 그대로 라이트로 박혀 있다 — 어떤 부품은 다크에서 뒤집히고
+ *  어떤 부품은 안 뒤집히는, 종전보다 알아보기 어려운 상태가 된다
+ *  (🤖 component-verifier 지적 2026-09-21). 그래서 설치할 때마다 한 번 걷어낸다.
+ *  대상은 **설치기가 만든 것이 확실한 세트 안 마스터**뿐이다 — 이름이 같다는 이유만으로는 받지 않고,
+ *  같은 페이지에 설치기만 만드는 설명 시트(`<이름> — Spec Light/Dark`)가 함께 있어야 한다.
+ *  사용자가 만든 컴포넌트는 건드리지 않는다. 세트 자신의 고정(진열면 표시)은 그대로 둔다. */
+async function unpinInstalledMasters(maps: BuildMaps): Promise<number> {
+  const names = new Set<string>();
+  for (const cat of COMPONENT_CATEGORIES) for (const m of cat.members) names.add(m);
+  const colorCid = maps.semanticColorCollectionId;
+  const shadowCid = maps.semanticShadowCollectionId;
+  let count = 0;
+  let pages: readonly PageNode[] = [];
+  try { pages = figma.root.children; } catch (e) { return 0; }
+  if (!Array.isArray(pages)) return 0;
+  for (const page of pages) {
+    try { await page.loadAsync(); } catch (e) { continue; }
+    let sets: SceneNode[] = [];
+    try { sets = page.findAllWithCriteria({ types: ["COMPONENT_SET"] }) as SceneNode[]; } catch (e) { continue; }
+    if (!Array.isArray(sets)) continue;
+    // 🚨 **이름만으로 받지 않는다.** `Button`·`Table` 같은 이름은 사람이 제 레이어에 가장 흔히 붙이는 말이라,
+    //    이름만 보고 남의 컴포넌트 고정을 푸는 일이 생긴다(저장소가 같은 위험을 이미 판정해 둔 자리:
+    //    buildAllComponents 의 installerMade 주석 — 🤖 component-verifier 지적 2026-09-21).
+    //    → 그 페이지에 **설치기만 만드는 설명 시트**(`<이름> — Spec Light/Dark`)가 함께 있는 세트만 받는다.
+    //      사람이 이 접미사를 손으로 붙일 일은 없다.
+    const signed = new Set<string>();
+    try {
+      const marks = page.findAllWithCriteria({ types: ["FRAME"] }) as SceneNode[];
+      if (Array.isArray(marks)) {
+        for (const m of marks) {
+          const nm = String(m.name || "");
+          for (const suffix of [" — Spec Light", " — Spec Dark"]) {
+            if (nm.length > suffix.length && nm.slice(nm.length - suffix.length) === suffix) {
+              signed.add(nm.slice(0, nm.length - suffix.length));
+            }
+          }
+        }
+      }
+    } catch (e) { /* 표식을 못 읽으면 이 페이지는 건너뛴다 */ }
+    if (signed.size === 0) continue;
+    for (const set of sets) {
+      // 설치기 표식이 있는 페이지에서, **우리 부품 이름이거나 우리 설명 시트가 붙은 세트**를 받는다.
+      //   둘 중 하나로 넓힌 이유(🤖 component-verifier 3차): 이름 명단에 없지만 설치기가 만드는 세트
+      //   (GNB Menu)와, 이름 명단에 있지만 설명 시트를 안 만드는 세트(CI)가 각각 빠지고 있었다.
+      if (!names.has(set.name) && !signed.has(set.name)) continue;
+      let kids: any;
+      try { kids = (set as ComponentSetNode).children; } catch (e) { continue; }
+      if (!Array.isArray(kids)) continue;
+      for (const child of kids as SceneNode[]) {
+        if (String(child.type) !== "COMPONENT") continue;
+        const pins = (child as any).explicitVariableModes as { [cid: string]: string } | undefined;
+        if (!pins) continue;
+        const clear = (cid: string | undefined): boolean => {
+          if (!cid || !pins[cid]) return false;
+          try {
+            (child as unknown as { clearExplicitVariableModeForCollection: (c: string) => void })
+              .clearExplicitVariableModeForCollection(cid);
+            return true;
+          } catch (e) { return false; }
+        };
+        const a = clear(colorCid);
+        const b = clear(shadowCid);
+        if (a || b) count++;
+      }
+    }
+  }
+  return count;
+}
+
 /**
  * 부모의 Appearance(Light/Dark) 를 그대로 물려받게 모드 핀을 푼다.
  * 인스턴스가 자기 모드를 명시하면 부모의 Dark 핀을 이겨버려서, 다크 스펙에서 그 부분만
@@ -198,6 +269,11 @@ function clearMode(node: SceneNode, maps: BuildMaps): void {
 function setShadowMode(node: SceneNode, maps: BuildMaps, modeId: string | undefined): void {
   const sCid = maps.semanticShadowCollectionId;
   if (!sCid || !modeId) return;
+  // 색(setLightMode)과 같은 이유로 **마스터에는 박지 않는다** — 박으면 그림자만 라이트로 남는다
+  //   (🤖 component-verifier 적발 2026-09-21: Modal·Modal Content 에서 색은 뒤집히고 그림자만 안 뒤집힘).
+  let kind = "";
+  try { kind = String(node.type); } catch (e) { kind = ""; }
+  if (kind === "COMPONENT") return;
   try {
     (node as unknown as {
       setExplicitVariableModeForCollection: (cid: string, mid: string) => void;
@@ -243,7 +319,21 @@ function boundShadowEffects(maps: BuildMaps, token: string): Effect[] {
   });
 }
 
+/** 라이트 모드를 **표시용으로만** 건다.
+ *  ⚠️ **부품 마스터(COMPONENT)에는 걸지 않는다**(river 지시 2026-09-21 "다크 화면에서 부품이
+ *  안 뒤집히는 것도 고쳐줘"). 마스터에 박은 모드는 그 부품으로 만든 **인스턴스에 그대로 따라붙어**,
+ *  다크 화면에 부품을 놓아도 그 부분만 라이트로 남는다(검수기 체크리스트 10번이 대량으로 잡던 것).
+ *  세트(COMPONENT_SET)에 거는 것은 그대로 둔다 — 가이드 페이지의 **진열면** 표시일 뿐이고
+ *  인스턴스로 복제되지 않는다. 이 구분은 저장소에 이미 있던 판단이다(Dropdown·Line Tab 의
+ *  "← 세트에만 (컴포넌트 단위 설정 시 인스턴스가 다크모드 상속 불가)" 주석, Calendar Cell 의
+ *  "셀이 라이트로 고착되면 다크 스펙 프레임의 setMode(dark) 가 셀까지 전파되지 못한다") —
+ *  그것을 한 곳에서 전면 적용한다.
+ *  스펙 시트(라이트/다크 사본·라벨·띠)는 자기 프레임과 그 안 인스턴스에 `setMode` 로 직접
+ *  모드를 걸므로 이 변경의 영향을 받지 않는다. */
 function setLightMode(node: SceneNode, maps: BuildMaps): void {
+  let kind = "";
+  try { kind = String(node.type); } catch (e) { kind = ""; }
+  if (kind === "COMPONENT") return;   // 마스터에는 박지 않는다 — 인스턴스가 화면 모드를 따라가야 한다
   setMode(node, maps, maps.semanticLightModeId);
 }
 
@@ -2028,7 +2118,7 @@ async function buildDropdownList(maps: BuildMaps, originY: number): Promise<{ se
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "Dropdown List";
   set.x = 0; set.y = originY;
-  setLightMode(set, maps); // ← 세트에만 (컴포넌트 단위 설정 시 인스턴스가 다크모드 상속 불가)
+  setLightMode(set, maps); // ← 세트(진열면)에만. 마스터 고정은 setLightMode 가 막는다(2026-09-21)
   BUILT_SETS["Dropdown List"] = set;
   const opts: GroupedSpecOpts = {
     title: "Dropdown List",
@@ -2152,7 +2242,7 @@ async function buildDropdown(maps: BuildMaps, originY: number): Promise<{ set: C
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "Dropdown";
   set.x = 0; set.y = originY;
-  setLightMode(set, maps); // ← 세트에만 (컴포넌트 단위 설정 시 인스턴스가 다크모드 상속 불가)
+  setLightMode(set, maps); // ← 세트(진열면)에만. 마스터 고정은 setLightMode 가 막는다(2026-09-21)
   BUILT_SETS["Dropdown"] = set;
 
   const opts: SpecOpts = {
@@ -7324,7 +7414,8 @@ export async function buildAllComponents(
         skipped.push(name);
         continue;
       }
-      if (onProgress) onProgress(`${name} 생성 중…`, 92 + Math.round((done / TOTAL) * 8));
+      // 상한 98 — 뒤에 걷어내기(99)와 완료(100)가 있어 진행률이 되돌아가면 안 된다(🤖 3차 지적).
+      if (onProgress) onProgress(`${name} 생성 중…`, 92 + Math.round((done / TOTAL) * 6));
       // isDepSet(Calendar Cell·Calendar Tile)은 이미 있어도 매번 러너가 돈다(빠진 크기 채우기).
       //   그 세트는 보존된 Calendar·Date Picker 인스턴스의 원본이라 **지우면 안 된다** — 옛 스펙 시트와
       //   장식만 걷어내고 세트는 남겨 `getOrBuildCalendarCell` 이 그대로 재사용하게 한다.
@@ -7578,6 +7669,14 @@ export async function buildAllComponents(
   if (degraded.length) {
     console.error(`[installer] 부품 누락으로 불완전 ${degraded.length}개: ${degraded.map((d) => `${d.name}(${d.missing.join("·")} 빠짐)`).join(", ")}`);
   }
+  // 이미 깔려 있던 옛 부품의 모드 고정을 걷어낸다 — 다크 화면에서 일부만 안 뒤집히는 혼재 상태 방지.
+  //   '완료' 를 알리기 **전에** 한다 — 100% 를 띄워 놓고 뒤에서 더 도는 구간을 만들지 않는다
+  //   (🤖 component-verifier 지적 2026-09-21).
+  if (onProgress) onProgress("옛 부품의 모드 고정을 걷어내는 중…", 99);
+  try {
+    const unpinned = await unpinInstalledMasters(maps);
+    if (unpinned) console.log(`[installer] 옛 부품 ${unpinned}개의 모드 고정을 걷어냈습니다(다크 화면에서 따라 뒤집히게).`);
+  } catch (e) { console.warn("[installer] 모드 고정 정리 실패(설치 자체는 정상):", e); }
   if (onProgress) {
     onProgress(
       `완료 — 추가 ${added.length}개 · 기존 보존 ${skipped.length}개` +
