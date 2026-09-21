@@ -1048,6 +1048,22 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
       if (isDummyChromePart(node)) continue;
       const pins = (node as any).explicitVariableModes as { [collectionId: string]: string } | undefined;
       if (!pins) continue;
+      // **부품이 원래 그렇게 만들어져 있는 고정은 띄우지 않는다**(river 지시 2026-09-21).
+      //   설치기는 부품 마스터에 라이트 모드를 박아 둔다(build-components.ts setLightMode). 그 고정은
+      //   인스턴스로 그대로 따라오므로, 화면에 부품을 놓기만 해도 이 알림이 대량으로 붙어
+      //   **사람이 이 화면에서 직접 박은 한 건**이 그 속에 묻혔다.
+      //   → 자기 원본(마스터)과 같은 고정이면 부품 소관이라 넘기고, 부품 속 조각도 넘긴다.
+      //     화면에서 사람이 박은 고정만 남는다. (부품이 다크에서 안 뒤집히는 것 자체는 부품 쪽 문제다)
+      if (hasInstanceAncestor(node)) continue;
+      if (node.type === "INSTANCE") {
+        let masterPins: { [collectionId: string]: string } | undefined;
+        try {
+          const master = await (node as InstanceNode).getMainComponentAsync();
+          masterPins = master ? ((master as any).explicitVariableModes as { [collectionId: string]: string } | undefined) : undefined;
+        } catch (e) { masterPins = undefined; }
+        const sameAsMaster = !!masterPins && Object.keys(pins).every((cid) => masterPins![cid] === pins[cid]);
+        if (sameAsMaster) continue;
+      }
       // 한 노드가 컬렉션 두 곳에 고정돼 있을 수 있다. 보고는 한 번만 하고,
       // 바깥과 어긋난 고정이 하나라도 있으면 그것을 고른다(🤖 검증 지적 2026-09-17).
       let pickedDetail = "";
@@ -1967,7 +1983,12 @@ async function scanSwapCandidates(
       // (내부 조각이 인스턴스가 아니거나 이름이 정본과 다르면 위 판정을 통과하므로)
       const similarParts = (!isRepeatedPartModule && !sameAsTarget) ? countSimilarSizedParts(inst) : 0;
       const isStructuralModule = similarParts >= 2;
-      if (isRepeatedPartModule || isStructuralModule) {
+      // **이미 정본인 부품은 «재구성 필요»로 내리지 않는다**(river 지시 2026-09-21).
+      //   모달·바텀시트·드롭다운처럼 같은 크기 조각이 여러 개 들어 있는 정본 부품이,
+      //   기준 풀에서 자기 세트를 못 찾은 순간 "부품 모양 2개가 나란히 — 재구성하세요"로
+      //   내려가던 자리다(🤖 component-verifier 적발 2026-09-21). 신원(노드 id)으로만 가른다.
+      const isCanonAlready = pool.some((pc) => pc.id === currentTopId);
+      if (!isCanonAlready && (isRepeatedPartModule || isStructuralModule)) {
         if (!manualSeen.has(inst.id)) {
           manualSeen.add(inst.id);
           modules.push({
@@ -1993,7 +2014,7 @@ async function scanSwapCandidates(
       // **이미 정본인 부품에는 결정표를 묻지 않는다.** 레거시 파일에도 정본과 **이름이 같은** 세트가 있어
       // (체크박스·칩·라디오·토글·표 등 11건), 이름으로 가르면 정본이 레거시로 오인되거나
       // 레거시가 «이미 정본» 으로 묻힌다(🤖 독립 검증 2026-09-17 2차). 신원(노드 id)으로만 가른다.
-      const isCanonAlready = pool.some((pc) => pc.id === currentTopId);
+      //   (isCanonAlready 는 위 모듈 판정 앞에서 이미 구했다)
       const verdict = isCanonAlready ? null : lookupLegacyDecision([compareName, inst.name], legacyVariantProps(inst));
       if (verdict && (verdict.kind === "decided" || verdict.kind === "not-a-part")) {
         if (verdict.kind === "decided") mediumVotes.push(mediumFromAxes(verdict.axes));
