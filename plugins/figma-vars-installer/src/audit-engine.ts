@@ -572,11 +572,48 @@ function guessPartKind(node: SceneNode, depth = 0): PartGuess | null {
     };
     collect(node, 0);
     const oneText = texts.length === 1 ? texts[0] : null;
-    const centered = !!oneText && (() => {
+    // 글자가 가운데인가 — **글자 정렬 설정만 믿지 않는다.** 오토레이아웃으로 가운데에 놓고
+    //   글자 자체는 LEFT 인 경우가 흔하다(river 실측 2026-09-21: 로그인 버튼을 입력칸으로 오판).
+    //   그래서 ①글자 정렬 ②프레임 가운데 정렬 ③실제 놓인 자리(가운데에서 얼마나 벗어났나) 셋 중 하나면 가운데로 본다.
+    const centeredByAlign = !!oneText && (() => {
       try { return oneText.textAlignHorizontal === "CENTER"; } catch (e) { return false; }
     })();
-    const leftAligned = !!oneText && (() => {
-      try { return oneText.textAlignHorizontal === "LEFT"; } catch (e) { return false; }
+    const centeredByLayout = (() => {
+      try {
+        const f: any = node as any;
+        if (f.layoutMode === "HORIZONTAL") return f.primaryAxisAlignItems === "CENTER";
+        if (f.layoutMode === "VERTICAL") return f.counterAxisAlignItems === "CENTER";
+        return false;
+      } catch (e) { return false; }
+    })();
+    const centeredByPlace = !!oneText && (() => {
+      try {
+        const nb: any = (node as any).absoluteBoundingBox;
+        const tb: any = (oneText as any).absoluteBoundingBox;
+        if (!nb || !tb || !nb.width || !tb.width) return false;
+        const gapLeft = tb.x - nb.x;
+        const gapRight = (nb.x + nb.width) - (tb.x + tb.width);
+        if (gapLeft < 0 || gapRight < 0) return false;
+        return Math.abs(gapLeft - gapRight) <= Math.max(8, nb.width * 0.08);
+      } catch (e) { return false; }
+    })();
+    const centered = centeredByAlign || centeredByLayout || centeredByPlace;
+    const leftAligned = !!oneText && !centered;
+    // 칠이 **또렷한 색**인가(파랑·빨강 등). 입력칸 바탕은 흰색·회색 계열이라, 또렷한 색이 칠해져
+    //   있으면 입력칸으로 보지 않는다 — 같은 크기라도 버튼일 가능성이 압도적이다.
+    const vividFill = (() => {
+      try {
+        if (!Array.isArray(fills)) return false;
+        for (const paint of fills) {
+          if (!paint || paint.type !== "SOLID" || paint.visible === false) continue;
+          const c = paint.color;
+          if (!c) continue;
+          const max = Math.max(c.r, c.g, c.b), min = Math.min(c.r, c.g, c.b);
+          if (max - min > 0.12) return true;    // 색이 있다(무채색이 아니다)
+          if (max < 0.6) return true;           // 어두운 면(짙은 버튼)
+        }
+      } catch (e) { /* 못 읽으면 아니라고 본다 */ }
+      return false;
     })();
     const pill = radius !== null && radius >= h / 2 - 1;
     if (h >= 20 && h <= 40 && pill && oneText && hasFill) {
@@ -585,7 +622,11 @@ function guessPartKind(node: SceneNode, depth = 0): PartGuess | null {
     if (hasFill && oneText && centered && h >= 24 && h <= 60 && w >= h * 1.6) {
       return { category: "button", label: "버튼", why: `${Math.round(w)}×${Math.round(h)} 채움 + 가운데 글자` };
     }
-    if (hasStroke && h >= 24 && h <= 60 && w >= h * 1.6 && (!oneText || leftAligned)) {
+    // 또렷한 색이 칠해져 있으면 **글자가 없거나 왼쪽이어도 버튼 쪽**으로 본다(입력칸 바탕은 흰·회색이다).
+    if (hasFill && vividFill && h >= 24 && h <= 60 && w >= h * 1.6) {
+      return { category: "button", label: "버튼", why: `${Math.round(w)}×${Math.round(h)} 또렷한 색으로 채운 면` };
+    }
+    if (hasStroke && !vividFill && h >= 24 && h <= 60 && w >= h * 1.6 && (!oneText || leftAligned)) {
       return { category: "form-control", label: "입력칸", why: `${Math.round(w)}×${Math.round(h)} 테두리 + 왼쪽 글자` };
     }
     if (hasFill && ((w >= 320 && h >= 320) || w * h >= 320 * 480 * 0.6)) {
