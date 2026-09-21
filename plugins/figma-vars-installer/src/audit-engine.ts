@@ -141,6 +141,7 @@ type Suggestion = {
   collectionName: string;
   confidence: "high" | "medium" | "low";
   exact?: boolean;      // 색이 정확히 같은 토큰인가(자동 적용 판정에 쓴다)
+  state?: string;       // default·hover·selected·disabled … (토큰 이름에서 읽는다)
   matchType: "role+component" | "role" | "exact" | "near";
   matchInfo?: string;  // 'Δ12' 같은 부가 정보 (color distance)
   category: string;     // 'button' | 'tab' | 'text' | 'foundation' | ...
@@ -148,7 +149,7 @@ type Suggestion = {
 
 /** 이 도형이 무엇인지 **모양·크기·글자로 읽은** 추정. 그림을 보고 판단하는 것이 아니라
  *  정본 부품의 생김새 규칙으로 가른다(river 지시 2026-09-21 — 제안이 너무 많다). */
-type PartGuess = { category: string; label: string; why: string };
+type PartGuess = { category: string; label: string; why: string; state?: string };
 
 type Issue = {
   id: string;                       // unique
@@ -635,7 +636,10 @@ function guessPartKind(node: SceneNode, depth = 0): PartGuess | null {
     return null;
   };
   const mine = self();
-  if (mine) return mine;
+  if (mine) {
+    const hint = stateHintOf(node);
+    return hint ? { category: mine.category, label: mine.label, why: mine.why, state: hint } : mine;
+  }
   // 글자·아이콘·작은 조각은 자기를 감싼 도형의 정체를 물려받는다.
   if (depth >= 3) return null;
   const parent = node.parent;
@@ -717,6 +721,41 @@ function hexDistance(a: string, b: string): number {
 }
 
 // V2 토큰 이름에서 카테고리 추출 ('color/button/...' → 'button', 'color/text/...' → 'text')
+/** 토큰 이름에서 **상태**를 읽는다 — `…/primary--default` · `…/bg/hover` 꼴 둘 다. */
+const KNOWN_STATES = ["default", "hover", "pressed", "selected", "disabled", "focus", "error", "correct", "active", "caution"];
+function stateOf(varName: string): string {
+  const lower = (varName || "").toLowerCase();
+  const tail = lower.split("/").filter(Boolean).pop() || "";
+  const afterDouble = tail.indexOf("--") >= 0 ? tail.slice(tail.indexOf("--") + 2) : tail;
+  if (KNOWN_STATES.indexOf(afterDouble) >= 0) return afterDouble;
+  for (const seg of lower.split(/[/-]+/)) {
+    if (KNOWN_STATES.indexOf(seg) >= 0) return seg;
+  }
+  return "";
+}
+
+/** 도형에서 **상태 단서**를 읽는다. 없으면 빈 문자열 — 없는 것을 지어내지 않는다.
+ *  ①흐린 도형(불투명도가 낮음) = 비활성 ②레이어 이름에 상태 낱말이 있으면 그것
+ *  (river 결정 2026-09-21: 단서가 없으면 자동으로 정하지 말고 사람이 고르게 한다). */
+function stateHintOf(node: SceneNode): string {
+  try {
+    const o = (node as any).opacity;
+    if (typeof o === "number" && o > 0 && o <= 0.6) return "disabled";
+  } catch (e) { /* 없는 속성 */ }
+  let nm = "";
+  try { nm = String(node.name || "").toLowerCase(); } catch (e) { nm = ""; }
+  const dict: { [k: string]: string } = {
+    hover: "hover", "호버": "hover", pressed: "pressed", "눌": "pressed",
+    selected: "selected", "선택": "selected", active: "selected",
+    disabled: "disabled", "비활성": "disabled", off: "disabled",
+    focus: "focus", "포커": "focus", error: "error", "오류": "error",
+  };
+  for (const key of Object.keys(dict)) {
+    if (nm.indexOf(key) >= 0) return dict[key];
+  }
+  return "";
+}
+
 function categoryOf(varName: string): string {
   const segs = varName.toLowerCase().split("/").filter(Boolean);
   if (segs.length < 2) return "etc";
@@ -778,6 +817,7 @@ function pickSuggestions(
       collectionName: v.collectionName,
       confidence,
       exact: isExact,
+      state: stateOf(v.name),
       matchType,
       category: cat,
     });
@@ -793,6 +833,7 @@ function pickSuggestions(
       collectionName: v.collectionName,
       confidence: "medium",
       exact: true,
+      state: stateOf(v.name),
       matchType: "exact",
       category: v.collectionName === FOUNDATION_COLLECTION ? "foundation" : categoryOf(v.name),
     });
@@ -829,9 +870,22 @@ function pickSuggestions(
   const orderMap: Record<string, number> = { "role+component": 0, "role": 1, "exact": 2, "near": 3 };
   // 모양으로 읽은 정체(버튼·칩·입력칸·배경)가 있으면 그 카테고리를 맨 앞에 세운다.
   const guessRank = (cat: string): number => (guess && guess.category === cat ? 0 : 1);
+  // 추정한 부품 안에서는 ①색이 정확히 같은 것 ②상태 단서와 맞는 것 ③기본(default) 순으로 세운다.
+  //   (river 결정 2026-09-21 — 상태가 갈리면 자동으로 정하지 말고 사람이 고른다. 순서만 돕는다.)
+  const exactRank = (x: Suggestion): number => (x.exact ? 0 : 1);
+  const stateRank = (x: Suggestion): number => {
+    if (guess && guess.state) return x.state === guess.state ? 0 : 1;
+    return x.state === "default" || x.state === "" ? 0 : 1;
+  };
   result.sort((a, b) => {
     const ag = guessRank(a.category), bg = guessRank(b.category);
     if (ag !== bg) return ag - bg;
+    if (ag === 0) {
+      const ae = exactRank(a), be = exactRank(b);
+      if (ae !== be) return ae - be;
+      const as = stateRank(a), bs = stateRank(b);
+      if (as !== bs) return as - bs;
+    }
     const aCtx = contextSegments.indexOf(a.category) >= 0 ? 0 : 1;
     const bCtx = contextSegments.indexOf(b.category) >= 0 ? 0 : 1;
     if (aCtx !== bCtx) return aCtx - bCtx;
@@ -1273,6 +1327,68 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
   return { items, colorDetails, textIssues, shadowIssues, modeIssues, platformIssues };
 }
 
+/** 채움을 바꾸면 **같은 부품·같은 상태의 테두리**(또는 그 반대)도 함께 건다.
+ *  한 도형에 채움과 테두리가 같이 깨져 있으면 두 번 고르게 되는데, 짝이 분명할 때는 한 번이면 된다
+ *  (river 요청 2026-09-21). **지금 그 자리 색이 짝 토큰 값과 정확히 같을 때만** 건다 —
+ *  다르면 건드리지 않는다(값을 바꿔 버리지 않기 위해). 돌려주는 값은 함께 바꾼 자리 수.
+ */
+async function applyPairedPaint(issue: Issue, sug: Suggestion): Promise<number> {
+  const otherProp: "fills" | "strokes" = issue.property === "fills" ? "strokes" : "fills";
+  const name = sug.variableName;
+  // bg ↔ border/line 자리 바꾸기. 이름 규칙이 안 맞으면 짝이 없다고 본다.
+  const candidates: string[] = [];
+  if (issue.property === "fills") {
+    candidates.push(name.replace("/bg/", "/border/"), name.replace("/bg/", "/line/"));
+  } else {
+    candidates.push(name.replace("/border/", "/bg/"), name.replace("/line/", "/bg/"));
+  }
+  const wanted = candidates.filter((c) => c && c !== name);
+  if (!wanted.length) return 0;
+  let pairVar: Variable | null = null;
+  try {
+    const all = await figma.variables.getLocalVariablesAsync("COLOR");
+    for (const v of all) {
+      if (wanted.indexOf(v.name) >= 0) { pairVar = v; break; }
+    }
+  } catch (e) { return 0; }
+  if (!pairVar) return 0;
+  // 짝 토큰이 가진 색(모드 전부) — 지금 칠해진 색이 그중 하나와 같아야 건다.
+  const pairHexes: string[] = [];
+  try {
+    const byMode: any = (pairVar as any).valuesByMode || {};
+    for (const modeId of Object.keys(byMode)) {
+      const val: any = byMode[modeId];
+      if (val && typeof val.r === "number") pairHexes.push(rgbToHex(val));
+    }
+  } catch (e) { /* 값을 못 읽으면 아래에서 0 으로 끝난다 */ }
+  if (!pairHexes.length) return 0;
+
+  let changed = 0;
+  const nodeIds = new Set<string>();
+  nodeIds.add(issue.nodeId);
+  for (const t of issue.targets || []) nodeIds.add(t.nodeId);
+  for (const nodeId of Array.from(nodeIds)) {
+    const node = await figma.getNodeByIdAsync(nodeId);
+    if (!node || !("type" in node)) continue;
+    let arr: any;
+    try { arr = (node as any)[otherProp]; } catch (e) { continue; }
+    if (!Array.isArray(arr)) continue;
+    const next = JSON.parse(JSON.stringify(arr));
+    let touched = false;
+    for (let i = 0; i < next.length; i++) {
+      const paint = next[i];
+      if (!paint || paint.type !== "SOLID") continue;
+      if (paint.boundVariables && paint.boundVariables.color) continue;   // 이미 토큰에 걸린 자리는 그대로
+      if (pairHexes.indexOf(rgbToHex(paint.color)) < 0) continue;         // 색이 다르면 건드리지 않는다
+      next[i] = figma.variables.setBoundVariableForPaint(paint, "color", pairVar);
+      touched = true;
+    }
+    if (!touched) continue;
+    try { (node as any)[otherProp] = next; changed++; } catch (e) { /* 읽기 전용 자리 */ }
+  }
+  return changed;
+}
+
 async function applyOne(issue: Issue, suggestionIndex: number): Promise<boolean> {
   const sug = issue.suggestions[suggestionIndex];
   if (!sug) return false;
@@ -1316,6 +1432,8 @@ async function applyOne(issue: Issue, suggestionIndex: number): Promise<boolean>
       return false;
     }
   }
+  // 짝(채움↔테두리)도 함께 건다 — 실패해도 이번 적용은 성공이다.
+  try { await applyPairedPaint(issue, sug); } catch (e) { /* 짝 적용 실패는 무시 */ }
   return true;
 }
 
@@ -1330,7 +1448,14 @@ function autoPickIndex(issue: Issue): number | null {
     const s = issue.suggestions[i];
     if (s.category === issue.guess.category && s.exact === true && s.matchType === "role+component") hits.push(i);
   }
-  return hits.length === 1 ? hits[0] : null;
+  if (hits.length === 1) return hits[0];
+  // 색이 같은 후보가 여럿이면 **상태가 갈린 것**이다 — 단서가 있을 때만 그 상태로 좁힌다.
+  //   단서가 없으면 자동으로 바꾸지 않는다(river 결정 2026-09-21: "고르게 해줘").
+  if (hits.length > 1 && issue.guess.state) {
+    const byState = hits.filter((i) => issue.suggestions[i].state === issue.guess!.state);
+    if (byState.length === 1) return byState[0];
+  }
+  return null;
 }
 
 async function applyHighConfidence(issues: Issue[]): Promise<number> {

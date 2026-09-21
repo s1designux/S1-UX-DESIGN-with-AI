@@ -1309,6 +1309,7 @@ let activeTab = "component"; // component | generic
 let picks = {}; // { issueId: suggestionIndex }
 let activeCat = {}; // { issueId: 'tab' | 'button' | 'foundation' | ... }
 let detailOpen = {}; // { issueId: true } — 「자세히」로 펴 둔 카드. 다시 그려도 유지한다.
+let moreOpen = {};   // { issueId: true } — 「색이 다른 후보」를 펴 둔 카드(기본은 접힘).
 let activeMode = "color"; // color | swap
 
 // 컴포넌트 교체 모드 상태
@@ -1558,7 +1559,7 @@ function startAuditInspection(phase) {
   const btn = $("#btn-audit");
   btn.disabled = true;
   btn.textContent = "검사 중…";
-  picks = {}; detailOpen = {};
+  picks = {}; detailOpen = {}; moreOpen = {};
   activeCat = {};
   updatePickedCount();
   resetAuditChecklist('running');
@@ -2772,7 +2773,13 @@ function rerenderTab() {
     }).join("");
 
     const pickedIdx = picks[issue.id];
-    const visibleSugs = catGroups[curCat] || [];
+    const allSugs = catGroups[curCat] || [];
+    // 색이 정확히 같은 후보가 있으면 **그것만** 먼저 보여 준다 — 색이 다른 후보는 접는다.
+    //   (river 지적 2026-09-21: 블루라인부터 프라이머리까지 다 나와 고르기 어렵다)
+    const exactSugs = allSugs.filter((one) => one.s && one.s.exact);
+    const showAll = !!moreOpen[issue.id] || exactSugs.length === 0;
+    const foldedCount = exactSugs.length ? allSugs.length - exactSugs.length : 0;
+    const visibleSugs = showAll ? allSugs : exactSugs;
     const sugsHtml = visibleSugs.length === 0
       ? '<div class="sug"><span class="name" style="color:var(--muted)">이 카테고리에 매칭 토큰 없음</span></div>'
       : visibleSugs.map(({ s, i }) => {
@@ -2805,9 +2812,17 @@ function rerenderTab() {
       ${issue.guess ? `<div class="issue-meta">이 도형을 <b>${escape(issue.guess.label)}</b>으로 봤습니다 (${escape(issue.guess.why)}) — 다르면 아래에서 다른 칩을 고르세요.</div>` : ''}
       <div class="cat-chips">${chipsHtml}</div>
       <div class="sugs">${sugsHtml}</div>
+      ${(foldedCount > 0 && !showAll) ? `<button class="detail-toggle" data-action="more-sugs" type="button">색이 다른 후보 ${foldedCount}개 보기</button>` : ''}
     `;
     div.addEventListener("click", (e) => {
       const t = e.target;
+      // "색이 다른 후보 보기" → 이 카드만 펼친다
+      if (t && t.dataset && t.dataset.action === "more-sugs") {
+        moreOpen[issue.id] = true;
+        rerenderTab();
+        e.stopPropagation();
+        return;
+      }
       // 카테고리 칩 클릭 → 활성 카테고리 변경 후 issue 카드만 다시 렌더링
       const chip = t.closest && t.closest(".cat-chip");
       if (chip) {
@@ -2897,7 +2912,7 @@ function renderInspectionResult(payload) {
   renderRecentSwaps();
 
   lastIssues = payload.colorIssues || [];
-  picks = {}; activeCat = {}; detailOpen = {}; updatePickedCount();
+  picks = {}; activeCat = {}; detailOpen = {}; moreOpen = {}; updatePickedCount();
   rerenderTab();
   const extraColor = (payload.colorDetails || []).filter((issue) => issue.checklistId !== 1);
   if (extraColor.length) {
@@ -3108,7 +3123,7 @@ function handleAuditUiMessage(msg) {
       renderRecentSwaps();
       // ── 그 외 버킷: HEX 색상 → 시멘틱 토큰 제안 ──
       lastIssues = msg.payload.colorIssues || [];
-      picks = {}; activeCat = {}; detailOpen = {}; updatePickedCount();
+      picks = {}; activeCat = {}; detailOpen = {}; moreOpen = {}; updatePickedCount();
       rerenderTab();
       // ── 칩 카운트 + 결과 칩 노출 ──
       const compCount = swapCandidates.length + manual.length + modules.length;
