@@ -101,6 +101,10 @@ async function run() {
   // 빌드 시각은 화면에서 뺐다(river 지시 2026-09-18) — 검수 화면은 작업자용이라 우리 쪽 시각이 필요 없다.
   // 로그에는 그대로 남기므로 배포본이 언제 구워졌는지는 여기서 확인한다.
   html = replaceAll(html, {
+    // 화면 맨 위에 **어느 판이 도는지** 한 눈에 보이게 한다(2026-09-21 재도입).
+    //   2026-09-18 에 뺐던 것인데, 여러 세션이 같은 dist 를 덮어쓰는 일이 겹치면서
+    //   "고쳤다는데 그대로다"를 가리지 못해 river 가 같은 확인을 여러 번 하게 됐다.
+    BUILD_STAMP: htmlEscape(label),
     COMPONENT_COUNT: String(count),
     UPDATE_DATE: htmlEscape(notes.date),
     UPDATE_NOTES: notes.lines.map(htmlEscape).join("<br>\n      "),

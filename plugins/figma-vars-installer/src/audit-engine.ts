@@ -2258,6 +2258,42 @@ function pageHasInstallerMark(node: BaseNode): boolean {
   return found;
 }
 
+/** 지금 쓰는 부품이 **정본과 같은 부품**인가 — 신원이 아니라 **구성**으로 가른다.
+ *  이름이 같고 변형 축(크기·상태·종류·화면 …) 구성이 똑같으면 같은 부품으로 본다.
+ *  이 파일 밖(라이브러리) 부품이라 부모 세트를 읽을 수 없는 경우까지 덮기 위해
+ *  현재 축은 **인스턴스의 variantProperties** 에서 읽는다. */
+const canonAxesCache = new Map<string, string[]>();
+async function axesOfCanonSet(refId: string): Promise<string[]> {
+  const hit = canonAxesCache.get(refId);
+  if (hit) return hit;
+  let axes: string[] = [];
+  try {
+    const node = await figma.getNodeByIdAsync(refId);
+    if (node && node.type === "COMPONENT_SET") {
+      const defs = (node as ComponentSetNode).componentPropertyDefinitions;
+      axes = Object.keys(defs)
+        .filter((k) => (defs as any)[k] && (defs as any)[k].type === "VARIANT")
+        .map((k) => normAxisName(k.split("#")[0]))
+        .sort();
+    }
+  } catch (e) { axes = []; }
+  canonAxesCache.set(refId, axes);
+  return axes;
+}
+async function isSameAsCanonSet(inst: InstanceNode, target: ReferenceComponent): Promise<boolean> {
+  if (!target || target.type !== "COMPONENT_SET") return false;
+  const canonAxes = await axesOfCanonSet(target.id);
+  if (!canonAxes.length) return false;
+  let curAxes: string[] = [];
+  try {
+    const vp = inst.variantProperties || {};
+    curAxes = Object.keys(vp).map(normAxisName).sort();
+  } catch (e) { return false; }
+  if (!curAxes.length || curAxes.length !== canonAxes.length) return false;
+  for (let i = 0; i < curAxes.length; i++) if (curAxes[i] !== canonAxes[i]) return false;
+  return true;
+}
+
 // 기준 풀과 현재 instance를 비교해 swap 후보 산정 + 진단 정보 반환
 async function scanSwapCandidates(
   pool: ReferenceComponent[],
@@ -2282,6 +2318,7 @@ async function scanSwapCandidates(
   };
   if (sel.length === 0) return { candidates: [], diagnostics: diag, manualCandidates: [], modules: [] };
   installerPageCache.clear();
+  canonAxesCache.clear();
   const candidates: SwapCandidate[] = [];
   const manualCandidates: ManualMapCandidate[] = [];
   const modules: ModuleFlag[] = [];
@@ -2446,9 +2483,13 @@ async function scanSwapCandidates(
         continue;
       }
       if (sameAsTarget) continue;
-      // 이름이 맞는 정본 세트를 가리키고 있고, 그 세트가 설치기가 깐 것이면 **이미 정본**이다.
-      //   (가이드를 다시 깔아 같은 이름 세트가 둘이 된 경우 — 바꿀 이유가 없다)
-      if (main.parent && main.parent.type === "COMPONENT_SET" && pageHasInstallerMark(main)) {
+      // **이미 정본인 부품은 교체 후보가 아니다.** 신원(노드 id)이 다르더라도,
+      //   ①이름이 정본과 같고 ②변형 축 구성이 정본과 똑같으면 같은 부품이다 —
+      //   가이드를 다시 깔아 세트가 둘이 된 경우, 라이브러리(다른 파일)의 가이드 부품을 쓰는 경우가
+      //   모두 여기에 해당한다(river 실측 2026-09-21: 깨지 않은 부품까지 전부 "잘못됐다"고 떴다.
+      //   화면에는 `지금 쓰는 부품이 있는 곳: (외부)` — 이 파일 밖 부품이라 종전 판정이 닿지 않았다).
+      const sameAsCanonSet = await isSameAsCanonSet(inst, target!);
+      if (sameAsCanonSet) {
         diag.sameIdSkippedCount++;
         continue;
       }
@@ -2489,7 +2530,11 @@ async function describeComponentLocation(comp: ComponentNode): Promise<string> {
     if (cur.type === "PAGE") { pageName = cur.name; break; }
     cur = cur.parent;
   }
-  return pageName || "(외부)";
+  if (pageName) return pageName;
+  // 이 파일에 없는 부품 = 라이브러리(다른 파일). 어디 것인지 한 마디라도 남긴다.
+  let remote = false;
+  try { remote = (comp as any).remote === true; } catch (e) { remote = false; }
+  return remote ? "라이브러리(다른 파일)" : "(외부)";
 }
 
 type ResolveResult = {
