@@ -225,6 +225,11 @@ async function loadV2Vars(): Promise<{
   byHex: { [hex: string]: V2Var[] };
 }> {
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  // 별칭을 따라갈 때 **대상 컬렉션의 모드**로 갈아타기 위한 지도(컬렉션 id → 모드 목록).
+  //   Semantic 의 Light/Dark 모드 id 로 Foundation 변수를 찾으면 값이 안 나온다 — 그래서
+  //   정본 색이 '정확히 같은 색' 목록에서 통째로 빠졌다(river 지적 2026-09-21: 프라이머리를 못 집는다).
+  const modesByCollectionId = new Map<string, { modeId: string; name: string }[]>();
+  for (const c of collections) modesByCollectionId.set(c.id, c.modes.map((m) => ({ modeId: m.modeId, name: m.name })));
   const v2Cols = collections.filter((c) => V2_COLLECTION_NAMES.indexOf(c.name) >= 0);
   const v2CollectionIds = new Set<string>(v2Cols.map((c) => c.id));
   const v2: V2Var[] = [];
@@ -247,7 +252,16 @@ async function loadV2Vars(): Promise<{
               if (typeof cur === "object" && "type" in cur && (cur as VariableAlias).type === "VARIABLE_ALIAS") {
                 const next = await figma.variables.getVariableByIdAsync((cur as VariableAlias).id);
                 if (!next) break;
-                cur = next.valuesByMode[m.modeId] as any;
+                // 대상 변수의 **자기 모드**로 갈아탄다: 같은 모드 id → 같은 이름의 모드 → 하나뿐이면 그것.
+                let nextModeId = m.modeId;
+                const nextValues: any = next.valuesByMode || {};
+                if (!(nextModeId in nextValues)) {
+                  const nextModes = modesByCollectionId.get(next.variableCollectionId) || [];
+                  const sameName = nextModes.filter((one) => one.name === m.name)[0];
+                  const keys = Object.keys(nextValues);
+                  nextModeId = sameName ? sameName.modeId : (keys.length ? keys[0] : nextModeId);
+                }
+                cur = nextValues[nextModeId] as any;
                 continue;
               }
               break;
