@@ -390,6 +390,22 @@ export async function buildPattern(
       warnings.push(`섹션 바탕색을 토큰(${sectionVar})에 연결하지 못해 색 없이 두었습니다: ${section.name}`);
     }
   } catch (e) { /* fills 를 못 읽는 환경 → 그대로 둔다 */ }
+  // 섹션 테두리 — Figma 가 새 섹션에 기본으로 깔아 주는 선은 토큰 밖 색이라 검수기에 걸린다
+  //   (river 실측 2026-09-21: "Pattern / App Login (선)"). 바탕과 같은 규칙으로, 선도 정본 토큰에 걸고
+  //   걸리지 않으면 색 없이 둔다. 선이 원래 없으면 아무것도 하지 않는다.
+  try {
+    const st = (section as unknown as GeometryMixin).strokes as Paint[];
+    if (Array.isArray(st) && st.length > 0) {
+      bindStroke(section as unknown as SceneNode, maps, "color/line/gray/subtle", warnings);
+      const after = (section as unknown as GeometryMixin).strokes as Paint[];
+      const bound = Array.isArray(after) && after.length > 0 && after.every((p) =>
+        p.type === "SOLID" && !!(p as SolidPaint).boundVariables && !!(p as SolidPaint).boundVariables!.color);
+      if (!bound) {
+        (section as unknown as GeometryMixin).strokes = [];
+        warnings.push(`섹션 테두리색을 토큰에 연결하지 못해 선 없이 두었습니다: ${section.name}`);
+      }
+    }
+  } catch (e) { /* strokes 를 못 읽는 환경 → 그대로 둔다 */ }
 
   // 섹션 크기 = 화면 배치 범위 + 정본과 같은 여백(좌우/상하 80·100).
   let maxX = 0, maxY = 0;
