@@ -6,9 +6,13 @@
    · 앞 체크 18, 글과 사이 12 · 화살표 24, 글과 사이 4
    · 구분선 #EBEBEB ≒ 우리 gray-100, 화면 폭 360 전체
    · 앞 아이콘 32×32, 왼쪽 16, 글 시작 56 (권한 화면)
-   ※ 줄 간격은 레거시 그대로 글자 크기와 같게 간다(100%) — river 결정 2026-09-18 "레거시 그대로".
-     그래서 두 줄짜리도 74 로 떨어진다. 우리 글꼴 기본 130% 를 이 부품 안에서만 100% 로 덮는다.
-     (간격 100% 토큰이 아직 없다 — 정본 등록할 때 함께 만든다.)
+   ※ 2026-09-21 river 결정으로 바뀐 것: 글자는 **최신 정본 텍스트 스타일 그대로**(줄 간격 130%) 쓰고,
+     줄 높이만 레거시와 같게 맞춘다. 130% 로 재면 제목 20.8 · 설명 18.2 (실측) 이라 글 덩이가 47 이 된다.
+     제목·설명 사이는 2 로 둔다(상자 여유가 붙어 눈에는 약 6.5 로 보인다 — river 가 화면 보고 고름).
+     글 자리를 짝수로 고정하고(두 줄 48 · 한 줄 24) 위아래 여백 13 으로 높이를 맞춘다 —
+     13 + 48 + 13 = 74 — 제목만 있든 설명이 붙든 같은 74 다(river 2026-09-21: 같은 목록 안에서
+     내용물 양에 따라 높이가 달라지면 안 된다). 메뉴처럼 모두 한 줄인 목록만 통째로 48 로 내린다
+     (12 + 24 + 12, 전체 메뉴 피치 105건) — 줄 단위가 아니라 목록 단위 설정이다. (구 규칙: 줄간격 100% + 여백 18 — 폐기)
    색·글꼴은 전부 토큰/타이포 클래스. HEX 없음. */
 
 [data-s1-component="list-row"] {
@@ -18,10 +22,11 @@
   box-sizing: border-box;
   cursor: pointer;
   display: flex;
-  gap: var(--spacing-8);
+  /* 글과 오른쪽 자리 사이 16 — 설명이 길어져도 토글·값에 붙지 않게 */
+  gap: var(--spacing-16);
   min-height: 74px;
-  /* 위아래 18 — 우리 간격 토큰에 18 이 없다. 토큰 신설은 승인 사항이라 값으로 두고 needs-decision 으로 올린다. */
-  padding: 18px var(--spacing-16) 18px var(--spacing-20);
+  /* 위아래 13 — 우리 간격 토큰에 13 이 없다. 토큰 신설은 승인 사항이라 값으로 두고 needs-decision 으로 올린다. */
+  padding: 13px var(--spacing-16) 13px var(--spacing-20);
   text-align: left;
   width: 100%;
 }
@@ -54,11 +59,35 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: var(--spacing-8);
+  /* 제목·설명 사이 2 — 정본 글자(130%)는 상자 위아래에 여유(제목 2.4·설명 2.1)가 붙는다.
+     8 을 주면 눈에는 12.5 로 벌어지고, 4 면 약 8.5(레거시와 비슷), 2 면 약 6.5 다.
+     river 가 화면을 보고 2 를 골랐다 (2026-09-21) */
+  gap: var(--spacing-2);
+  /* 글 자리 48 고정 — 정본 텍스트(20.8 + 2 + 18.2 = 41)를 짝수 자리에 담아 줄 높이를 74 로 떨군다.
+     제목만 있는 줄도 이 48 자리에 가운데로 놓여 같은 74 가 된다 */
+  height: 48px;
+  justify-content: center;
   min-width: 0;
 }
-[data-s1-component="list-row"] [data-s1-part="title"] { color: var(--color-text-title-primary); line-height: 1; margin: 0; }
-[data-s1-component="list-row"] [data-s1-part="description"] { color: var(--color-text-body-tertiary); line-height: 1; margin: 0; }
+
+/* 줄 높이는 '내용물'이 아니라 '목록'이 정한다 (river 2026-09-21)
+   — 같은 목록 안에서 한 줄짜리와 두 줄짜리의 높이가 달라지면 안 된다.
+   기본은 74. 글 자리 48 을 가운데 두므로 제목만 있어도 74 로 선다.
+   메뉴처럼 줄이 모두 한 줄인 촘촘한 목록만 48 로 내린다 —
+   목록에 data-s1-density="compact" 를 주면 그 목록의 줄이 전부 48 이 된다
+   (근거: 전체 메뉴의 제목만+화살표 줄 피치 48, 105건). 줄 하나만 따로 내리지 않는다. */
+[data-s1-part="list"][data-s1-density="compact"] [data-s1-component="list-row"],
+[data-s1-component="list-row"][data-s1-density="compact"] {
+  min-height: 48px;
+  padding-bottom: var(--spacing-12);
+  padding-top: var(--spacing-12);
+}
+[data-s1-part="list"][data-s1-density="compact"] [data-s1-component="list-row"] [data-s1-part="text"],
+[data-s1-component="list-row"][data-s1-density="compact"] [data-s1-part="text"] { height: 24px; }
+
+/* 줄 간격은 정본 텍스트 스타일(130%) 그대로 둔다 — 덮지 않는다 (river 2026-09-21) */
+[data-s1-component="list-row"] [data-s1-part="title"] { color: var(--color-text-title-primary); margin: 0; }
+[data-s1-component="list-row"] [data-s1-part="description"] { color: var(--color-text-body-tertiary); margin: 0; }
 
 /* 줄 끝 자리 — 상태 글자 · 화살표 · 토글 */
 [data-s1-component="list-row"] [data-s1-part="trail"] {
@@ -67,7 +96,11 @@
   flex: none;
   gap: var(--spacing-4);
 }
-[data-s1-component="list-row"] [data-s1-part="trail-text"] { color: var(--color-text-body-secondary); line-height: 1; }
+/* 토글이 오는 줄은 조금 더 띄운다 — 토글이 글자보다 커서 더 붙어 보인다 */
+[data-s1-component="list-row"]:has([data-s1-component="toggle"]) { gap: var(--spacing-20); }
+/* 오른쪽 값 글자 — 레거시는 검정(#000)이었다. 검정에 가장 가까운 '본문' 토큰으로 옮긴다
+   (제목이 아니라 값이라 title-primary 는 쓰지 않는다) */
+[data-s1-component="list-row"] [data-s1-part="trail-text"] { color: var(--color-text-body-primary); }
 [data-s1-component="list-row"] [data-s1-part="arrow"] {
   background-color: var(--color-icon-gray);
   display: block;
