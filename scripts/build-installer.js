@@ -9,6 +9,7 @@
  * 이 스크립트는 fs·esbuild JS API·순수 Node zip writer 만 사용해 셸 종류와 무관하게 동일하게 동작한다.
  */
 const fs = require("fs");
+const vm = require("vm");
 const path = require("path");
 const zlib = require("zlib");
 const { execFileSync } = require("child_process");
@@ -50,6 +51,25 @@ async function run() {
 
   console.log("[installer] ui.html 스탬프…");
   execFileSync(process.execPath, [path.join(ROOT, "scripts/stamp-installer-ui.js"), path.join(OUT_DIR, "ui.html")], { stdio: "inherit" });
+
+  // ── ui.html 안 <script> 문법 검사 ─────────────────────────────────────────
+  //   괄호 하나가 어긋나도 그 스크립트가 **통째로 안 돌아** 화면이 죽는다. 실제로 그렇게 나갔고
+  //   (2026-09-21 검수 탭이 '확인 중'에서 멈춤) 사람이 Figma 에서야 발견했다. 빌드에서 막는다.
+  {
+    const html = fs.readFileSync(path.join(OUT_DIR, "ui.html"), "utf8");
+    const blocks = html.match(/<script>[\s\S]*?<\/script>/g) || [];
+    let index = 0;
+    for (const block of blocks) {
+      index += 1;
+      const code = block.replace(/^<script>/, "").replace(/<\/script>$/, "");
+      try {
+        new vm.Script(code, { filename: `ui.html#script${index}` });
+      } catch (e) {
+        throw new Error(`[installer] ui.html 의 ${index}번째 <script> 에 문법 오류가 있습니다 — 이 상태로 나가면 그 화면이 통째로 죽습니다.\n${e.message}`);
+      }
+    }
+    console.log(`[installer] ui.html 스크립트 문법 확인 — ${blocks.length}개 정상`);
+  }
 
   console.log("[installer] zip 압축…");
   fs.mkdirSync(path.dirname(ZIP_PATH), { recursive: true });
