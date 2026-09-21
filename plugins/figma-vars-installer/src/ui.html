@@ -2966,7 +2966,13 @@ function handleAuditUiMessage(msg) {
     auditInstalled = true;
     // 시작한 자리로 돌려보낸다 — 패턴에서 시작했으면 패턴 목록을 새로 읽어 잠금이 풀린 채 보여 준다.
     switchTab(GUIDE_UPDATE_ORIGIN === 'pattern' ? 'pattern' : 'audit');
-    showToast(`✅ ${msg.payload && msg.payload.pageName ? msg.payload.pageName : '새 가이드 페이지'} 설치 완료`);
+    const _p = msg.payload || {};
+    // 먼저 만들어 둔 패턴 화면의 부품은 자동으로 최신으로 바뀐다 — 몇 개가 바뀌었는지 함께 알린다.
+    //   («확인필요»로 남은 것은 검수 탭의 컴포넌트 항목에서 사람이 고른다)
+    const _swap = _p.swappedCount
+      ? ` · 먼저 만든 화면의 부품 ${_p.swappedCount}개를 최신으로 교체${_p.swapSkipped ? ` (확인 필요 ${_p.swapSkipped}건)` : ''}`
+      : '';
+    showToast(`✅ ${_p.pageName ? _p.pageName : '새 가이드 페이지'} 설치 완료${_swap}`);
   } else if (msg.type === "guide-update-failed") {
     // 설치 탭에 이미 오류 화면이 떠 있다 — 탭을 옮기지 않고 사유만 덧붙인다.
     resetGuideUpdateButton();

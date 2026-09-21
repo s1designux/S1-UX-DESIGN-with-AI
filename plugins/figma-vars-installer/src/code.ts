@@ -1141,6 +1141,43 @@ function uniqueGuidePageName(): string {
   return `${GUIDE_PAGE_NAME} ${index}`;
 }
 
+/** 최신 가이드를 새로 깐 **직후**, 설치기가 만들어 둔 패턴 화면의 부품을 새 세트로 바꾼다.
+ *  묻지 않고 자동으로 한다(river 결정 2026-09-21).
+ *    왜: [최신 가이드로 업데이트]는 **새 페이지에 새 세트**를 깐다. 먼저 만들어 둔 패턴 화면은
+ *    옛 세트를 계속 가리키므로, 그 상태로 검수하면 부품이 전부 "바꿔야 할 것"으로 나와
+ *    색·글자 검수를 볼 수 없다. 사람이 순서를 외워야 하는 자리를 도구가 없앤다.
+ *  범위는 **설치기 자신이 만든 패턴 페이지**로 한정한다 — 사용자가 다른 페이지에 만든 화면을
+ *  묻지도 않고 바꾸지 않는다. 애매한 것(«확인필요»·묶음)은 손대지 않고 숫자로만 알린다.
+ *  되돌리기는 검수 탭의 [되돌리기]와 같은 장부(swapRollbackById)에 쌓인다. */
+async function autoSwapPatternScreens(): Promise<{ applied: number; skipped: number }> {
+  const out = { applied: 0, skipped: 0 };
+  try {
+    const page = figma.root.children.find((p) => p.name === PATTERN_PAGE_NAME);
+    if (!page) return out;
+    await page.loadAsync();
+    const roots = Array.from(page.children) as SceneNode[];
+    if (!roots.length) return out;
+    const guidePage = await getStampedGuidePage();
+    const pool = collectPageReference(guidePage || undefined);
+    const scan = await scanSwapCandidates(pool, roots);
+    for (const c of scan.candidates) {
+      // 한 번에 바꾸는 길에는 «확인이 필요하다» 고 내려온 것을 들이지 않는다(검수 탭의 일괄 교체와 같은 기준).
+      if (c.confidence !== "high" || c.demoteReason) { out.skipped++; continue; }
+      const r = await applySwap(c, "lenient");
+      if (r.ok) {
+        out.applied++;
+        if (r.rollback) swapRollbackById.set(c.id, r.rollback);
+      } else {
+        out.skipped++;
+      }
+    }
+    out.skipped += scan.manualCandidates.length + scan.modules.length;
+  } catch (e) {
+    console.warn("[installer] 패턴 화면 자동 교체 실패(설치 자체는 정상):", e);
+  }
+  return out;
+}
+
 async function installLatestGuideOnNewPage(): Promise<void> {
   const previousPage = figma.currentPage;
   const page = figma.createPage();
@@ -1162,7 +1199,12 @@ async function installLatestGuideOnNewPage(): Promise<void> {
     });
     return;
   }
-  figma.ui.postMessage({ type: "audit:guide-update-done", payload: { pageName: page.name } });
+  // 먼저 만들어 둔 패턴 화면의 부품을 방금 깐 최신 세트로 바꾼다(묻지 않는다).
+  const swapped = await autoSwapPatternScreens();
+  figma.ui.postMessage({
+    type: "audit:guide-update-done",
+    payload: { pageName: page.name, swappedCount: swapped.applied, swapSkipped: swapped.skipped },
+  });
 }
 
 // ── 패턴 탭 ──────────────────────────────────────────────────────────────────
