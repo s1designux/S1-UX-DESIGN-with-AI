@@ -439,16 +439,17 @@ async function getStampedGuidePage(): Promise<PageNode | null> {
  *    → 막는 기준은 **내용이 있는가**(색·수치·글자 스타일·부품)뿐이고,
  *      최신 여부는 **값을 실제로 대조해서**(getGuideValueDrift) 알려만 준다. */
 async function getAuditInstallState(): Promise<{
-  installed: boolean; missing: string[]; currentGuide: boolean; valueDrift: string[];
+  installed: boolean; missing: string[]; partial: string[]; currentGuide: boolean; valueDrift: string[];
 }> {
-  const missing = await getGuideContentMissing();
+  const content = await getGuideContentMissing();
   const stamped = await getStampedGuidePage();
-  // 내용이 없으면 값 대조는 의미가 없다(없는 것을 다르다고 적지 않는다).
-  const valueDrift = missing.length ? [] : await getGuideValueDrift();
+  // 비교할 기준이 아예 없을 때만 값 대조를 건너뛴다.
+  const valueDrift = content.blocking.length ? [] : await getGuideValueDrift();
   return {
-    installed: missing.length === 0,
-    missing,
-    currentGuide: !!stamped && valueDrift.length === 0,
+    installed: content.blocking.length === 0,
+    missing: content.blocking,
+    partial: content.partial,
+    currentGuide: !!stamped && valueDrift.length === 0 && content.partial.length === 0,
     valueDrift,
   };
 }
@@ -531,7 +532,7 @@ async function getGuideValueDrift(): Promise<string[]> {
   return drift.slice(0, 40);
 }
 
-async function getGuideContentMissing(): Promise<string[]> {
+async function getGuideContentMissing(): Promise<{ blocking: string[]; partial: string[] }> {
   const missing: string[] = [];
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const collectionByName = new Map(collections.map((collection) => [collection.name, collection]));
@@ -549,10 +550,16 @@ async function getGuideContentMissing(): Promise<string[]> {
     [SEMANTIC_SHADOW_COLLECTION, shadowVariableNames],
   ]);
   let incompleteVariables = false;
+  let noColorBase = false;        // 색 기준 자체가 아예 없다 = 검수를 할 수 없다
   const missingVarNames: string[] = [];
   for (const [name, expectedNames] of expectedVariableNames) {
     const collection = collectionByName.get(name);
-    if (!collection) { incompleteVariables = true; missingVarNames.push(`${name} 전체`); break; }
+    if (!collection) {
+      incompleteVariables = true;
+      missingVarNames.push(`${name} 전체`);
+      if (name === FOUNDATION_COLLECTION || name === SEMANTIC_COLOR_COLLECTION) noColorBase = true;
+      break;
+    }
     const installedNames = new Set<string>();
     for (const id of collection.variableIds) {
       const variable = await figma.variables.getVariableByIdAsync(id);
@@ -589,7 +596,19 @@ async function getGuideContentMissing(): Promise<string[]> {
     }
   }
   if (missingComponents.length) missing.push(`컴포넌트 ${missingComponents.length}개${listOf(missingComponents, 5)}`);
-  return missing;
+  // ⚠️ **검수를 막는 것과 그냥 모자란 것을 가른다**(river 지적 2026-09-21 — "기존 가이드로 세팅돼
+  //    있어도 검수할 수 있게 고쳤잖아"). 옛 가이드에는 나중에 생긴 부품이 없을 수밖에 없는데,
+  //    그걸 '부족'으로 막으면 결국 또 새로 깔라는 말이 된다.
+  //    막는 것은 **비교할 기준이 아예 없을 때**뿐이다:
+  //      · 색 기준(Foundation·Semantic Color) 컬렉션 자체가 없음
+  //      · 정본 부품이 파일에 **하나도** 없음
+  //    그 외(일부 부품·일부 토큰·글자 스타일 부족)는 알리기만 하고 검수는 그대로 한다.
+  const noComponents = missingComponents.length >= COMPONENT_CATEGORIES.reduce((sum, c) => sum + c.members.length, 0);
+  const blocking = missing.filter(() => false).concat(
+    noColorBase ? [`색·수치 기준${listOf(missingVarNames, 3)}`] : [],
+    noComponents ? ["정본 부품(이 파일에 하나도 없습니다)"] : [],
+  );
+  return { blocking, partial: missing };
 }
 
 function normalizeAuditName(name: string): string {
@@ -1169,7 +1188,7 @@ async function runInstall(
     //   종전 조건(4개 전부 선택)에서는 이미 토큰이 깔린 파일에 컴포넌트만 다시 설치하면 도장이
     //   안 찍혀 검수 탭이 영원히 "최신 가이드가 아닙니다"였다(river 결정 2026-09-03 — 부분 설치도 인정).
     if (options.stampCompleteGuide && componentProblems === 0) {
-      const contentMissing = await getGuideContentMissing();
+      const contentMissing = (await getGuideContentMissing()).partial;
       // 새 가이드 페이지를 만드는 흐름은 반드시 완전해야 한다 — 모자라면 실패로 되돌린다.
       if (contentMissing.length && options.updateFlow) {
         throw new Error(`최신 가이드 설치가 완료되지 않았습니다: ${contentMissing.join(" · ")}`);

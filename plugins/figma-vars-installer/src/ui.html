@@ -2953,19 +2953,23 @@ function handleAuditUiMessage(msg) {
     // 막는 기준은 **내용이 있는가**뿐이다. 설치 기록(도장)이 옛것이어도 값이 같으면 그대로 검수한다
     //   (river 지시 2026-09-21 — 값이 같은데 매번 새로 깔게 하면 이미 만든 화면이 옛것이 된다).
     const missingContents = (p.missing || []).filter((m) => m !== '최신 가이드 버전');
+    const partial = p.partial || [];
     const drift = p.valueDrift || [];
     $('#audit-install-missing').textContent = !auditInstalled
-      ? `이 파일에 부족한 기준: ${missingContents.join(' · ')}. 쓰던 가이드 페이지에 이어서 설치합니다(없으면 새로 만듭니다).`
-      : (drift.length
+      ? `이 파일에 비교할 기준이 없습니다: ${missingContents.join(' · ')}. 쓰던 가이드 페이지에 이어서 설치합니다(없으면 새로 만듭니다).`
+      : (partial.length
+        ? `검수는 그대로 할 수 있습니다. 다만 이 파일에 없는 것이 있습니다: ${partial.join(' · ')}. [최신 가이드로 업데이트]를 누르면 쓰던 가이드 페이지에 그것만 이어서 깝니다.`
+        : drift.length
           ? `가이드의 색·수치 ${drift.length}개가 정본과 다릅니다 (${esc(drift.slice(0, 4).join(' · '))}${drift.length > 4 ? ' …' : ''}). [최신 가이드로 업데이트]를 누르면 쓰던 가이드 페이지에서 그 값만 갱신합니다 — 만들어 둔 화면에 그대로 반영됩니다.`
-          : '색·수치 값은 정본과 같습니다. 다만 부품의 구성이 바뀌었을 수 있으니, 검수 결과의 컴포넌트 항목에서 확인하세요.');
+          : '색·수치 값은 정본과 같습니다. 다만 부품의 구성이 바뀌었을 수 있으니, 검수 결과의 컴포넌트 항목에서 확인하세요.'));
     // 설치 기록이 옛것이어도 값이 같으면 "업데이트하라"고 하지 않는다 — 부품 구성만 짚어 준다.
     const stale = p.currentGuide === false;
     $('#audit-install-title').textContent = !auditInstalled
-      ? '검수 기준이 부족합니다'
-      : (drift.length ? '가이드 값이 정본과 다릅니다' : '가이드 설치 기록이 옛것입니다');
-    // 값이 다르거나 기록이 옛것이면 알려만 준다 — 안내 줄만 보이고 시작 버튼은 잠그지 않는다.
-    $('#audit-install-required').classList.toggle('visible', !auditInstalled || drift.length > 0 || stale);
+      ? '비교할 기준이 없습니다'
+      : (partial.length ? '가이드에 없는 것이 있습니다 (검수는 됩니다)'
+        : (drift.length ? '가이드 값이 정본과 다릅니다' : '가이드 설치 기록이 옛것입니다'));
+    // 모자란 것이 있어도 검수는 된다 — 안내 줄만 보이고 시작 버튼은 잠그지 않는다.
+    $('#audit-install-required').classList.toggle('visible', !auditInstalled || partial.length > 0 || drift.length > 0 || stale);
     applyAuditSelectionSummary(p);
   } else if (msg.type === "selection-summary") {
     applyAuditSelectionSummary(msg.payload || {});
