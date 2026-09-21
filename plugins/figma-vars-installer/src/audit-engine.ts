@@ -1332,6 +1332,26 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
  *  (river 요청 2026-09-21). **지금 그 자리 색이 짝 토큰 값과 정확히 같을 때만** 건다 —
  *  다르면 건드리지 않는다(값을 바꿔 버리지 않기 위해). 돌려주는 값은 함께 바꾼 자리 수.
  */
+/** 변수가 실제로 가리키는 색(모드 전부)을 hex 로 돌려준다 — **별칭을 끝까지 따라간다**. */
+async function resolveVarHexes(variable: Variable, depth = 0): Promise<string[]> {
+  if (!variable || depth > 4) return [];
+  const out: string[] = [];
+  try {
+    const byMode: any = (variable as any).valuesByMode || {};
+    for (const modeId of Object.keys(byMode)) {
+      const val: any = byMode[modeId];
+      if (!val) continue;
+      if (val.type === "VARIABLE_ALIAS") {
+        const next = await figma.variables.getVariableByIdAsync(val.id);
+        if (next) for (const hex of await resolveVarHexes(next, depth + 1)) out.push(hex);
+        continue;
+      }
+      if (typeof val.r === "number") out.push(rgbToHex(val));
+    }
+  } catch (e) { /* 못 읽으면 빈 목록 */ }
+  return out;
+}
+
 async function applyPairedPaint(issue: Issue, sug: Suggestion): Promise<number> {
   const otherProp: "fills" | "strokes" = issue.property === "fills" ? "strokes" : "fills";
   const name = sug.variableName;
@@ -1353,14 +1373,9 @@ async function applyPairedPaint(issue: Issue, sug: Suggestion): Promise<number> 
   } catch (e) { return 0; }
   if (!pairVar) return 0;
   // 짝 토큰이 가진 색(모드 전부) — 지금 칠해진 색이 그중 하나와 같아야 건다.
-  const pairHexes: string[] = [];
-  try {
-    const byMode: any = (pairVar as any).valuesByMode || {};
-    for (const modeId of Object.keys(byMode)) {
-      const val: any = byMode[modeId];
-      if (val && typeof val.r === "number") pairHexes.push(rgbToHex(val));
-    }
-  } catch (e) { /* 값을 못 읽으면 아래에서 0 으로 끝난다 */ }
+  //   ⚠️ Semantic 토큰의 값은 대개 **Foundation 을 가리키는 별칭**이다. 별칭을 안 따라가면
+  //      색을 하나도 못 읽어 짝 적용이 조용히 아무 일도 안 한다(river 지적 2026-09-21).
+  const pairHexes = await resolveVarHexes(pairVar);
   if (!pairHexes.length) return 0;
 
   let changed = 0;
@@ -1389,7 +1404,7 @@ async function applyPairedPaint(issue: Issue, sug: Suggestion): Promise<number> 
   return changed;
 }
 
-async function applyOne(issue: Issue, suggestionIndex: number): Promise<boolean> {
+async function applyOne(issue: Issue, suggestionIndex: number, out?: { paired: number }): Promise<boolean> {
   const sug = issue.suggestions[suggestionIndex];
   if (!sug) return false;
   const v2 = await figma.variables.getVariableByIdAsync(sug.variableId);
@@ -1433,7 +1448,10 @@ async function applyOne(issue: Issue, suggestionIndex: number): Promise<boolean>
     }
   }
   // 짝(채움↔테두리)도 함께 건다 — 실패해도 이번 적용은 성공이다.
-  try { await applyPairedPaint(issue, sug); } catch (e) { /* 짝 적용 실패는 무시 */ }
+  try {
+    const paired = await applyPairedPaint(issue, sug);
+    if (out) out.paired = paired;
+  } catch (e) { /* 짝 적용 실패는 무시 */ }
   return true;
 }
 

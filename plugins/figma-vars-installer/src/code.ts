@@ -206,8 +206,12 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
         figma.viewport.scrollAndZoomIntoView([n as SceneNode]);
       }
     } else if (type === "apply-one") {
-      const ok = await applyOne(payload.issue, payload.suggestionIndex);
-      figma.ui.postMessage({ type: "audit:apply-result", payload: { issueId: payload.issue.id, suggestionIndex: payload.suggestionIndex, ok } });
+      const pairInfo = { paired: 0 };
+      const ok = await applyOne(payload.issue, payload.suggestionIndex, pairInfo);
+      figma.ui.postMessage({
+        type: "audit:apply-result",
+        payload: { issueId: payload.issue.id, suggestionIndex: payload.suggestionIndex, ok, paired: pairInfo.paired },
+      });
     } else if (type === "apply-high") {
       const count = await applyHighConfidence(payload.issues);
       figma.notify(`${count}건 자동 적용 완료`);

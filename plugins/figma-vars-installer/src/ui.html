@@ -3059,7 +3059,7 @@ function handleAuditUiMessage(msg) {
     lastIssues = msg.payload.issues;
     rerenderTab();
   } else if (msg.type === "apply-result") {
-    const { issueId, suggestionIndex, ok } = msg.payload;
+    const { issueId, suggestionIndex, ok, paired } = msg.payload;
     const el = list.querySelector(`[data-id="${issueId}"]`);
     if (el) {
       // 같은 issue의 모든 apply 버튼을 활성 상태로 복원 + applied 표시 해제
@@ -3078,7 +3078,12 @@ function handleAuditUiMessage(msg) {
         }
       }
     }
-    showToast(ok ? "적용 완료" : "적용 실패");
+    // 같은 도형의 채움↔테두리를 함께 걸었으면 그 사실을 알린다(river 요청 2026-09-21).
+    let applyMsg;
+    if (!ok) applyMsg = "적용 실패";
+    else if (paired) applyMsg = "적용 완료 · 같은 도형의 테두리/배경도 함께 연결했습니다";
+    else applyMsg = "적용 완료";
+    showToast(applyMsg);
   } else if (msg.type === "apply-high-result") {
     showToast(`${msg.payload.count}건 자동 적용 완료. 다시 스캔을 권장합니다.`);
   } else if (msg.type === "apply-multi-result") {
