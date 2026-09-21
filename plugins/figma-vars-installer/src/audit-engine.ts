@@ -141,6 +141,7 @@ type Suggestion = {
   collectionName: string;
   confidence: "high" | "medium" | "low";
   exact?: boolean;      // 색이 정확히 같은 토큰인가(자동 적용 판정에 쓴다)
+  dist?: number;        // 지금 칠해진 색과의 거리(0=같음). 정렬·자동적용 판정에 쓴다
   state?: string;       // default·hover·selected·disabled … (토큰 이름에서 읽는다)
   matchType: "role+component" | "role" | "exact" | "near";
   matchInfo?: string;  // 'Δ12' 같은 부가 정보 (color distance)
@@ -785,8 +786,18 @@ function pickSuggestions(
   nodeKind: NodeKind,
   contextSegments: string[],
   externalVarName?: string,
-  guess?: PartGuess | null
+  guess?: PartGuess | null,
+  modeName?: string
 ): Suggestion[] {
+  /** 이 토큰이 지금 화면 모드에서 갖는 색. 못 읽으면 빈 문자열. */
+  const hexOfVar = (v: V2Var): string => {
+    if (modeName && v.hexByModeName && v.hexByModeName[modeName]) return v.hexByModeName[modeName];
+    return v.fallbackHex || "";
+  };
+  const distOfVar = (v: V2Var): number => {
+    const h = hexOfVar(v);
+    return h ? hexDistance(hex, h) : 9999;
+  };
   const roles = decideRoles(nodeKind, paintProp, externalVarName);
   const exactList = byHex[hex] || [];
   const exactIds = new Set(exactList.map((v) => v.id));
@@ -831,6 +842,7 @@ function pickSuggestions(
       collectionName: v.collectionName,
       confidence,
       exact: isExact,
+      dist: isExact ? 0 : distOfVar(v),
       state: stateOf(v.name),
       matchType,
       category: cat,
@@ -847,6 +859,7 @@ function pickSuggestions(
       collectionName: v.collectionName,
       confidence: "medium",
       exact: true,
+      dist: 0,
       state: stateOf(v.name),
       matchType: "exact",
       category: v.collectionName === FOUNDATION_COLLECTION ? "foundation" : categoryOf(v.name),
@@ -897,6 +910,11 @@ function pickSuggestions(
     if (ag === 0) {
       const ae = exactRank(a), be = exactRank(b);
       if (ae !== be) return ae - be;
+      // 정확히 같은 색이 없으면 **가장 가까운 색**이 먼저다 — 흰색(블루라인)이 파란 버튼 위에
+      //   서던 문제를 없앤다(river 지적 2026-09-21).
+      const ad = typeof a.dist === "number" ? a.dist : 9999;
+      const bd = typeof b.dist === "number" ? b.dist : 9999;
+      if (Math.abs(ad - bd) > 0.5) return ad - bd;
       const as = stateRank(a), bs = stateRank(b);
       if (as !== bs) return as - bs;
     }
@@ -986,7 +1004,7 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?:
           }
         }
         const guess = kind === "shape" || kind === "text" || kind === "icon" ? guessPartKind(n) : null;
-        const suggestions = pickSuggestions(hex, byHex, v2, prop, kind, ctx, externalVarName, guess);
+        const suggestions = pickSuggestions(hex, byHex, v2, prop, kind, ctx, externalVarName, guess, modeName);
         // 노드가 어떤 컴포넌트/인스턴스에 속하면 컴포넌트 매칭 탭으로 분류
         // (V2에 해당 컴포넌트 토큰이 정의되어 있는지 여부는 suggestion 점수에만 영향)
         const hasComponentMatch = ctx.length > 0;
@@ -1471,6 +1489,11 @@ async function applyOne(issue: Issue, suggestionIndex: number, out?: { paired: n
 
 /** 물어보지 않고 바꿔도 되는 자리 — **모양으로 읽은 정체 + 색이 정확히 같은 토큰**이 딱 하나일 때만.
  *  (river 지시 2026-09-21 "확실하면 자동 교체". 애매하면 자동으로 안 바꾸고 그대로 묻는다.) */
+/** 색이 "거의 같다"고 볼 거리 — Δ(0~765). 12 는 눈으로 구분이 어려운 수준이다.
+ *  (river 지적 2026-09-21: 시안의 #226FEC 는 정본 blue/400 #1D6CEB 와 Δ9 다 — 같은 파랑을
+ *  손으로 조금 다르게 찍은 것이라, 이 정도는 정본으로 되돌려 주는 것이 맞다.) */
+const NEAR_SAME = 12;
+
 function autoPickIndex(issue: Issue): number | null {
   // 종전 규칙 — 후보가 아예 하나뿐이고 확신도가 높으면 그대로.
   if (issue.suggestions.length === 1 && issue.suggestions[0].confidence === "high") return 0;
@@ -1481,6 +1504,28 @@ function autoPickIndex(issue: Issue): number | null {
     if (s.category === issue.guess.category && s.exact === true && s.matchType === "role+component") hits.push(i);
   }
   if (hits.length === 1) return hits[0];
+  // 정확히 같은 색이 하나도 없으면 — **추정한 부품 안에서 거의 같은 색이 하나뿐일 때만** 바꾼다.
+  //   (둘 이상이 비슷하면 어느 상태인지 사람이 골라야 한다.)
+  if (hits.length === 0) {
+    const near: number[] = [];
+    for (let i = 0; i < issue.suggestions.length; i++) {
+      const s = issue.suggestions[i];
+      if (s.category !== issue.guess.category) continue;
+      if (typeof s.dist !== "number" || s.dist > NEAR_SAME) continue;
+      near.push(i);
+    }
+    if (near.length === 1) return near[0];
+    if (near.length > 1 && issue.guess.state) {
+      const byState = near.filter((i) => issue.suggestions[i].state === issue.guess!.state);
+      if (byState.length === 1) return byState[0];
+    }
+    // 기본 상태 하나만 거의 같으면 그것으로 본다(나머지는 hover·비활성 등 변형).
+    if (near.length > 1) {
+      const defaults = near.filter((i) => issue.suggestions[i].state === "default");
+      if (defaults.length === 1) return defaults[0];
+    }
+    return null;
+  }
   // 색이 같은 후보가 여럿이면 **상태가 갈린 것**이다 — 단서가 있을 때만 그 상태로 좁힌다.
   //   단서가 없으면 자동으로 바꾸지 않는다(river 결정 2026-09-21: "고르게 해줘").
   if (hits.length > 1 && issue.guess.state) {
@@ -2188,6 +2233,31 @@ function pickVariantTarget(set: ComponentSetNode, legacyVP: { [k: string]: strin
   return { target: null, reason: "no-variant-match", axisLoss };
 }
 
+/** 이 부품이 **설치기가 깐 정본 세트**를 가리키고 있나 — 기준 풀에 있는 그 세트가 아니어도.
+ *  가이드를 새 페이지에 다시 깔면 같은 이름의 세트가 둘이 되고, 먼저 만든 화면은 옛 세트를
+ *  가리킨다. 값이 같은데도 "바꿔라"가 매번 뜨던 자리다(river 지적 2026-09-21).
+ *  판정은 두 가지를 모두 만족할 때만: ①정본 부품 이름과 맞는다 ②그 세트가 있는 페이지에
+ *  설치기만 만드는 설명 시트(`<이름> — Spec Light/Dark`)가 있다. */
+const installerPageCache = new Map<string, boolean>();
+function pageHasInstallerMark(node: BaseNode): boolean {
+  let cur: BaseNode | null = node;
+  while (cur && cur.type !== "PAGE") cur = cur.parent;
+  if (!cur) return false;
+  const page = cur as PageNode;
+  const hit = installerPageCache.get(page.id);
+  if (hit !== undefined) return hit;
+  let found = false;
+  try {
+    const marks = page.findAllWithCriteria({ types: ["FRAME"] }) as SceneNode[];
+    for (const m of marks) {
+      const nm = String(m.name || "");
+      if (nm.indexOf(" — Spec Light") > 0 || nm.indexOf(" — Spec Dark") > 0) { found = true; break; }
+    }
+  } catch (e) { found = false; }
+  installerPageCache.set(page.id, found);
+  return found;
+}
+
 // 기준 풀과 현재 instance를 비교해 swap 후보 산정 + 진단 정보 반환
 async function scanSwapCandidates(
   pool: ReferenceComponent[],
@@ -2211,6 +2281,7 @@ async function scanSwapCandidates(
     instancesPreview: [],
   };
   if (sel.length === 0) return { candidates: [], diagnostics: diag, manualCandidates: [], modules: [] };
+  installerPageCache.clear();
   const candidates: SwapCandidate[] = [];
   const manualCandidates: ManualMapCandidate[] = [];
   const modules: ModuleFlag[] = [];
@@ -2375,6 +2446,12 @@ async function scanSwapCandidates(
         continue;
       }
       if (sameAsTarget) continue;
+      // 이름이 맞는 정본 세트를 가리키고 있고, 그 세트가 설치기가 깐 것이면 **이미 정본**이다.
+      //   (가이드를 다시 깔아 같은 이름 세트가 둘이 된 경우 — 바꿀 이유가 없다)
+      if (main.parent && main.parent.type === "COMPONENT_SET" && pageHasInstallerMark(main)) {
+        diag.sameIdSkippedCount++;
+        continue;
+      }
       const key = inst.id + ":" + target!.id;
       if (seen.has(key)) continue;
       seen.add(key);

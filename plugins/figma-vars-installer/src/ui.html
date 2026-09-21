@@ -1310,6 +1310,7 @@ let picks = {}; // { issueId: suggestionIndex }
 let activeCat = {}; // { issueId: 'tab' | 'button' | 'foundation' | ... }
 let detailOpen = {}; // { issueId: true } — 「자세히」로 펴 둔 카드. 다시 그려도 유지한다.
 let moreOpen = {};   // { issueId: true } — 「색이 다른 후보」를 펴 둔 카드(기본은 접힘).
+let catsOpen = {};   // { issueId: true } — 「다른 부품」 칩까지 펴 둔 카드(기본은 접힘).
 let activeMode = "color"; // color | swap
 
 // 컴포넌트 교체 모드 상태
@@ -1559,7 +1560,7 @@ function startAuditInspection(phase) {
   const btn = $("#btn-audit");
   btn.disabled = true;
   btn.textContent = "검사 중…";
-  picks = {}; detailOpen = {}; moreOpen = {};
+  picks = {}; detailOpen = {}; moreOpen = {}; catsOpen = {};
   activeCat = {};
   updatePickedCount();
   resetAuditChecklist('running');
@@ -2764,21 +2765,36 @@ function rerenderTab() {
     activeCat[issue.id] = curCat;
 
     const guessCatKey = issue.guess ? issue.guess.category : null;
+    // 칩을 **볼 만한 것만** 남긴다 — 추정한 부품, 색이 (거의) 같은 후보가 있는 부품, 팔레트 유사색.
+    //   종전에는 칩·표·모달까지 다 떠서 고르기 어려웠다(river 지적 2026-09-21: "칩 자체를 지워").
+    const NEAR = 12;
+    const worthCat = (cat) => {
+      if (cat === guessCatKey || cat === 'foundation') return true;
+      return (catGroups[cat] || []).some((one) => one.s && (one.s.exact || (typeof one.s.dist === 'number' && one.s.dist <= NEAR)));
+    };
+    const keptCats = catKeys.filter(worthCat);
+    const hiddenCats = catKeys.filter((c) => keptCats.indexOf(c) < 0);
+    const showAllCats = !!catsOpen[issue.id] || keptCats.length === 0;
+    const baseCats = showAllCats ? catKeys : keptCats;
     // 추정한 부품을 맨 앞으로 — 눌러야 할 칩을 찾아다니지 않게 한다.
     const orderedCatKeys = guessCatKey && catGroups[guessCatKey]
-      ? [guessCatKey].concat(catKeys.filter((c) => c !== guessCatKey))
-      : catKeys;
+      ? [guessCatKey].concat(baseCats.filter((c) => c !== guessCatKey))
+      : baseCats;
     const chipsHtml = orderedCatKeys.length === 0 ? '' : orderedCatKeys.map((cat) => {
       const isCtx = (issue.componentContext || []).indexOf(cat) >= 0;
       const isGuess = cat === guessCatKey;
       return `<button class="cat-chip ${cat === curCat ? 'active' : ''}" data-cat="${cat}" data-issue-id="${issue.id}">${catLabel(cat)}${isGuess ? ' ★' : (isCtx ? ' ●' : '')}<span class="ct">${catGroups[cat].length}</span></button>`;
-    }).join("");
+    }).join("") + ((hiddenCats.length && !showAllCats)
+      ? `<button class="cat-chip" data-action="more-cats" data-issue-id="${issue.id}">다른 부품 ${hiddenCats.length}개</button>`
+      : '');
 
     const pickedIdx = picks[issue.id];
     const allSugs = catGroups[curCat] || [];
     // 색이 정확히 같은 후보가 있으면 **그것만** 먼저 보여 준다 — 색이 다른 후보는 접는다.
     //   (river 지적 2026-09-21: 블루라인부터 프라이머리까지 다 나와 고르기 어렵다)
-    const exactSugs = allSugs.filter((one) => one.s && one.s.exact);
+    // 정확히 같은 색이 없으면 **가장 가까운 색들**(Δ12 이내)을 앞에 둔다 — 시안 색이 정본과
+    //   미세하게 다른 경우가 많아, 그때도 고를 것을 좁혀 준다.
+    const exactSugs = allSugs.filter((one) => one.s && (one.s.exact || (typeof one.s.dist === 'number' && one.s.dist <= 12)));
     const showAll = !!moreOpen[issue.id] || exactSugs.length === 0;
     const foldedCount = exactSugs.length ? allSugs.length - exactSugs.length : 0;
     const visibleSugs = showAll ? allSugs : exactSugs;
@@ -2819,6 +2835,12 @@ function rerenderTab() {
     div.addEventListener("click", (e) => {
       const t = e.target;
       // "색이 다른 후보 보기" → 이 카드만 펼친다
+      if (t && t.dataset && t.dataset.action === "more-cats") {
+        catsOpen[issue.id] = true;
+        rerenderTab();
+        e.stopPropagation();
+        return;
+      }
       if (t && t.dataset && t.dataset.action === "more-sugs") {
         moreOpen[issue.id] = true;
         rerenderTab();
@@ -2914,7 +2936,7 @@ function renderInspectionResult(payload) {
   renderRecentSwaps();
 
   lastIssues = payload.colorIssues || [];
-  picks = {}; activeCat = {}; detailOpen = {}; moreOpen = {}; updatePickedCount();
+  picks = {}; activeCat = {}; detailOpen = {}; moreOpen = {}; catsOpen = {}; updatePickedCount();
   rerenderTab();
   const extraColor = (payload.colorDetails || []).filter((issue) => issue.checklistId !== 1);
   if (extraColor.length) {
@@ -3130,7 +3152,7 @@ function handleAuditUiMessage(msg) {
       renderRecentSwaps();
       // ── 그 외 버킷: HEX 색상 → 시멘틱 토큰 제안 ──
       lastIssues = msg.payload.colorIssues || [];
-      picks = {}; activeCat = {}; detailOpen = {}; moreOpen = {}; updatePickedCount();
+      picks = {}; activeCat = {}; detailOpen = {}; moreOpen = {}; catsOpen = {}; updatePickedCount();
       rerenderTab();
       // ── 칩 카운트 + 결과 칩 노출 ──
       const compCount = swapCandidates.length + manual.length + modules.length;
