@@ -862,24 +862,26 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
    *  정본 `color/overlay` 가 rgba(0,0,0,0.5) 라서, Figma 가 그 알파를 paint.opacity 로 풀어 준다.
    *  그것을 "불투명도를 임의로 만졌다"고 잡으면 정본 토큰을 제대로 쓴 화면이 오류로 뜬다
    *  (river 지적 2026-09-21 — 모달 오버레이). 별칭(alias)은 끝까지 따라간다. */
-  const alphaCache = new Map<string, number | null>();
-  const variableAlpha = async (v: Variable | null, depth = 0): Promise<number | null> => {
-    if (!v || depth > 4) return null;
+  //  ⚠️ **모드마다 값이 다르다** — `color/overlay` 는 라이트 50% · 다크 75% 다. 한쪽만 보고 끊으면
+  //     반대쪽 화면의 정상 딤이 그대로 오류로 뜬다(🤖 component-verifier 적발 2026-09-21).
+  //     그래서 모든 모드의 알파를 모아 **하나라도 맞으면** 정본 값으로 본다.
+  const alphaCache = new Map<string, number[]>();
+  const variableAlphas = async (v: Variable | null, depth = 0): Promise<number[]> => {
+    if (!v || depth > 4) return [];
     const hit = alphaCache.get(v.id);
     if (hit !== undefined) return hit;
-    let out: number | null = null;
+    const out: number[] = [];
     try {
       const byMode: any = (v as any).valuesByMode || {};
       for (const modeId of Object.keys(byMode)) {
         const val: any = byMode[modeId];
         if (val && val.type === "VARIABLE_ALIAS") {
-          const a = await variableAlpha(await getVariable(val.id), depth + 1);
-          if (a !== null) { out = a; break; }
+          for (const a of await variableAlphas(await getVariable(val.id), depth + 1)) out.push(a);
           continue;
         }
-        if (val && typeof val.a === "number" && val.a < 0.999) { out = val.a; break; }
+        if (val && typeof val.a === "number" && val.a < 0.999) out.push(val.a);
       }
-    } catch (e) { out = null; }
+    } catch (e) { /* 값을 못 읽으면 알파 없음으로 본다 */ }
     alphaCache.set(v.id, out);
     return out;
   };
@@ -943,13 +945,17 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
           // 브랜드 색(brand/*)은 Semantic 대응이 없다 — 로고·CI 는 Foundation 을 그대로 쓸 수밖에 없다.
           //   (river 2026-09-21: "컴포넌트와 달리 로고같은 것은 파운데이션 값을 그대로 사용할 수 밖에 없어")
           const isBrandVar = !!variable && variable.name.slice(0, 6) === "brand/";
-          if (colName === FOUNDATION_COLLECTION && !isBrandVar) {
+          // 컴포넌트 세트 **자신의 바탕**은 부품 색이 아니라 라이브러리 진열면이다.
+          //   CI 세트는 흰 로고가 묻히지 않게 정본이 일부러 Foundation gray/50 을 직접 건다
+          //   (build-components.ts — 사용자 결정 2026-06-25). 그 자리를 오류로 잡지 않는다.
+          const isSetSurface = String(node.type) === "COMPONENT_SET";
+          if (colName === FOUNDATION_COLLECTION && !isBrandVar && !isSetSurface) {
             add(colorDetails, 2, "color", node, `Foundation 변수 ${variable!.name} 직접 사용`);
           }
           if (typeof paint.opacity === "number" && paint.opacity < 0.999) {
             // 토큰 자신이 반투명하면(overlay 등) 그 불투명도는 정본 값이지 임의 변형이 아니다.
-            const tokenAlpha = await variableAlpha(variable);
-            const fromToken = tokenAlpha !== null && Math.abs(tokenAlpha - paint.opacity) < 0.02;
+            const tokenAlphas = await variableAlphas(variable);
+            const fromToken = tokenAlphas.some((a) => Math.abs(a - paint.opacity) < 0.02);
             if (!fromToken) {
               add(colorDetails, 4, "color", node, `변수 색에 불투명도 ${Math.round(paint.opacity * 100)}% 적용`);
             }
