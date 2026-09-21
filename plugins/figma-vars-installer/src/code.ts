@@ -414,12 +414,22 @@ function postAuditSelectionSummary(): void {
   figma.ui.postMessage({ type: "audit:selection-summary", payload: auditSelectionSummary() });
 }
 
+/** 현황을 **두 번에 나눠** 보낸다 — 먼저 "검수를 시작할 수 있나"만 빨리 알리고,
+ *  값 대조(느릴 수 있음)는 끝나는 대로 한 번 더 보낸다. 화면이 기다리지 않게 하려는 것이다
+ *  (river 보고 2026-09-21 — '가이드 현황을 확인하고 있습니다…'에서 안 넘어감). */
 async function postAuditSelectionState(requestId?: number): Promise<void> {
-  const installState = await getAuditInstallState();
+  const fast = await getAuditInstallState(true);
   await figma.ui.postMessage({
     type: "audit:selection-state",
-    payload: { requestId, ...auditSelectionSummary(), ...installState },
+    payload: { requestId, ...auditSelectionSummary(), ...fast },
   });
+  if (fast.installed && !guideStateCache) {
+    const full = await getAuditInstallState();
+    await figma.ui.postMessage({
+      type: "audit:selection-state",
+      payload: { requestId, ...auditSelectionSummary(), ...full },
+    });
+  }
 }
 
 async function getStampedGuidePage(): Promise<PageNode | null> {
@@ -444,13 +454,22 @@ async function getStampedGuidePage(): Promise<PageNode | null> {
 let guideStateCache: { installed: boolean; missing: string[]; partial: string[]; currentGuide: boolean; valueDrift: string[] } | null = null;
 function clearGuideStateCache(): void { guideStateCache = null; }
 
-async function getAuditInstallState(): Promise<{
+async function getAuditInstallState(fastOnly = false): Promise<{
   installed: boolean; missing: string[]; partial: string[]; currentGuide: boolean; valueDrift: string[];
 }> {
   if (guideStateCache) return guideStateCache;
   const content = await getGuideContentMissing();
   const stamped = await getStampedGuidePage();
-  // 비교할 기준이 아예 없을 때만 값 대조를 건너뛴다.
+  // 비교할 기준이 아예 없을 때만 값 대조를 건너뛴다. fastOnly 면 값 대조는 나중에(캐시도 남기지 않는다).
+  if (fastOnly) {
+    return {
+      installed: content.blocking.length === 0,
+      missing: content.blocking,
+      partial: content.partial,
+      currentGuide: !!stamped && content.partial.length === 0,
+      valueDrift: [],
+    };
+  }
   const valueDrift = content.blocking.length ? [] : await getGuideValueDrift();
   guideStateCache = {
     installed: content.blocking.length === 0,
@@ -561,6 +580,18 @@ async function getGuideContentMissing(): Promise<{ blocking: string[]; partial: 
   let incompleteVariables = false;
   let noColorBase = false;        // 색 기준 자체가 아예 없다 = 검수를 할 수 없다
   const missingVarNames: string[] = [];
+  // ⚠️ 변수는 **한 번에** 읽는다. 종전에는 컬렉션마다 변수 id 를 하나씩 `getVariableByIdAsync` 로
+  //    물어 700번 가까이 왕복했고, 큰 파일에서는 검수 탭이 그 동안 '확인 중'에 멈춰 있었다
+  //    (river 보고 2026-09-21 — 다시 열어도 안 넘어감).
+  const namesByCollectionId = new Map<string, Set<string>>();
+  try {
+    const allVars = await figma.variables.getLocalVariablesAsync();
+    for (const v of allVars) {
+      let set = namesByCollectionId.get(v.variableCollectionId);
+      if (!set) { set = new Set<string>(); namesByCollectionId.set(v.variableCollectionId, set); }
+      set.add(v.name);
+    }
+  } catch (e) { /* 못 읽으면 아래에서 '없음'으로 판정된다 */ }
   for (const [name, expectedNames] of expectedVariableNames) {
     const collection = collectionByName.get(name);
     if (!collection) {
@@ -569,11 +600,7 @@ async function getGuideContentMissing(): Promise<{ blocking: string[]; partial: 
       if (name === FOUNDATION_COLLECTION || name === SEMANTIC_COLOR_COLLECTION) noColorBase = true;
       break;
     }
-    const installedNames = new Set<string>();
-    for (const id of collection.variableIds) {
-      const variable = await figma.variables.getVariableByIdAsync(id);
-      if (variable) installedNames.add(variable.name);
-    }
+    const installedNames = namesByCollectionId.get(collection.id) || new Set<string>();
     const lack = expectedNames.filter((expectedName) => !installedNames.has(expectedName));
     if (lack.length) { incompleteVariables = true; for (const one of lack) missingVarNames.push(one); break; }
     if ((name === SEMANTIC_COLOR_COLLECTION || name === SEMANTIC_SHADOW_COLLECTION) &&
