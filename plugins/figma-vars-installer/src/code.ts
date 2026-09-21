@@ -549,28 +549,30 @@ async function getGuideContentMissing(): Promise<string[]> {
     [SEMANTIC_SHADOW_COLLECTION, shadowVariableNames],
   ]);
   let incompleteVariables = false;
+  const missingVarNames: string[] = [];
   for (const [name, expectedNames] of expectedVariableNames) {
     const collection = collectionByName.get(name);
-    if (!collection) { incompleteVariables = true; break; }
+    if (!collection) { incompleteVariables = true; missingVarNames.push(`${name} 전체`); break; }
     const installedNames = new Set<string>();
     for (const id of collection.variableIds) {
       const variable = await figma.variables.getVariableByIdAsync(id);
       if (variable) installedNames.add(variable.name);
     }
-    if (expectedNames.some((expectedName) => !installedNames.has(expectedName))) { incompleteVariables = true; break; }
+    const lack = expectedNames.filter((expectedName) => !installedNames.has(expectedName));
+    if (lack.length) { incompleteVariables = true; for (const one of lack) missingVarNames.push(one); break; }
     if ((name === SEMANTIC_COLOR_COLLECTION || name === SEMANTIC_SHADOW_COLLECTION) &&
         (!collection.modes.some((mode) => mode.name === LIGHT_MODE) || !collection.modes.some((mode) => mode.name === DARK_MODE))) {
       incompleteVariables = true;
       break;
     }
   }
-  if (incompleteVariables) missing.push("색·수치 기준");
+  // 무엇이 없는지 이름을 적는다 — "컴포넌트" 한 단어로는 사람이 무엇을 할지 알 수 없다(river 지적 2026-09-21).
+  const listOf = (names: string[], max: number): string =>
+    names.length ? `(${names.slice(0, max).join(" · ")}${names.length > max ? ` 외 ${names.length - max}개` : ""})` : "";
+  if (incompleteVariables) missing.push(`색·수치 기준${listOf(missingVarNames, 3)}`);
   const localTextStyleNames = new Set((await figma.getLocalTextStylesAsync()).map((style) => style.name));
-  if (TEXT_STYLES.some((style) => !localTextStyleNames.has(style.name))) missing.push("글자 스타일");
-  const expectedComponentNames = new Set<string>();
-  for (const category of COMPONENT_CATEGORIES) {
-    for (const name of category.members) expectedComponentNames.add(normalizeAuditName(name));
-  }
+  const missingTextStyles = TEXT_STYLES.filter((style) => !localTextStyleNames.has(style.name)).map((style) => style.name);
+  if (missingTextStyles.length) missing.push(`글자 스타일${listOf(missingTextStyles, 3)}`);
   // 컴포넌트는 **파일 전체**에서 찾는다. 종전에는 '도장 찍힌 가이드 페이지 안'만 봐서,
   //   도장이 없으면 파일에 43종이 다 있어도 '컴포넌트 없음'으로 적혔다(river 보고 2026-09-03).
   //   표식 문제와 내용 문제를 분리한다 — 페이지 위치는 검수에 쓰이지 않고(패턴 탭도 파일 전체를 훑는다),
@@ -579,7 +581,14 @@ async function getGuideContentMissing(): Promise<string[]> {
     collectComponents(figma.root, figma.root.name)
       .map((component) => normalizeAuditName(component.name))
   );
-  if (Array.from(expectedComponentNames).some((name) => !installedComponentNames.has(name))) missing.push("컴포넌트");
+  // 어떤 부품이 없는지 **원래 이름**으로 적는다(normalizeAuditName 은 비교용이라 사람이 못 읽는다).
+  const missingComponents: string[] = [];
+  for (const category of COMPONENT_CATEGORIES) {
+    for (const name of category.members) {
+      if (!installedComponentNames.has(normalizeAuditName(name))) missingComponents.push(name);
+    }
+  }
+  if (missingComponents.length) missing.push(`컴포넌트 ${missingComponents.length}개${listOf(missingComponents, 5)}`);
   return missing;
 }
 
