@@ -418,6 +418,8 @@ function postAuditSelectionSummary(): void {
  *  값 대조(느릴 수 있음)는 끝나는 대로 한 번 더 보낸다. 화면이 기다리지 않게 하려는 것이다
  *  (river 보고 2026-09-21 — '가이드 현황을 확인하고 있습니다…'에서 안 넘어감). */
 async function postAuditSelectionState(requestId?: number): Promise<void> {
+  // 선택 요약은 계산이 필요 없으니 **먼저** 보낸다 — 무엇을 고른 상태인지 바로 보이게.
+  postAuditSelectionSummary();
   const fast = await getAuditInstallState(true);
   await figma.ui.postMessage({
     type: "audit:selection-state",
@@ -620,10 +622,17 @@ async function getGuideContentMissing(): Promise<{ blocking: string[]; partial: 
   //   도장이 없으면 파일에 43종이 다 있어도 '컴포넌트 없음'으로 적혔다(river 보고 2026-09-03).
   //   표식 문제와 내용 문제를 분리한다 — 페이지 위치는 검수에 쓰이지 않고(패턴 탭도 파일 전체를 훑는다),
   //   도장은 "어느 페이지에 최신 가이드를 설치했나"의 포인터일 뿐이다.
-  const installedComponentNames = new Set(
-    collectComponents(figma.root, figma.root.name)
-      .map((component) => normalizeAuditName(component.name))
-  );
+  // 부품 이름도 **네이티브 탐색 한 번**으로 모은다 — 문서 전체를 자바스크립트로 재귀하며 훑으면
+  //   큰 파일에서 몇 초씩 걸리고, 그 동안 검수 탭이 '확인 중'에 머문다(river 2026-09-21).
+  const installedComponentNames = new Set<string>();
+  try {
+    const found = figma.root.findAllWithCriteria({ types: ["COMPONENT_SET", "COMPONENT"] }) as SceneNode[];
+    for (const node of found) installedComponentNames.add(normalizeAuditName(node.name));
+  } catch (e) {
+    for (const component of collectComponents(figma.root, figma.root.name)) {
+      installedComponentNames.add(normalizeAuditName(component.name));
+    }
+  }
   // 어떤 부품이 없는지 **원래 이름**으로 적는다(normalizeAuditName 은 비교용이라 사람이 못 읽는다).
   const missingComponents: string[] = [];
   for (const category of COMPONENT_CATEGORIES) {

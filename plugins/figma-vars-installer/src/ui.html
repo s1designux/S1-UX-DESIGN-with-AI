@@ -1390,7 +1390,7 @@ function beginAuditGuideCheck() {
   $('#audit-install-required').classList.remove('visible');
   $('#btn-audit').disabled = true;
   send('selection-state', { requestId: auditGuideRequestId });
-  // 답이 12초 안에 안 오면 '확인 중' 대신 다시 확인 카드를 보여 준다 — 멈춘 화면을 남기지 않는다.
+  // 답이 4초 안에 안 오면 '확인 중' 대신 다시 확인 카드를 보여 준다 — 멈춘 화면을 남기지 않는다.
   const askedId = auditGuideRequestId;
   setTimeout(() => {
     if (askedId !== auditGuideRequestId) return;
@@ -1398,7 +1398,7 @@ function beginAuditGuideCheck() {
     $('#audit-screen-start').classList.remove('guide-checking');
     $('#audit-guide-checking').classList.remove('visible');
     $('#audit-guide-error').classList.add('visible');
-  }, 12000);
+  }, 4000);
 }
 
 // 항목 원본은 숨은 템플릿 1곳 — 진행·결과 화면이 그것을 복제해 쓴다.
