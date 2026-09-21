@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "workflow": "ui-library-code",
+  "workId": "list-row",
+  "objective": "모두앱 프로파일에서 정리한 목록 줄을 공용 부품(list-row)으로 정본화한다. 뼈대(왼쪽칸+가운데글+오른쪽칸) + 치수 축 + 유형 축을 부품이 갖고, 서비스별 수치는 프로파일에 남긴다.",
+  "intent": {
+    "approvedBy": "river",
+    "approvedAt": "2026-09-21",
+    "principles": [
+      "공용 창고에는 틀만 넣는다 — 모두앱 수치(74·48)는 모두앱 프로파일에 둔다 (river A안).",
+      "일곱 유형(이동·값·읽기·선택·동의·토글·썸네일)은 부품 안의 선택지로 넣는다 (river A안).",
+      "촘촘 치수는 줄이 아니라 목록이 정한다 (river A안).",
+      "맥락(언제 쓰나·하지 말 것)은 이번 범위 밖 — 적용하면서 나중에 채운다 (river 2026-09-21).",
+      "정본에 없는 수치를 ⭐ 가 만들지 않는다 — 근거 없으면 needs-decision 으로 올린다."
+    ]
+  },
+  "contract": {
+    "path": "registry/governance/ui-library-code-contract.json",
+    "status": "candidate",
+    "version": "0.1.2"
+  },
+  "target": {
+    "kind": "core-component",
+    "components": [
+      "list-row"
+    ]
+  },
+  "figmaSources": {
+    "role": "시각 정본은 build-components.ts 다. 이 부품은 아직 정본에 없어 신설 대상이며, Figma V3.0 은 이번 재고조사의 필수 조건이 아니다.",
+    "requiredForInventory": false,
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "fileName": "SW-UX-GUIDE V3.0 TEST",
+    "components": {
+      "list-row": {
+        "nodeId": null,
+        "source": "not-consulted",
+        "status": "정본에 없는 신설 대상이라 참고할 V3.0 노드가 없다."
+      }
+    }
+  },
+  "currentPhase": "3-build",
+  "workflowStatus": "in-progress",
+  "uiLibraryStatus": "draft",
+  "lastCompletedCheckpoint": 2,
+  "nextAction": "ui-library-builder 가 ui-library/src 와 생성 경로를 구현 중. 끝나면 4-verification.",
+  "ownership": {
+    "currentActor": "ui-library-builder",
+    "startedAt": "2026-09-21T00:00:00+09:00",
+    "note": "3-build 구현 중. 상태 파일은 오케스트레이터만 수정한다."
+  },
+  "canonicalInputs": [
+    {
+      "role": "component-visual",
+      "path": "plugins/figma-vars-installer/src/build-components.ts",
+      "sha256": "51685fedf195c44eb6c0c043c465eba13195060ddb6e575bcc6adad618a30206"
+    },
+    {
+      "role": "token-values",
+      "path": "plugins/figma-vars-installer/src/vars-data.ts",
+      "sha256": "14c5df38e32f154da10e83370004726971c11511f0108b94719a08f109433bc0"
+    },
+    {
+      "role": "text-styles",
+      "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
+      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+    }
+  ],
+  "inventory": {
+    "canonComponent": "없음 — build-components.ts 에 목록 줄 빌더가 없다(신설 대상).",
+    "registryEntry": "없음 — registry/components/list-row.json 미존재.",
+    "distComponent": "없음 — ui-library/dist/components 26개에 list-row 없음.",
+    "serviceProfile": "reports/pattern-builder/profiles/app-modu/list-row/ (모두앱 전용 수치·대조판)",
+    "rowLikePrecedents": [
+      {
+        "name": "Dropdown List 옵션 줄",
+        "heights": [
+          28,
+          34,
+          44
+        ],
+        "note": "PC 눈금 XXSM·XSM·MD, 좌우 패딩 12"
+      },
+      {
+        "name": "Bottom Sheet Option",
+        "heights": [
+          48
+        ],
+        "note": "Mobile, 폭 360, 좌우 20·위아래 8"
+      },
+      {
+        "name": "GNB Sub Menu Item",
+        "heights": [],
+        "note": "높이 고정 없이 내용에 맞춤(AUTO)"
+      }
+    ]
+  },
+  "blockers": [],
+  "evidence": {
+    "sourceAudit": {
+      "observedAt": "2026-09-21",
+      "basis": "build-components.ts 빌드 함수 목록·ui-library/dist/components 목록·registry/components 목록 직접 확인(📖 source-reader 판독 포함)"
+    }
+  },
+  "artifacts": {
+    "policyContract": "registry/governance/ui-library-code-contract.json",
+    "humanGuide": "registry/governance/ui-library-authoring-guide.md",
+    "componentChecklist": "registry/governance/ui-library-component-checklist.md",
+    "repositoryInventory": "reports/component-inventory-audit.md",
+    "inventory": "reports/ui-library/list-row/1-inventory.md",
+    "sourceRoot": "ui-library/src",
+    "distManifest": "ui-library/dist/manifest.json",
+    "reviewPage": "pages/ui-review.html",
+    "guidePage": "pages/components.html",
+    "migrationRecord": "registry/governance/ui-library-migration.json",
+    "serviceProfile": "reports/pattern-builder/profiles/app-modu/list-row/",
+    "canonReadiness": "reports/ui-library/list-row/2-canon-readiness.md"
+  },
+  "decisions": [
+    {
+      "id": "D-1",
+      "at": "2026-09-21",
+      "by": "river",
+      "decision": "공용 창고에는 틀만 넣고 모두앱 수치는 프로파일에 둔다",
+      "quote": "위의 제안은 AAA로 일단 진행 된 후에 수정이 필요하면 추가로 조정해보자"
+    },
+    {
+      "id": "D-2",
+      "at": "2026-09-21",
+      "by": "river",
+      "decision": "일곱 유형을 부품 안 선택지로 넣는다",
+      "quote": "위의 제안은 AAA로 일단 진행 된 후에 수정이 필요하면 추가로 조정해보자"
+    },
+    {
+      "id": "D-3",
+      "at": "2026-09-21",
+      "by": "river",
+      "decision": "촘촘 치수는 목록이 정한다",
+      "quote": "위의 제안은 AAA로 일단 진행 된 후에 수정이 필요하면 추가로 조정해보자"
+    },
+    {
+      "id": "D-4",
+      "at": "2026-09-21",
+      "by": "river",
+      "decision": "맥락(언제 쓰나 등)은 이번 범위 밖 — 적용하면서 나중에 채운다",
+      "quote": "우선 맥락은 나중에 적용하면서 추가하는게 차라리 나을 것 같고"
+    },
+    {
+      "id": "D-5",
+      "at": "2026-09-21",
+      "by": "river",
+      "decision": "공용 목록 줄 높이를 치수 토큰 눈금에 맞추지 않는다 — 여백 토큰과 글 자리로 높이가 잡힌다",
+      "quote": "간격을 패딩 토큰으로 적용하면 자연스럽게 전체 하이트가 잡히는거지"
+    }
+  ],
+  "handoff": {
+    "lastActor": "orchestrator",
+    "updatedAt": "2026-09-21",
+    "summary": "정본 buildListRow 신설(Gate 34 승인)·registry/components/list-row.json 신설 완료. 3-build 를 ui-library-builder 에 넘김."
+  }
+}

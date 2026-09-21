@@ -3,7 +3,7 @@
     "generated": true,
     "source": "plugins/figma-vars-installer/src/build-components.ts",
     "method": "mock-execution",
-    "sourceHash": "2c6902e59855",
+    "sourceHash": "8f3b89798b51",
     "unknownValuePolicy": [
       "unknown",
       "not-defined",
@@ -2116,6 +2116,101 @@
       ],
       "composition": {
         "buildDependencies": []
+      }
+    },
+    "List Row": {
+      "variantAxes": {
+        "Type": [
+          "Nav",
+          "Value",
+          "Read",
+          "Pick",
+          "Agree",
+          "Switch",
+          "Thumb"
+        ],
+        "Density": [
+          "Default",
+          "Compact"
+        ],
+        "State": [
+          "Default",
+          "Hover",
+          "Pressed",
+          "Disabled"
+        ]
+      },
+      "geometry": [
+        {
+          "when": {
+            "Density": "Default"
+          },
+          "target": "root",
+          "width": 360,
+          "height": 1,
+          "layoutMode": "HORIZONTAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "AUTO",
+          "counterAxisAlignItems": "CENTER",
+          "itemSpacing": "spacing/16",
+          "paddingTop": "spacing/16",
+          "paddingRight": "spacing/16",
+          "paddingBottom": "spacing/16",
+          "paddingLeft": "spacing/20"
+        },
+        {
+          "when": {
+            "Density": "Compact"
+          },
+          "target": "root",
+          "width": 360,
+          "height": 1,
+          "layoutMode": "HORIZONTAL",
+          "primaryAxisSizingMode": "FIXED",
+          "counterAxisSizingMode": "AUTO",
+          "counterAxisAlignItems": "CENTER",
+          "itemSpacing": "spacing/16",
+          "paddingTop": "spacing/12",
+          "paddingRight": "spacing/16",
+          "paddingBottom": "spacing/12",
+          "paddingLeft": "spacing/20"
+        }
+      ],
+      "anatomy": [
+        "control",
+        "text",
+        "thumbnail",
+        "trail"
+      ],
+      "tokenBindings": [
+        "color/bg/level-0",
+        "color/bg/level-1",
+        "color/bg/level-2",
+        "color/control/bg/default",
+        "color/control/bg/disabled",
+        "color/control/bg/selected",
+        "color/control/border/default",
+        "color/control/border/disabled",
+        "color/control/indicator/disabled",
+        "color/control/indicator/selected",
+        "color/text/body/primary",
+        "color/text/body/tertiary",
+        "color/text/state/disabled",
+        "color/text/title/primary",
+        "radius/4",
+        "sizing/24",
+        "sizing/48",
+        "spacing/12",
+        "spacing/16",
+        "spacing/2",
+        "spacing/20",
+        "spacing/4"
+      ],
+      "composition": {
+        "buildDependencies": [
+          "Checkbox",
+          "Toggle"
+        ]
       }
     },
     "Input": {

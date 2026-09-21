@@ -1219,6 +1219,9 @@ async function buildToggle(maps: BuildMaps, originY: number): Promise<{ set: Com
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "Toggle";
   set.x = 0; set.y = originY;
+  // List Row 등이 reuseVariant 로 집어 쓴다 — 선례 buildCheckbox 와 같이 **변형**을 등록한다
+  //   (세트를 BUILT_SETS 에 넣으면 재사용 경로가 set.children 을 훑다가 하네스에서 깨진다).
+  cells.forEach(({ comp, row, col }) => { BUILT_COMPS[`Toggle:${press[col]}:${sts[row]}`] = comp; });
   const opts: SpecOpts = {
     title: "Toggle",
     colHeaders: press.map((p) => `Pressed=${p}`),
@@ -1228,6 +1231,177 @@ async function buildToggle(maps: BuildMaps, originY: number): Promise<{ set: Com
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── List Row (목록 한 줄) — 왼쪽 칸 + 가운데 글 + 오른쪽 칸 ───────────────────
+//   ▸ 높이를 숫자로 고정하지 않는다. **위아래 여백(spacing 토큰) + 글 자리**로 높이가 잡힌다.
+//     (river 2026-09-21: "간격을 패딩 토큰으로 적용하면 자연스럽게 전체 하이트가 잡히는 거지")
+//   ▸ Density 는 **목록이 정한다** — 같은 목록 안에서 줄마다 높이가 달라지면 안 되므로
+//     Default(제목+설명·여백 16) / Compact(제목만·여백 12) 를 목록 단위로 고른다(river 2026-09-21).
+//   ▸ Type 은 "그 줄이 하는 일"로 가른다 — 눌러 들어가는 줄(Nav)·값을 보여주고 들어가는 줄(Value)·
+//     보여주기만 하는 줄(Read)·고르는 줄(Pick)·동의 줄(Agree)·켜고 끄는 줄(Switch)·그림 줄(Thumb).
+//   ▸ 서비스별 실제 수치(모두앱 74·48 등)는 정본에 넣지 않는다 — 서비스 프로파일이 갖는다.
+async function buildListRow(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const ROW_W = 360;
+  const numv = (k: string) => requireVar(maps.foundationNumber, k, "Foundation Number");
+  const chevRight = (c: string) =>
+    `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="${c}" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+  const densities = [
+    { name: "Default", padY: "spacing/16", desc: true },   // 제목 + 설명
+    { name: "Compact", padY: "spacing/12", desc: false },  // 제목만
+  ];
+  const types = ["Nav", "Value", "Read", "Pick", "Agree", "Switch", "Thumb"];
+  const states = ["Default", "Hover", "Pressed", "Disabled"];
+
+  const bgKey = (st: string) =>
+    st === "Hover" ? "color/bg/level-1" : st === "Pressed" ? "color/bg/level-2" : "color/bg/level-0";
+  const titleKey = (st: string) => (st === "Disabled" ? "color/text/state/disabled" : "color/text/title/primary");
+  const descKey  = (st: string) => (st === "Disabled" ? "color/text/state/disabled" : "color/text/body/tertiary");
+  const valueKey = (st: string) => (st === "Disabled" ? "color/text/state/disabled" : "color/text/body/primary");
+  const iconKey  = (st: string) => (st === "Disabled" ? "color/icon/gray-light" : "color/icon/gray");
+
+  const comps: ComponentNode[] = [];
+  const cells: { comp: ComponentNode; type: string; density: string; state: string }[] = [];
+
+  for (const d of densities) {
+    for (const t of types) {
+      for (const st of states) {
+        const comp = figma.createComponent();
+        comp.name = `Type=${t}, Density=${d.name}, State=${st}`;
+        comp.layoutMode = "HORIZONTAL";
+        comp.counterAxisAlignItems = "CENTER";
+        // ⚠️ resize() 를 **먼저** 부르고 sizing mode 를 뒤에 건다 — 오토레이아웃 프레임에 resize() 를
+        //    나중에 부르면 양 축이 FIXED 로 덮여 높이가 1px 로 굳는다(선례 buildTimePickerDropdown 의 fillPanel).
+        comp.resize(ROW_W, 1);
+        comp.primaryAxisSizingMode = "FIXED";   // 폭 360 고정
+        comp.counterAxisSizingMode = "AUTO";    // ★ 높이는 여백+글이 정한다(숫자 고정 없음)
+        comp.setBoundVariable("paddingLeft", numv("spacing/20"));
+        comp.setBoundVariable("paddingRight", numv("spacing/16"));
+        comp.setBoundVariable("paddingTop", numv(d.padY));
+        comp.setBoundVariable("paddingBottom", numv(d.padY));
+        comp.setBoundVariable("itemSpacing", numv("spacing/16"));
+        comp.fills = [boundPaint(scv(maps, bgKey(st)))];
+
+        // ── 왼쪽 칸 — 체크(Pick·Agree) · 그림(Thumb) ──────────────────────
+        if (t === "Pick" || t === "Agree") {
+          const chkState = st === "Disabled" ? "Disabled" : "Default";
+          const chk = await reuseVariant("Checkbox", `Checkbox:${chkState}`, [`State=${chkState}`]);
+          if (chk) {
+            const inst = chk.createInstance();
+            inst.name = "control";
+            comp.appendChild(inst);
+          } else {
+            // 선례 buildDropdownList 와 같은 자리 — 조용히 빈자리로 두지 않고 정본 buildCheckbox 와
+            //   같은 토큰으로 임시 도형을 그린다(체크박스 없이 단독 설치되는 경우).
+            console.warn(`[List Row] Checkbox 를 찾지 못해 임시 도형으로 그립니다 (State=${chkState}) — Checkbox 를 먼저 설치하면 인스턴스로 붙습니다.`);
+            const box = figma.createFrame();
+            box.name = "control"; box.resize(18, 18); box.cornerRadius = 2;
+            box.fills = [boundPaint(scv(maps, st === "Disabled" ? "color/control/bg/disabled" : "color/control/bg/default"))];
+            box.strokes = [boundPaint(scv(maps, st === "Disabled" ? "color/control/border/disabled" : "color/control/border/default"))];
+            box.strokeWeight = 1; box.strokeAlign = "INSIDE";
+            comp.appendChild(box);
+            box.layoutSizingHorizontal = "FIXED"; box.layoutSizingVertical = "FIXED";
+          }
+        } else if (t === "Thumb") {
+          // 왼쪽 그림은 **그 밀도의 글 자리와 같은 크기**로 둔다(Default 48 · Compact 24).
+          //   그림이 글 자리보다 크면 그 줄만 높이가 튀어 "같은 목록 = 같은 높이"가 깨진다.
+          const thumbPx = d.name === "Default" ? 48 : 24;
+          const box = figma.createFrame();
+          box.name = "thumbnail";
+          box.resize(thumbPx, thumbPx);
+          box.setBoundVariable("width", numv(`sizing/${thumbPx}`));
+          box.setBoundVariable("height", numv(`sizing/${thumbPx}`));
+          box.fills = [boundPaint(scv(maps, "color/bg/level-2"))];
+          bindRadius(box, maps, "radius/4");
+          comp.appendChild(box);
+          box.layoutSizingHorizontal = "FIXED";
+          box.layoutSizingVertical = "FIXED";
+        }
+
+        // ── 가운데 글 — 제목(+설명) ─────────────────────────────────────
+        const text = figma.createFrame();
+        text.name = "text";
+        text.layoutMode = "VERTICAL";
+        text.primaryAxisSizingMode = "AUTO";
+        text.counterAxisSizingMode = "AUTO";
+        text.fills = [];
+        text.setBoundVariable("itemSpacing", numv("spacing/2"));
+        // 글 자리 최소 높이 — 같은 목록 안에서 줄마다 높이가 갈리지 않게, 그 밀도에서 **가장 큰 부품**에
+        //   맞춘다(Default=썸네일 48 · Compact=화살표 24). 새 숫자를 만들지 않고 이미 있는 값을 쓴다.
+        text.minHeight = d.name === "Default" ? 48 : 24;
+        text.appendChild(await makeBoundText("제목", 16, "Medium", scv(maps, titleKey(st)), "title/16M"));
+        if (d.desc) text.appendChild(await makeBoundText("설명", 14, "Regular", scv(maps, descKey(st)), "body/14R"));
+        comp.appendChild(text);
+        text.layoutGrow = 1;                       // 가운데 글이 남는 폭을 차지한다
+        text.layoutSizingHorizontal = "FILL";
+
+        // ── 오른쪽 칸 — 값 · 화살표 · 토글 ──────────────────────────────
+        const needsTrail = t === "Nav" || t === "Value" || t === "Agree" || t === "Switch";
+        if (needsTrail) {
+          const trail = figma.createFrame();
+          trail.name = "trail";
+          trail.layoutMode = "HORIZONTAL";
+          trail.counterAxisAlignItems = "CENTER";
+          trail.primaryAxisSizingMode = "AUTO";
+          trail.counterAxisSizingMode = "AUTO";
+          trail.fills = [];
+          trail.setBoundVariable("itemSpacing", numv("spacing/4"));
+          if (t === "Value") {
+            trail.appendChild(await makeBoundText("값", 14, "Regular", scv(maps, valueKey(st)), "body/14R"));
+          }
+          if (t === "Switch") {
+            const tgState = st === "Disabled" ? "Disabled" : "Default";
+            const tg = await reuseVariant("Toggle", `Toggle:On:${tgState}`, ["Pressed=On", `State=${tgState}`]);
+            if (tg) {
+              const inst = tg.createInstance();
+              inst.name = "toggle";
+              trail.appendChild(inst);
+            } else {
+              // 정본 buildToggle 과 같은 치수·토큰으로 임시 도형(트랙 40×20 + 노브 16).
+              console.warn(`[List Row] Toggle 을 찾지 못해 임시 도형으로 그립니다 (State=${tgState}) — Toggle 을 먼저 설치하면 인스턴스로 붙습니다.`);
+              const track = figma.createFrame();
+              track.name = "toggle"; track.resize(40, 20); track.cornerRadius = 10;
+              track.fills = [boundPaint(scv(maps, st === "Disabled" ? "color/control/bg/disabled" : "color/control/bg/selected"))];
+              const knob = figma.createEllipse();
+              knob.resize(16, 16);
+              knob.fills = [boundPaint(scv(maps, st === "Disabled" ? "color/control/indicator/disabled" : "color/control/indicator/selected"))];
+              track.appendChild(knob); knob.x = 22; knob.y = 2;
+              trail.appendChild(track);
+              track.layoutSizingHorizontal = "FIXED"; track.layoutSizingVertical = "FIXED";
+            }
+          } else {
+            trail.appendChild(await makeIconInstance("chevron", scv(maps, iconKey(st)), 24, chevRight("#000"), 0, { wrap: false }));
+          }
+          comp.appendChild(trail);
+          trail.layoutSizingHorizontal = "HUG";
+        }
+
+        setLightMode(comp, maps);
+        comps.push(comp);
+        cells.push({ comp, type: t, density: d.name, state: st });
+      }
+    }
+  }
+
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "List Row";
+  set.x = 0; set.y = originY;
+  BUILT_SETS["List Row"] = set;
+  cells.forEach((c) => { BUILT_COMPS[`ListRow:${c.type}:${c.density}:${c.state}`] = c.comp; });
+
+  const opts: GroupedSpecOpts = {
+    title: "List Row",
+    platforms: [{ name: "PC", sizes: densities.map((d) => d.name) }],
+    rowLabels: types,
+    colHeaders: states,
+    cellAt: (_platName, size, ri, ci) =>
+      cells.find((x) => x.type === types[ri] && x.density === size && x.state === states[ci])?.comp ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 380, cellH: 96, rowLabelW: 96,
+  };
+  let bottomY = await decorateSetGrouped(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
   return { set, bottomY };
 }
 
@@ -6995,6 +7169,8 @@ export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] 
     //   Form Control 보다 GRID 앞에 둬서 Select Box(Form Control)의 Dropdown 의존(BUILD_DEPENDENCIES)이 빌드순서로 충족됨.
     { name: "Dropdown",     members: ["Dropdown", "Dropdown List"] },
     { name: "Chip",         members: ["Chip"] },
+    // List Row: 목록 한 줄. 체크·토글을 인스턴스로 붙이므로 Selection 뒤에 둔다.
+    { name: "List",         members: ["List Row"] },
     // members = 표시(나열) 순서: 메인 컴포넌트 → 그 안을 구성하는 요소 컴포넌트 순. 빌드(생성) 순서는
     //   BUILD_DEPENDENCIES 로 의존성(요소 먼저)이 자동 적용된다 — 표시순서 ≠ 빌드순서 규칙(§ 아래 주석).
     { name: "Form Control", members: ["Input", "Search Input", "Text Area", "Select Box"] },
@@ -7040,6 +7216,7 @@ export const BUILD_DEPENDENCIES: Record<string, string[]> = {
   //   순서(Selection 이 앞)로 충족되고, **재설치(세트 skip)** 는 buildDropdownList 의 reuseVariant 가
   //   캔버스의 기존 Checkbox 를 재등록해 해결한다. 이 줄은 의존 관계를 문서/열화보고에 남기는 용도다.
   "Dropdown List": ["Checkbox"],
+  "List Row": ["Checkbox", "Toggle"],   // Pick·Agree 가 Checkbox, Switch 가 Toggle 인스턴스 부착(타 카테고리=카테고리 순서로 보장)
   "Filter Chip": ["Dropdown"],        // Selected 상태가 Dropdown 패널 인스턴스 부착(타 카테고리=순서 보장)
   "Time Picker": ["Time Picker Dropdown"], // Focus 상태가 Time Picker Dropdown 인스턴스 부착
   "GNB": ["GNB Utility Icon"],        // GNB 바 유틸 영역이 GNB Utility Icon all-on 인스턴스 부착
@@ -7296,6 +7473,7 @@ export async function buildAllComponents(
     "Multi Toggle Element": (oy) => buildMultiToggleElement(maps, oy),
     "Multi Toggle":         (oy) => buildMultiToggle(maps, oy),
     "Chip":                 (oy) => buildChip(maps, oy),
+    "List Row":             (oy) => buildListRow(maps, oy),
     "Filter Chip":          (oy) => buildFilterChip(maps, oy),
     "Input":                (oy) => buildInput(maps, oy, 0),
     "Search Input":         (oy) => buildSearch(maps, oy),

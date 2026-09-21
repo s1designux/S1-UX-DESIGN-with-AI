@@ -412,6 +412,20 @@
         "html": ""
       },
       "note": "신규 편입(2026-09-15, work-id bottom-sheet). 시트 안 한 줄. 정본 buildBottomSheetOption(4957) 실재 9칸(12칸 아님). Checkbox·Radio 코어 재사용. origin 분류 tbd — river 결정 필요. 웹 빌드 직후 — component-verifier 독립 검증 대기, 통과 시 verify→new."
+    },
+    {
+      "id": "list-row",
+      "origin": "tbd",
+      "sourceNode": "",
+      "verify": "none",
+      "verifyDate": "",
+      "mobile": "미확인",
+      "dates": {
+        "installer": "2026-09-21",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "신규 편입(2026-09-21, work-id list-row). 목록 한 줄(왼쪽칸+가운데글+오른쪽칸), Type 7종×Density 2종×State 4종. 정본 buildListRow(1242) 2026-09-21 신설(Gate 34 component:List Row 승인). Checkbox·Toggle 코어 재사용. origin 분류 tbd — 레거시 재현(A)이 아니라 뼈대를 새로 설계했으므로 river 결정 시 B(신규) 가능성이 높다. 웹 빌드 직후(3-build) — component-verifier 독립 검증 대기, 통과 시 verify→new."
     }
   ],
   "patterns": [

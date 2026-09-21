@@ -820,6 +820,27 @@
       "riverApproval": "approved 2026-09-15",
       "promotionDecision": "approved 2026-09-15 · 정본 실재 9칸만 구현(checkbox:disabled · radio:disabled · list:selected 는 정본에 없어 만들지 않음) · check24·lock 아이콘은 라이브러리 원본 픽셀 대조 통과(0.00181 · 0.00203)",
       "jsRequired": false
+    },
+    {
+      "id": "list-row",
+      "kind": "core-component",
+      "legacyStatus": "not-applicable",
+      "uiLibraryStatus": "candidate",
+      "dependencies": [
+        "tokens.css",
+        "typography.css",
+        "checkbox.css",
+        "toggle.css",
+        "chevron.svg"
+      ],
+      "lastVerified": null,
+      "reverifyTrigger": "정본 buildListRow Type×Density×State 구성·geometry·토큰 변경, 또는 checkbox·toggle 코어 계약 변경",
+      "evidence": [
+        "reports/ui-library/list-row/3-build.md"
+      ],
+      "riverApproval": "pending — 4-verification·river UX 승인 전",
+      "promotionDecision": "candidate — 정본 buildListRow(2026-09-21 신설, Gate 34 승인) 56칸(Type 7 × Density 2 × State 4) 전부 구현. 왼쪽 체크(Pick·Agree)는 checkbox 코어, 오른쪽 토글(Switch)은 toggle 코어를 조립하며 내부를 복제하지 않았다. 제목만 있는 줄도 Default 밀도 목록에서 두 줄짜리와 같은 높이가 되도록 text 부품에 타이포 기반 min-height 를 줬다(river D-5). Density 는 data-density 를 목록 안 모든 줄에 동일하게 주는 사용 규칙으로 뒀다(CSS 가 개별 줄 편차를 강제 차단하지는 않는다 — needs-decision 아님, registry doDont 로 문서화).",
+      "jsRequired": false
     }
   ]
 }

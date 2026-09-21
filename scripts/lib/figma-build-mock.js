@@ -50,7 +50,7 @@ const PROP_CLASS = {
   paddingTop: 'LAYOUT', paddingRight: 'LAYOUT', paddingBottom: 'LAYOUT', paddingLeft: 'LAYOUT',
   layoutGrow: 'LAYOUT', layoutAlign: 'LAYOUT', layoutPositioning: 'LAYOUT',
   layoutSizingHorizontal: 'LAYOUT', layoutSizingVertical: 'LAYOUT',
-  minWidth: 'LAYOUT', constraints: 'LAYOUT',
+  minWidth: 'LAYOUT', minHeight: 'LAYOUT', constraints: 'LAYOUT',
   // ── 식별(지문의 키) ──
   name: 'IDENTITY',
   // ── 제외 ──
