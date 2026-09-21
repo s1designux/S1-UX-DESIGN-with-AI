@@ -2608,8 +2608,8 @@ _Don't_
 
 | 요소 | 역할 |
 | --- | --- |
-| 왼쪽 칸(선택) | 비움 · 체크 코어 인스턴스 · 그림(밀도를 따라간다 — Default 48 · Compact 24). |
-| 가운데 글 | 제목(필수) 과 설명(Density=Default 일 때). 남는 폭을 차지한다. |
+| 왼쪽 칸(선택) | 비움 · 체크 코어 인스턴스 18 · 그림 40(선례 Bottom Sheet Option 의 아바타와 같은 크기). |
+| 가운데 글 | 제목과 설명. 남는 폭을 차지하고 최소 높이 44 를 갖는다. |
 | 오른쪽 칸(선택) | 비움 · 화살표 24 · 값 글자 · 값+화살표 · 토글 코어 인스턴스. |
 | 구분선 | 줄과 줄 사이. 줄이 소유하지 않고 목록이 긋는다. |
 
@@ -2631,9 +2631,6 @@ agent:
       - "Agree"
       - "Switch"
       - "Thumb"
-    Density:
-      - "Default"
-      - "Compact"
     State:
       - "Default"
       - "Hover"
@@ -2658,20 +2655,14 @@ agent:
       primaryAxisSizingMode: "FIXED"
       counterAxisSizingMode: "AUTO"
       counterAxisAlignItems: "CENTER"
-      itemSpacing: "spacing/16"
-      paddingRight: "spacing/16"
+      itemSpacing: "spacing/12"
+      paddingTop: "spacing/12"
+      paddingRight: "spacing/20"
+      paddingBottom: "spacing/12"
       paddingLeft: "spacing/20"
     variants:
       -
-        when:
-          Density: "Default"
-        paddingTop: "spacing/16"
-        paddingBottom: "spacing/16"
-      -
-        when:
-          Density: "Compact"
-        paddingTop: "spacing/12"
-        paddingBottom: "spacing/12"
+        when: "all"
   composition:
     mustReuse:
       - "Checkbox"
@@ -2702,13 +2693,12 @@ agent:
       - "color/text/state/disabled"
       - "color/text/title/primary"
       - "radius/4"
-      - "sizing/24"
-      - "sizing/48"
+      - "sizing/40"
+      - "sizing/44"
       - "spacing/12"
-      - "spacing/16"
       - "spacing/2"
       - "spacing/20"
-      - "spacing/4"
+      - "spacing/8"
     aliasChains: "not-defined"
   figma:
     status: "available"
@@ -2724,9 +2714,6 @@ agent:
         - "agree"
         - "switch"
         - "thumb"
-      density:
-        - "default"
-        - "compact"
       state:
         - "default"
         - "hover"
@@ -2739,12 +2726,11 @@ agent:
 
 _Do_
 - 체크·토글은 코어 배포본 인스턴스를 그대로 넣는다.
-- 한 목록 안에서는 Density 를 하나로 통일한다 — 내용물 양에 따라 줄 높이가 달라지지 않게.
-- 높이는 여백 토큰과 글 자리로 잡는다.
+- 높이는 여백 토큰과 글 자리 최소 높이로 잡는다 — 일곱 유형이 같은 높이로 선다.
+- 수치가 필요하면 정본 선례에서 끌어온다.
 
 _Don't_
 - 줄 높이를 숫자로 못 박지 않는다.
-- 줄마다 Density 를 다르게 주지 않는다.
 - 체크·토글 코어 내부를 복제하거나 override 하지 않는다.
 - 서비스 전용 수치(레거시에서 옮겨 온 값)를 이 부품에 넣지 않는다 — 서비스 프로파일이 갖는다.
 
@@ -5164,4 +5150,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 30fbad227211 · 손편집 금지 -->
+<!-- generated-stamp: 0bb439c4d2a3 · 손편집 금지 -->

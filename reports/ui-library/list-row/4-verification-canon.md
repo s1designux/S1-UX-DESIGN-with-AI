@@ -504,3 +504,282 @@ box.setBoundVariable("height", numv(`sizing/${thumbPx}`));
 ## 최종 한 줄 판정
 
 **pass** (전제: 커밋 전 `npm run components:facts:write` 1회 — §4-4)
+
+---
+---
+
+# 4-verification (정본) — **5차 재검증** (축 축소 + 수치 전면 재정렬)
+
+- 검증자: 🤖 component-verifier (시나리오 D — 설치기 생성기 구조 변경) · 일자: 2026-09-21
+- 대상: `plugins/figma-vars-installer/src/build-components.ts` `buildListRow`(1245-1405) · `registry/components/list-row.json`
+- 범위: **전수 재검증**(승계 없음). 근거 — 축이 3개→2개로 줄고(56칸→28칸) 수치가 전부 갈렸다. §검증 입력 계약 ②의 승계 금지 조건 (i)「정본 지문이 달라졌다」에 해당한다.
+- 판정 근거: 코드 정독 + `buildBottomSheetOption` 원문 대조 + git diff 헝크 전수 + 결정론 게이트 5종 실행 + **구조 프로브 실측(28칸 전수)**
+- 한계: **Figma 실물 캔버스 렌더는 5차에도 미검증**(figma-local ConnectionRefused · figma MCP 미인증). 행 높이 68 은 프로브 실측 부품 크기에서 결정론적으로 도출한 값이다.
+- ⚠️ **절차 이탈 1건(검증 대상의 결함 아님):** 이번 spawn 에는 §검증 입력 계약 ①이 요구하는 **기계검사 표가 첨부되지 않았다.** 원칙대로면 HOLD 반환이지만 1~4차 내내 검증자가 직접 돌려 온 관행을 이어 이번에도 검증자가 5종을 실행했다. 다음 회차부터는 호출자가 표를 붙여 주기 바란다.
+
+## 5-0. 결정론 게이트 — **5/5 초록**
+
+| 게이트 | 결과 |
+|---|---|
+| `npm run installer:check` (tsc --noEmit) | ✅ exit 0 |
+| `npm run components:keycheck` | ✅ exit 0 · 누락 0 (color 167/184 · number 16/79) |
+| `npm run components:anatomy` | ✅ exit 0 · **`생성 실패` 0건** (grep 확인) |
+| `npm run components:iconpolicy` | ✅ exit 0 · 위반 0 |
+| `npm run components:facts` (**Gate 9e**) | ✅ exit 0 · 정본 일치 |
+
+## 5-0-1. 구조 프로브 실측 (28칸 전수)
+
+```
+variants: 28          ← Density 축 소멸 확인 (56 → 28)
+Type=Nav,    State=×4  :: FRAME:text(min44)[TEXT TEXT] | FRAME:trail[FRAME:chevron]
+Type=Value,  State=×4  :: FRAME:text(min44)[TEXT TEXT] | FRAME:trail[TEXT FRAME:chevron]
+Type=Read,   State=×4  :: FRAME:text(min44)[TEXT TEXT]
+Type=Pick,   State=×4  :: INSTANCE:control(18x18) | FRAME:text(min44)[TEXT TEXT]
+Type=Agree,  State=×4  :: INSTANCE:control(18x18) | FRAME:text(min44)[TEXT TEXT] | FRAME:trail[FRAME:chevron]
+Type=Switch, State=×4  :: FRAME:text(min44)[TEXT TEXT] | FRAME:trail[INSTANCE:toggle(40x20)]
+Type=Thumb,  State=×4  :: FRAME:thumbnail(40x40) | FRAME:text(min44)[TEXT TEXT]
+
+root  bound: {paddingLeft:spacing/20, paddingRight:spacing/20, paddingTop:spacing/12,
+              paddingBottom:spacing/12, itemSpacing:spacing/12}
+text  bound: {itemSpacing:spacing/2}          props: {minHeight:"44"}   ← ★ 바인딩 아님(원시 숫자)
+thumb bound: {width:sizing/40, height:sizing/40, *Radius:radius/4}
+control INSTANCE 8/8 · toggle INSTANCE 4/4 · 폴백 warn 0건
+```
+
+---
+
+## ① 근거가 실제로 맞나 — ✅ **PASS** (6/6 실재)
+
+`buildBottomSheetOption`(`build-components.ts:5439-5578`) 원문과 한 줄씩 대조했다.
+
+| 자리 | 코드 | 주장 근거 | 선례 원문 | 판정 |
+|---|---|---|---|---|
+| 좌우 여백 20 / 20 | `:1279-1280` `spacing/20` ×2 | buildBottomSheetOption | `:5456` `paddingLeft=20; paddingRight=20`(선택행) · `:5541` 동일(List 행) | ✅ |
+| 위아래 여백 12 | `:1281-1282` `spacing/12` ×2 | 같은 곳 List 행 | `:5541` `paddingTop = 12; paddingBottom = 12` | ✅ |
+| 왼쪽 요소↔글 12 | `:1283` `itemSpacing spacing/12` | 같은 곳 `left.itemSpacing` | `:5520` `left.itemSpacing = 12` | ✅ |
+| 제목↔설명 2 | `:1330` `spacing/2` | 같은 곳 `col.itemSpacing` | `:5524` `col.itemSpacing = 2` | ✅ |
+| 오른쪽 칸 내부 8 | `:1350` `spacing/8` | 같은 곳 **선택행** itemSpacing | `:5457` `comp.itemSpacing = 8` | ✅ |
+| 그림 40 | `:1311-1314` `sizing/40` | 같은 곳 아바타 40 | `:5512` `av.resize(40, 40)` | ✅ |
+| 화살표 24 | `:1375` `makeIconInstance(..., 24, ...)` | 같은 곳 chevron 24 | `:5548` `makeIconInstance("chevron", …, 24, CHEVRON_RIGHT_SVG)` | ✅ |
+
+**틀린 근거는 없다.** 주석 `:1253` 이 여섯 값을 통째로 "List 행"에 귀속시킨 표기는 엄밀히는 절반만 맞지만(오른쪽 칸 8 은 **선택행**), 바로 그 자리의 주석 `:1349` 가 "선례 buildBottomSheetOption **선택행**의 itemSpacing 8" 로 정확히 적어 두었으므로 오도하지 않는다.
+
+- 🟡 참고(판정 아님): 선례 List 행은 `primaryAxisAlignItems="SPACE_BETWEEN"`(`:5539`)으로 좌우를 벌리고 itemSpacing 을 쓰지 않는다. `buildListRow` 는 root `itemSpacing spacing/12` + `text.layoutGrow=1` 로 같은 결과를 만드는데, 이 경우 **글↔오른쪽 칸 간격도 12** 가 된다(선례에는 대응하는 값이 없다). 같은 토큰을 재사용한 것이라 "마음대로 정한 값"은 아니지만, 계약 `geometry.provenance` 는 12 를 "왼쪽 요소↔글"로만 적어 두어 절반만 설명한다.
+
+## ② 남은 '마음대로 정한 값' — ❌ **FAIL (a) 2건**
+
+### ❌ (a-1) `text.minHeight = 44` 가 **토큰 바인딩이 아니라 원시 숫자**다
+
+```ts
+// build-components.ts:1331-1332
+// 글 자리 최소 44 — 제목만 있는 줄도 설명이 붙은 줄과 같은 높이로 선다(sizing/44).
+text.minHeight = 44;
+```
+
+- 주석은 `(sizing/44)`, 계약 `minTextHeight`·`tokens.sizing` 도 `sizing/44` 라고 선언한다. **그러나 코드는 변수를 걸지 않는다.**
+- 같은 함수의 바로 위가 **올바른 방식의 본보기**다 — `:1312-1314` `box.setBoundVariable("width", numv("sizing/40"))`. 같은 부품 안에서 한 자리는 바인딩, 한 자리는 원시 숫자다.
+- **기계 증거:** `component-facts.json` 의 `List Row.tokenBindings` 에 `sizing/40` 은 있고 **`sizing/44` 는 없다**(빌더 실행 산출물). 프로브 실측도 `text` 의 `boundVariables` 가 `{itemSpacing: spacing/2}` 뿐이고 `minHeight` 는 `props` 쪽 `"44"` 다.
+- **웹 배포본은 이미 토큰으로 간다** — `ui-library/src/components/list-row/list-row.css:94` `min-height: var(--sizing-44);`. 즉 **정본만 토큰을 안 타고, 파생이 더 옳게 돼 있다.**
+- `sizing/44` 는 `vars-data.ts:381` 에 실재하므로 신설이 필요 없다. (수정은 구현자 소관 — `setBoundVariable("minHeight", numv("sizing/44"))`. mock 이 이 필드를 못 받으면 `sizing/40` 처럼 원시 세팅 후 바인딩하는 같은 패턴을 쓰면 된다.)
+
+### ❌ (a-2) 화살표 폴백 SVG 의 `stroke-width="1.4"` — 정본 상수는 `1.5`
+
+```ts
+// build-components.ts:1248-1249
+const chevRight = (c: string) =>
+  `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M9 6L15 12L9 18" stroke="${c}" stroke-width="1.4" …/></svg>`;
+```
+
+- 저장소에 **같은 크기(24)·같은 path(`M9 6L15 12L9 18`) 의 정본 상수가 이미 있다** — `build-components.ts:5398` `CHEVRON_RIGHT_SVG` … `stroke-width="1.5"`. 선례 `buildBottomSheetOption`(`:5548`)은 그 상수를 그대로 쓴다.
+- `1.4` 는 `:2039-2040` `chevDown`/`chevUp` 에 선례가 있지만 그쪽은 **16×16** 이다. 24 짜리 오른쪽 화살표를 1.4 로 그린 곳은 여기뿐이다.
+- 아이콘/이미지 원본은 CLAUDE.md §정확 대조 항목(두갈래 적용 금지·항상 엄격)이므로 ❌(a) 로 둔다. 다만 **영향 범위는 아이콘 라이브러리 import 실패 폴백 경로뿐**이고(정상 경로는 `makeIconInstance` 가 라이브러리 인스턴스를 붙이고 `rebindIconColor` 로 색을 다시 건다), `components:iconpolicy` 는 초록이다. **이 델타에서 새로 들어온 줄은 아니며 1~4차에서도 지적되지 않았다** — 이번에 "모든 숫자를 훑으라"는 지시로 처음 걸렸다. 고치는 방법은 `CHEVRON_RIGHT_SVG` 재사용 한 줄이다.
+
+### 나머지 숫자 — 전수 훑기 결과 설명됨
+
+| 숫자 | 자리 | 설명 |
+|---|---|---|
+| `ROW_W = 360` | `:1246` | 선례 `buildBottomSheetOption:5440` `const ROW_W = 360` 동일. 계약 `geometry.width` 가 "캔버스 편의상 360" 으로 선언 ✅ |
+| `resize(ROW_W, 1)` 의 `1` | `:1272` | 직후 `counterAxisSizingMode="AUTO"` 가 덮는 자리표시자. 선례 `fillPanel:3209` 의 `100` 과 같은 용법 ✅ |
+| 18 · `cornerRadius 2` · `strokeWeight 1` | `:1300-1303` | Checkbox **폴백** 도형 — `buildCheckbox:1090-1097` 과 동일(2차 PASS 유지, 실측에서 폴백 0회) ✅ |
+| 40×20 · `radius 10` · 노브 16 · `x=22,y=2` | `:1366-1372` | Toggle **폴백** 도형 — `buildToggle:1205-1212` 와 동일 ✅ |
+| 16 / 14 (글자 크기) | `:1333-1334`·`:1353` | `title/16M`·`body/14R` 텍스트 스타일 인자와 짝 ✅ |
+| `cellW 380 · cellH 88 · rowLabelW 96` | `:1398` | **부품이 아니라 스펙 진열판** 수치. `cellW 380` 은 선례 `buildBottomSheetOption:5573` 과 동일, `cellH 88` 은 행 높이 68 + 여유. 🟡 유일하게 선례 없는 진열 수치지만 컴포넌트 산출물에 들어가지 않는다 |
+
+## ③ 토큰 레벨 매칭 — ⚠️ **부분 PASS** (색·여백·반경·타이포 ✅ / 크기 1건 ❌ = ②-a-1)
+
+| 갈래 | 실측 | 판정 |
+|---|---|---|
+| 색 | 배경(`:1284`)·썸네일(`:1315`)·글자(`:1333-1334`,`:1353`)·아이콘(`:1375`)·폴백 도형 전부 `boundPaint(scv(maps, …))`. **하드코딩 hex 0건**(`chevRight("#000")` 은 폴백 SVG 인자이며 `rebindIconColor` 로 즉시 재바인딩 — iconpolicy 초록) | ✅ |
+| 여백 | `spacing/20`·`spacing/12`·`spacing/8`·`spacing/2` — 전부 `setBoundVariable` (프로브 실측) | ✅ |
+| 반경 | `radius/4` — `bindRadius`(`:1316`) | ✅ |
+| 크기 | `sizing/40` ✅ 바인딩 / **`sizing/44` ❌ 미바인딩**(원시 44) / `sizing/24` 는 코드에서 사라짐 | ❌ |
+| 텍스트 스타일 | `title/16M`·`body/14R` — `textstyles-data.ts:48,60` 실재 | ✅ |
+| 토큰 실재 | `spacing/2`(:321)·`spacing/8`(:324)·`spacing/12`(:326)·`spacing/20`(:329)·`radius/4`(:346)·`sizing/40`·`sizing/44`(:381) 전부 `vars-data.ts` 실재 · `keycheck` 누락 0 | ✅ |
+
+## ④ 구조 매칭 (registry ↔ 코드) — ❌ **FAIL (a) 1건**
+
+일치하는 것(전부 대조 완료):
+
+| 계약 필드 | 값 | 코드/실측 |
+|---|---|---|
+| `variantAxis.property` | `["Type","State"]` | `comp.name = \`Type=${t}, State=${st}\``(`:1270`) ✅ · 프로브 28칸 ✅ |
+| `variantAxis.values` | Type 7 · State 4 · `absentCombinations: []` | 7×4=28 실측 ✅ |
+| `slotMap` 7유형 | nav/value=화살표24 · read=없음 · pick=체크18 · agree=체크18+화살표24 · switch=토글40×20 · thumb=그림40 | 프로브 트리와 **7/7 일치** ✅ (체크 18 = `buildCheckbox:1090`, 토글 40×20 = `buildToggle:1201`) |
+| `anatomy` | 왼쪽 칸(체크18·그림40) · 가운데 글(최소 44) · 오른쪽 칸 | facts `anatomy = ["control","text","thumbnail","trail"]` ✅ |
+| `tokens.spacing` | `20·12·8·2` | facts `tokenBindings` 의 spacing 과 **정확히 4/4 일치** ✅ |
+| `tokens.radius` / `typography` | `radius/4` / `title/16M`·`body/14R` | ✅ |
+| `geometry.height` · `sizeAxis` | "12 + 44 = 68, 일곱 유형 같다" | ⑤ 도출값과 일치 ✅ |
+| `webDistribution.note` | "28칸(7 × 4)" | ✅ |
+| **Compact 흔적** | 계약·코드·웹 소스 모두 "Density 축은 없다"는 **정정 기록**만 남고 실제 축·분기·수치는 0건 | ✅ |
+
+### ❌ (a-3) `tokens.sizing` 이 코드와 어긋난다 — Compact 잔재 1건 + 허위 바인딩 1건
+
+```json
+// registry/components/list-row.json:142-146
+"sizing": ["sizing/44", "sizing/40", "sizing/24"]
+```
+
+- **`sizing/24`** — 코드 어디에도 없다(`grep 'sizing/24' build-components.ts` → buildListRow 0건). Compact 썸네일 24 를 걷어내면서 **계약에서만 남은 잔재**다. 유일하게 살아남은 Compact 흔적이다.
+- **`sizing/44`** — 선언돼 있으나 코드는 원시 숫자(②-a-1). 계약이 "이 토큰을 쓴다"고 말하는데 빌더 산출물에는 그 바인딩이 없다.
+- **기계 증거:** 빌더 실행 산출물 `component-facts.json` 의 `List Row.tokenBindings` 에 크기 토큰은 **`sizing/40` 하나뿐**이다. 선언 3개 : 실측 1개.
+- 1차 §6(`tokens.line`)·3차 ⑤(`anatomy` 썸네일 48)와 **같은 잣대**다 — 선언이 코드와 어긋나면 ❌(a).
+- 방향(참고): `sizing/24` 는 빼고, `sizing/44` 는 ②-a-1 을 고쳐 실제 바인딩으로 만들면 선언 3→2 로 실측과 맞는다.
+
+## ⑤ 높이 12 + 44 + 12 = 68 — ✅ **PASS** (일곱 유형 전부 성립 · 도출값)
+
+행 높이 = `padY×2 + max(자식 높이)`. 자식 높이는 프로브 실측:
+
+| 자식 | 높이 | 44 이하? |
+|---|---|---|
+| `text` (min 44, 내용 41 = `title/16M` 16×130% 20.8 + `spacing/2` 2 + `body/14R` 14×130% 18.2) | **44** | = |
+| `control` (Checkbox 인스턴스) | 18 | ✅ |
+| `toggle` (Toggle 인스턴스) | 20 | ✅ |
+| `trail` (hug — 최대 자식 = 화살표 24) | 24 | ✅ |
+| `thumbnail` | 40 | ✅ |
+
+→ 모든 유형에서 `max(자식) = 44`(text) 이므로 **12 + 44 + 12 = 68**, 28칸 전부 동일. `counterAxisSizingMode="AUTO"`(`:1274`)로 숫자 고정도 없다. `resize()` → sizing mode 순서도 4차 PASS 그대로 유지(`:1272-1274`, 선례 `buildTimePickerDropdown`/`fillPanel:3209-3211`).
+- 교차 확인: 웹 소스 `list-row.css:16-24` 도 `padding: var(--spacing-12) var(--spacing-20)` + `min-height: var(--sizing-44)` 로 같은 68 을 만든다.
+- ⚠️ mock 은 레이아웃을 계산하지 않는다 — 68 은 **실측 부품 크기에서 결정론적으로 도출한 값**이며 Figma 캔버스 육안 확인은 아니다.
+
+## ⑥ 기존 코드 훼손 없음 — ✅ **PASS**
+
+`git diff -U0` 헝크 **16개 전부가 `buildListRow` 함수 내부(1246-1405)** 다. 함수 밖 변경 0건.
+
+- 다른 빌더·`COMPONENT_CATEGORIES_GRID`(:7169) · `BUILD_DEPENDENCIES`(:7215) · runners(:7472) 는 **무변경**.
+- `BUILT_SETS["List Row"] = set;` 이 이번에 삭제됐다. **소비처 0건**(`grep` 으로 `getBuiltSet("List Row")`·`BUILT_SETS["List Row"]` 전수 확인) → 깨지는 곳 없다. 3차에서 `BUILT_SETS["Toggle"]` 을 뺀 것과 같은 방향(변형 캐시 `BUILT_COMPS` 만 등록)이라 일관적이다.
+- `BUILT_COMPS` 키가 `ListRow:<Type>:<Density>:<State>` → `ListRow:<Type>:<State>` 로 바뀌었다. **옛 키 참조처 0건**(`grep 'ListRow:'` → 정의 1곳뿐).
+- 결정론 게이트 5/5 초록이 이 무변경을 뒷받침한다(facts 해시 일치 = 다른 컴포넌트 산출물 무변동).
+
+---
+
+## 5차 항목별 판정 요약
+
+| # | 항목 | 판정 |
+|---|---|---|
+| ① | 근거가 실제로 맞나 (7/7 선례 대조) | ✅ **PASS** — 틀린 근거 0건 (🟡 글↔오른쪽 칸 12 는 계약 설명이 절반) |
+| ② | 마음대로 정한 값 | ❌ **FAIL (a) 2건** — `minHeight=44` 원시 숫자(선언은 sizing/44) · 화살표 폴백 `stroke-width 1.4`(정본 상수는 1.5) |
+| ③ | 토큰 레벨 매칭 | ⚠️ 색·여백·반경·타이포 ✅ / 크기 `sizing/44` 미바인딩 ❌(=②-a-1) · 사용 토큰 전부 정본 실재 ✅ |
+| ④ | 구조 매칭 (variantAxis·slotMap·anatomy·tokens·geometry) | ❌ **FAIL (a) 1건** — `tokens.sizing` 에 `sizing/24`(미사용 Compact 잔재)·`sizing/44`(미바인딩). 나머지 전 필드 코드와 일치, Compact 흔적 그 한 자리뿐 |
+| ⑤ | 높이 68 · 일곱 유형 동일 | ✅ **PASS** (프로브 실측 부품 크기에서 도출 · 웹 배포본과 교차 확인) |
+| ⑥ | 기존 코드 훼손 없음 | ✅ **PASS** — 헝크 16개 전부 함수 내부, 삭제된 키 소비처 0건 |
+| 0 | 결정론 게이트 | ✅ **5/5 초록** |
+
+- ❌(a): **3건** (②-a-1 · ②-a-2 · ④-a-3) · ❓(c): 0건 · 🟡(b): 3건 · BLOCKED: 0건
+- 승계(이번에 재확인하지 않음): **없음** — 지문 변경으로 전수 재검증
+- 미검증(정직 표기): **Figma 실물 캔버스 렌더** — MCP 연결 불가로 5차 내내 불가. 행 높이 68 은 도출값이다.
+- 절차 이탈: 호출자가 기계검사 표를 첨부하지 않아 검증자가 대행 실행(§5차 머리말)
+
+## 5차 한 줄 판정
+
+**fail** — 셋 다 한 줄짜리 수정이다: `minHeight` 를 `sizing/44` 로 바인딩 · 화살표 폴백을 `CHEVRON_RIGHT_SVG` 로 교체 · 계약 `tokens.sizing` 에서 `sizing/24` 제거. 축 축소(28칸)와 수치 재정렬의 **근거 자체는 전부 실재해 PASS** 다.
+
+---
+---
+
+# 4-verification (정본) — **6차 재검증** (5차 ❌ 3건 델타)
+
+- 검증자: 🤖 component-verifier (시나리오 D) · 일자: 2026-09-21
+- 입력: 5차 보고서 + **호출자 기계검사 표**(§검증 입력 계약 ① 충족 — 이번 회차부터 첨부됨) + 5차 이후 변경분
+- 범위: **델타 재검증** — 5차 ❌ 3건 + 그 수정이 닿은 범위만.
+  - **이번에 재확인하지 않음(5차 PASS 승계):** ① 근거 7/7 선례 대조 · ⑤ 높이 68 산식 · ⑥ 헝크 범위 원칙. 근거: 해당 코드·수치가 델타에 없고 검사 규칙도 강화되지 않았다. (단 ⑤·⑥은 아래 6-4 에서 **부수 피해 여부만** 다시 봤다.)
+- 한계: **Figma 실물 캔버스 렌더는 6차에도 미검증**(figma-local ConnectionRefused · figma MCP 미인증).
+
+## 6-0. 결정론 게이트 — 검증자 재실행 **5/5 exit 0**
+
+호출자 표의 4건을 재실행해 종료코드만 확인(위조 방지)했고, **표에 빠져 있던 `components:iconpolicy` 를 추가로 실행**했다 — 이번 수정이 아이콘 호출부를 건드렸기 때문이다.
+
+| 게이트 | 호출자 표 | 검증자 재실행 |
+|---|---|---|
+| `installer:check` | ✅ | ✅ exit 0 |
+| `components:keycheck` | ✅ | ✅ exit 0 |
+| `components:anatomy` | ✅ | ✅ exit 0 · `실패` 0건 |
+| `components:facts` (Gate 9e) | ✅ | ✅ exit 0 |
+| `components:iconpolicy` | **표에 없음** | ✅ exit 0 · 위반 0 |
+
+## 6-1. ① `minHeight` 토큰 바인딩 — ✅ **PASS** (5차 ❌ 해소)
+
+```ts
+// build-components.ts:1329-1330
+text.minHeight = 44;
+try { text.setBoundVariable("minHeight", numv("sizing/44")); } catch (e) { /* 구버전 API */ }
+```
+
+- **구조 프로브 실측:** `text` 노드의 `boundVariables` 가 `{itemSpacing: "spacing/2", minHeight: "sizing/44"}` — 5차에 없던 `minHeight` 바인딩이 실제로 걸린다.
+- **기계 증거:** `component-facts.json` `List Row.tokenBindings` 에 **`sizing/44` 가 들어왔다**. 현재 크기 토큰 = `sizing/40` · `sizing/44` 2개로, 계약 `tokens.sizing` 선언과 **2:2 정확히 일치**한다.
+- 원시 `text.minHeight = 44` 를 남겨 둔 것은 이중 안전장치다 — 바인딩이 거부돼도 높이 44 는 유지된다.
+- 🟡 (판정 아님) `catch` 가 조용하다. 구버전 API 에서 바인딩이 통째로 빠져도 로그가 없다. 다만 **이 경우에도 동작은 5차 이전과 같아 열화가 아니고**, Gate 9e 가 facts 에서 `sizing/44` 소실을 잡아낸다(바인딩이 빠지면 facts 가 달라져 exit 1). 감시 장치가 이미 있으므로 ❌ 로 올리지 않는다.
+
+## 6-2. ② 화살표 폴백 SVG — ✅ **PASS** (5차 ❌ 해소)
+
+```ts
+// build-components.ts:1374
+// 폴백 SVG 도 정본 상수를 그대로 쓴다(사본을 만들지 않는다 — 선 굵기 같은 값이 갈리지 않게).
+trail.appendChild(await makeIconInstance("chevron", scv(maps, iconKey(st)), 24, CHEVRON_RIGHT_SVG, 0, { wrap: false }));
+```
+
+- 지역 헬퍼 `chevRight` 가 **완전히 삭제**됐다(`grep 'chevRight'` → 0건). 24 짜리 오른쪽 화살표의 `stroke-width` 갈림(1.4 vs 1.5)이 원인부터 사라졌다.
+- 이제 선례 `buildBottomSheetOption:5547` 과 **같은 상수**(`:5397` `CHEVRON_RIGHT_SVG`, `stroke-width 1.5`)를 쓴다. 남은 `1.4` 2건(`:2038-2039`)은 16×16 chevUp/chevDown 으로 이 부품과 무관하다.
+- **선언 순서 위험 없음(실증):** `CHEVRON_RIGHT_SVG`(`:5397`)가 사용처(`:1374`)보다 아래에 있지만 `buildListRow` 는 모듈 평가 시점이 아니라 runner 호출 시점에 실행되므로 TDZ 에 걸리지 않는다 — **구조 프로브에서 28칸이 정상 생성되고 chevron 노드가 붙는 것으로 실증**됐다(tsc·iconpolicy 도 초록).
+- `makeIconInstance` 의 나머지 인자(크기 24 · 회전 0 · `{wrap:false}`)는 무변경이라 정상 경로(라이브러리 인스턴스 + `rebindIconColor`)도 그대로다. 폴백 warn 0건.
+
+## 6-3. ③ 계약 `tokens.sizing` — ✅ **PASS** (5차 ❌ 해소)
+
+```json
+"sizing": ["sizing/44", "sizing/40"],
+"_sizingNote": "화살표 24 는 아이콘 인스턴스 크기 인자라 Number 변수 바인딩 대상이 아니다(선례 Bottom Sheet Option 과 같은 방식)."
+```
+
+- `sizing/24` 제거 확인 — 계약·코드·facts 어디에도 없다. **Compact 잔재 0건**(계약에 남은 Compact 언급은 `variantAxis.note` 의 "두지 않는다"는 정정 기록뿐이며 축·분기·수치가 아니다).
+- 선언 2개 : facts 실측 2개(`sizing/44`·`sizing/40`) **정확히 일치**.
+- `_sizingNote` 의 주장도 사실이다 — `:1374` 와 선례 `:5547` 모두 24 를 `makeIconInstance` 의 크기 인자로 넘기고 Variable 을 걸지 않는다. 같은 방식이 맞다.
+
+## 6-4. 부수 피해 — ✅ **없음**
+
+| 확인 대상 | 결과 |
+|---|---|
+| 헝크 범위 | `git diff -U0` 16개 헝크 **전부 `buildListRow`(1246-1405) 내부**. 함수 밖 변경 0건 |
+| 다른 컴포넌트의 facts | `component-facts.json` diff 가 **`_meta.sourceHash` + `List Row` 항목뿐**. 다른 컴포넌트 0줄 변동 |
+| 폴백 경로 | Checkbox 18 / Toggle 40×20 폴백 도형 코드 무변경(2차 PASS 유지) · 프로브에서 폴백 warn **0건**, 인스턴스 `control 8/8 · toggle 4/4` |
+| 축·구조 | 프로브 28칸 · `Type × State` · anatomy `control/text/thumbnail/trail` — 5차와 동일 |
+| 높이 산식 | 자식 최대 높이 무변동(text 44 · thumbnail 40 · trail 24 · control 18 · toggle 20) → **68 유지**. 호출자의 배포본 http 실측(28칸 + 제목만 7칸 전부 68.0)과도 일치 |
+| 아이콘 정책 | `iconpolicy` 위반 0 — 상수 교체가 정책을 깨지 않았다 |
+
+---
+
+## 6차 항목별 판정 요약
+
+| # | 5차 | 6차 |
+|---|---|---|
+| ① `minHeight` 토큰 바인딩 | ❌ (a) | ✅ **PASS** — 프로브 `bound.minHeight = sizing/44` · facts 에 반영 |
+| ② 화살표 폴백 SVG 정본 상수 | ❌ (a) | ✅ **PASS** — 지역 사본 삭제, 선 굵기 갈림 소멸 |
+| ③ 계약 `tokens.sizing` | ❌ (a) | ✅ **PASS** — `sizing/24` 제거, 선언 2 : 실측 2 |
+| 부수 피해 | — | ✅ **없음** |
+| 결정론 게이트 | 5/5 | ✅ **5/5 exit 0**(iconpolicy 포함, 검증자 재실행) |
+
+- ❌(a): **0건** · ❓(c): 0건 · 🟡(b): 1건(조용한 catch — Gate 9e 가 감시) · BLOCKED: 0건
+- 승계(이번에 재확인하지 않음): 5차 ① 근거 7/7 대조 · ⑤ 높이 산식(부수 피해 관점으로만 재확인)
+- 미검증(정직 표기): **Figma 실물 캔버스 렌더** — 1~6차 내내 MCP 연결 불가. 행 높이 68 은 ①프로브 실측 부품 크기에서 도출 ②웹 배포본 http 렌더로 교차 확인했으나 Figma 캔버스 육안 확인은 아니다.
+
+## 6차 한 줄 판정 — **최종**
+
+**pass** — Gate 13 검증 기록을 실행해도 된다. 조건 없음(5차의 커밋 전 선행조치도 이미 `components:facts` 초록으로 해소).
