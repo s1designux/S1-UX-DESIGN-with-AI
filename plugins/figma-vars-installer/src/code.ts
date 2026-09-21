@@ -941,6 +941,8 @@ async function runInstall(
     let componentNoRunner: string[] = [];
     // 실패한 부품 때문에 '만들어졌지만 불완전한' 컴포넌트 — 성공으로만 보이면 안 된다.
     let componentDegraded: { name: string; missing: string[] }[] = [];
+    // 만든 뒤에도 토큰에 연결되지 않은 색이 남은 자리 — 설치는 성공이되 사람이 볼 필요가 있는 것.
+    let componentRawPaints: string[] = [];
 
     // ── Foundation (또는 의존 항목 위해 기존 로드) ──
     let foundationColorMap: Record<string, Variable> = {};
@@ -1056,6 +1058,7 @@ async function runInstall(
       componentFailed = compResult.failed;        // 생성 중 예외로 실패한 것(전체 중단 대신 계속 진행)
       componentNoRunner = compResult.noRunner;    // 빌더 미등록으로 건너뛴 것(Gate 30 이 커밋 단계에서 차단)
       componentDegraded = compResult.degraded;    // 부품 누락으로 불완전하게 완성된 것
+      componentRawPaints = compResult.rawPaints;  // 토큰에 연결되지 않은 색이 남은 자리(있으면 완료 화면에 표시)
     }
 
     const componentProblems = componentFailed.length + componentNoRunner.length + componentDegraded.length;
@@ -1096,6 +1099,7 @@ async function runInstall(
       componentFailed,
       componentNoRunner,
       componentDegraded,
+      componentRawPaints,
       removedCount: removedAll.length,
       removedNames: removedAll,
       guideUpdated: options.updateFlow === true,

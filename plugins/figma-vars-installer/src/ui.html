@@ -1070,13 +1070,22 @@
           }).join(' · '))}</strong><br>` : ''}
           <strong>[재설치]</strong>로 다시 시도하거나, 위 사유를 디자인시스템 담당자에게 알려주세요.
         </div>` : '';
+      // 토큰에 연결되지 않은 색이 남은 자리 — 설치 실패가 아니므로 제목은 건드리지 않고 회색으로만 알린다.
+      //   보이지 않는 색은 설치기가 이미 지웠고, 여기 남는 것은 지우면 그림이 사라질 수 있어 사람이 볼 자리다.
+      const rawPaintList = msg.componentRawPaints || [];
+      const rawPaintBlock = rawPaintList.length ? `
+        <div class="result-sub" style="margin-top:10px;padding:10px 12px;border-radius:8px;background:#f3f4f6;color:#4b5563;font-size:11px;line-height:1.7;">
+          <strong>토큰에 연결되지 않은 색이 남은 자리 (${rawPaintList.length}곳)</strong><br>
+          ${esc(rawPaintList.slice(0, 12).join(' / '))}${rawPaintList.length > 12 ? ' …' : ''}<br>
+          검수기에서 <strong>hex 직접 사용</strong>으로 잡힐 수 있는 자리입니다. 디자인시스템 담당자에게 알려주세요.
+        </div>` : '';
       document.getElementById('result').innerHTML = `
         <div class="result-success">
           <div class="result-title">${problem ? '⚠️ 설치 완료 (일부 누락)' : '✅ 설치 완료'}</div>
           <div class="result-sub">${lines.join('<br>') || '설치된 항목이 없습니다.'}<br><br>
             왼쪽 패널 <strong>Local variables</strong> · <strong>Text styles</strong> · <strong>Assets</strong>에서 확인하세요.
           </div>
-        </div>${warnBlock}
+        </div>${warnBlock}${rawPaintBlock}
         <div class="result-sub" style="color:#6b7280;font-size:11px;line-height:1.7;">
           컴포넌트 설치가 중간에 멈췄거나 배치가 이상하면 <strong>[재설치]</strong>를 누르세요 —
           기존 컴포넌트를 지우고 처음부터 다시 설치합니다.

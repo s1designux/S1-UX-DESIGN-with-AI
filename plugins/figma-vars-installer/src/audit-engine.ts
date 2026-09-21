@@ -781,6 +781,13 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?:
       for (let i = 0; i < arr.length; i++) {
         const p = arr[i];
         if (!p || p.type !== "SOLID") continue;
+        // 그리지 않는 색은 가이드 위반이 될 수 없다 — 검수 대상에서 뺀다(river 지적 2026-09-21).
+        //   ① 꺼 둔 칠·불투명도 0: 화면에 아무것도 안 그린다.
+        //   ② 마스크 도형의 칠·선: 색이 아니라 '가릴 모양'이다. 토큰으로 바꿀 것이 아니다.
+        if (p.visible === false || p.opacity === 0) continue;
+        let isMaskShape = false;
+        try { isMaskShape = (n as any).isMask === true; } catch (e) { /* isMask 가 없는 노드 */ }
+        if (isMaskShape) continue;   // 칠·선 모두 — 마스크는 선도 '가릴 모양'에 기여한다
         const rgb = (p as SolidPaint).color;
         const hex = rgbToHex(rgb);
         const bound = (p as SolidPaint).boundVariables && (p as SolidPaint).boundVariables!.color;

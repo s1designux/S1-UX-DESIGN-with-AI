@@ -325,6 +325,61 @@ function boundPaint(variable: Variable): SolidPaint {
   return figma.variables.setBoundVariableForPaint(paint, "color", variable) as SolidPaint;
 }
 
+/** ── 남은 raw 색 청소 (2026-09-21 river 지적) ──────────────────────────────
+ *  설치기가 만든 부품 안에 **토큰에 연결되지 않은 색**이 남지 않게 하는 마무리 단계다.
+ *  Figma 는 프레임·컴포넌트를 만들 때 흰색(FFFFFF) 칠을 기본으로 깔아 준다. 빌더가 그 자리를
+ *  덮지도 비우지도 않고 지나가면 그 흰색이 그대로 부품에 남아, 눈에 보이지도 않으면서
+ *  검수기에는 "hex 직접 사용"으로 걸린다.
+ *    ① 보이지 않는 칠(꺼진 칠·불투명도 0)이면서 토큰에 안 걸린 것은 **지운다**
+ *       — 그리는 것이 없으므로 지워도 모양이 바뀌지 않는다.
+ *    ② 그래도 남은 미연결 색은 **지우지 않고 자리 이름만 모아 보고**한다. 아이콘 원본색처럼
+ *       지우면 그림이 사라지는 자리가 있어, 판단이 필요한 것은 사람에게 올린다(하드룰 H6②).
+ *  인스턴스는 자기 칠까지 건드리지 않는다 — 그 색의 주인은 원본 부품이다.
+ *  마스크 도형도 건드리지 않는다 — 그 흰색은 색이 아니라 '가릴 모양'이라 토큰으로 바꿀 것이 아니다.
+ */
+export function sweepRawPaints(root: SceneNode): string[] {
+  const left: string[] = [];
+  const seen = new Set<string>();
+  const nameOf = (n: SceneNode): string => { try { return String(n.name); } catch (e) { return "?"; } };
+  const isBound = (p: any): boolean => !!(p && p.boundVariables && p.boundVariables.color);
+  const isInvisible = (p: any): boolean => p.visible === false || p.opacity === 0;
+  const visit = (node: SceneNode, path: string): void => {
+    // 인스턴스는 **자기 칠까지** 손대지 않는다 — 고치면 원본 부품과의 연결(override)이 끊긴다.
+    //   (🤖 component-verifier 적발 2026-09-21: 조기 return 이 칠 처리 뒤에 있어 인스턴스 루트를 건드렸다)
+    if (node.type === "INSTANCE") return;
+    // 마스크 도형의 칠·선은 색이 아니라 '가릴 모양'이다 — 지우지도, 보고하지도 않는다.
+    //   (검수기 audit-engine 도 같은 이유로 마스크를 검수 대상에서 뺀다 — 두 곳의 기준을 같게 둔다)
+    let isMaskShape = false;
+    try { isMaskShape = (node as any).isMask === true; } catch (e) { /* isMask 가 없는 노드 */ }
+    if (isMaskShape) { visitKids(node, path); return; }
+    for (const prop of ["fills", "strokes"] as const) {
+      let arr: any;
+      try { arr = (node as any)[prop]; } catch (e) { continue; }
+      if (!Array.isArray(arr)) continue;
+      const kept = arr.filter((p: any) => !(p && p.type === "SOLID" && !isBound(p) && isInvisible(p)));
+      if (kept.length !== arr.length) {
+        try { (node as any)[prop] = kept; } catch (e) { /* 읽기 전용 자리(인스턴스 등)는 건너뛴다 */ }
+      }
+      for (const p of kept) {
+        if (!p || p.type !== "SOLID" || isBound(p)) continue;
+        const label = `${path} (${prop === "fills" ? "칠" : "선"})`;
+        if (seen.has(label)) continue;
+        seen.add(label);
+        left.push(label);
+      }
+    }
+    visitKids(node, path);
+  };
+  function visitKids(node: SceneNode, path: string): void {
+    let kids: any;
+    try { kids = (node as any).children; } catch (e) { return; }
+    if (!Array.isArray(kids)) return;
+    for (const c of kids) visit(c as SceneNode, `${path} / ${nameOf(c as SceneNode)}`);
+  }
+  visit(root, nameOf(root));
+  return left;
+}
+
 function requireVar(map: Record<string, Variable>, key: string, kind: string): Variable {
   const v = map[key];
   if (!v) throw new Error(`${kind} 변수 누락: ${key} — 먼저 Variables 설치가 필요합니다.`);
@@ -998,6 +1053,8 @@ async function buildRadio(maps: BuildMaps, originY: number): Promise<{ set: Comp
       comp.primaryAxisSizingMode = "AUTO";
       comp.counterAxisSizingMode = "AUTO";
       comp.itemSpacing = 8;
+      // 외곽 컨테이너는 투명 — createComponent 기본 흰색 fill 제거(미사용 FFFFFF, 2026-09-21)
+      comp.fills = [];
       const circle = figma.createFrame();
       circle.name = "circle";
       circle.resize(18, 18);
@@ -2756,6 +2813,8 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
       const comp = figma.createComponent();
       comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}, Type=${ty.key}`;
       comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 4;
+      // 외곽 컨테이너는 투명 — createComponent 기본 흰색 fill 제거(미사용 FFFFFF, 2026-09-21)
+      comp.fills = [];
       comp.appendChild(trigger);
       if (st.name === "Focus") {
         // Time Picker Dropdown 인스턴스 재사용 (anatomy gate: "dropdown" raw 프레임 금지)
@@ -6973,7 +7032,7 @@ export async function buildAllComponents(
   // [중단하기] 신호. 컴포넌트 1개를 만들던 중에는 끊지 않고 **다음 부품 직전**에서만 멈춘다
   //   — 만들다 만 반쪽 세트를 캔버스에 남기지 않기 위해서다.
   shouldCancel?: () => boolean
-): Promise<{ created: number; added: string[]; skipped: string[]; noRunner: string[]; failed: { name: string; reason: string }[]; degraded: { name: string; missing: string[] }[] }> {
+): Promise<{ created: number; added: string[]; skipped: string[]; noRunner: string[]; failed: { name: string; reason: string }[]; degraded: { name: string; missing: string[] }[]; rawPaints: string[] }> {
   // 플러그인을 닫지 않고 새 가이드 페이지를 설치해도 이전 페이지 노드를 재사용하지 않는다.
   for (const key of Object.keys(BUILT_SETS)) delete BUILT_SETS[key];
   for (const key of Object.keys(BUILT_COMPS)) delete BUILT_COMPS[key];
@@ -7127,6 +7186,9 @@ export async function buildAllComponents(
   const noRunner: string[] = [];
   // 빌드 중 예외로 실패한 컴포넌트(건별 집계 — 전체 중단 대신 계속 진행).
   const failed: { name: string; reason: string }[] = [];
+  // 만들고 나서도 토큰에 연결되지 않은 색이 남은 자리(sweepRawPaints 가 지우지 못한 것).
+  //   보이지 않는 칠은 그 자리에서 이미 지워졌고, 여기 남는 것은 사람이 볼 필요가 있는 것뿐이다.
+  const rawPaints: string[] = [];
 
   // 컴포넌트 빌더 — 이름 → (originY) => {set, bottomY}. Input 은 originX=0(섹션 컬럼 좌측정렬).
   const runners: { [name: string]: (oy: number) => Promise<{ set: ComponentSetNode; bottomY: number }> } = {
@@ -7293,7 +7355,14 @@ export async function buildAllComponents(
         // 이번 빌더가 새로 만든 최상위 노드 = 이 카테고리 소유(떠있는 그룹라벨·밴드 포함).
         try {
           const kids = figma.currentPage.children as SceneNode[];
-          if (Array.isArray(kids)) for (const n of kids) if (!beforeIds.has(n.id)) ownedIds.add(n.id);
+          if (Array.isArray(kids)) for (const n of kids) {
+            if (beforeIds.has(n.id)) continue;
+            ownedIds.add(n.id);
+            // 만든 직후 **토큰에 안 걸린 색**을 훑는다 — 부수로 생긴 세트(GNB Menu 등)도 함께 잡힌다.
+            //   스펙 시트(설명용 프레임)는 부품이 아니므로 대상에서 뺀다.
+            if (String(n.type) !== "COMPONENT_SET") continue;
+            for (const spot of sweepRawPaints(n)) rawPaints.push(`${name}: ${spot}`);
+          }
         } catch (_) { /* mock/no-page */ }
       } catch (e: any) {
         const reason = (e && (e.message || String(e))) || "unknown";
@@ -7517,7 +7586,10 @@ export async function buildAllComponents(
       100
     );
   }
-  return { created, added, skipped, noRunner, failed, degraded };
+  if (rawPaints.length) {
+    console.warn(`[installer] 토큰에 연결되지 않은 색이 남은 자리 ${rawPaints.length}곳: ${rawPaints.join(" / ")}`);
+  }
+  return { created, added, skipped, noRunner, failed, degraded, rawPaints };
 }
 
 // ── 섹션 래핑 (대메뉴 묶기) ───────────────────────────────────────────────────

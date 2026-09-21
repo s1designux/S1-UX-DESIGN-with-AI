@@ -3,7 +3,7 @@
     "목적": "검수판 카드에 박는 정본 사실 — 사람이 요약하지 않고 기계가 뽑는다",
     "출처": "ui-library/dist/components/*.manifest.json (정본 build-components.ts 에서 생성)",
     "재생성": "npm run board:facts",
-    "생성일": "2026-09-17"
+    "생성일": "2026-09-21"
   },
   "components": {
     "assist-button": {
@@ -45,7 +45,7 @@
     "bottom-sheet-option": {
       "id": "bottom-sheet-option",
       "status": "approved",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "sizes": [],
       "breaks": {
         "pc": [],
@@ -76,12 +76,12 @@
         "Type=List × State=Disabled": "list:disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "831f204759c3cdaeab8bfead541b1cd296718836db6064783d9d48cc56c531c7"
+      "sourceFingerprint": "efe1c36ef0575d5ce88ba47efa21abbbaa388561c8687bd7208ba17de72c5032"
     },
     "bottom-sheet": {
       "id": "bottom-sheet",
       "status": "approved",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "sizes": [],
       "breaks": {
         "pc": [],
@@ -111,7 +111,7 @@
           "reason": "정본에 Break 축이 없다. 시트 자체가 모바일 전용이다."
         }
       ],
-      "sourceFingerprint": "59371aea56a5bb03323e64c832fae4567f87332e90d354b6f969577434bce726"
+      "sourceFingerprint": "c45ff89640b597cfcd0fc63a1ab9c8ae4d1007463b7e66dd701186819af3ed0d"
     },
     "button": {
       "id": "button",
@@ -280,7 +280,7 @@
     "date-picker": {
       "id": "date-picker",
       "status": "approved",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "sizes": [
         "xxsm",
         "xsm",
@@ -345,7 +345,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "2e4d3450adf75c7e5b6cda2787e2d2f2de9c20472e6bc3fa4965f26fda228147"
+      "sourceFingerprint": "8597dd10b43db896cfca3d9d13a0adc1bc027f6b8651baf05d63231c38196343"
     },
     "dropdown": {
       "id": "dropdown",
@@ -824,7 +824,7 @@
     "radio": {
       "id": "radio",
       "status": "approved",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "sizes": [],
       "breaks": {},
       "sizeBreakGrid": [],
@@ -847,7 +847,7 @@
         "Dis+Selected": "disabledSelected"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "5fea6d2c54b762e84e3d865e5eb6b5523bdae5e169b607b0a295ad196c2b88ff"
+      "sourceFingerprint": "20d319456325d95b787834afb941e3d3fafc695dc03083d74c3ef1ae40c5aadb"
     },
     "select": {
       "id": "select",
@@ -1126,7 +1126,7 @@
     "time-picker": {
       "id": "time-picker",
       "status": "approved",
-      "version": "0.3.2",
+      "version": "0.3.3",
       "sizes": [
         "xxsm",
         "xsm",
@@ -1199,7 +1199,7 @@
           "reason": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
         }
       ],
-      "sourceFingerprint": "3d8708522e4b4e62861b580e0875faebd53746414d18414634bcd247bfb61eb0"
+      "sourceFingerprint": "c5bdae5b8a7f57b9f0069931c2fb34cf61a2a0abd06041eab525363739c52eda"
     },
     "toggle": {
       "id": "toggle",

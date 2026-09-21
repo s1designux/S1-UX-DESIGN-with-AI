@@ -12,6 +12,7 @@
  */
 
 import type { PatternDef, PatternScreen, PNode, Override, SizeOverride } from "./pattern-data";
+import { sweepRawPaints } from "./build-components";
 
 export interface PatternMaps {
   /** "color/bg/level-0" → Variable (Semantic + Foundation 색 통합 맵) */
@@ -319,7 +320,10 @@ async function renderNode(
   if (node.type !== "INSTANCE" && "clipsContent" in node) node.clipsContent = spec.clip === true;
   if (spec.r !== undefined && "cornerRadius" in node) (node as RectangleNode).cornerRadius = spec.r;
   if (spec.fillVar) bindFill(node, maps, spec.fillVar, warnings);
-  else if (spec.t === "FRAME") (node as FrameNode).fills = [];
+  // 색을 정해 주지 않은 자리는 **Figma 기본색(프레임 흰색·사각형 회색)을 남기지 않는다.**
+  //   남기면 부품이 아닌 요소가 검수기에 "hex 직접 사용"으로 걸린다(river 지적 2026-09-21).
+  else if (spec.t === "FRAME" || spec.t === "RECT") (node as GeometryMixin).fills = [];
+  else if (spec.t === "TEXT") warnings.push(`글자색이 토큰에 연결되지 않았습니다: ${spec.n}`);
   if (spec.strokeVar) {
     bindStroke(node, maps, spec.strokeVar, warnings);
     if (spec.strokeW !== undefined) (node as GeometryMixin).strokeWeight = spec.strokeW;
@@ -373,7 +377,19 @@ export async function buildPattern(
   section.name = uniqueSectionName(page, def.section);
   page.appendChild(section);
   // 바탕색 — 화면 프레임(흰색)의 테두리가 보이게. 섹션도 색은 Semantic 변수로 연결한다.
-  bindFill(section, maps, def.sectionFillVar || "color/bg/level-3", warnings);
+  const sectionVar = def.sectionFillVar || "color/bg/level-3";
+  bindFill(section, maps, sectionVar, warnings);
+  // **연결이 실제로 걸렸는지 확인한다.** 걸리지 않았다면 raw 색을 남기지 않고 비운다 —
+  //   토큰 밖의 색을 섹션에 칠해 두면 그 상자 자체가 검수기에 걸린다(river 지적 2026-09-21).
+  try {
+    const f = (section as unknown as GeometryMixin).fills as Paint[];
+    const bound = Array.isArray(f) && f.length > 0 && f.every((p) =>
+      p.type === "SOLID" && !!(p as SolidPaint).boundVariables && !!(p as SolidPaint).boundVariables!.color);
+    if (!bound) {
+      (section as unknown as GeometryMixin).fills = [];
+      warnings.push(`섹션 바탕색을 토큰(${sectionVar})에 연결하지 못해 색 없이 두었습니다: ${section.name}`);
+    }
+  } catch (e) { /* fills 를 못 읽는 환경 → 그대로 둔다 */ }
 
   // 섹션 크기 = 화면 배치 범위 + 정본과 같은 여백(좌우/상하 80·100).
   let maxX = 0, maxY = 0;
@@ -403,6 +419,12 @@ export async function buildPattern(
     done++;
   }
   if (onProgress) onProgress(done, def.screens.length, "");
+
+  // 마무리 훑기 — 부품이 아닌 요소(섹션 상자·화면 틀·사각형)까지 토큰에 안 걸린 색을 찾는다.
+  //   보이지 않는 색은 그 자리에서 지우고, 남는 것은 이름 그대로 결과창에 올린다.
+  for (const spot of sweepRawPaints(section as unknown as SceneNode)) {
+    warnings.push(`토큰에 연결되지 않은 색이 남았습니다: ${spot}`);
+  }
 
   return { sectionId: section.id, screenCount: def.screens.length, warnings };
 }
