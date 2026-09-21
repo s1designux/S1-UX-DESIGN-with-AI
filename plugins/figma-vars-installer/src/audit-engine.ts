@@ -858,6 +858,31 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
     if (!variableCache.has(id)) variableCache.set(id, await figma.variables.getVariableByIdAsync(id));
     return variableCache.get(id) || null;
   };
+  /** 토큰 **자신이** 반투명한 색인가 — 그렇다면 그 불투명도는 사람이 덧씌운 값이 아니다.
+   *  정본 `color/overlay` 가 rgba(0,0,0,0.5) 라서, Figma 가 그 알파를 paint.opacity 로 풀어 준다.
+   *  그것을 "불투명도를 임의로 만졌다"고 잡으면 정본 토큰을 제대로 쓴 화면이 오류로 뜬다
+   *  (river 지적 2026-09-21 — 모달 오버레이). 별칭(alias)은 끝까지 따라간다. */
+  const alphaCache = new Map<string, number | null>();
+  const variableAlpha = async (v: Variable | null, depth = 0): Promise<number | null> => {
+    if (!v || depth > 4) return null;
+    const hit = alphaCache.get(v.id);
+    if (hit !== undefined) return hit;
+    let out: number | null = null;
+    try {
+      const byMode: any = (v as any).valuesByMode || {};
+      for (const modeId of Object.keys(byMode)) {
+        const val: any = byMode[modeId];
+        if (val && val.type === "VARIABLE_ALIAS") {
+          const a = await variableAlpha(await getVariable(val.id), depth + 1);
+          if (a !== null) { out = a; break; }
+          continue;
+        }
+        if (val && typeof val.a === "number" && val.a < 0.999) { out = val.a; break; }
+      }
+    } catch (e) { out = null; }
+    alphaCache.set(v.id, out);
+    return out;
+  };
   const getStyle = async (id: string) => {
     if (!styleCache.has(id)) styleCache.set(id, await figma.getStyleByIdAsync(id));
     return styleCache.get(id) || null;
@@ -915,11 +940,19 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
         if (bound) {
           const variable = await getVariable(bound.id);
           const colName = variable ? collectionById.get(variable.variableCollectionId) : undefined;
-          if (colName === FOUNDATION_COLLECTION) {
+          // 브랜드 색(brand/*)은 Semantic 대응이 없다 — 로고·CI 는 Foundation 을 그대로 쓸 수밖에 없다.
+          //   (river 2026-09-21: "컴포넌트와 달리 로고같은 것은 파운데이션 값을 그대로 사용할 수 밖에 없어")
+          const isBrandVar = !!variable && variable.name.slice(0, 6) === "brand/";
+          if (colName === FOUNDATION_COLLECTION && !isBrandVar) {
             add(colorDetails, 2, "color", node, `Foundation 변수 ${variable!.name} 직접 사용`);
           }
           if (typeof paint.opacity === "number" && paint.opacity < 0.999) {
-            add(colorDetails, 4, "color", node, `변수 색에 불투명도 ${Math.round(paint.opacity * 100)}% 적용`);
+            // 토큰 자신이 반투명하면(overlay 등) 그 불투명도는 정본 값이지 임의 변형이 아니다.
+            const tokenAlpha = await variableAlpha(variable);
+            const fromToken = tokenAlpha !== null && Math.abs(tokenAlpha - paint.opacity) < 0.02;
+            if (!fromToken) {
+              add(colorDetails, 4, "color", node, `변수 색에 불투명도 ${Math.round(paint.opacity * 100)}% 적용`);
+            }
           }
         }
       }
