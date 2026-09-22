@@ -27,6 +27,7 @@ import { TEXT_STYLES, TEXT_STYLE_FONT_FAMILY, TextStyleDef } from "./textstyles-
 import { parseCssShadow } from "./shadow-parse";
 import { LEGACY_MAP, LegacyMapEntry } from "./legacy-map-data";
 import ALLOWED_REMOTE_KEYS from "../../../registry/figma/allowed-remote-keys.json";
+import COMPONENT_FACTS from "../../../registry/components/component-facts.json";
 import DUMMY_CHROME from "../../../registry/governance/dummy-chrome-parts.json";
 
 // 검수 대상 컬렉션 = 설치기가 만드는 V2 컬렉션 전부.
@@ -167,7 +168,8 @@ type Issue = {
   reasonKind: "external-var" | "unbound-hex";
   hex: string;                      // resolved (light 우선)
   sourceLabel: string;              // 외부 변수 이름 또는 "raw"
-  componentContext: string[];       // 가장 가까운 component 이름 segments
+  componentContext: string[];       // 감싼 라이브러리 부품(정본·레거시)의 이름 조각 + 그 부품이 쓰는 토큰 카테고리 — 가까운 것부터
+  partTokens?: string[][];          // 감싼 부품이 **실제로 바인딩한 토큰** 묶음(가까운 부품의 자기 것 → 물려받은 것 → 그 바깥 …) — 자동 연결의 1순위 근거
   hasComponentMatch: boolean;       // suggestion이 component-내 토큰을 포함하는지
   suggestions: Suggestion[];
   offGuide: boolean;                // 가이드(팔레트)에 없는 색 — 정확일치 0 & 최근접 Foundation 거리 > 임계값
@@ -681,27 +683,177 @@ function guessPartKind(node: SceneNode, depth = 0): PartGuess | null {
   return guessPartKind(parent as SceneNode, depth + 1);
 }
 
-function getComponentContext(node: SceneNode): string[] {
-  const isComponentLike = (n: BaseNode) =>
-    n.type === "COMPONENT" || n.type === "COMPONENT_SET" || n.type === "INSTANCE";
+// ─── 부품 이름 → 그 부품이 실제로 바인딩한 토큰 ─────────────────────────────────────
+// 정본(build-components.ts)에서 자동 생성된 사실표(component-facts.json · tokenBindings)에서 읽는다 —
+//   Checkbox 는 color/control/*, Input 은 color/form-control/*, Calendar 는 color/date-picker/* 를 쓰는데
+//   이름과 카테고리가 달라 이름만으로는 «그 부품의 토큰»을 못 찾았다(🤖 component-verifier 적발 2026-09-22).
+//   사람이 표를 손으로 쓰지 않는다 — 정본이 바뀌면 사실표가 다시 생성돼 여기도 따라온다(Gate 9e 가 낡음을 막는다).
+// **카테고리가 아니라 토큰 이름 집합**을 쓴다 — 카테고리 단위로 잡으면 Modal Content 가 바인딩하지도 않은
+//   color/bg/level-0 이 들어오고, 부모·자식이 같은 카테고리를 쓰면 부모 것이 «물려받은 것»이 된다(🤖 적발 2026-09-22).
+// 두 층: ①자기 것(자식 부품 composition.buildDependencies 에서 물려받지 않은 토큰) ②물려받은 것.
+type PartTokens = { own: string[]; inherited: string[] };
+const PART_TOKENS: { [norm: string]: PartTokens } = (() => {
+  const comps: any = (COMPONENT_FACTS as any).components || {};
+  const names = Object.keys(comps);
+  const raw: { [name: string]: string[] } = {};
+  for (const name of names) {
+    const bindings: unknown = comps[name] && comps[name].tokenBindings;
+    const toks: string[] = [];
+    if (Array.isArray(bindings)) {
+      for (const ref of bindings as unknown[]) {
+        if (typeof ref !== "string" || ref.indexOf("color/") !== 0) continue;
+        const t = ref.toLowerCase();
+        if (toks.indexOf(t) < 0) toks.push(t);
+      }
+    }
+    raw[name] = toks;
+  }
+  const depsOf = (name: string): string[] => {
+    const comp = comps[name] || {};
+    const list: unknown = comp.composition && comp.composition.buildDependencies;
+    return Array.isArray(list) ? (list as unknown[]).filter((x): x is string => typeof x === "string" && !!raw[x]) : [];
+  };
+  const inheritedOf = (name: string, seen: { [n: string]: true } = {}): { [t: string]: true } => {
+    const out: { [t: string]: true } = {};
+    for (const dep of depsOf(name)) {
+      if (seen[dep]) continue;
+      seen[dep] = true;
+      for (const t of raw[dep]) out[t] = true;
+      const deeper = inheritedOf(dep, seen);
+      for (const t of Object.keys(deeper)) out[t] = true;
+    }
+    return out;
+  };
+  const m: { [norm: string]: PartTokens } = {};
+  for (const name of names) {
+    const toks = raw[name];
+    if (!toks.length) continue;
+    const inh = inheritedOf(name);
+    m[refNameKey(name)] = { own: toks.filter((t) => !inh[t]), inherited: toks.filter((t) => !!inh[t]) };
+  }
+  return m;
+})();
 
+/** 부품 세트 이름(정본 또는 레거시)이 바인딩한 토큰 — [자기 것, 물려받은 것] 순의 비어 있지 않은 묶음.
+ *  레거시 이름은 레거시 표의 정본 대응 세트로 푼다. 모르는 부품이면 빈 배열. */
+function partTokenScopes(setName: string): string[][] {
+  const direct = PART_TOKENS[refNameKey(setName)];
+  const merged: PartTokens = { own: [], inherited: [] };
+  const add = (pt: PartTokens) => {
+    for (const t of pt.own) if (merged.own.indexOf(t) < 0) merged.own.push(t);
+    for (const t of pt.inherited) if (merged.inherited.indexOf(t) < 0) merged.inherited.push(t);
+  };
+  if (direct) add(direct);
+  else {
+    const rows = LEGACY_INDEX[normalizeName(setName)] || [];
+    for (const row of rows) for (const canon of row.canonSets || []) {
+      const pt = PART_TOKENS[refNameKey(canon)];
+      if (pt) add(pt);
+    }
+  }
+  const out: string[][] = [];
+  if (merged.own.length) out.push(merged.own);
+  if (merged.inherited.length) out.push(merged.inherited);
+  return out;
+}
+
+/** 부품 세트 이름이 쓰는 토큰 카테고리 — 자기 것 먼저, 물려받은 것 다음(칩 순서·이름 조각용). */
+function partTokenCategories(setName: string): string[] {
+  const out: string[] = [];
+  for (const scope of partTokenScopes(setName)) {
+    for (const t of scope) {
+      const cat = categoryOf(t);
+      if (out.indexOf(cat) < 0) out.push(cat);
+    }
+  }
+  // 부품 이름과 같은 카테고리(Table → table)는 맨 앞 — 칩에서 그 부품 칸이 먼저 보이게. 자동 연결은 토큰 묶음이 정한다.
+  const words = setName.toLowerCase().split(/[\s_\/]+/).filter(Boolean);
+  return out.filter((c) => words.indexOf(c) >= 0).concat(out.filter((c) => words.indexOf(c) < 0));
+}
+
+/** 이 부품이 «라이브러리 부품»(정본이거나 레거시 가이드 것)인가 — 라이브러리 연결이 있거나, 정본 이름이거나, 레거시 표에 있는 것.
+ *  디자이너가 파일 안에서 직접 만든 컴포넌트·화면을 컴포넌트로 묶은 것은 부품이 아니다(river 결정 2026-09-22 — 교체 대상과 같은 잣대). */
+function isLibraryPartName(setName: string, nodeName: string, remote: boolean): boolean {
+  if (remote) return true;
+  for (const nm of [setName, nodeName]) {
+    if (!nm) continue;
+    if (CANONICAL_NAME_SET[refNameKey(nm)]) return true;
+    if (LEGACY_INDEX[normalizeName(nm)]) return true;
+  }
+  return false;
+}
+
+// 한 번의 검사 동안 조상별로 계산한 «부품 조각»을 기억한다 — 같은 부품 안 노드마다 다시 풀지 않게.
+type PartContext = { segs: string[]; scopes: string[][] };
+let partSegmentsCache: Map<string, PartContext> = new Map();
+
+/** 컴포넌트류 노드 하나가 내는 것: 이름 낱말 + 그 부품의 토큰 카테고리(segs), 그리고 그 부품이 실제로
+ *  바인딩한 토큰 묶음(scopes — [자기 것, 물려받은 것]). 라이브러리 부품이 아니면 둘 다 빈 배열. */
+async function partSegmentsOf(n: BaseNode): Promise<PartContext> {
+  const hit = partSegmentsCache.get(n.id);
+  if (hit) return hit;
   const splitName = (name: string) =>
     (name || "")
       .split(/[/_\s,+]+/)
       .map((s) => s.trim().toLowerCase())
       .filter(Boolean);
-
-  if (isComponentLike(node)) {
-    return splitName(node.name);
+  let setName = n.name;
+  let remote = false;
+  if (n.type === "INSTANCE") {
+    let main: ComponentNode | null = null;
+    try { main = await (n as InstanceNode).getMainComponentAsync(); } catch (e) { main = null; }
+    if (main) {
+      setName = main.parent && main.parent.type === "COMPONENT_SET" ? main.parent.name : main.name;
+      try { remote = (main as any).remote === true; } catch (e) { remote = false; }
+    }
+  } else if (n.type === "COMPONENT" && n.parent && n.parent.type === "COMPONENT_SET") {
+    setName = n.parent.name;
   }
+  const out: string[] = [];
+  const scopes: string[][] = [];
+  if (isLibraryPartName(setName, n.name, remote)) {
+    const push = (seg: string) => { if (out.indexOf(seg) < 0) out.push(seg); };
+    for (const sc of partTokenScopes(setName)) scopes.push(sc);
+    if (setName !== n.name && scopes.length === 0) for (const sc of partTokenScopes(n.name)) scopes.push(sc);
+    // **사실표의 토큰 카테고리가 이름 낱말보다 먼저다** — 'Line Tab' 의 line, 'Text Area' 의 text 같은 이름 낱말이
+    //   앞에 서면 공통 line/text 토큰이 진짜 카테고리(navigation·form-control)를 가로챈다(🤖 적발 2026-09-22).
+    //   사실표가 그 부품을 알면 역할 낱말(text·line·icon·bg…)은 이름에서 담지 않는다 — 부품이 실제로 쓰는
+    //   역할 토큰은 사실표에 이미 들어 있다. 사실표가 모르는 부품(표 밖 레거시)만 이름 낱말을 그대로 쓴다.
+    const cats: string[] = [];
+    for (const cat of partTokenCategories(setName)) if (cats.indexOf(cat) < 0) cats.push(cat);
+    if (setName !== n.name) for (const cat of partTokenCategories(n.name)) if (cats.indexOf(cat) < 0) cats.push(cat);
+    for (const cat of cats) push(cat);
+    const known = cats.length > 0;
+    for (const seg of splitName(n.name).concat(splitName(setName))) {
+      if (known && isRoleCategory(seg)) continue;
+      push(seg);
+    }
+  }
+  const ctx: PartContext = { segs: out, scopes };
+  partSegmentsCache.set(n.id, ctx);
+  return ctx;
+}
+
+async function getComponentContext(node: SceneNode): Promise<PartContext> {
+  const isComponentLike = (n: BaseNode) =>
+    n.type === "COMPONENT" || n.type === "COMPONENT_SET" || n.type === "INSTANCE";
+
+  // **조상 체인 전체**의 라이브러리 부품을 합친다(가까운 것이 앞) — 가장 가까운 것 하나만 보면
+  //   Chip › ic_check › VECTOR 에서 아이콘 인스턴스만 잡혀 칩을 놓친다(🤖 component-verifier 적발 2026-09-22).
+  //   라이브러리 부품이 아닌 것(직접 만든 컴포넌트·컴포넌트로 묶은 화면)은 근거가 아니다.
+  const out: string[] = [];
+  const scopes: string[][] = [];
+  const push = (pc: PartContext) => {
+    for (const seg of pc.segs) if (out.indexOf(seg) < 0) out.push(seg);
+    for (const sc of pc.scopes) scopes.push(sc);
+  };
+  if (isComponentLike(node)) push(await partSegmentsOf(node));
   let cur: BaseNode | null = node.parent;
   while (cur && cur.id !== figma.currentPage.id) {
-    if (isComponentLike(cur)) {
-      return splitName(cur.name);
-    }
+    if (isComponentLike(cur)) push(await partSegmentsOf(cur));
     cur = cur.parent;
   }
-  return [];
+  return { segs: out, scopes };
 }
 
 // 노드 종류와 paint 속성, 외부 변수 이름으로부터 "역할(role)" segment 결정
@@ -710,6 +862,14 @@ function getComponentContext(node: SceneNode): string[] {
 //     SHAPE fills → ['bg', 'surface']
 //     SHAPE strokes → ['border', 'line']
 const KNOWN_ROLES = ["text", "label", "icon", "bg", "surface", "border", "line", "stroke", "fill"];
+
+/** 부품과 무관한 «공통 역할» 카테고리인가 — color/text/* · color/bg/* · color/border/* · color/icon/* 등.
+ *  **손으로 그린** 도형·글자·아이콘(어느 부품 인스턴스 안도 아닌 것)에는 이 카테고리만 근거로 쓴다.
+ *  모양(크기·둥글기·글자 위치)으로 "버튼이다" 하고 부품 토큰을 고르지 않는다 — 부품이면 사람이
+ *  라이브러리 부품으로 직접 바꾼다(river 결정 2026-09-22). 모양 추정(guess)은 안내 문구와 칩 순서에만 남는다. */
+function isRoleCategory(cat: string): boolean {
+  return KNOWN_ROLES.indexOf(cat) >= 0;
+}
 
 function decideRoles(nodeKind: NodeKind, paintProp: "fills" | "strokes", externalVarName?: string): string[] {
   const roles: string[] = [];
@@ -826,7 +986,8 @@ function pickSuggestions(
   contextSegments: string[],
   externalVarName?: string,
   guess?: PartGuess | null,
-  modeName?: string
+  modeName?: string,
+  partBound?: Set<string>
 ): Suggestion[] {
   /** 이 토큰이 지금 화면 모드에서 갖는 색. 못 읽으면 빈 문자열. */
   const hexOfVar = (v: V2Var): string => {
@@ -863,17 +1024,22 @@ function pickSuggestions(
         break;
       }
     }
-    if (!hasRoleMatch) continue;
+    // 감싼 부품이 **실제로 바인딩한 토큰**은 이름에 역할 낱말이 없어도 후보다 — color/table/cell/default ·
+    //   color/navigation/indicator/selected 처럼 정본 토큰 24개가 역할 매칭에 걸리지 않아 어떤 제안에도 안 뜨던
+    //   자리(🤖 component-verifier 적발 2026-09-22). 정본이 그 자리에 쓴다고 한 토큰이니 역할도 맞는 것으로 본다.
+    const boundByPart = !!partBound && partBound.has(lower);
+    if (!hasRoleMatch && !boundByPart) continue;
 
     const cat = categoryOf(v.name);
-    // 모양으로 읽은 정체도 '그 부품이 맞다'는 근거로 쓴다 — 인스턴스가 아니라 맨 도형이면
-    //   componentContext 가 비어 있어 종전에는 전 카테고리가 같은 값으로 늘어섰다.
-    const isComponentMatch = contextSegments.indexOf(cat) >= 0 || (!!guess && guess.category === cat);
+    // «그 부품이 맞다»는 근거는 **감싼 부품 인스턴스 이름뿐**이다. 모양으로 읽은 정체(guess)는
+    //   근거로 치지 않는다 — 맨 도형이 버튼처럼 생겼다고 버튼 토큰을 '확실함'으로 올리던 것을
+    //   걷어냈다(river 결정 2026-09-22: 손으로 그린 건 사람이 부품으로 직접 바꾼다).
+    const isComponentMatch = contextSegments.indexOf(cat) >= 0;
     const isExact = exactIds.has(v.id);
 
     let matchType: Suggestion["matchType"];
     let confidence: "high" | "medium" | "low";
-    if (isComponentMatch) {
+    if (isComponentMatch || boundByPart) {
       matchType = "role+component";
       confidence = "high";
     } else {
@@ -892,7 +1058,10 @@ function pickSuggestions(
       state: stateOf(v.name),
       matchType,
       category: cat,
-      roleFit: roleFitOf(v.name, preferredRoles),
+      // 역할 낱말이 아예 없는 부품 토큰(table/cell/* · navigation/indicator/* · pagination/number/*)만 부품 근거로
+      //   «맞음»으로 올린다. 역할이 명시된 배경·테두리 토큰(chip/line/bg 등)은 글자·아이콘 자리에서 종전대로
+      //   «어긋남»으로 막는다 — 강제로 0 을 주면 흰 라벨에 배경 토큰이 걸린다(🤖 적발 2026-09-22).
+      roleFit: (() => { const fit = roleFitOf(v.name, preferredRoles); return boundByPart && fit === 1 ? 0 : fit; })(),
     });
     added.add(v.id);
   }
@@ -946,8 +1115,21 @@ function pickSuggestions(
 
   // 정렬: 컨텍스트 매칭 카테고리 → 점수순 (matchType 우선, exact 우선)
   const orderMap: Record<string, number> = { "role+component": 0, "role": 1, "exact": 2, "near": 3 };
-  // 모양으로 읽은 정체(버튼·칩·입력칸·배경)가 있으면 그 카테고리를 맨 앞에 세운다.
-  const guessRank = (cat: string): number => (guess && guess.category === cat ? 0 : 1);
+  // 카테고리 순서 — 부품 안이면 그 부품이 먼저. **맨 도형·글자·아이콘이면 공통 역할 토큰이 먼저**,
+  //   모양으로 짐작한 부품과 팔레트 색은 그 다음(참고), 나머지 부품은 맨 뒤(river 결정 2026-09-22).
+  //   «부품 안»은 부품 이름이 **실제 후보 카테고리와 겹칠 때**만이다 — 레이어 이름을 '저장'으로 바꾼
+  //   인스턴스 안 글자는 손그림과 같이 다룬다(화면 쪽 hasCtx 와 같은 정의 · 🤖 적발 2026-09-22).
+  const presentCats = new Set(result.map((r) => r.category));
+  const ctxCats = contextSegments.filter((c) => presentCats.has(c));
+  const hasCtx = ctxCats.length > 0;
+  //   부품이 겹치면(Pagination › Button) **가까운 부품이 먼저** — ctx 는 가까운 것부터 늘어서 있다.
+  const guessRank = (cat: string): number => {
+    if (hasCtx) { const i = ctxCats.indexOf(cat); return i >= 0 ? i : ctxCats.length + 3; }
+    if (isRoleCategory(cat)) return 0;
+    if (cat === "foundation") return 1;
+    if (guess && guess.category === cat) return 2;
+    return 3;
+  };
   // 추정한 부품 안에서는 ①색이 정확히 같은 것 ②상태 단서와 맞는 것 ③기본(default) 순으로 세운다.
   //   (river 결정 2026-09-21 — 상태가 갈리면 자동으로 정하지 말고 사람이 고른다. 순서만 돕는다.)
   const exactRank = (x: Suggestion): number => (x.exact ? 0 : 1);
@@ -1030,9 +1212,14 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?:
     issues.push(created);
   };
 
+  partSegmentsCache = new Map();
   for (const n of allNodes) {
     if (isDummyChromePart(n)) continue;   // 더미 크롬(상태바·내비바/키보드·웹 탭바)은 검수 대상이 아니다
-    const ctx = getComponentContext(n);
+    const partCtx = await getComponentContext(n);
+    const ctx = partCtx.segs;
+    const partScopes = partCtx.scopes;
+    const partBound = new Set<string>();
+    for (const sc of partScopes) for (const t of sc) partBound.add(t);
     const kind = classifyNode(n);
     for (const prop of ["fills", "strokes"] as const) {
       if (!(prop in n)) continue;
@@ -1059,7 +1246,7 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?:
           }
         }
         const guess = kind === "shape" || kind === "text" || kind === "icon" ? guessPartKind(n) : null;
-        const suggestions = pickSuggestions(hex, byHex, v2, prop, kind, ctx, externalVarName, guess, modeName);
+        const suggestions = pickSuggestions(hex, byHex, v2, prop, kind, ctx, externalVarName, guess, modeName, partBound);
         // 노드가 어떤 컴포넌트/인스턴스에 속하면 컴포넌트 매칭 탭으로 분류
         // (V2에 해당 컴포넌트 토큰이 정의되어 있는지 여부는 suggestion 점수에만 영향)
         const hasComponentMatch = ctx.length > 0;
@@ -1080,6 +1267,7 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?:
             hex,
             sourceLabel: v.name,
             componentContext: ctx,
+            partTokens: partScopes.length ? partScopes : undefined,
             hasComponentMatch,
             suggestions,
             offGuide,
@@ -1095,6 +1283,7 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?:
             hex,
             sourceLabel: hex,
             componentContext: ctx,
+            partTokens: partScopes.length ? partScopes : undefined,
             hasComponentMatch,
             suggestions,
             offGuide,
@@ -1681,16 +1870,15 @@ async function applyOne(issue: Issue, suggestionIndex: number, out?: { paired: n
   return true;
 }
 
-/** 물어보지 않고 바꿔도 되는 자리 — **모양으로 읽은 정체 + 색이 정확히 같은 토큰**이 딱 하나일 때만.
- *  (river 지시 2026-09-21 "확실하면 자동 교체". 애매하면 자동으로 안 바꾸고 그대로 묻는다.) */
 /** 색이 "거의 같다"고 볼 거리 — Δ(0~765). 12 는 눈으로 구분이 어려운 수준이다.
  *  (river 지적 2026-09-21: 시안의 #226FEC 는 정본 blue/400 #1D6CEB 와 Δ9 다 — 같은 파랑을
  *  손으로 조금 다르게 찍은 것이라, 이 정도는 정본으로 되돌려 주는 것이 맞다.) */
 const NEAR_SAME = 12;
 
 /** 아이콘 자리는 **바로 아이콘색을 건다**(river 지시 2026-09-22). 어느 부품의 아이콘색인지는
- *  세 계단으로 정한다 — ①이 아이콘을 감싼 **부품 인스턴스 이름**(가장 확실) ②모양으로 읽은
- *  부품 추정 ③둘 다 없으면 부품과 무관한 **공통 아이콘색**(color/icon/*) 중 지금 색과 같은 것.
+ *  두 계단으로 정한다 — ①이 아이콘을 감싼 **부품 인스턴스 이름**(가장 확실) ②없으면 부품과
+ *  무관한 **공통 아이콘색**(color/icon/*) 중 지금 색과 같은 것. 모양으로 읽은 부품 추정은
+ *  쓰지 않는다(river 결정 2026-09-22 — 손으로 그린 건 사람이 부품으로 직접 바꾼다).
  *  같은 부품 안에서 상태가 갈리면 색으로 가른다(흰 아이콘=selected 등). 못 가리면 그대로 묻는다. */
 function iconAutoPick(issue: Issue): { index: number; why: string } | null {
   if (issue.nodeKind !== "icon") return null;
@@ -1730,17 +1918,24 @@ function iconAutoPick(issue: Issue): { index: number; why: string } | null {
     return out;
   };
 
-  // ① 감싼 부품 인스턴스 이름 — 이름이 곧 근거다.
+  // ① 감싼 부품이 **실제로 바인딩한 토큰** — 가까운 부품의 자기 것부터 한 묶음씩(사실표 근거).
+  for (const scope of issue.partTokens || []) {
+    const idxs: number[] = [];
+    for (let i = 0; i < issue.suggestions.length; i++) {
+      const s = issue.suggestions[i];
+      if (scope.indexOf(s.variableName.toLowerCase()) >= 0 && isIconToken(s)) idxs.push(i);   // 아이콘 자리엔 아이콘 토큰만
+    }
+    if (idxs.length === 0) continue;
+    const pick = pickNearest(idxs);
+    if (pick !== null) return { index: pick, why: "감싼 부품이 쓰는 토큰" };
+    return null;   // 그 부품 토큰 안에서 상태가 갈리면 사람이 고른다 — 바깥으로 새지 않는다
+  }
+  // ② 감싼 부품 인스턴스 이름 — 사실표에 없는 부품(표 밖 레거시)은 이름 카테고리로.
   for (const cat of issue.componentContext) {
     const pick = pickNearest(idxsOfCategory(cat));
     if (pick !== null) return { index: pick, why: `${cat} 부품 안 아이콘` };
   }
-  // ② 모양으로 읽은 부품
-  if (issue.guess) {
-    const pick = pickNearest(idxsOfCategory(issue.guess.category));
-    if (pick !== null) return { index: pick, why: `모양으로 ${issue.guess.label}(으)로 봄` };
-  }
-  // ③ 부품을 모르면 공통 아이콘색
+  // ③ 부품 안이 아니면 공통 아이콘색
   const generic: number[] = [];
   for (let i = 0; i < issue.suggestions.length; i++) {
     if (issue.suggestions[i].variableName.toLowerCase().indexOf("color/icon/") === 0) generic.push(i);
@@ -1758,40 +1953,57 @@ function autoPickIndex(issue: Issue): number | null {
   if (issue.suggestions.length > 0 && issue.suggestions[0].roleFit === 2) return null;
   // 종전 규칙 — 후보가 아예 하나뿐이고 확신도가 높으면 그대로.
   if (issue.suggestions.length === 1 && issue.suggestions[0].confidence === "high") return 0;
-  if (!issue.guess) return null;
-  const hits: number[] = [];
-  for (let i = 0; i < issue.suggestions.length; i++) {
-    const s = issue.suggestions[i];
-    if (s.category === issue.guess.category && s.exact === true && s.matchType === "role+component") hits.push(i);
-  }
-  if (hits.length === 1) return hits[0];
-  // 정확히 같은 색이 하나도 없으면 — **추정한 부품 안에서 거의 같은 색이 하나뿐일 때만** 바꾼다.
-  //   (둘 이상이 비슷하면 어느 상태인지 사람이 골라야 한다.)
-  if (hits.length === 0) {
-    const near: number[] = [];
-    for (let i = 0; i < issue.suggestions.length; i++) {
-      const s = issue.suggestions[i];
-      if (s.category !== issue.guess.category) continue;
-      if (typeof s.dist !== "number" || s.dist > NEAR_SAME) continue;
-      near.push(i);
-    }
-    if (near.length === 1) return near[0];
-    if (near.length > 1 && issue.guess.state) {
-      const byState = near.filter((i) => issue.suggestions[i].state === issue.guess!.state);
+
+  // «부품 안»은 부품 이름이 실제 후보 카테고리와 겹칠 때만(pickSuggestions·화면과 같은 정의).
+  const ctx = (issue.componentContext || []).filter((c) => issue.suggestions.some((s) => s.category === c));
+  const hasCtx = ctx.length > 0;
+  // «이 자리의 근거»가 되는 카테고리 — 부품 안이면 그 부품(이름이 근거), 맨 도형·글자면 공통 역할 토큰뿐.
+  //   모양으로 짐작한 부품(guess)은 근거가 아니다(river 결정 2026-09-22).
+  // 상태 단서는 **레이어 이름**에서 온 것만 쓴다(guess.state = stateHintOf(node)). 모양이 아니다.
+  const stateHint = issue.guess && issue.guess.state ? issue.guess.state : "";
+  const narrowByState = (idxs: number[]): number | null => {
+    if (idxs.length === 1) return idxs[0];
+    if (idxs.length === 0) return null;
+    if (stateHint) {
+      const byState = idxs.filter((i) => issue.suggestions[i].state === stateHint);
       if (byState.length === 1) return byState[0];
     }
-    // 기본 상태 하나만 거의 같으면 그것으로 본다(나머지는 hover·비활성 등 변형).
-    if (near.length > 1) {
-      const defaults = near.filter((i) => issue.suggestions[i].state === "default");
-      if (defaults.length === 1) return defaults[0];
+    // 기본 상태 하나만 남으면 그것으로 본다(나머지는 hover·비활성 등 변형).
+    const defaults = idxs.filter((i) => issue.suggestions[i].state === "default" || issue.suggestions[i].state === "");
+    return defaults.length === 1 ? defaults[0] : null;
+  };
+
+  // 부품이 겹치면(Pagination › Button 안의 면) **가까운 부품부터 한 카테고리씩** 본다 — 바깥 부품 토큰이
+  //   안쪽 자리의 후보로 섞여 들지 않게(🤖 component-verifier 적발 2026-09-22). 맨 도형은 공통 역할 한 묶음.
+  // 1순위 근거는 **감싼 부품이 실제로 바인딩한 토큰 묶음**(사실표) — 카테고리로 잡으면 바인딩하지도 않은
+  //   같은 카테고리 토큰이 들어온다(🤖 적발 2026-09-22). 사실표에 없는 부품(표 밖 레거시)만 이름 카테고리로.
+  const tokenScopes = issue.partTokens || [];
+  const inPart = tokenScopes.length > 0 || hasCtx;
+  type Scope = { tokens?: string[]; cats?: string[] };
+  const scopes: Scope[] = tokenScopes.length
+    ? tokenScopes.map((t) => ({ tokens: t }))
+    : hasCtx ? ctx.map((c) => ({ cats: [c] })) : [{ cats: KNOWN_ROLES.slice() }];
+  const collect = (scope: Scope, pred: (s: Suggestion) => boolean): number[] => {
+    const idxs: number[] = [];
+    for (let i = 0; i < issue.suggestions.length; i++) {
+      const s = issue.suggestions[i];
+      if (s.roleFit === 2) continue;
+      if (scope.tokens && scope.tokens.indexOf(s.variableName.toLowerCase()) < 0) continue;
+      if (scope.cats && scope.cats.indexOf(s.category) < 0) continue;
+      if (pred(s)) idxs.push(i);
     }
-    return null;
+    return idxs;
+  };
+  for (const scope of scopes) {
+    const hits = collect(scope, (s) => s.exact === true);
+    if (hits.length > 0) return narrowByState(hits);
   }
-  // 색이 같은 후보가 여럿이면 **상태가 갈린 것**이다 — 단서가 있을 때만 그 상태로 좁힌다.
-  //   단서가 없으면 자동으로 바꾸지 않는다(river 결정 2026-09-21: "고르게 해줘").
-  if (hits.length > 1 && issue.guess.state) {
-    const byState = hits.filter((i) => issue.suggestions[i].state === issue.guess!.state);
-    if (byState.length === 1) return byState[0];
+  // 정확히 같은 색이 하나도 없으면 — **부품 안에서만** 거의 같은 색(Δ12 이내)이 하나뿐일 때 바꾼다.
+  //   맨 도형·글자는 정확히 같은 색일 때만 자동으로 건다(river 결정 2026-09-22).
+  if (!inPart) return null;
+  for (const scope of scopes) {
+    const near = collect(scope, (s) => typeof s.dist === "number" && s.dist <= NEAR_SAME);
+    if (near.length > 0) return narrowByState(near);
   }
   return null;
 }
@@ -1967,6 +2179,8 @@ type SwapDiagnostics = {
   skippedNestedCount: number;  // 인스턴스 내부(하위레이어)라 교체 불가로 제외된 수
   noMatchCount: number;        // 기준 풀에 대응 이름이 없어 대상에서 빠진 수
   skippedInstallerRemoteCount: number; // 설치기가 심는 외부 라이브러리 부품(아이콘 등)이라 제외된 수
+  skippedHandMadeCount: number;        // 라이브러리 부품이 아닌 것(직접 만든 컴포넌트, 또는 레거시 표에 없는 복사본)이라 제외된 수 — 사람이 직접 바꾼다
+  handMadePreview: { id: string; name: string; mainName: string }[];  // 그 부품(눌러서 찾아갈 수 있게 id 포함)
   candidateCount: number;
   instancesPreview: { name: string; mainName: string; mainTopId: string; matched: boolean; sameAsTarget: boolean }[];
 };
@@ -2574,6 +2788,8 @@ async function scanSwapCandidates(
     skippedNestedCount: 0,
     noMatchCount: 0,
     skippedInstallerRemoteCount: 0,
+    skippedHandMadeCount: 0,
+    handMadePreview: [],
     candidateCount: 0,
     instancesPreview: [],
   };
@@ -2604,6 +2820,23 @@ async function scanSwapCandidates(
         ? main.parent.name
         : main.name;
       const currentTopId = main.parent && main.parent.type === "COMPONENT_SET" ? main.parent.id : main.id;
+      // **교체 대상은 레거시 가이드로 만든 부품뿐**(river 결정 2026-09-22). 디자이너가 이 파일에서
+      //   직접 만든 컴포넌트(라이브러리 연결도 없고 레거시 이름표에도 없는 것)는 이름이 비슷해도
+      //   후보에 넣지 않는다 — 손으로 그린 것은 사람이 라이브러리 부품으로 직접 바꾼다.
+      //   이미 정본인 부품(설치기가 이 파일에 깐 것)은 로컬이지만 «이미 같은 부품»으로 흘러야 하므로 제외하지 않는다.
+      const isLegacyGuidePart = (() => {
+        let remote = false;
+        try { remote = (main as any).remote === true; } catch (e) { remote = false; }
+        if (remote) return true;
+        if (LEGACY_INDEX[normalizeName(compareName)]) return true;
+        if (inst.name && LEGACY_INDEX[normalizeName(inst.name)]) return true;
+        return pool.some((pc) => pc.id === currentTopId);
+      })();
+      if (!isLegacyGuidePart) {
+        diag.skippedHandMadeCount++;
+        if (diag.handMadePreview.length < 200) diag.handMadePreview.push({ id: inst.id, name: inst.name, mainName: compareName });
+        continue;
+      }
       // 유연 매칭: 정확 → 정규화 → 부분 일치
       let found = findReferenceMatch(compareName, pool);
       // 인스턴스 노드 이름으로 보조 매칭 (예: instance.name이 "Button"이면 그것도 시도)
