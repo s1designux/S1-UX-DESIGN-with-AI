@@ -28,6 +28,10 @@ export interface BuildMaps {
   textStyles: Record<string, TextStyle>;      // "body/14M","body/16M" 등
   semanticColorCollectionId: string;          // Semantic Color V2 컬렉션 id (Appearance 모드 연결)
   semanticLightModeId: string;                // Light 모드 id
+  // Light 모드를 **이름으로 찾았는가**. 못 찾아 첫 모드로 대체한 경우(false)에는 페이지·섹션에
+  //   모드를 박지 않는다 — 그 첫 모드가 다크값이면 흰 면이 검게 **고착**되기 때문이다
+  //   (🤖 component-verifier 2026-09-22). 설치기 runInstall 이 채운다. 없으면 true 로 본다(기존 호출부 호환).
+  semanticLightModeNamed?: boolean;
   semanticDarkModeId: string;                 // Dark 모드 id (다크 스펙 프레임용)
   // ── 그림자(2026-07-29) — 선택 필드 ──────────────────────────────────────────
   // "shadow/raised/layer-a/color" 처럼 겹당 변수. 설치기 runInstall 이 채워 준다.
@@ -7340,6 +7344,16 @@ export async function buildAllComponents(
   const page = figma.currentPage;
   // 가이드 페이지 바탕도 정본 토큰(섹션보다 한 단계 아래 면). Figma 기본 배경은 raw 색이라 토큰 밖이었다.
   bindSurface("page", (paint) => { page.backgrounds = [paint]; });
+  // 페이지에 Light 를 박는다 — river 지적 2026-09-22 "깔면 섹션의 배경이 갑자기 다크모드로 보인다".
+  //   Figma 는 **모드를 안 박은 노드**를 컬렉션 기본 모드로 해석한다. 부품·스펙 라벨에는 Light 를 박지만
+  //   페이지 바탕·섹션 상자에는 안 박아서, 파일의 기본 모드가 Dark 면 그 면들만 검게 풀렸다
+  //   (실측 2026-09-22: Core 페이지 섹션 fill 이 rgb(0,0,0) · 페이지·섹션 explicitVariableModes 비어 있음).
+  //   ⚠️ 모드 **이름을 바꾸거나 순서를 돌리는 방법은 쓰지 않는다** — 고정(pin)은 모드 ID 로 저장돼 있어
+  //   이름을 맞바꾸면 이미 Light 로 박아 둔 기존 부품이 전부 검어진다(🤖 component-verifier 2026-09-22).
+  //   어두운 스펙 칸은 자기 자신에 Dark 를 박고 있어 이 고정의 영향을 받지 않는다.
+  if (maps.semanticLightModeNamed !== false && maps.semanticLightModeId) {
+    try { setMode(page as unknown as SceneNode, maps, maps.semanticLightModeId); } catch (e) { /* 구버전 API */ }
+  }
 
   // ── 캔버스 레벨 노드(매 호출 시점에 새로 읽는다) ────────────────────────────
   //   ⚠️ 함수 진입 시 한 번 캡처한 page.children 만 훑으면 **첫 설치 뒤 섹션 안으로 들어간 노드를
@@ -7959,6 +7973,11 @@ async function wrapCategoryInSection(
   } catch (e) { /* mock → 신규 */ }
   if (!section) section = figma.createSection();
   section.name = title;
+  // 섹션에도 Light 를 박는다(페이지 고정과 같은 이유 — 위 bindSurface("page") 주석 참조).
+  //   페이지 고정만으로도 상속되지만, 섹션을 다른 페이지로 옮겨도 흰 면이 유지되게 자기 자신에도 박는다.
+  if (SPEC_MAPS && SPEC_MAPS.semanticLightModeNamed !== false && SPEC_MAPS.semanticLightModeId) {
+    try { setMode(section as unknown as SceneNode, SPEC_MAPS, SPEC_MAPS.semanticLightModeId); } catch (e) { /* 구버전 API */ }
+  }
   // 섹션 배경 = Semantic 토큰(재설치 때도 매번 다시 바인딩 — 손으로 바뀐 raw 색을 정본으로 되돌린다)
   const sec = section;
   bindSurface("section", (paint) => { sec.fills = [paint]; });

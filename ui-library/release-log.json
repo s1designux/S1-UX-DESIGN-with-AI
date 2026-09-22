@@ -5,10 +5,19 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.12.5",
+  "version": "0.12.6",
   "releasedAt": "2026-09-22",
-  "canonicalFingerprint": "c6e2004115902004a017d09a0f3a1dc6d8601469b5a693593e6eb2e32d724cae",
+  "canonicalFingerprint": "8e36ce3645bbe157ad89427e4e27c574c0a476ad19d430037c8e3d5a87af6124",
   "releases": [
+    {
+      "version": "0.12.6",
+      "date": "2026-09-22",
+      "kind": "patch",
+      "canonicalFingerprint": "8e36ce3645bbe157ad89427e4e27c574c0a476ad19d430037c8e3d5a87af6124",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "91e20b89983c916d88e549c630076018ba6f8fa38607338b1706feb43f98fcb8"
+    },
     {
       "version": "0.12.5",
       "date": "2026-09-22",
@@ -994,5 +1003,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "81a11e0c3edef43aefb1516d650900b1079a858425c1085dc655e3b80559c054"
+  "deliveryFingerprint": "91e20b89983c916d88e549c630076018ba6f8fa38607338b1706feb43f98fcb8"
 }

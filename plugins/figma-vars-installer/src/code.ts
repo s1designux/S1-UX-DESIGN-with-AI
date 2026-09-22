@@ -942,6 +942,8 @@ interface SemanticResult {
   scc: VariableCollection;
   lightModeId: string;
   darkModeId: string;
+  /** Light 모드를 이름으로 확보했는가 — 신규 설치 경로는 늘 true. 페이지·섹션 모드 고정의 조건이다. */
+  lightModeNamed: boolean;
   removed: string[];
   count: number;
 }
@@ -987,7 +989,7 @@ async function installSemantic(
   const removedSemanticNumber = await pruneCollection(scn, new Set(scNumberKeys), "FLOAT");
 
   return {
-    semanticColorMap, scc, lightModeId: sLightId, darkModeId: sDarkId,
+    semanticColorMap, scc, lightModeId: sLightId, darkModeId: sDarkId, lightModeNamed: true,
     removed: [...removedSemanticColor, ...removedSemanticNumber],
     count: scColorKeys.length + scNumberKeys.length,
   };
@@ -1083,16 +1085,20 @@ async function loadExistingSemantic(): Promise<{
   scc: VariableCollection;
   lightModeId: string;
   darkModeId: string;
+  lightModeNamed: boolean;
 } | null> {
   const cols = await figma.variables.getLocalVariableCollectionsAsync();
   const scc = cols.find((c) => c.name === SEMANTIC_COLOR_COLLECTION);
   if (!scc) return null;
   const light = scc.modes.find((m) => m.name === LIGHT_MODE);
   const dark = scc.modes.find((m) => m.name === DARK_MODE);
+  // Light 를 **이름으로** 찾았는지 함께 알린다 — 못 찾아 첫 모드로 대체한 경우 그 모드에 다크값이
+  //   들어 있을 수 있어, 페이지·섹션에 모드를 박으면 흰 면이 검게 고착된다(🤖 component-verifier 2026-09-22).
   const lightModeId = light ? light.modeId : scc.modes[0].modeId;
+  const lightModeNamed = !!light;
   const darkModeId = dark ? dark.modeId : lightModeId; // Dark 모드 없으면 Light 로 대체
   const semanticColorMap = await loadExistingVarMap(SEMANTIC_COLOR_COLLECTION, "COLOR");
-  return { semanticColorMap, scc, lightModeId, darkModeId };
+  return { semanticColorMap, scc, lightModeId, darkModeId, lightModeNamed };
 }
 
 async function runInstall(
@@ -1141,6 +1147,8 @@ async function runInstall(
     let scc: VariableCollection | null = null;
     let lightModeId = "";
     let darkModeId = "";
+    // Light 를 이름으로 확보했는가 — 페이지·섹션 모드 고정의 조건(기본값 true).
+    let lightModeNamed = true;
     if (sel.semantic) {
       if (Object.keys(foundationColorMap).length === 0) {
         throw new Error("Semantic 설치에는 Foundation 이 필요합니다. Foundation 도 함께 선택하거나 먼저 설치하세요.");
@@ -1150,6 +1158,7 @@ async function runInstall(
       scc = r.scc;
       lightModeId = r.lightModeId;
       darkModeId = r.darkModeId;
+      lightModeNamed = r.lightModeNamed;
       semanticCount = r.count;
       removedAll.push(...r.removed);
     } else if (sel.components) {
@@ -1159,6 +1168,7 @@ async function runInstall(
         scc = loaded.scc;
         lightModeId = loaded.lightModeId;
         darkModeId = loaded.darkModeId;
+        lightModeNamed = loaded.lightModeNamed;
       }
     }
 
@@ -1220,6 +1230,7 @@ async function runInstall(
           textStyles: textStyleMap,
           semanticColorCollectionId: scc.id,
           semanticLightModeId: lightModeId,
+          semanticLightModeNamed: lightModeNamed,
           semanticDarkModeId: darkModeId,
           shadowVars: shadowVarMap,
           semanticShadowCollectionId: shadowCollectionId || undefined,
