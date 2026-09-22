@@ -457,7 +457,6 @@
     border:1px solid var(--line); background:transparent; color:var(--fg); cursor:pointer; }
   #audit-root .detail-item .fix-row button:hover { border-color:var(--btn-bg); color:var(--btn-bg); }
   #audit-root .detail-item .fix-row button[disabled] { opacity:.5; cursor:default; }
-  #audit-root .issue-meta.auto-why { color:var(--high); }
   #audit-root .detail-item .fix-row select { font:inherit; font-size:11px; padding:2px 4px; border:1px solid var(--line);
     border-radius:4px; background:transparent; color:var(--fg); }
   #audit-root .detail-item .fix-row .fix-note { color:var(--muted); font-size:10.5px; }
@@ -509,8 +508,6 @@
   /* 가이드 외 색상 (M3) */
   #audit-root .kind.offguide { background:#fff1f0; color:#c0362c; border:1px solid #f5c6c2; }
   #audit-root .offguide-note { color:#c0362c; font-weight:600; }
-  #audit-root .offguide-banner { background:#fff1f0; border:1px solid #f5c6c2; color:#8a2a22; border-radius:8px; padding:10px 12px; font-size:11.5px; line-height:1.6; margin-bottom:10px; }
-  #audit-root .auto-banner { background:#eef4ff; border-color:#c7d9fb; color:#1f4fa8; }
 </style>
 </head>
 <body>
@@ -812,7 +809,7 @@
 
   <!-- 결과: 전체·컴포넌트·색·텍스트·그림자 칩 -->
   <section class="audit-screen" id="audit-screen-result">
-    <div class="result-head"><h2>검사 결과</h2><p id="audit-result-summary"></p></div>
+    <div class="result-head"><h2>검사 결과</h2></div>
     <!-- 무엇을 보고 검사했는지 — 화면 종류·모드를 먼저 밝힌다(river 지시 2026-09-17) -->
     <div class="tabs" id="result-chips">
       <button data-bucket="all" class="active">전체 <span class="count" id="cnt-all">0</span></button>
@@ -2631,44 +2628,9 @@ function renderSwapList(diag) {
   $("#swap-count").textContent = swapCandidates.length;
   $("#btn-apply-swap-all").disabled = swapCandidates.length === 0;
   if (swapCandidates.length === 0) {
-    let html = '<div class="empty" style="text-align:left;">';
-    html += '<div style="text-align:center;font-size:13px;color:var(--fg);margin-bottom:12px;"><b>교체 후보 없음</b></div>';
-    if (diag) {
-      html += '<div style="font-size:11px;color:var(--muted);line-height:1.7;padding:8px 12px;background:var(--code-bg);border-radius:4px;">';
-      html += `· 선택된 노드: <b>${diag.selectionCount}</b>개<br/>`;
-      html += `· 그 안 INSTANCE: <b>${diag.instanceCount}</b>개<br/>`;
-      html += `· 기준 풀: <b>${diag.referencePoolSize}</b>개 컴포넌트<br/>`;
-      html += `· mainComponent 이름 일치: <b>${diag.matchedNameCount}</b>개<br/>`;
-      html += `· 이미 같은 컴포넌트 (스킵): <b>${diag.sameIdSkippedCount}</b>개<br/>`;
-      html += '</div>';
-      html += handMadeNoteHtml(diag);
-      if (diag.instancesPreview && diag.instancesPreview.length > 0) {
-        html += '<div style="margin-top:12px;font-size:11px;color:var(--muted);">발견된 인스턴스 (상위 ' + diag.instancesPreview.length + '):</div>';
-        html += '<div style="margin-top:4px;font-size:11px;font-family:ui-monospace,monospace;line-height:1.6;">';
-        diag.instancesPreview.forEach((p, idx) => {
-          const status = p.sameAsTarget ? '<span style="color:var(--high);">[기준과 동일]</span>'
-            : p.matched ? '<span style="color:var(--med);">[이름 일치, ID 다름 — 후보였어야 함]</span>'
-            : '<span style="color:var(--muted);">[기준에 없음]</span>';
-          html += `${idx + 1}. <b>${escape(p.name)}</b> · main: <code>${escape(p.mainName)}</code> ${status}<br/>`;
-        });
-        html += '</div>';
-      }
-      if (diag.instanceCount === 0) {
-        html += '<div style="margin-top:12px;padding:8px 12px;background:#FFF4CE;border-radius:4px;color:#8F6A00;font-size:11px;">';
-        html += '⚠ 선택한 노드 안에 <b>INSTANCE 노드가 0개</b>입니다.<br/>';
-        html += '교체는 인스턴스에만 가능합니다. 컴포넌트 본체(원본)는 교체 대상이 아닙니다.<br/>';
-        html += '시안 페이지(인스턴스가 배치된 프레임)를 선택했는지 확인해주세요.';
-        html += '</div>';
-      } else if (diag.matchedNameCount === 0 && !diag.skippedHandMadeCount) {
-        // 직접 만든 부품을 건너뛴 것이 있으면 위 안내가 이유를 다 말한다 — 여기서 겹쳐 겁주지 않는다.
-        html += '<div style="margin-top:12px;padding:8px 12px;background:#FFF4CE;border-radius:4px;color:#8F6A00;font-size:11px;">';
-        html += '⚠ 시안 인스턴스의 <b>mainComponent 이름이 기준 풀과 하나도 일치하지 않습니다</b>.<br/>';
-        html += '기준 등록한 페이지/프레임 안 컴포넌트 이름을 확인하거나, ComponentSet의 이름과 시안 인스턴스가 참조하는 컴포넌트 이름을 비교해주세요.';
-        html += '</div>';
-      }
-    }
-    html += '</div>';
-    listEl.innerHTML = html;
+    // 교체할 것이 없으면 **아무것도 그리지 않는다**(river 지시 2026-09-22) — 진단 수치·인스턴스 목록은
+    //   화면에서 뺐다. 손으로 만든 부품 안내만, 있을 때 남긴다.
+    listEl.innerHTML = handMadeNoteHtml(diag);
     wireHandMadeNote(listEl);
     return;
   }
@@ -2806,23 +2768,6 @@ function updatePickedCount() {
 }
 
 // 색이 «어디에» 칠해져 있나 — fills/strokes 같은 속성 이름 대신 사람 말로.
-// 도형은 배경일 수도 구분선일 수도 있어 단정하지 않고 중립어(«칠한 색»)를 쓴다.
-function colorWhere(issue) {
-  const isStroke = issue.property === 'strokes';
-  if (issue.nodeKind === 'text') return isStroke ? '글자 테두리색' : '글자색';
-  if (issue.nodeKind === 'icon') return isStroke ? '아이콘 선색' : '아이콘색';
-  return isStroke ? '선 색' : '칠한 색';
-}
-// 왜 걸렸는지 — «아예 안 걸림» 과 «다른 라이브러리 변수에 걸림» 은 다른 이야기다.
-// 후자는 그 변수 이름이 유일한 단서라 문장에 그대로 넣는다.
-function colorWhyText(issue) {
-  if (issue.reasonKind === 'external-var') {
-    const name = issue.sourceLabel && issue.sourceLabel !== 'raw' ? '(' + issue.sourceLabel + ')' : '';
-    return colorWhere(issue) + '이 다른 라이브러리 변수' + name + '에 걸려 있습니다';
-  }
-  return colorWhere(issue) + '이 토큰에 안 걸려 있습니다';
-}
-
 function rerenderTab() {
   // 통합 흐름: 교체 불가(그 외) = 색상 이슈 전체를 한 목록에 렌더. 하위 필터 없음.
   const filtered = lastIssues;
@@ -2831,14 +2776,9 @@ function rerenderTab() {
     list.innerHTML = '<div class="empty" style="text-align:center;padding:28px 16px;color:var(--muted);font-size:12px;">HEX 직접 색상 없음 ✓<br/>모든 색상이 토큰에 바인딩되어 있습니다.</div>';
     return;
   }
-  const hasOffguide = lastIssues.some((i) => i.offGuide);
-  const autoCount = lastIssues.filter((i) => typeof i.autoPick === 'number').length;
-  list.innerHTML = (hasOffguide
-    ? '<div class="offguide-banner">⚠ 일부는 가이드 팔레트에 없는 색입니다(가장 가까운 색 참고). 나머지는 유사 시멘틱 토큰을 제안합니다.</div>'
-    : "")
-    + (autoCount
-      ? '<div class="offguide-banner auto-banner">✔ 아이콘처럼 바로 걸 수 있는 ' + autoCount + '칸은 미리 골라 뒀습니다 — 아래 [선택 항목 적용] 한 번이면 끝납니다.</div>'
-      : "");
+  // 설명 배너는 두지 않는다(river 지시 2026-09-22) — 미리 골라 둔 칸은 라디오가 이미 켜져 있고,
+  //   팔레트 밖 색은 카드마다 «팔레트 외» 표로 보인다.
+  list.innerHTML = "";
   for (const issue of filtered) {
     const div = document.createElement("div");
     div.className = "issue" + (detailOpen[issue.id] ? " show-detail" : "");
@@ -2959,11 +2899,7 @@ function rerenderTab() {
         ${issue.offGuide ? '<span class="kind offguide">팔레트 외</span>' : ''}
         <button class="detail-toggle" data-action="toggle-detail" type="button">${detailOpen[issue.id] ? '접기' : '자세히'}</button>
       </div>
-      <div class="issue-meta">
-        ${escape(colorWhyText(issue))} · <span class="hex">${issue.hex}</span>${issue.offGuide ? ` · <span class="offguide-note">가이드에 없는 색</span>` : ''}
-      </div>
-      ${issue.autoWhy ? `<div class="issue-meta auto-why">✔ <b>${escape(issue.suggestions[issue.autoPick] ? issue.suggestions[issue.autoPick].variableName : '')}</b> 로 미리 골라 뒀습니다 — ${escape(issue.autoWhy)}</div>` : ''}
-      ${(issue.guess && !hasCtx) ? `<div class="issue-meta">모양이 <b>${escape(issue.guess.label)}</b>처럼 보입니다 (${escape(issue.guess.why)}) — 부품이면 라이브러리 부품으로 <b>직접 바꿔 주세요</b>. 그대로 둘 거면 아래 공통 토큰(글자·면·테두리·아이콘)에서 고르세요.</div>` : ''}
+      <div class="issue-meta"><span class="hex">${issue.hex}</span></div>
       <div class="cat-chips">${chipsHtml}</div>
       <div class="sugs">${sugsHtml}</div>
       ${(foldedCount > 0 && !showAll) ? `<button class="detail-toggle" data-action="more-sugs" type="button">다른 후보 ${foldedCount}개 보기</button>` : ''}
@@ -3104,15 +3040,14 @@ function renderInspectionResult(payload) {
   $('#cnt-text').textContent = textCount;
   $('#cnt-shadow').textContent = shadowCount;
 
-  const passCount = checklist.filter((item) => item.status === 'pass' && item.count === 0).length;
-  const selection = payload.selection || {};
   // 검수가 끝나면 모든 항목을 연다 — 컴포넌트를 먼저 교체해야 나머지가 열리던 잠금은 없앴다(river 지시 2026-09-03).
-  const scopeLabel = auditScreenTypeLabel || selection.label || '선택 영역';
-  $('#audit-result-summary').textContent =
-    `${scopeLabel} · ${checklist.length}개 중 ${passCount}개 통과`;
+  // **걸린 것이 없는 칩은 아예 감춘다**(river 지시 2026-09-22) — 0 칩을 눌러 빈 화면을 보게 하지 않는다.
   document.querySelectorAll('#result-chips button').forEach((btn) => {
     btn.disabled = false;
     btn.classList.toggle('active', btn.dataset.bucket === 'all');
+    const cnt = btn.querySelector('.count');
+    const empty = btn.dataset.bucket !== 'all' && cnt && Number(cnt.textContent) === 0;
+    btn.hidden = !!empty;
   });
   document.querySelectorAll('#audit-screen-result .view').forEach((view) => {
     view.classList.toggle('active', view.id === 'bucket-all');
