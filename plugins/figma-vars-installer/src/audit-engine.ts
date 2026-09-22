@@ -23,7 +23,7 @@ import {
   LIGHT_MODE,
   DARK_MODE,
 } from "./vars-data";
-import { TEXT_STYLES, TEXT_STYLE_FONT_FAMILY } from "./textstyles-data";
+import { TEXT_STYLES, TEXT_STYLE_FONT_FAMILY, TextStyleDef } from "./textstyles-data";
 import { parseCssShadow } from "./shadow-parse";
 import { LEGACY_MAP, LegacyMapEntry } from "./legacy-map-data";
 import ALLOWED_REMOTE_KEYS from "../../../registry/figma/allowed-remote-keys.json";
@@ -146,6 +146,10 @@ type Suggestion = {
   matchType: "role+component" | "role" | "exact" | "near";
   matchInfo?: string;  // 'Δ12' 같은 부가 정보 (color distance)
   category: string;     // 'button' | 'tab' | 'text' | 'foundation' | ...
+  // 이 토큰의 역할이 노드 종류와 맞는가 — 0=맞음(아이콘에 icon 토큰) 1=역할 낱말 없음(Foundation)
+  //   2=어긋남(아이콘에 label/text 토큰). 아이콘 자리에 글자색 토큰이 먼저 서던 것을 막는다
+  //   (river 지시 2026-09-21: "아이콘이라고 인지되는 것들은 icon 컬러에서 고르게").
+  roleFit?: 0 | 1 | 2;
 };
 
 /** 이 도형이 무엇인지 **모양·크기·글자로 읽은** 추정. 그림을 보고 판단하는 것이 아니라
@@ -171,6 +175,9 @@ type Issue = {
   // 화면에는 아이콘·버튼 같은 의미 단위로 한 건만 보여주되, 적용할 때는
   // 그 안에서 같은 위반을 가진 실제 paint를 모두 고친다.
   targets?: { nodeId: string; property: "fills" | "strokes"; paintIndex: number }[];
+  // 물어보지 않고 바로 걸어도 되는 후보(번호)와 그 근거 문구. 아이콘은 여기서 거의 다 채워진다.
+  autoPick?: number;
+  autoWhy?: string;
 };
 
 type ChecklistItemResult = {
@@ -180,6 +187,17 @@ type ChecklistItemResult = {
   coverage: "full" | "partial";
 };
 
+/** 「표시만 하지 말고 바로 고치게」 — 항목별 결과 줄에 붙는 한 번 누르면 되는 수선책.
+ *  (river 지시 2026-09-21: "텍스트는 왜 표시만 하고 자동으로 변경하는 기능이 없어?") */
+type ChecklistFix = {
+  kind: "text-style";
+  styleName: string;    // 걸어 줄 정본 텍스트 스타일 이름 (예: body/14R)
+  label: string;        // 버튼 옆 안내 — "body/14R 로 맞추기"
+  exact: boolean;       // 크기·굵기가 그대로 맞는가(아니면 가장 가까운 정본)
+  alternatives?: string[]; // 값이 같아 갈리는 정본이 더 있으면(title/16M·body/16M) 사람이 고른다
+  targetIds: string[];  // 실제로 고칠 TEXT 노드들
+};
+
 type ChecklistDetailIssue = {
   id: string;
   checklistId: number;
@@ -187,6 +205,7 @@ type ChecklistDetailIssue = {
   nodeId: string;
   nodeName: string;
   detail: string;
+  fix?: ChecklistFix;   // 없으면 종전처럼 보여 주기만 한다
 };
 
 type ChecklistFacts = {
@@ -724,6 +743,26 @@ function decideRoles(nodeKind: NodeKind, paintProp: "fills" | "strokes", externa
   return roles;
 }
 
+/** 토큰 이름 안에 들어 있는 역할 낱말 — 'color/chip/solid/icon/default' → ['icon'] */
+function rolesInName(name: string): string[] {
+  const segs = (name || "").toLowerCase().split(/[/\-]+/).filter(Boolean);
+  const out: string[] = [];
+  for (const seg of segs) {
+    if (KNOWN_ROLES.indexOf(seg) >= 0 && out.indexOf(seg) === -1) out.push(seg);
+  }
+  return out;
+}
+
+/** 이 토큰이 «이 자리»의 역할과 맞는가. 0=맞음 · 1=역할 낱말 없음 · 2=어긋남. */
+function roleFitOf(name: string, preferred: string[]): 0 | 1 | 2 {
+  const found = rolesInName(name);
+  if (found.length === 0) return 1;
+  for (const r of found) {
+    if (preferred.indexOf(r) >= 0) return 0;
+  }
+  return 2;
+}
+
 function hexDistance(a: string, b: string): number {
   if (!a || !b || a.length < 7 || b.length < 7) return 999;
   const ar = parseInt(a.slice(1, 3), 16);
@@ -799,6 +838,13 @@ function pickSuggestions(
     return h ? hexDistance(hex, h) : 9999;
   };
   const roles = decideRoles(nodeKind, paintProp, externalVarName);
+  // 후보를 «찾을 때»는 지금 걸린 외부 변수 이름까지 단서로 쓰지만, 「이 자리에 맞는 역할」은
+  //   노드 종류로만 정한다 — 아이콘이 label 변수에 잘못 걸려 있어도 아이콘은 아이콘이다.
+  //   도형은 칠·선을 한 식구로 본다 — 구분선을 얇은 사각형 «칠»로 그리는 자리가 많아,
+  //   칠이라고 line 토큰을 뒤로 밀면 오히려 맞는 후보가 사라진다. 좁히는 건 글자·아이콘만.
+  const preferredRoles = nodeKind === "shape"
+    ? ["bg", "surface", "border", "line", "stroke", "fill"]
+    : decideRoles(nodeKind, paintProp);
   const exactList = byHex[hex] || [];
   const exactIds = new Set(exactList.map((v) => v.id));
 
@@ -846,6 +892,7 @@ function pickSuggestions(
       state: stateOf(v.name),
       matchType,
       category: cat,
+      roleFit: roleFitOf(v.name, preferredRoles),
     });
     added.add(v.id);
   }
@@ -863,6 +910,7 @@ function pickSuggestions(
       state: stateOf(v.name),
       matchType: "exact",
       category: v.collectionName === FOUNDATION_COLLECTION ? "foundation" : categoryOf(v.name),
+      roleFit: roleFitOf(v.name, preferredRoles),
     });
     added.add(v.id);
   }
@@ -889,6 +937,9 @@ function pickSuggestions(
       matchType: "near",
       matchInfo: `Δ${Math.round(n.dist)}`,
       category: "foundation",
+      // 유사색도 거리를 남긴다 — 가까운 색부터 서게 한다(river 지시 2026-09-21).
+      dist: n.dist,
+      roleFit: roleFitOf(n.v.name, preferredRoles),
     });
     added.add(n.v.id);
   }
@@ -904,10 +955,14 @@ function pickSuggestions(
     if (guess && guess.state) return x.state === guess.state ? 0 : 1;
     return x.state === "default" || x.state === "" ? 0 : 1;
   };
+  // 역할이 맞는 토큰이 먼저다 — 아이콘 자리에는 icon 토큰, 글자 자리에는 text/label 토큰.
+  const fitRank = (x: Suggestion): number => (typeof x.roleFit === "number" ? x.roleFit : 1);
   result.sort((a, b) => {
     const ag = guessRank(a.category), bg = guessRank(b.category);
     if (ag !== bg) return ag - bg;
-    if (ag === 0) {
+    const af = fitRank(a), bf = fitRank(b);
+    if (af !== bf) return af - bf;
+    {
       const ae = exactRank(a), be = exactRank(b);
       if (ae !== be) return ae - be;
       // 정확히 같은 색이 없으면 **가장 가까운 색**이 먼저다 — 흰색(블루라인)이 파란 버튼 위에
@@ -1050,8 +1105,114 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?:
     }
   }
 
-  const highCount = issues.filter((x) => autoPickIndex(x) !== null).length;
+  // 어느 칸을 물어보지 않고 걸 수 있는지 미리 새겨 둔다 — 화면이 그 근거를 그대로 보여 준다.
+  for (const issue of issues) {
+    const icon = iconAutoPick(issue);
+    if (icon) {
+      issue.autoPick = icon.index;
+      issue.autoWhy = icon.why;
+      continue;
+    }
+    const pick = autoPickIndex(issue);
+    if (pick !== null) {
+      issue.autoPick = pick;
+      issue.autoWhy = "색이 같은 후보가 하나뿐";
+    }
+  }
+  const highCount = issues.filter((x) => typeof x.autoPick === "number").length;
   return { issues, stats: { scanned: allNodes.length, issuesCount: issues.length, highCount } };
+}
+
+/** 글꼴 굵기 이름을 정본 3단(Regular·Medium·Bold)으로 접는다. 못 읽으면 빈 문자열 — 짐작하지 않는다. */
+function normalizeWeight(styleName: string): string {
+  const lower = (styleName || "").toLowerCase();
+  if (lower.indexOf("bold") >= 0 || lower.indexOf("black") >= 0 || lower.indexOf("heavy") >= 0) return "Bold";
+  if (lower.indexOf("semi") >= 0 || lower.indexOf("demi") >= 0 || lower.indexOf("medium") >= 0) return "Medium";
+  if (lower.indexOf("regular") >= 0 || lower.indexOf("normal") >= 0 || lower.indexOf("light") >= 0 || lower.indexOf("thin") >= 0) return "Regular";
+  return "";
+}
+
+/** 이 글자에 걸어 줄 **정본 텍스트 스타일**을 고른다. 크기·굵기가 그대로 맞으면 exact,
+ *  크기만 정본에 없으면 같은 굵기 중 가장 가까운 크기. 굵기를 못 읽으면 고르지 않는다.
+ *  같은 크기·굵기가 여러 개면(title/16M · body/16M) 줄간격·자간으로 좁히고, 그래도 갈리면
+ *  둘 다 돌려준다 — 짐작해서 하나로 정하지 않고 사람이 고르게 한다. */
+function suggestCanonicalTextStyle(node: TextNode): { def: TextStyleDef; exact: boolean; alternatives: TextStyleDef[] } | null {
+  const size = typeof node.fontSize === "number" ? node.fontSize : 0;
+  if (!size) return null;
+  const fontName = node.fontName;
+  const rawStyle = fontName === figma.mixed ? "" : (fontName as FontName).style;
+  const weight = normalizeWeight(rawStyle);
+  if (!weight) return null;
+  const sameWeight = TEXT_STYLES.filter((s) => s.fontStyle === weight);
+  if (sameWeight.length === 0) return null;
+
+  let pool = sameWeight.filter((s) => s.fontSize === size);
+  const exact = pool.length > 0;
+  if (!exact) {
+    let bestGap = Infinity;
+    for (const s of sameWeight) bestGap = Math.min(bestGap, Math.abs(s.fontSize - size));
+    pool = sameWeight.filter((s) => Math.abs(s.fontSize - size) === bestGap);
+  }
+
+  // 자간·줄간격을 읽을 수 있으면 그것으로 좁힌다 — title/14M(0%)과 body/14M(-2%)을 가른다.
+  if (pool.length > 1) {
+    const ls = node.letterSpacing;
+    if (ls !== figma.mixed && ls && (ls as LetterSpacing).unit === "PERCENT") {
+      const value = (ls as LetterSpacing).value;
+      const narrowed = pool.filter((s) => Math.abs(s.letterSpacingPercent - value) < 0.01);
+      if (narrowed.length > 0) pool = narrowed;
+    }
+  }
+  if (pool.length > 1) {
+    const lh = node.lineHeight;
+    if (lh !== figma.mixed && lh && (lh as LineHeight).unit === "PERCENT") {
+      const value = (lh as any).value as number;
+      const narrowed = pool.filter((s) => Math.abs(s.lineHeightPercent - value) < 0.01);
+      if (narrowed.length > 0) pool = narrowed;
+    }
+  }
+  return { def: pool[0], exact, alternatives: pool };
+}
+
+/** 정본 이름으로 이 파일의 텍스트 스타일을 찾는다(설치기가 깔아 둔 로컬 스타일). */
+async function findCanonicalTextStyle(name: string): Promise<TextStyle | null> {
+  const locals = await figma.getLocalTextStylesAsync();
+  for (const s of locals) {
+    if (s.name === name) return s;
+  }
+  return null;
+}
+
+/** 텍스트 항목 수선 — 고른 정본 스타일을 실제로 걸어 준다(덮어쓴 값도 함께 정리된다). */
+async function applyTextStyleFix(styleName: string, targetIds: string[]): Promise<{ ok: number; fail: number; reason?: string }> {
+  const style = await findCanonicalTextStyle(styleName);
+  if (!style) return { ok: 0, fail: targetIds.length, reason: `가이드 텍스트 스타일 «${styleName}» 이 이 파일에 없습니다 — 먼저 가이드를 설치하세요` };
+  try {
+    await figma.loadFontAsync(style.fontName as FontName);
+  } catch (e) {
+    return { ok: 0, fail: targetIds.length, reason: "Pretendard 글꼴을 불러오지 못했습니다" };
+  }
+  let ok = 0;
+  let fail = 0;
+  for (const id of targetIds) {
+    const node = await figma.getNodeByIdAsync(id);
+    if (!node || node.type !== "TEXT") { fail++; continue; }
+    const text = node as TextNode;
+    try {
+      // 섞여 있는 글꼴을 먼저 불러와야 글자를 건드릴 수 있다.
+      const used = text.characters.length > 0 ? text.getRangeAllFontNames(0, text.characters.length) : [];
+      for (const f of used) {
+        try { await figma.loadFontAsync(f); } catch (e) { /* 없는 글꼴은 건너뛴다 */ }
+      }
+      // 스타일을 **마지막에** 건다 — 그래야 크기·자간 덮어쓰기가 정본 값으로 정리된다.
+      text.fontName = style.fontName as FontName;
+      await text.setTextStyleIdAsync(style.id);
+      ok++;
+    } catch (e) {
+      fail++;
+    }
+  }
+  return { ok, fail };
 }
 
 // 1차 체크리스트의 토큰·텍스트·그림자 사실을 읽기 전용으로 수집한다.
@@ -1106,6 +1267,20 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
     canonicalShadowGroups.push(parseCssShadow(entry.light), parseCssShadow(entry.dark));
   }
   const near = (a: number, b: number) => Math.abs(a - b) < 0.001;
+  // 이 글자에 「한 번 눌러 고치기」로 붙일 정본 스타일. 못 고르면 종전처럼 보여 주기만 한다.
+  const textStyleFix = (textNode: TextNode): ChecklistFix | undefined => {
+    const picked = suggestCanonicalTextStyle(textNode);
+    if (!picked) return undefined;
+    const name = picked.def.name;
+    return {
+      kind: "text-style",
+      styleName: name,
+      label: picked.exact ? `${name} 걸기` : `가장 가까운 ${name}(${picked.def.fontSize}px) 걸기`,
+      exact: picked.exact,
+      alternatives: picked.alternatives.length > 1 ? picked.alternatives.map((d) => d.name) : undefined,
+      targetIds: [textNode.id],
+    };
+  };
   const shadowGroupMatchesCanon = (effects: any[]) => canonicalShadowGroups.some((group) => {
     if (group.length !== effects.length) return false;
     return group.every((layer, index) => {
@@ -1118,16 +1293,29 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
     });
   });
   let detailSeq = 0;
-  const detailSeen = new Set<string>();
+  const detailSeen = new Map<string, ChecklistDetailIssue>();
   const add = (
     target: ChecklistDetailIssue[], checklistId: number, category: ChecklistDetailIssue["category"],
-    node: SceneNode, detail: string,
+    node: SceneNode, detail: string, fix?: ChecklistFix,
   ) => {
     const unit = resolveAuditUnit(node);
     const key = `${checklistId}|${unit.id}`;
-    if (detailSeen.has(key)) return;
-    detailSeen.add(key);
-    target.push({ id: `c${checklistId}-${++detailSeq}`, checklistId, category, nodeId: unit.id, nodeName: unit.name, detail });
+    const existing = detailSeen.get(key);
+    if (existing) {
+      // 한 묶음(버튼·칸) 안 여러 글자가 같은 위반이면 줄은 하나로 두되 **고칠 대상은 모은다.**
+      if (existing.fix && fix && existing.fix.styleName === fix.styleName) {
+        for (const id of fix.targetIds) {
+          if (existing.fix.targetIds.indexOf(id) < 0) existing.fix.targetIds.push(id);
+        }
+      } else if (existing.fix) {
+        // 고칠 스타일이 갈리면 자동으로 정하지 않는다 — 사람이 글자별로 고른다.
+        existing.fix = undefined;
+      }
+      return;
+    }
+    const created: ChecklistDetailIssue = { id: `c${checklistId}-${++detailSeq}`, checklistId, category, nodeId: unit.id, nodeName: unit.name, detail, fix };
+    detailSeen.set(key, created);
+    target.push(created);
   };
 
   // 1. 색 변수 바인딩 — 기존 색 엔진의 미바인딩 결과만 사용한다.
@@ -1188,13 +1376,13 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
       const textNode = node as TextNode;
       const textStyleId = textNode.textStyleId;
       if (typeof textStyleId !== "string" || !textStyleId) {
-        add(textIssues, 5, "text", node, "text style 미적용 또는 혼합 적용");
+        add(textIssues, 5, "text", node, "text style 미적용 또는 혼합 적용", textStyleFix(textNode));
       }
 
       const fontSize = textNode.fontSize;
       const allowedSizes = new Set(TEXT_STYLES.map((s) => s.fontSize));
       if (typeof fontSize === "number" && !allowedSizes.has(fontSize)) {
-        add(textIssues, 6, "text", node, `정의 밖 폰트 크기 ${fontSize}px`);
+        add(textIssues, 6, "text", node, `정의 밖 폰트 크기 ${fontSize}px`, textStyleFix(textNode));
       }
 
       if (typeof textStyleId === "string" && textStyleId) {
@@ -1206,7 +1394,13 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
             (textNode.fontName !== figma.mixed && JSON.stringify(textNode.fontName) !== JSON.stringify(textStyle.fontName)) ||
             (textNode.lineHeight !== figma.mixed && JSON.stringify(textNode.lineHeight) !== JSON.stringify(textStyle.lineHeight)) ||
             (textNode.letterSpacing !== figma.mixed && JSON.stringify(textNode.letterSpacing) !== JSON.stringify(textStyle.letterSpacing));
-          if (overridden) add(textIssues, 7, "text", node, `text style ${textStyle.name} 값 덮어쓰기`);
+          if (overridden) {
+            // 이미 걸린 정본 스타일이 있다 — 덮어쓴 값만 그 스타일 값으로 되돌리면 된다.
+            const backFix: ChecklistFix | undefined = canonicalTextStyleNames.has(textStyle.name)
+              ? { kind: "text-style", styleName: textStyle.name, label: `${textStyle.name} 값으로 되돌리기`, exact: true, targetIds: [textNode.id] }
+              : textStyleFix(textNode);
+            add(textIssues, 7, "text", node, `text style ${textStyle.name} 값 덮어쓰기`, backFix);
+          }
         }
       }
 
@@ -1214,9 +1408,9 @@ async function auditChecklistFacts(colorIssues: Issue[], rootsOverride?: readonl
       if (fontName === figma.mixed) {
         const families = textNode.getRangeAllFontNames(0, textNode.characters.length).map((font) => font.family);
         const nonPretendard = families.find((family) => family !== TEXT_STYLE_FONT_FAMILY);
-        if (nonPretendard) add(textIssues, 8, "text", node, `${nonPretendard} 등 Pretendard가 아닌 글꼴이 섞여 있음`);
+        if (nonPretendard) add(textIssues, 8, "text", node, `${nonPretendard} 등 Pretendard가 아닌 글꼴이 섞여 있음`, textStyleFix(textNode));
       } else if (fontName.family !== TEXT_STYLE_FONT_FAMILY) {
-        add(textIssues, 8, "text", node, `${fontName.family} 사용`);
+        add(textIssues, 8, "text", node, `${fontName.family} 사용`, textStyleFix(textNode));
       }
     }
 
@@ -1494,7 +1688,74 @@ async function applyOne(issue: Issue, suggestionIndex: number, out?: { paired: n
  *  손으로 조금 다르게 찍은 것이라, 이 정도는 정본으로 되돌려 주는 것이 맞다.) */
 const NEAR_SAME = 12;
 
+/** 아이콘 자리는 **바로 아이콘색을 건다**(river 지시 2026-09-22). 어느 부품의 아이콘색인지는
+ *  세 계단으로 정한다 — ①이 아이콘을 감싼 **부품 인스턴스 이름**(가장 확실) ②모양으로 읽은
+ *  부품 추정 ③둘 다 없으면 부품과 무관한 **공통 아이콘색**(color/icon/*) 중 지금 색과 같은 것.
+ *  같은 부품 안에서 상태가 갈리면 색으로 가른다(흰 아이콘=selected 등). 못 가리면 그대로 묻는다. */
+function iconAutoPick(issue: Issue): { index: number; why: string } | null {
+  if (issue.nodeKind !== "icon") return null;
+  const isIconToken = (s: Suggestion) => s.roleFit === 0 && rolesInName(s.variableName).indexOf("icon") >= 0;
+
+  /** 후보 무리에서 «지금 칠해진 색에 가장 가까운 것» 하나를 고른다. 갈리면 null. */
+  const pickNearest = (idxs: number[]): number | null => {
+    if (idxs.length === 0) return null;
+    if (idxs.length === 1) return idxs[0];
+    const distOf = (i: number) => {
+      const d = issue.suggestions[i].dist;
+      return typeof d === "number" ? d : 9999;
+    };
+    const sorted = idxs.slice().sort((a, b) => distOf(a) - distOf(b));
+    const best = distOf(sorted[0]);
+    if (best > NEAR_SAME) return null;                       // 팔레트에 없는 색이면 사람이 정한다
+    const tied = sorted.filter((i) => distOf(i) - best <= 0.5);
+    if (tied.length === 1) return tied[0];
+    // 색이 같은 것이 여럿 = 상태가 갈린 것. 단서가 있으면 그 상태, 없으면 기본 상태.
+    if (issue.guess && issue.guess.state) {
+      const byHint = tied.filter((i) => issue.suggestions[i].state === issue.guess!.state);
+      if (byHint.length === 1) return byHint[0];
+    }
+    const defaults = tied.filter((i) => {
+      const st = issue.suggestions[i].state;
+      return st === "default" || st === "";
+    });
+    return defaults.length === 1 ? defaults[0] : null;
+  };
+
+  const idxsOfCategory = (cat: string): number[] => {
+    const out: number[] = [];
+    for (let i = 0; i < issue.suggestions.length; i++) {
+      const s = issue.suggestions[i];
+      if (s.category === cat && isIconToken(s)) out.push(i);
+    }
+    return out;
+  };
+
+  // ① 감싼 부품 인스턴스 이름 — 이름이 곧 근거다.
+  for (const cat of issue.componentContext) {
+    const pick = pickNearest(idxsOfCategory(cat));
+    if (pick !== null) return { index: pick, why: `${cat} 부품 안 아이콘` };
+  }
+  // ② 모양으로 읽은 부품
+  if (issue.guess) {
+    const pick = pickNearest(idxsOfCategory(issue.guess.category));
+    if (pick !== null) return { index: pick, why: `모양으로 ${issue.guess.label}(으)로 봄` };
+  }
+  // ③ 부품을 모르면 공통 아이콘색
+  const generic: number[] = [];
+  for (let i = 0; i < issue.suggestions.length; i++) {
+    if (issue.suggestions[i].variableName.toLowerCase().indexOf("color/icon/") === 0) generic.push(i);
+  }
+  const pick = pickNearest(generic);
+  if (pick !== null) return { index: pick, why: "부품을 못 읽어 공통 아이콘색" };
+  return null;
+}
+
 function autoPickIndex(issue: Issue): number | null {
+  // 아이콘은 아이콘색으로 바로 건다 — 다른 규칙보다 먼저 본다.
+  const icon = iconAutoPick(issue);
+  if (icon) return icon.index;
+  // 역할이 어긋난 토큰(아이콘 자리의 label 토큰 등)은 색이 같아도 자동으로 걸지 않는다.
+  if (issue.suggestions.length > 0 && issue.suggestions[0].roleFit === 2) return null;
   // 종전 규칙 — 후보가 아예 하나뿐이고 확신도가 높으면 그대로.
   if (issue.suggestions.length === 1 && issue.suggestions[0].confidence === "high") return 0;
   if (!issue.guess) return null;
@@ -3470,9 +3731,10 @@ export {
   collectPageReference,
   buildImprovedCopy,
   auditChecklistFacts,
+  applyTextStyleFix,
   detectScreenContext,
   clearV2Cache,
 };
 export type {
-  Issue, Suggestion, ReferenceComponent, SwapCandidate, SwapDiagnostics, SavedReference, NodeKind,
+  Issue, Suggestion, ChecklistFix, ReferenceComponent, SwapCandidate, SwapDiagnostics, SavedReference, NodeKind,
   SwapMode, SwapOutcome, SwapRollback, ModulePart, ModuleFlag, ModulePartSwapResult, VariantOption, VariantInfo, ImprovedSummary, BuildImprovedResult, ChecklistItemResult, ChecklistDetailIssue, ChecklistFacts, ScreenContext };

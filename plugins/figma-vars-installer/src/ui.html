@@ -451,6 +451,17 @@
   #audit-root .detail-item:hover { background:var(--code-bg); }
   #audit-root .detail-item b { display:block; font-size:11.5px; margin-bottom:2px; }
   #audit-root .detail-item span { color:var(--muted); font-size:10.5px; }
+  /* 텍스트 항목 「한 번 눌러 고치기」 — 보여 주기만 하던 줄에 수선 버튼을 붙인다 */
+  #audit-root .detail-item .fix-row { margin-top:6px; display:flex; align-items:center; gap:8px; }
+  #audit-root .detail-item .fix-row button { font:inherit; font-size:11px; padding:3px 10px; border-radius:4px;
+    border:1px solid var(--line); background:transparent; color:var(--fg); cursor:pointer; }
+  #audit-root .detail-item .fix-row button:hover { border-color:var(--btn-bg); color:var(--btn-bg); }
+  #audit-root .detail-item .fix-row button[disabled] { opacity:.5; cursor:default; }
+  #audit-root .issue-meta.auto-why { color:var(--high); }
+  #audit-root .detail-item .fix-row select { font:inherit; font-size:11px; padding:2px 4px; border:1px solid var(--line);
+    border-radius:4px; background:transparent; color:var(--fg); }
+  #audit-root .detail-item .fix-row .fix-note { color:var(--muted); font-size:10.5px; }
+  #audit-root .detail-item.fixed .fix-row button { background:var(--high); color:#fff; border-color:var(--high); }
   @keyframes audit-spin { to { transform:rotate(360deg); } }
   #audit-root .ref-info { padding:8px 16px; background:var(--code-bg); border-bottom:1px solid var(--line); font-size:11px; color:var(--muted); }
   #audit-root .ref-info b { color:var(--fg); font-weight:600; }
@@ -499,6 +510,7 @@
   #audit-root .kind.offguide { background:#fff1f0; color:#c0362c; border:1px solid #f5c6c2; }
   #audit-root .offguide-note { color:#c0362c; font-weight:600; }
   #audit-root .offguide-banner { background:#fff1f0; border:1px solid #f5c6c2; color:#8a2a22; border-radius:8px; padding:10px 12px; font-size:11.5px; line-height:1.6; margin-bottom:10px; }
+  #audit-root .auto-banner { background:#eef4ff; border-color:#c7d9fb; color:#1f4fa8; }
 </style>
 </head>
 <body>
@@ -1496,10 +1508,54 @@ function renderDetailList(selector, issues, emptyText) {
     target.innerHTML = '<div class="empty">' + emptyText + '</div>';
     return;
   }
-  target.innerHTML = issues.map((issue) =>
-    '<div class="detail-item" data-node-id="' + escape(issue.nodeId) + '"><b>' + escape(issue.nodeName) + '</b><span>' + escape(issue.detail) + '</span></div>'
-  ).join('');
-  target.querySelectorAll('[data-node-id]').forEach((row) => row.addEventListener('click', () => send('select-node', { nodeId: row.dataset.nodeId })));
+  issues.forEach((issue) => { if (issue.fix) detailFixById[issue.id] = issue.fix; });
+  target.innerHTML = issues.map((issue) => detailItemHtml(issue)).join('');
+  bindDetailItems(target);
+}
+
+// 항목 한 줄 — 고칠 수 있는 것(정본 텍스트 스타일이 정해지는 것)은 그 자리에서 고치게 버튼을 붙인다.
+//   (river 지시 2026-09-21: "텍스트는 왜 표시만 하고 자동으로 변경하는 기능이 없어?")
+function detailItemHtml(issue) {
+  const fix = issue.fix;
+  // 값이 같아 갈리는 정본이 둘 이상이면(title/16M · body/16M) 고르게 한다 — 짐작해서 하나로 정하지 않는다.
+  const altHtml = (fix && fix.alternatives && fix.alternatives.length > 1)
+    ? '<select data-role="fix-style" data-issue-id="' + escape(issue.id) + '">'
+      + fix.alternatives.map((name) => '<option value="' + escape(name) + '">' + escape(name) + '</option>').join('')
+      + '</select>'
+    : '';
+  const fixHtml = fix
+    ? '<div class="fix-row">'
+      + altHtml
+      + '<button type="button" data-action="apply-fix" data-issue-id="' + escape(issue.id) + '">' + escape(altHtml ? '이 스타일 걸기' : fix.label) + '</button>'
+      + (fix.exact ? '' : '<span class="fix-note">크기가 가이드에 없어 가장 가까운 것으로 맞춥니다</span>')
+      + '</div>'
+    : '';
+  return '<div class="detail-item" data-node-id="' + escape(issue.nodeId) + '" data-issue-id="' + escape(issue.id) + '">'
+    + '<b>' + escape(issue.nodeName) + '</b><span>' + escape(issue.detail) + '</span>' + fixHtml + '</div>';
+}
+
+// 줄을 누르면 그 노드로 이동, 버튼을 누르면 고친다(버튼 클릭이 이동으로 새지 않게 막는다).
+const detailFixById = {};
+function bindDetailItems(target, issues) {
+  if (issues) issues.forEach((issue) => { if (issue.fix) detailFixById[issue.id] = issue.fix; });
+  target.querySelectorAll('[data-node-id]').forEach((row) => {
+    row.addEventListener('click', (e) => {
+      const t = e.target;
+      if (t && t.dataset && t.dataset.role === 'fix-style') { e.stopPropagation(); return; }
+      if (t && t.dataset && t.dataset.action === 'apply-fix') {
+        e.stopPropagation();
+        const fix = detailFixById[t.dataset.issueId];
+        if (!fix || t.disabled) return;
+        const sel = row.querySelector('select[data-role="fix-style"]');
+        const styleName = sel ? sel.value : fix.styleName;
+        t.disabled = true;
+        t.textContent = '고치는 중…';
+        send('apply-text-style', { issueId: t.dataset.issueId, styleName: styleName, targetIds: fix.targetIds });
+        return;
+      }
+      send('select-node', { nodeId: row.dataset.nodeId });
+    });
+  });
 }
 
 // 검사 결과보다 먼저 읽히는 줄 — 무엇을 보고 검사했는지.
@@ -2720,9 +2776,13 @@ function rerenderTab() {
     return;
   }
   const hasOffguide = lastIssues.some((i) => i.offGuide);
-  list.innerHTML = hasOffguide
+  const autoCount = lastIssues.filter((i) => typeof i.autoPick === 'number').length;
+  list.innerHTML = (hasOffguide
     ? '<div class="offguide-banner">⚠ 일부는 가이드 팔레트에 없는 색입니다(가장 가까운 색 참고). 나머지는 유사 시멘틱 토큰을 제안합니다.</div>'
-    : "";
+    : "")
+    + (autoCount
+      ? '<div class="offguide-banner auto-banner">✔ 아이콘처럼 바로 걸 수 있는 ' + autoCount + '칸은 미리 골라 뒀습니다 — 아래 [선택 항목 적용] 한 번이면 끝납니다.</div>'
+      : "");
   for (const issue of filtered) {
     const div = document.createElement("div");
     div.className = "issue" + (detailOpen[issue.id] ? " show-detail" : "");
@@ -2795,10 +2855,15 @@ function rerenderTab() {
     //   (river 지적 2026-09-21: 블루라인부터 프라이머리까지 다 나와 고르기 어렵다)
     // 정확히 같은 색이 없으면 **가장 가까운 색들**(Δ12 이내)을 앞에 둔다 — 시안 색이 정본과
     //   미세하게 다른 경우가 많아, 그때도 고를 것을 좁혀 준다.
-    const exactSugs = allSugs.filter((one) => one.s && (one.s.exact || (typeof one.s.dist === 'number' && one.s.dist <= 12)));
-    const showAll = !!moreOpen[issue.id] || exactSugs.length === 0;
-    const foldedCount = exactSugs.length ? allSugs.length - exactSugs.length : 0;
-    const visibleSugs = showAll ? allSugs : exactSugs;
+    // 역할이 어긋난 후보(아이콘 자리의 label·글자색 토큰)는 뒤로 접는다 — 아이콘은 icon 토큰에서 고른다
+    //   (river 지시 2026-09-21). 맞는 역할이 하나도 없을 때만 그대로 다 보여 준다.
+    const roleOk = allSugs.filter((one) => one.s && (one.s.roleFit === undefined || one.s.roleFit < 2));
+    const baseSugs = roleOk.length ? roleOk : allSugs;
+    const exactSugs = baseSugs.filter((one) => one.s && (one.s.exact || (typeof one.s.dist === 'number' && one.s.dist <= 12)));
+    const primarySugs = exactSugs.length ? exactSugs : baseSugs;
+    const showAll = !!moreOpen[issue.id] || primarySugs.length === allSugs.length;
+    const visibleSugs = showAll ? allSugs : primarySugs;
+    const foldedCount = allSugs.length - visibleSugs.length;
     const sugsHtml = visibleSugs.length === 0
       ? '<div class="sug"><span class="name" style="color:var(--muted)">이 카테고리에 매칭 토큰 없음</span></div>'
       : visibleSugs.map(({ s, i }) => {
@@ -2828,10 +2893,11 @@ function rerenderTab() {
       <div class="issue-meta">
         ${escape(colorWhyText(issue))} · <span class="hex">${issue.hex}</span>${issue.offGuide ? ` · <span class="offguide-note">가이드에 없는 색</span>` : ''}
       </div>
+      ${issue.autoWhy ? `<div class="issue-meta auto-why">✔ <b>${escape(issue.suggestions[issue.autoPick] ? issue.suggestions[issue.autoPick].variableName : '')}</b> 로 미리 골라 뒀습니다 — ${escape(issue.autoWhy)}</div>` : ''}
       ${issue.guess ? `<div class="issue-meta">이 도형을 <b>${escape(issue.guess.label)}</b>으로 봤습니다 (${escape(issue.guess.why)}) — 다르면 아래에서 다른 칩을 고르세요.</div>` : ''}
       <div class="cat-chips">${chipsHtml}</div>
       <div class="sugs">${sugsHtml}</div>
-      ${(foldedCount > 0 && !showAll) ? `<button class="detail-toggle" data-action="more-sugs" type="button">색이 다른 후보 ${foldedCount}개 보기</button>` : ''}
+      ${(foldedCount > 0 && !showAll) ? `<button class="detail-toggle" data-action="more-sugs" type="button">다른 후보 ${foldedCount}개 보기</button>` : ''}
     `;
     div.addEventListener("click", (e) => {
       const t = e.target;
@@ -2937,7 +3003,10 @@ function renderInspectionResult(payload) {
   renderRecentSwaps();
 
   lastIssues = payload.colorIssues || [];
-  picks = {}; activeCat = {}; detailOpen = {}; moreOpen = {}; catsOpen = {}; updatePickedCount();
+  picks = {}; activeCat = {}; detailOpen = {}; moreOpen = {}; catsOpen = {};
+  // 아이콘처럼 «바로 걸어도 되는» 칸은 미리 골라 둔다 — 아래 [선택 항목 적용] 한 번이면 끝난다.
+  lastIssues.forEach((issue) => { if (typeof issue.autoPick === 'number') picks[issue.id] = issue.autoPick; });
+  updatePickedCount();
   rerenderTab();
   const extraColor = (payload.colorDetails || []).filter((issue) => issue.checklistId !== 1);
   if (extraColor.length) {
@@ -3126,6 +3195,22 @@ function handleAuditUiMessage(msg) {
       }
     }
     showToast(applyMsg);
+  } else if (msg.type === "apply-text-style-result") {
+    const p = msg.payload || {};
+    const row = document.querySelector('.detail-item[data-issue-id="' + p.issueId + '"]');
+    const btn = row ? row.querySelector('button[data-action="apply-fix"]') : null;
+    const fix = detailFixById[p.issueId];
+    if (p.reason) {
+      if (btn) { btn.disabled = false; btn.textContent = fix ? (fix.alternatives && fix.alternatives.length > 1 ? '이 스타일 걸기' : fix.label) : '다시 시도'; }
+      showToast(p.reason);
+    } else if (p.ok > 0) {
+      if (row) row.classList.add('fixed');
+      if (btn) { btn.disabled = true; btn.textContent = p.styleName + ' 적용됨'; }
+      showToast(p.fail ? `${p.ok}건 정리 · ${p.fail}건 실패` : `${p.ok}건 정리 완료`);
+    } else {
+      if (btn) { btn.disabled = false; btn.textContent = fix ? (fix.alternatives && fix.alternatives.length > 1 ? '이 스타일 걸기' : fix.label) : '다시 시도'; }
+      showToast('고치지 못했습니다 — 컴포넌트 안 글자는 원본에서 고쳐야 합니다');
+    }
   } else if (msg.type === "apply-high-result") {
     showToast(`${msg.payload.count}건 자동 적용 완료. 다시 스캔을 권장합니다.`);
   } else if (msg.type === "apply-multi-result") {

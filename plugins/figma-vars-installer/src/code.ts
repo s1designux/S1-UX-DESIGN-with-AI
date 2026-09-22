@@ -45,7 +45,7 @@ import type { PatternMaps } from "./build-patterns";
 import {
   audit, applyOne, applyHighConfidence, applyMulti, setVariablesMode, detectScreenContext, clearV2Cache,
   collectComponents, saveReference, loadReference, clearReference,
-  scanSwapCandidates, applySwap, applyModulePartSwap, detachModule, getVariantOptions, exportNodePreview, exportReferencePreview, importComponentCopy, rollbackSwap, cleanupSwapBackups, buildImprovedCopy, collectPageReference, auditChecklistFacts,
+  scanSwapCandidates, applySwap, applyModulePartSwap, detachModule, getVariantOptions, exportNodePreview, exportReferencePreview, importComponentCopy, rollbackSwap, cleanupSwapBackups, buildImprovedCopy, collectPageReference, auditChecklistFacts, applyTextStyleFix,
 } from "./audit-engine";
 import type { ReferenceComponent, SwapCandidate, SwapRollback } from "./audit-engine";
 
@@ -211,6 +211,15 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
       figma.ui.postMessage({
         type: "audit:apply-result",
         payload: { issueId: payload.issue.id, suggestionIndex: payload.suggestionIndex, ok, paired: pairInfo.paired },
+      });
+    } else if (type === "apply-text-style") {
+      // 텍스트 항목 「한 번 눌러 고치기」 — 고른 정본 스타일을 실제 글자에 건다.
+      const res = await applyTextStyleFix(payload.styleName, payload.targetIds || []);
+      if (res.reason) figma.notify(res.reason);
+      else figma.notify(`${res.ok}건 정리${res.fail ? ` · ${res.fail}건 실패` : ""}`);
+      figma.ui.postMessage({
+        type: "audit:apply-text-style-result",
+        payload: { issueId: payload.issueId, ok: res.ok, fail: res.fail, reason: res.reason, styleName: payload.styleName },
       });
     } else if (type === "apply-high") {
       const count = await applyHighConfidence(payload.issues);
