@@ -219,7 +219,6 @@
   .variant-summary { display: flex; align-items: center; gap: 8px; flex: 1 1 100%; min-width: 0; font-size: 11.5px; }
   .variant-summary [data-role="variant-label"] { flex: 1 1 auto; min-width: 0; line-height: 1.45; }
   .variant-summary b { display: block; font-weight: 600; word-break: keep-all; overflow-wrap: break-word; }
-  .variant-summary .variant-why { display: block; margin-top: 1px; color: var(--muted, #8A8F98); font-size: 10.5px; }
   .variant-summary button { flex: 0 0 auto; height: 24px; padding: 0 8px; border-radius: 4px; border: 1px solid var(--line, #E3E5E8); background: transparent; color: inherit; font-size: 10.5px; cursor: pointer; }
   .part-selects .grow { flex: 1 1 auto; width: auto; min-width: 0; }
   .part-actions { display: flex; align-items: center; gap: 6px; justify-content: flex-end; margin-top: 6px; }
@@ -313,14 +312,8 @@
   #audit-root .issue-head .swatch { width:14px; height:14px; border-radius:3px; border:1px solid var(--line); }
   #audit-root .issue-head .name { font-weight:500; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   #audit-root .issue-head .kind { font-size:11px; padding:2px 6px; border-radius:4px; background:var(--code-bg); color:var(--muted); }
-  #audit-root .issue-head .node-kind { font-size:10px; padding:1px 5px; border-radius:3px; font-weight:600; letter-spacing:0.4px; }
-  #audit-root .issue-head .node-kind.text { background:#E2F1FF; color:#1D6CEB; }
-  #audit-root .issue-head .node-kind.icon { background:#FFF4CE; color:#8F6A00; }
-  #audit-root .issue-head .node-kind.shape { background:var(--code-bg); color:var(--muted); }
-  @media (prefers-color-scheme: dark) {
-    #audit-root .issue-head .node-kind.text { background:#112B55; color:#6FA5F8; }
-    #audit-root .issue-head .node-kind.icon { background:#3D2E08; color:#F0D068; }
-  }
+  #audit-root .issue-head .hex { font-size:10.5px; padding:1px 5px; background:var(--code-bg); border-radius:3px; color:var(--muted); font-family:ui-monospace, "SF Mono", monospace; }
+  #audit-root .issue-head .offguide-note { font-size:10px; font-weight:600; }
   /* 설명은 사람 말이라 보통 글꼴로, 색 코드만 고정폭으로 둔다. */
   #audit-root .issue-meta { margin-top:4px; font-size:11px; color:var(--muted); }
   #audit-root .issue-meta .hex { padding:1px 5px; background:var(--code-bg); border-radius:3px; font-family:ui-monospace, "SF Mono", monospace; }
@@ -466,7 +459,10 @@
   #audit-root .ref-info b { color:var(--fg); font-weight:600; }
   #audit-root .swap-card { padding:10px 16px; border-bottom:1px solid var(--line); cursor:pointer; }
   #audit-root .swap-card:hover { background:var(--code-bg); }
-  #audit-root .swap-card-head { display:flex; align-items:center; gap:8px; }
+  #audit-root .swap-card-head { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+  #audit-root .swap-card-head .from { font-size:11px; padding:2px 6px; background:var(--code-bg); border-radius:3px; color:var(--med); }
+  #audit-root .swap-card-head .to { font-size:11px; padding:2px 6px; background:var(--code-bg); border-radius:3px; color:var(--high); }
+  #audit-root .swap-card-head .swap-arrow { font-size:11px; color:var(--muted); }
   #audit-root .swap-card .iname { font-weight:500; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   #audit-root .swap-card .swap-arrow { font-family:ui-monospace, monospace; color:var(--muted); }
   #audit-root .swap-card-meta { margin-top:4px; font-size:11px; color:var(--muted); display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
@@ -2292,24 +2288,6 @@ function humanVariantLabel(text) {
   }).join(' · ');
 }
 
-// 왜 그 변형을 골랐는지 한 줄 — 축 이름을 늘어놓지 않고 사람 말로 짧게 쓴다.
-// 짐작이 섞였으면 «정해 두신 대로» 라고 말하지 않는다(그 말은 근거가 전부 있을 때만 쓴다).
-function variantWhyText(info) {
-  if (!info || !info.hasVariants || !info.axisSource) return '';
-  const kinds = {};
-  Object.keys(info.axisSource).forEach(function (axis) {
-    if ((info.guessedAxes || []).indexOf(axis) >= 0) return;   // 짐작한 축은 근거로 치지 않는다
-    kinds[info.axisSource[axis]] = true;
-  });
-  const guessed = (info.guessedAxes || []).length > 0;
-  let head = '';
-  if (kinds.decision) head = '정해 두신 대로 골랐습니다';
-  else if (kinds.legacy) head = '지금 쓰던 것에서 그대로 가져왔습니다';
-  else if (kinds.name) head = '이름에 적힌 값으로 골랐습니다';
-  if (!head) return guessed ? '기준 목록에서 짐작해 골랐습니다 — 맞는지 봐 주세요' : '고를 수 있는 변형이 하나뿐입니다';
-  return guessed ? head + ' · 나머지는 짐작입니다' : head;
-}
-
 function syncVariantSummary(partId) {
   const row = rowEl(partId);
   const st = variantState[partId];
@@ -2318,11 +2296,6 @@ function syncVariantSummary(partId) {
   if (!label) return;
   const chosen = (st.info.options || []).filter(function (o) { return o.id === st.chosenId; })[0];
   label.textContent = chosen ? humanVariantLabel(chosen.label) : '변형을 고르세요';
-  // 사람이 직접 고른 뒤에도 «정해 두신 대로» 라고 남아 있으면 거짓말이 된다.
-  const why = row.querySelector('[data-role="variant-label"] .variant-why');
-  if (why) why.textContent = (st.chosenId && st.chosenId !== st.info.pickedId)
-    ? '직접 고르신 변형입니다'
-    : variantWhyText(st.info);
 }
 
 function renderVariantPick(row, vsel, info) {
@@ -2346,10 +2319,8 @@ function renderVariantPick(row, vsel, info) {
   if (!many) { sum.style.display = 'none'; vsel.removeAttribute('hidden'); return; }
   sum.style.display = 'flex';
   const picked = (info.options || []).filter(function (o) { return o.id === info.pickedId; })[0];
-  const why = variantWhyText(info);
   sum.querySelector('[data-role="variant-label"]').innerHTML =
-    '<b>' + escape(picked ? humanVariantLabel(picked.label) : '변형을 고르세요') + '</b>' +
-    (why ? '<span class="variant-why">' + escape(why) + '</span>' : '');
+    '<b>' + escape(picked ? humanVariantLabel(picked.label) : '변형을 고르세요') + '</b>';
   vsel.setAttribute('hidden', '');
   const btn = sum.querySelector('[data-role="variant-toggle"]');
   if (btn) btn.textContent = '다른 변형';
@@ -2611,7 +2582,7 @@ function handMadeNoteHtml(diag) {
     `<a href="#" data-action="goto-node" data-node-id="${escape(p.id || '')}" style="color:var(--muted);text-decoration:underline dotted;">${escape(p.name)}</a>`
   ).join(' · ');
   return `<div class="issue-meta" data-role="hand-made-note" style="padding:8px 12px;margin-bottom:8px;background:var(--code-bg);border-radius:4px;line-height:1.6;">`
-    + `레거시 목록에 없는 부품 <b>${diag.skippedHandMadeCount}</b>개는 자동 교체하지 않습니다 — 직접 만든 부품이거나, 목록 밖의 레거시 복사본입니다. 부품이면 라이브러리 부품으로 <b>직접 바꿔 주세요</b>. 이름을 누르면 그 자리로 갑니다.`
+    + `레거시 목록에 없는 부품 <b>${diag.skippedHandMadeCount}</b>개 — 직접 바꿔 주세요.`
     + (names ? `<br/>${names}${diag.skippedHandMadeCount > (diag.handMadePreview || []).length ? ' …' : ''}` : '')
     + `</div>`;
 }
@@ -2646,15 +2617,13 @@ function renderSwapList(diag) {
     div.innerHTML = `
       <div class="swap-card-head">
         <div class="iname">${escape(c.instanceName)}</div>
+        <span class="from">${escape(c.currentMainName)}</span>
+        <span class="swap-arrow">→</span>
+        <span class="to">${escape(c.suggestedName)}</span>
         ${badge}
       </div>
-      <div class="swap-card-meta">
-        <span class="from">현재: ${escape(c.currentMainName)}</span>
-        <span class="swap-arrow">→</span>
-        <span class="to">교체: ${escape(c.suggestedName)} (기준)</span>
-      </div>
-      <div style="font-size:10px;color:var(--muted);margin-top:2px;">지금 쓰는 부품이 있는 곳: ${escape(c.currentMainPath || '(알 수 없음)')}</div>
-      ${c.demoteReason ? `<div style="font-size:10px;color:var(--muted);margin-top:2px;">사유: ${escape(c.demoteReason)}</div>` : ""}
+      <div style="font-size:10px;color:var(--muted);margin-top:2px;">있는 곳: ${escape(c.currentMainPath || '(알 수 없음)')}</div>
+      ${c.demoteReason ? `<div style="font-size:10px;color:var(--muted);margin-top:2px;">${escape(c.demoteReason)}</div>` : ""}
       <div class="part-preview">
         <img class="part-thumb empty" data-role="thumb-now" alt="">
         <span class="part-arrow" data-role="thumb-arrow" hidden>→</span>
@@ -2894,12 +2863,9 @@ function rerenderTab() {
       <div class="issue-head">
         <div class="swatch" style="background:${issue.hex}"></div>
         <div class="name">${escape(issue.nodeName)}</div>
-        <span class="node-kind ${issue.nodeKind}">${({text:'텍스트',icon:'아이콘',shape:'도형'}[issue.nodeKind] || issue.nodeKind)}</span>
-        <span class="kind">${kindLabel}</span>
-        ${issue.offGuide ? '<span class="kind offguide">팔레트 외</span>' : ''}
-        <button class="detail-toggle" data-action="toggle-detail" type="button">${detailOpen[issue.id] ? '접기' : '자세히'}</button>
+        <span class="hex">${issue.hex}</span>
+        ${issue.offGuide ? '<span class="offguide-note">팔레트 외</span>' : ''}
       </div>
-      <div class="issue-meta"><span class="hex">${issue.hex}</span></div>
       <div class="cat-chips">${chipsHtml}</div>
       <div class="sugs">${sugsHtml}</div>
       ${(foldedCount > 0 && !showAll) ? `<button class="detail-toggle" data-action="more-sugs" type="button">다른 후보 ${foldedCount}개 보기</button>` : ''}
@@ -2930,14 +2896,6 @@ function rerenderTab() {
         return;
       }
       const action = t.dataset && t.dataset.action;
-      // 판정 꼬리표 펴기/접기 — 이 카드에만 적용된다
-      if (action === "toggle-detail") {
-        const open = div.classList.toggle('show-detail');
-        if (open) detailOpen[issue.id] = true; else delete detailOpen[issue.id];
-        t.textContent = open ? '접기' : '자세히';
-        e.stopPropagation();
-        return;
-      }
       // Apply 단건 버튼
       if (action === "apply") {
         if (t.classList.contains("applied")) {

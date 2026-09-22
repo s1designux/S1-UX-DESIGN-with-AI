@@ -55,6 +55,10 @@ function refNameKey(name?: string | null): string {
 }
 
 // 이 목록에 있는 이름만 "정본"으로 인정해, 파일 내 다른 레거시 세트가 정본으로 둔갑하는 것을 막는다.
+// 설치 목록(COMPONENT_CATEGORIES.members)만 보면 **설치기가 실제로 만드는데 이름 명단에는 없는 세트**가
+//   새어 나간다 — `GNB Menu` 가 그랬다(build-components.ts 의 주석도 그 어긋남을 적어 두었다).
+//   그 세트는 기준 풀에도 못 들어가, 부분 일치로 `GNB` 에 붙어 "최신인데 교체하라"가 떴다(river 실측 2026-09-22).
+//   그래서 정본에서 자동 생성된 사실표(component-facts.json — 설치기를 모의 실행해 만든다)의 이름도 함께 인정한다.
 const CANONICAL_NAME_SET: { [norm: string]: true } = (() => {
   const m: { [norm: string]: true } = {};
   for (const cat of COMPONENT_CATEGORIES) {
@@ -62,6 +66,8 @@ const CANONICAL_NAME_SET: { [norm: string]: true } = (() => {
       m[refNameKey(name)] = true;
     }
   }
+  const comps: any = (COMPONENT_FACTS as any).components || {};
+  for (const name of Object.keys(comps)) m[refNameKey(name)] = true;
   return m;
 })();
 
@@ -2585,7 +2591,21 @@ async function collectModuleParts(root: SceneNode, pool: ReferenceComponent[], m
         });
         return;
       }
+      // 통째 교체와 같은 잣대 — 이름이 정본 목록에 있는 부품은 그 자체가 최신이다.
+      //   같은 이름을 못 찾았다고 «다른 정본»(GNB Menu → GNB)으로 바꾸라고 권하지 않는다.
+      const partIsCanonName = CANONICAL_NAME_SET[refNameKey(compareName)] === true;
+      if (partIsCanonName && found.match && normalizeName(found.match.name) !== normalizeName(compareName)) {
+        found = { match: null, matchType: null };
+      }
+      // «이미 최신»이라고 안심시키는 것은 **라이브러리에서 왔거나 이 파일 기준 풀에 있는 부품**뿐이다 —
+      //   이름만 정본과 같은 직접 만든 부품(내 파일의 Toggle·Modal Content)은 사람이 고르게 남긴다
+      //   (🤖 component-verifier 적발 2026-09-22).
+      let partIsRemote = false;
+      try { partIsRemote = !!main && (main as any).remote === true; } catch (e) { partIsRemote = false; }
+      const partIsLibrary = partIsRemote || pool.some((pc) => pc.id === currentTopId);
       if (found.match && found.match.id === currentTopId) {
+        parts.push({ id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "canonical", path, suggestions: [] });
+      } else if (partIsCanonName && partIsLibrary && !found.match) {
         parts.push({ id: partId(inst.id), nodeId: inst.id, nodeName: inst.name, currentMainName: compareName, kind: "canonical", path, suggestions: [] });
       } else if (found.match) {
         // 자동 선정된 정본을 목록 맨 앞으로 올린다(사용자가 다른 것으로 바꿀 수도 있게 목록은 그대로 둔다)
@@ -2852,6 +2872,21 @@ async function scanSwapCandidates(
       const confidence: "high" | "ambiguous" = (found.matchType === "partial" || clashed) ? "ambiguous" : "high";
       const matched = !!target;
       const sameAsTarget = !!target && target.id === currentTopId;
+      // **이름이 정본 목록에 있는 부품은 그 자체가 최신이다** — 기준 풀에 같은 이름이 없다고 해서
+      //   부분 일치로 «다른 부품»을 권하지 않는다(river 실측 2026-09-22: 최신 GNB Menu 를 GNB 로
+      //   바꾸라고 떴다). 같은 이름을 찾았을 때만 아래로 내려가 «정말 같은 부품인가»를 따진다.
+      //   **레거시 표에 있는 이름은 예외다** — 정본과 이름이 같은 레거시 세트가 11건 있어(체크박스·칩·표 등),
+      //   여기서 «이미 최신»으로 끊으면 부분 설치 파일에서 그 레거시가 결정표를 못 만나고 사라진다
+      //   (🤖 component-verifier 적발 2026-09-22). 모듈 경로는 결정표가 먼저 도는 순서다.
+      //   판정은 **부품의 신원(세트 이름)으로만** 한다 — 레이어 딱지(inst.name)로 문지기를 끄면
+      //   레이어 이름을 'search' 로 붙인 정본 Search Input 이 다시 Input 으로 바꾸라고 뜬다
+      //   (🤖 component-verifier 적발 2026-09-22).
+      const currentIsCanonName = CANONICAL_NAME_SET[refNameKey(compareName)] === true
+        && !LEGACY_INDEX[normalizeName(compareName)];
+      if (currentIsCanonName && (!target || normalizeName(target.name) !== normalizeName(compareName))) {
+        diag.sameIdSkippedCount++;
+        continue;
+      }
 
       // 바깥 묶음을 최신 부품 하나로 축소하기 전에 내부 구조부터 본다.
       // 같은 정본 부품으로 해석되는 자식이 2개 이상이면 "여러 부품의 묶음"이다.
@@ -2881,7 +2916,8 @@ async function scanSwapCandidates(
       // **이미 정본인 부품은 «재구성 필요»로 내리지 않는다**(river 지시 2026-09-21).
       //   모달·바텀시트·드롭다운처럼 같은 크기 조각이 여러 개 들어 있는 정본 부품이,
       //   기준 풀에서 자기 세트를 못 찾은 순간 "부품 모양 2개가 나란히 — 재구성하세요"로
-      //   내려가던 자리다(🤖 component-verifier 적발 2026-09-21). 신원(노드 id)으로만 가른다.
+      //   내려가던 자리다(🤖 component-verifier 적발 2026-09-21). 신원(노드 id)으로만 가른다 —
+      //   이름으로 가르면 정본과 이름이 같은 레거시 11건이 «이미 정본»으로 묻힌다(2026-09-17 2차 검증).
       const isCanonAlready = pool.some((pc) => pc.id === currentTopId);
       if (!isCanonAlready && (isRepeatedPartModule || isStructuralModule)) {
         if (!manualSeen.has(inst.id)) {
