@@ -30,6 +30,19 @@ async function run() {
   console.log("[installer] audit-bindings 검사…");
   execFileSync(process.execPath, [path.join(ROOT, "scripts/audit-bindings.js")], { stdio: "inherit" });
 
+  // ── 부품 사실표 최신 검사 ────────────────────────────────────────────────
+  //   검수기의 «정본 부품 이름표»와 «부품이 쓰는 토큰»이 이 표에서 나온다. 정본을 고치고 표를 다시
+  //   만들지 않은 채 플러그인을 지으면, 새 부품이 «우리 부품이 아닌 것»으로 조용히 새어 나간다
+  //   (GNB Menu 사고 2026-09-22). 낡은 표로는 짓지 않는다. 커밋 검문소(Gate 9e)보다 앞선 자리다.
+  console.log("[installer] 부품 사실표 최신 검사…");
+  try {
+    execFileSync(process.execPath, [path.join(ROOT, "scripts/gen-component-facts.js")], { stdio: "inherit" });
+  } catch (e) {
+    console.error("[installer] ❌ 부품 사실표가 정본과 어긋납니다 — 낡은 표로는 검수기를 짓지 않습니다.");
+    console.error("[installer]    고치는 법: npm run components:facts:write 로 표를 다시 만든 뒤 다시 지어 주세요.");
+    process.exit(1);
+  }
+
   console.log("[installer] dist 초기화…");
   fs.rmSync(DIST_ROOT, { recursive: true, force: true });
   fs.mkdirSync(OUT_DIR, { recursive: true });

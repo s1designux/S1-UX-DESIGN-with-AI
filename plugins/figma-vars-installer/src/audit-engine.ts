@@ -71,6 +71,34 @@ const CANONICAL_NAME_SET: { [norm: string]: true } = (() => {
   return m;
 })();
 
+// ─── 사실표가 낡았는지 — 검수 시작 전에 막는다 (river 지시 2026-09-22) ──────────────
+// 이 검수기의 «정본 부품 이름표»와 «부품이 쓰는 토큰»은 정본에서 자동 생성된 사실표
+//   (registry/components/component-facts.json)에 기댄다. 정본에 부품을 넣고 사실표를 다시 만들지 않으면
+//   그 부품이 «우리 부품이 아닌 것»으로 조용히 새어 나간다(GNB Menu 사고 2026-09-22).
+//   그래서 «설치 목록에 있는 부품은 사실표에도 있어야 한다»를 검수 시작 시 기계로 확인한다.
+//   빌드 단계(build-installer)에서도 같은 것을 막지만, 지어 둔 플러그인이 낡은 채 돌아가는 일도 막는다.
+function staleFactsReason(): string | null {
+  const comps: any = (COMPONENT_FACTS as any).components || {};
+  const have: { [norm: string]: true } = {};
+  for (const name of Object.keys(comps)) have[refNameKey(name)] = true;
+  if (Object.keys(have).length === 0) return "검수 기준표(부품 사실표)가 비어 있습니다";
+  const missing: string[] = [];
+  for (const cat of COMPONENT_CATEGORIES) {
+    for (const name of cat.members) {
+      if (!have[refNameKey(name)]) missing.push(name);
+    }
+  }
+  if (missing.length === 0) return null;
+  const head = missing.slice(0, 5).join(" · ");
+  return `검수 기준표가 낡았습니다 — ${missing.length}개 부품(${head}${missing.length > 5 ? " …" : ""})이 기준표에 없습니다`;
+}
+
+/** 낡았으면 검수를 시작하지 않는다 — 조용히 틀리게 판정하느니 멈춘다. */
+function assertFactsFresh(): void {
+  const reason = staleFactsReason();
+  if (reason) throw new Error(`${reason}. 설치기를 다시 지어 주세요(npm run components:facts:write 후 npm run installer:build).`);
+}
+
 // 설치기가 화면에 직접 심는 **외부 라이브러리 부품**(V2.2 아이콘 등)의 컴포넌트 키 집합.
 // 이 부품들은 이 파일 안에 정본 컴포넌트로 존재하지 않으므로 이름 매칭이 절대 성립하지 않는다.
 // 그대로 두면 설치기가 만든 화면인데도 아이콘마다 "이름 다름 → 교체 후보" 카드가 떠서
@@ -1176,6 +1204,7 @@ function pickSuggestions(
 }
 
 async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?: string): Promise<{ issues: Issue[]; stats: { scanned: number; issuesCount: number; highCount: number } }> {
+  assertFactsFresh();
   // rootOverride 를 주면 해당 노드들(예: 검사 시작 시점 선택 스냅샷)을 대상으로, 없으면 현재 선택 영역.
   const sel: readonly SceneNode[] = rootOverride
     ? (Array.isArray(rootOverride) ? rootOverride : [rootOverride as SceneNode])
@@ -2794,6 +2823,7 @@ async function scanSwapCandidates(
   pool: ReferenceComponent[],
   roots?: readonly BaseNode[]
 ): Promise<{ candidates: SwapCandidate[]; diagnostics: SwapDiagnostics; manualCandidates: ManualMapCandidate[]; modules: ModuleFlag[] }> {
+  assertFactsFresh();
   // roots 를 주면 그 노드들을 대상으로(개선안 복제본 스캔용), 없으면 기존대로 현재 선택 영역
   const sel: readonly BaseNode[] = roots && roots.length
     ? normalizeSelectionRoots(roots.filter((root): root is SceneNode => "id" in root && root.type !== "PAGE" && root.type !== "DOCUMENT") as SceneNode[])
