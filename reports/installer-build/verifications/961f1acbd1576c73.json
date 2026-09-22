@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:961f1acbd1576c732ffad504bb27bb5cf128b74002afa8220fe1b1af99cbfba7",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-22T04:30:50.473Z",
+  "notes": "buildListRow 12차 pass — Thumb 의 사진 자리를 Figma 슬롯('그림')으로 교체(Gate 34 componentprop:그림 승인). 자리표시 40각·sizing/40·bg/level-2·radius/4 무변동, 슬롯 호출은 선례 6종과 동일. 계약 slots[] 신설·설명 정본 일치. 웹은 :empty 자리표시 + img object-fit(인라인 svg 는 자기 비율). 28칸 전수 높이 68.0 실측. Figma 실물 캔버스 렌더 미검증."
+}

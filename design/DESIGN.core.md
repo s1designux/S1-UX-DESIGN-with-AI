@@ -2608,7 +2608,7 @@ _Don't_
 
 | 요소 | 역할 |
 | --- | --- |
-| 왼쪽 칸(선택) | 비움 · 체크 코어 인스턴스 18 · 그림 40(사진·아이콘이 들어갈 자리. 선례 Bottom Sheet Option 의 아바타와 같은 크기). |
+| 왼쪽 칸(선택) | 비움 · 체크 코어 인스턴스 18 · **그림 슬롯**(사진·아이콘·아바타를 넣는 자리. 기본은 40각 자리표시, 비우면 자리표시만 보인다). |
 | 가운데 글 | 제목과 설명. 남는 폭을 차지하고 최소 높이 44 를 갖는다. |
 | 오른쪽 칸(선택) | 비움 · 화살표 24 · 값 글자 · 값+화살표 · 토글 코어 인스턴스. |
 | 구분선 | 줄과 줄 사이. 줄이 소유하지 않고 목록이 긋는다. |
@@ -2671,8 +2671,8 @@ agent:
     declaredParts:
       - "control"
       - "text"
-      - "thumbnail"
       - "trail"
+      - "그림"
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
@@ -5147,4 +5147,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: c1f334ffaf77 · 손편집 금지 -->
+<!-- generated-stamp: f5794f1f4be0 · 손편집 금지 -->

@@ -63,13 +63,39 @@
 
 /* ── 왼쪽 칸 — 그림(Thumb, 40×40 — 선례 Bottom Sheet Option 아바타와 같은 크기). 체크(Pick·Agree)는
    checkbox 코어를 그대로 조립하므로 이 컴포넌트가 내부를 그리지 않는다 — 자리(flex-shrink)만 준다
-   (계약 compositionOwner). 40 은 글 자리 최소 높이(44)보다 작아 이 줄만 높이가 튀지 않는다. ── */
+   (계약 compositionOwner). 40 은 글 자리 최소 높이(44)보다 작아 이 줄만 높이가 튀지 않는다.
+
+   thumbnail 은 **슬롯**이다(정본 build-components.ts makeSlot "그림", river 2026-09-21 "사진이
+   들어갈 자리는 슬롯으로 교체해줄래"). 쓰는 화면이 그 안에 <img>·아이콘·아바타를 넣거나 비워 둔다.
+   비어 있을 때만(:empty) 정본 자리표시(bg/level-2 사각)를 보인다 — 내용이 들어가면 회색 바탕은
+   보이지 않는다. 자리 크기는 채워도 40 각 고정이다. 그림(img)은 잘라 채우고, 인라인 svg 는 자기 비율대로 맞춰 들어간다
+   (잘라 채우려면 정사각 viewBox 를 쓴다). ── */
 [data-s1-component="list-row"] [data-s1-part="thumbnail"] {
-  background: var(--color-bg-level-2);
   border-radius: var(--radius-4);
   flex: none;
   height: var(--sizing-40);
+  overflow: hidden;
   width: var(--sizing-40);
+}
+
+[data-s1-component="list-row"] [data-s1-part="thumbnail"]:empty {
+  background: var(--color-bg-level-2);
+}
+
+/* 그림(img)은 40 각 안에서 잘라 채운다(object-fit).
+   인라인 svg 에는 object-fit 이 듣지 않는다 — svg 는 자기 viewBox 비율대로 칸 안에 맞춰 들어간다.
+   잘라 채우려면 넣는 쪽에서 정사각 viewBox 를 쓰거나 svg 에 preserveAspectRatio="xMidYMid slice" 를 준다. */
+[data-s1-component="list-row"] [data-s1-part="thumbnail"] > img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+[data-s1-component="list-row"] [data-s1-part="thumbnail"] > svg {
+  display: block;
+  height: 100%;
+  width: 100%;
 }
 
 [data-s1-component="list-row"] > [data-s1-component="checkbox"] {

@@ -2,7 +2,7 @@
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
   "_updated": "2026-09-21",
-  "count": 661,
+  "count": 662,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -456,6 +456,7 @@
     "componentprop:Password Action Hover",
     "componentprop:Password Icon",
     "componentprop:Tabs",
+    "componentprop:그림",
     "number:border-width/1",
     "number:border-width/2",
     "number:breakpoint/2xl",
@@ -1404,6 +1405,18 @@
       "evidence": {
         "transcript": "b22a85f4-da52-450b-9ea8-b1de552aafc1.jsonl",
         "at": "2026-09-21T04:38:21.422Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "componentprop:그림",
+      "by": "river",
+      "reason": "list-row Thumb 의 사진 자리를 Figma 슬롯으로 교체 — 사진·아이콘·아바타를 넣고 뺄 수 있게",
+      "approvedAt": "2026-09-21T07:40:18.404Z",
+      "quote": "사진이 들어갈 자리는 슬롯으로 교체해줄래?",
+      "evidence": {
+        "transcript": "b22a85f4-da52-450b-9ea8-b1de552aafc1.jsonl",
+        "at": "2026-09-21T07:37:44.101Z"
       },
       "recordedBy": "orchestrator"
     }

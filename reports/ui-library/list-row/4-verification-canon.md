@@ -1031,3 +1031,311 @@ registry/governance/ui-library-migration.json  (List Row 레코드)
 ## 8차 한 줄 판정 — **최종**
 
 **pass** — Gate 13 검증 기록을 실행해도 된다. 남은 것은 판정을 막지 않는 🟡 한 건(`build-components.ts:1240-1241` 옛 Density 설명 두 줄 삭제)뿐이며, 호출자 보고가 이 건만 사실과 달랐다는 점을 기록에 남긴다.
+
+---
+---
+
+# 4-verification (정본) — **9차 재검증** (Thumb 자리 → Figma 슬롯)
+
+- 검증자: 🤖 component-verifier (시나리오 D) · 일자: 2026-09-22
+- 입력: 8차 보고서(pass) + **호출자 기계검사 표 10건**(§검증 입력 계약 ① 충족) + 8차 이후 변경분(git diff)
+- 범위: **델타 재검증** — 이번 변경(`makeSlot` 도입 + 계약 `slots[]` + 배포본 채움 자리)이 닿은 표면만.
+  - **이번에 재확인하지 않음(8차 PASS 승계):** Hover 흔적 전수 · 눌림 배경 `bg/level-1` · facts tokenBindings 내용 · Gate 34 baseline 의 hover 축소. 근거: 이번 diff 가 정본 1헝크(Thumb 분기)·계약 `slots[]` 신설·배포본 thumbnail 규칙에 한정되고, 상태·축·색 토큰은 한 줄도 바뀌지 않았다(9-6 으로 실증). 검사 규칙 강화도 없었다.
+- 한계: **Figma 실물 캔버스는 9차에도 미검증**(MCP 연결 불가 — 1~9차 동일). 슬롯의 캔버스 거동(속성 등록·인스턴스에서 넣고 빼기)은 코드·선례 대조로만 판정했다.
+
+## 9-0. 결정론 게이트 — 검증자 재실행 **10/10 exit 0**
+
+`installer:check` · `components:keycheck` · `components:anatomy` · `components:iconpolicy` · `components:facts` · `ui:build:check` · `ui:contract` · `ui:test:check` · `ui:version` · `canon:check` — 호출자 표와 동일하게 **전부 exit 0**. (위조 방지 재실행이며 내용 재판정은 하지 않았다.)
+
+## 9-1. 슬롯이 실제로 생성되는가 — ✅ **PASS**
+
+`build-components.ts:1317-1322`
+
+- **선례와 같은 방식이다.** 호출 형태(`await makeSlot(comp, 이름, 설명, [기본내용], [], {레이아웃})`)가 Options(`:2405`)·Tabs(`:2574`)·Menus(`:4080`)·Columns(`:4333`)·Content(`:5810`)·Items(`:7120`)와 동일하고, **variant 를 합치기(`combineAsVariants`) 전에 칸마다 호출**하는 것도 전 선례와 같다.
+- 슬롯 속성 등록은 `makeSlot` 내부(`:3589-3593`)가 `componentPropertyDefinitions` 를 전후 비교해 **새 SLOT 이 안 생기면 예외를 던진다** — 조용한 실패 경로가 없다.
+- **자리 순서 보존 확인:** 슬롯은 `text`·`trail` 을 붙이기 **전에** `comp` 에 붙으므로 왼쪽 칸 자리가 그대로다(`makeSlot` 이 `(layout.parent ?? comp).appendChild(slot)` — `:3584`).
+- **Thumb 3칸에만 생긴다** — 호출이 `else if (t === "Thumb")` 분기 안이라 21칸 중 Type=Thumb × State 3 에만 달린다. 이름이 세 칸 모두 `그림` 으로 같아 **State 를 바꿔도 같은 속성으로 이어진다**(Figma 는 이름으로 잇는다). Type 을 바꾸면 사라지는데, 그림이 없는 유형이므로 맞다.
+- 🟡 선례와 다른 점 하나: 다른 슬롯은 `preferredValues` 에 컴포넌트 세트 키를 넘겨 스왑 후보를 좁히는데 여기는 `[]` 다. 무엇이든 넣는 자리라 타당하나, 후보 추천이 없다는 뜻이다.
+
+## 9-2. 자리표시 치수·토큰 — ✅ **PASS**
+
+`:1310-1315` — `resize(40,40)` 후 `width`/`height` ← `sizing/40` 바인딩 · `fills` ← `color/bg/level-2` 바인딩 · `bindRadius(radius/4)`. **이전과 한 글자도 다르지 않다**(git diff 상 이 5줄은 무변동, 바뀐 것은 `name` 과 감싸기뿐).
+- `layoutSizingHorizontal/Vertical = "FIXED"` 가 **슬롯에 붙인 뒤** 걸린다(`:1323-1324`) — 오토레이아웃 부모 안에서만 유효한 API 라 순서가 맞다.
+- 하드코딩 hex 0건(H2 준수) · 폰트 건드림 0건(H3 무관).
+
+## 9-3. 줄 높이 68 — ✅ **PASS** (실측)
+
+- **도출:** 슬롯이 `primaryAxisSizingMode/counterAxisSizingMode = AUTO` · padding 0 · itemSpacing 0 이라 자리표시 40 을 그대로 감싼다. 칸의 세로 최대 자식은 여전히 `text`(minHeight 44) → 12 + 44 + 12 = **68**. 슬롯이 높이를 밀어 올리지 않는다.
+- **실측(배포본 http, 전수):** `reports/ui-library/list-row/matrix-fixture.html` 의 **28칸(21칸 + 제목만 7칸) 전부 정확히 68.0** (min=68.0 max=68.0, 벗어난 칸 0). Thumb 3칸 모두 자리표시 40.0×40.0 · `rgb(245,245,245)`(= bg/level-2) · radius 4px.
+- 🟡 (b) 구조 관찰: Figma 슬롯이 AUTO 라 **40 보다 큰 것을 넣으면 68 이 깨진다** — 이를 막는 것은 계약 문장(`rule`)뿐이고 기하가 막지 않는다. 웹은 `--sizing-40` 고정 + `overflow:hidden` 으로 강제된다. 정본도 슬롯을 `sizing/40` FIXED 로 묶으면 규칙이 기하로 내려온다(권고, 이번 판정에는 반영 안 함).
+
+## 9-4. 계약 ↔ 정본 ↔ 배포본 manifest ↔ facts 4면 — ✅ **PASS**
+
+| 표면 | 슬롯 이름 | 적용 범위 | 결과 |
+|---|---|---|---|
+| 정본 `build-components.ts:1317` | `그림` (안쪽 `자리표시`) | Thumb 분기 | 기준 |
+| facts `component-facts.json` List Row | `slots: ["그림"]` · `anatomy` 에 `그림` | — | ✅ 일치 |
+| 계약 `registry/components/list-row.json:214-224` | `name/figmaProperty = 그림` · `webPart = thumbnail` · `appliesTo = [thumb]` | ✅ 일치 |
+| 배포본 `list-row.manifest.json` | `contentSlots.thumbnail` 이 `makeSlot("그림")` 을 명시 · `typeStructure.thumb` 에 슬롯 표기 | ✅ 일치 |
+
+- facts `anatomy` 에서 `thumbnail` 이 빠지고 `그림` 이 들어온 것은 **옳다** — 자리표시는 이제 루트 직계가 아니라 슬롯 안이고, 파생 생성기(`gen-component-facts.js:144`)가 SLOT 이름을 집는다. 선례 슬롯들과 같은 모양이다.
+- 옛 이름 `thumbnail` 이 남은 곳은 **웹 부품 이름**(`ui-review.html:2529`·계약 `webPart`·배포본 CSS)뿐이며, 이는 바뀌지 않아야 할 웹 계약이다. 정본 쪽 잔재 0건.
+- 🟡 (b) 사각지대: 새 `slots[]` 필드를 대조하는 결정론 검사기가 **없다**. 지금은 사람(이 검증)만 본다 — facts `slots` 와 계약 `slots[].figmaProperty` 를 맞대는 검사를 붙이면 다음부터 기계가 잡는다.
+
+## 9-5. Gate 34 — ✅ **PASS**
+
+- `canon-additions-baseline.json`: `count 662 = items 662`(중복 0), `componentprop:그림` 1건만 늘었다. 다른 항목 손실 0.
+- 승인 기록의 인용을 **세션 기록에서 직접 확인**: `"사진이 들어갈 자리는 슬롯으로 교체해줄래?"` 가 `origin.kind = human` 인 사람 발화로 실재하고, 그 타임스탬프(`2026-09-21T07:37:44.101Z`)가 `approvals[].evidence.at` 과 **정확히 일치**한다. 자기신고가 아니다.
+- `canon:check` exit 0.
+- ℹ️ 같은 발화의 뒷문장(`또 슬롯으로 교체할만한게 뭐가 있을지도 검토해줘`)은 이번 변경 범위 밖이다 — 미이행 여부는 내 판정 대상이 아니며 호출자 몫으로 남긴다.
+
+## 9-6. 기존 코드 훼손 — ✅ **PASS**
+
+- `build-components.ts` diff = **헝크 1개(`:1305-1324`, Thumb 분기)뿐.** 다른 유형(Nav·Value·Read·Pick·Agree·Switch)·다른 컴포넌트 함수·`makeSlot` 본체 모두 무변동.
+- facts diff = `sourceHash` + List Row 의 `anatomy`·`slots` 뿐. 다른 컴포넌트 0줄.
+- 계약 diff = anatomy 문구 1줄 · `slotMap.thumb.left` 1줄 · `slots[]` 신설. 축·상태·토큰 무변동.
+- 배포본 diff = list-row CSS/manifest/example + 버전 파생(0.12.1→0.12.2)뿐. 다른 컴포넌트 CSS 0건.
+- 🟡 작업트리에 **이번 변경과 무관한 수정 1건**이 섞여 있다: `reports/pattern-builder/profiles/app-modu/imported/4-3-관리자-초대_…json` 의 `_meta.link` 1줄(패턴 빌더 작업 잔여). 그대로 커밋하면 이번 커밋에 딸려 들어간다.
+
+## 9-7. ❌ **(a) 1건 — 배포본이 적어 둔 동작이 실제와 다르다(실측)**
+
+`ui-library/src/components/list-row/list-row.css:78-84` (= `dist/components/list-row.css` · 합본 `dist/s1-ui.css` 동일)
+
+```css
+[data-s1-component="list-row"] [data-s1-part="thumbnail"] > img,
+[data-s1-component="list-row"] [data-s1-part="thumbnail"] > svg {
+  object-fit: cover;  /* ← svg 에는 효력이 없다 */
+}
+```
+
+`list-row.manifest.json` `contentSlots.thumbnail` 과 CSS 머리말은 **채우면 "40 각 안에서 잘려 채워진다(object-fit: cover)"** 라고 단정하고, 그 대상에 `svg` 를 명시적으로 넣었다. 실측 결과:
+
+| 넣은 것 | 실제 | 문서 주장과 |
+|---|---|---|
+| `<img>` 100×20 | **40×40 으로 잘려 채워짐** | ✅ 맞음 |
+| 인라인 `<svg>` viewBox 100×20 | **40×8 로 줄어 여백이 생김**(letterbox) | ❌ 다름 |
+
+`object-fit` 은 대체요소(img·video)에만 듣고 인라인 `svg` 에는 듣지 않는다 — 인라인 svg 는 `preserveAspectRatio` 기본값(meet)으로 **잘리지 않고 축소**된다. 예시 파일의 svg 가 정사각(40×40)이라 눈으로는 드러나지 않았을 뿐이며, 계약을 따르는 소비자가 정사각이 아닌 아이콘 svg 를 넣으면 문서와 다른 결과를 본다.
+
+**판정 근거:** 7차 ❌(a)-2 에서 "파일이 실제로 하는 일과 다른 주석"을 ❌(a) 로 매겼다. 같은 종류이므로 같게 매긴다(사후 기준 완화 금지). 고치는 방법은 한 줄 — `> svg` 를 object-fit 규칙에서 빼고 `preserveAspectRatio="xMidYMid slice"` 를 안내하거나, 문서에서 svg 를 잘림 대상에서 제외한다.
+
+## 9-8. ❓ **(c) 1건 — Figma 에서 그림을 넣으면 자리표시가 남는가**
+
+슬롯의 기본 내용이 `자리표시` 프레임이고, 슬롯 레이아웃은 HORIZONTAL·AUTO·itemSpacing 0 이다. 소비자가 자리표시를 **지우지 않고** 그림을 넣으면 왼쪽 칸이 `자리표시 + 그림` 두 개가 되어 폭 80 이 된다. 선례 슬롯들은 설명에 "**넣고 빼서**"라고 적어 빼는 것을 명시했지만, 이번 설명은 "그 안에 놓거나 비워 둔다"라 **자리표시를 빼야 한다는 말이 없다.**
+
+한편 배포본 계약은 "채우면 회색 바탕이 사라진다"(`:empty` 규칙)고 적어, 웹은 자동으로 사라지고 Figma 는 손으로 빼야 하는 **양쪽 거동 차이**가 생긴다.
+
+MCP 가 끊겨 실제 캔버스에서 슬롯이 기본 내용을 어떻게 다루는지 확인할 수 없으므로 **임의로 (b) 로 빼지 않고 (c) 로 올린다.** 확인할 것: Figma 슬롯에 내용을 넣을 때 기본 내용이 자동으로 밀려나는가, 아니면 설명에 "자리표시를 빼고 넣는다"를 넣어야 하는가.
+
+## 9차 항목별 판정 요약
+
+| # | 항목 | 판정 |
+|---|---|---|
+| 1 | 슬롯 생성·선례 일치·Thumb 3칸 한정 | ✅ PASS (🟡 preferredValues 비어 있음) |
+| 2 | 자리표시 40 · sizing/40 · bg/level-2 · radius/4 | ✅ PASS |
+| 3 | 줄 높이 68 (28칸 실측 전부 68.0) | ✅ PASS (🟡 슬롯 AUTO 라 기하가 40 을 강제하지 않음) |
+| 4 | 계약↔정본↔manifest↔facts 4면 | ✅ PASS (🟡 `slots[]` 전용 검사기 없음) |
+| 5 | Gate 34 승인 인용·baseline | ✅ PASS (사람 발화·타임스탬프 일치 확인) |
+| 6 | 기존 코드 훼손 | ✅ PASS (🟡 무관한 파일 1건이 작업트리에 섞임) |
+| 7 | 슬롯 이름 한글(`그림`) | ✅ **문제 없음** — 아래 참조 |
+| — | 배포본 object-fit 서술 | ❌ **(a) 1건** |
+| — | Figma 자리표시 잔존 | ❓ **(c) 1건** |
+| 0 | 결정론 게이트 | ✅ 10/10 exit 0 |
+
+**7번 판정(슬롯 이름 한글):** 저장소 관례상 **문제로 보지 않는다.** ①정본에서 사람이 읽는 이름은 이미 한글이 기본이다(부품 `자리표시`·`control`·`text` 혼재, 계약·주석 전부 한글). ②Figma 속성 이름은 코드 식별자가 아니라 **디자이너가 패널에서 읽는 라벨**이고, 이 저장소의 1차 독자는 비개발자다. ③영문 선례 6종(Options·Tabs·Menus·Columns·Content·Items)은 모두 2026-09-03~09 에 만들어진 것이라 관례라기보다 그때의 습관이며, 한글 금지 규칙은 어디에도 없다(`audit-rules.json` R04/R11 은 CSS 변수·클래스 대상이라 적용 밖). 다만 **섞여 있는 상태 자체**는 다음에 슬롯을 더 만들 때 매번 되묻게 되므로, river 에게 "슬롯 이름은 한글로 통일한다/영문으로 통일한다"를 한 번 정해 두길 권한다(이번 판정에는 영향 없음).
+
+- ❌(a): **1건** · ❓(c): **1건** · 🟡(b): 4건 · BLOCKED: 0건
+- 승계(이번에 재확인하지 않음): 8차 Hover 전수 · 눌림 배경 · facts tokenBindings 내용 · baseline hover 축소 (근거: 9-6 diff 범위)
+- 미검증(정직 표기): **Figma 실물 캔버스** — 1~9차 내내 MCP 연결 불가. 슬롯 속성 등록은 코드·선례 대조로만 판정.
+
+## 9차 한 줄 판정
+
+**fail** — 슬롯 교체 자체는 정본·계약·facts·배포본 4면이 모두 맞고 줄 높이 68 도 28칸 전수 실측으로 지켜졌다. 막는 것은 배포본이 "svg 도 잘려 채워진다"고 적었으나 실제로는 여백을 두고 줄어든다는 것 한 줄(❌a)과, Figma 에서 그림을 넣을 때 자리표시를 빼야 하는지 확인이 필요하다는 것(❓c) 둘이다. Gate 13 검증 기록은 아직 실행하면 안 된다.
+
+---
+---
+
+# 4-verification (정본) — **10차 재검증** (9차 ❌1·❓1 처리분)
+
+- 검증자: 🤖 component-verifier (시나리오 D) · 일자: 2026-09-22
+- 입력: 9차 보고서 + **호출자 기계검사 표 10건**(§검증 입력 계약 ① 충족) + 9차 이후 변경분
+- 범위: **델타 재검증** — 9차 ❌(a)-1(object-fit 서술) · ❓(c)(자리표시 잔존) 두 건과 그 수정이 닿은 표면만.
+  - **이번에 재확인하지 않음(9차 PASS 승계):** 슬롯 생성 방식·선례 일치 · 자리표시 치수/토큰 바인딩 · Gate 34 승인 인용 · 정본 훼손 범위. 근거: 정본 diff 가 **슬롯 설명 문자열 1개**만 늘었고 실행 코드·바인딩·기하는 한 줄도 바뀌지 않았다(10-3 실증).
+- 한계: **Figma 실물 캔버스는 10차에도 미검증**(MCP 연결 불가 — 1~10차 동일).
+
+## 10-0. 결정론 게이트 — 검증자 재실행 **10/10 exit 0**
+
+10건 전부 exit 0 재확인. `gate:check` 전체는 **error 1건 = Gate 13 자신**(이 검증 기록 대기)뿐이고 나머지 error 0 · 경고 20(기존 부채). 8차·9차와 같은 모양이다.
+
+## 10-1. ① object-fit 서술 — ✅ **PASS** (실측으로 확인)
+
+`ui-library/src/components/list-row/list-row.css:85-99` (= `dist/components/list-row.css:85-99` · 합본 `dist/s1-ui.css:4381-4392` **세 벌 모두 동일**)
+
+- `object-fit: cover` 는 이제 `> img` 에만 있고, `> svg` 는 `display:block; width/height:100%` 만 남았다. **없는 속성을 지어내지 않았다**(내 권고 그대로).
+- CSS 머리말·`contentSlots.thumbnail`·`geometry.thumbnail.note` 문구가 전부 "그림(img)은 잘라 채우고, 인라인 svg 는 자기 비율대로 맞춰 들어간다"로 바뀌었다.
+
+**실측(합본 `s1-ui.css` 로 http 렌더 — 배포되는 바로 그 파일):**
+
+| 넣은 것 | 자리 | 내용 | 줄 높이 | 문서 주장과 |
+|---|---|---|---|---|
+| 비움 | 40.0×40.0 · `rgb(245,245,245)`(bg/level-2) · r4 · overflow hidden | — | **68.0** | ✅ |
+| `<img>` 100×20 | 40.0×40.0 · 배경 투명 | 40.0×40.0 `object-fit=cover`(잘려 채움) | **68.0** | ✅ |
+| 인라인 `<svg>` viewBox 100×20 | 40.0×40.0 · 배경 투명 | 상자 40.0×40.0 · 그려진 것 40.0×8.0(비율대로 가운데) `object-fit=fill`(=기본값, 규칙 제거됨) | **68.0** | ✅ |
+
+호출자 보고("svg 는 40 각 상자 안에 비율대로, 가운데 띠")와 내 실측이 **정확히 일치**한다. 9차 ❌(a) **해소**.
+
+- **높이 68 재확인:** 규칙 변경이 thumbnail 자식에만 걸려 기하에 영향이 없음을 확인하려고 `matrix-fixture.html` **28칸을 새 합본으로 다시 쟀다 — 전부 68.0**(min=max=68.0, 벗어난 칸 0, Thumb 3칸 40×40·bg/level-2·r4).
+
+## 10-2. ② Figma 자리표시 규칙 — ⚠️ **정본은 PASS · 계약이 따라오지 않음**
+
+**정본 — ✅ 고쳐졌다.** `build-components.ts:1318`
+
+```
+"… 기본은 40 각 자리표시이며, **자리표시를 빼고 넣을 것을 그 자리에 넣는다**(둘을 같이 두면
+ 왼쪽 칸이 둘이 된다). 비워 두면 자리표시만 남는다. 줄 높이(68)는 … 40 보다 큰 것을 넣지 않는다."
+```
+
+선례(Options·Menus)의 "넣고 빼서" 화법에 맞고, 9차 (c)가 지적한 "빼라는 말이 없다"가 해소됐다. 파생 `component-guide-model.json` 에도 **새 문장이 3곳 반영**됐다(자동 연동 정상).
+
+**계약은 옛 문장 그대로다 — ❌(a).** `registry/components/list-row.json:220`
+
+```json
+"description": "사진·아이콘·아바타가 들어가는 자리. 기본은 40각 자리표시이며, 넣을 것을 그 안에 놓거나 비워 둔다."
+```
+
+- 정본은 "**자리표시를 빼고** 그 자리에 넣는다", 계약은 "**그 안에** 놓는다" — 이번 수정이 겨냥한 **바로 그 문장에서 두 표면이 서로 다른 말을 한다.** 계약 문장은 9차 (c)에서 "왼쪽 칸이 둘이 된다"고 지적한 바로 그 오해를 그대로 안내한다.
+- 전수 확인: 새 문장은 정본 1곳 + guide-model 3곳에 있고, 옛 문장은 **계약 1곳에만** 남았다. 다른 표면 오염 없음.
+- 한 줄 수정이다(계약 `slots[0].description` 을 정본 문장과 같게). 같은 파일의 `anatomy`·`slotMap.thumb.left` 에는 이미 "넣고 빼기"가 들어가 있어, 정작 규칙을 담는 `slots[].description` 만 빠졌다.
+
+## 10-3. 새로 어긋난 곳 — ✅ **없음**
+
+| 확인 대상 | 결과 |
+|---|---|
+| 정본 diff | 여전히 헝크 1개(Thumb 분기). 9차 대비 **슬롯 설명 문자열만** 달라졌고 `makeSlot` 인자 구조·바인딩·기하·다른 유형 0줄 |
+| facts | `slots:["그림"]` · anatomy `그림` 유지. 슬롯 설명은 facts 가 담지 않아 영향 없음 |
+| 배포본 CSS 3벌 | src·dist·합본이 **바이트 단위로 같은 규칙**(img 규칙 1 · svg 규칙 1). 합본 누락 없음 |
+| manifest src↔dist | `sourceFingerprint` 1줄 외 완전 동일 |
+| 버전 | release-log·package·dist manifest **전부 0.12.3** 일치, `ui:version` 28종 초록 |
+| 재생성 표면 | 설치기·전달본 zip·`install-prompt.html`·`DESIGN.core.md`·`component-guide-model.json`·crosswalk 장부가 함께 갱신됨 — 손편집 흔적 없이 파생 경로로 생성 |
+| 9차 🟡 무관 파일 | `reports/pattern-builder/…json` 1줄 여전히 있음 — 호출자가 커밋에서 제외하겠다고 밝혀 판정에 반영하지 않는다 |
+
+## 10차 항목별 판정 요약
+
+| # | 9차 | 10차 |
+|---|---|---|
+| ❌(a) 배포본 object-fit 서술 | ❌ | ✅ **PASS** — CSS 3벌 정정 + img/svg/빈자리 3종 실측 일치 |
+| ❓(c) Figma 자리표시 잔존 | ❓ | ✅ 정본 규칙 명시로 **해소** |
+| 계약 `slots[].description` 동기화 | — | ❌ **(a) 1건** — 정본과 다른 옛 문장 잔존 |
+| 높이 68 (28칸 전수 재실측) | ✅ | ✅ **PASS** |
+| 새 어긋남·버전·3벌 동기화 | — | ✅ **없음** |
+| 결정론 게이트 | 10/10 | ✅ **10/10 exit 0** (gate:check error 는 Gate 13 자신뿐) |
+
+- ❌(a): **1건** · ❓(c): **0건** · 🟡(b): 3건(9차 이월 — preferredValues 없음 · 슬롯 AUTO 라 40 을 기하가 강제 안 함 · `slots[]` 전용 검사기 없음) · BLOCKED: 0건
+- 승계(이번에 재확인하지 않음): 9차 슬롯 생성 방식 · 자리표시 치수/토큰 · Gate 34 승인 인용 · 정본 훼손 범위 (근거: 10-3)
+- 미검증(정직 표기): **Figma 실물 캔버스** — 1~10차 내내 MCP 연결 불가.
+
+## 10차 한 줄 판정
+
+**fail** — 지적한 두 건은 실측으로 확인될 만큼 제대로 고쳐졌고 남은 것은 **계약 파일의 슬롯 설명 한 문장이 정본을 따라오지 않은 것 하나뿐**이다. 그 한 줄을 정본 문장과 같게 맞추면 4면이 다시 붙고, 그때 Gate 13 기록을 실행해도 된다(지금은 아직 실행하면 안 된다).
+
+---
+---
+
+# 4-verification (정본) — **11차 재검증** (10차 ❌ 한 줄 처리분)
+
+- 검증자: 🤖 component-verifier (시나리오 D) · 일자: 2026-09-22
+- 범위: **델타** — 10차 ❌(a)(계약 `slots[].description`) 1건과 그 수정이 닿은 표면만.
+  - **이번에 재확인하지 않음(10차 PASS 승계):** object-fit img/svg 실측 · 28칸 높이 68 · CSS 3벌 동기화 · Gate 34 승인 인용 · 슬롯 생성 방식. 근거: 이번 변경은 **JSON 문자열 1개**뿐이고 CSS·기하·바인딩이 한 줄도 바뀌지 않았다.
+
+## 11-1. 문장 일치 — ✅ **PASS**
+
+`registry/components/list-row.json` `slots[0].description` 이 정본 `build-components.ts:1318` 과 같은 말이 됐다 — "자리표시를 빼고 넣을 것을 그 자리에 넣는다(둘을 같이 두면 왼쪽 칸이 둘이 된다). 비워 두면 자리표시만 남는다." 높이 규칙은 계약 `slots[0].rule` 이 따로 갖고 있어 **합치면 정본 문장과 내용이 같다**(남은 차이는 `40각`/`40 각` 띄어쓰기와 `**` 강조 표시뿐 — 뜻에 영향 없음).
+
+- **옛 문장 전수 검색 → 저장소 0건.** 새 문장은 정본 1 · 계약 1 · guide-model 3 으로 정상 분포.
+
+## 11-2. ❌ **(a) 1건 — 정본이 또 바뀌었는데 배포본 번호가 안 따라갔다**
+
+호출자는 `components:anatomy`·`components:facts`·`ui:contract`·`canon:check` 넷만 다시 돌렸다. **`ui:build:check`·`ui:test:check`·`ui:version` 세 개는 다시 돌리지 않았고, 지금 셋 다 실패한다.**
+
+```
+ui:version   → ❌ 정본이 바뀐 부품 1종에 번호가 안 올라갔습니다 (list-row)
+ui:build:check / ui:test:check
+             → Error: list-row canonicalFingerprint is stale. Review canon changes before rebuilding.
+```
+
+- 원인: 10차 때 정본 슬롯 설명을 고쳐 지문이 바뀌면 `ui:bump` 로 0.12.3 을 냈는데, **11차에서 정본을 또 건드리지는 않았음에도 계약(`list-row.json`)이 `canonicalSources` 에 들어 있어** 부품 지문이 다시 어긋났다. 배포본 `list-row.manifest.json` 의 `canonicalFingerprint` 가 옛 값이다.
+- `gate:check` error 가 **1건(Gate 13 자신) → 2건**으로 늘었다(Gate 50 추가). 10차까지 초록이던 게이트가 이번 변경으로 빨개진 것이라 그냥 넘길 수 없다.
+- 처리: `ui:version:refresh` → `ui:bump`(문구만 바뀐 patch) → `ui:build` 재생성. 그 뒤 10건 전부 exit 0 이어야 한다.
+
+> §검증 입력 계약 ① 관련 기록: 이번 요청의 기계검사 표는 **10건 중 6건만 재실행된 것**이었고, 빠진 3건이 실제로 빨간 상태였다. 다음부터는 표를 부분 실행으로 채우지 않기를 권한다.
+
+## 11차 판정 요약
+
+| 항목 | 결과 |
+|---|---|
+| 계약 ↔ 정본 슬롯 설명 일치 | ✅ **PASS** (옛 문장 저장소 0건) |
+| 결정론 게이트 10건 | ❌ **7/10** — `ui:build:check`·`ui:test:check`·`ui:version` 실패 |
+| `gate:check` | ❌ error 2건 (Gate 13 자신 + **Gate 50 번호 미상승**) |
+| 새 어긋남 | 위 지문 건 외 없음 — CSS·기하·facts·Gate 34 무변동 |
+
+- ❌(a): **1건** · ❓(c): 0건 · 🟡(b): 3건(이월) · BLOCKED: 0건
+- 미검증: **Figma 실물 캔버스**(1~11차 MCP 연결 불가)
+
+## 11차 한 줄 판정
+
+**fail** — 고치라고 한 문장은 정확히 맞춰졌지만, 그 수정으로 배포본 지문이 다시 어긋나 `ui:build:check`·`ui:test:check`·`ui:version` 셋이 빨갛다. 번호를 올리고 배포본을 다시 만든 뒤 10건이 모두 초록이면 그때 Gate 13 기록을 실행해도 된다(지금은 아직 아니다).
+
+---
+---
+
+# 4-verification (정본) — **12차 재검증** (11차 ❌ 지문·번호 처리분)
+
+- 검증자: 🤖 component-verifier (시나리오 D) · 일자: 2026-09-22
+- 범위: **델타** — 11차 ❌(a)(배포본 지문 stale · 번호 미상승)와 그 재생성이 닿은 표면.
+  - **이번에 재확인하지 않음(승계):** 슬롯 생성 방식·선례 일치 · 자리표시 치수/토큰 · Gate 34 승인 인용 · 정본 훼손 범위. 근거: 12차 변경은 지문 갱신과 배포본 재생성뿐이고 정본·계약 내용은 한 글자도 바뀌지 않았다.
+
+## 12-1. 결정론 게이트 — ✅ **10/10 exit 0**
+
+검증자 재실행 10건 전부 exit 0(11차에 빨갛던 `ui:build:check`·`ui:test:check`·`ui:version` 포함). `gate:check` = **error 1건 = Gate 13 자신**(이 검증 기록 대기) · 경고 20 — 8차·10차와 같은 정상 모양으로 돌아왔다.
+
+## 12-2. 지문·번호 정합 — ✅ **PASS**
+
+| 확인 | 결과 |
+|---|---|
+| 부품 manifest 지문 src↔dist | `e167ea48…` **동일** |
+| 부품 지문 stale 여부 | ✅ 없음(`ui:version` 초록) |
+| 번호 3면 | 장부 0.12.3 · `package.json` 0.12.3 · `dist/manifest.json` 0.12.3 **일치** |
+| 전달본 지문 | 장부 top == `releases[0].deliveryFingerprint` **일치** |
+
+## 12-3. 내용 재확인 — ✅ **PASS** (재생성본으로 다시 실측)
+
+배포본이 다시 만들어졌으므로 10차에 확인한 것을 **새 합본으로 다시 쟀다.**
+
+- 계약 `slots[0].description` = 정본 `build-components.ts:1318` 과 같은 말(옛 문장 저장소 0건) · facts `slots:["그림"]`·anatomy `그림` 유지.
+- CSS 3벌(src·dist·합본) 모두 `> img` 규칙 1개 · `> svg` 규칙 1개 · **svg 쪽 object-fit 0개** — 10차 정정이 재생성 뒤에도 그대로다.
+- 실측: 빈 자리 40×40 `rgb(245,245,245)` r4 · 가로로 긴 `img` → 40×40 잘려 채움(fit=cover) · 가로로 긴 `svg` → 상자 40×40 안에 40×8 비율대로(fit=fill). **세 줄 모두 68.0.**
+- `matrix-fixture.html` **28칸 전수 재측정 — 전부 68.0**(min=max=68.0, 벗어난 칸 0).
+
+## 12-4. 🟡 기록해 두는 것 — 0.12.3 이 두 벌을 가리킨다
+
+장부 top 지문(`48e352bb…`)과 `releases[0]`(0.12.3) 의 지문(`5ba4561d…`)이 다르다. 10차에 0.12.3 을 낸 뒤 11차에서 정본·계약 문장을 고치고 `ui:version:refresh`(번호 유지)로 맞췄기 때문이며, **같은 번호가 서로 다른 정본 내용 두 벌을 가리키는 상태**다.
+
+**판정을 막지 않는다** — ①`--refresh` 는 도구가 제공하는 정식 경로이고 ②git 이력에서 같은 어긋남이 이미 4회 커밋된 적이 있어(0.7.1·0.6.10·0.7.0) 이 저장소가 허용해 온 상태다. 내가 새 규칙을 만들지 않는다(H6②). 다만 문구만 바뀐 경우 번호를 올릴지 유지할지는 river 가 한 번 정해 두면 다음부터 흔들리지 않는다.
+
+## 12차 판정 요약
+
+| 항목 | 결과 |
+|---|---|
+| 결정론 게이트 10건 | ✅ **10/10 exit 0** |
+| `gate:check` | ✅ error 1건 = Gate 13 자신뿐(경고 20, 기존 부채) |
+| 지문·번호 정합(부품·번들·전달본) | ✅ PASS |
+| 계약↔정본↔facts↔배포본 4면 | ✅ PASS (옛 문장 0건) |
+| 재생성본 실측(img·svg·빈자리 · 28칸 68.0) | ✅ PASS |
+| 새 어긋남 | ✅ 없음 |
+
+- ❌(a): **0건** · ❓(c): **0건** · 🟡(b): 4건(이월 3 + 12-4) · BLOCKED: 0건
+- 미검증(정직 표기): **Figma 실물 캔버스** — 1~12차 내내 MCP 연결 불가. 슬롯의 캔버스 거동은 코드·선례 대조로만 판정했고, 높이 68 은 도출 + 웹 배포본 28칸 실측 교차로 확인했다.
+
+## 12차 한 줄 판정 — **최종**
+
+**pass** — Gate 13 검증 기록을 실행해도 된다. 남은 🟡 4건은 판정을 막지 않으며, Figma 실물 캔버스 미검증만 정직하게 남는다.

@@ -2,7 +2,7 @@
   "id": "list-row",
   "version": "0.3.0",
   "status": "candidate",
-  "canonicalFingerprint": "0efb23d4974f60928164dada4f8b144741f7822a7aeaf853860b896143245bf9",
+  "canonicalFingerprint": "e167ea484e2c2ed3155fea69360119629aa49c4c565f43f78fab3175681b72cf",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -32,7 +32,7 @@
       "width": "--sizing-40",
       "height": "--sizing-40",
       "radius": "--radius-4",
-      "note": "선례 Bottom Sheet Option 아바타와 같은 크기(40) — 2026-09-21 정정(이전 48 은 새로 지어낸 값이라 선례로 교체). 글 자리 최소 높이(44)보다 작아 이 줄만 높이가 튀지 않는다."
+      "note": "선례 Bottom Sheet Option 아바타와 같은 크기(40) — 2026-09-21 정정(이전 48 은 새로 지어낸 값이라 선례로 교체). 글 자리 최소 높이(44)보다 작아 이 줄만 높이가 튀지 않는다. 슬롯이라 채워도 40 각 고정 — 그림(img)은 잘라 채운다(object-fit: cover). 인라인 svg 는 자기 비율대로 칸 안에 맞춰 들어간다."
     },
     "text": {
       "gap": "--spacing-2",
@@ -95,7 +95,7 @@
       "pick": "label[data-s1-component=list-row][data-type=pick] > div[data-s1-component=checkbox](control 만, Label=Off) + div[data-s1-part=text]. checkbox control 의 accessible name 은 aria-labelledby 로 title 을 가리킨다.",
       "agree": "label[data-s1-component=list-row][data-type=agree] > div[data-s1-component=checkbox](control 만) + div[data-s1-part=text] + span[data-s1-part=trail] > span[data-s1-part=chevron](장식 — 두 번째 클릭 영역이 필요하면 쓰는 화면이 별도로 구성한다).",
       "switch": "div[data-s1-component=list-row][data-type=switch] > div[data-s1-part=text] + span[data-s1-part=trail] > button[data-s1-component=toggle](코어 그대로, role=switch, aria-labelledby 로 title 을 가리킨다).",
-      "thumb": "div[data-s1-component=list-row][data-type=thumb] > div[data-s1-part=thumbnail] + div[data-s1-part=text]."
+      "thumb": "div[data-s1-component=list-row][data-type=thumb] > div[data-s1-part=thumbnail](슬롯 — 비우거나 <img>/아이콘/아바타를 넣는다) + div[data-s1-part=text]."
     },
     "grouping": "이 컴포넌트는 줄 모양과 상태만 소유한다. 목록 구조(role·이름·선택 반영)와 고르기·이동 동작은 목록을 그리는 화면이 소유한다.",
     "relations": [
@@ -122,7 +122,8 @@
   "contentSlots": {
     "title": "필수; 보이는 제목.",
     "description": "선택; 있으면 제목 아래에 표출한다. 없어도 글 자리 최소 높이(44)가 자리를 지켜 줄 높이는 같다.",
-    "value": "선택; Type=Value 의 오른쪽 값 글자."
+    "value": "선택; Type=Value 의 오른쪽 값 글자.",
+    "thumbnail": "Type=Thumb 전용, 내용을 끼우는 자리(슬롯) — 정본 build-components.ts makeSlot(\"그림\"). 쓰는 화면이 <img>·아이콘·아바타를 안에 놓거나 비워 둔다. 비우면 정본 자리표시(40 각, bg/level-2)만 보이고([data-s1-part=thumbnail]:empty), 채우면 회색 바탕은 사라진다. 그림(img)은 40 각 안에서 잘려 채워지고(object-fit: cover), 인라인 svg 는 자기 비율대로 맞춰 들어간다. 40 보다 큰 것을 넣지 않는다 — 줄 높이(68)는 글 자리가 정한다."
   },
   "dependencies": {
     "font": [
@@ -188,5 +189,5 @@
     "runtime": "none",
     "reason": "줄 모양·상태만 소유한다. 실제 이동·선택 반영·이벤트는 목록을 그리는 화면이 배선한다. Switch 의 아리아 전환은 toggle 코어 자신의 런타임이 담당한다(list-row 가 별도로 담당하지 않는다)."
   },
-  "sourceFingerprint": "5ffe762d821e7dd8b84414fb67d27b6f7eba26eafbf6e285dd112fbf0513bdca"
+  "sourceFingerprint": "a4f30dff43b3db3e027805c792b6aded21beae3b43810ea371f9e1fac3bb429f"
 }

@@ -73,11 +73,28 @@
     </span>
   </div>
 
+  <!-- thumbnail 은 슬롯이다 — 비워 두면 정본 자리표시(40 각 회색)만 보인다. -->
   <div data-s1-component="list-row" data-type="thumb" data-state="default">
     <div data-s1-part="thumbnail" aria-hidden="true"></div>
     <div data-s1-part="text">
       <span data-s1-part="title">여행 사진</span>
       <span data-s1-part="description">2026년 9월 14일</span>
+    </div>
+  </div>
+
+  <!-- thumbnail 슬롯에 실제 그림을 채운 예시 — 외부 의존 없는 인라인 SVG. 채워지면 자리표시
+       회색은 사라지고(:empty 아님) 40 각 안에서 잘려 채워진다. -->
+  <div data-s1-component="list-row" data-type="thumb" data-state="default">
+    <div data-s1-part="thumbnail">
+      <svg viewBox="0 0 40 40" role="img" aria-hidden="true">
+        <rect width="40" height="40" fill="#8FA8FF"></rect>
+        <circle cx="14" cy="16" r="5" fill="#FFFFFF"></circle>
+        <path d="M0 34 L14 20 L24 30 L30 24 L40 34 V40 H0 Z" fill="#FFFFFF" opacity="0.85"></path>
+      </svg>
+    </div>
+    <div data-s1-part="text">
+      <span data-s1-part="title">프로필 사진</span>
+      <span data-s1-part="description">그림을 채운 예시</span>
     </div>
   </div>
 

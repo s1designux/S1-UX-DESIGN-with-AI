@@ -1305,14 +1305,20 @@ async function buildListRow(maps: BuildMaps, originY: number): Promise<{ set: Co
       } else if (t === "Thumb") {
         // 그림 40 — 선례 buildBottomSheetOption 의 아바타와 같은 크기. 글 자리(44)보다 작아
         //   이 줄만 높이가 튀지 않는다. 모양은 사각(그림용)이라 radius 토큰만 다르게 쓴다.
+        //   ▸ **슬롯**으로 둔다(river 2026-09-21 "사진이 들어갈 자리는 슬롯으로 교체해줘") —
+        //     사진·아이콘·아바타 무엇이든 넣고 뺄 수 있고, 비우면 자리표시 사각만 남는다.
         const box = figma.createFrame();
-        box.name = "thumbnail";
+        box.name = "자리표시";
         box.resize(40, 40);
         box.setBoundVariable("width", numv("sizing/40"));
         box.setBoundVariable("height", numv("sizing/40"));
         box.fills = [boundPaint(scv(maps, "color/bg/level-2"))];
         bindRadius(box, maps, "radius/4");
-        comp.appendChild(box);
+        await makeSlot(comp, "그림",
+          "사진·아이콘·아바타가 들어가는 자리. 기본은 40 각 자리표시이며, **자리표시를 빼고 넣을 것을 그 자리에 넣는다**(둘을 같이 두면 왼쪽 칸이 둘이 된다). 비워 두면 자리표시만 남는다. 줄 높이(68)는 글 자리가 정하므로 40 보다 큰 것을 넣지 않는다.",
+          [box], [],
+          { layoutMode: "HORIZONTAL", primaryAxisSizingMode: "AUTO", counterAxisSizingMode: "AUTO",
+            primaryAxisAlignItems: "CENTER", counterAxisAlignItems: "CENTER", itemSpacing: 0 });
         box.layoutSizingHorizontal = "FIXED";
         box.layoutSizingVertical = "FIXED";
       }

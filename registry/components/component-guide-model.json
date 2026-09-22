@@ -120729,50 +120729,40 @@
             },
             "children": [
               {
-                "type": "FRAME",
-                "name": "thumbnail",
+                "type": "SLOT",
+                "name": "그림",
                 "dimensions": {
-                  "width": 40,
-                  "height": 40
+                  "width": null,
+                  "height": null
                 },
                 "position": {
                   "x": null,
                   "y": null
                 },
                 "layout": {
-                  "layoutMode": null,
-                  "primaryAxisSizingMode": null,
-                  "counterAxisSizingMode": null,
-                  "primaryAxisAlignItems": null,
-                  "counterAxisAlignItems": null,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "AUTO",
+                  "counterAxisSizingMode": "AUTO",
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": "FIXED",
-                  "layoutSizingVertical": "FIXED",
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
-                    "top": null,
-                    "right": null,
-                    "bottom": null,
-                    "left": null
+                    "top": 0,
+                    "right": 0,
+                    "bottom": 0,
+                    "left": 0
                   },
-                  "gap": null
+                  "gap": 0
                 },
                 "text": null,
                 "appearance": {
-                  "fill": "color/bg/level-2",
+                  "fill": "(없음)",
                   "stroke": null,
-                  "fillPaints": [
-                    {
-                      "type": "SOLID",
-                      "__tokenKey": "color/bg/level-2",
-                      "color": {
-                        "r": 0,
-                        "g": 0,
-                        "b": 0
-                      }
-                    }
-                  ],
+                  "fillPaints": [],
                   "strokePaints": [],
                   "opacity": null,
                   "strokeWeight": null,
@@ -120789,15 +120779,80 @@
                   "effects": null
                 },
                 "asset": null,
-                "boundVariables": {
-                  "bottomLeftRadius": "radius/4",
-                  "bottomRightRadius": "radius/4",
-                  "height": "sizing/40",
-                  "topLeftRadius": "radius/4",
-                  "topRightRadius": "radius/4",
-                  "width": "sizing/40"
-                },
-                "children": []
+                "boundVariables": {},
+                "children": [
+                  {
+                    "type": "FRAME",
+                    "name": "자리표시",
+                    "dimensions": {
+                      "width": 40,
+                      "height": 40
+                    },
+                    "position": {
+                      "x": null,
+                      "y": null
+                    },
+                    "layout": {
+                      "layoutMode": null,
+                      "primaryAxisSizingMode": null,
+                      "counterAxisSizingMode": null,
+                      "primaryAxisAlignItems": null,
+                      "counterAxisAlignItems": null,
+                      "layoutGrow": null,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": "FIXED",
+                      "layoutSizingVertical": "FIXED",
+                      "minWidth": null,
+                      "padding": {
+                        "top": null,
+                        "right": null,
+                        "bottom": null,
+                        "left": null
+                      },
+                      "gap": null
+                    },
+                    "text": null,
+                    "appearance": {
+                      "fill": "color/bg/level-2",
+                      "stroke": null,
+                      "fillPaints": [
+                        {
+                          "type": "SOLID",
+                          "__tokenKey": "color/bg/level-2",
+                          "color": {
+                            "r": 0,
+                            "g": 0,
+                            "b": 0
+                          }
+                        }
+                      ],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": null,
+                      "strokeTopWeight": null,
+                      "strokeRightWeight": null,
+                      "strokeBottomWeight": null,
+                      "strokeLeftWeight": null,
+                      "cornerRadius": null,
+                      "topLeftRadius": null,
+                      "topRightRadius": null,
+                      "bottomLeftRadius": null,
+                      "bottomRightRadius": null,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": null,
+                    "boundVariables": {
+                      "bottomLeftRadius": "radius/4",
+                      "bottomRightRadius": "radius/4",
+                      "height": "sizing/40",
+                      "topLeftRadius": "radius/4",
+                      "topRightRadius": "radius/4",
+                      "width": "sizing/40"
+                    },
+                    "children": []
+                  }
+                ]
               },
               {
                 "type": "FRAME",
@@ -120998,6 +121053,13 @@
                     "children": []
                   }
                 ]
+              }
+            ],
+            "componentProperties": [
+              {
+                "name": "그림",
+                "type": "SLOT",
+                "description": "사진·아이콘·아바타가 들어가는 자리. 기본은 40 각 자리표시이며, **자리표시를 빼고 넣을 것을 그 자리에 넣는다**(둘을 같이 두면 왼쪽 칸이 둘이 된다). 비워 두면 자리표시만 남는다. 줄 높이(68)는 글 자리가 정하므로 40 보다 큰 것을 넣지 않는다."
               }
             ]
           }
@@ -121078,50 +121140,40 @@
             },
             "children": [
               {
-                "type": "FRAME",
-                "name": "thumbnail",
+                "type": "SLOT",
+                "name": "그림",
                 "dimensions": {
-                  "width": 40,
-                  "height": 40
+                  "width": null,
+                  "height": null
                 },
                 "position": {
                   "x": null,
                   "y": null
                 },
                 "layout": {
-                  "layoutMode": null,
-                  "primaryAxisSizingMode": null,
-                  "counterAxisSizingMode": null,
-                  "primaryAxisAlignItems": null,
-                  "counterAxisAlignItems": null,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "AUTO",
+                  "counterAxisSizingMode": "AUTO",
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": "FIXED",
-                  "layoutSizingVertical": "FIXED",
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
-                    "top": null,
-                    "right": null,
-                    "bottom": null,
-                    "left": null
+                    "top": 0,
+                    "right": 0,
+                    "bottom": 0,
+                    "left": 0
                   },
-                  "gap": null
+                  "gap": 0
                 },
                 "text": null,
                 "appearance": {
-                  "fill": "color/bg/level-2",
+                  "fill": "(없음)",
                   "stroke": null,
-                  "fillPaints": [
-                    {
-                      "type": "SOLID",
-                      "__tokenKey": "color/bg/level-2",
-                      "color": {
-                        "r": 0,
-                        "g": 0,
-                        "b": 0
-                      }
-                    }
-                  ],
+                  "fillPaints": [],
                   "strokePaints": [],
                   "opacity": null,
                   "strokeWeight": null,
@@ -121138,15 +121190,80 @@
                   "effects": null
                 },
                 "asset": null,
-                "boundVariables": {
-                  "bottomLeftRadius": "radius/4",
-                  "bottomRightRadius": "radius/4",
-                  "height": "sizing/40",
-                  "topLeftRadius": "radius/4",
-                  "topRightRadius": "radius/4",
-                  "width": "sizing/40"
-                },
-                "children": []
+                "boundVariables": {},
+                "children": [
+                  {
+                    "type": "FRAME",
+                    "name": "자리표시",
+                    "dimensions": {
+                      "width": 40,
+                      "height": 40
+                    },
+                    "position": {
+                      "x": null,
+                      "y": null
+                    },
+                    "layout": {
+                      "layoutMode": null,
+                      "primaryAxisSizingMode": null,
+                      "counterAxisSizingMode": null,
+                      "primaryAxisAlignItems": null,
+                      "counterAxisAlignItems": null,
+                      "layoutGrow": null,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": "FIXED",
+                      "layoutSizingVertical": "FIXED",
+                      "minWidth": null,
+                      "padding": {
+                        "top": null,
+                        "right": null,
+                        "bottom": null,
+                        "left": null
+                      },
+                      "gap": null
+                    },
+                    "text": null,
+                    "appearance": {
+                      "fill": "color/bg/level-2",
+                      "stroke": null,
+                      "fillPaints": [
+                        {
+                          "type": "SOLID",
+                          "__tokenKey": "color/bg/level-2",
+                          "color": {
+                            "r": 0,
+                            "g": 0,
+                            "b": 0
+                          }
+                        }
+                      ],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": null,
+                      "strokeTopWeight": null,
+                      "strokeRightWeight": null,
+                      "strokeBottomWeight": null,
+                      "strokeLeftWeight": null,
+                      "cornerRadius": null,
+                      "topLeftRadius": null,
+                      "topRightRadius": null,
+                      "bottomLeftRadius": null,
+                      "bottomRightRadius": null,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": null,
+                    "boundVariables": {
+                      "bottomLeftRadius": "radius/4",
+                      "bottomRightRadius": "radius/4",
+                      "height": "sizing/40",
+                      "topLeftRadius": "radius/4",
+                      "topRightRadius": "radius/4",
+                      "width": "sizing/40"
+                    },
+                    "children": []
+                  }
+                ]
               },
               {
                 "type": "FRAME",
@@ -121348,6 +121465,13 @@
                   }
                 ]
               }
+            ],
+            "componentProperties": [
+              {
+                "name": "그림",
+                "type": "SLOT",
+                "description": "사진·아이콘·아바타가 들어가는 자리. 기본은 40 각 자리표시이며, **자리표시를 빼고 넣을 것을 그 자리에 넣는다**(둘을 같이 두면 왼쪽 칸이 둘이 된다). 비워 두면 자리표시만 남는다. 줄 높이(68)는 글 자리가 정하므로 40 보다 큰 것을 넣지 않는다."
+              }
             ]
           }
         },
@@ -121427,50 +121551,40 @@
             },
             "children": [
               {
-                "type": "FRAME",
-                "name": "thumbnail",
+                "type": "SLOT",
+                "name": "그림",
                 "dimensions": {
-                  "width": 40,
-                  "height": 40
+                  "width": null,
+                  "height": null
                 },
                 "position": {
                   "x": null,
                   "y": null
                 },
                 "layout": {
-                  "layoutMode": null,
-                  "primaryAxisSizingMode": null,
-                  "counterAxisSizingMode": null,
-                  "primaryAxisAlignItems": null,
-                  "counterAxisAlignItems": null,
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "AUTO",
+                  "counterAxisSizingMode": "AUTO",
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": "FIXED",
-                  "layoutSizingVertical": "FIXED",
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
-                    "top": null,
-                    "right": null,
-                    "bottom": null,
-                    "left": null
+                    "top": 0,
+                    "right": 0,
+                    "bottom": 0,
+                    "left": 0
                   },
-                  "gap": null
+                  "gap": 0
                 },
                 "text": null,
                 "appearance": {
-                  "fill": "color/bg/level-2",
+                  "fill": "(없음)",
                   "stroke": null,
-                  "fillPaints": [
-                    {
-                      "type": "SOLID",
-                      "__tokenKey": "color/bg/level-2",
-                      "color": {
-                        "r": 0,
-                        "g": 0,
-                        "b": 0
-                      }
-                    }
-                  ],
+                  "fillPaints": [],
                   "strokePaints": [],
                   "opacity": null,
                   "strokeWeight": null,
@@ -121487,15 +121601,80 @@
                   "effects": null
                 },
                 "asset": null,
-                "boundVariables": {
-                  "bottomLeftRadius": "radius/4",
-                  "bottomRightRadius": "radius/4",
-                  "height": "sizing/40",
-                  "topLeftRadius": "radius/4",
-                  "topRightRadius": "radius/4",
-                  "width": "sizing/40"
-                },
-                "children": []
+                "boundVariables": {},
+                "children": [
+                  {
+                    "type": "FRAME",
+                    "name": "자리표시",
+                    "dimensions": {
+                      "width": 40,
+                      "height": 40
+                    },
+                    "position": {
+                      "x": null,
+                      "y": null
+                    },
+                    "layout": {
+                      "layoutMode": null,
+                      "primaryAxisSizingMode": null,
+                      "counterAxisSizingMode": null,
+                      "primaryAxisAlignItems": null,
+                      "counterAxisAlignItems": null,
+                      "layoutGrow": null,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": "FIXED",
+                      "layoutSizingVertical": "FIXED",
+                      "minWidth": null,
+                      "padding": {
+                        "top": null,
+                        "right": null,
+                        "bottom": null,
+                        "left": null
+                      },
+                      "gap": null
+                    },
+                    "text": null,
+                    "appearance": {
+                      "fill": "color/bg/level-2",
+                      "stroke": null,
+                      "fillPaints": [
+                        {
+                          "type": "SOLID",
+                          "__tokenKey": "color/bg/level-2",
+                          "color": {
+                            "r": 0,
+                            "g": 0,
+                            "b": 0
+                          }
+                        }
+                      ],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": null,
+                      "strokeTopWeight": null,
+                      "strokeRightWeight": null,
+                      "strokeBottomWeight": null,
+                      "strokeLeftWeight": null,
+                      "cornerRadius": null,
+                      "topLeftRadius": null,
+                      "topRightRadius": null,
+                      "bottomLeftRadius": null,
+                      "bottomRightRadius": null,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": null,
+                    "boundVariables": {
+                      "bottomLeftRadius": "radius/4",
+                      "bottomRightRadius": "radius/4",
+                      "height": "sizing/40",
+                      "topLeftRadius": "radius/4",
+                      "topRightRadius": "radius/4",
+                      "width": "sizing/40"
+                    },
+                    "children": []
+                  }
+                ]
               },
               {
                 "type": "FRAME",
@@ -121696,6 +121875,13 @@
                     "children": []
                   }
                 ]
+              }
+            ],
+            "componentProperties": [
+              {
+                "name": "그림",
+                "type": "SLOT",
+                "description": "사진·아이콘·아바타가 들어가는 자리. 기본은 40 각 자리표시이며, **자리표시를 빼고 넣을 것을 그 자리에 넣는다**(둘을 같이 두면 왼쪽 칸이 둘이 된다). 비워 두면 자리표시만 남는다. 줄 높이(68)는 글 자리가 정하므로 40 보다 큰 것을 넣지 않는다."
               }
             ]
           }

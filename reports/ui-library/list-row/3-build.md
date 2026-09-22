@@ -110,3 +110,19 @@ river 지시("오늘 만든 리스트는 모바일에서만 사용하는 패턴�
 - `pages/ui-review.html`의 List Row 검수 패널은 여전히 옛 계약(Density 2축·State 4종=56칸, Hover 라벨 포함)이다 — 오케스트레이터가 따로 맡기로 해 건드리지 않았다. 지금 상태로 열면 `data-state="hover"` 칸이 더 이상 배경이 바뀌지 않아(계약 변경 그대로 반영됨) 보이지만, 축 설명(56칸·Hover 라벨)은 갱신이 필요하다.
 - `registry/components/list-row.json`·`build-components.ts`는 오케스트레이터가 이미 갱신해 둔 정본이라 손대지 않았다.
 - `workflow-state.json`은 수정하지 않았다(오케스트레이터 소관).
+
+## 후속 — thumbnail 을 슬롯으로 교체 (2026-09-21, 🧱 ui-library-builder)
+
+river 지시("사진이 들어갈 자리는 슬롯으로 교체해줄래?") 반영. 정본은 이미 바뀌어 있었다(`buildListRow` 의 Thumb 왼쪽 자리가 `makeSlot(comp, "그림", …)` 로 감싸졌고, 기본 내용은 그대로 40 각 자리표시 · 부품 이름만 `thumbnail` → `자리표시`, Gate 34 승인 기록 `componentprop:그림` 완료) — 배포본만 같은 뜻을 마크업 계약으로 맞췄다.
+
+- `list-row.css` — `[data-s1-part="thumbnail"]` 을 채움 자리로 바꿨다. 배경은 `:empty` 일 때만 `--color-bg-level-2` 를 준다(비어 있을 때만 회색 자리표시). `overflow:hidden` 을 더하고, 안쪽 `img`/`svg` 는 `width/height:100%` + `object-fit:cover` 로 40 각 안에서 잘려 채워지게 했다. 크기(`--sizing-40`)·radius(`--radius-4`)는 그대로.
+- `manifest.json` — `contentSlots.thumbnail` 신설(슬롯임을 명시, 비었을 때/채웠을 때 동작 서술), `htmlContract.typeStructure.thumb`·`geometry.thumbnail.note` 에 슬롯 문구 추가.
+- `list-row.example.html` — Thumb 유형에 두 줄을 보인다: 기존 빈 자리표시 줄(`여행 사진`) + 인라인 SVG로 실제 그림을 채운 줄(`프로필 사진`, 외부 의존 없음).
+- `canonicalFingerprint` 재계산(`ui:version:refresh`) 후 `ui:bump`(값만 바뀐 변경으로 판단 — patch) → **0.12.1 → 0.12.2**. `ui:build`(278 files) 재생성.
+- `ui:build:check` · `ui:contract` · `ui:test:check` · `ui:version` 전부 PASS(28/28 일치).
+- 실제 dist(`tokens.css`+`typography.css`+`list-row.css`+`checkbox.css`+`toggle.css`)를 http로 로드해 Thumb 두 줄을 직접 재본 결과: 빈 자리 `h=68, 배경=rgb(245,245,245)(level-2), 40×40` / 채운 자리 `h=68, 배경=투명(그림 위로 회색 안 보임), 40×40, overflow=hidden`. 줄 높이는 그림 유무와 무관하게 68로 유지됨을 확인.
+
+### 미해결 — 내가 손대지 않은 것
+- `pages/ui-review.html` 은 손대지 않았다(오케스트레이터 소관, 이번 지시에도 제외 명시).
+- `registry/components/list-row.json`·`build-components.ts` 는 오케스트레이터가 이미 갱신해 둔 정본이라 손대지 않았다.
+- `workflow-state.json` 은 수정하지 않았다(오케스트레이터 소관).

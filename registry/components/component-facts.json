@@ -3,7 +3,7 @@
     "generated": true,
     "source": "plugins/figma-vars-installer/src/build-components.ts",
     "method": "mock-execution",
-    "sourceHash": "e37766d6fb8e",
+    "sourceHash": "961f1acbd157",
     "unknownValuePolicy": [
       "unknown",
       "not-defined",
@@ -2155,8 +2155,8 @@
       "anatomy": [
         "control",
         "text",
-        "thumbnail",
-        "trail"
+        "trail",
+        "그림"
       ],
       "tokenBindings": [
         "color/bg/level-0",
@@ -2186,7 +2186,10 @@
           "Checkbox",
           "Toggle"
         ]
-      }
+      },
+      "slots": [
+        "그림"
+      ]
     },
     "Input": {
       "variantAxes": {
