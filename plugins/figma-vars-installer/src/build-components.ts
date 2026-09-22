@@ -1284,12 +1284,14 @@ async function buildListRow(maps: BuildMaps, originY: number): Promise<{ set: Co
 
       // ── 왼쪽 칸 — 체크(Pick·Agree) · 그림(Thumb) ──────────────────────
       if (t === "Pick" || t === "Agree") {
+        // ▸ **슬롯**으로 둔다(river 2026-09-22) — 기본은 체크지만 라디오·아이콘으로 갈아끼울 수 있다.
         const chkState = st === "Disabled" ? "Disabled" : "Default";
         const chk = await reuseVariant("Checkbox", `Checkbox:${chkState}`, [`State=${chkState}`]);
+        const contents: SceneNode[] = [];
         if (chk) {
           const inst = chk.createInstance();
           inst.name = "control";
-          comp.appendChild(inst);
+          contents.push(inst);
         } else {
           // 선례 buildDropdownList 와 같은 자리 — 조용히 빈자리로 두지 않고 정본 buildCheckbox 와
           //   같은 토큰으로 임시 도형을 그린다(체크박스 없이 단독 설치되는 경우).
@@ -1299,8 +1301,17 @@ async function buildListRow(maps: BuildMaps, originY: number): Promise<{ set: Co
           box.fills = [boundPaint(scv(maps, st === "Disabled" ? "color/control/bg/disabled" : "color/control/bg/default"))];
           box.strokes = [boundPaint(scv(maps, st === "Disabled" ? "color/control/border/disabled" : "color/control/border/default"))];
           box.strokeWeight = 1; box.strokeAlign = "INSIDE";
-          comp.appendChild(box);
-          box.layoutSizingHorizontal = "FIXED"; box.layoutSizingVertical = "FIXED";
+          contents.push(box);
+        }
+        const radioSet = await getBuiltSet("Radio");
+        await makeSlot(comp, "왼쪽 칸",
+          "고르는 표시가 들어가는 자리. 기본은 체크이며, 들어 있는 것을 빼고 라디오·아이콘 같은 다른 부품을 그 자리에 넣는다. 비워 두면 왼쪽 칸이 없는 줄이 된다.",
+          contents,
+          radioSet ? [{ type: "COMPONENT_SET", key: radioSet.key }] : [],
+          { layoutMode: "HORIZONTAL", primaryAxisSizingMode: "AUTO", counterAxisSizingMode: "AUTO",
+            primaryAxisAlignItems: "CENTER", counterAxisAlignItems: "CENTER", itemSpacing: 0 });
+        for (const c of contents) {
+          try { (c as FrameNode).layoutSizingHorizontal = "FIXED"; (c as FrameNode).layoutSizingVertical = "FIXED"; } catch (e) { /* 인스턴스는 자기 크기를 지킨다 */ }
         }
       } else if (t === "Thumb") {
         // 그림 40 — 선례 buildBottomSheetOption 의 아바타와 같은 크기. 글 자리(44)보다 작아
@@ -1336,7 +1347,9 @@ async function buildListRow(maps: BuildMaps, originY: number): Promise<{ set: Co
       text.minHeight = 44;
       try { text.setBoundVariable("minHeight", numv("sizing/44")); } catch (e) { /* 구버전 API */ }
       text.appendChild(await makeBoundText("제목", 16, "Medium", scv(maps, titleKey(st)), "title/16M"));
-      text.appendChild(await makeBoundText("설명", 14, "Regular", scv(maps, descKey(st)), "body/14R"));
+      const descNode = await makeBoundText("설명", 14, "Regular", scv(maps, descKey(st)), "body/14R");
+      descNode.name = "description";   // 아래에서 '설명 보임' 스위치에 묶는다 — 이름이 곧 연결 고리다
+      text.appendChild(descNode);
       comp.appendChild(text);
       text.layoutGrow = 1;
       text.layoutSizingHorizontal = "FILL";
@@ -1344,17 +1357,12 @@ async function buildListRow(maps: BuildMaps, originY: number): Promise<{ set: Co
       // ── 오른쪽 칸 — 값 · 화살표 · 토글 ──────────────────────────────
       const needsTrail = t === "Nav" || t === "Value" || t === "Agree" || t === "Switch";
       if (needsTrail) {
-        const trail = figma.createFrame();
-        trail.name = "trail";
-        trail.layoutMode = "HORIZONTAL";
-        trail.counterAxisAlignItems = "CENTER";
-        trail.primaryAxisSizingMode = "AUTO";
-        trail.counterAxisSizingMode = "AUTO";
-        trail.fills = [];
-        // 오른쪽 칸 내부(값↔화살표) 8 — 선례 buildBottomSheetOption 선택행의 itemSpacing 8.
-        trail.setBoundVariable("itemSpacing", numv("spacing/8"));
+        // ▸ 오른쪽 칸도 **슬롯**이다(river 2026-09-22) — 유형이 주는 기본(화살표·값·토글) 위에
+        //   작은 버튼·배지 같은 것으로 갈아끼울 수 있다. 슬롯 자체가 오른쪽 칸 역할을 하므로
+        //   내부 간격(값↔화살표 8)은 슬롯에 건다.
+        const trailContents: SceneNode[] = [];
         if (t === "Value") {
-          trail.appendChild(await makeBoundText("값", 14, "Regular", scv(maps, valueKey(st)), "body/14R"));
+          trailContents.push(await makeBoundText("값", 14, "Regular", scv(maps, valueKey(st)), "body/14R"));
         }
         if (t === "Switch") {
           const tgState = st === "Disabled" ? "Disabled" : "Default";
@@ -1362,7 +1370,7 @@ async function buildListRow(maps: BuildMaps, originY: number): Promise<{ set: Co
           if (tg) {
             const inst = tg.createInstance();
             inst.name = "toggle";
-            trail.appendChild(inst);
+            trailContents.push(inst);
           } else {
             // 정본 buildToggle 과 같은 치수·토큰으로 임시 도형(트랙 40×20 + 노브 16).
             console.warn(`[List Row] Toggle 을 찾지 못해 임시 도형으로 그립니다 (State=${tgState}) — Toggle 을 먼저 설치하면 인스턴스로 붙습니다.`);
@@ -1373,15 +1381,22 @@ async function buildListRow(maps: BuildMaps, originY: number): Promise<{ set: Co
             knob.resize(16, 16);
             knob.fills = [boundPaint(scv(maps, st === "Disabled" ? "color/control/indicator/disabled" : "color/control/indicator/selected"))];
             track.appendChild(knob); knob.x = 22; knob.y = 2;
-            trail.appendChild(track);
-            track.layoutSizingHorizontal = "FIXED"; track.layoutSizingVertical = "FIXED";
+            trailContents.push(track);
           }
         } else {
           // 폴백 SVG 도 정본 상수를 그대로 쓴다(사본을 만들지 않는다 — 선 굵기 같은 값이 갈리지 않게).
-          trail.appendChild(await makeIconInstance("chevron", scv(maps, iconKey(st)), 24, CHEVRON_RIGHT_SVG, 0, { wrap: false }));
+          trailContents.push(await makeIconInstance("chevron", scv(maps, iconKey(st)), 24, CHEVRON_RIGHT_SVG, 0, { wrap: false }));
         }
-        comp.appendChild(trail);
-        trail.layoutSizingHorizontal = "HUG";
+        const trail = await makeSlot(comp, "오른쪽 칸",
+          "줄 오른쪽에 붙는 것이 들어가는 자리. 유형이 기본을 준다 — 이동·동의는 화살표, 값 줄은 값+화살표, 토글 줄은 토글. 들어 있는 것을 빼고 작은 버튼·배지 같은 다른 부품을 그 자리에 넣을 수 있고, 비워 두면 오른쪽이 없는 줄이 된다.",
+          trailContents, [],
+          { layoutMode: "HORIZONTAL", primaryAxisSizingMode: "AUTO", counterAxisSizingMode: "AUTO",
+            primaryAxisAlignItems: "CENTER", counterAxisAlignItems: "CENTER" });
+        // 오른쪽 칸 내부(값↔화살표) 8 — 선례 buildBottomSheetOption 선택행의 itemSpacing 8.
+        trail.setBoundVariable("itemSpacing", numv("spacing/8"));
+        for (const c of trailContents) {
+          try { (c as FrameNode).layoutSizingHorizontal = "FIXED"; (c as FrameNode).layoutSizingVertical = "FIXED"; } catch (e) { /* 글자·인스턴스는 자기 크기를 지킨다 */ }
+        }
       }
 
       setLightMode(comp, maps);
@@ -1393,6 +1408,16 @@ async function buildListRow(maps: BuildMaps, originY: number): Promise<{ set: Co
   const set = figma.combineAsVariants(comps, figma.currentPage);
   set.name = "List Row";
   set.x = 0; set.y = originY;
+  // '설명 보임' 스위치 — 끄면 제목만 남는 한 줄이 된다(river 결정 2026-09-22 "A로 넣어줘").
+  //   글 자리는 슬롯으로 열지 않는다 — 글자 규칙(제목 16 Medium · 설명 14 Regular)을 부품이 계속 지켜야 한다.
+  //   높이는 글 자리 최소 44 가 잡으므로 스위치를 꺼도 68 그대로다.
+  //   선례: buildInput 의 "Password Icon" BOOLEAN — 레이어 visible 을 속성에 묶는 같은 방식.
+  const descPropId = set.addComponentProperty("설명 보임", "BOOLEAN", true);
+  for (const c of comps) {
+    const textFrame = c.findChild((n: SceneNode) => n.name === "text") as FrameNode | null;
+    const desc = textFrame ? textFrame.findOne((n: SceneNode) => n.name === "description") : null;
+    if (desc) desc.componentPropertyReferences = { visible: descPropId };
+  }
   cells.forEach((c) => { BUILT_COMPS[`ListRow:${c.type}:${c.state}`] = c.comp; });
 
   const opts: SpecOpts = {

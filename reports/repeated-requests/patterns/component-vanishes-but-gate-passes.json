@@ -1,0 +1,14 @@
+{
+  "id": "component-vanishes-but-gate-passes",
+  "category": "uncategorized",
+  "label": "부품이 사라져도 검문소가 초록",
+  "count": 1,
+  "promotionStatus": "watching",
+  "occurrences": [
+    {
+      "date": "2026-09-22",
+      "summary": "빌더가 컴포넌트 생성에 실패해 세트가 통째로 사라져도 건별 try/catch 가 예외를 삼켜 검문소가 통과한다 — 2026-09-22 List Row 가 anatomy 검사에서 빠져 있던 것을 우연히 발견"
+    }
+  ],
+  "recommendedRule": "빌드 결과 세트 목록을 기대치(COMPONENT_CATEGORIES_GRID members)와 대조해 빠진 부품이 있으면 error 로 막는다"
+}

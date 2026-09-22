@@ -4354,9 +4354,13 @@
   cursor: not-allowed;
 }
 
-/* ── 왼쪽 칸 — 그림(Thumb, 40×40 — 선례 Bottom Sheet Option 아바타와 같은 크기). 체크(Pick·Agree)는
-   checkbox 코어를 그대로 조립하므로 이 컴포넌트가 내부를 그리지 않는다 — 자리(flex-shrink)만 준다
-   (계약 compositionOwner). 40 은 글 자리 최소 높이(44)보다 작아 이 줄만 높이가 튀지 않는다.
+/* ── 왼쪽 칸 — 그림(Thumb, 40×40 — 선례 Bottom Sheet Option 아바타와 같은 크기) · 고르는 표시
+   (Pick·Agree, 기본은 checkbox 코어 control 만). 체크·토글 같은 다른 코어를 그대로 조립하므로
+   이 컴포넌트가 그 내부를 그리지 않는다 — 자리(flex)만 준다(계약 compositionOwner).
+   [data-s1-part="lead"] 는 Pick·Agree 의 **슬롯**이다(정본 build-components.ts makeSlot "왼쪽 칸",
+   river 2026-09-22 "둘 다 슬롯으로 바꿔줘"). 기본은 checkbox control 이며, 쓰는 화면이
+   빼고 radio 같은 다른 부품으로 갈아끼우거나 비울 수 있다. 40 은 글 자리 최소 높이(44)보다
+   작아 이 줄만 높이가 튀지 않는다.
 
    thumbnail 은 **슬롯**이다(정본 build-components.ts makeSlot "그림", river 2026-09-21 "사진이
    들어갈 자리는 슬롯으로 교체해줄래"). 쓰는 화면이 그 안에 <img>·아이콘·아바타를 넣거나 비워 둔다.
@@ -4391,8 +4395,18 @@
   width: 100%;
 }
 
-[data-s1-component="list-row"] > [data-s1-component="checkbox"] {
+[data-s1-component="list-row"] [data-s1-part="lead"] {
+  align-items: center;
+  display: flex;
   flex: none;
+  max-height: var(--sizing-44);
+  overflow: hidden;
+}
+
+/* 비워 두면(내용을 빼고 아무것도 채우지 않으면) 왼쪽 칸 자체가 사라진다 — 빈 자리에 gap 만큼
+   여백이 남지 않게 한다(river 가 말한 규칙이 아니라 구현 판단 — 빈 자리가 여백으로 남지 않게). */
+[data-s1-component="list-row"] [data-s1-part="lead"]:empty {
+  display: none;
 }
 
 /* ── 가운데 글 — 제목(필수) + 설명(선택). 남는 폭을 차지하고 최소 높이 44(sizing/44) 를 갖는다 —
@@ -4439,12 +4453,23 @@
 
 /* ── 오른쪽 칸 — 화살표(Nav·Agree) · 값+화살표(Value 는 값 글자와 화살표를 함께 받는다 — 정본
    buildListRow 그대로, Switch 만 화살표 대신 toggle) · 토글(Switch). Pick·Read·Thumb 는 없다.
-   내부 간격 8 — 선례 Bottom Sheet Option 선택행의 itemSpacing. ── */
+   내부 간격 8 — 선례 Bottom Sheet Option 선택행의 itemSpacing.
+
+   [data-s1-part="trail"] 은 **슬롯**이다(정본 build-components.ts makeSlot "오른쪽 칸",
+   river 2026-09-22 "둘 다 슬롯으로 바꿔줘"). 유형이 기본(화살표·값·토글)을 주고, 쓰는 화면이
+   그 위에서 작은 버튼·배지 같은 다른 것으로 갈아끼우거나 비울 수 있다. ── */
 [data-s1-component="list-row"] [data-s1-part="trail"] {
   align-items: center;
   display: flex;
   flex: none;
   gap: var(--spacing-8);
+  max-height: var(--sizing-44);
+  overflow: hidden;
+}
+
+/* 비워 두면 오른쪽 칸 자체가 사라진다 — 왼쪽 칸과 같은 규칙(river 2026-09-22). */
+[data-s1-component="list-row"] [data-s1-part="trail"]:empty {
+  display: none;
 }
 
 [data-s1-component="list-row"] [data-s1-part="value"] {

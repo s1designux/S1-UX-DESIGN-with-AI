@@ -32,6 +32,20 @@
 > **정리(2026-06-19):** 완료 항목(구 1·4·7·8·10·15)은 「변경 이력」 표·git 히스토리·각 reports에 보존돼 본 목록에서 제거했다. 아래는 **활성 미결만** 남긴 것이다.
 
 ```
+0-Z. **검문소 사각지대 2건 — 다음 작업 (river 지시 2026-09-22)**
+   - **가.  부품이 사라져도 검문소가 초록이다.** 빌더가 컴포넌트 생성에 실패하면 건별 try/catch 가
+     예외를 삼키고 `threw` 는 경고에 그쳐, 세트가 통째로 없어져도 Gate 11 이 통과한다.
+     2026-09-22 List Row 가 anatomy 검사에서 빠져 있던 것을 우연히 발견했다(원인은 mock 의 고정 슬롯키,
+     그건 고쳤다). 필요한 것은 **빌드 결과 세트 목록 ↔ 기대치(COMPONENT_CATEGORIES_GRID members) 대조**.
+     낱장: `reports/repeated-requests/patterns/component-vanishes-but-gate-passes.json`
+   - **나.  짧은 승인어는 근거로 쓸 수 없다.** Gate 34 는 인용 8자 이상을 요구해
+     "A로 넣어줘"·"좋아"·"그렇게 해" 같은 **가장 명확한 승인**이 근거가 되지 못한다.
+     지금은 `reason` 에 경위를 적는 우회뿐인데 그 칸은 검사기가 대조하지 않는다.
+     필요한 것은 **짧은 승인 발화를 시각과 함께 검증하는 칸**(직전 선택지 제시와 짝지어 확인).
+     낱장: `reports/repeated-requests/patterns/short-approval-word-cannot-be-quoted.json`
+   - 둘 다 **BOOLEAN 속성 결속을 어떤 게이트도 검사하지 않는다**는 같은 계열의 사각지대와 함께 본다
+     (mock 이 대입을 삼키고 facts 스키마에 칸이 없다 — 🤖 component-verifier 13차 관찰).
+
 0-A. **레거시 대응 검수판 — 정본 보강 4건 (river 지시 2026-09-04) — 2026-09-08 시공 완료**
    - 인계서: `reports/legacy-crosswalk-board/NEXT.md` — **새 세션은 이 파일만 읽으면 이어서 할 수 있다**
    - 결과: 신규 컴포넌트 **5**(Assist Button · Text Button · Modal Content · GNB Sub Menu · GNB Sub Menu Item) ·

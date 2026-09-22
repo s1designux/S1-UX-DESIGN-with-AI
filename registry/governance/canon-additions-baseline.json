@@ -1,8 +1,8 @@
 {
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
-  "_updated": "2026-09-21",
-  "count": 662,
+  "_updated": "2026-09-22",
+  "count": 665,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -457,6 +457,9 @@
     "componentprop:Password Icon",
     "componentprop:Tabs",
     "componentprop:그림",
+    "componentprop:설명 보임",
+    "componentprop:오른쪽 칸",
+    "componentprop:왼쪽 칸",
     "number:border-width/1",
     "number:border-width/2",
     "number:breakpoint/2xl",
@@ -1419,6 +1422,43 @@
         "at": "2026-09-21T07:37:44.101Z"
       },
       "recordedBy": "orchestrator"
+    },
+    {
+      "item": "componentprop:왼쪽 칸",
+      "by": "river",
+      "reason": "list-row 의 왼쪽 컨트롤 자리와 오른쪽 칸을 Figma 슬롯으로 교체 — 체크 대신 라디오·아이콘, 화살표 대신 작은 버튼·배지로 갈아끼울 수 있게",
+      "approvedAt": "2026-09-22T04:34:25.023Z",
+      "quote": "둘 다 슬롯으로 바꿔줘",
+      "evidence": {
+        "transcript": "b22a85f4-da52-450b-9ea8-b1de552aafc1.jsonl",
+        "at": "2026-09-22T04:33:50.198Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "componentprop:오른쪽 칸",
+      "by": "river",
+      "reason": "list-row 의 왼쪽 컨트롤 자리와 오른쪽 칸을 Figma 슬롯으로 교체 — 체크 대신 라디오·아이콘, 화살표 대신 작은 버튼·배지로 갈아끼울 수 있게",
+      "approvedAt": "2026-09-22T04:34:26.563Z",
+      "quote": "둘 다 슬롯으로 바꿔줘",
+      "evidence": {
+        "transcript": "b22a85f4-da52-450b-9ea8-b1de552aafc1.jsonl",
+        "at": "2026-09-22T04:33:50.198Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "componentprop:설명 보임",
+      "by": "river",
+      "reason": "설명 줄 켜고 끄는 스위치 — river 가 선택지 (A) 스위치를 골랐다(직후 발화 'A로 넣어줘', 8자 미만이라 직전 맥락 발화를 인용)",
+      "approvedAt": "2026-09-22T04:36:55.011Z",
+      "quote": "글자도 지금은 한줄인데 두줄로 넣는 경우도 있거든",
+      "evidence": {
+        "transcript": "b22a85f4-da52-450b-9ea8-b1de552aafc1.jsonl",
+        "at": "2026-09-22T04:35:46.353Z"
+      },
+      "recordedBy": "orchestrator",
+      "reapprovedAt": "2026-09-22T04:46:34.745Z"
     }
   ],
   "extendedTracking": [

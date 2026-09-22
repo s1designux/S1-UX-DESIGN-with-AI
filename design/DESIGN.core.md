@@ -2608,9 +2608,10 @@ _Don't_
 
 | 요소 | 역할 |
 | --- | --- |
-| 왼쪽 칸(선택) | 비움 · 체크 코어 인스턴스 18 · **그림 슬롯**(사진·아이콘·아바타를 넣는 자리. 기본은 40각 자리표시, 비우면 자리표시만 보인다). |
-| 가운데 글 | 제목과 설명. 남는 폭을 차지하고 최소 높이 44 를 갖는다. |
-| 오른쪽 칸(선택) | 비움 · 화살표 24 · 값 글자 · 값+화살표 · 토글 코어 인스턴스. |
+| 왼쪽 칸(선택 · 슬롯) | 기본은 체크 코어 인스턴스 18. 라디오·아이콘으로 갈아끼울 수 있고 비울 수 있다. |
+| 그림(Thumb 유형 · 슬롯) | 사진·아이콘·아바타가 들어가는 40각 자리. 기본은 자리표시. |
+| 가운데 글 | 제목과 설명. 남는 폭을 차지하고 최소 높이 44 를 갖는다. 슬롯이 아니다 — 글자를 바꾸는 자리이고, 설명 줄은 '설명 보임' 스위치로 켜고 끈다. |
+| 오른쪽 칸(선택 · 슬롯) | 유형이 주는 기본(화살표 24 · 값 · 토글) 위에 작은 버튼·배지로 갈아끼울 수 있다. |
 | 구분선 | 줄과 줄 사이. 줄이 소유하지 않고 목록이 긋는다. |
 
 | variant | default | hover | pressed | disabled |
@@ -2669,10 +2670,10 @@ agent:
       - "toggle"
     mustNotCreate: "not-defined"
     declaredParts:
-      - "control"
       - "text"
-      - "trail"
       - "그림"
+      - "오른쪽 칸"
+      - "왼쪽 칸"
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
@@ -5147,4 +5148,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: f5794f1f4be0 · 손편집 금지 -->
+<!-- generated-stamp: b1219314693b · 손편집 금지 -->

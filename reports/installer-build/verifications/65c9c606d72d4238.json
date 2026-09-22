@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:65c9c606d72d423806ab4f26475723b9221391e3536f0f8a0d690463da8b6b38",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-22T04:48:58.655Z",
+  "notes": "buildListRow 14차 pass — 슬롯 3개(왼쪽 칸·그림·오른쪽 칸) + '설명 보임' BOOLEAN(기본 true, 21칸 결속). 검사기 mock 고정 슬롯키 수정으로 List Row 가 anatomy 검사에서 빠지던 조용한 실패 해소(52→53, 다른 부품 판정 무변동). 승인 인용 정정 2건. 31칸 전수 높이 68 실측. Figma 실물 캔버스 미검증."
+}

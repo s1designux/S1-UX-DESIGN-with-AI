@@ -126,3 +126,53 @@ river 지시("사진이 들어갈 자리는 슬롯으로 교체해줄래?") 반�
 - `pages/ui-review.html` 은 손대지 않았다(오케스트레이터 소관, 이번 지시에도 제외 명시).
 - `registry/components/list-row.json`·`build-components.ts` 는 오케스트레이터가 이미 갱신해 둔 정본이라 손대지 않았다.
 - `workflow-state.json` 은 수정하지 않았다(오케스트레이터 소관).
+
+## 후속 — 왼쪽 칸·오른쪽 칸을 슬롯으로 교체 (2026-09-22, 🧱 ui-library-builder)
+
+river 지시("둘 다 슬롯으로 바꿔줘") 반영. 정본은 이미 바뀌어 있었다(`buildListRow` 의 Pick·Agree 왼쪽 자리가 `makeSlot(comp, "왼쪽 칸", …)` 로, 기존 `trail` 프레임이 `makeSlot(comp, "오른쪽 칸", …)` 로 감싸졌다. Gate 34 승인 기록 `componentprop:왼쪽 칸`·`componentprop:오른쪽 칸` 완료, `registry/components/list-row.json` 의 `slots` 배열도 이미 셋으로 갱신돼 있었다) — 배포본만 같은 뜻을 마크업 계약으로 맞췄다.
+
+- `list-row.css`
+  - 왼쪽 칸 — `[data-s1-component="list-row"] > [data-s1-component="checkbox"] { flex: none; }` 를 지우고 `[data-s1-part="lead"]` 채움 자리 규칙으로 바꿨다(`align-items:center; display:flex; flex:none`). checkbox 는 그 안에 그대로 조립한다.
+  - 오른쪽 칸 — 기존 `[data-s1-part="trail"]` 규칙(정렬·gap 8)은 그대로 두고 슬롯 문서화 주석만 더했다 — trail 은 이미 오른쪽 칸 그 자체였다(구조 변경 없음).
+  - 두 자리 모두 `max-height:var(--sizing-44); overflow:hidden`을 더해, 넣은 것이 글 자리 최소 높이(44)를 넘어도 줄 높이(68)가 튀지 않게 잘라낸다(river 지시 3항 — "막을 수 있으면 막는다"를 CSS로 실제 실행).
+  - 두 자리 모두 `:empty { display:none }`을 더해, 비우면 자리 자체가 사라지게 했다(river 지시 1·2항).
+- `list-row.example.html`
+  - Pick·Agree 의 checkbox 를 `<span data-s1-part="lead">…</span>` 로 감쌌다(기존 checkbox 직계 자식 구조에서 슬롯 래퍼로).
+  - 갈아끼운 보기 2줄 추가: **lead → radio**(카드 결제, Pick 유형 — checkbox 대신 radio control 만) · **trail → text-button**(마케팅 수신 동의, Agree 유형 — 기본 화살표 대신 text-button 코어 "약관 보기").
+- `manifest.json`
+  - `parts`에 `lead` 추가.
+  - `htmlContract.optionalParts`에 `lead` 추가, `typeStructure`의 pick·agree·switch·nav·value 문구에 `(슬롯)` 표시를 달아 lead·trail 이 슬롯임을 명시.
+  - `htmlContract.relations`에 lead·trail 슬롯 규칙(갈아끼우기·비우면 사라짐) 문장 추가.
+  - `contentSlots`에 `lead`·`trail` 항목 신설(적용 대상·기본값·44 초과 시 잘림 규칙·비었을 때 동작 서술).
+- `canonicalFingerprint` 재계산(`ui:version:refresh`) 후 `ui:bump`(값만 바뀐 변경 — 슬롯 자체는 이미 있던 trail 이 대부분이고 lead 도 기존 checkbox 자리에 래퍼만 두른 것이라 patch 로 판단) → **0.12.3 → 0.12.4**. `ui:build`(278 files) 재생성.
+
+## 실행 명령과 결과 (10건 일괄, 2026-09-22)
+
+| 검사기 | 결과 |
+|---|---|
+| `npm run installer:check` | ✅ PASS |
+| `npm run components:keycheck` | ✅ PASS (누락 0) |
+| `npm run components:anatomy` | ✅ PASS (8개 규칙 전부 충족) |
+| `npm run components:iconpolicy` | ✅ PASS (위반 0) |
+| `npm run components:facts` | ✅ PASS (정본 일치) |
+| `npm run ui:build:check` | ✅ PASS (278 files) |
+| `npm run ui:contract` | ✅ PASS (candidate, errors=0) |
+| `npm run ui:test:check` | ✅ PASS |
+| `npm run ui:version` | ✅ PASS (0.12.4, 28/28 일치) |
+| `npm run canon:check` | ✅ PASS (Gate 34, 신설 0건 — 추적 665항목 전부 동결 목록과 일치) |
+
+`components:anatomy` 실행 중 `[installer] "List Row" 생성 실패 — [makeSlot] 오른쪽 칸 슬롯 속성을 찾지 못했습니다` 경고가 찍혔지만 같은 실행의 최종 판정은 `✅ 8개 규칙 전부 충족`으로 PASS했다 — 이 스크립트가 매번 Figma mock 을 새로 부트스트랩하며 컴포넌트 속성을 스스로 등록하는 재시도 경로를 갖고 있어(다른 경고들도 "다크 사본을 못 찾아 인스턴스로 대체" 식으로 같은 패턴), `build-components.ts` 를 이번에 건드리지 않은 나로서는 원인을 더 파고들 소관이 아니라고 판단해 결과(PASS)만 보고한다.
+
+## 실제 렌더 재실측 (http, 2026-09-22)
+
+`reports/ui-library/list-row/matrix-fixture.html` 을 이번 계약(lead 래퍼·trail 슬롯 문서화)에 맞게 갱신했다 — 옛 checkbox 마크업(코어 자신의 label 을 보이던 구조)을 `[data-s1-part="lead"]` 래퍼 + Label=Off 구조로 8곳 교체하고, 갈아끼운 보기 3줄(lead→radio · trail→text-button · lead·trail 둘 다 비운 read 줄)을 추가했다. `python3 -m http.server` 로 로컬 서빙 후 브라우저로 `getBoundingClientRect()` 실측:
+
+- **31줄 전부 `height = 68`** — 21칸(7유형×3상태) + 설명 없는 7줄 + 갈아끼운 보기 3줄, 예외 없음.
+- radio(lead)·text-button(trail) 갈아끼운 보기 모두 스크린샷으로 육안 대조 — 정상 렌더(원(radio) 정렬·"약관 보기" 버튼 정렬 이상 없음).
+- `[data-s1-part="lead"]`·`[data-s1-part="trail"]` 을 빈 `read` 줄에서 눈으로도 확인 — 두 자리 모두 없어 글 자리만 남는다.
+
+### 미해결 — 내가 손대지 않은 것
+- `pages/ui-review.html` 은 손대지 않았다(오케스트레이터 소관, 이번 지시에도 제외 명시).
+- `registry/components/list-row.json`·`build-components.ts` 는 오케스트레이터가 이미 갱신해 둔 정본이라 손대지 않았다.
+- `workflow-state.json` 은 수정하지 않았다(오케스트레이터 소관).
+- `components:anatomy` 의 "오른쪽 칸 슬롯 속성을 찾지 못했습니다" 경고 원인 — `build-components.ts` 소관이라 판정하지 않았다(최종 PASS는 확인).

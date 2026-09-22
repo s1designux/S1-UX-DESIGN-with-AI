@@ -1,0 +1,14 @@
+{
+  "id": "short-approval-word-cannot-be-quoted",
+  "category": "uncategorized",
+  "label": "짧은 승인어는 근거로 못 쓴다",
+  "count": 1,
+  "promotionStatus": "watching",
+  "occurrences": [
+    {
+      "date": "2026-09-22",
+      "summary": "Gate 34 승인 인용이 8자 이상을 요구해 'A로 넣어줘'·'좋아'·'그렇게 해' 같은 가장 명확한 승인어를 근거로 쓸 수 없다 — 우회로 reason 에 적지만 그 칸은 검사기가 대조하지 않는다"
+    }
+  ],
+  "recommendedRule": "짧은 승인 발화도 시각(timestamp)과 함께 검증하는 칸을 두어, 직전 선택지 제시와 짝지어 확인한다"
+}

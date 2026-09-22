@@ -3,7 +3,7 @@
     "generated": true,
     "source": "plugins/figma-vars-installer/src/build-components.ts",
     "method": "mock-execution",
-    "sourceHash": "961f1acbd157",
+    "sourceHash": "65c9c606d72d",
     "unknownValuePolicy": [
       "unknown",
       "not-defined",
@@ -2153,10 +2153,10 @@
         }
       ],
       "anatomy": [
-        "control",
         "text",
-        "trail",
-        "그림"
+        "그림",
+        "오른쪽 칸",
+        "왼쪽 칸"
       ],
       "tokenBindings": [
         "color/bg/level-0",
@@ -2188,7 +2188,9 @@
         ]
       },
       "slots": [
-        "그림"
+        "그림",
+        "오른쪽 칸",
+        "왼쪽 칸"
       ]
     },
     "Input": {

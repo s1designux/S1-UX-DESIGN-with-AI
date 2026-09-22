@@ -55,6 +55,8 @@ const ANATOMY = [
 ];
 
 // ── 만능 auto-stub (콜러블 + 모든 prop) — 미목 API 호출이 throw 하지 않게 ─────
+let slotPropertyCounter = 0;
+
 function makeStub() {
   const f = function () { return makeStub(); };
   return new Proxy(f, {
@@ -90,7 +92,11 @@ function recNode(type) {
       if (prop === "insertChild") return (_i, c) => pushChild(c);
       if (prop === "createSlot" && state.type === "COMPONENT") {
         return () => {
-          state.componentPropertyDefinitions["Slot#mock"] = { type: "SLOT", defaultValue: "" };
+          // 슬롯이 둘 이상인 컴포넌트(List Row 의 왼쪽 칸 + 오른쪽 칸)를 위해 **호출마다 다른 키**를 준다.
+          //   종전에는 고정 키("Slot#mock")라 두 번째 슬롯이 첫 번째를 덮어써, 빌더의 슬롯 확인이
+          //   "새 슬롯 없음"으로 보고 던졌고 그 컴포넌트가 통째로 검사에서 빠졌다(조용한 실패).
+          //   생성기 쪽 mock(scripts/lib/figma-build-mock.js)은 이미 같은 방식으로 일련번호를 쓴다.
+          state.componentPropertyDefinitions[`Slot#mock:${++slotPropertyCounter}`] = { type: "SLOT", defaultValue: "" };
           return recNode("SLOT");
         };
       }
