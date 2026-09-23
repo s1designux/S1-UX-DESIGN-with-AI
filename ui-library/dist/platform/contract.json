@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
     "purpose": "개발 툴과 검사기가 함께 읽는 허용목록. 여기 없는 variant·size·속성은 승인된 적이 없는 것이다.",
-    "canonicalFingerprint": "e8babccae0aae87312fbca6a6fded140d0ba901c998f99102d385f2782107f59"
+    "canonicalFingerprint": "964c65df9a45841d3d8b2d8f0e104e747ee13e0c44be43946113096b6100cb27"
   },
   "components": [
     {
@@ -64,8 +64,8 @@
         "init is idempotent",
         "destroy removes listeners and hides clear action"
       ],
-      "canonicalFingerprint": "5638233892f7bc9913c361ae106c0822692fd50dff37d66a6648d37a9a2ee7de",
-      "sourceFingerprint": "9ce0273ef3f695fd1eee0647d4a854c79391ec86515b53e2626f5cbfff1f265e"
+      "canonicalFingerprint": "37bdbc0b83a7b99e137a538a4fc05d5e7284ef3db22eee1a45ec971bf4f11f21",
+      "sourceFingerprint": "061942e71c3bbefb4f32423222de5a2d3ef4380ebf4bbf95bd2e2f9853e9cbac"
     },
     {
       "id": "button",
@@ -374,8 +374,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "5c33619e76940e30cfde18072b4e3f8a78f1128896998ac9a381841df8433acc",
-      "sourceFingerprint": "bef31d5d0402edd61fccb5ca54474f1c663dac4e15a86a64237b5ccfbc69bfc6"
+      "canonicalFingerprint": "4266ecc8c20d0f60154d106e01f0a0dbd2ebb14933ceabaa4aa1df940a40f96c",
+      "sourceFingerprint": "cde002d0b86b666b7bd2f503e80e75efbe0636c55262a4f61c1084912a13d692"
     },
     {
       "id": "filter-chip",
@@ -871,8 +871,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "575059cdd5a904c5b4aa7441412e7cf5d0ea916876b1d240d5dab3275b496a20",
-      "sourceFingerprint": "00f2908a8f2ef1b6c7d82f6c75cd21d5243d98e35decd042066d1a058d42b6d1"
+      "canonicalFingerprint": "cefa333d4aaaef36bcff1076baca3a99eea37e841e41d1204497658ed3b4fa84",
+      "sourceFingerprint": "0402226be369d351253d8132c1408cb5691e82a414a7219256015b0b5f13529e"
     },
     {
       "id": "date-picker",
@@ -959,8 +959,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "f4fd4334a1df175211579d97db20ece072bcde18c9779805415dc7aa5e98d56b",
-      "sourceFingerprint": "7385e3397e2180c998ce1f1938783b4694c5b143f9dbcd8a1c1aad7076cadf78"
+      "canonicalFingerprint": "c748414909ce4f5c0d29feb1ed958f4f2eea5d4c97ed160d6cc854d62eb9f745",
+      "sourceFingerprint": "0cb7cedc7755843deecc70bb582abb3a947b01c04c6acce59c7c30b8a1b452e5"
     },
     {
       "id": "gnb",

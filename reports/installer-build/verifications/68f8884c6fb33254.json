@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:68f8884c6fb33254053fad76d99c1c11d7bc1ec2b7720a3411d1ad75b09ea53e",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-23T03:38:53.561Z",
+  "notes": "폼 칸 4종 왼쪽 안쪽 여백 12 통일(buildInput·buildSearch·buildSelect·buildDatePicker MD PC/Mobile 16→12, buildTimePicker XXSM 10→12·MD 16→12). 정본 diff 5개 hunk 전부 sizes 표 padL 값만 변경 — padR·h·font·head 무변경, Chip/Filter Chip 표(SM12·MD16·MobileMD12) 무변경. 결정론 게이트 실행: installer:check·components:keycheck·components:anatomy·components:iconpolicy 전부 exit 0. 호출자 기계검사표 8종 재실행 exit 0 재확인(devpanel 은 devpanel:check). 웹 배포본 독립 실측: 신·구 CSS 토글 하네스로 4부품×크기4×break3×상태4×맥락9 1620조합 대조 — 변경 633건 전부 padL=12, padL 이 12 아닌 회귀 0, padR·height 변경 0. dist/preview.html 실렌더 16개 인스턴스 padL 12·글자 시작선 13px(12+보더1) 전부 동일, 폭 입력200·날짜/시간/선택140 유지, 글자 잘림 0·아이콘 겹침 0, hit area PC28·Mobile48 유지, time-picker 24h/12h 패널 정상. 파생(facts 11건·guide-model 82건·DESIGN.core.md) 전부 12 로만 변경, 무관 변경 0. 한계: Figma 캔버스 육안 렌더는 코드 레벨 검증 범위 밖."
+}
