@@ -1500,8 +1500,8 @@
         "icon",
         "panel"
       ],
-      "unreadPcOnly": 10,
-      "unreadDisplayRules": 18,
+      "unreadPcOnly": 11,
+      "unreadDisplayRules": 19,
       "unreadDeclarations": [
         {
           "selector": "[data-s1-component=\"select\"][data-size=\"xxsm\"] [data-s1-part=\"trigger\"]",
@@ -1515,6 +1515,13 @@
           "media": null,
           "property": "height",
           "value": "var(--sizing-28)",
+          "reason": "pc-only"
+        },
+        {
+          "selector": "[data-s1-component=\"select\"][data-size=\"xxsm\"] [data-s1-part=\"trigger\"]",
+          "media": null,
+          "property": "padding-left",
+          "value": "var(--spacing-12)",
           "reason": "pc-only"
         },
         {
@@ -1627,6 +1634,13 @@
           "media": null,
           "property": "height",
           "value": "var(--sizing-28)",
+          "reason": "display-rule"
+        },
+        {
+          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"trigger\"]",
+          "media": null,
+          "property": "padding-left",
+          "value": "var(--spacing-12)",
           "reason": "display-rule"
         },
         {

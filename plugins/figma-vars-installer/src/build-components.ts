@@ -2089,11 +2089,13 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
     { name: "Filled",   bg: "bg/default",  border: "border/default",  tc: "text/selected",    icon: "icon/default",  up: false },
     { name: "Disabled", bg: "bg/disabled", border: "border/disabled", tc: "text/disabled",    icon: "icon/disabled", up: false },
   ];
+  // 좌측 패딩 — 원본 select(540:3397) 실측: pc-xxsm=12, pc-xsm·pc-md·mobile=16.
+  //   XSM 이 Input(12)과 다른 것은 원본이 그렇다(river 확인 대기 항목, 2026-09-23).
   const sizes = [
-    { size: "XXSM", brk: "PC",     h: 28, font: 12 },
-    { size: "XSM",  brk: "PC",     h: 34, font: 14 },
-    { size: "MD",   brk: "PC",     h: 44, font: 14 },
-    { size: "MD",   brk: "Mobile", h: 48, font: 14 },
+    { size: "XXSM", brk: "PC",     h: 28, font: 12, padL: 12 },
+    { size: "XSM",  brk: "PC",     h: 34, font: 14, padL: 16 },
+    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 16 },
+    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16 },
   ];
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];
@@ -2106,7 +2108,7 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
       trigger.counterAxisAlignItems = "CENTER";
       trigger.primaryAxisSizingMode = "FIXED"; trigger.counterAxisSizingMode = "FIXED";
       // Mobile 아이콘 끝 여백 12 — Input·Search 와 같은 자리로 통일(river 결정 2026-09-21).
-      trigger.paddingLeft = 16; trigger.paddingRight = sc.brk === "Mobile" ? 12 : 8; trigger.paddingTop = 0; trigger.paddingBottom = 0;
+      trigger.paddingLeft = sc.padL; trigger.paddingRight = sc.brk === "Mobile" ? 12 : 8; trigger.paddingTop = 0; trigger.paddingBottom = 0;
       trigger.cornerRadius = 4;
       trigger.fills = [boundPaint(scv(maps, fc(st.bg)))];
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))];
@@ -5011,11 +5013,13 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
     { name: "Open",     bg: "bg/selected", border: "border/selected", txt: "26.06.17", tc: "text/selected",    icon: "icon/selected", open: true },
     { name: "Disabled", bg: "bg/disabled", border: "border/disabled", txt: "날짜 선택", tc: "text/disabled",    icon: "icon/disabled", open: false },
   ];
+  // 좌측 패딩은 크기를 따라간다 — 원본 datepicker_input(540:3794) 실측: pc-xxsm·pc-xsm=12, pc-md·mobile=16.
+  //   Base Input 과 같은 값이라 한 줄에 나란히 놓아도 글자 시작선이 맞는다(river 지적 2026-09-23).
   const sizes = [
-    { size: "XXSM", brk: "PC",     h: 28, font: 12 },
-    { size: "XSM",  brk: "PC",     h: 34, font: 14 },
-    { size: "MD",   brk: "PC",     h: 44, font: 14 },
-    { size: "MD",   brk: "Mobile", h: 48, font: 14 },
+    { size: "XXSM", brk: "PC",     h: 28, font: 12, padL: 12 },
+    { size: "XSM",  brk: "PC",     h: 34, font: 14, padL: 12 },
+    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 16 },
+    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16 },
   ];
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];
@@ -5026,7 +5030,7 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
       trigger.layoutMode = "HORIZONTAL"; trigger.primaryAxisAlignItems = "SPACE_BETWEEN"; trigger.counterAxisAlignItems = "CENTER";
       trigger.primaryAxisSizingMode = "FIXED"; trigger.counterAxisSizingMode = "FIXED";
       // Mobile 아이콘 끝 여백 12 — Input·Search 와 같은 자리로 통일(river 결정 2026-09-21).
-      trigger.paddingLeft = 16; trigger.paddingRight = sc.brk === "Mobile" ? 12 : 8; trigger.paddingTop = 0; trigger.paddingBottom = 0;
+      trigger.paddingLeft = sc.padL; trigger.paddingRight = sc.brk === "Mobile" ? 12 : 8; trigger.paddingTop = 0; trigger.paddingBottom = 0;
       trigger.cornerRadius = 4;
       trigger.fills = [boundPaint(scv(maps, fc(st.bg)))];
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))]; trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
