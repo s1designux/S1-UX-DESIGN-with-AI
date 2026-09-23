@@ -61,7 +61,12 @@ let TEXT_STYLES: Record<string, TextStyle> = {};
 let SPEC_MAPS: BuildMaps | null = null;
 /** 스펙/견본 시트가 섹션 면·선을 토큰에 물릴 수 있게 맵을 미리 심는다.
  *  컴포넌트를 설치하지 않는 회차(토큰만 설치)에도 토큰 견본 시트가 같은 배선을 쓰기 위함. */
-export function primeSpecMaps(maps: BuildMaps): void { SPEC_MAPS = maps; }
+export function primeSpecMaps(maps: BuildMaps): void {
+  SPEC_MAPS = maps;
+  // 텍스트 스타일 맵도 같이 심는다 — 이걸 빼면 부품을 설치하지 않는 회차에서 섹션 머리말 글자가
+  //   정본 스타일을 못 찾아 **글자 없는 빈 띠**로 나간다(H3 상 raw 글꼴 폴백을 하지 않기 때문).
+  TEXT_STYLES = maps.textStyles || {};
+}
 type SpecRole = "bg" | "band" | "title" | "platform" | "size" | "label";
 const SPEC_ROLE_TOKEN: Record<SpecRole, string> = {
   bg: "color/bg/level-0",
@@ -420,6 +425,51 @@ function variantSlots(variant: VariantId, state: StateId): Slots {
 export function boundPaint(variable: Variable): SolidPaint {
   const paint: SolidPaint = { type: "SOLID", color: { r: 0, g: 0, b: 0 } };
   return figma.variables.setBoundVariableForPaint(paint, "color", variable) as SolidPaint;
+}
+
+/** ── 부품이 쓰는 색 읽어 오기 ─────────────────────────────────────────────
+ *  세트 아래 붙는 「쓰는 색」 꼬리표의 재료. **다 만들어진 세트를 훑어** 칠·선에 실제로 물려 있는
+ *  색 변수 이름을 모은다(river 요청 2026-09-23). 목록을 따로 적어 두고 베끼지 않으므로
+ *  결과물과 어긋날 수가 없다.
+ *  · **인스턴스 속까지 들어간다.** 아이콘 색은 `rebindIconColor` 가 인스턴스 *안쪽* 벡터에 물리는데,
+ *    그 아이콘의 원본은 설치기가 만들지 않는 외부 라이브러리 부품이라 자기 꼬리표가 생기지 않는다.
+ *    건너뛰면 아이콘 색 계열이 공통 판에서도 빠지고 꼬리표에도 없어 **어디에도 안 남는다**
+ *    (🤖 component-verifier 실측 2026-09-23: 세트 39개 중 16개에서 1~7개씩 소실).
+ *    대신 부품이 다른 부품을 품으면(모달 속 버튼) 그 색도 함께 적힌다 — 그 화면에 실제로 보이는 색이다.
+ *  · 설명 시트·라벨은 세트 밖이라 애초에 걸리지 않는다. */
+export function collectBoundColors(root: SceneNode, maps: BuildMaps): string[] {
+  const byId: { [id: string]: string } = {};
+  for (const bag of [maps.semanticColor, maps.foundationColor]) {
+    if (!bag) continue;
+    for (const key of Object.keys(bag)) { try { byId[String(bag[key].id)] = key; } catch (e) { /* mock */ } }
+  }
+  const found = new Set<string>();
+  const take = (node: SceneNode): void => {
+    for (const field of ["fills", "strokes"] as const) {
+      let arr: readonly Paint[] | typeof figma.mixed;
+      try { arr = (node as GeometryMixin)[field]; } catch (e) { continue; }
+      if (!Array.isArray(arr)) continue;
+      for (const paint of arr as Paint[]) {
+        const bv = (paint as { boundVariables?: { color?: { id?: string } } }).boundVariables;
+        const id = bv && bv.color ? String(bv.color.id) : "";
+        if (!id) continue;
+        const nm = Object.prototype.hasOwnProperty.call(byId, id) ? byId[id] : "";
+        if (nm) found.add(nm);
+      }
+    }
+  };
+  const walk = (node: SceneNode, depth: number): void => {
+    take(node);
+    if (depth >= 16) return;
+    try {
+      const kids = (node as ChildrenMixin).children;
+      if (Array.isArray(kids)) for (const k of kids as SceneNode[]) walk(k, depth + 1);
+    } catch (e) { /* 자식 없음 */ }
+  };
+  walk(root, 0);
+  const out = Array.from(found);
+  out.sort();
+  return out;
 }
 
 /** ── 남은 raw 색 청소 (2026-09-21 river 지적) ──────────────────────────────
@@ -7386,7 +7436,7 @@ export async function buildAllComponents(
   //        사람이 이 접미사를 손으로 붙일 일은 없다. 옮겨진 세트·스펙 시트는 그대로 잡히고,
   //        같은 이름의 사용자 프레임은 걸리지 않는다.
   const CANVAS_CONTAINERS = ["SECTION", "FRAME", "GROUP"];
-  const INSTALLER_NAME_SUFFIXES = [" — Spec Light", " — Spec Dark", ` ${DECO_SUFFIX}`];
+  const INSTALLER_NAME_SUFFIXES = [" — Spec Light", " — Spec Dark", " — Tokens", ` ${DECO_SUFFIX}`];
   const installerMade = (n: SceneNode): boolean => {
     try { if (String(n.type) === "COMPONENT_SET") return true; } catch (e) { /* mock */ }
     let nm = "";
@@ -7475,8 +7525,11 @@ export async function buildAllComponents(
     // Date Picker Mobile Bottom Sheet backward-compat: 구 "Date Picker Mobile" 세트 자동 정리(재설치 시)
     if (p === "Date Picker Mobile Bottom Sheet") base.push(
       "Date Picker Mobile", "Date Picker Mobile — Spec Light", "Date Picker Mobile — Spec Dark");
+    // 「쓰는 색」 꼬리표는 **세트마다** 붙는다(부모가 부수로 만드는 자식 세트 포함) → 세트 이름마다 더한다.
+    //   여기서 빠뜨리면 재설치 때 옛 꼬리표가 안 걷히고 새 것이 겹쳐 쌓인다.
+    const tokenPanels = base.filter((b) => b.indexOf(" — Spec ") < 0).map((b) => `${b} — Tokens`);
     // 장식(떠있는 라벨·밴드)은 `<세트이름> — Spec Deco` 로 이름이 붙는다 → 이름으로 함께 걷어낸다.
-    return base.concat(base.map((b) => `${b} ${DECO_SUFFIX}`));
+    return base.concat(tokenPanels, base.map((b) => `${b} ${DECO_SUFFIX}`));
   };
   const regionBottom = (p: string): number | null => {
     const names = new Set(footprint(p));
@@ -7597,7 +7650,14 @@ export async function buildAllComponents(
     const ownedIds = new Set<string>();
     try {
       const oldSec = sectionByName(cat.name);
-      const kids = oldSec ? oldSec.children : null;
+      let kids = oldSec ? oldSec.children : null;
+      // 옛 머리띠는 회수 대상이 아니다 — 섹션 맨 위에 있어 "내용의 맨 윗변"을 흔들어 놓는다.
+      //   여기서 걷어내고, 래핑 마지막에 새로 그린다(buildSectionHeader).
+      if (Array.isArray(kids)) {
+        const heads = (kids as SceneNode[]).filter((k) => String(k.name).indexOf(SECTION_HEADER_SUFFIX) >= 0);
+        for (const h of heads) { try { h.remove(); } catch (e) { /* 이미 지워짐 */ } }
+        if (heads.length) { try { kids = oldSec ? oldSec.children : null; } catch (e) { /* */ } }
+      }
       if (oldSec && Array.isArray(kids) && kids.length) {
         const keep = (kids as SceneNode[]).map((k) => {
           const b = k.absoluteBoundingBox;
@@ -7676,6 +7736,33 @@ export async function buildAllComponents(
         created += res.set.children.length;
         added.push(name);
         catY = res.bottomY + 140;
+        // 세트 아래에 「쓰는 색」 꼬리표를 붙인다(river 요청 2026-09-23 — 부품 전용 역할색은 그 부품 밑에서).
+        //   ⚠️ 러너 1개가 세트를 여럿 만든다(GNB→GNB Menu · Time Picker Dropdown→Time Picker Cell).
+        //      자기 세트에만 붙이면 그 자식 세트가 쓰는 색이 공통 판에서도 꼬리표에서도 빠져
+        //      **어디에도 안 남는다**(🤖 component-verifier 실측 2026-09-23).
+        try {
+          const newSets: ComponentSetNode[] = [];
+          const seenSets = new Set<string>();
+          try {
+            const kids = figma.currentPage.children as SceneNode[];
+            if (Array.isArray(kids)) for (const n of kids) {
+              if (beforeIds.has(n.id) || String(n.type) !== "COMPONENT_SET") continue;
+              newSets.push(n as ComponentSetNode); seenSets.add(n.id);
+            }
+          } catch (_) { /* mock/no-page */ }
+          // 재사용된 세트(Calendar Cell 등)는 "새로 생긴 것"에 안 잡히므로 자기 세트는 따로 챙긴다.
+          try { if (!seenSets.has(res.set.id)) newSets.unshift(res.set); } catch (_) { newSets.unshift(res.set); }
+          let panelY = res.bottomY + 32;
+          for (const st of newSets) {
+            const used = collectBoundColors(st as unknown as SceneNode, maps);
+            let px = 0;
+            const sb = st.absoluteBoundingBox;
+            if (sb && typeof sb.x === "number") px = sb.x;
+            const panel = await buildTokenUsagePanel(maps, st.name, used, px, panelY);
+            if (panel) panelY = panelY + panel.height + 32;
+          }
+          if (panelY > res.bottomY + 32) catY = panelY + 108;
+        } catch (_) { /* 꼬리표 실패가 부품 설치를 깨뜨리지 않게 한다 */ }
         // 이번 빌더가 새로 만든 최상위 노드 = 이 카테고리 소유(떠있는 그룹라벨·밴드 포함).
         try {
           const kids = figma.currentPage.children as SceneNode[];
@@ -7770,8 +7857,11 @@ export async function buildAllComponents(
       }
     } catch (e) { /* mock/no-page */ }
     // 카테고리를 1개 섹션으로 래핑 — **소유 노드 목록으로** 담는다(y밴드 짐작 폐기).
-    await wrapCategoryInSection(cat.name, canvasNodes().filter((n) => n.type !== "SECTION" && ownedIds.has(n.id)),
-      SECTION_TITLE_SPACE, SECTION_PAD);
+    const catNodes = canvasNodes().filter((n) => n.type !== "SECTION" && ownedIds.has(n.id));
+    // 개수는 **선언된 목록이 아니라 실제로 들어간 세트 수**를 센다 — 실패·미구현이 있으면
+    //   목록 수는 없는 것까지 세어 말한다(🤖 component-verifier 지적 2026-09-23).
+    const catSets = catNodes.filter((n) => String(n.type) === "COMPONENT_SET").length;
+    await wrapCategoryInSection(cat.name, catNodes, SECTION_TITLE_SPACE, SECTION_PAD, catSets);
     y = catY + SECTION_GAP;
   }
 
@@ -7960,16 +8050,212 @@ function relocateSection(section: SectionNode, targetX: number, targetY: number)
   }
 }
 
+/** ── 부품 세트 아래 「쓰는 색」 꼬리표 ────────────────────────────────────
+ *  그 부품을 만들면서 실제로 물린 색 토큰을 그 자리에 적는다(river 요청 2026-09-23).
+ *  종전에는 역할색 184개가 별도 판에 줄줄이 있어 "이 부품이 무슨 색을 쓰나"를 찾을 수 없었다.
+ *  · 칩은 그 토큰 변수에 직접 물려 있어 토큰 값이 바뀌면 꼬리표도 따라 바뀐다(H2).
+ *  · 글자는 정본 텍스트 스타일(makeLabel)을 쓴다(H3).
+ *  쓰는 색이 하나도 기록되지 않은 부품(이미지·아이콘만 있는 경우)은 판을 만들지 않는다.
+ */
+export async function buildTokenUsagePanel(
+  maps: BuildMaps, componentName: string, tokens: string[], x: number, y: number,
+): Promise<FrameNode | null> {
+  if (typeof figma.createFrame !== "function") return null;   // mock(키체크) 환경
+  if (!tokens || !tokens.length) return null;
+  const madeHere: SceneNode[] = [];
+  try { return await buildTokenUsagePanelInner(maps, componentName, tokens, x, y, madeHere); }
+  catch (e) { for (const n of madeHere) { try { n.remove(); } catch (err) { /* 이미 지워짐 */ } } throw e; }
+}
+
+async function buildTokenUsagePanelInner(
+  maps: BuildMaps, componentName: string, tokens: string[], x: number, y: number, madeHere: SceneNode[],
+): Promise<FrameNode | null> {
+
+  const PAD = 20, ROW_H = 22, COL_W = 300, CHIP = 14, HEAD_H = 34;
+  // 줄이 적으면 한 칸에 모으고, 많아지면 최대 3칸까지 벌린다(한 칸 12줄 기준).
+  const cols = Math.max(1, Math.min(3, Math.ceil(tokens.length / 12)));
+  const rows = Math.ceil(tokens.length / cols);
+
+  const f = figma.createFrame();
+  madeHere.push(f);
+  f.name = `${componentName} — Tokens`;
+  f.clipsContent = false;
+  f.x = x; f.y = y;
+  f.resize(PAD * 2 + cols * COL_W, PAD * 2 + HEAD_H + rows * ROW_H);
+  bindSurface("section", (paint) => { f.fills = [paint]; });
+  if (SPEC_MAPS) {
+    const line = SPEC_MAPS.semanticColor[SECTION_STROKE_TOKEN];
+    if (line) { try { f.strokes = [boundPaint(line)]; f.strokeWeight = 1; } catch (e) { /* */ } }
+    const radius = SPEC_MAPS.foundationNumber["radius/8"];
+    if (radius) {
+      for (const corner of ["topLeftRadius", "topRightRadius", "bottomLeftRadius", "bottomRightRadius"] as const) {
+        try { f.setBoundVariable(corner, radius); } catch (e) { f.cornerRadius = 8; }
+      }
+    } else { f.cornerRadius = 8; }
+  }
+  // 라이트 모드를 박는다 — 어두운 파일로 옮겨도 이 설명판은 밝은 면을 유지한다(스펙 Light 와 같은 규칙).
+  if (SPEC_MAPS && SPEC_MAPS.semanticLightModeNamed !== false && SPEC_MAPS.semanticLightModeId) {
+    try { setMode(f as unknown as SceneNode, SPEC_MAPS, SPEC_MAPS.semanticLightModeId); } catch (e) { /* 구버전 API */ }
+  }
+
+  const head = await makeLabel(`쓰는 색 ${tokens.length}`, 14, "Bold", PAD, PAD, 400, "LEFT", SPEC_ROLES.title, false);
+  madeHere.push(head); f.appendChild(head);
+
+  for (let i = 0; i < tokens.length; i++) {
+    const nm = tokens[i];
+    const col = Math.floor(i / rows), row = i % rows;
+    const cx = PAD + col * COL_W, cy = PAD + HEAD_H + row * ROW_H;
+    const v = maps.semanticColor[nm] || maps.foundationColor[nm];
+    const chip = figma.createRectangle();
+    madeHere.push(chip);
+    chip.name = `${nm} chip`;
+    chip.x = cx; chip.y = cy + 3; chip.resize(CHIP, CHIP);
+    // 칩은 그 토큰 자체에 물린다. 이 바인딩은 '설명'이 아니라 '견본'이라 장부에 섞이지 않게 덮어 둔다.
+    if (v) { try { chip.fills = [boundPaint(v)]; } catch (e) { chip.fills = []; } }
+    else { chip.fills = []; }
+    if (SPEC_MAPS) {
+      const line = SPEC_MAPS.semanticColor[SECTION_STROKE_TOKEN];
+      if (line) { try { chip.strokes = [boundPaint(line)]; chip.strokeWeight = 1; } catch (e) { /* */ } }
+    }
+    chip.cornerRadius = 3;
+    f.appendChild(chip);
+    // 이름은 `color/` 를 떼고 적는다 — 한 칸에 들어가고, 어차피 전부 색 토큰이다.
+    const label = nm.indexOf("color/") === 0 ? nm.slice(6) : nm;
+    const nameCell = await makeLabel(label, 12, "Medium", cx + CHIP + 8, cy, COL_W - CHIP - 28, "LEFT", SPEC_ROLES.platform, false);
+    madeHere.push(nameCell); f.appendChild(nameCell);
+  }
+  return f;
+}
+
 // ⚠️ nodes 는 **호출자가 소유권으로 확정한 목록**이다(이번 실행에서 이 카테고리가 만든 노드 +
 //   이 카테고리 섹션의 기존 자식). 종전처럼 "y밴드에 들어오는 페이지의 모든 노드"를 담지 않는다 —
 //   그 방식은 한 부품이 실패하면 밴드가 남의 카테고리를 삼켜 배치가 통째로 무너졌다(2026-09-08 실측).
+// ── 섹션 머리말 ────────────────────────────────────────────────────────────
+//  종전에는 Figma 가 붙이는 섹션 이름 글자만 회색으로 떠 있어, 캔버스에서 묶음이 어디서 시작하는지
+//  읽히지 않았다(river 지적 2026-09-23). 섹션 안 맨 위에 머리띠를 깔고 이름·개수·한 줄 설명을 얹는다.
+//  · 색은 전부 Semantic 경유(면=level-2 · 선=line/gray/subtle · 글자=text/*) — H2.
+//  · 글자는 정본 텍스트 스타일 바인딩 — H3.
+const SECTION_HEADER_SUFFIX = "— Section Header";
+const SECTION_HEADER_H = 76;
+
+/** 묶음 한 줄 설명 — 캔버스에서 "이 묶음이 무엇인가"를 바로 알게 한다. */
+const SECTION_SUBTITLE: Record<string, string> = {
+  "Platform": "화면의 겉틀 — 상태바·주소줄·로고·푸터",
+  "Navigation": "메뉴와 화면 이동을 맡는 부품",
+  "Line Tab": "같은 화면 안에서 내용을 갈아 끼우는 탭",
+  "Pagination": "긴 목록을 쪽으로 나눠 넘기는 부품",
+  "Actions": "누르면 무슨 일이 일어나는 버튼들",
+  "Selection": "고르고 켜고 끄는 부품",
+  "Dropdown": "펼쳐서 고르는 목록 패널",
+  "Chip": "짧은 꼬리표 · 걸러내기 단추",
+  "List": "목록 한 줄의 짜임",
+  "Form Control": "값을 적어 넣는 입력칸",
+  "Date Picker": "날짜를 고르는 부품",
+  "Time Picker": "시간을 고르는 부품",
+  "Table": "표의 머리·칸 짜임",
+  "Bottom Sheet": "아래에서 올라오는 시트",
+  "Modal": "화면을 덮는 팝업",
+  "Filter Chip": "조건을 걸어 목록을 좁히는 칩",
+  "Tokens · Color (Light)": "밝은 화면에서 쓰는 색",
+  "Tokens · Color (Dark)": "어두운 화면에서 쓰는 색",
+  "Tokens · Typography": "글자 스타일 정본 전종",
+  "Tokens · Number": "간격 · 크기 · 두께 · 모서리",
+};
+
+/** 정본 텍스트 스타일에 묶인 머리말 글자. 스타일이 없으면 raw 글꼴로 떨어뜨리지 않고 만들지 않는다(H3). */
+async function headerText(
+  chars: string, styleKey: string, colorKey: string, x: number, y: number, w: number,
+): Promise<TextNode | null> {
+  const ts = TEXT_STYLES[styleKey];
+  if (!ts || !SPEC_MAPS) return null;
+  const bold = styleKey.indexOf("B") === styleKey.length - 1;
+  const style = bold ? "Bold" : "Medium";
+  try { await figma.loadFontAsync({ family: "Pretendard", style }); } catch (e) { return null; }
+  const t = figma.createText();
+  t.fontName = { family: "Pretendard", style };
+  t.characters = chars;
+  // 정본 스타일을 못 물리면 **그 글자를 만들지 않는다** — raw 글꼴로 때우지 않는다(H3).
+  try { await t.setTextStyleIdAsync(ts.id); } catch (e) { try { t.remove(); } catch (err) { /* */ } return null; }
+  t.textAutoResize = "HEIGHT";
+  t.resize(w, t.height);
+  t.x = x; t.y = y;
+  const v = SPEC_MAPS.semanticColor[colorKey];
+  t.fills = v ? [boundPaint(v)] : [];
+  return t;
+}
+
+/** 섹션 맨 위 머리띠를 (다시) 만든다. 이미 있던 것은 걷어내고 새로 그린다(멱등). */
+async function buildSectionHeader(section: SectionNode, title: string, count: number, pad: number): Promise<void> {
+  if (typeof figma.createFrame !== "function") return;   // mock(키체크) 환경
+  if (!SPEC_MAPS) return;
+  // 도중에 터져도 그리다 만 조각이 캔버스에 남지 않게, 만든 것을 모아 두고 실패 시 되감는다.
+  const madeHere: SceneNode[] = [];
+  try { return await buildSectionHeaderInner(section, title, count, pad, madeHere); }
+  catch (e) { for (const n of madeHere) { try { n.remove(); } catch (err) { /* 이미 지워짐 */ } } throw e; }
+}
+
+async function buildSectionHeaderInner(
+  section: SectionNode, title: string, count: number, pad: number, madeHere: SceneNode[],
+): Promise<void> {
+  if (!SPEC_MAPS) return;
+  // 섹션 밖으로 꺼내진 옛 머리띠도 걷어낸다 — 섹션 직속만 보면 페이지에 영구 고아가 쌓인다
+  //   (🤖 component-verifier 지적 2026-09-23). 이 이름은 설치기만 쓰므로 이름으로 지워도 안전하다.
+  try {
+    const stale = figma.currentPage.findAll(
+      (n) => String(n.name) === `${title} ${SECTION_HEADER_SUFFIX}`,
+    ) as SceneNode[];
+    if (Array.isArray(stale)) for (const n of stale) { try { n.remove(); } catch (e) { /* 이미 지워짐 */ } }
+  } catch (e) { /* mock/no-page */ }
+  const band = figma.createFrame();
+  madeHere.push(band);
+  band.name = `${title} ${SECTION_HEADER_SUFFIX}`;
+  band.clipsContent = false;
+  let w = 0;
+  try { w = typeof section.width === "number" ? section.width : 0; } catch (e) { w = 0; }
+  band.resize(Math.max(360, w - pad * 2), SECTION_HEADER_H);
+  const bandVar = SPEC_MAPS.semanticColor["color/bg/level-2"];
+  band.fills = bandVar ? [boundPaint(bandVar)] : [];
+  const line = SPEC_MAPS.semanticColor[SECTION_STROKE_TOKEN];
+  if (line) { try { band.strokes = [boundPaint(line)]; band.strokeWeight = 1; } catch (e) { /* */ } }
+  const radius = SPEC_MAPS.foundationNumber["radius/8"];
+  if (radius) {
+    for (const corner of ["topLeftRadius", "topRightRadius", "bottomLeftRadius", "bottomRightRadius"] as const) {
+      try { band.setBoundVariable(corner, radius); } catch (e) { band.cornerRadius = 8; }
+    }
+  } else { band.cornerRadius = 8; }
+  if (SPEC_MAPS.semanticLightModeNamed !== false && SPEC_MAPS.semanticLightModeId) {
+    try { setMode(band as unknown as SceneNode, SPEC_MAPS, SPEC_MAPS.semanticLightModeId); } catch (e) { /* 구버전 API */ }
+  }
+
+  const nameNode = await headerText(title, "title/20B", "color/text/title/primary", 24, 16, band.width - 48);
+  if (nameNode) { madeHere.push(nameNode); band.appendChild(nameNode); }
+  const sub = Object.prototype.hasOwnProperty.call(SECTION_SUBTITLE, title) ? SECTION_SUBTITLE[title] : "";
+  const tail = count > 0 ? `${sub ? sub + " · " : ""}${count}개` : sub;
+  if (tail) {
+    const subNode = await headerText(tail, "body/14R", "color/text/body/secondary", 24, 46, band.width - 48);
+    if (subNode) { madeHere.push(subNode); band.appendChild(subNode); }
+  }
+
+  // 섹션 안, 내용 위 여백(titleSpace)에 얹는다. 섹션 자식 좌표는 섹션 기준 상대좌표다.
+  try { section.appendChild(band); } catch (e) { try { band.remove(); } catch (_) { /* */ } return; }
+  try { band.x = pad; band.y = 28; } catch (e) { /* */ }
+}
+
 export async function wrapCategoryInSection(
   title: string,
   nodes: SceneNode[],
   titleSpace: number,
   pad: number,
+  count?: number,
 ): Promise<void> {
   if (typeof figma.createSection !== "function") return; // mock/구버전 → 건너뜀
+  // 머리띠는 "내용"이 아니다 — 크기 계산에 넣으면 매 설치마다 섹션이 위로 자란다.
+  const content = nodes.filter((n) => String(n.name).indexOf(SECTION_HEADER_SUFFIX) < 0);
+  for (const n of nodes) {
+    if (String(n.name).indexOf(SECTION_HEADER_SUFFIX) < 0) continue;
+    try { n.remove(); } catch (e) { /* 이미 지워짐 */ }
+  }
+  nodes = content;
   if (!nodes || !nodes.length) return;
   const box = absBBox(nodes);
   if (!box) return;
@@ -8028,4 +8314,6 @@ export async function wrapCategoryInSection(
       n.y += by - after.y;
     }
   }
+  // 내용이 다 담긴 뒤 맨 위 여백에 머리띠를 얹는다(river 요청 2026-09-23).
+  try { await buildSectionHeader(sec, title, count || 0, pad); } catch (e) { /* 머리띠 실패가 설치를 깨지 않게 */ }
 }

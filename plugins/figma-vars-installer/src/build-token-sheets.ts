@@ -41,7 +41,10 @@ export interface TokenSheetResult {
 }
 
 // 시트 섹션 이름 — 재설치 때 이 이름으로 옛 시트를 걷어낸다.
-export const TOKEN_SHEET_SECTIONS = ["Tokens · Color", "Tokens · Typography", "Tokens · Number"];
+export const TOKEN_SHEET_SECTIONS = [
+  "Tokens · Color (Light)", "Tokens · Color (Dark)", "Tokens · Typography", "Tokens · Number",
+  "Tokens · Color",   // 옛 이름(라이트·다크 한 섹션) — 재설치 때 걷어내기 위해 남긴다.
+];
 
 // 시트에서 쓰는 글자·면 토큰(전부 Semantic 정본에 이미 있는 것들).
 const T = {
@@ -187,19 +190,27 @@ function groupSemantic(keys: string[]): { head: string; members: string[] }[] {
 /** Foundation 한 칸이 역할색(Semantic)에 몇 번 쓰이는지 — 정본에서 세기만 한다.
  *  Light·Dark 양쪽 별칭을 모두 센다. "무엇이 대표(Primary)인가"를 내가 정하지 않고,
  *  **정본이 실제로 가장 많이 쓰는 단계**를 그대로 표시하기 위한 근거다(river 요청 2026-09-22). */
-function semanticUsage(): { [foundationKey: string]: number } {
+function semanticUsage(mode: "light" | "dark"): { [foundationKey: string]: number } {
   const count: { [k: string]: number } = {};
   const bump = (k: string): void => {
     if (!k || k.indexOf("#") === 0 || k.indexOf("rgba") === 0) return;   // 색 리터럴은 Foundation 칸이 아니다
     count[k] = (Object.prototype.hasOwnProperty.call(count, k) ? count[k] : 0) + 1;
   };
-  for (const key of Object.keys(SEMANTIC_COLOR)) {
-    const e = SEMANTIC_COLOR[key];
-    bump(e.light);
-    bump(e.dark);
-  }
+  // 판마다 그 판의 별칭만 센다 — 밝은 판에 "다크에서 몇 곳" 이 섞이면 대표 판정이 흐려진다.
+  for (const key of Object.keys(SEMANTIC_COLOR)) bump(mode === "dark" ? SEMANTIC_COLOR[key].dark : SEMANTIC_COLOR[key].light);
   return count;
 }
+
+// 글자 표본 문구 — river 지정 2026-09-23.
+const TYPE_SAMPLE = "S-1 S/W UX 디자인가이드 타이포그래피";
+
+// 견본 시트에 남기는 **공통** 역할색 묶음(river 결정 2026-09-23).
+//   역할색 184개 중 특정 부품 전용(button·chip·date-picker…) 155개는 이 판에서 빼고,
+//   그 부품 세트 바로 아래 "쓰는 색" 꼬리표로 옮긴다 — 한 판에 줄줄이 쌓으면 아무도 읽지 않는다.
+//   여기 남는 것은 어느 부품에도 매이지 않고 화면 전체가 공유하는 것뿐이다.
+const COMMON_SEMANTIC_HEADS = [
+  "color/bg", "color/surface", "color/text", "color/line", "color/icon", "color/overlay", "color/scroll",
+];
 
 // 대표값을 표시할 계열 — river 결정 2026-09-23: "대표색상 표시는 blue, red, blue dark, red dark 에만".
 //   회색 계열은 단계가 많고 쓰임이 넓어 대표를 세워도 읽는 데 도움이 안 된다.
@@ -222,16 +233,24 @@ function primaryOfGroup(head: string, members: string[], usage: { [k: string]: n
 const PAD = 40;
 const SHEET_TITLE_H = 60;
 
-/** Foundation 팔레트 격자. 반환 = 프레임. */
-async function buildFoundationColor(maps: TokenSheetMaps): Promise<{ frame: FrameNode; count: number }> {
+/** Foundation 팔레트 격자 한 벌.
+ *  dark=false → `-dark` 가 아닌 계열(밝은 화면에서 쓰는 단계)을 흰 판 위에,
+ *  dark=true  → `-dark` 계열을 **Dark 모드를 박은 어두운 판** 위에 얹는다.
+ *  (river 요청 2026-09-23 — 어두운 단계를 흰 바탕에 늘어놓으면 실제 쓰이는 화면과 달라 보인다.
+ *   부품 세트의 Spec Dark 프레임과 같은 방식이다.) */
+async function buildFoundationColor(maps: TokenSheetMaps, dark: boolean): Promise<{ frame: FrameNode; count: number }> {
   const COLS = 11, CW = 116, SW = 104, SH = 56, CH = 124, GROUP_TITLE_H = 30, GROUP_GAP = 24;
-  const usage = semanticUsage();
-  const f = sheetFrame(maps, "Tokens · Color — Foundation", maps.semanticLightModeId, T.surface);
+  const usage = semanticUsage(dark ? "dark" : "light");
+  const modeId = dark ? maps.semanticDarkModeId : maps.semanticLightModeId;
+  const f = sheetFrame(maps, `Tokens · Color — Foundation ${dark ? "Dark" : "Light"}`, modeId, T.surface);
   let y = PAD;
-  f.appendChild(await text(maps, "Foundation · 기본 팔레트", "title/16B", T.title, PAD, y, 600));
+  f.appendChild(await text(maps, `Foundation · 기본 팔레트 (${dark ? "Dark" : "Light"})`, "title/16B", T.title, PAD, y, 600));
   y += SHEET_TITLE_H;
   let count = 0;
-  for (const g of groupByHead(Object.keys(FOUNDATION_COLOR))) {
+  const all = groupByHead(Object.keys(FOUNDATION_COLOR));
+  // 계열 이름 끝이 `-dark` 인가로 두 판을 가른다 — 정본 이름 규칙 그대로이고 목록을 손으로 적지 않는다.
+  const groups = all.filter((g) => (g.head.length > 5 && g.head.slice(-5) === "-dark") === dark);
+  for (const g of groups) {
     const primary = primaryOfGroup(g.head, g.members, usage);
     // 대표 표시는 지정된 계열에만. 나머지는 계열 이름만 적는다(river 결정 2026-09-23).
     const head = primary
@@ -273,10 +292,14 @@ async function buildSemanticColor(maps: TokenSheetMaps, dark: boolean): Promise<
   const ROW_H = 30, COL_W = 560, COL_MAX_H = 3200, GROUP_TITLE_H = 30, GROUP_GAP = 16;
   const modeId = dark ? maps.semanticDarkModeId : maps.semanticLightModeId;
   const f = sheetFrame(maps, `Tokens · Color — Semantic ${dark ? "Dark" : "Light"}`, modeId, T.surface);
-  f.appendChild(await text(maps, `Semantic · 역할색 (${dark ? "Dark" : "Light"})`, "title/16B", T.title, PAD, PAD, 600));
+  // 제목·안내는 한 칸 폭 안에 들어가야 한다 — 칸이 하나뿐인 판에서 글자가 판 밖으로 나간다.
+  f.appendChild(await text(maps, `Semantic · 공통 역할색 (${dark ? "Dark" : "Light"})`, "title/16B", T.title, PAD, PAD, COL_W - 40));
+  f.appendChild(await text(maps, "부품 전용 색은 각 부품 세트 아래 「쓰는 색」에서 봅니다.",
+    "body/12R", T.meta, PAD, PAD + 26, COL_W - 40));
   const top = PAD + SHEET_TITLE_H;
   let x = PAD, y = top, maxY = top, count = 0;
-  const groups = groupSemantic(Object.keys(SEMANTIC_COLOR));
+  const groups = groupSemantic(Object.keys(SEMANTIC_COLOR))
+    .filter((g) => COMMON_SEMANTIC_HEADS.indexOf(g.head) >= 0);
   for (const g of groups) {
     const blockH = GROUP_TITLE_H + g.members.length * ROW_H + GROUP_GAP;
     if (y > top && y + blockH > COL_MAX_H) { x += COL_W; y = top; }   // 다음 칸으로 넘긴다
@@ -310,7 +333,7 @@ async function buildTypography(maps: TokenSheetMaps): Promise<{ frame: FrameNode
     const rowH = Math.max(52, Math.round(d.fontSize * (d.lineHeightPercent / 100)) + 28);
     f.appendChild(await text(maps, d.name, "body/12M", T.sub, PAD, y + 8, NAME_W));
     // 표본은 그 스타일 자체로 — 이 줄이 스타일의 실물이다.
-    f.appendChild(await text(maps, "다람쥐 헌 쳇바퀴에 타고파 AaBbCc 0123", d.name, T.body, SAMPLE_X, y, SAMPLE_W, "LEFT", true));
+    f.appendChild(await text(maps, TYPE_SAMPLE, d.name, T.body, SAMPLE_X, y, SAMPLE_W, "LEFT", true));
     const spec = `${d.fontSize}px · ${d.fontStyle} · 행간 ${d.lineHeightPercent}% · 자간 ${d.letterSpacingPercent}%`;
     f.appendChild(await text(maps, spec, "body/12R", T.meta, SPEC_X, y + 8, SPEC_W));
     y += rowH;
@@ -485,22 +508,32 @@ export async function buildTokenSheets(
   const rows: { title: string; frames: FrameNode[] }[] = [];
   try {
     if (onProgress) onProgress("토큰 견본 — 색 시트 그리는 중…", 96);
-    const colorFrames: FrameNode[] = [];
+    // 색은 **라이트 섹션 / 다크 섹션 두 덩어리**로 나눈다(river 요청 2026-09-23).
+    //   어두운 단계를 흰 바탕에 늘어놓으면 실제 쓰이는 화면과 달라 보인다 — 부품 세트의
+    //   Spec Light / Spec Dark 가 갈려 있는 것과 같은 방식이다.
+    const lightFrames: FrameNode[] = [];
+    const darkFrames: FrameNode[] = [];
     if (hasFoundationColor) {
-      const r = await buildFoundationColor(maps);
-      colorFrames.push(r.frame); made.push(r.frame); result.swatches += r.count;
+      const palLight = await buildFoundationColor(maps, false);
+      lightFrames.push(palLight.frame); made.push(palLight.frame); result.swatches += palLight.count;
+      if (hasDarkMode) {
+        const palDark = await buildFoundationColor(maps, true);
+        darkFrames.push(palDark.frame); made.push(palDark.frame); result.swatches += palDark.count;
+      }
     } else {
       result.skipped.push("Foundation 팔레트 판 — 기본 팔레트 변수가 이 파일에 없습니다");
     }
-    const lightSheet = await buildSemanticColor(maps, false);
-    colorFrames.push(lightSheet.frame); made.push(lightSheet.frame); result.swatches += lightSheet.count;
+    const semLight = await buildSemanticColor(maps, false);
+    lightFrames.push(semLight.frame); made.push(semLight.frame); result.swatches += semLight.count;
     if (hasDarkMode) {
-      const darkSheet = await buildSemanticColor(maps, true);
-      colorFrames.push(darkSheet.frame); made.push(darkSheet.frame); result.swatches += darkSheet.count;
+      const semDark = await buildSemanticColor(maps, true);
+      darkFrames.push(semDark.frame); made.push(semDark.frame); result.swatches += semDark.count;
     } else {
-      result.skipped.push("역할색 Dark 판 — 이 파일에 Dark 모드가 없습니다");
+      // Dark 모드가 없는 파일에서는 "Dark" 라는 이름의 밝은 판을 만들지 않는다.
+      result.skipped.push("색 Dark 섹션 — 이 파일에 Dark 모드가 없습니다");
     }
-    rows.push({ title: "Tokens · Color", frames: colorFrames });
+    rows.push({ title: "Tokens · Color (Light)", frames: lightFrames });
+    if (darkFrames.length) rows.push({ title: "Tokens · Color (Dark)", frames: darkFrames });
 
     if (hasAllStyles) {
       if (onProgress) onProgress("토큰 견본 — 글자 시트 그리는 중…", 97);
