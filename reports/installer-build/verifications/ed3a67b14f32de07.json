@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:ed3a67b14f32de07323b1b8bca3e6df3ba57dbf5f54777fb6e82323a6f4dc805",
+  "verifiedBy": "orchestrator",
+  "verdict": "pass",
+  "changeType": "mechanical",
+  "verifiedAt": "2026-09-23T03:08:19.261Z",
+  "notes": "main 병합. build-components.ts 는 충돌 없이 자동 병합됐고, 양쪽 변경이 서로 닿지 않는다 — main 쪽은 Input/Select/Time Picker 크기·여백(a620191, 그 커밋에서 Gate 13 통과), 이쪽은 토큰 견본 시트·꼬리표·머리말(ca96876385e29de2 에서 component-verifier PASS). 병합으로 새로 생긴 구조 변경 없음."
+}

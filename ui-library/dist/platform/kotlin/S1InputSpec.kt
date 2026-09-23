@@ -10,7 +10,7 @@ object S1InputSpec {
 
     val boxes: Map<String, Map<String, S1Box>> = mapOf(
         "md|mobile|default" to mapOf(
-            "root" to S1Box(gap = 6f),
+            "root" to S1Box(width = 200f, gap = 6f),
             "label" to S1Box(foreground = S1Palette.colorFormControlLabelDefault, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 500),
             "field" to S1Box(background = S1Palette.colorFormControlBgDefault, borderColor = S1Palette.colorFormControlBorderDefault, borderWidth = 1f, radius = 4f, height = 48f, minHeight = 48f, paddingStart = 16f),
             "control" to S1Box(foreground = S1Palette.colorFormControlTextDefault, minWidth = 0f, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 400),
@@ -20,7 +20,7 @@ object S1InputSpec {
             "placeholder" to S1Box(foreground = S1Palette.colorFormControlTextPlaceholder, opacity = 1f)
         ),
         "md|mobile|filled" to mapOf(
-            "root" to S1Box(gap = 6f),
+            "root" to S1Box(width = 200f, gap = 6f),
             "label" to S1Box(foreground = S1Palette.colorFormControlLabelDefault, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 500),
             "field" to S1Box(background = S1Palette.colorFormControlBgDefault, borderColor = S1Palette.colorFormControlBorderDefault, borderWidth = 1f, radius = 4f, height = 48f, minHeight = 48f, paddingStart = 16f),
             "control" to S1Box(foreground = S1Palette.colorFormControlTextDefault, minWidth = 0f, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 400),
@@ -30,7 +30,7 @@ object S1InputSpec {
             "placeholder" to S1Box(foreground = S1Palette.colorFormControlTextPlaceholder, opacity = 1f)
         ),
         "md|mobile|focus" to mapOf(
-            "root" to S1Box(gap = 6f),
+            "root" to S1Box(width = 200f, gap = 6f),
             "label" to S1Box(foreground = S1Palette.colorFormControlLabelDefault, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 500),
             "field" to S1Box(background = S1Palette.colorFormControlBgSelected, borderColor = S1Palette.colorFormControlBorderSelected, borderWidth = 1f, radius = 4f, height = 48f, minHeight = 48f, paddingStart = 16f),
             "control" to S1Box(foreground = S1Palette.colorFormControlTextSelected, minWidth = 0f, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 400),
@@ -40,7 +40,7 @@ object S1InputSpec {
             "placeholder" to S1Box(foreground = S1Palette.colorFormControlTextPlaceholder, opacity = 1f)
         ),
         "md|mobile|error" to mapOf(
-            "root" to S1Box(gap = 6f),
+            "root" to S1Box(width = 200f, gap = 6f),
             "label" to S1Box(foreground = S1Palette.colorFormControlLabelDefault, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 500),
             "field" to S1Box(background = S1Palette.colorFormControlBgDefault, borderColor = S1Palette.colorFormControlBorderError, borderWidth = 1f, radius = 4f, height = 48f, minHeight = 48f, paddingStart = 16f),
             "control" to S1Box(foreground = S1Palette.colorFormControlTextDefault, minWidth = 0f, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 400),
@@ -50,7 +50,7 @@ object S1InputSpec {
             "placeholder" to S1Box(foreground = S1Palette.colorFormControlTextPlaceholder, opacity = 1f)
         ),
         "md|mobile|correct" to mapOf(
-            "root" to S1Box(gap = 6f),
+            "root" to S1Box(width = 200f, gap = 6f),
             "label" to S1Box(foreground = S1Palette.colorFormControlLabelDefault, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 500),
             "field" to S1Box(background = S1Palette.colorFormControlBgDefault, borderColor = S1Palette.colorFormControlBorderCorrect, borderWidth = 1f, radius = 4f, height = 48f, minHeight = 48f, paddingStart = 16f),
             "control" to S1Box(foreground = S1Palette.colorFormControlTextDefault, minWidth = 0f, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 400),
@@ -60,7 +60,7 @@ object S1InputSpec {
             "placeholder" to S1Box(foreground = S1Palette.colorFormControlTextPlaceholder, opacity = 1f)
         ),
         "md|mobile|readOnly" to mapOf(
-            "root" to S1Box(gap = 6f),
+            "root" to S1Box(width = 200f, gap = 6f),
             "label" to S1Box(foreground = S1Palette.colorFormControlLabelDefault, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 500),
             "field" to S1Box(background = S1Palette.colorFormControlBgDisabled, borderColor = S1Palette.colorFormControlBorderDefault, borderWidth = 1f, radius = 4f, height = 48f, minHeight = 48f, paddingStart = 16f),
             "control" to S1Box(foreground = S1Palette.colorFormControlTextReadOnly, minWidth = 0f, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 400),
@@ -70,7 +70,7 @@ object S1InputSpec {
             "placeholder" to S1Box(foreground = S1Palette.colorFormControlTextPlaceholder, opacity = 1f)
         ),
         "md|mobile|disabled" to mapOf(
-            "root" to S1Box(gap = 6f),
+            "root" to S1Box(width = 200f, gap = 6f),
             "label" to S1Box(foreground = S1Palette.colorFormControlLabelDisabled, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 500),
             "field" to S1Box(background = S1Palette.colorFormControlBgDisabled, borderColor = S1Palette.colorFormControlBorderDisabled, borderWidth = 1f, radius = 4f, height = 48f, minHeight = 48f, paddingStart = 16f),
             "control" to S1Box(foreground = S1Palette.colorFormControlTextDisabled, minWidth = 0f, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 400),

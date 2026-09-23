@@ -23,17 +23,17 @@
   font-weight: var(--font-weight-regular);
   gap: var(--spacing-8);
   justify-content: space-between;
-  min-width: 180px; /* 정본 trigger.resize(180, sc.h) — build-components.ts:4507 */
-  padding-left: var(--spacing-16);
+  min-width: 140px; /* 정본 trigger.resize(140) — 입력·선택 칸과 같은 기본 폭 (river 결정 2026-09-23) */
+  padding-left: var(--spacing-12); /* 크기별로 다시 지정 — XXSM·XSM 12, MD 16 (원본 datepicker_input 실측, Base Input 과 같은 값) */
   padding-right: var(--spacing-8);
   width: 100%;
 }
 
 [data-s1-component="date-picker"][data-size="xxsm"] [data-s1-part="trigger"] { font-size: var(--font-size-12); line-height: var(--line-height-130); letter-spacing: var(--letter-spacing-normal); height: var(--sizing-28); }
 [data-s1-component="date-picker"][data-size="xsm"] [data-s1-part="trigger"] { font-size: var(--font-size-14); line-height: var(--line-height-130); letter-spacing: var(--letter-spacing-tight); height: var(--sizing-34); }
-[data-s1-component="date-picker"][data-size="md"] [data-s1-part="trigger"] { font-size: var(--font-size-14); line-height: var(--line-height-130); letter-spacing: var(--letter-spacing-tight); height: var(--sizing-44); }
+[data-s1-component="date-picker"][data-size="md"] [data-s1-part="trigger"] { font-size: var(--font-size-14); line-height: var(--line-height-130); letter-spacing: var(--letter-spacing-tight); height: var(--sizing-44); padding-left: var(--spacing-16); }
 /* Mobile 아이콘 끝 여백 12 — Input·Search 와 같은 자리로 통일(river 결정 2026-09-21). */
-[data-s1-component="date-picker"][data-size="md"][data-break="mobile"] [data-s1-part="trigger"] { height: var(--sizing-48); padding-right: var(--spacing-12); }
+[data-s1-component="date-picker"][data-size="md"][data-break="mobile"] [data-s1-part="trigger"] { height: var(--sizing-48); padding-left: var(--spacing-16); padding-right: var(--spacing-12); }
 
 [data-s1-component="date-picker"] [data-s1-part="value"] {
   color: inherit;

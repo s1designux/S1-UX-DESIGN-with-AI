@@ -1323,7 +1323,7 @@ agent:
   geometry:
     common:
       target: "trigger"
-      width: 180
+      width: 140
       layoutMode: "HORIZONTAL"
       primaryAxisSizingMode: "FIXED"
       counterAxisSizingMode: "FIXED"
@@ -1331,7 +1331,6 @@ agent:
       counterAxisAlignItems: "CENTER"
       paddingTop: "0"
       paddingBottom: "0"
-      paddingLeft: "16"
       cornerRadius: "4"
       strokeWeight: "1"
       strokeAlign: "INSIDE"
@@ -1342,24 +1341,28 @@ agent:
           Break: "PC"
         height: 28
         paddingRight: "8"
+        paddingLeft: "12"
       -
         when:
           Size: "XSM"
           Break: "PC"
         height: 34
         paddingRight: "8"
+        paddingLeft: "12"
       -
         when:
           Size: "MD"
           Break: "PC"
         height: 44
         paddingRight: "8"
+        paddingLeft: "16"
       -
         when:
           Size: "MD"
           Break: "Mobile"
         height: 48
         paddingRight: "12"
+        paddingLeft: "16"
   composition:
     mustReuse:
       - "Calendar"
@@ -4045,7 +4048,6 @@ agent:
       counterAxisAlignItems: "CENTER"
       paddingTop: "0"
       paddingBottom: "0"
-      paddingLeft: "16"
       cornerRadius: "4"
       strokeWeight: "1"
       strokeAlign: "INSIDE"
@@ -4056,24 +4058,28 @@ agent:
           Break: "PC"
         height: 28
         paddingRight: "8"
+        paddingLeft: "12"
       -
         when:
           Size: "XSM"
           Break: "PC"
         height: 34
         paddingRight: "8"
+        paddingLeft: "12"
       -
         when:
           Size: "MD"
           Break: "PC"
         height: 44
         paddingRight: "8"
+        paddingLeft: "16"
       -
         when:
           Size: "MD"
           Break: "Mobile"
         height: 48
         paddingRight: "12"
+        paddingLeft: "16"
   composition:
     mustReuse:
       - "Dropdown"
@@ -4805,7 +4811,7 @@ agent:
   geometry:
     common:
       target: "trigger"
-      width: 150
+      width: 140
       layoutMode: "HORIZONTAL"
       primaryAxisSizingMode: "FIXED"
       counterAxisSizingMode: "FIXED"
@@ -5148,4 +5154,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: d107f1a9e070 · 손편집 금지 -->
+<!-- generated-stamp: 6fda9eaf46a7 · 손편집 금지 -->

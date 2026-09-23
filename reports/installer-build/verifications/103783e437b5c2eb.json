@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:103783e437b5c2eb19f56b9aa58c4280fdd26134c382e1075b181febe9c1a5a7",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-23T01:30:16.377Z",
+  "notes": "buildDatePicker·buildSelect 좌측 패딩 크기별 분기(padL). 레거시 REST 실측 대조: datepicker_input 540:3794 = xxsm12/xsm12/md16/mobile16, select 540:3397 = xxsm12/xsm16/md16/mobile16 — 정본 값과 전부 일치. paddingRight 무변경(PC8/Mobile12, river 2026-09-21 개선(b)). 파생(facts 3건·guide-model 16건·DESIGN.core.md) 범위 정확, Table 푸터 12 는 SelectBox:XXSM 인스턴스 상속. 웹 dist 실측 computed padding-left 전 조합 1:1 일치. 게이트 installer:check·keycheck·anatomy·iconpolicy 전부 exit 0. Figma 캔버스 육안 미검증(코드 레벨)."
+}

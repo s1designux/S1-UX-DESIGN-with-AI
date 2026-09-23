@@ -1566,13 +1566,13 @@ async function buildChip(maps: BuildMaps, originY: number): Promise<{ set: Compo
 async function buildInput(maps: BuildMaps, originY: number, originX: number = INPUT_SHEET_X): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const fc = (k: string) => `color/form-control/${k}`;
   const states = [
-    { name: "Default",   bg: "bg/default",  border: "border/default",  txt: "입력",   tc: "text/placeholder" },
+    { name: "Default",   bg: "bg/default",  border: "border/default",  txt: "입력해 주세요", tc: "text/placeholder" },
     { name: "Filled",    bg: "bg/default",  border: "border/default",  txt: "텍스트", tc: "text/default" },
     { name: "Focus",     bg: "bg/selected", border: "border/selected", txt: "텍스트", tc: "text/selected" },
     { name: "Error",     bg: "bg/default",  border: "border/error",    txt: "텍스트", tc: "text/default" },
     { name: "Correct",   bg: "bg/default",  border: "border/correct",  txt: "텍스트", tc: "text/default" },
     { name: "Read-Only", bg: "bg/disabled", border: "border/default",  txt: "텍스트", tc: "text/read-only" },
-    { name: "Disabled",  bg: "bg/disabled", border: "border/disabled", txt: "입력",   tc: "text/disabled" },
+    { name: "Disabled",  bg: "bg/disabled", border: "border/disabled", txt: "입력해 주세요", tc: "text/disabled" },
   ];
   const sizes = [
     { size: "XXSM", brk: "PC",     h: 28, padL: 12, padR: 8,  font: 12, head: "XXSM" },
@@ -1682,7 +1682,7 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           trail.appendChild(passwordAction);
           if (clearIcon) trail.appendChild(wrapSuffixAction(clearIcon, "clear-action", actionHitSize, { hover: !isMobile })); // Focus: 각 action hit area 독립
           field.appendChild(trail);
-          field.resize(200, sc.h); // Input 예외 — 넓은 필드
+          field.resize(200, sc.h); // 기본 폭 200 — 글을 쓰는 칸이라 더 넓게. 날짜·시간·선택 칸은 140 (river 결정 2026-09-23)
           const comp = figma.createComponent();
           comp.name = `Size=${sc.size}, State=${st.name}, Message=${msg}, Break=${sc.brk}`;
           comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 6;
@@ -2139,11 +2139,13 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
     { name: "Filled",   bg: "bg/default",  border: "border/default",  tc: "text/selected",    icon: "icon/default",  up: false },
     { name: "Disabled", bg: "bg/disabled", border: "border/disabled", tc: "text/disabled",    icon: "icon/disabled", up: false },
   ];
+  // 좌측 패딩 — 원본 select(540:3397)는 pc-xsm 만 16 이었으나, 다른 폼 컨트롤(Input·Date Picker)과
+  //   글자 시작선을 맞추려고 12 로 통일했다(river 결정 2026-09-23). 나머지 크기는 원본과 같다.
   const sizes = [
-    { size: "XXSM", brk: "PC",     h: 28, font: 12 },
-    { size: "XSM",  brk: "PC",     h: 34, font: 14 },
-    { size: "MD",   brk: "PC",     h: 44, font: 14 },
-    { size: "MD",   brk: "Mobile", h: 48, font: 14 },
+    { size: "XXSM", brk: "PC",     h: 28, font: 12, padL: 12 },
+    { size: "XSM",  brk: "PC",     h: 34, font: 14, padL: 12 },
+    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 16 },
+    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16 },
   ];
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];
@@ -2156,7 +2158,7 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
       trigger.counterAxisAlignItems = "CENTER";
       trigger.primaryAxisSizingMode = "FIXED"; trigger.counterAxisSizingMode = "FIXED";
       // Mobile 아이콘 끝 여백 12 — Input·Search 와 같은 자리로 통일(river 결정 2026-09-21).
-      trigger.paddingLeft = 16; trigger.paddingRight = sc.brk === "Mobile" ? 12 : 8; trigger.paddingTop = 0; trigger.paddingBottom = 0;
+      trigger.paddingLeft = sc.padL; trigger.paddingRight = sc.brk === "Mobile" ? 12 : 8; trigger.paddingTop = 0; trigger.paddingBottom = 0;
       trigger.cornerRadius = 4;
       trigger.fills = [boundPaint(scv(maps, fc(st.bg)))];
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))];
@@ -3166,7 +3168,7 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
       trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
       trigger.appendChild(await makeBoundText(stTxt, sc.font, "Regular", scv(maps, fc(st.tc))));
       trigger.appendChild(await makeIconInstance("clock", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), CLOCK));
-      trigger.resize(150, sc.h);
+      trigger.resize(140, sc.h); // 기본 폭 140 — 날짜·선택 칸과 공통 (river 결정 2026-09-23)
 
       const comp = figma.createComponent();
       comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}, Type=${ty.key}`;
@@ -5061,11 +5063,13 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
     { name: "Open",     bg: "bg/selected", border: "border/selected", txt: "26.06.17", tc: "text/selected",    icon: "icon/selected", open: true },
     { name: "Disabled", bg: "bg/disabled", border: "border/disabled", txt: "날짜 선택", tc: "text/disabled",    icon: "icon/disabled", open: false },
   ];
+  // 좌측 패딩은 크기를 따라간다 — 원본 datepicker_input(540:3794) 실측: pc-xxsm·pc-xsm=12, pc-md·mobile=16.
+  //   Base Input 과 같은 값이라 한 줄에 나란히 놓아도 글자 시작선이 맞는다(river 지적 2026-09-23).
   const sizes = [
-    { size: "XXSM", brk: "PC",     h: 28, font: 12 },
-    { size: "XSM",  brk: "PC",     h: 34, font: 14 },
-    { size: "MD",   brk: "PC",     h: 44, font: 14 },
-    { size: "MD",   brk: "Mobile", h: 48, font: 14 },
+    { size: "XXSM", brk: "PC",     h: 28, font: 12, padL: 12 },
+    { size: "XSM",  brk: "PC",     h: 34, font: 14, padL: 12 },
+    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 16 },
+    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16 },
   ];
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];
@@ -5076,13 +5080,13 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
       trigger.layoutMode = "HORIZONTAL"; trigger.primaryAxisAlignItems = "SPACE_BETWEEN"; trigger.counterAxisAlignItems = "CENTER";
       trigger.primaryAxisSizingMode = "FIXED"; trigger.counterAxisSizingMode = "FIXED";
       // Mobile 아이콘 끝 여백 12 — Input·Search 와 같은 자리로 통일(river 결정 2026-09-21).
-      trigger.paddingLeft = 16; trigger.paddingRight = sc.brk === "Mobile" ? 12 : 8; trigger.paddingTop = 0; trigger.paddingBottom = 0;
+      trigger.paddingLeft = sc.padL; trigger.paddingRight = sc.brk === "Mobile" ? 12 : 8; trigger.paddingTop = 0; trigger.paddingBottom = 0;
       trigger.cornerRadius = 4;
       trigger.fills = [boundPaint(scv(maps, fc(st.bg)))];
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))]; trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
       trigger.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
       trigger.appendChild(await makeIconInstance("calendar", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), CAL_ICON));
-      trigger.resize(180, sc.h);
+      trigger.resize(140, sc.h); // 기본 폭 140 — 입력·날짜·선택 칸 공통 (river 결정 2026-09-23)
 
       const comp = figma.createComponent();
       comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;

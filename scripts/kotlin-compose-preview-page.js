@@ -180,7 +180,7 @@ const SNIPPET = {
   ]),
   input: (c, api) => call('S1Input', [
     `value = ${c.state === 'default' ? '""' : '"입력한 값"'}`, 'onValueChange = { }',
-    'label = "이름"', 'placeholder = "내용을 입력하세요"',
+    'label = "이름"', 'placeholder = "입력해 주세요"',
     ...axisArg(api, 'size', c.size),
     ...(c.state === 'error' ? ['isError = true', 'message = "다시 확인해 주세요"'] : []),
     ...(c.state === 'correct' ? ['isCorrect = true', 'message = "사용할 수 있습니다"'] : []),

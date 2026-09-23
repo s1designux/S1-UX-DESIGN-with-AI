@@ -236,7 +236,7 @@ function list(items) {
 function inputMarkup({
   label = false,
   value = "",
-  placeholder = "내용을 입력하세요",
+  placeholder = "입력해 주세요",
   state = "default",
   size = "md",
   breakName = "pc",

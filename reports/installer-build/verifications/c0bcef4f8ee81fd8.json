@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:c0bcef4f8ee81fd8d82314d5e04588ab602b6c7b1109a66cf838f027eb54847e",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-23T02:28:43.508Z",
+  "notes": "Input 기본 폭 140→200 · Time Picker 트리거 150→140 · Select XSM 좌측 패딩 16→12 (river 결정 2026-09-23 인용 확인) 3건 구조 검증 PASS. 정본 3건 코드 대조 + 웹 배포본 0.13.11 브라우저 computed 실측: input 200×62 · select 140×44 · time-picker 140×80 · date-picker 140×66 전건 일치, 텍스트 2130개 전수 scrollWidth 넘침 0건(비밀번호 124.5/142 · 검색 112.4/138), XSM 글자 시작선 input=select=date-picker 13px 일치, XXSM 12 · MD 16 · Mobile 16 불변, Time Picker 24h 패널 140 12h 194 내부 넘침 0 · 휠 열 폭 고정으로 무영향, 파생 전파(facts 200×8/140×12 · guide-model · DESIGN.core · contract.json · S1InputSpec.kt · 번들) 일치. gate:check error 는 이 Gate 13 1건만 남음(96 PASS · 경고 20건 전부 기존 부채). 검증 중 발견해 해소된 ❌ 3건: 다운로드 화면 0.13.9 정체(devpanel:gen) · time-picker.css 옛 150 주석 · 검수판 time-picker 낡음(board:refresh). 잔존 사각지대: Figma 캔버스 실제 렌더 육안 · pages/components.html 손관리 화면(.s1-input-wrap 180px 로 입력칸이 눌려 보임, 잘림은 없음) · Select/Time/Date 는 min-width 140+width:100% 라 grid 칸에서 부모 폭까지 늘어남(river 결정 대기, C-1) · Time Picker XXSM 좌측 패딩 10(정본과 일치하는 기존 부품 간 불일치)."
+}
