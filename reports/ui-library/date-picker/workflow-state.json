@@ -45,7 +45,7 @@
   "workflowStatus": "awaiting-user",
   "uiLibraryStatus": "verified",
   "lastCompletedCheckpoint": 4,
-  "nextAction": "6-promotion 완료. 후속은 B11·B12(자간·줄높이 부채) 정리와 SM 재설치 안내뿐이다.",
+  "nextAction": "문구 '날짜 선택' 확정 반영(웹 0.13.1). 남은 것은 커밋 여부와 Figma 설치기 재설치 안내, 기존 후속(B11·B12).",
   "ownership": {
     "currentActor": null,
     "owner": null,
@@ -56,12 +56,12 @@
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "6e9f4e829bf948e26ade8b808fc4e85129487e8c087defa5adb40f24d1003bc1"
+      "sha256": "cee35c96b1bdfc9e722b0939aa5d522f63d965718bab758cbbeb77e9f218f405"
     },
     {
       "role": "token-values",
       "path": "plugins/figma-vars-installer/src/vars-data.ts",
-      "sha256": "81eb31cfbd5b1b7041f31967a9592d2181088cf386a9ccb26058a7625ec3c15a"
+      "sha256": "14c5df38e32f154da10e83370004726971c11511f0108b94719a08f109433bc0"
     },
     {
       "role": "text-styles",
@@ -76,7 +76,7 @@
     {
       "role": "component-meta",
       "path": "registry/components/date-picker.json",
-      "sha256": "2ef12bc1cbffb14b118a1b53332a727a6b7d03235e873b55ab77df9387f9c285"
+      "sha256": "2bd6191af8b4d67a324ab787d46caba97da13645309fe4142474a6efdd3c2857"
     }
   ],
   "artifacts": {
@@ -419,6 +419,27 @@
       "supersedesPriorVerification": false,
       "rationale": "다른 세션의 편집이 GNB 를 넘어 buildDropdown·buildLineTabSet·buildModalShell·buildMultiToggle 까지 번졌다. 그 결과 내가 쓰던 넓은 구간 대조(buildCalendarCell~buildCalendarCellLayout)가 사이에 낀 buildModalShell 변경 때문에 달라졌고, 한때 date-picker 구간이 바뀐 것처럼 보였다. **대조 범위를 함수 단위로 좁혀 다시 확인한 결과 date-picker 관련 빌더 6개(buildCalendarCell·buildCalendarTile·buildCalendar·buildDatePicker·buildDatePickerBottomSheet·buildTimePickerMobileBottomSheet)는 전부 HEAD 와 바이트 동일**하다. 앞선 refresh 들의 근거(구간 동일)는 결론은 맞았으나 대조 범위가 넓어 부정확했다 — 이 항목이 그 정정이다.",
       "diffScopeEvidence": "6개 함수 각각을 현재본·HEAD 본에서 추출해 sha256 대조, 전부 일치. git diff --@@ hunk 는 buildDropdown(1657·1679·1703·1715)·buildLineTabSet(1860·1884)·GNB_UTIL_SVGS(2828)·buildGNB(3310·3342)·buildModalShell(4506·4530·4550·4603)·buildMultiToggle(5621·5639) 로 date-picker 빌더 밖"
+    },
+    {
+      "refreshedAt": "2026-09-23",
+      "refreshedBy": "orchestrator",
+      "paths": [
+        "plugins/figma-vars-installer/src/build-components.ts",
+        "plugins/figma-vars-installer/src/vars-data.ts",
+        "registry/components/date-picker.json"
+      ],
+      "supersedesPriorVerification": false,
+      "rationale": "river 지시(2026-09-22)로 Date Picker 트리거 안내 문구를 'YY.MM.DD' → '날짜를 선택하세요'로 바꿨다. 정본 buildDatePicker 의 Default·Disabled txt 만 바뀌었고 기하·토큰·variant 구성은 그대로다. 다른 세션이 같은 파일의 공용 헬퍼(62·174·420·7960 줄대)를 손대 지문이 함께 움직였으나 date-picker 빌더 구간은 아니다."
+    },
+    {
+      "refreshedAt": "2026-09-23",
+      "refreshedBy": "orchestrator",
+      "paths": [
+        "plugins/figma-vars-installer/src/build-components.ts",
+        "registry/components/date-picker.json"
+      ],
+      "supersedesPriorVerification": false,
+      "rationale": "같은 날 두 번째 정본 변경 — Date Picker 문구를 '날짜 선택'으로 굳혔고, 별건으로 Checkbox 체크 표시를 라이브러리 아이콘 인스턴스에서 선 벡터로 바꿨다(🤖 component-verifier PASS). date-picker 빌더의 기하·토큰은 무변경."
     }
   ],
   "coreUpdates": [
@@ -493,6 +514,18 @@
       "what": "Y-1·Y-2 해소 — 자간을 정본 스타일별로 갈라 넣었다(14·16 계열 8곳 tight=-0.02em, 12·20B·24B·32R 은 normal 유지). 미선언으로 남아 있던 date-picker 트리거 3줄에도 줄높이·자간을 명시했다. 주석의 「전부 기본 자간」 문구도 정정.",
       "basis": "정본 textstyles-data.ts 20종 표를 직접 읽어 확인(body/14·16 계열과 title/16M·18M 이 -2%). 승인된 button·input 도 같은 방식으로 갈라 쓴다. 실측: 요일·날짜 숫자 -0.32px(=16×-0.02)·20.8px, 트리거 -0.28px(=14×-0.02)·18.2px, 기하는 패널 356×352·달력 308×312·칸 44×44 로 불변.",
       "correction": "7차 검증 Z-1: 이 메모의 「20종 중 8종이 -2%」는 서술 오류이고 실제로는 7종(title/18M·16M · body/18M·16M·16R·14M·14R)이다. 값 판정에는 영향 없다. 또 tight 로 정정한 자리 목록에 든 grid[data-tile-grid] 는 타이포 선언이 없는 규칙이라 실제 변경 대상이 아니었다 — 글자는 자식 tile 이 갖고 그쪽은 맞게 적용됐다."
+    },
+    {
+      "at": "2026-09-23",
+      "file": "ui-library/src/components/date-picker/{date-picker.js,manifest.json,*.example.html} · assets/js/ui-library-guide.js · pages/ui-review.html · registry/components/date-picker.json · plugins/figma-vars-installer/src/build-components.ts",
+      "what": "빈 트리거 안내 문구를 '날짜를 선택하세요'로 바꾸고, 트리거 폭이 좁아 문구가 잘리면 '날짜 선택'으로 자동 축약하도록 배선했다(ResizeObserver + scrollWidth 측정, data-placeholder / data-placeholder-short 로 교체 가능). 배포본 0.13.0 으로 올리고 ZIP 재생성.",
+      "basis": "river 지시 2026-09-22: \"데이트피크 인풋에서 현재 yy.mm.dd로 되어있는데 이걸 날짜를 선택하세요 로 바꿔줘. 그리고 위드 값에 따라 플레이스 홀더가 다 보이지 않는경우 날짜 선택으로 자동 변경되게 하고싶어\" · 렌더 실측: 180/170/160px=긴 문구, 140/120px=짧은 문구, 100px=짧은 문구+말줄임"
+    },
+    {
+      "at": "2026-09-23",
+      "file": "ui-library/src/components/date-picker/{date-picker.js,manifest.json,*.example.html} · assets/js/ui-library-guide.js · pages/ui-review.html · registry/components/date-picker.json · plugins/figma-vars-installer/src/build-components.ts",
+      "what": "전날 넣은 '날짜를 선택하세요' + 폭에 따른 자동 축약을 번복했다. 빈 트리거 문구는 폭과 상관없이 '날짜 선택' 한 가지이고, ResizeObserver·scrollWidth 측정·data-placeholder-short 는 걷어냈다. 배포본 0.13.1.",
+      "basis": "river 지시 2026-09-23: \"어제 요청한데서 추가로 번복할게있어. 길이에 상관없이 날짜 선택 으로 표시되도록 해줘\""
     }
   ],
   "scopeAdditionsFromOtherSession": {

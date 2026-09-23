@@ -84,3 +84,19 @@ river 님은 **코드 줄이 아니라 화면과 사용 흐름**을 봐 주세�
 ## 6. 승인 뒤 자동으로 일어나는 일
 
 승인하시면 ①안내 페이지의 Date Picker 메뉴가 열리고 ②그 화면이 실제 배포본을 소비하도록 전환되며 ③퍼블리셔·개발자가 받는 설치본에 포함됩니다. 지금은 승인 전이라 메뉴를 잠가 뒀습니다.
+
+---
+
+## 후속 — 트리거 안내 문구 변경 (2026-09-22 river 지시 · 2026-09-23 반영)
+
+- 빈 트리거 문구: `YY.MM.DD` → **날짜를 선택하세요**. 값 표시 형식(26.01.17)·값 입출력(ISO)은 그대로.
+- 폭이 좁아 문구가 잘리면 **날짜 선택**으로 자동 축약(ResizeObserver + scrollWidth 실측). 서비스는 `data-placeholder` / `data-placeholder-short` 로 교체.
+- 정본(build-components.ts buildDatePicker Default·Disabled txt)도 같은 문구로 바꿨다 — 축약 규칙만 웹 전용(manifest.notInCanon.placeholderAutoShorten).
+- 실측(실제 dist, http 렌더): 180·170·160px = 긴 문구 / 140·120px = 짧은 문구 / 100px = 짧은 문구 + 말줄임.
+- 기계검사: ui:contract·ui:build:check·ui:test:check·ui:icons·ui:icons:origin·ui:guide:render·ui:version·ui:zip:check 전부 통과. 배포본 0.13.0.
+- 남은 빨강(내 작업 밖): Gate 13(build-components 검증기록 — 다른 세션 편집분 포함) · Gate 47 검수판 재캡처.
+
+### 번복 (2026-09-23 river 지시)
+
+- 빈 트리거 문구는 **폭과 상관없이 "날짜 선택"** 한 가지. 전날의 "날짜를 선택하세요" + 자동 축약(ResizeObserver·scrollWidth·data-placeholder-short)은 전부 걷어냈다.
+- 정본(buildDatePicker Default·Disabled txt)도 "날짜 선택". 배포본 0.13.1.

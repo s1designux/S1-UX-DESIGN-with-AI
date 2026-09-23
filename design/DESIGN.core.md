@@ -845,7 +845,7 @@ _Don't_
 | 요소 | 역할 |
 | --- | --- |
 | 박스 | 체크 영역. 배경·테두리는 control 토큰. |
-| 체크 표시 | checked 인디케이터 아이콘(정본 ic_확인 16px). 색은 control indicator 토큰. |
+| 체크 표시 | checked 인디케이터 — 16px 안에 그린 보통 선(stroke 1.5, 모서리 둥글게) 체크 표시. 색은 control indicator 토큰. 2026-09-23 river 지시로 라이브러리 아이콘(ic_확인) 인스턴스에서 레거시 정본 540:3134 과 같은 선 벡터로 바꿨다. |
 | 라벨(선택) | 선택 부품. 없는 것이 기본이고, 붙이면 라벨 클릭도 선택 영역이 된다(본문 14 Medium, 간격 8). |
 
 | variant | default | hover | checked | disabled |
@@ -5148,4 +5148,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: b1219314693b · 손편집 금지 -->
+<!-- generated-stamp: d107f1a9e070 · 손편집 금지 -->

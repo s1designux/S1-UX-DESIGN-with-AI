@@ -2,7 +2,7 @@
   "id": "gnb-sub-menu-item",
   "version": "0.2.2",
   "status": "verified",
-  "canonicalFingerprint": "56df4314c8daacbe0d99e9761fd700d424f85b6b4975f422d1ef64c58a42c572",
+  "canonicalFingerprint": "1bb39c44cfcb22edb00db977a784d70c435304aafb55c5d00e6fab1d953bbd82",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -112,5 +112,5 @@
     "runtime": "none",
     "reason": "Hover 는 네이티브 CSS :hover 로 충분하고, 현재 위치 표시(aria-current)는 host 화면이 현재 경로에 맞춰 정적으로 설정하는 값이다(gnb 의 메뉴 링크와 같은 패턴) — 로컬 상태·이벤트 바인딩이 필요 없다."
   },
-  "sourceFingerprint": "1835e949ee1a71b683b5affbc346440ace1c56e5df1b2cf1153b7102dded7583"
+  "sourceFingerprint": "d8e5d775d52f3b1c052565f057768b8ec4c542fc550c8cc9a6dd18d7cedecfea"
 }

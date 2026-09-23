@@ -954,10 +954,16 @@ async function makeBoundText(chars: string, fontSize: number, style: string, col
   return t;
 }
 
-/** 체크 아이콘 — V2.2 ic_확인(line, ✓) 라이브러리 인스턴스(16px). ic_체크는 박스형이라 ic_확인 사용(사용자 지정 97:167). */
+/** 체크 표시 — 레거시 정본 checkbox(540:3134) 와 같은 **보통 선(stroke) 벡터** 로 그린다(river 지시 2026-09-23).
+ *  종전에는 V2.2 ic_확인 라이브러리 인스턴스를 붙였는데, 그 아이콘은 면으로 채운 글리프라 선으로 그은 원본과 모양이 달랐다.
+ *  원본 실측(REST, 540:3134 → "Stroke 2"): 16×16 안 10.125×6.75, strokeWeight 1.5, strokeJoin ROUND, 색은 Variable 바인딩. */
 async function makeCheckIcon(strokeVar: Variable): Promise<SceneNode> {
   const svg = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2.9375 8L6.13252 11.375L13.0625 4.625" stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
-  return makeIconInstance("check", strokeVar, 16, svg);
+  const node = figma.createNodeFromSvg(svg); // icon-vector-allow: 레거시 정본 540:3134 과 같은 보통 선 체크 — 라이브러리 아이콘(면 글리프)로는 재현 불가
+  node.name = "check";
+  if (node.width !== 16 || node.height !== 16) node.resize(16, 16);
+  rebindIconColor(node, strokeVar);
+  return node;
 }
 
 /**
@@ -5000,10 +5006,10 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
   const fc = (k: string) => `color/form-control/${k}`;
   const CAL_ICON = `<svg width="16" height="16" viewBox="0 0 16.2581 16.8" fill="none"><path d="M0 1.08387V16.2581C0 16.5615 0.238452 16.8 0.541936 16.8H15.7161C16.0196 16.8 16.2581 16.5615 16.2581 16.2581V1.08387C16.2581 0.780387 16.0196 0.541935 15.7161 0.541935H13.0065V0H11.9226V0.541935H4.33548V0H3.25161V0.541935H0.541936C0.238452 0.541935 0 0.780387 0 1.08387ZM4.33548 2.16774V1.62581H11.9226V2.16774H13.0065V1.62581H15.1742V3.79355H1.08387V1.62581H3.25161V2.16774H4.33548ZM15.1742 15.7161H1.08387V4.87742H15.1742V15.7161Z" fill="#000"/><path d="M5.14859 9.21302H3.52279V10.8388H5.14859V9.21302Z" fill="#000"/><path d="M8.94208 9.21302H7.31628V10.8388H8.94208V9.21302Z" fill="#000"/><path d="M12.7356 9.21302H11.1098V10.8388H12.7356V9.21302Z" fill="#000"/></svg>`;
   const states = [
-    { name: "Default",  bg: "bg/default",  border: "border/default",  txt: "YY.MM.DD", tc: "text/placeholder", icon: "icon/default",  open: false },
+    { name: "Default",  bg: "bg/default",  border: "border/default",  txt: "날짜 선택", tc: "text/placeholder", icon: "icon/default",  open: false },
     { name: "Filled",   bg: "bg/default",  border: "border/default",  txt: "26.06.17", tc: "text/default",     icon: "icon/default",  open: false },
     { name: "Open",     bg: "bg/selected", border: "border/selected", txt: "26.06.17", tc: "text/selected",    icon: "icon/selected", open: true },
-    { name: "Disabled", bg: "bg/disabled", border: "border/disabled", txt: "YY.MM.DD", tc: "text/disabled",    icon: "icon/disabled", open: false },
+    { name: "Disabled", bg: "bg/disabled", border: "border/disabled", txt: "날짜 선택", tc: "text/disabled",    icon: "icon/disabled", open: false },
   ];
   const sizes = [
     { size: "XXSM", brk: "PC",     h: 28, font: 12 },

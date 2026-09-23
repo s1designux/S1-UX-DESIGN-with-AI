@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:cee35c96b1bdfc9e722b0939aa5d522f63d965718bab758cbbeb77e9f218f405",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-23T00:49:57.583Z",
+  "notes": "체크 표시를 라이브러리 아이콘 인스턴스(ic_확인)에서 레거시 정본 540:3134 과 같은 보통 선(stroke 1.5, join ROUND) 벡터로 교체 — 꼭짓점 3점·굵기·모서리·색 Variable 바인딩 전수 일치, icon-instance-policy·installer:check·keycheck·anatomy 통과. 같은 파일의 Date Picker 문구(YY.MM.DD→날짜 선택) 카피 수정 2줄도 함께 봉인됨(river 지시 2026-09-23)."
+}

@@ -2262,7 +2262,7 @@
       const staticAttrs = statik ? " data-review-static" : "";
       const value = mode === "range" && range?.start
         ? (range.end ? `26.01.${String(range.start).padStart(2, "0")} - 26.01.${String(range.end).padStart(2, "0")}` : `26.01.${String(range.start).padStart(2, "0")} - `)
-        : (filled || open ? "26.01.17" : "YY.MM.DD");
+        : (filled || open ? "26.01.17" : "날짜 선택");
       const calendarOpenInner = `<div data-s1-part="calendar" data-view="date">${dpReviewHeader("date")}${dpReviewDateView(mode === "range" ? { range: range || { start: 17, end: 22 } } : {})}</div>`;
       /* R-3: 페이지 안 date-picker 인스턴스가 여러 벌 찍히므로(배선표 §2 T5), sheet-title id 는
          modalMarkup() 과 같은 방식으로 매 호출마다 uniqueId 를 새로 발급해 고유하게 만든다. */
