@@ -20,6 +20,7 @@
  * 사용: node scripts/presentation-layout-check.js  (npm run components:presentation)
  */
 const fs = require('fs');
+const { spawnChrome, killChromeTree } = require('./lib/chrome-proc');
 const os = require('os');
 const path = require('path');
 const { spawn } = require('child_process');
@@ -57,7 +58,7 @@ const DOM_MAX_BYTES = 64 * 1024 * 1024; // 종전 maxBuffer 와 동일
 function dumpOnce(chrome, fileUrl) {
   // 전용 임시 프로필 — 사용자/다른 Chrome 세션의 기본 프로필 잠금과 충돌해 크래시하는 것을 방지
   const profileDir = fs.mkdtempSync(path.join(os.tmpdir(), 'preso-chrome-'));
-  const child = spawn(chrome, ['--headless=new', '--dump-dom', '--virtual-time-budget=5000',
+  const child = spawnChrome(chrome, ['--headless=new', '--dump-dom', '--virtual-time-budget=5000',
     '--no-sandbox', '--disable-gpu', `--user-data-dir=${profileDir}`, fileUrl],
     { stdio: ['ignore', 'pipe', 'ignore'] });
 
@@ -65,7 +66,7 @@ function dumpOnce(chrome, fileUrl) {
     const chunks = []; let size = 0; let settled = false; let spawnErr = null;
 
     const cleanup = () => {
-      try { child.kill(); } catch (_) {}
+      try { killChromeTree(child); } catch (_) {}
       try { fs.rmSync(profileDir, { recursive: true, force: true }); } catch (_) {}
     };
     const settle = () => {

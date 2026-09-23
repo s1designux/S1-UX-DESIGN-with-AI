@@ -24,6 +24,7 @@
  * 종료코드: 0 성공 · 1 실패(파일 미생성) · 2 크롬 못 찾음
  */
 const fs = require('fs');
+const { spawnChrome, killChromeTree } = require('./lib/chrome-proc');
 const os = require('os');
 const path = require('path');
 const { spawn } = require('child_process');
@@ -69,13 +70,13 @@ function shoot(chrome, url, out, opts) {
     if (opts.fullPage) args.push('--screenshot-full-page');
     args.push(url);
 
-    const child = spawn(chrome, args, { stdio: ['ignore', 'ignore', 'ignore'] });
+    const child = spawnChrome(chrome, args, { stdio: ['ignore', 'ignore', 'ignore'] });
 
     let settled = false; let lastSize = -1; let stable = 0;
     const settle = (ok) => {
       if (settled) return; settled = true;
       clearInterval(poll); clearTimeout(timer);
-      try { child.kill(); } catch (_) {}
+      try { killChromeTree(child); } catch (_) {}
       try { fs.rmSync(profileDir, { recursive: true, force: true }); } catch (_) {}
       resolve(ok);
     };

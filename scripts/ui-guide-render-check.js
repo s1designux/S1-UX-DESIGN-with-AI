@@ -20,6 +20,7 @@
  * 종료코드: 0 통과 · 1 위반 · 2 크롬 못 찾음(S1_SKIP_RENDER_CHECK=1 이면 0 으로 건너뜀)
  */
 const fs = require('fs');
+const { spawnChrome, killChromeTree } = require('./lib/chrome-proc');
 const http = require('http');
 const os = require('os');
 const path = require('path');
@@ -73,7 +74,7 @@ function serve() {
 function dumpDom(chrome, url) {
   return new Promise((resolve, reject) => {
     const profileDir = fs.mkdtempSync(path.join(os.tmpdir(), 'guide-dom-'));
-    const child = spawn(chrome, [
+    const child = spawnChrome(chrome, [
       '--headless=new', '--dump-dom', '--virtual-time-budget=4000',
       /* 바깥 폰트 CDN 을 기다리느라 크롬이 30초씩 매달린다 — 로컬 외 요청은 즉시 실패시킨다.
          (검사 대상은 우리 화면 구조이지 웹폰트가 아니다.) */
@@ -91,7 +92,7 @@ function dumpDom(chrome, url) {
       settled = true;
       clearTimeout(guard);
       out += decoder.end();
-      try { child.kill('SIGKILL'); } catch (_) {}
+      try { killChromeTree(child); } catch (_) {}
       try { fs.rmSync(profileDir, { recursive: true, force: true }); } catch (_) {}
       out.includes('</html>') ? resolve(out) : reject(new Error(`DOM 을 받지 못했습니다: ${url}`));
     };
