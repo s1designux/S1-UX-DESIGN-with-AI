@@ -914,7 +914,7 @@ async function main() {
     for (const dark of [false, true]) {
       const want = [
         `Semantic · 공통 역할색 (${dark ? "Dark" : "Light"})`,
-        "부품 전용 색은 각 부품 세트 아래 「쓰는 색」에서 봅니다.",
+        "부품 전용 색은 Figma Variables 패널에서 봅니다.",
       ];
       for (const g of groupsOf(COMMON_KEYS, 2)) {
         want.push(g.head);

@@ -7834,11 +7834,12 @@ export async function buildAllComponents(
     };
     const H_GAP = 120;  // 섹션 사이 가로 간격
     const TOP_Y = 0;    // 모든 섹션 상단 정렬 기준 y
-    // ⚠️ 여기(또는 STACKED)에 없는 섹션은 **아무도 옮겨 주지 않아** 1단계 세로 컬럼 자리에 홀로 남는다.
-    //    실제로 "List" 가 빠져 있어 y≈19832 에 떨어져 있었다 — 디자이너 눈에는 "부품이 없다"로 보인다
-    //    (🤖 component-verifier 실측 2026-09-23 · river 보고 "컴포넌트가 누락된 게 많다").
+    // ⚠️ 여기(또는 STACKED)에 없는 섹션은 종전에 **아무도 옮겨 주지 않아** 1단계 세로 컬럼 자리에
+    //    홀로 남았다(실측: "List" 가 y≈19832). 디자이너 눈에는 "부품이 없다"로 보인다.
+    //    → 아래 마지막 단계가 남은 섹션을 무리 오른쪽 끝에 붙인다(river 지시 2026-09-23:
+    //      "패턴으로 추가하는 중이라 떨어져 있는 게 맞고, 다만 무리에 좀 더 가깝게").
     const ROW = ["Platform", "Navigation", "Line Tab", "Pagination", "Actions", "Selection", "Chip",
-      "List", "Form Control", "Date Picker", "Time Picker", "Table", "Modal"];
+      "Form Control", "Date Picker", "Time Picker", "Table", "Modal"];
     // 세로 스택 섹션: ROW 의 가로 컬럼 아래에 쌓는다(같은 X). below 는 ROW 컬럼명만 받는다(체인 불가) —
     //   같은 below 값을 가진 항목은 STACKED 배열 순서대로 차례로 쌓인다(다중 지원, 아래 루프 참고).
     //   Filter Chip→Chip 아래 · Dropdown→Selection 아래 · Bottom Sheet→"Selection" 아래(Dropdown 바로 다음
@@ -7873,6 +7874,19 @@ export async function buildAllComponents(
       if (!ssec) continue;
       relocateSection(ssec, curX, TOP_Y);
       curX += widthOf(ssec) + H_GAP;
+    }
+    // ROW·STACKED 어디에도 이름이 없는 섹션 — 무리 오른쪽 끝에 넉넉한 사이를 두고 붙인다.
+    //   아직 무리에 넣을지 정하지 않은 것(패턴으로 붙이는 중인 List 등)이 여기 온다.
+    //   자리 선언을 잊어도 멀리 고립되지 않는다 — 떨어뜨려 두되 눈에 닿는 거리로.
+    const APART_GAP = H_GAP * 3;
+    const named = new Set<string>(ROW.concat(STACKED.map((st) => st.name)));
+    let apartX = curX + APART_GAP - H_GAP;
+    for (const cat of COMPONENT_CATEGORIES) {
+      if (named.has(cat.name)) continue;
+      const osec = findSec(cat.name);
+      if (!osec) continue;
+      relocateSection(osec, apartX, TOP_Y);
+      apartX += widthOf(osec) + H_GAP;
     }
   } catch (e) { /* mock/no-page */ }
 

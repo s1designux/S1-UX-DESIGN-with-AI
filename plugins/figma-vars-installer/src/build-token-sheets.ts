@@ -206,8 +206,9 @@ const TYPE_SAMPLE = "S-1 S/W UX 디자인가이드 타이포그래피";
 
 // 견본 시트에 남기는 **공통** 역할색 묶음(river 결정 2026-09-23).
 //   역할색 184개 중 특정 부품 전용(button·chip·date-picker…) 155개는 이 판에서 빼고,
-//   그 부품 세트 바로 아래 "쓰는 색" 꼬리표로 옮긴다 — 한 판에 줄줄이 쌓으면 아무도 읽지 않는다.
-//   여기 남는 것은 어느 부품에도 매이지 않고 화면 전체가 공유하는 것뿐이다.
+//   빼고, 여기 남는 것은 어느 부품에도 매이지 않고 화면 전체가 공유하는 것뿐이다 —
+//   한 판에 184개를 줄줄이 쌓으면 아무도 읽지 않는다. 뺀 것은 Figma Variables 패널에 그대로 있다.
+//   (부품 세트 아래 「쓰는 색」 꼬리표로 옮기려던 계획은 2026-09-23 river 지시로 철거됐다.)
 const COMMON_SEMANTIC_HEADS = [
   "color/bg", "color/surface", "color/text", "color/line", "color/icon", "color/overlay", "color/scroll",
 ];
@@ -294,7 +295,7 @@ async function buildSemanticColor(maps: TokenSheetMaps, dark: boolean): Promise<
   const f = sheetFrame(maps, `Tokens · Color — Semantic ${dark ? "Dark" : "Light"}`, modeId, T.surface);
   // 제목·안내는 한 칸 폭 안에 들어가야 한다 — 칸이 하나뿐인 판에서 글자가 판 밖으로 나간다.
   f.appendChild(await text(maps, `Semantic · 공통 역할색 (${dark ? "Dark" : "Light"})`, "title/16B", T.title, PAD, PAD, COL_W - 40));
-  f.appendChild(await text(maps, "부품 전용 색은 각 부품 세트 아래 「쓰는 색」에서 봅니다.",
+  f.appendChild(await text(maps, "부품 전용 색은 Figma Variables 패널에서 봅니다.",
     "body/12R", T.meta, PAD, PAD + 26, COL_W - 40));
   const top = PAD + SHEET_TITLE_H;
   let x = PAD, y = top, maxY = top, count = 0;
