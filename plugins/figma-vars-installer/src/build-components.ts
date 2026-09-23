@@ -1632,7 +1632,7 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           trail.appendChild(passwordAction);
           if (clearIcon) trail.appendChild(wrapSuffixAction(clearIcon, "clear-action", actionHitSize, { hover: !isMobile })); // Focus: 각 action hit area 독립
           field.appendChild(trail);
-          field.resize(140, sc.h); // 기본 폭 140 — 입력·날짜·선택 칸을 같은 폭으로 (river 결정 2026-09-23)
+          field.resize(200, sc.h); // 기본 폭 200 — 글을 쓰는 칸이라 더 넓게. 날짜·시간·선택 칸은 140 (river 결정 2026-09-23)
           const comp = figma.createComponent();
           comp.name = `Size=${sc.size}, State=${st.name}, Message=${msg}, Break=${sc.brk}`;
           comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 6;
@@ -2089,11 +2089,11 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
     { name: "Filled",   bg: "bg/default",  border: "border/default",  tc: "text/selected",    icon: "icon/default",  up: false },
     { name: "Disabled", bg: "bg/disabled", border: "border/disabled", tc: "text/disabled",    icon: "icon/disabled", up: false },
   ];
-  // 좌측 패딩 — 원본 select(540:3397) 실측: pc-xxsm=12, pc-xsm·pc-md·mobile=16.
-  //   XSM 이 Input(12)과 다른 것은 원본이 그렇다(river 확인 대기 항목, 2026-09-23).
+  // 좌측 패딩 — 원본 select(540:3397)는 pc-xsm 만 16 이었으나, 다른 폼 컨트롤(Input·Date Picker)과
+  //   글자 시작선을 맞추려고 12 로 통일했다(river 결정 2026-09-23). 나머지 크기는 원본과 같다.
   const sizes = [
     { size: "XXSM", brk: "PC",     h: 28, font: 12, padL: 12 },
-    { size: "XSM",  brk: "PC",     h: 34, font: 14, padL: 16 },
+    { size: "XSM",  brk: "PC",     h: 34, font: 14, padL: 12 },
     { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 16 },
     { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16 },
   ];
@@ -3118,7 +3118,7 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
       trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
       trigger.appendChild(await makeBoundText(stTxt, sc.font, "Regular", scv(maps, fc(st.tc))));
       trigger.appendChild(await makeIconInstance("clock", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), CLOCK));
-      trigger.resize(150, sc.h);
+      trigger.resize(140, sc.h); // 기본 폭 140 — 날짜·선택 칸과 공통 (river 결정 2026-09-23)
 
       const comp = figma.createComponent();
       comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}, Type=${ty.key}`;

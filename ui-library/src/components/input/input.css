@@ -2,17 +2,11 @@
    둘 다 별도 컴포넌트가 아니라 이 Input을 조립한다(river D1, 2026-09-04). */
 [data-s1-component="input"] {
   box-sizing: border-box;
-  display: inline-flex; /* 기본 폭을 날짜·선택 칸과 같게 — 종전 flex + width:100% 는 칸 하나만 늘어나 보였다(river 지시 2026-09-23) */
+  display: inline-flex; /* 기본 폭을 부품이 스스로 갖는다 — 종전 flex + width:100% 는 부모에 따라 제멋대로 늘어났다(river 지시 2026-09-23) */
   flex-direction: column;
   gap: var(--spacing-6);
   max-width: 100%;
-  width: 140px; /* 정본 field.resize(140, sc.h) — 날짜·선택 칸과 같은 기본 폭. 넓게 쓰려면 쓰는 쪽에서 width 를 준다 */
-}
-
-/* 비밀번호 칸 최소 폭 — 기본 폭 140 에서는 눈 아이콘 자리를 빼면 글자칸이 90px 밖에 안 남아
-   "비밀번호를 입력하세요"(124.5px)가 잘린다(2026-09-23 실측). 검색과 같은 예외로 하한을 준다. */
-[data-s1-component="input"]:has([data-s1-part="action"][data-action="password"]) {
-  width: 200px;
+  width: 200px; /* 정본 field.resize(200, sc.h) — 글을 쓰는 칸이라 날짜·시간·선택(140)보다 넓다. 더 넓게 쓰려면 쓰는 쪽에서 width 를 준다 */
 }
 
 /* Search 최소 폭 — 정본 SEARCH_MIN_W(build-components.ts) 와 같은 200px.

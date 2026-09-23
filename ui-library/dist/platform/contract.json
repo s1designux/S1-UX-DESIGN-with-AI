@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
     "purpose": "개발 툴과 검사기가 함께 읽는 허용목록. 여기 없는 variant·size·속성은 승인된 적이 없는 것이다.",
-    "canonicalFingerprint": "aa951a30d71caa3187a3b28e90f9bb26d0ea7f5db43d92b45a134da70cd4e0f8"
+    "canonicalFingerprint": "e8babccae0aae87312fbca6a6fded140d0ba901c998f99102d385f2782107f59"
   },
   "components": [
     {
@@ -64,8 +64,8 @@
         "init is idempotent",
         "destroy removes listeners and hides clear action"
       ],
-      "canonicalFingerprint": "ce8ed703924e32597149aeae3b0adecb20445579543e4466e28671547c7838ce",
-      "sourceFingerprint": "cad402601591ad624e3f3c46940cc41308dea47fa3f5e625a8b768fc85810fe4"
+      "canonicalFingerprint": "5638233892f7bc9913c361ae106c0822692fd50dff37d66a6648d37a9a2ee7de",
+      "sourceFingerprint": "9ce0273ef3f695fd1eee0647d4a854c79391ec86515b53e2626f5cbfff1f265e"
     },
     {
       "id": "button",
@@ -374,8 +374,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "49bce9caf45a1d5042b27d790188146d019c34af8d4f4b89ba423cf3eab81bea",
-      "sourceFingerprint": "ed55799f04d17047a717fd6b40e3a617a980d63029be00efc231b4c4bfecdf69"
+      "canonicalFingerprint": "5c33619e76940e30cfde18072b4e3f8a78f1128896998ac9a381841df8433acc",
+      "sourceFingerprint": "bef31d5d0402edd61fccb5ca54474f1c663dac4e15a86a64237b5ccfbc69bfc6"
     },
     {
       "id": "filter-chip",
@@ -871,8 +871,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "51be66163114c250e7939b9fb0fd9f67bb70aa3e86e066a257bd08c3b290aeee",
-      "sourceFingerprint": "7b8c508f6b4c1669025b4930e921123621c228c6ccd245995403deef47ef47a6"
+      "canonicalFingerprint": "575059cdd5a904c5b4aa7441412e7cf5d0ea916876b1d240d5dab3275b496a20",
+      "sourceFingerprint": "00f2908a8f2ef1b6c7d82f6c75cd21d5243d98e35decd042066d1a058d42b6d1"
     },
     {
       "id": "date-picker",

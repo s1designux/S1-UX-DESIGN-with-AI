@@ -27,9 +27,9 @@
 }
 
 /* Size×Break — build-components.ts:1703-1708 */
-/* XXSM 만 좌측 여백 12 — 원본 select(540:3397) 실측. 나머지 크기는 16. */
+/* XXSM·XSM 좌측 여백 12 — 다른 폼 컨트롤과 글자 시작선을 맞춘다(river 결정 2026-09-23). MD·Mobile 은 16. */
 [data-s1-component="select"][data-size="xxsm"] [data-s1-part="trigger"] { font-size: var(--font-size-12); height: var(--sizing-28); padding-left: var(--spacing-12); }
-[data-s1-component="select"][data-size="xsm"] [data-s1-part="trigger"] { font-size: var(--font-size-14); height: var(--sizing-34); }
+[data-s1-component="select"][data-size="xsm"] [data-s1-part="trigger"] { font-size: var(--font-size-14); height: var(--sizing-34); padding-left: var(--spacing-12); }
 [data-s1-component="select"][data-size="md"] [data-s1-part="trigger"] { font-size: var(--font-size-14); height: var(--sizing-44); }
 /* Mobile 아이콘 끝 여백 12 — Input·Search 와 같은 자리로 통일(river 결정 2026-09-21). */
 [data-s1-component="select"][data-size="md"][data-break="mobile"] [data-s1-part="trigger"] { height: var(--sizing-48); padding-right: var(--spacing-12); }
@@ -127,7 +127,7 @@
 [data-s1-density="wide"] [data-s1-component="select"]:not([data-size]) [data-s1-part="icon"] { width: var(--sizing-24); height: var(--sizing-24); }
 
 /* density:normal 보통(34px) — data-size 를 직접 주면 그쪽이 이긴다 */
-[data-s1-density="normal"] [data-s1-component="select"]:not([data-size]) [data-s1-part="trigger"] { font-size: var(--font-size-14); height: var(--sizing-34); }
+[data-s1-density="normal"] [data-s1-component="select"]:not([data-size]) [data-s1-part="trigger"] { font-size: var(--font-size-14); height: var(--sizing-34); padding-left: var(--spacing-12); }
 
 [data-s1-density="normal"] [data-s1-component="select"]:not([data-size]) [data-s1-part="icon"] { width: var(--sizing-24); height: var(--sizing-24); }
 
