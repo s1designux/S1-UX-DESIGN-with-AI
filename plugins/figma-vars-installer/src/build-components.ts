@@ -1577,10 +1577,10 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
   const sizes = [
     { size: "XXSM", brk: "PC",     h: 28, padL: 12, padR: 8,  font: 12, head: "XXSM" },
     { size: "XSM",  brk: "PC",     h: 34, padL: 12, padR: 8,  font: 14, head: "XSM" },
-    { size: "MD",   brk: "PC",     h: 44, padL: 16, padR: 12, font: 14, head: "MD" },
+    { size: "MD",   brk: "PC",     h: 44, padL: 12, padR: 12, font: 14, head: "MD" },
     // Mobile 은 누르는 영역이 48×48 이라 padR 을 두면 아이콘이 안쪽으로 밀린다.
     // padR 0 으로 누르는 영역을 칸 끝에 붙인다. (river 지시 2026-09-04)
-    { size: "MD",   brk: "Mobile", h: 48, padL: 16, padR: 0,  font: 14, head: "MD·M" },
+    { size: "MD",   brk: "Mobile", h: 48, padL: 12, padR: 0,  font: 14, head: "MD·M" },
   ];
   const messages = ["Off", "On"];
   const comps: ComponentNode[] = [];
@@ -1962,8 +1962,8 @@ async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: Com
   const sizes = [
     { size: "XXSM", brk: "PC",     h: 28, font: 12, padL: 12, padR: 8 },
     { size: "XSM",  brk: "PC",     h: 34, font: 14, padL: 12, padR: 8 },
-    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 16, padR: 12 },
-    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16, padR: 0 },
+    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 12, padR: 12 },
+    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 12, padR: 0 },
   ];
   // 누르는 영역(river C3): PC 28×28 · Mobile 48×48 — Base Input wrapSuffixAction과 같은 크기 규칙.
   // pullInward: Mobile 에서 아이콘 두 개가 나란히 설 때 왼쪽(지우기) 그림을 자기 칸 안쪽 끝에 붙여
@@ -2144,8 +2144,8 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
   const sizes = [
     { size: "XXSM", brk: "PC",     h: 28, font: 12, padL: 12 },
     { size: "XSM",  brk: "PC",     h: 34, font: 14, padL: 12 },
-    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 16 },
-    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16 },
+    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 12 },
+    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 12 },
   ];
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];
@@ -3135,11 +3135,11 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
     { name: "Disabled", bg: "bg/disabled",  border: "border/disabled", txt: "00:00",     tc: "text/disabled",    icon: "icon/disabled" },
   ];
   const sizes = [
-    { size: "XXSM", brk: "PC",     h: 28, font: 12, padL: 10, padR: 6 },
+    { size: "XXSM", brk: "PC",     h: 28, font: 12, padL: 12, padR: 6 },
     { size: "XSM",  brk: "PC",     h: 34, font: 14, padL: 12, padR: 8 },
-    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 16, padR: 8 },
+    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 12, padR: 8 },
     // Mobile 은 아이콘 끝 여백 12 — Input·Search 와 같은 자리(river 결정 2026-09-21).
-    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16, padR: 12 },
+    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 12, padR: 12 },
   ];
   // 12시간제 / 24시간제 축 — 웹 배포본의 `data-type="12h" | "24h"` 와 1:1 (river 지시 2026-09-09).
   //   Time Picker Dropdown 은 이미 Type 축을 갖고 있었는데 트리거에는 없어서, 설치기 결과만 보면
@@ -5068,8 +5068,8 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
   const sizes = [
     { size: "XXSM", brk: "PC",     h: 28, font: 12, padL: 12 },
     { size: "XSM",  brk: "PC",     h: 34, font: 14, padL: 12 },
-    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 16 },
-    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16 },
+    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 12 },
+    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 12 },
   ];
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];

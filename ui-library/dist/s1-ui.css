@@ -164,6 +164,7 @@
   margin: 0;
 }
 
+/* 왼쪽 안쪽 여백은 크기와 상관없이 12 — 낮은 칸에서 16 은 글자가 가운데서 밀려 보였다(river 결정 2026-09-23). */
 [data-s1-component="input"][data-break="pc"][data-size="xxsm"] [data-s1-part="field"] {
   height: var(--sizing-28);
   padding-inline: var(--spacing-12) var(--spacing-8);
@@ -188,7 +189,7 @@
 
 [data-s1-component="input"][data-break="pc"][data-size="md"] [data-s1-part="field"] {
   height: var(--sizing-44);
-  padding-inline: var(--spacing-16) var(--spacing-12);
+  padding-inline: var(--spacing-12) var(--spacing-12);
 }
 
 [data-s1-component="input"][data-break="pc"][data-size="md"] [data-s1-part="control"] {
@@ -202,7 +203,7 @@
 [data-s1-component="input"][data-break="mobile"][data-size="md"] [data-s1-part="field"] {
   height: var(--sizing-48);
   min-height: var(--sizing-48);
-  padding-inline: var(--spacing-16) 0;
+  padding-inline: var(--spacing-12) 0;
 }
 
 [data-s1-component="input"][data-break="mobile"][data-size="md"] [data-s1-part="control"] {
@@ -280,7 +281,7 @@
 /* density:wide 넓게(44px) — data-size 를 직접 주면 그쪽이 이긴다 */
 [data-s1-density="wide"] [data-s1-component="input"]:not([data-break="mobile"]):not([data-size]) [data-s1-part="field"] {
   height: var(--sizing-44);
-  padding-inline: var(--spacing-16) var(--spacing-12);
+  padding-inline: var(--spacing-12) var(--spacing-12);
 }
 
 [data-s1-density="wide"] [data-s1-component="input"]:not([data-break="mobile"]):not([data-size]) [data-s1-part="control"] {
@@ -291,7 +292,7 @@
 
 [data-s1-break="pc"][data-s1-density="wide"] [data-s1-component="input"]:not([data-break="mobile"]):not([data-size]) [data-s1-part="field"] {
   height: var(--sizing-44);
-  padding-inline: var(--spacing-16) var(--spacing-12);
+  padding-inline: var(--spacing-12) var(--spacing-12);
 }
 
 [data-s1-break="pc"][data-s1-density="wide"] [data-s1-component="input"]:not([data-break="mobile"]):not([data-size]) [data-s1-part="control"] {
@@ -376,7 +377,7 @@
 
 :is([data-s1-break="pc"], [data-s1-density="wide"], [data-s1-density="normal"], [data-s1-density="narrow"]) [data-s1-component="input"]:not([data-break="mobile"])[data-size="md"] [data-s1-part="field"] {
   height: var(--sizing-44);
-  padding-inline: var(--spacing-16) var(--spacing-12);
+  padding-inline: var(--spacing-12) var(--spacing-12);
 }
 
 :is([data-s1-break="pc"], [data-s1-density="wide"], [data-s1-density="normal"], [data-s1-density="narrow"]) [data-s1-component="input"]:not([data-break="mobile"])[data-size="md"] [data-s1-part="control"] {
@@ -402,7 +403,7 @@
 [data-s1-break="mobile"] [data-s1-component="input"]:not([data-break="pc"])[data-size="md"] [data-s1-part="field"] {
   height: var(--sizing-48);
   min-height: var(--sizing-48);
-  padding-inline: var(--spacing-16) 0;
+  padding-inline: var(--spacing-12) 0;
 }
 
 [data-s1-break="mobile"] [data-s1-component="input"]:not([data-break="pc"])[data-size="md"] [data-s1-part="control"] {
@@ -415,7 +416,7 @@
 [data-s1-break="mobile"] [data-s1-component="input"]:not([data-break="pc"]):not([data-size]) [data-s1-part="field"] {
   height: var(--sizing-48);
   min-height: var(--sizing-48);
-  padding-inline: var(--spacing-16) 0;
+  padding-inline: var(--spacing-12) 0;
 }
 
 [data-s1-break="mobile"] [data-s1-component="input"]:not([data-break="pc"]):not([data-size]) [data-s1-part="control"] {
@@ -1185,15 +1186,14 @@
   font-weight: var(--font-weight-regular);
   justify-content: space-between;
   min-width: 140px; /* 정본 trigger.resize(140, sc.h) — river 2차 지시(2026-09-01): 셀렉트박스 본체(트리거)에도 최소 폭. Filter Chip 트리거는 정본이 primaryAxisSizingMode=AUTO(내용에 맞춰 줄어듦)라 여기 적용 안 함(filter-chip.css는 손대지 않음). */
-  padding-left: var(--spacing-16);
+  padding-left: var(--spacing-12); /* 왼쪽 안쪽 여백은 크기와 상관없이 12 — 낮은 칸에서 16 은 글자가 가운데서 밀려 보였다(river 결정 2026-09-23). */
   padding-right: var(--spacing-8);
   width: 100%;
 }
 
 /* Size×Break — build-components.ts:1703-1708 */
-/* XXSM·XSM 좌측 여백 12 — 다른 폼 컨트롤과 글자 시작선을 맞춘다(river 결정 2026-09-23). MD·Mobile 은 16. */
-[data-s1-component="select"][data-size="xxsm"] [data-s1-part="trigger"] { font-size: var(--font-size-12); height: var(--sizing-28); padding-left: var(--spacing-12); }
-[data-s1-component="select"][data-size="xsm"] [data-s1-part="trigger"] { font-size: var(--font-size-14); height: var(--sizing-34); padding-left: var(--spacing-12); }
+[data-s1-component="select"][data-size="xxsm"] [data-s1-part="trigger"] { font-size: var(--font-size-12); height: var(--sizing-28); }
+[data-s1-component="select"][data-size="xsm"] [data-s1-part="trigger"] { font-size: var(--font-size-14); height: var(--sizing-34); }
 [data-s1-component="select"][data-size="md"] [data-s1-part="trigger"] { font-size: var(--font-size-14); height: var(--sizing-44); }
 /* Mobile 아이콘 끝 여백 12 — Input·Search 와 같은 자리로 통일(river 결정 2026-09-21). */
 [data-s1-component="select"][data-size="md"][data-break="mobile"] [data-s1-part="trigger"] { height: var(--sizing-48); padding-right: var(--spacing-12); }
@@ -1291,12 +1291,12 @@
 [data-s1-density="wide"] [data-s1-component="select"]:not([data-size]) [data-s1-part="icon"] { width: var(--sizing-24); height: var(--sizing-24); }
 
 /* density:normal 보통(34px) — data-size 를 직접 주면 그쪽이 이긴다 */
-[data-s1-density="normal"] [data-s1-component="select"]:not([data-size]) [data-s1-part="trigger"] { font-size: var(--font-size-14); height: var(--sizing-34); padding-left: var(--spacing-12); }
+[data-s1-density="normal"] [data-s1-component="select"]:not([data-size]) [data-s1-part="trigger"] { font-size: var(--font-size-14); height: var(--sizing-34); }
 
 [data-s1-density="normal"] [data-s1-component="select"]:not([data-size]) [data-s1-part="icon"] { width: var(--sizing-24); height: var(--sizing-24); }
 
 /* density:narrow 좁게(28px) — data-size 를 직접 주면 그쪽이 이긴다 */
-[data-s1-density="narrow"] [data-s1-component="select"]:not([data-size]) [data-s1-part="trigger"] { font-size: var(--font-size-12); height: var(--sizing-28); padding-left: var(--spacing-12); }
+[data-s1-density="narrow"] [data-s1-component="select"]:not([data-size]) [data-s1-part="trigger"] { font-size: var(--font-size-12); height: var(--sizing-28); }
 
 [data-s1-density="narrow"] [data-s1-component="select"]:not([data-size]) [data-s1-part="icon"] { width: var(--sizing-20); height: var(--sizing-20); }
 
@@ -2382,7 +2382,7 @@
   line-height: var(--line-height-130);
   letter-spacing: var(--letter-spacing-normal);
   height: var(--sizing-28);
-  padding-left: var(--spacing-10);
+  padding-left: var(--spacing-12);
   padding-right: var(--spacing-6);
 }
 [data-s1-component="time-picker"][data-size="xsm"] [data-s1-part="trigger"] {
@@ -2404,7 +2404,7 @@
   line-height: var(--line-height-130);
   letter-spacing: var(--letter-spacing-tight);
   height: var(--sizing-44);
-  padding-left: var(--spacing-16);
+  padding-left: var(--spacing-12);
   padding-right: var(--spacing-8);
 }
 /* Mobile 아이콘 끝 여백 12 — Input·Search 와 같은 자리로 통일(river 결정 2026-09-21). */
@@ -2748,7 +2748,7 @@
   line-height: var(--line-height-130);
   letter-spacing: var(--letter-spacing-tight);
   height: var(--sizing-44);
-  padding-left: var(--spacing-16);
+  padding-left: var(--spacing-12);
   padding-right: var(--spacing-8);
 }
 
@@ -2778,7 +2778,7 @@
   line-height: var(--line-height-130);
   letter-spacing: var(--letter-spacing-normal);
   height: var(--sizing-28);
-  padding-left: var(--spacing-10);
+  padding-left: var(--spacing-12);
   padding-right: var(--spacing-6);
 }
 
@@ -2799,7 +2799,7 @@
   line-height: var(--line-height-130);
   letter-spacing: var(--letter-spacing-tight);
   height: var(--sizing-44);
-  padding-left: var(--spacing-16);
+  padding-left: var(--spacing-12);
   padding-right: var(--spacing-8);
 }
 
@@ -2837,16 +2837,16 @@
   gap: var(--spacing-8);
   justify-content: space-between;
   min-width: 140px; /* 정본 trigger.resize(140) — 입력·선택 칸과 같은 기본 폭 (river 결정 2026-09-23) */
-  padding-left: var(--spacing-12); /* 크기별로 다시 지정 — XXSM·XSM 12, MD 16 (원본 datepicker_input 실측, Base Input 과 같은 값) */
+  padding-left: var(--spacing-12); /* 왼쪽 안쪽 여백은 크기와 상관없이 12 — 낮은 칸에서 16 은 글자가 가운데서 밀려 보였다(river 결정 2026-09-23). */
   padding-right: var(--spacing-8);
   width: 100%;
 }
 
 [data-s1-component="date-picker"][data-size="xxsm"] [data-s1-part="trigger"] { font-size: var(--font-size-12); line-height: var(--line-height-130); letter-spacing: var(--letter-spacing-normal); height: var(--sizing-28); }
 [data-s1-component="date-picker"][data-size="xsm"] [data-s1-part="trigger"] { font-size: var(--font-size-14); line-height: var(--line-height-130); letter-spacing: var(--letter-spacing-tight); height: var(--sizing-34); }
-[data-s1-component="date-picker"][data-size="md"] [data-s1-part="trigger"] { font-size: var(--font-size-14); line-height: var(--line-height-130); letter-spacing: var(--letter-spacing-tight); height: var(--sizing-44); padding-left: var(--spacing-16); }
+[data-s1-component="date-picker"][data-size="md"] [data-s1-part="trigger"] { font-size: var(--font-size-14); line-height: var(--line-height-130); letter-spacing: var(--letter-spacing-tight); height: var(--sizing-44); }
 /* Mobile 아이콘 끝 여백 12 — Input·Search 와 같은 자리로 통일(river 결정 2026-09-21). */
-[data-s1-component="date-picker"][data-size="md"][data-break="mobile"] [data-s1-part="trigger"] { height: var(--sizing-48); padding-left: var(--spacing-16); padding-right: var(--spacing-12); }
+[data-s1-component="date-picker"][data-size="md"][data-break="mobile"] [data-s1-part="trigger"] { height: var(--sizing-48); padding-right: var(--spacing-12); }
 
 [data-s1-component="date-picker"] [data-s1-part="value"] {
   color: inherit;
@@ -3304,7 +3304,7 @@
 
 /* ── 밀도(density) — registry/governance/density-policy.json 에서 생성. 손편집 금지 ── */
 /* density:wide 넓게(44px) — data-size 를 직접 주면 그쪽이 이긴다 */
-[data-s1-density="wide"] [data-s1-component="date-picker"]:not([data-size]) [data-s1-part="trigger"] { font-size: var(--font-size-14); line-height: var(--line-height-130); letter-spacing: var(--letter-spacing-tight); height: var(--sizing-44); padding-left: var(--spacing-16); }
+[data-s1-density="wide"] [data-s1-component="date-picker"]:not([data-size]) [data-s1-part="trigger"] { font-size: var(--font-size-14); line-height: var(--line-height-130); letter-spacing: var(--letter-spacing-tight); height: var(--sizing-44); }
 
 [data-s1-density="wide"] [data-s1-component="date-picker"]:not([data-size]) [data-s1-part="icon"] { width: var(--sizing-24); height: var(--sizing-24); }
 
@@ -3433,14 +3433,14 @@
 }
 
 /* bridge:mobile 감싸기에 화면 구분을 적었으면 컴포넌트가 안 적어도 같은 규칙이 선다 */
-[data-s1-break="mobile"] [data-s1-component="date-picker"][data-size="md"]:not([data-break="pc"]) [data-s1-part="trigger"] { height: var(--sizing-48); padding-left: var(--spacing-16); padding-right: var(--spacing-12); }
+[data-s1-break="mobile"] [data-s1-component="date-picker"][data-size="md"]:not([data-break="pc"]) [data-s1-part="trigger"] { height: var(--sizing-48); padding-right: var(--spacing-12); }
 
 /* density:mobile 모바일은 밀도 축이 없다 — 손가락 기준 높이 하나 */
-[data-s1-break="mobile"] [data-s1-component="date-picker"]:not([data-size]) [data-s1-part="trigger"] { font-size: var(--font-size-14); line-height: var(--line-height-130); letter-spacing: var(--letter-spacing-tight); height: var(--sizing-44); padding-left: var(--spacing-16); }
+[data-s1-break="mobile"] [data-s1-component="date-picker"]:not([data-size]) [data-s1-part="trigger"] { font-size: var(--font-size-14); line-height: var(--line-height-130); letter-spacing: var(--letter-spacing-tight); height: var(--sizing-44); }
 
 [data-s1-break="mobile"] [data-s1-component="date-picker"]:not([data-size]) [data-s1-part="icon"] { width: var(--sizing-24); height: var(--sizing-24); }
 
-[data-s1-break="mobile"] [data-s1-component="date-picker"]:not([data-size]):not([data-break="pc"]) [data-s1-part="trigger"] { height: var(--sizing-48); padding-left: var(--spacing-16); padding-right: var(--spacing-12); }
+[data-s1-break="mobile"] [data-s1-component="date-picker"]:not([data-size]):not([data-break="pc"]) [data-s1-part="trigger"] { height: var(--sizing-48); padding-right: var(--spacing-12); }
 
 /* component:gnb */
 /* GNB — 정본 buildGNB(build-components.ts:3627)·fillGnbMenu(:3133)·

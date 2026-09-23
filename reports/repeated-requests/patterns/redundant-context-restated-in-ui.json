@@ -3,7 +3,7 @@
   "category": "guide-presentation",
   "label": "화면이 이미 알려주는 맥락을 문구로 다시 적어 장황해짐",
   "description": "보고 있는 화면 이름(Mobile/PC Components)만으로 알 수 있는 사실을 본문 안내 문장으로 중복 표기하는 패턴",
-  "count": 3,
+  "count": 4,
   "promotionStatus": "tracking",
   "occurrences": [
     {
@@ -17,6 +17,10 @@
     {
       "date": "2026-09-18",
       "summary": "검수 화면이 경로·코드 이름·결정 번호·퍼센트·감춘 개수·화면 폭·빌드 시각까지 내부 사정을 늘어놓고 있었다 — river 가 그림으로 짚어 10건을 지정해 걷어냄(2026-09-18)"
+    },
+    {
+      "date": "2026-09-18",
+      "summary": "검수 화면이 변형·속성·버튼을 영어와 코드 표기 그대로 보여주고 있었다 — river 가 «사람 말로» 지시(2026-09-18). 사전을 손으로 적자 축 4개·값 20여 개가 조용히 빠져 Gate 54 로 기계가 지키게 했다"
     }
   ],
   "automationNote": "3회 도달 시 '안내 화면에서 화면 제목·탭으로 이미 드러난 사실을 본문에 다시 적지 않는다'를 component-presentation-policy 규칙으로 승격 검토."
