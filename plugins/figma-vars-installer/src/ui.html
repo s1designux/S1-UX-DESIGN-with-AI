@@ -573,6 +573,12 @@
   </label>
 </div>
 
+<div class="dep-note" style="margin-bottom:8px;">
+  ⓘ <strong>토큰 견본 화면은 항상 함께 깔립니다</strong> — 색(Foundation 팔레트 · 역할색 Light/Dark) ·
+  글자(텍스트 스타일 표본) · 숫자(간격 · 반경 · 두께) 견본 3장이 가이드 페이지 왼쪽에 만들어집니다.
+  견본의 색·크기는 토큰 변수에 물려 있어, 토큰 값이 바뀌면 견본도 따라 바뀝니다.
+</div>
+
 <div class="dep-note">
   ⓘ <strong>의존성</strong>: Semantic은 Foundation을, Component Set은 Foundation·Semantic·Text Styles를 참조합니다.
   선택하지 않은 의존 항목은 <strong>이미 설치된 것을 자동 연결</strong>합니다(없으면 안내 후 중단).
@@ -1062,6 +1068,15 @@
       if (added.length) lines.push(`Component Set 추가: <strong>${added.length}개</strong> 세트 (variant ${msg.componentCount}개)<br><span style="color:#9ca3af;font-size:11px;">${added.join(' · ')}</span>`);
       if (skipped.length) lines.push(`기존 세트 보존: <strong>${skipped.length}개</strong> <span style="color:#9ca3af;font-size:11px;">(이미 존재 — 값 변경은 Variables로 자동 반영)</span>`);
       if (!added.length && !skipped.length && msg.componentCount) lines.push(`Component Set: <strong>${msg.componentCount}개</strong> variant`);
+      // 토큰 견본 시트 — 매 설치마다 함께 깔리므로 결과에 항상 한 줄 남긴다.
+      const sheetSections = msg.sheetSections || [];
+      if (sheetSections.length) {
+        const parts = [];
+        if (msg.sheetSwatches) parts.push(`색 ${msg.sheetSwatches}칸`);
+        if (msg.sheetStyles)   parts.push(`글자 ${msg.sheetStyles}종`);
+        if (msg.sheetNumbers)  parts.push(`숫자 ${msg.sheetNumbers}개`);
+        lines.push(`토큰 견본 화면: <strong>${sheetSections.length}장</strong>${parts.length ? ` (${parts.join(' · ')})` : ''}`);
+      }
       if (msg.removedCount)    lines.push(`옛 잔재 변수 <strong>${msg.removedCount}개</strong> 정리`);
       // 건별 실패·빌더 미등록 — 설치가 조용히 반쪽이 되지 않도록 완료 화면에 명시한다.
       //   (종전엔 1개 실패 시 전체가 중단됐고, 그마저도 개발자 콘솔에만 남았다.)
@@ -1085,6 +1100,20 @@
         </div>` : '';
       // 토큰에 연결되지 않은 색이 남은 자리 — 설치 실패가 아니므로 제목은 건드리지 않고 회색으로만 알린다.
       //   보이지 않는 색은 설치기가 이미 지웠고, 여기 남는 것은 지우면 그림이 사라질 수 있어 사람이 볼 자리다.
+      // 재료가 없어 못 그린 견본 시트 — 조용히 빼지 않고 사실대로 알린다.
+      const sheetSkipped = msg.sheetSkipped || [];
+      const sheetErrorBlock = msg.sheetError ? `
+        <div class="result-sub" style="margin-top:10px;padding:10px 12px;border-radius:8px;background:#fff7ed;color:#9a3412;font-size:11px;line-height:1.7;">
+          <strong>토큰 견본 화면을 만들지 못했습니다</strong><br>
+          사유: ${esc(msg.sheetError)}<br>
+          토큰·컴포넌트 설치 자체는 끝났습니다. 다시 설치하면 견본 화면도 함께 만들어집니다.
+        </div>` : '';
+      const sheetWarnBlock = sheetSkipped.length ? `
+        <div class="result-sub" style="margin-top:10px;padding:10px 12px;border-radius:8px;background:#f3f4f6;color:#4b5563;font-size:11px;line-height:1.7;">
+          <strong>만들지 않은 토큰 견본</strong><br>
+          ${sheetSkipped.map((s) => `· ${esc(s)}`).join('<br>')}<br>
+          모자란 항목을 함께 설치하면 다음 설치 때 그 판도 그려집니다.
+        </div>` : '';
       const rawPaintList = msg.componentRawPaints || [];
       const rawPaintBlock = rawPaintList.length ? `
         <div class="result-sub" style="margin-top:10px;padding:10px 12px;border-radius:8px;background:#f3f4f6;color:#4b5563;font-size:11px;line-height:1.7;">
@@ -1098,7 +1127,7 @@
           <div class="result-sub">${lines.join('<br>') || '설치된 항목이 없습니다.'}<br><br>
             왼쪽 패널 <strong>Local variables</strong> · <strong>Text styles</strong> · <strong>Assets</strong>에서 확인하세요.
           </div>
-        </div>${warnBlock}${rawPaintBlock}
+        </div>${warnBlock}${sheetErrorBlock}${sheetWarnBlock}${rawPaintBlock}
         <div class="result-sub" style="color:#6b7280;font-size:11px;line-height:1.7;">
           컴포넌트 설치가 중간에 멈췄거나 배치가 이상하면 <strong>[재설치]</strong>를 누르세요 —
           기존 컴포넌트를 지우고 처음부터 다시 설치합니다.

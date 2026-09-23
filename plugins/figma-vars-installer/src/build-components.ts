@@ -59,6 +59,9 @@ let TEXT_STYLES: Record<string, TextStyle> = {};
 //   검수기가 '비토큰 색·비정본 텍스트 스타일'로 정확히 잡아냈다(river 지적 2026-09-10) → 전부 정본 배선으로 옮긴다.
 //   다크 스펙은 프레임에 Dark 모드가 박히므로(setMode) 같은 토큰 한 벌로 양쪽이 맞는다.
 let SPEC_MAPS: BuildMaps | null = null;
+/** 스펙/견본 시트가 섹션 면·선을 토큰에 물릴 수 있게 맵을 미리 심는다.
+ *  컴포넌트를 설치하지 않는 회차(토큰만 설치)에도 토큰 견본 시트가 같은 배선을 쓰기 위함. */
+export function primeSpecMaps(maps: BuildMaps): void { SPEC_MAPS = maps; }
 type SpecRole = "bg" | "band" | "title" | "platform" | "size" | "label";
 const SPEC_ROLE_TOKEN: Record<SpecRole, string> = {
   bg: "color/bg/level-0",
@@ -168,7 +171,7 @@ async function getBuiltComp(name: string): Promise<ComponentNode | null> {
 }
 
 /** 노드 Appearance 에 Semantic Color V2 컬렉션의 특정 모드를 명시적으로 연결한다. */
-function setMode(node: SceneNode, maps: BuildMaps, modeId: string): void {
+export function setMode(node: SceneNode, maps: BuildMaps, modeId: string): void {
   try {
     // 프로젝트 표준 시그니처: (collectionId, modeId), 타이핑 차이로 any 캐스팅 (figma-component-audit 동일)
     (node as unknown as {
@@ -414,7 +417,7 @@ function variantSlots(variant: VariantId, state: StateId): Slots {
 }
 
 /** Semantic 변수에 바인딩된 SOLID paint 를 만든다. */
-function boundPaint(variable: Variable): SolidPaint {
+export function boundPaint(variable: Variable): SolidPaint {
   const paint: SolidPaint = { type: "SOLID", color: { r: 0, g: 0, b: 0 } };
   return figma.variables.setBoundVariableForPaint(paint, "color", variable) as SolidPaint;
 }
@@ -7954,7 +7957,7 @@ function relocateSection(section: SectionNode, targetX: number, targetY: number)
 // ⚠️ nodes 는 **호출자가 소유권으로 확정한 목록**이다(이번 실행에서 이 카테고리가 만든 노드 +
 //   이 카테고리 섹션의 기존 자식). 종전처럼 "y밴드에 들어오는 페이지의 모든 노드"를 담지 않는다 —
 //   그 방식은 한 부품이 실패하면 밴드가 남의 카테고리를 삼켜 배치가 통째로 무너졌다(2026-09-08 실측).
-async function wrapCategoryInSection(
+export async function wrapCategoryInSection(
   title: string,
   nodes: SceneNode[],
   titleSpace: number,

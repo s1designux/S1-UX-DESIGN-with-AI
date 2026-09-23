@@ -39,6 +39,7 @@ import { parseCssShadow, shadowVarName } from "./shadow-parse";
 import { installTextStyles } from "./install-textstyles";
 import { TEXT_STYLES } from "./textstyles-data";
 import { buildAllComponents, COMPONENT_CATEGORIES } from "./build-components";
+import { buildTokenSheets } from "./build-token-sheets";
 import { PATTERNS } from "./pattern-data";
 import { buildPattern } from "./build-patterns";
 import type { PatternMaps } from "./build-patterns";
@@ -1136,7 +1137,8 @@ async function runInstall(
       foundationNumberMap = r.numberMap;
       foundationCount = r.count;
       removedAll.push(...r.removed);
-    } else if (sel.semantic || sel.components) {
+    } else {
+      // 선택하지 않아도 읽어 둔다 — Semantic·컴포넌트 의존뿐 아니라 **토큰 견본 시트**가 항상 쓴다.
       foundationColorMap = await loadExistingVarMap(FOUNDATION_COLLECTION, "COLOR");
       foundationNumberMap = await loadExistingVarMap(FOUNDATION_COLLECTION, "FLOAT");
     }
@@ -1161,7 +1163,8 @@ async function runInstall(
       lightModeNamed = r.lightModeNamed;
       semanticCount = r.count;
       removedAll.push(...r.removed);
-    } else if (sel.components) {
+    } else {
+      // 컴포넌트를 안 깔아도 읽는다 — 토큰 견본 시트의 역할색 판이 이 맵을 쓴다.
       const loaded = await loadExistingSemantic();
       if (loaded) {
         semanticColorMap = loaded.semanticColorMap;
@@ -1210,6 +1213,12 @@ async function runInstall(
       post("progress", { step: "Text Styles 설치 중…", pct: 88 });
       textStyleMap = await installTextStyles((step, pct) => post("progress", { step, pct }), 88, 94);
       textStyleCount = Object.keys(textStyleMap).length;
+    } else {
+      // 이번에 깔지 않아도 파일에 있는 것을 읽어 둔다 — 토큰 견본의 글자 판이 이 맵으로 표본을 찍는다.
+      try {
+        const local = await figma.getLocalTextStylesAsync();
+        for (const st of local) textStyleMap[st.name] = st;
+      } catch (e) { /* 구버전 API → 글자 시트만 건너뛴다 */ }
     }
 
     throwIfCancelled();
@@ -1247,6 +1256,50 @@ async function runInstall(
       componentNoRunner = compResult.noRunner;    // 빌더 미등록으로 건너뛴 것(Gate 30 이 커밋 단계에서 차단)
       componentDegraded = compResult.degraded;    // 부품 누락으로 불완전하게 완성된 것
       componentRawPaints = compResult.rawPaints;  // 토큰에 연결되지 않은 색이 남은 자리(있으면 완료 화면에 표시)
+    }
+
+    throwIfCancelled();
+    // ── 토큰 견본 시트(색·글자·숫자) — 선택 항목이 아니라 **매 설치마다** 함께 깐다(river 결정 2026-09-22) ──
+    //   부품만 화면으로 깔리고 토큰은 패널 목록으로만 들어가던 상태를 없앤다.
+    //   재료(변수·텍스트 스타일)가 없는 판은 조용히 빼지 않고 sheetSkipped 로 알린다.
+    let sheetSections: string[] = [];
+    let sheetSwatches = 0;
+    let sheetStyles = 0;
+    let sheetNumbers = 0;
+    let sheetSkipped: string[] = [];
+    let sheetError = "";
+    try {
+      const semanticNumberMap = await loadExistingVarMap(SEMANTIC_NUMBER_COLLECTION, "FLOAT");
+      const sheet = await buildTokenSheets(
+        {
+          semanticColor: semanticColorMap,
+          foundationColor: foundationColorMap,
+          foundationNumber: foundationNumberMap,
+          semanticNumber: semanticNumberMap,
+          textStyles: textStyleMap,
+          semanticColorCollectionId: scc ? scc.id : "",
+          semanticLightModeId: lightModeId,
+          semanticLightModeNamed: lightModeNamed,
+          semanticDarkModeId: darkModeId,
+          shadowVars: shadowVarMap,
+          semanticShadowCollectionId: shadowCollectionId || undefined,
+          semanticShadowLightModeId: shadowLightModeId || undefined,
+          semanticShadowDarkModeId: shadowDarkModeId || undefined,
+        },
+        (step, pct) => post("progress", { step, pct }),
+      );
+      sheetSections = sheet.sections;
+      sheetSwatches = sheet.swatches;
+      sheetStyles = sheet.styles;
+      sheetNumbers = sheet.numbers;
+      sheetSkipped = sheet.skipped;
+    } catch (e) {
+      // 견본 시트가 실패해도 설치 자체를 깨지 않는다 — 대신 완료 화면에 빠진 사실을 알린다.
+      const reason = e instanceof Error ? e.message : String(e);
+      if (reason === CANCELLED) throw e;
+      console.error("[installer] 토큰 견본 시트 생성 실패:", reason);
+      // 재료가 없어 건너뛴 것과 **도중에 터진 것**은 원인이 다르다 — 화면에 그대로 구분해 알린다.
+      sheetError = reason;
     }
 
     const componentProblems = componentFailed.length + componentNoRunner.length + componentDegraded.length;
@@ -1289,6 +1342,12 @@ async function runInstall(
       componentNoRunner,
       componentDegraded,
       componentRawPaints,
+      sheetSections,
+      sheetSwatches,
+      sheetStyles,
+      sheetNumbers,
+      sheetSkipped,
+      sheetError,
       removedCount: removedAll.length,
       removedNames: removedAll,
       guideUpdated: options.updateFlow === true,

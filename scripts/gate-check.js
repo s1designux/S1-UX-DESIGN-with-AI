@@ -1323,6 +1323,27 @@ try {
   fail(`Gate 54 실행 실패: ${e.message}`);
 }
 
+// ── Gate 55: Token Sheets (토큰 견본 시트) ──────────────────────────
+// 설치하면 색·글자·숫자 견본 시트가 **항상** 함께 깔린다(river 결정 2026-09-22).
+// 그 판이 정본 전건을 싣고 있는지 · raw hex 나 비정본 글꼴이 섞이지 않았는지는
+// Figma 를 열어야만 보이던 것이라, 실제 빌더를 모의 Figma 위에서 돌려 기계로 본다.
+gateHeader('[Gate 55] 토큰견본 검사기 (Token Sheets)');
+try {
+  const { spawnSync } = require('child_process');
+  const r = spawnSync(process.execPath, [path.join(ROOT, 'scripts/token-sheets-check.js')], { encoding: 'utf-8' });
+  const out = `${r.stdout || ''}${r.stderr || ''}`;
+  if (r.status === 0) {
+    pass(out.match(/시트 (\d+장 .*)/)?.[1] || '토큰 견본 시트 정합 확인');
+  } else {
+    const bad = out.split('\n').filter((l) => l.includes('❌'));
+    for (const l of bad) fail(l.replace(/^.*❌\s*/, '').trim());
+    // 검사기가 **터진** 경우엔 ❌ 줄이 없다 — 그때 조용히 통과시키지 않는다(🤖 component-verifier 2026-09-22 A2).
+    if (!bad.length) fail(`Gate 55: 토큰 견본 검사기가 끝내지 못했습니다 (exit ${r.status})\n${out.trim().split('\n').slice(-5).join('\n')}`);
+  }
+} catch (e) {
+  fail(`Gate 55 실행 실패: ${e.message}`);
+}
+
 // ── Summary ───────────────────────────────────────────────────────
 if (VERBOSE || errors > 0 || warnings > 0) console.log('\n─────────────────────────────────────────────────────');
 const tally = `게이트 ${gates}개 · ✅ ${passes}건${VERBOSE ? '' : ' (상세: --verbose)'}`;
