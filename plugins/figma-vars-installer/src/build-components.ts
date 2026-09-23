@@ -1516,13 +1516,13 @@ async function buildChip(maps: BuildMaps, originY: number): Promise<{ set: Compo
 async function buildInput(maps: BuildMaps, originY: number, originX: number = INPUT_SHEET_X): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const fc = (k: string) => `color/form-control/${k}`;
   const states = [
-    { name: "Default",   bg: "bg/default",  border: "border/default",  txt: "입력",   tc: "text/placeholder" },
+    { name: "Default",   bg: "bg/default",  border: "border/default",  txt: "입력해 주세요", tc: "text/placeholder" },
     { name: "Filled",    bg: "bg/default",  border: "border/default",  txt: "텍스트", tc: "text/default" },
     { name: "Focus",     bg: "bg/selected", border: "border/selected", txt: "텍스트", tc: "text/selected" },
     { name: "Error",     bg: "bg/default",  border: "border/error",    txt: "텍스트", tc: "text/default" },
     { name: "Correct",   bg: "bg/default",  border: "border/correct",  txt: "텍스트", tc: "text/default" },
     { name: "Read-Only", bg: "bg/disabled", border: "border/default",  txt: "텍스트", tc: "text/read-only" },
-    { name: "Disabled",  bg: "bg/disabled", border: "border/disabled", txt: "입력",   tc: "text/disabled" },
+    { name: "Disabled",  bg: "bg/disabled", border: "border/disabled", txt: "입력해 주세요", tc: "text/disabled" },
   ];
   const sizes = [
     { size: "XXSM", brk: "PC",     h: 28, padL: 12, padR: 8,  font: 12, head: "XXSM" },
@@ -1632,7 +1632,7 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           trail.appendChild(passwordAction);
           if (clearIcon) trail.appendChild(wrapSuffixAction(clearIcon, "clear-action", actionHitSize, { hover: !isMobile })); // Focus: 각 action hit area 독립
           field.appendChild(trail);
-          field.resize(200, sc.h); // Input 예외 — 넓은 필드
+          field.resize(140, sc.h); // 기본 폭 140 — 입력·날짜·선택 칸을 같은 폭으로 (river 결정 2026-09-23)
           const comp = figma.createComponent();
           comp.name = `Size=${sc.size}, State=${st.name}, Message=${msg}, Break=${sc.brk}`;
           comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 6;
@@ -5036,7 +5036,7 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))]; trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
       trigger.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
       trigger.appendChild(await makeIconInstance("calendar", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), CAL_ICON));
-      trigger.resize(180, sc.h);
+      trigger.resize(140, sc.h); // 기본 폭 140 — 입력·날짜·선택 칸 공통 (river 결정 2026-09-23)
 
       const comp = figma.createComponent();
       comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;

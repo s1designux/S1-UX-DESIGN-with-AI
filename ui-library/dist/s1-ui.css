@@ -3,10 +3,17 @@
    둘 다 별도 컴포넌트가 아니라 이 Input을 조립한다(river D1, 2026-09-04). */
 [data-s1-component="input"] {
   box-sizing: border-box;
-  display: flex;
+  display: inline-flex; /* 기본 폭을 날짜·선택 칸과 같게 — 종전 flex + width:100% 는 칸 하나만 늘어나 보였다(river 지시 2026-09-23) */
   flex-direction: column;
   gap: var(--spacing-6);
-  width: 100%;
+  max-width: 100%;
+  width: 140px; /* 정본 field.resize(140, sc.h) — 날짜·선택 칸과 같은 기본 폭. 넓게 쓰려면 쓰는 쪽에서 width 를 준다 */
+}
+
+/* 비밀번호 칸 최소 폭 — 기본 폭 140 에서는 눈 아이콘 자리를 빼면 글자칸이 90px 밖에 안 남아
+   "비밀번호를 입력하세요"(124.5px)가 잘린다(2026-09-23 실측). 검색과 같은 예외로 하한을 준다. */
+[data-s1-component="input"]:has([data-s1-part="action"][data-action="password"]) {
+  width: 200px;
 }
 
 /* Search 최소 폭 — 정본 SEARCH_MIN_W(build-components.ts) 와 같은 200px.
@@ -2835,7 +2842,7 @@
   font-weight: var(--font-weight-regular);
   gap: var(--spacing-8);
   justify-content: space-between;
-  min-width: 180px; /* 정본 trigger.resize(180, sc.h) — build-components.ts:4507 */
+  min-width: 140px; /* 정본 trigger.resize(140) — 입력·선택 칸과 같은 기본 폭 (river 결정 2026-09-23) */
   padding-left: var(--spacing-12); /* 크기별로 다시 지정 — XXSM·XSM 12, MD 16 (원본 datepicker_input 실측, Base Input 과 같은 값) */
   padding-right: var(--spacing-8);
   width: 100%;

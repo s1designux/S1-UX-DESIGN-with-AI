@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:6e1f6ef3acb9f03744890b8f294c2668fc046bb432f2ed34458c580c8e6ad3c4",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-23T02:05:39.960Z",
+  "notes": "buildInput placeholder 입력→입력해 주세요(Default·Disabled만) + field.resize(200→140), buildDatePicker trigger.resize(180→140). 정본 3부품(Input field/Select·DatePicker trigger) 전 size·break 140 확인(component-facts 기계집계: field 140x4, trigger 140x8). SEARCH_MIN_W 200 무변경. 결정론 게이트 4종 exit 0. 웹 실측: base/select/date 140, search 200, password 200(:has 예외) — 잘림 0건(가이드 PC·Mobile, dist preview, 검수화면, empty-consumer 개별소비). 한계: Figma 캔버스 육안 미검증."
+}

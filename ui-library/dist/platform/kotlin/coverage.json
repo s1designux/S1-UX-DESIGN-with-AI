@@ -414,8 +414,15 @@
         "placeholder"
       ],
       "unreadPcOnly": 80,
-      "unreadDisplayRules": 5,
+      "unreadDisplayRules": 6,
       "unreadDeclarations": [
+        {
+          "selector": "[data-s1-component=\"input\"]:has([data-s1-part=\"action\"][data-action=\"password\"])",
+          "media": null,
+          "property": "width",
+          "value": "200px",
+          "reason": "display-rule"
+        },
         {
           "selector": "[data-s1-component=\"input\"][data-mode=\"search\"], [data-s1-component=\"input\"][data-mode=\"search\"] [data-s1-part=\"field\"]",
           "media": null,
