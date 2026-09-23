@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:bce7100d683a3f428ad0cb6ad6546137e5f81230790d286ad590170d81fac40f",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-23T05:00:16.167Z",
+  "notes": "델타 재검증(List 를 ROW 에서 빼고, 이름 미선언 섹션을 행 오른쪽 끝에 붙이는 마지막 단계 신설). 앞선 검증(꼬리표 철거·청소 범위 축소)은 유효, 이번 변경은 2단계 가로배치 2곳 단독. 실측: (1) 섹션 16개 겹침 0쌍 — List x=29284, Modal 이 26252+2672=28924 에서 끝나 정확히 APART_GAP 360 이격. Modal 아래로 쌓인 섹션 없음(STACKED below 는 Chip·Selection 뿐). (2) apartX = curX + APART_GAP - H_GAP 산식 검산 — ROW 루프가 마지막 컬럼 뒤에 이미 H_GAP 을 더해 두므로 실제 이격은 정확히 360. 새 루프는 별도 변수 apartX 만 쓰고 curX 를 건드리지 않아 앞 섹션 좌표 불변(Form Control 13984·Date Picker 17764·Time Picker 21260·Table 23964·Modal 26252 = 꼬리표 도입 이전과 동일). (3) named(ROW13+STACKED3) ↔ COMPONENT_CATEGORIES 16 양방향 대조: 무리 밖은 List 1개뿐, named 인데 카테고리에 없는 오타 0 — 이중 이동 위험 없음. (4) 3회 연속 재설치에서 16개 섹션 좌표 완전 동일. (5) 섹션 폭·높이 16개 전부 a620191 과 동일. (6) 청소·bystander 재시험 유지: 컴포넌트 내부·중첩 프레임 레이어 보존, 옛 판은 보존세트 아래·섹션 밖 모두 걷힘, 3회 재설치 후 판 0. (7) failed 는 모의 아이콘 스텁 탓 Mobile Header 1건(도입 이전 동일)·noRunner 0·degraded 0. tsc strict 통과, token-sheets 통과. Gate 9e/24 는 정본 해시 스탬프 탓이며 facts 내용은 해시 제외 시 동일 — components:facts:write + design:md:write 재생성 필요."
+}

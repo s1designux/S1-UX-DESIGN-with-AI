@@ -27,6 +27,7 @@
  * 종료: 0 통과 · 1 실패 · 2 크롬 없음(건너뜀은 gate 쪽에서 판단)
  */
 const fs = require('fs');
+const { spawnChrome, killChromeTree } = require('./lib/chrome-proc');
 const http = require('http');
 const os = require('os');
 const path = require('path');
@@ -261,7 +262,7 @@ function serve() {
 function dumpDom(chrome, url) {
   return new Promise((resolve, reject) => {
     const profileDir = fs.mkdtempSync(path.join(os.tmpdir(), 's1-liveness-'));
-    const child = spawn(chrome, [
+    const child = spawnChrome(chrome, [
       '--headless=new', '--dump-dom', '--virtual-time-budget=45000',
       '--host-resolver-rules=MAP * ~NOTFOUND, EXCLUDE 127.0.0.1',
       '--no-sandbox', '--disable-gpu', '--hide-scrollbars', '--disable-dev-shm-usage',
@@ -276,7 +277,7 @@ function dumpDom(chrome, url) {
       settled = true;
       clearTimeout(guard);
       out += decoder.end();
-      try { child.kill('SIGKILL'); } catch (_) { /* */ }
+      try { killChromeTree(child); } catch (_) { /* */ }
       try { fs.rmSync(profileDir, { recursive: true, force: true }); } catch (_) { /* */ }
       const m = /<script type="application\/json" id="__probe-results">([\s\S]*?)<\/script>/.exec(out);
       if (!m) { reject(new Error(`시험 결과를 받지 못했습니다: ${url}`)); return; }

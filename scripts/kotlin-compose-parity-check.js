@@ -13,6 +13,7 @@
  * 종료코드: 0 일치 · 1 불일치 · 2 실행 불가(크롬 없음 등)
  */
 const fs = require('fs');
+const { spawnChrome, killChromeTree } = require('./lib/chrome-proc');
 const os = require('os');
 const path = require('path');
 const { spawn } = require('child_process');
@@ -332,18 +333,18 @@ function runChrome(file) {
   if (!chrome) { console.error('❌ 크롬을 찾지 못했습니다. CHROME_PATH 를 지정하세요.'); process.exit(2); }
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), 's1-parity-profile-'));
   return new Promise((resolve, reject) => {
-    const child = spawn(chrome, [
+    const child = spawnChrome(chrome, [
       '--headless=new', '--disable-gpu', '--no-sandbox', '--hide-scrollbars',
       `--user-data-dir=${profile}`, '--virtual-time-budget=5000',
       '--dump-dom', `file://${file}`
     ], { stdio: ['ignore', 'pipe', 'ignore'] });
     let buffer = '';
-    const timer = setTimeout(() => { child.kill('SIGKILL'); reject(new Error('크롬이 시간 안에 결과를 내지 못했습니다.')); }, 60000);
+    const timer = setTimeout(() => { killChromeTree(child); reject(new Error('크롬이 시간 안에 결과를 내지 못했습니다.')); }, 60000);
     child.stdout.on('data', (chunk) => {
       buffer += chunk;
       if (buffer.includes('S1-PARITY-DONE') && buffer.includes('</html>')) {
         clearTimeout(timer);
-        child.kill('SIGKILL');
+        killChromeTree(child);
         const match = /<script type="application\/json" id="results">([\s\S]*?)<\/script>/.exec(buffer);
         if (!match) { reject(new Error('결과를 읽지 못했습니다.')); return; }
         try { fs.rmSync(profile, { recursive: true, force: true }); } catch (_) {}

@@ -29,6 +29,7 @@
  * 종료: 0 통과 · 1 실패 · 2 크롬 없음(건너뜀은 gate 쪽에서 판단)
  */
 const fs = require('fs');
+const { spawnChrome, killChromeTree } = require('./lib/chrome-proc');
 const os = require('os');
 const path = require('path');
 const { spawn } = require('child_process');
@@ -186,17 +187,17 @@ function runChrome(html) {
   const file = path.join(dir, 'fixture.html');
   fs.writeFileSync(file, html);
   return new Promise((resolve, reject) => {
-    const child = spawn(chrome, [
+    const child = spawnChrome(chrome, [
       '--headless=new', '--disable-gpu', '--no-sandbox', '--hide-scrollbars', '--disable-dev-shm-usage',
       `--user-data-dir=${path.join(dir, 'profile')}`, '--virtual-time-budget=5000',
       '--dump-dom', `file://${file}`,
     ], { stdio: ['ignore', 'pipe', 'ignore'] });
     let buf = '';
-    const timer = setTimeout(() => { child.kill('SIGKILL'); reject(new Error('크롬이 시간 안에 끝내지 못했습니다')); }, 120000);
+    const timer = setTimeout(() => { killChromeTree(child); reject(new Error('크롬이 시간 안에 끝내지 못했습니다')); }, 120000);
     child.stdout.on('data', (c) => {
       buf += c;
       if (buf.includes('id="results"') && buf.includes('</html>')) {
-        clearTimeout(timer); child.kill('SIGKILL');
+        clearTimeout(timer); killChromeTree(child);
         const m = /<script type="application\/json" id="results">([\s\S]*?)<\/script>/.exec(buf);
         try { fs.rmSync(dir, { recursive: true, force: true }); } catch (e) { /* */ }
         if (!m) { reject(new Error('결과를 읽지 못했습니다')); return; }

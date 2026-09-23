@@ -111,6 +111,41 @@ async function main() {
   const builderSrc = fs.readFileSync(path.join(SRC, "build-token-sheets.ts"), "utf8");
   const ROWS_INDENT = Number((builderSrc.match(/ROWS_INDENT\s*=\s*(\d+)/) || [])[1] || 12);
 
+  // river 가 정한 것 — 빌더에서 읽되 **여기 적힌 정본과 같은지** 대조한다(목록을 줄여 검사를 끄는 것 차단).
+  const TYPE_SAMPLE_CANON = "S-1 S/W UX 디자인가이드 타이포그래피";
+  const COMMON_HEADS_CANON = ["color/bg", "color/surface", "color/text", "color/line", "color/icon", "color/overlay", "color/scroll"];
+  const COMMON_HEADS = [...(builderSrc.match(/COMMON_SEMANTIC_HEADS = \[([^\]]*)\]/) || ["", ""])[1]
+    .matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+  const TYPE_SAMPLE = ((builderSrc.match(/const TYPE_SAMPLE = "([^"]*)"/) || [])[1]) || "";
+
+  // 밝은 판 / 어두운 판 가르기 — 계열 이름 끝이 `-dark` 인가(빌더와 같은 규칙).
+  const isDarkKey = (k) => { const h = k.slice(0, k.indexOf("/")); return h.length > 5 && h.slice(-5) === "-dark"; };
+  const FOUNDATION_KEYS = Object.keys(varsData.FOUNDATION_COLOR);
+  const FOUNDATION_BY_MODE = { light: FOUNDATION_KEYS.filter((k) => !isDarkKey(k)), dark: FOUNDATION_KEYS.filter(isDarkKey) };
+  const headOf2 = (k) => k.split("/").slice(0, 2).join("/");
+  const COMMON_KEYS = Object.keys(varsData.SEMANTIC_COLOR).filter((k) => COMMON_HEADS.indexOf(headOf2(k)) >= 0);
+  // 판마다 그 판의 별칭만 센다(빌더 semanticUsage 와 같은 규칙).
+  const usageFor = (mode) => {
+    const u = {};
+    for (const k of Object.keys(varsData.SEMANTIC_COLOR)) {
+      const alias = mode === "dark" ? varsData.SEMANTIC_COLOR[k].dark : varsData.SEMANTIC_COLOR[k].light;
+      if (!alias || alias[0] === "#" || alias.indexOf("rgba") === 0) continue;
+      u[alias] = (u[alias] || 0) + 1;
+    }
+    return u;
+  };
+  const USAGE = { light: usageFor("light"), dark: usageFor("dark") };
+  const groupsOf = (keys, depth) => {
+    const order = [], bag = {};
+    for (const k of keys) {
+      const parts = k.split("/");
+      const head = depth === 1 ? parts[0] : parts.slice(0, 2).join("/");
+      if (!bag[head]) { bag[head] = []; order.push(head); }
+      bag[head].push(k);
+    }
+    return order.map((h) => ({ head: h, members: bag[h] }));
+  };
+
   const sheets = loadModule(path.join(SRC, "build-token-sheets.ts"));
   const maps = {
     foundationColor: varMapFor(Object.keys(varsData.FOUNDATION_COLOR), "COLOR"),
@@ -130,13 +165,21 @@ async function main() {
   const notes = [];
 
   // ── 1) 정본 전건 수록 ──
-  const expectSwatch = Object.keys(varsData.FOUNDATION_COLOR).length + Object.keys(varsData.SEMANTIC_COLOR).length * 2;
+  // river 결정 대조 — 목록·문구를 바꿔 검사를 무력화하는 것을 여기서 막는다.
+  if (COMMON_HEADS.slice().sort().join(",") !== COMMON_HEADS_CANON.slice().sort().join(",")) {
+    errors.push(`공통 역할색 묶음이 river 결정과 다릅니다: [${COMMON_HEADS.join(", ")}] ≠ [${COMMON_HEADS_CANON.join(", ")}]`);
+  }
+  if (TYPE_SAMPLE !== TYPE_SAMPLE_CANON) {
+    errors.push(`글자 표본 문구가 river 지정과 다릅니다: "${TYPE_SAMPLE}" ≠ "${TYPE_SAMPLE_CANON}"`);
+  }
+  // 색 칸 = Foundation 전건(밝은 판+어두운 판) + 공통 역할색 두 벌.
+  const expectSwatch = FOUNDATION_KEYS.length + COMMON_KEYS.length * 2;
   const expectStyles = textData.TEXT_STYLES.length;
   const expectNumbers = Object.keys(varsData.FOUNDATION_NUMBER).length + Object.keys(varsData.SEMANTIC_NUMBER).length;
   if (result.swatches !== expectSwatch) errors.push(`색 견본 칸 ${result.swatches} ≠ 정본 ${expectSwatch}`);
   if (result.styles !== expectStyles) errors.push(`글자 표본 ${result.styles} ≠ 정본 ${expectStyles}`);
   if (result.numbers !== expectNumbers) errors.push(`숫자 줄 ${result.numbers} ≠ 정본 ${expectNumbers}`);
-  if (result.sections.length !== 3) errors.push(`시트 섹션 ${result.sections.length}장 (3장이어야 함)`);
+  if (result.sections.length !== 4) errors.push(`시트 섹션 ${result.sections.length}장 (4장이어야 함 — 색 Light·색 Dark·글자·숫자)`);
   if (result.skipped.length) errors.push(`건너뛴 판: ${result.skipped.join(" · ")}`);
 
   // ── 2) raw 색 0건 (H2) ──
@@ -164,13 +207,15 @@ async function main() {
   if (noStyle.length) errors.push(`정본 텍스트 스타일이 안 걸린 글자 ${noStyle.length}건 (하드룰 H3 위반)`);
 
   // ── 4) 시트 프레임끼리 겹침 없음 ──
-  const frames = all.filter((n) => n.type === "FRAME" && n.name.indexOf("Tokens · ") === 0);
+  // 섹션 머리띠는 '판'이 아니다 — 이름이 같은 접두사로 시작하므로 여기서 갈라낸다.
+  const frames = all.filter((n) => n.type === "FRAME" && n.name.indexOf("Tokens · ") === 0
+    && n.name.indexOf("Section Header") < 0);
 
   // ── 판 ↔ 기대 낱말을 1:1 로 확정한다 ─────────────────────────────────────────
   //   판을 그때그때 `find(이름 포함)` 로 집으면, 한 판이 두 낱말을 한꺼번에 만족할 때
   //   다른 판이 통째로 검사 밖으로 빠진다(🤖 component-verifier 9회차 P7).
   //   여기서 한 번에 짝을 짓고, 짝이 1:1 이 아니면 그 자리에서 막는다.
-  const EXPECTED_SHEETS = ["Foundation", "Semantic Light", "Semantic Dark", "Typography", "Number"];
+  const EXPECTED_SHEETS = ["Foundation Light", "Foundation Dark", "Semantic Light", "Semantic Dark", "Typography", "Number"];
   const sheet = {};
   for (const want of EXPECTED_SHEETS) {
     const hit = frames.filter((f) => f.name.indexOf(want) >= 0);
@@ -185,6 +230,8 @@ async function main() {
   }
   if (frames.length !== EXPECTED_SHEETS.length) errors.push(`판이 ${frames.length}장 — 기대 ${EXPECTED_SHEETS.length}장과 다릅니다`);
   const semanticSheets = [sheet["Semantic Light"], sheet["Semantic Dark"]].filter(Boolean);
+  const foundationSheets = [sheet["Foundation Light"], sheet["Foundation Dark"]].filter(Boolean);
+  const modeOf = (f) => (f.name.indexOf("Dark") >= 0 ? "dark" : "light");
   // 섹션 밖에 떠 있는 견본 판 — 섹션에 안 담긴 판은 위 검사들의 사정거리 밖이라 조용히 산다.
   const loose = page.children.filter((n) => n.type !== "SECTION" && String(n.name).indexOf("Tokens · ") === 0);
   if (loose.length) errors.push(`섹션에 담기지 않은 견본 판 ${loose.length}장이 페이지에 떠 있습니다 (${loose.map((n) => n.name).join(" / ")})`);
@@ -242,6 +289,12 @@ async function main() {
     }
   }
 
+  // 되감기 시험의 예외 주입 지점 — 판 구성이 바뀌면 고정 숫자는 범위 밖으로 나가 시험이 헛돈다.
+  //   이번 설치가 실제로 만든 글자 수에서 앞/뒤 두 지점을 뽑는다(앞=색 판, 뒤=숫자 판 구간).
+  const TOTAL_TEXTS = page.findAll((n) => n.type === "TEXT").length;
+  const INJECT_POINTS = [Math.max(20, Math.round(TOTAL_TEXTS * 0.25)), Math.max(40, Math.round(TOTAL_TEXTS * 0.8))];
+  if (TOTAL_TEXTS < 100) errors.push(`견본 글자가 ${TOTAL_TEXTS}개뿐입니다 — 판이 통째로 빠진 것으로 봅니다`);
+
   // ── 7) 재료가 없는 경우 · 두 번 깔기 (조용한 반쪽 · 겹쳐 쌓임 방지) ──
   const scenario = async (label, tweak, expect) => {
     const p2 = mockPage();
@@ -263,6 +316,7 @@ async function main() {
     if (!r2.skipped.length) errors.push('[텍스트 스타일 없음] 건너뛴 사실을 알리지 않음');
   });
   await scenario("Dark 모드 없음", { semanticDarkModeId: "light" }, (r2, secs) => {
+    // 색 Dark 섹션을 만들지 않으므로 3장(색 Light · 글자 · 숫자)이어야 한다.
     if (secs !== 3) errors.push(`[Dark 모드 없음] 섹션 ${secs}장 (3장이어야 함)`);
     if (!r2.skipped.some((x) => x.indexOf("Dark") >= 0)) errors.push('[Dark 모드 없음] 다크 판을 라이트 값으로 만들었거나 알리지 않음');
   });
@@ -273,7 +327,7 @@ async function main() {
     await sheets.buildTokenSheets(maps);
     const secs = p3.children.filter((n) => n.type === "SECTION");
     const loose = p3.children.filter((n) => n.type !== "SECTION").length;
-    if (secs.length !== 3) errors.push(`[두 번 깔기] 섹션 ${secs.length}장 — 옛 판이 겹쳐 쌓였습니다`);
+    if (secs.length !== 4) errors.push(`[두 번 깔기] 섹션 ${secs.length}장 — 옛 판이 겹쳐 쌓였습니다`);
     if (loose) errors.push(`[두 번 깔기] 섹션 밖 낱개 노드 ${loose}개 잔류`);
     const second = secs.map((n) => n.absoluteBoundingBox.x);
     if (first.length === second.length && first.some((x, i) => x !== second[i])) {
@@ -309,14 +363,6 @@ async function main() {
   };
 
   // 정본에서 계산한 '계열 대표 칸' 집합 — 대표 강조(파란 선)를 허용할 자리는 여기뿐이다.
-  const usageAll = {};
-  for (const k0 of Object.keys(varsData.SEMANTIC_COLOR)) {
-    const e0 = varsData.SEMANTIC_COLOR[k0];
-    for (const alias of [e0.light, e0.dark]) {
-      if (!alias || alias[0] === "#" || alias.indexOf("rgba") === 0) continue;
-      usageAll[alias] = (usageAll[alias] || 0) + 1;
-    }
-  }
   // 대표를 표시하는 계열 목록(river 결정 2026-09-23). 빌더에서 읽되 **비거나 사라지면 막는다** —
   //   목록을 지워 대표 검사를 통째로 끄는 것을 방지한다.
   //   빌더 목록을 그대로 믿지 않고 **river 가 정한 네 계열과 정확히 같은지** 대조한다
@@ -327,20 +373,23 @@ async function main() {
   if (PRIMARY_GROUPS.slice().sort().join(",") !== PRIMARY_GROUPS_CANON.slice().sort().join(",")) {
     errors.push(`대표 표시 계열이 river 결정과 다릅니다: [${PRIMARY_GROUPS.join(", ")}] ≠ [${PRIMARY_GROUPS_CANON.join(", ")}]`);
   }
-  const PRIMARY_KEYS = new Set();
-  {
-    const byHead0 = {};
-    for (const key of Object.keys(varsData.FOUNDATION_COLOR)) {
-      const head = key.slice(0, key.indexOf("/"));
-      (byHead0[head] = byHead0[head] || []).push(key);
+  // 대표는 **그 판의 별칭**으로 센다(빌더와 같은 규칙). 밝은 계열은 라이트 사용량, `-dark` 계열은 다크 사용량.
+  const primaryOf = (head, members, mode) => {
+    if (PRIMARY_GROUPS.indexOf(head) < 0) return null;
+    let best = null, bestN = 0;
+    for (const k of members) { const n = USAGE[mode][k] || 0; if (n > bestN) { best = k; bestN = n; } }
+    return bestN > 0 ? { key: best, n: bestN } : null;
+  };
+  const primariesFor = (mode) => {
+    const out = new Map();
+    for (const g of groupsOf(FOUNDATION_BY_MODE[mode], 1)) {
+      const p0 = primaryOf(g.head, g.members, mode);
+      if (p0) out.set(p0.key, p0.n);
     }
-    for (const head of Object.keys(byHead0)) {
-      if (PRIMARY_GROUPS.indexOf(head) < 0) continue;      // 대표를 세우지 않는 계열
-      let best = null, bestN = 0;
-      for (const k of byHead0[head]) { const n = usageAll[k] || 0; if (n > bestN) { best = k; bestN = n; } }
-      if (best) PRIMARY_KEYS.add(best);
-    }
-  }
+    return out;
+  };
+  const PRIMARY_BY_MODE = { light: primariesFor("light"), dark: primariesFor("dark") };
+  const PRIMARY_KEYS = new Set([...PRIMARY_BY_MODE.light.keys(), ...PRIMARY_BY_MODE.dark.keys()]);
 
   const boundName = (n) => {
     const p0 = n.fills && n.fills[0];
@@ -441,8 +490,7 @@ async function main() {
 
   // ── 14) 판이 적은 '값·참조' 글자가 정본과 같은가 (M-A·M-B — 칩 색만 맞고 글자가 거짓인 판) ──
   {
-    const foundationFrame = sheet["Foundation"];
-    if (foundationFrame) {
+    for (const foundationFrame of foundationSheets) {
       const texts0 = foundationFrame.children.filter((n) => n.type === "TEXT");
       let checked = 0;
       for (const c of foundationFrame.children) {
@@ -457,8 +505,8 @@ async function main() {
         }
         checked++;
       }
-      const wantF = Object.keys(varsData.FOUNDATION_COLOR).length;
-      if (checked !== wantF) errors.push(`Foundation 색값 대조가 ${checked}건 — 정본 ${wantF} 과 달라 대조가 새고 있습니다`);
+      const wantF = FOUNDATION_BY_MODE[modeOf(foundationFrame)].length;
+      if (checked !== wantF) errors.push(`"${foundationFrame.name}" 색값 대조가 ${checked}건 — 정본 ${wantF} 과 달라 대조가 새고 있습니다`);
     }
     for (const f of semanticSheets) {
       const dark = f.name.indexOf("Dark") >= 0;
@@ -478,14 +526,14 @@ async function main() {
         }
         checked++;
       }
-      const wantS = Object.keys(varsData.SEMANTIC_COLOR).length;
-      if (checked !== wantS) errors.push(`"${f.name}" 참조값 대조가 ${checked}건 — 정본 ${wantS} 과 달라 대조가 새고 있습니다`);
+      const wantS = COMMON_KEYS.length;
+      if (checked !== wantS) errors.push(`"${f.name}" 참조값 대조가 ${checked}건 — 공통 역할색 ${wantS} 과 달라 대조가 새고 있습니다`);
     }
   }
 
   // ── 15-b) 옛 판이 깔린 페이지에서 도중에 터지면, 옛 판은 살아 있어야 한다 ──
   //   빈 페이지 시험만으로는 "먼저 걷어내고 만들기"로 되돌려도 안 잡힌다(🤖 component-verifier 16회차 N-G).
-  for (const injectAt6 of [800, 1450]) {
+  for (const injectAt6 of INJECT_POINTS) {
     const p6 = new Node("PAGE");
     let made6 = 0, fail6 = false;
     const attach6 = (n) => { p6.appendChild(n); return n; };
@@ -513,62 +561,44 @@ async function main() {
   }
 
   // ── 16) "대표(Primary)" 표시가 정본 집계와 같은가 (M1 대표 오판 · M2 숫자 위조) ──
-  {
-    const usage = {};
-    for (const k of Object.keys(varsData.SEMANTIC_COLOR)) {
-      const e = varsData.SEMANTIC_COLOR[k];
-      for (const alias of [e.light, e.dark]) {
-        if (!alias || alias[0] === "#" || alias.indexOf("rgba") === 0) continue;
-        usage[alias] = (usage[alias] || 0) + 1;
-      }
-    }
-    const groups = {};
-    for (const key of Object.keys(varsData.FOUNDATION_COLOR)) {
-      const head = key.slice(0, key.indexOf("/"));
-      (groups[head] = groups[head] || []).push(key);
-    }
-    const foundationFrame2 = sheet["Foundation"];
-    const heads = foundationFrame2 ? foundationFrame2.children.filter((n) => n.type === "TEXT" && n.textStyleId === "style:title/14B") : [];
+  //   판마다 그 판의 계열·그 판의 별칭 집계로 본다(밝은 판=라이트, 어두운 판=다크).
+  for (const fFrame of foundationSheets) {
+    const mode = modeOf(fFrame);
+    const groups = groupsOf(FOUNDATION_BY_MODE[mode], 1);
+    const heads = fFrame.children.filter((n) => n.type === "TEXT" && n.textStyleId === "style:title/14B");
     let headChecked = 0;
-    for (const head of Object.keys(groups)) {
-      let best = null, bestN = 0;
-      for (const k of groups[head]) { const n = usage[k] || 0; if (n > bestN) { best = k; bestN = n; } }
-      if (PRIMARY_GROUPS.indexOf(head) < 0) best = null;
-      const marks = PRIMARY_GROUPS.indexOf(head) >= 0;
-      const want = (marks && best)
-        ? `${head} — 대표 ${best.slice(best.indexOf("/") + 1)} (역할색 ${bestN}곳)`
-        : head;
-      const got = heads.find((t) => String(t.characters) === head || String(t.characters).indexOf(`${head} —`) === 0);
-      if (!got) { errors.push(`계열 제목을 찾지 못했습니다: ${head}`); continue; }
+    for (const g of groups) {
+      const p0 = primaryOf(g.head, g.members, mode);
+      const want = p0 ? `${g.head} — 대표 ${p0.key.slice(p0.key.indexOf("/") + 1)} (역할색 ${p0.n}곳)` : g.head;
+      const got = heads.find((t) => String(t.characters) === g.head || String(t.characters).indexOf(`${g.head} —`) === 0);
+      if (!got) { errors.push(`"${fFrame.name}" 에서 계열 제목을 찾지 못했습니다: ${g.head}`); continue; }
       if (got.characters !== want) { errors.push(`대표 표시가 정본 집계와 다릅니다: 판 "${got.characters}" ≠ 정본 "${want}"`); break; }
       headChecked++;
     }
-    if (headChecked !== Object.keys(groups).length) {
-      errors.push(`계열 제목 대조가 ${headChecked}건 — 계열 ${Object.keys(groups).length} 과 달라 대조가 새고 있습니다`);
+    if (headChecked !== groups.length) {
+      errors.push(`"${fFrame.name}" 계열 제목 대조가 ${headChecked}건 — 계열 ${groups.length} 과 달라 대조가 새고 있습니다`);
     }
     // 칸별 "역할색 N곳" 라벨도 전건 대조한다(대표 줄만 맞추고 나머지를 위조하는 수법 차단).
-    if (foundationFrame2) {
-      const labels2 = foundationFrame2.children.filter((n) => n.type === "TEXT");
-      let cellChecked = 0;
-      for (const c of foundationFrame2.children) {
-        if (c.type !== "RECTANGLE" || isDecor(c)) continue;
-        const name = boundName(c);
-        if (!name) continue;
-        const marksHere = PRIMARY_GROUPS.indexOf(name.slice(0, name.indexOf("/"))) >= 0;
-        const used = marksHere ? (usage[name] || 0) : 0;
-        const note = labels2.find((t) => Math.abs(t.x - c.x) < 4 && Math.abs(t.y - (c.y + c.height + 38)) < 4);
-        if (!used) { if (note) errors.push(`쓰임 라벨을 적을 자리가 아닌데 라벨이 있습니다: ${name}`); continue; }
-        if (!note) { errors.push(`쓰임 라벨이 없습니다: ${name} (역할색 ${used}곳)`); break; }
-        if (String(note.characters).indexOf(`역할색 ${used}곳`) < 0) {
-          errors.push(`쓰임 라벨이 정본 집계와 다릅니다: ${name} → 판 "${note.characters}" ≠ 정본 ${used}곳`);
-          break;
-        }
-        cellChecked++;
+    const labels2 = fFrame.children.filter((n) => n.type === "TEXT");
+    let cellChecked = 0;
+    for (const c of fFrame.children) {
+      if (c.type !== "RECTANGLE" || isDecor(c)) continue;
+      const name = boundName(c);
+      if (!name) continue;
+      const marksHere = PRIMARY_GROUPS.indexOf(name.slice(0, name.indexOf("/"))) >= 0;
+      const used = marksHere ? (USAGE[mode][name] || 0) : 0;
+      const note = labels2.find((t) => Math.abs(t.x - c.x) < 4 && Math.abs(t.y - (c.y + c.height + 38)) < 4);
+      if (!used) { if (note) errors.push(`쓰임 라벨을 적을 자리가 아닌데 라벨이 있습니다: ${name}`); continue; }
+      if (!note) { errors.push(`쓰임 라벨이 없습니다: ${name} (역할색 ${used}곳)`); break; }
+      if (String(note.characters).indexOf(`역할색 ${used}곳`) < 0) {
+        errors.push(`쓰임 라벨이 정본 집계와 다릅니다: ${name} → 판 "${note.characters}" ≠ 정본 ${used}곳`);
+        break;
       }
-      const wantCells = Object.keys(varsData.FOUNDATION_COLOR)
-        .filter((k) => usage[k] && PRIMARY_GROUPS.indexOf(k.slice(0, k.indexOf("/"))) >= 0).length;
-      if (cellChecked !== wantCells) errors.push(`쓰임 라벨 대조가 ${cellChecked}건 — 정본 ${wantCells} 과 달라 대조가 새고 있습니다`);
+      cellChecked++;
     }
+    const wantCells = FOUNDATION_BY_MODE[mode]
+      .filter((k) => USAGE[mode][k] && PRIMARY_GROUPS.indexOf(k.slice(0, k.indexOf("/"))) >= 0).length;
+    if (cellChecked !== wantCells) errors.push(`"${fFrame.name}" 쓰임 라벨 대조가 ${cellChecked}건 — 정본 ${wantCells} 과 달라 대조가 새고 있습니다`);
   }
 
   // ── 18) 정본 토큰 '집합' 이 그대로 실렸는가 — 개수만 세면 한 칸을 빼고 다른 칸을 복제해도 통과한다
@@ -589,9 +619,8 @@ async function main() {
       if (missing.length) errors.push(`${label}: 정본에 있는데 판에 없는 토큰 ${missing.length}건 (${missing.slice(0, 4).join(", ")})`);
       if (extra.length) errors.push(`${label}: 정본에 없는 토큰이 판에 있습니다 ${extra.length}건 (${extra.slice(0, 4).join(", ")})`);
     };
-    const fFrame = sheet["Foundation"];
-    if (fFrame) diff(setOf(fFrame), Object.keys(varsData.FOUNDATION_COLOR), "Foundation 팔레트");
-    for (const f of semanticSheets) diff(setOf(f), Object.keys(varsData.SEMANTIC_COLOR), f.name);
+    for (const fFrame of foundationSheets) diff(setOf(fFrame), FOUNDATION_BY_MODE[modeOf(fFrame)], fFrame.name);
+    for (const f of semanticSheets) diff(setOf(f), COMMON_KEYS, f.name);
   }
 
   // ── 19) 글자 표본이 '자기 스타일'로 그려졌는가 — 줄 수만 세면 전부 같은 모양이어도 통과한다(N4) ──
@@ -603,7 +632,7 @@ async function main() {
       for (const d of textData.TEXT_STYLES) {
         const nameLabel = kids.find((t) => t.characters === d.name);
         if (!nameLabel) { errors.push(`글자 판에 "${d.name}" 줄이 없습니다`); continue; }
-        const sample = kids.find((t) => String(t.characters).indexOf("다람쥐") === 0 && Math.abs(t.y - (nameLabel.y - 8)) < 6);
+        const sample = kids.find((t) => String(t.characters) === TYPE_SAMPLE_CANON && Math.abs(t.y - (nameLabel.y - 8)) < 6);
         if (!sample) { errors.push(`"${d.name}" 줄에 표본 글자가 없습니다`); continue; }
         if (sample.textStyleId !== `style:${d.name}`) {
           errors.push(`표본이 자기 스타일로 그려지지 않았습니다: ${d.name} → ${sample.textStyleId}`);
@@ -621,42 +650,21 @@ async function main() {
   }
 
   // ── 20) 대표 강조 테두리가 '그 대표 칸'에만 걸렸는가 (N1) ──
-  {
-    const fFrame = sheet["Foundation"];
-    if (fFrame) {
-      const usage2 = {};
-      for (const k of Object.keys(varsData.SEMANTIC_COLOR)) {
-        const e = varsData.SEMANTIC_COLOR[k];
-        for (const alias of [e.light, e.dark]) {
-          if (!alias || alias[0] === "#" || alias.indexOf("rgba") === 0) continue;
-          usage2[alias] = (usage2[alias] || 0) + 1;
-        }
-      }
-      const primaries = new Set();
-      const byHead = {};
-      for (const key of Object.keys(varsData.FOUNDATION_COLOR)) {
-        const head = key.slice(0, key.indexOf("/"));
-        (byHead[head] = byHead[head] || []).push(key);
-      }
-      for (const head of Object.keys(byHead)) {
-        let best = null, bestN = 0;
-        for (const k of byHead[head]) { const n = usage2[k] || 0; if (n > bestN) { best = k; bestN = n; } }
-        if (best && PRIMARY_GROUPS.indexOf(head) >= 0) primaries.add(best);
-      }
-      let marked = 0;
-      for (const c of fFrame.children) {
-        if (c.type !== "RECTANGLE" || isDecor(c)) continue;
-        const name = boundName(c);
-        if (!name) continue;
-        const st = c.strokes && c.strokes[0];
-        const sid = st && st.boundVariables && st.boundVariables.color && st.boundVariables.color.id;
-        const isMarked = sid === "COLOR:color/line/blue" && c.strokeWeight === 3;
-        if (primaries.has(name) && !isMarked) { errors.push(`대표 칸에 강조 테두리가 없습니다: ${name}`); break; }
-        if (!primaries.has(name) && isMarked) { errors.push(`대표가 아닌 칸에 강조 테두리가 있습니다: ${name}`); break; }
-        if (isMarked) marked++;
-      }
-      if (marked !== primaries.size) errors.push(`강조 테두리 ${marked}칸 — 정본 대표 ${primaries.size}칸과 다릅니다`);
+  for (const fFrame of foundationSheets) {
+    const primaries = PRIMARY_BY_MODE[modeOf(fFrame)];
+    let marked = 0;
+    for (const c of fFrame.children) {
+      if (c.type !== "RECTANGLE" || isDecor(c)) continue;
+      const name = boundName(c);
+      if (!name) continue;
+      const st = c.strokes && c.strokes[0];
+      const sid = st && st.boundVariables && st.boundVariables.color && st.boundVariables.color.id;
+      const isMarked = sid === "COLOR:color/line/blue" && c.strokeWeight === 3;
+      if (primaries.has(name) && !isMarked) { errors.push(`대표 칸에 강조 테두리가 없습니다: ${name}`); break; }
+      if (!primaries.has(name) && isMarked) { errors.push(`대표가 아닌 칸에 강조 테두리가 있습니다: ${name}`); break; }
+      if (isMarked) marked++;
     }
+    if (marked !== primaries.size) errors.push(`"${fFrame.name}" 강조 테두리 ${marked}칸 — 정본 대표 ${primaries.size}칸과 다릅니다`);
   }
 
   // ── 22) 숫자 판이 정본 '집합'과 '값 글자'를 그대로 싣는가 (🤖 10회차 a-4~a-6) ──
@@ -839,7 +847,7 @@ async function main() {
   // ── 15) 도중에 터졌을 때 페이지에 조각이 남지 않는가 (되감기 회귀 시험) ──
   //   실제 Figma 는 create* 하는 순간 노드를 페이지에 붙인다. 그 조건을 그대로 흉내내고 예외를 주입한다.
   //   주입 지점은 두 곳 — 앞(색 판)과 뒤(숫자 판)를 모두 밟아야 경로 하나만 지키는 눈속임을 막는다.
-  for (const injectAt of [800, 1450]) {
+  for (const injectAt of INJECT_POINTS) {
     const p5 = new Node("PAGE");
     // 남의 노드를 하나 미리 놓는다 — "남은 조각 0" 만 보면 **페이지를 통째로 비우는 구현**도 통과한다
     //   (🤖 component-verifier V3 2026-09-22). 그 구현은 실제 파일에서 디자이너의 부품까지 지운다.
@@ -883,49 +891,32 @@ async function main() {
   //   이름 모양일 때만 걸렸다(🤖 component-verifier 12회차 N2·N3·N8). 판마다 기대 글자 목록을
   //   정본으로 만들어 **다중집합 그대로** 비교한다 — 덧붙이기도 빠뜨리기도 한 번에 드러난다.
   {
-    const usage3 = {};
-    for (const k of Object.keys(varsData.SEMANTIC_COLOR)) {
-      const e = varsData.SEMANTIC_COLOR[k];
-      for (const alias of [e.light, e.dark]) {
-        if (!alias || alias[0] === "#" || alias.indexOf("rgba") === 0) continue;
-        usage3[alias] = (usage3[alias] || 0) + 1;
-      }
-    }
-    const headsOf = (keys, depth) => {
-      const order = [], bag = {};
-      for (const k of keys) {
-        const parts = k.split("/");
-        const head = depth === 1 ? parts[0] : parts.slice(0, 2).join("/");
-        if (!bag[head]) { bag[head] = []; order.push(head); }
-        bag[head].push(k);
-      }
-      return order.map((h) => ({ head: h, members: bag[h] }));
-    };
-
     const expected = {};
 
-    // Foundation 판
-    {
-      const want = ["Foundation · 기본 팔레트"];
-      for (const g of headsOf(Object.keys(varsData.FOUNDATION_COLOR), 1)) {
+    // Foundation 판 — 밝은 판 / 어두운 판
+    for (const mode of ["light", "dark"]) {
+      const want = [`Foundation · 기본 팔레트 (${mode === "dark" ? "Dark" : "Light"})`];
+      for (const g of groupsOf(FOUNDATION_BY_MODE[mode], 1)) {
         const marks = PRIMARY_GROUPS.indexOf(g.head) >= 0;
-        let best = null, bestN = 0;
-        if (marks) for (const k of g.members) { const n = usage3[k] || 0; if (n > bestN) { best = k; bestN = n; } }
-        want.push(best ? `${g.head} — 대표 ${best.slice(best.indexOf("/") + 1)} (역할색 ${bestN}곳)` : g.head);
+        const p0 = primaryOf(g.head, g.members, mode);
+        want.push(p0 ? `${g.head} — 대표 ${p0.key.slice(p0.key.indexOf("/") + 1)} (역할색 ${p0.n}곳)` : g.head);
         for (const k of g.members) {
           want.push(k.slice(k.indexOf("/") + 1));
           want.push(varsData.FOUNDATION_COLOR[k]);
-          const used = marks ? (usage3[k] || 0) : 0;
-          if (used) want.push(k === best ? `★ 대표 · 역할색 ${used}곳` : `역할색 ${used}곳`);
+          const used = marks ? (USAGE[mode][k] || 0) : 0;
+          if (used) want.push(p0 && k === p0.key ? `★ 대표 · 역할색 ${used}곳` : `역할색 ${used}곳`);
         }
       }
-      expected["Foundation"] = want;
+      expected[mode === "dark" ? "Foundation Dark" : "Foundation Light"] = want;
     }
 
-    // Semantic 판(라이트·다크)
+    // Semantic 판(라이트·다크) — 공통 묶음만
     for (const dark of [false, true]) {
-      const want = [`Semantic · 역할색 (${dark ? "Dark" : "Light"})`];
-      for (const g of headsOf(Object.keys(varsData.SEMANTIC_COLOR), 2)) {
+      const want = [
+        `Semantic · 공통 역할색 (${dark ? "Dark" : "Light"})`,
+        "부품 전용 색은 Figma Variables 패널에서 봅니다.",
+      ];
+      for (const g of groupsOf(COMMON_KEYS, 2)) {
         want.push(g.head);
         for (const k of g.members) {
           want.push(k);
@@ -940,7 +931,7 @@ async function main() {
       const want = ["Typography · 글자 스타일"];
       for (const d of textData.TEXT_STYLES) {
         want.push(d.name);
-        want.push("다람쥐 헌 쳇바퀴에 타고파 AaBbCc 0123");
+        want.push(TYPE_SAMPLE_CANON);
         want.push(`${d.fontSize}px · ${d.fontStyle} · 행간 ${d.lineHeightPercent}% · 자간 ${d.letterSpacingPercent}%`);
       }
       expected["Typography"] = want;
@@ -949,7 +940,7 @@ async function main() {
     // 숫자 판
     {
       const want = ["Number · 간격 · 반경 · 두께"];
-      for (const g of headsOf(Object.keys(varsData.FOUNDATION_NUMBER), 1)) {
+      for (const g of groupsOf(Object.keys(varsData.FOUNDATION_NUMBER), 1)) {
         want.push(`${g.head} · ${g.members.length}개`);
         for (const k of g.members) { want.push(k); want.push(String(varsData.FOUNDATION_NUMBER[k])); }
       }
@@ -1011,9 +1002,8 @@ async function main() {
     const heads2 = texts5.filter((t) => t.textStyleId === "style:title/14B");
     const order = [];
     const seenHead = {};
-    for (const k of Object.keys(varsData.SEMANTIC_COLOR)) {
-      const parts = k.split("/");
-      const head = parts.slice(0, 2).join("/");
+    for (const k of COMMON_KEYS) {
+      const head = headOf2(k);
       if (!seenHead[head]) { seenHead[head] = [k]; order.push(head); } else seenHead[head].push(k);
     }
     for (const head of order) {
@@ -1040,6 +1030,38 @@ async function main() {
     if (stray.length) errors.push(`섹션 "${sec.name}" 에 판이 아닌 노드 ${stray.length}개가 직접 붙어 있습니다 (판 위에 덮어 그리는 수법)`);
     const notSheet = sec.children.filter((n) => n.type === "FRAME" && String(n.name).indexOf("Tokens · ") !== 0);
     if (notSheet.length) errors.push(`섹션 "${sec.name}" 에 견본 판이 아닌 틀 ${notSheet.length}개가 있습니다`);
+  }
+
+  // ── 29) 섹션 머리말 — 이름·개수·설명이 붙었는가, 판을 덮지 않는가 ──
+  //   (river 요청 2026-09-23) 머리띠가 조용히 빠지거나 글자 없이 빈 띠로 나가는 것을 막는다.
+  {
+    const bcSrc = fs.readFileSync(path.join(SRC, "build-components.ts"), "utf8");
+    const subtitleMap = {};
+    for (const m of (bcSrc.match(/const SECTION_SUBTITLE[\s\S]*?\n\};/) || [""])[0]
+      .matchAll(/"([^"]+)":\s*"([^"]+)"/g)) subtitleMap[m[1]] = m[2];
+    for (const sec of sheetSections) {
+      const heads = sec.children.filter((n) => n.type === "FRAME" && String(n.name).indexOf("Section Header") >= 0);
+      if (heads.length !== 1) { errors.push(`섹션 "${sec.name}" 의 머리말이 ${heads.length}개입니다 — 1개여야 합니다`); continue; }
+      const h = heads[0];
+      if (h.name !== `${sec.name} — Section Header`) errors.push(`머리말 이름이 섹션과 어긋납니다: "${h.name}"`);
+      const ht = h.findAll((n) => n.type === "TEXT").map((t) => String(t.characters));
+      if (ht.indexOf(sec.name) < 0) errors.push(`머리말에 묶음 이름이 없습니다: "${sec.name}"`);
+      const wantSub = Object.prototype.hasOwnProperty.call(subtitleMap, sec.name) ? subtitleMap[sec.name] : null;
+      if (!wantSub) errors.push(`묶음 "${sec.name}" 의 한 줄 설명이 정본에 없습니다`);
+      else if (!ht.some((c) => c.indexOf(wantSub) === 0)) errors.push(`머리말 설명이 정본과 다릅니다: "${sec.name}" → ${JSON.stringify(ht)}`);
+      // 머리말 글자도 정본 스타일·Pretendard 여야 한다(H3) — 위 ③ 은 all 을 보므로 이미 포함되지만,
+      //   빈 띠(글자 0개)는 그 검사에 안 걸린다. 여기서 막는다.
+      if (!ht.length) errors.push(`섹션 "${sec.name}" 의 머리말이 글자 없는 빈 띠입니다`);
+      // 머리말이 판을 덮지 않는가.
+      const hb = h.absoluteBoundingBox;
+      for (const f of sec.children.filter((n) => n.type === "FRAME" && n !== h)) {
+        const b = f.absoluteBoundingBox;
+        if (hb.x < b.x + b.width && b.x < hb.x + hb.width && hb.y < b.y + b.height && b.y < hb.y + hb.height) {
+          errors.push(`섹션 "${sec.name}" 의 머리말이 판 "${f.name}" 을 덮습니다`);
+          break;
+        }
+      }
+    }
   }
 
   notes.push(`시트 ${result.sections.length}장 · 색 ${result.swatches}칸 · 글자 ${result.styles}종 · 숫자 ${result.numbers}개 · 노드 ${all.length}개`);

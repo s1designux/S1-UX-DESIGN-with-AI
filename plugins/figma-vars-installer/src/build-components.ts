@@ -61,7 +61,12 @@ let TEXT_STYLES: Record<string, TextStyle> = {};
 let SPEC_MAPS: BuildMaps | null = null;
 /** 스펙/견본 시트가 섹션 면·선을 토큰에 물릴 수 있게 맵을 미리 심는다.
  *  컴포넌트를 설치하지 않는 회차(토큰만 설치)에도 토큰 견본 시트가 같은 배선을 쓰기 위함. */
-export function primeSpecMaps(maps: BuildMaps): void { SPEC_MAPS = maps; }
+export function primeSpecMaps(maps: BuildMaps): void {
+  SPEC_MAPS = maps;
+  // 텍스트 스타일 맵도 같이 심는다 — 이걸 빼면 부품을 설치하지 않는 회차에서 섹션 머리말 글자가
+  //   정본 스타일을 못 찾아 **글자 없는 빈 띠**로 나간다(H3 상 raw 글꼴 폴백을 하지 않기 때문).
+  TEXT_STYLES = maps.textStyles || {};
+}
 type SpecRole = "bg" | "band" | "title" | "platform" | "size" | "label";
 const SPEC_ROLE_TOKEN: Record<SpecRole, string> = {
   bg: "color/bg/level-0",
@@ -1516,21 +1521,21 @@ async function buildChip(maps: BuildMaps, originY: number): Promise<{ set: Compo
 async function buildInput(maps: BuildMaps, originY: number, originX: number = INPUT_SHEET_X): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const fc = (k: string) => `color/form-control/${k}`;
   const states = [
-    { name: "Default",   bg: "bg/default",  border: "border/default",  txt: "입력",   tc: "text/placeholder" },
+    { name: "Default",   bg: "bg/default",  border: "border/default",  txt: "입력해 주세요", tc: "text/placeholder" },
     { name: "Filled",    bg: "bg/default",  border: "border/default",  txt: "텍스트", tc: "text/default" },
     { name: "Focus",     bg: "bg/selected", border: "border/selected", txt: "텍스트", tc: "text/selected" },
     { name: "Error",     bg: "bg/default",  border: "border/error",    txt: "텍스트", tc: "text/default" },
     { name: "Correct",   bg: "bg/default",  border: "border/correct",  txt: "텍스트", tc: "text/default" },
     { name: "Read-Only", bg: "bg/disabled", border: "border/default",  txt: "텍스트", tc: "text/read-only" },
-    { name: "Disabled",  bg: "bg/disabled", border: "border/disabled", txt: "입력",   tc: "text/disabled" },
+    { name: "Disabled",  bg: "bg/disabled", border: "border/disabled", txt: "입력해 주세요", tc: "text/disabled" },
   ];
   const sizes = [
     { size: "XXSM", brk: "PC",     h: 28, padL: 12, padR: 8,  font: 12, head: "XXSM" },
     { size: "XSM",  brk: "PC",     h: 34, padL: 12, padR: 8,  font: 14, head: "XSM" },
-    { size: "MD",   brk: "PC",     h: 44, padL: 16, padR: 12, font: 14, head: "MD" },
+    { size: "MD",   brk: "PC",     h: 44, padL: 12, padR: 12, font: 14, head: "MD" },
     // Mobile 은 누르는 영역이 48×48 이라 padR 을 두면 아이콘이 안쪽으로 밀린다.
     // padR 0 으로 누르는 영역을 칸 끝에 붙인다. (river 지시 2026-09-04)
-    { size: "MD",   brk: "Mobile", h: 48, padL: 16, padR: 0,  font: 14, head: "MD·M" },
+    { size: "MD",   brk: "Mobile", h: 48, padL: 12, padR: 0,  font: 14, head: "MD·M" },
   ];
   const messages = ["Off", "On"];
   const comps: ComponentNode[] = [];
@@ -1632,7 +1637,7 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           trail.appendChild(passwordAction);
           if (clearIcon) trail.appendChild(wrapSuffixAction(clearIcon, "clear-action", actionHitSize, { hover: !isMobile })); // Focus: 각 action hit area 독립
           field.appendChild(trail);
-          field.resize(200, sc.h); // Input 예외 — 넓은 필드
+          field.resize(200, sc.h); // 기본 폭 200 — 글을 쓰는 칸이라 더 넓게. 날짜·시간·선택 칸은 140 (river 결정 2026-09-23)
           const comp = figma.createComponent();
           comp.name = `Size=${sc.size}, State=${st.name}, Message=${msg}, Break=${sc.brk}`;
           comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 6;
@@ -1912,8 +1917,8 @@ async function buildSearch(maps: BuildMaps, originY: number): Promise<{ set: Com
   const sizes = [
     { size: "XXSM", brk: "PC",     h: 28, font: 12, padL: 12, padR: 8 },
     { size: "XSM",  brk: "PC",     h: 34, font: 14, padL: 12, padR: 8 },
-    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 16, padR: 12 },
-    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16, padR: 0 },
+    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 12, padR: 12 },
+    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 12, padR: 0 },
   ];
   // 누르는 영역(river C3): PC 28×28 · Mobile 48×48 — Base Input wrapSuffixAction과 같은 크기 규칙.
   // pullInward: Mobile 에서 아이콘 두 개가 나란히 설 때 왼쪽(지우기) 그림을 자기 칸 안쪽 끝에 붙여
@@ -2089,11 +2094,13 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
     { name: "Filled",   bg: "bg/default",  border: "border/default",  tc: "text/selected",    icon: "icon/default",  up: false },
     { name: "Disabled", bg: "bg/disabled", border: "border/disabled", tc: "text/disabled",    icon: "icon/disabled", up: false },
   ];
+  // 좌측 패딩 — 원본 select(540:3397)는 pc-xsm 만 16 이었으나, 다른 폼 컨트롤(Input·Date Picker)과
+  //   글자 시작선을 맞추려고 12 로 통일했다(river 결정 2026-09-23). 나머지 크기는 원본과 같다.
   const sizes = [
-    { size: "XXSM", brk: "PC",     h: 28, font: 12 },
-    { size: "XSM",  brk: "PC",     h: 34, font: 14 },
-    { size: "MD",   brk: "PC",     h: 44, font: 14 },
-    { size: "MD",   brk: "Mobile", h: 48, font: 14 },
+    { size: "XXSM", brk: "PC",     h: 28, font: 12, padL: 12 },
+    { size: "XSM",  brk: "PC",     h: 34, font: 14, padL: 12 },
+    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 12 },
+    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 12 },
   ];
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];
@@ -2106,7 +2113,7 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
       trigger.counterAxisAlignItems = "CENTER";
       trigger.primaryAxisSizingMode = "FIXED"; trigger.counterAxisSizingMode = "FIXED";
       // Mobile 아이콘 끝 여백 12 — Input·Search 와 같은 자리로 통일(river 결정 2026-09-21).
-      trigger.paddingLeft = 16; trigger.paddingRight = sc.brk === "Mobile" ? 12 : 8; trigger.paddingTop = 0; trigger.paddingBottom = 0;
+      trigger.paddingLeft = sc.padL; trigger.paddingRight = sc.brk === "Mobile" ? 12 : 8; trigger.paddingTop = 0; trigger.paddingBottom = 0;
       trigger.cornerRadius = 4;
       trigger.fills = [boundPaint(scv(maps, fc(st.bg)))];
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))];
@@ -3083,11 +3090,11 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
     { name: "Disabled", bg: "bg/disabled",  border: "border/disabled", txt: "00:00",     tc: "text/disabled",    icon: "icon/disabled" },
   ];
   const sizes = [
-    { size: "XXSM", brk: "PC",     h: 28, font: 12, padL: 10, padR: 6 },
+    { size: "XXSM", brk: "PC",     h: 28, font: 12, padL: 12, padR: 6 },
     { size: "XSM",  brk: "PC",     h: 34, font: 14, padL: 12, padR: 8 },
-    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 16, padR: 8 },
+    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 12, padR: 8 },
     // Mobile 은 아이콘 끝 여백 12 — Input·Search 와 같은 자리(river 결정 2026-09-21).
-    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 16, padR: 12 },
+    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 12, padR: 12 },
   ];
   // 12시간제 / 24시간제 축 — 웹 배포본의 `data-type="12h" | "24h"` 와 1:1 (river 지시 2026-09-09).
   //   Time Picker Dropdown 은 이미 Type 축을 갖고 있었는데 트리거에는 없어서, 설치기 결과만 보면
@@ -3116,7 +3123,7 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
       trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
       trigger.appendChild(await makeBoundText(stTxt, sc.font, "Regular", scv(maps, fc(st.tc))));
       trigger.appendChild(await makeIconInstance("clock", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), CLOCK));
-      trigger.resize(150, sc.h);
+      trigger.resize(140, sc.h); // 기본 폭 140 — 날짜·선택 칸과 공통 (river 결정 2026-09-23)
 
       const comp = figma.createComponent();
       comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}, Type=${ty.key}`;
@@ -5011,11 +5018,13 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
     { name: "Open",     bg: "bg/selected", border: "border/selected", txt: "26.06.17", tc: "text/selected",    icon: "icon/selected", open: true },
     { name: "Disabled", bg: "bg/disabled", border: "border/disabled", txt: "날짜 선택", tc: "text/disabled",    icon: "icon/disabled", open: false },
   ];
+  // 좌측 패딩은 크기를 따라간다 — 원본 datepicker_input(540:3794) 실측: pc-xxsm·pc-xsm=12, pc-md·mobile=16.
+  //   Base Input 과 같은 값이라 한 줄에 나란히 놓아도 글자 시작선이 맞는다(river 지적 2026-09-23).
   const sizes = [
-    { size: "XXSM", brk: "PC",     h: 28, font: 12 },
-    { size: "XSM",  brk: "PC",     h: 34, font: 14 },
-    { size: "MD",   brk: "PC",     h: 44, font: 14 },
-    { size: "MD",   brk: "Mobile", h: 48, font: 14 },
+    { size: "XXSM", brk: "PC",     h: 28, font: 12, padL: 12 },
+    { size: "XSM",  brk: "PC",     h: 34, font: 14, padL: 12 },
+    { size: "MD",   brk: "PC",     h: 44, font: 14, padL: 12 },
+    { size: "MD",   brk: "Mobile", h: 48, font: 14, padL: 12 },
   ];
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; size: string; brk: string; state: string }[] = [];
@@ -5026,13 +5035,13 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
       trigger.layoutMode = "HORIZONTAL"; trigger.primaryAxisAlignItems = "SPACE_BETWEEN"; trigger.counterAxisAlignItems = "CENTER";
       trigger.primaryAxisSizingMode = "FIXED"; trigger.counterAxisSizingMode = "FIXED";
       // Mobile 아이콘 끝 여백 12 — Input·Search 와 같은 자리로 통일(river 결정 2026-09-21).
-      trigger.paddingLeft = 16; trigger.paddingRight = sc.brk === "Mobile" ? 12 : 8; trigger.paddingTop = 0; trigger.paddingBottom = 0;
+      trigger.paddingLeft = sc.padL; trigger.paddingRight = sc.brk === "Mobile" ? 12 : 8; trigger.paddingTop = 0; trigger.paddingBottom = 0;
       trigger.cornerRadius = 4;
       trigger.fills = [boundPaint(scv(maps, fc(st.bg)))];
       trigger.strokes = [boundPaint(scv(maps, fc(st.border)))]; trigger.strokeWeight = 1; trigger.strokeAlign = "INSIDE";
       trigger.appendChild(await makeBoundText(st.txt, sc.font, "Regular", scv(maps, fc(st.tc))));
       trigger.appendChild(await makeIconInstance("calendar", scv(maps, fc(st.icon)), fcIconPx(sc.h, 0), CAL_ICON));
-      trigger.resize(180, sc.h);
+      trigger.resize(140, sc.h); // 기본 폭 140 — 입력·날짜·선택 칸 공통 (river 결정 2026-09-23)
 
       const comp = figma.createComponent();
       comp.name = `Size=${sc.size}, State=${st.name}, Break=${sc.brk}`;
@@ -7386,7 +7395,7 @@ export async function buildAllComponents(
   //        사람이 이 접미사를 손으로 붙일 일은 없다. 옮겨진 세트·스펙 시트는 그대로 잡히고,
   //        같은 이름의 사용자 프레임은 걸리지 않는다.
   const CANVAS_CONTAINERS = ["SECTION", "FRAME", "GROUP"];
-  const INSTALLER_NAME_SUFFIXES = [" — Spec Light", " — Spec Dark", ` ${DECO_SUFFIX}`];
+  const INSTALLER_NAME_SUFFIXES = [" — Spec Light", " — Spec Dark", " — Tokens", ` ${DECO_SUFFIX}`];
   const installerMade = (n: SceneNode): boolean => {
     try { if (String(n.type) === "COMPONENT_SET") return true; } catch (e) { /* mock */ }
     let nm = "";
@@ -7475,8 +7484,11 @@ export async function buildAllComponents(
     // Date Picker Mobile Bottom Sheet backward-compat: 구 "Date Picker Mobile" 세트 자동 정리(재설치 시)
     if (p === "Date Picker Mobile Bottom Sheet") base.push(
       "Date Picker Mobile", "Date Picker Mobile — Spec Light", "Date Picker Mobile — Spec Dark");
+    // 옛 「쓰는 색」 꼬리표(2026-09-23 신설 → 같은 날 river 지시로 철거)도 이름으로 걷어낸다 —
+    //   이미 깔린 파일에 남아 있으면 재설치 때 그대로 살아남기 때문이다.
+    const retired = base.filter((b) => b.indexOf(" — Spec ") < 0).map((b) => `${b} — Tokens`);
     // 장식(떠있는 라벨·밴드)은 `<세트이름> — Spec Deco` 로 이름이 붙는다 → 이름으로 함께 걷어낸다.
-    return base.concat(base.map((b) => `${b} ${DECO_SUFFIX}`));
+    return base.concat(retired, base.map((b) => `${b} ${DECO_SUFFIX}`));
   };
   const regionBottom = (p: string): number | null => {
     const names = new Set(footprint(p));
@@ -7578,6 +7590,24 @@ export async function buildAllComponents(
   //   빌더 함수는 originY 만 받고 X 는 내부 고정(x≈0)이라, 가로배치를 빌드 단계에서 할 수 없다.
   //   → 세로로 쌓아 각 카테고리가 disjoint 한 Y밴드를 갖게 한 뒤(wrapCategoryInSection 의 y밴드
   //     수집이 정확히 동작 = 내용이 실제로 섹션에 들어감), 2단계에서 섹션을 통째로 가로 이동한다.
+  // 철거된 「쓰는 색」 꼬리표 청소(2026-09-23 신설 → 같은 날 river 지시로 철거).
+  //   보존(skip)되는 부품은 removeByNames 를 타지 않아, 한 번 깔린 판이 영영 남는다.
+  //   이 이름은 설치기만 쓰므로 이름으로 지워도 사람 작업물을 건드리지 않는다.
+  //   ⚠️ **깊은 단까지 훑지 않는다.** `findAll` 로 페이지 전체를 뒤지면 사람이 중첩 프레임 안에
+  //      같은 이름으로 만들어 둔 레이어까지 지운다 — 되돌릴 수 없는 손실이고, removeByNames 가
+  //      같은 이유로 2단(페이지 직속 · 섹션 직속)만 보는 것과 같은 기준이다.
+  //      설치기는 이 판을 항상 페이지 직속으로만 만들었으므로 2단이면 충분하다.
+  try {
+    const SUF = " — Tokens";
+    for (const n of canvasNodesShallow()) {
+      let nm = "", t = "";
+      try { nm = String(n.name); t = String(n.type); } catch (e) { continue; }
+      if (t !== "FRAME") continue;
+      if (nm.length <= SUF.length || nm.slice(nm.length - SUF.length) !== SUF) continue;
+      try { n.remove(); } catch (e) { /* 이미 지워짐 */ }
+    }
+  } catch (e) { /* mock/no-page */ }
+
   for (const cat of COMPONENT_CATEGORIES) {
     const catTopY = y + SECTION_TITLE_SPACE; // 섹션 이름 라벨이 차지할 상단 여백 확보
     let catY = catTopY;
@@ -7597,7 +7627,14 @@ export async function buildAllComponents(
     const ownedIds = new Set<string>();
     try {
       const oldSec = sectionByName(cat.name);
-      const kids = oldSec ? oldSec.children : null;
+      let kids = oldSec ? oldSec.children : null;
+      // 옛 머리띠는 회수 대상이 아니다 — 섹션 맨 위에 있어 "내용의 맨 윗변"을 흔들어 놓는다.
+      //   여기서 걷어내고, 래핑 마지막에 새로 그린다(buildSectionHeader).
+      if (Array.isArray(kids)) {
+        const heads = (kids as SceneNode[]).filter((k) => String(k.name).indexOf(SECTION_HEADER_SUFFIX) >= 0);
+        for (const h of heads) { try { h.remove(); } catch (e) { /* 이미 지워짐 */ } }
+        if (heads.length) { try { kids = oldSec ? oldSec.children : null; } catch (e) { /* */ } }
+      }
       if (oldSec && Array.isArray(kids) && kids.length) {
         const keep = (kids as SceneNode[]).map((k) => {
           const b = k.absoluteBoundingBox;
@@ -7770,8 +7807,11 @@ export async function buildAllComponents(
       }
     } catch (e) { /* mock/no-page */ }
     // 카테고리를 1개 섹션으로 래핑 — **소유 노드 목록으로** 담는다(y밴드 짐작 폐기).
-    await wrapCategoryInSection(cat.name, canvasNodes().filter((n) => n.type !== "SECTION" && ownedIds.has(n.id)),
-      SECTION_TITLE_SPACE, SECTION_PAD);
+    const catNodes = canvasNodes().filter((n) => n.type !== "SECTION" && ownedIds.has(n.id));
+    // 개수는 **선언된 목록이 아니라 실제로 들어간 세트 수**를 센다 — 실패·미구현이 있으면
+    //   목록 수는 없는 것까지 세어 말한다(🤖 component-verifier 지적 2026-09-23).
+    const catSets = catNodes.filter((n) => String(n.type) === "COMPONENT_SET").length;
+    await wrapCategoryInSection(cat.name, catNodes, SECTION_TITLE_SPACE, SECTION_PAD, catSets);
     y = catY + SECTION_GAP;
   }
 
@@ -7794,6 +7834,10 @@ export async function buildAllComponents(
     };
     const H_GAP = 120;  // 섹션 사이 가로 간격
     const TOP_Y = 0;    // 모든 섹션 상단 정렬 기준 y
+    // ⚠️ 여기(또는 STACKED)에 없는 섹션은 종전에 **아무도 옮겨 주지 않아** 1단계 세로 컬럼 자리에
+    //    홀로 남았다(실측: "List" 가 y≈19832). 디자이너 눈에는 "부품이 없다"로 보인다.
+    //    → 아래 마지막 단계가 남은 섹션을 무리 오른쪽 끝에 붙인다(river 지시 2026-09-23:
+    //      "패턴으로 추가하는 중이라 떨어져 있는 게 맞고, 다만 무리에 좀 더 가깝게").
     const ROW = ["Platform", "Navigation", "Line Tab", "Pagination", "Actions", "Selection", "Chip",
       "Form Control", "Date Picker", "Time Picker", "Table", "Modal"];
     // 세로 스택 섹션: ROW 의 가로 컬럼 아래에 쌓는다(같은 X). below 는 ROW 컬럼명만 받는다(체인 불가) —
@@ -7830,6 +7874,19 @@ export async function buildAllComponents(
       if (!ssec) continue;
       relocateSection(ssec, curX, TOP_Y);
       curX += widthOf(ssec) + H_GAP;
+    }
+    // ROW·STACKED 어디에도 이름이 없는 섹션 — 무리 오른쪽 끝에 넉넉한 사이를 두고 붙인다.
+    //   아직 무리에 넣을지 정하지 않은 것(패턴으로 붙이는 중인 List 등)이 여기 온다.
+    //   자리 선언을 잊어도 멀리 고립되지 않는다 — 떨어뜨려 두되 눈에 닿는 거리로.
+    const APART_GAP = H_GAP * 3;
+    const named = new Set<string>(ROW.concat(STACKED.map((st) => st.name)));
+    let apartX = curX + APART_GAP - H_GAP;
+    for (const cat of COMPONENT_CATEGORIES) {
+      if (named.has(cat.name)) continue;
+      const osec = findSec(cat.name);
+      if (!osec) continue;
+      relocateSection(osec, apartX, TOP_Y);
+      apartX += widthOf(osec) + H_GAP;
     }
   } catch (e) { /* mock/no-page */ }
 
@@ -7960,16 +8017,132 @@ function relocateSection(section: SectionNode, targetX: number, targetY: number)
   }
 }
 
-// ⚠️ nodes 는 **호출자가 소유권으로 확정한 목록**이다(이번 실행에서 이 카테고리가 만든 노드 +
-//   이 카테고리 섹션의 기존 자식). 종전처럼 "y밴드에 들어오는 페이지의 모든 노드"를 담지 않는다 —
-//   그 방식은 한 부품이 실패하면 밴드가 남의 카테고리를 삼켜 배치가 통째로 무너졌다(2026-09-08 실측).
+// ── 섹션 머리말 ────────────────────────────────────────────────────────────
+//  종전에는 Figma 가 붙이는 섹션 이름 글자만 회색으로 떠 있어, 캔버스에서 묶음이 어디서 시작하는지
+//  읽히지 않았다(river 지적 2026-09-23). 섹션 안 맨 위에 머리띠를 깔고 이름·개수·한 줄 설명을 얹는다.
+//  · 색은 전부 Semantic 경유(면=level-2 · 선=line/gray/subtle · 글자=text/*) — H2.
+//  · 글자는 정본 텍스트 스타일 바인딩 — H3.
+const SECTION_HEADER_SUFFIX = "— Section Header";
+const SECTION_HEADER_H = 76;
+
+/** 묶음 한 줄 설명 — 캔버스에서 "이 묶음이 무엇인가"를 바로 알게 한다. */
+const SECTION_SUBTITLE: Record<string, string> = {
+  "Platform": "화면의 겉틀 — 상태바·주소줄·로고·푸터",
+  "Navigation": "메뉴와 화면 이동을 맡는 부품",
+  "Line Tab": "같은 화면 안에서 내용을 갈아 끼우는 탭",
+  "Pagination": "긴 목록을 쪽으로 나눠 넘기는 부품",
+  "Actions": "누르면 무슨 일이 일어나는 버튼들",
+  "Selection": "고르고 켜고 끄는 부품",
+  "Dropdown": "펼쳐서 고르는 목록 패널",
+  "Chip": "짧은 꼬리표 · 걸러내기 단추",
+  "List": "목록 한 줄의 짜임",
+  "Form Control": "값을 적어 넣는 입력칸",
+  "Date Picker": "날짜를 고르는 부품",
+  "Time Picker": "시간을 고르는 부품",
+  "Table": "표의 머리·칸 짜임",
+  "Bottom Sheet": "아래에서 올라오는 시트",
+  "Modal": "화면을 덮는 팝업",
+  "Filter Chip": "조건을 걸어 목록을 좁히는 칩",
+  "Tokens · Color (Light)": "밝은 화면에서 쓰는 색",
+  "Tokens · Color (Dark)": "어두운 화면에서 쓰는 색",
+  "Tokens · Typography": "글자 스타일 정본 전종",
+  "Tokens · Number": "간격 · 크기 · 두께 · 모서리",
+};
+
+/** 정본 텍스트 스타일에 묶인 머리말 글자. 스타일이 없으면 raw 글꼴로 떨어뜨리지 않고 만들지 않는다(H3). */
+async function headerText(
+  chars: string, styleKey: string, colorKey: string, x: number, y: number, w: number,
+): Promise<TextNode | null> {
+  const ts = TEXT_STYLES[styleKey];
+  if (!ts || !SPEC_MAPS) return null;
+  const bold = styleKey.indexOf("B") === styleKey.length - 1;
+  const style = bold ? "Bold" : "Medium";
+  try { await figma.loadFontAsync({ family: "Pretendard", style }); } catch (e) { return null; }
+  const t = figma.createText();
+  t.fontName = { family: "Pretendard", style };
+  t.characters = chars;
+  // 정본 스타일을 못 물리면 **그 글자를 만들지 않는다** — raw 글꼴로 때우지 않는다(H3).
+  try { await t.setTextStyleIdAsync(ts.id); } catch (e) { try { t.remove(); } catch (err) { /* */ } return null; }
+  t.textAutoResize = "HEIGHT";
+  t.resize(w, t.height);
+  t.x = x; t.y = y;
+  const v = SPEC_MAPS.semanticColor[colorKey];
+  t.fills = v ? [boundPaint(v)] : [];
+  return t;
+}
+
+/** 섹션 맨 위 머리띠를 (다시) 만든다. 이미 있던 것은 걷어내고 새로 그린다(멱등). */
+async function buildSectionHeader(section: SectionNode, title: string, count: number, pad: number): Promise<void> {
+  if (typeof figma.createFrame !== "function") return;   // mock(키체크) 환경
+  if (!SPEC_MAPS) return;
+  // 도중에 터져도 그리다 만 조각이 캔버스에 남지 않게, 만든 것을 모아 두고 실패 시 되감는다.
+  const madeHere: SceneNode[] = [];
+  try { return await buildSectionHeaderInner(section, title, count, pad, madeHere); }
+  catch (e) { for (const n of madeHere) { try { n.remove(); } catch (err) { /* 이미 지워짐 */ } } throw e; }
+}
+
+async function buildSectionHeaderInner(
+  section: SectionNode, title: string, count: number, pad: number, madeHere: SceneNode[],
+): Promise<void> {
+  if (!SPEC_MAPS) return;
+  // 섹션 밖으로 꺼내진 옛 머리띠도 걷어낸다 — 섹션 직속만 보면 페이지에 영구 고아가 쌓인다
+  //   (🤖 component-verifier 지적 2026-09-23). 이 이름은 설치기만 쓰므로 이름으로 지워도 안전하다.
+  try {
+    const stale = figma.currentPage.findAll(
+      (n) => String(n.name) === `${title} ${SECTION_HEADER_SUFFIX}`,
+    ) as SceneNode[];
+    if (Array.isArray(stale)) for (const n of stale) { try { n.remove(); } catch (e) { /* 이미 지워짐 */ } }
+  } catch (e) { /* mock/no-page */ }
+  const band = figma.createFrame();
+  madeHere.push(band);
+  band.name = `${title} ${SECTION_HEADER_SUFFIX}`;
+  band.clipsContent = false;
+  let w = 0;
+  try { w = typeof section.width === "number" ? section.width : 0; } catch (e) { w = 0; }
+  band.resize(Math.max(360, w - pad * 2), SECTION_HEADER_H);
+  const bandVar = SPEC_MAPS.semanticColor["color/bg/level-2"];
+  band.fills = bandVar ? [boundPaint(bandVar)] : [];
+  const line = SPEC_MAPS.semanticColor[SECTION_STROKE_TOKEN];
+  if (line) { try { band.strokes = [boundPaint(line)]; band.strokeWeight = 1; } catch (e) { /* */ } }
+  const radius = SPEC_MAPS.foundationNumber["radius/8"];
+  if (radius) {
+    for (const corner of ["topLeftRadius", "topRightRadius", "bottomLeftRadius", "bottomRightRadius"] as const) {
+      try { band.setBoundVariable(corner, radius); } catch (e) { band.cornerRadius = 8; }
+    }
+  } else { band.cornerRadius = 8; }
+  if (SPEC_MAPS.semanticLightModeNamed !== false && SPEC_MAPS.semanticLightModeId) {
+    try { setMode(band as unknown as SceneNode, SPEC_MAPS, SPEC_MAPS.semanticLightModeId); } catch (e) { /* 구버전 API */ }
+  }
+
+  const nameNode = await headerText(title, "title/20B", "color/text/title/primary", 24, 16, band.width - 48);
+  if (nameNode) { madeHere.push(nameNode); band.appendChild(nameNode); }
+  const sub = Object.prototype.hasOwnProperty.call(SECTION_SUBTITLE, title) ? SECTION_SUBTITLE[title] : "";
+  const tail = count > 0 ? `${sub ? sub + " · " : ""}${count}개` : sub;
+  if (tail) {
+    const subNode = await headerText(tail, "body/14R", "color/text/body/secondary", 24, 46, band.width - 48);
+    if (subNode) { madeHere.push(subNode); band.appendChild(subNode); }
+  }
+
+  // 섹션 안, 내용 위 여백(titleSpace)에 얹는다. 섹션 자식 좌표는 섹션 기준 상대좌표다.
+  try { section.appendChild(band); } catch (e) { try { band.remove(); } catch (_) { /* */ } return; }
+  try { band.x = pad; band.y = 28; } catch (e) { /* */ }
+}
+
 export async function wrapCategoryInSection(
   title: string,
   nodes: SceneNode[],
   titleSpace: number,
   pad: number,
+  count?: number,
 ): Promise<void> {
   if (typeof figma.createSection !== "function") return; // mock/구버전 → 건너뜀
+  // 머리띠는 "내용"이 아니다 — 크기 계산에 넣으면 매 설치마다 섹션이 위로 자란다.
+  const content = nodes.filter((n) => String(n.name).indexOf(SECTION_HEADER_SUFFIX) < 0);
+  for (const n of nodes) {
+    if (String(n.name).indexOf(SECTION_HEADER_SUFFIX) < 0) continue;
+    try { n.remove(); } catch (e) { /* 이미 지워짐 */ }
+  }
+  nodes = content;
   if (!nodes || !nodes.length) return;
   const box = absBBox(nodes);
   if (!box) return;
@@ -8028,4 +8201,6 @@ export async function wrapCategoryInSection(
       n.y += by - after.y;
     }
   }
+  // 내용이 다 담긴 뒤 맨 위 여백에 머리띠를 얹는다(river 요청 2026-09-23).
+  try { await buildSectionHeader(sec, title, count || 0, pad); } catch (e) { /* 머리띠 실패가 설치를 깨지 않게 */ }
 }

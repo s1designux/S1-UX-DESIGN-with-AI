@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:f2f011b2b16856b6946df25b8722b8aff517f8cb62a57c39aad4d745feeed2a5",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-23T04:53:07.904Z",
+  "notes": "델타 재검증(List 섹션 가로배치 편입). 앞선 검증(꼬리표 철거 + 청소 범위 축소)은 유효하며 이번 변경은 ROW 배열 1줄 추가 단독. 실측: (1) 모의 전체 설치에서 섹션 16개 겹침 0쌍·고립 0 — List x=13984,y=0 이고 폭 누적(2776+120)이 정확히 반영돼 Form Control 이 16880 으로 밀림. (2) 섹션 폭·높이 16개 전부 꼬리표 도입 이전(a620191)과 동일 — 크기 회귀 없음. (3) STACKED 3개(Filter Chip/Dropdown/Bottom Sheet)의 below 는 Chip·Selection 으로 List 앞 컬럼이라 좌표 불변(11720,978 / 8856,2256 / 8856,4098) — List 가 below 대상이 아니어서 생기는 부작용 없음. (4) 3회 연속 재설치에서 16개 섹션 좌표 완전 동일. (5) COMPONENT_CATEGORIES 16개 ↔ ROW 13 + STACKED 3 양방향 대조 — 배치 목록에서 빠진 카테고리 0, 목록에만 있는 이름 0(같은 고립 잔존 없음). (6) 청소·bystander 재시험 유지: 컴포넌트 내부·중첩 프레임 레이어 보존, 옛 판은 보존세트 아래·섹션 밖 모두 걷힘, 3회 재설치 후 판 0. (7) failed 는 모의 아이콘 스텁 탓 Mobile Header 1건(도입 이전 동일)·noRunner 0·degraded 0. tsc strict 통과, token-sheets ✅. Gate 9e/24 는 정본 해시 스탬프 탓이며 facts 내용은 해시 제외 시 동일 — components:facts:write + design:md:write 재생성 필요."
+}
