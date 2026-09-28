@@ -45,7 +45,7 @@
   "workflowStatus": "awaiting-user",
   "uiLibraryStatus": "verified",
   "lastCompletedCheckpoint": 4,
-  "nextAction": "문구 '날짜 선택' 확정 반영(웹 0.13.1). 남은 것은 커밋 여부와 Figma 설치기 재설치 안내, 기존 후속(B11·B12).",
+  "nextAction": "옆달 요일색 수정 반영(배포본 0.13.14). 남은 것은 커밋·푸시와 기존 후속(B11·B12).",
   "ownership": {
     "currentActor": null,
     "owner": null,
@@ -56,7 +56,7 @@
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "cee35c96b1bdfc9e722b0939aa5d522f63d965718bab758cbbeb77e9f218f405"
+      "sha256": "b2dfbf84951e21a34fc8cae4d619d76e7658cf3b2227a94f75011ca92bfa102f"
     },
     {
       "role": "token-values",
@@ -440,6 +440,15 @@
       ],
       "supersedesPriorVerification": false,
       "rationale": "같은 날 두 번째 정본 변경 — Date Picker 문구를 '날짜 선택'으로 굳혔고, 별건으로 Checkbox 체크 표시를 라이브러리 아이콘 인스턴스에서 선 벡터로 바꿨다(🤖 component-verifier PASS). date-picker 빌더의 기하·토큰은 무변경."
+    },
+    {
+      "refreshedAt": "2026-09-28",
+      "refreshedBy": "orchestrator",
+      "paths": [
+        "plugins/figma-vars-installer/src/build-components.ts"
+      ],
+      "supersedesPriorVerification": false,
+      "rationale": "지문이 움직인 구간 중 date-picker 관련은 buildDatePicker 의 trigger.paddingLeft 16→sc.padL(12) 과 trigger.resize(180→140) 두 줄뿐이고(hunk @@5019·@@5036), 웹 배포본 date-picker.css 는 이미 min-width:140px · padding-left:12 로 같은 값을 쓰고 있어 파생과 정본이 일치한다. 나머지 hunk(64·1519·2091·3086·7203~8030)는 설치기 섹션 묶음 재배치로 date-picker 빌더 밖이다. 이전 검증 유지."
     }
   ],
   "coreUpdates": [
@@ -526,6 +535,13 @@
       "file": "ui-library/src/components/date-picker/{date-picker.js,manifest.json,*.example.html} · assets/js/ui-library-guide.js · pages/ui-review.html · registry/components/date-picker.json · plugins/figma-vars-installer/src/build-components.ts",
       "what": "전날 넣은 '날짜를 선택하세요' + 폭에 따른 자동 축약을 번복했다. 빈 트리거 문구는 폭과 상관없이 '날짜 선택' 한 가지이고, ResizeObserver·scrollWidth 측정·data-placeholder-short 는 걷어냈다. 배포본 0.13.1.",
       "basis": "river 지시 2026-09-23: \"어제 요청한데서 추가로 번복할게있어. 길이에 상관없이 날짜 선택 으로 표시되도록 해줘\""
+    },
+    {
+      "at": "2026-09-28",
+      "file": "ui-library/src/components/date-picker/date-picker.css (+ dist 재생성, 배포본 0.13.14)",
+      "what": "옆달(other-month) 날짜가 토·일요일이면 요일색(파랑·빨강)으로 표시되던 것을 회색(--color-date-picker-text-other-month)으로 고쳤다. 원인은 CSS 특정도 — 요일 규칙이 속성 5개, other-month 규칙이 속성 3개라 요일색이 이겼다. other-month 규칙에 [data-state=\"default\"]·[data-state=\"range-mid\"] 를 붙여 특정도를 맞췄다. 새 토큰·새 색 0건. 정본 근거: build-components.ts dayKindToCellKey 가 other-month 를 Calendar Cell Standard:Disabled 로 매핑한다.",
+      "basis": "river 지적 2026-09-28: \"해당 월의 일이 아닌 부분이 활성화 색상으로 표시되고있어. 7월 4일이 토요일 색상으로 활성화 되는 문제 있음\"",
+      "verification": "라이트·다크 × PC·Mobile 실측(2026년 6월 달력): 옆달 5/31(일)·7/1~7/4(토 포함) 전부 gray/300(라이트 rgb(196,196,196)) · gray-dark/400(다크 rgb(53,54,63)). 같은 달 주말은 기존 색 유지(토 rgb(29,108,235) · 일 rgb(255,69,84)). 기계검사 7종(ui:contract·ui:version·ui:build:check·ui:test:check·ui:icons·ui:icons:origin·ui:guide:render) 전부 종료코드 0."
     }
   ],
   "scopeAdditionsFromOtherSession": {
