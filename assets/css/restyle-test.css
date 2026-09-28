@@ -1,0 +1,234 @@
+/* ══════════════════════════════════════════════════
+   restyle-test.css — 가이드 사이트 재입힘 테스트 화면 전용
+   ──────────────────────────────────────────────────
+   ⚠️ 이 파일은 정본도 파생도 아니다. `pages/_restyle-test/` 에서만 쓰는 실험용이다.
+   목적: 「사이트 껍데기를 가이드 토큰만으로 다시 그릴 수 있는가」를 눈으로 확인한다.
+
+   규칙 — 이 파일에는 HEX 를 쓰지 않는다. 색은 전부 semantic 토큰 경유다.
+   doc-*  = 디자인가이드 문서 전용 조각(정식 부품 아님 · 4장 B갈래)
+   cand-* = 정식 부품 승격 후보(가이드에 없어서 여기서 임시로 그린 것 · 4장 A갈래)
+   ══════════════════════════════════════════════════ */
+
+/* ── 바탕 ───────────────────────────────────────── */
+html, body {
+  margin: 0;
+  background: var(--color-bg-level-1);
+  color: var(--color-text-body-primary);
+  font-family: Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; }
+a { color: inherit; text-decoration: none; }
+
+/* ── 테스트 조작 바 (실험 장치 · 실제 사이트에 안 나감) ── */
+.t-bar {
+  position: sticky; top: 0; z-index: 90;
+  display: flex; align-items: center; gap: var(--spacing-16);
+  flex-wrap: wrap;
+  padding: var(--spacing-10) var(--spacing-20);
+  background: var(--color-bg-level-3);
+  border-bottom: 1px solid var(--color-line-gray-subtle);
+}
+.t-bar-label {
+  color: var(--color-text-state-caption);
+  margin-right: var(--spacing-4);
+}
+.t-bar-spacer { flex: 1; }
+
+/* ── 조각 꼬리표 — 무엇이 정식 부품인지 눈에 보이게 ── */
+.mark { position: relative; }
+.mark::before {
+  content: attr(data-mark);
+  position: absolute; top: calc(var(--spacing-8) * -1); left: 0;
+  transform: translateY(-50%);
+  padding: 0 var(--spacing-6);
+  border-radius: var(--radius-4);
+  font-size: var(--font-size-10);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.7;
+  letter-spacing: var(--letter-spacing-normal);
+  white-space: nowrap;
+  pointer-events: none;
+}
+.mark[data-kind="core"]::before {
+  background: var(--color-line-blue);
+  color: var(--color-text-state-accent-inverse);
+}
+.mark[data-kind="doc"]::before {
+  background: var(--color-bg-level-3);
+  color: var(--color-text-body-tertiary);
+  border: 1px solid var(--color-line-gray-subtle);
+}
+.mark[data-kind="cand"]::before {
+  background: var(--color-status-dark-yellow);
+  color: var(--color-text-state-accent-inverse);
+}
+body[data-marks="off"] .mark::before { display: none; }
+
+/* ── 뼈대 ───────────────────────────────────────── */
+.shell { display: flex; min-height: calc(100vh - 44px); }
+.shell-main { flex: 1; min-width: 0; }
+.page {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: var(--spacing-40) var(--spacing-32) var(--spacing-80);
+}
+.page-head { margin-bottom: var(--spacing-32); }
+.page-head h1 { margin: 0 0 var(--spacing-8); color: var(--color-text-title-primary); }
+.page-head p { margin: 0; color: var(--color-text-body-tertiary); }
+
+.sec { margin-top: var(--spacing-48); }
+.sec-head {
+  display: flex; align-items: baseline; gap: var(--spacing-12);
+  margin-bottom: var(--spacing-16);
+}
+.sec-head h2 { margin: 0; color: var(--color-text-title-primary); }
+.sec-head span { color: var(--color-text-state-caption); }
+
+/* ── cand: 사이드바 메뉴 (Navigation — 정본에 토큰만 있고 웹 코드 없음) ── */
+.cand-side {
+  width: 236px; flex: 0 0 236px;
+  background: var(--color-navigation-bg);
+  border-right: 1px solid var(--color-line-gray-subtle);
+  padding: var(--spacing-20) var(--spacing-12);
+}
+.cand-side-logo {
+  display: block;
+  padding: 0 var(--spacing-8) var(--spacing-20);
+  color: var(--color-text-title-primary);
+}
+.cand-side-group {
+  padding: var(--spacing-16) var(--spacing-8) var(--spacing-6);
+  color: var(--color-text-state-caption);
+}
+.cand-side-item {
+  display: flex; align-items: center; gap: var(--spacing-8);
+  padding: var(--spacing-8) var(--spacing-10);
+  border-radius: var(--radius-6);
+  color: var(--color-navigation-label-default);
+  border-left: 2px solid var(--color-navigation-indicator-default);
+}
+.cand-side-item:hover {
+  color: var(--color-navigation-label-hover);
+  border-left-color: var(--color-navigation-indicator-hover);
+  background: var(--color-bg-level-1);
+}
+.cand-side-item[aria-current="page"] {
+  color: var(--color-navigation-label-selected);
+  border-left-color: var(--color-navigation-indicator-selected);
+  background: var(--color-bg-level-1);
+}
+
+/* ── doc: 히어로 ─────────────────────────────────── */
+.doc-hero {
+  border-radius: var(--radius-16);
+  background: var(--color-line-blue);
+  color: var(--color-text-state-accent-inverse);
+  padding: var(--spacing-40);
+}
+.doc-hero h2 { margin: var(--spacing-12) 0; }
+.doc-hero p { margin: 0; max-width: 52ch; opacity: .88; }
+.doc-hero-kicker {
+  display: inline-block;
+  padding: var(--spacing-4) var(--spacing-10);
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border-white, currentColor);
+}
+
+/* ── doc: 숫자판 ────────────────────────────────── */
+.doc-stats {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  gap: var(--spacing-12);
+}
+.doc-stat {
+  background: var(--color-bg-level-0);
+  border: 1px solid var(--color-line-gray-subtle);
+  border-radius: var(--radius-12);
+  padding: var(--spacing-20);
+}
+.doc-stat-num { color: var(--color-text-state-accent); }
+.doc-stat-cap { color: var(--color-text-body-tertiary); margin-top: var(--spacing-4); }
+
+/* ── cand: 안내 상자 (승격 후보 — 4벌) ──────────── */
+.cand-callout {
+  display: flex; gap: var(--spacing-12);
+  border-radius: var(--radius-12);
+  padding: var(--spacing-16) var(--spacing-20);
+  border: 1px solid var(--color-line-gray-subtle);
+  background: var(--color-bg-level-0);
+}
+.cand-callout-dot {
+  flex: 0 0 auto; width: 8px; height: 8px; margin-top: var(--spacing-6);
+  border-radius: var(--radius-full);
+  background: var(--color-text-body-tertiary);
+}
+.cand-callout-title { color: var(--color-text-title-primary); margin-bottom: var(--spacing-4); }
+.cand-callout-body { color: var(--color-text-body-secondary); }
+.cand-callout[data-tone="caution"] { border-color: var(--color-status-dark-yellow); }
+.cand-callout[data-tone="caution"] .cand-callout-dot { background: var(--color-status-dark-yellow); }
+.cand-callout[data-tone="caution"] .cand-callout-title { color: var(--color-text-state-caution); }
+.cand-callout[data-tone="correct"] { border-color: var(--color-status-dark-green); }
+.cand-callout[data-tone="correct"] .cand-callout-dot { background: var(--color-status-dark-green); }
+.cand-callout[data-tone="correct"] .cand-callout-title { color: var(--color-text-state-correct); }
+.cand-callout[data-tone="error"] { border-color: var(--color-status-dark-red); }
+.cand-callout[data-tone="error"] .cand-callout-dot { background: var(--color-status-dark-red); }
+.cand-callout[data-tone="error"] .cand-callout-title { color: var(--color-text-state-error, var(--color-text-state-caution)); }
+.cand-callout[data-tone="info"] { border-color: var(--color-line-blue); }
+.cand-callout[data-tone="info"] .cand-callout-dot { background: var(--color-line-blue); }
+.cand-callout[data-tone="info"] .cand-callout-title { color: var(--color-text-state-accent); }
+
+/* ── cand: 뱃지 (안 누르는 꼬리표 — Chip 과 다름) ── */
+.cand-badge {
+  display: inline-block;
+  padding: var(--spacing-2) var(--spacing-8);
+  border-radius: var(--radius-4);
+  background: var(--color-bg-level-2);
+  color: var(--color-text-body-tertiary);
+}
+.cand-badge[data-tone="accent"] {
+  background: var(--color-bg-level-1);
+  color: var(--color-text-state-accent);
+}
+.cand-badge[data-tone="correct"] { color: var(--color-text-state-correct); }
+.cand-badge[data-tone="caution"] { color: var(--color-text-state-caution); }
+
+/* ── cand: 정보 카드 (누르지 않는 네모) ─────────── */
+.cand-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-16); }
+.cand-card {
+  background: var(--color-bg-level-0);
+  border: 1px solid var(--color-line-gray-subtle);
+  border-radius: var(--radius-12);
+  padding: var(--spacing-20);
+}
+.cand-card-title { color: var(--color-text-title-primary); margin-bottom: var(--spacing-6); }
+.cand-card-desc { color: var(--color-text-body-tertiary); }
+.cand-card-foot {
+  margin-top: var(--spacing-12); padding-top: var(--spacing-12);
+  border-top: 1px solid var(--color-line-gray-subtle);
+  display: flex; align-items: center; gap: var(--spacing-8);
+}
+
+/* ── cand: 구분선 ──────────────────────────────── */
+.cand-divider {
+  height: 1px; border: 0; margin: var(--spacing-32) 0;
+  background: var(--color-line-gray-subtle);
+}
+
+/* ── 이동 목록은 정식 부품(List Row)을 그대로 쓴다 ── */
+.core-list {
+  border: 1px solid var(--color-line-gray-subtle);
+  border-radius: var(--radius-12);
+  overflow: hidden;
+  background: var(--color-bg-level-0);
+}
+
+/* ── 부품 줄 세우기 ────────────────────────────── */
+.row { display: flex; align-items: center; gap: var(--spacing-12); flex-wrap: wrap; }
+
+@media (max-width: 1080px) {
+  .doc-stats { grid-template-columns: repeat(2, 1fr); }
+  .cand-cards { grid-template-columns: 1fr; }
+}
+
+/* 꼬리표 위치 보정 — 잘려 보이던 두 자리 */
+.cand-side.mark::before { top: var(--spacing-8); left: var(--spacing-8); transform: none; }
+.cand-badge.mark::before { top: calc(var(--spacing-12) * -1); }
