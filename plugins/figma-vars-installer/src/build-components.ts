@@ -7452,13 +7452,37 @@ export async function buildAllComponents(
     } catch (e) { /* mock */ }
     return out;
   };
+  // 섹션이 다른 섹션 안에 들어가 있을 수 있다(Mobile Pattern 바깥 묶음). 그래서 **깊은 단까지 찾고**,
+  //   찾은 것이 섹션 안에 있으면 제자리를 그대로 둔 채 페이지로 꺼낸다.
+  //   섹션 자식의 x·y 는 상대좌표인데 아래 래핑은 절대좌표로 쓴다 — 섞여 있으면 두 번째 설치에서
+  //   섹션 테두리만 바깥 묶음 원점만큼 밀려 내용과 떨어진다(🤖 component-verifier 지적 a-7·a-8, 재현됨).
   const sectionByName = (nm: string): SectionNode | null => {
+    let found: SectionNode | null = null;
     try {
-      const kids = page.children;
-      if (!Array.isArray(kids)) return null;
-      for (const n of kids as SceneNode[]) if (n.type === "SECTION" && n.name === nm) return n as SectionNode;
-    } catch (e) { /* mock */ }
-    return null;
+      const hits = page.findAll((n) => n.type === "SECTION" && n.name === nm);
+      if (Array.isArray(hits) && hits.length) found = hits[0] as SectionNode;
+    } catch (e) {
+      try {
+        const kids = page.children;
+        if (Array.isArray(kids)) {
+          for (const n of kids as SceneNode[]) if (n.type === "SECTION" && n.name === nm) { found = n as SectionNode; break; }
+        }
+      } catch (err) { /* mock */ }
+    }
+    if (!found) return null;
+    try {
+      if (found.parent && found.parent.type === "SECTION") {
+        const b = found.absoluteBoundingBox;
+        const bx = b && typeof b.x === "number" ? b.x : null;
+        const by = b && typeof b.y === "number" ? b.y : null;
+        page.appendChild(found);
+        const a = found.absoluteBoundingBox;
+        if (bx != null && by != null && a && typeof a.x === "number" && typeof found.x === "number") {
+          found.x += bx - a.x; found.y += by - a.y;
+        }
+      }
+    } catch (e) { /* mock/구버전 */ }
+    return found;
   };
   let existing = new Set<string>();
   try {
@@ -7875,18 +7899,45 @@ export async function buildAllComponents(
       relocateSection(ssec, curX, TOP_Y);
       curX += widthOf(ssec) + H_GAP;
     }
-    // ROW·STACKED 어디에도 이름이 없는 섹션 — 무리 오른쪽 끝에 넉넉한 사이를 두고 붙인다.
-    //   아직 무리에 넣을지 정하지 않은 것(패턴으로 붙이는 중인 List 등)이 여기 온다.
-    //   자리 선언을 잊어도 멀리 고립되지 않는다 — 떨어뜨려 두되 눈에 닿는 거리로.
-    const APART_GAP = H_GAP * 3;
+    // ROW·STACKED 어디에도 이름이 없는 섹션 = **모바일 패턴** — 부품 무리 **아래**에 붙인다.
+    //   종전에는 무리 오른쪽 끝으로 보냈는데, 가로로 한참 가야 보여서 멀었다
+    //   (river 지시 2026-09-28: "공통 컴포넌트 세트 묶음 아래에 너무 멀지 않게").
+    //   그리고 그것들을 다시 "Mobile Pattern" 한 묶음으로 감싼다 — 부품이 아니라 패턴임을 보이게.
     const named = new Set<string>(ROW.concat(STACKED.map((st) => st.name)));
-    let apartX = curX + APART_GAP - H_GAP;
+    let rowBottom = TOP_Y;
+    for (const nm of ROW) {
+      const sec = findSec(nm);
+      if (sec) { const b = TOP_Y + heightOf(sec); if (b > rowBottom) rowBottom = b; }
+    }
+    for (const st of STACKED) {
+      const ssec = findSec(st.name);
+      if (!ssec) continue;
+      try {
+        const bb = ssec.absoluteBoundingBox;
+        if (bb && typeof bb.y === "number" && typeof bb.height === "number" && bb.y + bb.height > rowBottom) {
+          rowBottom = bb.y + bb.height;
+        }
+      } catch (e) { /* mock */ }
+    }
+    const PATTERN_GAP = H_GAP * 2;          // 무리 아래와 패턴 사이(눈에 닿는 거리)
+    const PATTERN_TITLE_SPACE = 200;        // 바깥 묶음 "Mobile Pattern" 의 머리말 자리
+    let patternX = 0;
+    const patternSecs: SceneNode[] = [];
     for (const cat of COMPONENT_CATEGORIES) {
       if (named.has(cat.name)) continue;
       const osec = findSec(cat.name);
       if (!osec) continue;
-      relocateSection(osec, apartX, TOP_Y);
-      apartX += widthOf(osec) + H_GAP;
+      // 지난 설치에서 이미 바깥 묶음 안에 들어가 있으면 먼저 페이지로 꺼낸다 — 섹션 자식의 좌표는
+      //   섹션 기준 상대값이라, 넣은 채로 옮기면 자리가 어깟난다.
+      try { if (osec.parent && osec.parent.type === "SECTION") figma.currentPage.appendChild(osec); } catch (e) { /* mock */ }
+      relocateSection(osec, patternX, rowBottom + PATTERN_GAP + PATTERN_TITLE_SPACE);
+      patternX += widthOf(osec) + H_GAP;
+      patternSecs.push(osec as unknown as SceneNode);
+    }
+    // 바깥 묶음으로 감싼다. 섹션 안에 섹션을 넣지 못하는 런타임이면 조용히 건너뛴다(배치는 이미 끝났다).
+    if (patternSecs.length) {
+      try { await wrapCategoryInSection("Mobile Pattern", patternSecs, PATTERN_TITLE_SPACE, SECTION_PAD); }
+      catch (e) { console.warn("[installer] Mobile Pattern 묶기 실패(배치는 정상):", e); }
     }
   } catch (e) { /* mock/no-page */ }
 
@@ -8053,8 +8104,10 @@ const SECTION_SUBTITLE: Record<string, string> = {
   "Bottom Sheet": "아래에서 올라오는 시트",
   "Modal": "화면을 덮는 팝업",
   "Filter Chip": "조건을 걸어 목록을 좁히는 칩",
+  "Tokens · Color": "밝은 화면 · 어두운 화면에서 쓰는 색",
   "Tokens · Color (Light)": "밝은 화면에서 쓰는 색",
   "Tokens · Color (Dark)": "어두운 화면에서 쓰는 색",
+  "Mobile Pattern": "모바일 화면에서 되풀이되는 짜임",
   "Tokens · Typography": "글자 스타일 정본 전종",
   "Tokens · Number": "간격 · 크기 · 두께 · 모서리",
 };

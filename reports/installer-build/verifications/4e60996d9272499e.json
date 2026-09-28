@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:4e60996d9272499efa02e496d28617f092f660d7047c7919a12e9a184e5811bd",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-28T05:24:16.303Z",
+  "notes": "설치기 캔버스 배치 3건(토큰 라이트/다크 한 섹션 · List 를 무리 아래 Mobile Pattern 으로 감싸기 · 윗변 정렬) 델타 재검증. a-7·a-8 수정 확인 — sectionByName 을 깊은 단 조회 + 중첩 시 절대위치 보존 꺼내기로 바꿔, 1단계 wrapCategoryInSection 이 항상 페이지 좌표에서 돈다. 모의 Figma 로 연속 5회 설치 재현: 섹션·내용 좌표가 회차마다 동일(어긋난 양 872/4660 → 0/0), Mobile Pattern·List 중복 0, 자기중첩 0. 회수 패스 순서 무충돌 확인(꺼내기 → 옛 머리띠 제거 → 자식 회수 → ownedIds). sectionByName 호출자는 7653 한 곳뿐이라 깊은 조회 전환으로 오집 여지 없음. 좌우 줄기 배치는 token-sheets-check 가 겹침·머리말 덮음 0 으로 확인(시트 3장·노드 1184). 윗변 정렬은 originLeftOfContent 가 섹션 윗변(TOP_Y=0)을 재므로 토큰 섹션 윗변 = 0 으로 일치. rowBottom 은 STACKED 를 실측 bbox 로 포함. 기계검사 7종 exit 0. 권고 1: wrapCategoryInSection 자체에도 방어적 꺼내기를 두면 불변식이 호출자 규율에 의존하지 않는다(현재 결함 아님). 잔여: 2줄 내림 분기가 설명 가로 맞춤 미측정(띠폭 485px 미만, 도달 불가). 검문소 상태 HOLD — river 결정 3건 대기(Foundation gray/700 직접 참조 · opacity 0.75 · 규칙 예외를 Gate 34 추적 대상에 넣을지). Figma 실제 렌더 미검증(중첩 섹션 그리기·머리말 라벨)."
+}

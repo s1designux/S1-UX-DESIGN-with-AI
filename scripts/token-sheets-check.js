@@ -218,7 +218,7 @@ async function main() {
   if (result.swatches !== expectSwatch) errors.push(`색 견본 칸 ${result.swatches} ≠ 정본 ${expectSwatch}`);
   if (result.styles !== expectStyles) errors.push(`글자 표본 ${result.styles} ≠ 정본 ${expectStyles}`);
   if (result.numbers !== expectNumbers) errors.push(`숫자 줄 ${result.numbers} ≠ 정본 ${expectNumbers}`);
-  if (result.sections.length !== 4) errors.push(`시트 섹션 ${result.sections.length}장 (4장이어야 함 — 색 Light·색 Dark·글자·숫자)`);
+  if (result.sections.length !== 3) errors.push(`시트 섹션 ${result.sections.length}장 (3장이어야 함 — 색(라이트·다크 한 묶음)·글자·숫자)`);
   if (result.skipped.length) errors.push(`건너뛴 판: ${result.skipped.join(" · ")}`);
 
   // ── 2) raw 색 0건 (H2) ──
@@ -366,7 +366,7 @@ async function main() {
     await sheets.buildTokenSheets(maps);
     const secs = p3.children.filter((n) => n.type === "SECTION");
     const loose = p3.children.filter((n) => n.type !== "SECTION").length;
-    if (secs.length !== 4) errors.push(`[두 번 깔기] 섹션 ${secs.length}장 — 옛 판이 겹쳐 쌓였습니다`);
+    if (secs.length !== 3) errors.push(`[두 번 깔기] 섹션 ${secs.length}장 — 옛 판이 겹쳐 쌓였습니다`);
     if (loose) errors.push(`[두 번 깔기] 섹션 밖 낱개 노드 ${loose}개 잔류`);
     const second = secs.map((n) => n.absoluteBoundingBox.x);
     if (first.length === second.length && first.some((x, i) => x !== second[i])) {

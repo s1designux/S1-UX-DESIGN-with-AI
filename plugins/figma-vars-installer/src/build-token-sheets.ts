@@ -42,8 +42,9 @@ export interface TokenSheetResult {
 
 // 시트 섹션 이름 — 재설치 때 이 이름으로 옛 시트를 걷어낸다.
 export const TOKEN_SHEET_SECTIONS = [
-  "Tokens · Color (Light)", "Tokens · Color (Dark)", "Tokens · Typography", "Tokens · Number",
-  "Tokens · Color",   // 옛 이름(라이트·다크 한 섹션) — 재설치 때 걷어내기 위해 남긴다.
+  "Tokens · Color", "Tokens · Typography", "Tokens · Number",
+  // 옛 이름(라이트·다크를 따로 떼어 놨던 시기) — 재설치 때 걷어내려고 남긴다.
+  "Tokens · Color (Light)", "Tokens · Color (Dark)",
 ];
 
 // 시트에서 쓰는 글자·면 토큰(전부 Semantic 정본에 이미 있는 것들).
@@ -461,9 +462,12 @@ function originLeftOfContent(totalW: number, exclude: SceneNode[]): { x: number;
     }
   } catch (e) { /* mock */ }
   if (minX === Infinity) return { x: 0, y: 0 };
+  // ⚠️ 여기서 돌려주는 y 는 **판(frame)** 의 y 다. 섹션은 그보다 머리말 자리(140)만큼 위로 올라간다.
+  //   그래서 부품 섹션 윗변과 토큰 섹션 윗변을 맞추려면 판을 그만큼 내려야 한다
+  //   (river 지적 2026-09-28: "토큰과 코어컴포넌트 상단 라인이 안 맞는다").
   // 부품 첫 섹션(Platform)과 토큰 판 사이는 넉넉히 띄운다 — 붙어 있으면 한 덩어리로 보인다
   //   (river 지시 2026-09-28). totalW 는 섹션 여백까지 포함한 폭이다.
-  return { x: minX - totalW - 1200, y: minY };
+  return { x: minX - totalW - 1200, y: minY + 140 };
 }
 
 /**
@@ -510,7 +514,8 @@ export async function buildTokenSheets(
   const made: FrameNode[] = [];
   // 한 줄(row)에 섹션 여러 개를 좌우로 놓는다 — 색 라이트|다크, 글자|숫자 (river 지시 2026-09-28).
   //   한 섹션 안의 판은 **세로로 쌓는다** — 공통 역할색(Semantic)이 기본 팔레트(Foundation) 아래로 간다.
-  const rows: { title: string; frames: FrameNode[] }[][] = [];
+  //   한 섹션 = 세로로 쌓은 판 묶음(col) 여러 개를 좌우로. 색은 한 섹션 안에서 라이트|다크 두 줄기다.
+  const rows: { title: string; cols: FrameNode[][] }[][] = [];
   try {
     if (onProgress) onProgress("토큰 견본 — 색 시트 그리는 중…", 96);
     // 색은 **라이트 섹션 / 다크 섹션 두 덩어리**로 나눈다(river 요청 2026-09-23).
@@ -537,17 +542,18 @@ export async function buildTokenSheets(
       // Dark 모드가 없는 파일에서는 "Dark" 라는 이름의 밝은 판을 만들지 않는다.
       result.skipped.push("색 Dark 섹션 — 이 파일에 Dark 모드가 없습니다");
     }
-    const colorRow: { title: string; frames: FrameNode[] }[] = [];
-    colorRow.push({ title: "Tokens · Color (Light)", frames: lightFrames });
-    if (darkFrames.length) colorRow.push({ title: "Tokens · Color (Dark)", frames: darkFrames });
-    rows.push(colorRow);
-    const restRow: { title: string; frames: FrameNode[] }[] = [];
+    // 라이트·다크를 **한 섹션**에 좌우로 묶는다(river 지시 2026-09-28) — 같은 색의 두 얼굴이라
+    //   따로 떼어 놓을 이유가 없다. 각 줄기 안에서는 Foundation 위, Semantic 아래.
+    const colorCols: FrameNode[][] = [lightFrames];
+    if (darkFrames.length) colorCols.push(darkFrames);
+    rows.push([{ title: "Tokens · Color", cols: colorCols }]);
+    const restRow: { title: string; cols: FrameNode[][] }[] = [];
 
     if (hasAllStyles) {
       if (onProgress) onProgress("토큰 견본 — 글자 시트 그리는 중…", 97);
       const r = await buildTypography(maps);
       made.push(r.frame); result.styles = r.count;
-      restRow.push({ title: "Tokens · Typography", frames: [r.frame] });
+      restRow.push({ title: "Tokens · Typography", cols: [[r.frame]] });
     } else {
       result.skipped.push("글자 판 — 글자 스타일 일부가 이 파일에 없습니다");
     }
@@ -556,7 +562,7 @@ export async function buildTokenSheets(
       if (onProgress) onProgress("토큰 견본 — 숫자 시트 그리는 중…", 98);
       const r = await buildNumber(maps);
       made.push(r.frame); result.numbers = r.count;
-      restRow.push({ title: "Tokens · Number", frames: [r.frame] });
+      restRow.push({ title: "Tokens · Number", cols: [[r.frame]] });
     } else {
       result.skipped.push("숫자 판 — 간격·반경 변수가 이 파일에 없습니다");
     }
@@ -577,9 +583,15 @@ export async function buildTokenSheets(
   const STACK_GAP = 120;      // 한 섹션 안에서 판과 판 사이(세로)
   const SECTION_GAP = 240;    // 같은 줄의 섹션끼리(가로)
   const ROW_GAP = 320;        // 줄과 줄 사이(세로)
-  const secW = (sec: { frames: FrameNode[] }) => {
+  const COL_GAP = 160;        // 한 섹션 안에서 줄기끼리(가로) — 라이트|다크
+  const colW = (col: FrameNode[]) => {
     let w = 0;
-    for (const f of sec.frames) if (f.width > w) w = f.width;
+    for (const f of col) if (f.width > w) w = f.width;
+    return w;
+  };
+  const secW = (sec: { cols: FrameNode[][] }) => {
+    let w = 0;
+    for (let i = 0; i < sec.cols.length; i++) w += colW(sec.cols[i]) + (i ? COL_GAP : 0);
     return w + PAD * 2;
   };
   let totalW = 0;
@@ -594,11 +606,17 @@ export async function buildTokenSheets(
   for (const row of rows) {
     let x = origin.x, bottom = rowY;
     for (const sec of row) {
-      let y = rowY;
-      for (const f of sec.frames) { f.x = x; f.y = y; y += f.height + STACK_GAP; }
-      const secBottom = y - STACK_GAP;
+      let cx = x;
+      let secBottom = rowY;
+      const all: FrameNode[] = [];
+      for (const col of sec.cols) {
+        let y = rowY;
+        for (const f of col) { f.x = cx; f.y = y; y += f.height + STACK_GAP; all.push(f); }
+        if (y - STACK_GAP > secBottom) secBottom = y - STACK_GAP;
+        cx += colW(col) + COL_GAP;
+      }
       if (secBottom > bottom) bottom = secBottom;
-      await wrapCategoryInSection(sec.title, sec.frames, TITLE_SPACE, PAD);
+      await wrapCategoryInSection(sec.title, all, TITLE_SPACE, PAD);
       result.sections.push(sec.title);
       x += secW(sec) + SECTION_GAP;
     }
