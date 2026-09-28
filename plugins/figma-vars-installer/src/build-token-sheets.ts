@@ -461,7 +461,9 @@ function originLeftOfContent(totalW: number, exclude: SceneNode[]): { x: number;
     }
   } catch (e) { /* mock */ }
   if (minX === Infinity) return { x: 0, y: 0 };
-  return { x: minX - totalW - 400, y: minY };
+  // 부품 첫 섹션(Platform)과 토큰 판 사이는 넉넉히 띄운다 — 붙어 있으면 한 덩어리로 보인다
+  //   (river 지시 2026-09-28). totalW 는 섹션 여백까지 포함한 폭이다.
+  return { x: minX - totalW - 1200, y: minY };
 }
 
 /**
@@ -506,7 +508,9 @@ export async function buildTokenSheets(
   //   먼저 걷어내고 만들면, 중간에 실패했을 때 옛 판은 이미 사라지고 만들다 만 조각만 남는다
   //   (🤖 component-verifier 지적 2026-09-22 a-1).
   const made: FrameNode[] = [];
-  const rows: { title: string; frames: FrameNode[] }[] = [];
+  // 한 줄(row)에 섹션 여러 개를 좌우로 놓는다 — 색 라이트|다크, 글자|숫자 (river 지시 2026-09-28).
+  //   한 섹션 안의 판은 **세로로 쌓는다** — 공통 역할색(Semantic)이 기본 팔레트(Foundation) 아래로 간다.
+  const rows: { title: string; frames: FrameNode[] }[][] = [];
   try {
     if (onProgress) onProgress("토큰 견본 — 색 시트 그리는 중…", 96);
     // 색은 **라이트 섹션 / 다크 섹션 두 덩어리**로 나눈다(river 요청 2026-09-23).
@@ -533,14 +537,17 @@ export async function buildTokenSheets(
       // Dark 모드가 없는 파일에서는 "Dark" 라는 이름의 밝은 판을 만들지 않는다.
       result.skipped.push("색 Dark 섹션 — 이 파일에 Dark 모드가 없습니다");
     }
-    rows.push({ title: "Tokens · Color (Light)", frames: lightFrames });
-    if (darkFrames.length) rows.push({ title: "Tokens · Color (Dark)", frames: darkFrames });
+    const colorRow: { title: string; frames: FrameNode[] }[] = [];
+    colorRow.push({ title: "Tokens · Color (Light)", frames: lightFrames });
+    if (darkFrames.length) colorRow.push({ title: "Tokens · Color (Dark)", frames: darkFrames });
+    rows.push(colorRow);
+    const restRow: { title: string; frames: FrameNode[] }[] = [];
 
     if (hasAllStyles) {
       if (onProgress) onProgress("토큰 견본 — 글자 시트 그리는 중…", 97);
       const r = await buildTypography(maps);
       made.push(r.frame); result.styles = r.count;
-      rows.push({ title: "Tokens · Typography", frames: [r.frame] });
+      restRow.push({ title: "Tokens · Typography", frames: [r.frame] });
     } else {
       result.skipped.push("글자 판 — 글자 스타일 일부가 이 파일에 없습니다");
     }
@@ -549,10 +556,11 @@ export async function buildTokenSheets(
       if (onProgress) onProgress("토큰 견본 — 숫자 시트 그리는 중…", 98);
       const r = await buildNumber(maps);
       made.push(r.frame); result.numbers = r.count;
-      rows.push({ title: "Tokens · Number", frames: [r.frame] });
+      restRow.push({ title: "Tokens · Number", frames: [r.frame] });
     } else {
       result.skipped.push("숫자 판 — 간격·반경 변수가 이 파일에 없습니다");
     }
+    if (restRow.length) rows.push(restRow);
   } catch (e) {
     // 만들다 실패하면 이번에 만든 것을 모두 되감는다 — 그리다 만 판까지 포함해서.
     for (const n of PENDING_NODES) { try { n.remove(); } catch (err) { /* 이미 지워짐 */ } }
@@ -564,11 +572,20 @@ export async function buildTokenSheets(
   removeOldSheets();
 
   // 실제 폭 합으로 왼쪽 빈자리를 잡는다 — 어림값을 쓰지 않는다(겹침 위험 제거).
-  const GAP = 160, ROW_GAP = 400;
+  const PAD = 64;             // 섹션 안쪽 좌우·아래 여백(wrapCategoryInSection 과 같은 값)
+  const TITLE_SPACE = 140;    // 섹션 머리말 자리
+  const STACK_GAP = 120;      // 한 섹션 안에서 판과 판 사이(세로)
+  const SECTION_GAP = 240;    // 같은 줄의 섹션끼리(가로)
+  const ROW_GAP = 320;        // 줄과 줄 사이(세로)
+  const secW = (sec: { frames: FrameNode[] }) => {
+    let w = 0;
+    for (const f of sec.frames) if (f.width > w) w = f.width;
+    return w + PAD * 2;
+  };
   let totalW = 0;
   for (const row of rows) {
     let w = 0;
-    for (let i = 0; i < row.frames.length; i++) w += row.frames[i].width + (i ? GAP : 0);
+    for (let i = 0; i < row.length; i++) w += secW(row[i]) + (i ? SECTION_GAP : 0);
     if (w > totalW) totalW = w;
   }
   const origin = originLeftOfContent(totalW, made);
@@ -576,14 +593,17 @@ export async function buildTokenSheets(
   let rowY = origin.y;
   for (const row of rows) {
     let x = origin.x, bottom = rowY;
-    for (const f of row.frames) {
-      f.x = x; f.y = rowY;
-      x += f.width + GAP;
-      if (rowY + f.height > bottom) bottom = rowY + f.height;
+    for (const sec of row) {
+      let y = rowY;
+      for (const f of sec.frames) { f.x = x; f.y = y; y += f.height + STACK_GAP; }
+      const secBottom = y - STACK_GAP;
+      if (secBottom > bottom) bottom = secBottom;
+      await wrapCategoryInSection(sec.title, sec.frames, TITLE_SPACE, PAD);
+      result.sections.push(sec.title);
+      x += secW(sec) + SECTION_GAP;
     }
-    await wrapCategoryInSection(row.title, row.frames, 140, 64);
-    result.sections.push(row.title);
-    rowY = bottom + ROW_GAP;
+    // 다음 줄은 이 줄 섹션의 아래변(내용 + 아래 여백) 밑에서, 머리말 자리를 두고 시작한다.
+    rowY = bottom + PAD + ROW_GAP + TITLE_SPACE;
   }
 
   return result;
