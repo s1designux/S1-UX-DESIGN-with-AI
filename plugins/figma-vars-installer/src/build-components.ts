@@ -8020,10 +8020,16 @@ function relocateSection(section: SectionNode, targetX: number, targetY: number)
 // ── 섹션 머리말 ────────────────────────────────────────────────────────────
 //  종전에는 Figma 가 붙이는 섹션 이름 글자만 회색으로 떠 있어, 캔버스에서 묶음이 어디서 시작하는지
 //  읽히지 않았다(river 지적 2026-09-23). 섹션 안 맨 위에 머리띠를 깔고 이름·개수·한 줄 설명을 얹는다.
-//  · 색은 전부 Semantic 경유(면=level-2 · 선=line/gray/subtle · 글자=text/*) — H2.
-//  · 글자는 정본 텍스트 스타일 바인딩 — H3.
+//  · 색은 전부 Variable 바인딩 — H2. 면=Foundation gray/700(Semantic 에 '진한 면' 역할이 없다 · river
+//    지시 2026-09-28 로 진하기 3회 조정), 글자=Semantic text/state/accent-inverse. 테두리는 쓰지 않는다.
+//  · 모서리는 Foundation radius/16 바인딩, 글자는 정본 텍스트 스타일 바인딩 — H3.
 const SECTION_HEADER_SUFFIX = "— Section Header";
-const SECTION_HEADER_H = 76;
+const SECTION_HEADER_H = 104;
+const SECTION_RADIUS_TOKEN = "radius/16";   // 섹션·머리띠 모서리 둥글기 = 정본 숫자 토큰
+const SECTION_RADIUS = 16;                  // 위 토큰의 값(Variable 바인딩이 안 될 때만 쓰는 대체값)
+const SECTION_HEADER_TITLE_STYLE = "title/32B";  // 정본 텍스트 스타일 중 가장 큰 글자(H3 — 정본 바인딩 필수)
+const SECTION_HEADER_TITLE_SIZE = 32;
+const SECTION_HEADER_SUB_SIZE = 18;
 
 /** 묶음 한 줄 설명 — 캔버스에서 "이 묶음이 무엇인가"를 바로 알게 한다. */
 const SECTION_SUBTITLE: Record<string, string> = {
@@ -8049,6 +8055,13 @@ const SECTION_SUBTITLE: Record<string, string> = {
   "Tokens · Number": "간격 · 크기 · 두께 · 모서리",
 };
 
+/** 글자 폭 어림 — 한글 1자 ≈ 글자크기, 그 밖 ≈ 0.55배. 검사기(token-sheets-check.js)와 같은 식. */
+function estTextWidth(chars: string, size: number): number {
+  let w = 0;
+  for (const ch of String(chars)) w += /[\u3131-\uD79D]/.test(ch) ? size : size * 0.55;
+  return w;
+}
+
 /** 정본 텍스트 스타일에 묶인 머리말 글자. 스타일이 없으면 raw 글꼴로 떨어뜨리지 않고 만들지 않는다(H3). */
 async function headerText(
   chars: string, styleKey: string, colorKey: string, x: number, y: number, w: number,
@@ -8063,8 +8076,8 @@ async function headerText(
   t.characters = chars;
   // 정본 스타일을 못 물리면 **그 글자를 만들지 않는다** — raw 글꼴로 때우지 않는다(H3).
   try { await t.setTextStyleIdAsync(ts.id); } catch (e) { try { t.remove(); } catch (err) { /* */ } return null; }
-  t.textAutoResize = "HEIGHT";
-  t.resize(w, t.height);
+  if (w > 0) { t.textAutoResize = "HEIGHT"; t.resize(w, t.height); }
+  else { t.textAutoResize = "WIDTH_AND_HEIGHT"; }   // 폭을 글자에 맞춘다(제목 옆에 붙일 때)
   t.x = x; t.y = y;
   const v = SPEC_MAPS.semanticColor[colorKey];
   t.fills = v ? [boundPaint(v)] : [];
@@ -8099,33 +8112,59 @@ async function buildSectionHeaderInner(
   band.clipsContent = false;
   let w = 0;
   try { w = typeof section.width === "number" ? section.width : 0; } catch (e) { w = 0; }
-  band.resize(Math.max(360, w - pad * 2), SECTION_HEADER_H);
-  const bandVar = SPEC_MAPS.semanticColor["color/bg/level-2"];
+  // 섹션 폭을 그대로 꽉 채운다 — 좌우에 여백이 남으면 카드처럼 보여 머리말로 읽히지 않는다(river 지적 2026-09-28).
+  band.resize(Math.max(360, w), SECTION_HEADER_H);
+  // 면은 진한 회색 통판 — 화면을 줄여도 묶음의 시작이 덩어리로 읽힌다(river 지시 2026-09-28).
+  //   Semantic 에 '진한 면' 역할이 없어 Foundation 변수에 직접 묶는다(임의 hex 금지 — H2).
+  //   대체 색을 두지 않는다 — 글자용 토큰을 면에 쓰면 역할이 뒤집힌다(🤖 component-verifier 지적 c-3).
+  const bandVar = SPEC_MAPS.foundationColor["gray/700"];
   band.fills = bandVar ? [boundPaint(bandVar)] : [];
-  const line = SPEC_MAPS.semanticColor[SECTION_STROKE_TOKEN];
-  if (line) { try { band.strokes = [boundPaint(line)]; band.strokeWeight = 1; } catch (e) { /* */ } }
-  const radius = SPEC_MAPS.foundationNumber["radius/8"];
-  if (radius) {
-    for (const corner of ["topLeftRadius", "topRightRadius", "bottomLeftRadius", "bottomRightRadius"] as const) {
-      try { band.setBoundVariable(corner, radius); } catch (e) { band.cornerRadius = 8; }
+  try { band.strokes = []; } catch (e) { /* 구버전 런타임 */ }
+  // 섹션이 둥근 모서리라, 머리띠 윗모서리도 같은 값으로 맞춘다(아래는 각지게).
+  //   둥글기도 정본 숫자 Variable 에 묶는다 — 생 숫자로 두지 않는다(🤖 component-verifier 지적 a-2).
+  const radiusVar = SPEC_MAPS.foundationNumber[SECTION_RADIUS_TOKEN];
+  try {
+    for (const corner of ["topLeftRadius", "topRightRadius"] as const) {
+      if (radiusVar) { try { band.setBoundVariable(corner, radiusVar); continue; } catch (e) { /* 구버전 API */ } }
+      band[corner] = SECTION_RADIUS;
     }
-  } else { band.cornerRadius = 8; }
+    band.bottomLeftRadius = 0; band.bottomRightRadius = 0;
+  } catch (e) { try { band.cornerRadius = 0; } catch (err) { /* */ } }
   if (SPEC_MAPS.semanticLightModeNamed !== false && SPEC_MAPS.semanticLightModeId) {
     try { setMode(band as unknown as SceneNode, SPEC_MAPS, SPEC_MAPS.semanticLightModeId); } catch (e) { /* 구버전 API */ }
   }
 
-  const nameNode = await headerText(title, "title/20B", "color/text/title/primary", 24, 16, band.width - 48);
-  if (nameNode) { madeHere.push(nameNode); band.appendChild(nameNode); }
+  // 면이 진한 회색이라 글자는 흰색 계열 Semantic 로 뒤집는다.
+  //   글자 왼끝은 아래 내용과 같은 줄(섹션 안쪽 여백)에 세우고, 설명은 제목 오른쪽에 붙인다.
+  //   ⚠️ 설명은 줄바꿈이 없는 한 줄이라, 좁은 섹션에서는 오른쪽에 두면 띠 밖으로 삐져나온다
+  //      (🤖 component-verifier 지적 — 컴포넌트 섹션 폭 미실측). 안 들어가면 제목 아래로 내린다.
   const sub = Object.prototype.hasOwnProperty.call(SECTION_SUBTITLE, title) ? SECTION_SUBTITLE[title] : "";
   const tail = count > 0 ? `${sub ? sub + " · " : ""}${count}개` : sub;
+  const titleEst = Math.ceil(estTextWidth(title, SECTION_HEADER_TITLE_SIZE));
+  const subEst = Math.ceil(estTextWidth(tail, SECTION_HEADER_SUB_SIZE));
+  const sideBySide = !tail || pad + titleEst + 24 + subEst + pad <= band.width;
+  const titleY = sideBySide
+    ? Math.round((SECTION_HEADER_H - SECTION_HEADER_TITLE_SIZE * 1.3) / 2)
+    : Math.round((SECTION_HEADER_H - (SECTION_HEADER_TITLE_SIZE + SECTION_HEADER_SUB_SIZE) * 1.3) / 2);
+  const nameNode = await headerText(
+    title, SECTION_HEADER_TITLE_STYLE, "color/text/state/accent-inverse", pad, titleY, 0,
+  );
+  if (nameNode) { madeHere.push(nameNode); band.appendChild(nameNode); }
   if (tail) {
-    const subNode = await headerText(tail, "body/14R", "color/text/body/secondary", 24, 46, band.width - 48);
-    if (subNode) { madeHere.push(subNode); band.appendChild(subNode); }
+    // 옆에 붙일 때 자리는 **실측 폭과 어림 폭 중 큰 쪽** 기준 — 검사기(어림)와 실제 Figma(실측) 양쪽에서 안 겹친다.
+    const titleW = nameNode ? Math.max(nameNode.width || 0, titleEst) : 0;
+    const subX = sideBySide && nameNode ? pad + Math.ceil(titleW) + 24 : pad;
+    const subY = sideBySide
+      ? titleY + Math.round((SECTION_HEADER_TITLE_SIZE - SECTION_HEADER_SUB_SIZE) * 1.3)
+      : titleY + Math.round(SECTION_HEADER_TITLE_SIZE * 1.3) + 4;
+    const subNode = await headerText(tail, "body/18M", "color/text/state/accent-inverse", subX, subY, 0);
+    // 제목보다 한 결 연하게 — 색 토큰을 더 만들지 않고 투명도로 위계를 준다.
+    if (subNode) { try { subNode.opacity = 0.75; } catch (e) { /* */ } madeHere.push(subNode); band.appendChild(subNode); }
   }
 
   // 섹션 안, 내용 위 여백(titleSpace)에 얹는다. 섹션 자식 좌표는 섹션 기준 상대좌표다.
   try { section.appendChild(band); } catch (e) { try { band.remove(); } catch (_) { /* */ } return; }
-  try { band.x = pad; band.y = 28; } catch (e) { /* */ }
+  try { band.x = 0; band.y = 0; } catch (e) { /* */ }
 }
 
 export async function wrapCategoryInSection(
@@ -8162,6 +8201,9 @@ export async function wrapCategoryInSection(
   }
   // 섹션 배경 = Semantic 토큰(재설치 때도 매번 다시 바인딩 — 손으로 바뀐 raw 색을 정본으로 되돌린다)
   const sec = section;
+  // 모서리를 둥글게 — 묶음이 하나의 판으로 읽히게 한다(river 지시 2026-09-28).
+  //   SectionNode 는 숫자 Variable 바인딩 지원이 확인되지 않아 값으로 넣는다(머리띠 FRAME 은 바인딩).
+  try { sec.cornerRadius = SECTION_RADIUS; } catch (e) { /* 구버전 런타임 */ }
   bindSurface("section", (paint) => { sec.fills = [paint]; });
   // 섹션 테두리도 같은 규칙. SectionNode.strokes 는 최신 Figma API(plugin-typings 1.138+)에서 열렸다.
   if (SPEC_MAPS) {

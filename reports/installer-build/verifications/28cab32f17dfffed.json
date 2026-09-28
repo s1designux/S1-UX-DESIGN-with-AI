@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:28cab32f17dfffede9f7e9128d110809e8896d67fb1142736c28246579dd61c4",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-28T02:21:35.925Z",
+  "notes": "섹션 머리말(Section Header) 변경 델타 재검증 — a-1(설계 주석 정정)·a-2(머리띠 윗모서리를 radius/16 Variable 바인딩)·c-3(면의 글자토큰 대체 제거) 3건 수정 확인. 삐짐 위험은 어림폭 사전판정 + 우여백 pad 64 예비로 구조 해소(어림오차 최대 52px < 64px). H2 hex 0건 · H3 정본 스타일 바인딩 유지 · 멱등성(띠 104 < titleSpace 140, 회수 전 제거) 재확인. 기계검사 5종 exit 0. 잔여: (1) 2줄 내림 분기는 설명 자체의 가로 맞춤을 재지 않아 띠폭 485px 미만에서 삐짐 여지(실 섹션 폭에서 도달 불가·어떤 검사기도 미커버) — 띠 최소폭을 360→549 로 올리면 완전 봉쇄 권고. (2) river 결정 대기 (c) 2건: 진한 면의 Foundation gray/700 직접 참조, 설명 글자 투명도 0.75 하드코딩."
+}
