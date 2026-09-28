@@ -2837,7 +2837,8 @@ async function buildTable(maps: BuildMaps, originY: number): Promise<{ set: Comp
 
     // ── 페이지네이션: 완성 Pagination 바(세트) 인스턴스 재사용 ──
     //   직접 셀 조립 대신 buildPaginationBar 산출 "Pagination:Bar/Middle"(중간 상태 = 전체 활성) 인스턴스 1개.
-    //   (BUILD_DEPENDENCIES 가 없어도 Pagination 카테고리가 Table 카테고리보다 먼저라 선빌드 보장.)
+    //   (BUILD_DEPENDENCIES 가 없어도 Pagination 이 속한 Navigation 이 Table 보다 먼저라 선빌드 보장.
+    //    2026-09-28 합치기 전에는 Pagination 이 독립 카테고리였고, 순서 보장은 그때와 같다.)
     let barComp: ComponentNode | undefined = BUILT_COMPS["Pagination:Bar/Middle"];
     if (!barComp) {
       const barSet = await getBuiltSet("Pagination");
@@ -7209,15 +7210,16 @@ async function buildMultiToggle(maps: BuildMaps, originY: number): Promise<{ set
 export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] = [
   [
     { name: "Platform",     members: ["StatusBar", "NavBar", "CI", "LoginGNB", "WebTabBar", "Footer"] },
-    { name: "Navigation",   members: ["GNB", "GNB Sub Menu", "GNB Sub Menu Item", "GNB Utility Icon", "Language Icon", "Mobile Bottom Nav", "Mobile Header"] },
-    { name: "Line Tab",     members: ["Line Tab Set", "Line Tab"] },
-    { name: "Pagination",   members: ["Pagination", "Pagination Cell"] },
+    // Line Tab·Pagination 을 여기로 합쳤다(river 결정 2026-09-28) — 둘 다 "화면을 갈아 끼우거나
+    //   넘기는" 이동 부품이고, 각각 부품 2개짜리 작은 묶음이라 독립 섹션을 둘 이유가 없다.
+    { name: "Navigation",   members: ["GNB", "GNB Sub Menu", "GNB Sub Menu Item", "GNB Utility Icon", "Language Icon", "Mobile Bottom Nav", "Mobile Header", "Line Tab Set", "Line Tab", "Pagination", "Pagination Cell"] },
     { name: "Actions",      members: ["Button", "Assist Button", "Text Button"] },
     { name: "Selection",    members: ["Checkbox", "Radio", "Toggle", "Multi Toggle", "Multi Toggle Element"] },
     // Dropdown 섹션 = Form Control 에서 분리(사용자 결정 2026-06-26). Selection 아래에 세로 스택 배치(stage 2 STACKED).
     //   Form Control 보다 GRID 앞에 둬서 Select Box(Form Control)의 Dropdown 의존(BUILD_DEPENDENCIES)이 빌드순서로 충족됨.
     { name: "Dropdown",     members: ["Dropdown", "Dropdown List"] },
-    { name: "Chip",         members: ["Chip"] },
+    // Filter Chip 을 여기로 합쳤다(river 결정 2026-09-28) — 이미 Chip 바로 아래 붙여 놓던 것이다.
+    { name: "Chip",         members: ["Chip", "Filter Chip"] },
     // List Row: 목록 한 줄. 체크·토글을 인스턴스로 붙이므로 Selection 뒤에 둔다.
     { name: "List",         members: ["List Row"] },
     // members = 표시(나열) 순서: 메인 컴포넌트 → 그 안을 구성하는 요소 컴포넌트 순. 빌드(생성) 순서는
@@ -7226,15 +7228,10 @@ export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] 
     { name: "Date Picker",  members: ["Date Picker", "Calendar", "Calendar Cell", "Calendar Tile", "Calendar Nav Arrow", "Date Picker Mobile Bottom Sheet"] },
     { name: "Time Picker",  members: ["Time Picker", "Time Picker Dropdown", "Time Picker Cell", "Time Picker Mobile Bottom Sheet"] },
     { name: "Table",        members: ["Table", "Table Cell"] },
-    // Bottom Sheet: 메인 컨테이너(Bottom Sheet) → 요소(Bottom Sheet Option) 표시순서.
-    //   빌드는 BUILD_DEPENDENCIES 로 요소(Option)·Checkbox·Radio·Button 이 먼저(카테고리를 Selection·Actions 뒤에 둠).
-    { name: "Bottom Sheet", members: ["Bottom Sheet", "Bottom Sheet Option"] },
-    // Modal(overlay): 공통 팝업 셸. 코어 Button(Actions, 앞 카테고리)을 인스턴스로 부착 → 카테고리 순서로 선빌드 보장.
-    { name: "Modal",        members: ["Modal", "Modal Content"] },
-  ],
-  // Filter Chip은 별도로 (Chip 아래에 배치될 예정)
-  [
-    { name: "Filter Chip",  members: ["Filter Chip"] },
+    // Overlay = 화면 위에 떠서 덮는 것들. Modal 과 Bottom Sheet 을 합쳤다(river 결정 2026-09-28,
+    //   이름도 river 가 고름). 표시순서는 컨테이너 → 그 안 요소.
+    //   빌드는 BUILD_DEPENDENCIES 로 요소·Checkbox·Radio·Button 이 먼저(카테고리를 Selection·Actions 뒤에 둠).
+    { name: "Overlay",      members: ["Modal", "Modal Content", "Bottom Sheet", "Bottom Sheet Option"] },
   ],
 ];
 
@@ -7280,18 +7277,19 @@ export const BUILD_DEPENDENCIES: Record<string, string[]> = {
   // 모바일 바텀시트: Calendar:Date 인스턴스(본문) + Button primary(하단 "적용") 부착 → 둘 다 선빌드 필요.
   "Date Picker Mobile Bottom Sheet": ["Calendar", "Button"],
   // 시간 휠 바텀시트: 하단 "적용" Button + (DateTime 변형) 날짜·시간 Line Tab 인스턴스 부착 → 둘 다 선빌드.
-  //   Button(Actions)·Line Tab(Line Tab 카테고리) 은 Time Picker 보다 그리드 앞이라 카테고리 순서로도 보장되나 명시.
+  //   Button(Actions)·Line Tab(2026-09-28 부터 Navigation 소속) 은 Time Picker 보다 그리드 앞이라
+  //   카테고리 순서로도 보장되나 명시.
   "Time Picker Mobile Bottom Sheet": ["Button", "Line Tab"],
   "Line Tab Set": ["Line Tab"],       // 탭 3개 묶음 세트가 Line Tab 셀 인스턴스 조합
   // Table 푸터가 완성 Pagination 바(BUILT_COMPS["Pagination:Bar/Middle"]) 인스턴스 부착.
-  //   (타 카테고리 의존 = 카테고리 순서로 보장: Pagination 카테고리가 Table 보다 먼저라 선빌드됨.)
+  //   (타 묶음 의존 = 묶음 순서로 보장: Pagination 이 속한 Navigation 이 Table 보다 먼저라 선빌드됨.)
   //   Table 본문 칸은 Table Cell 인스턴스 재사용 — 2026-08-02 이전엔 이 의존이 없어 Table(39번째)이
   //   Table Cell(40번째)보다 먼저 빌드됐고, makeTableRow 의 조회가 매번 빈손이라 **72칸 전부 fallback
   //   plain frame**(인스턴스 0)이었다. 즉 셀 컴포넌트를 고쳐도 표에 반영되지 않았다.
   //   🤖 component-verifier 실측으로 원인·해법 확인 후 편입(인스턴스 36/36 · MD→MD·SM→SM 정확 매칭).
   "Table": ["Pagination", "Table Cell"],
   // Bottom Sheet 컨테이너 = Bottom Sheet Option(Text) 리스트 + Button 인스턴스 부착 → 둘 다 선빌드.
-  //   Option 은 같은 카테고리(요소 먼저), Button 은 Actions 카테고리(그리드 순서로 선빌드).
+  //   Option 은 같은 묶음(Overlay — 요소 먼저), Button 은 Actions 묶음(그리드 순서로 선빌드).
   "Bottom Sheet": ["Bottom Sheet Option", "Button"],
   "Modal": ["Button"],
   "Modal Content": ["Button"],                // 푸터가 코어 Button(XXSM h28) 인스턴스 부착 → Button 선빌드
@@ -7621,6 +7619,35 @@ export async function buildAllComponents(
   //      같은 이름으로 만들어 둔 레이어까지 지운다 — 되돌릴 수 없는 손실이고, removeByNames 가
   //      같은 이유로 2단(페이지 직속 · 섹션 직속)만 보는 것과 같은 기준이다.
   //      설치기는 이 판을 항상 페이지 직속으로만 만들었으므로 2단이면 충분하다.
+  // 은퇴한 묶음 풀기 — 2026-09-28 합치기로 이름이 없어진 섹션들이다(river 결정).
+  //   그냥 두면 옛 섹션이 옛 부품을 담은 채 캔버스에 남고, 새 묶음은 반쪽이 된다.
+  //   섹션을 지우면 자식까지 지워지므로 **먼저 절대위치를 보존해 페이지로 꺼낸 뒤** 지운다.
+  //   꺼내 놓으면 아래 1단계가 "보존한 기존 부품"으로 알아보고 새 카테고리 소유로 등록한다.
+  try {
+    const RETIRED = ["Line Tab", "Pagination", "Filter Chip", "Modal", "Bottom Sheet"];
+    const olds = figma.currentPage.findAll(
+      (n) => n.type === "SECTION" && RETIRED.indexOf(String(n.name)) >= 0,
+    ) as SectionNode[];
+    if (Array.isArray(olds)) {
+      for (const sec of olds) {
+        let kids: SceneNode[] = [];
+        try { const c = sec.children; if (Array.isArray(c)) kids = (c as SceneNode[]).slice(); } catch (e) { /* */ }
+        for (const k of kids) {
+          // 옛 머리띠는 따라 나올 이유가 없다 — 새 묶음이 제 머리띠를 다시 그린다.
+          if (String(k.name).indexOf(SECTION_HEADER_SUFFIX) >= 0) { try { k.remove(); } catch (e) { /* */ } continue; }
+          const b = k.absoluteBoundingBox;
+          try { figma.currentPage.appendChild(k); } catch (e) { continue; }
+          const a = k.absoluteBoundingBox;
+          if (b && a && typeof b.x === "number" && typeof a.x === "number" && typeof k.x === "number") {
+            k.x += b.x - a.x; k.y += b.y - a.y;
+          }
+        }
+        try { sec.remove(); } catch (e) { /* 이미 지워짐 */ }
+      }
+      if (olds.length) console.log(`[installer] 합쳐진 옛 묶음 ${olds.length}개를 풀었습니다.`);
+    }
+  } catch (e) { /* mock/no-page */ }
+
   try {
     const SUF = " — Tokens";
     for (const n of canvasNodesShallow()) {
@@ -7862,16 +7889,15 @@ export async function buildAllComponents(
     //    홀로 남았다(실측: "List" 가 y≈19832). 디자이너 눈에는 "부품이 없다"로 보인다.
     //    → 아래 마지막 단계가 남은 섹션을 무리 오른쪽 끝에 붙인다(river 지시 2026-09-23:
     //      "패턴으로 추가하는 중이라 떨어져 있는 게 맞고, 다만 무리에 좀 더 가깝게").
-    const ROW = ["Platform", "Navigation", "Line Tab", "Pagination", "Actions", "Selection", "Chip",
-      "Form Control", "Date Picker", "Time Picker", "Table", "Modal"];
+    const ROW = ["Platform", "Navigation", "Actions", "Selection", "Chip",
+      "Form Control", "Date Picker", "Time Picker", "Table", "Overlay"];
     // 세로 스택 섹션: ROW 의 가로 컬럼 아래에 쌓는다(같은 X). below 는 ROW 컬럼명만 받는다(체인 불가) —
     //   같은 below 값을 가진 항목은 STACKED 배열 순서대로 차례로 쌓인다(다중 지원, 아래 루프 참고).
     //   Filter Chip→Chip 아래 · Dropdown→Selection 아래 · Bottom Sheet→"Selection" 아래(Dropdown 바로 다음
     //   순서라 실제로는 Dropdown 아래에 쌓임, 사용자 결정 2026-07-06 — 독립 세로줄에서 이동).
+    //   Filter Chip·Bottom Sheet 은 2026-09-28 에 각각 Chip·Overlay 로 합쳐져 목록에서 빠졌다.
     const STACKED = [
-      { name: "Filter Chip",  below: "Chip",      placed: false },
       { name: "Dropdown",     below: "Selection", placed: false },
-      { name: "Bottom Sheet", below: "Selection", placed: false },
     ];
     let curX = 0;
     for (const nm of ROW) {
@@ -8189,13 +8215,14 @@ const SECTION_HEADER_SUB_SIZE = 18;
 /** 묶음 한 줄 설명 — 캔버스에서 "이 묶음이 무엇인가"를 바로 알게 한다. */
 const SECTION_SUBTITLE: Record<string, string> = {
   "Platform": "화면의 겉틀 — 상태바·주소줄·로고·푸터",
-  "Navigation": "메뉴와 화면 이동을 맡는 부품",
+  "Navigation": "메뉴 · 탭 · 쪽 넘김 — 화면을 옮기는 부품",
   "Line Tab": "같은 화면 안에서 내용을 갈아 끼우는 탭",
   "Pagination": "긴 목록을 쪽으로 나눠 넘기는 부품",
   "Actions": "누르면 무슨 일이 일어나는 버튼들",
   "Selection": "고르고 켜고 끄는 부품",
   "Dropdown": "펼쳐서 고르는 목록 패널",
-  "Chip": "짧은 꼬리표 · 걸러내기 단추",
+  "Chip": "짧은 꼬리표 · 조건을 걸어 좁히는 칩",
+  "Overlay": "화면을 덮는 팝업 · 아래에서 올라오는 시트",
   "List": "목록 한 줄의 짜임",
   "Form Control": "값을 적어 넣는 입력칸",
   "Date Picker": "날짜를 고르는 부품",

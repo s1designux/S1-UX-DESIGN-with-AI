@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:b2dfbf84951e21a34fc8cae4d619d76e7658cf3b2227a94f75011ca92bfa102f",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-28T06:48:32.126Z",
+  "notes": "부품 묶음 합치기(Overlay=Modal+Bottom Sheet · Filter Chip→Chip · Line Tab·Pagination→Navigation) 최종 검증. 묶음 16→12개·GRID 2행→1행. ❌ 2건 닫힘 확인: ①파생 component-guide-model.json 재생성(guide-model:check exit 0 · 묶음 12개·gridRow 단일 0·은퇴 5개 잔존 0건·Overlay/Chip/Navigation member 순서가 정본 선언과 글자 그대로 일치·항목 50) ②없어진 묶음 이름을 근거로 대던 주석 3곳 전부 정정(2841·7281·7285). 잔존 스윕: '없어진 묶음을 카테고리로 부르는 주석' 0건 — 남은 3개 히트는 사실과 맞다(2841 은 과거형 서술, 7266 의 '타 카테고리' 는 Chip↔Dropdown 으로 여전히 참, 7296 의 Selection 은 현존 묶음). 승계(이번에 재확인하지 않음 — 지문·규칙·변경목록 조건 충족): 이주 코드가 자식을 잃지 않는 것 · existing.has + footprint 의 '— Spec Deco' 로 떠 있는 장식까지 소유 등록 · BUILD_DEPENDENCIES 22줄 전수 대조(Overlay 를 맨 뒤로 보낸 것이 안전한 근거 = 이 넷을 자식으로 갖는 부모가 없음) · GRID 1행이 소비자 2곳(grid.flat · 중첩 forEach)을 깨지 않음 · 표시순서 규칙 준수. gate:check = 1 error(이 기록으로 닫히는 Gate 13) · 20 warning(기존 부채) · 게이트 59개 · ✅ 96건. Gate 51 은 환경 현상으로 갈라냈다(연속 실행에서 통과/시간초과 교차 + 실패 직후 헤드리스 크롬 프로세스 잔존 확인 — 묶음 이름과 무관, 별건 후보). 검문소 상태 HOLD — river 결정 3건 대기(Foundation gray/700 직접 참조 · opacity 0.75 · 규칙 예외를 Gate 34 추적 대상에 넣을지) + 손관리 사이트 pages/components.html 의 묶음이 Figma 와 갈린 건. 미검증: Figma 실제 렌더 — 옛 섹션 5개를 푼 뒤 기존 부품이 새 섹션에 담기는지는 두 번 연달아 설치해 육안 확인 필요."
+}
