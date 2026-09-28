@@ -59,3 +59,6 @@ reports/pattern-builder/inventory/*/.embeddings-order.json
 
 # 렌더 확인용 임시 하네스(플러그인 화면을 Figma 없이 눈으로 볼 때) — 커밋하지 않는다
 .tmp-preview/
+
+# 게이트 캐시 — 무거운 검사기의 지난 통과 결과(지문 대조로만 재사용). 지워도 안전하다.
+.gate-cache/

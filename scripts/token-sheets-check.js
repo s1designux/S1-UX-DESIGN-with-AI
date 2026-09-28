@@ -18,6 +18,45 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 
+// ── H3 예외(정본 목록) ───────────────────────────────────────────────────
+//   정본 텍스트 스타일을 안 무는 글자는 원칙적으로 H3 위반이다. 사용자가 승인한 자리만
+//   registry/governance/figma-font-policy.json → styleBindingExceptions 에 적히고, 이 검사기는
+//   그 목록을 **읽어서** 대조한다(조건을 검사기에 심지 않는다 — 정본은 한 곳).
+const FONT_POLICY = JSON.parse(fs.readFileSync(
+  path.join(__dirname, "..", "registry", "governance", "figma-font-policy.json"), "utf8"));
+const STYLE_BINDING_EXCEPTIONS = Array.isArray(FONT_POLICY.styleBindingExceptions)
+  ? FONT_POLICY.styleBindingExceptions : [];
+//   조건이 비면 "전부 허용"이 되는 사고를 막는다 — 필수 조건을 강제하고, 모르는 키가 있으면 멈춘다
+//   (🤖 component-verifier 지적 a-4: 키 오타 하나로 H3 검사가 통째로 꺼지는 구조였다).
+const EXCEPTION_KEYS = ["id", "where", "parentNameEndsWith", "family", "fontStyle", "fontSize",
+  "approvedBy", "approvedAt", "quote", "askedQuestion", "why", "limits"];
+for (const ex of STYLE_BINDING_EXCEPTIONS) {
+  const unknown = Object.keys(ex).filter((k) => k.charAt(0) !== "$" && EXCEPTION_KEYS.indexOf(k) < 0);
+  if (unknown.length) {
+    console.error(`[토큰 견본] ❌ 글자 스타일 예외 항목에 모르는 항목이 있습니다: ${unknown.join(", ")} (figma-font-policy.json)`);
+    process.exit(1);
+  }
+  if (!ex.parentNameEndsWith || !ex.fontSize || !ex.family || !ex.fontStyle) {
+    console.error(`[토큰 견본] ❌ 글자 스타일 예외에는 자리(parentNameEndsWith)·크기·글꼴·굵기가 모두 있어야 합니다: ${ex.id || "(이름 없음)"}`);
+    process.exit(1);
+  }
+  if (!ex.approvedBy || !ex.quote) {
+    console.error(`[토큰 견본] ❌ 글자 스타일 예외에는 누가 승인했는지와 그 말(approvedBy·quote)이 있어야 합니다: ${ex.id || "(이름 없음)"}`);
+    process.exit(1);
+  }
+}
+function styleBindingExcepted(t) {
+  const parentName = t && t.parent ? String(t.parent.name || "") : "";
+  return STYLE_BINDING_EXCEPTIONS.some((ex) => {
+    const tail = String(ex.parentNameEndsWith);
+    if (parentName.slice(-tail.length) !== tail) return false;
+    if (t.fontSize !== ex.fontSize) return false;
+    if (!t.fontName || t.fontName.family !== ex.family) return false;
+    if (t.fontName.style !== ex.fontStyle) return false;
+    return true;
+  });
+}
+
 const ROOT = path.resolve(__dirname, "..");
 const SRC = path.join(ROOT, "plugins/figma-vars-installer/src");
 
@@ -202,7 +241,7 @@ async function main() {
   // ── 3) 글자 = Pretendard + 정본 텍스트 스타일 (H3) ──
   const texts = all.filter((n) => n.type === "TEXT");
   const badFont = texts.filter((t) => !t.fontName || t.fontName.family !== textData.TEXT_STYLE_FONT_FAMILY);
-  const noStyle = texts.filter((t) => !t.textStyleId);
+  const noStyle = texts.filter((t) => !t.textStyleId && !styleBindingExcepted(t));
   if (badFont.length) errors.push(`비-${textData.TEXT_STYLE_FONT_FAMILY} 글자 ${badFont.length}건 (하드룰 H3 위반)`);
   if (noStyle.length) errors.push(`정본 텍스트 스타일이 안 걸린 글자 ${noStyle.length}건 (하드룰 H3 위반)`);
 
@@ -837,7 +876,7 @@ async function main() {
     await sheets.buildTokenSheets(Object.assign({}, maps, { textStyles: onlyRequired }));
     const built = p4.children.filter((n) => n.type === "SECTION");
     const labels = [].concat(...built.map((s0) => s0.findAll((n) => n.type === "TEXT")));
-    const unstyled = labels.filter((t) => !t.textStyleId);
+    const unstyled = labels.filter((t) => !t.textStyleId && !styleBindingExcepted(t));
     if (!labels.length) errors.push('[라벨 스타일] 목록 스타일만 있는 파일에서 판을 한 장도 만들지 못했습니다');
     if (unstyled.length) {
       errors.push(`막는 목록 밖 글자 스타일을 씁니다 — 정본 스타일이 안 걸린 글자 ${unstyled.length}건 (예: "${String(unstyled[0].characters).slice(0, 20)}")`);

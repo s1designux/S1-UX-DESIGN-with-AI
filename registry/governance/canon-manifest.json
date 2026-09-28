@@ -315,7 +315,8 @@
         "role": "Pretendard 정본 폰트 정책",
         "consumers": [
           "PreToolUse 폰트 훅",
-          "component-verifier"
+          "component-verifier",
+          "scripts/token-sheets-check.js (styleBindingExceptions 대조)"
         ]
       },
       "guardians.json": {

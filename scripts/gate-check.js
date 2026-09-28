@@ -45,6 +45,11 @@ const pass = (msg) => { passes++; if (VERBOSE) console.log(`  ✅ ${msg}`); };
 const warn = (msg) => { flushHeader(); console.warn(`  ⚠️  ${msg}`); warnings++; };
 const fail = (msg) => { flushHeader(); console.error(`  ❌ ${msg}`); errors++; };
 
+// 무거운 게이트 4개(6c·28·44·53)는 「보는 파일이 하나도 안 바뀌면 지난 통과 결과를 쓴다」.
+// 판정 로직·출력은 그대로고, 통과만 저장한다(실패·경고·크롬부재는 매번 다시 돈다).
+// 끄기: --no-cache 또는 GATE_CACHE=0.
+const gateCache = require('./lib/gate-cache');
+
 // ── Gate 1: Registry Gate ─────────────────────────────────────────
 gateHeader('[Gate 1] 부품명세 검사기 (Registry)');
 
@@ -229,10 +234,26 @@ try {
 gateHeader('[Gate 6c] 설치기툴팁 검사기 (Installer Tooltip)');
 try {
   const { spawnSync } = require('child_process');
-  const r = spawnSync('node', [path.join(ROOT, 'scripts/installer-tooltip-check.js')], { encoding: 'utf-8' });
+  // 10초(전체의 1/3)가 걸리던 게이트 — git 이력을 되짚어 툴팁 문장·카드 날짜를 매번 다시 만든다.
+  // 설치기 소스와 커밋된 zip 이 그대로면 답도 그대로다(이력 재작성은 gitPaths 로 잡는다).
+  const r = gateCache.runCached({
+    key: 'gate-6c-installer-tooltip',
+    deps: [
+      'plugins/figma-vars-installer/src',
+      'assets/downloads/s1-ux-design-guide-installer.zip',
+      'scripts/installer-tooltip-check.js',
+      'scripts/installer-update-notes.js',
+      'scripts/lib/installer-fingerprint.js',
+      'scripts/lib/installer-history.js',
+      'scripts/lib/read-zip-entry.js',
+    ],
+    gitPaths: ['plugins/figma-vars-installer/src', 'assets/downloads/s1-ux-design-guide-installer.zip'],
+    exec: () => spawnSync('node', [path.join(ROOT, 'scripts/installer-tooltip-check.js')], { encoding: 'utf-8' }),
+  });
+  if (r.cached) gateCache.noteSkip();
   if (r.status === 0) {
     const m = (r.stdout || '').match(/✅\s*(.+)/);
-    pass(m ? m[1].trim() : '설치기 zip 툴팁·카드날짜 일치');
+    pass((m ? m[1].trim() : '설치기 zip 툴팁·카드날짜 일치') + (r.cached ? ' (변경 없음 — 지난 검사 결과)' : ''));
   } else {
     const out = (r.stdout || '') + (r.stderr || '');
     const lines = out.split('\n').filter((l) => l.trim());
@@ -802,12 +823,25 @@ try {
 gateHeader('[Gate 28] 시스템 맵 신선도 검사기 (System Map Drift)');
 try {
   const { spawnSync } = require('child_process');
-  const r = spawnSync('node', [
-    path.join(ROOT, 'pipeline-status.js'), '--self-check',
-    '--skip', 'gate:check,components:presentation',
-  ], { cwd: ROOT, encoding: 'utf-8' });
+  // 저장소를 통째로 훑어 시스템 맵을 다시 만드는 게이트(2.3초). 맵의 입력은
+  // 「어떤 파일이 있는가」(namesOnly) + 「검사기·정본 코드의 내용」(deps)이다.
+  const r = gateCache.runCached({
+    key: 'gate-28-system-map',
+    namesOnly: ['.'],
+    deps: [
+      'scripts', 'package.json', 'pipeline-status.js', 'pages',
+      'registry', 'design', 'assets/css', 'ui-library/dist',
+      'plugins/figma-vars-installer/src',
+    ],
+    exec: () => spawnSync('node', [
+      path.join(ROOT, 'pipeline-status.js'), '--self-check',
+      '--skip', 'gate:check,components:presentation',
+    ], { cwd: ROOT, encoding: 'utf-8' }),
+  });
+  if (r.cached) gateCache.noteSkip();
   if (r.status === 0) {
-    pass('시스템 맵 최신 — pipeline-status.html 이 현재 코드와 일치(휘발성 제외)');
+    pass('시스템 맵 최신 — pipeline-status.html 이 현재 코드와 일치(휘발성 제외)'
+      + (r.cached ? ' (변경 없음 — 지난 검사 결과)' : ''));
   } else {
     warn('Gate 28: pipeline-status.html 이 현재 코드와 맞지 않습니다 (시스템 맵 낡음)\n'
       + '       → 해결: npm run map:verify 로 확인 후, 재생성:\n'
@@ -1090,9 +1124,25 @@ try {
 gateHeader('[Gate 44] 안내 화면 렌더 검사기 (UI Guide Render)');
 try {
   const { spawnSync } = require('child_process');
-  const result = spawnSync(process.execPath, [path.join(__dirname, 'ui-guide-render-check.js'), '--quiet'], { encoding: 'utf8' });
+  // 크롬을 띄워 안내 화면을 실제로 그려 보는 게이트(2.1초). 화면·CSS·JS·배포본이
+  // 그대로면 그린 결과도 그대로다. 크롬 부재(status 2)는 저장하지 않는다.
+  const result = gateCache.runCached({
+    key: 'gate-44-ui-guide-render',
+    deps: [
+      // 화면 묶음 전체가 아니라 「이 게이트가 실제로 띄우는 화면」만 본다 —
+      // 대시보드(pipeline-status.html) 재생성 같은 무관한 변경에 헛돌지 않도록.
+      'pages/components.html', 'pages/ui-review.html',
+      'assets/css', 'assets/js', 'ui-library/dist',
+      'registry/governance/component-presentation-policy.json',
+      'scripts/ui-guide-render-check.js', 'scripts/ui-guide-part-sample-check.js',
+      'scripts/lib/chrome-proc.js',
+    ],
+    exec: () => spawnSync(process.execPath, [path.join(__dirname, 'ui-guide-render-check.js'), '--quiet'], { encoding: 'utf8' }),
+  });
+  if (result.cached) gateCache.noteSkip();
   const output = `${result.stdout || ''}${result.stderr || ''}`.trim();
-  if (result.status === 0) pass('안내 화면 실제 렌더 통과 — 개발 코드 플랫폼 일치 · 부품 표본 격리 (상세: npm run ui:guide:render)');
+  if (result.status === 0) pass('안내 화면 실제 렌더 통과 — 개발 코드 플랫폼 일치 · 부품 표본 격리 (상세: npm run ui:guide:render)'
+    + (result.cached ? ' (변경 없음 — 지난 검사 결과)' : ''));
   else if (result.status === 2) warn(`Gate 44: 크롬을 찾지 못해 건너뜁니다 — ${output.split('\n').slice(-1)[0]}`);
   else {
     fail('안내 화면 렌더 검사 실패 — npm run ui:guide:render 로 상세 확인');
@@ -1291,10 +1341,21 @@ try {
 gateHeader('[Gate 53] 안내표본 생존 검사기 (Guide Sample Liveness)');
 try {
   const { spawnSync } = require('child_process');
-  const r = spawnSync(process.execPath, [path.join(ROOT, 'scripts/guide-sample-liveness-check.js')], { encoding: 'utf-8' });
+  // 크롬을 띄워 표본이 살아 깨어나는지 보는 게이트(1.8초). 입력은 Gate 44 와 같은 화면 묶음이다.
+  const r = gateCache.runCached({
+    key: 'gate-53-guide-sample-liveness',
+    deps: [
+      'pages/components.html', 'pages/ui-review.html',
+      'assets/css', 'assets/js', 'ui-library/dist',
+      'scripts/guide-sample-liveness-check.js', 'scripts/lib/chrome-proc.js',
+    ],
+    exec: () => spawnSync(process.execPath, [path.join(ROOT, 'scripts/guide-sample-liveness-check.js')], { encoding: 'utf-8' }),
+  });
+  if (r.cached) gateCache.noteSkip();
   const out = `${r.stdout || ''}${r.stderr || ''}`;
   if (r.status === 2) warn('Gate 53: 크롬이 없어 건너뜀 — 안내 표본이 살아 있는지 확인되지 않았습니다');
-  else if (r.status === 0) pass(out.match(/✅ (살아 있는 표본.*)/)?.[1] || '안내 표본 전부 살아 있음');
+  else if (r.status === 0) pass((out.match(/✅ (살아 있는 표본.*)/)?.[1] || '안내 표본 전부 살아 있음')
+    + (r.cached ? ' (변경 없음 — 지난 검사 결과)' : ''));
   else for (const l of out.split('\n').filter((l) => l.includes('❌'))) fail(l.replace(/^\s*❌\s*/, '').trim());
 } catch (e) {
   fail(`Gate 53 실행 실패: ${e.message}`);
@@ -1346,7 +1407,10 @@ try {
 
 // ── Summary ───────────────────────────────────────────────────────
 if (VERBOSE || errors > 0 || warnings > 0) console.log('\n─────────────────────────────────────────────────────');
-const tally = `게이트 ${gates}개 · ✅ ${passes}건${VERBOSE ? '' : ' (상세: --verbose)'}`;
+const cacheNote = gateCache.skippedCount() > 0
+  ? ` · 변경 없어 건너뜀 ${gateCache.skippedCount()}개(무거운 게이트 — 다시 돌리려면 --no-cache)`
+  : '';
+const tally = `게이트 ${gates}개 · ✅ ${passes}건${cacheNote}${VERBOSE ? '' : ' (상세: --verbose)'}`;
 if (errors > 0) {
   console.error(`\nGate Check FAILED — ${errors} error(s), ${warnings} warning(s) · ${tally}\n`);
   process.exit(1);

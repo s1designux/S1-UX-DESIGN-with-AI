@@ -8027,8 +8027,12 @@ const SECTION_HEADER_SUFFIX = "— Section Header";
 const SECTION_HEADER_H = 104;
 const SECTION_RADIUS_TOKEN = "radius/16";   // 섹션·머리띠 모서리 둥글기 = 정본 숫자 토큰
 const SECTION_RADIUS = 16;                  // 위 토큰의 값(Variable 바인딩이 안 될 때만 쓰는 대체값)
-const SECTION_HEADER_TITLE_STYLE = "title/32B";  // 정본 텍스트 스타일 중 가장 큰 글자(H3 — 정본 바인딩 필수)
-const SECTION_HEADER_TITLE_SIZE = 32;
+const SECTION_HEADER_TITLE_STYLE = "title/32B";  // 굵기 기준(정본 스타일 중 가장 큰 글자)
+const SECTION_HEADER_TITLE_STYLE_SIZE: number = 32;   // 위 정본 스타일의 크기
+//  제목만 44 — 정본 최대가 32라 스타일을 못 문다. river 가 이 자리 하나만 예외로 승인했고
+//  (2026-09-28 "이것만 예외로 하고 기준에 안맞더라도 적용해줘"), 정본 기록은
+//  registry/governance/figma-font-policy.json → styleBindingExceptions 에 있다. 글꼴은 Pretendard 그대로.
+const SECTION_HEADER_TITLE_SIZE: number = 44;
 const SECTION_HEADER_SUB_SIZE = 18;
 
 /** 묶음 한 줄 설명 — 캔버스에서 "이 묶음이 무엇인가"를 바로 알게 한다. */
@@ -8062,20 +8066,32 @@ function estTextWidth(chars: string, size: number): number {
   return w;
 }
 
-/** 정본 텍스트 스타일에 묶인 머리말 글자. 스타일이 없으면 raw 글꼴로 떨어뜨리지 않고 만들지 않는다(H3). */
+/**
+ * 머리말 글자 한 줄. 기본은 **정본 텍스트 스타일 바인딩**이고, 스타일을 못 물면 그 글자를 만들지 않는다(H3).
+ * 예외: `rawSize` 를 준 호출만 스타일 대신 그 크기를 직접 쓴다 — 정본에 없는 크기가 필요한
+ *   **승인된 자리**(registry/governance/figma-font-policy.json → styleBindingExceptions)에만 넘긴다.
+ *   그 경우에도 글꼴은 Pretendard 그대로이고, 검사기가 그 예외 목록과 대조한다.
+ */
 async function headerText(
   chars: string, styleKey: string, colorKey: string, x: number, y: number, w: number,
+  rawSize?: number,
 ): Promise<TextNode | null> {
   const ts = TEXT_STYLES[styleKey];
-  if (!ts || !SPEC_MAPS) return null;
+  if (!SPEC_MAPS) return null;
+  if (!ts && !rawSize) return null;
   const bold = styleKey.indexOf("B") === styleKey.length - 1;
   const style = bold ? "Bold" : "Medium";
   try { await figma.loadFontAsync({ family: "Pretendard", style }); } catch (e) { return null; }
   const t = figma.createText();
   t.fontName = { family: "Pretendard", style };
   t.characters = chars;
-  // 정본 스타일을 못 물리면 **그 글자를 만들지 않는다** — raw 글꼴로 때우지 않는다(H3).
-  try { await t.setTextStyleIdAsync(ts.id); } catch (e) { try { t.remove(); } catch (err) { /* */ } return null; }
+  if (rawSize) {
+    // 정본 스타일에 없는 크기 — figma-font-policy.json 의 승인된 예외 자리에서만 쓴다.
+    try { t.fontSize = rawSize; t.lineHeight = { unit: "PERCENT", value: 130 }; } catch (e) { /* */ }
+  } else if (ts) {
+    // 정본 스타일을 못 물리면 **그 글자를 만들지 않는다** — raw 글꼴로 때우지 않는다(H3).
+    try { await t.setTextStyleIdAsync(ts.id); } catch (e) { try { t.remove(); } catch (err) { /* */ } return null; }
+  }
   if (w > 0) { t.textAutoResize = "HEIGHT"; t.resize(w, t.height); }
   else { t.textAutoResize = "WIDTH_AND_HEIGHT"; }   // 폭을 글자에 맞춘다(제목 옆에 붙일 때)
   t.x = x; t.y = y;
@@ -8142,21 +8158,26 @@ async function buildSectionHeaderInner(
   const tail = count > 0 ? `${sub ? sub + " · " : ""}${count}개` : sub;
   const titleEst = Math.ceil(estTextWidth(title, SECTION_HEADER_TITLE_SIZE));
   const subEst = Math.ceil(estTextWidth(tail, SECTION_HEADER_SUB_SIZE));
-  const sideBySide = !tail || pad + titleEst + 24 + subEst + pad <= band.width;
+  //   크기가 정본 스타일과 같으면 rawSize 를 넘기지 않는다 — 나중에 32 로 되돌려도 스타일이 물린다.
+  const rawTitleSize = SECTION_HEADER_TITLE_SIZE === SECTION_HEADER_TITLE_STYLE_SIZE
+    ? undefined : SECTION_HEADER_TITLE_SIZE;
+  const nameNode = await headerText(
+    title, SECTION_HEADER_TITLE_STYLE, "color/text/state/accent-inverse", pad, 0, 0, rawTitleSize,
+  );
+  if (nameNode) { madeHere.push(nameNode); band.appendChild(nameNode); }
+  // 옆에 붙일지는 **제목을 만든 뒤 실측 폭**으로 정한다 — 어림값으로 정하면 실측에서 띠 밖으로 나갈 수 있다
+  //   (🤖 component-verifier 지적 a-6). 실측을 못 얻으면 어림값으로 떨어진다.
+  const titleW = nameNode ? Math.max(nameNode.width || 0, titleEst) : 0;
+  const sideBySide = !tail || pad + Math.ceil(titleW) + 24 + subEst + pad <= band.width;
   const titleY = sideBySide
     ? Math.round((SECTION_HEADER_H - SECTION_HEADER_TITLE_SIZE * 1.3) / 2)
     : Math.round((SECTION_HEADER_H - (SECTION_HEADER_TITLE_SIZE + SECTION_HEADER_SUB_SIZE) * 1.3) / 2);
-  const nameNode = await headerText(
-    title, SECTION_HEADER_TITLE_STYLE, "color/text/state/accent-inverse", pad, titleY, 0,
-  );
-  if (nameNode) { madeHere.push(nameNode); band.appendChild(nameNode); }
+  if (nameNode) { try { nameNode.y = titleY; } catch (e) { /* */ } }
   if (tail) {
-    // 옆에 붙일 때 자리는 **실측 폭과 어림 폭 중 큰 쪽** 기준 — 검사기(어림)와 실제 Figma(실측) 양쪽에서 안 겹친다.
-    const titleW = nameNode ? Math.max(nameNode.width || 0, titleEst) : 0;
     const subX = sideBySide && nameNode ? pad + Math.ceil(titleW) + 24 : pad;
     const subY = sideBySide
       ? titleY + Math.round((SECTION_HEADER_TITLE_SIZE - SECTION_HEADER_SUB_SIZE) * 1.3)
-      : titleY + Math.round(SECTION_HEADER_TITLE_SIZE * 1.3) + 4;
+      : titleY + Math.round(SECTION_HEADER_TITLE_SIZE * 1.3) + 8;
     const subNode = await headerText(tail, "body/18M", "color/text/state/accent-inverse", subX, subY, 0);
     // 제목보다 한 결 연하게 — 색 토큰을 더 만들지 않고 투명도로 위계를 준다.
     if (subNode) { try { subNode.opacity = 0.75; } catch (e) { /* */ } madeHere.push(subNode); band.appendChild(subNode); }

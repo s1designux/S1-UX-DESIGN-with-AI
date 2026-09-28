@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:9b3c0f21ad12c7cf11bb9086bc01a5966a31218ba82870cefaa4d3be3bdc11ae",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-28T03:03:14.509Z",
+  "notes": "섹션 머리말 제목 44 예외 적용분 델타 재검증 — ❌(a) 4건 중 3건 수정 확인(a-3 headerText 계약 독스트링 · a-4 예외 조건 엄격화 · a-6 sideBySide 를 제목 실측 뒤로 이동). a-5(Gate 34 기계 대조 경로 부재)는 canon:approve 가 '규칙 예외'를 추적하지 않아 거부됨 — askedQuestion·quoteNote 로 사람 확인 가능하게 보강하고 추적 범위 확대는 river 결정으로 상신(적절한 (c) 처리로 인정). 적대 테스트 7종 자체 실행: 빈 예외·키 오타·승인자 누락·조건 누락 전부 exit 1 차단, 크기/부모이름 위조 시 제목 4건이 H3 위반으로 정상 검출 — 예외가 이 자리에만 붙는 것을 실증. 기하: 옆붙임 남는여백 -7px → +57px(제목 항이 실측으로 통일돼 어림오차 창 소멸), 아래내림 간격 3.8 → 7.8px, 띠 아래 3.6px. H2 hex 0 · badFont 검사 무변경(폰트 정체성 규칙 무손상). 기계검사 7종 exit 0(tsc·token-sheets·keycheck·anatomy·iconpolicy·Gate34·Gate36). 검문소 상태는 HOLD — river 결정 3건 대기: (c1) 진한 면의 Foundation gray/700 직접 참조, (c2) 설명 글자 opacity 0.75, (c4) 규칙 예외를 Gate 34 추적 대상에 넣을지. 잔여 위험 1: 2줄 분기가 설명 자체의 가로 맞춤은 재지 않음(띠폭 485px 미만, 실 섹션에서 도달 불가)."
+}
