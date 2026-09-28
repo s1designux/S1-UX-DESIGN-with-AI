@@ -66,6 +66,20 @@
       "limits": "이 예외는 위 조건(부모 이름·글꼴·굵기·크기)에 정확히 맞는 글자에만 적용된다. 다른 자리에서 정본 스타일을 안 무는 글자는 그대로 H3 위반이다.",
       "askedQuestion": "섹션 머리말 제목을 32보다 크게 하려면 가이드에 새 글자 크기(44 굵게)를 정식으로 추가해야 합니다. 추가할까요, 32로 둘까요? 안 정하면 32로 둡니다.",
       "$quoteNote": "river 의 답을 그대로 옮긴 것이다. 짧은 말이라 무엇에 대한 승인인지 말 자체에는 없어서, 바로 앞에 한 질문(askedQuestion)을 함께 남긴다 — 나중에 사람이 관련성을 눈으로 확인할 수 있게. Gate 34(정본 신설 승인)는 토큰·스타일·컴포넌트 이름만 추적해 '규칙 예외'는 시야 밖이라, 기계 대조 경로가 없다."
+    },
+    {
+      "id": "installer-area-title",
+      "where": "설치기가 캔버스에 놓는 영역 제목(Tokens · Core Component · Mobile Pattern — '… — Area Title' 노드)",
+      "nodeNameEndsWith": "— Area Title",
+      "family": "Pretendard",
+      "fontStyle": "Bold",
+      "fontSize": 200,
+      "approvedBy": "river",
+      "approvedAt": "2026-09-28",
+      "askedQuestion": "(river 가 먼저 지시함) 한 화면에 토큰·코어 부품·패턴이 함께 나와 구분이 어려우니 각 영역 시작점에 제목을 적어 달라는 요청.",
+      "quote": "토큰스 컬러 시작점, 코어컴포넌트 시작점(플랫폼 섹션), 리스트 위쪽에 200px폰트로 각 영역 타이틀을 적어줘",
+      "why": "정본 텍스트 스타일의 최대 크기가 32라 200px 을 스타일로 물릴 수 없다. 캔버스를 멀리서 볼 때 영역을 가르는 표지라 크기가 곧 기능이고, river 가 크기를 직접 지정했다.",
+      "limits": "이 예외는 이름이 '— Area Title' 로 끝나는 Pretendard Bold 200 글자에만 적용된다. 다른 자리에서 정본 스타일을 안 무는 글자는 그대로 H3 위반이다."
     }
   ],
   "$styleBindingExceptionsNote": "H3(정본 텍스트 스타일 바인딩)의 유일한 예외 목록. 검사기 token-sheets-check.js 가 이 파일을 읽어 대조한다 — 검사기에 조건을 심지 않는다."

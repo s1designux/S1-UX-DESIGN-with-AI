@@ -7919,8 +7919,30 @@ export async function buildAllComponents(
         }
       } catch (e) { /* mock */ }
     }
+    // 바깥 묶음("Mobile Pattern")은 걷어낸다(river 지시 2026-09-28) — 묶음 안 묶음 대신
+    //   아주 큰 영역 제목으로 구분한다. 섹션을 그냥 지우면 자식까지 지워지므로 먼저 꺼낸다.
+    try {
+      const mps = figma.currentPage.findAll((n) => n.type === "SECTION" && n.name === "Mobile Pattern");
+      if (Array.isArray(mps)) {
+        for (const mp of mps as SectionNode[]) {
+          let kids: SceneNode[] = [];
+          try { const c = mp.children; if (Array.isArray(c)) kids = (c as SceneNode[]).slice(); } catch (e) { /* */ }
+          for (const k of kids) {
+            const b = k.absoluteBoundingBox;
+            try { figma.currentPage.appendChild(k); } catch (e) { continue; }
+            const a = k.absoluteBoundingBox;
+            if (b && a && typeof b.x === "number" && typeof a.x === "number" && typeof k.x === "number") {
+              k.x += b.x - a.x; k.y += b.y - a.y;
+            }
+          }
+          try { mp.remove(); } catch (e) { /* 이미 지워짐 */ }
+        }
+      }
+    } catch (e) { /* mock/no-page */ }
+    removeAreaTitle("Mobile Pattern");
+
     const PATTERN_GAP = H_GAP * 2;          // 무리 아래와 패턴 사이(눈에 닿는 거리)
-    const PATTERN_TITLE_SPACE = 200;        // 바깥 묶음 "Mobile Pattern" 의 머리말 자리
+    const PATTERN_TITLE_SPACE = AREA_TITLE_SPACE;   // 패턴 영역 제목이 앉을 자리
     let patternX = 0;
     const patternSecs: SceneNode[] = [];
     for (const cat of COMPONENT_CATEGORIES) {
@@ -7934,11 +7956,11 @@ export async function buildAllComponents(
       patternX += widthOf(osec) + H_GAP;
       patternSecs.push(osec as unknown as SceneNode);
     }
-    // 바깥 묶음으로 감싼다. 섹션 안에 섹션을 넣지 못하는 런타임이면 조용히 건너뛴다(배치는 이미 끝났다).
-    if (patternSecs.length) {
-      try { await wrapCategoryInSection("Mobile Pattern", patternSecs, PATTERN_TITLE_SPACE, SECTION_PAD); }
-      catch (e) { console.warn("[installer] Mobile Pattern 묶기 실패(배치는 정상):", e); }
-    }
+    // 영역 제목 — 부품 무리 위와 패턴 무리 위에 각각 한 줄.
+    const patternTop = rowBottom + PATTERN_GAP + PATTERN_TITLE_SPACE;
+    await buildAreaTitle("Core Component", 0, TOP_Y - AREA_TITLE_SPACE);
+    if (patternSecs.length) await buildAreaTitle("Mobile Pattern", 0, patternTop - AREA_TITLE_SPACE);
+    else removeAreaTitle("Mobile Pattern");
   } catch (e) { /* mock/no-page */ }
 
   if (noRunner.length) {
@@ -8067,6 +8089,51 @@ function relocateSection(section: SectionNode, targetX: number, targetY: number)
     if (b && typeof b.x === "number" && typeof d.k.x === "number") { d.k.x += d.x - b.x; d.k.y += d.y - b.y; }
   }
 }
+
+
+// ── 영역 제목 ──────────────────────────────────────────────────────────────
+//  한 화면에 토큰·코어 부품·패턴이 함께 깔려 구분이 어렵다는 지적(river 2026-09-28).
+//  각 영역 시작점 위에 아주 큰 글자로 이름을 적는다. 정본 텍스트 스타일 최대가 32라 스타일을
+//  못 물고, 승인된 예외로 둔다 — registry/governance/figma-font-policy.json → styleBindingExceptions.
+export const AREA_TITLE_SUFFIX = "— Area Title";
+export const AREA_TITLE_SIZE = 200;
+
+/** 같은 이름의 옛 영역 제목을 걷어낸다(멱등). 이 이름은 설치기만 쓴다. */
+export function removeAreaTitle(label: string): void {
+  try {
+    const olds = figma.currentPage.findAll(
+      (n) => String(n.name) === `${label} ${AREA_TITLE_SUFFIX}`,
+    ) as SceneNode[];
+    if (Array.isArray(olds)) for (const n of olds) { try { n.remove(); } catch (e) { /* 이미 지워짐 */ } }
+  } catch (e) { /* mock/no-page */ }
+}
+
+/** 영역 제목 한 줄을 (x, y) 에 놓는다. 색은 Semantic 바인딩(H2), 글꼴은 정본 Pretendard(H3). */
+export async function buildAreaTitle(label: string, x: number, y: number): Promise<TextNode | null> {
+  if (typeof figma.createText !== "function") return null;
+  if (!SPEC_MAPS) return null;
+  removeAreaTitle(label);
+  try { await figma.loadFontAsync({ family: "Pretendard", style: "Bold" }); } catch (e) { return null; }
+  let t: TextNode;
+  try { t = figma.createText(); } catch (e) { return null; }
+  try {
+    t.name = `${label} ${AREA_TITLE_SUFFIX}`;
+    t.fontName = { family: "Pretendard", style: "Bold" };
+    t.characters = label;
+    t.fontSize = AREA_TITLE_SIZE;
+    t.textAutoResize = "WIDTH_AND_HEIGHT";
+    t.x = x; t.y = y;
+    const v = SPEC_MAPS.semanticColor["color/text/title/primary"];
+    t.fills = v ? [boundPaint(v)] : [];
+    if (SPEC_MAPS.semanticLightModeNamed !== false && SPEC_MAPS.semanticLightModeId) {
+      try { setMode(t as unknown as SceneNode, SPEC_MAPS, SPEC_MAPS.semanticLightModeId); } catch (e) { /* 구버전 API */ }
+    }
+  } catch (e) { try { t.remove(); } catch (err) { /* */ } return null; }
+  return t;
+}
+
+/** 영역 제목이 차지하는 세로 자리(글자 높이 + 아래 여백). */
+export const AREA_TITLE_SPACE = Math.round(AREA_TITLE_SIZE * 1.3) + 120;
 
 // ── 섹션 머리말 ────────────────────────────────────────────────────────────
 //  종전에는 Figma 가 붙이는 섹션 이름 글자만 회색으로 떠 있어, 캔버스에서 묶음이 어디서 시작하는지

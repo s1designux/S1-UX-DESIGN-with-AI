@@ -23,7 +23,7 @@
  */
 
 import type { BuildMaps } from "./build-components";
-import { boundPaint, setMode, wrapCategoryInSection, primeSpecMaps } from "./build-components";
+import { boundPaint, setMode, wrapCategoryInSection, primeSpecMaps, buildAreaTitle, AREA_TITLE_SPACE, AREA_TITLE_SUFFIX } from "./build-components";
 import { FOUNDATION_COLOR, FOUNDATION_NUMBER, SEMANTIC_COLOR, SEMANTIC_NUMBER } from "./vars-data";
 import { TEXT_STYLES as TEXT_STYLE_DEFS, TEXT_STYLE_FONT_FAMILY } from "./textstyles-data";
 
@@ -454,6 +454,10 @@ function originLeftOfContent(totalW: number, exclude: SceneNode[]): { x: number;
       for (const n of kids) {
         let id = ""; try { id = String((n as SceneNode).id); } catch (e) { /* mock */ }
         if (id && skip.has(id)) continue;                 // 이번에 만든 판은 기준에서 뺀다
+        // 영역 제목은 **우리가 놓은 표지**다 — 기준에 넣으면 회차마다 판이 왼쪽·위로 밀려난다.
+        let nm = ""; try { nm = String((n as SceneNode).name); } catch (e) { /* mock */ }
+        if (nm.length > AREA_TITLE_SUFFIX.length
+          && nm.slice(nm.length - AREA_TITLE_SUFFIX.length) === AREA_TITLE_SUFFIX) continue;
         const b = (n as SceneNode).absoluteBoundingBox;
         if (!b || typeof b.x !== "number") continue;
         if (b.x < minX) minX = b.x;
@@ -583,27 +587,43 @@ export async function buildTokenSheets(
   const STACK_GAP = 120;      // 한 섹션 안에서 판과 판 사이(세로)
   const SECTION_GAP = 240;    // 같은 줄의 섹션끼리(가로)
   const ROW_GAP = 320;        // 줄과 줄 사이(세로)
-  const COL_GAP = 160;        // 한 섹션 안에서 줄기끼리(가로) — 라이트|다크
+  const COL_GAP = 160;        // 한 섹션 안에서 줄기끼리(가로) — 라이트|다크 (기본값)
+  const colGap: number[] = [];   // 줄(row)마다 실제로 쓸 줄기 간격
   const colW = (col: FrameNode[]) => {
     let w = 0;
     for (const f of col) if (f.width > w) w = f.width;
     return w;
   };
-  const secW = (sec: { cols: FrameNode[][] }) => {
+  const secW = (sec: { cols: FrameNode[][] }, gap: number) => {
     let w = 0;
-    for (let i = 0; i < sec.cols.length; i++) w += colW(sec.cols[i]) + (i ? COL_GAP : 0);
+    for (let i = 0; i < sec.cols.length; i++) w += colW(sec.cols[i]) + (i ? gap : 0);
     return w + PAD * 2;
   };
-  let totalW = 0;
-  for (const row of rows) {
+  for (let i = 0; i < rows.length; i++) colGap.push(COL_GAP);
+  const rowW = (ri: number) => {
     let w = 0;
-    for (let i = 0; i < row.length; i++) w += secW(row[i]) + (i ? SECTION_GAP : 0);
-    if (w > totalW) totalW = w;
+    for (let i = 0; i < rows[ri].length; i++) w += secW(rows[ri][i], colGap[ri]) + (i ? SECTION_GAP : 0);
+    return w;
+  };
+  // 줄마다 폭이 들쭉날쭉하면 판이 어긋나 보인다 — 줄기가 둘 이상인 섹션 하나뿐인 줄(=색)은
+  //   줄기 간격을 늘려 **가장 넓은 줄과 폭을 맞춘다**(river 지시 2026-09-28).
+  let totalW = 0;
+  for (let ri = 0; ri < rows.length; ri++) { const w = rowW(ri); if (w > totalW) totalW = w; }
+  for (let ri = 0; ri < rows.length; ri++) {
+    if (rows[ri].length !== 1 || rows[ri][0].cols.length < 2) continue;
+    const slack = totalW - rowW(ri);
+    if (slack > 0) colGap[ri] += Math.floor(slack / (rows[ri][0].cols.length - 1));
   }
+  totalW = 0;
+  for (let ri = 0; ri < rows.length; ri++) { const w = rowW(ri); if (w > totalW) totalW = w; }
   const origin = originLeftOfContent(totalW, made);
 
+  // 영역 제목 — 토큰 판 묶음 위에 한 줄(섹션 윗변보다 더 위).
+  await buildAreaTitle("Tokens", origin.x - PAD, origin.y - TITLE_SPACE - AREA_TITLE_SPACE);
+
   let rowY = origin.y;
-  for (const row of rows) {
+  for (let ri = 0; ri < rows.length; ri++) {
+    const row = rows[ri];
     let x = origin.x, bottom = rowY;
     for (const sec of row) {
       let cx = x;
@@ -613,12 +633,12 @@ export async function buildTokenSheets(
         let y = rowY;
         for (const f of col) { f.x = cx; f.y = y; y += f.height + STACK_GAP; all.push(f); }
         if (y - STACK_GAP > secBottom) secBottom = y - STACK_GAP;
-        cx += colW(col) + COL_GAP;
+        cx += colW(col) + colGap[ri];
       }
       if (secBottom > bottom) bottom = secBottom;
       await wrapCategoryInSection(sec.title, all, TITLE_SPACE, PAD);
       result.sections.push(sec.title);
-      x += secW(sec) + SECTION_GAP;
+      x += secW(sec, colGap[ri]) + SECTION_GAP;
     }
     // 다음 줄은 이 줄 섹션의 아래변(내용 + 아래 여백) 밑에서, 머리말 자리를 두고 시작한다.
     rowY = bottom + PAD + ROW_GAP + TITLE_SPACE;

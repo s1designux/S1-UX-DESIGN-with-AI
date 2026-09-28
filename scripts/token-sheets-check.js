@@ -28,16 +28,16 @@ const STYLE_BINDING_EXCEPTIONS = Array.isArray(FONT_POLICY.styleBindingException
   ? FONT_POLICY.styleBindingExceptions : [];
 //   조건이 비면 "전부 허용"이 되는 사고를 막는다 — 필수 조건을 강제하고, 모르는 키가 있으면 멈춘다
 //   (🤖 component-verifier 지적 a-4: 키 오타 하나로 H3 검사가 통째로 꺼지는 구조였다).
-const EXCEPTION_KEYS = ["id", "where", "parentNameEndsWith", "family", "fontStyle", "fontSize",
-  "approvedBy", "approvedAt", "quote", "askedQuestion", "why", "limits"];
+const EXCEPTION_KEYS = ["id", "where", "parentNameEndsWith", "nodeNameEndsWith", "family", "fontStyle",
+  "fontSize", "approvedBy", "approvedAt", "quote", "askedQuestion", "why", "limits"];
 for (const ex of STYLE_BINDING_EXCEPTIONS) {
   const unknown = Object.keys(ex).filter((k) => k.charAt(0) !== "$" && EXCEPTION_KEYS.indexOf(k) < 0);
   if (unknown.length) {
     console.error(`[토큰 견본] ❌ 글자 스타일 예외 항목에 모르는 항목이 있습니다: ${unknown.join(", ")} (figma-font-policy.json)`);
     process.exit(1);
   }
-  if (!ex.parentNameEndsWith || !ex.fontSize || !ex.family || !ex.fontStyle) {
-    console.error(`[토큰 견본] ❌ 글자 스타일 예외에는 자리(parentNameEndsWith)·크기·글꼴·굵기가 모두 있어야 합니다: ${ex.id || "(이름 없음)"}`);
+  if ((!ex.parentNameEndsWith && !ex.nodeNameEndsWith) || !ex.fontSize || !ex.family || !ex.fontStyle) {
+    console.error(`[토큰 견본] ❌ 글자 스타일 예외에는 자리(parentNameEndsWith 또는 nodeNameEndsWith)·크기·글꼴·굵기가 모두 있어야 합니다: ${ex.id || "(이름 없음)"}`);
     process.exit(1);
   }
   if (!ex.approvedBy || !ex.quote) {
@@ -45,11 +45,46 @@ for (const ex of STYLE_BINDING_EXCEPTIONS) {
     process.exit(1);
   }
 }
+const AREA_TITLE_SUFFIX = "— Area Title";
+/** 영역 제목의 자리표 — 이름과 좌표를 한 줄로. 두 번 깔기 비교용. */
+function areaTitleMarks(page) {
+  return page.children.filter(isAreaTitle)
+    .map((n) => `${n.name}@${Math.round(n.x)},${Math.round(n.y)}`).sort();
+}
+
+/**
+ * 영역 제목 건전성 — 잔류 조각 셈에서 뺀 대신 여기서 본다.
+ *   ①같은 이름이 둘 이상이면 옛 표지가 겹쳐 남은 것 ②판을 한 장이라도 깔았으면 "Tokens" 표지가 있어야 한다.
+ */
+function checkAreaTitles(label, page, errors) {
+  const titles = page.children.filter(isAreaTitle);
+  const seen = new Map();
+  for (const t of titles) seen.set(String(t.name), (seen.get(String(t.name)) || 0) + 1);
+  for (const [nm, cnt] of seen) {
+    if (cnt > 1) errors.push(`[${label}] 영역 제목 "${nm}" 이 ${cnt}개입니다 — 1개여야 합니다`);
+  }
+  const madeSheets = page.children.some((n) => n.type === "SECTION");
+  const hasTokens = seen.has(`Tokens ${AREA_TITLE_SUFFIX}`);
+  if (madeSheets && !hasTokens) errors.push(`[${label}] 판을 깔았는데 "Tokens" 영역 제목이 없습니다`);
+  if (!madeSheets && hasTokens) errors.push(`[${label}] 판이 없는데 "Tokens" 영역 제목만 남았습니다`);
+}
+
+function isAreaTitle(n) {
+  const nm = n && n.name ? String(n.name) : "";
+  return nm.slice(-AREA_TITLE_SUFFIX.length) === AREA_TITLE_SUFFIX;
+}
 function styleBindingExcepted(t) {
   const parentName = t && t.parent ? String(t.parent.name || "") : "";
+  const ownName = t && t.name ? String(t.name) : "";
   return STYLE_BINDING_EXCEPTIONS.some((ex) => {
-    const tail = String(ex.parentNameEndsWith);
-    if (parentName.slice(-tail.length) !== tail) return false;
+    if (ex.parentNameEndsWith) {
+      const tail = String(ex.parentNameEndsWith);
+      if (parentName.slice(-tail.length) !== tail) return false;
+    }
+    if (ex.nodeNameEndsWith) {
+      const tail = String(ex.nodeNameEndsWith);
+      if (ownName.slice(-tail.length) !== tail) return false;
+    }
     if (t.fontSize !== ex.fontSize) return false;
     if (!t.fontName || t.fontName.family !== ex.family) return false;
     if (t.fontName.style !== ex.fontStyle) return false;
@@ -224,7 +259,13 @@ async function main() {
   // ── 2) raw 색 0건 (H2) ──
   // 검사 대상 = 견본 시트 섹션과 그 안의 모든 노드(모사해 둔 부품 섹션은 제외).
   const sheetSections = page.children.filter((n) => n.type === "SECTION" && n.name.indexOf("Tokens · ") === 0);
-  const all = sheetSections.concat(...sheetSections.map((s0) => s0.findAll(() => true)));
+  // 영역 제목은 섹션 **밖**(페이지 직속)에 놓이는 설치기 산출물이다. 섹션 안에 없다는 이유로
+  //   H2(색은 Variable 바인딩)·H3(글꼴·스타일) 검사에서 빠지면, 승인된 예외 말고는 아무도 안 보게 된다
+  //   (🤖 component-verifier 지적: 예외 항목을 통째로 지워도 검사기가 초록이었다).
+  const areaTitles = page.children.filter(isAreaTitle);
+  const all = sheetSections
+    .concat(...sheetSections.map((s0) => s0.findAll(() => true)))
+    .concat(areaTitles);
   let rawPaint = 0;
   for (const n of all) {
     for (const key of ["fills", "strokes"]) {
@@ -342,8 +383,9 @@ async function main() {
     try { r2 = await sheets.buildTokenSheets(m2); } catch (e) { threw = e.message; }
     if (threw) { errors.push(`[${label}] 예외로 멈춤: ${threw}`); return; }
     const secs = p2.children.filter((n) => n.type === "SECTION").length;
-    const loose = p2.children.filter((n) => n.type !== "SECTION").length;
+    const loose = p2.children.filter((n) => n.type !== "SECTION" && !isAreaTitle(n)).length;
     if (loose) errors.push(`[${label}] 섹션 밖 낱개 노드 ${loose}개가 페이지에 남음`);
+    checkAreaTitles(label, p2, errors);
     expect(r2, secs, p2);
   };
   await scenario("Semantic 색 없음", { semanticColor: {} }, (r2, secs) => {
@@ -363,9 +405,17 @@ async function main() {
     const p3 = mockPage();
     await sheets.buildTokenSheets(maps);
     const first = p3.children.filter((n) => n.type === "SECTION").map((n) => n.absoluteBoundingBox.x);
+    const firstTitles = areaTitleMarks(p3);
     await sheets.buildTokenSheets(maps);
     const secs = p3.children.filter((n) => n.type === "SECTION");
-    const loose = p3.children.filter((n) => n.type !== "SECTION").length;
+    // 영역 제목(… — Area Title)은 설치기가 일부러 페이지에 놓는 표지다 — 잔류 조각이 아니다.
+    //   대신 **이름마다 1개 · 두 번 깔아도 같은 자리** 를 따로 본다(아래 두 줄).
+    const loose = p3.children.filter((n) => n.type !== "SECTION" && !isAreaTitle(n)).length;
+    checkAreaTitles("두 번 깔기", p3, errors);
+    const secondTitles = areaTitleMarks(p3);
+    if (firstTitles.join("|") !== secondTitles.join("|")) {
+      errors.push(`[두 번 깔기] 영역 제목 자리가 달라집니다 (${firstTitles.join(",")} → ${secondTitles.join(",")})`);
+    }
     if (secs.length !== 3) errors.push(`[두 번 깔기] 섹션 ${secs.length}장 — 옛 판이 겹쳐 쌓였습니다`);
     if (loose) errors.push(`[두 번 깔기] 섹션 밖 낱개 노드 ${loose}개 잔류`);
     const second = secs.map((n) => n.absoluteBoundingBox.x);

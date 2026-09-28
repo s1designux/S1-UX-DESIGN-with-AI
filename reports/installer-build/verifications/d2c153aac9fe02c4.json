@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:d2c153aac9fe02c44f9ff45664791bb21a952a57a87a99e0cf66a853983fdcf5",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-28T05:57:07.671Z",
+  "notes": "설치기 캔버스 배치 3건(토큰 색 폭 맞춤 · 영역 제목 200px · Mobile Pattern 해제) 최종 델타 재검증. 죽은 코드 닫힘 확인 — checkAreaTitles(label, page, errors) 로 errors 를 인자로 받고 호출 두 곳이 넘긴다. 내가 세 분기를 각각 재현: ①표지 중복(removeAreaTitle 제거) ②판은 깔렸는데 Tokens 표지 없음(표지 호출 제거) ③판 없는데 표지만 남음(이른 반환 앞으로 이동) — 전부 ReferenceError 0건에 정상 메시지로 보고되고 뒤 검사도 끊기지 않는다. 영역 제목 감시가 이제 4겹: §2 H2(칠을 raw 로 바꾸면 '토큰에 안 걸린 색 1건'), §3 H3(예외 정본을 크기/이름/굵기 중 하나만 틀거나 항목을 삭제하면 'H3 위반 1건' — 4종 확인), checkAreaTitles(개수·존재), areaTitleMarks(두 번 깔기 자리 동일 — 제외를 없애 드리프트를 되살리면 실제로 잡힘). 지문은 설계대로 표지를 제외(부품·토큰의 자). 폭 맞춤 산수 3316 일치, 다크 없음·slack<=0·빈 줄 경계 경로 전부 안전. 영역 제목 멱등성 5회 동일 좌표, Mobile Pattern 해제가 자식·좌표 보존(모의 실행). installer-fingerprint.js 의 날 NUL 제거로 파일이 다시 UTF-8 텍스트. 기계검사 7종 exit 0. 기록으로 남기는 절충 1건: 영역 제목에 lineHeight 를 안 박음(박으면 PROP_CLASS 에 새 속성으로 잡혀 지문이 흔들린다) — 기본 줄높이와 코드의 x1.3 전제가 다를 수 있으나 여유 120px 안이라 계산상 안전, 머리띠와는 불일치. 검문소 상태 HOLD — river 결정 3건 대기(Foundation gray/700 직접 참조 · opacity 0.75 · 규칙 예외를 Gate 34 추적 대상에 넣을지, 예외 2개로 증가). Figma 실제 렌더 미검증(200px 실제 줄높이·세 표지 한 줄 정렬·폭 맞춤 육안)."
+}
