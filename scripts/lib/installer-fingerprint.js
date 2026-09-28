@@ -94,12 +94,14 @@ function flattenTokens(varsMod, textMod) {
 //   지문은 "Figma 에 표출되는 **부품·토큰** 정보"를 재는 자라, 표지는 넣지 않는다.
 //   (넣으면 표지 문구 하나 고칠 때마다 업데이트 툴팁이 설명할 말이 없는 변경을 보고 멈춘다.)
 const CANVAS_LABEL_SUFFIX = '\u2014 Area Title';
+const CANVAS_RULE_SUFFIX = '\u2014 Area Rule';
 
 function specRows(nodes) {
   const rows = new Set();
   for (const n of nodes) {
     const nm = String((n.props && n.props.name) || '');
     if (nm.slice(-CANVAS_LABEL_SUFFIX.length) === CANVAS_LABEL_SUFFIX) continue;
+    if (nm.slice(-CANVAS_RULE_SUFFIX.length) === CANVAS_RULE_SUFFIX) continue;
     const entries = Object.entries(n.props)
       .filter(([p]) => PROP_CLASS[p] === 'VISUAL' || PROP_CLASS[p] === 'LAYOUT')
       .sort(([a], [b]) => (a < b ? -1 : 1));

@@ -46,6 +46,7 @@ for (const ex of STYLE_BINDING_EXCEPTIONS) {
   }
 }
 const AREA_TITLE_SUFFIX = "— Area Title";
+const AREA_RULE_SUFFIX = "— Area Rule";
 /** 영역 제목의 자리표 — 이름과 좌표를 한 줄로. 두 번 깔기 비교용. */
 function areaTitleMarks(page) {
   return page.children.filter(isAreaTitle)
@@ -69,9 +70,11 @@ function checkAreaTitles(label, page, errors) {
   if (!madeSheets && hasTokens) errors.push(`[${label}] 판이 없는데 "Tokens" 영역 제목만 남았습니다`);
 }
 
+/** 영역 표지 = 제목 글자와 그 옆 굵은 줄. 둘 다 설치기가 페이지에 일부러 놓는 것이다. */
 function isAreaTitle(n) {
   const nm = n && n.name ? String(n.name) : "";
-  return nm.slice(-AREA_TITLE_SUFFIX.length) === AREA_TITLE_SUFFIX;
+  return nm.slice(-AREA_TITLE_SUFFIX.length) === AREA_TITLE_SUFFIX
+    || nm.slice(-AREA_RULE_SUFFIX.length) === AREA_RULE_SUFFIX;
 }
 function styleBindingExcepted(t) {
   const parentName = t && t.parent ? String(t.parent.name || "") : "";

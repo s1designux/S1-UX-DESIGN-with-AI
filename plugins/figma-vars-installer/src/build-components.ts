@@ -7958,8 +7958,10 @@ export async function buildAllComponents(
     }
     // 영역 제목 — 부품 무리 위와 패턴 무리 위에 각각 한 줄.
     const patternTop = rowBottom + PATTERN_GAP + PATTERN_TITLE_SPACE;
-    await buildAreaTitle("Core Component", 0, TOP_Y - AREA_TITLE_SPACE);
-    if (patternSecs.length) await buildAreaTitle("Mobile Pattern", 0, patternTop - AREA_TITLE_SPACE);
+    const rowW = curX > 0 ? curX - H_GAP : 0;          // 무리 전체 폭(마지막 간격 제외)
+    const patternW = patternX > 0 ? patternX - H_GAP : 0;
+    await buildAreaTitle("Core Component", 0, TOP_Y - AREA_TITLE_SPACE, rowW);
+    if (patternSecs.length) await buildAreaTitle("Mobile Pattern", 0, patternTop - AREA_TITLE_SPACE, patternW);
     else removeAreaTitle("Mobile Pattern");
   } catch (e) { /* mock/no-page */ }
 
@@ -8096,20 +8098,26 @@ function relocateSection(section: SectionNode, targetX: number, targetY: number)
 //  각 영역 시작점 위에 아주 큰 글자로 이름을 적는다. 정본 텍스트 스타일 최대가 32라 스타일을
 //  못 물고, 승인된 예외로 둔다 — registry/governance/figma-font-policy.json → styleBindingExceptions.
 export const AREA_TITLE_SUFFIX = "— Area Title";
+export const AREA_RULE_SUFFIX = "— Area Rule";   // 제목 옆 굵은 줄(한 묶음으로 보이게)
 export const AREA_TITLE_SIZE = 200;
+export const AREA_RULE_H = 10;                   // 줄 두께(river 지시 2026-09-28)
+export const AREA_RULE_GAP = 40;                 // 제목 글자와 줄 사이
 
-/** 같은 이름의 옛 영역 제목을 걷어낸다(멱등). 이 이름은 설치기만 쓴다. */
+/** 같은 이름의 옛 영역 제목과 그 줄을 걷어낸다(멱등). 이 이름은 설치기만 쓴다. */
 export function removeAreaTitle(label: string): void {
   try {
     const olds = figma.currentPage.findAll(
-      (n) => String(n.name) === `${label} ${AREA_TITLE_SUFFIX}`,
+      (n) => String(n.name) === `${label} ${AREA_TITLE_SUFFIX}`
+        || String(n.name) === `${label} ${AREA_RULE_SUFFIX}`,
     ) as SceneNode[];
     if (Array.isArray(olds)) for (const n of olds) { try { n.remove(); } catch (e) { /* 이미 지워짐 */ } }
   } catch (e) { /* mock/no-page */ }
 }
 
 /** 영역 제목 한 줄을 (x, y) 에 놓는다. 색은 Semantic 바인딩(H2), 글꼴은 정본 Pretendard(H3). */
-export async function buildAreaTitle(label: string, x: number, y: number): Promise<TextNode | null> {
+export async function buildAreaTitle(
+  label: string, x: number, y: number, ruleW?: number,
+): Promise<TextNode | null> {
   if (typeof figma.createText !== "function") return null;
   if (!SPEC_MAPS) return null;
   removeAreaTitle(label);
@@ -8129,11 +8137,36 @@ export async function buildAreaTitle(label: string, x: number, y: number): Promi
       try { setMode(t as unknown as SceneNode, SPEC_MAPS, SPEC_MAPS.semanticLightModeId); } catch (e) { /* 구버전 API */ }
     }
   } catch (e) { try { t.remove(); } catch (err) { /* */ } return null; }
+
+  // 제목 옆 굵은 줄 — 제목부터 영역 오른쪽 끝까지 이어 한 묶음으로 보이게 한다(river 지시 2026-09-28).
+  if (ruleW && typeof figma.createRectangle === "function") {
+    let tw = 0, th = AREA_TITLE_SIZE;
+    try { tw = typeof t.width === "number" ? t.width : 0; } catch (e) { /* mock */ }
+    try { th = typeof t.height === "number" && t.height > 0 ? t.height : AREA_TITLE_SIZE; } catch (e) { /* */ }
+    const startX = x + tw + AREA_RULE_GAP;
+    const w = (x + ruleW) - startX;
+    if (w > 0) {
+      try {
+        const r = figma.createRectangle();
+        r.name = `${label} ${AREA_RULE_SUFFIX}`;
+        r.resize(w, AREA_RULE_H);
+        r.x = startX;
+        r.y = Math.round(y + (th - AREA_RULE_H) / 2);
+        const v = SPEC_MAPS.semanticColor["color/text/title/primary"];
+        r.fills = v ? [boundPaint(v)] : [];
+        if (SPEC_MAPS.semanticLightModeNamed !== false && SPEC_MAPS.semanticLightModeId) {
+          try { setMode(r as unknown as SceneNode, SPEC_MAPS, SPEC_MAPS.semanticLightModeId); } catch (e) { /* 구버전 API */ }
+        }
+      } catch (e) { /* 줄을 못 그려도 제목은 남긴다 */ }
+    }
+  }
   return t;
 }
 
 /** 영역 제목이 차지하는 세로 자리(글자 높이 + 아래 여백). */
-export const AREA_TITLE_SPACE = Math.round(AREA_TITLE_SIZE * 1.3) + 120;
+//  하위 묶음의 이름표(Figma 가 섹션 위에 붙이는 칩)와 겹치지 않게 넉넉히 띄운다
+//  (river 지적 2026-09-28: "하위섹션 타이틀상자 때문에 상위 그룹명이 잘 안 보인다").
+export const AREA_TITLE_SPACE = Math.round(AREA_TITLE_SIZE * 1.3) + 280;
 
 // ── 섹션 머리말 ────────────────────────────────────────────────────────────
 //  종전에는 Figma 가 붙이는 섹션 이름 글자만 회색으로 떠 있어, 캔버스에서 묶음이 어디서 시작하는지

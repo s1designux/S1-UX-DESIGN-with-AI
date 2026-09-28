@@ -23,7 +23,7 @@
  */
 
 import type { BuildMaps } from "./build-components";
-import { boundPaint, setMode, wrapCategoryInSection, primeSpecMaps, buildAreaTitle, AREA_TITLE_SPACE, AREA_TITLE_SUFFIX } from "./build-components";
+import { boundPaint, setMode, wrapCategoryInSection, primeSpecMaps, buildAreaTitle, AREA_TITLE_SPACE, AREA_TITLE_SUFFIX, AREA_RULE_SUFFIX } from "./build-components";
 import { FOUNDATION_COLOR, FOUNDATION_NUMBER, SEMANTIC_COLOR, SEMANTIC_NUMBER } from "./vars-data";
 import { TEXT_STYLES as TEXT_STYLE_DEFS, TEXT_STYLE_FONT_FAMILY } from "./textstyles-data";
 
@@ -458,6 +458,8 @@ function originLeftOfContent(totalW: number, exclude: SceneNode[]): { x: number;
         let nm = ""; try { nm = String((n as SceneNode).name); } catch (e) { /* mock */ }
         if (nm.length > AREA_TITLE_SUFFIX.length
           && nm.slice(nm.length - AREA_TITLE_SUFFIX.length) === AREA_TITLE_SUFFIX) continue;
+        if (nm.length > AREA_RULE_SUFFIX.length
+          && nm.slice(nm.length - AREA_RULE_SUFFIX.length) === AREA_RULE_SUFFIX) continue;
         const b = (n as SceneNode).absoluteBoundingBox;
         if (!b || typeof b.x !== "number") continue;
         if (b.x < minX) minX = b.x;
@@ -619,7 +621,7 @@ export async function buildTokenSheets(
   const origin = originLeftOfContent(totalW, made);
 
   // 영역 제목 — 토큰 판 묶음 위에 한 줄(섹션 윗변보다 더 위).
-  await buildAreaTitle("Tokens", origin.x - PAD, origin.y - TITLE_SPACE - AREA_TITLE_SPACE);
+  await buildAreaTitle("Tokens", origin.x - PAD, origin.y - TITLE_SPACE - AREA_TITLE_SPACE, totalW);
 
   let rowY = origin.y;
   for (let ri = 0; ri < rows.length; ri++) {
