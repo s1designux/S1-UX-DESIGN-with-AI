@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>승격 후보 4종 — 검수</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="../../ui-library/dist/assets/css/tokens.css?v=202609291222">
-<link rel="stylesheet" href="../../ui-library/dist/assets/css/typography.css?v=202609291222">
-<link rel="stylesheet" href="../../ui-library/dist/s1-ui.css?v=202609291222">
-<link rel="stylesheet" href="../../assets/css/restyle-test.css?v=202609291222">
-<link rel="stylesheet" href="../../assets/css/restyle-candidates.css?v=202609291222">
+<link rel="stylesheet" href="../../ui-library/dist/assets/css/tokens.css?v=20260929123313">
+<link rel="stylesheet" href="../../ui-library/dist/assets/css/typography.css?v=20260929123313">
+<link rel="stylesheet" href="../../ui-library/dist/s1-ui.css?v=20260929123313">
+<link rel="stylesheet" href="../../assets/css/restyle-test.css?v=20260929123313">
+<link rel="stylesheet" href="../../assets/css/restyle-candidates.css?v=20260929123313">
 <style>
   /* 이 검수 화면 자체의 틀 — 부품이 아니다 */
   .sheet { max-width: 1120px; margin: 0 auto; padding: var(--spacing-32) var(--spacing-24) var(--spacing-80); }
@@ -59,51 +59,43 @@
   <!-- ══ 1 ══ -->
   <div class="blk">
     <h2 class="typo-title-20b">1 · 뱃지 (Data Tag)</h2>
-    <p class="sub typo-body-12r">모양 2종(둥근/각진) × 채움/선 × 5색 — 원본 구성 그대로</p>
+    <p class="sub typo-body-12r">뜻이 정해진 두 색만 씁니다 — 파랑은 승인·확인, 빨강은 주의·에러</p>
 
     <div class="panel" style="display:grid;gap:var(--spacing-20)">
       <div class="grid-label">
         <span class="k typo-body-12m">둥근 · 채움</span>
         <span class="flow">
-          <span data-s1-cand="data-tag" data-shape="chips" data-solid="on" data-tone="blue"      class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="chips" data-solid="on" data-tone="red"       class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="chips" data-solid="on" data-tone="turquoise" class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="chips" data-solid="on" data-tone="orange"    class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="chips" data-solid="on" data-tone="seagreen"  class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="chips" data-solid="on" data-tone="neutral"   class="typo-body-12m">항목</span>
+          <span data-s1-cand="data-tag" data-shape="chips" data-solid="on" data-tone="blue" class="typo-body-12m">승인</span>
+          <span data-s1-cand="data-tag" data-shape="chips" data-solid="on" data-tone="blue" class="typo-body-12m">확인</span>
+          <span data-s1-cand="data-tag" data-shape="chips" data-solid="on" data-tone="red"  class="typo-body-12m">주의</span>
+          <span data-s1-cand="data-tag" data-shape="chips" data-solid="on" data-tone="red"  class="typo-body-12m">에러</span>
         </span>
       </div>
       <div class="grid-label">
         <span class="k typo-body-12m">각진 · 채움</span>
         <span class="flow">
-          <span data-s1-cand="data-tag" data-shape="square" data-solid="on" data-tone="blue"      class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="square" data-solid="on" data-tone="red"       class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="square" data-solid="on" data-tone="turquoise" class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="square" data-solid="on" data-tone="orange"    class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="square" data-solid="on" data-tone="seagreen"  class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="square" data-solid="on" data-tone="neutral"   class="typo-body-12m">항목</span>
+          <span data-s1-cand="data-tag" data-shape="square" data-solid="on" data-tone="blue" class="typo-body-12m">승인</span>
+          <span data-s1-cand="data-tag" data-shape="square" data-solid="on" data-tone="blue" class="typo-body-12m">확인</span>
+          <span data-s1-cand="data-tag" data-shape="square" data-solid="on" data-tone="red"  class="typo-body-12m">주의</span>
+          <span data-s1-cand="data-tag" data-shape="square" data-solid="on" data-tone="red"  class="typo-body-12m">에러</span>
         </span>
       </div>
       <div class="grid-label">
         <span class="k typo-body-12m">둥근 · 선</span>
         <span class="flow">
-          <span data-s1-cand="data-tag" data-shape="chips" data-solid="off" data-tone="blue"      class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="chips" data-solid="off" data-tone="red"       class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="chips" data-solid="off" data-tone="turquoise" class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="chips" data-solid="off" data-tone="orange"    class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="chips" data-solid="off" data-tone="seagreen"  class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="chips" data-solid="off" data-tone="disabled"  class="typo-body-12m">항목</span>
+          <span data-s1-cand="data-tag" data-shape="chips" data-solid="off" data-tone="blue" class="typo-body-12m">승인</span>
+          <span data-s1-cand="data-tag" data-shape="chips" data-solid="off" data-tone="blue" class="typo-body-12m">확인</span>
+          <span data-s1-cand="data-tag" data-shape="chips" data-solid="off" data-tone="red"  class="typo-body-12m">주의</span>
+          <span data-s1-cand="data-tag" data-shape="chips" data-solid="off" data-tone="red"  class="typo-body-12m">에러</span>
         </span>
       </div>
       <div class="grid-label">
         <span class="k typo-body-12m">각진 · 선</span>
         <span class="flow">
-          <span data-s1-cand="data-tag" data-shape="square" data-solid="off" data-tone="blue"      class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="square" data-solid="off" data-tone="red"       class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="square" data-solid="off" data-tone="turquoise" class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="square" data-solid="off" data-tone="orange"    class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="square" data-solid="off" data-tone="seagreen"  class="typo-body-12m">항목</span>
-          <span data-s1-cand="data-tag" data-shape="square" data-solid="off" data-tone="disabled"  class="typo-body-12m">항목</span>
+          <span data-s1-cand="data-tag" data-shape="square" data-solid="off" data-tone="blue" class="typo-body-12m">승인</span>
+          <span data-s1-cand="data-tag" data-shape="square" data-solid="off" data-tone="blue" class="typo-body-12m">확인</span>
+          <span data-s1-cand="data-tag" data-shape="square" data-solid="off" data-tone="red"  class="typo-body-12m">주의</span>
+          <span data-s1-cand="data-tag" data-shape="square" data-solid="off" data-tone="red"  class="typo-body-12m">에러</span>
         </span>
       </div>
       <div class="grid-label">
@@ -127,11 +119,6 @@
                   <td data-s1-part="cell">이○진</td>
                   <td data-s1-part="cell" data-align="center"><span data-s1-cand="data-tag" data-shape="square" data-solid="on" data-tone="red" class="typo-body-12m">미확인</span></td>
                 </tr>
-                <tr data-s1-part="row">
-                  <td data-s1-part="cell">2026.01.23</td>
-                  <td data-s1-part="cell">배○호</td>
-                  <td data-s1-part="cell" data-align="center"><span data-s1-cand="data-tag" data-shape="square" data-solid="on" data-tone="seagreen" class="typo-body-12m">완료</span></td>
-                </tr>
               </tbody>
             </table>
           </div>
@@ -139,10 +126,8 @@
       </div>
 
       <div class="note typo-body-12r">
-        <span class="t">색 이름이 아직 없어서, 색을 직접 가져다 썼습니다</span>
-        채움 배경과 청록·주황·초록은 가이드에 「어디에 쓰는 색」이라는 이름이 아직 없습니다.
-        일단 팔레트 색을 그대로 붙여 만들어 뒀고, 다크는 같은 계열의 어두운 단계로 짝지었습니다.
-        이름이 정해지면 이 부분만 그 이름으로 바꾸면 됩니다.
+        <span class="t">채움 배경은 아직 팔레트 색을 직접 가져다 쓴 상태입니다</span>
+        가이드에 「강조색 배경」이라는 쓰임 이름이 아직 없어서입니다. 이름이 정해지면 이 부분만 그 이름으로 바꾸면 됩니다.
       </div>
     </div>
   </div>
@@ -168,14 +153,6 @@
       <div class="grid-label">
         <span class="k typo-body-12m">강한선 · 굵게</span>
         <hr data-s1-cand="divider" data-axis="x" data-tone="strong" data-weight="strong">
-      </div>
-      <div class="grid-label">
-        <span class="k typo-body-12m">표 위·아래</span>
-        <span style="width:100%">
-          <hr data-s1-cand="divider" data-axis="x" data-tone="strong">
-          <span style="display:block;padding:var(--spacing-12) 0" class="typo-body-14m">표 내용이 이 사이에 들어갑니다</span>
-          <hr data-s1-cand="divider" data-axis="x" data-tone="strong">
-        </span>
       </div>
       <div class="grid-label">
         <span class="k typo-body-12m">세로</span>
@@ -210,9 +187,9 @@
         <nav data-s1-cand="side-nav" aria-label="사이드바 메뉴 예시 · 라인형 아이콘" style="border-right:0;min-width:0">
           <div data-s1-part="group" class="typo-body-10m">GUIDE · 라인형 아이콘</div>
           <ul data-s1-part="items">
-            <li><a data-s1-part="item" class="typo-body-14m" href="#" aria-current="page"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_홈_line.png')" aria-hidden="true"></span>Overview</a></li>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_목록리스트형_line.png')" aria-hidden="true"></span>Foundation Tokens</a></li>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_사용환경설정_line.png')" aria-hidden="true"></span>Semantic Tokens</a></li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#" aria-current="page"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_홈_line.png');--s1-icon-solid:url('../../assets/icons/ic_홈_solid.png')" aria-hidden="true"></span>Overview</a></li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_목록리스트형_line.png');--s1-icon-solid:url('../../assets/icons/ic_목록리스트형_solid.png')" aria-hidden="true"></span>Foundation Tokens</a></li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_사용환경설정_line.png');--s1-icon-solid:url('../../assets/icons/ic_사용환경설정_solid.png')" aria-hidden="true"></span>Semantic Tokens</a></li>
           </ul>
 
           <button type="button" data-s1-part="group" class="typo-body-10m" aria-expanded="true" aria-controls="sn-source">
@@ -220,9 +197,9 @@
             <span data-s1-part="group-icon" aria-hidden="true"></span>
           </button>
           <ul data-s1-part="items" id="sn-source">
-            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_메뉴_line.png')" aria-hidden="true"></span>PC Components</a></li>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_폴더_line.png')" aria-hidden="true"></span>Mobile Components</a></li>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_날짜근태달력_line.png')" aria-hidden="true"></span>Patterns</a></li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_메뉴_line.png');--s1-icon-solid:url('../../assets/icons/ic_메뉴_solid.png')" aria-hidden="true"></span>PC Components</a></li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_폴더_line.png');--s1-icon-solid:url('../../assets/icons/ic_폴더_solid.png')" aria-hidden="true"></span>Mobile Components</a></li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_날짜근태달력_line.png');--s1-icon-solid:url('../../assets/icons/ic_날짜근태달력_solid.png')" aria-hidden="true"></span>Patterns</a></li>
           </ul>
 
           <button type="button" data-s1-part="group" class="typo-body-10m" aria-expanded="false" aria-controls="sn-system">
@@ -230,9 +207,9 @@
             <span data-s1-part="group-icon" aria-hidden="true"></span>
           </button>
           <ul data-s1-part="items" id="sn-system" hidden>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_새로고침_line.png')" aria-hidden="true"></span>파이프라인 상태</a></li>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_SW최신업데이트_line.png')" aria-hidden="true"></span>업데이트 관리</a></li>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#" aria-disabled="true"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_잠김_line.png')" aria-hidden="true"></span>준비 중</a></li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_새로고침_line.png');--s1-icon-solid:url('../../assets/icons/ic_새로고침_solid.png')" aria-hidden="true"></span>파이프라인 상태</a></li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_SW최신업데이트_line.png');--s1-icon-solid:url('../../assets/icons/ic_SW최신업데이트_solid.png')" aria-hidden="true"></span>업데이트 관리</a></li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#" aria-disabled="true"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_잠김_line.png');--s1-icon-solid:url('../../assets/icons/ic_잠김_solid.png')" aria-hidden="true"></span>준비 중</a></li>
           </ul>
         </nav>
       </div>
@@ -273,15 +250,15 @@
       <div class="typo-title-14b" style="color:var(--color-text-title-primary);margin-bottom:var(--spacing-6)">아이콘은 아이콘 가이드에서만 가져옵니다</div>
       <div class="typo-body-12r" style="color:var(--color-text-body-tertiary);margin-bottom:var(--spacing-16)">가이드에 있는 819개 중 아무것이나 라인형·솔리드형으로 쓸 수 있습니다. 색은 그림이 아니라 메뉴 상태가 정합니다.</div>
       <div class="flow" style="gap:var(--spacing-16)">
-        <span class="icon-cell"><span class="cand-icon" style="--s1-icon:url('../../assets/icons/ic_홈_line.png')" aria-hidden="true"></span><span class="typo-body-10r">홈 · 라인</span></span>
+        <span class="icon-cell"><span class="cand-icon" style="--s1-icon:url('../../assets/icons/ic_홈_line.png');--s1-icon-solid:url('../../assets/icons/ic_홈_solid.png')" aria-hidden="true"></span><span class="typo-body-10r">홈 · 라인</span></span>
         <span class="icon-cell"><span class="cand-icon" style="--s1-icon:url('../../assets/icons/ic_홈_solid.png')" aria-hidden="true"></span><span class="typo-body-10r">홈 · 솔리드</span></span>
-        <span class="icon-cell"><span class="cand-icon" style="--s1-icon:url('../../assets/icons/ic_목록리스트형_line.png')" aria-hidden="true"></span><span class="typo-body-10r">목록 · 라인</span></span>
+        <span class="icon-cell"><span class="cand-icon" style="--s1-icon:url('../../assets/icons/ic_목록리스트형_line.png');--s1-icon-solid:url('../../assets/icons/ic_목록리스트형_solid.png')" aria-hidden="true"></span><span class="typo-body-10r">목록 · 라인</span></span>
         <span class="icon-cell"><span class="cand-icon" style="--s1-icon:url('../../assets/icons/ic_목록리스트형_solid.png')" aria-hidden="true"></span><span class="typo-body-10r">목록 · 솔리드</span></span>
-        <span class="icon-cell"><span class="cand-icon" style="--s1-icon:url('../../assets/icons/ic_사용환경설정_line.png')" aria-hidden="true"></span><span class="typo-body-10r">설정 · 라인</span></span>
+        <span class="icon-cell"><span class="cand-icon" style="--s1-icon:url('../../assets/icons/ic_사용환경설정_line.png');--s1-icon-solid:url('../../assets/icons/ic_사용환경설정_solid.png')" aria-hidden="true"></span><span class="typo-body-10r">설정 · 라인</span></span>
         <span class="icon-cell"><span class="cand-icon" style="--s1-icon:url('../../assets/icons/ic_사용환경설정_solid.png')" aria-hidden="true"></span><span class="typo-body-10r">설정 · 솔리드</span></span>
-        <span class="icon-cell"><span class="cand-icon" style="--s1-icon:url('../../assets/icons/ic_데이터분석_line.png')" aria-hidden="true"></span><span class="typo-body-10r">분석 · 라인</span></span>
+        <span class="icon-cell"><span class="cand-icon" style="--s1-icon:url('../../assets/icons/ic_데이터분석_line.png');--s1-icon-solid:url('../../assets/icons/ic_데이터분석_solid.png')" aria-hidden="true"></span><span class="typo-body-10r">분석 · 라인</span></span>
         <span class="icon-cell"><span class="cand-icon" style="--s1-icon:url('../../assets/icons/ic_데이터분석_solid.png')" aria-hidden="true"></span><span class="typo-body-10r">분석 · 솔리드</span></span>
-        <span class="icon-cell"><span class="cand-icon" style="--s1-icon:url('../../assets/icons/ic_잠김_line.png')" aria-hidden="true"></span><span class="typo-body-10r">잠김 · 라인</span></span>
+        <span class="icon-cell"><span class="cand-icon" style="--s1-icon:url('../../assets/icons/ic_잠김_line.png');--s1-icon-solid:url('../../assets/icons/ic_잠김_solid.png')" aria-hidden="true"></span><span class="typo-body-10r">잠김 · 라인</span></span>
         <span class="icon-cell"><span class="cand-icon" style="--s1-icon:url('../../assets/icons/ic_잠김_solid.png')" aria-hidden="true"></span><span class="typo-body-10r">잠김 · 솔리드</span></span>
       </div>
     </div>
@@ -372,7 +349,7 @@
   </div>
 </div>
 
-<script src="../../ui-library/dist/s1-ui.js?v=202609291222"></script>
+<script src="../../ui-library/dist/s1-ui.js?v=20260929123313"></script>
 <script>
 (function () {
   var themeRoot = document.getElementById('theme-switch');

@@ -22,12 +22,12 @@
    ══════════════════════════════════════════════════ */
 
 /* ══ 1. Data Tag (뱃지) ═══════════════════════════════
-   축: data-shape=chips|square · data-solid=on|off · data-tone=<색>
-   ⚠️ 채움형(data-solid="on")과 청록·주황·초록은 **Foundation 팔레트를 직접** 쓴다.
-      「강조색 배경」·그 세 색의 semantic(쓰임) 이름이 정본에 아직 없어서다.
-      river 지시로 "일단" 만든 상태 — 쓰임 이름이 생기면 아래 값만 그 이름으로 바꾼다.
-      다크는 각 계열의 dark 단계로 짝지었다(파랑 blue-dark-300 · 청록 skyblue-dark-300 ·
-      빨강/주황/초록 -dark-350) — 기존 semantic 이 쓰는 짝을 그대로 따른 것이다.
+   축: data-shape=chips|square · data-solid=on|off · data-tone=blue|red
+   뜻이 정해진 두 가지만 쓴다(river 2026-09-29):
+     · blue = 승인 / 확인      · red = 주의 / 에러
+   원본에 있던 청록·주황·초록은 쓰임이 정해지지 않아 넣지 않는다.
+   ⚠️ 채움형 배경은 정본에 「강조색 배경」 semantic 이 없어 Foundation 팔레트를 직접 쓴다.
+      쓰임 이름이 생기면 아래 값만 그 이름으로 바꾼다.
    ══════════════════════════════════════════════════ */
 [data-s1-cand="data-tag"] {
   --tag-color: var(--color-line-default);
@@ -47,31 +47,17 @@
 [data-s1-cand="data-tag"][data-shape="square"] { border-radius: var(--radius-4); }
 
 /* 색 — Light */
-[data-s1-cand="data-tag"][data-tone="blue"]      { --tag-color: var(--color-blue-400);    --tag-label: var(--color-blue-400); }
-[data-s1-cand="data-tag"][data-tone="red"]       { --tag-color: var(--color-red-300);     --tag-label: var(--color-red-300); }
-[data-s1-cand="data-tag"][data-tone="turquoise"] { --tag-color: var(--color-skyblue-400); --tag-label: var(--color-skyblue-400); }
-[data-s1-cand="data-tag"][data-tone="orange"]    { --tag-color: var(--color-orange-300);  --tag-label: var(--color-orange-300); }
-[data-s1-cand="data-tag"][data-tone="seagreen"]  { --tag-color: var(--color-green-300);   --tag-label: var(--color-green-300); }
-[data-s1-cand="data-tag"][data-tone="neutral"]   { --tag-color: var(--color-line-default); --tag-label: var(--color-text-body-tertiary); }
-[data-s1-cand="data-tag"][data-tone="disabled"]  { --tag-color: var(--color-line-default); --tag-label: var(--color-text-state-disabled); }
+[data-s1-cand="data-tag"][data-tone="blue"] { --tag-color: var(--color-blue-400); --tag-label: var(--color-blue-400); }
+[data-s1-cand="data-tag"][data-tone="red"]  { --tag-color: var(--color-red-300);  --tag-label: var(--color-red-300); }
 
 /* 색 — Dark */
-[data-theme="dark"] [data-s1-cand="data-tag"][data-tone="blue"]      { --tag-color: var(--color-blue-dark-300);    --tag-label: var(--color-blue-dark-300); }
-[data-theme="dark"] [data-s1-cand="data-tag"][data-tone="red"]       { --tag-color: var(--color-red-dark-350);     --tag-label: var(--color-red-dark-350); }
-[data-theme="dark"] [data-s1-cand="data-tag"][data-tone="turquoise"] { --tag-color: var(--color-skyblue-dark-300); --tag-label: var(--color-skyblue-dark-300); }
-[data-theme="dark"] [data-s1-cand="data-tag"][data-tone="orange"]    { --tag-color: var(--color-orange-dark-350);  --tag-label: var(--color-orange-dark-350); }
-[data-theme="dark"] [data-s1-cand="data-tag"][data-tone="seagreen"]  { --tag-color: var(--color-green-dark-350);   --tag-label: var(--color-green-dark-350); }
+[data-theme="dark"] [data-s1-cand="data-tag"][data-tone="blue"] { --tag-color: var(--color-blue-dark-300); --tag-label: var(--color-blue-dark-300); }
+[data-theme="dark"] [data-s1-cand="data-tag"][data-tone="red"]  { --tag-color: var(--color-red-dark-350);  --tag-label: var(--color-red-dark-350); }
 
 /* 채움형 — 테두리색을 그대로 배경으로 쓰고 글자는 흰색 */
 [data-s1-cand="data-tag"][data-solid="on"] {
   background: var(--tag-color);
   color: var(--color-base-white);
-}
-[data-s1-cand="data-tag"][data-solid="on"][data-tone="neutral"],
-[data-s1-cand="data-tag"][data-solid="on"][data-tone="disabled"] {
-  background: var(--color-bg-level-2);
-  border-color: var(--color-bg-level-2);
-  color: var(--color-text-body-tertiary);
 }
 
 /* ══ 2. Divider (구분선) ═══════════════════════════════
@@ -95,7 +81,7 @@
 /* 세로선 — 글자 줄보다 짧게 세운다(늘리지 않는다) */
 [data-s1-cand="divider"][data-axis="y"] {
   align-self: center;
-  height: var(--sizing-10);
+  height: var(--sizing-16);
   width: var(--border-width-default);
 }
 [data-s1-cand="divider"][data-axis="y"][data-weight="strong"] { width: var(--border-width-strong); }
@@ -171,8 +157,9 @@
   background: var(--color-bg-level-1);
   color: var(--color-navigation-label-hover);
 }
+/* 선택된 항목은 배경을 깔지 않는다(river 2026-09-29) — 글자·아이콘 색으로만 알린다 */
 [data-s1-cand="side-nav"] [data-s1-part="item"][aria-current="page"] {
-  background: var(--color-bg-level-1);
+  background: transparent;
   color: var(--color-navigation-label-selected);
 }
 [data-s1-cand="side-nav"] [data-s1-part="item"][aria-disabled="true"] {
@@ -207,6 +194,14 @@
   background-color: var(--color-icon-gray-light);
 }
 .cand-icon { height: var(--sizing-24); width: var(--sizing-24); }
+
+/* 다크에서는 라인형 대신 **솔리드형**을 기본으로 쓴다(river 2026-09-29).
+   항목이 --s1-icon-solid 를 함께 주면 다크에서 그것으로 바뀌고, 없으면 원래 그림을 그대로 쓴다.
+   아이콘을 낱개로 늘어놓는 견본(.cand-icon)은 라인형·솔리드형을 나란히 보여야 하므로 바꾸지 않는다. */
+[data-theme="dark"] [data-s1-cand="side-nav"] [data-s1-part="item-icon"] {
+  -webkit-mask-image: var(--s1-icon-solid, var(--s1-icon));
+  mask-image: var(--s1-icon-solid, var(--s1-icon));
+}
 
 /* ══ 4. Expandable Card (접힘카드) — PC ═══════════════
    원본은 모바일(V2.4 card 섹션). 구조·간격·반경은 원본 그대로, 너비만 화면이 정한다.
@@ -251,6 +246,8 @@
 }
 [data-s1-cand="expandable-card"] [data-s1-part="title"]    { color: var(--color-text-title-primary); }
 [data-s1-cand="expandable-card"] [data-s1-part="subtitle"] { color: var(--color-text-body-secondary); }
+/* 다크에서는 본문 글자가 너무 밝아 한 단계 낮춘다(river 2026-09-29) */
+[data-theme="dark"] [data-s1-cand="expandable-card"] [data-s1-part="subtitle"] { color: var(--color-text-body-tertiary); }
 [data-s1-cand="expandable-card"] [data-s1-part="caption"]  { color: var(--color-text-state-caption); }
 
 /* 여닫이 화살표 — 닫힘은 아래, 열림은 위로 뒤집는다(회전 아님) */
