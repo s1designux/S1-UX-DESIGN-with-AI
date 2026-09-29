@@ -1,10 +1,8 @@
-<!-- 패널 접기 (line) — 아이콘 가이드 스타일.
-     비율은 달력(ic_날짜근태달력)과 같은 정사각 1.00, 크기는 이웃 메뉴 아이콘과 같은 잉크 18×18.
-     선 굵기 1.08 · 모서리 0.57 · 끝 각짐.
-     뜻: 왼쪽 판(LNB)을 접는다.
+<!-- 패널 접기 (line) — 아이콘 가이드 스타일. 잉크 18×18(이웃 메뉴 아이콘과 같은 폭) ·
+     선 굵기 1.08(달력 실측) · 끝 각짐. 뜻: 왼쪽 판(LNB)을 접는다.
      ⚠️ Figma 원본이 없어 저장소에서 그린 아이콘이다(river 지시 2026-09-29). -->
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-  <rect x="3.54" y="3.54" width="16.92" height="16.92" rx="0.57" stroke="black" stroke-width="1.08"/>
-  <path d="M9.43 3.54V20.46" stroke="black" stroke-width="1.08"/>
-  <path d="M15.81 10.31L14.06 12L15.81 13.69" stroke="black" stroke-width="1.08" stroke-linecap="square"/>
+  <rect x="3.54" y="3.54" width="16.92" height="16.92" stroke="black" stroke-width="1.08"/>
+  <path d="M9 3V21" stroke="black" stroke-width="1.08"/>
+  <path d="M15.8 10.3L14.05 12L15.8 13.7" stroke="black" stroke-width="1.08" stroke-linecap="square"/>
 </svg>
