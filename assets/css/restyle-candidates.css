@@ -5,54 +5,77 @@
    그때 `data-s1-cand` 를 `data-s1-component` 로 바꾸기만 하면 되도록 **정식 부품과 같은
    계약 모양**(data-s1-cand / data-s1-part / data-* 축)을 쓴다.
 
-   규칙 — 이 파일에는 HEX·임의 수치가 없다. 색·간격·반경·크기·타이포는 전부 정본 토큰 경유다.
-   아이콘도 정본 자산(ui-library/dist/assets/icons/*.svg)만 CSS mask 로 쓴다 — 새로 그리지 않는다.
+   규칙 — HEX·임의 수치를 쓰지 않는다. 색·간격·반경·크기·타이포는 전부 정본 토큰 경유다.
+   아이콘도 정본 자산만 쓴다 — 새로 그리지 않는다.
 
    근거(원본):
      · data-tag  = PC S/W UX GUIDE V1.0 「03.component/table04」 4-3 Data Tag (287:13552)
      · divider   = 같은 파일 table02/03 의 Middle / Bottom Line List 선 규격
      · side-nav  = river 지시(2026-09-29) 아이콘+메뉴명, 접힘이면 우측 끝 아래 화살표
      · expandable-card = SW UX GUIDE V2.4 「card」 expandable-card (540:6547 / 540:6555) 를 PC 로
+
+   river 지시(2026-09-29) 반영:
+     · 뱃지 채움형을 Foundation 색 그대로 일단 만든다 + 다크 표시 + 글자 세로 가운데
+     · 구분선은 회색·강조색 각각 기본/굵게 4벌, 세로선은 짧게
+     · 사이드바 왼쪽 세로 막대 제거 · 라인형/솔리드형 아이콘 모두 · 아이콘은 아이콘 가이드에서만
+     · 접힘카드는 누른 뒤 헤더가 기본색 · 화살표는 회전 말고 상하 뒤집기 · 펼침은 부드럽게
    ══════════════════════════════════════════════════ */
 
 /* ══ 1. Data Tag (뱃지) ═══════════════════════════════
-   축: data-shape=chips|square · data-tone=accent|caution · data-solid=off
-   ⛔ data-solid="on"(채움형)은 아직 만들지 않는다 — 정본에 「강조색 배경」 semantic 토큰이
-      없어서 채우면 HEX 를 박아야 한다. 승인 대기(needs-decision).
-   ⛔ 원본의 청록·주황·초록 3색도 semantic 토큰이 없어 같은 이유로 대기. 팔레트에는 있다
-      (skyblue-400 / orange-300 / green-300) — semantic 신설이 승인되면 축만 늘리면 된다.
+   축: data-shape=chips|square · data-solid=on|off · data-tone=<색>
+   ⚠️ 채움형(data-solid="on")과 청록·주황·초록은 **Foundation 팔레트를 직접** 쓴다.
+      「강조색 배경」·그 세 색의 semantic(쓰임) 이름이 정본에 아직 없어서다.
+      river 지시로 "일단" 만든 상태 — 쓰임 이름이 생기면 아래 값만 그 이름으로 바꾼다.
+      다크는 각 계열의 dark 단계로 짝지었다(파랑 blue-dark-300 · 청록 skyblue-dark-300 ·
+      빨강/주황/초록 -dark-350) — 기존 semantic 이 쓰는 짝을 그대로 따른 것이다.
    ══════════════════════════════════════════════════ */
 [data-s1-cand="data-tag"] {
+  --tag-color: var(--color-line-gray-subtle);
+  --tag-label: var(--color-text-body-tertiary);
+
   align-items: center;
   background: transparent;
-  border-style: solid;
-  border-width: var(--border-width-default);
+  border: var(--border-width-default) solid var(--tag-color);
+  color: var(--tag-label);
   display: inline-flex;
-  padding: var(--spacing-4) var(--spacing-8);
+  justify-content: center;
+  line-height: 1;
+  padding: var(--spacing-6) var(--spacing-8);
   white-space: nowrap;
 }
 [data-s1-cand="data-tag"][data-shape="chips"]  { border-radius: var(--radius-full); }
 [data-s1-cand="data-tag"][data-shape="square"] { border-radius: var(--radius-4); }
 
-[data-s1-cand="data-tag"][data-tone="accent"] {
-  border-color: var(--color-line-blue);
-  color: var(--color-text-state-accent);
+/* 색 — Light */
+[data-s1-cand="data-tag"][data-tone="blue"]      { --tag-color: var(--color-blue-400);    --tag-label: var(--color-blue-400); }
+[data-s1-cand="data-tag"][data-tone="red"]       { --tag-color: var(--color-red-300);     --tag-label: var(--color-red-300); }
+[data-s1-cand="data-tag"][data-tone="turquoise"] { --tag-color: var(--color-skyblue-400); --tag-label: var(--color-skyblue-400); }
+[data-s1-cand="data-tag"][data-tone="orange"]    { --tag-color: var(--color-orange-300);  --tag-label: var(--color-orange-300); }
+[data-s1-cand="data-tag"][data-tone="seagreen"]  { --tag-color: var(--color-green-300);   --tag-label: var(--color-green-300); }
+[data-s1-cand="data-tag"][data-tone="neutral"]   { --tag-color: var(--color-line-gray-subtle); --tag-label: var(--color-text-body-tertiary); }
+[data-s1-cand="data-tag"][data-tone="disabled"]  { --tag-color: var(--color-line-gray-subtle); --tag-label: var(--color-text-state-disabled); }
+
+/* 색 — Dark */
+[data-theme="dark"] [data-s1-cand="data-tag"][data-tone="blue"]      { --tag-color: var(--color-blue-dark-300);    --tag-label: var(--color-blue-dark-300); }
+[data-theme="dark"] [data-s1-cand="data-tag"][data-tone="red"]       { --tag-color: var(--color-red-dark-350);     --tag-label: var(--color-red-dark-350); }
+[data-theme="dark"] [data-s1-cand="data-tag"][data-tone="turquoise"] { --tag-color: var(--color-skyblue-dark-300); --tag-label: var(--color-skyblue-dark-300); }
+[data-theme="dark"] [data-s1-cand="data-tag"][data-tone="orange"]    { --tag-color: var(--color-orange-dark-350);  --tag-label: var(--color-orange-dark-350); }
+[data-theme="dark"] [data-s1-cand="data-tag"][data-tone="seagreen"]  { --tag-color: var(--color-green-dark-350);   --tag-label: var(--color-green-dark-350); }
+
+/* 채움형 — 테두리색을 그대로 배경으로 쓰고 글자는 흰색 */
+[data-s1-cand="data-tag"][data-solid="on"] {
+  background: var(--tag-color);
+  color: var(--color-base-white);
 }
-[data-s1-cand="data-tag"][data-tone="caution"] {
-  border-color: var(--color-text-state-caution);
-  color: var(--color-text-state-caution);
-}
-[data-s1-cand="data-tag"][data-tone="neutral"] {
-  border-color: var(--color-line-gray-subtle);
+[data-s1-cand="data-tag"][data-solid="on"][data-tone="neutral"],
+[data-s1-cand="data-tag"][data-solid="on"][data-tone="disabled"] {
+  background: var(--color-bg-level-2);
+  border-color: var(--color-bg-level-2);
   color: var(--color-text-body-tertiary);
-}
-[data-s1-cand="data-tag"][data-tone="disabled"] {
-  border-color: var(--color-line-gray-subtle);
-  color: var(--color-text-state-disabled);
 }
 
 /* ══ 2. Divider (구분선) ═══════════════════════════════
-   축: data-axis=x|y · data-weight=default|strong · data-inset=none|text
+   축: data-axis=x|y · data-weight=default|strong · data-tone=gray|accent · data-inset=none|text
    ══════════════════════════════════════════════════ */
 [data-s1-cand="divider"] {
   background: var(--color-line-gray-subtle);
@@ -61,31 +84,38 @@
   flex: none;
   margin: 0;
 }
-[data-s1-cand="divider"][data-axis="x"] { height: var(--border-width-default); width: 100%; }
-[data-s1-cand="divider"][data-axis="y"] { align-self: stretch; width: var(--border-width-default); }
-[data-s1-cand="divider"][data-axis="x"][data-weight="strong"] { height: var(--border-width-strong); }
-[data-s1-cand="divider"][data-axis="y"][data-weight="strong"] { width: var(--border-width-strong); }
 [data-s1-cand="divider"][data-tone="accent"] { background: var(--color-line-blue); }
+
+[data-s1-cand="divider"][data-axis="x"] { height: var(--border-width-default); width: 100%; }
+[data-s1-cand="divider"][data-axis="x"][data-weight="strong"] { height: var(--border-width-strong); }
+
+/* 세로선 — 글자 줄보다 짧게 세운다(늘리지 않는다) */
+[data-s1-cand="divider"][data-axis="y"] {
+  align-self: center;
+  height: var(--sizing-10);
+  width: var(--border-width-default);
+}
+[data-s1-cand="divider"][data-axis="y"][data-weight="strong"] { width: var(--border-width-strong); }
 
 /* 글자 줄에 맞춰 좌우를 들여 쓰는 형태 — 목록 안 구분선에 쓴다 */
 [data-s1-cand="divider"][data-inset="text"] { width: auto; margin-inline: var(--spacing-20); }
 
 /* ══ 3. Side Nav (사이드바 메뉴) ═══════════════════════
-   구성: 그룹 제목 → 항목(아이콘 + 라벨) · 접히는 그룹은 제목 우측 끝에 아래 화살표
-   색은 정본 navigation 토큰만 쓴다(tokens.css 에 실재하는 것: bg · icon-default ·
-   indicator-default/hover/selected · label-default/-alt/hover/selected · submenu-label-default).
+   구성: 그룹 제목 → 항목(아이콘 + 메뉴명) · 접히는 그룹은 제목 우측 끝에 아래 화살표
+   왼쪽 세로 막대는 쓰지 않는다(river 2026-09-29) — 현재 위치는 배경과 글자색이 알린다.
+   아이콘은 **아이콘 가이드의 그림** 을 CSS mask 로 쓴다. 라인형·솔리드형 둘 다 된다:
+     <span data-s1-part="item-icon" style="--s1-icon:url('…/ic_홈_line.png')"></span>
+   색은 그림이 아니라 토큰이 정한다. 여러 색이 섞인 color 형은 이 방식에 맞지 않아 쓰지 않는다.
    ══════════════════════════════════════════════════ */
 [data-s1-cand="side-nav"] {
   background: var(--color-navigation-bg);
   border-right: var(--border-width-default) solid var(--color-line-gray-subtle);
   display: flex;
   flex-direction: column;
-  padding: var(--spacing-16) var(--spacing-12);
-  width: var(--sizing-128);
   min-width: 240px;
+  padding: var(--spacing-16) var(--spacing-12);
 }
 
-/* 그룹 제목 — 접힘 없는 형태는 <div>, 접히는 형태는 <button> */
 [data-s1-cand="side-nav"] [data-s1-part="group"] {
   align-items: center;
   background: transparent;
@@ -99,7 +129,7 @@
 }
 [data-s1-cand="side-nav"] button[data-s1-part="group"] { cursor: pointer; }
 
-/* 접힘 화살표 — 정본 chevron.svg 를 돌려 쓴다(오른쪽 ▶ → 아래 ▼). select·filter-chip 과 같은 방식 */
+/* 접힘 화살표 — 정본 chevron 한 장. 닫힘은 아래, 열림은 위로 뒤집는다(회전 아님) */
 [data-s1-cand="side-nav"] [data-s1-part="group-icon"] {
   background-color: var(--color-navigation-icon-default);
   flex: none;
@@ -108,11 +138,11 @@
   -webkit-mask: url("../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
   mask: url("../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
   transform: rotate(90deg);
-  transition: transform .15s ease;
+  transition: transform .18s ease;
   width: var(--sizing-20);
 }
 [data-s1-cand="side-nav"] [data-s1-part="group"][aria-expanded="true"] [data-s1-part="group-icon"] {
-  transform: rotate(-90deg);
+  transform: rotate(90deg) scaleX(-1);
 }
 
 [data-s1-cand="side-nav"] [data-s1-part="items"] {
@@ -124,10 +154,9 @@
 }
 [data-s1-cand="side-nav"] [data-s1-part="items"][hidden] { display: none; }
 
-/* 항목 — 아이콘 + 메뉴명. 왼쪽 막대가 현재 위치를 가리킨다 */
 [data-s1-cand="side-nav"] [data-s1-part="item"] {
   align-items: center;
-  border-left: var(--border-width-strong) solid var(--color-navigation-indicator-default);
+  border-radius: var(--radius-6);
   color: var(--color-navigation-label-default);
   display: flex;
   gap: var(--spacing-8);
@@ -135,11 +164,28 @@
   padding: var(--spacing-8) var(--spacing-10);
   text-decoration: none;
 }
+[data-s1-cand="side-nav"] [data-s1-part="item"]:hover {
+  background: var(--color-bg-level-1);
+  color: var(--color-navigation-label-hover);
+}
+[data-s1-cand="side-nav"] [data-s1-part="item"][aria-current="page"] {
+  background: var(--color-bg-level-1);
+  color: var(--color-navigation-label-selected);
+}
+[data-s1-cand="side-nav"] [data-s1-part="item"][aria-disabled="true"] {
+  color: var(--color-text-state-disabled);
+  pointer-events: none;
+}
+
+/* 메뉴 아이콘 — 그림은 --s1-icon 으로 받고, 색은 토큰이 준다 */
 [data-s1-cand="side-nav"] [data-s1-part="item-icon"],
 .cand-icon {
   background-color: var(--color-navigation-icon-default);
+  display: inline-block;
   flex: none;
   height: var(--sizing-20);
+  -webkit-mask-image: var(--s1-icon);
+  mask-image: var(--s1-icon);
   -webkit-mask-position: center;
   mask-position: center;
   -webkit-mask-repeat: no-repeat;
@@ -148,55 +194,21 @@
   mask-size: contain;
   width: var(--sizing-20);
 }
-[data-s1-cand="side-nav"] [data-s1-part="item"]:hover {
-  background: var(--color-bg-level-1);
-  border-left-color: var(--color-navigation-indicator-hover);
-  color: var(--color-navigation-label-hover);
-}
 [data-s1-cand="side-nav"] [data-s1-part="item"]:hover [data-s1-part="item-icon"] {
   background-color: var(--color-navigation-label-hover);
-}
-[data-s1-cand="side-nav"] [data-s1-part="item"][aria-current="page"] {
-  background: var(--color-bg-level-1);
-  border-left-color: var(--color-navigation-indicator-selected);
-  color: var(--color-navigation-label-selected);
 }
 [data-s1-cand="side-nav"] [data-s1-part="item"][aria-current="page"] [data-s1-part="item-icon"] {
   background-color: var(--color-navigation-label-selected);
 }
-[data-s1-cand="side-nav"] [data-s1-part="item"][aria-disabled="true"] {
-  color: var(--color-text-state-disabled);
-  pointer-events: none;
-}
 [data-s1-cand="side-nav"] [data-s1-part="item"][aria-disabled="true"] [data-s1-part="item-icon"] {
   background-color: var(--color-icon-gray-light);
 }
-
-/* 항목 아이콘 — 정본 자산만. 여기 없는 그림은 만들지 않는다 */
-[data-s1-cand="side-nav"] [data-icon="home"],
-.cand-icon[data-icon="home"]          { -webkit-mask-image: url("../../ui-library/dist/assets/icons/mobile-nav-home.svg");   mask-image: url("../../ui-library/dist/assets/icons/mobile-nav-home.svg"); }
-[data-s1-cand="side-nav"] [data-icon="search"],
-.cand-icon[data-icon="search"]        { -webkit-mask-image: url("../../ui-library/dist/assets/icons/nav-search.svg");        mask-image: url("../../ui-library/dist/assets/icons/nav-search.svg"); }
-[data-s1-cand="side-nav"] [data-icon="notification"],
-.cand-icon[data-icon="notification"]  { -webkit-mask-image: url("../../ui-library/dist/assets/icons/nav-notification.svg");  mask-image: url("../../ui-library/dist/assets/icons/nav-notification.svg"); }
-[data-s1-cand="side-nav"] [data-icon="settings"],
-.cand-icon[data-icon="settings"]      { -webkit-mask-image: url("../../ui-library/dist/assets/icons/nav-settings.svg");      mask-image: url("../../ui-library/dist/assets/icons/nav-settings.svg"); }
-[data-s1-cand="side-nav"] [data-icon="account"],
-.cand-icon[data-icon="account"]       { -webkit-mask-image: url("../../ui-library/dist/assets/icons/account.svg");           mask-image: url("../../ui-library/dist/assets/icons/account.svg"); }
-[data-s1-cand="side-nav"] [data-icon="globe"],
-.cand-icon[data-icon="globe"]         { -webkit-mask-image: url("../../ui-library/dist/assets/icons/globe.svg");             mask-image: url("../../ui-library/dist/assets/icons/globe.svg"); }
-[data-s1-cand="side-nav"] [data-icon="calendar"],
-.cand-icon[data-icon="calendar"]      { -webkit-mask-image: url("../../ui-library/dist/assets/icons/calendar.svg");          mask-image: url("../../ui-library/dist/assets/icons/calendar.svg"); }
-[data-s1-cand="side-nav"] [data-icon="clock"],
-.cand-icon[data-icon="clock"]         { -webkit-mask-image: url("../../ui-library/dist/assets/icons/clock.svg");             mask-image: url("../../ui-library/dist/assets/icons/clock.svg"); }
-[data-s1-cand="side-nav"] [data-icon="lock"],
-.cand-icon[data-icon="lock"]          { -webkit-mask-image: url("../../ui-library/dist/assets/icons/lock.svg");              mask-image: url("../../ui-library/dist/assets/icons/lock.svg"); }
-[data-s1-cand="side-nav"] [data-icon="menu"],
-.cand-icon[data-icon="menu"]          { -webkit-mask-image: url("../../ui-library/dist/assets/icons/menu.svg");              mask-image: url("../../ui-library/dist/assets/icons/menu.svg"); }
+.cand-icon { height: var(--sizing-24); width: var(--sizing-24); }
 
 /* ══ 4. Expandable Card (접힘카드) — PC ═══════════════
-   원본은 모바일(V2.4 card 섹션). 구조·간격·반경은 원본 그대로 두고 PC 에서 쓰도록
-   너비만 화면이 정하게 한다. 헤더를 누르면 아래 본문 판이 열린다.
+   원본은 모바일(V2.4 card 섹션). 구조·간격·반경은 원본 그대로, 너비만 화면이 정한다.
+   헤더는 누른 뒤 기본색으로 돌아온다(열려 있어도 회색으로 남지 않는다).
+   펼침은 높이를 부드럽게 늘려 보인다.
    ══════════════════════════════════════════════════ */
 [data-s1-cand="expandable-card"] {
   background: var(--color-bg-level-0);
@@ -217,9 +229,15 @@
   gap: var(--spacing-10);
   padding: var(--spacing-16) var(--spacing-16) var(--spacing-20) var(--spacing-20);
   text-align: left;
+  transition: background-color .18s ease;
   width: 100%;
 }
 [data-s1-cand="expandable-card"] [data-s1-part="header"]:hover { background: var(--color-bg-level-1); }
+/* 누른 뒤(=열린 뒤)에는 기본색으로 — 마우스가 위에 남아 있어도 회색으로 두지 않는다 */
+[data-s1-cand="expandable-card"] [data-s1-part="header"][aria-expanded="true"],
+[data-s1-cand="expandable-card"] [data-s1-part="header"][aria-expanded="true"]:hover {
+  background: var(--color-bg-level-0);
+}
 
 [data-s1-cand="expandable-card"] [data-s1-part="text"] {
   display: flex;
@@ -232,7 +250,7 @@
 [data-s1-cand="expandable-card"] [data-s1-part="subtitle"] { color: var(--color-text-body-secondary); }
 [data-s1-cand="expandable-card"] [data-s1-part="caption"]  { color: var(--color-text-state-caption); }
 
-/* 여닫이 화살표 — 정본 chevron.svg. 닫힘 ▼ / 열림 ▲ */
+/* 여닫이 화살표 — 닫힘은 아래, 열림은 위로 뒤집는다(회전 아님) */
 [data-s1-cand="expandable-card"] [data-s1-part="toggle-icon"] {
   background-color: var(--color-icon-gray);
   flex: none;
@@ -240,27 +258,45 @@
   -webkit-mask: url("../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
   mask: url("../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
   transform: rotate(90deg);
-  transition: transform .15s ease;
+  transition: transform .22s ease;
   width: var(--sizing-24);
 }
 [data-s1-cand="expandable-card"] [data-s1-part="header"][aria-expanded="true"] [data-s1-part="toggle-icon"] {
-  transform: rotate(-90deg);
+  transform: rotate(90deg) scaleX(-1);
 }
 
+/* 펼침 — 높이 0 → 내용 높이로 부드럽게. 닫혀 있으면 읽히지 않게 숨긴다 */
+[data-s1-cand="expandable-card"] [data-s1-part="panel-wrap"] {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition: grid-template-rows .22s ease, opacity .22s ease, visibility 0s linear .22s;
+  visibility: hidden;
+}
+[data-s1-cand="expandable-card"] [data-s1-part="panel-wrap"][data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition: grid-template-rows .22s ease, opacity .22s ease, visibility 0s;
+  visibility: visible;
+}
 [data-s1-cand="expandable-card"] [data-s1-part="panel"] {
   background: var(--color-bg-level-1);
-  border-top: var(--border-width-default) solid var(--color-line-gray-subtle);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-10);
+  min-height: 0;
+  overflow: hidden;
+  padding: 0 var(--spacing-16) 0 var(--spacing-20);
+  transition: padding .22s ease;
+}
+[data-s1-cand="expandable-card"] [data-s1-part="panel-wrap"][data-open="true"] [data-s1-part="panel"] {
+  border-top: var(--border-width-default) solid var(--color-line-gray-subtle);
   padding: var(--spacing-16) var(--spacing-16) var(--spacing-20) var(--spacing-20);
 }
-[data-s1-cand="expandable-card"] [data-s1-part="panel"][hidden] { display: none; }
 
-/* 아이콘 낱개 보기 — 검수 화면에서 아이콘만 늘어놓을 때 쓴다(부품 아님) */
-.cand-icon {
-  display: inline-block;
-  background-color: var(--color-navigation-icon-default);
-  height: var(--sizing-24);
-  width: var(--sizing-24);
+@media (prefers-reduced-motion: reduce) {
+  [data-s1-cand="expandable-card"] [data-s1-part="panel-wrap"],
+  [data-s1-cand="expandable-card"] [data-s1-part="panel"],
+  [data-s1-cand="expandable-card"] [data-s1-part="toggle-icon"],
+  [data-s1-cand="side-nav"] [data-s1-part="group-icon"] { transition: none; }
 }
