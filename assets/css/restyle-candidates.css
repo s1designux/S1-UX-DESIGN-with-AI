@@ -133,14 +133,24 @@
   min-height: var(--sizing-40);
 }
 
-/* 로고 — 글자만. 집 아이콘을 넣지 않는다(river 2026-09-29). 누르면 첫 화면 */
+/* 로고 — 지급받은 로고 그림(assets/img/logo-s1-ux-guide.svg)을 그대로 쓴다.
+   집 아이콘을 덧붙이지 않는다(river 2026-09-29). 누르면 첫 화면.
+   로고는 브랜드 자산이라 색을 토큰으로 바꾸지 않는다 — 그림이 가진 색 그대로 둔다. */
 [data-s1-cand="side-nav"] [data-s1-part="brand"] {
-  color: var(--color-text-title-primary);
+  align-items: center;
+  display: flex;
+  min-width: 0;
   overflow: hidden;
   padding-left: var(--spacing-10);
   text-decoration: none;
-  white-space: nowrap;
 }
+[data-s1-cand="side-nav"] [data-s1-part="brand-logo"] {
+  display: block;
+  height: auto;
+  max-width: 100%;
+  width: 150px;
+}
+[data-s1-cand="side-nav"][data-size="lg"] [data-s1-part="brand-logo"] { width: 178px; }
 [data-s1-cand="side-nav"]:not([data-variant="brand"]) [data-s1-part="brand"] { display: none; }
 [data-s1-cand="side-nav"][data-variant="brand"] [data-s1-part="head"] {
   border-bottom: var(--border-width-default) solid var(--color-line-default);
