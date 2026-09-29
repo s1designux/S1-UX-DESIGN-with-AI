@@ -1,0 +1,8 @@
+<!-- 패널 접기 (solid) — line 과 같은 골격에 왼쪽 판만 채운다(가이드 solid 관례).
+     채움은 바깥 선 안쪽에 맞춰 넣는다(선을 덮지 않는다).
+     ⚠️ 아직 아이콘 가이드에 등록되지 않은 후보다. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <rect x="4" y="6" width="5.5" height="12" fill="black"/>
+  <rect x="3.5" y="5.5" width="17" height="13" stroke="black" stroke-width="1"/>
+  <path d="M16.5 9.5L14 12L16.5 14.5" stroke="black" stroke-width="1" stroke-linecap="square"/>
+</svg>

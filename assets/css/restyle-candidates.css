@@ -175,16 +175,22 @@
   width: var(--sizing-32);
 }
 [data-s1-cand="side-nav"] [data-s1-part="collapse"]:hover { background: var(--color-bg-level-1); }
+/* 판 접기 아이콘 — 가이드에 없어서 가이드 line/solid 스타일대로 새로 그렸다(river 지시 2026-09-29).
+   펼친 상태는 그림 그대로(왼쪽 판 + 왼쪽 꺾쇠 = 접기), 접힌 상태는 좌우를 뒤집어 펴기로 읽힌다.
+   다크에서는 메뉴 아이콘과 같이 solid 를 쓴다. */
 [data-s1-cand="side-nav"] [data-s1-part="collapse-icon"] {
   background-color: var(--color-icon-gray-dark);
-  height: var(--sizing-20);
-  -webkit-mask: url("../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
-  mask: url("../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
-  transform: scaleX(-1);
+  height: var(--sizing-24);
+  -webkit-mask: url("../img/candidate-icons/ic_패널접기_line.svg") center / contain no-repeat;
+  mask: url("../img/candidate-icons/ic_패널접기_line.svg") center / contain no-repeat;
   transition: transform .18s ease;
-  width: var(--sizing-20);
+  width: var(--sizing-24);
 }
-[data-s1-cand="side-nav"][data-state="collapsed"] [data-s1-part="collapse-icon"] { transform: none; }
+[data-s1-cand="side-nav"][data-state="collapsed"] [data-s1-part="collapse-icon"] { transform: scaleX(-1); }
+[data-theme="dark"] [data-s1-cand="side-nav"] [data-s1-part="collapse-icon"] {
+  -webkit-mask-image: url("../img/candidate-icons/ic_패널접기_solid.svg");
+  mask-image: url("../img/candidate-icons/ic_패널접기_solid.svg");
+}
 [data-s1-cand="side-nav"][data-state="collapsed"] [data-s1-part="collapse"] { margin-inline: auto; }
 
 /* 중간 구분명 — grouped 벌에서만 보인다 */
