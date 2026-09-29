@@ -1,10 +1,9 @@
 <!-- 패널 접기 (color) — 달력 color 변형의 색 관례를 그대로 따랐다.
-     몸통 #CDD2DE · 강조(왼쪽 판) #1D6CEB(= blue/400) · 안쪽 표시 #808796 — ic_날짜근태달력_color 실측값.
-     왼쪽 판은 몸통의 둥근 모서리 안쪽으로 잘린다.
-     ⚠️ Figma 원본이 없어 저장소에서 그린 아이콘이다(river 지시 2026-09-29). -->
+     몸통 #CDD2DE · 강조(왼쪽 판) #1D6CEB(= blue/400) · 안쪽 표시 #808796.
+     ⚠️ Figma 원본이 없어 저장소에서 그린 아이콘이다. -->
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-  <clipPath id="s1-panel-body"><rect x="4.58" y="4.58" width="14.84" height="14.84" rx="0.54"/></clipPath>
-  <rect x="4.58" y="4.58" width="14.84" height="14.84" rx="0.54" fill="#CDD2DE"/>
-  <rect x="4.58" y="4.58" width="5.02" height="14.84" fill="#1D6CEB" clip-path="url(#s1-panel-body)"/>
-  <path d="M15.6 10.4L13.95 12L15.6 13.6" stroke="#808796" stroke-width="1.08" stroke-linecap="square"/>
+  <clipPath id="s1-panel-body"><rect x="3.54" y="3.54" width="16.92" height="16.92" rx="0.57"/></clipPath>
+  <rect x="3.54" y="3.54" width="16.92" height="16.92" rx="0.57" fill="#CDD2DE"/>
+  <rect x="3.54" y="3.54" width="5.89" height="16.92" fill="#1D6CEB" clip-path="url(#s1-panel-body)"/>
+  <path d="M15.81 10.31L14.06 12L15.81 13.69" stroke="#808796" stroke-width="1.08" stroke-linecap="square"/>
 </svg>

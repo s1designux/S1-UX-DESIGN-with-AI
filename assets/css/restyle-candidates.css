@@ -284,7 +284,9 @@
   transform: rotate(90deg) scaleX(-1);
 }
 
-/* 하위 목록 — 부모 메뉴 아래로 들여쓴다(아이콘 폭 + 사이 간격만큼) */
+/* 하위 목록(레벨 2) — 부모 메뉴 아래로 들여쓰고, 글자색은 한 단계 낮춘다(river 2026-09-29).
+   부모(레벨 1)는 navigation/label/default = gray/600, 하위는 한 칸 아래인 gray/500
+   (= --color-text-body-tertiary). 고른 상태·hover 는 부모와 같은 규칙을 그대로 쓴다. */
 [data-s1-cand="side-nav"] [data-s1-part="subitems"] {
   display: flex;
   flex-direction: column;
@@ -293,6 +295,15 @@
   padding: 0 0 0 calc(var(--sizing-20) + var(--spacing-8));
 }
 [data-s1-cand="side-nav"] [data-s1-part="subitems"][hidden] { display: none; }
+[data-s1-cand="side-nav"] [data-s1-part="subitems"] [data-s1-part="item"] {
+  color: var(--color-text-body-tertiary);
+}
+[data-s1-cand="side-nav"] [data-s1-part="subitems"] [data-s1-part="item"]:hover {
+  color: var(--color-navigation-label-hover);
+}
+[data-s1-cand="side-nav"] [data-s1-part="subitems"] [data-s1-part="item"][aria-current="page"] {
+  color: var(--color-navigation-label-selected);
+}
 
 /* ── 접힘 상태 — 아이콘만 남기고 글자·구분명·하위목록·여닫이를 감춘다 ── */
 [data-s1-cand="side-nav"][data-state="collapsed"] [data-s1-part="group"],
