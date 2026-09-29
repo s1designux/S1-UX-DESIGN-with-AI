@@ -102,14 +102,70 @@
      <span data-s1-part="item-icon" style="--s1-icon:url('…/ic_홈_line.png')"></span>
    색은 그림이 아니라 토큰이 정한다(icon/gray-dark). color 형은 이 방식에 맞지 않아 쓰지 않는다.
    ══════════════════════════════════════════════════ */
+/* 축
+   · data-type   = menu-only(위에 GNB 가 있고 LNB 는 메뉴만) | standalone(GNB 없이 LNB 단독 — 로고를 얹는다)
+   · data-size   = md | lg        (펼쳤을 때 가로 크기)
+   · data-state  = expanded | collapsed (접으면 아이콘만 남는 좁은 띠가 된다)
+   ⚠️ 펼침 가로 크기(240·280)는 정본에 크기 토큰이 없어 이 파일이 임시로 들고 있다 —
+      river 판정 후 정본에 올릴 값이다(needs-decision). 접힘 폭은 정본 sizing/64 를 쓴다. */
 [data-s1-cand="side-nav"] {
+  --lnb-width: 240px;
+
   background: var(--color-navigation-bg);
   border-right: var(--border-width-default) solid var(--color-line-default);
   display: flex;
   flex-direction: column;
-  min-width: 240px;
   padding: var(--spacing-16) var(--spacing-12);
+  transition: width .18s ease;
+  width: var(--lnb-width);
 }
+[data-s1-cand="side-nav"][data-size="lg"] { --lnb-width: 280px; }
+[data-s1-cand="side-nav"][data-state="collapsed"] { --lnb-width: var(--sizing-64); }
+
+/* 로고 자리 — data-type="standalone" 일 때만 쓴다(GNB 가 없으니 여기가 서비스 이름을 진다) */
+[data-s1-cand="side-nav"] [data-s1-part="brand"] {
+  align-items: center;
+  border-bottom: var(--border-width-default) solid var(--color-line-default);
+  color: var(--color-text-title-primary);
+  display: flex;
+  gap: var(--spacing-8);
+  margin-bottom: var(--spacing-8);
+  min-height: var(--sizing-48);
+  padding: 0 var(--spacing-10) var(--spacing-16);
+  text-decoration: none;
+}
+[data-s1-cand="side-nav"][data-type="menu-only"] [data-s1-part="brand"] { display: none; }
+
+/* 접기 단추 — 맨 아래. 화살표는 정본 chevron 한 장(펼침=왼쪽 · 접힘=오른쪽) */
+[data-s1-cand="side-nav"] [data-s1-part="collapse"] {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-6);
+  color: var(--color-navigation-label-default);
+  cursor: pointer;
+  display: flex;
+  gap: var(--spacing-8);
+  margin-top: auto;
+  min-height: var(--sizing-40);
+  padding: var(--spacing-8) var(--spacing-10);
+  width: 100%;
+}
+[data-s1-cand="side-nav"] [data-s1-part="collapse"]:hover {
+  background: var(--color-bg-level-1);
+  color: var(--color-navigation-label-hover);
+}
+[data-s1-cand="side-nav"] [data-s1-part="collapse-icon"] {
+  background-color: var(--color-icon-gray-dark);
+  flex: none;
+  height: var(--sizing-20);
+  -webkit-mask: url("../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
+  mask: url("../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
+  transform: scaleX(-1);
+  transition: transform .18s ease;
+  width: var(--sizing-20);
+}
+[data-s1-cand="side-nav"][data-state="collapsed"] [data-s1-part="collapse-icon"] { transform: none; }
 
 /* 작은 구분명 — 글자만. 누르는 물건이 아니다 */
 [data-s1-cand="side-nav"] [data-s1-part="group"] {
@@ -210,6 +266,28 @@
   padding: 0 0 0 calc(var(--sizing-20) + var(--spacing-8));
 }
 [data-s1-cand="side-nav"] [data-s1-part="subitems"][hidden] { display: none; }
+
+/* ── 접힘 상태 — 아이콘만 남기고 글자·화살표·구분명을 감춘다 ── */
+[data-s1-cand="side-nav"][data-state="collapsed"] { padding-inline: var(--spacing-10); }
+[data-s1-cand="side-nav"][data-state="collapsed"] [data-s1-part="group"],
+[data-s1-cand="side-nav"][data-state="collapsed"] [data-s1-part="item-toggle"],
+[data-s1-cand="side-nav"][data-state="collapsed"] [data-s1-part="subitems"],
+[data-s1-cand="side-nav"][data-state="collapsed"] [data-s1-part="brand-label"],
+[data-s1-cand="side-nav"][data-state="collapsed"] [data-s1-part="collapse-label"] { display: none; }
+[data-s1-cand="side-nav"][data-state="collapsed"] [data-s1-part="item"],
+[data-s1-cand="side-nav"][data-state="collapsed"] [data-s1-part="brand"],
+[data-s1-cand="side-nav"][data-state="collapsed"] [data-s1-part="collapse"] {
+  gap: 0;
+  justify-content: center;
+  padding-inline: 0;
+}
+/* 글자는 자리만 감춘다 — 읽는 기계에는 남겨 둔다 */
+[data-s1-cand="side-nav"][data-state="collapsed"] [data-s1-part="item"] {
+  font-size: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+[data-s1-cand="side-nav"][data-state="collapsed"] [data-s1-part="item"] [data-s1-part="item-icon"] { font-size: initial; }
 
 /* 다크에서는 라인형 대신 **솔리드형**을 기본으로 쓴다(river 2026-09-29).
    항목이 --s1-icon-solid 를 함께 주면 다크에서 그것으로 바뀌고, 없으면 원래 그림을 그대로 쓴다.
