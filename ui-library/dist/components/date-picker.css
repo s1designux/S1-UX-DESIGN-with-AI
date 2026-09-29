@@ -115,6 +115,14 @@
   margin-top: 0;
   top: auto;
 }
+/* 열려 있는 동안만 화면 고정 층으로 띄운다 — 스크롤 상자(overflow:auto/hidden) 안에서도 잘리지 않게.
+   좌표는 JS(floatPanel)가 트리거 기준으로 계산해 인라인으로 넣는다. 닫으면 위 규칙으로 돌아온다. */
+[data-s1-component="date-picker"] [data-s1-part="panel"][data-s1-float="fixed"] {
+  bottom: auto;
+  margin-bottom: 0;
+  margin-top: 0;
+  position: fixed;
+}
 
 /* ── 캘린더 본문(패널·시트 공용) — Date view gap 16 · Year/Month view gap 20(정본 itemSpacing). ── */
 [data-s1-component="date-picker"] [data-s1-part="calendar"] {

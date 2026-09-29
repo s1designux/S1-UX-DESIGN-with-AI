@@ -3,7 +3,7 @@
     "목적": "검수판 카드에 박는 정본 사실 — 사람이 요약하지 않고 기계가 뽑는다",
     "출처": "ui-library/dist/components/*.manifest.json (정본 build-components.ts 에서 생성)",
     "재생성": "npm run board:facts",
-    "생성일": "2026-09-28"
+    "생성일": "2026-09-29"
   },
   "components": {
     "assist-button": {
@@ -345,7 +345,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "525c6d22c850859a6c2440b0a9209f978180b59800195c13e665d23a8168ab01"
+      "sourceFingerprint": "b115ada46fdc60b95649f54077de0cf3dcc390388236e822242c4ba9d268d2eb"
     },
     "dropdown": {
       "id": "dropdown",
@@ -448,7 +448,7 @@
           "reason": "정본에 Error 상태가 없다."
         }
       ],
-      "sourceFingerprint": "bb68adecc4baeeac240db5ea59dd8549a5165b0a6b9b6d8157b3f820e6c57913"
+      "sourceFingerprint": "ddadbd5241ef7b63e6fbbdd61af4cacb610702a1166c581f2e11a45530e03940"
     },
     "gnb-sub-menu-item": {
       "id": "gnb-sub-menu-item",
@@ -956,7 +956,7 @@
           "reason": "정본에 Error 상태가 없다."
         }
       ],
-      "sourceFingerprint": "cde002d0b86b666b7bd2f503e80e75efbe0636c55262a4f61c1084912a13d692"
+      "sourceFingerprint": "9cc146a4f133a1b61397493eeafed3ffbe30a937937c4ec82accd435510b2546"
     },
     "tab": {
       "id": "tab",
@@ -1229,7 +1229,7 @@
           "reason": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
         }
       ],
-      "sourceFingerprint": "0402226be369d351253d8132c1408cb5691e82a414a7219256015b0b5f13529e"
+      "sourceFingerprint": "b0a20f43cdc1a09d1104ac169986d1fc314be906f4abe9458e79d66af13e33d9"
     },
     "toggle": {
       "id": "toggle",

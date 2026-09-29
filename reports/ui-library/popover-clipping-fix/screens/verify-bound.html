@@ -1,0 +1,30 @@
+<!doctype html><html lang="ko" data-theme="light"><head><meta charset="utf-8"><title>flip boundary</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="/ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="/ui-library/dist/assets/css/typography.css">
+<link rel="stylesheet" href="/ui-library/dist/s1-ui.css">
+<style>html,body{margin:0;height:100%;font-family:Pretendard,sans-serif;background:#f2f4f7}
+ .slot{position:fixed;top:300px} #a{left:40px}#b{left:260px}#c{left:480px}#d{left:700px}</style></head><body>
+<div class="slot" id="a"><div data-s1-component="date-picker" data-size="md" data-break="pc" data-mode="single">
+ <button type="button" data-s1-part="trigger" aria-haspopup="dialog" aria-expanded="false"><span data-s1-part="value">날짜 선택</span><span data-s1-part="icon" aria-hidden="true"></span></button>
+ <div data-s1-part="panel" role="dialog" hidden><div data-s1-part="calendar"></div></div></div></div>
+<div class="slot" id="b"><div data-s1-component="time-picker" data-size="xxsm" data-break="pc" data-type="24h" data-minute-step="1">
+ <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="시간"><span data-s1-part="value">시간 선택</span><span data-s1-part="icon" aria-hidden="true"></span></button>
+ <div data-s1-part="panel" hidden><div data-s1-part="columns"><div data-s1-part="column" data-column="hour" role="listbox" aria-label="시"></div><div data-s1-part="divider"></div><div data-s1-part="column" data-column="minute" role="listbox" aria-label="분"></div></div><div data-s1-part="footer"><button type="button" data-s1-part="confirm" disabled>확인</button></div></div></div></div>
+<div class="slot" id="c"><div data-s1-component="select" data-size="xxsm" data-break="pc">
+ <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false"><span data-s1-part="value">선택</span><span data-s1-part="icon" aria-hidden="true"></span></button>
+ <div data-s1-part="panel" hidden><div data-s1-component="dropdown" data-type="text" data-size="xxsm" role="listbox" aria-label="선택">
+  <div data-s1-part="option" role="option" aria-selected="false" tabindex="0" data-value="a"><span data-s1-part="option-label">서울</span></div>
+  <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="b"><span data-s1-part="option-label">부산</span></div>
+  <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="c"><span data-s1-part="option-label">제주</span></div></div></div></div></div>
+<div class="slot" id="d"><div data-s1-component="filter-chip" data-variant="line" data-size="sm" data-break="pc" data-title="on">
+ <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false"><span data-s1-part="title">정렬</span><span data-s1-part="value">최신순</span><span data-s1-part="icon" aria-hidden="true"></span></button>
+ <div data-s1-part="panel" hidden><div data-s1-component="dropdown" data-type="text" data-size="xsm" role="listbox" aria-label="정렬">
+  <div data-s1-part="option" role="option" aria-selected="true" tabindex="0" data-value="l"><span data-s1-part="option-label">최신순</span></div>
+  <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="p"><span data-s1-part="option-label">인기순</span></div>
+  <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="q"><span data-s1-part="option-label">과거순</span></div></div></div></div></div>
+<script type="module">
+ import { autoInit } from "/ui-library/dist/s1-ui.auto.js";
+ autoInit(document);
+ window.__ready = true;
+</script></body></html>
