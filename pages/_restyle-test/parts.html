@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>승격 후보 4종 — 검수</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="../../ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="../../ui-library/dist/assets/css/typography.css">
+<link rel="stylesheet" href="../../ui-library/dist/s1-ui.css">
+<link rel="stylesheet" href="../../assets/css/restyle-test.css">
+<link rel="stylesheet" href="../../assets/css/restyle-candidates.css">
+<style>
+  /* 이 검수 화면 자체의 틀 — 부품이 아니다 */
+  .sheet { max-width: 1120px; margin: 0 auto; padding: var(--spacing-32) var(--spacing-24) var(--spacing-80); }
+  .sheet > h1 { margin: 0 0 var(--spacing-8); color: var(--color-text-title-primary); }
+  .sheet > .lede { margin: 0 0 var(--spacing-40); color: var(--color-text-body-tertiary); }
+  .blk { margin-top: var(--spacing-48); }
+  .blk > h2 { margin: 0 0 var(--spacing-4); color: var(--color-text-title-primary); }
+  .blk > .sub { margin: 0 0 var(--spacing-20); color: var(--color-text-state-caption); }
+  .panel {
+    background: var(--color-bg-level-0);
+    border: var(--border-width-default) solid var(--color-line-gray-subtle);
+    border-radius: var(--radius-card-md);
+    padding: var(--spacing-24);
+  }
+  .grid-label { display: grid; grid-template-columns: 120px 1fr; gap: var(--spacing-16); align-items: center; }
+  .grid-label > .k { color: var(--color-text-state-caption); }
+  .flow { display: flex; flex-wrap: wrap; gap: var(--spacing-12); align-items: center; }
+  .hold {
+    border: var(--border-width-default) dashed var(--color-text-state-caution);
+    border-radius: var(--radius-8);
+    padding: var(--spacing-16) var(--spacing-20);
+    color: var(--color-text-state-caution);
+  }
+  .hold .t { display: block; font-weight: 700; margin-bottom: var(--spacing-4); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-20); align-items: start; }
+  @media (max-width: 960px) { .two { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body data-marks="off">
+
+<div class="t-bar typo-body-12m">
+  <span class="t-bar-label">테마</span>
+  <div data-s1-component="multi-toggle" data-size="sm" role="radiogroup" aria-label="테마" id="theme-switch">
+    <button type="button" data-s1-part="cell" role="radio" aria-checked="true" data-value="light">Light</button>
+    <button type="button" data-s1-part="cell" role="radio" aria-checked="false" data-value="dark">Dark</button>
+  </div>
+  <span class="t-bar-spacer"></span>
+  <span class="t-bar-label">색·간격·반경·아이콘 전부 정본 토큰·정본 자산</span>
+</div>
+
+<div class="sheet">
+  <h1 class="typo-title-32b">승격 후보 4종</h1>
+  <p class="lede typo-body-14r">가이드에 없어서 사이트가 직접 만들어 쓰던 자리입니다. 쓸 만하면 정본 부품으로 올립니다.</p>
+
+  <!-- ══ 1 ══ -->
+  <div class="blk">
+    <h2 class="typo-title-20b">1 · 뱃지 (Data Tag)</h2>
+    <p class="sub typo-body-12r">V1.0 가이드의 Data Tag 를 옮긴 것 — 모양 2종(둥근/각진) × 색</p>
+
+    <div class="panel" style="display:grid;gap:var(--spacing-20)">
+      <div class="grid-label">
+        <span class="k typo-body-12m">둥근 · 선</span>
+        <span class="flow">
+          <span data-s1-cand="data-tag" data-shape="chips" data-tone="accent"   class="typo-body-12m">진행중</span>
+          <span data-s1-cand="data-tag" data-shape="chips" data-tone="caution"  class="typo-body-12m">지연</span>
+          <span data-s1-cand="data-tag" data-shape="chips" data-tone="neutral"  class="typo-body-12m">대기</span>
+          <span data-s1-cand="data-tag" data-shape="chips" data-tone="disabled" class="typo-body-12m">종료</span>
+        </span>
+      </div>
+      <div class="grid-label">
+        <span class="k typo-body-12m">각진 · 선</span>
+        <span class="flow">
+          <span data-s1-cand="data-tag" data-shape="square" data-tone="accent"   class="typo-body-12m">진행중</span>
+          <span data-s1-cand="data-tag" data-shape="square" data-tone="caution"  class="typo-body-12m">지연</span>
+          <span data-s1-cand="data-tag" data-shape="square" data-tone="neutral"  class="typo-body-12m">대기</span>
+          <span data-s1-cand="data-tag" data-shape="square" data-tone="disabled" class="typo-body-12m">종료</span>
+        </span>
+      </div>
+      <div class="grid-label">
+        <span class="k typo-body-12m">표 안에서</span>
+        <span>
+          <div data-s1-component="table" data-size="sm">
+            <table data-s1-part="table">
+              <thead><tr>
+                <th data-s1-part="header-cell" scope="col">동의일</th>
+                <th data-s1-part="header-cell" scope="col">동의자</th>
+                <th data-s1-part="header-cell" data-align="center" scope="col">상태</th>
+              </tr></thead>
+              <tbody>
+                <tr data-s1-part="row">
+                  <td data-s1-part="cell">2026.01.23</td>
+                  <td data-s1-part="cell">김○하</td>
+                  <td data-s1-part="cell" data-align="center"><span data-s1-cand="data-tag" data-shape="square" data-tone="accent" class="typo-body-12m">확인</span></td>
+                </tr>
+                <tr data-s1-part="row">
+                  <td data-s1-part="cell">2026.01.23</td>
+                  <td data-s1-part="cell">이○진</td>
+                  <td data-s1-part="cell" data-align="center"><span data-s1-cand="data-tag" data-shape="square" data-tone="caution" class="typo-body-12m">미확인</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </span>
+      </div>
+
+      <div class="hold typo-body-12r">
+        <span class="t">여기까지만 만들었습니다 — 나머지는 정하셔야 합니다</span>
+        원본에는 <b>채움형(글자 대신 색으로 꽉 채운 것)</b>과 <b>청록·주황·초록</b>이 더 있습니다.
+        그런데 가이드에는 「강조색 배경」과 그 세 색의 <b>쓰임 이름이 없습니다</b>(색 자체는 팔레트에 있습니다).
+        없는 이름을 제가 만들면 규칙 위반이라 멈췄습니다. 만들어도 된다고 하시면 축만 늘리면 됩니다.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 2 ══ -->
+  <div class="blk">
+    <h2 class="typo-title-20b">2 · 구분선</h2>
+    <p class="sub typo-body-12r">가로·세로 / 기본·굵게 / 목록 안에서 좌우를 들여 쓴 것</p>
+
+    <div class="panel" style="display:grid;gap:var(--spacing-24)">
+      <div class="grid-label">
+        <span class="k typo-body-12m">가로 · 기본</span>
+        <hr data-s1-cand="divider" data-axis="x">
+      </div>
+      <div class="grid-label">
+        <span class="k typo-body-12m">가로 · 굵게</span>
+        <hr data-s1-cand="divider" data-axis="x" data-weight="strong">
+      </div>
+      <div class="grid-label">
+        <span class="k typo-body-12m">가로 · 강조</span>
+        <hr data-s1-cand="divider" data-axis="x" data-weight="strong" data-tone="accent">
+      </div>
+      <div class="grid-label">
+        <span class="k typo-body-12m">세로</span>
+        <span class="flow" style="height:20px">
+          <span class="typo-body-12r" style="color:var(--color-text-body-secondary)">총 322건</span>
+          <hr data-s1-cand="divider" data-axis="y">
+          <span class="typo-body-12r" style="color:var(--color-text-body-secondary)">선택 3건</span>
+          <hr data-s1-cand="divider" data-axis="y">
+          <span class="typo-body-12r" style="color:var(--color-text-body-secondary)">최근순</span>
+        </span>
+      </div>
+      <div class="grid-label">
+        <span class="k typo-body-12m">목록 안 · 들여쓰기</span>
+        <span style="border:var(--border-width-default) solid var(--color-line-gray-subtle);border-radius:var(--radius-card-md);overflow:hidden;background:var(--color-bg-level-0)">
+          <span style="display:block;padding:var(--spacing-12) var(--spacing-20)" class="typo-body-14m">첫째 줄</span>
+          <hr data-s1-cand="divider" data-axis="x" data-inset="text">
+          <span style="display:block;padding:var(--spacing-12) var(--spacing-20)" class="typo-body-14m">둘째 줄</span>
+          <hr data-s1-cand="divider" data-axis="x" data-inset="text">
+          <span style="display:block;padding:var(--spacing-12) var(--spacing-20)" class="typo-body-14m">셋째 줄</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 3 ══ -->
+  <div class="blk">
+    <h2 class="typo-title-20b">3 · 사이드바 메뉴</h2>
+    <p class="sub typo-body-12r">아이콘 + 메뉴명. 접히는 묶음은 제목 오른쪽 끝에 아래 화살표가 붙습니다</p>
+
+    <div class="two">
+      <div class="panel" style="padding:0;overflow:hidden">
+        <nav data-s1-cand="side-nav" aria-label="사이드바 메뉴 예시" id="demo-side-nav" style="border-right:0;width:auto;min-width:0">
+          <div data-s1-part="group" class="typo-body-10m">GUIDE</div>
+          <ul data-s1-part="items">
+            <li><a data-s1-part="item" class="typo-body-14m" href="#" aria-current="page"><span data-s1-part="item-icon" data-icon="home" aria-hidden="true"></span>Overview</a></li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" data-icon="search" aria-hidden="true"></span>Foundation Tokens</a></li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" data-icon="settings" aria-hidden="true"></span>Semantic Tokens</a></li>
+          </ul>
+
+          <button type="button" data-s1-part="group" class="typo-body-10m" aria-expanded="true" aria-controls="sn-source">
+            SOURCE
+            <span data-s1-part="group-icon" aria-hidden="true"></span>
+          </button>
+          <ul data-s1-part="items" id="sn-source">
+            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" data-icon="menu" aria-hidden="true"></span>PC Components</a></li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" data-icon="menu" aria-hidden="true"></span>Mobile Components</a></li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" data-icon="calendar" aria-hidden="true"></span>Patterns</a></li>
+          </ul>
+
+          <button type="button" data-s1-part="group" class="typo-body-10m" aria-expanded="false" aria-controls="sn-system">
+            SYSTEM
+            <span data-s1-part="group-icon" aria-hidden="true"></span>
+          </button>
+          <ul data-s1-part="items" id="sn-system" hidden>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" data-icon="notification" aria-hidden="true"></span>파이프라인 상태</a></li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" data-icon="clock" aria-hidden="true"></span>업데이트 관리</a></li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#" aria-disabled="true"><span data-s1-part="item-icon" data-icon="lock" aria-hidden="true"></span>준비 중</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="panel" style="display:grid;gap:var(--spacing-16);align-content:start">
+        <div>
+          <div class="typo-title-14b" style="color:var(--color-text-title-primary);margin-bottom:var(--spacing-6)">쓸 수 있는 아이콘</div>
+          <div class="typo-body-12r" style="color:var(--color-text-body-tertiary)">가이드에 등록된 것만 씁니다. 없는 그림은 새로 그리지 않습니다.</div>
+        </div>
+        <div class="flow">
+          <span class="cand-icon" data-icon="home" aria-hidden="true" title="home"></span>
+          <span class="cand-icon" data-icon="search" aria-hidden="true" title="search"></span>
+          <span class="cand-icon" data-icon="notification" aria-hidden="true" title="notification"></span>
+          <span class="cand-icon" data-icon="settings" aria-hidden="true" title="settings"></span>
+          <span class="cand-icon" data-icon="account" aria-hidden="true" title="account"></span>
+          <span class="cand-icon" data-icon="globe" aria-hidden="true" title="globe"></span>
+          <span class="cand-icon" data-icon="calendar" aria-hidden="true" title="calendar"></span>
+          <span class="cand-icon" data-icon="clock" aria-hidden="true" title="clock"></span>
+          <span class="cand-icon" data-icon="lock" aria-hidden="true" title="lock"></span>
+          <span class="cand-icon" data-icon="menu" aria-hidden="true" title="menu"></span>
+        </div>
+        <hr data-s1-cand="divider" data-axis="x">
+        <div class="typo-body-12r" style="color:var(--color-text-body-tertiary)">
+          메뉴 하나하나에 딱 맞는 아이콘(문서·팔레트·부품 같은 것)은 가이드에 없습니다.
+          지금은 있는 것 중에서 고른 상태라, 맞는 그림을 새로 넣을지는 따로 정하셔야 합니다.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ 4 ══ -->
+  <div class="blk">
+    <h2 class="typo-title-20b">4 · 접힘카드 (PC)</h2>
+    <p class="sub typo-body-12r">모바일에만 있던 것을 PC 에서 쓰도록 옮겼습니다 — 구조·간격·모서리는 원본 그대로, 너비만 화면이 정합니다</p>
+
+    <div class="two">
+      <div data-s1-cand="expandable-card">
+        <button type="button" data-s1-part="header" aria-expanded="false" aria-controls="exp-1">
+          <span data-s1-part="text">
+            <span data-s1-part="title" class="typo-title-16b">타이틀</span>
+            <span data-s1-part="subtitle" class="typo-title-14b">서브타이틀</span>
+            <span data-s1-part="subtitle" class="typo-body-14r">서브타이틀</span>
+            <span data-s1-part="subtitle" class="typo-body-12r">서브타이틀</span>
+            <span data-s1-part="caption" class="typo-body-12r">서브타이틀</span>
+          </span>
+          <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+        </button>
+        <div data-s1-part="panel" id="exp-1" hidden>
+          <span data-s1-part="title" class="typo-title-16b">타이틀</span>
+          <span data-s1-part="subtitle" class="typo-title-14b">서브타이틀</span>
+          <span data-s1-part="subtitle" class="typo-body-14r">서브타이틀</span>
+          <span data-s1-part="caption" class="typo-body-12r">서브타이틀</span>
+        </div>
+      </div>
+
+      <div data-s1-cand="expandable-card">
+        <button type="button" data-s1-part="header" aria-expanded="true" aria-controls="exp-2">
+          <span data-s1-part="text">
+            <span data-s1-part="title" class="typo-title-16b">타이틀</span>
+            <span data-s1-part="subtitle" class="typo-title-14b">서브타이틀</span>
+            <span data-s1-part="subtitle" class="typo-body-14r">서브타이틀</span>
+            <span data-s1-part="subtitle" class="typo-body-12r">서브타이틀</span>
+            <span data-s1-part="caption" class="typo-body-12r">서브타이틀</span>
+          </span>
+          <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+        </button>
+        <div data-s1-part="panel" id="exp-2">
+          <span data-s1-part="title" class="typo-title-16b">타이틀</span>
+          <span data-s1-part="subtitle" class="typo-title-14b">서브타이틀</span>
+          <span data-s1-part="subtitle" class="typo-body-14r">서브타이틀</span>
+          <span data-s1-part="caption" class="typo-body-12r">서브타이틀</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:var(--spacing-20)">
+      <div class="typo-title-14b" style="color:var(--color-text-title-primary);margin-bottom:var(--spacing-12)">실제로 쓰면 이런 모습</div>
+      <div style="display:grid;gap:var(--spacing-12)">
+        <div data-s1-cand="expandable-card">
+          <button type="button" data-s1-part="header" aria-expanded="false" aria-controls="exp-faq-1">
+            <span data-s1-part="text">
+              <span data-s1-part="title" class="typo-title-16b">토큰 값을 바꾸면 어디까지 따라오나요?</span>
+              <span data-s1-part="caption" class="typo-body-12r">정본 · 파생 연동</span>
+            </span>
+            <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+          </button>
+          <div data-s1-part="panel" id="exp-faq-1" hidden>
+            <span data-s1-part="subtitle" class="typo-body-14r">정본 한 곳만 고치면 웹 가이드·설치기·문서까지 한 번에 다시 만들어집니다. 파생은 손으로 고치지 않습니다.</span>
+          </div>
+        </div>
+        <div data-s1-cand="expandable-card">
+          <button type="button" data-s1-part="header" aria-expanded="false" aria-controls="exp-faq-2">
+            <span data-s1-part="text">
+              <span data-s1-part="title" class="typo-title-16b">다크모드는 언제 켜지나요?</span>
+              <span data-s1-part="caption" class="typo-body-12r">테마</span>
+            </span>
+            <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+          </button>
+          <div data-s1-part="panel" id="exp-faq-2" hidden>
+            <span data-s1-part="subtitle" class="typo-body-14r">색을 전부 가이드 이름으로 연결하면 그 순간부터 켜집니다. 이 화면도 위에서 바로 바꿔 보실 수 있습니다.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../../ui-library/dist/s1-ui.js"></script>
+<script>
+(function () {
+  // 테마 전환 (검수용 장치)
+  var themeRoot = document.getElementById('theme-switch');
+  if (themeRoot) themeRoot.addEventListener('click', function (e) {
+    var cell = e.target.closest('[data-s1-part="cell"]');
+    if (!cell) return;
+    if (cell.getAttribute('data-value') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    else document.documentElement.removeAttribute('data-theme');
+  });
+  var q = new URLSearchParams(location.search);
+  if (q.get('theme') === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    themeRoot.querySelectorAll('[data-s1-part="cell"]').forEach(function (c) {
+      c.setAttribute('aria-checked', String(c.getAttribute('data-value') === 'dark'));
+    });
+  }
+
+  // 여닫이 — 사이드바 그룹 · 접힘카드 헤더가 같은 규칙을 쓴다
+  document.addEventListener('click', function (e) {
+    var trigger = e.target.closest('[aria-controls][aria-expanded]');
+    if (!trigger) return;
+    var panel = document.getElementById(trigger.getAttribute('aria-controls'));
+    if (!panel) return;
+    var open = trigger.getAttribute('aria-expanded') === 'true';
+    trigger.setAttribute('aria-expanded', String(!open));
+    panel.hidden = open;
+  });
+})();
+</script>
+</body>
+</html>
