@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>승격 후보 4종 — 검수</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link rel="stylesheet" href="../../ui-library/dist/assets/css/tokens.css?v=20260929123635">
-<link rel="stylesheet" href="../../ui-library/dist/assets/css/typography.css?v=20260929123635">
-<link rel="stylesheet" href="../../ui-library/dist/s1-ui.css?v=20260929123635">
-<link rel="stylesheet" href="../../assets/css/restyle-test.css?v=20260929123635">
-<link rel="stylesheet" href="../../assets/css/restyle-candidates.css?v=20260929123635">
+<link rel="stylesheet" href="../../ui-library/dist/assets/css/tokens.css?v=20260929124318">
+<link rel="stylesheet" href="../../ui-library/dist/assets/css/typography.css?v=20260929124318">
+<link rel="stylesheet" href="../../ui-library/dist/s1-ui.css?v=20260929124318">
+<link rel="stylesheet" href="../../assets/css/restyle-test.css?v=20260929124318">
+<link rel="stylesheet" href="../../assets/css/restyle-candidates.css?v=20260929124318">
 <style>
   /* 이 검수 화면 자체의 틀 — 부품이 아니다 */
   .sheet { max-width: 1120px; margin: 0 auto; padding: var(--spacing-32) var(--spacing-24) var(--spacing-80); }
@@ -180,35 +180,45 @@
   <!-- ══ 3 ══ -->
   <div class="blk">
     <h2 class="typo-title-20b">3 · 사이드바 메뉴</h2>
-    <p class="sub typo-body-12r">아이콘 + 메뉴명. 접히는 묶음은 제목 오른쪽 끝 화살표로 여닫습니다</p>
+    <p class="sub typo-body-12r">작은 구분명은 글자만 — 여닫이 화살표는 하위 메뉴를 가진 메뉴 칸 오른쪽 끝에 붙습니다</p>
 
     <div class="two">
       <div class="panel" style="padding:0;overflow:hidden">
         <nav data-s1-cand="side-nav" aria-label="사이드바 메뉴 예시 · 라인형 아이콘" style="border-right:0;min-width:0">
-          <div data-s1-part="group" class="typo-body-10m">GUIDE · 라인형 아이콘</div>
+          <div data-s1-part="group" class="typo-body-10m">GUIDE</div>
           <ul data-s1-part="items">
             <li><a data-s1-part="item" class="typo-body-14m" href="#" aria-current="page"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_홈_line.png');--s1-icon-solid:url('../../assets/icons/ic_홈_solid.png')" aria-hidden="true"></span>Overview</a></li>
             <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_목록리스트형_line.png');--s1-icon-solid:url('../../assets/icons/ic_목록리스트형_solid.png')" aria-hidden="true"></span>Foundation Tokens</a></li>
             <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_사용환경설정_line.png');--s1-icon-solid:url('../../assets/icons/ic_사용환경설정_solid.png')" aria-hidden="true"></span>Semantic Tokens</a></li>
           </ul>
 
-          <button type="button" data-s1-part="group" class="typo-body-10m" aria-expanded="true" aria-controls="sn-source">
-            SOURCE
-            <span data-s1-part="group-icon" aria-hidden="true"></span>
-          </button>
-          <ul data-s1-part="items" id="sn-source">
-            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_메뉴_line.png');--s1-icon-solid:url('../../assets/icons/ic_메뉴_solid.png')" aria-hidden="true"></span>PC Components</a></li>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_폴더_line.png');--s1-icon-solid:url('../../assets/icons/ic_폴더_solid.png')" aria-hidden="true"></span>Mobile Components</a></li>
+          <div data-s1-part="group" class="typo-body-10m">SOURCE</div>
+          <ul data-s1-part="items">
+            <li>
+              <button type="button" data-s1-part="item" class="typo-body-14m" aria-expanded="true" aria-controls="sn-a-comp">
+                <span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_메뉴_line.png');--s1-icon-solid:url('../../assets/icons/ic_메뉴_solid.png')" aria-hidden="true"></span>Components
+                <span data-s1-part="item-toggle" aria-hidden="true"></span>
+              </button>
+              <ul data-s1-part="subitems" id="sn-a-comp">
+                <li><a data-s1-part="item" class="typo-body-14m" href="#">PC Components</a></li>
+                <li><a data-s1-part="item" class="typo-body-14m" href="#">Mobile Components</a></li>
+              </ul>
+            </li>
             <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_날짜근태달력_line.png');--s1-icon-solid:url('../../assets/icons/ic_날짜근태달력_solid.png')" aria-hidden="true"></span>Patterns</a></li>
           </ul>
 
-          <button type="button" data-s1-part="group" class="typo-body-10m" aria-expanded="false" aria-controls="sn-system">
-            SYSTEM
-            <span data-s1-part="group-icon" aria-hidden="true"></span>
-          </button>
-          <ul data-s1-part="items" id="sn-system" hidden>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_새로고침_line.png');--s1-icon-solid:url('../../assets/icons/ic_새로고침_solid.png')" aria-hidden="true"></span>파이프라인 상태</a></li>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_SW최신업데이트_line.png');--s1-icon-solid:url('../../assets/icons/ic_SW최신업데이트_solid.png')" aria-hidden="true"></span>업데이트 관리</a></li>
+          <div data-s1-part="group" class="typo-body-10m">SYSTEM</div>
+          <ul data-s1-part="items">
+            <li>
+              <button type="button" data-s1-part="item" class="typo-body-14m" aria-expanded="false" aria-controls="sn-a-ops">
+                <span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_새로고침_line.png');--s1-icon-solid:url('../../assets/icons/ic_새로고침_solid.png')" aria-hidden="true"></span>운영
+                <span data-s1-part="item-toggle" aria-hidden="true"></span>
+              </button>
+              <ul data-s1-part="subitems" id="sn-a-ops" hidden>
+                <li><a data-s1-part="item" class="typo-body-14m" href="#">파이프라인 상태</a></li>
+                <li><a data-s1-part="item" class="typo-body-14m" href="#">업데이트 관리</a></li>
+              </ul>
+            </li>
             <li><a data-s1-part="item" class="typo-body-14m" href="#" aria-disabled="true"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_잠김_line.png');--s1-icon-solid:url('../../assets/icons/ic_잠김_solid.png')" aria-hidden="true"></span>준비 중</a></li>
           </ul>
         </nav>
@@ -216,31 +226,41 @@
 
       <div class="panel" style="padding:0;overflow:hidden">
         <nav data-s1-cand="side-nav" aria-label="사이드바 메뉴 예시 · 솔리드형 아이콘" style="border-right:0;min-width:0">
-          <div data-s1-part="group" class="typo-body-10m">GUIDE · 솔리드형 아이콘</div>
+          <div data-s1-part="group" class="typo-body-10m">GUIDE</div>
           <ul data-s1-part="items">
-            <li><a data-s1-part="item" class="typo-body-14m" href="#" aria-current="page"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_홈_solid.png')" aria-hidden="true"></span>Overview</a></li>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_목록리스트형_solid.png')" aria-hidden="true"></span>Foundation Tokens</a></li>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_사용환경설정_solid.png')" aria-hidden="true"></span>Semantic Tokens</a></li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#" aria-current="page"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_홈_solid.png');--s1-icon-solid:url('../../assets/icons/ic_홈_solid.png')" aria-hidden="true"></span>Overview</a></li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_목록리스트형_solid.png');--s1-icon-solid:url('../../assets/icons/ic_목록리스트형_solid.png')" aria-hidden="true"></span>Foundation Tokens</a></li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_사용환경설정_solid.png');--s1-icon-solid:url('../../assets/icons/ic_사용환경설정_solid.png')" aria-hidden="true"></span>Semantic Tokens</a></li>
           </ul>
 
-          <button type="button" data-s1-part="group" class="typo-body-10m" aria-expanded="true" aria-controls="sn-source-solid">
-            SOURCE
-            <span data-s1-part="group-icon" aria-hidden="true"></span>
-          </button>
-          <ul data-s1-part="items" id="sn-source-solid">
-            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_메뉴_solid.png')" aria-hidden="true"></span>PC Components</a></li>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_폴더_solid.png')" aria-hidden="true"></span>Mobile Components</a></li>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_날짜근태달력_solid.png')" aria-hidden="true"></span>Patterns</a></li>
+          <div data-s1-part="group" class="typo-body-10m">SOURCE</div>
+          <ul data-s1-part="items">
+            <li>
+              <button type="button" data-s1-part="item" class="typo-body-14m" aria-expanded="true" aria-controls="sn-b-comp">
+                <span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_메뉴_solid.png');--s1-icon-solid:url('../../assets/icons/ic_메뉴_solid.png')" aria-hidden="true"></span>Components
+                <span data-s1-part="item-toggle" aria-hidden="true"></span>
+              </button>
+              <ul data-s1-part="subitems" id="sn-b-comp">
+                <li><a data-s1-part="item" class="typo-body-14m" href="#">PC Components</a></li>
+                <li><a data-s1-part="item" class="typo-body-14m" href="#">Mobile Components</a></li>
+              </ul>
+            </li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_날짜근태달력_solid.png');--s1-icon-solid:url('../../assets/icons/ic_날짜근태달력_solid.png')" aria-hidden="true"></span>Patterns</a></li>
           </ul>
 
-          <button type="button" data-s1-part="group" class="typo-body-10m" aria-expanded="false" aria-controls="sn-system-solid">
-            SYSTEM
-            <span data-s1-part="group-icon" aria-hidden="true"></span>
-          </button>
-          <ul data-s1-part="items" id="sn-system-solid" hidden>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_새로고침_solid.png')" aria-hidden="true"></span>파이프라인 상태</a></li>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_SW최신업데이트_solid.png')" aria-hidden="true"></span>업데이트 관리</a></li>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#" aria-disabled="true"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_잠김_solid.png')" aria-hidden="true"></span>준비 중</a></li>
+          <div data-s1-part="group" class="typo-body-10m">SYSTEM</div>
+          <ul data-s1-part="items">
+            <li>
+              <button type="button" data-s1-part="item" class="typo-body-14m" aria-expanded="false" aria-controls="sn-b-ops">
+                <span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_새로고침_solid.png');--s1-icon-solid:url('../../assets/icons/ic_새로고침_solid.png')" aria-hidden="true"></span>운영
+                <span data-s1-part="item-toggle" aria-hidden="true"></span>
+              </button>
+              <ul data-s1-part="subitems" id="sn-b-ops" hidden>
+                <li><a data-s1-part="item" class="typo-body-14m" href="#">파이프라인 상태</a></li>
+                <li><a data-s1-part="item" class="typo-body-14m" href="#">업데이트 관리</a></li>
+              </ul>
+            </li>
+            <li><a data-s1-part="item" class="typo-body-14m" href="#" aria-disabled="true"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_잠김_solid.png');--s1-icon-solid:url('../../assets/icons/ic_잠김_solid.png')" aria-hidden="true"></span>준비 중</a></li>
           </ul>
         </nav>
       </div>
@@ -349,7 +369,7 @@
   </div>
 </div>
 
-<script src="../../ui-library/dist/s1-ui.js?v=20260929123635"></script>
+<script src="../../ui-library/dist/s1-ui.js?v=20260929124318"></script>
 <script>
 (function () {
   var themeRoot = document.getElementById('theme-switch');

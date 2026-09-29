@@ -93,11 +93,14 @@
 [data-s1-cand="divider"][data-inset="text"] { width: auto; margin-inline: var(--spacing-20); }
 
 /* ══ 3. Side Nav (사이드바 메뉴) ═══════════════════════
-   구성: 그룹 제목 → 항목(아이콘 + 메뉴명) · 접히는 그룹은 제목 우측 끝에 아래 화살표
-   왼쪽 세로 막대는 쓰지 않는다(river 2026-09-29) — 현재 위치는 배경과 글자색이 알린다.
+   구성: 작은 구분명(GUIDE·SOURCE…) → 항목(아이콘 + 메뉴명)
+   · 작은 구분명은 **글자만** 이다 — 여닫이 화살표를 달지 않는다(river 2026-09-29).
+   · 하위 메뉴를 가진 **메뉴 항목 자신의 오른쪽 끝**에 여닫이 화살표가 붙고,
+     그 아래로 하위 목록이 들여쓰기되어 열린다.
+   왼쪽 세로 막대는 쓰지 않는다 — 현재 위치는 글자·아이콘 색이 알린다.
    아이콘은 **아이콘 가이드의 그림** 을 CSS mask 로 쓴다. 라인형·솔리드형 둘 다 된다:
      <span data-s1-part="item-icon" style="--s1-icon:url('…/ic_홈_line.png')"></span>
-   색은 그림이 아니라 토큰이 정한다. 여러 색이 섞인 color 형은 이 방식에 맞지 않아 쓰지 않는다.
+   색은 그림이 아니라 토큰이 정한다(icon/gray-dark). color 형은 이 방식에 맞지 않아 쓰지 않는다.
    ══════════════════════════════════════════════════ */
 [data-s1-cand="side-nav"] {
   background: var(--color-navigation-bg);
@@ -108,33 +111,11 @@
   padding: var(--spacing-16) var(--spacing-12);
 }
 
+/* 작은 구분명 — 글자만. 누르는 물건이 아니다 */
 [data-s1-cand="side-nav"] [data-s1-part="group"] {
-  align-items: center;
-  background: transparent;
-  border: 0;
   color: var(--color-navigation-submenu-label-default);
-  display: flex;
-  gap: var(--spacing-8);
+  display: block;
   padding: var(--spacing-16) var(--spacing-10) var(--spacing-6);
-  text-align: left;
-  width: 100%;
-}
-[data-s1-cand="side-nav"] button[data-s1-part="group"] { cursor: pointer; }
-
-/* 접힘 화살표 — 정본 chevron 한 장. 닫힘은 아래, 열림은 위로 뒤집는다(회전 아님) */
-[data-s1-cand="side-nav"] [data-s1-part="group-icon"] {
-  background-color: var(--color-navigation-icon-default);
-  flex: none;
-  height: var(--sizing-20);
-  margin-left: auto;
-  -webkit-mask: url("../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
-  mask: url("../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
-  transform: rotate(90deg);
-  transition: transform .18s ease;
-  width: var(--sizing-20);
-}
-[data-s1-cand="side-nav"] [data-s1-part="group"][aria-expanded="true"] [data-s1-part="group-icon"] {
-  transform: rotate(90deg) scaleX(-1);
 }
 
 [data-s1-cand="side-nav"] [data-s1-part="items"] {
@@ -148,14 +129,19 @@
 
 [data-s1-cand="side-nav"] [data-s1-part="item"] {
   align-items: center;
+  background: transparent;
+  border: 0;
   border-radius: var(--radius-6);
   color: var(--color-navigation-label-default);
   display: flex;
   gap: var(--spacing-8);
   min-height: var(--sizing-40);
   padding: var(--spacing-8) var(--spacing-10);
+  text-align: left;
   text-decoration: none;
+  width: 100%;
 }
+[data-s1-cand="side-nav"] button[data-s1-part="item"] { cursor: pointer; }
 [data-s1-cand="side-nav"] [data-s1-part="item"]:hover {
   background: var(--color-bg-level-1);
   color: var(--color-navigation-label-hover);
@@ -173,7 +159,7 @@
 /* 메뉴 아이콘 — 그림은 --s1-icon 으로 받고, 색은 토큰이 준다 */
 [data-s1-cand="side-nav"] [data-s1-part="item-icon"],
 .cand-icon {
-  background-color: var(--color-navigation-icon-default);
+  background-color: var(--color-icon-gray-dark);
   display: inline-block;
   flex: none;
   height: var(--sizing-20);
@@ -197,6 +183,33 @@
   background-color: var(--color-icon-gray-light);
 }
 .cand-icon { height: var(--sizing-24); width: var(--sizing-24); }
+
+/* 여닫이 화살표 — **메뉴 항목 자신의 오른쪽 끝**에 붙는다.
+   정본 chevron 한 장을 닫힘은 아래, 열림은 위로 뒤집어 쓴다(회전 아님) */
+[data-s1-cand="side-nav"] [data-s1-part="item-toggle"] {
+  background-color: var(--color-icon-gray-dark);
+  flex: none;
+  height: var(--sizing-20);
+  margin-left: auto;
+  -webkit-mask: url("../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
+  mask: url("../../ui-library/dist/assets/icons/chevron.svg") center / contain no-repeat;
+  transform: rotate(90deg);
+  transition: transform .18s ease;
+  width: var(--sizing-20);
+}
+[data-s1-cand="side-nav"] [data-s1-part="item"][aria-expanded="true"] [data-s1-part="item-toggle"] {
+  transform: rotate(90deg) scaleX(-1);
+}
+
+/* 하위 목록 — 부모 메뉴 아래로 들여쓴다(아이콘 폭 + 사이 간격만큼) */
+[data-s1-cand="side-nav"] [data-s1-part="subitems"] {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 calc(var(--sizing-20) + var(--spacing-8));
+}
+[data-s1-cand="side-nav"] [data-s1-part="subitems"][hidden] { display: none; }
 
 /* 다크에서는 라인형 대신 **솔리드형**을 기본으로 쓴다(river 2026-09-29).
    항목이 --s1-icon-solid 를 함께 주면 다크에서 그것으로 바뀌고, 없으면 원래 그림을 그대로 쓴다.
