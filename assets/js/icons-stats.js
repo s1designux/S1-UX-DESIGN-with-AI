@@ -4,4 +4,4 @@
    ⚠ 직접 수정 금지 — npm run icons:stats 로 재생성 (검사: npm run icons:stats:check)
 ============================================================ */
 
-window.ICONS_STATS = {"icons":819,"sections":15};
+window.ICONS_STATS = {"icons":820,"sections":15};

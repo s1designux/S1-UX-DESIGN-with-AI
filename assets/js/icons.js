@@ -168,8 +168,12 @@
     const hasPng = png.trim().length > 0;
     const hasSvg = svg.trim().length > 0;
     const svgShow = svgVisible[icon.id];
-    const figmaNodeId = variantData.figmaNodeId || icon.figmaNodeId;
-    const figmaUrl = 'https://www.figma.com/design/' + FIGMA_FILE_KEY + '/' + FIGMA_FILE_NAME + '?node-id=' + figmaNodeId.replace(':', '-');
+    const figmaNodeId = variantData.figmaNodeId || icon.figmaNodeId || '';
+    /* Figma 원본이 아직 없는 아이콘(저장소에서 그린 것)도 카드로 보여야 한다.
+       종전에는 nodeId 가 없으면 여기서 터져 **아이콘 판 전체가 안 그려졌다**. */
+    const figmaUrl = figmaNodeId
+      ? 'https://www.figma.com/design/' + FIGMA_FILE_KEY + '/' + FIGMA_FILE_NAME + '?node-id=' + figmaNodeId.replace(':', '-')
+      : '';
 
     const variantTabs = ['line', 'solid', 'color']
       .filter(v => icon.properties.type.includes(v))
@@ -198,7 +202,7 @@
     } else if (hasSvg) {
       detailAreaHtml = '<div class="icon-svg-code">' + escHtml(svg) + '</div>';
     } else {
-      detailAreaHtml = '<div class="icon-svg-empty">export-icons-png.js 를 실행해<br>PNG를 생성하세요<br><br><code>' + escHtml(figmaNodeId) + '</code></div>';
+      detailAreaHtml = '<div class="icon-svg-empty">export-icons-png.js 를 실행해<br>PNG를 생성하세요<br><br><code>' + escHtml(figmaNodeId || '(Figma 원본 없음)') + '</code></div>';
     }
 
     const keywordText = icon.keywords.slice(0, 8).join(', ');
@@ -210,10 +214,12 @@
       '  <div class="icon-keywords">' + (escHtml(keywordText) || '—') + '</div>\n' +
       '  <div class="icon-meta-row">\n' +
       '    <button class="icon-svg-toggle-btn" data-id="' + escHtml(icon.id) + '">' + (svgShow ? '▲ 숨기기' : toggleLabel) + '</button>\n' +
-      '    <a class="icon-figma-link" href="' + figmaUrl + '" target="_blank" title="Figma에서 열기">\n' +
-      '      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.332 8.668a3.333 3.333 0 0 0 0-6.663H8.668a3.333 3.333 0 0 0 0 6.663 3.333 3.333 0 0 0 0 6.665 3.333 3.333 0 1 0 3.332 3.332V8.668h3.332z"/><circle cx="15.332" cy="5.336" r="3.332"/></svg>\n' +
-      '      Figma\n' +
-      '    </a>\n' +
+      (figmaUrl
+        ? '    <a class="icon-figma-link" href="' + figmaUrl + '" target="_blank" title="Figma에서 열기">\n' +
+          '      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M15.332 8.668a3.333 3.333 0 0 0 0-6.663H8.668a3.333 3.333 0 0 0 0 6.663 3.333 3.333 0 0 0 0 6.665 3.333 3.333 0 1 0 3.332 3.332V8.668h3.332z"/><circle cx="15.332" cy="5.336" r="3.332"/></svg>\n' +
+          '      Figma\n' +
+          '    </a>\n'
+        : '    <span class="icon-figma-link is-none" title="Figma 원본이 아직 없습니다">Figma 없음</span>\n') +
       '  </div>\n' +
       '  <div class="icon-svg-area' + (svgShow ? ' is-visible' : '') + '" id="svg-area-' + escHtml(icon.id) + '">\n' +
       '    ' + detailAreaHtml + '\n' +

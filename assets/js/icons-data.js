@@ -27451,6 +27451,45 @@ window.ICONS_DATA = {
           "png": "../assets/icons/ic_마지막장_color.png"
         }
       }
+    },
+    {
+      "name": "ic_패널접기",
+      "id": "ic_패널접기",
+      "description": "패널접기, 사이드메뉴접기, LNB, 접기, 펴기, panel, sidebar, collapse, expand, drawer",
+      "keywords": [
+        "패널접기",
+        "사이드메뉴접기",
+        "LNB",
+        "접기",
+        "펴기",
+        "panel",
+        "sidebar",
+        "collapse",
+        "expand",
+        "drawer"
+      ],
+      "section": "ui",
+      "origin": "repo",
+      "originNote": "Figma 원본이 아직 없다. 저장소에서 그린 아이콘이다(river 지시 2026-09-29, 기준=ic_날짜근태달력 비율). Figma 라이브러리 등록은 별도 작업이며, 등록되면 figmaNodeId 를 채운다.",
+      "source": "assets/img/candidate-icons/ic_패널접기_line.svg · _solid.svg",
+      "properties": {
+        "type": [
+          "line",
+          "solid",
+          "color"
+        ]
+      },
+      "variants": {
+        "line": {
+          "png": "../assets/icons/ic_패널접기_line.png"
+        },
+        "solid": {
+          "png": "../assets/icons/ic_패널접기_solid.png"
+        },
+        "color": {
+          "png": "../assets/icons/ic_패널접기_color.png"
+        }
+      }
     }
   ]
 };
