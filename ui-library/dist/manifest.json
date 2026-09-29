@@ -1,9 +1,9 @@
 {
   "id": "s1-ui",
-  "version": "0.13.14",
-  "releasedAt": "2026-09-28",
+  "version": "0.13.16",
+  "releasedAt": "2026-09-29",
   "status": "approved",
-  "canonicalFingerprint": "964c65df9a45841d3d8b2d8f0e104e747ee13e0c44be43946113096b6100cb27",
+  "canonicalFingerprint": "9c27af310cd4ca946a71488f215ea9cb26cd75e104d4ef251cbd9305054ab4ad",
   "tokenMapFingerprint": "796fb798dd329910ba6c42a29fb4af9e0fd217446b3fa847e140bc70a0a8f4c7",
   "commonCssDependencies": [
     "assets/css/tokens.css",
@@ -16,7 +16,7 @@
     }
   ],
   "commonCssFingerprints": {
-    "assets/css/tokens.css": "8eb015e3a73edbf60872300a8d7b3ee2b85296e7f3c4f98d4b36a3c3ea81e456",
+    "assets/css/tokens.css": "d3f70ad86c683c8a62b043a4e8e6c208e2780427c9bcfd73dbc5f767a10f484f",
     "assets/css/typography.css": "d5961f792bec6b8d339c0f4362ae4da15bac829e0bfec5ecb7d4dc732ce232da"
   },
   "jsRequired": true,
@@ -914,11 +914,11 @@
     },
     {
       "id": "time-picker",
-      "version": "0.3.7",
+      "version": "0.3.9",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "cefa333d4aaaef36bcff1076baca3a99eea37e841e41d1204497658ed3b4fa84",
-      "sourceFingerprint": "0402226be369d351253d8132c1408cb5691e82a414a7219256015b0b5f13529e",
+      "canonicalFingerprint": "228178a0c28f142b872b091b8542d2c56a6820d947d09ec284344797446f76b4",
+      "sourceFingerprint": "33143012fbf2bba850f652146dfca177adec42da315d8922db16da7b05348f00",
       "css": "components/time-picker.css",
       "js": "components/time-picker.js",
       "example": "examples/time-picker.html",
@@ -944,11 +944,11 @@
     },
     {
       "id": "gnb",
-      "version": "0.2.2",
+      "version": "0.2.4",
       "status": "verified",
       "jsRequired": true,
-      "canonicalFingerprint": "951af843113ba1349a87819a4ec7bd6fe987e6da285900022897f65c7f7409df",
-      "sourceFingerprint": "bf66ba74287c99968566e9e03c4392ca750c03e89823b245d99e0c02d4fdaf46",
+      "canonicalFingerprint": "141ff9bc8bfa75cf70d3e8d7bd6b97b66283971be811b7f666411ab5ee2c619b",
+      "sourceFingerprint": "2c7c3ff9bb2fcba48a42ef61f35f636d678aa8066b232a0e0049d141e0cca1fc",
       "css": "components/gnb.css",
       "js": "components/gnb.js",
       "example": "examples/gnb.html",
@@ -972,11 +972,11 @@
     },
     {
       "id": "gnb-sub-menu",
-      "version": "0.2.2",
+      "version": "0.2.4",
       "status": "verified",
       "jsRequired": false,
-      "canonicalFingerprint": "b5a8c17297511f64c9c9ae7f08560841b364060537d05ea5097982fd513569a3",
-      "sourceFingerprint": "80695529e241529d672ca6a0ed968f67f388da07967290f0a29502a8fd9b3604",
+      "canonicalFingerprint": "4d24732009e9f4cc20c3137285ff431512ae096deb59bb348c55f7d9203b64b6",
+      "sourceFingerprint": "9399f28f0eed3b8244661267ded3985e546fd53b9f840e005c11b188ef4f0f22",
       "css": "components/gnb-sub-menu.css",
       "js": "components/gnb-sub-menu.js",
       "example": "examples/gnb-sub-menu.html",

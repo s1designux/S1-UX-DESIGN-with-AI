@@ -442,8 +442,10 @@ object S1Tokens {
         const val colorIconWhite: Long = 0xFFFFFFFF
         /** --color-line-blue = #1D6CEB */
         const val colorLineBlue: Long = 0xFF1D6CEB
-        /** --color-line-gray-subtle = #E9E9E9 */
-        const val colorLineGraySubtle: Long = 0xFFE9E9E9
+        /** --color-line-default = #E9E9E9 */
+        const val colorLineDefault: Long = 0xFFE9E9E9
+        /** --color-line-strong = #353535 */
+        const val colorLineStrong: Long = 0xFF353535
         /** --color-modal-panel-border = #D9D9D9 */
         const val colorModalPanelBorder: Long = 0xFFD9D9D9
         /** --color-navigation-bg = #FFFFFF */
@@ -1046,8 +1048,10 @@ object S1Tokens {
         const val colorIconRed: Long = 0xFFF06070
         /** --color-line-blue = #3070D8 */
         const val colorLineBlue: Long = 0xFF3070D8
-        /** --color-line-gray-subtle = #2E2F38 */
-        const val colorLineGraySubtle: Long = 0xFF2E2F38
+        /** --color-line-default = #2E2F38 */
+        const val colorLineDefault: Long = 0xFF2E2F38
+        /** --color-line-strong = #8A8C96 */
+        const val colorLineStrong: Long = 0xFF8A8C96
         /** --color-modal-panel-border = #3E4049 */
         const val colorModalPanelBorder: Long = 0xFF3E4049
         /** --color-navigation-bg = #1C1D23 */

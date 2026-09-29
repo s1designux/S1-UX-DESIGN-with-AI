@@ -178,7 +178,7 @@
 }
 
 [data-s1-component="time-picker"] [data-s1-part="divider"] {
-  background: var(--color-line-gray-subtle);
+  background: var(--color-line-default);
   flex: 0 0 auto;
   width: var(--border-width-1);
 }
@@ -232,7 +232,7 @@
    panelW-16 길이의 1px 선을 둔다(build-components.ts 2540-2547). 투명 border 로 정본의
    1px 행 높이를 유지하고, 실제 선은 그 자리에 안쪽으로만 그린다. */
 [data-s1-component="time-picker"] [data-s1-part="columns"] + [data-s1-part="footer"] {
-  background: linear-gradient(var(--color-line-gray-subtle), var(--color-line-gray-subtle)) no-repeat 50% 0 / calc(100% - var(--spacing-16)) var(--border-width-1);
+  background: linear-gradient(var(--color-line-default), var(--color-line-default)) no-repeat 50% 0 / calc(100% - var(--spacing-16)) var(--border-width-1);
   background-origin: border-box;
   border-top: var(--border-width-1) solid transparent;
 }

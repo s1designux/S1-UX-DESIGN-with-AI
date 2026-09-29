@@ -55,7 +55,7 @@ const T = {
   meta: "color/text/body/tertiary",
   surface: "color/bg/level-0",
   band: "color/bg/level-2",
-  line: "color/line/gray/subtle",
+  line: "color/line/default",
   mark: "color/icon/gray-light",   // 자·모서리 상자 같은 '표시용 도형'. 바탕색 계열은 흰 판에서 안 보인다(실측 2026-09-22).
 };
 

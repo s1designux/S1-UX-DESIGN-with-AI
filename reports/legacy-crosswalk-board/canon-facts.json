@@ -3,7 +3,7 @@
     "목적": "검수판 카드에 박는 정본 사실 — 사람이 요약하지 않고 기계가 뽑는다",
     "출처": "ui-library/dist/components/*.manifest.json (정본 build-components.ts 에서 생성)",
     "재생성": "npm run board:facts",
-    "생성일": "2026-09-28"
+    "생성일": "2026-09-29"
   },
   "components": {
     "assist-button": {
@@ -481,7 +481,7 @@
     "gnb-sub-menu": {
       "id": "gnb-sub-menu",
       "status": "verified",
-      "version": "0.2.2",
+      "version": "0.2.4",
       "sizes": [],
       "breaks": {},
       "sizeBreakGrid": [],
@@ -494,12 +494,12 @@
         "Type=compact-2": "compact-2"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "80695529e241529d672ca6a0ed968f67f388da07967290f0a29502a8fd9b3604"
+      "sourceFingerprint": "9399f28f0eed3b8244661267ded3985e546fd53b9f840e005c11b188ef4f0f22"
     },
     "gnb": {
       "id": "gnb",
       "status": "verified",
-      "version": "0.2.2",
+      "version": "0.2.4",
       "sizes": [
         "md",
         "sm",
@@ -532,7 +532,7 @@
           "reason": "GNB Utility Icon 세트는 language·menu·user on/off 5변형을 갖지만, GNB 바가 실제로 쓰는 것은 all-on(GNBUtil:full) 1개뿐이다(buildGNB:3607, registry 서술). 다른 4변형은 이 컴포넌트가 배포하지 않는다 — 유틸 영역 구성을 바꾸려면 host 화면이 data-s1-part 를 골라 빼고 넣는다."
         }
       ],
-      "sourceFingerprint": "bf66ba74287c99968566e9e03c4392ca750c03e89823b245d99e0c02d4fdaf46"
+      "sourceFingerprint": "2c7c3ff9bb2fcba48a42ef61f35f636d678aa8066b232a0e0049d141e0cca1fc"
     },
     "input": {
       "id": "input",
@@ -1156,7 +1156,7 @@
     "time-picker": {
       "id": "time-picker",
       "status": "approved",
-      "version": "0.3.7",
+      "version": "0.3.9",
       "sizes": [
         "xxsm",
         "xsm",
@@ -1229,7 +1229,7 @@
           "reason": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
         }
       ],
-      "sourceFingerprint": "0402226be369d351253d8132c1408cb5691e82a414a7219256015b0b5f13529e"
+      "sourceFingerprint": "33143012fbf2bba850f652146dfca177adec42da315d8922db16da7b05348f00"
     },
     "toggle": {
       "id": "toggle",

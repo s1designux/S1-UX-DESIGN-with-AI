@@ -443,8 +443,10 @@ public enum S1Tokens {
         public static let colorIconWhite: UInt32 = 0xFFFFFFFF
         /// --color-line-blue = #1D6CEB
         public static let colorLineBlue: UInt32 = 0xFF1D6CEB
-        /// --color-line-gray-subtle = #E9E9E9
-        public static let colorLineGraySubtle: UInt32 = 0xFFE9E9E9
+        /// --color-line-default = #E9E9E9
+        public static let colorLineDefault: UInt32 = 0xFFE9E9E9
+        /// --color-line-strong = #353535
+        public static let colorLineStrong: UInt32 = 0xFF353535
         /// --color-modal-panel-border = #D9D9D9
         public static let colorModalPanelBorder: UInt32 = 0xFFD9D9D9
         /// --color-navigation-bg = #FFFFFF
@@ -1047,8 +1049,10 @@ public enum S1Tokens {
         public static let colorIconRed: UInt32 = 0xFFF06070
         /// --color-line-blue = #3070D8
         public static let colorLineBlue: UInt32 = 0xFF3070D8
-        /// --color-line-gray-subtle = #2E2F38
-        public static let colorLineGraySubtle: UInt32 = 0xFF2E2F38
+        /// --color-line-default = #2E2F38
+        public static let colorLineDefault: UInt32 = 0xFF2E2F38
+        /// --color-line-strong = #8A8C96
+        public static let colorLineStrong: UInt32 = 0xFF8A8C96
         /// --color-modal-panel-border = #3E4049
         public static let colorModalPanelBorder: UInt32 = 0xFF3E4049
         /// --color-navigation-bg = #1C1D23

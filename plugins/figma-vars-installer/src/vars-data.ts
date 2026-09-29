@@ -619,7 +619,11 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
 
   // ── line ────────────────────────────────
   "color/line/blue": { light: "blue/400", dark: "blue-dark/300" },
-  "color/line/gray/subtle": { light: "gray/100", dark: "gray-dark/300" },
+  "color/line/default": { light: "gray/100", dark: "gray-dark/300" },
+  // 표 위·아래 같은 "강한 구분선". 값은 이미 있던 color/table/border/strong 과 같은 짝이다
+  // (river 지시 2026-09-29 — "line의 스트롱은 gray800이야. 테이블 그릴때 상하에 있는 그 라인 말야").
+  // 종전 이름 color/line/default 은 같은 지시로 color/line/default 로 개명했다.
+  "color/line/strong": { light: "gray/800", dark: "gray-dark/700" },
 
   // ── navigation ────────────────────────────────
   "color/navigation/bg": { light: "base/white", dark: "gray-dark/100" },

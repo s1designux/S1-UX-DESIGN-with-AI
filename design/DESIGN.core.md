@@ -1970,8 +1970,8 @@ Global Navigation Bar. 로고 + 메뉴 슬롯(slots_menu) + 유틸리티(아이�
 
 | variant | default | hover | pressed | disabled |
 | --- | --- | --- | --- | --- |
-| menuSlot | --color-navigation-label-default-alt | --color-navigation-label-hover | — | — |
-| bar | --color-navigation-label-default-alt | --color-navigation-label-hover | — | — |
+| menuSlot | --color-line-default<br>--color-navigation-label-default-alt | --color-navigation-label-hover | — | — |
+| bar | --color-line-default<br>--color-navigation-label-default-alt | --color-navigation-label-hover | — | — |
 
 #### Agent-readable contract
 
@@ -2048,7 +2048,7 @@ agent:
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
-      - "color/line/gray/subtle"
+      - "color/line/default"
       - "color/navigation/bg"
       - "color/navigation/indicator/selected"
       - "color/navigation/label/default-alt"
@@ -2060,7 +2060,7 @@ agent:
         chain: "--color-navigation-bg → --color-base-white → #FFFFFF"
         status: "resolved"
       -
-        chain: "--color-line-gray-subtle → --color-gray-100 → #E9E9E9"
+        chain: "--color-line-default → --color-gray-100 → #E9E9E9"
         status: "resolved"
       -
         chain: "--color-navigation-label-default-alt → --color-gray-700 → #434343"
@@ -2193,7 +2193,7 @@ agent:
   constraints: "unknown"
   tokens:
     figmaSemanticBindings:
-      - "color/line/gray/subtle"
+      - "color/line/default"
       - "color/navigation/bg"
       - "color/navigation/label/default"
       - "color/navigation/label/selected"
@@ -4865,7 +4865,7 @@ agent:
       - "color/form-control/text/default"
       - "color/form-control/text/disabled"
       - "color/form-control/text/placeholder"
-      - "color/line/gray/subtle"
+      - "color/line/default"
       - "color/text/state/disabled"
     aliasChains:
       -
@@ -5142,4 +5142,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: aae46fba2c9c · 손편집 금지 -->
+<!-- generated-stamp: 9b18ecb62e88 · 손편집 금지 -->

@@ -102,7 +102,7 @@ window.REGISTRY_BUNDLE = {
           "name": "SW Foundation Colors",
           "version": "2.4",
           "status": "stable",
-          "updatedAt": "2026-09-15",
+          "updatedAt": "2026-09-29",
           "source": "plugins/figma-vars-installer/src/vars-data.ts (FOUNDATION_COLOR)",
           "description": "Official SW Design System V2.4 foundation color foundation. Raw HEX values are allowed here only.",
           "generated": true,
@@ -11485,9 +11485,9 @@ window.REGISTRY_BUNDLE = {
           "description": "GNB 바 배경"
         },
         {
-          "name": "--color-line-gray-subtle",
+          "name": "--color-line-default",
           "resolvedLight": "#E9E9E9",
-          "figmaVariable": "color/line/gray/subtle",
+          "figmaVariable": "color/line/default",
           "status": "stable",
           "description": "GNB 바 하단 1px 라인"
         },
@@ -11772,7 +11772,7 @@ window.REGISTRY_BUNDLE = {
           "property": "bg"
         },
         {
-          "name": "color/line/gray/subtle",
+          "name": "color/line/default",
           "property": "border-bottom"
         },
         {

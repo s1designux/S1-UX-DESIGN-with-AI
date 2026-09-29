@@ -146,7 +146,7 @@ function helperText(label: string, w: number): PNode {
 }
 
 const HELPER_SEP: PNode = {
-  t: "RECT", n: "sep", w: 1, h: 10, sz: ["FIXED", "FIXED"], fillVar: "color/line/gray/subtle",
+  t: "RECT", n: "sep", w: 1, h: 10, sz: ["FIXED", "FIXED"], fillVar: "color/line/default",
 };
 
 /** 회원가입 · 아이디 찾기 · 비밀번호 찾기 + 사이 구분선 (spec-change-2026-08-24-helper-separator) */
@@ -479,7 +479,7 @@ function agreements(): PNode {
     c: [
       { t: "FRAME", n: "Agreement Row / All", x: 0, y: 8, w: 320, h: 20, clip: true,
         c: [checkbox(), agreementLabel("전체 동의하기", 292)] },
-      { t: "RECT", n: "Divider", x: 0, y: 50, w: 320, h: 1, fillVar: "color/line/gray/subtle" },
+      { t: "RECT", n: "Divider", x: 0, y: 50, w: 320, h: 1, fillVar: "color/line/default" },
       { t: "FRAME", n: "Agreement Row / Terms", x: 0, y: 78, w: 320, h: 24, clip: true,
         c: [checkbox(), agreementLabel("회원 약관 동의(필수)", 258), moreIcon(296, 0)] },
       { t: "FRAME", n: "Agreement Row / Privacy", x: 0, y: 126, w: 320, h: 24, clip: true,
@@ -583,7 +583,7 @@ export const MOBILE_WEB_SIGNUP: PatternDef = {
     signupScreen("MWEB/SIGNUP/2 · 외부 본인인증 (플레이스홀더)", 480, 100, [
       { t: "FRAME", n: "ExternalAuthPlaceholder", sz: ["FIXED", "HUG"], w: 320, h: 147, clip: true, r: 8,
         al: ["VERTICAL", 24, 32, 20, 32, 20, "AUTO", "FIXED", "MIN", "CENTER"],
-        fillVar: "color/bg/level-0", strokeVar: "color/line/gray/subtle", strokeW: 1, strokeAlign: "INSIDE",
+        fillVar: "color/bg/level-0", strokeVar: "color/line/default", strokeW: 1, strokeAlign: "INSIDE",
         c: [
           { t: "TEXT", n: "[외부 본인인증 사이트 표출]", sz: ["HUG", "HUG"], w: 171, h: 21,
             fillVar: "color/text/body/secondary", chars: "[외부 본인인증 사이트 표출]",
@@ -593,13 +593,13 @@ export const MOBILE_WEB_SIGNUP: PatternDef = {
             c: [
               { t: "FRAME", n: "PlaceholderAction / 취소", sz: ["HUG", "HUG"], w: 74, h: 38, clip: true, r: 6,
                 al: ["HORIZONTAL", 0, 10, 20, 10, 20, "AUTO", "AUTO", "MIN", "CENTER"],
-                fillVar: "color/bg/level-1", strokeVar: "color/line/gray/subtle", strokeW: 1, strokeAlign: "INSIDE",
+                fillVar: "color/bg/level-1", strokeVar: "color/line/default", strokeW: 1, strokeAlign: "INSIDE",
                 c: [{ t: "TEXT", n: "[취소]", sz: ["HUG", "HUG"], w: 34, h: 18,
                       fillVar: "color/text/body/tertiary", chars: "[취소]",
                       tar: "WIDTH_AND_HEIGHT", ta: ["LEFT", "TOP"], ts: "body/14M" }] },
               { t: "FRAME", n: "PlaceholderAction / 다음", sz: ["HUG", "HUG"], w: 74, h: 38, clip: true, r: 6,
                 al: ["HORIZONTAL", 0, 10, 20, 10, 20, "AUTO", "AUTO", "MIN", "CENTER"],
-                fillVar: "color/bg/level-1", strokeVar: "color/line/gray/subtle", strokeW: 1, strokeAlign: "INSIDE",
+                fillVar: "color/bg/level-1", strokeVar: "color/line/default", strokeW: 1, strokeAlign: "INSIDE",
                 c: [{ t: "TEXT", n: "[다음]", sz: ["HUG", "HUG"], w: 34, h: 18,
                       fillVar: "color/text/body/tertiary", chars: "[다음]",
                       tar: "WIDTH_AND_HEIGHT", ta: ["LEFT", "TOP"], ts: "body/14M" }] },

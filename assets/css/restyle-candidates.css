@@ -30,7 +30,7 @@
       빨강/주황/초록 -dark-350) — 기존 semantic 이 쓰는 짝을 그대로 따른 것이다.
    ══════════════════════════════════════════════════ */
 [data-s1-cand="data-tag"] {
-  --tag-color: var(--color-line-gray-subtle);
+  --tag-color: var(--color-line-default);
   --tag-label: var(--color-text-body-tertiary);
 
   align-items: center;
@@ -52,8 +52,8 @@
 [data-s1-cand="data-tag"][data-tone="turquoise"] { --tag-color: var(--color-skyblue-400); --tag-label: var(--color-skyblue-400); }
 [data-s1-cand="data-tag"][data-tone="orange"]    { --tag-color: var(--color-orange-300);  --tag-label: var(--color-orange-300); }
 [data-s1-cand="data-tag"][data-tone="seagreen"]  { --tag-color: var(--color-green-300);   --tag-label: var(--color-green-300); }
-[data-s1-cand="data-tag"][data-tone="neutral"]   { --tag-color: var(--color-line-gray-subtle); --tag-label: var(--color-text-body-tertiary); }
-[data-s1-cand="data-tag"][data-tone="disabled"]  { --tag-color: var(--color-line-gray-subtle); --tag-label: var(--color-text-state-disabled); }
+[data-s1-cand="data-tag"][data-tone="neutral"]   { --tag-color: var(--color-line-default); --tag-label: var(--color-text-body-tertiary); }
+[data-s1-cand="data-tag"][data-tone="disabled"]  { --tag-color: var(--color-line-default); --tag-label: var(--color-text-state-disabled); }
 
 /* 색 — Dark */
 [data-theme="dark"] [data-s1-cand="data-tag"][data-tone="blue"]      { --tag-color: var(--color-blue-dark-300);    --tag-label: var(--color-blue-dark-300); }
@@ -75,16 +75,19 @@
 }
 
 /* ══ 2. Divider (구분선) ═══════════════════════════════
-   축: data-axis=x|y · data-weight=default|strong · data-tone=gray|accent · data-inset=none|text
+   축: data-axis=x|y · data-weight=default|strong · data-inset=none|text
+   색은 선 토큰 두 개가 정한다 — 기본선은 --color-line-default(gray/100),
+   표 위·아래 같은 강한 선은 --color-line-strong(gray/800).
+   파란 선(--color-line-blue)은 쓰지 않는다(river 2026-09-29).
    ══════════════════════════════════════════════════ */
 [data-s1-cand="divider"] {
-  background: var(--color-line-gray-subtle);
+  background: var(--color-line-default);
   border: 0;
   display: block;
   flex: none;
   margin: 0;
 }
-[data-s1-cand="divider"][data-tone="accent"] { background: var(--color-line-blue); }
+[data-s1-cand="divider"][data-tone="strong"] { background: var(--color-line-strong); }
 
 [data-s1-cand="divider"][data-axis="x"] { height: var(--border-width-default); width: 100%; }
 [data-s1-cand="divider"][data-axis="x"][data-weight="strong"] { height: var(--border-width-strong); }
@@ -109,7 +112,7 @@
    ══════════════════════════════════════════════════ */
 [data-s1-cand="side-nav"] {
   background: var(--color-navigation-bg);
-  border-right: var(--border-width-default) solid var(--color-line-gray-subtle);
+  border-right: var(--border-width-default) solid var(--color-line-default);
   display: flex;
   flex-direction: column;
   min-width: 240px;
@@ -212,7 +215,7 @@
    ══════════════════════════════════════════════════ */
 [data-s1-cand="expandable-card"] {
   background: var(--color-bg-level-0);
-  border: var(--border-width-default) solid var(--color-line-gray-subtle);
+  border: var(--border-width-default) solid var(--color-line-default);
   border-radius: var(--radius-card-md);
   display: flex;
   flex-direction: column;
@@ -290,7 +293,7 @@
   transition: padding .22s ease;
 }
 [data-s1-cand="expandable-card"] [data-s1-part="panel-wrap"][data-open="true"] [data-s1-part="panel"] {
-  border-top: var(--border-width-default) solid var(--color-line-gray-subtle);
+  border-top: var(--border-width-default) solid var(--color-line-default);
   padding: var(--spacing-16) var(--spacing-16) var(--spacing-20) var(--spacing-20);
 }
 

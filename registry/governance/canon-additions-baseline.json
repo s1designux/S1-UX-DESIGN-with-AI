@@ -1,8 +1,8 @@
 {
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
-  "_updated": "2026-09-22",
-  "count": 665,
+  "_updated": "2026-09-29",
+  "count": 667,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -180,7 +180,9 @@
     "color:color/icon/red",
     "color:color/icon/white",
     "color:color/line/blue",
+    "color:color/line/default",
     "color:color/line/gray/subtle",
+    "color:color/line/strong",
     "color:color/modal/panel/border",
     "color:color/navigation/bg",
     "color:color/navigation/icon/default",
@@ -1459,6 +1461,30 @@
       },
       "recordedBy": "orchestrator",
       "reapprovedAt": "2026-09-22T04:46:34.745Z"
+    },
+    {
+      "item": "color:color/line/default",
+      "by": "river",
+      "reason": "구분선 semantic 개명·신설: gray-subtle→default, strong(gray/800) 추가 — 표 위아래 선용",
+      "approvedAt": "2026-09-29T02:15:23.447Z",
+      "quote": "현재 semantic - line이 subtle 하나밖에 없는데 기존것은 default로 이름을 바꾸고 strong유형을 추가해서 gray800으로 적용해줘.",
+      "evidence": {
+        "transcript": "72ea72d8-b5b0-4151-87b4-c14241a30a06.jsonl",
+        "at": "2026-09-29T02:13:55.524Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/line/strong",
+      "by": "river",
+      "reason": "구분선 semantic 개명·신설: gray-subtle→default, strong(gray/800) 추가 — 표 위아래 선용",
+      "approvedAt": "2026-09-29T02:15:23.453Z",
+      "quote": "현재 semantic - line이 subtle 하나밖에 없는데 기존것은 default로 이름을 바꾸고 strong유형을 추가해서 gray800으로 적용해줘.",
+      "evidence": {
+        "transcript": "72ea72d8-b5b0-4151-87b4-c14241a30a06.jsonl",
+        "at": "2026-09-29T02:13:55.524Z"
+      },
+      "recordedBy": "orchestrator"
     }
   ],
   "extendedTracking": [

@@ -107,7 +107,7 @@ function specStyleKey(style: string): string {
  *  토큰을 거치지 않는 면이 남아 있었다(river 지적 2026-09-10). 부품 배경과 같은 규칙을 적용한다.
  *  면 배치는 바로 아래 SURFACE_TOKEN 주석 참조(2026-09-10 재조정). */
 //  면 배치(2026-09-10 재조정): 섹션 테두리가 보이려면 '선 색 ≠ 바깥 바탕색'이어야 한다.
-//    우리 회색 선 토큰은 line/gray/subtle(gray/100) 하나뿐인데 종전 배치는 페이지 바탕도 같은
+//    우리 회색 선 토큰은 line/default(gray/100) 하나뿐인데 종전 배치는 페이지 바탕도 같은
 //    gray/100 이라 선이 바탕에 묻혔다. 새 토큰을 만들지 않고(river 지시) 면 단계를 옮겨 해결한다:
 //    페이지 level-2 → 섹션 level-0(흰 면 + 회색 선) 순으로, 선이 양쪽 어디에도 묻히지 않는다.
 const SURFACE_TOKEN: Record<"section" | "page", string> = {
@@ -116,7 +116,7 @@ const SURFACE_TOKEN: Record<"section" | "page", string> = {
 };
 // 섹션 테두리 — Figma 가 섹션에 기본으로 넣는 선은 검정 10%(Variable 아님, river 실측 2026-09-10).
 //   새 토큰을 만들지 않고 이미 있는 우리 선 토큰을 그대로 쓴다(river 지시: "우리 기준 중 하나로 스트록에 적용").
-const SECTION_STROKE_TOKEN = "color/line/gray/subtle";
+const SECTION_STROKE_TOKEN = "color/line/default";
 function bindSurface(target: "section" | "page", apply: (paint: SolidPaint) => void): void {
   if (!SPEC_MAPS) return;                                  // mock(키체크) 환경 → 건너뜀
   const v = SPEC_MAPS.semanticColor[SURFACE_TOKEN[target]];
@@ -3211,7 +3211,7 @@ async function buildTimePickerCell(maps: BuildMaps): Promise<{ set: ComponentSet
 //   확인 푸터(px16 py12) 우측정렬 — 분 선택 전 disabled, 선택 후 accent.
 //   메인 세트는 Type=24h/12h 만(변형 폭증 방지). 상태값은 아래 별도 States 스펙 시트로 정리.
 // V2.4 원본 pc_timepicker_input_dropdown(540:3506) 실측:
-//   패널 폭 24h=121 / 12h=194 (고정). cols: px8·gap8·컬럼 사이 1px 구분선(line/gray/subtle).
+//   패널 폭 24h=121 / 12h=194 (고정). cols: px8·gap8·컬럼 사이 1px 구분선(line/default).
 //   컬럼=flex-grow(채움), 셀=컬럼 폭 채움(STRETCH)·h32. 패널 그림자 0 4 8 rgba(0,0,0,.15)(MVP4.3-A 허용).
 const TPD_COLS_H = 192, TPD_PAD_TOP = 12;
 const TPD_PANEL_W = (n: number) => (n >= 3 ? 194 : 121); // 컬럼 수 → 원본 고정 폭
@@ -3241,7 +3241,7 @@ async function buildTimePickerDropdown(maps: BuildMaps, originY: number): Promis
   function makeColSep(): RectangleNode {
     const sep = figma.createRectangle();
     sep.name = "sep"; sep.resize(1, TPD_COLS_H);
-    sep.fills = [boundPaint(scv(maps, "color/line/gray/subtle"))];
+    sep.fills = [boundPaint(scv(maps, "color/line/default"))];
     return sep;
   }
 
@@ -3279,7 +3279,7 @@ async function buildTimePickerDropdown(maps: BuildMaps, originY: number): Promis
     fdivWrap.paddingLeft = 8; fdivWrap.paddingRight = 8; fdivWrap.fills = [];
     fdivWrap.resize(panelW, 1);
     const fdiv = figma.createRectangle(); fdiv.name = "line"; fdiv.resize(panelW - 16, 1);
-    fdiv.fills = [boundPaint(scv(maps, "color/line/gray/subtle"))];
+    fdiv.fills = [boundPaint(scv(maps, "color/line/default"))];
     fdivWrap.appendChild(fdiv); fdiv.layoutAlign = "STRETCH";
     node.appendChild(fdivWrap); fdivWrap.layoutAlign = "STRETCH";
 
@@ -3566,7 +3566,7 @@ async function buildPaginationBar(maps: BuildMaps, originY: number): Promise<{ s
 }
 
 // ── GNB — 메뉴 슬롯(9 variants) + GNB 바(6 variants) ─────────────────────────
-// 정본: pages/components.html. PC only. 색은 color/navigation/* + line/gray/subtle + text/title/primary + icon/gray-dark.
+// 정본: pages/components.html. PC only. 색은 color/navigation/* + line/default + text/title/primary + icon/gray-dark.
 // 메뉴 슬롯: 라벨 + 하단 2px 라인. Default=label/default-alt·밑줄 없음 / Hover·Selected=label/selected·밑줄(indicator/selected).
 const GNB_MENU_SIZE: Record<string, { h: number; font: number; padX: number; inset: number }> = {
   md:  { h: 56, font: 18, padX: 40, inset: 24 },
@@ -4157,7 +4157,7 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
       //   appendChild(맨 위) 대신 insertChild(0, …)(맨 아래)로 보내 메뉴 인스턴스가 위에 오게 한다. (사용자 결정 2026-06-25)
       const border = figma.createRectangle();
       border.name = "border"; border.resize(BAR_W, 1);
-      border.fills = [boundPaint(scv(maps, "color/line/gray/subtle"))];
+      border.fills = [boundPaint(scv(maps, "color/line/default"))];
       try { comp.insertChild(0, border); } catch (e) { comp.appendChild(border); }
       try { (border as unknown as { layoutPositioning: string }).layoutPositioning = "ABSOLUTE"; } catch (e) { /* skip */ }
       border.x = 0; border.y = h - 1;
@@ -4198,7 +4198,7 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
 //   처음엔 B `gnb`(vHg5UOMMYI77RHH6vVVppu / 5:10245)를 기준으로 만들었으나(2단 14px·들여쓰기 8·간격 16),
 //   river 가 A 노드를 짚어 대조를 요구했고 두께·크기가 달라 A 로 바꿨다. ⭐ 가 540:6423·540:6458 을 직접 읽음.
 //   A 실측: 제목(1단) Bold 16 title/16B #353535 · 항목(2단) Medium 16 title/16M #555 · 들여쓰기 없음 ·
-//          컬럼 안 세로 간격 24(spacing/stack/lg) · 컬럼 사이 72 · 패널 1920 흰 배경 · 하단선 1px line/gray/subtle ·
+//          컬럼 안 세로 간격 24(spacing/stack/lg) · 컬럼 사이 72 · 패널 1920 흰 배경 · 하단선 1px line/default ·
 //          그림자 0 4px 4px 15% · regular = 위 32/아래 64 · compact = 상하 24 · 컬럼 묶음 **가운데 정렬**(px 320).
 //   river 승인 2026-09-08(결정 ⑨·⑩ + C-2/C-3). 굵기(C-1)는 A 실측이 확정을 대신한다.
 //
@@ -4214,7 +4214,7 @@ async function buildGNB(maps: BuildMaps, originY: number): Promise<{ set: Compon
 //     컬럼 사이 간격        72  → spacing/80     (정본 토큰 64·80 의 정중앙이라 "가장 가까운 값" 규칙으로는
 //                                                못 고른다. river 가 64·72·80 세 안을 렌더로 비교해 **80 확정**, 2026-09-08)
 //     그림자   0 4px 4px 15%  → shadow/dropdown (정본 그림자 재사용 · 새 그림자 토큰 0건, river C-3)
-//     패널 하단선 1px line/gray/subtle → 같은 정본 토큰 (A 는 상단 구분선이 아니라 하단선이다)
+//     패널 하단선 1px line/default → 같은 정본 토큰 (A 는 상단 구분선이 아니라 하단선이다)
 //   좌우 여백: A 는 px 320 에 컬럼 묶음을 **가운데 정렬**한다 — 여백 값이 아니라 정렬 규칙이다.
 //     그래서 패널을 CENTER 정렬로 만들고 좌우 여백은 GNB 바와 같은 spacing/24 를 최소값으로만 둔다.
 //
@@ -4349,8 +4349,8 @@ async function buildGNBSubMenu(maps: BuildMaps, originY: number): Promise<{ set:
     comp.setBoundVariable("paddingBottom", num(spec.padBottom));
     comp.setBoundVariable("paddingLeft", num("spacing/24"));   // 최소 여백 — 실제 위치는 CENTER 정렬이 정한다
     comp.setBoundVariable("paddingRight", num("spacing/24"));
-    // A: 패널 하단선 1px line/gray/subtle (GNB 바 하단선과 같은 토큰). 세 유형 공통.
-    comp.strokes = [boundPaint(scv(maps, "color/line/gray/subtle"))];
+    // A: 패널 하단선 1px line/default (GNB 바 하단선과 같은 토큰). 세 유형 공통.
+    comp.strokes = [boundPaint(scv(maps, "color/line/default"))];
     comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
     comp.strokeTopWeight = 0; comp.strokeLeftWeight = 0; comp.strokeRightWeight = 0; comp.strokeBottomWeight = 1;
     comp.resize(PANEL_W, 100);
@@ -6345,7 +6345,7 @@ async function buildShellUrlBar(maps: BuildMaps): Promise<FrameNode> {
 }
 
 // ── Footer (PC + Mobile 플랫폼 세트) ─────────────────────────────────────────
-// PC: 1920×116, HORIZONTAL, bg=color/navigation/bg, 상단 테두리 1px=color/line/gray/subtle
+// PC: 1920×116, HORIZONTAL, bg=color/navigation/bg, 상단 테두리 1px=color/line/default
 //     padding L/R=320px(raw·Foundation에 spacing/320 없음), T/B=spacing/28 바인딩
 //     content: [좌] links(10px)+bizinfo+copyright / [우] S1 로고(C/IMG/Logo/S1_g 벡터)
 // Mobile: 360×(hug), VERTICAL centered, no bg/border, itemSpacing=spacing/4 바인딩
@@ -6372,7 +6372,7 @@ async function buildFooter(maps: BuildMaps, originY: number): Promise<{ set: Com
   pc.setBoundVariable("paddingTop", sp28);
   pc.setBoundVariable("paddingBottom", sp28);
   pc.fills = [boundPaint(scv(maps, "color/navigation/bg"))];
-  pc.strokes = [boundPaint(scv(maps, "color/line/gray/subtle"))];
+  pc.strokes = [boundPaint(scv(maps, "color/line/default"))];
   pc.strokeAlign = "INSIDE";
   pc.strokeTopWeight = 1; pc.strokeBottomWeight = 0; pc.strokeLeftWeight = 0; pc.strokeRightWeight = 0;
 
@@ -6428,7 +6428,7 @@ async function buildFooter(maps: BuildMaps, originY: number): Promise<{ set: Com
     mLinks.appendChild(await makeBoundText(LINK_NAMES[i], 12, "Regular", scv(maps, "color/text/body/tertiary")));
     if (i < LINK_NAMES.length - 1) {
       const sep = figma.createRectangle(); sep.name = "sep";
-      sep.resize(1, 10); sep.fills = [boundPaint(scv(maps, "color/line/gray/subtle"))];
+      sep.resize(1, 10); sep.fills = [boundPaint(scv(maps, "color/line/default"))];
       mLinks.appendChild(sep);
     }
   }
@@ -6718,7 +6718,7 @@ async function buildLoginGNB(maps: BuildMaps, originY: number): Promise<{ set: C
   comp.resize(W, H); comp.primaryAxisAlignItems = "SPACE_BETWEEN"; comp.counterAxisAlignItems = "CENTER";
   comp.paddingLeft = 320; comp.paddingRight = 320; comp.paddingTop = 12; comp.paddingBottom = 12;
   comp.fills = [boundPaint(scv(maps, "color/navigation/bg"))];
-  comp.strokes = [boundPaint(scv(maps, "color/line/gray/subtle"))];
+  comp.strokes = [boundPaint(scv(maps, "color/line/default"))];
   comp.strokeAlign = "INSIDE";
   comp.strokeTopWeight = 0; comp.strokeRightWeight = 0; comp.strokeLeftWeight = 0; comp.strokeBottomWeight = 1;
 
@@ -6768,7 +6768,7 @@ async function buildWebTabBar(maps: BuildMaps, originY: number): Promise<{ set: 
   comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "FIXED"; comp.counterAxisSizingMode = "FIXED";
   comp.resize(W, H); comp.itemSpacing = 0; comp.paddingTop = 0; comp.paddingBottom = 0; comp.paddingLeft = 0; comp.paddingRight = 0;
   comp.fills = [boundPaint(scv(maps, "color/scroll/bg"))];
-  comp.strokes = [boundPaint(scv(maps, "color/line/gray/subtle"))];
+  comp.strokes = [boundPaint(scv(maps, "color/line/default"))];
   comp.strokeAlign = "INSIDE";
   comp.strokeTopWeight = 0; comp.strokeRightWeight = 0; comp.strokeLeftWeight = 0; comp.strokeBottomWeight = 1;
 

@@ -26,7 +26,7 @@ a { color: inherit; text-decoration: none; }
   flex-wrap: wrap;
   padding: var(--spacing-10) var(--spacing-20);
   background: var(--color-bg-level-3);
-  border-bottom: 1px solid var(--color-line-gray-subtle);
+  border-bottom: 1px solid var(--color-line-default);
 }
 .t-bar-label {
   color: var(--color-text-state-caption);
@@ -56,7 +56,7 @@ a { color: inherit; text-decoration: none; }
 .mark[data-kind="doc"]::before {
   background: var(--color-bg-level-3);
   color: var(--color-text-body-tertiary);
-  border: 1px solid var(--color-line-gray-subtle);
+  border: 1px solid var(--color-line-default);
 }
 .mark[data-kind="cand"]::before {
   background: var(--color-status-dark-yellow);
@@ -88,7 +88,7 @@ body[data-marks="off"] .mark::before { display: none; }
 .cand-side {
   width: 236px; flex: 0 0 236px;
   background: var(--color-navigation-bg);
-  border-right: 1px solid var(--color-line-gray-subtle);
+  border-right: 1px solid var(--color-line-default);
   padding: var(--spacing-20) var(--spacing-12);
 }
 .cand-side-logo {
@@ -141,7 +141,7 @@ body[data-marks="off"] .mark::before { display: none; }
 }
 .doc-stat {
   background: var(--color-bg-level-0);
-  border: 1px solid var(--color-line-gray-subtle);
+  border: 1px solid var(--color-line-default);
   border-radius: var(--radius-12);
   padding: var(--spacing-20);
 }
@@ -153,7 +153,7 @@ body[data-marks="off"] .mark::before { display: none; }
   display: flex; gap: var(--spacing-12);
   border-radius: var(--radius-12);
   padding: var(--spacing-16) var(--spacing-20);
-  border: 1px solid var(--color-line-gray-subtle);
+  border: 1px solid var(--color-line-default);
   background: var(--color-bg-level-0);
 }
 .cand-callout-dot {
@@ -195,7 +195,7 @@ body[data-marks="off"] .mark::before { display: none; }
 .cand-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-16); }
 .cand-card {
   background: var(--color-bg-level-0);
-  border: 1px solid var(--color-line-gray-subtle);
+  border: 1px solid var(--color-line-default);
   border-radius: var(--radius-12);
   padding: var(--spacing-20);
 }
@@ -203,19 +203,19 @@ body[data-marks="off"] .mark::before { display: none; }
 .cand-card-desc { color: var(--color-text-body-tertiary); }
 .cand-card-foot {
   margin-top: var(--spacing-12); padding-top: var(--spacing-12);
-  border-top: 1px solid var(--color-line-gray-subtle);
+  border-top: 1px solid var(--color-line-default);
   display: flex; align-items: center; gap: var(--spacing-8);
 }
 
 /* ── cand: 구분선 ──────────────────────────────── */
 .cand-divider {
   height: 1px; border: 0; margin: var(--spacing-32) 0;
-  background: var(--color-line-gray-subtle);
+  background: var(--color-line-default);
 }
 
 /* ── 이동 목록은 정식 부품(List Row)을 그대로 쓴다 ── */
 .core-list {
-  border: 1px solid var(--color-line-gray-subtle);
+  border: 1px solid var(--color-line-default);
   border-radius: var(--radius-12);
   overflow: hidden;
   background: var(--color-bg-level-0);

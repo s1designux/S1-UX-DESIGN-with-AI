@@ -3,7 +3,7 @@
     "generated": true,
     "source": "plugins/figma-vars-installer/src/build-components.ts",
     "method": "mock-execution",
-    "sourceHash": "b2dfbf84951e",
+    "sourceHash": "efc5775379af",
     "unknownValuePolicy": [
       "unknown",
       "not-defined",
@@ -239,7 +239,7 @@
       ],
       "tokenBindings": [
         "color/icon/gray-dark",
-        "color/line/gray/subtle",
+        "color/line/default",
         "color/navigation/bg",
         "color/text/title/primary"
       ],
@@ -274,7 +274,7 @@
         "color/bg/level-0",
         "color/bg/level-3",
         "color/icon/blue",
-        "color/line/gray/subtle",
+        "color/line/default",
         "color/scroll/bg",
         "color/text/body/secondary"
       ],
@@ -324,7 +324,7 @@
       ],
       "tokenBindings": [
         "color/icon/gray-light",
-        "color/line/gray/subtle",
+        "color/line/default",
         "color/navigation/bg",
         "color/text/body/tertiary",
         "spacing/28",
@@ -537,7 +537,7 @@
         "leading"
       ],
       "tokenBindings": [
-        "color/line/gray/subtle",
+        "color/line/default",
         "color/navigation/bg",
         "color/navigation/indicator/selected",
         "color/navigation/label/default-alt",
@@ -643,7 +643,7 @@
         "Columns"
       ],
       "tokenBindings": [
-        "color/line/gray/subtle",
+        "color/line/default",
         "color/navigation/bg",
         "color/navigation/label/default",
         "color/navigation/label/selected",
@@ -3355,7 +3355,7 @@
         "color/dropdown/option/label/default",
         "color/dropdown/option/label/hover",
         "color/dropdown/option/label/selected",
-        "color/line/gray/subtle",
+        "color/line/default",
         "color/text/state/accent",
         "color/text/state/disabled"
       ],
@@ -3496,7 +3496,7 @@
         "color/form-control/text/default",
         "color/form-control/text/disabled",
         "color/form-control/text/placeholder",
-        "color/line/gray/subtle",
+        "color/line/default",
         "color/text/state/disabled"
       ],
       "composition": {

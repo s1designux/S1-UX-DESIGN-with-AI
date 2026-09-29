@@ -20,7 +20,7 @@
   .blk > .sub { margin: 0 0 var(--spacing-20); color: var(--color-text-state-caption); }
   .panel {
     background: var(--color-bg-level-0);
-    border: var(--border-width-default) solid var(--color-line-gray-subtle);
+    border: var(--border-width-default) solid var(--color-line-default);
     border-radius: var(--radius-card-md);
     padding: var(--spacing-24);
   }
@@ -28,7 +28,7 @@
   .grid-label > .k { color: var(--color-text-state-caption); }
   .flow { display: flex; flex-wrap: wrap; gap: var(--spacing-12); align-items: center; }
   .note {
-    border: var(--border-width-default) dashed var(--color-line-gray-subtle);
+    border: var(--border-width-default) dashed var(--color-line-default);
     border-radius: var(--radius-8);
     padding: var(--spacing-16) var(--spacing-20);
     color: var(--color-text-body-tertiary);
@@ -150,24 +150,32 @@
   <!-- ══ 2 ══ -->
   <div class="blk">
     <h2 class="typo-title-20b">2 · 구분선</h2>
-    <p class="sub typo-body-12r">회색·강조색 각각 기본/굵게 — 네 가지</p>
+    <p class="sub typo-body-12r">기본선(옅은 회색)·강한선(진한 회색) 각각 기본/굵게 — 네 가지</p>
 
     <div class="panel" style="display:grid;gap:var(--spacing-24)">
       <div class="grid-label">
-        <span class="k typo-body-12m">회색 · 기본</span>
+        <span class="k typo-body-12m">기본선 · 기본</span>
         <hr data-s1-cand="divider" data-axis="x">
       </div>
       <div class="grid-label">
-        <span class="k typo-body-12m">회색 · 굵게</span>
+        <span class="k typo-body-12m">기본선 · 굵게</span>
         <hr data-s1-cand="divider" data-axis="x" data-weight="strong">
       </div>
       <div class="grid-label">
-        <span class="k typo-body-12m">강조색 · 기본</span>
-        <hr data-s1-cand="divider" data-axis="x" data-tone="accent">
+        <span class="k typo-body-12m">강한선 · 기본</span>
+        <hr data-s1-cand="divider" data-axis="x" data-tone="strong">
       </div>
       <div class="grid-label">
-        <span class="k typo-body-12m">강조색 · 굵게</span>
-        <hr data-s1-cand="divider" data-axis="x" data-tone="accent" data-weight="strong">
+        <span class="k typo-body-12m">강한선 · 굵게</span>
+        <hr data-s1-cand="divider" data-axis="x" data-tone="strong" data-weight="strong">
+      </div>
+      <div class="grid-label">
+        <span class="k typo-body-12m">표 위·아래</span>
+        <span style="width:100%">
+          <hr data-s1-cand="divider" data-axis="x" data-tone="strong">
+          <span style="display:block;padding:var(--spacing-12) 0" class="typo-body-14m">표 내용이 이 사이에 들어갑니다</span>
+          <hr data-s1-cand="divider" data-axis="x" data-tone="strong">
+        </span>
       </div>
       <div class="grid-label">
         <span class="k typo-body-12m">세로</span>
@@ -181,7 +189,7 @@
       </div>
       <div class="grid-label">
         <span class="k typo-body-12m">목록 안 · 들여쓰기</span>
-        <span style="border:var(--border-width-default) solid var(--color-line-gray-subtle);border-radius:var(--radius-card-md);overflow:hidden;background:var(--color-bg-level-0)">
+        <span style="border:var(--border-width-default) solid var(--color-line-default);border-radius:var(--radius-card-md);overflow:hidden;background:var(--color-bg-level-0)">
           <span style="display:block;padding:var(--spacing-12) var(--spacing-20)" class="typo-body-14m">첫째 줄</span>
           <hr data-s1-cand="divider" data-axis="x" data-inset="text">
           <span style="display:block;padding:var(--spacing-12) var(--spacing-20)" class="typo-body-14m">둘째 줄</span>

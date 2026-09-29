@@ -1622,7 +1622,7 @@
       max-height: 192px; overflow-y: auto; scroll-behavior: smooth;
     }
     .s1-tp-col::-webkit-scrollbar { width: 0; }
-    .s1-tp-col-sep { width: 1px; background: var(--color-line-gray-subtle); flex-shrink: 0; align-self: stretch; }
+    .s1-tp-col-sep { width: 1px; background: var(--color-line-default); flex-shrink: 0; align-self: stretch; }
     .s1-tp-col-item {
       height: var(--sizing-32);  /* V2.4 원본 timepicker_input_component(540:3470) = 32 (builds-components.ts TPC_H 일치) */
       display: flex; align-items: center; justify-content: center;
@@ -1652,7 +1652,7 @@
     }
     .s1-tp-footer-sep {
       width: calc(100% - 16px); height: 1px;
-      background: var(--color-line-gray-subtle); margin-top: 4px;
+      background: var(--color-line-default); margin-top: 4px;
     }
     .s1-tp-footer {
       display: flex; align-items: center; justify-content: flex-end;
@@ -1921,7 +1921,7 @@
       padding-left: 24px;  /* pl lg */
       padding-right: 20px; /* pr md */
       background: var(--color-navigation-bg);
-      border-bottom: var(--border-width-default) solid var(--color-line-gray-subtle);
+      border-bottom: var(--border-width-default) solid var(--color-line-default);
     }
     .s1-gnb--sm  { height: 48px; }
     .s1-gnb--xsm { height: 36px; padding-left: 20px; padding-right: 24px; } /* xsm 좌우 반전 — Figma 582:7770 (spacing/20·24) */
@@ -4077,7 +4077,7 @@ function setDisabled(on) {
   <span class="c-prop">height</span>: <span class="c-val">56px</span>;
   <span class="c-prop">padding</span>: <span class="c-val">0 20px 0 24px</span>;
   <span class="c-prop">background</span>: <span class="c-val">var(--color-navigation-bg)</span>;
-  <span class="c-prop">border-bottom</span>: <span class="c-val">1px solid var(--color-line-gray-subtle)</span>;
+  <span class="c-prop">border-bottom</span>: <span class="c-val">1px solid var(--color-line-default)</span>;
 }
 <span class="c-sel">.s1-gnb--sm</span>  { <span class="c-prop">height</span>: <span class="c-val">48px</span>; }
 <span class="c-sel">.s1-gnb--xsm</span> { <span class="c-prop">height</span>: <span class="c-val">36px</span>; <span class="c-prop">padding-left</span>: <span class="c-val">20px</span>; <span class="c-prop">padding-right</span>: <span class="c-val">24px</span>; }
@@ -4099,7 +4099,7 @@ function setDisabled(on) {
               </thead>
               <tbody>
                 <tr><td class="token-name">--color-navigation-bg</td><td class="token-value">var(--color-base-white)</td><td class="token-resolved" data-token="--color-navigation-bg"></td><td>GNB 바 배경</td></tr>
-                <tr><td class="token-name">--color-line-gray-subtle</td><td class="token-value">var(--color-gray-100)</td><td class="token-resolved" data-token="--color-line-gray-subtle"></td><td>GNB 바 하단 1px 라인</td></tr>
+                <tr><td class="token-name">--color-line-default</td><td class="token-value">var(--color-gray-100)</td><td class="token-resolved" data-token="--color-line-default"></td><td>GNB 바 하단 1px 라인</td></tr>
                 <tr><td class="token-name">--color-navigation-label-default-alt</td><td class="token-value">var(--color-gray-700)</td><td class="token-resolved" data-token="--color-navigation-label-default-alt"></td><td>메뉴 슬롯 기본 라벨(black)</td></tr>
                 <tr><td class="token-name">--color-navigation-label-selected</td><td class="token-value">var(--color-blue-400)</td><td class="token-resolved" data-token="--color-navigation-label-selected"></td><td>메뉴 슬롯 hover·selected 라벨</td></tr>
                 <tr><td class="token-name">--color-navigation-indicator-selected</td><td class="token-value">var(--color-blue-400)</td><td class="token-resolved" data-token="--color-navigation-indicator-selected"></td><td>메뉴 슬롯 hover·selected 하단 밑줄</td></tr>

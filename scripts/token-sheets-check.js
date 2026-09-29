@@ -444,7 +444,7 @@ async function main() {
   // ── 10) 이름표 ↔ 실제 변수 — 칸 수만 세면 라벨과 칩이 어긋난 표를 못 잡는다 ──
   // 장식(묶음 머리띠·구분선)인가 = **이름 + 실제로 물린 토큰**이 둘 다 맞아야 한다.
   //   이름만 보면 진짜 칩을 "group band" 로 위장해 대조를 빠져나간다(🤖 component-verifier 6회차 M3).
-  const DECOR = { "group band": "color/bg/level-2", "group rule": "color/line/gray/subtle" };
+  const DECOR = { "group band": "color/bg/level-2", "group rule": "color/line/default" };
   const isDecor = (n) => {
     const want = Object.prototype.hasOwnProperty.call(DECOR, n.name) ? DECOR[n.name] : null;
     if (!want) return false;
@@ -893,7 +893,7 @@ async function main() {
         const sid = strokeId(r);
         const chipKey = boundName(r);
         const mayBeBlue = chipKey && PRIMARY_KEYS.has(chipKey);
-        const wantStroke = mayBeBlue ? "COLOR:color/line/blue" : "COLOR:color/line/gray/subtle";
+        const wantStroke = mayBeBlue ? "COLOR:color/line/blue" : "COLOR:color/line/default";
         // 파란 선은 대표 칸에만. OR 로 두 색을 다 받으면 577칸을 전부 파랗게 칠해도 통과한다
         //   (🤖 component-verifier 16회차 N-A).
         // 두께도 본다 — 대표만 3 을 보고 나머지를 안 보면, 테두리를 0 으로 만들어 흰 칩을 지울 수 있다

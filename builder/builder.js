@@ -1810,13 +1810,13 @@ const EXPORT_CSS = `
    간격은 묶음 규칙이 정한 값이 각 줄에 인라인으로 박혀 나가므로 여기 규칙은 없다. */
 .s1-block { min-width: 0; }
 .s1-text { margin: 0; }
-.s1-divider { border: 0; border-top: 1px solid var(--color-line-gray-subtle); margin: 0; width: 100%; }
+.s1-divider { border: 0; border-top: 1px solid var(--color-line-default); margin: 0; width: 100%; }
 /* 하단 메뉴 바 — 배포 부품은 탭 1칸(60×60)뿐이고 바(가로 배치·배경)는 화면이 소유한다.
    근거: registry/components/mobile-bottom-nav.json(bar-background = --color-navigation-bg) · s1-ui.css D1. */
 .s1-block [role="tablist"]:has(> [data-s1-component="mobile-bottom-nav"]) { display: flex; width: 100%; background: var(--color-navigation-bg); }
 .s1-block [role="tablist"]:has(> [data-s1-component="mobile-bottom-nav"]) > [data-s1-component="mobile-bottom-nav"] { flex: 1 1 0; }
 /* 대응 부품이 아직 없어 비워 둔 자리 — 채운 척하지 않는다. */
-.s1-block[data-s1-placeholder="true"] { box-sizing: border-box; display: flex; align-items: center; justify-content: center; text-align: center; border: 1px dashed var(--color-line-gray-subtle); border-radius: var(--radius-4); background: var(--color-bg-level-1); color: var(--color-text-body-tertiary); font-size: 11px; line-height: 1.4; padding: 4px 6px; overflow: hidden; }
+.s1-block[data-s1-placeholder="true"] { box-sizing: border-box; display: flex; align-items: center; justify-content: center; text-align: center; border: 1px dashed var(--color-line-default); border-radius: var(--radius-4); background: var(--color-bg-level-1); color: var(--color-text-body-tertiary); font-size: 11px; line-height: 1.4; padding: 4px 6px; overflow: hidden; }
 /* 가져온 레거시 칸 — 원본 화면을 찍은 그림이다. 우리 부품이 아니고 토큰도 타지 않는다. */
 .s1-block[data-s1-legacy="true"] { line-height: 0; }
 .s1-block[data-s1-legacy="true"] img { display: block; max-width: none; }

@@ -396,7 +396,7 @@ export async function buildPattern(
   try {
     const st = (section as unknown as GeometryMixin).strokes as Paint[];
     if (Array.isArray(st) && st.length > 0) {
-      bindStroke(section as unknown as SceneNode, maps, "color/line/gray/subtle", warnings);
+      bindStroke(section as unknown as SceneNode, maps, "color/line/default", warnings);
       const after = (section as unknown as GeometryMixin).strokes as Paint[];
       const bound = Array.isArray(after) && after.length > 0 && after.every((p) =>
         p.type === "SOLID" && !!(p as SolidPaint).boundVariables && !!(p as SolidPaint).boundVariables!.color);

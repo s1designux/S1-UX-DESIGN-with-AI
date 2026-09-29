@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:efc5775379af0feb57dcd3f095b527d06c4e1ce3d482a4f70549445d52a9691b",
+  "verifiedBy": "orchestrator",
+  "verdict": "pass",
+  "changeType": "mechanical",
+  "verifiedAt": "2026-09-29T02:24:13.264Z",
+  "notes": "토큰 개명 1건의 참조 갱신만 — color/line/gray/subtle → color/line/default (16곳, 주석 포함). 구조·함수·variant 스펙 변경 없음(diff 전량이 이 문자열 치환). river 지시 2026-09-29"
+}

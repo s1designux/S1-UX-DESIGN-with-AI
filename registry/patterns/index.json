@@ -99,7 +99,7 @@
           "date": "2026-08-24",
           "by": "river",
           "change": "보조 링크(회원가입·아이디 찾기·비밀번호 찾기) 사이 구분선 추가 — 11개 화면 전부",
-          "reason": "레거시 참고 화면과 같은 화면 하단 Footer 에는 구분선이 있는데 보조 링크 줄에만 누락됐다. 레거시 규격(1×12)이 아니라 정본 buildFooter 모바일 링크 행 규격(itemSpacing 8 + sep 1×10, color/line/gray/subtle)으로 통일했다.",
+          "reason": "레거시 참고 화면과 같은 화면 하단 Footer 에는 구분선이 있는데 보조 링크 줄에만 누락됐다. 레거시 규격(1×12)이 아니라 정본 buildFooter 모바일 링크 행 규격(itemSpacing 8 + sep 1×10, color/line/default)으로 통일했다.",
           "record": "reports/screen-rebuild/modu-app/login-mobile/spec-change-2026-08-24-helper-separator.md"
         }
       ],
