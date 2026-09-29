@@ -180,11 +180,11 @@
    다크에서는 메뉴 아이콘과 같이 solid 를 쓴다. */
 [data-s1-cand="side-nav"] [data-s1-part="collapse-icon"] {
   background-color: var(--color-icon-gray-dark);
-  height: var(--sizing-20);
+  height: var(--sizing-24);
   -webkit-mask: url("../icons/ic_패널접기_line.png") center / contain no-repeat;
   mask: url("../icons/ic_패널접기_line.png") center / contain no-repeat;
   transition: transform .18s ease;
-  width: var(--sizing-20);
+  width: var(--sizing-24);
 }
 [data-s1-cand="side-nav"][data-state="collapsed"] [data-s1-part="collapse-icon"] { transform: scaleX(-1); }
 [data-theme="dark"] [data-s1-cand="side-nav"] [data-s1-part="collapse-icon"] {
@@ -285,8 +285,9 @@
 }
 
 /* 하위 목록(레벨 2) — 부모 메뉴 아래로 들여쓰고, 글자색은 한 단계 낮춘다(river 2026-09-29).
-   부모(레벨 1)는 navigation/label/default = gray/600, 하위는 한 칸 아래인 gray/500
-   (= --color-text-body-tertiary). 고른 상태·hover 는 부모와 같은 규칙을 그대로 쓴다. */
+   부모(레벨 1)는 navigation/label/default = gray/600, 하위는 두 칸 아래인 gray/400
+   (= --color-text-state-helper · river 2026-09-29 "라이트에서 한단게 더 연하게").
+   고른 상태·hover 는 부모와 같은 규칙을 그대로 쓴다. */
 [data-s1-cand="side-nav"] [data-s1-part="subitems"] {
   display: flex;
   flex-direction: column;
@@ -296,7 +297,7 @@
 }
 [data-s1-cand="side-nav"] [data-s1-part="subitems"][hidden] { display: none; }
 [data-s1-cand="side-nav"] [data-s1-part="subitems"] [data-s1-part="item"] {
-  color: var(--color-text-body-tertiary);
+  color: var(--color-text-state-helper);
 }
 [data-s1-cand="side-nav"] [data-s1-part="subitems"] [data-s1-part="item"]:hover {
   color: var(--color-navigation-label-hover);
