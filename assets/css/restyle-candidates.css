@@ -79,8 +79,9 @@
 [data-s1-cand="divider"][data-axis="x"][data-weight="strong"] { height: var(--border-width-strong); }
 
 /* 세로선 — 글자 줄보다 짧게 세운다(늘리지 않는다). 높이 14 (river 2026-09-29 "2픽셀 줄여봐").
-   ⚠️ 정본 sizing 단계에 14 가 없어(…10 · 16 · 18 …) 같은 값의 spacing/14 를 빌려 쓴다.
-      sizing/14 를 새로 만들지 않은 이유는 정본 신설이 승인 사항이기 때문이다(needs-decision). */
+   정본 sizing 단계에 14 가 없어(…10 · 16 · 18 …) 같은 값의 spacing/14 를 쓴다.
+   river 결정 2026-09-29 — "이걸 크기로 적용할건 아닌거같은데, 일단 그대로 둬".
+   즉 sizing/14 신설은 하지 않는다. 이 선의 길이는 크기 축이 아니라 간격 값으로 본다. */
 [data-s1-cand="divider"][data-axis="y"] {
   align-self: center;
   height: var(--spacing-14);
