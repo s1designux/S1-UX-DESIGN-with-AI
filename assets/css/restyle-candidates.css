@@ -180,11 +180,11 @@
    다크에서는 메뉴 아이콘과 같이 solid 를 쓴다. */
 [data-s1-cand="side-nav"] [data-s1-part="collapse-icon"] {
   background-color: var(--color-icon-gray-dark);
-  height: var(--sizing-24);
+  height: var(--sizing-20);
   -webkit-mask: url("../img/candidate-icons/ic_패널접기_line.svg") center / contain no-repeat;
   mask: url("../img/candidate-icons/ic_패널접기_line.svg") center / contain no-repeat;
   transition: transform .18s ease;
-  width: var(--sizing-24);
+  width: var(--sizing-20);
 }
 [data-s1-cand="side-nav"][data-state="collapsed"] [data-s1-part="collapse-icon"] { transform: scaleX(-1); }
 [data-theme="dark"] [data-s1-cand="side-nav"] [data-s1-part="collapse-icon"] {
