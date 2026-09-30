@@ -7544,7 +7544,7 @@ async function buildSideNavItem(maps: BuildMaps, originY: number): Promise<{ set
         bindIconSize(toggle, num("sizing/20"));
         comp.appendChild(toggle);
       } else {
-        // 접힘 칸 — 64×64 정사각. 아이콘 24 위 + 간격 2 + 메뉴명 12 Regular 아래(가운데). 여백 2. figmaBuildSpec ④.
+        // 접힘 칸 — 64×64 정사각. 아이콘 24 위 + 간격 2 + 메뉴명 12 Regular(선택은 Bold) 아래(가운데). 여백 2. figmaBuildSpec ④.
         comp.layoutMode = "VERTICAL";
         comp.resize(64, 64);
         comp.primaryAxisSizingMode = "FIXED";
@@ -7563,7 +7563,8 @@ async function buildSideNavItem(maps: BuildMaps, originY: number): Promise<{ set
         icon.name = "icon";
         bindIconSize(icon, num("sizing/24"));
         comp.appendChild(icon);
-        const label = await makeBoundText("메뉴", 12, "Regular", scv(maps, c.label));
+        // 선택 칸의 메뉴명은 볼드(title/12B, river 2026-09-30) — 웹 lnb.css 접힘 선택 규칙과 같다.
+        const label = await makeBoundText("메뉴", 12, state === "Selected" ? "Bold" : "Regular", scv(maps, c.label));
         label.name = "label";
         label.textAlignHorizontal = "CENTER";
         comp.appendChild(label);

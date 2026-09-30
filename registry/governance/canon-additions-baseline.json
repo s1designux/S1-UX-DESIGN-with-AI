@@ -2,7 +2,7 @@
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
   "_updated": "2026-09-30",
-  "count": 698,
+  "count": 699,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -575,6 +575,7 @@
     "textstyle:body/16M",
     "textstyle:body/16R",
     "textstyle:body/18M",
+    "textstyle:title/12B",
     "textstyle:title/14B",
     "textstyle:title/14M",
     "textstyle:title/16B",
@@ -1886,6 +1887,18 @@
       "evidence": {
         "transcript": "f8347252-7dc2-45d6-8561-8f0fb20c04a6.jsonl",
         "at": "2026-09-30T06:44:29.542Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "textstyle:title/12B",
+      "by": "river",
+      "reason": "LNB 접힌 칸 선택 메뉴명 12px 볼드",
+      "approvedAt": "2026-09-30T07:45:10.774Z",
+      "quote": "응 title/12B로 넣어줘",
+      "evidence": {
+        "transcript": "f8347252-7dc2-45d6-8561-8f0fb20c04a6.jsonl",
+        "at": "2026-09-30T07:43:51.980Z"
       },
       "recordedBy": "orchestrator"
     }
