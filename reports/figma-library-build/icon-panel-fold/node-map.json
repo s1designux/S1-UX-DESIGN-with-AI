@@ -1,0 +1,57 @@
+{
+  "fileKey": "YcBbW9e0MTR9T3W5Sz0Ukx",
+  "page": "0:1",
+  "section": "97:377",
+  "builtBy": "figma-library-builder",
+  "builtAt": "2026-09-30",
+  "componentSet": {
+    "id": "1767:44",
+    "name": "ic_패널접기",
+    "position": {"x": 1468, "y": 100},
+    "size": {"w": 64, "h": 160},
+    "clip": true,
+    "constraints": "MIN/MIN",
+    "setChrome": "strokes/strokeWeight/strokeAlign/dashPattern/cornerRadius copied at runtime from ic_메뉴 97:227 (1px INSIDE, dash [10,5], r5); fills []",
+    "description": "패널접기, 판 접기, 메뉴 접기, 사이드바 접기, panel collapse, sidebar collapse, fold panel",
+    "variantProperty": {"Property 1": {"default": "Solid", "options": ["Solid", "Line", "Color"]}}
+  },
+  "variants": {
+    "Solid": {
+      "id": "1767:24", "pos": [20, 20], "group": "1767:27",
+      "vectors": [
+        {"id": "1767:21", "role": "왼쪽 판 (SVG fill path)", "var": "VariableID:1402:415", "varName": "color/icon/gray"},
+        {"id": "1767:25", "role": "외곽 테두리 (rect stroke outline)", "var": "VariableID:1402:415", "varName": "color/icon/gray"},
+        {"id": "1767:26", "role": "쉐브론 (stroke outline)", "var": "VariableID:1402:415", "varName": "color/icon/gray"}
+      ]
+    },
+    "Line": {
+      "id": "1767:32", "pos": [20, 68], "group": "1767:36",
+      "vectors": [
+        {"id": "1767:33", "role": "외곽 테두리 (rect stroke outline)", "var": "VariableID:1402:416", "varName": "color/icon/gray-dark"},
+        {"id": "1767:34", "role": "세로선 x=9 (stroke outline)", "var": "VariableID:1402:416", "varName": "color/icon/gray-dark"},
+        {"id": "1767:35", "role": "쉐브론 (stroke outline)", "var": "VariableID:1402:416", "varName": "color/icon/gray-dark"}
+      ]
+    },
+    "Color": {
+      "id": "1767:41", "pos": [20, 116], "group": "1767:43",
+      "vectors": [
+        {"id": "1767:38", "role": "몸통 (rect fill, flattened)", "var": "VariableID:1402:212", "varName": "visual-gray/200"},
+        {"id": "1767:39", "role": "왼쪽 판 (rect fill, flattened)", "var": "VariableID:1402:56", "varName": "blue/400"},
+        {"id": "1767:42", "role": "쉐브론 (stroke outline)", "var": "VariableID:1402:214", "varName": "visual-gray/300"}
+      ]
+    }
+  },
+  "variablesVerifiedLocal": true,
+  "structureNotes": [
+    "SVG 는 createNodeFromSvg 로 임포트. 훅(hex 금지) 때문에 color SVG 의 hex 색은 임포트 시 'black' 으로 치환하고 도형 기하는 원본 그대로 사용 — 색은 전부 Variable 바인딩으로 재지정.",
+    "stroke 레이어는 outlineStroke() 결과로 대체 후 원본 stroke 레이어 삭제. 모든 벡터 strokes 0, fills 1(바인딩).",
+    "fill 전용 rect(Color 몸통·왼쪽 판)는 figma.flatten 으로 VECTOR 변환.",
+    "모든 벡터 이름 'Vector', constraints SCALE/SCALE, '원본' GROUP 1단(ic_메뉴의 중간 'Group' 레벨은 없음).",
+    "기존 노드 변경 없음. 섹션 크기 1560x935 그대로, 섹션 자식 77→78.",
+    "combineAsVariants 는 신규 컴포넌트끼리만 — 기존 인스턴스 remap 해당 없음. detach 없음."
+  ],
+  "screenshots": [
+    "reports/figma-library-build/icon-panel-fold/shots/ic_패널접기_set.png",
+    "reports/figma-library-build/icon-panel-fold/shots/ic_메뉴_vs_ic_패널접기.png"
+  ]
+}

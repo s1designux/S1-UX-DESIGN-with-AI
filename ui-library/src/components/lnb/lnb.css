@@ -243,6 +243,7 @@
   background: transparent;
   color: var(--color-navigation-label-selected);
   font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-normal);   /* 정본 텍스트 스타일 title/14B 와 같게(자간 0) — Figma 부품과 일치 */
 }
 
 [data-s1-component="lnb"] [data-s1-part="item"][aria-disabled="true"] {

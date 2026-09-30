@@ -2,7 +2,7 @@
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
   "_updated": "2026-09-30",
-  "count": 693,
+  "count": 698,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -449,6 +449,9 @@
     "component:Radio",
     "component:Search Input",
     "component:Select Box",
+    "component:Side Nav",
+    "component:Side Nav Item",
+    "component:Side Nav Sub Item",
     "component:StatusBar",
     "component:Table",
     "component:Table Cell",
@@ -471,8 +474,10 @@
     "componentprop:Tabs",
     "componentprop:그림",
     "componentprop:설명 보임",
+    "componentprop:아이콘",
     "componentprop:오른쪽 칸",
     "componentprop:왼쪽 칸",
+    "componentprop:하위메뉴 화살표",
     "number:border-width/1",
     "number:border-width/2",
     "number:breakpoint/2xl",
@@ -1821,6 +1826,66 @@
       "evidence": {
         "transcript": "f8347252-7dc2-45d6-8561-8f0fb20c04a6.jsonl",
         "at": "2026-09-30T05:17:17.417Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "component:Side Nav",
+      "by": "river",
+      "reason": "승격 후보 4종(LNB) 정본 편입 — 판 접기 아이콘(ic_패널접기) 게시 뒤 Side Nav 세트 3종을 Navigation 묶음에 신설",
+      "approvedAt": "2026-09-30T06:58:35.772Z",
+      "quote": "LNB 부품도 이어서 만들어줘",
+      "evidence": {
+        "transcript": "f8347252-7dc2-45d6-8561-8f0fb20c04a6.jsonl",
+        "at": "2026-09-30T06:44:29.542Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "component:Side Nav Item",
+      "by": "river",
+      "reason": "승격 후보 4종(LNB) 정본 편입 — 판 접기 아이콘(ic_패널접기) 게시 뒤 Side Nav 세트 3종을 Navigation 묶음에 신설",
+      "approvedAt": "2026-09-30T06:58:38.160Z",
+      "quote": "LNB 부품도 이어서 만들어줘",
+      "evidence": {
+        "transcript": "f8347252-7dc2-45d6-8561-8f0fb20c04a6.jsonl",
+        "at": "2026-09-30T06:44:29.542Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "component:Side Nav Sub Item",
+      "by": "river",
+      "reason": "승격 후보 4종(LNB) 정본 편입 — 판 접기 아이콘(ic_패널접기) 게시 뒤 Side Nav 세트 3종을 Navigation 묶음에 신설",
+      "approvedAt": "2026-09-30T06:58:40.526Z",
+      "quote": "LNB 부품도 이어서 만들어줘",
+      "evidence": {
+        "transcript": "f8347252-7dc2-45d6-8561-8f0fb20c04a6.jsonl",
+        "at": "2026-09-30T06:44:29.542Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "componentprop:아이콘",
+      "by": "river",
+      "reason": "Side Nav Item 의 메뉴 아이콘 교체·하위메뉴 화살표 속성 (LNB Figma 부품 편입)",
+      "approvedAt": "2026-09-30T07:16:17.361Z",
+      "quote": "LNB 부품도 이어서 만들어줘",
+      "evidence": {
+        "transcript": "f8347252-7dc2-45d6-8561-8f0fb20c04a6.jsonl",
+        "at": "2026-09-30T06:44:29.542Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "componentprop:하위메뉴 화살표",
+      "by": "river",
+      "reason": "Side Nav Item 하위메뉴 화살표 표시 속성 (LNB Figma 부품 편입)",
+      "approvedAt": "2026-09-30T07:16:28.339Z",
+      "quote": "LNB 부품도 이어서 만들어줘",
+      "evidence": {
+        "transcript": "f8347252-7dc2-45d6-8561-8f0fb20c04a6.jsonl",
+        "at": "2026-09-30T06:44:29.542Z"
       },
       "recordedBy": "orchestrator"
     }

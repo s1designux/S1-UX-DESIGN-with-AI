@@ -27,7 +27,9 @@ async function main() {
   //             river "오케이 4종 승인할게" / 묶음 배치 "응 그렇게 해줘" (Gate 34 기록).
   //   52 → 53: 2026-09-30 river 승인 1건 — Data Tag(뱃지·Chip 묶음). 뱃지 전용 색 7줄 신설 뒤 편입
   //             (river "토큰은 제안한대로 추가하자").
-  if (model.componentCount !== 53) throw new Error(`정본 grid 항목은 53개여야 합니다. 현재 ${model.componentCount}개`);
+  //   53 → 56: 2026-09-30 river 승인 — Side Nav · Side Nav Item · Side Nav Sub Item(LNB·Navigation 묶음).
+  //             river "오케이 4종 승인할게"(2026-09-29) · "LNB 부품도 이어서 만들어줘"(2026-09-30).
+  if (model.componentCount !== 56) throw new Error(`정본 grid 항목은 56개여야 합니다. 현재 ${model.componentCount}개`);
   const invalid = model.componentIndex.filter((item) => !['public', 'internal', 'excluded'].includes(item.visibility));
   if (invalid.length) throw new Error(`공개/내부/제외 미분류: ${invalid.map((item) => item.name).join(', ')}`);
 

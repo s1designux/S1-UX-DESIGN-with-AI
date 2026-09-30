@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:11ff4314f59c8a9fc5f81ca96e6cd9076f26aac01fc916f16c4fc64fd7b29d38",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-09-30T07:18:51.349Z",
+  "notes": "Side Nav 3세트(8·3·8) 재검증(델타): A1 해소 — addComponentProperty 두 곳 리터럴(하위메뉴 화살표 BOOLEAN·아이콘 INSTANCE_SWAP), Gate 34 추적 690→692·승인 기록 2건 확인. 그 외 build-components.ts 변경은 견본 메뉴 주석 1곳뿐(직전 diff 대조). 1차 대조 항목(치수·토큰 바인딩·색 Variable·텍스트 스타일·panelFold key 1767:32)은 코드 동일로 승계. 선택 글자 자간은 웹을 0 으로 맞춰 Figma=웹. 남은 결정: 폭 240/280·로고 150/178 크기 토큰 부재(웹 needs-decision 1 과 같은 기존 대기). 실제 Figma 렌더 미검증."
+}

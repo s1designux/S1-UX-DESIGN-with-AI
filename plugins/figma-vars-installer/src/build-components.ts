@@ -1769,6 +1769,9 @@ export const ICON_KEYS: Record<string, string> = {
   mobileHeaderClose: "54469d54f16ed38de2d7b420b0e2195e4cf7c118", // ic_닫기 / Solid — Mobile Header
   mobileHeaderNotification: "13cf1b580ec982fda488f9318c6821930ddfb26e", // ic_알림(신규) / Line — Mobile Header
   mobileHeaderArrowDown: "6babc3f493e48be1e7191a7b8a68945833039fe8", // ic_화살표, 더보기, 다음장 / Solid(419:68) — Mobile Header, 아래 방향 -90°
+  // 판 접기(ic_패널접기 / Line 1767:32, 세트 1767:44) — Side Nav 머리줄 접기 단추. 다른 아이콘처럼 Line 변형 key.
+  //   key 는 2026-09-30 공식 Figma 커넥터 읽기 스크립트로 얻음(node.key). 웹은 다크에서 Solid(1767:24)로 바꾸지만 Figma 는 Line 고정.
+  panelFold: "e185bec52b05c4e25ec54a7e3bcd0077bca3b737",
 };
 // 삼성 로고 컴포넌트 — V3.0 파일 로컬 노드 333:165 (134×30 벡터). 파일 동일 시 getNodeByIdAsync 직접 접근.
 const SAMSUNG_LOGO_KEY = "9b32bb9ada9e84cdd18550f641389874858fa6ee";
@@ -7206,12 +7209,13 @@ async function buildMultiToggle(maps: BuildMaps, originY: number): Promise<{ set
 //   (mock 환경(렌더러·키체크)은 page.findAll/children 이 배열이 아니므로 가드로 fresh 취급.)
 
 // ════════════════════════════════════════════════════════════════════════════
-//  승격 후보 4종 중 3종 — river 승인 2026-09-29 ("오케이 4종 승인할게")
+//  승격 후보 4종 — river 승인 2026-09-29 ("오케이 4종 승인할게")
 //  묶음 배치도 river 결정 2026-09-29 ("응 그렇게 해줘"):
 //    Side Nav → Navigation · Expandable Card → List · Divider → Common(신설) · Data Tag → Chip
 //  Data Tag 는 뱃지 전용 색 7줄(color/tag/*)을 정본에 넣은 뒤 편입했다
 //    — river 승인 2026-09-30 "토큰은 제안한대로 추가하자".
-//  ⚠️ Side Nav 만 아직 없다 — 판 접기 아이콘(ic_패널접기)이 Figma 아이콘 라이브러리에 없어 대기 중이다.
+//  Side Nav 는 판 접기 아이콘(ic_패널접기 1767:44)이 V2.2 아이콘 라이브러리에 게시된 뒤 편입했다
+//    — river 2026-09-30 "LNB 부품도 이어서 만들어줘". 빌더는 아래 buildSideNav · buildSideNavItem · buildSideNavSubItem.
 // ════════════════════════════════════════════════════════════════════════════
 
 // ── Data Tag (뱃지) — 상태를 보여주기만 하는 작은 라벨 ──────────────────────
@@ -7451,6 +7455,437 @@ async function buildExpandableCard(maps: BuildMaps, originY: number): Promise<{ 
   return { set, bottomY };
 }
 
+// ── Side Nav (LNB · 사이드바 메뉴) — 화면 왼쪽에 세로로 서는 메뉴 판 ─────────────────
+//   river 승인 2026-09-29 "오케이 4종 승인할게" · 2026-09-30 "LNB 부품도 이어서 만들어줘" · 묶음 Navigation.
+//   모양의 기준 = 웹 정본 ui-library/src/components/lnb/lnb.css (같은 모양·같은 토큰).
+//   Figma 빌드 규칙 = reports/ui-library/promoted-parts-4/workflow-state.json lnb.figmaBuildSpec ①~⑤.
+//   세트 3개:
+//     Side Nav Item     — Mode(Expanded 펼침 줄 · Collapsed 접힘 칸) × State(Default·Hover·Selected·Disabled) = 8
+//     Side Nav Sub Item — 하위메뉴(2뎁스) 줄. State(Default·Hover·Selected) = 3. 아이콘 없음.
+//     Side Nav          — 판 전체. Type(Menu 로고 없음 · Brand 로고 있음) × Size(MD 240 · LG 280) × State(Expanded·Collapsed) = 8
+//   색 규칙(웹과 같음):
+//     · 메뉴명 = 본문 2단계 text/body/secondary · 아이콘 = icon/gray-dark (river 2026-09-30)
+//     · 호버 = 글자·아이콘 색 그대로, 바탕만 navigation/bg--hover (figmaBuildSpec ⑤)
+//     · 선택(펼침) = 바탕 없음 + 글자·아이콘 navigation/label/selected + 글자 Bold (figmaBuildSpec ①②)
+//     · 선택(접힘) = 바탕 button/bg/primary--default + 아이콘·글자 button/label/primary--default (figmaBuildSpec ④)
+//     · 준비 중 = 글자 text/state/disabled · 아이콘 icon/gray-light
+//     · 여닫이 화살표 = 늘 icon/gray-dark (웹 item-toggle 은 상태별 덮어쓰기가 없다)
+//   ⚠️ needs-decision — 펼침 폭 240·280, 로고 자리 150·178 은 정본에 크기 토큰이 없어 raw 값이다(웹 lnb.css 와 같음).
+//   ⚠️ needs-decision — 접힘 메뉴명 원본은 11 인데 정본에 11 이 없어 12(body/12R)를 쓴다(figmaBuildSpec ④, 웹과 같음).
+//   ⚠️ 선택 글자 Bold 는 정본 title/14B(자간 0)에 묶인다 — 웹은 Bold 에도 자간 tight(-2%)를 그대로 둔다.
+//      정본에 14 Bold 자간 -2% 스타일이 없어 새로 만들지 않았다(하드룰 H6②, needs-decision).
+const SIDE_NAV_MODES = ["Expanded", "Collapsed"] as const;
+const SIDE_NAV_ITEM_STATES = ["Default", "Hover", "Selected", "Disabled"] as const;
+const SIDE_NAV_SUB_STATES = ["Default", "Hover", "Selected"] as const;
+const SIDE_NAV_ITEM_W = 216;   // 펼침 줄 견본 폭 = MD 240 − 좌우 여백 12×2. 판 안에서는 가로 채움(STRETCH)으로 판 폭을 따른다
+const SIDE_NAV_SUB_W = 188;    // 하위 줄 견본 폭 = 216 − 들여쓰기 28
+const SIDE_NAV_ICON_PROP = "아이콘";
+const SIDE_NAV_ARROW_PROP = "하위메뉴 화살표";
+// 판 접기 아이콘 폴백 — 라이브러리(ic_패널접기 Line 1767:32) import 실패 시만 쓴다.
+// icon-fallback-not-canon: 라이브러리 import 실패용 폴백(assets/img/candidate-icons/ic_패널접기_line.svg 와 같은 그림). 웹 자산 근거가 아니다.
+const PANEL_FOLD_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3.54" y="3.54" width="16.92" height="16.92" stroke="#353535" stroke-width="1.08"/><path d="M9 3V21" stroke="#353535" stroke-width="1.08"/><path d="M15.8 10.3L14.05 12L15.8 13.7" stroke="#353535" stroke-width="1.08" stroke-linecap="square"/></svg>`;
+
+/** 메뉴 칸의 색 세 가지(글자·아이콘·바탕) — 웹 lnb.css 의 상태 규칙을 그대로 옮긴다. */
+function sideNavColors(mode: string, state: string): { label: string; icon: string; bg: string | null } {
+  if (state === "Disabled") return { label: "color/text/state/disabled", icon: "color/icon/gray-light", bg: null };
+  if (state === "Selected") {
+    return mode === "Collapsed"
+      ? { label: "color/button/label/primary--default", icon: "color/button/label/primary--default", bg: "color/button/bg/primary--default" }
+      : { label: "color/navigation/label/selected", icon: "color/navigation/label/selected", bg: null };
+  }
+  return { label: "color/text/body/secondary", icon: "color/icon/gray-dark", bg: state === "Hover" ? "color/navigation/bg--hover" : null };
+}
+
+/** 아이콘 인스턴스의 가로·세로를 Foundation 크기 변수에 묶는다(폴백 도형이면 조용히 넘어간다). */
+function bindIconSize(node: SceneNode, v: Variable): void {
+  try { (node as FrameNode).setBoundVariable("width", v); (node as FrameNode).setBoundVariable("height", v); } catch (e) { /* 환경 미지원 */ }
+}
+
+async function buildSideNavItem(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const num = (k: string): Variable => requireVar(maps.foundationNumber, k, "Foundation Number");
+  const comps: ComponentNode[] = [];
+  const byKey = new Map<string, ComponentNode>();
+  for (const mode of SIDE_NAV_MODES) {
+    const collapsed = mode === "Collapsed";
+    for (const state of SIDE_NAV_ITEM_STATES) {
+      const c = sideNavColors(mode, state);
+      const comp = figma.createComponent();
+      comp.name = `Mode=${mode}, State=${state}`;
+      comp.fills = c.bg ? [boundPaint(scv(maps, c.bg))] : [];
+      bindRadius(comp, maps, "radius/6");
+      if (!collapsed) {
+        // 펼침 줄 — 아이콘 20 + 간격 8 + 메뉴명 14 + (오른쪽 끝) 여닫이 화살표. 높이 최소 40, 여백 위아래 8 · 좌우 10.
+        comp.layoutMode = "HORIZONTAL";
+        comp.resize(SIDE_NAV_ITEM_W, 40);
+        comp.primaryAxisSizingMode = "FIXED";
+        comp.counterAxisSizingMode = "AUTO";
+        comp.counterAxisAlignItems = "CENTER";
+        comp.minHeight = 40; comp.setBoundVariable("minHeight", num("sizing/40"));
+        comp.paddingTop = 8; comp.paddingBottom = 8; comp.paddingLeft = 10; comp.paddingRight = 10;
+        comp.setBoundVariable("paddingTop", num("spacing/8"));
+        comp.setBoundVariable("paddingBottom", num("spacing/8"));
+        comp.setBoundVariable("paddingLeft", num("spacing/10"));
+        comp.setBoundVariable("paddingRight", num("spacing/10"));
+        comp.itemSpacing = 8; comp.setBoundVariable("itemSpacing", num("spacing/8"));
+        const icon = await makeIconInstance("menu", scv(maps, c.icon), 20, GNB_UTIL_SVGS.menu, 0, { wrap: false });
+        icon.name = "icon";
+        bindIconSize(icon, num("sizing/20"));
+        comp.appendChild(icon);
+        // 선택만 Bold(title/14B) — 나머지는 14 Medium(body/14M · 자간 tight). figmaBuildSpec ①.
+        const label = await makeBoundText("메뉴", 14, state === "Selected" ? "Bold" : "Medium", scv(maps, c.label));
+        label.name = "label";
+        comp.appendChild(label);
+        label.layoutGrow = 1;
+        label.textAutoResize = "HEIGHT";
+        // 여닫이 화살표 — 하위 메뉴가 있는 칸만 켠다(속성 「하위메뉴 화살표」, 기본 끔).
+        //   쉐브론 원본은 우향(›) — 닫힘은 아래(270), 열림은 위(90). 웹 rotate(90deg) / rotate(90deg) scaleX(-1) 와 같다.
+        const toggle = await makeIconInstance("chevron", scv(maps, "color/icon/gray-dark"), 20, CHEVRON_RIGHT_SVG, 270, { wrap: false });
+        toggle.name = "toggle";
+        bindIconSize(toggle, num("sizing/20"));
+        comp.appendChild(toggle);
+      } else {
+        // 접힘 칸 — 64×64 정사각. 아이콘 24 위 + 간격 2 + 메뉴명 12 Regular 아래(가운데). 여백 2. figmaBuildSpec ④.
+        comp.layoutMode = "VERTICAL";
+        comp.resize(64, 64);
+        comp.primaryAxisSizingMode = "FIXED";
+        comp.counterAxisSizingMode = "FIXED";
+        comp.setBoundVariable("width", num("sizing/64"));
+        comp.setBoundVariable("height", num("sizing/64"));
+        comp.primaryAxisAlignItems = "CENTER";
+        comp.counterAxisAlignItems = "CENTER";
+        comp.paddingTop = 2; comp.paddingBottom = 2; comp.paddingLeft = 2; comp.paddingRight = 2;
+        comp.setBoundVariable("paddingTop", num("spacing/2"));
+        comp.setBoundVariable("paddingBottom", num("spacing/2"));
+        comp.setBoundVariable("paddingLeft", num("spacing/2"));
+        comp.setBoundVariable("paddingRight", num("spacing/2"));
+        comp.itemSpacing = 2; comp.setBoundVariable("itemSpacing", num("spacing/2"));
+        const icon = await makeIconInstance("menu", scv(maps, c.icon), 24, GNB_UTIL_SVGS.menu, 0, { wrap: false });
+        icon.name = "icon";
+        bindIconSize(icon, num("sizing/24"));
+        comp.appendChild(icon);
+        const label = await makeBoundText("메뉴", 12, "Regular", scv(maps, c.label));
+        label.name = "label";
+        label.textAlignHorizontal = "CENTER";
+        comp.appendChild(label);
+        // 긴 이름은 말줄임하지 않고 칸 안에서 두 줄로 내린다(웹 word-break: keep-all) — 칸 폭에 맞추고 높이만 늘린다.
+        label.layoutAlign = "STRETCH";
+        label.textAutoResize = "HEIGHT";
+      }
+      setLightMode(comp, maps);
+      comps.push(comp); byKey.set(`${mode}:${state}`, comp);
+      BUILT_COMPS[`SideNavItem:${mode}:${state}`] = comp;
+    }
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Side Nav Item"; set.x = 0; set.y = originY;
+  BUILT_SETS["Side Nav Item"] = set;
+  // 「하위메뉴 화살표」 스위치 — 켜면 줄 오른쪽 끝에 여닫이 화살표가 보인다(펼침 줄에만 있다).
+  //   선례: buildListRow 「설명 보임」 BOOLEAN — 레이어 visible 을 속성에 묶는 같은 방식.
+  const arrowPropId = set.addComponentProperty("하위메뉴 화살표", "BOOLEAN", false);   // 이름은 SIDE_NAV_ARROW_PROP 과 같다 — Gate 34 가 글자 그대로를 센다
+  // 「아이콘」 교체 — 화면마다 메뉴 아이콘을 바꿔 끼운다. 기본은 ic_메뉴(웹 기본 menu.svg 와 같다).
+  //   라이브러리를 못 읽는 환경(폴백 도형)에서는 교체 속성을 만들 수 없어 건너뛴다.
+  let iconPropId: string | null = null;
+  try {
+    const menuComp = await figma.importComponentByKeyAsync(ICON_KEYS.menu);
+    iconPropId = set.addComponentProperty("아이콘", "INSTANCE_SWAP", menuComp.id);   // = SIDE_NAV_ICON_PROP
+  } catch (e) { iconPropId = null; }
+  for (const c of comps) {
+    const toggle = c.findOne((n: SceneNode) => n.name === "toggle");
+    if (toggle) { toggle.visible = false; toggle.componentPropertyReferences = { visible: arrowPropId }; }
+    if (iconPropId) {
+      const icon = c.findOne((n: SceneNode) => n.name === "icon" && n.type === "INSTANCE");
+      if (icon) { try { icon.componentPropertyReferences = { mainComponent: iconPropId }; } catch (e) { /* 폴백 도형 */ } }
+    }
+  }
+  set.description = "사이드바 메뉴(LNB)의 메뉴 한 칸. Mode=Expanded 는 판을 펼쳤을 때의 줄(아이콘+메뉴명), "
+    + "Mode=Collapsed 는 접었을 때의 64 정사각 칸(아이콘 위·메뉴명 아래)이다. 하위 메뉴가 있으면 「하위메뉴 화살표」를 켠다. "
+    + "아이콘은 「아이콘」 속성으로 바꿔 끼운다. 웹은 어두운 화면에서 솔리드 아이콘으로 바꾸지만 Figma 는 모드별 교체가 안 돼 라인형이 기본이다.";
+  const opts: SpecOpts = {
+    title: "Side Nav Item",
+    colHeaders: [...SIDE_NAV_ITEM_STATES],
+    rowLabels: [...SIDE_NAV_MODES],
+    cellAt: (r, c) => byKey.get(`${SIDE_NAV_MODES[r]}:${SIDE_NAV_ITEM_STATES[c]}`) ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 240, cellH: 72, rowLabelW: 96,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+async function buildSideNavSubItem(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const num = (k: string): Variable => requireVar(maps.foundationNumber, k, "Foundation Number");
+  const comps: ComponentNode[] = [];
+  const byKey = new Map<string, ComponentNode>();
+  for (const state of SIDE_NAV_SUB_STATES) {
+    // 글자 색은 상위 메뉴와 같다 — 연하게 낮추지 않는다(river 2026-09-29). 선택·호버 규칙도 상위와 같다.
+    const c = sideNavColors("Expanded", state);
+    const comp = figma.createComponent();
+    comp.name = `State=${state}`;
+    comp.layoutMode = "HORIZONTAL";
+    comp.resize(SIDE_NAV_SUB_W, 40);
+    comp.primaryAxisSizingMode = "FIXED";
+    comp.counterAxisSizingMode = "AUTO";
+    comp.counterAxisAlignItems = "CENTER";
+    comp.minHeight = 40; comp.setBoundVariable("minHeight", num("sizing/40"));
+    comp.paddingTop = 8; comp.paddingBottom = 8; comp.paddingLeft = 10; comp.paddingRight = 10;
+    comp.setBoundVariable("paddingTop", num("spacing/8"));
+    comp.setBoundVariable("paddingBottom", num("spacing/8"));
+    comp.setBoundVariable("paddingLeft", num("spacing/10"));
+    comp.setBoundVariable("paddingRight", num("spacing/10"));
+    comp.fills = c.bg ? [boundPaint(scv(maps, c.bg))] : [];
+    bindRadius(comp, maps, "radius/6");
+    const label = await makeBoundText("하위 메뉴", 14, state === "Selected" ? "Bold" : "Medium", scv(maps, c.label));
+    label.name = "label";
+    comp.appendChild(label);
+    label.layoutGrow = 1;
+    label.textAutoResize = "HEIGHT";
+    setLightMode(comp, maps);
+    comps.push(comp); byKey.set(state, comp);
+    BUILT_COMPS[`SideNavSubItem:${state}`] = comp;
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Side Nav Sub Item"; set.x = 0; set.y = originY;
+  BUILT_SETS["Side Nav Sub Item"] = set;
+  set.description = "사이드바 메뉴의 하위 메뉴(2뎁스) 한 줄. 아이콘이 없고, 들여쓰기(28 = 아이콘 20 + 간격 8)는 "
+    + "Side Nav 안의 하위 목록 칸이 준다(웹 subitems 규칙). 글자 색·선택·호버는 상위 메뉴와 같다.";
+  const opts: SpecOpts = {
+    title: "Side Nav Sub Item",
+    colHeaders: [...SIDE_NAV_SUB_STATES],
+    rowLabels: ["2뎁스"],
+    cellAt: (_r, c) => byKey.get(SIDE_NAV_SUB_STATES[c]) ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 220, cellH: 56, rowLabelW: 96,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+async function buildSideNav(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const num = (k: string): Variable => requireVar(maps.foundationNumber, k, "Foundation Number");
+  const types = ["Menu", "Brand"];
+  const sizes = ["MD", "LG"];
+  const states = ["Expanded", "Collapsed"];
+  // needs-decision — 펼침 폭은 정본에 크기 토큰이 없다(웹 lnb.css 240/280 과 같은 raw 값). 접힘 폭은 sizing/80.
+  const WIDTH: Record<string, number> = { MD: 240, LG: 280 };
+  const LOGO_W: Record<string, number> = { MD: 150, LG: 178 };   // needs-decision — 로고 자리 폭도 토큰 없음(웹과 같음)
+  const itemComp = async (mode: string, state: string): Promise<InstanceNode> => {
+    const c = BUILT_COMPS[`SideNavItem:${mode}:${state}`]
+      ?? await reuseVariant("Side Nav Item", `SideNavItem:${mode}:${state}`, [`Mode=${mode}`, `State=${state}`]);
+    if (!c) throw new Error("Side Nav 는 Side Nav Item 정본이 먼저 필요합니다.");
+    return c.createInstance();
+  };
+  const subComp = async (state: string): Promise<InstanceNode> => {
+    const c = BUILT_COMPS[`SideNavSubItem:${state}`]
+      ?? await reuseVariant("Side Nav Sub Item", `SideNavSubItem:${state}`, [`State=${state}`]);
+    if (!c) throw new Error("Side Nav 는 Side Nav Sub Item 정본이 먼저 필요합니다.");
+    return c.createInstance();
+  };
+  const setLabel = (inst: InstanceNode, s: string): void => {
+    const t = inst.findOne((n) => n.type === "TEXT") as TextNode | null;
+    if (t) { try { t.characters = s; } catch (e) { /* */ } }
+  };
+  // 「하위메뉴 화살표」 속성 키(이름#아이디) — 재설치로 항목 세트가 보존돼도 캔버스 세트에서 찾아 쓴다.
+  const arrowKey = async (): Promise<string | null> => {
+    try {
+      const s = BUILT_SETS["Side Nav Item"] ?? await getBuiltSet("Side Nav Item");
+      const defs = s ? s.componentPropertyDefinitions : {};
+      return Object.keys(defs || {}).find((k) => k.split("#")[0] === SIDE_NAV_ARROW_PROP) ?? null;
+    } catch (e) { return null; }
+  };
+  // 견본 메뉴 — 웹 lnb.example.html 을 바탕으로 하되, 하위메뉴 모양을 보이려고 「컴포넌트」를 펼치고 「패턴」 한 칸을 더했다.
+  //   첫 칸 선택 · 「컴포넌트」는 하위메뉴를 가진 칸(펼침 판에서만 열림) · 마지막은 준비 중.
+  const MENU: { label: string; state: string; subs?: { label: string; state: string }[] }[] = [
+    { label: "개요", state: "Selected" },
+    { label: "기반 토큰", state: "Default" },
+    { label: "컴포넌트", state: "Default", subs: [{ label: "PC 컴포넌트", state: "Default" }, { label: "Mobile 컴포넌트", state: "Default" }] },
+    { label: "패턴", state: "Default" },
+    { label: "준비 중", state: "Disabled" },
+  ];
+
+  const comps: ComponentNode[] = [];
+  const cells: { comp: ComponentNode; row: number; col: number }[] = [];
+  const rows: { type: string; size: string }[] = [];
+  for (const type of types) for (const size of sizes) rows.push({ type, size });
+  for (let row = 0; row < rows.length; row++) {
+    const { type, size } = rows[row];
+    const brand = type === "Brand";
+    for (let col = 0; col < states.length; col++) {
+      const state = states[col];
+      const collapsed = state === "Collapsed";
+      const comp = figma.createComponent();
+      comp.name = `Type=${type}, Size=${size}, State=${state}`;
+      comp.layoutMode = "VERTICAL";
+      comp.resize(collapsed ? 80 : WIDTH[size], 400);
+      comp.primaryAxisSizingMode = "AUTO";
+      comp.counterAxisSizingMode = "FIXED";
+      if (collapsed) comp.setBoundVariable("width", num("sizing/80"));
+      comp.counterAxisAlignItems = collapsed ? "CENTER" : "MIN";
+      // 여백 — 펼침 위 12 · 좌우 12 · 아래 16 / 접힘은 좌우만 8(80 − 8×2 = 64 칸 폭).
+      comp.paddingTop = 12; comp.paddingBottom = 16;
+      comp.paddingLeft = collapsed ? 8 : 12; comp.paddingRight = collapsed ? 8 : 12;
+      comp.setBoundVariable("paddingTop", num("spacing/12"));
+      comp.setBoundVariable("paddingBottom", num("spacing/16"));
+      comp.setBoundVariable("paddingLeft", num(collapsed ? "spacing/8" : "spacing/12"));
+      comp.setBoundVariable("paddingRight", num(collapsed ? "spacing/8" : "spacing/12"));
+      // 머리줄과 첫 메뉴 사이 — 접힘 16(river 2026-09-30) · 로고 벌 펼침 8(구분선 아래) · 기본 펼침 0.
+      const headGap = collapsed ? 16 : (brand ? 8 : 0);
+      comp.itemSpacing = headGap;
+      if (headGap) comp.setBoundVariable("itemSpacing", num(`spacing/${headGap}`));
+      comp.fills = [boundPaint(scv(maps, "color/navigation/bg"))];
+      // 오른쪽 테두리 1px line/default — 판과 본문을 나눈다.
+      comp.strokes = [boundPaint(scv(maps, "color/line/default"))];
+      comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
+      comp.strokeTopWeight = 0; comp.strokeLeftWeight = 0; comp.strokeBottomWeight = 0; comp.strokeRightWeight = 1;
+      try { comp.setBoundVariable("strokeRightWeight", num("border-width/1")); } catch (e) { /* 환경 미지원 */ }
+
+      // ── 머리줄: (로고 벌) 왼쪽 로고 자리 + 오른쪽 끝 접기 단추 ──
+      const headRow = figma.createFrame();
+      headRow.name = "head-row";
+      headRow.layoutMode = "HORIZONTAL";
+      headRow.primaryAxisSizingMode = "FIXED";
+      headRow.counterAxisSizingMode = "AUTO";
+      headRow.counterAxisAlignItems = "CENTER";
+      // 접힘은 단추 가운데 · 로고 벌은 양 끝 · 기본 벌은 단추만 오른쪽 끝(웹 margin-left: auto)
+      headRow.primaryAxisAlignItems = collapsed ? "CENTER" : (brand ? "SPACE_BETWEEN" : "MAX");
+      headRow.itemSpacing = 8; headRow.setBoundVariable("itemSpacing", num("spacing/8"));
+      headRow.minHeight = brand ? 48 : 40;
+      headRow.setBoundVariable("minHeight", num(brand ? "sizing/48" : "sizing/40"));
+      headRow.fills = [];
+      if (brand && !collapsed) {
+        // 로고 자리 — 정본에 서비스 로고 자산이 없어 비어 있는 자리표시다. 화면이 자기 서비스 로고로 바꾼다.
+        //   집 아이콘을 덧붙이지 않는다(river 2026-09-29). 접힌 판에서는 로고를 감춘다(웹과 같음).
+        const brandBox = figma.createFrame();
+        brandBox.name = "brand";
+        brandBox.layoutMode = "HORIZONTAL";
+        brandBox.primaryAxisSizingMode = "AUTO";
+        brandBox.counterAxisSizingMode = "AUTO";
+        brandBox.counterAxisAlignItems = "CENTER";
+        brandBox.paddingLeft = 10; brandBox.setBoundVariable("paddingLeft", num("spacing/10"));
+        brandBox.fills = [];
+        const logo = figma.createFrame();
+        logo.name = "Logo — 서비스 로고로 교체";
+        logo.resize(LOGO_W[size], 24);
+        logo.setBoundVariable("height", num("sizing/24"));
+        logo.fills = [];
+        brandBox.appendChild(logo);
+        headRow.appendChild(brandBox);
+      }
+      // 접기 단추 — 32 칸 · 모서리 radius/6 · 아이콘 20(메뉴 아이콘과 같은 크기 — 크게 그리면 선이 굵어진다, river 2026-09-29).
+      //   펼친 판은 그림 그대로(접기), 접힌 판은 좌우를 뒤집어 펴기로 읽힌다 — 이 그림은 위아래가 대칭이라
+      //   180° 회전이 좌우 뒤집기와 같다(웹 scaleX(-1)).
+      const collapseBtn = figma.createFrame();
+      collapseBtn.name = "collapse";
+      collapseBtn.layoutMode = "HORIZONTAL";
+      collapseBtn.resize(32, 32);
+      collapseBtn.primaryAxisSizingMode = "FIXED";
+      collapseBtn.counterAxisSizingMode = "FIXED";
+      collapseBtn.setBoundVariable("width", num("sizing/32"));
+      collapseBtn.setBoundVariable("height", num("sizing/32"));
+      collapseBtn.primaryAxisAlignItems = "CENTER";
+      collapseBtn.counterAxisAlignItems = "CENTER";
+      collapseBtn.fills = [];
+      bindRadius(collapseBtn, maps, "radius/6");
+      const foldIcon = await makeIconInstance("panelFold", scv(maps, "color/icon/gray-dark"), 20, PANEL_FOLD_SVG, collapsed ? 180 : 0, { wrap: false });
+      foldIcon.name = "collapse-icon";
+      bindIconSize(foldIcon, num("sizing/20"));
+      collapseBtn.appendChild(foldIcon);
+      headRow.appendChild(collapseBtn);
+
+      if (brand) {
+        // 로고 벌 머리줄 — 아래 여백 12 + 구분선 1px line/default(웹 border-bottom). 접힌 판에도 그대로 남는다(웹과 같음).
+        const head = figma.createFrame();
+        head.name = "head";
+        head.layoutMode = "VERTICAL";
+        head.primaryAxisSizingMode = "AUTO";
+        head.counterAxisSizingMode = "AUTO";
+        head.itemSpacing = 12; head.setBoundVariable("itemSpacing", num("spacing/12"));
+        head.fills = [];
+        head.appendChild(headRow);
+        headRow.layoutAlign = "STRETCH";
+        const line = figma.createRectangle();
+        line.name = "divider";
+        line.resize(collapsed ? 64 : WIDTH[size] - 24, 1);
+        line.setBoundVariable("height", num("border-width/1"));
+        line.fills = [boundPaint(scv(maps, "color/line/default"))];
+        head.appendChild(line);
+        line.layoutAlign = "STRETCH";
+        comp.appendChild(head);
+        head.layoutAlign = "STRETCH";
+      } else {
+        headRow.name = "head";
+        comp.appendChild(headRow);
+        headRow.layoutAlign = "STRETCH";
+      }
+
+      // ── 메뉴 목록 ──
+      const items = figma.createFrame();
+      items.name = "items";
+      items.layoutMode = "VERTICAL";
+      items.primaryAxisSizingMode = "AUTO";
+      items.counterAxisSizingMode = "AUTO";
+      items.counterAxisAlignItems = collapsed ? "CENTER" : "MIN";
+      items.itemSpacing = collapsed ? 16 : 0;
+      if (collapsed) items.setBoundVariable("itemSpacing", num("spacing/16"));   // 접힘 칸 사이 16(river 2026-09-30)
+      items.fills = [];
+      const aKey = await arrowKey();
+      for (const m of MENU) {
+        const inst = await itemComp(collapsed ? "Collapsed" : "Expanded", m.state);
+        inst.name = "item";
+        setLabel(inst, m.label);
+        items.appendChild(inst);
+        if (!collapsed) inst.layoutAlign = "STRETCH";
+        if (m.subs && !collapsed) {
+          // 하위 메뉴를 펼쳐 둔 모습 — 화살표를 켜고 위로 뒤집는다(웹 aria-expanded=true).
+          if (aKey) { try { inst.setProperties({ [aKey]: true }); } catch (e) { /* */ } }
+          const tg = inst.findOne((n) => n.name === "toggle");
+          if (tg) { try { (tg as FrameNode).rotation = 90; } catch (e) { /* */ } }
+          // 하위 목록 — 왼쪽 들여쓰기 28 = 아이콘 20 + 간격 8(웹 calc(sizing-20 + spacing-8)). spacing/28 과 같은 값.
+          const subs = figma.createFrame();
+          subs.name = "subitems";
+          subs.layoutMode = "VERTICAL";
+          subs.primaryAxisSizingMode = "AUTO";
+          subs.counterAxisSizingMode = "AUTO";
+          subs.paddingLeft = 28; subs.setBoundVariable("paddingLeft", num("spacing/28"));
+          subs.fills = [];
+          for (const s of m.subs) {
+            const si = await subComp(s.state);
+            si.name = "subitem";
+            setLabel(si, s.label);
+            subs.appendChild(si);
+            si.layoutAlign = "STRETCH";
+          }
+          items.appendChild(subs);
+          subs.layoutAlign = "STRETCH";
+        }
+      }
+      comp.appendChild(items);
+      if (!collapsed) items.layoutAlign = "STRETCH";
+
+      setLightMode(comp, maps);
+      comps.push(comp);
+      cells.push({ comp, row, col });
+    }
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Side Nav"; set.x = 0; set.y = originY;
+  BUILT_SETS["Side Nav"] = set;
+  set.description = "사이드바 메뉴(LNB) 판 전체. Type=Menu 는 로고 없는 기본 벌, Brand 는 머리줄 왼쪽에 서비스 로고가 붙는 벌. "
+    + "Size=MD 240 · LG 280, State=Collapsed 는 폭 80 띠(아이콘 위·메뉴명 아래). 접기는 머리줄 오른쪽 끝 아이콘 단추 하나로만 한다. "
+    + "로고 자리는 비어 있다 — 서비스 로고로 교체한다. 어두운 화면의 로고는 한 가지 색(제목 글자 색 text/title/primary)으로 바꿔야 하는데, "
+    + "Figma 는 모드별로 그림을 바꿀 수 없어 로고를 넣을 때 직접 맞춘다. 메뉴 아이콘도 웹은 어두운 화면에서 솔리드형으로 바꾸지만 여기서는 라인형이 기본이다. "
+    + "펼친 폭 240·280 은 아직 크기 토큰이 없다(결정 대기).";
+  const opts: SpecOpts = {
+    title: "Side Nav",
+    colHeaders: states.map((s) => `State=${s}`),
+    rowLabels: rows.map((r) => `${r.type === "Brand" ? "로고" : "기본"} · ${r.size}`),
+    cellAt: (r, c) => cells.find((x) => x.row === r && x.col === c)?.comp ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 320, cellH: 440, rowLabelW: 96, rowGap: 24,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
 // 대메뉴(섹션) 분류 — 모든 섹션을 한 행에 가로로 배치
 // Filter Chip은 특별히 처리 (Chip 아래)
 export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] = [
@@ -7458,7 +7893,7 @@ export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] 
     { name: "Platform",     members: ["StatusBar", "NavBar", "CI", "LoginGNB", "WebTabBar", "Footer"] },
     // Line Tab·Pagination 을 여기로 합쳤다(river 결정 2026-09-28) — 둘 다 "화면을 갈아 끼우거나
     //   넘기는" 이동 부품이고, 각각 부품 2개짜리 작은 묶음이라 독립 섹션을 둘 이유가 없다.
-    { name: "Navigation",   members: ["GNB", "GNB Sub Menu", "GNB Sub Menu Item", "GNB Utility Icon", "Language Icon", "Mobile Bottom Nav", "Mobile Header", "Line Tab Set", "Line Tab", "Pagination", "Pagination Cell"] },
+    { name: "Navigation",   members: ["GNB", "GNB Sub Menu", "GNB Sub Menu Item", "GNB Utility Icon", "Language Icon", "Side Nav", "Side Nav Item", "Side Nav Sub Item", "Mobile Bottom Nav", "Mobile Header", "Line Tab Set", "Line Tab", "Pagination", "Pagination Cell"] },
     { name: "Actions",      members: ["Button", "Assist Button", "Text Button"] },
     { name: "Selection",    members: ["Checkbox", "Radio", "Toggle", "Multi Toggle", "Multi Toggle Element"] },
     // Dropdown 섹션 = Form Control 에서 분리(사용자 결정 2026-06-26). Selection 아래에 세로 스택 배치(stage 2 STACKED).
@@ -7519,6 +7954,8 @@ export const BUILD_DEPENDENCIES: Record<string, string[]> = {
   "Mobile Header": ["StatusBar"],
   // 하위메뉴 패널이 항목 세트의 변형을 인스턴스로 붙인다 → 항목이 먼저 빌드돼야 한다.
   "GNB Sub Menu": ["GNB Sub Menu Item"],
+  // Side Nav 판이 메뉴 칸·하위 줄 세트의 변형을 인스턴스로 붙인다 → 두 세트가 먼저 빌드돼야 한다.
+  "Side Nav": ["Side Nav Item", "Side Nav Sub Item"],
   "Pagination": ["Pagination Cell"],  // 완성 바가 Pagination Cell(Arrow·Edge·Number) 인스턴스 조합
   "Multi Toggle": ["Multi Toggle Element"], // 조합형태가 Multi Toggle Element 셀 인스턴스 사용 → 요소 먼저 빌드
   "Date Picker": ["Calendar"],        // Open 상태가 Calendar 패널 인스턴스 부착(BUILT_COMPS["Calendar:Date"])
@@ -7563,6 +8000,7 @@ const ATTACH_DEPENDENCIES: { [parent: string]: string[] } = {
   "Table": ["Pagination", "Checkbox", "Select Box", "Table Cell"],
   "Mobile Header": ["StatusBar"],
   "Calendar": ["Calendar Cell", "Calendar Tile", "Calendar Nav Arrow"],
+  "Side Nav": ["Side Nav Item", "Side Nav Sub Item"],
 };
 
 // 부모가 **부수 생성**하는 컴포넌트 — 자기 runner 가 없는 것이 정상이다(2026-08-01 명시화).
@@ -7841,6 +8279,9 @@ export async function buildAllComponents(
     "GNB":                  (oy) => buildGNB(maps, oy),
     "GNB Sub Menu":         (oy) => buildGNBSubMenu(maps, oy),
     "GNB Sub Menu Item":    (oy) => buildGNBSubMenuItem(maps, oy),
+    "Side Nav":             (oy) => buildSideNav(maps, oy),
+    "Side Nav Item":        (oy) => buildSideNavItem(maps, oy),
+    "Side Nav Sub Item":    (oy) => buildSideNavSubItem(maps, oy),
     "Pagination":           (oy) => buildPaginationBar(maps, oy),
     "Pagination Cell":      (oy) => buildPaginationCell(maps, oy),
     "StatusBar":            (oy) => buildStatusBar(maps, oy),

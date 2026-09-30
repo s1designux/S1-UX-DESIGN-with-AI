@@ -145,6 +145,18 @@
     {
       "name": "List Row",
       "reason": "정본 buildListRow 2026-09-21 신설, work-id list-row 3-build 완료(ui-library/dist 배포본 있음) — 손관리 components 페이지 섹션은 4-verification·river UX 승인 뒤 guide-builder 가 추가한다. HTML 섹션 생기면 sectionFor 로 이관."
+    },
+    {
+      "name": "Side Nav",
+      "reason": "사이드바 메뉴(LNB) 판 — 정본 buildSideNav 2026-09-30 신설(river \"LNB 부품도 이어서 만들어줘\"). 웹 배포본 원본(ui-library/src/components/lnb)은 있으나 손관리 components 페이지 섹션은 검증·river UX 승인 뒤 guide-builder 가 추가한다. HTML 섹션 생기면 sectionFor 로 이관."
+    },
+    {
+      "name": "Side Nav Item",
+      "reason": "요소 — Side Nav 안 메뉴 칸(펼침 줄·접힘 칸)."
+    },
+    {
+      "name": "Side Nav Sub Item",
+      "reason": "요소 — Side Nav 안 하위 메뉴(2뎁스) 줄."
     }
   ],
   "mobileOnly": [

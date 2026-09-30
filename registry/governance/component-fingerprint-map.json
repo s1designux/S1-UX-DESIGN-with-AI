@@ -126,6 +126,14 @@
       ],
       "why": "buildListRow 가 만드는 세트 1개. 왼쪽 체크(Checkbox)·오른쪽 토글(Toggle) 인스턴스는 각자 배포 부품이라 manifest dependencies.coreComponents 빌려쓰기로 처리한다."
     },
+    "lnb": {
+      "canonSets": [
+        "Side Nav",
+        "Side Nav Item",
+        "Side Nav Sub Item"
+      ],
+      "why": "buildSideNav 판 세트 + BUILD_DEPENDENCIES: Side Nav→Side Nav Item·Side Nav Sub Item. 메뉴 칸·하위 줄을 담는 별도 배포 부품이 없다(웹 lnb 의 item·subitems 부분이 곧 두 세트다)."
+    },
     "mobile-bottom-nav": {
       "canonSets": [
         "Mobile Bottom Nav"

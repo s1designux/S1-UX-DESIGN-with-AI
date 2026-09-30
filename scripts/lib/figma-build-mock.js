@@ -55,6 +55,8 @@ const PROP_CLASS = {
   name: 'IDENTITY',
   // ── 제외 ──
   x: 'IGNORED', y: 'IGNORED',
+  // 세트 설명(쓰는 법 안내 글) — 모양·배치와 무관한 문서라 지문에서 뺀다(2026-09-30 Side Nav 가 처음 씀).
+  description: 'IGNORED',
 };
 
 const NUMERIC_GETTERS = ['width', 'height', 'x', 'y', 'length', 'strokeWeight', 'cornerRadius', 'fontSize'];
