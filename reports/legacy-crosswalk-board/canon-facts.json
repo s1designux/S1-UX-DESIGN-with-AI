@@ -3,7 +3,7 @@
     "목적": "검수판 카드에 박는 정본 사실 — 사람이 요약하지 않고 기계가 뽑는다",
     "출처": "ui-library/dist/components/*.manifest.json (정본 build-components.ts 에서 생성)",
     "재생성": "npm run board:facts",
-    "생성일": "2026-09-29"
+    "생성일": "2026-09-30"
   },
   "components": {
     "assist-button": {
@@ -277,10 +277,29 @@
       ],
       "sourceFingerprint": "77dba51c5af7714a7470727fad23cfcfa596276acbf8e9303c17eaa933b48a5d"
     },
+    "data-tag": {
+      "id": "data-tag",
+      "status": "candidate",
+      "version": "0.1.0",
+      "sizes": [],
+      "breaks": {},
+      "sizeBreakGrid": [],
+      "variants": [
+        "blue",
+        "red"
+      ],
+      "types": null,
+      "states": [
+        "default"
+      ],
+      "canonicalStateMap": {},
+      "absentCombinations": [],
+      "sourceFingerprint": "9f5d10b54693e58506cde98dca46ec24e4af4d04538985927335b3b70bd51e58"
+    },
     "date-picker": {
       "id": "date-picker",
       "status": "approved",
-      "version": "0.2.7",
+      "version": "0.2.8",
       "sizes": [
         "xxsm",
         "xsm",
@@ -345,7 +364,26 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "525c6d22c850859a6c2440b0a9209f978180b59800195c13e665d23a8168ab01"
+      "sourceFingerprint": "fd3073c587d81b2cc45ab02fcf015b461d697f3f240ac333450af445dff969a6"
+    },
+    "divider": {
+      "id": "divider",
+      "status": "candidate",
+      "version": "0.1.0",
+      "sizes": [],
+      "breaks": {},
+      "sizeBreakGrid": [],
+      "variants": [
+        "x",
+        "y"
+      ],
+      "types": null,
+      "states": [
+        "default"
+      ],
+      "canonicalStateMap": {},
+      "absentCombinations": [],
+      "sourceFingerprint": "1168be5412bf46ba2e7e3dad0c484fa05971c5d8018c146632dfb02f21132762"
     },
     "dropdown": {
       "id": "dropdown",
@@ -382,6 +420,24 @@
         }
       ],
       "sourceFingerprint": "ceb5ad17fa234acafeb402b044c1ed2c1d47839def24672c09a8623f5a7c83e0"
+    },
+    "expandable-card": {
+      "id": "expandable-card",
+      "status": "candidate",
+      "version": "0.1.1",
+      "sizes": [],
+      "breaks": {},
+      "sizeBreakGrid": [],
+      "variants": [],
+      "types": null,
+      "states": [
+        "closed",
+        "open",
+        "hover"
+      ],
+      "canonicalStateMap": {},
+      "absentCombinations": [],
+      "sourceFingerprint": "ab208ea2fe65e8d0a63229b8e0d3b8984e5e7e70ee98cd24e4390f88f7f49755"
     },
     "filter-chip": {
       "id": "filter-chip",
@@ -448,7 +504,7 @@
           "reason": "정본에 Error 상태가 없다."
         }
       ],
-      "sourceFingerprint": "bb68adecc4baeeac240db5ea59dd8549a5165b0a6b9b6d8157b3f820e6c57913"
+      "sourceFingerprint": "aaa54348538ed0dbb4ac9f04c67256f90c2a38e4d764a366845440ee4589578c"
     },
     "gnb-sub-menu-item": {
       "id": "gnb-sub-menu-item",
@@ -537,7 +593,7 @@
     "input": {
       "id": "input",
       "status": "approved",
-      "version": "0.3.3",
+      "version": "0.3.4",
       "sizes": [
         "xxsm",
         "xsm",
@@ -606,7 +662,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "061942e71c3bbefb4f32423222de5a2d3ef4380ebf4bbf95bd2e2f9853e9cbac"
+      "sourceFingerprint": "9407be5bc51ad02436048e833d09c15da764876ab26a2c9b7afc9bbad4bd50e8"
     },
     "list-row": {
       "id": "list-row",
@@ -882,7 +938,7 @@
     "select": {
       "id": "select",
       "status": "approved",
-      "version": "0.2.6",
+      "version": "0.2.7",
       "sizes": [
         "xxsm",
         "xsm",
@@ -956,7 +1012,7 @@
           "reason": "정본에 Error 상태가 없다."
         }
       ],
-      "sourceFingerprint": "cde002d0b86b666b7bd2f503e80e75efbe0636c55262a4f61c1084912a13d692"
+      "sourceFingerprint": "ab5fe850596a73f4153b7ca9aaad66d7e07f683dcbf37590ea2610ac21717ce6"
     },
     "tab": {
       "id": "tab",
@@ -1027,7 +1083,7 @@
     "table": {
       "id": "table",
       "status": "approved",
-      "version": "0.2.3",
+      "version": "0.2.4",
       "sizes": [
         "md",
         "sm",
@@ -1083,7 +1139,7 @@
           "reason": "정본·Registry 모두 모바일 표 표출 규칙이 없다. 이번 배포는 PC 만 선언한다."
         }
       ],
-      "sourceFingerprint": "cc90626cbfcac3569e839d9dc8b82e6b05e493539f1089aef5cf33f93bed15d1"
+      "sourceFingerprint": "1b09b0a94d2d47bfb902b0f2b0524093996a8910d07e402595a7dfeb4f316147"
     },
     "text-button": {
       "id": "text-button",
@@ -1123,7 +1179,7 @@
     "textarea": {
       "id": "textarea",
       "status": "approved",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "sizes": [],
       "breaks": {},
       "sizeBreakGrid": [],
@@ -1151,7 +1207,7 @@
           "reason": "정본은 State 축만 있고 sm/md/lg 같은 크기 축이 없다."
         }
       ],
-      "sourceFingerprint": "3238f3dee1441cc5db2f6446f7db300cd199c894ded3d115dc2e366fbb1601f8"
+      "sourceFingerprint": "270f5d53a6c79ab86be68fead9bbfad16fdad25e81685df2c838816403af45c7"
     },
     "time-picker": {
       "id": "time-picker",
@@ -1229,7 +1285,7 @@
           "reason": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
         }
       ],
-      "sourceFingerprint": "33143012fbf2bba850f652146dfca177adec42da315d8922db16da7b05348f00"
+      "sourceFingerprint": "10b3cfb53c2afd872b908996ca5f9e027366511e74ff3431fd2e96ee9b6d6242"
     },
     "toggle": {
       "id": "toggle",

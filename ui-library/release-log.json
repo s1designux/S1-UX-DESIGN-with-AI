@@ -5,10 +5,19 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.14.4",
+  "version": "0.14.5",
   "releasedAt": "2026-09-30",
-  "canonicalFingerprint": "c77ae5d14af57a4af69a56879f4ac7ea8dc10051bfc4300e5e97701323ed9587",
+  "canonicalFingerprint": "02a63fe2444545e7f2ff7a247389bb09bcf2278cb56b1447f439870b98e0cd54",
   "releases": [
+    {
+      "version": "0.14.5",
+      "date": "2026-09-30",
+      "kind": "patch",
+      "canonicalFingerprint": "02a63fe2444545e7f2ff7a247389bb09bcf2278cb56b1447f439870b98e0cd54",
+      "components": [],
+      "note": "본 가지(main)를 합쳐 들였다 — main 쪽 병행 릴리스 0.13.15(팝오버가 스크롤 상자에 잘리던 것 · 화면 고정 층) 와 0.13.16(폼컨트롤 다크값 4건 — input·select·textarea·table·time-picker·date-picker)이 이 번호에 함께 들어 있다. 두 줄기가 0.13.15·0.13.16 번호를 따로 썼으므로 main 쪽 두 번호는 이 기록으로 갈음한다.",
+      "deliveryFingerprint": "11cf2b704f7257e942abf0bf78ced66d33bcca765130c13a3bef7030dfbd521e"
+    },
     {
       "version": "0.14.4",
       "date": "2026-09-30",
@@ -1295,5 +1304,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "38b8d4240722a5e4a33993e96eff7f294300b5d3b898009b4f741890c034b2cf"
+  "deliveryFingerprint": "11cf2b704f7257e942abf0bf78ced66d33bcca765130c13a3bef7030dfbd521e"
 }

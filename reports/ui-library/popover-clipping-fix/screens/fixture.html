@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="utf-8">
+<title>팝오버 잘림 재현 틀 — date-picker · time-picker · select · filter-chip</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="/ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="/ui-library/dist/assets/css/typography.css">
+<link rel="stylesheet" href="/ui-library/dist/s1-ui.css">
+<style>
+  /* 소비자가 컴포넌트를 스크롤 상자 안에 넣은 상황 재현 — 안내 페이지 .preview-area 와 같은 조건. */
+  body { font-family: Pretendard, sans-serif; margin: 0; padding: 20px; background: #f5f6f8; }
+  h1 { font-size: 14px; margin: 0 0 10px; }
+  .scroll-card { background: #fff; border: 1px solid #d8dbe0; border-radius: 8px; height: 300px; overflow: auto; padding: 20px; }
+  .filler { height: 240px; }
+  .row { display: flex; gap: 28px; align-items: flex-end; }
+  .cell { display: flex; flex-direction: column; gap: 6px; font-size: 11px; color: #555; }
+</style>
+</head>
+<body>
+<h1>스크롤 상자 안에서 네 컴포넌트를 아래쪽에서 열었을 때 — 위로 뒤집히고, 잘리지 않아야 한다</h1>
+<div class="scroll-card" id="card">
+  <div class="filler"></div>
+  <div class="row">
+    <div class="cell"><span>Date Picker XXSM</span>
+      <div data-s1-component="date-picker" data-size="xxsm" data-break="pc" data-mode="single">
+        <button type="button" data-s1-part="trigger" aria-haspopup="dialog" aria-expanded="false">
+          <span data-s1-part="value">날짜 선택</span><span data-s1-part="icon" aria-hidden="true"></span>
+        </button>
+        <div data-s1-part="panel" role="dialog" hidden><div data-s1-part="calendar"></div></div>
+      </div>
+    </div>
+    <div class="cell"><span>Time Picker XXSM</span>
+      <div data-s1-component="time-picker" data-size="xxsm" data-break="pc" data-type="24h" data-minute-step="1">
+        <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="시간">
+          <span data-s1-part="value">시간 선택</span><span data-s1-part="icon" aria-hidden="true"></span>
+        </button>
+        <div data-s1-part="panel" hidden>
+          <div data-s1-part="columns">
+            <div data-s1-part="column" data-column="hour" role="listbox" aria-label="시"></div>
+            <div data-s1-part="divider"></div>
+            <div data-s1-part="column" data-column="minute" role="listbox" aria-label="분"></div>
+          </div>
+          <div data-s1-part="footer"><button type="button" data-s1-part="confirm" disabled>확인</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="cell"><span>Select XXSM</span>
+      <div data-s1-component="select" data-size="xxsm" data-break="pc">
+        <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false">
+          <span data-s1-part="value">선택</span><span data-s1-part="icon" aria-hidden="true"></span>
+        </button>
+        <div data-s1-part="panel" hidden>
+          <div data-s1-component="dropdown" data-type="text" data-size="xxsm" role="listbox" aria-label="선택">
+            <div data-s1-part="option" role="option" aria-selected="false" tabindex="0" data-value="seoul"><span data-s1-part="option-label">서울</span></div>
+            <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="busan"><span data-s1-part="option-label">부산</span></div>
+            <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="jeju"><span data-s1-part="option-label">제주</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cell"><span>Filter Chip SM</span>
+      <div data-s1-component="filter-chip" data-variant="line" data-size="sm" data-break="pc" data-title="on">
+        <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false">
+          <span data-s1-part="title">정렬</span><span data-s1-part="value">최신순</span><span data-s1-part="icon" aria-hidden="true"></span>
+        </button>
+        <div data-s1-part="panel" hidden>
+          <div data-s1-component="dropdown" data-type="text" data-size="xsm" role="listbox" aria-label="정렬">
+            <div data-s1-part="option" role="option" aria-selected="true" tabindex="0" data-value="latest"><span data-s1-part="option-label">최신순</span></div>
+            <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="popular"><span data-s1-part="option-label">인기순</span></div>
+            <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="past"><span data-s1-part="option-label">과거순</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="filler"></div>
+</div>
+<script type="module">
+  import { autoInit } from "/ui-library/dist/s1-ui.auto.js";
+  autoInit(document);
+  const card = document.getElementById("card");
+  card.scrollTop = card.scrollHeight;
+  setTimeout(() => { for (const t of document.querySelectorAll('[data-s1-part="trigger"]')) t.click(); }, 500);
+</script>
+</body>
+</html>

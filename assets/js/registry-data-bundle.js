@@ -82,7 +82,8 @@ window.REGISTRY_BUNDLE = {
       "bottom-sheet-option": "registry/components/bottom-sheet-option.json",
       "list-row": "registry/components/list-row.json",
       "expandable-card": "registry/components/expandable-card.json",
-      "divider": "registry/components/divider.json"
+      "divider": "registry/components/divider.json",
+      "data-tag": "registry/components/data-tag.json"
     },
     "figma": "registry/figma/figma-map.json",
     "governance": {
@@ -9876,6 +9877,16 @@ window.REGISTRY_BUNDLE = {
         "status": "in-progress",
         "harnessStatus": "planned",
         "priority": 31
+      },
+      {
+        "id": "data-tag",
+        "name": "Data Tag",
+        "label": "Data Tag",
+        "category": "core",
+        "path": "registry/components/data-tag.json",
+        "status": "in-progress",
+        "harnessStatus": "planned",
+        "priority": 32
       }
     ]
   },
@@ -16069,7 +16080,7 @@ window.REGISTRY_BUNDLE = {
         "id": "expandable-card",
         "name": "Expandable Card",
         "category": "core",
-        "updatedAt": "2026-09-29",
+        "updatedAt": "2026-09-30",
         "version": "0.1.0",
         "tokenStatus": "stable",
         "codeStatus": "planned",
@@ -16100,7 +16111,7 @@ window.REGISTRY_BUNDLE = {
         },
         {
           "part": "글 묶음",
-          "role": "타이틀(16 Bold) 아래로 서브타이틀 세 줄과 캡션. 줄 간격 10."
+          "role": "타이틀(16 Bold) 아래로 서브타이틀 세 줄과 캡션. 줄 간격 10. 머리줄 제목 첫 줄은 화살표 높이(24)에 맞춰 가운데 선다."
         },
         {
           "part": "여닫이 화살표",
@@ -16113,9 +16124,10 @@ window.REGISTRY_BUNDLE = {
       ],
       "doDont": {
         "do": [
-          "여백은 원본 그대로 위16 · 오른16 · 아래20 · 왼20 을 쓴다.",
+          "여백은 위16 · 오른16 · 아래16 · 왼20 을 쓴다(river E안 2026-09-30 — 원본은 아래 20).",
           "머리줄과 펼침칸은 바탕색 차이로만 나눈다.",
-          "화살표는 라이브러리 아이콘 인스턴스를 쓴다."
+          "화살표는 라이브러리 아이콘 인스턴스를 쓴다.",
+          "글자 색은 텍스트 색상 단계를 쓴다 — 제목 1단계 · 본문 2단계 · 캡션은 본문 3단계. 다크에서 따로 덮어쓰지 않는다."
         ],
         "dont": [
           "머리줄과 펼침칸 사이에 선을 넣지 않는다 — 원본에 없다.",
@@ -16154,7 +16166,7 @@ window.REGISTRY_BUNDLE = {
         "text": [
           "color/text/title/primary",
           "color/text/body/secondary",
-          "color/text/state/caption"
+          "color/text/body/tertiary"
         ],
         "icon": [
           "color/icon/gray-dark"
@@ -16164,7 +16176,8 @@ window.REGISTRY_BUNDLE = {
           "spacing/16",
           "spacing/20",
           "radius/10",
-          "border-width/1"
+          "border-width/1",
+          "sizing/24"
         ]
       },
       "reuses": {
@@ -16224,7 +16237,7 @@ window.REGISTRY_BUNDLE = {
         "id": "divider",
         "name": "Divider",
         "category": "core",
-        "updatedAt": "2026-09-29",
+        "updatedAt": "2026-09-30",
         "version": "0.1.0",
         "tokenStatus": "stable",
         "codeStatus": "planned",
@@ -16232,7 +16245,7 @@ window.REGISTRY_BUNDLE = {
         "a11yStatus": "candidate",
         "figmaStatus": "planned",
         "harnessStatus": "planned",
-        "description": "내용을 나누는 선. 가로·세로 두 방향, 기본(1)·굵게(2) 두 두께를 갖는다. 색은 선 토큰 두 개가 정한다 — 기본선은 옅은 회색, 강한선은 진한 회색.",
+        "description": "내용을 나누는 선. 가로·세로 두 방향, 기본(1)·굵게(2) 두 두께, 옅은·진한 두 색을 따로 고른다. 색은 선 토큰 두 개가 정한다.",
         "a11yApproval": "미확정 — 뜻 없는 장식선은 읽히지 않게 두고, 문단을 실제로 가르는 자리에서만 구분 역할을 준다. 3-build 에서 확정한다.",
         "codeStatusNote": "정본 buildDivider 는 2026-09-29 신설(river 승인 \"오케이 4종 승인할게\", Gate 34 기록). 설치기 묶음은 Common — river 가 이름을 정했다(2026-09-29).",
         "platform": "both"
@@ -16272,7 +16285,8 @@ window.REGISTRY_BUNDLE = {
       "variantAxis": {
         "property": [
           "Axis",
-          "Weight"
+          "Weight",
+          "Tone"
         ],
         "values": {
           "Axis": [
@@ -16282,10 +16296,14 @@ window.REGISTRY_BUNDLE = {
           "Weight": [
             "Default",
             "Strong"
+          ],
+          "Tone": [
+            "Default",
+            "Strong"
           ]
         },
         "absentCombinations": [],
-        "sizeAxis": "없음 — 길이는 놓인 자리가 정한다."
+        "sizeAxis": "없음 — 길이는 놓인 자리가 정한다. 목록용 들여쓰기는 부품 축이 아니라 놓이는 자리가 정한다."
       },
       "scope": "light+dark",
       "tokens": {
@@ -16317,9 +16335,13 @@ window.REGISTRY_BUNDLE = {
           "weight": [
             "default",
             "strong"
+          ],
+          "tone": [
+            "default",
+            "strong"
           ]
         },
-        "note": "4칸(2 × 2). Dark 는 Appearance 모드로 제공한다. 설치기 묶음은 Common(신설)."
+        "note": "8칸(2 × 2 × 2). 굵기와 색을 따로 고른다(river 2026-09-30 \"정본을 네벌로 맞춘다\"). Dark 는 Appearance 모드로 제공한다. 설치기 묶음은 Common(신설)."
       },
       "governance": {
         "verify": "new",
@@ -16338,6 +16360,152 @@ window.REGISTRY_BUNDLE = {
         "width": "가로선은 놓인 자리 폭을 그대로 쓴다. 세로선은 두께 1 또는 2.",
         "height": "가로선은 두께 1 또는 2. 세로선 높이는 14 — 글 줄보다 짧게 세운다.",
         "provenance": "세로선 14 는 river 결정(2026-09-29). 크기 축이 아니라 간격 값(spacing/14)으로 본다."
+      },
+      "platformSupport": {
+        "mobile": true,
+        "pc": true,
+        "note": "두 매체가 같은 부품을 쓴다."
+      }
+    },
+    "data-tag": {
+      "_meta": {
+        "id": "data-tag",
+        "name": "Data Tag",
+        "category": "core",
+        "updatedAt": "2026-09-30",
+        "version": "0.1.0",
+        "tokenStatus": "stable",
+        "codeStatus": "planned",
+        "darkModeStatus": "stable",
+        "a11yStatus": "candidate",
+        "figmaStatus": "planned",
+        "harnessStatus": "planned",
+        "description": "상태를 보여주기만 하는 작은 라벨. 누르지 않는다. 둥근·각진 두 모양, 채움·선 두 형태, 파랑·빨강 두 색을 갖는다.",
+        "a11yApproval": "미확정 — 표 안에서 쓸 때 그 칸의 뜻을 글자로 읽히게 둔다. 3-build 에서 확정한다.",
+        "codeStatusNote": "정본 buildDataTag 는 2026-09-30 신설. 색은 뱃지 전용 쓰임 이름(color/tag/*)이며 river 승인 \"토큰은 제안한대로 추가하자\".",
+        "platform": "both"
+      },
+      "usage": {
+        "whenToUse": [
+          "표나 목록에서 한 줄의 상태를 한 눈에 보이게 할 때.",
+          "승인·확인(파랑), 주의·에러(빨강)처럼 뜻이 정해진 상태를 표시할 때."
+        ],
+        "whenNotToUse": [
+          "누르는 것 — Chip 이나 Button 을 쓴다.",
+          "고르는 것 — Filter Chip 을 쓴다.",
+          "뜻이 정해지지 않은 색을 쓰고 싶을 때 — 색을 늘리지 않는다."
+        ],
+        "note": "원본에 있던 청록·주황·초록은 쓰임이 정해지지 않아 넣지 않았다(river 2026-09-29)."
+      },
+      "anatomy": [
+        {
+          "part": "글자",
+          "role": "12 Medium 한 줄. 위아래 6, 좌우 8 여백 안에 가운데로 앉는다."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "뜻이 정해진 두 색만 쓴다 — 파랑은 승인·확인, 빨강은 주의·에러.",
+          "표 안에서는 각진 모양을 쓴다."
+        ],
+        "dont": [
+          "뱃지를 눌러서 무엇을 하게 만들지 않는다.",
+          "색을 새로 늘리지 않는다.",
+          "글자를 두 줄로 흘리지 않는다."
+        ]
+      },
+      "a11y": [
+        "누르는 것이 아니므로 단추 역할을 주지 않는다.",
+        "색만으로 뜻을 전하지 않는다 — 글자가 뜻을 갖는다."
+      ],
+      "variantAxis": {
+        "property": [
+          "Type",
+          "Variant",
+          "Color"
+        ],
+        "values": {
+          "Type": [
+            "Chips",
+            "Square"
+          ],
+          "Variant": [
+            "Line",
+            "Solid"
+          ],
+          "Color": [
+            "Blue",
+            "Red"
+          ]
+        },
+        "absentCombinations": [],
+        "sizeAxis": "없음 — 글자와 여백이 크기를 정한다."
+      },
+      "scope": "light+dark",
+      "tokens": {
+        "bg": [
+          "color/tag/solid/bg/blue",
+          "color/tag/solid/bg/red"
+        ],
+        "line": [
+          "color/tag/line/border/blue",
+          "color/tag/line/border/red"
+        ],
+        "text": [
+          "color/tag/solid/label",
+          "color/tag/line/label/blue",
+          "color/tag/line/label/red"
+        ],
+        "number": [
+          "spacing/6",
+          "spacing/8",
+          "radius/full",
+          "radius/4",
+          "border-width/1"
+        ]
+      },
+      "reuses": {
+        "coreComponents": [],
+        "note": "다른 부품을 붙이지 않는다."
+      },
+      "figma": {
+        "componentSetKey": "(미발행 — 라이브러리 publish 시 기록)",
+        "fileKey": "cysG5U1udpQqVagYY1hWHW",
+        "targetFile": "SW UX GUIDE V3.0-TEST",
+        "builder": "plugins/figma-vars-installer/src/build-components.ts · buildDataTag",
+        "propertyMap": {
+          "type": [
+            "chips",
+            "square"
+          ],
+          "variant": [
+            "line",
+            "solid"
+          ],
+          "color": [
+            "blue",
+            "red"
+          ]
+        },
+        "note": "8칸(2 × 2 × 2). Dark 는 Appearance 모드로 제공한다. 설치기 묶음은 Chip(river 결정 2026-09-29)."
+      },
+      "governance": {
+        "verify": "new",
+        "verifyNote": "2026-09-30 정본 신설. Figma 실물 설치·렌더 대조는 아직 하지 않았다 — component-verifier 가 맡는다.",
+        "canonApproval": "Gate 34 승인 기록 — 색 7줄(color/tag/*) by river 2026-09-30, 부품 신설 by river 2026-09-29.",
+        "origin": "PC S/W UX GUIDE V1.0 「03.component/table04」 4-3 Data Tag (287:13552) 참고, 쓰임이 정해진 두 색만 채택."
+      },
+      "webDistribution": {
+        "status": "in-progress",
+        "manifest": "ui-library/src/components/data-tag/manifest.json",
+        "runtime": null,
+        "note": "동작이 없는 표시 전용 부품이다.",
+        "workId": "promoted-parts-4"
+      },
+      "geometry": {
+        "width": "글자 길이에 따라 늘어난다(hug). 줄바꿈 없음.",
+        "height": "글자 12 + 위아래 여백 6 으로 잡힌다.",
+        "provenance": "승격 후보 시제품 승인본(2026-09-29) — 여백 6/8, 글자 12 Medium, 줄간격 1."
       },
       "platformSupport": {
         "mobile": true,
