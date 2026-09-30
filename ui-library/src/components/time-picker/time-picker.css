@@ -80,6 +80,12 @@
   white-space: nowrap;
 }
 
+/* 한글 세로 보정 — Figma 원본과 같은 자리로 보이게 1px 내림. 브라우저가 글자를 1px 단위로 놓으면서 12px·130%·16px 이상에서 위로 붙는다(실측 reports/text-vcenter/index.html, river A안 2026-09-30). 정본 수치는 그대로. */
+[data-s1-component="time-picker"][data-size="xxsm"] [data-s1-part="value"] {
+  position: relative;
+  top: 1px;
+}
+
 /* 아이콘 — clock. 크기: XXSM=20px, 그 외=24px (fcIconPx, build-components.ts:1506·2411). */
 [data-s1-component="time-picker"] [data-s1-part="icon"] {
   background-color: var(--color-form-control-icon-default);
