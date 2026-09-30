@@ -389,6 +389,8 @@
    상태 칸 안에 눕혀 보여준다. 이 CSS 는 dist 에 넣지 않는다(cssContract.previewNote). */
 .uilg [data-s1-component="modal-content"].is-preview {
   inset: auto;
+  /* 배포본의 화면 최상층(z-index 1000)을 그대로 두면 스크롤 시 고정 머리말 위로 튀어나온다 — 지면 층으로 내린다. */
+  z-index: auto;
   padding: var(--spacing-24);
   position: relative;
 }
@@ -622,6 +624,8 @@
    (배포본 계약 cssContract.previewNote). 색·크기·간격은 그대로 dist 가 그린다. */
 .uilg [data-s1-component="modal"].is-preview {
   inset: auto;
+  /* 배포본의 화면 최상층(z-index 1000)을 그대로 두면 스크롤 시 고정 머리말 위로 튀어나온다 — 지면 층으로 내린다. */
+  z-index: auto;
   padding: var(--spacing-24);
   position: relative;
 }
@@ -642,6 +646,8 @@
    (배포본 계약 cssContract.previewNote). 색·크기·간격은 그대로 dist 가 그린다. */
 .uilg [data-s1-component="bottom-sheet"].is-preview {
   inset: auto;
+  /* 배포본의 화면 최상층(z-index 1000)을 그대로 두면 스크롤 시 고정 머리말 위로 튀어나온다 — 지면 층으로 내린다. */
+  z-index: auto;
   overflow-x: auto;
   padding: var(--spacing-24);
   position: relative;
