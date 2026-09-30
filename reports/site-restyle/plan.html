@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>가이드 사이트를 디자인가이드대로 다시 입히면</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="../../ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="../../ui-library/dist/assets/css/typography.css">
+<link rel="stylesheet" href="../../ui-library/dist/s1-ui.css">
+<style>
+  :root{
+    --doc-bg:#f4f5f7; --doc-panel:#ffffff; --doc-line:#e3e5e9;
+    --doc-ink:#111318; --doc-ink2:#4a5058; --doc-ink3:#7b828c;
+    --doc-accent:#1b5fd9; --doc-warn:#b45309; --doc-warn-bg:#fff8e8; --doc-warn-line:#f0cf92;
+    --doc-ok:#1b7a4b; --doc-ok-bg:#eef8f2;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--doc-bg);color:var(--doc-ink);
+       font-family:Pretendard,-apple-system,sans-serif;line-height:1.65;}
+  .wrap{max-width:1180px;margin:0 auto;padding:48px 24px 120px}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.4px;margin:0 0 10px}
+  .lede{font-size:16px;color:var(--doc-ink2);margin:0 0 6px}
+  .meta{font-size:12.5px;color:var(--doc-ink3);margin:0 0 40px}
+  h2{font-size:21px;font-weight:800;letter-spacing:-.3px;margin:56px 0 6px;
+     padding-top:26px;border-top:2px solid var(--doc-ink);}
+  h2 .n{color:var(--doc-accent);margin-right:8px}
+  .h2sub{font-size:14px;color:var(--doc-ink2);margin:0 0 22px}
+  h3{font-size:16px;font-weight:700;margin:32px 0 10px}
+  p{margin:0 0 12px}
+
+  .keys{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0 8px}
+  .key{background:var(--doc-panel);border:1px solid var(--doc-line);border-radius:12px;padding:16px 16px 18px}
+  .key .num{font-size:24px;font-weight:800;color:var(--doc-accent);line-height:1.2}
+  .key .cap{font-size:13px;font-weight:700;margin-top:6px}
+  .key .desc{font-size:12.5px;color:var(--doc-ink2);line-height:1.55;margin-top:4px}
+
+  table{width:100%;border-collapse:collapse;background:var(--doc-panel);
+        border:1px solid var(--doc-line);border-radius:12px;overflow:hidden;
+        font-size:13.5px;margin:14px 0 8px}
+  th,td{padding:11px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--doc-line)}
+  th{background:#eceef2;font-weight:700;font-size:12.5px;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  td b{font-weight:700}
+  .muted{color:var(--doc-ink3)}
+  .arrow{color:var(--doc-accent);font-weight:700}
+
+  .tagA,.tagB,.tagC{display:inline-block;font-size:11px;font-weight:800;border-radius:5px;
+        padding:2px 7px;white-space:nowrap;letter-spacing:.2px}
+  .tagA{background:#e8efff;color:#1b4fb8}
+  .tagB{background:#fdf0e3;color:#9a5416}
+  .tagC{background:#e9f6ee;color:#1b7a4b}
+
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:16px 0 10px;align-items:start}
+  .pane{background:var(--doc-panel);border:1px solid var(--doc-line);border-radius:12px;overflow:hidden}
+  .pane > .ph{font-size:12px;font-weight:800;letter-spacing:.3px;padding:9px 14px;
+       border-bottom:1px solid var(--doc-line);background:#eceef2;color:var(--doc-ink2)}
+  .pane.after > .ph{background:#e8efff;color:#1b4fb8}
+  .pane img{display:block;width:100%;height:auto}
+  .shotclip{max-height:430px;overflow:hidden;position:relative}
+  .shotclip:after{content:"";position:absolute;left:0;right:0;bottom:0;height:46px;
+       background:linear-gradient(to bottom,rgba(255,255,255,0),#fff)}
+  .stage{padding:18px 16px;background:var(--color-bg-default,#fff)}
+  .stage + .stage{border-top:1px solid var(--doc-line)}
+  .stage-l{font-size:11px;font-weight:700;color:var(--doc-ink3);margin-bottom:10px;letter-spacing:.2px}
+  .scaled{width:1180px;transform:scale(.47);transform-origin:top left}
+  .scaled-box{height:34px;overflow:hidden}
+
+  .gap{border:1.5px dashed #c2762a;background:#fffaf1;border-radius:10px;padding:14px;
+       color:#8a5316;font-size:12.5px}
+  .gap .t{display:block;font-size:13px;font-weight:800;margin-bottom:4px;color:#7a4a12}
+  .gap b{color:#7a4a12}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+  .note{background:var(--doc-warn-bg);border:1px solid var(--doc-warn-line);border-radius:10px;
+        padding:14px 16px;font-size:13px;color:#7a4a12;margin:16px 0}
+  .note b{color:#5f3a0d}
+  .decide{background:var(--doc-panel);border:2px solid var(--doc-ink);border-radius:12px;
+        padding:20px 22px;margin-top:20px}
+  .decide h3{margin-top:0}
+  .decide ol{margin:0;padding-left:20px}
+  .decide li{margin-bottom:14px;font-size:14px}
+  .decide li:last-child{margin-bottom:0}
+  .decide .opt{font-size:13px;color:var(--doc-ink2);display:block;margin-top:3px}
+
+  @media (max-width:900px){ .keys{grid-template-columns:repeat(2,1fr)} .cmp{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>가이드 사이트를 디자인가이드대로 다시 입히면</h1>
+  <p class="lede">지금 사이트는 디자인가이드와 상관없이 만들어졌습니다. 가이드의 실제 부품으로 다시 입혔을 때
+     주요 화면이 어떻게 바뀌는지, 그리고 <b>가이드에 없는 자리</b>는 어떻게 할지 정리했습니다.</p>
+  <p class="meta">2026-09-28 · 오른쪽 「적용 후」는 설명 그림이 아니라 <b>실제 배포본(s1-ui 0.13.14)의 부품을 그대로 불러 그린 것</b>입니다.</p>
+
+  <!-- ══════════ 1. 한눈에 ══════════ -->
+  <h2><span class="n">1</span>한눈에 — 크게 바뀌는 건 네 가지</h2>
+  <p class="h2sub">화면 23장 전체에 공통으로 걸립니다.</p>
+
+  <div class="keys">
+    <div class="key">
+      <div class="num">왼쪽 → 위</div>
+      <div class="cap">메뉴가 자리를 옮깁니다</div>
+      <div class="desc">지금은 왼쪽 세로 사이드바입니다. 가이드의 정식 메뉴 부품은 <b>화면 위 가로 바(GNB) + 펼침 메뉴</b>라서,
+        메뉴가 위로 올라가고 본문이 화면 전체 폭을 씁니다. 가장 큰 변화입니다.</div>
+    </div>
+    <div class="key">
+      <div class="num">443곳</div>
+      <div class="cap">색을 손으로 박아 쓴 자리</div>
+      <div class="desc">사이트 껍데기 파일에 242곳, 화면 안에 직접 박은 것이 201곳. 전부 가이드 색 이름으로 바뀝니다.
+        <b>이걸 바꿔야 다크모드가 처음으로 실제로 켜집니다.</b></div>
+    </div>
+    <div class="key">
+      <div class="num">이모지 → 아이콘</div>
+      <div class="cap">그림 문자가 사라집니다</div>
+      <div class="desc">메뉴와 카드의 🎨 ⚡ 🌗 같은 이모지는 가이드에 없습니다. 가이드 아이콘으로 바꾸거나,
+        없으면 아예 빼고 글자만 남깁니다.</div>
+    </div>
+    <div class="key">
+      <div class="num">28개 중 9개</div>
+      <div class="cap">쓸 수 있는 부품은 절반도 안 됩니다</div>
+      <div class="desc">가이드 웹 부품 28개 중 이 사이트가 실제로 쓸 자리가 있는 건 9개뿐입니다.
+        사이트를 이루는 나머지 조각(카드·안내상자·뱃지·코드상자)은 <b>가이드에 없습니다</b> — 대책은 4장에 있습니다.</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>미리 알려드릴 건 하나예요.</b> 가이드에 「사이드바 메뉴」 부품이 이름만 있고 웹 코드는 아직 없습니다.
+    그래서 사이드바를 유지하려면 그 부품부터 만들어야 하고, 그게 싫으면 위 가로 바(GNB)로 갈아타야 합니다.
+    이게 이번 작업에서 가장 먼저 정하실 일입니다.
+  </div>
+
+  <!-- ══════════ 2. 화면별 예상 ══════════ -->
+  <h2><span class="n">2</span>주요 화면이 어떻게 바뀌나</h2>
+  <p class="h2sub">왼쪽이 지금 화면(실제 촬영), 오른쪽이 가이드 부품으로 다시 그린 모습입니다.</p>
+
+  <!-- ── 홈 ── -->
+  <h3>홈 (Overview)</h3>
+  <div class="cmp">
+    <div class="pane">
+      <div class="ph">지금</div>
+      <div class="shotclip"><img src="shots/before-home.png" alt="현재 홈 화면"></div>
+    </div>
+    <div class="pane after">
+      <div class="ph">가이드 적용 후</div>
+
+      <div class="stage">
+        <div class="stage-l">메뉴 — 왼쪽 사이드바가 위 가로 바로</div>
+        <div class="scaled-box"><div class="scaled">
+        <nav data-s1-component="gnb" data-size="sm" data-variant="start" aria-label="주 메뉴">
+          <div data-s1-part="leading">
+            <a data-s1-part="logo" href="#">S1 UX DESIGN GUIDE</a>
+            <ul data-s1-part="menus">
+              <li><a data-s1-part="menu" href="#" aria-current="page">Guide</a></li>
+              <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="sub-src">Source</a></li>
+              <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="sub-sys">System</a></li>
+            </ul>
+          </div>
+          <div data-s1-part="util">
+            <button type="button" data-s1-part="lang">
+              <span data-s1-part="lang-icon" aria-hidden="true"></span>
+              <span data-s1-part="lang-label">한국어</span>
+            </button>
+            <button type="button" data-s1-part="account" aria-label="계정">
+              <span data-s1-part="account-icon" aria-hidden="true"></span>
+            </button>
+            <button type="button" data-s1-part="menu-toggle" aria-label="전체 메뉴">
+              <span data-s1-part="menu-icon" aria-hidden="true"></span>
+            </button>
+          </div>
+        </nav>
+        </div></div>
+        <div data-s1-component="gnb-sub-menu" data-type="regular" id="sub-src" aria-label="Source 하위 메뉴" hidden>
+          <div data-s1-part="columns">
+            <ul data-s1-part="column">
+              <li><span data-s1-component="gnb-sub-menu-item" data-depth="1depth">컴포넌트</span></li>
+              <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">PC Components</a></li>
+              <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">Mobile Components</a></li>
+            </ul>
+            <ul data-s1-part="column">
+              <li><span data-s1-component="gnb-sub-menu-item" data-depth="1depth">자산</span></li>
+              <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">Icons</a></li>
+              <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">Patterns</a></li>
+            </ul>
+          </div>
+        </div>
+        <div data-s1-component="gnb-sub-menu" data-type="regular" id="sub-sys" aria-label="System 하위 메뉴" hidden>
+          <div data-s1-part="columns">
+            <ul data-s1-part="column">
+              <li><span data-s1-component="gnb-sub-menu-item" data-depth="1depth">운영</span></li>
+              <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">파이프라인 상태</a></li>
+              <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">업데이트 관리</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-l">검색 — 손으로 만든 검색칸이 가이드 Input(검색형)으로</div>
+        <div data-s1-component="input" data-size="md" data-break="pc" data-mode="search" style="max-width:340px">
+          <div data-s1-part="field">
+            <input id="demo-search" data-s1-part="control" aria-label="검색" placeholder="토큰, 색상 검색...">
+            <button type="button" data-s1-part="action" data-action="clear" aria-label="검색어 지우기" hidden>
+              <span data-s1-part="action-icon" aria-hidden="true"></span>
+            </button>
+            <button type="button" data-s1-part="action" data-action="search" aria-label="검색">
+              <span data-s1-part="action-icon" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-l">파란 히어로 · 숫자판 · 노란 경고상자 — 가이드에 없는 자리</div>
+        <div class="gap">
+          <span class="t">이 세 덩어리는 가이드 부품이 아닙니다</span>
+          파란 그라데이션 히어로, 숫자 5칸(110/61/124…), 노란 안내상자는 이 사이트가 직접 만든 것입니다.
+          가이드 색과 글자 크기만 입혀 <b>문서 전용 조각</b>으로 남기거나(권장), 정식 부품으로 승격 신청합니다. → 4장
+        </div>
+      </div>
+
+      <div class="stage">
+        <div class="stage-l">아래 카드 묶음 — 클릭해서 이동하는 목록이면 List Row 로 대체 가능</div>
+        <div style="max-width:420px;border:1px solid var(--color-border-subtle,#eee);border-radius:10px;overflow:hidden">
+          <button type="button" data-s1-component="list-row" data-type="nav" data-state="default">
+            <div data-s1-part="text">
+              <span data-s1-part="title">Foundation Tokens</span>
+              <span data-s1-part="description">11개 색상 계열 · Spacing · Radius · Typography</span>
+            </div>
+            <span data-s1-part="trail"><span data-s1-part="chevron" aria-hidden="true"></span></span>
+          </button>
+          <button type="button" data-s1-component="list-row" data-type="nav" data-state="default">
+            <div data-s1-part="text">
+              <span data-s1-part="title">Semantic Tokens</span>
+              <span data-s1-part="description">8개 카테고리 Light / Dark</span>
+            </div>
+            <span data-s1-part="trail"><span data-s1-part="chevron" aria-hidden="true"></span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Foundation ── -->
+  <h3>Foundation (색·타이포 견본 화면)</h3>
+  <div class="cmp">
+    <div class="pane">
+      <div class="ph">지금</div>
+      <div class="shotclip"><img src="shots/before-foundation.png" alt="현재 Foundation 화면"></div>
+    </div>
+    <div class="pane after">
+      <div class="ph">가이드 적용 후</div>
+      <div class="stage">
+        <div class="stage-l">화면 안 전환 — 손으로 만든 필터 버튼이 가이드 Tab / Multi Toggle 로</div>
+        <div data-s1-component="tab" data-size="md" data-break="pc" role="tablist" aria-label="Foundation 보기 선택">
+          <button type="button" data-s1-part="tab" role="tab" aria-selected="true" data-value="color">Color</button>
+          <button type="button" data-s1-part="tab" role="tab" aria-selected="false" data-value="type">Typography</button>
+          <button type="button" data-s1-part="tab" role="tab" aria-selected="false" data-value="space">Spacing · Radius</button>
+        </div>
+        <div style="height:14px"></div>
+        <div class="row">
+          <div data-s1-component="multi-toggle" data-size="sm" role="radiogroup" aria-label="테마">
+            <button type="button" data-s1-part="cell" role="radio" aria-checked="true" data-value="light">Light</button>
+            <button type="button" data-s1-part="cell" role="radio" aria-checked="false" data-value="dark">Dark</button>
+          </div>
+          <button type="button" data-s1-component="chip" data-variant="line" data-size="md" data-break="pc" aria-pressed="true">
+            <span data-s1-part="label">Gray</span>
+          </button>
+          <button type="button" data-s1-component="chip" data-variant="line" data-size="md" data-break="pc" aria-pressed="false">
+            <span data-s1-part="label">Blue</span>
+          </button>
+          <button type="button" data-s1-component="text-button" data-variant="primary">
+            <span data-s1-part="label">전체 복사</span>
+          </button>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-l">토큰 목록 — 손으로 만든 표가 가이드 Table 로</div>
+        <div data-s1-component="table" data-size="sm">
+          <table data-s1-part="table">
+            <thead>
+              <tr>
+                <th data-s1-part="header-cell" scope="col">토큰 이름</th>
+                <th data-s1-part="header-cell" scope="col">연결된 값</th>
+                <th data-s1-part="header-cell" data-align="center" scope="col">상태</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-s1-part="row">
+                <td data-s1-part="cell">--color-gray-100</td>
+                <td data-s1-part="cell">#F1F3F5</td>
+                <td data-s1-part="cell" data-align="center">stable</td>
+              </tr>
+              <tr data-s1-part="row">
+                <td data-s1-part="cell">--color-blue-400</td>
+                <td data-s1-part="cell">#1B5FD9</td>
+                <td data-s1-part="cell" data-align="center">stable</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-l">색 견본판 자체 — 가이드에 없는 자리</div>
+        <div class="gap">
+          <span class="t">색 네모·글꼴 견본은 가이드 부품이 될 수 없습니다</span>
+          이건 디자인가이드 문서에서만 쓰는 전시용 조각입니다. 다른 서비스가 가져다 쓸 물건이 아니므로
+          <b>문서 전용</b>으로 확정하고, 안에 쓰는 색·글자만 가이드 토큰으로 맞춥니다. → 4장 B갈래
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Components ── -->
+  <h3>Components (부품 목록 화면)</h3>
+  <div class="cmp">
+    <div class="pane">
+      <div class="ph">지금</div>
+      <div class="shotclip"><img src="shots/before-components.png" alt="현재 Components 화면"></div>
+    </div>
+    <div class="pane after">
+      <div class="ph">가이드 적용 후</div>
+      <div class="stage">
+        <div class="stage-l">PC / Mobile 전환과 걸러보기 — Multi Toggle · Filter Chip · Select</div>
+        <div class="row">
+          <div data-s1-component="multi-toggle" data-size="md" role="radiogroup" aria-label="플랫폼">
+            <button type="button" data-s1-part="cell" role="radio" aria-checked="true" data-value="pc">PC</button>
+            <button type="button" data-s1-part="cell" role="radio" aria-checked="false" data-value="mobile">Mobile</button>
+          </div>
+          <div data-s1-component="select" data-size="md" data-break="pc" style="min-width:160px">
+            <button type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false">
+              <span data-s1-part="value">전체 분류</span>
+              <span data-s1-part="icon" aria-hidden="true"></span>
+            </button>
+            <div data-s1-part="panel" hidden>
+              <div data-s1-component="dropdown" data-type="text" data-size="md" role="listbox" aria-label="분류">
+                <div data-s1-part="option" role="option" aria-selected="true" tabindex="0" data-value="all"><span data-s1-part="option-label">전체 분류</span></div>
+                <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="form"><span data-s1-part="option-label">입력</span></div>
+                <div data-s1-part="option" role="option" aria-selected="false" tabindex="-1" data-value="nav"><span data-s1-part="option-label">이동</span></div>
+              </div>
+            </div>
+          </div>
+          <button type="button" data-s1-component="button" data-variant="secondary" data-size="md">
+            <span data-s1-part="label">코드 복사</span>
+          </button>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-l">긴 목록 — 페이지 넘김이 가이드 Pagination 으로</div>
+        <nav data-s1-component="pagination" data-total-pages="4" data-page="1" aria-label="페이지 탐색">
+          <span data-s1-part="arrow-group"><button type="button" data-s1-action="first" aria-label="첫 페이지"><span data-s1-part="icon" data-icon="edge" aria-hidden="true"></span></button><button type="button" data-s1-action="previous" aria-label="이전 페이지"><span data-s1-part="icon" data-icon="chevron" aria-hidden="true"></span></button></span>
+          <span data-s1-part="pages"><button type="button" data-s1-part="page" data-page="1" aria-current="page">1</button><button type="button" data-s1-part="page" data-page="2">2</button><button type="button" data-s1-part="page" data-page="3">3</button><button type="button" data-s1-part="page" data-page="4">4</button></span>
+          <span data-s1-part="arrow-group"><button type="button" data-s1-action="next" aria-label="다음 페이지"><span data-s1-part="icon" data-icon="chevron" aria-hidden="true"></span></button><button type="button" data-s1-action="last" aria-label="마지막 페이지"><span data-s1-part="icon" data-icon="edge" aria-hidden="true"></span></button></span>
+        </nav>
+      </div>
+      <div class="stage">
+        <div class="stage-l">부품 미리보기 칸·코드 상자 — 가이드에 없는 자리</div>
+        <div class="gap">
+          <span class="t">이 화면의 뼈대는 대부분 가이드 밖입니다</span>
+          부품을 올려놓고 보여주는 칸, 상태 표(default/hover/disabled 격자), 코드 상자와 그 위 탭은
+          디자인가이드 문서 고유의 장치입니다. <b>문서 전용</b>으로 확정하고 색·글자만 토큰으로 맞춥니다. → 4장 B갈래
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ 3. 바로 교체되는 자리 ══════════ -->
+  <h2><span class="n">3</span>고민 없이 바로 바뀌는 자리</h2>
+  <p class="h2sub">가이드 부품이 이미 있고 웹 코드도 나와 있어, 지금 껍데기를 걷어내고 끼우면 되는 것들입니다.</p>
+
+  <table>
+    <thead>
+      <tr><th>지금 사이트</th><th></th><th>바뀔 가이드 부품</th><th>보이는 변화</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>사이드바 검색칸</td><td class="arrow">→</td><td><b>Input (검색형)</b></td><td>높이·모서리·아이콘 자리가 가이드 규격으로. 지우기 버튼이 생깁니다.</td></tr>
+      <tr><td>화면 안 탭 (tab-btn)</td><td class="arrow">→</td><td><b>Tab</b></td><td>밑줄 두께·선택색이 통일되고 키보드 좌우 이동이 붙습니다.</td></tr>
+      <tr><td>걸러보기 버튼 (filter-btn)</td><td class="arrow">→</td><td><b>Chip / Filter Chip</b></td><td>둥근 알약 모양으로. 값이 있는 필터는 펼침 패널이 붙습니다.</td></tr>
+      <tr><td>토큰·부품 표</td><td class="arrow">→</td><td><b>Table</b></td><td>머리줄 배경·줄 간격·정렬이 통일됩니다.</td></tr>
+      <tr><td>Light / Dark 전환</td><td class="arrow">→</td><td><b>Multi Toggle</b></td><td>두세 칸 중 하나를 고르는 정식 부품으로.</td></tr>
+      <tr><td>PC / Mobile 전환</td><td class="arrow">→</td><td><b>Multi Toggle</b></td><td>위와 같은 부품 하나로 통일됩니다.</td></tr>
+      <tr><td>분류 고르기</td><td class="arrow">→</td><td><b>Select + Dropdown</b></td><td>브라우저 기본 모양이 사라지고 가이드 목록으로.</td></tr>
+      <tr><td>복사·다운로드 버튼</td><td class="arrow">→</td><td><b>Button / Text Button</b></td><td>크기 4단계·상태색이 가이드 규격으로.</td></tr>
+      <tr><td>페이지 넘김</td><td class="arrow">→</td><td><b>Pagination</b></td><td>처음·끝 화살표가 생기고 현재 쪽 표시가 통일됩니다.</td></tr>
+      <tr><td>모바일 상단 바</td><td class="arrow">→</td><td><b>Mobile Header</b></td><td>뒤로·닫기·알림 자리가 가이드 규격으로.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ══════════ 4. 없는 부품 대책 ══════════ -->
+  <h2><span class="n">4</span>가이드에 없는 것 — 세 갈래로 나눕니다</h2>
+  <p class="h2sub">「없으니까 대충 만든다」를 막기 위해, 없는 자리를 만날 때마다 아래 셋 중 하나로 넣습니다.</p>
+
+  <table>
+    <thead><tr><th style="width:90px">갈래</th><th>뜻</th><th>어떻게 처리하나</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="tagA">A 승격</span></td>
+        <td>다른 서비스도 쓸 <b>진짜 공통 부품</b>인데 가이드에 아직 없는 것</td>
+        <td>제가 임의로 만들지 않고 <b>승인 요청으로 올립니다</b>. 승인되면 정식 부품으로 만들고, 사이트는 그걸 가져다 씁니다.</td>
+      </tr>
+      <tr>
+        <td><span class="tagB">B 문서전용</span></td>
+        <td>디자인가이드 문서에서만 쓰는 <b>전시용 조각</b></td>
+        <td>정식 부품으로 올리지 않습니다. 이름 앞에 <code>doc-</code> 를 붙여 따로 두고, <b>안에 쓰는 색·글자만</b> 가이드 토큰으로 맞춥니다.</td>
+      </tr>
+      <tr>
+        <td><span class="tagC">C 조합</span></td>
+        <td>새로 만들 필요 없이 <b>있는 부품 조합</b>으로 되는 것</td>
+        <td>새 부품을 만들지 않고 기존 부품을 엮습니다. 가장 좋은 결과라 우선 여기로 보냅니다.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>자리별 판정</h3>
+  <table>
+    <thead><tr><th style="width:150px">없는 자리</th><th style="width:96px">갈래</th><th>왜 그렇게 보나 / 어떻게 하나</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>사이드바 메뉴</b></td>
+        <td><span class="tagA">A 승격</span></td>
+        <td>가이드에 <b>이름과 색은 이미 정해져 있는데 웹 코드만 없습니다</b>(Navigation). 사이드바를 유지하기로 하면 이 부품부터 만들어야 합니다.
+            위 가로 바(GNB)로 가기로 하면 <b>이 건은 사라집니다</b> — 그래서 이게 1번 결정입니다.</td>
+      </tr>
+      <tr>
+        <td><b>카드</b><br><span class="muted">홈 카드 · 통계 숫자판 · 대시보드 칸</span></td>
+        <td><span class="tagC">C 조합</span> <span class="tagA">A 승격</span></td>
+        <td>눌러서 이동하는 카드는 <b>List Row(nav형)</b>로 대체됩니다 — 새로 만들 필요가 없습니다.
+            누르지 않고 정보만 담는 네모 상자는 공통 부품감이라 <b>승격 후보</b>로 올립니다.</td>
+      </tr>
+      <tr>
+        <td><b>안내·경고 상자</b><br><span class="muted">노란 주의 상자 · Do/Don't 상자</span></td>
+        <td><span class="tagA">A 승격</span></td>
+        <td>어느 서비스에나 있는 흔한 부품인데 가이드에 없습니다. <b>성공/주의/오류/정보 4벌</b>로 승격 요청합니다.
+            승인 전까지는 가이드 색만 입혀 지금 모양을 유지합니다.</td>
+      </tr>
+      <tr>
+        <td><b>뱃지 · 상태 꼬리표</b><br><span class="muted">v1.0.0 · New · stable</span></td>
+        <td><span class="tagA">A 승격</span></td>
+        <td>가이드의 Chip 은 <b>눌러서 고르는 물건</b>이라 「읽기만 하는 꼬리표」로 쓰면 어긋납니다.
+            안 누르는 Badge 를 별도로 승격 요청합니다. 승인 전에는 Chip 을 쓰지 않고 색만 맞춘 글자로 둡니다.</td>
+      </tr>
+      <tr>
+        <td><b>구분선</b></td>
+        <td><span class="tagA">A 승격</span></td>
+        <td>선 하나지만 두께·색이 화면마다 제각각입니다. 가장 싸게 통일되는 건이라 같이 올립니다.</td>
+      </tr>
+      <tr>
+        <td><b>접었다 펴는 목록</b><br><span class="muted">메뉴 그룹 · 색 계열 묶음</span></td>
+        <td><span class="tagA">A 승격</span></td>
+        <td>가이드에 없습니다. 다만 위 가로 바(GNB)로 가면 메뉴 쪽은 펼침 메뉴가 대신하므로 <b>남는 건 본문 묶음뿐</b>이라 건수가 줄어듭니다.</td>
+      </tr>
+      <tr>
+        <td><b>코드 상자</b><br><span class="muted">복사 버튼 · 위쪽 탭</span></td>
+        <td><span class="tagB">B 문서전용</span></td>
+        <td>가이드 문서에서만 쓰는 장치입니다. 위 탭은 <b>Tab</b>, 복사는 <b>Text Button</b> 으로 바꾸고,
+            코드 본문 상자만 문서 전용으로 남깁니다.</td>
+      </tr>
+      <tr>
+        <td><b>색·글꼴 견본판</b><br><span class="muted">색 네모 · 굵기 견본 · 부품 미리보기 칸 · 상태 격자</span></td>
+        <td><span class="tagB">B 문서전용</span></td>
+        <td>다른 서비스가 가져다 쓸 물건이 아닙니다. 문서 전용으로 확정하고 색·글자만 토큰으로 맞춥니다.</td>
+      </tr>
+      <tr>
+        <td><b>파란 히어로</b></td>
+        <td><span class="tagB">B 문서전용</span></td>
+        <td>홈 첫 화면 전용 장식입니다. 그라데이션을 가이드 파랑 한 색으로 정리하고 문서 전용으로 둡니다.</td>
+      </tr>
+      <tr>
+        <td><b>이모지 아이콘</b></td>
+        <td><span class="tagC">C 조합</span></td>
+        <td>가이드 아이콘에 대응하는 게 있으면 바꾸고, 없으면 <b>빼고 글자만 남깁니다</b>. 비슷한 걸 새로 그리지 않습니다.</td>
+      </tr>
+      <tr>
+        <td><b>현재 위치 표시</b><br><span class="muted">breadcrumb</span></td>
+        <td><span class="tagC">C 조합</span></td>
+        <td>지금 사이트에 없지만 가로 바로 바뀌면 필요해집니다. 새 부품 없이 글자와 구분자로 조립합니다.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <b>승격 후보는 모아서 한 번에 올립니다.</b> 지금 셈으로 A갈래는 <b>6건</b>(사이드바 메뉴 · 정보 카드 · 안내상자 4벌 · 뱃지 · 구분선 · 접힘목록)입니다.
+    하나씩 물어보지 않고, 1번 결정이 난 뒤 목록 하나로 올려 한 번에 승인받겠습니다.
+  </div>
+
+  <!-- ══════════ 5. 순서 ══════════ -->
+  <h2><span class="n">5</span>어떤 순서로 하나</h2>
+  <p class="h2sub">한 번에 다 갈아엎지 않고, 되돌릴 수 있는 단위로 끊습니다.</p>
+  <table>
+    <thead><tr><th style="width:56px">순서</th><th style="width:210px">무엇을</th><th>끝나면 보이는 것</th></tr></thead>
+    <tbody>
+      <tr><td><b>1</b></td><td>색을 전부 토큰으로</td><td>화면 모양은 그대로인데 <b>다크모드가 처음으로 실제로 켜집니다.</b> 가장 안전하고 효과가 큰 단계입니다.</td></tr>
+      <tr><td><b>2</b></td><td>바로 교체되는 9자리</td><td>검색칸·탭·표·버튼·페이지넘김이 가이드 모양으로 바뀝니다. 화면 구조는 그대로입니다.</td></tr>
+      <tr><td><b>3</b></td><td>메뉴 이전 (1번 결정에 따라)</td><td>가장 크게 달라 보이는 단계입니다. 한 화면에서 먼저 해보고 확인받은 뒤 나머지에 펼칩니다.</td></tr>
+      <tr><td><b>4</b></td><td>승격 부품 반영</td><td>승인된 안내상자·뱃지·카드가 들어가 손으로 만든 조각이 사라집니다.</td></tr>
+      <tr><td><b>5</b></td><td>문서 전용 조각 정리</td><td>견본판·코드상자가 <code>doc-</code> 로 분리되어, 가이드 부품과 섞이지 않게 됩니다.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ══════════ 결정 ══════════ -->
+  <div class="decide">
+    <h3>정하실 것 세 가지</h3>
+    <ol>
+      <li>
+        <b>메뉴를 위로 올릴까요, 왼쪽 사이드바를 지킬까요?</b>
+        <span class="opt">(A) 위 가로 바로 — 가이드에 이미 있는 부품을 그대로 씁니다. 대신 화면 구조가 가장 크게 바뀝니다.
+          (B) 사이드바 유지 — 지금 쓰던 대로지만, 없는 「사이드바 메뉴」 부품을 먼저 만들어야 합니다.
+          <b>안 정하면 2·3장 예상은 (A) 기준으로 그려둔 상태 그대로입니다.</b></span>
+      </li>
+      <li>
+        <b>없는 부품 6개를 정식 부품으로 올릴까요?</b>
+        <span class="opt">(A) 올린다 — 승인 목록을 만들어 한 번에 받고, 승인된 것만 만들어 씁니다.
+          (B) 안 올린다 — 전부 문서 전용으로만 두고, 다른 서비스는 계속 각자 만듭니다.
+          <b>안 정하면 문서 전용(B)으로 두고 색만 맞춥니다 — 나중에 승격할 수 있습니다.</b></span>
+      </li>
+      <li>
+        <b>1단계(색 전부 토큰으로)부터 바로 시작할까요?</b>
+        <span class="opt">이건 1·2번 결정과 상관없이 먼저 해도 되고, 다크모드가 바로 켜집니다.
+          <b>안 정하면 결정이 날 때까지 아무것도 건드리지 않고 기다립니다.</b></span>
+      </li>
+    </ol>
+  </div>
+
+</div>
+<script src="../../ui-library/dist/s1-ui.js"></script>
+</body>
+</html>
