@@ -5,10 +5,49 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.13.15",
-  "releasedAt": "2026-09-28",
-  "canonicalFingerprint": "964c65df9a45841d3d8b2d8f0e104e747ee13e0c44be43946113096b6100cb27",
+  "version": "0.13.16",
+  "releasedAt": "2026-09-29",
+  "canonicalFingerprint": "07ff83a14fe7f5bff0ef9948b515841d3b3ec5c1a984d3b2b3fbc0466d852f23",
   "releases": [
+    {
+      "version": "0.13.16",
+      "date": "2026-09-29",
+      "kind": "patch",
+      "canonicalFingerprint": "07ff83a14fe7f5bff0ef9948b515841d3b3ec5c1a984d3b2b3fbc0466d852f23",
+      "components": [
+        {
+          "id": "input",
+          "from": "0.3.3",
+          "to": "0.3.4"
+        },
+        {
+          "id": "select",
+          "from": "0.2.6",
+          "to": "0.2.7"
+        },
+        {
+          "id": "textarea",
+          "from": "0.2.2",
+          "to": "0.2.3"
+        },
+        {
+          "id": "table",
+          "from": "0.2.3",
+          "to": "0.2.4"
+        },
+        {
+          "id": "time-picker",
+          "from": "0.3.7",
+          "to": "0.3.8"
+        },
+        {
+          "id": "date-picker",
+          "from": "0.2.7",
+          "to": "0.2.8"
+        }
+      ],
+      "deliveryFingerprint": "2c80a8604a39bf4d3c40c803b27da9f301ec3fbd7825aed08aa8ccb2df64909d"
+    },
     {
       "version": "0.13.15",
       "date": "2026-09-28",
@@ -1197,5 +1236,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "fc2c38025cf17989e8de7aedc6ae4ae567d613d1d4621cf72cd3de830248a49b"
+  "deliveryFingerprint": "2c80a8604a39bf4d3c40c803b27da9f301ec3fbd7825aed08aa8ccb2df64909d"
 }

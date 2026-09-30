@@ -599,14 +599,14 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/form-control/bg/selected": { light: "base/white", dark: "gray-dark/200" },
   "color/form-control/border/correct": { light: "blue/400", dark: "blue-dark/350" },
   "color/form-control/border/default": { light: "gray/200", dark: "gray-dark/500" },
-  "color/form-control/border/disabled": { light: "gray/100", dark: "gray-dark/200" },
+  "color/form-control/border/disabled": { light: "gray/100", dark: "gray-dark/300" },
   "color/form-control/border/error": { light: "red/300", dark: "red-dark/350" },
   "color/form-control/border/selected": { light: "blue/400", dark: "blue-dark/350" },
   "color/form-control/label/default": { light: "gray/800", dark: "gray-dark/800" },
   "color/form-control/label/disabled": { light: "gray/300", dark: "gray-dark/600" },
   "color/form-control/text/default": { light: "gray/800", dark: "gray-dark/800" },
   "color/form-control/text/disabled": { light: "gray/300", dark: "gray-dark/600" },
-  "color/form-control/text/placeholder": { light: "gray/500", dark: "gray-dark/600" },
+  "color/form-control/text/placeholder": { light: "gray/500", dark: "gray-dark/700" },
   "color/form-control/text/selected": { light: "gray/900", dark: "gray-dark/800" },
 
   // ── icon ────────────────────────────────
@@ -733,13 +733,13 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/text/state/helper": { light: "gray/400", dark: "gray-dark/600" },
   "color/text/title/primary": { light: "base/black", dark: "gray-dark/900" },
   "color/text/title/secondary": { light: "gray/800", dark: "gray-dark/800" },
-  "color/form-control/icon/default":   { light: "gray/800", dark: "gray-dark/700" },
+  "color/form-control/icon/default":   { light: "gray/800", dark: "gray-dark/800" },
   // 아이콘도 상태를 갖는다(river 승인 2026-09-10, 값은 '가' 진한 회색안).
   //   종전에는 default·disabled 둘뿐이라 마우스 올림·펼침에서도 아이콘 색이 한 가지였다.
   //   값은 글자의 text/selected(gray/900)와 같은 단계를 쓴다 — 같은 트리거 안에서 글자와 아이콘이 함께 진해진다.
   "color/form-control/icon/hover":     { light: "gray/900", dark: "gray-dark/800" },
   "color/form-control/icon/selected":  { light: "gray/900", dark: "gray-dark/800" },
-  "color/form-control/icon/disabled":  { light: "gray/300", dark: "gray-dark/500" },
+  "color/form-control/icon/disabled":  { light: "gray/300", dark: "gray-dark/600" },
   "color/scroll/bg":                   { light: "gray/200", dark: "gray-dark/600" },
   "color/form-control/text-cursor":    { light: "blue/400", dark: "blue-dark/350" },
   "color/form-control/text/read-only": { light: "gray/500", dark: "gray-dark/700" },

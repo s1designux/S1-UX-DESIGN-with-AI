@@ -280,7 +280,7 @@
     "date-picker": {
       "id": "date-picker",
       "status": "approved",
-      "version": "0.2.7",
+      "version": "0.2.8",
       "sizes": [
         "xxsm",
         "xsm",
@@ -345,7 +345,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "6bc42efbe805944d29d30d525bace0b9e67e97c061a909431d1b7ffd670876bf"
+      "sourceFingerprint": "fd3073c587d81b2cc45ab02fcf015b461d697f3f240ac333450af445dff969a6"
     },
     "dropdown": {
       "id": "dropdown",
@@ -537,7 +537,7 @@
     "input": {
       "id": "input",
       "status": "approved",
-      "version": "0.3.3",
+      "version": "0.3.4",
       "sizes": [
         "xxsm",
         "xsm",
@@ -606,7 +606,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "061942e71c3bbefb4f32423222de5a2d3ef4380ebf4bbf95bd2e2f9853e9cbac"
+      "sourceFingerprint": "9407be5bc51ad02436048e833d09c15da764876ab26a2c9b7afc9bbad4bd50e8"
     },
     "list-row": {
       "id": "list-row",
@@ -882,7 +882,7 @@
     "select": {
       "id": "select",
       "status": "approved",
-      "version": "0.2.6",
+      "version": "0.2.7",
       "sizes": [
         "xxsm",
         "xsm",
@@ -956,7 +956,7 @@
           "reason": "정본에 Error 상태가 없다."
         }
       ],
-      "sourceFingerprint": "9b7b3cb8cffe73f9b896438df9adea2065a73dc020d076829a3d27a70ee6df68"
+      "sourceFingerprint": "ab5fe850596a73f4153b7ca9aaad66d7e07f683dcbf37590ea2610ac21717ce6"
     },
     "tab": {
       "id": "tab",
@@ -1027,7 +1027,7 @@
     "table": {
       "id": "table",
       "status": "approved",
-      "version": "0.2.3",
+      "version": "0.2.4",
       "sizes": [
         "md",
         "sm",
@@ -1083,7 +1083,7 @@
           "reason": "정본·Registry 모두 모바일 표 표출 규칙이 없다. 이번 배포는 PC 만 선언한다."
         }
       ],
-      "sourceFingerprint": "cc90626cbfcac3569e839d9dc8b82e6b05e493539f1089aef5cf33f93bed15d1"
+      "sourceFingerprint": "1b09b0a94d2d47bfb902b0f2b0524093996a8910d07e402595a7dfeb4f316147"
     },
     "text-button": {
       "id": "text-button",
@@ -1123,7 +1123,7 @@
     "textarea": {
       "id": "textarea",
       "status": "approved",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "sizes": [],
       "breaks": {},
       "sizeBreakGrid": [],
@@ -1151,12 +1151,12 @@
           "reason": "정본은 State 축만 있고 sm/md/lg 같은 크기 축이 없다."
         }
       ],
-      "sourceFingerprint": "3238f3dee1441cc5db2f6446f7db300cd199c894ded3d115dc2e366fbb1601f8"
+      "sourceFingerprint": "270f5d53a6c79ab86be68fead9bbfad16fdad25e81685df2c838816403af45c7"
     },
     "time-picker": {
       "id": "time-picker",
       "status": "approved",
-      "version": "0.3.7",
+      "version": "0.3.8",
       "sizes": [
         "xxsm",
         "xsm",
@@ -1229,7 +1229,7 @@
           "reason": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
         }
       ],
-      "sourceFingerprint": "b1401c4b4ecaf42c49d629b1b3eaf178a70177b5290ec76b7ce95a2b1875592a"
+      "sourceFingerprint": "3be8a7b0042b5f2146f78206f194d12c25f84740389de108a63fc46646384df4"
     },
     "toggle": {
       "id": "toggle",
