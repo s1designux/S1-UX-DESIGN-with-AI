@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "source": "plugins/figma-vars-installer/src/build-components.ts",
   "classificationSource": "registry/governance/component-page-coverage.json",
-  "componentCount": 50,
+  "componentCount": 53,
   "componentIndex": [
     {
       "order": 0,
@@ -326,6 +326,17 @@
     {
       "order": 29,
       "gridRow": 0,
+      "categoryOrder": 5,
+      "memberOrder": 2,
+      "category": "Chip",
+      "name": "Data Tag",
+      "visibility": "public",
+      "sectionId": "data-tag",
+      "reason": null
+    },
+    {
+      "order": 30,
+      "gridRow": 0,
       "categoryOrder": 6,
       "memberOrder": 0,
       "category": "List",
@@ -335,9 +346,31 @@
       "reason": "정본 buildListRow 2026-09-21 신설, work-id list-row 3-build 완료(ui-library/dist 배포본 있음) — 손관리 components 페이지 섹션은 4-verification·river UX 승인 뒤 guide-builder 가 추가한다. HTML 섹션 생기면 sectionFor 로 이관."
     },
     {
-      "order": 30,
+      "order": 31,
+      "gridRow": 0,
+      "categoryOrder": 6,
+      "memberOrder": 1,
+      "category": "List",
+      "name": "Expandable Card",
+      "visibility": "public",
+      "sectionId": "expandable-card",
+      "reason": null
+    },
+    {
+      "order": 32,
       "gridRow": 0,
       "categoryOrder": 7,
+      "memberOrder": 0,
+      "category": "Common",
+      "name": "Divider",
+      "visibility": "public",
+      "sectionId": "divider",
+      "reason": null
+    },
+    {
+      "order": 33,
+      "gridRow": 0,
+      "categoryOrder": 8,
       "memberOrder": 0,
       "category": "Form Control",
       "name": "Input",
@@ -346,9 +379,9 @@
       "reason": null
     },
     {
-      "order": 31,
+      "order": 34,
       "gridRow": 0,
-      "categoryOrder": 7,
+      "categoryOrder": 8,
       "memberOrder": 1,
       "category": "Form Control",
       "name": "Search Input",
@@ -357,9 +390,9 @@
       "reason": null
     },
     {
-      "order": 32,
+      "order": 35,
       "gridRow": 0,
-      "categoryOrder": 7,
+      "categoryOrder": 8,
       "memberOrder": 2,
       "category": "Form Control",
       "name": "Text Area",
@@ -368,9 +401,9 @@
       "reason": null
     },
     {
-      "order": 33,
+      "order": 36,
       "gridRow": 0,
-      "categoryOrder": 7,
+      "categoryOrder": 8,
       "memberOrder": 3,
       "category": "Form Control",
       "name": "Select Box",
@@ -379,9 +412,9 @@
       "reason": null
     },
     {
-      "order": 34,
+      "order": 37,
       "gridRow": 0,
-      "categoryOrder": 8,
+      "categoryOrder": 9,
       "memberOrder": 0,
       "category": "Date Picker",
       "name": "Date Picker",
@@ -390,9 +423,9 @@
       "reason": null
     },
     {
-      "order": 35,
+      "order": 38,
       "gridRow": 0,
-      "categoryOrder": 8,
+      "categoryOrder": 9,
       "memberOrder": 1,
       "category": "Date Picker",
       "name": "Calendar",
@@ -401,9 +434,9 @@
       "reason": "요소 — Date Picker 안 캘린더 패널"
     },
     {
-      "order": 36,
+      "order": 39,
       "gridRow": 0,
-      "categoryOrder": 8,
+      "categoryOrder": 9,
       "memberOrder": 2,
       "category": "Date Picker",
       "name": "Calendar Cell",
@@ -412,9 +445,9 @@
       "reason": "요소 — Date Picker 안 날짜 셀"
     },
     {
-      "order": 37,
+      "order": 40,
       "gridRow": 0,
-      "categoryOrder": 8,
+      "categoryOrder": 9,
       "memberOrder": 3,
       "category": "Date Picker",
       "name": "Calendar Tile",
@@ -423,9 +456,9 @@
       "reason": "요소 — Date Picker 안 타일"
     },
     {
-      "order": 38,
+      "order": 41,
       "gridRow": 0,
-      "categoryOrder": 8,
+      "categoryOrder": 9,
       "memberOrder": 4,
       "category": "Date Picker",
       "name": "Calendar Nav Arrow",
@@ -434,9 +467,9 @@
       "reason": "요소 — Date Picker 안 캘린더 헤더의 이전/다음 화살표 칸(State=Default/Hover/Disabled). river 결정 2026-09-15 로 신설(그 전에는 헤더에 아이콘을 직접 그려 hover·disabled 색을 담을 자리가 없었다)."
     },
     {
-      "order": 39,
+      "order": 42,
       "gridRow": 0,
-      "categoryOrder": 8,
+      "categoryOrder": 9,
       "memberOrder": 5,
       "category": "Date Picker",
       "name": "Date Picker Mobile Bottom Sheet",
@@ -445,9 +478,9 @@
       "reason": "요소/변형 — Date Picker(date-picker 섹션) 모바일 폼. HTML 섹션 제목이 'Date Picker Bottom Sheet'(Mobile 생략)이라 slug 자동 대응이 안 돼 sectionId 로 명시(2026-07-31)"
     },
     {
-      "order": 40,
+      "order": 43,
       "gridRow": 0,
-      "categoryOrder": 9,
+      "categoryOrder": 10,
       "memberOrder": 0,
       "category": "Time Picker",
       "name": "Time Picker",
@@ -456,9 +489,9 @@
       "reason": null
     },
     {
-      "order": 41,
+      "order": 44,
       "gridRow": 0,
-      "categoryOrder": 9,
+      "categoryOrder": 10,
       "memberOrder": 1,
       "category": "Time Picker",
       "name": "Time Picker Dropdown",
@@ -467,9 +500,9 @@
       "reason": "요소 — Time Picker 안 드롭다운 패널"
     },
     {
-      "order": 42,
+      "order": 45,
       "gridRow": 0,
-      "categoryOrder": 9,
+      "categoryOrder": 10,
       "memberOrder": 2,
       "category": "Time Picker",
       "name": "Time Picker Cell",
@@ -478,9 +511,9 @@
       "reason": "요소 — Time Picker 안 셀"
     },
     {
-      "order": 43,
+      "order": 46,
       "gridRow": 0,
-      "categoryOrder": 9,
+      "categoryOrder": 10,
       "memberOrder": 3,
       "category": "Time Picker",
       "name": "Time Picker Mobile Bottom Sheet",
@@ -489,9 +522,9 @@
       "reason": "요소/변형 — Time Picker(time-picker 섹션) 모바일 폼(휠 바텀시트)"
     },
     {
-      "order": 44,
+      "order": 47,
       "gridRow": 0,
-      "categoryOrder": 10,
+      "categoryOrder": 11,
       "memberOrder": 0,
       "category": "Table",
       "name": "Table",
@@ -500,9 +533,9 @@
       "reason": null
     },
     {
-      "order": 45,
+      "order": 48,
       "gridRow": 0,
-      "categoryOrder": 10,
+      "categoryOrder": 11,
       "memberOrder": 1,
       "category": "Table",
       "name": "Table Cell",
@@ -511,9 +544,9 @@
       "reason": "요소 — Table 안 셀"
     },
     {
-      "order": 46,
+      "order": 49,
       "gridRow": 0,
-      "categoryOrder": 11,
+      "categoryOrder": 12,
       "memberOrder": 0,
       "category": "Overlay",
       "name": "Modal",
@@ -522,9 +555,9 @@
       "reason": "확인 계열 공통 팝업 셸(overlay) — codeStatus in-progress, 아직 HTML 하네스 데모 없음(harnessStatus not-started). Figma 라이브러리 정본. HTML 섹션 생기면 sectionFor 로 이관."
     },
     {
-      "order": 47,
+      "order": 50,
       "gridRow": 0,
-      "categoryOrder": 11,
+      "categoryOrder": 12,
       "memberOrder": 1,
       "category": "Overlay",
       "name": "Modal Content",
@@ -533,9 +566,9 @@
       "reason": null
     },
     {
-      "order": 48,
+      "order": 51,
       "gridRow": 0,
-      "categoryOrder": 11,
+      "categoryOrder": 12,
       "memberOrder": 2,
       "category": "Overlay",
       "name": "Bottom Sheet",
@@ -544,9 +577,9 @@
       "reason": "공용 오버레이 컴포넌트 — 모바일 사용은 Filter Chip(·Time Picker) 섹션의 바텀시트로 표출(전용 섹션 불요). Figma 라이브러리 정본."
     },
     {
-      "order": 49,
+      "order": 52,
       "gridRow": 0,
-      "categoryOrder": 11,
+      "categoryOrder": 12,
       "memberOrder": 3,
       "category": "Overlay",
       "name": "Bottom Sheet Option",
@@ -139551,6 +139584,1308 @@
       ]
     },
     {
+      "name": "Data Tag",
+      "gridMembership": "public",
+      "variantCount": 8,
+      "axes": {
+        "Type": [
+          "Chips",
+          "Square"
+        ],
+        "Variant": [
+          "Line",
+          "Solid"
+        ],
+        "Color": [
+          "Blue",
+          "Red"
+        ]
+      },
+      "presentationAxes": {
+        "rowAxis": null,
+        "columnAxis": "Type",
+        "bandAxes": [
+          "Variant",
+          "Color"
+        ]
+      },
+      "dependencies": [],
+      "variants": [
+        {
+          "name": "Type=Chips, Variant=Line, Color=Blue",
+          "axes": {
+            "Type": "Chips",
+            "Variant": "Line",
+            "Color": "Blue"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Type=Chips, Variant=Line, Color=Blue",
+            "dimensions": {
+              "width": null,
+              "height": null
+            },
+            "position": {
+              "x": 168,
+              "y": 178
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "AUTO",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": 6,
+                "right": 8,
+                "bottom": 6,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "(없음)",
+              "stroke": "color/tag/line/border/blue",
+              "fillPaints": [],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/tag/line/border/blue",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {
+              "bottomLeftRadius": "radius/full",
+              "bottomRightRadius": "radius/full",
+              "paddingBottom": "spacing/6",
+              "paddingLeft": "spacing/8",
+              "paddingRight": "spacing/8",
+              "paddingTop": "spacing/6",
+              "strokeWeight": "border-width/1",
+              "topLeftRadius": "radius/full",
+              "topRightRadius": "radius/full"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "라벨",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/tag/line/label/blue",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/tag/line/label/blue",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "Type=Chips, Variant=Line, Color=Red",
+          "axes": {
+            "Type": "Chips",
+            "Variant": "Line",
+            "Color": "Red"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Type=Chips, Variant=Line, Color=Red",
+            "dimensions": {
+              "width": null,
+              "height": null
+            },
+            "position": {
+              "x": 264,
+              "y": 178
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "AUTO",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": 6,
+                "right": 8,
+                "bottom": 6,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "(없음)",
+              "stroke": "color/tag/line/border/red",
+              "fillPaints": [],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/tag/line/border/red",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {
+              "bottomLeftRadius": "radius/full",
+              "bottomRightRadius": "radius/full",
+              "paddingBottom": "spacing/6",
+              "paddingLeft": "spacing/8",
+              "paddingRight": "spacing/8",
+              "paddingTop": "spacing/6",
+              "strokeWeight": "border-width/1",
+              "topLeftRadius": "radius/full",
+              "topRightRadius": "radius/full"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "라벨",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/tag/line/label/red",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/tag/line/label/red",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "Type=Chips, Variant=Solid, Color=Blue",
+          "axes": {
+            "Type": "Chips",
+            "Variant": "Solid",
+            "Color": "Blue"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Type=Chips, Variant=Solid, Color=Blue",
+            "dimensions": {
+              "width": null,
+              "height": null
+            },
+            "position": {
+              "x": 168,
+              "y": 234
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "AUTO",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": 6,
+                "right": 8,
+                "bottom": 6,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/tag/solid/bg/blue",
+              "stroke": "color/tag/solid/bg/blue",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/tag/solid/bg/blue",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/tag/solid/bg/blue",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {
+              "bottomLeftRadius": "radius/full",
+              "bottomRightRadius": "radius/full",
+              "paddingBottom": "spacing/6",
+              "paddingLeft": "spacing/8",
+              "paddingRight": "spacing/8",
+              "paddingTop": "spacing/6",
+              "strokeWeight": "border-width/1",
+              "topLeftRadius": "radius/full",
+              "topRightRadius": "radius/full"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "라벨",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/tag/solid/label",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/tag/solid/label",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "Type=Chips, Variant=Solid, Color=Red",
+          "axes": {
+            "Type": "Chips",
+            "Variant": "Solid",
+            "Color": "Red"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Type=Chips, Variant=Solid, Color=Red",
+            "dimensions": {
+              "width": null,
+              "height": null
+            },
+            "position": {
+              "x": 264,
+              "y": 234
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "AUTO",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": 6,
+                "right": 8,
+                "bottom": 6,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/tag/solid/bg/red",
+              "stroke": "color/tag/solid/bg/red",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/tag/solid/bg/red",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/tag/solid/bg/red",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {
+              "bottomLeftRadius": "radius/full",
+              "bottomRightRadius": "radius/full",
+              "paddingBottom": "spacing/6",
+              "paddingLeft": "spacing/8",
+              "paddingRight": "spacing/8",
+              "paddingTop": "spacing/6",
+              "strokeWeight": "border-width/1",
+              "topLeftRadius": "radius/full",
+              "topRightRadius": "radius/full"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "라벨",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/tag/solid/label",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/tag/solid/label",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "Type=Square, Variant=Line, Color=Blue",
+          "axes": {
+            "Type": "Square",
+            "Variant": "Line",
+            "Color": "Blue"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Type=Square, Variant=Line, Color=Blue",
+            "dimensions": {
+              "width": null,
+              "height": null
+            },
+            "position": {
+              "x": 168,
+              "y": 350
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "AUTO",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": 6,
+                "right": 8,
+                "bottom": 6,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "(없음)",
+              "stroke": "color/tag/line/border/blue",
+              "fillPaints": [],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/tag/line/border/blue",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {
+              "bottomLeftRadius": "radius/4",
+              "bottomRightRadius": "radius/4",
+              "paddingBottom": "spacing/6",
+              "paddingLeft": "spacing/8",
+              "paddingRight": "spacing/8",
+              "paddingTop": "spacing/6",
+              "strokeWeight": "border-width/1",
+              "topLeftRadius": "radius/4",
+              "topRightRadius": "radius/4"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "라벨",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/tag/line/label/blue",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/tag/line/label/blue",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "Type=Square, Variant=Line, Color=Red",
+          "axes": {
+            "Type": "Square",
+            "Variant": "Line",
+            "Color": "Red"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Type=Square, Variant=Line, Color=Red",
+            "dimensions": {
+              "width": null,
+              "height": null
+            },
+            "position": {
+              "x": 264,
+              "y": 350
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "AUTO",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": 6,
+                "right": 8,
+                "bottom": 6,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "(없음)",
+              "stroke": "color/tag/line/border/red",
+              "fillPaints": [],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/tag/line/border/red",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {
+              "bottomLeftRadius": "radius/4",
+              "bottomRightRadius": "radius/4",
+              "paddingBottom": "spacing/6",
+              "paddingLeft": "spacing/8",
+              "paddingRight": "spacing/8",
+              "paddingTop": "spacing/6",
+              "strokeWeight": "border-width/1",
+              "topLeftRadius": "radius/4",
+              "topRightRadius": "radius/4"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "라벨",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/tag/line/label/red",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/tag/line/label/red",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "Type=Square, Variant=Solid, Color=Blue",
+          "axes": {
+            "Type": "Square",
+            "Variant": "Solid",
+            "Color": "Blue"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Type=Square, Variant=Solid, Color=Blue",
+            "dimensions": {
+              "width": null,
+              "height": null
+            },
+            "position": {
+              "x": 168,
+              "y": 406
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "AUTO",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": 6,
+                "right": 8,
+                "bottom": 6,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/tag/solid/bg/blue",
+              "stroke": "color/tag/solid/bg/blue",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/tag/solid/bg/blue",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/tag/solid/bg/blue",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {
+              "bottomLeftRadius": "radius/4",
+              "bottomRightRadius": "radius/4",
+              "paddingBottom": "spacing/6",
+              "paddingLeft": "spacing/8",
+              "paddingRight": "spacing/8",
+              "paddingTop": "spacing/6",
+              "strokeWeight": "border-width/1",
+              "topLeftRadius": "radius/4",
+              "topRightRadius": "radius/4"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "라벨",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/tag/solid/label",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/tag/solid/label",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "Type=Square, Variant=Solid, Color=Red",
+          "axes": {
+            "Type": "Square",
+            "Variant": "Solid",
+            "Color": "Red"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Type=Square, Variant=Solid, Color=Red",
+            "dimensions": {
+              "width": null,
+              "height": null
+            },
+            "position": {
+              "x": 264,
+              "y": 406
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "AUTO",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": 6,
+                "right": 8,
+                "bottom": 6,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/tag/solid/bg/red",
+              "stroke": "color/tag/solid/bg/red",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/tag/solid/bg/red",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/tag/solid/bg/red",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {
+              "bottomLeftRadius": "radius/4",
+              "bottomRightRadius": "radius/4",
+              "paddingBottom": "spacing/6",
+              "paddingLeft": "spacing/8",
+              "paddingRight": "spacing/8",
+              "paddingTop": "spacing/6",
+              "strokeWeight": "border-width/1",
+              "topLeftRadius": "radius/4",
+              "topRightRadius": "radius/4"
+            },
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "라벨",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/tag/solid/label",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/tag/solid/label",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
       "name": "List Row",
       "gridMembership": "internal",
       "variantCount": 21,
@@ -148376,6 +149711,2486 @@
                 "description": "사진·아이콘·아바타가 들어가는 자리. 기본은 40 각 자리표시이며, **자리표시를 빼고 넣을 것을 그 자리에 넣는다**(둘을 같이 두면 왼쪽 칸이 둘이 된다). 비워 두면 자리표시만 남는다. 줄 높이(68)는 글 자리가 정하므로 40 보다 큰 것을 넣지 않는다."
               }
             ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Expandable Card",
+      "gridMembership": "public",
+      "variantCount": 2,
+      "axes": {
+        "State": [
+          "Collapsed",
+          "Expanded"
+        ]
+      },
+      "presentationAxes": {
+        "rowAxis": null,
+        "columnAxis": "State",
+        "bandAxes": []
+      },
+      "dependencies": [],
+      "variants": [
+        {
+          "name": "State=Collapsed",
+          "axes": {
+            "State": "Collapsed"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "State=Collapsed",
+            "dimensions": {
+              "width": 328,
+              "height": 0
+            },
+            "position": {
+              "x": 300,
+              "y": 82
+            },
+            "layout": {
+              "layoutMode": "VERTICAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": null,
+              "counterAxisAlignItems": null,
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": 0
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/bg/level-0",
+              "stroke": "color/line/default",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/bg/level-0",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/line/default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {
+              "bottomLeftRadius": "radius/10",
+              "bottomRightRadius": "radius/10",
+              "strokeWeight": "border-width/1",
+              "topLeftRadius": "radius/10",
+              "topRightRadius": "radius/10"
+            },
+            "children": [
+              {
+                "type": "FRAME",
+                "name": "header",
+                "dimensions": {
+                  "width": 328,
+                  "height": 0
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "AUTO",
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": "MIN",
+                  "layoutGrow": null,
+                  "layoutAlign": "STRETCH",
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": 16,
+                    "right": 16,
+                    "bottom": 16,
+                    "left": 20
+                  },
+                  "gap": 10
+                },
+                "text": null,
+                "appearance": {
+                  "fill": "color/bg/level-0",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/bg/level-0",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {
+                  "itemSpacing": "spacing/10",
+                  "paddingBottom": "spacing/16",
+                  "paddingLeft": "spacing/20",
+                  "paddingRight": "spacing/16",
+                  "paddingTop": "spacing/16"
+                },
+                "children": [
+                  {
+                    "type": "FRAME",
+                    "name": "text",
+                    "dimensions": {
+                      "width": null,
+                      "height": null
+                    },
+                    "position": {
+                      "x": null,
+                      "y": null
+                    },
+                    "layout": {
+                      "layoutMode": "VERTICAL",
+                      "primaryAxisSizingMode": "AUTO",
+                      "counterAxisSizingMode": "AUTO",
+                      "primaryAxisAlignItems": null,
+                      "counterAxisAlignItems": null,
+                      "layoutGrow": 1,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": null,
+                      "layoutSizingVertical": null,
+                      "minWidth": null,
+                      "padding": {
+                        "top": null,
+                        "right": null,
+                        "bottom": null,
+                        "left": null
+                      },
+                      "gap": 10
+                    },
+                    "text": null,
+                    "appearance": {
+                      "fill": "(없음)",
+                      "stroke": null,
+                      "fillPaints": [],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": null,
+                      "strokeTopWeight": null,
+                      "strokeRightWeight": null,
+                      "strokeBottomWeight": null,
+                      "strokeLeftWeight": null,
+                      "cornerRadius": null,
+                      "topLeftRadius": null,
+                      "topRightRadius": null,
+                      "bottomLeftRadius": null,
+                      "bottomRightRadius": null,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": null,
+                    "boundVariables": {
+                      "itemSpacing": "spacing/10"
+                    },
+                    "children": [
+                      {
+                        "type": "FRAME",
+                        "name": "title-row",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": "HORIZONTAL",
+                          "primaryAxisSizingMode": "AUTO",
+                          "counterAxisSizingMode": "AUTO",
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": "CENTER",
+                          "layoutGrow": null,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": null,
+                        "appearance": {
+                          "fill": "(없음)",
+                          "stroke": null,
+                          "fillPaints": [],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {
+                          "minHeight": "sizing/24"
+                        },
+                        "children": [
+                          {
+                            "type": "TEXT",
+                            "name": "",
+                            "dimensions": {
+                              "width": null,
+                              "height": null
+                            },
+                            "position": {
+                              "x": null,
+                              "y": null
+                            },
+                            "layout": {
+                              "layoutMode": null,
+                              "primaryAxisSizingMode": null,
+                              "counterAxisSizingMode": null,
+                              "primaryAxisAlignItems": null,
+                              "counterAxisAlignItems": null,
+                              "layoutGrow": null,
+                              "layoutAlign": null,
+                              "layoutSizingHorizontal": null,
+                              "layoutSizingVertical": null,
+                              "minWidth": null,
+                              "padding": {
+                                "top": null,
+                                "right": null,
+                                "bottom": null,
+                                "left": null
+                              },
+                              "gap": null
+                            },
+                            "text": {
+                              "characters": "타이틀",
+                              "fontSize": 16,
+                              "fontStyle": "Bold",
+                              "fontFamily": "Pretendard",
+                              "textStyleId": "title/16B",
+                              "textAutoResize": null
+                            },
+                            "appearance": {
+                              "fill": "color/text/title/primary",
+                              "stroke": null,
+                              "fillPaints": [
+                                {
+                                  "type": "SOLID",
+                                  "__tokenKey": "color/text/title/primary",
+                                  "color": {
+                                    "r": 0,
+                                    "g": 0,
+                                    "b": 0
+                                  }
+                                }
+                              ],
+                              "strokePaints": [],
+                              "opacity": null,
+                              "strokeWeight": null,
+                              "strokeTopWeight": null,
+                              "strokeRightWeight": null,
+                              "strokeBottomWeight": null,
+                              "strokeLeftWeight": null,
+                              "cornerRadius": null,
+                              "topLeftRadius": null,
+                              "topRightRadius": null,
+                              "bottomLeftRadius": null,
+                              "bottomRightRadius": null,
+                              "visible": null,
+                              "effects": null
+                            },
+                            "asset": null,
+                            "boundVariables": {},
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": null,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "서브타이틀",
+                          "fontSize": 14,
+                          "fontStyle": "Bold",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "title/14B",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/text/body/secondary",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/text/body/secondary",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      },
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": null,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "서브타이틀",
+                          "fontSize": 14,
+                          "fontStyle": "Regular",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "body/14R",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/text/body/secondary",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/text/body/secondary",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      },
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": null,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "서브타이틀",
+                          "fontSize": 12,
+                          "fontStyle": "Regular",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "body/12R",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/text/body/secondary",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/text/body/secondary",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      },
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": null,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "서브타이틀",
+                          "fontSize": 12,
+                          "fontStyle": "Regular",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "body/12R",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/text/body/tertiary",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/text/body/tertiary",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "FRAME",
+                    "name": "chevron",
+                    "dimensions": {
+                      "width": null,
+                      "height": null
+                    },
+                    "position": {
+                      "x": null,
+                      "y": null
+                    },
+                    "layout": {
+                      "layoutMode": null,
+                      "primaryAxisSizingMode": null,
+                      "counterAxisSizingMode": null,
+                      "primaryAxisAlignItems": null,
+                      "counterAxisAlignItems": null,
+                      "layoutGrow": null,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": null,
+                      "layoutSizingVertical": null,
+                      "minWidth": null,
+                      "padding": {
+                        "top": null,
+                        "right": null,
+                        "bottom": null,
+                        "left": null
+                      },
+                      "gap": null
+                    },
+                    "text": null,
+                    "appearance": {
+                      "fill": null,
+                      "stroke": null,
+                      "fillPaints": [],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": null,
+                      "strokeTopWeight": null,
+                      "strokeRightWeight": null,
+                      "strokeBottomWeight": null,
+                      "strokeLeftWeight": null,
+                      "cornerRadius": null,
+                      "topLeftRadius": null,
+                      "topRightRadius": null,
+                      "bottomLeftRadius": null,
+                      "bottomRightRadius": null,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": {
+                      "kind": "svg",
+                      "payload": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M9 6L15 12L9 18\" stroke=\"#353535\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+                      "colorToken": "color/icon/gray-dark",
+                      "colorBinding": "stroke"
+                    },
+                    "boundVariables": {},
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "State=Expanded",
+          "axes": {
+            "State": "Expanded"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "State=Expanded",
+            "dimensions": {
+              "width": 328,
+              "height": 0
+            },
+            "position": {
+              "x": 660,
+              "y": 82
+            },
+            "layout": {
+              "layoutMode": "VERTICAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": null,
+              "counterAxisAlignItems": null,
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": 0
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/bg/level-0",
+              "stroke": "color/line/default",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/bg/level-0",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/line/default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {
+              "bottomLeftRadius": "radius/10",
+              "bottomRightRadius": "radius/10",
+              "strokeWeight": "border-width/1",
+              "topLeftRadius": "radius/10",
+              "topRightRadius": "radius/10"
+            },
+            "children": [
+              {
+                "type": "FRAME",
+                "name": "header",
+                "dimensions": {
+                  "width": 328,
+                  "height": 0
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "FIXED",
+                  "counterAxisSizingMode": "AUTO",
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": "MIN",
+                  "layoutGrow": null,
+                  "layoutAlign": "STRETCH",
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": 16,
+                    "right": 16,
+                    "bottom": 16,
+                    "left": 20
+                  },
+                  "gap": 10
+                },
+                "text": null,
+                "appearance": {
+                  "fill": "color/bg/level-0",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/bg/level-0",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {
+                  "itemSpacing": "spacing/10",
+                  "paddingBottom": "spacing/16",
+                  "paddingLeft": "spacing/20",
+                  "paddingRight": "spacing/16",
+                  "paddingTop": "spacing/16"
+                },
+                "children": [
+                  {
+                    "type": "FRAME",
+                    "name": "text",
+                    "dimensions": {
+                      "width": null,
+                      "height": null
+                    },
+                    "position": {
+                      "x": null,
+                      "y": null
+                    },
+                    "layout": {
+                      "layoutMode": "VERTICAL",
+                      "primaryAxisSizingMode": "AUTO",
+                      "counterAxisSizingMode": "AUTO",
+                      "primaryAxisAlignItems": null,
+                      "counterAxisAlignItems": null,
+                      "layoutGrow": 1,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": null,
+                      "layoutSizingVertical": null,
+                      "minWidth": null,
+                      "padding": {
+                        "top": null,
+                        "right": null,
+                        "bottom": null,
+                        "left": null
+                      },
+                      "gap": 10
+                    },
+                    "text": null,
+                    "appearance": {
+                      "fill": "(없음)",
+                      "stroke": null,
+                      "fillPaints": [],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": null,
+                      "strokeTopWeight": null,
+                      "strokeRightWeight": null,
+                      "strokeBottomWeight": null,
+                      "strokeLeftWeight": null,
+                      "cornerRadius": null,
+                      "topLeftRadius": null,
+                      "topRightRadius": null,
+                      "bottomLeftRadius": null,
+                      "bottomRightRadius": null,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": null,
+                    "boundVariables": {
+                      "itemSpacing": "spacing/10"
+                    },
+                    "children": [
+                      {
+                        "type": "FRAME",
+                        "name": "title-row",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": "HORIZONTAL",
+                          "primaryAxisSizingMode": "AUTO",
+                          "counterAxisSizingMode": "AUTO",
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": "CENTER",
+                          "layoutGrow": null,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": null,
+                        "appearance": {
+                          "fill": "(없음)",
+                          "stroke": null,
+                          "fillPaints": [],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {
+                          "minHeight": "sizing/24"
+                        },
+                        "children": [
+                          {
+                            "type": "TEXT",
+                            "name": "",
+                            "dimensions": {
+                              "width": null,
+                              "height": null
+                            },
+                            "position": {
+                              "x": null,
+                              "y": null
+                            },
+                            "layout": {
+                              "layoutMode": null,
+                              "primaryAxisSizingMode": null,
+                              "counterAxisSizingMode": null,
+                              "primaryAxisAlignItems": null,
+                              "counterAxisAlignItems": null,
+                              "layoutGrow": null,
+                              "layoutAlign": null,
+                              "layoutSizingHorizontal": null,
+                              "layoutSizingVertical": null,
+                              "minWidth": null,
+                              "padding": {
+                                "top": null,
+                                "right": null,
+                                "bottom": null,
+                                "left": null
+                              },
+                              "gap": null
+                            },
+                            "text": {
+                              "characters": "타이틀",
+                              "fontSize": 16,
+                              "fontStyle": "Bold",
+                              "fontFamily": "Pretendard",
+                              "textStyleId": "title/16B",
+                              "textAutoResize": null
+                            },
+                            "appearance": {
+                              "fill": "color/text/title/primary",
+                              "stroke": null,
+                              "fillPaints": [
+                                {
+                                  "type": "SOLID",
+                                  "__tokenKey": "color/text/title/primary",
+                                  "color": {
+                                    "r": 0,
+                                    "g": 0,
+                                    "b": 0
+                                  }
+                                }
+                              ],
+                              "strokePaints": [],
+                              "opacity": null,
+                              "strokeWeight": null,
+                              "strokeTopWeight": null,
+                              "strokeRightWeight": null,
+                              "strokeBottomWeight": null,
+                              "strokeLeftWeight": null,
+                              "cornerRadius": null,
+                              "topLeftRadius": null,
+                              "topRightRadius": null,
+                              "bottomLeftRadius": null,
+                              "bottomRightRadius": null,
+                              "visible": null,
+                              "effects": null
+                            },
+                            "asset": null,
+                            "boundVariables": {},
+                            "children": []
+                          }
+                        ]
+                      },
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": null,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "서브타이틀",
+                          "fontSize": 14,
+                          "fontStyle": "Bold",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "title/14B",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/text/body/secondary",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/text/body/secondary",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      },
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": null,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "서브타이틀",
+                          "fontSize": 14,
+                          "fontStyle": "Regular",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "body/14R",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/text/body/secondary",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/text/body/secondary",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      },
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": null,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "서브타이틀",
+                          "fontSize": 12,
+                          "fontStyle": "Regular",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "body/12R",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/text/body/secondary",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/text/body/secondary",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      },
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": null,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "서브타이틀",
+                          "fontSize": 12,
+                          "fontStyle": "Regular",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "body/12R",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/text/body/tertiary",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/text/body/tertiary",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "FRAME",
+                    "name": "chevron",
+                    "dimensions": {
+                      "width": null,
+                      "height": null
+                    },
+                    "position": {
+                      "x": null,
+                      "y": null
+                    },
+                    "layout": {
+                      "layoutMode": null,
+                      "primaryAxisSizingMode": null,
+                      "counterAxisSizingMode": null,
+                      "primaryAxisAlignItems": null,
+                      "counterAxisAlignItems": null,
+                      "layoutGrow": null,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": null,
+                      "layoutSizingVertical": null,
+                      "minWidth": null,
+                      "padding": {
+                        "top": null,
+                        "right": null,
+                        "bottom": null,
+                        "left": null
+                      },
+                      "gap": null
+                    },
+                    "text": null,
+                    "appearance": {
+                      "fill": null,
+                      "stroke": null,
+                      "fillPaints": [],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": null,
+                      "strokeTopWeight": null,
+                      "strokeRightWeight": null,
+                      "strokeBottomWeight": null,
+                      "strokeLeftWeight": null,
+                      "cornerRadius": null,
+                      "topLeftRadius": null,
+                      "topRightRadius": null,
+                      "bottomLeftRadius": null,
+                      "bottomRightRadius": null,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": {
+                      "kind": "svg",
+                      "payload": "<svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M9 6L15 12L9 18\" stroke=\"#353535\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>",
+                      "colorToken": "color/icon/gray-dark",
+                      "colorBinding": "stroke"
+                    },
+                    "boundVariables": {},
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "type": "FRAME",
+                "name": "panel",
+                "dimensions": {
+                  "width": 328,
+                  "height": 0
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": "VERTICAL",
+                  "primaryAxisSizingMode": "AUTO",
+                  "counterAxisSizingMode": "FIXED",
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": null,
+                  "layoutAlign": "STRETCH",
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": 16,
+                    "right": 16,
+                    "bottom": 16,
+                    "left": 20
+                  },
+                  "gap": 10
+                },
+                "text": null,
+                "appearance": {
+                  "fill": "color/bg/level-2",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/bg/level-2",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {
+                  "itemSpacing": "spacing/10",
+                  "paddingBottom": "spacing/16",
+                  "paddingLeft": "spacing/20",
+                  "paddingRight": "spacing/16",
+                  "paddingTop": "spacing/16"
+                },
+                "children": [
+                  {
+                    "type": "FRAME",
+                    "name": "text",
+                    "dimensions": {
+                      "width": null,
+                      "height": null
+                    },
+                    "position": {
+                      "x": null,
+                      "y": null
+                    },
+                    "layout": {
+                      "layoutMode": "VERTICAL",
+                      "primaryAxisSizingMode": "AUTO",
+                      "counterAxisSizingMode": "AUTO",
+                      "primaryAxisAlignItems": null,
+                      "counterAxisAlignItems": null,
+                      "layoutGrow": null,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": null,
+                      "layoutSizingVertical": null,
+                      "minWidth": null,
+                      "padding": {
+                        "top": null,
+                        "right": null,
+                        "bottom": null,
+                        "left": null
+                      },
+                      "gap": 10
+                    },
+                    "text": null,
+                    "appearance": {
+                      "fill": "(없음)",
+                      "stroke": null,
+                      "fillPaints": [],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": null,
+                      "strokeTopWeight": null,
+                      "strokeRightWeight": null,
+                      "strokeBottomWeight": null,
+                      "strokeLeftWeight": null,
+                      "cornerRadius": null,
+                      "topLeftRadius": null,
+                      "topRightRadius": null,
+                      "bottomLeftRadius": null,
+                      "bottomRightRadius": null,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": null,
+                    "boundVariables": {
+                      "itemSpacing": "spacing/10"
+                    },
+                    "children": [
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": null,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "타이틀",
+                          "fontSize": 16,
+                          "fontStyle": "Bold",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "title/16B",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/text/title/primary",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/text/title/primary",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      },
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": null,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "서브타이틀",
+                          "fontSize": 14,
+                          "fontStyle": "Bold",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "title/14B",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/text/body/secondary",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/text/body/secondary",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      },
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": null,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "서브타이틀",
+                          "fontSize": 14,
+                          "fontStyle": "Regular",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "body/14R",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/text/body/secondary",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/text/body/secondary",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      },
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": null,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "서브타이틀",
+                          "fontSize": 12,
+                          "fontStyle": "Regular",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "body/12R",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/text/body/secondary",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/text/body/secondary",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      },
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": null,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "서브타이틀",
+                          "fontSize": 12,
+                          "fontStyle": "Regular",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "body/12R",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/text/body/tertiary",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/text/body/tertiary",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Divider",
+      "gridMembership": "public",
+      "variantCount": 8,
+      "axes": {
+        "Axis": [
+          "X",
+          "Y"
+        ],
+        "Weight": [
+          "Default",
+          "Strong"
+        ],
+        "Tone": [
+          "Default",
+          "Strong"
+        ]
+      },
+      "presentationAxes": {
+        "rowAxis": null,
+        "columnAxis": "Axis",
+        "bandAxes": [
+          "Weight",
+          "Tone"
+        ]
+      },
+      "dependencies": [],
+      "variants": [
+        {
+          "name": "Axis=X, Weight=Default, Tone=Default",
+          "axes": {
+            "Axis": "X",
+            "Weight": "Default",
+            "Tone": "Default"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Axis=X, Weight=Default, Tone=Default",
+            "dimensions": {
+              "width": 240,
+              "height": 1
+            },
+            "position": {
+              "x": 284,
+              "y": 82
+            },
+            "layout": {
+              "layoutMode": null,
+              "primaryAxisSizingMode": null,
+              "counterAxisSizingMode": null,
+              "primaryAxisAlignItems": null,
+              "counterAxisAlignItems": null,
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/line/default",
+              "stroke": null,
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/line/default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": []
+          }
+        },
+        {
+          "name": "Axis=X, Weight=Strong, Tone=Default",
+          "axes": {
+            "Axis": "X",
+            "Weight": "Strong",
+            "Tone": "Default"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Axis=X, Weight=Strong, Tone=Default",
+            "dimensions": {
+              "width": 240,
+              "height": 2
+            },
+            "position": {
+              "x": 548,
+              "y": 82
+            },
+            "layout": {
+              "layoutMode": null,
+              "primaryAxisSizingMode": null,
+              "counterAxisSizingMode": null,
+              "primaryAxisAlignItems": null,
+              "counterAxisAlignItems": null,
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/line/default",
+              "stroke": null,
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/line/default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": []
+          }
+        },
+        {
+          "name": "Axis=X, Weight=Default, Tone=Strong",
+          "axes": {
+            "Axis": "X",
+            "Weight": "Default",
+            "Tone": "Strong"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Axis=X, Weight=Default, Tone=Strong",
+            "dimensions": {
+              "width": 240,
+              "height": 1
+            },
+            "position": {
+              "x": 284,
+              "y": 130
+            },
+            "layout": {
+              "layoutMode": null,
+              "primaryAxisSizingMode": null,
+              "counterAxisSizingMode": null,
+              "primaryAxisAlignItems": null,
+              "counterAxisAlignItems": null,
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/line/strong",
+              "stroke": null,
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/line/strong",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": []
+          }
+        },
+        {
+          "name": "Axis=X, Weight=Strong, Tone=Strong",
+          "axes": {
+            "Axis": "X",
+            "Weight": "Strong",
+            "Tone": "Strong"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Axis=X, Weight=Strong, Tone=Strong",
+            "dimensions": {
+              "width": 240,
+              "height": 2
+            },
+            "position": {
+              "x": 548,
+              "y": 130
+            },
+            "layout": {
+              "layoutMode": null,
+              "primaryAxisSizingMode": null,
+              "counterAxisSizingMode": null,
+              "primaryAxisAlignItems": null,
+              "counterAxisAlignItems": null,
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/line/strong",
+              "stroke": null,
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/line/strong",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": []
+          }
+        },
+        {
+          "name": "Axis=Y, Weight=Default, Tone=Default",
+          "axes": {
+            "Axis": "Y",
+            "Weight": "Default",
+            "Tone": "Default"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Axis=Y, Weight=Default, Tone=Default",
+            "dimensions": {
+              "width": 1,
+              "height": 14
+            },
+            "position": {
+              "x": 284,
+              "y": 178
+            },
+            "layout": {
+              "layoutMode": null,
+              "primaryAxisSizingMode": null,
+              "counterAxisSizingMode": null,
+              "primaryAxisAlignItems": null,
+              "counterAxisAlignItems": null,
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/line/default",
+              "stroke": null,
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/line/default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": []
+          }
+        },
+        {
+          "name": "Axis=Y, Weight=Strong, Tone=Default",
+          "axes": {
+            "Axis": "Y",
+            "Weight": "Strong",
+            "Tone": "Default"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Axis=Y, Weight=Strong, Tone=Default",
+            "dimensions": {
+              "width": 2,
+              "height": 14
+            },
+            "position": {
+              "x": 548,
+              "y": 178
+            },
+            "layout": {
+              "layoutMode": null,
+              "primaryAxisSizingMode": null,
+              "counterAxisSizingMode": null,
+              "primaryAxisAlignItems": null,
+              "counterAxisAlignItems": null,
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/line/default",
+              "stroke": null,
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/line/default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": []
+          }
+        },
+        {
+          "name": "Axis=Y, Weight=Default, Tone=Strong",
+          "axes": {
+            "Axis": "Y",
+            "Weight": "Default",
+            "Tone": "Strong"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Axis=Y, Weight=Default, Tone=Strong",
+            "dimensions": {
+              "width": 1,
+              "height": 14
+            },
+            "position": {
+              "x": 284,
+              "y": 226
+            },
+            "layout": {
+              "layoutMode": null,
+              "primaryAxisSizingMode": null,
+              "counterAxisSizingMode": null,
+              "primaryAxisAlignItems": null,
+              "counterAxisAlignItems": null,
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/line/strong",
+              "stroke": null,
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/line/strong",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": []
+          }
+        },
+        {
+          "name": "Axis=Y, Weight=Strong, Tone=Strong",
+          "axes": {
+            "Axis": "Y",
+            "Weight": "Strong",
+            "Tone": "Strong"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Axis=Y, Weight=Strong, Tone=Strong",
+            "dimensions": {
+              "width": 2,
+              "height": 14
+            },
+            "position": {
+              "x": 548,
+              "y": 226
+            },
+            "layout": {
+              "layoutMode": null,
+              "primaryAxisSizingMode": null,
+              "counterAxisSizingMode": null,
+              "primaryAxisAlignItems": null,
+              "counterAxisAlignItems": null,
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/line/strong",
+              "stroke": null,
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/line/strong",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": []
           }
         }
       ]
@@ -373479,10 +377294,13 @@
     "Filter Chip": [
       "Dropdown"
     ],
+    "Data Tag": [],
     "List Row": [
       "Checkbox",
       "Toggle"
     ],
+    "Expandable Card": [],
+    "Divider": [],
     "Input": [],
     "Search Input": [],
     "Text Area": [],

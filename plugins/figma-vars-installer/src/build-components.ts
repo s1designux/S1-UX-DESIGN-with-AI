@@ -7205,6 +7205,252 @@ async function buildMultiToggle(maps: BuildMaps, originY: number): Promise<{ set
 //   토큰 "값" 변경은 Variables 재설치로 기존 컴포넌트에 자동 반영되므로 컴포넌트 재생성 불필요.
 //   (mock 환경(렌더러·키체크)은 page.findAll/children 이 배열이 아니므로 가드로 fresh 취급.)
 
+// ════════════════════════════════════════════════════════════════════════════
+//  승격 후보 4종 중 3종 — river 승인 2026-09-29 ("오케이 4종 승인할게")
+//  묶음 배치도 river 결정 2026-09-29 ("응 그렇게 해줘"):
+//    Side Nav → Navigation · Expandable Card → List · Divider → Common(신설) · Data Tag → Chip
+//  Data Tag 는 뱃지 전용 색 7줄(color/tag/*)을 정본에 넣은 뒤 편입했다
+//    — river 승인 2026-09-30 "토큰은 제안한대로 추가하자".
+//  ⚠️ Side Nav 만 아직 없다 — 판 접기 아이콘(ic_패널접기)이 Figma 아이콘 라이브러리에 없어 대기 중이다.
+// ════════════════════════════════════════════════════════════════════════════
+
+// ── Data Tag (뱃지) — 상태를 보여주기만 하는 작은 라벨 ──────────────────────
+//   river 승인 2026-09-29 "오케이 4종 승인할게" · 색 이름 승인 2026-09-30 "토큰은 제안한대로 추가하자".
+//   축: Type(Chips 둥근 · Square 각진) × Variant(Line 선 · Solid 채움) × Color(Blue · Red)
+//   뜻이 정해진 두 색만 쓴다 — 파랑 = 승인·확인 / 빨강 = 주의·에러.
+//   색은 뱃지 전용 쓰임 이름(color/tag/*)이 갖는다. 라이트·다크가 그 이름 안에 들어 있다.
+async function buildDataTag(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const types = ["Chips", "Square"];
+  const variants = ["Line", "Solid"];
+  const colors = ["Blue", "Red"];
+  const num = (k: string): Variable => requireVar(maps.foundationNumber, k, "Foundation Number");
+  const comps: ComponentNode[] = [];
+  const cells: { comp: ComponentNode; type: string; variant: string; color: string }[] = [];
+  for (const type of types) {
+    for (const variant of variants) {
+      for (const color of colors) {
+        const tone = color.toLowerCase();               // blue | red
+        const solid = variant === "Solid";
+        const comp = figma.createComponent();
+        comp.name = `Type=${type}, Variant=${variant}, Color=${color}`;
+        comp.layoutMode = "HORIZONTAL";
+        comp.primaryAxisAlignItems = "CENTER";
+        comp.counterAxisAlignItems = "CENTER";
+        comp.primaryAxisSizingMode = "AUTO";
+        comp.counterAxisSizingMode = "AUTO";
+        comp.paddingTop = 6; comp.paddingBottom = 6;
+        comp.paddingLeft = 8; comp.paddingRight = 8;
+        comp.setBoundVariable("paddingTop", num("spacing/6"));
+        comp.setBoundVariable("paddingBottom", num("spacing/6"));
+        comp.setBoundVariable("paddingLeft", num("spacing/8"));
+        comp.setBoundVariable("paddingRight", num("spacing/8"));
+        bindRadius(comp, maps, type === "Chips" ? "radius/full" : "radius/4");
+        // 선형은 바탕이 비어 있다 — 정본에 선형 바탕 칸을 두지 않았다(river 승인 구조).
+        comp.fills = solid ? [boundPaint(scv(maps, `color/tag/solid/bg/${tone}`))] : [];
+        comp.strokes = [boundPaint(scv(maps, solid ? `color/tag/solid/bg/${tone}` : `color/tag/line/border/${tone}`))];
+        comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
+        comp.setBoundVariable("strokeWeight", num("border-width/1"));
+        const labelVar = solid ? scv(maps, "color/tag/solid/label") : scv(maps, `color/tag/line/label/${tone}`);
+        comp.appendChild(await makeBoundText("라벨", 12, "Medium", labelVar));
+        setLightMode(comp, maps);
+        comps.push(comp);
+        cells.push({ comp, type, variant, color });
+      }
+    }
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Data Tag";
+  set.x = 0; set.y = originY;
+  const opts: GroupedSpecOpts = {
+    title: "Data Tag",
+    platforms: [{ name: "PC", sizes: ["Chips", "Square"] }],
+    rowLabels: variants,
+    colHeaders: colors,
+    cellAt: (_platName, size, ri, ci) =>
+      cells.find((x) => x.type === size && x.variant === variants[ri] && x.color === colors[ci])?.comp ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 96, cellH: 40, rowLabelW: 96,
+  };
+  let bottomY = await decorateSetGrouped(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildGroupedSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── Divider (구분선) — 어느 화면에나 끼는 보조선 ─────────────────────────────
+//   축: Axis(X 가로 · Y 세로) × Weight(Default 1 · Strong 2) × Tone(Default 옅은 · Strong 진한) = 8칸
+//   굵기와 색은 따로 고른다 — river 가 승인한 검수 화면이 네 벌(옅은·진한 × 기본·굵게)이었다.
+//   (2026-09-30 river "정본을 네벌로 맞춘다" — 처음 정본은 색과 굵기를 한 축에 묶어 둘로 줄였었다.)
+//   색은 선 토큰 두 개가 정한다 — 옅은 선 line/default(gray/100), 진한 선 line/strong(gray/800).
+//   세로선 높이 14 는 크기 축이 아니라 간격 값으로 본다(river 2026-09-29 "이걸 크기로 적용할건
+//   아닌거같은데, 일단 그대로 둬") — spacing/14 와 같은 값이다.
+//   목록용 들여쓰기는 부품 축이 아니다 — 놓이는 자리(목록)가 정한다.
+async function buildDivider(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const axes = ["X", "Y"];
+  const tones = ["Default", "Strong"];
+  const weights = ["Default", "Strong"];
+  const X_LEN = 240;   // 가로선 견본 길이 — 실제로는 놓인 자리가 폭을 정한다(부품은 늘어난다)
+  const Y_LEN = 14;    // 세로선 높이 = spacing/14
+  const comps: ComponentNode[] = [];
+  const cells: { comp: ComponentNode; row: number; col: number }[] = [];
+  // 행 = Axis × Tone (가로·옅은 / 가로·진한 / 세로·옅은 / 세로·진한), 열 = Weight
+  const rows: { axis: string; tone: string }[] = [];
+  for (const axis of axes) for (const tone of tones) rows.push({ axis, tone });
+  for (let row = 0; row < rows.length; row++) {
+    for (let col = 0; col < weights.length; col++) {
+      const { axis, tone } = rows[row];
+      const weight = weights[col];
+      const thick = weight === "Strong" ? 2 : 1;
+      const comp = figma.createComponent();
+      comp.name = `Axis=${axis}, Weight=${weight}, Tone=${tone}`;
+      if (axis === "X") comp.resize(X_LEN, thick);
+      else comp.resize(thick, Y_LEN);
+      comp.fills = [boundPaint(scv(maps, tone === "Strong" ? "color/line/strong" : "color/line/default"))];
+      setLightMode(comp, maps);
+      comps.push(comp);
+      cells.push({ comp, row, col });
+    }
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Divider";
+  set.x = 0; set.y = originY;
+  const opts: SpecOpts = {
+    title: "Divider",
+    colHeaders: weights.map((w) => `Weight=${w}`),
+    rowLabels: rows.map((r) => `${r.axis === "X" ? "가로" : "세로"} · ${r.tone === "Strong" ? "진한 선" : "옅은 선"}`),
+    cellAt: (r, c) => cells.find((x) => x.row === r && x.col === c)?.comp ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 264, cellH: 32, rowLabelW: 128,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
+// ── Expandable Card (접힘카드) — 모바일 한 유형 ──────────────────────────────
+//   원본: SW UX GUIDE V2.4 「card」 expandable-card (540:6547 닫힘 / 540:6555 펼침, REST 실측)
+//   여백 위16·오른16·아래16·왼20(river E안 2026-09-30 — 원본은 아래 20) · 줄 간격 10 · 반경 10
+//   · 테두리 line/default · 펼침칸 바탕 bg/level-2.
+//   헤더와 펼침칸 사이에 선을 넣지 않는다 — 원본은 바탕색 차이로만 나뉜다.
+//   PC 유형(리스트형·컨텐츠박스형)은 이번 범위 밖(river 2026-09-29).
+async function buildExpandableCard(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
+  const CARD_W = 328;                    // 모바일 360 화면에 좌우 16 여백을 뺀 폭
+  const states = ["Collapsed", "Expanded"];
+  const num = (k: string): Variable => requireVar(maps.foundationNumber, k, "Foundation Number");
+  // 글자 색은 텍스트 색상 단계 기준을 따른다(river 2026-09-30) — 제목 = 제목 1단계,
+  //   서브타이틀·본문 = 본문 2단계, 캡션 = 본문 3단계. 모드별 덮어쓰기는 두지 않는다.
+  const textBlock = async (withCaption: boolean, inHeader: boolean): Promise<FrameNode> => {
+    const f = figma.createFrame();
+    f.name = "text";
+    f.layoutMode = "VERTICAL";
+    f.primaryAxisSizingMode = "AUTO";
+    f.counterAxisSizingMode = "AUTO";
+    f.itemSpacing = 10; f.setBoundVariable("itemSpacing", num("spacing/10"));
+    f.fills = [];
+    const title = await makeBoundText("타이틀", 16, "Bold", scv(maps, "color/text/title/primary"));
+    if (inHeader) {
+      // 머리줄 제목 첫 줄을 화살표(24) 높이에 맞춰 가운데 둔다 — 한 줄 제목이 위로 떠 보이던 것
+      //   (river 2026-09-30 E안). 여러 줄이면 제목이 늘어나며 이 줄도 따라 커진다(최소 높이만 24).
+      const row = figma.createFrame();
+      row.name = "title-row";
+      row.layoutMode = "HORIZONTAL";
+      row.primaryAxisSizingMode = "AUTO";
+      row.counterAxisSizingMode = "AUTO";
+      row.counterAxisAlignItems = "CENTER";
+      row.fills = [];
+      row.minHeight = 24;
+      row.setBoundVariable("minHeight", num("sizing/24"));
+      row.appendChild(title);
+      f.appendChild(row);
+    } else {
+      f.appendChild(title);
+    }
+    f.appendChild(await makeBoundText("서브타이틀", 14, "Bold", scv(maps, "color/text/body/secondary")));
+    f.appendChild(await makeBoundText("서브타이틀", 14, "Regular", scv(maps, "color/text/body/secondary")));
+    f.appendChild(await makeBoundText("서브타이틀", 12, "Regular", scv(maps, "color/text/body/secondary")));
+    if (withCaption) f.appendChild(await makeBoundText("서브타이틀", 12, "Regular", scv(maps, "color/text/body/tertiary")));
+    return f;
+  };
+  // 여백: 위 16 · 오른 16 · 아래 16 · 왼 20 — river 결정 2026-09-30(E안).
+  //   원본 V2.4 는 아래가 20 이었는데 한 줄 제목이 위로 떠 보여 위아래를 같게 했다.
+  const pad = (n: FrameNode | ComponentNode): void => {
+    n.paddingTop = 16; n.paddingRight = 16; n.paddingBottom = 16; n.paddingLeft = 20;
+    n.setBoundVariable("paddingTop", num("spacing/16"));
+    n.setBoundVariable("paddingRight", num("spacing/16"));
+    n.setBoundVariable("paddingBottom", num("spacing/16"));
+    n.setBoundVariable("paddingLeft", num("spacing/20"));
+  };
+  const comps: ComponentNode[] = [];
+  const cells: { comp: ComponentNode; row: number; col: number }[] = [];
+  for (let col = 0; col < states.length; col++) {
+    const open = states[col] === "Expanded";
+    const comp = figma.createComponent();
+    comp.name = `State=${states[col]}`;
+    comp.layoutMode = "VERTICAL";
+    comp.primaryAxisSizingMode = "AUTO";
+    comp.counterAxisSizingMode = "FIXED";
+    comp.itemSpacing = 0;
+    comp.fills = [boundPaint(scv(maps, "color/bg/level-0"))];
+    comp.strokes = [boundPaint(scv(maps, "color/line/default"))];
+    comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
+    comp.setBoundVariable("strokeWeight", num("border-width/1"));
+    bindRadius(comp, maps, "radius/10");
+    comp.clipsContent = true;
+
+    // 머리줄 — 글 묶음 + 오른쪽 끝 여닫이 화살표
+    const head = figma.createFrame();
+    head.name = "header";
+    head.layoutMode = "HORIZONTAL";
+    head.primaryAxisSizingMode = "FIXED";
+    head.counterAxisSizingMode = "AUTO";
+    head.counterAxisAlignItems = "MIN";
+    head.itemSpacing = 10; head.setBoundVariable("itemSpacing", num("spacing/10"));
+    head.fills = [boundPaint(scv(maps, "color/bg/level-0"))];
+    pad(head);
+    head.resize(CARD_W, head.height);
+    const ht = await textBlock(true, true);
+    head.appendChild(ht);
+    ht.layoutGrow = 1;
+    // 여닫이 화살표 — 라이브러리 chevron 인스턴스(Gate 12: 아이콘은 라이브러리 원본만).
+    //   쉐브론 원본은 우향(›)이라 회전으로 방향을 만든다(반시계: 상 90 · 하 270).
+    const caret = await makeIconInstance("chevron", scv(maps, "color/icon/gray-dark"), 24, CHEVRON_RIGHT_SVG, open ? 90 : 270, { wrap: false });
+    head.appendChild(caret);
+    comp.appendChild(head);
+
+    // 펼침칸 — 열렸을 때만. 바탕이 한 단계 어두워 머리줄과 나뉜다(선 없음)
+    if (open) {
+      const panel = figma.createFrame();
+      panel.name = "panel";
+      panel.layoutMode = "VERTICAL";
+      panel.primaryAxisSizingMode = "AUTO";
+      panel.counterAxisSizingMode = "FIXED";
+      panel.itemSpacing = 10; panel.setBoundVariable("itemSpacing", num("spacing/10"));
+      panel.fills = [boundPaint(scv(maps, "color/bg/level-2"))];
+      pad(panel);
+      panel.resize(CARD_W, panel.height);
+      const pt = await textBlock(true, false)  /* 펼친 칸도 원본 V2.4 처럼 다섯 줄(캡션 포함) — river 2026-09-30 */;
+      panel.appendChild(pt);
+      comp.appendChild(panel);
+      panel.layoutAlign = "STRETCH";
+    }
+    head.layoutAlign = "STRETCH";
+    comp.resize(CARD_W, comp.height);
+    setLightMode(comp, maps);
+    comps.push(comp);
+    cells.push({ comp, row: 0, col });
+  }
+  const set = figma.combineAsVariants(comps, figma.currentPage);
+  set.name = "Expandable Card";
+  set.x = 0; set.y = originY;
+  const opts: SpecOpts = {
+    title: "Expandable Card",
+    colHeaders: states.map((s) => `State=${s}`),
+    rowLabels: ["Mobile"],
+    cellAt: (r, c) => cells.find((x) => x.row === r && x.col === c)?.comp ?? null,
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: 360, cellH: 360, rowLabelW: 96,
+  };
+  let bottomY = await decorateSetFlat(set, opts, maps);
+  try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
+  return { set, bottomY };
+}
+
 // 대메뉴(섹션) 분류 — 모든 섹션을 한 행에 가로로 배치
 // Filter Chip은 특별히 처리 (Chip 아래)
 export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] = [
@@ -7219,9 +7465,12 @@ export const COMPONENT_CATEGORIES_GRID: { name: string; members: string[] }[][] 
     //   Form Control 보다 GRID 앞에 둬서 Select Box(Form Control)의 Dropdown 의존(BUILD_DEPENDENCIES)이 빌드순서로 충족됨.
     { name: "Dropdown",     members: ["Dropdown", "Dropdown List"] },
     // Filter Chip 을 여기로 합쳤다(river 결정 2026-09-28) — 이미 Chip 바로 아래 붙여 놓던 것이다.
-    { name: "Chip",         members: ["Chip", "Filter Chip"] },
+    { name: "Chip",         members: ["Chip", "Filter Chip", "Data Tag"] },
     // List Row: 목록 한 줄. 체크·토글을 인스턴스로 붙이므로 Selection 뒤에 둔다.
-    { name: "List",         members: ["List Row"] },
+    // 접힘카드를 List 로 넣었다(river 결정 2026-09-29) — 목록 한 줄과 성격이 같은 "내용을 담는 칸"이다.
+    { name: "List",         members: ["List Row", "Expandable Card"] },
+    // Common = 특정 부품에 딸리지 않고 어느 화면에나 끼는 범용 보조 부품(river 이름 결정 2026-09-29).
+    { name: "Common",       members: ["Divider"] },
     // members = 표시(나열) 순서: 메인 컴포넌트 → 그 안을 구성하는 요소 컴포넌트 순. 빌드(생성) 순서는
     //   BUILD_DEPENDENCIES 로 의존성(요소 먼저)이 자동 적용된다 — 표시순서 ≠ 빌드순서 규칙(§ 아래 주석).
     { name: "Form Control", members: ["Input", "Search Input", "Text Area", "Select Box"] },
@@ -7558,6 +7807,9 @@ export async function buildAllComponents(
     "Multi Toggle":         (oy) => buildMultiToggle(maps, oy),
     "Chip":                 (oy) => buildChip(maps, oy),
     "List Row":             (oy) => buildListRow(maps, oy),
+    "Expandable Card":      (oy) => buildExpandableCard(maps, oy),
+    "Divider":              (oy) => buildDivider(maps, oy),
+    "Data Tag":             (oy) => buildDataTag(maps, oy),
     "Filter Chip":          (oy) => buildFilterChip(maps, oy),
     "Input":                (oy) => buildInput(maps, oy, 0),
     "Search Input":         (oy) => buildSearch(maps, oy),
@@ -7890,7 +8142,7 @@ export async function buildAllComponents(
     //    → 아래 마지막 단계가 남은 섹션을 무리 오른쪽 끝에 붙인다(river 지시 2026-09-23:
     //      "패턴으로 추가하는 중이라 떨어져 있는 게 맞고, 다만 무리에 좀 더 가깝게").
     const ROW = ["Platform", "Navigation", "Actions", "Selection", "Chip",
-      "Form Control", "Date Picker", "Time Picker", "Table", "Overlay"];
+      "Form Control", "Date Picker", "Time Picker", "Table", "Overlay", "Common"];
     // 세로 스택 섹션: ROW 의 가로 컬럼 아래에 쌓는다(같은 X). below 는 ROW 컬럼명만 받는다(체인 불가) —
     //   같은 below 값을 가진 항목은 STACKED 배열 순서대로 차례로 쌓인다(다중 지원, 아래 루프 참고).
     //   Filter Chip→Chip 아래 · Dropdown→Selection 아래 · Bottom Sheet→"Selection" 아래(Dropdown 바로 다음

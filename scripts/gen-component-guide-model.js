@@ -23,7 +23,11 @@ async function main() {
   //   43 → 48: 2026-09-08 river 승인 5건 — Assist Button · Text Button · GNB Sub Menu · GNB Sub Menu Item · Modal Content.
   //   48 → 49: 2026-09-15 river 승인 1건 — Calendar Nav Arrow("달력 화살표를 작은 부품으로 빼줘", Gate 34 기록).
   //   49 → 50: 2026-09-21 river 승인 1건 — List Row(목록 한 줄, Gate 34 기록 component:List Row).
-  if (model.componentCount !== 50) throw new Error(`정본 grid 항목은 50개여야 합니다. 현재 ${model.componentCount}개`);
+  //   50 → 52: 2026-09-29 river 승인 2건 — Expandable Card(접힘카드·List 묶음) · Divider(구분선·Common 묶음 신설).
+  //             river "오케이 4종 승인할게" / 묶음 배치 "응 그렇게 해줘" (Gate 34 기록).
+  //   52 → 53: 2026-09-30 river 승인 1건 — Data Tag(뱃지·Chip 묶음). 뱃지 전용 색 7줄 신설 뒤 편입
+  //             (river "토큰은 제안한대로 추가하자").
+  if (model.componentCount !== 53) throw new Error(`정본 grid 항목은 53개여야 합니다. 현재 ${model.componentCount}개`);
   const invalid = model.componentIndex.filter((item) => !['public', 'internal', 'excluded'].includes(item.visibility));
   if (invalid.length) throw new Error(`공개/내부/제외 미분류: ${invalid.map((item) => item.name).join(', ')}`);
 

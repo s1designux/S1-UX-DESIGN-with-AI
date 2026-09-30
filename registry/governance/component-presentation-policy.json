@@ -694,6 +694,55 @@
       "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id bottom-sheet, 2026-09-15).",
       "note": "Type(행) × State(열) 매트릭스이되, 정본에 실재하는 칸은 12칸이 아니라 9칸이다 — checkbox:disabled·radio:disabled·list:selected 는 정본에 없어 빈 칸으로 둔다(manifest absentCombinations). 크기 축 없음. 모바일 전용.",
       "managedBy": "ui-library-guide"
+    },
+    "divider": {
+      "platform": "pc+mobile",
+      "archetype": "base",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "states": [],
+      "extraAxes": {
+        "axis": [
+          "x",
+          "y"
+        ],
+        "weight": [
+          "default",
+          "strong"
+        ]
+      },
+      "statesLayout": "matrix",
+      "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id promoted-parts-4, 2026-09-30).",
+      "note": "상태 축이 없는 정적 선이다 — 표는 Axis(행) × Weight(열) 네 칸이다. 정본(buildDivider)은 Weight=Strong 에 색(line/strong)까지 묶으므로 배포본에서 data-weight=\"strong\" + data-tone=\"strong\" 두 속성으로 같은 모습을 만든다. 배포본만 따로 갖는 색·들여쓰기 축(data-tone 단독 · data-inset)은 정본 축이 아니라 표로 세우지 않고 Action 의 실제 쓰임(목록)에서 보인다. 접힘카드는 모바일 전용이라 이 정책 범위 밖(coverage mobileOnly).",
+      "managedBy": "ui-library-guide"
+    },
+    "data-tag": {
+      "platform": "pc+mobile",
+      "archetype": "base",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "states": [],
+      "variants": [
+        "line",
+        "solid"
+      ],
+      "extraAxes": {
+        "type": [
+          "chips",
+          "square"
+        ],
+        "color": [
+          "blue",
+          "red"
+        ]
+      },
+      "statesLayout": "matrix",
+      "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id promoted-parts-4, 2026-09-30).",
+      "note": "상태 축이 없는 표시 전용 라벨이다. 정본 세 축(Type × Variant × Color)을 블록으로 가르지 않고 한 표에서 본다 — 모양·형태를 행으로 겹쳐 쌓고 색을 열로 둔다(A-5). 색은 뱃지 전용 쓰임 이름(--color-tag-*)이 라이트·다크 값을 함께 가지므로 안내 화면에 다크 덮어쓰기를 두지 않는다.",
+      "managedBy": "ui-library-guide"
     }
-  }
+  },
+  "updatedAt": "2026-09-30"
 }

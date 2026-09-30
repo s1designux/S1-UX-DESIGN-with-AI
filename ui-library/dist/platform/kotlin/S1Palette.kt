@@ -694,6 +694,20 @@ object S1Palette {
     val colorTableCellSelected: S1Color = S1Color(0xFFE2F1FF, 0xFF112B55)
     /** --color-table-header-bg — 라이트 #FAFAFA · 다크 #24252C */
     val colorTableHeaderBg: S1Color = S1Color(0xFFFAFAFA, 0xFF24252C)
+    /** --color-tag-line-border-blue — 라이트 #1D6CEB · 다크 #3070D8 */
+    val colorTagLineBorderBlue: S1Color = S1Color(0xFF1D6CEB, 0xFF3070D8)
+    /** --color-tag-line-border-red — 라이트 #FF4554 · 다크 #F06070 */
+    val colorTagLineBorderRed: S1Color = S1Color(0xFFFF4554, 0xFFF06070)
+    /** --color-tag-line-label-blue — 라이트 #1D6CEB · 다크 #3070D8 */
+    val colorTagLineLabelBlue: S1Color = S1Color(0xFF1D6CEB, 0xFF3070D8)
+    /** --color-tag-line-label-red — 라이트 #FF4554 · 다크 #F06070 */
+    val colorTagLineLabelRed: S1Color = S1Color(0xFFFF4554, 0xFFF06070)
+    /** --color-tag-solid-bg-blue — 라이트 #1D6CEB · 다크 #3070D8 */
+    val colorTagSolidBgBlue: S1Color = S1Color(0xFF1D6CEB, 0xFF3070D8)
+    /** --color-tag-solid-bg-red — 라이트 #FF4554 · 다크 #F06070 */
+    val colorTagSolidBgRed: S1Color = S1Color(0xFFFF4554, 0xFFF06070)
+    /** --color-tag-solid-label — 라이트 #FFFFFF */
+    val colorTagSolidLabel: S1Color = S1Color(0xFFFFFFFF, 0xFFFFFFFF)
     /** --color-text-body-primary — 라이트 #353535 · 다크 #ECEDF0 */
     val colorTextBodyPrimary: S1Color = S1Color(0xFF353535, 0xFFECEDF0)
     /** --color-text-body-secondary — 라이트 #555555 · 다크 #B8BABF */

@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
     "purpose": "개발 툴과 검사기가 함께 읽는 허용목록. 여기 없는 variant·size·속성은 승인된 적이 없는 것이다.",
-    "canonicalFingerprint": "9c27af310cd4ca946a71488f215ea9cb26cd75e104d4ef251cbd9305054ab4ad"
+    "canonicalFingerprint": "c77ae5d14af57a4af69a56879f4ac7ea8dc10051bfc4300e5e97701323ed9587"
   },
   "components": [
     {
@@ -1345,6 +1345,106 @@
       "lifecycle": [],
       "canonicalFingerprint": "591ac12e7ca5a259c5818c0c9d0b6bc2d6d685cf33a70a1a7eda84e8ac7a2fe4",
       "sourceFingerprint": "ba7fcab95cd2c8f4ab40d674accfd291ed75da5642da43a205306185bd6eb264"
+    },
+    {
+      "id": "expandable-card",
+      "status": "candidate",
+      "rootSelector": "[data-s1-component=\"expandable-card\"]",
+      "root": "div[data-s1-component=expandable-card] > button[data-s1-part=header][aria-expanded][aria-controls] + div[data-s1-part=panel-wrap][id] > div[data-s1-part=panel]. header 안은 span[data-s1-part=text](title·subtitle·body·note·caption 중 필요한 것) + span[data-s1-part=toggle-icon].",
+      "variants": [],
+      "sizes": [],
+      "breaks": null,
+      "states": [
+        "closed",
+        "open",
+        "hover"
+      ],
+      "parts": [
+        "header",
+        "text",
+        "title",
+        "subtitle",
+        "body",
+        "note",
+        "caption",
+        "toggle-icon",
+        "panel-wrap",
+        "panel"
+      ],
+      "variantAttribute": null,
+      "sizeAttribute": null,
+      "requiredAttributes": [],
+      "requiredParts": [
+        "header",
+        "text",
+        "title",
+        "toggle-icon",
+        "panel-wrap",
+        "panel"
+      ],
+      "jsRequired": true,
+      "events": [
+        "s1:expandable-card:change"
+      ],
+      "lifecycle": [],
+      "canonicalFingerprint": "e5e1b554d08aac7e3e3535320dd8d365fdf97ab3f00de24a62680163e2673a20",
+      "sourceFingerprint": "ab208ea2fe65e8d0a63229b8e0d3b8984e5e7e70ee98cd24e4390f88f7f49755"
+    },
+    {
+      "id": "data-tag",
+      "status": "candidate",
+      "rootSelector": "[data-s1-component=\"data-tag\"]",
+      "root": "span[data-s1-component=data-tag] — 누르지 않는 표시. 안에는 글자만 둔다(부품 자리 없음).",
+      "variants": [
+        "blue",
+        "red"
+      ],
+      "sizes": [],
+      "breaks": null,
+      "states": [
+        "default"
+      ],
+      "parts": [],
+      "variantAttribute": "data-tone",
+      "sizeAttribute": null,
+      "requiredAttributes": [
+        "data-shape",
+        "data-solid",
+        "data-tone"
+      ],
+      "requiredParts": [],
+      "jsRequired": false,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "09e9c5965090f6a380613607b8e6c781020c0421e6ab4781512065579e4857aa",
+      "sourceFingerprint": "9f5d10b54693e58506cde98dca46ec24e4af4d04538985927335b3b70bd51e58"
+    },
+    {
+      "id": "divider",
+      "status": "candidate",
+      "rootSelector": "[data-s1-component=\"divider\"]",
+      "root": "hr[data-s1-component=divider]. 세로선(data-axis=y)에는 aria-orientation=vertical 을 함께 쓴다. 자식·부품 자리가 없다.",
+      "variants": [
+        "x",
+        "y"
+      ],
+      "sizes": [],
+      "breaks": null,
+      "states": [
+        "default"
+      ],
+      "parts": [],
+      "variantAttribute": "data-axis",
+      "sizeAttribute": null,
+      "requiredAttributes": [
+        "data-axis"
+      ],
+      "requiredParts": [],
+      "jsRequired": false,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "d3652b4550a81eaa1aeebda781ba0e746e9f01cdf5a697311b12fd55e4b49b22",
+      "sourceFingerprint": "1168be5412bf46ba2e7e3dad0c484fa05971c5d8018c146632dfb02f21132762"
     }
   ]
 }

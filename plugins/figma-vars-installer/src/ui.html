@@ -2201,10 +2201,15 @@ const AXIS_WORD = {
   element: '요소', platform: '화면', brand: '브랜드', color: '색', position: '자리',
   icon: '아이콘', language: '언어', menu: '메뉴', user: '사용자',
   pressed: '스위치', selected: '고른 자리', title: '제목', content: '내용', density: '밀도',
+  axis: '방향', weight: '두께', tone: '색',
 };
 const VALUE_WORD = {
   size: { xl: '아주 큼', lg: '큼', md: '보통', sm: '작음', xsm: '더 작음', xxsm: '가장 작음' },
+  axis: { x: '가로', y: '세로' },
+  weight: { default: '기본', strong: '굵게' },
+  tone: { default: '옅은 선', strong: '진한 선' },
   state: {
+    collapsed: '접힘', expanded: '펼침',
     default: '기본', hover: '마우스 올림', pressed: '누름', focus: '입력 중', filled: '입력됨',
     open: '열림', error: '오류', correct: '정상', 'read-only': '읽기 전용', disabled: '사용 불가',
     selected: '선택됨', checked: '체크됨', unselected: '선택 안 됨', today: '오늘',
@@ -2221,6 +2226,7 @@ const VALUE_WORD = {
     text: '글자', checkbox: '체크박스', 'checkbox+all': '체크박스 + 전체', radio: '라디오', list: '목록',
     cell: '칸', header: '머리글', standard: '한 날짜', range: '기간', '12h': '12시간', '24h': '24시간',
     regular: '기본', 'compact-1': '좁게 1', 'compact-2': '좁게 2',
+    chips: '둥근', square: '각진',
     'home / title': '홈 / 제목', 'home / title+1 icon': '홈 / 제목 + 아이콘 1개',
     'home / title+subtitle+1 icon': '홈 / 제목 + 작은 제목 + 아이콘 1개',
     'standard / title': '일반 / 제목', 'standard / title+close': '일반 / 제목 + 닫기',
@@ -2235,7 +2241,7 @@ const VALUE_WORD = {
   depth: { '1depth': '1단계', '2depth': '2단계' },
   element: { arrow: '화살표', edge: '처음·끝', number: '숫자' },
   platform: { app: '앱', web: '웹', 'app+keyboard': '앱 + 자판', 'web+keyboard': '웹 + 자판', pc: 'PC', mobile: '모바일' },
-  color: { white: '흰색', blue: '파랑', dark: '어두움' },
+  color: { white: '흰색', blue: '파랑', red: '빨강', dark: '어두움' },
   brand: { '에스원': '에스원', '삼성': '삼성' },   // 이미 우리말 — 축 이름만 붙인다
   position: { first: '첫째', 'middle-left': '가운데 왼쪽', 'middle-right': '가운데 오른쪽', last: '마지막' },
   icon: { home: '홈', search: '검색', notification: '알림', settings: '설정' },

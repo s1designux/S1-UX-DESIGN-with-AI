@@ -15,7 +15,7 @@ const read = (relative) => readFile(path.join(libraryRoot, relative), "utf8");
 const build = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/build.mjs"), "--check"], { encoding: "utf8" });
 if (build.status !== 0) failures.push(`build freshness: ${build.stderr || build.stdout}`);
 
-const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker", "gnb", "gnb-sub-menu-item", "gnb-sub-menu", "assist-button", "text-button", "modal-content", "bottom-sheet-option", "bottom-sheet", "list-row"];
+const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker", "gnb", "gnb-sub-menu-item", "gnb-sub-menu", "assist-button", "text-button", "modal-content", "bottom-sheet-option", "bottom-sheet", "list-row", "expandable-card", "data-tag", "divider"];
 const individualCss = [];
 for (const id of componentIds) {
   const css = await read(`dist/components/${id}.css`);
@@ -631,6 +631,56 @@ for (const id of componentIds) {
         }
       }
     }
+  }
+
+  /* 승격 후보 4종(promoted-parts-4, river 승인 2026-09-29) — 시제품 이름(data-s1-cand)이 배포본에 새지 않았는지,
+     river 결정 사항(두 벌·240/280·접힘 64·하위메뉴 색·뱃지 두 색·접힘카드 원본 실측)이 지켜지는지 잡는다. */
+  if (["lnb", "expandable-card", "data-tag", "divider"].includes(id)) {
+    /* 주석은 뺀 뒤 본다 — 출처를 적은 머리말(시제품 파일 이름)까지 "누출"로 잡으면 근거를 못 남긴다. */
+    const cssCode = css.replace(/\/\*[\s\S]*?\*\//g, "");
+    const exampleCode = example.replace(/<!--[\s\S]*?-->/g, "");
+    if (cssCode.includes("data-s1-cand") || exampleCode.includes("data-s1-cand")) failures.push(`${id} must not carry the prototype name data-s1-cand`);
+    if (/\.cand-icon|restyle-candidates/.test(cssCode)) failures.push(`${id} css must not reference prototype-only selectors`);
+  }
+  if (id === "lnb") {
+    if (manifest.jsRequired !== true) failures.push("lnb must declare its runtime (submenu toggle + collapse)");
+    if (JSON.stringify(manifest.variants) !== JSON.stringify(["menu", "brand"])) failures.push("lnb variants must be exactly menu (default, no logo) and brand — grouped is on hold (river 2026-09-29)");
+    if (JSON.stringify(manifest.sizes) !== JSON.stringify(["md", "lg"])) failures.push("lnb sizes must be md(240) and lg(280)");
+    if (/data-variant="grouped"/.test(example)) failures.push("lnb example must not demonstrate the on-hold grouped variant");
+    if (!/\[data-s1-component="lnb"\]\s*\{[^}]*width:\s*240px;/.test(css) || !/\[data-size="lg"\]\s*\{[^}]*width:\s*280px;/.test(css)) failures.push("lnb widths must be 240 (md, default) and 280 (lg)");
+    if (!/\[data-state="collapsed"\]\s*\{[^}]*width:\s*var\(--sizing-64\)/.test(css)) failures.push("lnb collapsed width must be sizing/64");
+    if (!/\[data-s1-component="lnb"\] button\s*\{\s*font-family:\s*inherit;/.test(css)) failures.push("lnb button items need font-family: inherit (button default font leaked in the prototype)");
+    if (css.includes("--color-text-state-helper")) failures.push("lnb sub-menu text must keep the parent menu color — do not lower it with text/state/helper (river 2026-09-29)");
+    if (!/\[data-s1-component="lnb"\] \[data-s1-part="item"\]\s*\{[^}]*color:\s*var\(--color-text-body-secondary\)/.test(css)) failures.push("lnb menu label must use the text step text/body/secondary (river 2026-09-30)");
+    if (/\[data-theme="dark"\][^{]*\[data-s1-part="item"\][^{]*\{[^}]*\bcolor:/.test(css)) failures.push("lnb must not override text color per theme — the text step carries light/dark (river 2026-09-30)");
+    if (!/aria-label="[^"]+"[\s\S]*?data-s1-part="collapse"/.test(example) || /data-s1-part="collapse"[^>]*>[^<]*[가-힣A-Za-z]/.test(example)) failures.push("lnb collapse control must be an icon-only button with an aria-label");
+    if (!example.includes("data-variant=\"brand\"") || !example.includes('data-state="collapsed"') || !example.includes('data-size="lg"')) failures.push("lnb example must show brand, collapsed and lg");
+  }
+  if (id === "expandable-card") {
+    if (manifest.jsRequired !== true) failures.push("expandable-card must declare its runtime (open/close)");
+    if (!css.includes("padding: var(--spacing-16) var(--spacing-16) var(--spacing-16) var(--spacing-20);")) failures.push("expandable-card padding must be top16/right16/bottom16/left20 (river E option 2026-09-30)");
+    if (/\[data-theme="dark"\][^{]*expandable-card[^{]*\{[^}]*\bcolor:/.test(css)) failures.push("expandable-card must not override text color per theme — the text step carries light/dark (river 2026-09-30)");
+    if (!/\[data-part="caption"\]|\[data-s1-part="caption"\]\s*\{[^}]*--color-text-body-tertiary/.test(css)) failures.push("expandable-card caption must use the text step text/body/tertiary (river 2026-09-30)");
+    if (!css.includes("var(--radius-card-md)") || !css.includes("var(--color-bg-level-2)")) failures.push("expandable-card needs radius/card/md and bg/level-2 panel");
+    if (/\[data-s1-part="panel"\][^{]*\{[^}]*border-top/.test(css)) failures.push("expandable-card must have no line between header and panel (original)");
+    for (const match of example.matchAll(/aria-controls="([^"]+)"/g)) {
+      if (!example.includes(`id="${match[1]}"`)) failures.push(`expandable-card example aria-controls ${match[1]} points to no id`);
+    }
+    if (!example.includes('aria-expanded="true"') || !example.includes('aria-expanded="false"')) failures.push("expandable-card example must show open and closed");
+  }
+  if (id === "data-tag") {
+    if (JSON.stringify(manifest.variants) !== JSON.stringify(["blue", "red"])) failures.push("data-tag tones must be exactly blue and red (river 2026-09-29)");
+    for (const shape of ["chips", "square"]) for (const solid of ["on", "off"]) for (const tone of ["blue", "red"]) {
+      if (!new RegExp(`data-shape="${shape}"\\s+data-solid="${solid}"\\s+data-tone="${tone}"`).test(example)) failures.push(`data-tag example must show ${shape}/${solid}/${tone}`);
+    }
+    if (/--color-(green|teal|cyan|orange|yellow)-/.test(css)) failures.push("data-tag must not use the dropped teal/orange/green tones");
+    if (/--color-(blue|red)-(dark-)?\d/.test(css)) failures.push("data-tag must use the tag/* usage tokens, not the raw palette (river approved the names 2026-09-30)");
+    if (!css.includes("--color-tag-solid-bg-blue") || !css.includes("--color-tag-line-label-red")) failures.push("data-tag must bind its colors through the tag/* tokens");
+  }
+  if (id === "divider") {
+    if (!/\[data-axis="y"\]\s*\{[^}]*height:\s*var\(--spacing-14\)/.test(css)) failures.push("divider vertical height must be spacing/14 (river 2026-09-29 — a gap value, not a sizing token)");
+    if (/--sizing-14/.test(css)) failures.push("divider must not introduce sizing/14");
+    if (!/data-axis="y"[^>]*aria-orientation="vertical"/.test(example)) failures.push("divider vertical example must carry aria-orientation=vertical");
   }
 
   const module = await import(`${pathToFileURL(path.join(libraryRoot, `dist/components/${id}.js`)).href}?check=${Date.now()}`);

@@ -1,8 +1,8 @@
 {
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
-  "_updated": "2026-09-29",
-  "count": 667,
+  "_updated": "2026-09-30",
+  "count": 692,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -225,6 +225,13 @@
     "color:color/table/cell/hover",
     "color:color/table/cell/selected",
     "color:color/table/header/bg",
+    "color:color/tag/line/border/blue",
+    "color:color/tag/line/border/red",
+    "color:color/tag/line/label/blue",
+    "color:color/tag/line/label/red",
+    "color:color/tag/solid/bg/blue",
+    "color:color/tag/solid/bg/red",
+    "color:color/tag/solid/label",
     "color:color/text/body/primary",
     "color:color/text/body/secondary",
     "color:color/text/body/tertiary",
@@ -410,10 +417,13 @@
     "component:Calendar Tile",
     "component:Checkbox",
     "component:Chip",
+    "component:Data Tag",
     "component:Date Picker",
     "component:Date Picker Mobile Bottom Sheet",
+    "component:Divider",
     "component:Dropdown",
     "component:Dropdown List",
+    "component:Expandable Card",
     "component:Filter Chip",
     "component:Footer",
     "component:GNB",
@@ -592,15 +602,20 @@
     "uistate:chip.disabled",
     "uistate:chip.hover",
     "uistate:chip.selected",
+    "uistate:data-tag.default",
     "uistate:date-picker.default",
     "uistate:date-picker.disabled",
     "uistate:date-picker.filled",
     "uistate:date-picker.hover",
     "uistate:date-picker.open",
+    "uistate:divider.default",
     "uistate:dropdown.default",
     "uistate:dropdown.hover",
     "uistate:dropdown.selectedCheckbox",
     "uistate:dropdown.selectedText",
+    "uistate:expandable-card.closed",
+    "uistate:expandable-card.hover",
+    "uistate:expandable-card.open",
     "uistate:filter-chip.complete",
     "uistate:filter-chip.default",
     "uistate:filter-chip.disabled",
@@ -622,6 +637,11 @@
     "uistate:list-row.default",
     "uistate:list-row.disabled",
     "uistate:list-row.pressed",
+    "uistate:lnb.collapsed",
+    "uistate:lnb.current",
+    "uistate:lnb.disabled",
+    "uistate:lnb.expanded",
+    "uistate:lnb.hover",
     "uistate:mobile-bottom-nav.selected",
     "uistate:mobile-bottom-nav.unselected",
     "uistate:modal-content.closed",
@@ -647,6 +667,11 @@
     "uistate:select.filled",
     "uistate:select.hover",
     "uistate:select.open",
+    "uistate:side-nav.collapsed",
+    "uistate:side-nav.current",
+    "uistate:side-nav.disabled",
+    "uistate:side-nav.expanded",
+    "uistate:side-nav.hover",
     "uistate:tab.default",
     "uistate:tab.hover",
     "uistate:tab.selected",
@@ -1483,6 +1508,306 @@
       "evidence": {
         "transcript": "72ea72d8-b5b0-4151-87b4-c14241a30a06.jsonl",
         "at": "2026-09-29T02:13:55.524Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "component:Divider",
+      "by": "river",
+      "reason": "승격 후보 4종 검수에서 river 승인 — 구분선은 Common 묶음 신설, 접힘카드는 List 묶음",
+      "approvedAt": "2026-09-29T07:37:41.306Z",
+      "quote": "오케이 4종 승인할게",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-29T07:19:57.974Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "component:Expandable Card",
+      "by": "river",
+      "reason": "승격 후보 4종 검수에서 river 승인 — 접힘카드(모바일 한 유형)를 List 묶음에 정본 신설",
+      "approvedAt": "2026-09-29T07:37:49.018Z",
+      "quote": "오케이 4종 승인할게",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-29T07:19:57.974Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:expandable-card.closed",
+      "by": "river",
+      "reason": "승격 후보 4종 승인에 딸린 상태값 — 웹 배포본 원본 코드가 선언하는 상태(접힘카드 열림·닫힘·마우스올림, 구분선 기본, 뱃지 기본, 사이드바 펼침·접힘·선택·마우스올림·사용불가)",
+      "approvedAt": "2026-09-29T07:47:29.453Z",
+      "quote": "오케이 4종 승인할게",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-29T07:19:57.974Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:expandable-card.open",
+      "by": "river",
+      "reason": "승격 후보 4종 승인에 딸린 상태값",
+      "approvedAt": "2026-09-29T07:47:57.050Z",
+      "quote": "오케이 4종 승인할게",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-29T07:19:57.974Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:expandable-card.hover",
+      "by": "river",
+      "reason": "승격 후보 4종 승인에 딸린 상태값",
+      "approvedAt": "2026-09-29T07:47:59.155Z",
+      "quote": "오케이 4종 승인할게",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-29T07:19:57.974Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:divider.default",
+      "by": "river",
+      "reason": "승격 후보 4종 승인에 딸린 상태값",
+      "approvedAt": "2026-09-29T07:48:01.443Z",
+      "quote": "오케이 4종 승인할게",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-29T07:19:57.974Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:data-tag.default",
+      "by": "river",
+      "reason": "승격 후보 4종 승인에 딸린 상태값",
+      "approvedAt": "2026-09-29T07:48:03.505Z",
+      "quote": "오케이 4종 승인할게",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-29T07:19:57.974Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:side-nav.expanded",
+      "by": "river",
+      "reason": "승격 후보 4종 승인에 딸린 상태값",
+      "approvedAt": "2026-09-29T07:48:06.054Z",
+      "quote": "오케이 4종 승인할게",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-29T07:19:57.974Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:side-nav.collapsed",
+      "by": "river",
+      "reason": "승격 후보 4종 승인에 딸린 상태값",
+      "approvedAt": "2026-09-29T07:48:08.188Z",
+      "quote": "오케이 4종 승인할게",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-29T07:19:57.974Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:side-nav.current",
+      "by": "river",
+      "reason": "승격 후보 4종 승인에 딸린 상태값",
+      "approvedAt": "2026-09-29T07:48:10.456Z",
+      "quote": "오케이 4종 승인할게",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-29T07:19:57.974Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:side-nav.hover",
+      "by": "river",
+      "reason": "승격 후보 4종 승인에 딸린 상태값",
+      "approvedAt": "2026-09-29T07:48:12.535Z",
+      "quote": "오케이 4종 승인할게",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-29T07:19:57.974Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:side-nav.disabled",
+      "by": "river",
+      "reason": "승격 후보 4종 승인에 딸린 상태값",
+      "approvedAt": "2026-09-29T07:48:15.358Z",
+      "quote": "오케이 4종 승인할게",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-29T07:19:57.974Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/tag/solid/bg/blue",
+      "by": "river",
+      "reason": "뱃지 전용 색 칸 7줄 — 제안한 이름·값 그대로(파랑=승인·확인, 빨강=주의·에러). 기존 부품 색은 건드리지 않는다.",
+      "approvedAt": "2026-09-30T01:13:18.836Z",
+      "quote": "토큰은 제안한대로 추가하자",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-30T01:12:23.770Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/tag/solid/bg/red",
+      "by": "river",
+      "reason": "뱃지 전용 색 칸 7줄 — 제안한 이름·값 그대로(파랑=승인·확인, 빨강=주의·에러). 기존 부품 색은 건드리지 않는다.",
+      "approvedAt": "2026-09-30T01:13:20.858Z",
+      "quote": "토큰은 제안한대로 추가하자",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-30T01:12:23.770Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/tag/solid/label",
+      "by": "river",
+      "reason": "뱃지 전용 색 칸 7줄 — 제안한 이름·값 그대로(파랑=승인·확인, 빨강=주의·에러). 기존 부품 색은 건드리지 않는다.",
+      "approvedAt": "2026-09-30T01:13:22.998Z",
+      "quote": "토큰은 제안한대로 추가하자",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-30T01:12:23.770Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/tag/line/border/blue",
+      "by": "river",
+      "reason": "뱃지 전용 색 칸 7줄 — 제안한 이름·값 그대로(파랑=승인·확인, 빨강=주의·에러). 기존 부품 색은 건드리지 않는다.",
+      "approvedAt": "2026-09-30T01:13:25.068Z",
+      "quote": "토큰은 제안한대로 추가하자",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-30T01:12:23.770Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/tag/line/border/red",
+      "by": "river",
+      "reason": "뱃지 전용 색 칸 7줄 — 제안한 이름·값 그대로(파랑=승인·확인, 빨강=주의·에러). 기존 부품 색은 건드리지 않는다.",
+      "approvedAt": "2026-09-30T01:13:26.974Z",
+      "quote": "토큰은 제안한대로 추가하자",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-30T01:12:23.770Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/tag/line/label/blue",
+      "by": "river",
+      "reason": "뱃지 전용 색 칸 7줄 — 제안한 이름·값 그대로(파랑=승인·확인, 빨강=주의·에러). 기존 부품 색은 건드리지 않는다.",
+      "approvedAt": "2026-09-30T01:13:28.845Z",
+      "quote": "토큰은 제안한대로 추가하자",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-30T01:12:23.770Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/tag/line/label/red",
+      "by": "river",
+      "reason": "뱃지 전용 색 칸 7줄 — 제안한 이름·값 그대로(파랑=승인·확인, 빨강=주의·에러). 기존 부품 색은 건드리지 않는다.",
+      "approvedAt": "2026-09-30T01:13:30.718Z",
+      "quote": "토큰은 제안한대로 추가하자",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-30T01:12:23.770Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "component:Data Tag",
+      "by": "river",
+      "reason": "승격 후보 4종 중 뱃지 — 색 이름 7줄 승인 후 정본 신설(Chip 묶음)",
+      "approvedAt": "2026-09-30T01:16:21.598Z",
+      "quote": "오케이 4종 승인할게",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-29T07:19:57.974Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:lnb.collapsed",
+      "by": "river",
+      "reason": "사이드바 이름을 LNB 로 확정하면서 상태값 이름이 따라 바뀜(내용 동일)",
+      "approvedAt": "2026-09-30T01:32:06.771Z",
+      "quote": "LNB로 확정하고, 아이콘도 만들어줘",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-30T01:27:02.279Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:lnb.current",
+      "by": "river",
+      "reason": "사이드바 이름을 LNB 로 확정하면서 상태값 이름이 따라 바뀜(내용 동일)",
+      "approvedAt": "2026-09-30T01:32:08.691Z",
+      "quote": "LNB로 확정하고, 아이콘도 만들어줘",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-30T01:27:02.279Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:lnb.disabled",
+      "by": "river",
+      "reason": "사이드바 이름을 LNB 로 확정하면서 상태값 이름이 따라 바뀜(내용 동일)",
+      "approvedAt": "2026-09-30T01:32:10.602Z",
+      "quote": "LNB로 확정하고, 아이콘도 만들어줘",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-30T01:27:02.279Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:lnb.expanded",
+      "by": "river",
+      "reason": "사이드바 이름을 LNB 로 확정하면서 상태값 이름이 따라 바뀜(내용 동일)",
+      "approvedAt": "2026-09-30T01:32:12.525Z",
+      "quote": "LNB로 확정하고, 아이콘도 만들어줘",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-30T01:27:02.279Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:lnb.hover",
+      "by": "river",
+      "reason": "사이드바 이름을 LNB 로 확정하면서 상태값 이름이 따라 바뀜(내용 동일)",
+      "approvedAt": "2026-09-30T01:32:14.475Z",
+      "quote": "LNB로 확정하고, 아이콘도 만들어줘",
+      "evidence": {
+        "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
+        "at": "2026-09-30T01:27:02.279Z"
       },
       "recordedBy": "orchestrator"
     }

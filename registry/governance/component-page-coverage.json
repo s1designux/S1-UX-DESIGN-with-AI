@@ -1,6 +1,6 @@
 {
   "_note": "Gate 18(component-page-coverage) 정본. 설치기(build-components.ts COMPONENT_CATEGORIES_GRID)의 모든 컴포넌트를 ①sectionFor(HTML 섹션이 있어야 함) 또는 ②noSectionNeeded(섹션 불요·사유) 로 분류한다. 설치기에 새 컴포넌트가 생겼는데 둘 다 없으면(미분류) Gate 18 이 커밋 차단 → 'HTML 페이지에 반영' 또는 '제외 분류'를 강제. 정본=설치기. 단독 npm run components:pagecheck.",
-  "_updated": "2026-09-15",
+  "_updated": "2026-09-30",
   "htmlPage": "pages/components.html",
   "sectionFor": {
     "Button": "button",
@@ -26,11 +26,17 @@
     "Text Button": "text-button",
     "Modal Content": "modal-content",
     "GNB Sub Menu Item": "gnb-sub-menu-item",
-    "GNB Sub Menu": "gnb-sub-menu"
+    "GNB Sub Menu": "gnb-sub-menu",
+    "Expandable Card": "expandable-card",
+    "Divider": "divider",
+    "Data Tag": "data-tag"
   },
   "_sectionForNote": {
     "Search Input": "input 섹션 안에 변형(variant-group)으로 임베드 — 독립 섹션 불요, input 섹션 존재로 충족",
-    "Line Tab Set": "HTML 섹션 id=tab (Line Tab)"
+    "Line Tab Set": "HTML 섹션 id=tab (Line Tab)",
+    "Expandable Card": "HTML 섹션 id=expandable-card — ui-library dist 배포본을 소비하는 승인 배포본 틀(§A) 빈 mount. 모바일 한 유형이라 comp-nav 는 data-platforms=\"mobile\".",
+    "Divider": "HTML 섹션 id=divider — 승인 배포본 틀(§A) 빈 mount. 상태 축이 없고 Axis × Weight 두 축(data-cov-axis · data-cov-weight).",
+    "Data Tag": "HTML 섹션 id=data-tag — 승인 배포본 틀(§A) 빈 mount. 상태 축이 없고 Type × Variant × Color 세 축을 한 표에서 본다."
   },
   "_variantCoverageNote": "Gate 19(variant-coverage) 용. 각 HTML 섹션이 보여줘야 할 '상태(State)'의 정본 = 설치기 변형의 State 축. stateSource 는 상태가 메인이 아니라 요소 컴포넌트에 있는 예외만 명시(기본=섹션의 main 컴포넌트). HTML 섹션은 data-cov-states 속성으로 자기 커버리지를 선언하고, Gate 19 가 설치기 State ⊆ 선언 인지 대조한다. 미선언 섹션은 '미계측'으로 정직 보고(거짓 완전성 차단).",
   "noSectionNeeded": [
@@ -143,7 +149,8 @@
   ],
   "mobileOnly": [
     "mobile-bottom-nav",
-    "mobile-header"
+    "mobile-header",
+    "expandable-card"
   ],
   "_mobileOnlyNote": "Gate 30 이 component-presentation-policy.json 등재를 요구하지 않는 목록. 그 정책은 스스로 scope 를 \"platform=pc … mobile 및 요소/셸 부품 섹션은 별도(추후)\"로 선언하므로, 모바일 전용 컴포넌트는 부채(baseline)가 아니라 **범위 밖**이다. 모바일 표출 규칙이 정본화되면 이 목록을 비우고 정책에 등재한다.",
   "axisSource": {

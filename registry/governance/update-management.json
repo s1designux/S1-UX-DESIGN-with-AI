@@ -426,6 +426,48 @@
         "html": ""
       },
       "note": "신규 편입(2026-09-21, work-id list-row). 목록 한 줄(왼쪽칸+가운데글+오른쪽칸), Type 7종×Density 2종×State 4종. 정본 buildListRow(1242) 2026-09-21 신설(Gate 34 component:List Row 승인). Checkbox·Toggle 코어 재사용. origin 분류 tbd — 레거시 재현(A)이 아니라 뼈대를 새로 설계했으므로 river 결정 시 B(신규) 가능성이 높다. 웹 빌드 직후(3-build) — component-verifier 독립 검증 대기, 통과 시 verify→new."
+    },
+    {
+      "id": "expandable-card",
+      "origin": "tbd",
+      "sourceNode": "",
+      "verify": "none",
+      "verifyDate": "",
+      "mobile": "미확인",
+      "dates": {
+        "installer": "2026-09-29",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "신규 편입(2026-09-29, work-id promoted-parts-4). 접힘카드 모바일 한 유형. 정본 buildExpandableCard. 원본 V2.4 card 540:6547·540:6555 실측. origin 분류 tbd — river 결정 필요. 웹 배포본 0.13.17 포함, component-verifier 독립 검증 대기."
+    },
+    {
+      "id": "divider",
+      "origin": "tbd",
+      "sourceNode": "",
+      "verify": "none",
+      "verifyDate": "",
+      "mobile": "미확인",
+      "dates": {
+        "installer": "2026-09-29",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "신규 편입(2026-09-29, work-id promoted-parts-4). 구분선 가로·세로 × 기본·굵게. 정본 buildDivider. 설치기 묶음 Common(신설, river 이름 결정). origin 분류 tbd — river 결정 필요. 웹 배포본 0.13.17 포함, component-verifier 독립 검증 대기."
+    },
+    {
+      "id": "data-tag",
+      "origin": "tbd",
+      "sourceNode": "",
+      "verify": "none",
+      "verifyDate": "",
+      "mobile": "미확인",
+      "dates": {
+        "installer": "2026-09-30",
+        "tokens": "2026-09-30",
+        "html": ""
+      },
+      "note": "신규 편입(2026-09-30, work-id promoted-parts-4). 뱃지 — 둥근·각진 × 채움·선 × 파랑·빨강. 색은 뱃지 전용 쓰임 이름 7줄 신설(river 승인). 설치기 묶음 Chip."
     }
   ],
   "patterns": [

@@ -1,9 +1,9 @@
 {
   "id": "s1-ui",
-  "version": "0.13.16",
-  "releasedAt": "2026-09-29",
+  "version": "0.14.4",
+  "releasedAt": "2026-09-30",
   "status": "approved",
-  "canonicalFingerprint": "9c27af310cd4ca946a71488f215ea9cb26cd75e104d4ef251cbd9305054ab4ad",
+  "canonicalFingerprint": "c77ae5d14af57a4af69a56879f4ac7ea8dc10051bfc4300e5e97701323ed9587",
   "tokenMapFingerprint": "796fb798dd329910ba6c42a29fb4af9e0fd217446b3fa847e140bc70a0a8f4c7",
   "commonCssDependencies": [
     "assets/css/tokens.css",
@@ -16,7 +16,7 @@
     }
   ],
   "commonCssFingerprints": {
-    "assets/css/tokens.css": "d3f70ad86c683c8a62b043a4e8e6c208e2780427c9bcfd73dbc5f767a10f484f",
+    "assets/css/tokens.css": "c3f53e8ef8fdd736ff409c25868def7d0f1ec9086b8f97e0b6ef85d948449d49",
     "assets/css/typography.css": "d5961f792bec6b8d339c0f4362ae4da15bac829e0bfec5ecb7d4dc732ce232da"
   },
   "jsRequired": true,
@@ -1067,6 +1067,48 @@
       "examples": {
         "pc": "examples/list-row.html"
       }
+    },
+    {
+      "id": "expandable-card",
+      "version": "0.1.1",
+      "status": "candidate",
+      "jsRequired": true,
+      "canonicalFingerprint": "e5e1b554d08aac7e3e3535320dd8d365fdf97ab3f00de24a62680163e2673a20",
+      "sourceFingerprint": "ab208ea2fe65e8d0a63229b8e0d3b8984e5e7e70ee98cd24e4390f88f7f49755",
+      "css": "components/expandable-card.css",
+      "js": "components/expandable-card.js",
+      "example": "examples/expandable-card.html",
+      "examples": {
+        "pc": "examples/expandable-card.html"
+      }
+    },
+    {
+      "id": "data-tag",
+      "version": "0.1.0",
+      "status": "candidate",
+      "jsRequired": false,
+      "canonicalFingerprint": "09e9c5965090f6a380613607b8e6c781020c0421e6ab4781512065579e4857aa",
+      "sourceFingerprint": "9f5d10b54693e58506cde98dca46ec24e4af4d04538985927335b3b70bd51e58",
+      "css": "components/data-tag.css",
+      "js": "components/data-tag.js",
+      "example": "examples/data-tag.html",
+      "examples": {
+        "pc": "examples/data-tag.html"
+      }
+    },
+    {
+      "id": "divider",
+      "version": "0.1.0",
+      "status": "candidate",
+      "jsRequired": false,
+      "canonicalFingerprint": "d3652b4550a81eaa1aeebda781ba0e746e9f01cdf5a697311b12fd55e4b49b22",
+      "sourceFingerprint": "1168be5412bf46ba2e7e3dad0c484fa05971c5d8018c146632dfb02f21132762",
+      "css": "components/divider.css",
+      "js": "components/divider.js",
+      "example": "examples/divider.html",
+      "examples": {
+        "pc": "examples/divider.html"
+      }
     }
   ],
   "bundleParity": {
@@ -1098,7 +1140,10 @@
       "modal-content",
       "bottom-sheet-option",
       "bottom-sheet",
-      "list-row"
+      "list-row",
+      "expandable-card",
+      "data-tag",
+      "divider"
     ],
     "source": "ui-library/src/components/*",
     "rule": "Full and individual outputs are generated in this build invocation from identical source strings."

@@ -724,6 +724,19 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   "color/status-card/text/tertiary--default": { light: "gray/400", dark: "gray-dark/600" },
   "color/status-card/text/tertiary--sub": { light: "gray/300", dark: "gray-dark/400" },
 
+  // ── tag (뱃지) ────────────────────────────────
+  // river 승인 2026-09-30 — "토큰은 제안한대로 추가하자".
+  //   뜻이 정해진 두 색만 쓴다: 파랑 = 승인·확인 / 빨강 = 주의·에러.
+  //   채움형은 바탕에 색을 깔고 글자는 흰색, 선형은 바탕 없이 테두리·글자에 색을 쓴다.
+  //   (선형 바탕 칸은 두지 않는다 — 비어 있는 것이 기본이다.)
+  "color/tag/solid/bg/blue": { light: "blue/400", dark: "blue-dark/300" },
+  "color/tag/solid/bg/red": { light: "red/300", dark: "red-dark/350" },
+  "color/tag/solid/label": { light: "base/white", dark: "base/white" },
+  "color/tag/line/border/blue": { light: "blue/400", dark: "blue-dark/300" },
+  "color/tag/line/border/red": { light: "red/300", dark: "red-dark/350" },
+  "color/tag/line/label/blue": { light: "blue/400", dark: "blue-dark/300" },
+  "color/tag/line/label/red": { light: "red/300", dark: "red-dark/350" },
+
   // ── text ────────────────────────────────
   "color/text/body/primary": { light: "gray/800", dark: "gray-dark/900" },
   "color/text/body/secondary": { light: "gray/600", dark: "gray-dark/800" },

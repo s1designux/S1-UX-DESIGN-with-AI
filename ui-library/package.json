@@ -1,6 +1,6 @@
 {
   "name": "@s1/ui",
-  "version": "0.13.16",
+  "version": "0.14.4",
   "private": true,
   "type": "module",
   "description": "S1 canonical web UI library",
@@ -107,7 +107,16 @@
     "./components/date-picker/html/mobile": "./dist/examples/date-picker.mobile.html",
     "./components/list-row": "./dist/components/list-row.js",
     "./components/list-row/css": "./dist/components/list-row.css",
-    "./components/list-row/html": "./dist/examples/list-row.html"
+    "./components/list-row/html": "./dist/examples/list-row.html",
+    "./components/expandable-card": "./dist/components/expandable-card.js",
+    "./components/expandable-card/css": "./dist/components/expandable-card.css",
+    "./components/expandable-card/html": "./dist/examples/expandable-card.html",
+    "./components/divider": "./dist/components/divider.js",
+    "./components/divider/css": "./dist/components/divider.css",
+    "./components/divider/html": "./dist/examples/divider.html",
+    "./components/data-tag": "./dist/components/data-tag.js",
+    "./components/data-tag/css": "./dist/components/data-tag.css",
+    "./components/data-tag/html": "./dist/examples/data-tag.html"
   },
   "scripts": {
     "build": "node scripts/build.mjs",

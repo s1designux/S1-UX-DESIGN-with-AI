@@ -363,12 +363,35 @@
         </ul>
       </div>
     </div>
+    <hr data-s1-component="divider" data-axis="x">
+    <span data-s1-component="data-tag" data-shape="chips" data-solid="on" data-tone="blue">승인</span>
+    <span data-s1-component="data-tag" data-shape="square" data-solid="off" data-tone="red">에러</span>
+    <div data-s1-component="expandable-card">
+      <button type="button" data-s1-part="header" aria-expanded="false" aria-controls="consumer-expandable-card-panel">
+        <span data-s1-part="text">
+          <span data-s1-part="title">접힘카드</span>
+          <span data-s1-part="caption">캡션</span>
+        </span>
+        <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+      </button>
+      <div data-s1-part="panel-wrap" id="consumer-expandable-card-panel">
+        <div data-s1-part="panel">
+          <span data-s1-part="body">펼침칸 내용</span>
+        </div>
+      </div>
+    </div>
   </main>
   <script type="module">
     import { autoInit } from "../dist/s1-ui.auto.js";
-    import { checkbox, radio, textarea, modal, mobileBottomNav, mobileHeader, gnb, gnbSubMenuItem, gnbSubMenu, assistButton, textButton, modalContent, bottomSheet, bottomSheetOption } from "../dist/s1-ui.js";
+    import { checkbox, radio, textarea, modal, mobileBottomNav, mobileHeader, gnb, gnbSubMenuItem, gnbSubMenu, assistButton, textButton, modalContent, bottomSheet, bottomSheetOption, expandableCard, dataTag, divider } from "../dist/s1-ui.js";
     if (checkbox.jsRequired || radio.jsRequired || textarea.jsRequired || mobileBottomNav.jsRequired || mobileHeader.jsRequired || gnbSubMenuItem.jsRequired || gnbSubMenu.jsRequired || assistButton.jsRequired || textButton.jsRequired || bottomSheetOption.jsRequired) {
       throw new Error("checkbox·radio·textarea·mobile-bottom-nav·mobile-header·gnb-sub-menu-item·gnb-sub-menu·assist-button·text-button·bottom-sheet-option은 런타임 없이 동작해야 합니다.");
+    }
+    if (dataTag.jsRequired || divider.jsRequired) {
+      throw new Error("data-tag·divider는 런타임 없이 동작해야 합니다.");
+    }
+    if (!expandableCard.jsRequired) {
+      throw new Error("expandable-card는 런타임이 필요합니다(여닫이).");
     }
     if (!modalContent.jsRequired) {
       throw new Error("modal-content는 런타임이 필요합니다.");

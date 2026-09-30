@@ -34,6 +34,9 @@
   <link rel="stylesheet" href="../dist/components/gnb-sub-menu.css">
   <link rel="stylesheet" href="../dist/components/bottom-sheet-option.css">
   <link rel="stylesheet" href="../dist/components/bottom-sheet.css">
+  <link rel="stylesheet" href="../dist/components/expandable-card.css">
+  <link rel="stylesheet" href="../dist/components/data-tag.css">
+  <link rel="stylesheet" href="../dist/components/divider.css">
 </head>
 <body>
   <main>
@@ -389,6 +392,23 @@
         </ul>
       </div>
     </div>
+    <hr data-s1-component="divider" data-axis="x">
+    <span data-s1-component="data-tag" data-shape="chips" data-solid="on" data-tone="blue">승인</span>
+    <span data-s1-component="data-tag" data-shape="square" data-solid="off" data-tone="red">에러</span>
+    <div data-s1-component="expandable-card">
+      <button type="button" data-s1-part="header" aria-expanded="false" aria-controls="consumer-expandable-card-panel">
+        <span data-s1-part="text">
+          <span data-s1-part="title">접힘카드</span>
+          <span data-s1-part="caption">캡션</span>
+        </span>
+        <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+      </button>
+      <div data-s1-part="panel-wrap" id="consumer-expandable-card-panel">
+        <div data-s1-part="panel">
+          <span data-s1-part="body">펼침칸 내용</span>
+        </div>
+      </div>
+    </div>
   </main>
   <script type="module">
     import "../dist/components/mobile-bottom-nav.js";
@@ -418,6 +438,9 @@
     import { init as initDatePicker } from "../dist/components/date-picker.js";
     import "../dist/components/bottom-sheet-option.js";
     import { init as initBottomSheet } from "../dist/components/bottom-sheet.js";
+    import { init as initExpandableCard } from "../dist/components/expandable-card.js";
+    import "../dist/components/data-tag.js";
+    import "../dist/components/divider.js";
     document.querySelectorAll('[data-s1-component="gnb"]').forEach((root) => initGnb(root));
     document.querySelectorAll('[data-s1-component="input"]').forEach((root) => initInput(root));
     document.querySelectorAll('[data-s1-component="toggle"]').forEach((root) => initToggle(root));
@@ -431,6 +454,7 @@
     document.querySelectorAll('[data-s1-component="table"]').forEach((root) => initTable(root));
     document.querySelectorAll('[data-s1-component="time-picker"]').forEach((root) => initTimePicker(root));
     document.querySelectorAll('[data-s1-component="date-picker"]').forEach((root) => initDatePicker(root));
+    document.querySelectorAll('[data-s1-component="expandable-card"]').forEach((root) => initExpandableCard(root));
     const consumerModal = document.querySelector('[data-s1-component="modal"]');
     const consumerModalApi = initModal(consumerModal);
     document.querySelector("[data-consumer-open-modal]")?.addEventListener("click", () => consumerModalApi?.open());

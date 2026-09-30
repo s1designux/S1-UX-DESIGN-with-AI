@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "workflow": "ui-library-code",
+  "workId": "promoted-parts-4",
+  "objective": "site-restyle 에서 river 가 승인한 승격 후보 4종을 정본 부품으로 올린다 — 사이드바 메뉴(Navigation) · 접힘카드(List) · 뱃지(Chip) · 구분선(Common 신설).",
+  "intent": {
+    "approvedBy": "river",
+    "approvedAt": "2026-09-29",
+    "principles": [
+      "4종 승인 — river 2026-09-29 \"오케이 4종 승인할게\".",
+      "묶음은 설치기 묶음 이름 기준 — Navigation · List · Chip · Common(신설). river 2026-09-29 \"응 그렇게 해줘\".",
+      "구분선이 들어갈 새 묶음 이름은 Common.",
+      "사이드바는 두 벌만 — 기본(디폴트) · 로고 얹음. 중간 구분명(grouped) 벌은 보류.",
+      "접힘카드는 모바일 한 유형만. PC 유형은 이번 범위 밖.",
+      "뱃지는 파랑(승인·확인)·빨강(주의·에러) 두 색만. 채움 배경은 「강조색 배경」 semantic 이 없어 Foundation 직접 사용 — 이름이 생기면 교체.",
+      "본문 행간은 정본 1.3배 그대로 둔다(river 2026-09-29).",
+      "정본에 없는 수치를 ⭐ 가 만들지 않는다 — 근거 없으면 needs-decision."
+    ]
+  },
+  "contract": {
+    "path": "registry/governance/ui-library-code-contract.json",
+    "status": "candidate",
+    "version": "0.1.2"
+  },
+  "target": {
+    "kind": "core-component",
+    "components": [
+      "lnb",
+      "expandable-card",
+      "data-tag",
+      "divider"
+    ]
+  },
+  "figmaSources": {
+    "role": "시각 정본은 build-components.ts 다. 네 부품 모두 정본에 없는 신설 대상이라, 승인된 시제품 CSS 가 착수 기준이고 원본 근거는 아래 Figma 노드다.",
+    "requiredForInventory": false,
+    "components": {
+      "expandable-card": {
+        "file": "SW UX GUIDE V2.4",
+        "fileKey": "yE5UCFEbmXJBlYJWB24Lz2",
+        "nodeId": "540:6547",
+        "source": "legacy-read",
+        "status": "REST 로 실측 — padding 16/16/20/20 · gap 10 · radius 10 · line #E9E9E9 · panel #F5F5F5 · 글자 16/700·14/700·14/400·12/400·캡션 12/400 (펼침 상태는 540:6555)"
+      },
+      "data-tag": {
+        "nodeId": null,
+        "source": "intent-spec",
+        "status": "원본의 청록·주황·초록은 쓰임 미정이라 제외, 파랑·빨강만"
+      },
+      "divider": {
+        "nodeId": null,
+        "source": "intent-spec",
+        "status": "가로 기본/굵게 · 세로(높이 14) · 목록 들여쓰기"
+      },
+      "lnb": {
+        "nodeId": null,
+        "source": "intent-spec",
+        "status": "레거시 원본 없음 — river 지시로 설계(두 벌 · 240/280 · 접힘 64)"
+      }
+    },
+    "fileKey": "yE5UCFEbmXJBlYJWB24Lz2",
+    "fileName": "SW UX GUIDE V2.4 (접힘카드 원본만)"
+  },
+  "currentPhase": "4-verification",
+  "workflowStatus": "in-progress",
+  "uiLibraryStatus": "draft",
+  "lastCompletedCheckpoint": 3,
+  "nextAction": "component-verifier 독립 검증 진행 중(접힘카드·구분선). Side Nav·Data Tag 는 river 결정 대기로 정본 보류.",
+  "ownership": {
+    "currentActor": "orchestrator",
+    "startedAt": "2026-09-29T00:00:00+09:00",
+    "note": "site-restyle 작업 폴더에서 진행. 상태 파일은 오케스트레이터만 수정한다."
+  },
+  "canonicalInputs": [
+    {
+      "role": "component-visual",
+      "path": "plugins/figma-vars-installer/src/build-components.ts",
+      "sha256": "80bbf33724e572be4a1ebac2bd646bff8a068e8307636345467d100164b4725b"
+    },
+    {
+      "role": "token-values",
+      "path": "plugins/figma-vars-installer/src/vars-data.ts",
+      "sha256": "ebf1ef2f712e522788c7ff54fb39a6b3a3d961cb99017a5dfbf25dbf7a4b3a36"
+    },
+    {
+      "role": "text-styles",
+      "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
+      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+    },
+    {
+      "role": "approved-prototype",
+      "path": "assets/css/restyle-candidates.css",
+      "sha256": "4a4addb718c03522dc052fd34170f628c9fb1f99d2c77fed244185b81b313614"
+    }
+  ],
+  "installerGroups": {
+    "expandable-card": "List",
+    "data-tag": "Chip",
+    "divider": "Common (신설)",
+    "lnb": "Navigation"
+  },
+  "blockers": [
+    {
+      "id": "B-1",
+      "component": "data-tag",
+      "what": "뱃지 채움·테두리에 쓸 「강조색」 semantic 색 이름이 정본에 없다",
+      "impact": "Foundation 을 직접 쓰면 Figma 다크에서 색이 뒤집히지 않는다",
+      "needs": "river 결정 — 토큰 이름을 새로 만들지"
+    },
+    {
+      "id": "B-2",
+      "component": "lnb",
+      "what": "판 접기 아이콘(ic_패널접기)이 Figma 아이콘 라이브러리에 없다(웹 자산으로만 있다)",
+      "impact": "Figma 부품을 만들면 접기 단추 자리가 빈다",
+      "needs": "river 결정 — 아이콘을 라이브러리에 정식 등록할지"
+    },
+    {
+      "id": "B-3",
+      "component": "lnb",
+      "what": "정본 navigation 라벨의 다크값이 아이콘보다 어둡다",
+      "impact": "지금은 이 부품 안에서만 밝은 글자 토큰으로 덮어 두었다",
+      "needs": "river 결정 — 정본을 고칠지"
+    }
+  ],
+  "evidence": {
+    "riverApproval": [
+      {
+        "date": "2026-09-29",
+        "quote": "오케이 4종 승인할게",
+        "scope": "승격 후보 4종 전체"
+      },
+      {
+        "date": "2026-09-29",
+        "quote": "응 그렇게 해줘",
+        "scope": "묶음 배치 Navigation · List · Chip · Common 신설"
+      }
+    ],
+    "sourceAudit": {
+      "observedAt": "2026-09-29",
+      "basis": "site-restyle 작업 폴더의 승인 시제품(assets/css/restyle-candidates.css · pages/_restyle-test/parts.html) 실제 렌더 확인 + 접힘카드는 Figma REST 실측(540:6547·540:6555). 정본 build-components.ts 에는 네 부품 모두 없음(grep 확인)."
+    }
+  },
+  "artifacts": {
+    "policyContract": "registry/governance/ui-library-code-contract.json",
+    "humanGuide": "registry/governance/ui-library-authoring-guide.md",
+    "componentChecklist": "registry/governance/ui-library-component-checklist.md",
+    "repositoryInventory": "reports/component-inventory-audit.md",
+    "inventory": "reports/ui-library/promoted-parts-4/1-inventory.md",
+    "sourceRoot": "ui-library/src",
+    "distManifest": "ui-library/dist/manifest.json",
+    "reviewPage": "pages/ui-review.html",
+    "guidePage": "pages/components.html",
+    "migrationRecord": "registry/governance/ui-library-migration.json",
+    "approvedPrototype": "pages/_restyle-test/parts.html",
+    "canonReadiness": "reports/ui-library/promoted-parts-4/2-canon-readiness.md",
+    "build": "reports/ui-library/promoted-parts-4/3-build.md"
+  },
+  "decisions": [
+    {
+      "id": "D-1",
+      "at": "2026-09-29",
+      "by": "river",
+      "decision": "승격 후보 4종을 정본으로 올린다",
+      "quote": "오케이 4종 승인할게"
+    },
+    {
+      "id": "D-2",
+      "at": "2026-09-29",
+      "by": "river",
+      "decision": "묶음은 설치기 기준 — Navigation · List · Chip · Common 신설",
+      "quote": "응 그렇게 해줘"
+    },
+    {
+      "id": "D-3",
+      "at": "2026-09-29",
+      "by": "river",
+      "decision": "사이드바 중간 카테고리 구분 벌은 보류",
+      "quote": "일단 카테고리 구분은 빼자. 너무 정신없네."
+    },
+    {
+      "id": "D-4",
+      "at": "2026-09-29",
+      "by": "river",
+      "decision": "본문 행간은 정본 1.3배 그대로 둔다",
+      "quote": "아니 전체를 바꿀순없고, 일단 그냥 두자"
+    },
+    {
+      "id": "D-5",
+      "at": "2026-09-30",
+      "by": "river",
+      "decision": "사이드바 메뉴의 이름을 LNB 로 확정(위쪽 메뉴 GNB 와 짝)",
+      "quote": "LNB로 확정하고, 아이콘도 만들어줘"
+    },
+    {
+      "id": "D-6",
+      "at": "2026-09-30",
+      "by": "river",
+      "decision": "판 접기 아이콘을 Figma 아이콘으로 새로 만든다",
+      "quote": "LNB로 확정하고, 아이콘도 만들어줘"
+    }
+  ],
+  "handoff": {
+    "lastActor": "orchestrator",
+    "updatedAt": "2026-09-29",
+    "summary": "접힘카드·구분선: 정본 신설(Gate 34 승인)·registry·설치기(52종)·웹 배포본 0.13.17 완료. 사이드바·뱃지: 웹 원본 코드만 두고 배포·정본에서 보류(needs-decision 3건)."
+  }
+}

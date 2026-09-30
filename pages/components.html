@@ -1799,6 +1799,8 @@
           <button class="category-btn" onclick="filterByCategory('time-picker', this)">Time Picker</button>
           <button class="category-btn" onclick="filterByCategory('table', this)">Table</button>
           <button class="category-btn" onclick="filterByCategory('overlay', this)">Overlay</button>
+          <button class="category-btn" onclick="filterByCategory('list', this)">List</button>
+          <button class="category-btn" onclick="filterByCategory('common', this)">Common</button>
         </div>
         <div class="comp-nav">
           <button class="comp-nav-btn is-active" data-category="actions" data-platforms="pc mobile" onclick="showSection('button', this)">Button</button>
@@ -1831,6 +1833,9 @@
           <button class="comp-nav-btn" data-category="overlay" data-platforms="pc" onclick="showSection('modal-content', this)">Modal Content</button>
           <button class="comp-nav-btn" data-category="overlay" data-platforms="mobile" onclick="showSection('bottom-sheet', this)">Bottom Sheet</button>
           <button class="comp-nav-btn" data-category="overlay" data-platforms="mobile" onclick="showSection('bottom-sheet-option', this)">Bottom Sheet Option</button>
+          <button class="comp-nav-btn" data-category="list" data-platforms="mobile" onclick="showSection('expandable-card', this)">Expandable Card</button>
+          <button class="comp-nav-btn" data-category="common" data-platforms="pc mobile" onclick="showSection('divider', this)">Divider</button>
+          <button class="comp-nav-btn" data-category="chip" data-platforms="pc mobile" onclick="showSection('data-tag', this)">Data Tag</button>
         </div><!-- /comp-nav -->
       </div><!-- /component-filter -->
 
@@ -2522,6 +2527,15 @@ update(); // 초기화</pre>
 
       <!-- Approved Time Picker guide: ui-library-guide.js renders from ui-library/dist -->
       <section class="comp-section" id="time-picker" data-cov-states="default,hover,focus,filled,disabled,selected,시 hover,시 selected,분 hover,분 selected" data-cov-sizes="xxsm,xsm,md" data-cov-type="24h,12h" data-cov-content="timeonly,datetime"></section>
+
+      <!-- Approved Expandable Card guide: ui-library-guide.js renders from ui-library/dist -->
+      <section class="comp-section" id="expandable-card" data-cov-states="collapsed,expanded"></section>
+
+      <!-- Approved Divider guide: ui-library-guide.js renders from ui-library/dist -->
+      <section class="comp-section" id="divider" data-cov-axis="x,y" data-cov-weight="default,strong" data-cov-tone="default,strong"></section>
+
+      <!-- Approved Data Tag guide: ui-library-guide.js renders from ui-library/dist -->
+      <section class="comp-section" id="data-tag" data-cov-type="chips,square" data-cov-variant="line,solid" data-cov-color="blue,red"></section>
 
       <!-- >>> GEN:COMPONENT-STUBS >>> 자동 생성 (npm run stubs:gen). 수동 편집 금지. -->
       <!-- ═══ LINE TAB ═══ -->

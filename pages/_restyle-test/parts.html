@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="../../assets/css/restyle-candidates.css?v=20260929143526">
 <style>
   /* 이 검수 화면 자체의 틀 — 부품이 아니다 */
-  .sheet { max-width: 1120px; margin: 0 auto; padding: var(--spacing-32) var(--spacing-24) var(--spacing-80); }
+  .sheet { max-width: 1180px; margin: 0 auto; padding: var(--spacing-32) var(--spacing-24) var(--spacing-80); }
   .sheet > h1 { margin: 0 0 var(--spacing-8); color: var(--color-text-title-primary); }
   .sheet > .lede { margin: 0 0 var(--spacing-40); color: var(--color-text-body-tertiary); }
   .blk { margin-top: var(--spacing-48); }
@@ -50,6 +50,22 @@
     padding: var(--spacing-8) var(--spacing-12);
   }
   .icon-cell span:last-child { color: var(--color-text-state-caption); text-align: center; }
+  /* 모바일 폭 기준 틀 — 부품이 아니다. 360 화면에 좌우 16 여백을 준 자리에 카드가 들어간다 */
+  .mob-row { display: flex; gap: var(--spacing-20); align-items: flex-start; flex-wrap: wrap; }
+  .mob {
+    background: var(--color-bg-level-0);
+    border: var(--border-width-default) solid var(--color-line-default);
+    border-radius: var(--radius-card-md);
+    overflow: hidden;
+    width: 360px;
+  }
+  .mob-cap {
+    background: var(--color-bg-level-1);
+    border-bottom: var(--border-width-default) solid var(--color-line-default);
+    color: var(--color-text-state-caption);
+    padding: var(--spacing-8) var(--spacing-12);
+  }
+  .mob-body { padding: var(--spacing-16); }
   @media (max-width: 960px) { .two { grid-template-columns: 1fr; } }
 </style>
 </head>
@@ -139,8 +155,8 @@
       </div>
 
       <div class="note typo-body-12r">
-        <span class="t">채움 배경은 아직 팔레트 색을 직접 가져다 쓴 상태입니다</span>
-        가이드에 「강조색 배경」이라는 쓰임 이름이 아직 없어서입니다. 이름이 정해지면 이 부분만 그 이름으로 바꾸면 됩니다.
+        <span class="t">색은 뱃지 전용 이름으로 바꿨습니다</span>
+        파랑·빨강 모두 뱃지용 이름을 거쳐 쓰기 때문에, 다크모드에서 색이 따라 바뀝니다.
       </div>
     </div>
   </div>
@@ -193,22 +209,21 @@
   <!-- ══ 3 ══ -->
   <div class="blk">
     <h2 class="typo-title-20b">3 · 사이드바 메뉴</h2>
-    <p class="sub typo-body-12r">LNB 입니다 — 세 벌 · 가로 두 가지 · 접었을 때</p>
+    <p class="sub typo-body-12r">LNB 입니다 — 두 벌 · 가로 두 가지 · 접었을 때</p>
 
     <div class="panel" style="display:grid;gap:var(--spacing-10);margin-bottom:var(--spacing-24)">
-      <div class="typo-title-14b" style="color:var(--color-text-title-primary)">세 벌만 씁니다</div>
+      <div class="typo-title-14b" style="color:var(--color-text-title-primary)">두 벌만 씁니다</div>
       <div class="typo-body-12r" style="color:var(--color-text-body-tertiary)">
-        <b>① 기본</b> — 로고 없음 · 중간 구분명 없음. 화면 위에 이미 상단 바가 있을 때 씁니다.<br>
-        <b>② 구분명 있음</b> — 로고 없음 · 메뉴를 묶음으로 나눕니다. 메뉴가 많을 때 씁니다.<br>
-        <b>③ 로고 얹음</b> — 상단 바 없이 혼자 쓸 때. 맨 위에 서비스 이름이 오고, <b>집 아이콘은 넣지 않으며</b> 누르면 첫 화면으로 갑니다.<br>
+        <b>① 기본(디폴트)</b> — 로고 없음 · 중간 구분명 없음. 따로 고르지 않으면 이 벌입니다. 화면 위에 이미 상단 바가 있을 때 씁니다.<br>
+        <b>② 로고 얹음</b> — 상단 바 없이 혼자 쓸 때. 맨 위에 서비스 이름이 오고, <b>집 아이콘은 넣지 않으며</b> 누르면 첫 화면으로 갑니다.<br>
         <span style="color:var(--color-text-state-caption)">접기는 언제나 오른쪽 위 화살표 하나로만 합니다.</span>
       </div>
     </div>
 
     <div class="lnb-row">
       <div class="lnb-cell">
-        <div class="lnb-cap typo-body-12m">① 기본 · 240</div>
-        <nav data-s1-cand="side-nav" data-variant="menu" data-size="md" data-state="expanded" aria-label="기본 240" style="border-right:0">
+        <div class="lnb-cap typo-body-12m">① 기본(디폴트) · 240</div>
+        <nav data-s1-cand="lnb" data-size="md" data-state="expanded" aria-label="기본 240" style="border-right:0">
           <div data-s1-part="head">
             <button type="button" data-s1-part="collapse" aria-pressed="false" aria-label="메뉴 접기">
               <span data-s1-part="collapse-icon" aria-hidden="true"></span>
@@ -234,42 +249,8 @@
         </nav>
       </div>
       <div class="lnb-cell">
-        <div class="lnb-cap typo-body-12m">② 구분명 있음 · 240</div>
-        <nav data-s1-cand="side-nav" data-variant="grouped" data-size="md" data-state="expanded" aria-label="구분명 240" style="border-right:0">
-          <div data-s1-part="head">
-            <button type="button" data-s1-part="collapse" aria-pressed="false" aria-label="메뉴 접기">
-              <span data-s1-part="collapse-icon" aria-hidden="true"></span>
-            </button>
-          </div>
-          <div data-s1-part="group" class="typo-body-10m">GUIDE</div>
-          <ul data-s1-part="items">
-            <li><a data-s1-part="item" class="typo-body-14m" href="#" aria-current="page" title="Overview"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_홈_line.png');--s1-icon-solid:url('../../assets/icons/ic_홈_solid.png')" aria-hidden="true"></span>Overview</a></li>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#" title="Foundation Tokens"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_목록리스트형_line.png');--s1-icon-solid:url('../../assets/icons/ic_목록리스트형_solid.png')" aria-hidden="true"></span>Foundation Tokens</a></li>
-          </ul>
-          <div data-s1-part="group" class="typo-body-10m">SOURCE</div>
-          <ul data-s1-part="items">
-            <li>
-              <button type="button" data-s1-part="item" class="typo-body-14m" aria-expanded="true" aria-controls="sn-b-comp" title="Components">
-                <span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_메뉴_line.png');--s1-icon-solid:url('../../assets/icons/ic_메뉴_solid.png')" aria-hidden="true"></span>Components
-                <span data-s1-part="item-toggle" aria-hidden="true"></span>
-              </button>
-              <ul data-s1-part="subitems" id="sn-b-comp">
-                <li><a data-s1-part="item" class="typo-body-14m" href="#">PC Components</a></li>
-                <li><a data-s1-part="item" class="typo-body-14m" href="#">Mobile Components</a></li>
-              </ul>
-            </li>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#" title="Patterns"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_날짜근태달력_line.png');--s1-icon-solid:url('../../assets/icons/ic_날짜근태달력_solid.png')" aria-hidden="true"></span>Patterns</a></li>
-          </ul>
-          <div data-s1-part="group" class="typo-body-10m">SYSTEM</div>
-          <ul data-s1-part="items">
-            <li><a data-s1-part="item" class="typo-body-14m" href="#" title="서버 상태"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_새로고침_line.png');--s1-icon-solid:url('../../assets/icons/ic_새로고침_solid.png')" aria-hidden="true"></span>서버 상태</a></li>
-            <li><a data-s1-part="item" class="typo-body-14m" href="#" aria-disabled="true" title="준비 중"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_잠김_line.png');--s1-icon-solid:url('../../assets/icons/ic_잠김_solid.png')" aria-hidden="true"></span>준비 중</a></li>
-          </ul>
-        </nav>
-      </div>
-      <div class="lnb-cell">
-        <div class="lnb-cap typo-body-12m">③ 로고 얹음 · 240</div>
-        <nav data-s1-cand="side-nav" data-variant="brand" data-size="md" data-state="expanded" aria-label="로고 240" style="border-right:0">
+        <div class="lnb-cap typo-body-12m">② 로고 얹음 · 240</div>
+        <nav data-s1-cand="lnb" data-variant="brand" data-size="md" data-state="expanded" aria-label="로고 240" style="border-right:0">
           <div data-s1-part="head">
             <a data-s1-part="brand" href="#" aria-label="첫 화면으로"><img data-s1-part="brand-logo" src="../../assets/img/logo-s1-ux-guide.svg" alt="S1 UX DESIGN GUIDE"></a>
             <button type="button" data-s1-part="collapse" aria-pressed="false" aria-label="메뉴 접기">
@@ -297,7 +278,7 @@
       </div>
       <div class="lnb-cell">
         <div class="lnb-cap typo-body-12m">접었을 때 · 64</div>
-        <nav data-s1-cand="side-nav" data-variant="brand" data-size="md" data-state="collapsed" aria-label="접힘" style="border-right:0">
+        <nav data-s1-cand="lnb" data-variant="brand" data-size="md" data-state="collapsed" aria-label="접힘" style="border-right:0">
           <div data-s1-part="head">
             <a data-s1-part="brand" href="#" aria-label="첫 화면으로"><img data-s1-part="brand-logo" src="../../assets/img/logo-s1-ux-guide.svg" alt="S1 UX DESIGN GUIDE"></a>
             <button type="button" data-s1-part="collapse" aria-pressed="false" aria-label="메뉴 접기">
@@ -330,18 +311,16 @@
       <div class="lnb-row">
         <div class="lnb-cell">
           <div class="lnb-cap typo-body-12m">240</div>
-        <nav data-s1-cand="side-nav" data-variant="grouped" data-size="md" data-state="expanded" aria-label="가로 240" style="border-right:0">
+        <nav data-s1-cand="lnb" data-size="md" data-state="expanded" aria-label="가로 240" style="border-right:0">
           <div data-s1-part="head">
             <button type="button" data-s1-part="collapse" aria-pressed="false" aria-label="메뉴 접기">
               <span data-s1-part="collapse-icon" aria-hidden="true"></span>
             </button>
           </div>
-          <div data-s1-part="group" class="typo-body-10m">GUIDE</div>
           <ul data-s1-part="items">
             <li><a data-s1-part="item" class="typo-body-14m" href="#" aria-current="page" title="Overview"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_홈_line.png');--s1-icon-solid:url('../../assets/icons/ic_홈_solid.png')" aria-hidden="true"></span>Overview</a></li>
             <li><a data-s1-part="item" class="typo-body-14m" href="#" title="Foundation Tokens"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_목록리스트형_line.png');--s1-icon-solid:url('../../assets/icons/ic_목록리스트형_solid.png')" aria-hidden="true"></span>Foundation Tokens</a></li>
           </ul>
-          <div data-s1-part="group" class="typo-body-10m">SOURCE</div>
           <ul data-s1-part="items">
             <li>
               <button type="button" data-s1-part="item" class="typo-body-14m" aria-expanded="true" aria-controls="sn-e-comp" title="Components">
@@ -355,7 +334,6 @@
             </li>
             <li><a data-s1-part="item" class="typo-body-14m" href="#" title="Patterns"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_날짜근태달력_line.png');--s1-icon-solid:url('../../assets/icons/ic_날짜근태달력_solid.png')" aria-hidden="true"></span>Patterns</a></li>
           </ul>
-          <div data-s1-part="group" class="typo-body-10m">SYSTEM</div>
           <ul data-s1-part="items">
             <li><a data-s1-part="item" class="typo-body-14m" href="#" title="서버 상태"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_새로고침_line.png');--s1-icon-solid:url('../../assets/icons/ic_새로고침_solid.png')" aria-hidden="true"></span>서버 상태</a></li>
             <li><a data-s1-part="item" class="typo-body-14m" href="#" aria-disabled="true" title="준비 중"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_잠김_line.png');--s1-icon-solid:url('../../assets/icons/ic_잠김_solid.png')" aria-hidden="true"></span>준비 중</a></li>
@@ -364,18 +342,16 @@
         </div>
         <div class="lnb-cell">
           <div class="lnb-cap typo-body-12m">280</div>
-        <nav data-s1-cand="side-nav" data-variant="grouped" data-size="lg" data-state="expanded" aria-label="가로 280" style="border-right:0">
+        <nav data-s1-cand="lnb" data-size="lg" data-state="expanded" aria-label="가로 280" style="border-right:0">
           <div data-s1-part="head">
             <button type="button" data-s1-part="collapse" aria-pressed="false" aria-label="메뉴 접기">
               <span data-s1-part="collapse-icon" aria-hidden="true"></span>
             </button>
           </div>
-          <div data-s1-part="group" class="typo-body-10m">GUIDE</div>
           <ul data-s1-part="items">
             <li><a data-s1-part="item" class="typo-body-14m" href="#" aria-current="page" title="Overview"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_홈_line.png');--s1-icon-solid:url('../../assets/icons/ic_홈_solid.png')" aria-hidden="true"></span>Overview</a></li>
             <li><a data-s1-part="item" class="typo-body-14m" href="#" title="Foundation Tokens"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_목록리스트형_line.png');--s1-icon-solid:url('../../assets/icons/ic_목록리스트형_solid.png')" aria-hidden="true"></span>Foundation Tokens</a></li>
           </ul>
-          <div data-s1-part="group" class="typo-body-10m">SOURCE</div>
           <ul data-s1-part="items">
             <li>
               <button type="button" data-s1-part="item" class="typo-body-14m" aria-expanded="true" aria-controls="sn-f-comp" title="Components">
@@ -389,7 +365,6 @@
             </li>
             <li><a data-s1-part="item" class="typo-body-14m" href="#" title="Patterns"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_날짜근태달력_line.png');--s1-icon-solid:url('../../assets/icons/ic_날짜근태달력_solid.png')" aria-hidden="true"></span>Patterns</a></li>
           </ul>
-          <div data-s1-part="group" class="typo-body-10m">SYSTEM</div>
           <ul data-s1-part="items">
             <li><a data-s1-part="item" class="typo-body-14m" href="#" title="서버 상태"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_새로고침_line.png');--s1-icon-solid:url('../../assets/icons/ic_새로고침_solid.png')" aria-hidden="true"></span>서버 상태</a></li>
             <li><a data-s1-part="item" class="typo-body-14m" href="#" aria-disabled="true" title="준비 중"><span data-s1-part="item-icon" style="--s1-icon:url('../../assets/icons/ic_잠김_line.png');--s1-icon-solid:url('../../assets/icons/ic_잠김_solid.png')" aria-hidden="true"></span>준비 중</a></li>
@@ -423,86 +398,257 @@
 
   <!-- ══ 4 ══ -->
   <div class="blk">
-    <h2 class="typo-title-20b">4 · 접힘카드 (PC)</h2>
-    <p class="sub typo-body-12r">모바일에만 있던 것을 PC 에서 쓰도록 옮겼습니다 — 눌러서 여닫아 보세요</p>
+    <h2 class="typo-title-20b">4 · 접힘카드 (모바일)</h2>
+    <p class="sub typo-body-12r">원본과 같은 한 유형입니다 — 모바일 폭 기준 · 눌러서 여닫아 보세요</p>
 
-    <div class="two">
-      <div data-s1-cand="expandable-card">
-        <button type="button" data-s1-part="header" aria-expanded="false" aria-controls="exp-1">
-          <span data-s1-part="text">
-            <span data-s1-part="title" class="typo-title-16b">타이틀</span>
-            <span data-s1-part="subtitle" class="typo-title-14b">서브타이틀</span>
-            <span data-s1-part="subtitle" class="typo-body-14r">서브타이틀</span>
-            <span data-s1-part="subtitle" class="typo-body-12r">서브타이틀</span>
-            <span data-s1-part="caption" class="typo-body-12r">서브타이틀</span>
-          </span>
-          <span data-s1-part="toggle-icon" aria-hidden="true"></span>
-        </button>
-        <div data-s1-part="panel-wrap" id="exp-1">
-          <div data-s1-part="panel">
-            <span data-s1-part="title" class="typo-title-16b">타이틀</span>
-            <span data-s1-part="subtitle" class="typo-title-14b">서브타이틀</span>
-            <span data-s1-part="subtitle" class="typo-body-14r">서브타이틀</span>
-            <span data-s1-part="caption" class="typo-body-12r">서브타이틀</span>
-          </div>
-        </div>
-      </div>
-
-      <div data-s1-cand="expandable-card">
-        <button type="button" data-s1-part="header" aria-expanded="true" aria-controls="exp-2">
-          <span data-s1-part="text">
-            <span data-s1-part="title" class="typo-title-16b">타이틀</span>
-            <span data-s1-part="subtitle" class="typo-title-14b">서브타이틀</span>
-            <span data-s1-part="subtitle" class="typo-body-14r">서브타이틀</span>
-            <span data-s1-part="subtitle" class="typo-body-12r">서브타이틀</span>
-            <span data-s1-part="caption" class="typo-body-12r">서브타이틀</span>
-          </span>
-          <span data-s1-part="toggle-icon" aria-hidden="true"></span>
-        </button>
-        <div data-s1-part="panel-wrap" id="exp-2" data-open="true">
-          <div data-s1-part="panel">
-            <span data-s1-part="title" class="typo-title-16b">타이틀</span>
-            <span data-s1-part="subtitle" class="typo-title-14b">서브타이틀</span>
-            <span data-s1-part="subtitle" class="typo-body-14r">서브타이틀</span>
-            <span data-s1-part="caption" class="typo-body-12r">서브타이틀</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="panel" style="margin-top:var(--spacing-20)">
-      <div class="typo-title-14b" style="color:var(--color-text-title-primary);margin-bottom:var(--spacing-12)">실제로 쓰면 이런 모습</div>
-      <div style="display:grid;gap:var(--spacing-12)">
-        <div data-s1-cand="expandable-card">
-          <button type="button" data-s1-part="header" aria-expanded="false" aria-controls="exp-faq-1">
-            <span data-s1-part="text">
-              <span data-s1-part="title" class="typo-title-16b">토큰 값을 바꾸면 어디까지 따라오나요?</span>
-              <span data-s1-part="caption" class="typo-body-12r">정본 · 파생 연동</span>
-            </span>
-            <span data-s1-part="toggle-icon" aria-hidden="true"></span>
-          </button>
-          <div data-s1-part="panel-wrap" id="exp-faq-1">
-            <div data-s1-part="panel">
-              <span data-s1-part="subtitle" class="typo-body-14r">정본 한 곳만 고치면 웹 가이드·설치기·문서까지 한 번에 다시 만들어집니다. 파생은 손으로 고치지 않습니다.</span>
+    <div class="mob-row">
+      <div class="mob">
+        <div class="mob-cap typo-body-12r">닫힘</div>
+        <div class="mob-body">
+          <div data-s1-cand="expandable-card">
+            <button type="button" data-s1-part="header" aria-expanded="false" aria-controls="exp-1">
+              <span data-s1-part="text">
+                <span data-s1-part="title" class="typo-title-16b">타이틀</span>
+                <span data-s1-part="subtitle" class="typo-title-14b">서브타이틀</span>
+                <span data-s1-part="subtitle" class="typo-body-14r">서브타이틀</span>
+                <span data-s1-part="subtitle" class="typo-body-12r">서브타이틀</span>
+                <span data-s1-part="caption" class="typo-body-12r">서브타이틀</span>
+              </span>
+              <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+            </button>
+            <div data-s1-part="panel-wrap" id="exp-1">
+              <div data-s1-part="panel">
+                <span data-s1-part="title" class="typo-title-16b">타이틀</span>
+                <span data-s1-part="subtitle" class="typo-title-14b">서브타이틀</span>
+                <span data-s1-part="subtitle" class="typo-body-14r">서브타이틀</span>
+                <span data-s1-part="subtitle" class="typo-body-12r">서브타이틀</span>
+                <span data-s1-part="caption" class="typo-body-12r">서브타이틀</span>
+              </div>
             </div>
           </div>
         </div>
-        <div data-s1-cand="expandable-card">
-          <button type="button" data-s1-part="header" aria-expanded="false" aria-controls="exp-faq-2">
-            <span data-s1-part="text">
-              <span data-s1-part="title" class="typo-title-16b">다크모드는 언제 켜지나요?</span>
-              <span data-s1-part="caption" class="typo-body-12r">테마</span>
-            </span>
-            <span data-s1-part="toggle-icon" aria-hidden="true"></span>
-          </button>
-          <div data-s1-part="panel-wrap" id="exp-faq-2">
-            <div data-s1-part="panel">
-              <span data-s1-part="subtitle" class="typo-body-14r">색을 전부 가이드 이름으로 연결하면 그 순간부터 켜집니다. 이 화면도 위에서 바로 바꿔 보실 수 있습니다.</span>
+      </div>
+      <div class="mob">
+        <div class="mob-cap typo-body-12r">열림</div>
+        <div class="mob-body">
+          <div data-s1-cand="expandable-card">
+            <button type="button" data-s1-part="header" aria-expanded="true" aria-controls="exp-2">
+              <span data-s1-part="text">
+                <span data-s1-part="title" class="typo-title-16b">타이틀</span>
+                <span data-s1-part="subtitle" class="typo-title-14b">서브타이틀</span>
+                <span data-s1-part="subtitle" class="typo-body-14r">서브타이틀</span>
+                <span data-s1-part="subtitle" class="typo-body-12r">서브타이틀</span>
+                <span data-s1-part="caption" class="typo-body-12r">서브타이틀</span>
+              </span>
+              <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+            </button>
+            <div data-s1-part="panel-wrap" id="exp-2" data-open="true">
+              <div data-s1-part="panel">
+                <span data-s1-part="title" class="typo-title-16b">타이틀</span>
+                <span data-s1-part="subtitle" class="typo-title-14b">서브타이틀</span>
+                <span data-s1-part="subtitle" class="typo-body-14r">서브타이틀</span>
+                <span data-s1-part="subtitle" class="typo-body-12r">서브타이틀</span>
+                <span data-s1-part="caption" class="typo-body-12r">서브타이틀</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="mob-row" style="margin-top:var(--spacing-20)">
+      <div class="mob">
+        <div class="mob-cap typo-body-12r">실제로 쓰면 이런 모습</div>
+        <div class="mob-body" style="display:grid;gap:var(--spacing-12)">
+          <div data-s1-cand="expandable-card">
+            <button type="button" data-s1-part="header" aria-expanded="false" aria-controls="exp-faq-1">
+              <span data-s1-part="text">
+                <span data-s1-part="title" class="typo-title-16b">토큰 값을 바꾸면 어디까지 따라오나요?</span>
+                <span data-s1-part="caption" class="typo-body-12r">정본 · 파생 연동</span>
+              </span>
+              <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+            </button>
+            <div data-s1-part="panel-wrap" id="exp-faq-1">
+              <div data-s1-part="panel">
+                <span data-s1-part="subtitle" class="typo-body-14r">정본 한 곳만 고치면 웹 가이드·설치기·문서까지 한 번에 다시 만들어집니다. 파생은 손으로 고치지 않습니다.</span>
+              </div>
+            </div>
+          </div>
+          <div data-s1-cand="expandable-card">
+            <button type="button" data-s1-part="header" aria-expanded="false" aria-controls="exp-faq-2">
+              <span data-s1-part="text">
+                <span data-s1-part="title" class="typo-title-16b">다크모드는 언제 켜지나요?</span>
+                <span data-s1-part="caption" class="typo-body-12r">테마</span>
+              </span>
+              <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+            </button>
+            <div data-s1-part="panel-wrap" id="exp-faq-2">
+              <div data-s1-part="panel">
+                <span data-s1-part="subtitle" class="typo-body-14r">색을 전부 가이드 이름으로 연결하면 그 순간부터 켜집니다. 이 화면도 위에서 바로 바꿔 보실 수 있습니다.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mob">
+        <div class="mob-cap typo-body-12r">신청 내역 — 제목 + 상태 + 날짜</div>
+        <div class="mob-body" style="display:grid;gap:var(--spacing-12)">
+          <div data-s1-cand="expandable-card">
+            <button type="button" data-s1-part="header" aria-expanded="true" aria-controls="exp-ex-1">
+              <span data-s1-part="text">
+                <span data-s1-part="title" class="typo-title-16b">출근 버스 정기 신청</span>
+                <span data-s1-part="subtitle" class="typo-title-14b">승인 완료</span>
+                <span data-s1-part="caption" class="typo-body-12r">2026.09.28 신청</span>
+              </span>
+              <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+            </button>
+            <div data-s1-part="panel-wrap" id="exp-ex-1" data-open="true">
+              <div data-s1-part="panel">
+                <span data-s1-part="subtitle" class="typo-title-14b">노선</span>
+                <span data-s1-part="subtitle" class="typo-body-14r">강남역 → 판교 사옥</span>
+                <span data-s1-part="subtitle" class="typo-body-14r">07:20 출발 · 3번 정류장</span>
+                <span data-s1-part="caption" class="typo-body-12r">10월 한 달 · 평일만</span>
+              </div>
+            </div>
+          </div>
+          <div data-s1-cand="expandable-card">
+            <button type="button" data-s1-part="header" aria-expanded="false" aria-controls="exp-ex-2">
+              <span data-s1-part="text">
+                <span data-s1-part="title" class="typo-title-16b">퇴근 버스 1회 신청</span>
+                <span data-s1-part="subtitle" class="typo-title-14b">검토 중</span>
+                <span data-s1-part="caption" class="typo-body-12r">2026.09.30 신청</span>
+              </span>
+              <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+            </button>
+            <div data-s1-part="panel-wrap" id="exp-ex-2">
+              <div data-s1-part="panel">
+                <span data-s1-part="subtitle" class="typo-title-14b">노선</span>
+                <span data-s1-part="subtitle" class="typo-body-14r">판교 사옥 → 수원역</span>
+                <span data-s1-part="subtitle" class="typo-body-14r">18:40 출발 · 1번 정류장</span>
+              </div>
+            </div>
+          </div>
+          <div data-s1-cand="expandable-card">
+            <button type="button" data-s1-part="header" aria-expanded="false" aria-controls="exp-ex-3">
+              <span data-s1-part="text">
+                <span data-s1-part="title" class="typo-title-16b">주말 셔틀 신청</span>
+                <span data-s1-part="subtitle" class="typo-title-14b">반려</span>
+                <span data-s1-part="subtitle" class="typo-body-12r">좌석이 모두 찼습니다</span>
+                <span data-s1-part="caption" class="typo-body-12r">2026.09.27 신청</span>
+              </span>
+              <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+            </button>
+            <div data-s1-part="panel-wrap" id="exp-ex-3">
+              <div data-s1-part="panel">
+                <span data-s1-part="subtitle" class="typo-body-14r">같은 노선의 다음 주 좌석은 월요일 09:00 에 열립니다.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mob">
+        <div class="mob-cap typo-body-12r">출입 기록 — 제목 + 요약 한 줄</div>
+        <div class="mob-body" style="display:grid;gap:var(--spacing-12)">
+          <div data-s1-cand="expandable-card">
+            <button type="button" data-s1-part="header" aria-expanded="true" aria-controls="exp-ex-4">
+              <span data-s1-part="text">
+                <span data-s1-part="title" class="typo-title-16b">본관 3층 사무실</span>
+                <span data-s1-part="subtitle" class="typo-body-14r">오늘 4회 출입</span>
+                <span data-s1-part="caption" class="typo-body-12r">마지막 18:42</span>
+              </span>
+              <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+            </button>
+            <div data-s1-part="panel-wrap" id="exp-ex-4" data-open="true">
+              <div data-s1-part="panel">
+                <span data-s1-part="subtitle" class="typo-body-14r">08:51 들어옴</span>
+                <span data-s1-part="subtitle" class="typo-body-14r">12:03 나감 · 12:58 들어옴</span>
+                <span data-s1-part="subtitle" class="typo-body-14r">18:42 나감</span>
+              </div>
+            </div>
+          </div>
+          <div data-s1-cand="expandable-card">
+            <button type="button" data-s1-part="header" aria-expanded="false" aria-controls="exp-ex-5">
+              <span data-s1-part="text">
+                <span data-s1-part="title" class="typo-title-16b">지하 2층 주차장</span>
+                <span data-s1-part="subtitle" class="typo-body-14r">오늘 2회 출입</span>
+                <span data-s1-part="caption" class="typo-body-12r">마지막 08:05</span>
+              </span>
+              <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+            </button>
+            <div data-s1-part="panel-wrap" id="exp-ex-5">
+              <div data-s1-part="panel">
+                <span data-s1-part="subtitle" class="typo-body-14r">07:58 들어옴</span>
+                <span data-s1-part="subtitle" class="typo-body-14r">08:05 나감</span>
+              </div>
+            </div>
+          </div>
+          <div data-s1-cand="expandable-card">
+            <button type="button" data-s1-part="header" aria-expanded="false" aria-controls="exp-ex-6">
+              <span data-s1-part="text">
+                <span data-s1-part="title" class="typo-title-16b">서버실</span>
+                <span data-s1-part="subtitle" class="typo-body-14r">오늘 출입 없음</span>
+              </span>
+              <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+            </button>
+            <div data-s1-part="panel-wrap" id="exp-ex-6">
+              <div data-s1-part="panel">
+                <span data-s1-part="subtitle" class="typo-body-12r">출입 권한이 있는 날짜에만 기록이 남습니다.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mob">
+        <div class="mob-cap typo-body-12r">공지 — 긴 제목 · 제목만</div>
+        <div class="mob-body" style="display:grid;gap:var(--spacing-12)">
+          <div data-s1-cand="expandable-card">
+            <button type="button" data-s1-part="header" aria-expanded="false" aria-controls="exp-ex-7">
+              <span data-s1-part="text">
+                <span data-s1-part="title" class="typo-title-16b">10월 정기 점검으로 출입 시스템이 새벽 2시부터 30분 동안 멈춥니다</span>
+                <span data-s1-part="caption" class="typo-body-12r">공지 · 2026.09.30</span>
+              </span>
+              <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+            </button>
+            <div data-s1-part="panel-wrap" id="exp-ex-7">
+              <div data-s1-part="panel">
+                <span data-s1-part="subtitle" class="typo-body-14r">점검 중에는 사원증으로 문이 열리지 않습니다. 이 시간에 출입이 필요하면 1층 보안실에 연락해 주세요.</span>
+                <span data-s1-part="caption" class="typo-body-12r">점검 일시 · 10.05(일) 02:00 ~ 02:30</span>
+              </div>
+            </div>
+          </div>
+          <div data-s1-cand="expandable-card">
+            <button type="button" data-s1-part="header" aria-expanded="false" aria-controls="exp-ex-8">
+              <span data-s1-part="text">
+                <span data-s1-part="title" class="typo-title-16b">모바일 사원증 새 버전 안내</span>
+                <span data-s1-part="subtitle" class="typo-title-14b">필수 업데이트</span>
+                <span data-s1-part="caption" class="typo-body-12r">공지 · 2026.09.26</span>
+              </span>
+              <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+            </button>
+            <div data-s1-part="panel-wrap" id="exp-ex-8">
+              <div data-s1-part="panel">
+                <span data-s1-part="subtitle" class="typo-body-14r">10월 10일부터 이전 버전으로는 출입할 수 없습니다. 앱을 최신 버전으로 올려 주세요.</span>
+              </div>
+            </div>
+          </div>
+          <div data-s1-cand="expandable-card">
+            <button type="button" data-s1-part="header" aria-expanded="false" aria-controls="exp-ex-9">
+              <span data-s1-part="text">
+                <span data-s1-part="title" class="typo-title-16b">구내식당 운영 시간 변경</span>
+              </span>
+              <span data-s1-part="toggle-icon" aria-hidden="true"></span>
+            </button>
+            <div data-s1-part="panel-wrap" id="exp-ex-9">
+              <div data-s1-part="panel">
+                <span data-s1-part="subtitle" class="typo-body-14r">점심 11:30 ~ 13:30 · 저녁 17:30 ~ 19:00</span>
+                <span data-s1-part="caption" class="typo-body-12r">10월 1일부터 적용</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -545,7 +691,7 @@
   document.addEventListener('click', function (e) {
     var btn = e.target.closest('[data-s1-part="collapse"]');
     if (!btn) return;
-    var nav = btn.closest('[data-s1-cand="side-nav"]');
+    var nav = btn.closest('[data-s1-cand="lnb"]');
     if (!nav) return;
     var collapsed = nav.getAttribute('data-state') === 'collapsed';
     nav.setAttribute('data-state', collapsed ? 'expanded' : 'collapsed');

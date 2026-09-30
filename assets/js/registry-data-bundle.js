@@ -80,7 +80,9 @@ window.REGISTRY_BUNDLE = {
       "modal-content": "registry/components/modal-content.json",
       "bottom-sheet": "registry/components/bottom-sheet.json",
       "bottom-sheet-option": "registry/components/bottom-sheet-option.json",
-      "list-row": "registry/components/list-row.json"
+      "list-row": "registry/components/list-row.json",
+      "expandable-card": "registry/components/expandable-card.json",
+      "divider": "registry/components/divider.json"
     },
     "figma": "registry/figma/figma-map.json",
     "governance": {
@@ -102,7 +104,7 @@ window.REGISTRY_BUNDLE = {
           "name": "SW Foundation Colors",
           "version": "2.4",
           "status": "stable",
-          "updatedAt": "2026-09-29",
+          "updatedAt": "2026-09-30",
           "source": "plugins/figma-vars-installer/src/vars-data.ts (FOUNDATION_COLOR)",
           "description": "Official SW Design System V2.4 foundation color foundation. Raw HEX values are allowed here only.",
           "generated": true,
@@ -9854,6 +9856,26 @@ window.REGISTRY_BUNDLE = {
         "status": "in-progress",
         "harnessStatus": "planned",
         "priority": 29
+      },
+      {
+        "id": "expandable-card",
+        "name": "Expandable Card",
+        "label": "Expandable Card",
+        "category": "core",
+        "path": "registry/components/expandable-card.json",
+        "status": "in-progress",
+        "harnessStatus": "planned",
+        "priority": 30
+      },
+      {
+        "id": "divider",
+        "name": "Divider",
+        "label": "Divider",
+        "category": "core",
+        "path": "registry/components/divider.json",
+        "status": "in-progress",
+        "harnessStatus": "planned",
+        "priority": 31
       }
     ]
   },
@@ -16041,6 +16063,287 @@ window.REGISTRY_BUNDLE = {
           "webEquivalent": "설명 요소를 넣거나 빼면 된다([data-s1-part=\"description\"])."
         }
       ]
+    },
+    "expandable-card": {
+      "_meta": {
+        "id": "expandable-card",
+        "name": "Expandable Card",
+        "category": "core",
+        "updatedAt": "2026-09-29",
+        "version": "0.1.0",
+        "tokenStatus": "stable",
+        "codeStatus": "planned",
+        "darkModeStatus": "stable",
+        "a11yStatus": "candidate",
+        "figmaStatus": "planned",
+        "harnessStatus": "planned",
+        "description": "제목 줄을 누르면 아래로 내용이 펼쳐지는 카드. 머리줄(글 묶음 + 여닫이 화살표)과 펼침칸 두 자리로 짜인다. 머리줄은 흰 바탕, 펼침칸은 한 단계 어두운 바탕이라 선 없이 나뉜다.",
+        "a11yApproval": "미확정 — 머리줄은 button + aria-expanded/aria-controls, 펼침칸은 그 id 를 갖는다. 3-build 에서 확정한다.",
+        "codeStatusNote": "정본 buildExpandableCard 는 2026-09-29 신설(river 승인 \"오케이 4종 승인할게\", Gate 34 기록). 웹 배포본은 work-id promoted-parts-4 진행 중.",
+        "platform": "mobile"
+      },
+      "usage": {
+        "whenToUse": [
+          "한 화면에 여러 덩어리를 쌓아 두고, 필요한 것만 펴서 보게 할 때.",
+          "질문과 답처럼 제목만으로 고르고 내용은 접어 두는 목록."
+        ],
+        "whenNotToUse": [
+          "화면을 덮어야 하는 내용 — Bottom Sheet·Modal 을 쓴다.",
+          "같은 모양의 한 줄이 반복될 뿐 펼칠 내용이 없을 때 — List Row 를 쓴다."
+        ],
+        "note": "PC 유형(리스트형·컨텐츠박스형)은 아직 만들지 않았다. river 결정 2026-09-29 — 모바일 한 유형부터."
+      },
+      "anatomy": [
+        {
+          "part": "머리줄",
+          "role": "누르는 자리. 글 묶음 + 오른쪽 끝 여닫이 화살표."
+        },
+        {
+          "part": "글 묶음",
+          "role": "타이틀(16 Bold) 아래로 서브타이틀 세 줄과 캡션. 줄 간격 10."
+        },
+        {
+          "part": "여닫이 화살표",
+          "role": "라이브러리 chevron 24. 닫히면 아래, 열리면 위를 본다."
+        },
+        {
+          "part": "펼침칸",
+          "role": "열렸을 때만 보이는 내용 자리. 바탕이 bg/level-2 라 머리줄과 나뉜다."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "여백은 원본 그대로 위16 · 오른16 · 아래20 · 왼20 을 쓴다.",
+          "머리줄과 펼침칸은 바탕색 차이로만 나눈다.",
+          "화살표는 라이브러리 아이콘 인스턴스를 쓴다."
+        ],
+        "dont": [
+          "머리줄과 펼침칸 사이에 선을 넣지 않는다 — 원본에 없다.",
+          "펼침칸 바탕을 머리줄과 같은 색으로 두지 않는다.",
+          "열린 뒤 머리줄을 회색으로 남겨 두지 않는다."
+        ]
+      },
+      "a11y": [
+        "머리줄은 button 이며 aria-expanded 로 열림 여부를, aria-controls 로 펼침칸을 가리킨다.",
+        "펼침칸은 닫혀 있는 동안 읽히지 않는다.",
+        "화살표는 장식이다 — 이름은 타이틀 글자가 갖는다.",
+        "한 화면에 여러 장을 놓아도 id 가 겹치지 않아야 한다."
+      ],
+      "variantAxis": {
+        "property": [
+          "State"
+        ],
+        "values": {
+          "State": [
+            "Collapsed",
+            "Expanded"
+          ]
+        },
+        "absentCombinations": [],
+        "sizeAxis": "없음 — 폭은 놓인 자리가 정한다(Figma 정본은 모바일 360 화면 기준 328)."
+      },
+      "scope": "light+dark",
+      "tokens": {
+        "bg": [
+          "color/bg/level-0",
+          "color/bg/level-2"
+        ],
+        "line": [
+          "color/line/default"
+        ],
+        "text": [
+          "color/text/title/primary",
+          "color/text/body/secondary",
+          "color/text/state/caption"
+        ],
+        "icon": [
+          "color/icon/gray-dark"
+        ],
+        "number": [
+          "spacing/10",
+          "spacing/16",
+          "spacing/20",
+          "radius/10",
+          "border-width/1"
+        ]
+      },
+      "reuses": {
+        "coreComponents": [],
+        "note": "여닫이 화살표는 아이콘 라이브러리 chevron 인스턴스다."
+      },
+      "figma": {
+        "componentSetKey": "(미발행 — 라이브러리 publish 시 기록)",
+        "fileKey": "cysG5U1udpQqVagYY1hWHW",
+        "targetFile": "SW UX GUIDE V3.0-TEST",
+        "builder": "plugins/figma-vars-installer/src/build-components.ts · buildExpandableCard",
+        "propertyMap": {
+          "state": [
+            "collapsed",
+            "expanded"
+          ]
+        },
+        "note": "2칸. Dark 는 Appearance 모드로 제공한다. 설치기 묶음은 List(river 결정 2026-09-29)."
+      },
+      "governance": {
+        "verify": "new",
+        "verifyNote": "2026-09-29 정본 신설. Figma 실물 설치·렌더 대조는 아직 하지 않았다 — 4-verification 에서 🤖 component-verifier 가 맡는다.",
+        "canonApproval": "Gate 34 승인 기록 — component:Expandable Card, by river, 2026-09-29.",
+        "origin": "SW UX GUIDE V2.4 「card」 expandable-card (540:6547 닫힘 / 540:6555 펼침) REST 실측."
+      },
+      "webDistribution": {
+        "status": "in-progress",
+        "manifest": "ui-library/src/components/expandable-card/manifest.json",
+        "runtime": null,
+        "note": "여닫는 동작은 부품이 갖고, 무엇을 넣을지는 쓰는 화면이 정한다.",
+        "workId": "promoted-parts-4"
+      },
+      "geometry": {
+        "width": "부품은 폭을 정하지 않는다(웹 100%). Figma 정본은 모바일 360 화면에서 좌우 16 을 뺀 328.",
+        "height": "고정하지 않는다 — 여백(16/16/20/20)과 글 줄 수가 높이를 정한다.",
+        "provenance": "V2.4 원본 실측 — 닫힘 274×165, 펼침 274×330(머리줄 165 + 펼침칸 165)."
+      },
+      "platformSupport": {
+        "mobile": true,
+        "pc": false,
+        "note": "PC 유형은 PC S/W UX GUIDE V1.0 accordion02 를 따로 만든다 — 이번 범위 밖."
+      },
+      "slots": [
+        {
+          "name": "펼침칸 내용",
+          "figmaProperty": "내용",
+          "webPart": "panel",
+          "appliesTo": [
+            "expanded"
+          ],
+          "description": "펼쳤을 때 보이는 자리. 기본은 글 묶음이며 다른 내용을 넣을 수 있다."
+        }
+      ]
+    },
+    "divider": {
+      "_meta": {
+        "id": "divider",
+        "name": "Divider",
+        "category": "core",
+        "updatedAt": "2026-09-29",
+        "version": "0.1.0",
+        "tokenStatus": "stable",
+        "codeStatus": "planned",
+        "darkModeStatus": "stable",
+        "a11yStatus": "candidate",
+        "figmaStatus": "planned",
+        "harnessStatus": "planned",
+        "description": "내용을 나누는 선. 가로·세로 두 방향, 기본(1)·굵게(2) 두 두께를 갖는다. 색은 선 토큰 두 개가 정한다 — 기본선은 옅은 회색, 강한선은 진한 회색.",
+        "a11yApproval": "미확정 — 뜻 없는 장식선은 읽히지 않게 두고, 문단을 실제로 가르는 자리에서만 구분 역할을 준다. 3-build 에서 확정한다.",
+        "codeStatusNote": "정본 buildDivider 는 2026-09-29 신설(river 승인 \"오케이 4종 승인할게\", Gate 34 기록). 설치기 묶음은 Common — river 가 이름을 정했다(2026-09-29).",
+        "platform": "both"
+      },
+      "usage": {
+        "whenToUse": [
+          "목록 줄 사이를 나눌 때.",
+          "표 위·아래처럼 영역을 크게 끊을 때(강한선).",
+          "한 줄 안에서 값과 값을 끊을 때(세로선)."
+        ],
+        "whenNotToUse": [
+          "바탕색이 이미 영역을 나누고 있을 때 — 선을 겹쳐 넣지 않는다.",
+          "카드 테두리 대신 쓰려 할 때 — 테두리는 그 부품이 갖는다."
+        ],
+        "note": "파란 선은 쓰지 않는다(river 2026-09-29)."
+      },
+      "anatomy": [
+        {
+          "part": "선",
+          "role": "두께 1 또는 2. 길이는 놓인 자리가 정한다(세로선만 예외로 14)."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "기본은 옅은 선을 쓰고, 영역을 크게 끊을 때만 강한선을 쓴다.",
+          "목록 안에서는 글 줄에 맞춰 좌우를 들여 쓴다."
+        ],
+        "dont": [
+          "선 색을 글자 토큰이나 바탕 토큰에서 빌려 쓰지 않는다.",
+          "세로선을 글 줄 높이만큼 늘리지 않는다."
+        ]
+      },
+      "a11y": [
+        "뜻 없는 장식선은 보조기기에서 읽히지 않게 둔다.",
+        "영역을 실제로 가르는 자리에서는 구분 역할을 준다."
+      ],
+      "variantAxis": {
+        "property": [
+          "Axis",
+          "Weight"
+        ],
+        "values": {
+          "Axis": [
+            "X",
+            "Y"
+          ],
+          "Weight": [
+            "Default",
+            "Strong"
+          ]
+        },
+        "absentCombinations": [],
+        "sizeAxis": "없음 — 길이는 놓인 자리가 정한다."
+      },
+      "scope": "light+dark",
+      "tokens": {
+        "line": [
+          "color/line/default",
+          "color/line/strong"
+        ],
+        "number": [
+          "border-width/1",
+          "border-width/2",
+          "spacing/14",
+          "spacing/20"
+        ]
+      },
+      "reuses": {
+        "coreComponents": [],
+        "note": "다른 부품을 붙이지 않는다."
+      },
+      "figma": {
+        "componentSetKey": "(미발행 — 라이브러리 publish 시 기록)",
+        "fileKey": "cysG5U1udpQqVagYY1hWHW",
+        "targetFile": "SW UX GUIDE V3.0-TEST",
+        "builder": "plugins/figma-vars-installer/src/build-components.ts · buildDivider",
+        "propertyMap": {
+          "axis": [
+            "x",
+            "y"
+          ],
+          "weight": [
+            "default",
+            "strong"
+          ]
+        },
+        "note": "4칸(2 × 2). Dark 는 Appearance 모드로 제공한다. 설치기 묶음은 Common(신설)."
+      },
+      "governance": {
+        "verify": "new",
+        "verifyNote": "2026-09-29 정본 신설. Figma 실물 설치·렌더 대조는 아직 하지 않았다 — 4-verification 에서 🤖 component-verifier 가 맡는다.",
+        "canonApproval": "Gate 34 승인 기록 — component:Divider, by river, 2026-09-29.",
+        "origin": "site-restyle 승격 후보 검수(2026-09-29). 선 색은 2026-09-28 semantic 정리(line/default·line/strong)를 따른다."
+      },
+      "webDistribution": {
+        "status": "in-progress",
+        "manifest": "ui-library/src/components/divider/manifest.json",
+        "runtime": null,
+        "note": "동작이 없는 표시 전용 부품이다.",
+        "workId": "promoted-parts-4"
+      },
+      "geometry": {
+        "width": "가로선은 놓인 자리 폭을 그대로 쓴다. 세로선은 두께 1 또는 2.",
+        "height": "가로선은 두께 1 또는 2. 세로선 높이는 14 — 글 줄보다 짧게 세운다.",
+        "provenance": "세로선 14 는 river 결정(2026-09-29). 크기 축이 아니라 간격 값(spacing/14)으로 본다."
+      },
+      "platformSupport": {
+        "mobile": true,
+        "pc": true,
+        "note": "두 매체가 같은 부품을 쓴다."
+      }
     }
   },
   "figma": {

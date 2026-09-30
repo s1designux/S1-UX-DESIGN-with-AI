@@ -50,6 +50,12 @@
       ],
       "why": "buildChip 가 만드는 세트 1개."
     },
+    "data-tag": {
+      "canonSets": [
+        "Data Tag"
+      ],
+      "why": "buildDataTag 가 만드는 세트 1개."
+    },
     "date-picker": {
       "canonSets": [
         "Date Picker",
@@ -61,12 +67,24 @@
       ],
       "why": "BUILD_DEPENDENCIES: Date Picker→Calendar · Calendar→Cell/Tile. 달력·타일·셀·모바일시트를 담는 별도 배포 부품이 없다. Calendar Nav Arrow 는 2026-09-15 정본 신설분으로 BUILD_DEPENDENCIES: Calendar→Calendar Nav Arrow 이며 이를 담는 별도 배포 부품이 없다."
     },
+    "divider": {
+      "canonSets": [
+        "Divider"
+      ],
+      "why": "buildDivider 가 만드는 세트 1개."
+    },
     "dropdown": {
       "canonSets": [
         "Dropdown",
         "Dropdown List"
       ],
       "why": "BUILD_DEPENDENCIES: Dropdown→Dropdown List. manifest parts(option·option-label·option-check·divider)가 곧 Dropdown List 행이다."
+    },
+    "expandable-card": {
+      "canonSets": [
+        "Expandable Card"
+      ],
+      "why": "buildExpandableCard 가 만드는 세트 1개."
     },
     "filter-chip": {
       "canonSets": [

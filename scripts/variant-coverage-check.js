@@ -100,8 +100,11 @@ function htmlSectionCov() {
     const tag = m[0]; const id = /\bid="([a-z0-9-]+)"/.exec(tag)[1];
     const cov = {};
     for (const a of tag.matchAll(/\bdata-cov-([a-z]+)="([^"]*)"/g)) {
-      let axis = a[1]; if (axis.endsWith('s')) axis = axis.replace(/s$/, ''); // states→state, sizes→size …
-      cov[axis] = new Set(a[2].split(',').map((x) => x.trim().toLowerCase()).filter(Boolean));
+      const values = new Set(a[2].split(',').map((x) => x.trim().toLowerCase()).filter(Boolean));
+      /* 복수형 선언을 단수 축으로 함께 읽는다(states→state · sizes→size …).
+         쓴 그대로의 이름도 남긴다 — 설치기 축 이름 자체가 's' 로 끝나면(예: Axis)
+         's' 를 떼는 규칙이 axis→axi 로 어긋나 선언이 통째로 안 읽혔다(2026-09-30). */
+      for (const name of new Set([a[1], a[1].replace(/s$/, '')])) cov[name] = values;
     }
     map[id] = cov;
   }
