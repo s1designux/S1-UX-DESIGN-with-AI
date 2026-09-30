@@ -334,7 +334,7 @@
 [data-s1-cand="lnb"][data-state="collapsed"] [data-s1-part="item"][aria-current="page"] {
   background: var(--color-button-bg-primary--default);
   color: var(--color-button-label-primary--default);
-  font-weight: var(--font-weight-regular);
+  font-weight: var(--font-weight-bold);   /* 접힘 선택 메뉴명도 볼드(river 2026-09-30) */
 }
 [data-s1-cand="lnb"][data-state="collapsed"] [data-s1-part="item"][aria-current="page"] [data-s1-part="item-icon"] {
   background-color: var(--color-button-label-primary--default);

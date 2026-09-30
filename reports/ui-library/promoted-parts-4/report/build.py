@@ -228,10 +228,12 @@ P["MT_SIZE"] = mtoggle("size", [("md", "240"), ("lg", "280")], "LNB 가로")
 P["MT_STATE"] = mtoggle("state", [("expanded", "펼침"), ("collapsed", "접힘")], "LNB 상태")
 P["MT_THEME_LNB"] = mtoggle("theme-lnb", [("light", "라이트"), ("dark", "다크")], "LNB 화면 테마")
 P["MT_THEME_CARD"] = mtoggle("theme-card", [("light", "라이트"), ("dark", "다크")], "카드 화면 테마")
-P["LNB_PLAY"] = P["COMBO_APP"]
+P["LNB_PLAY"] = ('<div class="app" style="min-width:720px">'
+    + lnb([lnb_item("대시보드", "home", current=True), lnb_group("신청 관리", "list", [("통근 버스", False), ("셔틀", False)]),
+           lnb_item("일정", "cal"), lnb_item("새로고침 기록", "refresh"), lnb_item("설정", "gear"), lnb_item("잠긴 메뉴", "lock", disabled=True)])
+    + '<div class="app-main" aria-hidden="true"></div></div>')
 
-card_types = [("apply", "신청 내역", P["CASE_APPLY"]), ("access", "출입 기록", P["CASE_ACCESS"]), ("notice", "공지", P["CASE_NOTICE"]),
-              ("tagged", "상태 붙은 공지", P["COMBO_CARD"]), ("list", "신청 목록", P["COMBO_LIST"])]
+card_types = [("apply", "신청 내역", P["CASE_APPLY"]), ("access", "출입 기록", P["CASE_ACCESS"]), ("notice", "공지", P["CASE_NOTICE"])]
 P["CARD_TABS"] = ('<div data-s1-component="tab" data-size="xsm" data-break="pc" role="tablist" aria-label="접힘카드 유형">'
     + "".join(f'<button type="button" data-s1-part="tab" role="tab" id="ct-{k}" aria-selected="{"true" if i == 0 else "false"}" '
               f'aria-controls="cp-{k}" tabindex="{0 if i == 0 else -1}">{E(t)}</button>' for i, (k, t, _) in enumerate(card_types))
