@@ -56,7 +56,7 @@
         "nodeId": null,
         "source": "intent-spec",
         "status": "레거시 원본 없음 — river 지시로 설계(두 벌 · 240/280 · 접힘 64)",
-        "figmaBuildSpec": "Side Nav 를 Figma 정본으로 만들 때 반드시 따를 것 — ① 선택된 메뉴 글자는 Bold(700), 라이트·다크 같음(river 2026-09-30 \"일단 볼드로 적용해보자\" · \"정본에도 선택된 메뉴는 볼드로 보이도록 해줘\") ② 선택 색은 color/navigation/label/selected(다크 blue-dark/350) ③ 어두운 화면의 로고는 한 가지 색(color/text/title/primary)(river 2026-09-30 \"로고는 한가지 색으로 표현해줘\")"
+        "figmaBuildSpec": "Side Nav 를 Figma 정본으로 만들 때 반드시 따를 것 — ① 선택된 메뉴 글자는 Bold(700), 라이트·다크 같음(river 2026-09-30 \"일단 볼드로 적용해보자\" · \"정본에도 선택된 메뉴는 볼드로 보이도록 해줘\") ② 선택 색은 color/navigation/label/selected(다크 blue-dark/350) ③ 어두운 화면의 로고는 한 가지 색(color/text/title/primary)(river 2026-09-30 \"로고는 한가지 색으로 표현해줘\") ④ 접힘 = 폭 80(sizing/80) · 칸 64×64 정사각형 · 아이콘 24 위 + 메뉴명(12 Regular, 원본 11 은 정본에 없어 needs-decision) 아래 · 칸 사이 16 · 접힘 아이콘과 첫 메뉴 사이 16 · 선택 칸 = button/bg/primary--default 바탕 + button/label/primary--default 아이콘·글자 (원본 dev-screen-qa-test 325:3749 에서 river 지시로 넓힘) ⑤ 호버 = 글자·아이콘 색 그대로, 바탕만 color/navigation/bg--hover(다크 gray-dark/200)"
       }
     },
     "fileKey": "yE5UCFEbmXJBlYJWB24Lz2",

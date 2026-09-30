@@ -450,6 +450,8 @@ object S1Tokens {
         const val colorModalPanelBorder: Long = 0xFFD9D9D9
         /** --color-navigation-bg = #FFFFFF */
         const val colorNavigationBg: Long = 0xFFFFFFFF
+        /** --color-navigation-bg--hover = #FAFAFA */
+        const val colorNavigationBgHover: Long = 0xFFFAFAFA
         /** --color-navigation-icon-default = #C4C4C4 */
         const val colorNavigationIconDefault: Long = 0xFFC4C4C4
         /** --color-navigation-indicator-default = #D9D9D9 */
@@ -1070,6 +1072,8 @@ object S1Tokens {
         const val colorModalPanelBorder: Long = 0xFF3E4049
         /** --color-navigation-bg = #1C1D23 */
         const val colorNavigationBg: Long = 0xFF1C1D23
+        /** --color-navigation-bg--hover = #24252C */
+        const val colorNavigationBgHover: Long = 0xFF24252C
         /** --color-navigation-icon-default = #55575F */
         const val colorNavigationIconDefault: Long = 0xFF55575F
         /** --color-navigation-indicator-default = #2E2F38 */

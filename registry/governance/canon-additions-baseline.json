@@ -2,7 +2,7 @@
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
   "_updated": "2026-09-30",
-  "count": 692,
+  "count": 693,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -185,6 +185,7 @@
     "color:color/line/strong",
     "color:color/modal/panel/border",
     "color:color/navigation/bg",
+    "color:color/navigation/bg--hover",
     "color:color/navigation/icon/default",
     "color:color/navigation/indicator/default",
     "color:color/navigation/indicator/hover",
@@ -1808,6 +1809,18 @@
       "evidence": {
         "transcript": "cc198bbb-0d55-4a4a-80ad-6eeb003be851.jsonl",
         "at": "2026-09-30T01:27:02.279Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/navigation/bg--hover",
+      "by": "river",
+      "reason": "LNB 호버는 바탕만 바뀌고 다크 호버 바탕은 기본보다 한 단계 밝게",
+      "approvedAt": "2026-09-30T05:19:19.299Z",
+      "quote": "다크모드 호버 배경은 디폴트보다 한단계 밝게 적용",
+      "evidence": {
+        "transcript": "f8347252-7dc2-45d6-8561-8f0fb20c04a6.jsonl",
+        "at": "2026-09-30T05:17:17.417Z"
       },
       "recordedBy": "orchestrator"
     }

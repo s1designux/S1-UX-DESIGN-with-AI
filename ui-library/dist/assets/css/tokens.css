@@ -551,6 +551,7 @@
 
   /* ── navigation ── */
   --color-navigation-bg                   : var(--color-base-white);
+  --color-navigation-bg--hover            : var(--color-gray-0);
   --color-navigation-icon-default         : var(--color-gray-300);
   --color-navigation-indicator-default    : var(--color-gray-200);
   --color-navigation-indicator-hover      : var(--color-blue-400);
@@ -791,6 +792,7 @@
 
   /* ── navigation ── */
   --color-navigation-bg                   : var(--color-gray-dark-100);
+  --color-navigation-bg--hover            : var(--color-gray-dark-200);
   --color-navigation-icon-default         : var(--color-gray-dark-600);
   --color-navigation-indicator-default    : var(--color-gray-dark-300);
   --color-navigation-indicator-hover      : var(--color-blue-dark-350);

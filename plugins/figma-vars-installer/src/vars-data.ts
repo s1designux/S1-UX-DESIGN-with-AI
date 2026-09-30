@@ -627,6 +627,10 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
 
   // ── navigation ────────────────────────────────
   "color/navigation/bg": { light: "base/white", dark: "gray-dark/100" },
+  // 메뉴 항목에 마우스를 올렸을 때의 바탕 — 글자·아이콘 색은 그대로 두고 바탕만 바뀐다(river 2026-09-30).
+  //   라이트는 종전 LNB 호버 바탕(gray/0) 그대로, 다크는 기본 바탕(gray-dark/100)보다 한 단계 밝게 —
+  //   "다크모드 호버 배경은 디폴트보다 한단계 밝게 적용". 종전 LNB 는 bg/level-1 을 빌려 써서 다크에서 오히려 어두웠다.
+  "color/navigation/bg--hover": { light: "gray/0", dark: "gray-dark/200" },
   // 내비게이션 자리의 아이콘 색. navigation 묶음에는 아이콘 칸이 없어서 모바일 하단 내비가
   //   icon/* 에서 빌려 쓰고 있었다(미선택이 과하게 진했던 원인). river 결정 2026-09-14 —
   //   "모바일 바텀 내비도 네비게이션의 한 종류이고 아이콘이 없을 뿐이니까 아이콘 항목만 만들고".

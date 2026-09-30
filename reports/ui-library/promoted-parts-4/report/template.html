@@ -167,7 +167,7 @@ a { color: var(--rp-accent); }
       <article class="part">
         <h3>LNB (사이드바 메뉴)</h3>
         <div class="stage">__LNB_MINI__</div>
-        <p class="small">왼쪽 세로 메뉴. 기본(로고 없음)·로고 얹음 두 벌, 가로 240·280, 접으면 64.</p>
+        <p class="small">왼쪽 세로 메뉴. 기본(로고 없음)·로고 얹음 두 벌, 가로 240·280, 접으면 80.</p>
       </article>
       <article class="part">
         <h3>접힘카드 (Expandable Card)</h3>
@@ -285,7 +285,7 @@ function pick(group, value) {
 function syncLnb() {
   var v = lnbNav.getAttribute("data-variant") === "brand" ? "로고 얹음" : "기본(로고 없음)";
   var w = lnbNav.getAttribute("data-size") === "lg" ? "280" : "240";
-  var st = lnbNav.getAttribute("data-state") === "collapsed" ? "접힘(64)" : "펼침";
+  var st = lnbNav.getAttribute("data-state") === "collapsed" ? "접힘(80)" : "펼침";
   pick(document.querySelector('[data-mt="state"]'), lnbNav.getAttribute("data-state"));
   var t = document.getElementById("lnb-stage").getAttribute("data-theme") === "dark" ? "다크" : "라이트";
   document.getElementById("lnb-now").textContent = "지금 보는 조합 — " + v + " · 가로 " + w + " · " + st + " · " + t;
