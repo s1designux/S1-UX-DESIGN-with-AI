@@ -56,7 +56,7 @@
 }
 
 /* 로고 — 화면이 자기 서비스 로고 그림을 넣는다. 집 아이콘을 덧붙이지 않는다(river 2026-09-29). 누르면 첫 화면.
-   로고는 브랜드 자산이라 색을 토큰으로 바꾸지 않는다 — 그림이 가진 색 그대로 둔다. */
+   로고는 브랜드 자산이라 라이트에서는 그림이 가진 색 그대로 둔다. 어두운 화면만 한 가지 색으로 바꾼다(아래). */
 [data-s1-component="lnb"] [data-s1-part="brand"] {
   align-items: center;
   display: flex;
@@ -75,6 +75,40 @@
 
 [data-s1-component="lnb"][data-size="lg"] [data-s1-part="brand-logo"] {
   width: 178px;
+}
+
+/* 어두운 화면의 로고 — 한 가지 색(제목 글자 색)으로 바꾼다(river 2026-09-30 "로고는 한가지 색으로 표현해줘").
+   브랜드 색 그대로는 어두운 바탕에서 잘 안 보인다. 라이트에서는 그림이 가진 색 그대로 둔다.
+   화면이 brand 에 --s1-brand-logo: url(로고 그림) 을 주면 켜진다 — 메뉴 아이콘(--s1-icon)과 같은 방식.
+   · 로고 그림 자리에 그림 모양대로 오린 색판(::after)을 얹고, 원래 그림은 가린다.
+   · 두 규칙 모두 --s1-brand-logo 를 품고 있어서, 주지 않으면 선언 전체가 무효가 되어 원래 그림이 그대로 보인다. */
+/* 입력 자리 선언 — initial 은 "값 없음"과 같다. 화면이 brand 나 nav 에 직접 주면 그 값이 이긴다. */
+[data-s1-component="lnb"] {
+  --s1-brand-logo: initial;
+}
+
+[data-theme="dark"] [data-s1-component="lnb"] [data-s1-part="brand"] {
+  --s1-brand-logo-w: 150px;
+  position: relative;
+}
+
+[data-theme="dark"] [data-s1-component="lnb"][data-size="lg"] [data-s1-part="brand"] {
+  --s1-brand-logo-w: 178px;
+}
+
+[data-theme="dark"] [data-s1-component="lnb"] [data-s1-part="brand"] [data-s1-part="brand-logo"] {
+  -webkit-mask: var(--s1-brand-logo) 0 0 / 0 0 no-repeat;
+  mask: var(--s1-brand-logo) 0 0 / 0 0 no-repeat;
+}
+
+[data-theme="dark"] [data-s1-component="lnb"] [data-s1-part="brand"]::after {
+  background: var(--s1-brand-logo) 0 0 / 0 0 no-repeat, var(--color-text-title-primary);
+  content: "";
+  inset: 0 0 0 var(--spacing-10);
+  -webkit-mask: var(--s1-brand-logo) left center / var(--s1-brand-logo-w) auto no-repeat;
+  mask: var(--s1-brand-logo) left center / var(--s1-brand-logo-w) auto no-repeat;
+  pointer-events: none;
+  position: absolute;
 }
 
 [data-s1-component="lnb"]:not([data-variant="brand"]) [data-s1-part="brand"] {
@@ -197,10 +231,13 @@
   color: var(--color-navigation-label-hover);
 }
 
-/* 선택된 항목은 배경을 깔지 않는다 — 글자·아이콘 색으로만 알린다 */
+/* 선택된 항목은 배경을 깔지 않는다 — 글자·아이콘 색과 굵기로 알린다.
+   굵기는 볼드(river 2026-09-30 "일단 볼드로 적용해보자") — 어두운 화면에서 파랑이 옆 회색 글자보다
+   흐려 보이는 것을 색을 더 밝히지 않고(프라이머리 파랑 유지) 두께로 보완한다. 라이트·다크 같은 값. */
 [data-s1-component="lnb"] [data-s1-part="item"][aria-current="page"] {
   background: transparent;
   color: var(--color-navigation-label-selected);
+  font-weight: var(--font-weight-bold);
 }
 
 [data-s1-component="lnb"] [data-s1-part="item"][aria-disabled="true"] {

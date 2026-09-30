@@ -1,0 +1,25 @@
+디자인그룹 공유용 작업사례 보고서(HTML 아티팩트)를 수정하려고 해.
+
+■ 대상
+- 아티팩트 링크: https://claude.ai/artifact/GjqE8TctDpdiAaZo8Ehdha
+  → 같은 링크를 유지해야 해. 먼저 Artifact read 로 현재 내용을 읽고, 고친 뒤 url 을 넘겨 같은 자리에 다시 올려줘. 새 링크 만들지 마.
+- 작업 폴더: /Users/designgroup_02/S1-UX-DESIGN-with-AI/.claude/worktrees/site-restyle (site-restyle 가지)
+- 보고서 원본: reports/ui-library/promoted-parts-4/report/
+  · template.html — 글·구성 틀. 본문 문구와 섹션은 여기서 고친다.
+  · build.py — 템플릿에 실제 배포본 CSS(ui-library/dist)·LNB 원본 CSS·아이콘·Pretendard(쓴 글자만 줄여서)를 넣어 한 장짜리 HTML 을 만든다.
+    부품 예시(카드·뱃지·구분선·LNB) 내용은 이 파일의 P["..."] 조각에서 고친다.
+  · 만들기: python3 -m venv /tmp/fontenv && /tmp/fontenv/bin/pip install fonttools brotli (처음 한 번)
+            → python3 build.py → /tmp/promoted-parts-report.html 이 나온다. 이 파일을 아티팩트로 올린다.
+
+■ 보고서 내용(2026-09-29~30 작업)
+사이트에서 쓰던 조각 넷(LNB·접힘카드·구분선·뱃지)을 디자인시스템 정식 부품으로 올린 사례.
+섹션: 새 부품 넷 → 진행 흐름 6단계 → 결정 기록(river 발화 그대로) → 접힘카드 테스트(글자 색 단계 · 여백 A/D/E, E 채택)
+      → 유형별 사례 → 조합 실험 → 배운 점.
+부품은 전부 실제 배포본 CSS로 그리고, 색은 디자인시스템 토큰만 쓴다(HEX 직접 금지).
+
+■ 고칠 것
+(여기에 수정 내용을 적어 주세요)
+
+■ 지킬 것
+- 글은 쉬운 말로, 사실만. 결정 기록의 따옴표 안은 river 가 실제로 한 말 그대로 둔다.
+- 고친 뒤 브라우저로 라이트·다크 한 번씩 확인하고 올린다.

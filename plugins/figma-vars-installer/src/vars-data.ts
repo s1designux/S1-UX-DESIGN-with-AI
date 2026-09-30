@@ -633,12 +633,12 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   //   라벨은 새로 만들지 않고 기존 navigation/label/default 를 그대로 쓴다(같은 결정, 선택지 가).
   "color/navigation/icon/default": { light: "gray/300", dark: "gray-dark/600" },
   "color/navigation/indicator/default": { light: "gray/200", dark: "gray-dark/300" },
-  "color/navigation/indicator/hover": { light: "blue/400", dark: "blue-dark/300" },
-  "color/navigation/indicator/selected": { light: "blue/400", dark: "blue-dark/300" },
+  "color/navigation/indicator/hover": { light: "blue/400", dark: "blue-dark/350" },
+  "color/navigation/indicator/selected": { light: "blue/400", dark: "blue-dark/350" },
   "color/navigation/label/default": { light: "gray/600", dark: "gray-dark/600" },
   "color/navigation/label/default-alt": { light: "gray/700", dark: "gray-dark/700" },
-  "color/navigation/label/hover": { light: "blue/400", dark: "blue-dark/300" },
-  "color/navigation/label/selected": { light: "blue/400", dark: "blue-dark/300" },
+  "color/navigation/label/hover": { light: "blue/400", dark: "blue-dark/350" },
+  "color/navigation/label/selected": { light: "blue/400", dark: "blue-dark/350" },
   // 하위메뉴(펼침 패널)의 **카테고리 제목** 글자 — 기준 원본 = A `gnb list`(yE5UCFEbmXJBlYJWB24Lz2 / 540:6423
   //   변형 regular) 실측 #353535 = gray/800, 원본 변수 color/text/title/secondary. (river 지시 2026-09-08 "A로 가"
   //   — 그전 B gnb(5:10245) 기준은 폐기됐다.)

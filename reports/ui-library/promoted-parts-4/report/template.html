@@ -1,0 +1,332 @@
+<title>승격 부품 4종 사례</title>
+<script>
+/* 뷰어 테마를 디자인시스템 토큰의 data-theme 로 잇는다 — 뷰어가 명시하면 그대로, "시스템"이면 OS 설정을 따른다 */
+(function () {
+  var root = document.documentElement;
+  var mine = false;
+  var mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  function sync() {
+    var v = root.getAttribute("data-theme");
+    if (v && !mine) return;
+    if (mq && mq.matches) { root.setAttribute("data-theme", "dark"); mine = true; }
+    else if (mine) { root.removeAttribute("data-theme"); mine = false; }
+  }
+  sync();
+  if (mq && mq.addEventListener) mq.addEventListener("change", sync);
+})();
+</script>
+<style>
+/*__FONTS__*/
+/*__TOKENS__*/
+/*__TYPO__*/
+/*__PARTS__*/
+
+/* ── 보고서 자체의 틀 ──────────────────────────────────────────────
+   레이아웃: 읽는 글은 좁은 단(68ch), 실제 부품을 그리는 판은 넓은 단(1080). 판 안의 부품은 전부
+   디자인시스템 배포본 CSS 그대로다. 색은 모두 디자인시스템 토큰에서 온다. */
+:root {
+  --rp-ground: var(--color-bg-level-1);
+  --rp-sheet: var(--color-bg-level-0);
+  --rp-ink: var(--color-text-title-primary);
+  --rp-ink-2: var(--color-text-body-secondary);
+  --rp-ink-3: var(--color-text-body-tertiary);
+  --rp-line: var(--color-line-default);
+  --rp-accent: var(--color-text-state-accent);
+  --rp-soft: var(--color-bg-level-2);
+  --rp-font: "Pretendard", -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --rp-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; } }
+:root[data-theme="dark"] { color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body {
+  background: var(--rp-ground);
+  color: var(--rp-ink);
+  font-family: var(--rp-font);
+  font-size: 15px;
+  line-height: 1.65;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.wrap { margin: 0 auto; max-width: 1112px; padding-block: 48px 120px; padding-inline: 16px; }
+.read { max-width: 68ch; }
+h1, h2, h3 { text-wrap: balance; margin: 0; color: var(--rp-ink); }
+h1 { font-size: clamp(28px, 4.2vw, 40px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.25; }
+h2 { font-size: 24px; font-weight: 800; letter-spacing: -0.01em; line-height: 1.35; }
+h3 { font-size: 17px; font-weight: 700; line-height: 1.45; }
+p { margin: 0; color: var(--rp-ink-2); }
+.h1-sub { display: block; }
+.lede .sent { display: block; }
+.eyebrow { color: var(--rp-accent); font-size: 13px; font-weight: 700; letter-spacing: 0.04em; }
+.lede { color: var(--rp-ink-2); font-size: 17px; line-height: 1.7; }
+.small { color: var(--rp-ink-3); font-size: 13px; }
+.stack { display: flex; flex-direction: column; gap: 14px; }
+section { border-top: 1px solid var(--rp-line); display: flex; flex-direction: column; gap: 24px; margin-top: 64px; padding-top: 40px; }
+.hero { display: flex; flex-direction: column; gap: 18px; }
+
+/* 부품 넷 한눈에 */
+.parts { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+.part { background: var(--rp-sheet); border: 1px solid var(--rp-line); border-radius: 12px; display: flex; flex-direction: column; gap: 12px; min-width: 0; padding: 20px; }
+.part .stage { align-items: center; background: var(--rp-ground); border-radius: 8px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; min-height: 128px; padding: 16px; }
+.part .meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.chipline { border: 1px solid var(--rp-line); border-radius: 999px; color: var(--rp-ink-2); font-size: 12px; font-weight: 600; padding: 2px 10px; }
+.chipline.ok { border-color: var(--rp-accent); color: var(--rp-accent); }
+
+/* 흐름 — 실제 순서라 번호를 쓴다 */
+.flow { counter-reset: step; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); list-style: none; margin: 0; padding: 0; }
+.flow li { background: var(--rp-sheet); border: 1px solid var(--rp-line); border-radius: 12px; counter-increment: step; display: flex; flex-direction: column; gap: 6px; min-width: 0; padding: 18px; }
+.flow li::before { color: var(--rp-accent); content: counter(step); font-family: var(--rp-mono); font-size: 13px; font-weight: 700; }
+.flow b { color: var(--rp-ink); font-size: 15px; }
+.flow span { color: var(--rp-ink-2); font-size: 14px; }
+
+/* 표 */
+.tbl-scroll { overflow-x: auto; }
+table { border-collapse: collapse; font-size: 14px; min-width: 560px; width: 100%; }
+th, td { border-bottom: 1px solid var(--rp-line); padding: 10px 12px; text-align: left; vertical-align: top; }
+th { color: var(--rp-ink-3); font-size: 12px; font-weight: 700; letter-spacing: 0.03em; white-space: nowrap; }
+td { color: var(--rp-ink-2); }
+td b { color: var(--rp-ink); }
+td q { color: var(--rp-ink); quotes: "“" "”"; }
+.num { font-family: var(--rp-mono); font-variant-numeric: tabular-nums; }
+
+/* 모바일 화면 틀 — 360 폭에 좌우 16 */
+.phones { align-items: flex-start; display: flex; flex-wrap: wrap; gap: 20px; }
+.phone { background: var(--color-bg-level-0); border: 1px solid var(--color-line-default); border-radius: 18px; color: var(--color-text-title-primary); max-width: 100%; overflow: hidden; width: 360px; }
+.phone-cap { background: var(--color-bg-level-1); border-bottom: 1px solid var(--color-line-default); color: var(--color-text-body-tertiary); font-size: 12px; font-weight: 600; padding: 9px 14px; }
+.phone-body { display: grid; gap: 12px; padding: 16px; }
+.phone-foot { border-top: 1px solid var(--color-line-default); color: var(--color-text-body-tertiary); font-size: 12px; padding: 10px 14px; }
+.phone-foot .num { color: var(--color-text-body-secondary); }
+
+/* 라이트·다크 나란히 — 판 자체에 data-theme 을 준다 */
+.duo { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.pane { background: var(--color-bg-level-1); border: 1px solid var(--color-line-default); border-radius: 14px; color: var(--color-text-title-primary); display: flex; flex-direction: column; gap: 12px; min-width: 0; padding: 16px; }
+.pane-cap { color: var(--color-text-body-tertiary); font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
+
+/* 결정 강조 */
+.pick { outline: 2px solid var(--rp-accent); outline-offset: 3px; }
+.tag-pick { background: var(--rp-accent); border-radius: 999px; color: var(--color-base-white); font-size: 11px; font-weight: 700; margin-left: 6px; padding: 1px 8px; vertical-align: 2px; }
+
+/* 조합 판 */
+.combo { background: var(--rp-sheet); border: 1px solid var(--rp-line); border-radius: 14px; display: flex; flex-direction: column; gap: 14px; min-width: 0; padding: 20px; }
+.combo-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.req-row { align-items: center; display: flex; gap: 10px; justify-content: space-between; padding: 12px 4px; }
+.req-row .t { color: var(--color-text-title-primary); font-size: 15px; font-weight: 600; }
+.req-row .d { color: var(--color-text-body-tertiary); font-size: 12px; }
+.meta-line span { white-space: nowrap; }
+.meta-line { align-items: center; color: var(--color-text-body-tertiary); display: flex; font-size: 12px; gap: 10px; }
+.title-with-tag { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; }
+.app { background: var(--color-bg-level-1); border: 1px solid var(--color-line-default); border-radius: 12px; display: flex; min-height: 420px; overflow: hidden; }
+.app-main { display: flex; flex: 1; flex-direction: column; gap: 14px; min-width: 0; padding: 20px; }
+.app-main h4 { color: var(--color-text-title-primary); font-size: 18px; font-weight: 700; margin: 0; }
+.app-scroll { overflow-x: auto; }
+
+/* 배운 점 */
+.lessons { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.lesson { background: var(--rp-sheet); border: 1px solid var(--rp-line); border-radius: 12px; display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: 20px; }
+.lesson b { color: var(--rp-ink); font-size: 16px; }
+.note { background: var(--rp-soft); border-radius: 12px; color: var(--rp-ink-2); font-size: 14px; padding: 16px 18px; }
+.note b { color: var(--rp-ink); }
+
+/* 눌러보기 판 — 고르는 단추는 디자인시스템 Multi Toggle · Tab 배포본 그대로 */
+.play { background: var(--rp-sheet); border: 1px solid var(--rp-line); border-radius: 14px; display: flex; flex-direction: column; gap: 16px; min-width: 0; padding: 20px; }
+.controls { display: flex; flex-wrap: wrap; gap: 12px 24px; }
+.ctl { align-items: center; display: flex; gap: 10px; }
+.ctl-label { color: var(--rp-ink-3); font-size: 12px; font-weight: 700; letter-spacing: 0.03em; min-width: 28px; }
+.stage-pane { background: var(--color-bg-level-1); border-radius: 12px; color: var(--color-text-title-primary); min-width: 0; padding: 16px; }
+.now { color: var(--rp-ink-3); font-size: 12px; }
+.tab-scroll { overflow-x: auto; }
+.card-panel { display: flex; justify-content: center; }
+.card-panel[hidden] { display: none; }
+.wrapup { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.wrapup .lesson ul { color: var(--rp-ink-2); display: flex; flex-direction: column; gap: 6px; margin: 0; padding-left: 18px; }
+.wrapup .lesson li { font-size: 14px; }
+.wrapup .lesson a { font-size: 14px; font-weight: 600; }
+
+a { color: var(--rp-accent); }
+:focus-visible { outline: 2px solid var(--rp-accent); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+
+  <header class="hero read">
+    <div class="eyebrow">S1 UX 디자인가이드 · 업데이트 노트 · 2026.09.29 – 09.30</div>
+    <h1>디자인가이드 업데이트 공지<span class="h1-sub">LNB · 접힘카드 · 구분선 · 뱃지</span></h1>
+    <p>페이지 안의 부품은 전부 실제 배포본 CSS로 그렸습니다. 단추를 눌러 유형을 바꿔 보세요.</p>
+  </header>
+
+  <section>
+    <div class="read stack">
+      <div class="eyebrow">01 · 이번 업데이트</div>
+      <h2>신규 정리된 컴포넌트</h2>
+    </div>
+    <div class="parts">
+      <article class="part">
+        <h3>LNB (사이드바 메뉴)</h3>
+        <div class="stage">__LNB_MINI__</div>
+        <p class="small">왼쪽 세로 메뉴. 기본(로고 없음)·로고 얹음 두 벌, 가로 240·280, 접으면 64.</p>
+      </article>
+      <article class="part">
+        <h3>접힘카드 (Expandable Card)</h3>
+        <div class="stage" style="align-items:stretch">__CARD_MINI__</div>
+        <p class="small">제목 줄을 누르면 아래로 내용이 펼쳐지는 모바일 카드. 원본은 SW UX GUIDE V2.4.</p>
+      </article>
+      <article class="part">
+        <h3>구분선 (Divider)</h3>
+        <div class="stage" style="flex-direction:column;align-items:stretch;gap:14px">__DIVIDER_MINI__</div>
+        <p class="small">가로·세로 × 기본·굵게 × 옅은·진한. 목록 안에서는 글 줄에 맞춰 들여 씁니다.</p>
+      </article>
+      <article class="part">
+        <h3>뱃지 (Data Tag)</h3>
+        <div class="stage">__TAG_MINI__</div>
+        <p class="small">상태를 보여주기만 하는 라벨. 파랑 = 승인·확인, 빨강 = 주의·에러. 뱃지 전용 색 이름 7개를 새로 등록했습니다.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="lnb-play">
+    <div class="read stack">
+      <div class="eyebrow">02 · LNB</div>
+      <h2>유형별로 눌러 보기</h2>
+      <p>로고 유무, 가로 크기, 접힘, 라이트·다크를 골라 보세요. 오른쪽 위 접기 단추와 하위메뉴도 실제로 동작합니다.</p>
+    </div>
+    <div class="play">
+      <div class="controls">
+        <div class="ctl"><span class="ctl-label">유형</span>__MT_VARIANT__</div>
+        <div class="ctl"><span class="ctl-label">가로</span>__MT_SIZE__</div>
+        <div class="ctl"><span class="ctl-label">상태</span>__MT_STATE__</div>
+        <div class="ctl"><span class="ctl-label">화면</span>__MT_THEME_LNB__</div>
+      </div>
+      <div class="stage-pane" id="lnb-stage"><div class="app-scroll">__LNB_PLAY__</div></div>
+      <div class="now" id="lnb-now" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="card-play">
+    <div class="read stack">
+      <div class="eyebrow">03 · 접힘카드</div>
+      <h2>유형별로 눌러 보기</h2>
+      <p>같은 카드 하나에 제목·서브타이틀·캡션을 다르게 넣고, 뱃지·구분선과 섞어 쓰임별로 만든 것입니다. 카드를 누르면 펼쳐집니다.</p>
+    </div>
+    <div class="play">
+      <div class="controls">
+        <div class="ctl"><span class="ctl-label">화면</span>__MT_THEME_CARD__</div>
+      </div>
+      <div class="tab-scroll">__CARD_TABS__</div>
+      <div class="stage-pane" id="card-stage">__CARD_PANELS__</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="read stack">
+      <div class="eyebrow">04 · 마치며</div>
+      <h2>남은 논의와 AI로 나아진 점</h2>
+    </div>
+    <div class="wrapup">
+      <div class="lesson">
+        <b>추후 논의점</b>
+        <p>새 부품의 동작과 디자인은 함께 논의한 뒤 다듬어야 합니다. 지금 열려 있는 것은 다음과 같습니다.</p>
+        <ul>
+          <li>LNB 판 접기 아이콘의 Figma 아이콘 라이브러리 등록 — 등록돼야 LNB도 Figma 부품이 됩니다.</li>
+          <li>어두운 화면에서 LNB 하위메뉴가 상위 메뉴보다 밝아 보이는 문제</li>
+          <li>LNB 로고의 어두운 화면용 판</li>
+          <li>뱃지 채움 바탕색에 쓸 역할 이름을 새로 둘지</li>
+          <li>접힘카드 PC용 리스트형·컨텐츠박스형</li>
+        </ul>
+      </div>
+      <div class="lesson">
+        <b>AI 사용으로 나아진 점</b>
+        <ul>
+          <li><b>부품 하나로 여러 패턴을 바로</b> — 접힘카드를 만든 뒤 신청 내역·출입 기록·공지 같은 쓰임별 화면과, 뱃지·구분선을 섞은 조합을 자동으로 여러 벌 만들어 비교했습니다. <a href="#card-play">카드 예시 보기</a></li>
+          <li><b>동작·다크모드를 빠르게 보고 정리</b> — 접기·하위메뉴 같은 동작과 라이트·다크 대응을 한 화면에서 바로 바꿔 보며 확인하고 정리할 수 있었습니다. <a href="#lnb-play">LNB 예시 보기</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* 여닫이 — 접힘카드는 높이를 부드럽게, LNB 하위메뉴는 바로. LNB 접기 단추는 64 띠로 줄인다 */
+document.addEventListener("click", function (e) {
+  var collapse = e.target.closest('[data-s1-component="lnb"] [data-s1-part="collapse"]');
+  if (collapse) {
+    var nav = collapse.closest('[data-s1-component="lnb"]');
+    var on = collapse.getAttribute("aria-pressed") === "true";
+    collapse.setAttribute("aria-pressed", String(!on));
+    collapse.setAttribute("aria-label", on ? "메뉴 접기" : "메뉴 펼치기");
+    nav.setAttribute("data-state", on ? "expanded" : "collapsed");
+    syncLnb();
+    return;
+  }
+  var trigger = e.target.closest("[aria-controls][aria-expanded]");
+  if (!trigger) return;
+  var panel = document.getElementById(trigger.getAttribute("aria-controls"));
+  if (!panel) return;
+  var open = trigger.getAttribute("aria-expanded") === "true";
+  trigger.setAttribute("aria-expanded", String(!open));
+  if (panel.getAttribute("data-s1-part") === "panel-wrap") {
+    if (open) panel.removeAttribute("data-open"); else panel.setAttribute("data-open", "true");
+  } else {
+    panel.hidden = open;
+  }
+});
+
+/* 고르는 단추 — Multi Toggle(radiogroup) */
+var lnbNav = document.querySelector('#lnb-stage [data-s1-component="lnb"]');
+function pageDark() { return document.documentElement.getAttribute("data-theme") === "dark"; }
+function setTheme(stage, v) { document.getElementById(stage).setAttribute("data-theme", v); }
+function pick(group, value) {
+  group.querySelectorAll('[data-s1-part="cell"]').forEach(function (c) { c.setAttribute("aria-checked", String(c.dataset.value === value)); });
+}
+function syncLnb() {
+  var v = lnbNav.getAttribute("data-variant") === "brand" ? "로고 얹음" : "기본(로고 없음)";
+  var w = lnbNav.getAttribute("data-size") === "lg" ? "280" : "240";
+  var st = lnbNav.getAttribute("data-state") === "collapsed" ? "접힘(64)" : "펼침";
+  pick(document.querySelector('[data-mt="state"]'), lnbNav.getAttribute("data-state"));
+  var t = document.getElementById("lnb-stage").getAttribute("data-theme") === "dark" ? "다크" : "라이트";
+  document.getElementById("lnb-now").textContent = "지금 보는 조합 — " + v + " · 가로 " + w + " · " + st + " · " + t;
+}
+document.addEventListener("click", function (e) {
+  var cell = e.target.closest('[data-s1-component="multi-toggle"] [data-s1-part="cell"]');
+  if (!cell) return;
+  var group = cell.closest('[data-s1-component="multi-toggle"]');
+  var key = group.dataset.mt, val = cell.dataset.value;
+  pick(group, val);
+  if (key === "variant") lnbNav.setAttribute("data-variant", val);
+  else if (key === "size") lnbNav.setAttribute("data-size", val);
+  else if (key === "state") {
+    lnbNav.setAttribute("data-state", val);
+    var c = lnbNav.querySelector('[data-s1-part="collapse"]');
+    c.setAttribute("aria-pressed", String(val === "collapsed"));
+    c.setAttribute("aria-label", val === "collapsed" ? "메뉴 펼치기" : "메뉴 접기");
+  }
+  else if (key === "theme-lnb") setTheme("lnb-stage", val);
+  else if (key === "theme-card") setTheme("card-stage", val);
+  syncLnb();
+});
+
+/* 카드 유형 — Tab */
+document.addEventListener("click", function (e) {
+  var tab = e.target.closest('#card-play [data-s1-component="tab"] [data-s1-part="tab"]');
+  if (!tab) return;
+  tab.parentNode.querySelectorAll('[data-s1-part="tab"]').forEach(function (t) {
+    var on = t === tab;
+    t.setAttribute("aria-selected", String(on));
+    t.tabIndex = on ? 0 : -1;
+    document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+  });
+});
+
+/* 처음 화면은 보는 사람의 테마를 따른다 */
+(function () {
+  var v = pageDark() ? "dark" : "light";
+  ["lnb-stage", "card-stage"].forEach(function (id) { setTheme(id, v); });
+  pick(document.querySelector('[data-mt="theme-lnb"]'), v);
+  pick(document.querySelector('[data-mt="theme-card"]'), v);
+  syncLnb();
+})();
+</script>

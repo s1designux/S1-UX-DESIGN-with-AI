@@ -509,7 +509,7 @@
     "gnb-sub-menu-item": {
       "id": "gnb-sub-menu-item",
       "status": "verified",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "sizes": [],
       "breaks": {},
       "sizeBreakGrid": [],
@@ -532,12 +532,12 @@
           "reason": "Depth 축은 크기·상태가 아니라 역할을 가른다 — 1depth=카테고리 제목(Bold 16), 2depth=항목(Medium 16). 두 값 모두 이 컴포넌트 하나가 낸다(build-components.ts:3807 주석)."
         }
       ],
-      "sourceFingerprint": "d8e5d775d52f3b1c052565f057768b8ec4c542fc550c8cc9a6dd18d7cedecfea"
+      "sourceFingerprint": "c25b709d2876602690002892ced4a0f95482c6dd90e8bb2a65cb4d4a5a21bb47"
     },
     "gnb-sub-menu": {
       "id": "gnb-sub-menu",
       "status": "verified",
-      "version": "0.2.4",
+      "version": "0.2.5",
       "sizes": [],
       "breaks": {},
       "sizeBreakGrid": [],
@@ -550,12 +550,12 @@
         "Type=compact-2": "compact-2"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "9399f28f0eed3b8244661267ded3985e546fd53b9f840e005c11b188ef4f0f22"
+      "sourceFingerprint": "5adc3e1f777d1f4e5fca281f370507d4ac437618f84ab5416a095b8519829d9c"
     },
     "gnb": {
       "id": "gnb",
       "status": "verified",
-      "version": "0.2.4",
+      "version": "0.2.5",
       "sizes": [
         "md",
         "sm",
@@ -588,7 +588,7 @@
           "reason": "GNB Utility Icon 세트는 language·menu·user on/off 5변형을 갖지만, GNB 바가 실제로 쓰는 것은 all-on(GNBUtil:full) 1개뿐이다(buildGNB:3607, registry 서술). 다른 4변형은 이 컴포넌트가 배포하지 않는다 — 유틸 영역 구성을 바꾸려면 host 화면이 data-s1-part 를 골라 빼고 넣는다."
         }
       ],
-      "sourceFingerprint": "2c7c3ff9bb2fcba48a42ef61f35f636d678aa8066b232a0e0049d141e0cca1fc"
+      "sourceFingerprint": "7ebc12b61be59251cc6982774239450118914e954a6bf4ac63a7fd8cfaee9f08"
     },
     "input": {
       "id": "input",
@@ -697,7 +697,7 @@
     "mobile-bottom-nav": {
       "id": "mobile-bottom-nav",
       "status": "approved",
-      "version": "0.3.2",
+      "version": "0.3.3",
       "sizes": [],
       "breaks": {},
       "sizeBreakGrid": [],
@@ -726,7 +726,7 @@
           "reason": "icon 축은 2026-09-14 river 승인으로 신설했다 — 홈 하나만 있어 4칸 바를 만들면 네 칸이 모두 홈 그림이었다. 여기 네 가지는 **예시**다(river 2026-09-14: \"예시로만 아이콘을 얹어놓고 개발자가 다운받은 아이콘으로 교체할 수 있도록\"). 실제 서비스의 칸 구성은 서비스마다 다르므로, 화면은 --s1-mobile-nav-icon(웹) · customIcon(Compose)으로 받은 아이콘을 끼운다. 예시 네 가지를 늘리는 것은 승인 사항이지만, 교체 통로로 넣는 아이콘은 화면 소유라 승인 대상이 아니다. 교체해 넣는 아이콘도 Solid 변형이어야 한다."
         }
       ],
-      "sourceFingerprint": "b5e3c636621828eca7f3dd3af9b77c9db5ce873b12a7ade18899d2e29c3d7629"
+      "sourceFingerprint": "f95231b62b105a23b2641dc885a801716624bbdcd1f64b3dbfb968f01e011c43"
     },
     "mobile-header": {
       "id": "mobile-header",
@@ -1017,7 +1017,7 @@
     "tab": {
       "id": "tab",
       "status": "approved",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "sizes": [
         "md",
         "sm",
@@ -1078,7 +1078,7 @@
         "Selected": "selected"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "089bc3f3a875046097184fc2831f792a7dadfb3f68f109574b764c94fdb6f16f"
+      "sourceFingerprint": "5d9e53f1439a4f8f1056c5a79da491a2d4076e420d68c9e46d3d7efcadf2d3d1"
     },
     "table": {
       "id": "table",
@@ -1212,7 +1212,7 @@
     "time-picker": {
       "id": "time-picker",
       "status": "approved",
-      "version": "0.3.9",
+      "version": "0.3.10",
       "sizes": [
         "xxsm",
         "xsm",
@@ -1285,7 +1285,7 @@
           "reason": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
         }
       ],
-      "sourceFingerprint": "10b3cfb53c2afd872b908996ca5f9e027366511e74ff3431fd2e96ee9b6d6242"
+      "sourceFingerprint": "a39e00bed7db3d52ae6a6c6bbedd51aefd0539d78155510121d281e93707259e"
     },
     "toggle": {
       "id": "toggle",

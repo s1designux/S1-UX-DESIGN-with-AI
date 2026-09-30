@@ -233,10 +233,11 @@
   background: var(--color-bg-level-1);
   color: var(--color-navigation-label-hover);
 }
-/* 선택된 항목은 배경을 깔지 않는다 — 글자·아이콘 색으로만 알린다 */
+/* 선택된 항목은 배경을 깔지 않는다 — 글자·아이콘 색과 볼드로 알린다(river 2026-09-30, 라이트·다크 같음) */
 [data-s1-cand="lnb"] [data-s1-part="item"][aria-current="page"] {
   background: transparent;
   color: var(--color-navigation-label-selected);
+  font-weight: var(--font-weight-bold);
 }
 [data-s1-cand="lnb"] [data-s1-part="item"][aria-disabled="true"] {
   color: var(--color-text-state-disabled);

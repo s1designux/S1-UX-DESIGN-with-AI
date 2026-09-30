@@ -55,7 +55,8 @@
       "lnb": {
         "nodeId": null,
         "source": "intent-spec",
-        "status": "레거시 원본 없음 — river 지시로 설계(두 벌 · 240/280 · 접힘 64)"
+        "status": "레거시 원본 없음 — river 지시로 설계(두 벌 · 240/280 · 접힘 64)",
+        "figmaBuildSpec": "Side Nav 를 Figma 정본으로 만들 때 반드시 따를 것 — ① 선택된 메뉴 글자는 Bold(700), 라이트·다크 같음(river 2026-09-30 \"일단 볼드로 적용해보자\" · \"정본에도 선택된 메뉴는 볼드로 보이도록 해줘\") ② 선택 색은 color/navigation/label/selected(다크 blue-dark/350) ③ 어두운 화면의 로고는 한 가지 색(color/text/title/primary)(river 2026-09-30 \"로고는 한가지 색으로 표현해줘\")"
       }
     },
     "fileKey": "yE5UCFEbmXJBlYJWB24Lz2",
