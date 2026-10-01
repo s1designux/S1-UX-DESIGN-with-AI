@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:3efea8a150db4a68143cf454968f28668edd891145f2a56e7becdf8a6895d14e",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-10-01T08:07:20.141Z",
+  "notes": "Time Picker Focus 패널 조회를 reuseVariant(캔버스 폴백)로: 조각 Type=24h/12h·State=시 Selected 가 TPD 변형명과 일치, 첫 설치는 BUILT_COMPS 우선이라 동작 동일, 재설치 skip 시 캔버스 세트에서 찾아 부착. 게이트 6종 exit 0"
+}

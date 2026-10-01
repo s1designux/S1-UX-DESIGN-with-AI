@@ -3159,7 +3159,10 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
       if (st.name === "Focus") {
         // Time Picker Dropdown 인스턴스 재사용 (anatomy gate: "dropdown" raw 프레임 금지)
         //   유형별로 같은 유형의 패널을 붙인다 — 12h 는 오전/오후 열이 있는 패널.
-        const tpdComp = BUILT_COMPS[`TPD:${ty.key}/시 Selected`] ?? BUILT_COMPS["TPD:focus-default"];
+        // 재설치에서 Time Picker Dropdown 세트가 건너뛰어지면(기존 보존) BUILT_COMPS 가 비어 패널이 빠진다 —
+        //   Select Box·Date Picker 처럼 캔버스에 깔린 세트에서 다시 찾아 붙인다(river 지시 2026-10-01).
+        const tpdComp = (await reuseVariant("Time Picker Dropdown", `TPD:${ty.key}/시 Selected`, [`Type=${ty.key}`, "State=시 Selected"]))
+          ?? (await reuseVariant("Time Picker Dropdown", "TPD:focus-default", ["Type=24h", "State=시 Selected"]));
         if (tpdComp) {
           const tpdInst = tpdComp.createInstance();
           tpdInst.name = "tpd";
