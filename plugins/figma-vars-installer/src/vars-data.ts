@@ -638,11 +638,14 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   //   icon/* 에서 빌려 쓰고 있었다(미선택이 과하게 진했던 원인). river 결정 2026-09-14 —
   //   "모바일 바텀 내비도 네비게이션의 한 종류이고 아이콘이 없을 뿐이니까 아이콘 항목만 만들고".
   //   라벨은 새로 만들지 않고 기존 navigation/label/default 를 그대로 쓴다(같은 결정, 선택지 가).
-  "color/navigation/icon/default": { light: "gray/300", dark: "gray-dark/600" },
+  //   2026-10-01 다크를 라벨과 함께 두 단계 올림(gray-dark/600 → 800, river "b로가자" — 비교 화면 대조 후).
+  "color/navigation/icon/default": { light: "gray/300", dark: "gray-dark/800" },
   "color/navigation/indicator/default": { light: "gray/200", dark: "gray-dark/300" },
   "color/navigation/indicator/hover": { light: "blue/400", dark: "blue-dark/350" },
   "color/navigation/indicator/selected": { light: "blue/400", dark: "blue-dark/350" },
-  "color/navigation/label/default": { light: "gray/600", dark: "gray-dark/600" },
+  // 선택 안 된 메뉴 글자(탭·상단 메뉴 하위 항목·모바일 하단 메뉴). 다크는 2026-10-01 두 단계 올려 본문 2단계와 같게
+  //   (gray-dark/600 → 800, river "b로가자"). 종전 값은 도움말 글자와 같은 단계라 너무 어두웠다.
+  "color/navigation/label/default": { light: "gray/600", dark: "gray-dark/800" },
   "color/navigation/label/default-alt": { light: "gray/700", dark: "gray-dark/700" },
   // LNB(사이드바 메뉴) 메뉴명 기본 글자 — 라이트는 종전 text/body/secondary(gray/600) 그대로,
   //   다크만 텍스트 단계 한 단계 위(gray-dark/800 → 900). 본문 글자 토큰은 다른 화면도 쓰므로 LNB 전용으로 분리

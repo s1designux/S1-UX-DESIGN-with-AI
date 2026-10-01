@@ -450,16 +450,16 @@ object S1Palette {
     val colorNavigationBg: S1Color = S1Color(0xFFFFFFFF, 0xFF1C1D23)
     /** --color-navigation-bg--hover — 라이트 #FAFAFA · 다크 #2E2F38 */
     val colorNavigationBgHover: S1Color = S1Color(0xFFFAFAFA, 0xFF2E2F38)
-    /** --color-navigation-icon-default — 라이트 #C4C4C4 · 다크 #55575F */
-    val colorNavigationIconDefault: S1Color = S1Color(0xFFC4C4C4, 0xFF55575F)
+    /** --color-navigation-icon-default — 라이트 #C4C4C4 · 다크 #B8BABF */
+    val colorNavigationIconDefault: S1Color = S1Color(0xFFC4C4C4, 0xFFB8BABF)
     /** --color-navigation-indicator-default — 라이트 #D9D9D9 · 다크 #2E2F38 */
     val colorNavigationIndicatorDefault: S1Color = S1Color(0xFFD9D9D9, 0xFF2E2F38)
     /** --color-navigation-indicator-hover — 라이트 #1D6CEB · 다크 #4285E8 */
     val colorNavigationIndicatorHover: S1Color = S1Color(0xFF1D6CEB, 0xFF4285E8)
     /** --color-navigation-indicator-selected — 라이트 #1D6CEB · 다크 #4285E8 */
     val colorNavigationIndicatorSelected: S1Color = S1Color(0xFF1D6CEB, 0xFF4285E8)
-    /** --color-navigation-label-default — 라이트 #555555 · 다크 #55575F */
-    val colorNavigationLabelDefault: S1Color = S1Color(0xFF555555, 0xFF55575F)
+    /** --color-navigation-label-default — 라이트 #555555 · 다크 #B8BABF */
+    val colorNavigationLabelDefault: S1Color = S1Color(0xFF555555, 0xFFB8BABF)
     /** --color-navigation-label-default-alt — 라이트 #434343 · 다크 #8A8C96 */
     val colorNavigationLabelDefaultAlt: S1Color = S1Color(0xFF434343, 0xFF8A8C96)
     /** --color-navigation-label-default-side — 라이트 #555555 · 다크 #ECEDF0 */

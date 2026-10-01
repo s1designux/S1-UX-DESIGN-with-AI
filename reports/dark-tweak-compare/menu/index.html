@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>메뉴 글자 다크 비교</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="../../../ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="../../../ui-library/dist/assets/css/typography.css">
+<link rel="stylesheet" href="../../../ui-library/dist/s1-ui.css">
+<style>
+  /* 비교용 시험 화면 — 정본이 아니다. 각 열에서만 메뉴 글자·아이콘 값을 덮어 미리 본다. */
+  body { margin:0; padding:32px; background:var(--color-bg-level-0); color:var(--color-text-body-primary);
+         font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+  h1 { font-size:20px; margin:0 0 6px; }
+  p.note { margin:0 0 28px; color:var(--color-text-body-tertiary); font-size:13px; line-height:1.7; }
+  .cols { display:grid; grid-template-columns:repeat(3, 320px); gap:20px; }
+  .col { background:var(--color-navigation-bg); border-radius:8px; padding:20px; display:flex; flex-direction:column; gap:22px; }
+  .col h3 { margin:0; font-size:14px; }
+  .col.a h3, .col.b h3 { color:var(--color-navigation-label-selected); }
+  .col .val { font-size:12px; color:var(--color-text-body-tertiary); line-height:1.6; margin-top:4px; }
+  .col .val b { color:var(--color-text-body-primary); }
+  .cap { font-size:11px; color:var(--color-text-body-tertiary); margin-bottom:8px; }
+  .col ul { list-style:none; margin:0; padding:0; }
+  .col nav[role="tablist"] { display:flex; }
+  .col nav[role="tablist"] > * { flex:1; }
+  .col [role="tabpanel"] { display:none; }
+
+  .col.a { --color-navigation-label-default: var(--color-gray-dark-700); --color-navigation-icon-default: var(--color-gray-dark-700); }
+  .col.b { --color-navigation-label-default: var(--color-gray-dark-800); --color-navigation-icon-default: var(--color-gray-dark-800); }
+</style>
+</head>
+<body>
+<h1>메뉴 글자 — 다크에서 선택 안 된 글자 밝기</h1>
+<p class="note">세 열 모두 같은 부품이고, 선택 안 된 메뉴 글자(모바일 하단 메뉴는 아이콘도 함께)만 다릅니다. 파란 글자는 선택된 메뉴라 그대로예요.</p>
+
+<div class="cols" id="cols"></div>
+
+<template id="set">
+  <div>
+    <div class="cap">탭</div>
+    <div data-s1-component="tab" data-size="md" data-break="pc" role="tablist" aria-label="탭">
+      <button type="button" data-s1-part="tab" role="tab" aria-selected="true">탭 메뉴 1</button>
+      <button type="button" data-s1-part="tab" role="tab" aria-selected="false">탭 메뉴 2</button>
+      <button type="button" data-s1-part="tab" role="tab" aria-selected="false">탭 메뉴 3</button>
+    </div>
+  </div>
+  <div>
+    <div class="cap">상단 메뉴의 하위 항목</div>
+    <ul>
+      <li><span data-s1-component="gnb-sub-menu-item" data-depth="1depth">카테고리 제목</span></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#" aria-current="page">하위 메뉴 (선택)</a></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="cap">모바일 하단 메뉴</div>
+    <nav aria-label="주요 메뉴" role="tablist">
+      <button type="button" data-s1-component="mobile-bottom-nav" data-icon="home" role="tab" aria-selected="true"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">홈</span></button>
+      <button type="button" data-s1-component="mobile-bottom-nav" data-icon="search" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">검색</span></button>
+      <button type="button" data-s1-component="mobile-bottom-nav" data-icon="notification" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">알림</span></button>
+      <button type="button" data-s1-component="mobile-bottom-nav" data-icon="settings" role="tab" aria-selected="false"><span data-s1-part="icon" aria-hidden="true"></span><span data-s1-part="label">설정</span></button>
+    </nav>
+  </div>
+</template>
+
+<script>
+  var cols = [
+    { cls: '',  title: '지금',                      val: '<b>#55575F</b> — 도움말 글자와 같은 단계' },
+    { cls: 'a', title: '안 A · 한 단계 위',          val: '<b>#8A8C96</b> — 본문 3단계와 같음' },
+    { cls: 'b', title: '안 B · 두 단계 위',          val: '<b>#B8BABF</b> — 본문 2단계와 같음' }
+  ];
+  var tpl = document.getElementById('set').innerHTML;
+  document.getElementById('cols').innerHTML = cols.map(function (c) {
+    return '<div class="col ' + c.cls + '"><div><h3>' + c.title + '</h3><div class="val">' + c.val + '</div></div>' + tpl + '</div>';
+  }).join('');
+</script>
+</body>
+</html>

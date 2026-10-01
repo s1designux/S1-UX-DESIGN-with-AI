@@ -509,7 +509,7 @@
     "gnb-sub-menu-item": {
       "id": "gnb-sub-menu-item",
       "status": "verified",
-      "version": "0.2.3",
+      "version": "0.2.4",
       "sizes": [],
       "breaks": {},
       "sizeBreakGrid": [],
@@ -532,12 +532,12 @@
           "reason": "Depth 축은 크기·상태가 아니라 역할을 가른다 — 1depth=카테고리 제목(Bold 16), 2depth=항목(Medium 16). 두 값 모두 이 컴포넌트 하나가 낸다(build-components.ts:3807 주석)."
         }
       ],
-      "sourceFingerprint": "f5e8cc8be583bc2d640238c8160a983f915676d11c96ccf44ab018aa17ed708f"
+      "sourceFingerprint": "4506fe488bd6c77f4f1af82230795526e24bc22d7a180df9d9dd1caf4882ff9c"
     },
     "gnb-sub-menu": {
       "id": "gnb-sub-menu",
       "status": "verified",
-      "version": "0.2.5",
+      "version": "0.2.6",
       "sizes": [],
       "breaks": {},
       "sizeBreakGrid": [],
@@ -550,7 +550,7 @@
         "Type=compact-2": "compact-2"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "7257c2123561f0e06e8c9516182bdec2521b131b31d4795727e163485d022662"
+      "sourceFingerprint": "90019b5c15d9d127ab520316a82d3e4b294f88c9a96025660032200cfcaa5189"
     },
     "gnb": {
       "id": "gnb",
@@ -697,7 +697,7 @@
     "mobile-bottom-nav": {
       "id": "mobile-bottom-nav",
       "status": "approved",
-      "version": "0.3.4",
+      "version": "0.3.5",
       "sizes": [],
       "breaks": {},
       "sizeBreakGrid": [],
@@ -726,7 +726,7 @@
           "reason": "icon 축은 2026-09-14 river 승인으로 신설했다 — 홈 하나만 있어 4칸 바를 만들면 네 칸이 모두 홈 그림이었다. 여기 네 가지는 **예시**다(river 2026-09-14: \"예시로만 아이콘을 얹어놓고 개발자가 다운받은 아이콘으로 교체할 수 있도록\"). 실제 서비스의 칸 구성은 서비스마다 다르므로, 화면은 --s1-mobile-nav-icon(웹) · customIcon(Compose)으로 받은 아이콘을 끼운다. 예시 네 가지를 늘리는 것은 승인 사항이지만, 교체 통로로 넣는 아이콘은 화면 소유라 승인 대상이 아니다. 교체해 넣는 아이콘도 Solid 변형이어야 한다."
         }
       ],
-      "sourceFingerprint": "0c4f7c7541c66a298055dac3884a5bfac533119442fdb660ff75fd4815bac660"
+      "sourceFingerprint": "7fdb7228bca2413c7a8fd073bc804f52d2d1cdb4ea15a84677dfd0716459e145"
     },
     "mobile-header": {
       "id": "mobile-header",
@@ -1017,7 +1017,7 @@
     "tab": {
       "id": "tab",
       "status": "approved",
-      "version": "0.2.3",
+      "version": "0.2.4",
       "sizes": [
         "md",
         "sm",
@@ -1078,7 +1078,7 @@
         "Selected": "selected"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "866dc1a5af33dcc4ec85baf87d2e024385df29ad3971450cc0f6e466d64234c6"
+      "sourceFingerprint": "5b1ae252cd54b60515c5437868792b6cb35d27da9d625d5d80e646e2cab524d2"
     },
     "table": {
       "id": "table",
@@ -1212,7 +1212,7 @@
     "time-picker": {
       "id": "time-picker",
       "status": "approved",
-      "version": "0.3.11",
+      "version": "0.3.12",
       "sizes": [
         "xxsm",
         "xsm",
@@ -1285,7 +1285,7 @@
           "reason": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
         }
       ],
-      "sourceFingerprint": "903affc632362121ed5b2d1750e0c13e186591a4ef2ba23d2570ab4a99ba7b9c"
+      "sourceFingerprint": "65aa65bd4c98438134853a9d9a5e185dff9aaddf450a9ee61d9cbd6ee8396433"
     },
     "toggle": {
       "id": "toggle",
