@@ -112,6 +112,16 @@ function s1TokensCss() {
   return `:root {\n${light}\n}\n@media (prefers-color-scheme: dark) { :root {\n${dark}\n} }`;
 }
 
+/**
+ * 아이콘 라이브러리 PNG 를 data URI 로 심는다 — 손으로 base64 를 붙여 두지 않는다.
+ *   화면에서는 mask 로 쓰고 색은 토큰으로 칠한다(예: 주의 아이콘 = color-icon-red).
+ */
+function iconDataUri(file) {
+  const abs = path.join(ROOT, "assets/icons", file);
+  if (!fs.existsSync(abs)) throw new Error(`[installer] 아이콘 라이브러리에 ${file} 이 없습니다 — ui.html 스탬프 중단.`);
+  return `data:image/png;base64,${fs.readFileSync(abs).toString("base64")}`;
+}
+
 async function run() {
   const { build } = require("./installer-update-notes");
   const notes = await build();   // 실패 시 던짐
@@ -129,6 +139,8 @@ async function run() {
     //   "고쳤다는데 그대로다"를 가리지 못해 river 가 같은 확인을 여러 번 하게 됐다.
     BUILD_STAMP: htmlEscape(label),
     COMPONENT_COUNT: String(count),
+    // 아이콘 라이브러리 ic_주의(원형) Solid (Figma 97:208)
+    ICON_CAUTION: iconDataUri("ic_주의원형_solid.png"),
     UPDATE_DATE: htmlEscape(notes.date),
     UPDATE_NOTES: notes.lines.map(htmlEscape).join("<br>\n      "),
     FOUNDATION_DATE: htmlEscape(notes.dates.foundation),

@@ -375,6 +375,9 @@
   /* 검수는 되는 경우의 보조 안내 — 작은 카드 + 보조 버튼(river 지시 2026-10-01: 튀지 않게) */
   #audit-root .install-required.visible.soft { flex:0 0 auto; align-items:center; margin:0 16px 12px; padding:12px; text-align:center; border:1px solid var(--line); border-radius:8px; background:var(--code-bg); }
   #audit-root .install-required.soft b { font-size:12px; font-weight:600; }
+  /* 업데이트가 필요한 경우만 제목 왼쪽에 빨간 주의 아이콘(아이콘 라이브러리 ic_주의(원형) Solid · color-icon-red) */
+  #audit-root .install-required.soft.caution b::before { content:''; display:inline-block; width:var(--sizing-16); height:var(--sizing-16); margin-right:var(--spacing-4); vertical-align:-3px;
+    background:var(--color-icon-red); -webkit-mask:url("{{ICON_CAUTION}}") center / contain no-repeat; mask:url("{{ICON_CAUTION}}") center / contain no-repeat; }
   #audit-root .install-required.soft p { margin:3px 0 0; max-width:none; font-size:10.5px; line-height:1.55; white-space:pre-line; }
   #audit-root .install-required.soft button { margin-top:9px; padding:6px 12px; font-size:11px; font-weight:500; background:var(--bg); border-color:var(--line); color:var(--fg); }
   #audit-root .guide-state-card { display:none; margin:0 16px 12px; padding:12px; border:1px solid var(--line); border-radius:8px; background:var(--code-bg); }
@@ -746,7 +749,7 @@
     </div>
     <div class="audit-scope">
       <div class="audit-scope-title">검사 항목</div>
-      <p class="audit-scope-body">컴포넌트 매칭, 색상 토큰·시맨틱 용도·색상 스타일·투명도, 텍스트 스타일·크기·값·글꼴, 그림자 총 10가지</p>
+      <p class="audit-scope-body">컴포넌트 매칭, 색상 토큰·시맨틱 용도·색상 스타일·투명도,<br>텍스트 스타일·크기·값·글꼴, 그림자 총 10가지</p>
     </div>
     <div class="install-required" id="audit-install-required">
       <b id="audit-install-title">검수 기준이 부족합니다</b>
@@ -3061,6 +3064,7 @@ function handleAuditUiMessage(msg) {
     $('#audit-install-required').classList.toggle('visible', !auditInstalled || partial.length > 0 || drift.length > 0 || stale);
     // 검수가 되는 경우(설치는 됨)는 보조 안내로 작게 — 막히는 경우만 크게 보인다.
     $('#audit-install-required').classList.toggle('soft', auditInstalled);
+    $('#audit-install-required').classList.toggle('caution', auditInstalled && (partial.length > 0 || drift.length > 0));
     applyAuditSelectionSummary(p);
   } else if (msg.type === "selection-summary") {
     applyAuditSelectionSummary(msg.payload || {});
