@@ -350,15 +350,19 @@
   #audit-root .audit-intro p { margin:0; color:var(--muted); font-size:11.5px; }
   /* 시작 화면 — 큰 안내 한 줄이 주인공, 검사 항목은 보조 텍스트로만 (2026-09-03 river 지시) */
   #audit-root .audit-hero { flex:1 1 auto; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 24px 12px; text-align:center; }
-  /* S-1 가이드 기준(river 지시 2026-10-01): 제목=title/20B · 검사 항목=title/12B · 설명=body/12R,
+  /* S-1 가이드 기준(river 지시 2026-10-01): 제목=title/16B · 검사 항목=title/12B · 설명=body/12R,
      색=역할색 값(아이콘 icon-gray-light · 제목 text-title-primary · 소제목 text-body-secondary · 설명 text-body-tertiary) */
-  #audit-root { --s1-icon:var(--color-icon-gray); --s1-title:var(--color-text-title-primary); --s1-sub:var(--color-text-body-secondary); --s1-desc:var(--color-text-body-tertiary); }
-  #audit-root .audit-hero-ico { color:var(--s1-icon); margin-bottom:16px; line-height:0; }
-  #audit-root .audit-hero h2 { margin:0; font-size:20px; font-weight:700; line-height:1.3; color:var(--s1-title); }
-  #audit-root .audit-hero .selection-card { margin:18px 0 0; max-width:280px; text-align:center; }
-  #audit-root .audit-scope { margin-top:16px; text-align:center; }
-  #audit-root .audit-scope-title { font-size:12px; font-weight:700; line-height:1.3; color:var(--s1-sub); margin-bottom:4px; }
-  #audit-root .audit-scope-body { margin:0 auto; max-width:290px; font-size:12px; font-weight:400; line-height:1.3; color:var(--s1-desc); }
+  #audit-root { --s1-title:var(--color-text-title-primary); --s1-sub:var(--color-text-body-secondary); --s1-desc:var(--color-text-body-tertiary); }
+  /* river 지시 2026-10-01: 아이콘 없음 · 제목 title/16B · 선택하면 제목 아래 «N개 선택» 파란 글자(body/12M). 선택 요약 카드는 감춘다. */
+  #audit-root .audit-hero h2 { margin:0; font-size:var(--font-size-16); font-weight:var(--font-weight-bold); line-height:var(--line-height-130); color:var(--s1-title); }
+  #audit-root .audit-hero .selection-card { display:none; }
+  #audit-root .audit-selected-count { margin-top:var(--spacing-4); font-size:var(--font-size-12); font-weight:var(--font-weight-medium); line-height:var(--line-height-130); color:var(--color-text-state-accent); }
+  #audit-root .audit-selected-count[hidden] { display:none; }
+  /* 검사 항목은 [검사 시작] 위 구분선 바로 위에 둔다(river 지시 2026-10-01). */
+  /* 검사 항목 = 최신 가이드 안내 카드와 같은 모양(river 지시 2026-10-01). */
+  #audit-root .audit-scope { margin:0 16px 12px; padding:12px; text-align:center; border:1px solid var(--line); border-radius:8px; background:var(--code-bg); }
+  #audit-root .audit-scope-title { font-size:12px; font-weight:600; color:var(--fg); }
+  #audit-root .audit-scope-body { margin:3px 0 0; font-size:10.5px; line-height:1.55; color:var(--muted); }
   #audit-root .selection-card { margin:0 16px 12px; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:var(--code-bg); }
   #audit-root .selection-card .selection-label { font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   #audit-root .selection-card .selection-hint { margin-top:3px; color:var(--muted); font-size:10.5px; }
@@ -369,9 +373,9 @@
   #audit-root .install-required p { margin:8px 0 0; max-width:280px; font-size:11.5px; line-height:1.7; color:var(--muted); }
   #audit-root .install-required button { margin-top:18px; width:auto; padding:9px 18px; font-size:12px; font-weight:600; background:var(--btn-bg); border-color:var(--btn-bg); color:var(--btn-fg); }
   /* 검수는 되는 경우의 보조 안내 — 작은 카드 + 보조 버튼(river 지시 2026-10-01: 튀지 않게) */
-  #audit-root .install-required.visible.soft { flex:0 0 auto; align-items:flex-start; margin:0 16px 12px; padding:12px; text-align:left; border:1px solid var(--line); border-radius:8px; background:var(--code-bg); }
+  #audit-root .install-required.visible.soft { flex:0 0 auto; align-items:center; margin:0 16px 12px; padding:12px; text-align:center; border:1px solid var(--line); border-radius:8px; background:var(--code-bg); }
   #audit-root .install-required.soft b { font-size:12px; font-weight:600; }
-  #audit-root .install-required.soft p { margin:3px 0 0; max-width:none; font-size:10.5px; line-height:1.55; }
+  #audit-root .install-required.soft p { margin:3px 0 0; max-width:none; font-size:10.5px; line-height:1.55; white-space:pre-line; }
   #audit-root .install-required.soft button { margin-top:9px; padding:6px 12px; font-size:11px; font-weight:500; background:var(--bg); border-color:var(--line); color:var(--fg); }
   #audit-root .guide-state-card { display:none; margin:0 16px 12px; padding:12px; border:1px solid var(--line); border-radius:8px; background:var(--code-bg); }
   #audit-root .guide-state-card.visible { display:block; }
@@ -724,12 +728,8 @@
   <!-- 시작: 큰 안내 한 줄 + 선택 배지 + 검사 항목 보조 텍스트 -->
   <section class="audit-screen active guide-checking" id="audit-screen-start">
     <div class="audit-hero">
-      <div class="audit-hero-ico" aria-hidden="true"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M8 21h8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M9.4 11.4l1.9 1.9 3.3-3.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h2>검수할 항목을 선택해 주세요.</h2>
-      <div class="audit-scope">
-        <div class="audit-scope-title">검사 항목</div>
-        <p class="audit-scope-body">컴포넌트 매칭, 색상 토큰·시맨틱 용도·색상 스타일·투명도, 텍스트 스타일·크기·값·글꼴, 그림자 총 10가지</p>
-      </div>
+      <div class="audit-selected-count" id="audit-selected-count" hidden></div>
       <div class="selection-card" id="audit-selection-card" hidden>
         <div class="selection-label" id="audit-selection-label">선택 없음</div>
         <div class="selection-hint" id="audit-selection-hint"></div>
@@ -743,6 +743,10 @@
       <b>가이드 현황을 확인하지 못했습니다</b>
       <p>잠시 후 다시 확인해 주세요.</p>
       <button id="btn-guide-retry">다시 확인</button>
+    </div>
+    <div class="audit-scope">
+      <div class="audit-scope-title">검사 항목</div>
+      <p class="audit-scope-body">컴포넌트 매칭, 색상 토큰·시맨틱 용도·색상 스타일·투명도, 텍스트 스타일·크기·값·글꼴, 그림자 총 10가지</p>
     </div>
     <div class="install-required" id="audit-install-required">
       <b id="audit-install-title">검수 기준이 부족합니다</b>
@@ -1399,6 +1403,8 @@ function applyAuditSelectionSummary(p) {
     : '';
   // 선택 전에는 배지를 숨겨 큰 안내 한 줄만 남긴다.
   $('#audit-selection-card').hidden = auditSelectionCount < 1;
+  $('#audit-selected-count').textContent = `${auditSelectionCount}개 선택`;
+  $('#audit-selected-count').hidden = auditSelectionCount < 1;
   const btn = $('#btn-audit');
   btn.disabled = auditInspecting || auditSelectionCount < 1 || !auditInstalled;
   btn.textContent = auditInspecting ? '검사 중…' : '검사 시작';
@@ -3036,9 +3042,9 @@ function handleAuditUiMessage(msg) {
     if (!auditInstalled) {
       noticeText = `이 파일에 비교할 기준이 없습니다: ${missingContents.join(' · ')}. 쓰던 가이드 페이지에 이어서 설치합니다(없으면 새로 만듭니다).`;
     } else if (partial.length) {
-      noticeText = '최신 가이드가 아니어도 검수는 할 수 있습니다. 정확하게 검수하려면 최신 가이드로 업데이트한 뒤 사용해 주세요.';
+      noticeText = '최신 가이드가 아니어도 검수는 할 수 있습니다.\n정확하게 검수하려면 최신 가이드로 업데이트한 뒤 사용해 주세요.';
     } else if (drift.length) {
-      noticeText = `색·수치 ${drift.length}개가 최신 가이드와 다릅니다. 업데이트하면 만들어 둔 화면에도 그대로 반영됩니다.`;
+      noticeText = `색·수치 ${drift.length}개가 최신 가이드와 다릅니다.\n업데이트하면 만들어 둔 화면에도 그대로 반영됩니다.`;
     } else {
       noticeText = '색·수치 값은 정본과 같습니다. 다만 부품의 구성이 바뀌었을 수 있으니, 검수 결과의 컴포넌트 항목에서 확인하세요.';
     }

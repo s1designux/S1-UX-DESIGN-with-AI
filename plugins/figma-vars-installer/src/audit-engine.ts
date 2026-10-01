@@ -3514,6 +3514,7 @@ async function applySwap(
     originalVisible: inst.visible,
   };
   const captured = captureTextOverrides(inst as InstanceNode);
+  const widthSnap = captureWidth(inst as InstanceNode);
   try {
     const backupFrame = await getRollbackFrame();
     backup.visible = false;
@@ -3529,6 +3530,7 @@ async function applySwap(
     await discardSwapRollback(rollback);
     return { ok: false, result: "failed", reason: String(e && e.message || e) };
   }
+  restoreWidth(inst as InstanceNode, widthSnap);
   let unpreserved: string[] = [];
   try {
     const pres = await restoreTextOverrides(inst as InstanceNode, captured);
@@ -3536,6 +3538,37 @@ async function applySwap(
   } catch (e) { /* 복원 실패해도 교체 자체는 성공 — 보존만 부분적 */ }
   const fitted = await fitInstanceToMode(inst as InstanceNode);
   return { ok: true, result: "swapped", variantReset: res.variantReset, axisLoss: res.axisLoss, unpreserved, rollback, modeFitted: fitted.changed ? fitted.mode : undefined };
+}
+
+// ─── 교체 전 가로 크기 지키기 (river 지시 2026-10-01) ───
+// swapComponent 는 인스턴스 크기를 새 컴포넌트의 기본 폭으로 되돌린다. 인풋·셀렉처럼 화면마다
+// 폭을 늘려 쓰는 부품은 교체할 때마다 하나씩 다시 늘려야 했다(글자가 두 줄로 꺾여 보임).
+// 높이는 Size 변형이 정하므로 건드리지 않고, **가로만** 원래대로 돌린다:
+//   채우기(FILL)였으면 채우기로, 고정 폭이었으면 그 폭으로. 내용 맞춤(HUG)이었으면 그대로 둔다.
+type WidthSnapshot = { width: number; sizing: string | null; grow: number | null; align: string | null };
+function captureWidth(inst: InstanceNode): WidthSnapshot {
+  const n = inst as any;
+  return {
+    width: inst.width,
+    sizing: typeof n.layoutSizingHorizontal === "string" ? n.layoutSizingHorizontal : null,
+    grow: typeof n.layoutGrow === "number" ? n.layoutGrow : null,
+    align: typeof n.layoutAlign === "string" ? n.layoutAlign : null,
+  };
+}
+function restoreWidth(inst: InstanceNode, snap: WidthSnapshot): void {
+  const n = inst as any;
+  try {
+    if (snap.sizing === "FILL") {
+      n.layoutSizingHorizontal = "FILL";
+      return;
+    }
+    if (snap.sizing === "HUG") return;
+    if (Math.abs(inst.width - snap.width) < 0.5) return;
+    if (snap.sizing) n.layoutSizingHorizontal = "FIXED";
+    inst.resize(snap.width, inst.height);
+    if (snap.grow !== null && n.layoutGrow !== snap.grow) n.layoutGrow = snap.grow;
+    if (snap.align === "STRETCH" && n.layoutAlign !== "STRETCH") n.layoutAlign = "STRETCH";
+  } catch (e) { /* 크기 복원 실패는 교체 자체를 막지 않는다 */ }
 }
 
 // ─── 교체한 부품을 화면 모드에 맞추기 (river 결정 2026-09-17 — "교체할 때 화면 모드에 맞춰줘") ───
@@ -3608,11 +3641,13 @@ async function swapInstanceTo(
     return { ok: false, result: "failed", reason: "기준 컴포넌트를 import할 수 없습니다. 기준 파일에서 컴포넌트가 publish되었는지 확인해주세요." };
   }
   const captured = captureTextOverrides(inst);
+  const widthSnap = captureWidth(inst);
   try {
     inst.swapComponent(res.target);
   } catch (e: any) {
     return { ok: false, result: "failed", reason: String((e && e.message) || e) };
   }
+  restoreWidth(inst, widthSnap);
   let unpreserved: string[] = [];
   try { unpreserved = (await restoreTextOverrides(inst, captured)).unpreserved; } catch {}
   const fitted = await fitInstanceToMode(inst);
@@ -3765,6 +3800,10 @@ async function importComponentCopy(
   }
   const page = figma.currentPage;
   page.appendChild(copy);   // 다른 프레임 안이 아니라 캔버스에 직접 — 원본 레이아웃을 건드리지 않는다
+  // 원본과 같은 가로 폭으로 놓는다 — 기본 폭으로 오면 하나하나 다시 늘려야 한다(river 지시 2026-10-01).
+  if (inst && inst.type === "INSTANCE") {
+    try { if (Math.abs(copy.width - (inst as InstanceNode).width) >= 0.5) copy.resize((inst as InstanceNode).width, copy.height); } catch (e) { /* */ }
+  }
   const box = inst && "absoluteBoundingBox" in inst ? (inst as SceneNode).absoluteBoundingBox : null;
   const GAP = 40;
   if (box) {
