@@ -136,7 +136,7 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
       clearV2Cache();
       const installState = await getAuditInstallState();
       const guidePage = await getReferenceGuidePage();
-      const pool = collectPageReference(guidePage || undefined);
+      const pool = await collectPageReference(guidePage || undefined);
       if (!installState.installed) {
         figma.ui.postMessage({ type: "audit:inspection-result", payload: { ok: false, code: "need-install", message: `검수 기준 설치가 필요합니다: ${installState.missing.join(" · ")}` } });
         return;
@@ -296,7 +296,7 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
       // 묶음(모듈) 안 부품 1건 교체. 먼저 그대로 시도하고, Figma 가 막으면 blocked 로 돌려준다.
       // 사용자가 [묶음 풀고 교체]를 누르면 allowDetach=true 로 다시 들어온다.
       const guidePage = await getReferenceGuidePage();
-      const pool = collectPageReference(guidePage || undefined);
+      const pool = await collectPageReference(guidePage || undefined);
       const res = await applyModulePartSwap({
         candidate: payload.candidate,
         moduleInstanceId: payload.moduleInstanceId,
@@ -329,7 +329,7 @@ async function handleAuditMessage(type: string, payload: any): Promise<void> {
     } else if (type === "detach-module") {
       // 묶음 풀기만 — 교체는 하지 않는다. 풀고 나면 안쪽 부품이 각자 교체 가능해진다.
       const guidePage = await getReferenceGuidePage();
-      const pool = collectPageReference(guidePage || undefined);
+      const pool = await collectPageReference(guidePage || undefined);
       const res = await detachModule(payload.moduleInstanceId, pool);
       if (res.ok && res.rollback) swapRollbackById.set(payload.moduleId, res.rollback);
       if (res.ok && res.moduleNodeId) {
@@ -455,6 +455,7 @@ async function getStampedGuidePage(): Promise<PageNode | null> {
   const node = await figma.getNodeByIdAsync(pageId);
   if (!node || node.type !== "PAGE") return null;
   if (node.getPluginData(GUIDE_VERSION_KEY) !== CURRENT_GUIDE_FINGERPRINT) return null;
+  await (node as PageNode).loadAsync();   // dynamic-page: 돌려받은 쪽이 바로 children 을 읽는다
   return node as PageNode;
 }
 
@@ -638,14 +639,25 @@ async function getGuideContentMissing(): Promise<{ blocking: string[]; partial: 
   //   도장은 "어느 페이지에 최신 가이드를 설치했나"의 포인터일 뿐이다.
   // 부품 이름도 **네이티브 탐색 한 번**으로 모은다 — 문서 전체를 자바스크립트로 재귀하며 훑으면
   //   큰 파일에서 몇 초씩 걸리고, 그 동안 검수 탭이 '확인 중'에 머문다(river 2026-09-21).
+  //   ⚠️ 페이지는 **필요할 때만 연다**(manifest documentAccess=dynamic-page). 가이드 페이지에서
+  //   다 찾으면 나머지 페이지는 열지 않는다 — 켤 때 30페이지를 전부 읽어 들이던 대기를 없앤다(river 2026-10-01).
   const installedComponentNames = new Set<string>();
-  try {
-    const found = figma.root.findAllWithCriteria({ types: ["COMPONENT_SET", "COMPONENT"] }) as SceneNode[];
-    for (const node of found) installedComponentNames.add(normalizeAuditName(node.name));
-  } catch (e) {
-    for (const component of collectComponents(figma.root, figma.root.name)) {
-      installedComponentNames.add(normalizeAuditName(component.name));
+  const wantedComponentNames = COMPONENT_CATEGORIES.reduce<string[]>((acc, c) => acc.concat(c.members), []).map(normalizeAuditName);
+  const collectFrom = (root: PageNode | DocumentNode) => {
+    try {
+      const found = root.findAllWithCriteria({ types: ["COMPONENT_SET", "COMPONENT"] }) as SceneNode[];
+      for (const node of found) installedComponentNames.add(normalizeAuditName(node.name));
+    } catch (e) {
+      for (const component of collectComponents(root, figma.root.name)) {
+        installedComponentNames.add(normalizeAuditName(component.name));
+      }
     }
+  };
+  const guidePage = await getReferenceGuidePage();
+  if (guidePage) { await guidePage.loadAsync(); collectFrom(guidePage); }
+  if (!guidePage || wantedComponentNames.some((n) => !installedComponentNames.has(n))) {
+    await figma.loadAllPagesAsync();
+    collectFrom(figma.root);
   }
   // 어떤 부품이 없는지 **원래 이름**으로 적는다(normalizeAuditName 은 비교용이라 사람이 못 읽는다).
   const missingComponents: string[] = [];
@@ -1406,7 +1418,7 @@ async function autoSwapPatternScreens(): Promise<{ applied: number; skipped: num
     const roots = Array.from(page.children) as SceneNode[];
     if (!roots.length) return out;
     const guidePage = await getReferenceGuidePage();
-    const pool = collectPageReference(guidePage || undefined);
+    const pool = await collectPageReference(guidePage || undefined);
     const scan = await scanSwapCandidates(pool, roots);
     for (const c of scan.candidates) {
       // 한 번에 바꾸는 길에는 «확인이 필요하다» 고 내려온 것을 들이지 않는다(검수 탭의 일괄 교체와 같은 기준).
@@ -1454,7 +1466,9 @@ async function getInstalledGuidePage(): Promise<PageNode | null> {
 async function getReferenceGuidePage(): Promise<PageNode | null> {
   const stamped = await getStampedGuidePage();
   if (stamped) return stamped;
-  return await getInstalledGuidePage();
+  const installed = await getInstalledGuidePage();
+  if (installed) await installed.loadAsync();   // dynamic-page: 돌려받은 쪽이 바로 children 을 읽는다
+  return installed;
 }
 
 async function installLatestGuideOnNewPage(): Promise<void> {
@@ -1466,8 +1480,7 @@ async function installLatestGuideOnNewPage(): Promise<void> {
   const page = existingGuide || figma.createPage();
   const createdPage = !existingGuide;
   if (createdPage) page.name = uniqueGuidePageName();
-  await page.loadAsync();
-  figma.currentPage = page;
+  await figma.setCurrentPageAsync(page);
   const result = await runInstall(
     { foundation: true, semantic: true, textStyles: true, components: true },
     { stampCompleteGuide: true, updateFlow: true },
@@ -1475,7 +1488,7 @@ async function installLatestGuideOnNewPage(): Promise<void> {
   if (result !== "ok") {
     // 실패든 중단이든 이번에 만든 '가이드 페이지'는 되돌린다.
     // (Variables·Text Styles 는 문서 단위라 남는다 — UI 가 그 사실을 그대로 알린다.)
-    try { figma.currentPage = previousPage; } catch (e) { /* best-effort */ }
+    try { await figma.setCurrentPageAsync(previousPage); } catch (e) { /* best-effort */ }
     // 이번에 만든 페이지만 되돌린다 — 쓰던 가이드 페이지를 지우면 그것으로 만든 화면이 다 깨진다.
     if (createdPage) { try { page.remove(); } catch (e) { /* best-effort */ } }
     figma.ui.postMessage({

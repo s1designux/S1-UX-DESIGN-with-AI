@@ -3402,7 +3402,9 @@ async function cleanupSwapBackups(): Promise<void> {
   rollbackFrameNode = null;
   rollbackFrameId = "";
   // 이전 실행이 비정상 종료돼 메모리 ID가 사라졌더라도 marker로 숨은 백업을 회수한다.
-  for (const page of figma.root.children) {
+  // 켤 때 도는 정리라 **이미 열린 페이지만** 본다(dynamic-page — 안 열린 페이지를 열면 시작이 느려진다).
+  //   백업 틀은 교체를 한 그 페이지에 생기므로, 그 페이지에서 다시 켜면 회수된다.
+  for (const page of [figma.currentPage]) {
     try {
       for (const node of Array.from(page.children)) {
         if (node.type === "FRAME" && node.getPluginData(ROLLBACK_FRAME_MARK) === "1") node.remove();
@@ -3824,7 +3826,7 @@ async function rollbackSwap(rollback: SwapRollback): Promise<{ ok: boolean; reas
 // 단, 문서 전체를 훑으면 파일 내 레거시 세트가 섞일 수 있어 — 설치기 정본 이름 목록
 // (CANONICAL_NAME_SET)에 있는 것만 남긴다. 이것이 "설치기 기준"의 실체다.
 // 현재 페이지를 먼저 담아 같은 이름이 여러 곳에 있으면 현재 페이지 것이 이긴다.
-function collectPageReference(preferredPage?: PageNode): ReferenceComponent[] {
+async function collectPageReference(preferredPage?: PageNode): Promise<ReferenceComponent[]> {
   const fileName = figma.root.name;
   const seen: { [k: string]: boolean } = {};
   const out: ReferenceComponent[] = [];
@@ -3843,10 +3845,11 @@ function collectPageReference(preferredPage?: PageNode): ReferenceComponent[] {
     }
   };
   const firstPage = preferredPage || figma.currentPage;
+  try { await firstPage.loadAsync(); } catch {}
   try { push(collectComponents(firstPage, fileName)); } catch {}
   for (const page of figma.root.children) {
     if (page.id === firstPage.id) continue;
-    try { push(collectComponents(page, fileName)); } catch {}
+    try { await page.loadAsync(); push(collectComponents(page, fileName)); } catch {}
   }
   return out;
 }
@@ -3888,7 +3891,7 @@ async function buildImprovedCopy(): Promise<BuildImprovedResult> {
   }
   const src = sel[0] as FrameNode;
 
-  const pool = collectPageReference();
+  const pool = await collectPageReference();
   if (pool.length === 0) {
     return { ok: false, code: "need-install", reason: "이 페이지에 정본 컴포넌트가 없습니다. [설치] 탭을 먼저 실행해주세요." };
   }
