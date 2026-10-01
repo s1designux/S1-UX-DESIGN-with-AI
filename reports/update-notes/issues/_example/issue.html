@@ -1,0 +1,54 @@
+<!-- title: 디자인가이드 업데이트 공지 -->
+<!-- 매주 호의 뼈대. 이 파일을 issues/<금요일 날짜>/issue.html 로 복사해 채운다. 섹션 수는 그 주 내용에 맞게 늘이고 줄인다. -->
+  <header class="hero read">
+    <div class="eyebrow">S1 UX 디자인가이드 · 업데이트 노트 · 2026.09.25 – 10.01</div>
+    <h1>디자인가이드 업데이트 공지<span class="h1-sub">이번 주 핵심 한 줄</span></h1>
+    <p>페이지 안의 부품은 전부 실제 배포본 CSS로 그렸습니다.</p>
+  </header>
+
+  <section>
+    <div class="read stack">
+      <div class="eyebrow">01 · 이번 업데이트</div>
+      <h2>새로 정리되거나 바뀐 것</h2>
+    </div>
+    <div class="parts">
+      <article class="part">
+        <h3>뱃지 (Data Tag)</h3>
+        <div class="stage">
+          <span data-s1-component="data-tag" data-shape="chips" data-solid="on" data-tone="blue">승인</span>
+          <span data-s1-component="data-tag" data-shape="chips" data-solid="off" data-tone="red">주의</span>
+        </div>
+        <p class="small">무엇이 바뀌었는지 한두 문장.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="try">
+    <div class="read stack">
+      <div class="eyebrow">02 · 눌러 보기</div>
+      <h2>라이트·다크로 바꿔 보기</h2>
+    </div>
+    <div class="play">
+      <div class="controls">
+        <div class="ctl"><span class="ctl-label">화면</span>
+          <div data-s1-component="multi-toggle" data-size="sm" role="radiogroup" aria-label="화면 테마" data-theme-target="try-stage">
+            <button type="button" data-s1-part="cell" role="radio" aria-checked="true" data-value="light">라이트</button>
+            <button type="button" data-s1-part="cell" role="radio" aria-checked="false" data-value="dark">다크</button>
+          </div>
+        </div>
+      </div>
+      <div class="stage-pane" id="try-stage">
+        <hr data-s1-component="divider" data-axis="x">
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="read stack">
+      <div class="eyebrow">03 · 마치며</div>
+      <h2>남은 논의</h2>
+    </div>
+    <div class="wrapup">
+      <div class="lesson"><b>추후 논의점</b><p>아직 정하지 않은 것을 쉬운 말로.</p></div>
+    </div>
+  </section>

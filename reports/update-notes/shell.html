@@ -1,0 +1,201 @@
+<title>__TITLE__</title>
+<script>
+/* 뷰어 테마를 디자인시스템 토큰의 data-theme 로 잇는다 — 뷰어가 명시하면 그대로, "시스템"이면 OS 설정을 따른다 */
+(function () {
+  var root = document.documentElement;
+  var mine = false;
+  var mq = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+  function sync() {
+    var v = root.getAttribute("data-theme");
+    if (v && !mine) return;
+    if (mq && mq.matches) { root.setAttribute("data-theme", "dark"); mine = true; }
+    else if (mine) { root.removeAttribute("data-theme"); mine = false; }
+  }
+  sync();
+  if (mq && mq.addEventListener) mq.addEventListener("change", sync);
+})();
+</script>
+<style>
+/*__FONTS__*/
+/*__TOKENS__*/
+/*__TYPO__*/
+/*__PARTS__*/
+
+/* ── 보고서 자체의 틀 ──────────────────────────────────────────────
+   레이아웃: 읽는 글은 좁은 단(68ch), 실제 부품을 그리는 판은 넓은 단(1080). 판 안의 부품은 전부
+   디자인시스템 배포본 CSS 그대로다. 색은 모두 디자인시스템 토큰에서 온다. */
+:root {
+  --rp-ground: var(--color-bg-level-1);
+  --rp-sheet: var(--color-bg-level-0);
+  --rp-ink: var(--color-text-title-primary);
+  --rp-ink-2: var(--color-text-body-secondary);
+  --rp-ink-3: var(--color-text-body-tertiary);
+  --rp-line: var(--color-line-default);
+  --rp-accent: var(--color-text-state-accent);
+  --rp-soft: var(--color-bg-level-2);
+  --rp-font: "Pretendard", -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --rp-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { color-scheme: dark; } }
+:root[data-theme="dark"] { color-scheme: dark; }
+
+* { box-sizing: border-box; }
+body {
+  background: var(--rp-ground);
+  color: var(--rp-ink);
+  font-family: var(--rp-font);
+  font-size: 15px;
+  line-height: 1.65;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.wrap { margin: 0 auto; max-width: 1112px; padding-block: 48px 120px; padding-inline: 16px; }
+.read { max-width: 68ch; }
+h1, h2, h3 { text-wrap: balance; margin: 0; color: var(--rp-ink); }
+h1 { font-size: clamp(28px, 4.2vw, 40px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.25; }
+h2 { font-size: 24px; font-weight: 800; letter-spacing: -0.01em; line-height: 1.35; }
+h3 { font-size: 17px; font-weight: 700; line-height: 1.45; }
+p { margin: 0; color: var(--rp-ink-2); }
+.h1-sub { display: block; font-size: 24px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.35; margin-top: 6px; }
+.lede .sent { display: block; }
+.eyebrow { color: var(--rp-accent); font-size: 13px; font-weight: 700; letter-spacing: 0.04em; }
+.lede { color: var(--rp-ink-2); font-size: 17px; line-height: 1.7; }
+.small { color: var(--rp-ink-3); font-size: 13px; }
+.stack { display: flex; flex-direction: column; gap: 14px; }
+section { border-top: 1px solid var(--rp-line); display: flex; flex-direction: column; gap: 24px; margin-top: 64px; padding-top: 40px; }
+.hero { display: flex; flex-direction: column; gap: 18px; }
+
+/* 부품 넷 한눈에 */
+.parts { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+.part { background: var(--rp-sheet); border: 1px solid var(--rp-line); border-radius: 12px; display: flex; flex-direction: column; gap: 12px; min-width: 0; padding: 20px; }
+.part .stage { align-items: center; background: var(--rp-ground); border-radius: 8px; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; min-height: 128px; padding: 16px; }
+.part .meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.chipline { border: 1px solid var(--rp-line); border-radius: 999px; color: var(--rp-ink-2); font-size: 12px; font-weight: 600; padding: 2px 10px; }
+.chipline.ok { border-color: var(--rp-accent); color: var(--rp-accent); }
+
+/* 흐름 — 실제 순서라 번호를 쓴다 */
+.flow { counter-reset: step; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); list-style: none; margin: 0; padding: 0; }
+.flow li { background: var(--rp-sheet); border: 1px solid var(--rp-line); border-radius: 12px; counter-increment: step; display: flex; flex-direction: column; gap: 6px; min-width: 0; padding: 18px; }
+.flow li::before { color: var(--rp-accent); content: counter(step); font-family: var(--rp-mono); font-size: 13px; font-weight: 700; }
+.flow b { color: var(--rp-ink); font-size: 15px; }
+.flow span { color: var(--rp-ink-2); font-size: 14px; }
+
+/* 표 */
+.tbl-scroll { overflow-x: auto; }
+table { border-collapse: collapse; font-size: 14px; min-width: 560px; width: 100%; }
+th, td { border-bottom: 1px solid var(--rp-line); padding: 10px 12px; text-align: left; vertical-align: top; }
+th { color: var(--rp-ink-3); font-size: 12px; font-weight: 700; letter-spacing: 0.03em; white-space: nowrap; }
+td { color: var(--rp-ink-2); }
+td b { color: var(--rp-ink); }
+td q { color: var(--rp-ink); quotes: "“" "”"; }
+.num { font-family: var(--rp-mono); font-variant-numeric: tabular-nums; }
+
+/* 모바일 화면 틀 — 360 폭에 좌우 16 */
+.phones { align-items: flex-start; display: flex; flex-wrap: wrap; gap: 20px; }
+.phone { background: var(--color-bg-level-0); border: 1px solid var(--color-line-default); border-radius: 18px; color: var(--color-text-title-primary); max-width: 100%; overflow: hidden; width: 360px; }
+.phone-cap { background: var(--color-bg-level-1); border-bottom: 1px solid var(--color-line-default); color: var(--color-text-body-tertiary); font-size: 12px; font-weight: 600; padding: 9px 14px; }
+.phone-body { display: grid; gap: 12px; padding: 16px; }
+.phone-foot { border-top: 1px solid var(--color-line-default); color: var(--color-text-body-tertiary); font-size: 12px; padding: 10px 14px; }
+.phone-foot .num { color: var(--color-text-body-secondary); }
+
+/* 라이트·다크 나란히 — 판 자체에 data-theme 을 준다 */
+.duo { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.pane { background: var(--color-bg-level-1); border: 1px solid var(--color-line-default); border-radius: 14px; color: var(--color-text-title-primary); display: flex; flex-direction: column; gap: 12px; min-width: 0; padding: 16px; }
+.pane-cap { color: var(--color-text-body-tertiary); font-size: 12px; font-weight: 700; letter-spacing: 0.04em; }
+
+/* 결정 강조 */
+.pick { outline: 2px solid var(--rp-accent); outline-offset: 3px; }
+.tag-pick { background: var(--rp-accent); border-radius: 999px; color: var(--color-base-white); font-size: 11px; font-weight: 700; margin-left: 6px; padding: 1px 8px; vertical-align: 2px; }
+
+/* 조합 판 */
+.combo { background: var(--rp-sheet); border: 1px solid var(--rp-line); border-radius: 14px; display: flex; flex-direction: column; gap: 14px; min-width: 0; padding: 20px; }
+.combo-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.req-row { align-items: center; display: flex; gap: 10px; justify-content: space-between; padding: 12px 4px; }
+.req-row .t { color: var(--color-text-title-primary); font-size: 15px; font-weight: 600; }
+.req-row .d { color: var(--color-text-body-tertiary); font-size: 12px; }
+.meta-line span { white-space: nowrap; }
+.meta-line { align-items: center; color: var(--color-text-body-tertiary); display: flex; font-size: 12px; gap: 10px; }
+.title-with-tag { align-items: center; display: flex; flex-wrap: wrap; gap: 8px; }
+.app { background: var(--color-bg-level-1); border: 1px solid var(--color-line-default); border-radius: 12px; display: flex; min-height: 420px; overflow: hidden; }
+.app-main { display: flex; flex: 1; flex-direction: column; gap: 14px; min-width: 0; padding: 20px; }
+.app-main h4 { color: var(--color-text-title-primary); font-size: 18px; font-weight: 700; margin: 0; }
+.app-scroll { overflow-x: auto; }
+
+/* 배운 점 */
+.lessons { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.lesson { background: var(--rp-sheet); border: 1px solid var(--rp-line); border-radius: 12px; display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: 20px; }
+.lesson b { color: var(--rp-ink); font-size: 16px; }
+.note { background: var(--rp-soft); border-radius: 12px; color: var(--rp-ink-2); font-size: 14px; padding: 16px 18px; }
+.note b { color: var(--rp-ink); }
+
+/* 눌러보기 판 — 고르는 단추는 디자인시스템 Multi Toggle · Tab 배포본 그대로 */
+.play { background: var(--rp-sheet); border: 1px solid var(--rp-line); border-radius: 14px; display: flex; flex-direction: column; gap: 16px; min-width: 0; padding: 20px; }
+.controls { display: flex; flex-wrap: wrap; gap: 12px 24px; }
+.ctl { align-items: center; display: flex; gap: 10px; }
+.ctl-label { color: var(--rp-ink-3); font-size: 12px; font-weight: 700; letter-spacing: 0.03em; min-width: 28px; }
+.stage-pane { background: var(--color-bg-level-1); border-radius: 12px; color: var(--color-text-title-primary); min-width: 0; padding: 16px; }
+.now { color: var(--rp-ink-3); font-size: 12px; }
+.tab-scroll { overflow-x: auto; }
+.card-panel { display: flex; justify-content: center; }
+.card-panel[hidden] { display: none; }
+.wrapup { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.wrapup .lesson ul { color: var(--rp-ink-2); display: flex; flex-direction: column; gap: 6px; margin: 0; padding-left: 18px; }
+.wrapup .lesson li { font-size: 14px; }
+.wrapup .lesson a { font-size: 14px; font-weight: 600; }
+
+a { color: var(--rp-accent); }
+:focus-visible { outline: 2px solid var(--rp-accent); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+__BODY__
+</div>
+
+<script>
+/* 공통 동작 — 여닫이(aria-controls) · 고르는 단추(Multi Toggle) · 탭. 판마다 data-theme 을 바꿀 수 있다. */
+document.addEventListener("click", function (e) {
+  var trigger = e.target.closest("[aria-controls][aria-expanded]");
+  if (trigger) {
+    var panel = document.getElementById(trigger.getAttribute("aria-controls"));
+    if (!panel) return;
+    var open = trigger.getAttribute("aria-expanded") === "true";
+    trigger.setAttribute("aria-expanded", String(!open));
+    if (panel.getAttribute("data-s1-part") === "panel-wrap") {
+      if (open) panel.removeAttribute("data-open"); else panel.setAttribute("data-open", "true");
+    } else { panel.hidden = open; }
+    return;
+  }
+  var cell = e.target.closest('[data-s1-component="multi-toggle"] [data-s1-part="cell"]');
+  if (cell) {
+    var group = cell.closest('[data-s1-component="multi-toggle"]');
+    group.querySelectorAll('[data-s1-part="cell"]').forEach(function (c) { c.setAttribute("aria-checked", String(c === cell)); });
+    /* data-theme-target="판id" 이면 그 판의 라이트·다크를 바꾼다 */
+    var tgt = group.getAttribute("data-theme-target");
+    if (tgt) document.getElementById(tgt).setAttribute("data-theme", cell.dataset.value);
+    group.dispatchEvent(new CustomEvent("pick", { detail: cell.dataset.value, bubbles: true }));
+    return;
+  }
+  var tab = e.target.closest('[data-s1-component="tab"] [data-s1-part="tab"]');
+  if (tab) {
+    tab.parentNode.querySelectorAll('[data-s1-part="tab"]').forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute("aria-selected", String(on));
+      t.tabIndex = on ? 0 : -1;
+      var p = document.getElementById(t.getAttribute("aria-controls"));
+      if (p) p.hidden = !on;
+    });
+  }
+});
+/* 처음 화면 — 테마 판은 보는 사람의 테마를 따른다 */
+(function () {
+  var v = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+  document.querySelectorAll("[data-theme-target]").forEach(function (g) {
+    var el = document.getElementById(g.getAttribute("data-theme-target"));
+    if (el) el.setAttribute("data-theme", v);
+    g.querySelectorAll('[data-s1-part="cell"]').forEach(function (c) { c.setAttribute("aria-checked", String(c.dataset.value === v)); });
+  });
+})();
+</script>
