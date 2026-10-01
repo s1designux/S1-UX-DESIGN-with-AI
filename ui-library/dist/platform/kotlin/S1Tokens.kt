@@ -464,6 +464,8 @@ object S1Tokens {
         const val colorNavigationLabelDefault: Long = 0xFF555555
         /** --color-navigation-label-default-alt = #434343 */
         const val colorNavigationLabelDefaultAlt: Long = 0xFF434343
+        /** --color-navigation-label-default-side = #555555 */
+        const val colorNavigationLabelDefaultSide: Long = 0xFF555555
         /** --color-navigation-label-hover = #1D6CEB */
         const val colorNavigationLabelHover: Long = 0xFF1D6CEB
         /** --color-navigation-label-selected = #1D6CEB */
@@ -1016,8 +1018,8 @@ object S1Tokens {
         const val colorFormControlBgDisabled: Long = 0xFF24252C
         /** --color-form-control-bg-hover = #24252C */
         const val colorFormControlBgHover: Long = 0xFF24252C
-        /** --color-form-control-bg-selected = #24252C */
-        const val colorFormControlBgSelected: Long = 0xFF24252C
+        /** --color-form-control-bg-selected = #1C1D23 */
+        const val colorFormControlBgSelected: Long = 0xFF1C1D23
         /** --color-form-control-border-correct = #4285E8 */
         const val colorFormControlBorderCorrect: Long = 0xFF4285E8
         /** --color-form-control-border-default = #3E4049 */
@@ -1072,8 +1074,8 @@ object S1Tokens {
         const val colorModalPanelBorder: Long = 0xFF3E4049
         /** --color-navigation-bg = #1C1D23 */
         const val colorNavigationBg: Long = 0xFF1C1D23
-        /** --color-navigation-bg--hover = #24252C */
-        const val colorNavigationBgHover: Long = 0xFF24252C
+        /** --color-navigation-bg--hover = #2E2F38 */
+        const val colorNavigationBgHover: Long = 0xFF2E2F38
         /** --color-navigation-icon-default = #55575F */
         const val colorNavigationIconDefault: Long = 0xFF55575F
         /** --color-navigation-indicator-default = #2E2F38 */
@@ -1086,6 +1088,8 @@ object S1Tokens {
         const val colorNavigationLabelDefault: Long = 0xFF55575F
         /** --color-navigation-label-default-alt = #8A8C96 */
         const val colorNavigationLabelDefaultAlt: Long = 0xFF8A8C96
+        /** --color-navigation-label-default-side = #ECEDF0 */
+        const val colorNavigationLabelDefaultSide: Long = 0xFFECEDF0
         /** --color-navigation-label-hover = #4285E8 */
         const val colorNavigationLabelHover: Long = 0xFF4285E8
         /** --color-navigation-label-selected = #4285E8 */

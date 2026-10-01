@@ -105,7 +105,7 @@ window.REGISTRY_BUNDLE = {
           "name": "SW Foundation Colors",
           "version": "2.4",
           "status": "stable",
-          "updatedAt": "2026-09-30",
+          "updatedAt": "2026-10-01",
           "source": "plugins/figma-vars-installer/src/vars-data.ts (FOUNDATION_COLOR)",
           "description": "Official SW Design System V2.4 foundation color foundation. Raw HEX values are allowed here only.",
           "generated": true,

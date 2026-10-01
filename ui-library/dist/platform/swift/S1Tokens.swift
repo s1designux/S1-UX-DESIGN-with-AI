@@ -465,6 +465,8 @@ public enum S1Tokens {
         public static let colorNavigationLabelDefault: UInt32 = 0xFF555555
         /// --color-navigation-label-default-alt = #434343
         public static let colorNavigationLabelDefaultAlt: UInt32 = 0xFF434343
+        /// --color-navigation-label-default-side = #555555
+        public static let colorNavigationLabelDefaultSide: UInt32 = 0xFF555555
         /// --color-navigation-label-hover = #1D6CEB
         public static let colorNavigationLabelHover: UInt32 = 0xFF1D6CEB
         /// --color-navigation-label-selected = #1D6CEB
@@ -1017,8 +1019,8 @@ public enum S1Tokens {
         public static let colorFormControlBgDisabled: UInt32 = 0xFF24252C
         /// --color-form-control-bg-hover = #24252C
         public static let colorFormControlBgHover: UInt32 = 0xFF24252C
-        /// --color-form-control-bg-selected = #24252C
-        public static let colorFormControlBgSelected: UInt32 = 0xFF24252C
+        /// --color-form-control-bg-selected = #1C1D23
+        public static let colorFormControlBgSelected: UInt32 = 0xFF1C1D23
         /// --color-form-control-border-correct = #4285E8
         public static let colorFormControlBorderCorrect: UInt32 = 0xFF4285E8
         /// --color-form-control-border-default = #3E4049
@@ -1073,8 +1075,8 @@ public enum S1Tokens {
         public static let colorModalPanelBorder: UInt32 = 0xFF3E4049
         /// --color-navigation-bg = #1C1D23
         public static let colorNavigationBg: UInt32 = 0xFF1C1D23
-        /// --color-navigation-bg--hover = #24252C
-        public static let colorNavigationBgHover: UInt32 = 0xFF24252C
+        /// --color-navigation-bg--hover = #2E2F38
+        public static let colorNavigationBgHover: UInt32 = 0xFF2E2F38
         /// --color-navigation-icon-default = #55575F
         public static let colorNavigationIconDefault: UInt32 = 0xFF55575F
         /// --color-navigation-indicator-default = #2E2F38
@@ -1087,6 +1089,8 @@ public enum S1Tokens {
         public static let colorNavigationLabelDefault: UInt32 = 0xFF55575F
         /// --color-navigation-label-default-alt = #8A8C96
         public static let colorNavigationLabelDefaultAlt: UInt32 = 0xFF8A8C96
+        /// --color-navigation-label-default-side = #ECEDF0
+        public static let colorNavigationLabelDefaultSide: UInt32 = 0xFFECEDF0
         /// --color-navigation-label-hover = #4285E8
         public static let colorNavigationLabelHover: UInt32 = 0xFF4285E8
         /// --color-navigation-label-selected = #4285E8

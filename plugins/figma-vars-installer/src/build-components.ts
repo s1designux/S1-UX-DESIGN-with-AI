@@ -7464,7 +7464,7 @@ async function buildExpandableCard(maps: BuildMaps, originY: number): Promise<{ 
 //     Side Nav Sub Item — 하위메뉴(2뎁스) 줄. State(Default·Hover·Selected) = 3. 아이콘 없음.
 //     Side Nav          — 판 전체. Type(Menu 로고 없음 · Brand 로고 있음) × Size(MD 240 · LG 280) × State(Expanded·Collapsed) = 8
 //   색 규칙(웹과 같음):
-//     · 메뉴명 = 본문 2단계 text/body/secondary · 아이콘 = icon/gray-dark (river 2026-09-30)
+//     · 메뉴명 = navigation/label/default-side(라이트=본문 2단계와 같은 값, 다크는 한 단계 위 — river 2026-10-01) · 아이콘 = icon/gray-dark (river 2026-09-30)
 //     · 호버 = 글자·아이콘 색 그대로, 바탕만 navigation/bg--hover (figmaBuildSpec ⑤)
 //     · 선택(펼침) = 바탕 없음 + 글자·아이콘 navigation/label/selected + 글자 Bold (figmaBuildSpec ①②)
 //     · 선택(접힘) = 바탕 button/bg/primary--default + 아이콘·글자 button/label/primary--default (figmaBuildSpec ④)
@@ -7493,7 +7493,7 @@ function sideNavColors(mode: string, state: string): { label: string; icon: stri
       ? { label: "color/button/label/primary--default", icon: "color/button/label/primary--default", bg: "color/button/bg/primary--default" }
       : { label: "color/navigation/label/selected", icon: "color/navigation/label/selected", bg: null };
   }
-  return { label: "color/text/body/secondary", icon: "color/icon/gray-dark", bg: state === "Hover" ? "color/navigation/bg--hover" : null };
+  return { label: "color/navigation/label/default-side", icon: "color/icon/gray-dark", bg: state === "Hover" ? "color/navigation/bg--hover" : null };
 }
 
 /** 아이콘 인스턴스의 가로·세로를 Foundation 크기 변수에 묶는다(폴백 도형이면 조용히 넘어간다). */

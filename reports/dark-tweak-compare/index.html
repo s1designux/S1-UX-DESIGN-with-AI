@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ko" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>다크모드 수정안 비교</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="../../ui-library/dist/assets/css/tokens.css">
+<link rel="stylesheet" href="../../ui-library/dist/assets/css/typography.css">
+<link rel="stylesheet" href="../../ui-library/dist/s1-ui.css">
+<link rel="stylesheet" href="../../ui-library/src/components/lnb/lnb.css">
+<style>
+  /* 비교용 시험 화면 — 정본이 아니다. 「수정안」 칸에서만 값을 덮어 미리 본다. */
+  body { margin:0; padding:32px; background:var(--color-bg-level-0); color:var(--color-text-body-primary);
+         font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+  h1 { font-size:20px; margin:0 0 6px; }
+  h2 { font-size:16px; margin:40px 0 14px; }
+  p.note { margin:0; color:var(--color-text-body-tertiary); font-size:13px; line-height:1.7; }
+  .cap { font-size:12px; color:var(--color-text-body-tertiary); margin-bottom:8px; }
+  .cap.new { color:var(--color-navigation-label-selected); font-weight:600; }
+  .val { font-size:12px; color:var(--color-text-body-tertiary); margin-top:10px; line-height:1.6; }
+  .val b { color:var(--color-text-body-primary); font-weight:600; }
+
+  /* 입력칸: 한 줄에 기본 · 포커스(지금) · 포커스(수정안) */
+  .in-table { display:grid; grid-template-columns:repeat(3, 200px); gap:12px 28px; align-items:start;
+              background:var(--color-navigation-bg); padding:24px; border-radius:8px; width:max-content; }
+  [data-s1-part="item-icon"], [data-s1-part="collapse-icon"] {
+    --s1-icon:url("/.claude/worktrees/site-restyle/ui-library/src/assets/icons/menu.svg");
+    --s1-collapse-icon:url("/.claude/worktrees/site-restyle/ui-library/src/assets/icons/menu.svg");
+  }
+
+  /* 상태 고정 — 마우스를 올리지 않아도 포커스·호버 모습이 보이게 */
+  [data-s1-component="input"].is-focus [data-s1-part="field"] {
+    background: var(--color-form-control-bg-selected);
+    border-color: var(--color-form-control-border-selected);
+  }
+  [data-s1-component="lnb"] [data-s1-part="item"].is-hover { background: var(--color-navigation-bg--hover); }
+
+  /* ── 수정안 ── */
+  .proposed { --color-form-control-bg-selected: var(--color-gray-dark-100); }
+  .proposed[data-s1-component="lnb"] { --color-navigation-bg--hover: var(--color-gray-dark-300); }
+  .proposed[data-s1-component="lnb"] [data-s1-part="item"]:not([aria-current="page"]):not([aria-disabled="true"]) { color: var(--color-gray-dark-900); }
+
+  .lnb-row { display:flex; gap:32px; align-items:flex-start; flex-wrap:wrap; }
+  .lnb-row nav { height:auto; min-height:0; }
+</style>
+</head>
+<body>
+<h1>다크모드 수정안 비교</h1>
+<p class="note">「호버」「포커스」라고 적힌 칸은 그 모습으로 고정해 둔 것이고, 나머지 칸은 직접 마우스를 올리거나 눌러 볼 수 있습니다.</p>
+
+<h2>1. 입력칸 — 포커스 때 바탕</h2>
+<div class="in-table">
+  <div class="cap">기본</div>
+  <div class="cap">포커스 · 지금</div>
+  <div class="cap new">포커스 · 수정안</div>
+
+  <div data-s1-component="input" data-size="md" data-break="pc"><div data-s1-part="field"><input data-s1-part="control" aria-label="기본 빈칸" placeholder="입력해 주세요"></div></div>
+  <div data-s1-component="input" data-size="md" data-break="pc" class="is-focus"><div data-s1-part="field"><input data-s1-part="control" aria-label="포커스 지금 빈칸" placeholder="입력해 주세요"></div></div>
+  <div data-s1-component="input" data-size="md" data-break="pc" class="is-focus proposed"><div data-s1-part="field"><input data-s1-part="control" aria-label="포커스 수정안 빈칸" placeholder="입력해 주세요"></div></div>
+
+  <div data-s1-component="input" data-size="md" data-break="pc"><div data-s1-part="field"><input data-s1-part="control" aria-label="기본 입력됨" value="홍길동"></div></div>
+  <div data-s1-component="input" data-size="md" data-break="pc" class="is-focus"><div data-s1-part="field"><input data-s1-part="control" aria-label="포커스 지금 입력됨" value="홍길동"></div></div>
+  <div data-s1-component="input" data-size="md" data-break="pc" class="is-focus proposed"><div data-s1-part="field"><input data-s1-part="control" aria-label="포커스 수정안 입력됨" value="홍길동"></div></div>
+
+  <div class="val">바탕 <b>#1C1D23</b></div>
+  <div class="val">바탕 <b>#24252C</b> (한 단계 밝음)</div>
+  <div class="val">바탕 <b>#1C1D23</b> (기본과 같음)</div>
+</div>
+
+<h2>2. LNB — 호버 바탕 · 기본 글자</h2>
+<div class="lnb-row">
+  <div>
+    <div class="cap">지금</div>
+    <nav data-s1-component="lnb" data-variant="menu" data-size="md" data-state="expanded" aria-label="지금">
+      <div data-s1-part="head"><button type="button" data-s1-part="collapse" aria-label="메뉴 접기"><span data-s1-part="collapse-icon" aria-hidden="true"></span></button></div>
+      <ul data-s1-part="items">
+        <li><a data-s1-part="item" href="#" aria-current="page"><span data-s1-part="item-icon" aria-hidden="true"></span>개요 (선택)</a></li>
+        <li><a data-s1-part="item" href="#" class="is-hover"><span data-s1-part="item-icon" aria-hidden="true"></span>기반 토큰 (호버)</a></li>
+        <li><a data-s1-part="item" href="#"><span data-s1-part="item-icon" aria-hidden="true"></span>컴포넌트 (기본)</a></li>
+        <li><a data-s1-part="item" href="#"><span data-s1-part="item-icon" aria-hidden="true"></span>패턴 (기본)</a></li>
+        <li><a data-s1-part="item" href="#" aria-disabled="true"><span data-s1-part="item-icon" aria-hidden="true"></span>준비 중</a></li>
+      </ul>
+    </nav>
+    <div class="val">호버 바탕 <b>#24252C</b><br>기본 글자 <b>#B8BABF</b></div>
+  </div>
+  <div>
+    <div class="cap new">수정안</div>
+    <nav data-s1-component="lnb" class="proposed" data-variant="menu" data-size="md" data-state="expanded" aria-label="수정안">
+      <div data-s1-part="head"><button type="button" data-s1-part="collapse" aria-label="메뉴 접기"><span data-s1-part="collapse-icon" aria-hidden="true"></span></button></div>
+      <ul data-s1-part="items">
+        <li><a data-s1-part="item" href="#" aria-current="page"><span data-s1-part="item-icon" aria-hidden="true"></span>개요 (선택)</a></li>
+        <li><a data-s1-part="item" href="#" class="is-hover"><span data-s1-part="item-icon" aria-hidden="true"></span>기반 토큰 (호버)</a></li>
+        <li><a data-s1-part="item" href="#"><span data-s1-part="item-icon" aria-hidden="true"></span>컴포넌트 (기본)</a></li>
+        <li><a data-s1-part="item" href="#"><span data-s1-part="item-icon" aria-hidden="true"></span>패턴 (기본)</a></li>
+        <li><a data-s1-part="item" href="#" aria-disabled="true"><span data-s1-part="item-icon" aria-hidden="true"></span>준비 중</a></li>
+      </ul>
+    </nav>
+    <div class="val">호버 바탕 <b>#2E2F38</b> (한 단계 밝음)<br>기본 글자 <b>#ECEDF0</b> (한 단계 밝음)</div>
+  </div>
+</div>
+</body>
+</html>

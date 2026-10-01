@@ -1,8 +1,8 @@
 {
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
-  "_updated": "2026-09-30",
-  "count": 699,
+  "_updated": "2026-10-01",
+  "count": 700,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -192,6 +192,7 @@
     "color:color/navigation/indicator/selected",
     "color:color/navigation/label/default",
     "color:color/navigation/label/default-alt",
+    "color:color/navigation/label/default-side",
     "color:color/navigation/label/hover",
     "color:color/navigation/label/selected",
     "color:color/navigation/submenu/label/default",
@@ -1899,6 +1900,18 @@
       "evidence": {
         "transcript": "f8347252-7dc2-45d6-8561-8f0fb20c04a6.jsonl",
         "at": "2026-09-30T07:43:51.980Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "color:color/navigation/label/default-side",
+      "by": "river",
+      "reason": "LNB 메뉴명 다크 글자 한 단계 위 — 비교 화면 대조 후 승인",
+      "approvedAt": "2026-10-01T01:30:38.269Z",
+      "quote": "승인할게, 넷 다 같이 바꿔줘",
+      "evidence": {
+        "transcript": "2be71951-f7e0-4eb6-8ab9-ecbd2527bc67.jsonl",
+        "at": "2026-10-01T01:28:51.698Z"
       },
       "recordedBy": "orchestrator"
     }

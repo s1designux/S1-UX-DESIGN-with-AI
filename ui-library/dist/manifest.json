@@ -1,9 +1,9 @@
 {
   "id": "s1-ui",
-  "version": "0.14.7",
-  "releasedAt": "2026-09-30",
+  "version": "0.14.8",
+  "releasedAt": "2026-10-01",
   "status": "approved",
-  "canonicalFingerprint": "07a8ce7347453aa1fe773e6a95f8dceeab74411186abd4ec25cda3450d2eccef",
+  "canonicalFingerprint": "4857441dd0461149d026a94dcbaa30bcdd7977108a9847ec59a9d4a64d680d98",
   "tokenMapFingerprint": "796fb798dd329910ba6c42a29fb4af9e0fd217446b3fa847e140bc70a0a8f4c7",
   "commonCssDependencies": [
     "assets/css/tokens.css",
@@ -16,7 +16,7 @@
     }
   ],
   "commonCssFingerprints": {
-    "assets/css/tokens.css": "6823efb7ec543e0aa038e47617e0410730cea202d5188f30ba628f79fa7b76de",
+    "assets/css/tokens.css": "cecff6ce9b33b47db4380f351b7fea04e0d752cfb2ad14c0d7bd10ed6eb240d6",
     "assets/css/typography.css": "cd32269e4b7979eec671ec6eaa40b1e2aa1acccaa8fc0b33201234fb5bf1a65b"
   },
   "jsRequired": true,
@@ -664,11 +664,11 @@
   "components": [
     {
       "id": "input",
-      "version": "0.3.5",
+      "version": "0.3.6",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "f90d7220545f2f19508ee5670861c1d45f626b76a66a961d82e313b07b82be4e",
-      "sourceFingerprint": "b6a39b5c77f2a5a1879c6da6e9b2849ec42421e2aaa855472d499f50b030e234",
+      "canonicalFingerprint": "a791a78480230ca297bc776cdef482e4f981ca20d74351c9c5d65b55888ac8c3",
+      "sourceFingerprint": "1241507573f4522daf67b780ca0c055e6064e809bf2e0793237959b52fbd5c86",
       "css": "components/input.css",
       "js": "components/input.js",
       "example": "examples/input.html",
@@ -769,11 +769,11 @@
     },
     {
       "id": "select",
-      "version": "0.2.8",
+      "version": "0.2.9",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "bfbce7d0cba469da7c963f2edb589fe7b1cdb3276cee8c666094ccaa16024032",
-      "sourceFingerprint": "9bca1c9f4b31c2bad8ecea84030cb70daecc2e7e758edbf1c663bd25f09e01fb",
+      "canonicalFingerprint": "b25c9d9919206acde513011867fa7067edc2922a9bd5d0e8df19c74f70bdc5fe",
+      "sourceFingerprint": "07f93d7cd14f9c1a4ab5dd480398937736c504646ffe5eb247bc5c16e4da9ca3",
       "css": "components/select.css",
       "js": "components/select.js",
       "example": "examples/select.html",
@@ -828,11 +828,11 @@
     },
     {
       "id": "textarea",
-      "version": "0.2.3",
+      "version": "0.2.4",
       "status": "approved",
       "jsRequired": false,
-      "canonicalFingerprint": "2ded0158700a6543ee6640dd9ae7cf5621d311c1a9e2859346ffa9b38ff6e3bd",
-      "sourceFingerprint": "ef8ca7e4806dea1722d984ead4bcbc5588f7701aa8664be0e9a2c9683d1093a2",
+      "canonicalFingerprint": "10f9384cabeb960c182b0fe2216f0ebbc9704e7a9006a9859927d07f5a124e56",
+      "sourceFingerprint": "498ea18652dd530aecd845bcf754fdd19327e9a83ebc4abd4b728d7b7bdb1f21",
       "css": "components/textarea.css",
       "js": "components/textarea.js",
       "example": "examples/textarea.html",
@@ -929,11 +929,11 @@
     },
     {
       "id": "date-picker",
-      "version": "0.2.9",
+      "version": "0.2.10",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "378e4711a2e83494c5d7fba6df67a1c13b03faa25ea113173283719a43bcd101",
-      "sourceFingerprint": "d5d0eb3d67597b3d0d5540c563635f794a36937a265f9ca8ffc92134d17bb892",
+      "canonicalFingerprint": "be55eee1f5332bac2ed4952fb5c01d0e469a8bd8e4ad08e95efd271d46cf41f9",
+      "sourceFingerprint": "61abde32c7023dfcb7c62a07465e727a2a8ff4a8c659682aae042e5219871030",
       "css": "components/date-picker.css",
       "js": "components/date-picker.js",
       "example": "examples/date-picker.html",

@@ -218,9 +218,8 @@
   background: transparent;
   border: 0;
   border-radius: var(--radius-6);
-  /* 글자 색은 텍스트 색상 단계 기준을 따른다 — 메뉴명 = 본문 2단계(text/body/secondary).
-     라이트·다크 값은 그 단계가 갖는다. 모드별 덮어쓰기를 두지 않는다(river 2026-09-30). */
-  color: var(--color-text-body-secondary);
+  /* 글자 색 = LNB 전용 navigation/label/default-side — 라이트는 본문 2단계와 같고, 다크만 한 단계 위(river 2026-10-01). */
+  color: var(--color-navigation-label-default-side);
   display: flex;
   gap: var(--spacing-8);
   min-height: var(--sizing-40);
