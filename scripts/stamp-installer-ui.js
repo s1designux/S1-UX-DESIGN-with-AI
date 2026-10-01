@@ -93,11 +93,34 @@ function replaceAll(html, map) {
   return out;
 }
 
+/**
+ * 가이드 색 토큰을 ui.html 에 심는다(river 지시 2026-10-01 — 설치기 전체를 가이드 색으로).
+ *   손으로 값을 베끼지 않는다: 파생 표면 assets/css/tokens.css 를 그대로 가져와
+ *   :root 블록은 그대로, [data-theme="dark"] 블록은 플러그인이 따르는 OS 다크 설정으로 감싼다.
+ *   tokens.css 는 tokens:reconcile 이 정본(vars-data.ts)에서 다시 만드므로 정본 → 설치기가 자동으로 따라온다.
+ */
+const TOKENS_CSS = path.join(ROOT, "assets/css/tokens.css");
+const TOKENS_MARK = "/*{{S1_TOKENS}}*/";
+function s1TokensCss() {
+  const css = fs.readFileSync(TOKENS_CSS, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+  const blocks = [...css.matchAll(/(:root|\[data-theme="dark"\])\s*\{([^}]*)\}/g)];
+  const light = blocks.filter((b) => b[1] === ":root").map((b) => b[2].trim()).join("\n");
+  const dark = blocks.filter((b) => b[1] !== ":root").map((b) => b[2].trim()).join("\n");
+  if (!light || !dark) {
+    throw new Error("[installer] tokens.css 에서 :root / [data-theme=\"dark\"] 블록을 찾지 못했습니다 — 가이드 색을 심을 수 없어 중단합니다.");
+  }
+  return `:root {\n${light}\n}\n@media (prefers-color-scheme: dark) { :root {\n${dark}\n} }`;
+}
+
 async function run() {
   const { build } = require("./installer-update-notes");
   const notes = await build();   // 실패 시 던짐
 
   let html = fs.readFileSync(SRC, "utf8");
+  if (!html.includes(TOKENS_MARK)) {
+    throw new Error(`[installer] ui.html 에 가이드 색 자리 ${TOKENS_MARK} 가 없습니다 — 손으로 지웠는지 확인하세요.`);
+  }
+  html = html.replace(TOKENS_MARK, s1TokensCss());
   // 빌드 시각은 화면에서 뺐다(river 지시 2026-09-18) — 검수 화면은 작업자용이라 우리 쪽 시각이 필요 없다.
   // 로그에는 그대로 남기므로 배포본이 언제 구워졌는지는 여기서 확인한다.
   html = replaceAll(html, {

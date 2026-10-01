@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <style>
+  /*{{S1_TOKENS}}*/
   * { box-sizing: border-box; margin: 0; padding: 0; }
   /* ── 앱셸 ──
      문서(html/body)는 스크롤하지 않는다. 스크롤은 내부 .iscroll 한 곳만 담당하고
@@ -11,10 +12,10 @@
   html, body { height: 100%; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 13px; color: #111827;
-    background: #fff;
-    /* 하단 60px = 고정 내비바 자리. 그 위 20px 은 .install-footer 가 자기 padding 으로 가진다. */
-    padding: 20px 20px 60px;
+    font-size: 13px; color: var(--color-text-body-primary);
+    background: var(--color-bg-level-0);
+    /* 하단 72px = 고정 내비바 자리(LNB 접힘 칸 64 + 위아래 4). 그 위 20px 은 .install-footer 가 자기 padding 으로 가진다. */
+    padding: 20px 20px 72px;
     display: flex; flex-direction: column;
     overflow: hidden;
   }
@@ -25,7 +26,7 @@
   }
   .header-icon {
     width: 36px; height: 36px; border-radius: 10px;
-    background: #111827; display: flex; align-items: center;
+    background: var(--color-bg-level-3); display: flex; align-items: center;
     justify-content: center; font-size: 18px; flex-shrink: 0;
   }
   /* 제목 + 버전이 한 줄에 들어가야 한다(폭 440 · 우측 빌드 스탬프와 경쟁) → 13px + nowrap.
@@ -33,33 +34,33 @@
      가로로 밀어냈다(플러그인 전체가 가로 스크롤). 글자를 줄이고, 그래도 모자라면 말줄임으로
      끊어 창 밖으로 밀지 않는다. */
   .header > div { min-width: 0; }
-  .header-title { font-size: 12.5px; font-weight: 700; color: #111827; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .header-title { font-size: 12.5px; font-weight: 700; color: var(--color-text-title-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   /* 버전 배지 — 손으로 올린다 */
-  .header-build { font-size:10px; color:#9ca3af; font-weight:400; white-space:nowrap; }
-  .header-ver { font-size: 10px; font-weight: 600; color: #1d6ceb; margin-left: 5px; vertical-align: 1px; }
-  .header-sub   { font-size: 11px; color: #9ca3af; margin-top: 2px; }
+  .header-build { font-size:10px; color:var(--color-text-state-helper); font-weight:400; white-space:nowrap; }
+  .header-ver { font-size: 10px; font-weight: 600; color: var(--color-text-state-accent); margin-left: 5px; vertical-align: 1px; }
+  .header-sub   { font-size: 11px; color: var(--color-text-state-helper); margin-top: 2px; }
 
   /* ── 선택 리스트 ── */
   .select-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
   .select-row {
-    border: 1px solid #e5e7eb; border-radius: 10px;
+    border: 1px solid var(--color-control-border-default); border-radius: 10px;
     padding: 12px 14px; display: flex; align-items: flex-start; gap: 10px;
     cursor: pointer; transition: border-color 0.12s, background 0.12s;
   }
-  .select-row:hover { border-color: #c7d2fe; background: #fafbff; }
-  .select-row.checked { border-color: #1d6ceb; background: #f5f9ff; }
+  .select-row:hover { border-color: var(--color-control-border-default); background: var(--color-control-bg-hover); }
+  .select-row.checked { border-color: var(--color-control-border-selected); background: var(--color-dropdown-option-bg-selected); }
   .select-row input { margin-top: 2px; flex-shrink: 0; width: 15px; height: 15px; cursor: pointer; }
   .select-body { flex: 1; }
-  .select-name { font-size: 13px; font-weight: 600; color: #111827; }
-  .tag-updating { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 10px; font-size: 10px; font-weight: 600; background: #fff7ed; color: #c2410c; vertical-align: middle; }
-  .select-desc { font-size: 11px; color: #6b7280; margin-top: 3px; line-height: 1.5; }
-  .select-date { font-size: 10px; color: #9ca3af; margin-top: 4px; }
-  .select-date strong { color: #6b7280; font-weight: 600; }
+  .select-name { font-size: 13px; font-weight: 600; color: var(--color-text-title-primary); }
+  .tag-updating { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 10px; font-size: 10px; font-weight: 600; background: var(--color-bg-level-2); color: var(--color-text-state-caution); vertical-align: middle; }
+  .select-desc { font-size: 11px; color: var(--color-text-body-tertiary); margin-top: 3px; line-height: 1.5; }
+  .select-date { font-size: 10px; color: var(--color-text-state-helper); margin-top: 4px; }
+  .select-date strong { color: var(--color-text-body-tertiary); font-weight: 600; }
 
   .dep-note {
-    background: #f9fafb; border: 1px solid #e5e7eb;
+    background: var(--color-bg-level-1); border: 1px solid var(--color-line-default);
     border-radius: 8px; padding: 10px 12px;
-    font-size: 10.5px; color: #6b7280; margin-bottom: 16px; line-height: 1.6;
+    font-size: 10.5px; color: var(--color-text-body-tertiary); margin-bottom: 16px; line-height: 1.6;
   }
 
   /* ══════════ 설치 탭 3화면 상태기계 (선택 → 설치중 → 완료) ══════════
@@ -76,50 +77,54 @@
   @keyframes s1-spin { to { transform: rotate(360deg); } }
   .spinner {
     width: 40px; height: 40px; margin: 30px auto 18px; border-radius: 50%;
-    border: 3px solid #e5e7eb; border-top-color: #1d6ceb;
+    border: 3px solid var(--color-bg-level-3); border-top-color: var(--color-line-blue);
     animation: s1-spin 0.8s linear infinite;
   }
-  #progress-pct { text-align: center; font-size: 30px; font-weight: 700; color: #111827; letter-spacing: -0.5px; line-height: 1.1; }
-  #progress-heading { text-align: center; font-size: 13px; font-weight: 600; color: #374151; margin-top: 6px; }
-  #progress-label { font-size: 11px; color: #6b7280; margin: 8px 0 12px; word-break: break-all; text-align: center; min-height: 15px; }
-  #progress-bar-track { height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; }
-  #progress-bar-fill { height: 100%; background: #1d6ceb; border-radius: 3px; width: 0%; transition: width 0.2s ease; }
+  #progress-pct { text-align: center; font-size: 30px; font-weight: 700; color: var(--color-text-title-primary); letter-spacing: -0.5px; line-height: 1.1; }
+  #progress-heading { text-align: center; font-size: 13px; font-weight: 600; color: var(--color-text-body-secondary); margin-top: 6px; }
+  #progress-label { font-size: 11px; color: var(--color-text-body-tertiary); margin: 8px 0 12px; word-break: break-all; text-align: center; min-height: 15px; }
+  #progress-bar-track { height: 6px; background: var(--color-bg-level-3); border-radius: 3px; overflow: hidden; }
+  #progress-bar-fill { height: 100%; background: var(--color-line-blue); border-radius: 3px; width: 0%; transition: width 0.2s ease; }
   .warn-note {
-    margin-top: 20px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px;
-    padding: 12px 14px; font-size: 11.5px; color: #92400e; line-height: 1.75;
+    margin-top: 20px; background: var(--color-bg-level-1); border: 1px solid var(--color-line-default); border-radius: 10px;
+    padding: 12px 14px; font-size: 11.5px; color: var(--color-text-state-caution); line-height: 1.75;
   }
-  .warn-note b { color: #7c2d12; }
+  .warn-note b { color: var(--color-text-state-caution); }
 
   /* ── result ── */
-  .result-success { background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
-  .result-title { font-size: 14px; font-weight: 700; color: #166534; margin-bottom: 6px; }
-  .result-sub { font-size: 12px; color: #374151; line-height: 1.7; }
-  .result-error { background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
-  .result-error-title { font-size: 14px; font-weight: 700; color: #991b1b; margin-bottom: 6px; }
+  .result-success { background: var(--color-bg-level-1); border: 1px solid var(--color-line-blue); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  .result-title { font-size: 14px; font-weight: 700; color: var(--color-text-state-correct); margin-bottom: 6px; }
+  .result-sub { font-size: 12px; color: var(--color-text-body-secondary); line-height: 1.7; }
+  .result-error { background: var(--color-bg-level-1); border: 1px solid var(--color-form-control-border-error); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  .result-error-title { font-size: 14px; font-weight: 700; color: var(--color-text-state-caution); margin-bottom: 6px; }
 
   /* ── 하단 내비게이션 바 (2026-09-02 — 상단 탭에서 이전) ──
-     상단 탭이 헤더와 붙어 어느 화면인지 잘 드러나지 않아, 라이팅 도우미 플러그인과 같은
-     하단 고정 내비로 옮겼다. 아이콘 + 라벨 · 선택 시 파랑(#1d6ceb) · 햄버거 메뉴 없음. */
+     칸 모양은 S-1 LNB 접힘(Collapsed) 항목 사양을 따른다(river 지시 2026-10-01 · build-components buildSideNavItem):
+     64×64 · 안쪽 2 · 아이콘 24 위 / 메뉴명 아래 간격 2 · radius 6 · 메뉴명 body/12R(선택 title/12B).
+     색: 기본 아이콘 icon/gray-dark · 글자 navigation/label/default-side · hover 바탕 navigation/bg--hover
+         · 선택 = 바탕은 기본과 같고 아이콘·메뉴명만 navigation/label/selected 파랑(river 지시 2026-10-01 — 기존 탭 선택 사양 유지). */
   .tab-bar {
-    position: fixed; left: 0; right: 0; bottom: 0; height: 60px; z-index: 900;
-    display: flex; align-items: stretch;
-    background: #fff; border-top: 1px solid #e5e7eb;
+    position: fixed; left: 0; right: 0; bottom: 0; height: 72px; z-index: 900;
+    display: flex; align-items: center; justify-content: space-around;
+    padding: var(--spacing-4) 0;
+    background: var(--color-navigation-bg); border-top: 1px solid var(--color-line-default);
   }
   /* 설치 중에는 이동 금지 — 눌리지 않는다는 것이 보이게 흐리게 처리한다. */
   .tab-bar.locked { opacity: 0.45; pointer-events: none; }
   .tab-btn {
-    flex: 1; min-width: 0;
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-    padding: 6px 2px; border: none; background: none; border-radius: 0;
-    font-size: 11px; font-weight: 500; line-height: 1; color: #7f7f7f; cursor: pointer;
-    transition: color 0.12s;
+    flex: 0 0 var(--sizing-64); width: var(--sizing-64); height: var(--sizing-64);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--spacing-2);
+    padding: var(--spacing-2); border: none; background: none; border-radius: var(--radius-6);
+    font-size: var(--font-size-12); font-weight: var(--font-weight-regular); line-height: var(--line-height-130); letter-spacing: 0;
+    text-align: center; word-break: keep-all;
+    color: var(--color-navigation-label-default-side); cursor: pointer;
+    transition: background 0.12s, color 0.12s;
   }
-  .tab-btn .tab-ico { display: flex; align-items: center; justify-content: center; color: #c4c4c4; transition: color 0.12s; }
-  .tab-btn .tab-ico svg { display: block; }
-  .tab-btn:hover { color: #353535; }
-  .tab-btn:hover .tab-ico { color: #9a9a9a; }
-  .tab-btn.active { color: #1d6ceb; font-weight: 600; }
-  .tab-btn.active .tab-ico { color: #1d6ceb; }
+  .tab-btn .tab-ico { display: flex; align-items: center; justify-content: center; width: var(--sizing-24); height: var(--sizing-24); color: var(--color-icon-gray-dark); }
+  .tab-btn .tab-ico svg { display: block; width: var(--sizing-24); height: var(--sizing-24); }
+  .tab-btn:hover { background: var(--color-navigation-bg--hover); }
+  .tab-btn.active { color: var(--color-navigation-label-selected); font-weight: var(--font-weight-bold); }
+  .tab-btn.active .tab-ico { color: var(--color-navigation-label-selected); }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
   /* 설치 탭만 flex 컬럼 셸 — 검수 탭(#audit-root)의 자체 레이아웃은 건드리지 않는다 */
@@ -128,31 +133,31 @@
   #tab-audit.tab-panel.active { display:flex; flex-direction:column; flex:1 1 auto; min-height:0; overflow:hidden; }
   /* 패턴 탭도 설치 탭과 같은 flex 컬럼 셸 — 하단 버튼 줄이 스크롤 밖에 고정된다. */
   #tab-pattern.tab-panel.active { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; }
-  #tab-pattern { --muted: #9ca3af; }
-  #pattern-pct { text-align: center; font-size: 30px; font-weight: 700; color: #111827; letter-spacing: -0.5px; line-height: 1.1; }
-  #pattern-heading { text-align: center; font-size: 13px; font-weight: 600; color: #374151; margin-top: 6px; }
-  #pattern-label { font-size: 11px; color: #6b7280; margin: 8px 0 12px; word-break: break-all; text-align: center; min-height: 15px; }
-  #pattern-bar-track { height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; }
-  #pattern-bar-fill { height: 100%; background: #1d6ceb; border-radius: 3px; width: 0%; transition: width 0.2s ease; }
-  .pattern-empty { font-size: 12px; color: #9ca3af; padding: 24px 4px; text-align: center; }
+  #tab-pattern { --muted: var(--color-text-state-helper); }
+  #pattern-pct { text-align: center; font-size: 30px; font-weight: 700; color: var(--color-text-title-primary); letter-spacing: -0.5px; line-height: 1.1; }
+  #pattern-heading { text-align: center; font-size: 13px; font-weight: 600; color: var(--color-text-body-secondary); margin-top: 6px; }
+  #pattern-label { font-size: 11px; color: var(--color-text-body-tertiary); margin: 8px 0 12px; word-break: break-all; text-align: center; min-height: 15px; }
+  #pattern-bar-track { height: 6px; background: var(--color-bg-level-3); border-radius: 3px; overflow: hidden; }
+  #pattern-bar-fill { height: 100%; background: var(--color-line-blue); border-radius: 3px; width: 0%; transition: width 0.2s ease; }
+  .pattern-empty { font-size: 12px; color: var(--color-text-state-helper); padding: 24px 4px; text-align: center; }
   /* 설치 카드의 .select-date 와 같은 모양이지만 클래스는 따로 둔다 —
      Gate 6c 가 .select-date 개수로 '설치 카드 4장'을 세기 때문. */
-  .pattern-where { font-size: 10px; color: #9ca3af; margin-top: 4px; }
-  .pattern-where b { color: #6b7280; font-weight: 600; }
+  .pattern-where { font-size: 10px; color: var(--color-text-state-helper); margin-top: 4px; }
+  .pattern-where b { color: var(--color-text-body-tertiary); font-weight: 600; }
   /* 필요한 부품이 아직 없는 패턴 — 고를 수 없다는 것이 눈에 보이게. */
   .select-row.blocked { opacity: 0.55; cursor: not-allowed; border-style: dashed; }
   .select-row.blocked input { cursor: not-allowed; }
-  .pattern-missing { margin-top: 5px; font-size: 10.5px; color: #b45309; line-height: 1.6; }
-  .pattern-count { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 10px; font-size: 10px; font-weight: 600; background: #eef4ff; color: #1d4ed8; vertical-align: middle; }
-  .pattern-warn { background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 12px 14px; font-size: 11.5px; color: #92400e; line-height: 1.7; }
+  .pattern-missing { margin-top: 5px; font-size: 10.5px; color: var(--color-text-state-caution); line-height: 1.6; }
+  .pattern-count { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 10px; font-size: 10px; font-weight: 600; background: var(--color-bg-level-3); color: var(--color-text-state-accent); vertical-align: middle; }
+  .pattern-warn { background: var(--color-bg-level-1); border: 1px solid var(--color-line-default); border-radius: 10px; padding: 12px 14px; font-size: 11.5px; color: var(--color-text-state-caution); line-height: 1.7; }
   .pattern-warn ul { margin: 6px 0 0 16px; }
 
   /* 가이드(부품)가 아직 없어 패턴을 만들 수 없을 때 — 목록보다 '무엇을 먼저 하면 되는지'를 위에 둔다. */
-  .pattern-need { display: none; padding: 20px 4px 18px; margin-bottom: 14px; border-bottom: 1px solid #e5e7eb; text-align: center; }
+  .pattern-need { display: none; padding: 20px 4px 18px; margin-bottom: 14px; border-bottom: 1px solid var(--color-line-default); text-align: center; }
   .pattern-need.visible { display: block; }
-  .pattern-need .need-title { font-size: 13px; font-weight: 700; color: #111827; }
-  .pattern-need .need-desc { margin-top: 6px; font-size: 11.5px; color: #6b7280; line-height: 1.7; }
-  .pattern-need .btn-need { margin-top: 14px; padding: 9px 18px; border: 1px solid #1d6ceb; border-radius: 8px; background: #1d6ceb; color: #fff; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+  .pattern-need .need-title { font-size: 13px; font-weight: 700; color: var(--color-text-title-primary); }
+  .pattern-need .need-desc { margin-top: 6px; font-size: 11.5px; color: var(--color-text-body-tertiary); line-height: 1.7; }
+  .pattern-need .btn-need { margin-top: 14px; padding: 9px 18px; border: 1px solid var(--color-button-border-primary--default); border-radius: 8px; background: var(--color-button-bg-primary--default); color: var(--color-button-label-primary--default); font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
   .pattern-need .btn-need:hover { filter: brightness(0.95); }
   /* 만들 수 있는 패턴이 하나도 없을 때 — 지금 할 일은 설치뿐이므로 목록·설명·버튼줄을 모두 감추고
      안내와 버튼만 화면 가운데 둔다 (검수 탭의 '최신 가이드가 아닙니다' 화면과 같은 모양). */
@@ -164,9 +169,9 @@
 
   /* ── info tooltip (사용 방법 ⓘ 호버) ── */
   .info-ic { display: inline-flex; align-items: center; justify-content: center; margin-left: 8px; width: 18px; height: 18px; border-radius: 50%; color: var(--muted); cursor: help; position: relative; font-size: 13px; outline: none; }
-  .info-ic:hover, .info-ic:focus { color: #1d6ceb; }
-  .info-tip { display: none; position: absolute; top: 24px; left: 0; z-index: 50; width: 260px; padding: 10px 12px; background: #1f2430; color: #eef1f6; border-radius: 6px; font-size: 11px; line-height: 1.6; box-shadow: 0 6px 18px rgba(0,0,0,0.25); font-weight: 400; text-align: left; white-space: normal; }
-  .info-tip b { color: #fff; }
+  .info-ic:hover, .info-ic:focus { color: var(--color-icon-blue); }
+  .info-tip { display: none; position: absolute; top: 24px; left: 0; z-index: 50; width: 260px; padding: 10px 12px; background: var(--color-surface-raised); color: var(--color-text-body-primary); border: 1px solid var(--color-line-default); border-radius: 6px; font-size: 11px; line-height: 1.6; box-shadow: var(--shadow-raised); font-weight: 400; text-align: left; white-space: normal; }
+  .info-tip b { color: var(--color-text-title-primary); }
   .info-ic:hover .info-tip, .info-ic:focus .info-tip { display: block; }
   .info-hint { color: var(--muted); font-size: 11px; }
 
@@ -181,98 +186,87 @@
   /*   .info-ic 이 color: var(--muted) 를 참조하는데 --muted 는 #audit-root 스코프에만 있다.
        기존 규칙을 고치는 대신 설치 탭 컨테이너에만 같은 이름으로 정의한다.
        #audit-root 는 자기 --muted 를 재선언하므로(#audit-root 가 더 가까운 조상) 검수 탭은 무영향. */
-  #tab-install { --muted: #9ca3af; }
-  .update-row { display: flex; align-items: center; margin-bottom: 14px; font-size: 11px; color: #6b7280; flex: 0 0 auto; }
+  #tab-install { --muted: var(--color-text-state-helper); }
+  .update-row { display: flex; align-items: center; margin-bottom: 14px; font-size: 11px; color: var(--color-text-body-tertiary); flex: 0 0 auto; }
   /* 라벨 자체가 툴팁 트리거 — 우측 ⓘ 아이콘은 두지 않는다 */
   .update-label { position: relative; font-weight: 600; cursor: help; outline: none; }
-  .update-label:hover, .update-label:focus { color: #1d6ceb; }
+  .update-label:hover, .update-label:focus { color: var(--color-text-state-accent); }
   .update-label:hover .info-tip, .update-label:focus .info-tip { display: block; }
   /* 스크롤 영역 맨 아래 행이라 아래로 열면 잘린다 → 위로, 라벨 왼쪽에 맞춰 편다 */
   .update-label .info-tip--up { left: 0; right: auto; }
   .update-tip { line-height: 1.7; }
-  .update-legend { display: block; margin-top: 6px; padding-top: 6px; border-top: 1px solid #3a4050; color: #9ca3af; font-size: 10px; }
+  .update-legend { display: block; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--color-line-default); color: var(--color-text-state-helper); font-size: 10px; }
   /* ── 모듈(재구성 필요) 카드 ── */
-  .module-card { border: 1px dashed #d1a54a; border-radius: 8px; padding: 10px 12px; margin-bottom: 6px; background: #fffdf6; }
-  .part-row { border-top: 1px solid #eadfc4; padding: 7px 0 8px; }
+  .module-card { border: 1px dashed var(--color-control-border-default); border-radius: 8px; padding: 10px 12px; margin-bottom: 6px; background: var(--color-bg-level-1); }
+  .part-row { border-top: 1px solid var(--color-line-default); padding: 7px 0 8px; }
   .part-head { display: flex; align-items: center; gap: 6px; }
-  .part-name { font-size: 11.5px; font-weight: 600; color: #2b2b2b; }
+  .part-name { font-size: 11.5px; font-weight: 600; color: var(--color-text-body-primary); }
   .part-badge { font-size: 10px; font-weight: 600; margin-left: auto; }
-  .part-meta { font-size: 10px; color: #7a6a45; margin-top: 2px; line-height: 1.5; }
+  .part-meta { font-size: 10px; color: var(--color-text-body-tertiary); margin-top: 2px; line-height: 1.5; }
   /* 부품 선택 인풋 — 정본 Select XXSM(PC) 규격: 높이 28 · 12px · radius 4 · border 1 · 좌16/우8 · 최소폭 140(build-components.ts buildSelect).
-     플러그인 UI 는 tokens.css 를 못 쓰므로 토큰이 가리키는 실제 값을 그대로 적는다:
-     bg=base/white #FFFFFF · border=gray/200 #D9D9D9 · text=gray/900 #202020 (다크: gray-dark/100·500·800) */
+     색은 빌드 때 들어오는 가이드 토큰을 그대로 쓴다(form-control-* — 다크도 토큰이 바꾼다). */
   .ds-select {
     flex: 0 0 140px; width: 140px; height: 28px;
     font: 400 12px/1 -apple-system, "SF Pro Text", Pretendard, sans-serif;
     padding: 0 28px 0 16px; margin: 0;
-    border: 1px solid #D9D9D9; border-radius: 4px;
-    background-color: #FFFFFF; color: #202020;
+    border: 1px solid var(--color-form-control-border-default); border-radius: 4px;
+    background-color: var(--color-form-control-bg-default); color: var(--color-form-control-text-default);
     -webkit-appearance: none; appearance: none;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20' fill='none'><path d='M6.5 8.25L10 11.75L13.5 8.25' stroke='%23414141' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
     background-repeat: no-repeat; background-position: right 8px center;
     text-overflow: ellipsis; cursor: pointer;
   }
-  @media (prefers-color-scheme: dark) {
-    .ds-select { background-color: #1C1D23; border-color: #3E4049; color: #B8BABF; }
-  }
   .part-selects { display: flex; align-items: center; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
   .variant-summary { display: flex; align-items: center; gap: 8px; flex: 1 1 100%; min-width: 0; font-size: 11.5px; }
   .variant-summary [data-role="variant-label"] { flex: 1 1 auto; min-width: 0; line-height: 1.45; }
   .variant-summary b { display: block; font-weight: 600; word-break: keep-all; overflow-wrap: break-word; }
-  .variant-summary button { flex: 0 0 auto; height: 24px; padding: 0 8px; border-radius: 4px; border: 1px solid var(--line, #E3E5E8); background: transparent; color: inherit; font-size: 10.5px; cursor: pointer; }
+  .variant-summary button { flex: 0 0 auto; height: 24px; padding: 0 8px; border-radius: 4px; border: 1px solid var(--color-line-default); background: transparent; color: inherit; font-size: 10.5px; cursor: pointer; }
   .part-selects .grow { flex: 1 1 auto; width: auto; min-width: 0; }
   .part-actions { display: flex; align-items: center; gap: 6px; justify-content: flex-end; margin-top: 6px; }
   /* 버튼 — 정본 Button XXSM 규격: 높이 28 · 12px/500 · radius 4 · border 1 · 좌우 8 · 최소폭 56.
      기본(secondary): bg base/white · border gray/200 · label gray/800 — 정본 color/button/*-secondary--default */
   .module-card button, #audit-root .swap-card button {
     height: 28px; min-width: 56px; padding: 0 8px; border-radius: 4px;
-    border: 1px solid #D9D9D9; background: #FFFFFF; color: #353535;
+    border: 1px solid var(--color-button-border-secondary--default); background: var(--color-button-bg-secondary--default); color: var(--color-button-label-secondary--default);
     font: 500 12px/1.3 -apple-system, "SF Pro Text", Pretendard, sans-serif;
     white-space: nowrap;
   }
-  .module-card button.primary, #audit-root .swap-card button.primary { background: #1D6CEB; border-color: #1D6CEB; color: #FFFFFF; }
-  @media (prefers-color-scheme: dark) {
-    .module-card button, #audit-root .swap-card button { background: #1C1D23; border-color: #3E4049; color: #B8BABF; }
-    .module-card button.primary, #audit-root .swap-card button.primary { background: #1D6CEB; border-color: #1D6CEB; color: #FFFFFF; }
-  }
+  .module-card button.primary, #audit-root .swap-card button.primary { background: var(--color-button-bg-primary--default); border-color: var(--color-button-border-primary--default); color: var(--color-button-label-primary--default); }
   /* 미리보기 — 이름을 몰라도 그림으로 무엇인지 알 수 있게 (지금 모습 → 바뀔 모습) */
   .part-preview { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
   .part-thumb {
     height: 34px; max-width: 150px; min-width: 34px; object-fit: contain; object-position: left center;
-    border: 1px solid #D9D9D9; border-radius: 4px; background: #FFFFFF; padding: 2px; box-sizing: border-box;
+    border: 1px solid var(--color-control-border-default); border-radius: 4px; background: var(--color-surface-raised); padding: 2px; box-sizing: border-box;
   }
   .part-thumb.empty { display: none; }
   .part-preview:not(.ready) { display: none; }
-  .part-arrow { color: #757575; font-size: 12px; }
-  @media (prefers-color-scheme: dark) { .part-thumb { background: #1C1D23; border-color: #3E4049; } }
-  .module-badge { display: inline-block; font-size: 10px; font-weight: 600; color: #8a6100; background: #fff3d6; border-radius: 4px; padding: 1px 6px; margin-left: 6px; }
+  .part-arrow { color: var(--color-text-body-tertiary); font-size: 12px; }
+  .module-badge { display: inline-block; font-size: 10px; font-weight: 600; color: var(--color-text-state-caution); background: var(--color-bg-level-2); border-radius: 4px; padding: 1px 6px; margin-left: 6px; }
 
   /* ── buttons ── */
   .btn-row { display: flex; gap: 8px; }
   /* 설치 탭 하단 버튼: sticky 대신 앱셸의 고정 푸터 — 스크롤바가 버튼 영역을 지나가지 않는다 */
-  .install-footer { flex: 0 0 auto; background: #fff; padding: 10px 0 20px; margin-top: 2px; border-top: 1px solid #f3f4f6; }
+  .install-footer { flex: 0 0 auto; background: var(--color-bg-level-0); padding: 10px 0 20px; margin-top: 2px; border-top: 1px solid var(--color-line-default); }
   /* 선택 화면 푸터는 구분선 없이 — river 지시(2026-09-03) */
   #iscreen-select .install-footer { border-top: 0; }
   .btn { flex: 1; padding: 10px; border-radius: 8px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.15s; }
-  .btn-primary { background: #1d6ceb; color: #fff; }
-  .btn-primary:hover { background: #155ac4; }
-  .btn-primary:disabled { background: #d1d5db; color: #9ca3af; cursor: not-allowed; }
-  .btn-secondary { background: #f3f4f6; color: #374151; }
-  .btn-secondary:hover { background: #e5e7eb; }
-  .btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; background: #f3f4f6; }
+  .btn-primary { background: var(--color-button-bg-primary--default); color: var(--color-button-label-primary--default); }
+  .btn-primary:hover { background: var(--color-button-bg-primary--hover); }
+  .btn-primary:disabled { background: var(--color-button-bg-disabled); color: var(--color-button-label-disabled); cursor: not-allowed; }
+  .btn-secondary { background: var(--color-button-bg-secondary--default); color: var(--color-button-label-secondary--default); box-shadow: inset 0 0 0 1px var(--color-button-border-secondary--default); }
+  .btn-secondary:hover { background: var(--color-button-bg-secondary--hover); }
+  .btn-secondary:disabled { opacity: 0.5; cursor: not-allowed; background: var(--color-button-bg-secondary--default); }
 
   /* ══════════ 검수(audit) UI — 모든 규칙 #audit-root 스코프(설치 탭 불침범) ══════════ */
   #audit-root {
-    --bg: #fff; --fg: #1c1d23; --muted: #767880; --line: #e6e7ea;
-    --high: #1d6ceb; --med: #ff7a18; --low: #767880;
-    --btn-bg: #1d6ceb; --btn-fg: #fff;
-    --code-bg: #f5f5f5;
+    /* 가이드 토큰 별칭 — 다크는 토큰 쪽이 바꾼다(river 지시 2026-10-01: 설치기 전체를 가이드 색으로) */
+    --bg: var(--color-bg-level-0); --fg: var(--color-text-body-primary); --muted: var(--color-text-body-tertiary); --line: var(--color-line-default);
+    --high: var(--color-text-state-accent); --med: var(--color-text-state-caution); --low: var(--color-text-body-tertiary);
+    --btn-bg: var(--color-button-bg-primary--default); --btn-fg: var(--color-button-label-primary--default);
+    --code-bg: var(--color-bg-level-2);
     font:13px/1.45 -apple-system, "SF Pro Text", Pretendard, sans-serif;
     color:var(--fg); background:var(--bg);
     flex:1 1 auto; min-height:0; overflow-y:auto;
-  }
-  @media (prefers-color-scheme: dark) {
-    #audit-root { --bg:#2c2c2c; --fg:#fff; --muted:#a0a0a0; --line:#3a3a3a; --code-bg:#1c1d23; }
   }
   #audit-root * { box-sizing: border-box; }
   #audit-root header { padding:12px 16px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:12px; }
@@ -288,10 +282,10 @@
   #audit-root .tabs button:hover { border-color:var(--btn-bg); color:var(--btn-bg); }
   #audit-root .tabs button.active { background:var(--btn-bg); border-color:var(--btn-bg); color:var(--btn-fg); font-weight:600; }
   #audit-root .tabs .count { display:inline-block; padding:0 5px; margin-left:4px; background:var(--code-bg); border-radius:8px; font-size:10px; }
-  #audit-root .tabs button.active .count { background:rgba(255,255,255,.28); color:var(--btn-fg); }
+  #audit-root .tabs button.active .count { background:var(--color-bg-level-0); color:var(--color-text-state-accent); }
   #audit-root button { font:inherit; cursor:pointer; padding:6px 12px; border-radius:6px; border:1px solid var(--line); background:transparent; color:var(--fg); }
   #audit-root button.primary { background:var(--btn-bg); color:var(--btn-fg); border-color:var(--btn-bg); }
-  #audit-root button.primary:disabled { opacity:0.4; cursor:not-allowed; }
+  #audit-root button.primary:disabled { background:var(--color-button-bg-disabled); border-color:var(--color-button-border-disabled); color:var(--color-button-label-disabled); cursor:not-allowed; }
   #audit-root button:hover:not(:disabled) { filter: brightness(0.95); }
   #audit-root .list { padding:8px 0; max-height:calc(100vh - 200px); overflow-y:auto; }
   #audit-root .empty { padding:48px 16px; text-align:center; color:var(--muted); }
@@ -325,7 +319,7 @@
   #audit-root .sugs { margin-top:6px; display:flex; flex-direction:column; gap:4px; max-height:280px; overflow-y:auto; }
   #audit-root .sug { display:flex; align-items:center; gap:8px; padding:6px 8px; background:var(--code-bg); border-radius:4px; font-size:11px; cursor:pointer; border:1px solid transparent; }
   #audit-root .sug:hover { border-color:var(--line); }
-  #audit-root .sug.picked { border-color:var(--btn-bg); background:rgba(29,108,235,0.08); }
+  #audit-root .sug.picked { border-color:var(--btn-bg); background:var(--color-dropdown-option-bg-selected); }
   #audit-root .sug input[type=radio] { margin:0; cursor:pointer; flex-shrink:0; }
   #audit-root .sug .name { flex:1; min-width:0; font-family:ui-monospace, "SF Mono", monospace; word-break:break-all; line-height:1.4; }
   #audit-root .sug .col { color:var(--muted); font-size:10px; flex-shrink:0; }
@@ -333,17 +327,12 @@
   #audit-root .sug .conf-medium { color: var(--med); font-size:10px; }
   #audit-root .sug .conf-low { color: var(--low); font-size:10px; }
   #audit-root .sug .mt { font-size:9px; padding:1px 4px; border-radius:3px; background:var(--bg); color:var(--muted); flex-shrink:0; }
-  #audit-root .sug .mt.role { background:#E2F1FF; color:#1D6CEB; }
-  #audit-root .sug .mt.exact { background:#E3F2EA; color:#006F42; }
-  #audit-root .sug .mt.near { background:#FFEDE0; color:#DA4C00; }
+  #audit-root .sug .mt.role { background:var(--color-bg-level-3); color:var(--color-text-state-accent); }
+  #audit-root .sug .mt.exact { background:transparent; color:var(--color-text-state-correct); box-shadow:inset 0 0 0 1px var(--color-line-blue); }
+  #audit-root .sug .mt.near { background:var(--color-bg-level-3); color:var(--color-text-state-caution); }
   #audit-root .sug button { padding:3px 8px; font-size:11px; flex-shrink:0; }
-  #audit-root .sug button.applied { background:var(--high); color:#fff; border-color:var(--high); cursor:default; }
+  #audit-root .sug button.applied { background:var(--btn-bg); color:var(--btn-fg); border-color:var(--btn-bg); cursor:default; }
   #audit-root .sug button.applied:hover { filter:none; }
-  @media (prefers-color-scheme: dark) {
-    #audit-root .sug .mt.role { background:#112B55; color:#6FA5F8; }
-    #audit-root .sug .mt.exact { background:#102E22; color:#3FBE7E; }
-    #audit-root .sug .mt.near { background:#42200A; color:#F5AA68; }
-  }
   #audit-root .footer { position:sticky; bottom:0; padding:10px 16px; border-top:1px solid var(--line); background:var(--bg); display:flex; align-items:center; gap:8px; }
   #audit-root .footer .selected-info { flex:1; font-size:11px; color:var(--muted); }
   #audit-root .footer .selected-info b { color:var(--fg); font-weight:600; }
@@ -361,12 +350,15 @@
   #audit-root .audit-intro p { margin:0; color:var(--muted); font-size:11.5px; }
   /* 시작 화면 — 큰 안내 한 줄이 주인공, 검사 항목은 보조 텍스트로만 (2026-09-03 river 지시) */
   #audit-root .audit-hero { flex:1 1 auto; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 24px 12px; text-align:center; }
-  #audit-root .audit-hero-ico { color:var(--muted); opacity:.65; margin-bottom:14px; line-height:0; }
-  #audit-root .audit-hero h2 { margin:0; font-size:20px; font-weight:700; line-height:1.45; color:var(--fg); }
+  /* S-1 가이드 기준(river 지시 2026-10-01): 제목=title/20B · 검사 항목=title/12B · 설명=body/12R,
+     색=역할색 값(아이콘 icon-gray-light · 제목 text-title-primary · 소제목 text-body-secondary · 설명 text-body-tertiary) */
+  #audit-root { --s1-icon:var(--color-icon-gray); --s1-title:var(--color-text-title-primary); --s1-sub:var(--color-text-body-secondary); --s1-desc:var(--color-text-body-tertiary); }
+  #audit-root .audit-hero-ico { color:var(--s1-icon); margin-bottom:16px; line-height:0; }
+  #audit-root .audit-hero h2 { margin:0; font-size:20px; font-weight:700; line-height:1.3; color:var(--s1-title); }
   #audit-root .audit-hero .selection-card { margin:18px 0 0; max-width:280px; text-align:center; }
-  #audit-root .audit-scope { padding:0 24px 16px; text-align:center; }
-  #audit-root .audit-scope-title { font-size:11px; font-weight:700; color:var(--muted); margin-bottom:4px; }
-  #audit-root .audit-scope-body { margin:0 auto; max-width:290px; font-size:11px; line-height:1.65; color:var(--muted); }
+  #audit-root .audit-scope { margin-top:16px; text-align:center; }
+  #audit-root .audit-scope-title { font-size:12px; font-weight:700; line-height:1.3; color:var(--s1-sub); margin-bottom:4px; }
+  #audit-root .audit-scope-body { margin:0 auto; max-width:290px; font-size:12px; font-weight:400; line-height:1.3; color:var(--s1-desc); }
   #audit-root .selection-card { margin:0 16px 12px; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:var(--code-bg); }
   #audit-root .selection-card .selection-label { font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   #audit-root .selection-card .selection-hint { margin-top:3px; color:var(--muted); font-size:10.5px; }
@@ -376,6 +368,11 @@
   #audit-root .install-required b { display:block; font-size:14px; color:var(--fg); }
   #audit-root .install-required p { margin:8px 0 0; max-width:280px; font-size:11.5px; line-height:1.7; color:var(--muted); }
   #audit-root .install-required button { margin-top:18px; width:auto; padding:9px 18px; font-size:12px; font-weight:600; background:var(--btn-bg); border-color:var(--btn-bg); color:var(--btn-fg); }
+  /* 검수는 되는 경우의 보조 안내 — 작은 카드 + 보조 버튼(river 지시 2026-10-01: 튀지 않게) */
+  #audit-root .install-required.visible.soft { flex:0 0 auto; align-items:flex-start; margin:0 16px 12px; padding:12px; text-align:left; border:1px solid var(--line); border-radius:8px; background:var(--code-bg); }
+  #audit-root .install-required.soft b { font-size:12px; font-weight:600; }
+  #audit-root .install-required.soft p { margin:3px 0 0; max-width:none; font-size:10.5px; line-height:1.55; }
+  #audit-root .install-required.soft button { margin-top:9px; padding:6px 12px; font-size:11px; font-weight:500; background:var(--bg); border-color:var(--line); color:var(--fg); }
   #audit-root .guide-state-card { display:none; margin:0 16px 12px; padding:12px; border:1px solid var(--line); border-radius:8px; background:var(--code-bg); }
   #audit-root .guide-state-card.visible { display:block; }
   #audit-root .guide-state-card b { display:block; margin-bottom:3px; font-size:12px; }
@@ -400,7 +397,7 @@
   #audit-root .check-row:last-child { border-bottom:0; }
   #audit-root .check-icon { width:17px; height:17px; display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--line); border-radius:50%; color:var(--muted); font-size:10px; flex:0 0 auto; }
   #audit-root .check-row.running .check-icon { border-color:var(--btn-bg); color:var(--btn-bg); animation:audit-spin .8s linear infinite; }
-  #audit-root .check-row.done .check-icon { border-color:var(--btn-bg); background:var(--btn-bg); color:#fff; animation:none; }
+  #audit-root .check-row.done .check-icon { border-color:var(--btn-bg); background:var(--btn-bg); color:var(--color-text-state-accent-inverse); animation:none; }
   #audit-root .check-row.unjudged .check-icon { border-radius:4px; background:var(--code-bg); }
   #audit-root .check-name { flex:1; font-size:11.5px; }
   #audit-root .check-result { color:var(--muted); font-size:10.5px; white-space:nowrap; }
@@ -417,7 +414,7 @@
   #audit-root .why-fold > summary::before { content:'▸ '; }
   #audit-root .why-fold[open] > summary::before { content:'▾ '; }
   #audit-root .why-fold > summary:hover { color:var(--btn-bg); }
-  #audit-root .check-result.fail { color:#d14343; font-weight:600; }
+  #audit-root .check-result.fail { color:var(--color-text-state-caution); font-weight:600; }
   #audit-root .check-result.warning, #audit-root .check-result.choice { color:var(--med); font-weight:600; }
   /* 검사 중 화면 = 설치·패턴 탭 로딩 화면과 같은 모양으로 통일(river 지시 2026-09-03).
      .spinner 는 설치 탭과 같은 것을 그대로 쓴다(무스코프 클래스) — 한 곳만 고치면 셋이 함께 바뀐다. */
@@ -437,7 +434,7 @@
   #audit-root .result-head { padding:13px 16px 3px; }
   #audit-root .result-head h2 { margin:0; font-size:15px; }
   #audit-root .result-head p { margin:4px 0 0; color:var(--muted); font-size:11px; }
-  #audit-root .ctx-warn { margin:0; padding:9px 16px; color:var(--warning, #B26B00); font-size:11px; line-height:1.55; border-bottom:1px solid var(--line); }
+  #audit-root .ctx-warn { margin:0; padding:9px 16px; color:var(--color-text-state-caution); font-size:11px; line-height:1.55; border-bottom:1px solid var(--line); }
   #audit-root .detail-group { padding:9px 16px 4px; color:var(--muted); font-size:10.5px; background:var(--code-bg); border-bottom:1px solid var(--line); }
   #audit-root .detail-list { padding:8px 0; overflow-y:auto; max-height:calc(100vh - 230px); }
   #audit-root .detail-item { padding:10px 16px; border-bottom:1px solid var(--line); cursor:pointer; }
@@ -453,7 +450,7 @@
   #audit-root .detail-item .fix-row select { font:inherit; font-size:11px; padding:2px 4px; border:1px solid var(--line);
     border-radius:4px; background:transparent; color:var(--fg); }
   #audit-root .detail-item .fix-row .fix-note { color:var(--muted); font-size:10.5px; }
-  #audit-root .detail-item.fixed .fix-row button { background:var(--high); color:#fff; border-color:var(--high); }
+  #audit-root .detail-item.fixed .fix-row button { background:var(--btn-bg); color:var(--btn-fg); border-color:var(--btn-bg); }
   @keyframes audit-spin { to { transform:rotate(360deg); } }
   #audit-root .ref-info { padding:8px 16px; background:var(--code-bg); border-bottom:1px solid var(--line); font-size:11px; color:var(--muted); }
   #audit-root .ref-info b { color:var(--fg); font-weight:600; }
@@ -472,15 +469,15 @@
   #audit-root .swap-card .apply-row button { font:inherit; padding:3px 10px; font-size:11px; border-radius:4px; border:1px solid var(--line); background:transparent; color:var(--fg); cursor:pointer; }
   /* ── 판정 갈래 (결정표) ── 정해진 것·아직 안 정한 것·교체 대상 아님을 한눈에 가른다 */
   #audit-root .verdict-badge { font-size:10px; font-weight:700; padding:2px 7px; border-radius:10px; white-space:nowrap; }
-  #audit-root .verdict-badge.is-decided { color:#0f6b3f; background:#e4f5ec; }
-  #audit-root .verdict-badge.is-undecided { color:#8a6100; background:#fdf3dc; }
-  #audit-root .verdict-badge.is-none { color:#5b6470; background:#eceef1; }
-  #audit-root .swap-card.is-decided { border-left:3px solid #1f9d63; }
-  #audit-root .swap-card.is-undecided { border-left:3px solid #d1a54a; }
-  #audit-root .swap-card.is-none { border-left:3px solid #c3c8cf; background:#fafbfc; }
+  #audit-root .verdict-badge.is-decided { color:var(--color-text-state-correct); background:var(--color-bg-level-3); }
+  #audit-root .verdict-badge.is-undecided { color:var(--color-text-state-caution); background:var(--color-bg-level-3); }
+  #audit-root .verdict-badge.is-none { color:var(--color-text-body-tertiary); background:var(--color-bg-level-2); }
+  #audit-root .swap-card.is-decided { border-left:3px solid var(--color-line-blue); }
+  #audit-root .swap-card.is-undecided { border-left:3px solid var(--color-form-control-border-error); }
+  #audit-root .swap-card.is-none { border-left:3px solid var(--color-control-border-default); background:var(--color-bg-level-1); }
   #audit-root .verdict-note { margin-top:4px; font-size:10.5px; line-height:1.55; color:var(--muted); }
   #audit-root .verdict-note.is-answer { color:var(--fg); }
-  #audit-root .verdict-note b { color:#0f6b3f; }
+  #audit-root .verdict-note b { color:var(--color-text-state-correct); }
   #audit-root .medium-banner { display:flex; align-items:center; gap:8px; margin:10px 2px 2px; padding:6px 10px; border-radius:6px; background:var(--code-bg); font-size:10.5px; color:var(--muted); }
   #audit-root .medium-banner span { flex:1; }
   #audit-root .medium-banner b { color:var(--fg); }
@@ -492,18 +489,18 @@
   #audit-root .pick-fold > summary::-webkit-details-marker { display:none; }
   #audit-root .pick-fold > summary::before { content:'▸ '; }
   #audit-root .pick-fold[open] > summary::before { content:'▾ '; }
-  .part-row.is-decided { background:#f6fbf8; }
-  .part-row.is-none { background:#fafbfc; }
+  .part-row.is-decided { background:var(--color-dropdown-option-bg-selected); }
+  .part-row.is-none { background:var(--color-bg-level-1); }
   #audit-root .swap-card.applied { opacity:0.72; }
-  #audit-root .swap-card.applied .apply-row button { background:var(--high); color:#fff; border-color:var(--high); }
+  #audit-root .swap-card.applied .apply-row button { background:var(--btn-bg); color:var(--btn-fg); border-color:var(--btn-bg); }
   #audit-root .resize-handle { position:fixed; right:0; bottom:0; width:18px; height:18px; cursor:se-resize; z-index:100; }
   #audit-root .resize-handle::before { content:''; position:absolute; right:3px; bottom:3px; width:11px; height:11px; border-right:2px solid var(--muted); border-bottom:2px solid var(--muted); opacity:0.5; }
   #audit-root .resize-handle:hover::before { opacity:1; }
-  #audit-root .toast { position:fixed; bottom:12px; left:16px; right:16px; padding:8px 12px; border-radius:6px; background:var(--high); color:#fff; font-size:12px; opacity:0; transition:opacity 0.2s; }
+  #audit-root .toast { position:fixed; bottom:12px; left:16px; right:16px; padding:8px 12px; border-radius:6px; background:var(--btn-bg); color:var(--btn-fg); font-size:12px; opacity:0; transition:opacity 0.2s; }
   #audit-root .toast.show { opacity:1; }
   /* 가이드 외 색상 (M3) */
-  #audit-root .kind.offguide { background:#fff1f0; color:#c0362c; border:1px solid #f5c6c2; }
-  #audit-root .offguide-note { color:#c0362c; font-weight:600; }
+  #audit-root .kind.offguide { background:var(--color-bg-level-2); color:var(--color-text-state-caution); border:1px solid var(--color-form-control-border-error); }
+  #audit-root .offguide-note { color:var(--color-text-state-caution); font-weight:600; }
 </style>
 </head>
 <body>
@@ -729,6 +726,10 @@
     <div class="audit-hero">
       <div class="audit-hero-ico" aria-hidden="true"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M8 21h8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M9.4 11.4l1.9 1.9 3.3-3.7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <h2>검수할 항목을 선택해 주세요.</h2>
+      <div class="audit-scope">
+        <div class="audit-scope-title">검사 항목</div>
+        <p class="audit-scope-body">컴포넌트 매칭, 색상 토큰·시맨틱 용도·색상 스타일·투명도, 텍스트 스타일·크기·값·글꼴, 그림자 총 10가지</p>
+      </div>
       <div class="selection-card" id="audit-selection-card" hidden>
         <div class="selection-label" id="audit-selection-label">선택 없음</div>
         <div class="selection-hint" id="audit-selection-hint"></div>
@@ -747,10 +748,6 @@
       <b id="audit-install-title">검수 기준이 부족합니다</b>
       <p id="audit-install-missing">쓰던 가이드 페이지에 이어서 설치한 뒤 검수할 수 있습니다.</p>
       <button id="btn-go-install">최신 가이드로 업데이트</button>
-    </div>
-    <div class="audit-scope">
-      <div class="audit-scope-title">검사 항목</div>
-      <p class="audit-scope-body">컴포넌트 매칭, 색상 토큰·시맨틱 용도·색상 스타일·투명도, 텍스트 스타일·크기·값·글꼴, 그림자 총 10가지</p>
     </div>
     <div class="audit-actions"><button class="primary" id="btn-audit" disabled>검사 시작</button></div>
   </section>
@@ -1046,8 +1043,8 @@
       // Component Set — skip-if-exists: 추가 / 기존 보존 구분 표기
       const added = msg.componentAdded || [];
       const skipped = msg.componentSkipped || [];
-      if (added.length) lines.push(`Component Set 추가: <strong>${added.length}개</strong> 세트 (variant ${msg.componentCount}개)<br><span style="color:#9ca3af;font-size:11px;">${added.join(' · ')}</span>`);
-      if (skipped.length) lines.push(`기존 세트 보존: <strong>${skipped.length}개</strong> <span style="color:#9ca3af;font-size:11px;">(이미 존재 — 값 변경은 Variables로 자동 반영)</span>`);
+      if (added.length) lines.push(`Component Set 추가: <strong>${added.length}개</strong> 세트 (variant ${msg.componentCount}개)<br><span style="color:var(--color-text-state-helper);font-size:11px;">${added.join(' · ')}</span>`);
+      if (skipped.length) lines.push(`기존 세트 보존: <strong>${skipped.length}개</strong> <span style="color:var(--color-text-state-helper);font-size:11px;">(이미 존재 — 값 변경은 Variables로 자동 반영)</span>`);
       if (!added.length && !skipped.length && msg.componentCount) lines.push(`Component Set: <strong>${msg.componentCount}개</strong> variant`);
       // 토큰 견본 시트 — 매 설치마다 함께 깔리므로 결과에 항상 한 줄 남긴다.
       const sheetSections = msg.sheetSections || [];
@@ -1066,10 +1063,10 @@
       const degradedList = msg.componentDegraded || [];
       const problem = failedList.length + noRunnerList.length + degradedList.length;
       const warnBlock = problem ? `
-        <div class="result-sub" style="margin-top:10px;padding:10px 12px;border-radius:8px;background:#fff7ed;color:#9a3412;font-size:12px;line-height:1.7;">
+        <div class="result-sub" style="margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--color-bg-level-1);color:var(--color-text-state-caution);font-size:12px;line-height:1.7;">
           <strong>⚠️ 일부 컴포넌트가 설치되지 않았습니다 (${problem}개)</strong><br>
           ${failedList.length ? `생성 실패: <strong>${esc(failedList.map(f => f.name).join(' · '))}</strong><br>
-          <span style="color:#b45309;font-size:11px;">사유: ${esc(failedList.map(f => `${f.name} — ${f.reason || '알 수 없음'}`).join(' / '))}</span><br>` : ''}
+          <span style="color:var(--color-text-state-caution);font-size:11px;">사유: ${esc(failedList.map(f => `${f.name} — ${f.reason || '알 수 없음'}`).join(' / '))}</span><br>` : ''}
           ${noRunnerList.length ? `빌더 미등록: <strong>${esc(noRunnerList.join(' · '))}</strong><br>` : ''}
           ${degradedList.length ? `부품이 빠진 채 만들어짐: <strong>${esc(degradedList.map(d => {
             const failedNames = new Set(failedList.map(f => f.name));
@@ -1084,20 +1081,20 @@
       // 재료가 없어 못 그린 견본 시트 — 조용히 빼지 않고 사실대로 알린다.
       const sheetSkipped = msg.sheetSkipped || [];
       const sheetErrorBlock = msg.sheetError ? `
-        <div class="result-sub" style="margin-top:10px;padding:10px 12px;border-radius:8px;background:#fff7ed;color:#9a3412;font-size:11px;line-height:1.7;">
+        <div class="result-sub" style="margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--color-bg-level-1);color:var(--color-text-state-caution);font-size:11px;line-height:1.7;">
           <strong>토큰 견본 화면을 만들지 못했습니다</strong><br>
           사유: ${esc(msg.sheetError)}<br>
           토큰·컴포넌트 설치 자체는 끝났습니다. 다시 설치하면 견본 화면도 함께 만들어집니다.
         </div>` : '';
       const sheetWarnBlock = sheetSkipped.length ? `
-        <div class="result-sub" style="margin-top:10px;padding:10px 12px;border-radius:8px;background:#f3f4f6;color:#4b5563;font-size:11px;line-height:1.7;">
+        <div class="result-sub" style="margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--color-bg-level-2);color:var(--color-text-body-secondary);font-size:11px;line-height:1.7;">
           <strong>만들지 않은 토큰 견본</strong><br>
           ${sheetSkipped.map((s) => `· ${esc(s)}`).join('<br>')}<br>
           모자란 항목을 함께 설치하면 다음 설치 때 그 판도 그려집니다.
         </div>` : '';
       const rawPaintList = msg.componentRawPaints || [];
       const rawPaintBlock = rawPaintList.length ? `
-        <div class="result-sub" style="margin-top:10px;padding:10px 12px;border-radius:8px;background:#f3f4f6;color:#4b5563;font-size:11px;line-height:1.7;">
+        <div class="result-sub" style="margin-top:10px;padding:10px 12px;border-radius:8px;background:var(--color-bg-level-2);color:var(--color-text-body-secondary);font-size:11px;line-height:1.7;">
           <strong>토큰에 연결되지 않은 색이 남은 자리 (${rawPaintList.length}곳)</strong><br>
           ${esc(rawPaintList.slice(0, 12).join(' / '))}${rawPaintList.length > 12 ? ' …' : ''}<br>
           검수기에서 <strong>hex 직접 사용</strong>으로 잡힐 수 있는 자리입니다. 디자인시스템 담당자에게 알려주세요.
@@ -1109,7 +1106,7 @@
             왼쪽 패널 <strong>Local variables</strong> · <strong>Text styles</strong> · <strong>Assets</strong>에서 확인하세요.
           </div>
         </div>${warnBlock}${sheetErrorBlock}${sheetWarnBlock}${rawPaintBlock}
-        <div class="result-sub" style="color:#6b7280;font-size:11px;line-height:1.7;">
+        <div class="result-sub" style="color:var(--color-text-body-tertiary);font-size:11px;line-height:1.7;">
           컴포넌트 설치가 중간에 멈췄거나 배치가 이상하면 <strong>[재설치]</strong>를 누르세요 —
           기존 컴포넌트를 지우고 처음부터 다시 설치합니다.
         </div>`;
@@ -1764,7 +1761,7 @@ function verdictNoteHtml(d, decidedMissing) {
     return '<div class="verdict-note">같은 이름의 옛 조각이 여럿이라 어느 것인지 알 수 없습니다 — ' + escape(rows) + '</div>' +
            '<div class="verdict-note">고르면 이번 한 번의 선택입니다.</div>';
   }
-  return '<div class="verdict-note">정해진 답이 없습니다 — 고르면 <b style="color:#8a6100">이번 한 번의 선택</b>입니다.</div>';
+  return '<div class="verdict-note">정해진 답이 없습니다 — 고르면 <b style="color:var(--color-text-state-caution)">이번 한 번의 선택</b>입니다.</div>';
 }
 // 결정이 정해 둔 변형(크기·상태)은 검수기에 그대로 넘겨 **검수기가** 고른다 —
 // 화면에서 한 번 더 고르면 근거 기록과 어긋난 변형이 잡힌다(2026-09-18 독립 검증 지적).
@@ -3039,9 +3036,9 @@ function handleAuditUiMessage(msg) {
     if (!auditInstalled) {
       noticeText = `이 파일에 비교할 기준이 없습니다: ${missingContents.join(' · ')}. 쓰던 가이드 페이지에 이어서 설치합니다(없으면 새로 만듭니다).`;
     } else if (partial.length) {
-      noticeText = `검수는 그대로 할 수 있습니다. 다만 이 파일에 없는 것이 있습니다: ${partial.join(' · ')}. [최신 가이드로 업데이트]를 누르면 쓰던 가이드 페이지에 그것만 이어서 깝니다.`;
+      noticeText = '최신 가이드가 아니어도 검수는 할 수 있습니다. 정확하게 검수하려면 최신 가이드로 업데이트한 뒤 사용해 주세요.';
     } else if (drift.length) {
-      noticeText = `가이드의 색·수치 ${drift.length}개가 정본과 다릅니다 (${escape(drift.slice(0, 4).join(' · '))}${drift.length > 4 ? ' …' : ''}). [최신 가이드로 업데이트]를 누르면 쓰던 가이드 페이지에서 그 값만 갱신합니다 — 만들어 둔 화면에 그대로 반영됩니다.`;
+      noticeText = `색·수치 ${drift.length}개가 최신 가이드와 다릅니다. 업데이트하면 만들어 둔 화면에도 그대로 반영됩니다.`;
     } else {
       noticeText = '색·수치 값은 정본과 같습니다. 다만 부품의 구성이 바뀌었을 수 있으니, 검수 결과의 컴포넌트 항목에서 확인하세요.';
     }
@@ -3050,12 +3047,14 @@ function handleAuditUiMessage(msg) {
     const stale = p.currentGuide === false;
     let noticeTitle;
     if (!auditInstalled) noticeTitle = '비교할 기준이 없습니다';
-    else if (partial.length) noticeTitle = '가이드에 없는 것이 있습니다 (검수는 됩니다)';
-    else if (drift.length) noticeTitle = '가이드 값이 정본과 다릅니다';
+    else if (partial.length) noticeTitle = '최신 가이드가 아닙니다';
+    else if (drift.length) noticeTitle = '가이드 값이 최신과 다릅니다';
     else noticeTitle = '가이드 설치 기록이 옛것입니다';
     $('#audit-install-title').textContent = noticeTitle;
     // 모자란 것이 있어도 검수는 된다 — 안내 줄만 보이고 시작 버튼은 잠그지 않는다.
     $('#audit-install-required').classList.toggle('visible', !auditInstalled || partial.length > 0 || drift.length > 0 || stale);
+    // 검수가 되는 경우(설치는 됨)는 보조 안내로 작게 — 막히는 경우만 크게 보인다.
+    $('#audit-install-required').classList.toggle('soft', auditInstalled);
     applyAuditSelectionSummary(p);
   } else if (msg.type === "selection-summary") {
     applyAuditSelectionSummary(msg.payload || {});
@@ -3097,6 +3096,7 @@ function handleAuditUiMessage(msg) {
       showAuditScreen('start');
       if (msg.payload && msg.payload.code === 'need-install') {
         auditInstalled = false;
+        $('#audit-install-required').classList.remove('soft');
         $('#audit-install-required').classList.add('visible');
       }
       send('selection-summary');
