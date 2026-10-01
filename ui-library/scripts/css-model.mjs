@@ -18,7 +18,13 @@
 
 /** @media 블록을 펼쳐 평평한 규칙 목록으로 만든다. 규칙 순서는 원문 순서를 지킨다. */
 export function parseStylesheet(css) {
-  const source = css.replace(/\/\*[\s\S]*?\*\//g, "");
+  /* 웹 전용 보정 표식 — 「한글 세로 보정」 주석 바로 뒤의 규칙 하나는 모델에서 뺀다.
+     이 1px 은 브라우저가 글자를 1px 단위로 놓으면서 생기는 반올림 보정이라 Android·iOS 등
+     다른 플랫폼 스펙에 들어가면 안 된다(river A안 2026-09-30, "웹에만 보정").
+     주석은 아래에서 지워지므로, 지우기 전에 다음 규칙 앞에 @web-only 를 붙여 둔다. */
+  const source = css
+    .replace(/\/\*(?:(?!\*\/)[\s\S])*?한글 세로 보정(?:(?!\*\/)[\s\S])*?\*\//g, "@web-only ")
+    .replace(/\/\*[\s\S]*?\*\//g, "");
   const rules = [];
   let index = 0;
   let order = 0;
@@ -43,7 +49,9 @@ export function parseStylesheet(css) {
       const prelude = text.slice(cursor, brace).trim();
       const end = readBlock(offset + brace) - offset;
       const body = text.slice(brace + 1, end);
-      if (prelude.startsWith("@media")) {
+      if (prelude.startsWith("@web-only")) {
+        /* 웹 전용 보정 규칙 — 플랫폼 모델에서 제외 */
+      } else if (prelude.startsWith("@media")) {
         consume(body, offset + brace + 1, prelude.replace(/^@media\s*/, "").trim());
       } else if (prelude.startsWith("@")) {
         /* @keyframes 등 — 배포본 컴포넌트 CSS 에는 없다. 있으면 알린다. */

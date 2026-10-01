@@ -76,7 +76,7 @@
         "Type=List × State=Disabled": "list:disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "34c55cbef81233807f739669e9dfb5a493f6a134a0ed92c390536a01e52f01d6"
+      "sourceFingerprint": "464cdab2f0d4a52f044cc263959c691357ef71a4faf5e73cda33b2fc89a3c70f"
     },
     "bottom-sheet": {
       "id": "bottom-sheet",
@@ -182,7 +182,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "e64ae300944f10add5afaba15ba314cf6b1830fe2ea3a856b566a54abeff2038"
+      "sourceFingerprint": "bfa846f3717a190e4cdb28a2078b68b070ad41a216a556ef7feb6ea14c6c6f87"
     },
     "checkbox": {
       "id": "checkbox",
@@ -364,7 +364,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "61abde32c7023dfcb7c62a07465e727a2a8ff4a8c659682aae042e5219871030"
+      "sourceFingerprint": "69b1536aaeca5fa3c04321ca19380eb92c12c5c9d40bea9eb5a1ccee56bddfc6"
     },
     "divider": {
       "id": "divider",
@@ -532,7 +532,7 @@
           "reason": "Depth 축은 크기·상태가 아니라 역할을 가른다 — 1depth=카테고리 제목(Bold 16), 2depth=항목(Medium 16). 두 값 모두 이 컴포넌트 하나가 낸다(build-components.ts:3807 주석)."
         }
       ],
-      "sourceFingerprint": "4506fe488bd6c77f4f1af82230795526e24bc22d7a180df9d9dd1caf4882ff9c"
+      "sourceFingerprint": "8d02eac6232d54082159784d9b616753cc7e5b3914e0ed9c9bdebcb9a12cbd33"
     },
     "gnb-sub-menu": {
       "id": "gnb-sub-menu",
@@ -588,7 +588,7 @@
           "reason": "GNB Utility Icon 세트는 language·menu·user on/off 5변형을 갖지만, GNB 바가 실제로 쓰는 것은 all-on(GNBUtil:full) 1개뿐이다(buildGNB:3607, registry 서술). 다른 4변형은 이 컴포넌트가 배포하지 않는다 — 유틸 영역 구성을 바꾸려면 host 화면이 data-s1-part 를 골라 빼고 넣는다."
         }
       ],
-      "sourceFingerprint": "ee5758ca5e085e5204adadaff7132420234444b6c0ef879679f7292995da4de1"
+      "sourceFingerprint": "4e9255630fcbf4a9a3d53c31b0482ff67b92340964eb9b9707e1840423741383"
     },
     "input": {
       "id": "input",
@@ -752,7 +752,7 @@
           "reason": "StatusBar 제외로 App/Web 차이(상태바 높이만 다름)가 사라져 Platform 축도 함께 뺀다 — Type 6종 1축만 배포한다."
         }
       ],
-      "sourceFingerprint": "a57a05f11589c6002af8f2bbdb37ed6d146bac40214c7ce2fa7290db607179b2"
+      "sourceFingerprint": "34ba2ba82ddc4ba84b25c6e8da92680540868c5fc62730aab312cea9624baf23"
     },
     "modal-content": {
       "id": "modal-content",
@@ -1285,7 +1285,7 @@
           "reason": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
         }
       ],
-      "sourceFingerprint": "65aa65bd4c98438134853a9d9a5e185dff9aaddf450a9ee61d9cbd6ee8396433"
+      "sourceFingerprint": "cad4f5a2245af9c064cc8792ea9ef81d082c930f877e66e0a929902921e011b6"
     },
     "toggle": {
       "id": "toggle",

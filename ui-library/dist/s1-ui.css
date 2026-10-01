@@ -453,6 +453,12 @@
   text-align: center;
 }
 
+/* 한글 세로 보정 — Figma 원본과 같은 자리로 보이게 1px 내림. 브라우저가 글자를 1px 단위로 놓으면서 12px·130%·16px 이상에서 위로 붙는다(실측 reports/text-vcenter/index.html, river A안 2026-09-30). 정본 수치는 그대로. 글자 요소만 내려 버튼 크기·아이콘은 그대로. */
+[data-s1-component="button"][data-size="xxsm"] [data-s1-part="label"] {
+  position: relative;
+  top: 1px;
+}
+
 [data-s1-component="button"][data-size="md"] {
   font-size: var(--font-size-14);
   height: var(--sizing-44);
@@ -491,6 +497,12 @@
   justify-content: center;
   min-width: 0;
   width: 100%;
+}
+
+/* 한글 세로 보정 — Figma 원본과 같은 자리로 보이게 1px 내림. 브라우저가 글자를 1px 단위로 놓으면서 12px·130%·16px 이상에서 위로 붙는다(실측 reports/text-vcenter/index.html, river A안 2026-09-30). 정본 수치는 그대로. 글자 요소만 내려 버튼 크기·아이콘은 그대로. */
+[data-s1-component="button"][data-size="lg"] [data-s1-part="label"] {
+  position: relative;
+  top: 1px;
 }
 
 [data-s1-component="button"][data-variant="primary"] {
@@ -592,6 +604,12 @@
 }
 
 /* density:narrow 좁게(28px) — data-size 를 직접 주면 그쪽이 이긴다 */
+/* 한글 세로 보정 — 웹 전용(밀도 사본) */
+[data-s1-density="narrow"] [data-s1-component="button"]:not([data-size]) [data-s1-part="label"] {
+  position: relative;
+  top: 1px;
+}
+
 [data-s1-density="narrow"] [data-s1-component="button"]:not([data-size]) {
   font-size: var(--font-size-12);
   height: var(--sizing-28);
@@ -615,6 +633,12 @@
   justify-content: center;
   min-width: 0;
   width: 100%;
+}
+
+/* 한글 세로 보정 — 웹 전용(밀도 사본) */
+[data-s1-break="mobile"] [data-s1-component="button"]:not([data-size]) [data-s1-part="label"] {
+  position: relative;
+  top: 1px;
 }
 
 /* component:checkbox */
@@ -2217,6 +2241,12 @@
   text-align: center;
 }
 
+/* 한글 세로 보정 — Figma 원본과 같은 자리로 보이게 1px 내림. 브라우저가 글자를 1px 단위로 놓으면서 12px·130%·16px 이상에서 위로 붙는다(실측 reports/text-vcenter/index.html, river A안 2026-09-30). 정본 수치는 그대로. */
+[data-s1-component="mobile-header"][data-variant^="standard-"] [data-s1-part="title"] {
+  position: relative;
+  top: 1px;
+}
+
 /* No Title — 텍스트 없는 빈 grow 영역(레이아웃 대칭용). heading 이 아니다(빈 heading 금지). */
 [data-s1-component="mobile-header"][data-variant="standard-no-title"] [data-s1-part="title"],
 [data-s1-component="mobile-header"][data-variant="standard-no-title-close"] [data-s1-part="title"] {
@@ -2440,6 +2470,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* 한글 세로 보정 — Figma 원본과 같은 자리로 보이게 1px 내림. 브라우저가 글자를 1px 단위로 놓으면서 12px·130%·16px 이상에서 위로 붙는다(실측 reports/text-vcenter/index.html, river A안 2026-09-30). 정본 수치는 그대로. */
+[data-s1-component="time-picker"][data-size="xxsm"] [data-s1-part="value"] {
+  position: relative;
+  top: 1px;
 }
 
 /* 아이콘 — clock. 크기: XXSM=20px, 그 외=24px (fcIconPx, build-components.ts:1506·2411). */
@@ -2815,6 +2851,12 @@
   padding-right: var(--spacing-6);
 }
 
+/* 한글 세로 보정 — 웹 전용(밀도 사본) */
+[data-s1-density="narrow"] [data-s1-component="time-picker"]:not([data-size]) [data-s1-part="value"] {
+  position: relative;
+  top: 1px;
+}
+
 [data-s1-density="narrow"] [data-s1-component="time-picker"]:not([data-size]) [data-s1-part="icon"] { width: var(--sizing-20); height: var(--sizing-20); }
 
 /* bridge:mobile 감싸기에 화면 구분을 적었으면 컴포넌트가 안 적어도 같은 규칙이 선다 */
@@ -2886,6 +2928,12 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* 한글 세로 보정 — Figma 원본과 같은 자리로 보이게 1px 내림. 브라우저가 글자를 1px 단위로 놓으면서 12px·130%·16px 이상에서 위로 붙는다(실측 reports/text-vcenter/index.html, river A안 2026-09-30). 정본 수치는 그대로. */
+[data-s1-component="date-picker"][data-size="xxsm"] [data-s1-part="value"] {
+  position: relative;
+  top: 1px;
 }
 
 [data-s1-component="date-picker"] [data-s1-part="icon"] {
@@ -3423,6 +3471,12 @@
 /* density:narrow 좁게(28px) — data-size 를 직접 주면 그쪽이 이긴다 */
 [data-s1-density="narrow"] [data-s1-component="date-picker"]:not([data-size]) [data-s1-part="trigger"] { font-size: var(--font-size-12); line-height: var(--line-height-130); letter-spacing: var(--letter-spacing-normal); height: var(--sizing-28); }
 
+/* 한글 세로 보정 — 웹 전용(밀도 사본) */
+[data-s1-density="narrow"] [data-s1-component="date-picker"]:not([data-size]) [data-s1-part="value"] {
+  position: relative;
+  top: 1px;
+}
+
 [data-s1-density="narrow"] [data-s1-component="date-picker"]:not([data-size]) [data-s1-part="icon"] { width: var(--sizing-20); height: var(--sizing-20); }
 
 [data-s1-density="narrow"] [data-s1-component="date-picker"]:not([data-size]) [data-s1-part="panel"] {
@@ -3611,6 +3665,11 @@
   padding-right: var(--spacing-32);
 }
 
+/* 한글 세로 보정 — Figma 원본과 같은 자리로 보이게 1px 내림. 브라우저가 글자를 1px 단위로 놓으면서 12px·130%·16px 이상에서 위로 붙는다(실측 reports/text-vcenter/index.html, river A안 2026-09-30). 정본 수치는 그대로. 글자가 링크 상자에 직접 들어 있어 위 여백 2px 로 가운데를 1px 내린다(상자 높이·밑줄은 그대로). */
+[data-s1-component="gnb"]:is([data-size="md"], [data-size="sm"]) [data-s1-part="menu"] {
+  padding-top: 2px;
+}
+
 /* 하단 2px 강조선 — 기본은 투명(Default), Hover·Selected 에서만 칠한다(정본 fillGnbMenu :3141-3145).
    inset 은 md 24 / sm·xsm 20(정본 :3059).
    ⚠️ bottom 은 0 이다 — 정본은 이 2px 를 메뉴(=바와 같은 높이) 맨 아래 '안쪽'에 놓고(fillGnbMenu :3143,
@@ -3744,6 +3803,12 @@
   color: var(--color-navigation-submenu-label-default);
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--letter-spacing-normal);
+}
+
+/* 한글 세로 보정 — Figma 원본과 같은 자리로 보이게 1px 내림. 브라우저가 글자를 1px 단위로 놓으면서 12px·130%·16px 이상에서 위로 붙는다(실측 reports/text-vcenter/index.html, river A안 2026-09-30). 정본 수치는 그대로. */
+[data-s1-component="gnb-sub-menu-item"][data-depth="2depth"] {
+  position: relative;
+  top: 1px;
 }
 
 /* Hover 와 Selected 는 정본에서 색이 같다 — GNB 메뉴와 같은 구조다.
@@ -4148,6 +4213,12 @@
 
 [data-s1-component="bottom-sheet-option"][data-type="text"][data-state="disabled"] > [data-s1-part="label"] {
   color: var(--color-text-state-disabled);
+}
+
+/* 한글 세로 보정 — Figma 원본과 같은 자리로 보이게 1px 내림. 브라우저가 글자를 1px 단위로 놓으면서 12px·130%·16px 이상에서 위로 붙는다(실측 reports/text-vcenter/index.html, river A안 2026-09-30). 정본 수치는 그대로. */
+[data-s1-component="bottom-sheet-option"] > [data-s1-part="label"] {
+  position: relative;
+  top: 1px;
 }
 
 /* Text:Selected 우측 체크 — color/icon/blue, 24×24.

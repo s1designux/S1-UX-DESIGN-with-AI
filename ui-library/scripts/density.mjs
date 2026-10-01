@@ -14,6 +14,10 @@
  * 정책 정본: registry/governance/density-policy.json
  */
 
+/* 웹 전용 보정(「한글 세로 보정」 주석이 붙은 규칙)을 밀도 사본으로 옮길 때 표식도 같이 옮긴다.
+   플랫폼 추출기(css-model.mjs)가 이 표식을 보고 그 규칙을 Android·iOS 스펙에서 뺀다. */
+const WEB_ONLY_MARK = "/* 한글 세로 보정 — 웹 전용(밀도 사본) */\n";
+
 const SIZE_ATTR = /\[data-size="([a-z]+)"\]/g;
 const BREAK_ATTR = /\[data-break="([a-z]+)"\]/g;
 
@@ -154,16 +158,21 @@ function* topLevelRules(css) {
   let depth = 0;
   let start = 0;
   let selector = null;
+  let webOnly = false;
   for (let i = 0; i < css.length; i++) {
     const ch = css[i];
     if (ch === '{') {
       // 규칙 앞 주석은 선택자가 아니다 — 떼지 않으면 밀도 규칙 선택자 안에 주석이 끼어 들어간다.
-      if (depth === 0) { selector = css.slice(start, i).replace(/\/\*[\s\S]*?\*\//g, ' ').trim(); start = i + 1; }
+      if (depth === 0) {
+        const prelude = css.slice(start, i);
+        webOnly = /\/\*(?:(?!\*\/)[\s\S])*?한글 세로 보정(?:(?!\*\/)[\s\S])*?\*\//.test(prelude);
+        selector = prelude.replace(/\/\*[\s\S]*?\*\//g, ' ').trim(); start = i + 1;
+      }
       depth++;
     } else if (ch === '}') {
       depth--;
       if (depth === 0) {
-        if (selector && !selector.startsWith('@')) yield { selector, body: css.slice(start, i) };
+        if (selector && !selector.startsWith('@')) yield { selector, body: css.slice(start, i), webOnly };
         selector = null;
         start = i + 1;
       }
@@ -195,11 +204,11 @@ function breakBridgeFor(id, css, policy) {
   for (const breakValue of ['pc', 'mobile']) {
     const other = breakValue === 'pc' ? 'mobile' : 'pc';
     const moved = [];
-    for (const { selector, body } of topLevelRules(css)) {
+    for (const { selector, body, webOnly } of topLevelRules(css)) {
       const parts = splitSelectorList(selector)
         .filter((one) => one.includes(`[data-break="${breakValue}"]`) && !one.includes(`[data-break="${other}"]`))
         .map((one) => `${ancestors[breakValue]} ${one.replace(new RegExp(`\\[data-break="${breakValue}"\\]`, 'g'), `:not([data-break="${other}"])`)}`);
-      if (parts.length) moved.push(`${parts.join(',\n')} {${body}}`);
+      if (parts.length) moved.push(`${webOnly ? WEB_ONLY_MARK : ''}${parts.join(',\n')} {${body}}`);
     }
     if (moved.length) {
       blocks.push(`/* bridge:${breakValue} 감싸기에 화면 구분을 적었으면 컴포넌트가 안 적어도 같은 규칙이 선다 */\n${moved.join('\n\n')}`);
@@ -231,12 +240,12 @@ export function densityCssFor(id, css, policy, breaks = null) {
 
   const emit = (ancestor, size, breakValue) => {
     const moved = [];
-    for (const { selector, body } of rules) {
+    for (const { selector, body, webOnly } of rules) {
       const parts = splitSelectorList(selector)
         .map((s) => retarget(s, size, breakValue))
         .filter(Boolean)
         .map((s) => `${ancestor} ${s}`);
-      if (parts.length) moved.push(`${parts.join(',\n')} {${body}}`);
+      if (parts.length) moved.push(`${webOnly ? WEB_ONLY_MARK : ''}${parts.join(',\n')} {${body}}`);
     }
     return moved;
   };
