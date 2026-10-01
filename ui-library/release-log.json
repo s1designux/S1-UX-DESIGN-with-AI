@@ -5,10 +5,34 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.14.11",
+  "version": "0.14.12",
   "releasedAt": "2026-10-01",
-  "canonicalFingerprint": "6115d331b41d30fa8934300fb2a5e17ddbbb30281ddc7a72af7659f6965042b6",
+  "canonicalFingerprint": "2acb78d700a0342e1d75f29f4fd10627cea2038aaa11ef964bcc2cd0dd59853a",
   "releases": [
+    {
+      "version": "0.14.12",
+      "date": "2026-10-01",
+      "kind": "patch",
+      "canonicalFingerprint": "2acb78d700a0342e1d75f29f4fd10627cea2038aaa11ef964bcc2cd0dd59853a",
+      "components": [
+        {
+          "id": "select",
+          "from": "0.2.9",
+          "to": "0.2.10"
+        },
+        {
+          "id": "time-picker",
+          "from": "0.3.12",
+          "to": "0.3.13"
+        },
+        {
+          "id": "date-picker",
+          "from": "0.2.10",
+          "to": "0.2.11"
+        }
+      ],
+      "deliveryFingerprint": "2bc1fc80c4d7a2ffc0ced37edd726b35f072ec65de599a3a9729956210e0aa20"
+    },
     {
       "version": "0.14.11",
       "date": "2026-10-01",
@@ -1513,5 +1537,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "f046068d721fd2c815a7dd94b1fa9ff2f211432d57075e2d4766e3c5e4fe2844"
+  "deliveryFingerprint": "2bc1fc80c4d7a2ffc0ced37edd726b35f072ec65de599a3a9729956210e0aa20"
 }

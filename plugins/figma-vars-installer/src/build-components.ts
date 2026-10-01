@@ -2168,6 +2168,15 @@ async function buildSelect(maps: BuildMaps, originY: number): Promise<{ set: Com
           try { ddInst.resize(Math.max(DD_MIN_W, trigger.width), ddInst.height); } catch (e) { /* mock 환경 no-op */ }
         }
       }
+      // 칸이 부품 폭을 따라 늘어나게 한다(river 지시 2026-10-01 — Input 과 같은 방식). 부품 폭을 기본 140 으로 고정하고
+      //   칸은 그 폭을 채운다. 펼친(Open) 변형은 아래 목록이 칸보다 넓을 수 있어 지금 구조(내용 맞춤)를 그대로 둔다.
+      //   resize 는 두 방향 크기 방식을 FIXED 로 되돌리므로 resize 뒤에 방식을 다시 정한다(세로는 내용 맞춤).
+      if (comp.children.length === 1) {
+        comp.resize(140, comp.height);
+        comp.primaryAxisSizingMode = "AUTO";
+        comp.counterAxisSizingMode = "FIXED";
+        trigger.layoutSizingHorizontal = "FILL";
+      }
       setLightMode(comp, maps);
       comps.push(comp);
       cells.push({ comp, size: sc.size, brk: sc.brk, state: st.name });
@@ -3156,6 +3165,15 @@ async function buildTimePicker(maps: BuildMaps, originY: number): Promise<{ set:
           tpdInst.name = "tpd";
           comp.appendChild(tpdInst);
         }
+      }
+      // 칸이 부품 폭을 따라 늘어나게 한다(river 지시 2026-10-01 — Input 과 같은 방식). 부품 폭을 기본 140 으로 고정하고
+      //   칸은 그 폭을 채운다. 펼친(Open) 변형은 아래 목록이 칸보다 넓을 수 있어 지금 구조(내용 맞춤)를 그대로 둔다.
+      //   resize 는 두 방향 크기 방식을 FIXED 로 되돌리므로 resize 뒤에 방식을 다시 정한다(세로는 내용 맞춤).
+      if (comp.children.length === 1) {
+        comp.resize(140, comp.height);
+        comp.primaryAxisSizingMode = "AUTO";
+        comp.counterAxisSizingMode = "FIXED";
+        trigger.layoutSizingHorizontal = "FILL";
       }
       setLightMode(comp, maps);
       comps.push(comp);
@@ -5085,6 +5103,15 @@ async function buildDatePicker(maps: BuildMaps, originY: number): Promise<{ set:
           calInst.name = "calendar";
           comp.appendChild(calInst);
         }
+      }
+      // 칸이 부품 폭을 따라 늘어나게 한다(river 지시 2026-10-01 — Input 과 같은 방식). 부품 폭을 기본 140 으로 고정하고
+      //   칸은 그 폭을 채운다. 펼친(Open) 변형은 아래 목록이 칸보다 넓을 수 있어 지금 구조(내용 맞춤)를 그대로 둔다.
+      //   resize 는 두 방향 크기 방식을 FIXED 로 되돌리므로 resize 뒤에 방식을 다시 정한다(세로는 내용 맞춤).
+      if (comp.children.length === 1) {
+        comp.resize(140, comp.height);
+        comp.primaryAxisSizingMode = "AUTO";
+        comp.counterAxisSizingMode = "FIXED";
+        trigger.layoutSizingHorizontal = "FILL";
       }
       setLightMode(comp, maps);
       comps.push(comp);

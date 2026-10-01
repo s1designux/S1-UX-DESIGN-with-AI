@@ -1,8 +1,8 @@
 {
   "id": "time-picker",
-  "version": "0.3.12",
+  "version": "0.3.13",
   "status": "approved",
-  "canonicalFingerprint": "7623b969efd68f3f3c06ce47291416cb78dc7f62486fa1ddb80c6957ff6143c4",
+  "canonicalFingerprint": "7659ddd5503a8d496769fadb1e4345167a782604b270f752620bdc78303ab26b",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -325,5 +325,5 @@
     "controlMode": "uncontrolled",
     "progressiveEnhancementNote": "JavaScript 없이는 목록 칸이 생성되지 않아 선택할 수 없다 — 복합 Picker(정본 계약)라 native fallback이 없다. 트리거는 native button 이라 포커스·이름은 유지된다(계약 progressiveEnhancement 조항에 따른 명시적 unsupported 상태)."
   },
-  "sourceFingerprint": "cad4f5a2245af9c064cc8792ea9ef81d082c930f877e66e0a929902921e011b6"
+  "sourceFingerprint": "a6da9bb85dabd5d2e5305775c2579bc370b6be60afcc22c1125628ff087a7b6e"
 }

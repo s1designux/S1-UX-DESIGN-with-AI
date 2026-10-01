@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:2d0e467b0705f76db90a6b352fbdf4878f4bedd6737655aae3031d3181630c49",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-10-01T08:00:57.580Z",
+  "notes": "Select Box·Time Picker·Date Picker 닫힌 변형 61개: 부품 폭 140 FIXED + 칸 FILL(Input 방식). 펼친 변형(목록·달력 부착) 15개 내용맞춤 유지, DP Mobile Open 은 달력 없어 규칙 적용(의도 부합). 게이트 6종 exit 0. 참고: Time Picker Focus 는 TPD 세트 skip 시 캔버스 폴백 없음(기존 결함)"
+}
