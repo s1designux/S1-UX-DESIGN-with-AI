@@ -168603,8 +168603,8 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, State=Default, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 246,
@@ -168613,7 +168613,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -168671,7 +168671,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -169051,8 +169051,8 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, State=Default, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 246,
@@ -169061,7 +169061,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -169119,7 +169119,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -169503,7 +169503,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -169520,7 +169520,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caption",
@@ -169570,8 +169570,8 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, State=Filled, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 470,
@@ -169580,7 +169580,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -169638,7 +169638,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -170018,8 +170018,8 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, State=Filled, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 470,
@@ -170028,7 +170028,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -170086,7 +170086,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -170470,7 +170470,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -170487,7 +170487,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caption",
@@ -170537,8 +170537,8 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, State=Focus, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 694,
@@ -170547,7 +170547,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -170605,7 +170605,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -171287,8 +171287,8 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, State=Focus, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 694,
@@ -171297,7 +171297,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -171355,7 +171355,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -172041,7 +172041,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -172058,7 +172058,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caption",
@@ -172108,8 +172108,8 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, State=Error, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 918,
@@ -172118,7 +172118,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -172176,7 +172176,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -172556,8 +172556,8 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, State=Error, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 918,
@@ -172566,7 +172566,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -172624,7 +172624,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -173008,7 +173008,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -173025,7 +173025,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caution",
@@ -173075,8 +173075,8 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, State=Correct, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1142,
@@ -173085,7 +173085,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -173143,7 +173143,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -173523,8 +173523,8 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, State=Correct, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1142,
@@ -173533,7 +173533,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -173591,7 +173591,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -173975,7 +173975,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -173992,7 +173992,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/correct",
@@ -174042,8 +174042,8 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, State=Read-Only, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1366,
@@ -174052,7 +174052,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -174110,7 +174110,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -174490,8 +174490,8 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, State=Read-Only, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1366,
@@ -174500,7 +174500,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -174558,7 +174558,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -174942,7 +174942,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -174959,7 +174959,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caption",
@@ -175009,8 +175009,8 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, State=Disabled, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1590,
@@ -175019,7 +175019,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -175077,7 +175077,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -175457,8 +175457,8 @@
             "type": "COMPONENT",
             "name": "Size=XXSM, State=Disabled, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1590,
@@ -175467,7 +175467,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -175525,7 +175525,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -175909,7 +175909,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -175926,7 +175926,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/disabled",
@@ -175976,8 +175976,8 @@
             "type": "COMPONENT",
             "name": "Size=XSM, State=Default, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 246,
@@ -175986,7 +175986,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -176044,7 +176044,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -176424,8 +176424,8 @@
             "type": "COMPONENT",
             "name": "Size=XSM, State=Default, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 246,
@@ -176434,7 +176434,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -176492,7 +176492,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -176876,7 +176876,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -176893,7 +176893,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caption",
@@ -176943,8 +176943,8 @@
             "type": "COMPONENT",
             "name": "Size=XSM, State=Filled, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 470,
@@ -176953,7 +176953,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -177011,7 +177011,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -177391,8 +177391,8 @@
             "type": "COMPONENT",
             "name": "Size=XSM, State=Filled, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 470,
@@ -177401,7 +177401,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -177459,7 +177459,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -177843,7 +177843,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -177860,7 +177860,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caption",
@@ -177910,8 +177910,8 @@
             "type": "COMPONENT",
             "name": "Size=XSM, State=Focus, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 694,
@@ -177920,7 +177920,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -177978,7 +177978,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -178660,8 +178660,8 @@
             "type": "COMPONENT",
             "name": "Size=XSM, State=Focus, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 694,
@@ -178670,7 +178670,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -178728,7 +178728,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -179414,7 +179414,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -179431,7 +179431,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caption",
@@ -179481,8 +179481,8 @@
             "type": "COMPONENT",
             "name": "Size=XSM, State=Error, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 918,
@@ -179491,7 +179491,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -179549,7 +179549,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -179929,8 +179929,8 @@
             "type": "COMPONENT",
             "name": "Size=XSM, State=Error, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 918,
@@ -179939,7 +179939,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -179997,7 +179997,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -180381,7 +180381,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -180398,7 +180398,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caution",
@@ -180448,8 +180448,8 @@
             "type": "COMPONENT",
             "name": "Size=XSM, State=Correct, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1142,
@@ -180458,7 +180458,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -180516,7 +180516,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -180896,8 +180896,8 @@
             "type": "COMPONENT",
             "name": "Size=XSM, State=Correct, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1142,
@@ -180906,7 +180906,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -180964,7 +180964,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -181348,7 +181348,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -181365,7 +181365,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/correct",
@@ -181415,8 +181415,8 @@
             "type": "COMPONENT",
             "name": "Size=XSM, State=Read-Only, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1366,
@@ -181425,7 +181425,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -181483,7 +181483,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -181863,8 +181863,8 @@
             "type": "COMPONENT",
             "name": "Size=XSM, State=Read-Only, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1366,
@@ -181873,7 +181873,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -181931,7 +181931,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -182315,7 +182315,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -182332,7 +182332,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caption",
@@ -182382,8 +182382,8 @@
             "type": "COMPONENT",
             "name": "Size=XSM, State=Disabled, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1590,
@@ -182392,7 +182392,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -182450,7 +182450,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -182830,8 +182830,8 @@
             "type": "COMPONENT",
             "name": "Size=XSM, State=Disabled, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1590,
@@ -182840,7 +182840,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -182898,7 +182898,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -183282,7 +183282,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -183299,7 +183299,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/disabled",
@@ -183349,8 +183349,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Default, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 246,
@@ -183359,7 +183359,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -183417,7 +183417,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -183797,8 +183797,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Default, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 246,
@@ -183807,7 +183807,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -183865,7 +183865,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -184249,7 +184249,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -184266,7 +184266,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caption",
@@ -184316,8 +184316,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Filled, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 470,
@@ -184326,7 +184326,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -184384,7 +184384,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -184764,8 +184764,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Filled, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 470,
@@ -184774,7 +184774,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -184832,7 +184832,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -185216,7 +185216,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -185233,7 +185233,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caption",
@@ -185283,8 +185283,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Focus, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 694,
@@ -185293,7 +185293,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -185351,7 +185351,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -186033,8 +186033,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Focus, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 694,
@@ -186043,7 +186043,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -186101,7 +186101,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -186787,7 +186787,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -186804,7 +186804,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caption",
@@ -186854,8 +186854,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Error, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 918,
@@ -186864,7 +186864,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -186922,7 +186922,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -187302,8 +187302,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Error, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 918,
@@ -187312,7 +187312,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -187370,7 +187370,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -187754,7 +187754,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -187771,7 +187771,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caution",
@@ -187821,8 +187821,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Correct, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1142,
@@ -187831,7 +187831,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -187889,7 +187889,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -188269,8 +188269,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Correct, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1142,
@@ -188279,7 +188279,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -188337,7 +188337,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -188721,7 +188721,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -188738,7 +188738,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/correct",
@@ -188788,8 +188788,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Read-Only, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1366,
@@ -188798,7 +188798,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -188856,7 +188856,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -189236,8 +189236,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Read-Only, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1366,
@@ -189246,7 +189246,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -189304,7 +189304,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -189688,7 +189688,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -189705,7 +189705,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caption",
@@ -189755,8 +189755,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Disabled, Message=Off, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1590,
@@ -189765,7 +189765,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -189823,7 +189823,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -190203,8 +190203,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Disabled, Message=On, Break=PC",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1590,
@@ -190213,7 +190213,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -190271,7 +190271,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -190655,7 +190655,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -190672,7 +190672,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/disabled",
@@ -190722,8 +190722,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Default, Message=Off, Break=Mobile",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 246,
@@ -190732,7 +190732,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -190790,7 +190790,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -191101,8 +191101,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Default, Message=On, Break=Mobile",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 246,
@@ -191111,7 +191111,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -191169,7 +191169,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -191484,7 +191484,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -191501,7 +191501,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caption",
@@ -191551,8 +191551,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Filled, Message=Off, Break=Mobile",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 470,
@@ -191561,7 +191561,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -191619,7 +191619,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -191930,8 +191930,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Filled, Message=On, Break=Mobile",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 470,
@@ -191940,7 +191940,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -191998,7 +191998,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -192313,7 +192313,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -192330,7 +192330,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caption",
@@ -192380,8 +192380,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Focus, Message=Off, Break=Mobile",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 694,
@@ -192390,7 +192390,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -192448,7 +192448,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -192992,8 +192992,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Focus, Message=On, Break=Mobile",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 694,
@@ -193002,7 +193002,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -193060,7 +193060,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -193608,7 +193608,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -193625,7 +193625,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caption",
@@ -193675,8 +193675,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Error, Message=Off, Break=Mobile",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 918,
@@ -193685,7 +193685,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -193743,7 +193743,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -194054,8 +194054,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Error, Message=On, Break=Mobile",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 918,
@@ -194064,7 +194064,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -194122,7 +194122,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -194437,7 +194437,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -194454,7 +194454,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caution",
@@ -194504,8 +194504,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Correct, Message=Off, Break=Mobile",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1142,
@@ -194514,7 +194514,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -194572,7 +194572,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -194883,8 +194883,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Correct, Message=On, Break=Mobile",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1142,
@@ -194893,7 +194893,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -194951,7 +194951,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -195266,7 +195266,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -195283,7 +195283,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/correct",
@@ -195333,8 +195333,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Read-Only, Message=Off, Break=Mobile",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1366,
@@ -195343,7 +195343,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -195401,7 +195401,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -195712,8 +195712,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Read-Only, Message=On, Break=Mobile",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1366,
@@ -195722,7 +195722,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -195780,7 +195780,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -196095,7 +196095,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -196112,7 +196112,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/caption",
@@ -196162,8 +196162,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Disabled, Message=Off, Break=Mobile",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1590,
@@ -196172,7 +196172,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -196230,7 +196230,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -196541,8 +196541,8 @@
             "type": "COMPONENT",
             "name": "Size=MD, State=Disabled, Message=On, Break=Mobile",
             "dimensions": {
-              "width": null,
-              "height": null
+              "width": 200,
+              "height": 0
             },
             "position": {
               "x": 1590,
@@ -196551,7 +196551,7 @@
             "layout": {
               "layoutMode": "VERTICAL",
               "primaryAxisSizingMode": "AUTO",
-              "counterAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
               "primaryAxisAlignItems": null,
               "counterAxisAlignItems": null,
               "layoutGrow": null,
@@ -196609,7 +196609,7 @@
                   "counterAxisAlignItems": "CENTER",
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -196924,7 +196924,7 @@
                   "counterAxisAlignItems": null,
                   "layoutGrow": null,
                   "layoutAlign": null,
-                  "layoutSizingHorizontal": null,
+                  "layoutSizingHorizontal": "FILL",
                   "layoutSizingVertical": null,
                   "minWidth": null,
                   "padding": {
@@ -196941,7 +196941,7 @@
                   "fontStyle": "Regular",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/12R",
-                  "textAutoResize": null
+                  "textAutoResize": "HEIGHT"
                 },
                 "appearance": {
                   "fill": "color/text/state/disabled",

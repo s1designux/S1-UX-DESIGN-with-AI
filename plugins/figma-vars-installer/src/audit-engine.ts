@@ -2707,12 +2707,33 @@ function normVariantValue(v: string): string {
 
 type VariantPick = { target: ComponentNode | null; reason: string | null; axisLoss: number };
 
+// ─── 크기는 높이로 잇는다 (river 결정 D-06 · 2026-10-01 "크기 아이콘을 위처럼 이어주고") ───
+// "레거시 높이 값을 보고 최신 데이터와 비교하여 매칭하면 됨. 매칭되는 게 없다면 가장 가까운 height 값으로."
+// 레거시 크기 축(platform=pc-md 처럼 이름이 다른 축)은 정본 Size 축과 이름으로 이어지지 않는다.
+// 그래서 **정본 Size 축이 다른 근거로 정해지지 않았을 때만**, 남은 후보 가운데 높이가 레거시 인스턴스와
+// 가장 가까운 Size 값을 고른다. 높이를 모르면(0) 아무것도 하지 않는다.
+function isSizeAxis(axis: string): boolean {
+  return normAxisName(axis) === "size";
+}
+function nearestSizeByHeight(pool: ComponentNode[], axis: string, legacyHeight: number): string | null {
+  if (!legacyHeight || legacyHeight <= 0) return null;
+  let best: string | null = null;
+  let bestGap = Infinity;
+  for (const v of pool) {
+    const val = (v.variantProperties || {})[axis];
+    if (!val) continue;
+    const gap = Math.abs(v.height - legacyHeight);
+    if (gap < bestGap - 0.01) { bestGap = gap; best = val; }
+  }
+  return best;
+}
+
 // 정본 세트에서 레거시 인스턴스의 변형 조합에 해당하는 낱개 variant 를 고른다.
 // 규칙(§0 실측 반영) — 교집합 축만 일치시킨다:
 //   · 양쪽에 다 있는 축   → 정규화 후 값이 같아야 함 (필수)
 //   · 정본에만 있는 축     → defaultVariant 값 사용
 //   · 레거시에만 있는 축   → 버림 (정본에 개념이 없음) = axisLoss 로 집계
-function pickVariantTarget(set: ComponentSetNode, legacyVP: { [k: string]: string } | null): VariantPick {
+function pickVariantTarget(set: ComponentSetNode, legacyVP: { [k: string]: string } | null, legacyHeight = 0): VariantPick {
   const variants = set.children.filter((c) => c.type === "COMPONENT") as ComponentNode[];
   if (variants.length === 0) return { target: null, reason: "no-variant-match", axisLoss: 0 };
   const def = (set.defaultVariant || variants[0]) as ComponentNode;
@@ -2746,11 +2767,15 @@ function pickVariantTarget(set: ComponentSetNode, legacyVP: { [k: string]: strin
   if (matches.length === 0) return { target: null, reason: "no-variant-match", axisLoss };
   if (matches.length === 1) return { target: matches[0], reason: null, axisLoss };
 
-  // 여럿이면 정본에만 있는 축을 defaultVariant 값으로 좁힌다
+  // 여럿이면 정본에만 있는 축을 defaultVariant 값으로 좁힌다 — 단 Size 는 높이로 고른다(D-06)
   const otherAxes = canonAxes.filter((a) => !shared.some((s) => s.canon === a));
+  const wantOther: { [a: string]: string } = {};
+  for (const a of otherAxes) if (!isSizeAxis(a)) wantOther[a] = defVP[a];
+  const sameOthers = matches.filter((v) => otherAxes.every((a) => isSizeAxis(a) || (v.variantProperties || {})[a] === wantOther[a]));
+  for (const a of otherAxes) if (isSizeAxis(a)) wantOther[a] = nearestSizeByHeight(sameOthers, a, legacyHeight) || defVP[a];
   const narrowed = matches.filter((v) => {
     const vp = v.variantProperties || {};
-    return otherAxes.every((a) => vp[a] === defVP[a]);
+    return otherAxes.every((a) => vp[a] === wantOther[a]);
   });
   if (narrowed.length === 1) return { target: narrowed[0], reason: null, axisLoss };
   // 유일하게 안 좁혀지면 강등(안전 우선)
@@ -3142,7 +3167,7 @@ type VariantInfo = {
   pickedId: string | null;      // null = 세트를 못 읽은 때만. 변형이 있으면 언제나 하나를 고른다.
   matchedAxes: string[];
   unmatchedAxes: string[];
-  axisSource?: { [axis: string]: "decision" | "legacy" | "name" | "default" | "only" };
+  axisSource?: { [axis: string]: "decision" | "legacy" | "name" | "height" | "default" | "only" };
   guessedAxes?: string[];       // 근거 없이 기본값으로 채운 축
   confident?: boolean;          // 모든 축에 근거가 있었나 — 일괄 교체는 이것만 자동으로 돈다
 };
@@ -3191,6 +3216,7 @@ async function getVariantOptions(
     if (main) legacyNames += " " + main.name + " " + (main.parent && main.parent.type === "COMPONENT_SET" ? main.parent.name : "");
   }
   const nameTokens = tokenizeName(legacyNames.replace(/=/g, " ")).map(normVariantValue);
+  const legacyHeight = inst && "height" in inst ? Number((inst as SceneNode & LayoutMixin).height) || 0 : 0;
 
   // 축 이름은 세트 기본값에서 읽되, **기본값이 매체 필터에 걸려 사라졌으면 근거로 쓰지 않는다**
   // (PC 기본값을 모바일 화면에 들이밀지 않기 위해서다).
@@ -3207,7 +3233,7 @@ async function getVariantOptions(
   const want: { [axis: string]: string } = {};
   const matchedAxes: string[] = [];
   const unmatchedAxes: string[] = [];
-  const axisSource: { [axis: string]: "decision" | "legacy" | "name" | "default" | "only" } = {};
+  const axisSource: { [axis: string]: "decision" | "legacy" | "name" | "height" | "default" | "only" } = {};
   for (const axis of axes) {
     const values = Array.from(new Set(variants.map((v) => (v.variantProperties || {})[axis]).filter(Boolean)));
     // ① river 가 정해 둔 값 (결정표)
@@ -3225,6 +3251,11 @@ async function getVariantOptions(
     // ③ 레거시 이름에 그 축의 값이 적혀 있으면 그 값 (예: "btn_secondary_xsm")
     const byName = values.filter((v) => nameTokens.indexOf(normVariantValue(v)) >= 0);
     if (byName.length === 1) { want[axis] = byName[0]; matchedAxes.push(axis); axisSource[axis] = "name"; continue; }
+    // ④ 크기 축이면 레거시 높이와 가장 가까운 크기 (river 결정 D-06)
+    if (isSizeAxis(axis) && legacyHeight > 0) {
+      const byHeight = nearestSizeByHeight(variants, axis, legacyHeight);
+      if (byHeight) { want[axis] = byHeight; matchedAxes.push(axis); axisSource[axis] = "height"; continue; }
+    }
     unmatchedAxes.push(axis);
   }
 
@@ -3232,7 +3263,7 @@ async function getVariantOptions(
   // **좁히다가 남는 게 없어지면 그 축의 근거를 버리고 «짐작»으로 내린다** — 버린 근거를
   // 그대로 «정한 대로 골랐다»고 말하지 않기 위해서다.
   const defVP = (defaultSurvived ? setDefault.variantProperties || {} : {}) as { [k: string]: string };
-  const rank = { decision: 0, legacy: 1, name: 2, default: 3 } as { [k: string]: number };
+  const rank = { decision: 0, legacy: 1, name: 2, height: 3, default: 4 } as { [k: string]: number };
   const ordered = matchedAxes.slice().sort((a, b) => rank[axisSource[a]] - rank[axisSource[b]]);
   const guessedAxes: string[] = [];
   const keptAxes: string[] = [];
@@ -3311,7 +3342,8 @@ async function exportReferencePreview(ref: { id: string; key?: string; type: "CO
 async function resolveSwapTarget(
   candidate: SwapCandidate,
   mode: SwapMode,
-  legacyVP: { [k: string]: string } | null
+  legacyVP: { [k: string]: string } | null,
+  legacyHeight = 0
 ): Promise<ResolveResult> {
   const node = await loadSuggestedNode(candidate);
   if (!node) return { target: null, reason: "resolve-failed", variantReset: false, axisLoss: 0 };
@@ -3322,7 +3354,7 @@ async function resolveSwapTarget(
   }
 
   const set = node as ComponentSetNode;
-  const pick = pickVariantTarget(set, legacyVP);
+  const pick = pickVariantTarget(set, legacyVP, legacyHeight);
   if (pick.target) {
     return { target: pick.target, reason: null, variantReset: false, axisLoss: pick.axisLoss };
   }
@@ -3349,6 +3381,7 @@ type SwapRollback = {
   originalX: number;
   originalY: number;
   originalVisible: boolean;
+  wrapperId?: string;   // 라벨을 붙이느라 감싼 묶음 — 되돌릴 때 묶음째 걷어낸다
 };
 
 const ROLLBACK_FRAME_MARK = "s1-inspector-swap-backup";
@@ -3494,7 +3527,7 @@ async function applySwap(
     return { ok: false, result: "failed", reason: "다른 컴포넌트 안에 포함된 부품이라 개별 교체할 수 없습니다." };
   }
   const legacyVP = (inst as InstanceNode).variantProperties || null;
-  const res = await resolveSwapTarget(candidate, mode, legacyVP);
+  const res = await resolveSwapTarget(candidate, mode, legacyVP, (inst as InstanceNode).height);
   if (!res.target) {
     if (res.reason === "no-variant-match") {
       return { ok: false, result: "demoted", reason: "정본에 같은 상태(변형) 조합이 없어 자동 교체하지 않았습니다.", axisLoss: res.axisLoss };
@@ -3515,6 +3548,8 @@ async function applySwap(
   };
   const captured = captureTextOverrides(inst as InstanceNode);
   const widthSnap = captureWidth(inst as InstanceNode);
+  const labelCap = captureLabels(inst as InstanceNode);
+  const iconHints = await captureIconHints(inst as InstanceNode);
   try {
     const backupFrame = await getRollbackFrame();
     backup.visible = false;
@@ -3530,12 +3565,19 @@ async function applySwap(
     await discardSwapRollback(rollback);
     return { ok: false, result: "failed", reason: String(e && e.message || e) };
   }
+  carryIconToggles(inst as InstanceNode, iconHints);
   restoreWidth(inst as InstanceNode, widthSnap);
+  await settleSizeAfterSwap(inst as InstanceNode, widthSnap);
   let unpreserved: string[] = [];
   try {
     const pres = await restoreTextOverrides(inst as InstanceNode, captured);
     unpreserved = pres.unpreserved;
   } catch (e) { /* 복원 실패해도 교체 자체는 성공 — 보존만 부분적 */ }
+  try {
+    const lab = await attachLabels(inst as InstanceNode, labelCap);
+    if (lab.wrapperId) rollback.wrapperId = lab.wrapperId;
+    if (lab.attached.length) unpreserved = unpreserved.filter((t) => lab.attached.indexOf(t) < 0);
+  } catch (e) { /* 라벨을 못 붙여도 교체는 성공 */ }
   const fitted = await fitInstanceToMode(inst as InstanceNode);
   return { ok: true, result: "swapped", variantReset: res.variantReset, axisLoss: res.axisLoss, unpreserved, rollback, modeFitted: fitted.changed ? fitted.mode : undefined };
 }
@@ -3569,6 +3611,207 @@ function restoreWidth(inst: InstanceNode, snap: WidthSnapshot): void {
     if (snap.grow !== null && n.layoutGrow !== snap.grow) n.layoutGrow = snap.grow;
     if (snap.align === "STRETCH" && n.layoutAlign !== "STRETCH") n.layoutAlign = "STRETCH";
   } catch (e) { /* 크기 복원 실패는 교체 자체를 막지 않는다 */ }
+}
+
+// ─── 교체 뒤 크기 다듬기 (river 지시 2026-10-01) ───
+// swapComponent 는 옛 인스턴스의 크기를 끌고 온다. 높이는 새 부품의 크기(Size 변형)가 정하므로
+// 세로로 늘려 쓰던(FILL) 경우가 아니면 새 부품 높이로 돌린다. 옛것이 내용 맞춤(HUG)이었는데 새 부품이
+// 스스로 맞출 수 없는(오토레이아웃이 아닌) 부품이면 가로도 새 부품 크기로 돌린다(체크박스가 81폭으로 늘어나던 것).
+async function settleSizeAfterSwap(inst: InstanceNode, snap: WidthSnapshot): Promise<void> {
+  const n = inst as any;
+  let main: ComponentNode | null = null;
+  try { main = await inst.getMainComponentAsync(); } catch (e) { main = null; }
+  if (!main) return;
+  try {
+    if (n.layoutSizingVertical !== "FILL" && Math.abs(inst.height - main.height) >= 0.5) {
+      if (main.layoutMode && main.layoutMode !== "NONE" && n.layoutSizingVertical !== undefined) n.layoutSizingVertical = "HUG";
+      else inst.resize(inst.width, main.height);
+    }
+    if (snap.sizing === "HUG" && (!main.layoutMode || main.layoutMode === "NONE") && Math.abs(inst.width - main.width) >= 0.5) {
+      inst.resize(main.width, inst.height);
+    }
+  } catch (e) { /* 크기 다듬기 실패는 교체를 막지 않는다 */ }
+}
+
+// ─── 아이콘 켜짐을 잇는다 (river 지시 2026-10-01 "크기 아이콘을 위처럼 이어주고") ───
+// 옛 부품에 비밀번호 눈 아이콘이 보이고 있었으면, 새 부품의 «Password Icon» 켜기 속성을 켠다.
+// 근거는 옛 아이콘 부품의 이름(비밀번호·eye·password)뿐이다 — 다른 아이콘을 비밀번호 아이콘으로 짐작하지 않는다.
+const PASSWORD_ICON_HINT = /비밀번호|password|eye/i;
+async function captureIconHints(inst: InstanceNode): Promise<{ password: boolean }> {
+  let password = false;
+  try {
+    for (const child of inst.findAll((c) => c.type === "INSTANCE" && c.visible !== false) as InstanceNode[]) {
+      const main = await child.getMainComponentAsync();
+      const names = [child.name, main ? main.name : "", main && main.parent && main.parent.type === "COMPONENT_SET" ? main.parent.name : ""].join(" ");
+      if (PASSWORD_ICON_HINT.test(names)) { password = true; break; }
+    }
+  } catch (e) { /* */ }
+  return { password };
+}
+function carryIconToggles(inst: InstanceNode, hints: { password: boolean }): boolean {
+  if (!hints.password) return false;
+  try {
+    const props = inst.componentProperties || {};
+    const set: { [k: string]: boolean } = {};
+    for (const key of Object.keys(props)) {
+      if (props[key].type === "BOOLEAN" && /password\s*icon/i.test(key.split("#")[0]) && props[key].value !== true) set[key] = true;
+    }
+    if (Object.keys(set).length) { inst.setProperties(set); return true; }
+  } catch (e) { /* */ }
+  return false;
+}
+
+// ─── 라벨 옮겨 붙이기 (river 지시 2026-10-01) ───
+// "예전 컴포넌트는 체크박스·인풋·셀렉박스에 라벨이 붙은 채로 제공됐고, 지금은 라벨 없이 나온다.
+//  체크박스 옆, 폼컨트롤 옆/위에 나오는 텍스트는 라벨로 인식하고 레거시 라벨 텍스트와 동일한 스타일로 붙여 달라."
+// 라벨 = 옛 부품 안의 글자 중 **조작부(칸·상자) 바깥**에 있는 것. 조작부 = 글자를 뺀 보이는 도형·프레임의 범위.
+// 교체 뒤 새 부품 안에 같은 글자가 이미 보이면 붙이지 않는다(플레이스홀더처럼 칸 안 글자는 애초에 라벨이 아니다).
+type LabelSide = "left" | "right" | "top";
+type CapturedLabel = {
+  characters: string; side: LabelSide; gap: number;
+  textStyleId: string; fontName: FontName; fontSize: number;
+  lineHeight: LineHeight; letterSpacing: LetterSpacing; fills: Paint[]; fillStyleId: string;
+  relX: number; relY: number;
+};
+type CapturedLabels = { labels: CapturedLabel[]; boxX: number; boxY: number; parentX: number; parentY: number };
+function relBox(node: SceneNode, root: SceneNode): { x: number; y: number; w: number; h: number } {
+  const a = node.absoluteTransform, r = root.absoluteTransform;
+  return { x: a[0][2] - r[0][2], y: a[1][2] - r[1][2], w: (node as any).width || 0, h: (node as any).height || 0 };
+}
+function captureLabels(inst: InstanceNode): CapturedLabels {
+  const out: CapturedLabels = { labels: [], boxX: 0, boxY: 0, parentX: inst.x, parentY: inst.y };
+  try {
+    const texts = inst.findAll((c) => c.type === "TEXT" && c.visible !== false) as TextNode[];
+    if (!texts.length) return out;
+    // 조작부 = 채움·선이 있는 보이는 조각들(부품 틀 자신이 칠해져 있으면 그것도 — 인풋은 틀이 곧 입력칸이다).
+    //   글자가 그 조각 안에 있으면(플레이스홀더) 라벨이 아니다.
+    const painted: { x: number; y: number; w: number; h: number }[] = [];
+    const isPainted = (n: SceneNode) => {
+      const fills = (n as any).fills, strokes = (n as any).strokes;
+      return (Array.isArray(fills) && fills.some((f: Paint) => f.visible !== false)) || (Array.isArray(strokes) && strokes.some((f: Paint) => f.visible !== false));
+    };
+    if (isPainted(inst)) painted.push({ x: 0, y: 0, w: inst.width, h: inst.height });
+    for (const sh of inst.findAll((c) => c.type !== "TEXT" && c.visible !== false) as SceneNode[]) {
+      if (isPainted(sh)) painted.push(relBox(sh, inst));
+    }
+    if (!painted.length) return out;
+    const within = (b: { x: number; y: number; w: number; h: number }, p: { x: number; y: number; w: number; h: number }) =>
+      b.x + b.w / 2 >= p.x && b.x + b.w / 2 <= p.x + p.w && b.y + b.h / 2 >= p.y && b.y + b.h / 2 <= p.y + p.h;
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    for (const b of painted) { x0 = Math.min(x0, b.x); y0 = Math.min(y0, b.y); x1 = Math.max(x1, b.x + b.w); y1 = Math.max(y1, b.y + b.h); }
+    out.boxX = x0; out.boxY = y0;
+    for (const t of texts) {
+      const b = relBox(t, inst);
+      if (painted.some((p) => within(b, p))) continue;
+      let side: LabelSide | null = null, gap = 0;
+      if (b.x >= x1 - 0.5) { side = "right"; gap = b.x - x1; }
+      else if (b.x + b.w <= x0 + 0.5) { side = "left"; gap = x0 - (b.x + b.w); }
+      else if (b.y + b.h <= y0 + 0.5) { side = "top"; gap = y0 - (b.y + b.h); }
+      if (!side || !t.characters.trim()) continue;
+      const fontName = t.fontName === figma.mixed ? (t.getRangeFontName(0, 1) as FontName) : (t.fontName as FontName);
+      out.labels.push({
+        characters: t.characters, side, gap: Math.max(0, gap),
+        textStyleId: typeof t.textStyleId === "string" ? t.textStyleId : "",
+        fontName, fontSize: t.fontSize === figma.mixed ? 14 : (t.fontSize as number),
+        lineHeight: t.lineHeight === figma.mixed ? { unit: "AUTO" } : (t.lineHeight as LineHeight),
+        letterSpacing: t.letterSpacing === figma.mixed ? { unit: "PERCENT", value: 0 } : (t.letterSpacing as LetterSpacing),
+        fills: Array.isArray(t.fills) ? (JSON.parse(JSON.stringify(t.fills)) as Paint[]) : [],
+        fillStyleId: typeof t.fillStyleId === "string" ? t.fillStyleId : "",
+        relX: b.x, relY: b.y,
+      });
+    }
+  } catch (e) { /* 라벨을 못 읽으면 붙이지 않는다 */ }
+  return out;
+}
+// 라벨을 붙이는 대상은 river 가 말한 부품뿐이다 — 체크·라디오·토글은 옆, 폼컨트롤은 옆·위.
+const LABEL_SIDE_PARTS = ["checkbox", "radio", "toggle"];
+const LABEL_FORM_PARTS = ["input", "selectbox", "textarea", "searchinput"];
+// 라벨 글꼴 — 정본 글꼴(Pretendard)로 쓰고, 크기·굵기가 같은 정본 텍스트 스타일이 있으면 그것을 붙인다(하드룰 H3).
+//   레거시의 'Pretendard Variable' 은 같은 서체의 다른 배포본이라 Pretendard 로 읽는다.
+async function labelTextStyle(lab: CapturedLabel): Promise<{ font: FontName; styleId: string | null }> {
+  const style = lab.fontName && lab.fontName.style ? lab.fontName.style : "Regular";
+  const font: FontName = { family: "Pretendard", style };
+  try {
+    const styles = await figma.getLocalTextStylesAsync();
+    const hit = styles.filter((st) => st.fontName.family === "Pretendard" && st.fontName.style === style && Math.abs(st.fontSize - lab.fontSize) < 0.01);
+    const pick = hit.filter((st) => /^body\//i.test(st.name))[0] || hit[0];
+    if (pick) return { font: pick.fontName, styleId: pick.id };
+  } catch (e) { /* */ }
+  return { font, styleId: null };
+}
+async function attachLabels(inst: InstanceNode, cap: CapturedLabels): Promise<{ wrapperId?: string; attached: string[] }> {
+  if (!cap.labels.length) return { attached: [] };
+  let setName = "";
+  try {
+    const main = await inst.getMainComponentAsync();
+    setName = main ? normalizeName(main.parent && main.parent.type === "COMPONENT_SET" ? main.parent.name : main.name) : "";
+  } catch (e) { setName = ""; }
+  const sideOnly = LABEL_SIDE_PARTS.indexOf(setName) >= 0;
+  const formPart = LABEL_FORM_PARTS.indexOf(setName) >= 0;
+  if (!sideOnly && !formPart) return { attached: [] };
+  cap = { ...cap, labels: cap.labels.filter((l) => (sideOnly ? l.side !== "top" : true)) };
+  const visible = (inst.findAll((c) => c.type === "TEXT" && c.visible !== false) as TextNode[]).map((t) => t.characters.trim());
+  const todo = cap.labels.filter((l) => visible.indexOf(l.characters.trim()) < 0);
+  if (!todo.length) return { attached: [] };
+  const parent = inst.parent;
+  if (!parent || !("children" in parent)) return { attached: [] };
+  const lab = todo[0];                     // 한 부품에 라벨은 하나 — 여럿이면 첫 번째만(나머지는 보존 못 함으로 남는다)
+  const horizontal = lab.side !== "top";
+  const index = (parent as BaseNode & ChildrenMixin).children.indexOf(inst);
+  const n = inst as any;
+  const sizingH = n.layoutSizingHorizontal, grow = n.layoutGrow, align = n.layoutAlign;
+  const parentAuto = (parent as any).layoutMode && (parent as any).layoutMode !== "NONE";
+
+  // 순서가 중요하다: 글자·이름·크기 맞춤·색을 **먼저** 넣고 정본 텍스트 스타일을 **마지막에** 붙인다.
+  //   스타일을 먼저 붙이면 그 뒤의 쓰기마다 Pretendard 를 불러와야 해서, 글꼴이 없는 환경에서 멈춘다.
+  //   임시 글꼴(Inter)로 만든 뒤 스타일로 덮으므로 최종 글꼴은 정본 Pretendard 다(하드룰 H3).
+  const text = figma.createText();
+  try {
+    const ts = await labelTextStyle(lab);
+    if (ts.styleId) {
+      await figma.loadFontAsync({ family: "Inter", style: "Regular" });
+    } else {
+      await figma.loadFontAsync(ts.font);
+      text.fontName = ts.font;
+    }
+    text.characters = lab.characters;
+    text.name = "라벨";
+    text.textAutoResize = "WIDTH_AND_HEIGHT";
+    if (!ts.styleId) { text.fontSize = lab.fontSize; text.lineHeight = lab.lineHeight; text.letterSpacing = lab.letterSpacing; }
+    let filled = false;
+    if (lab.fillStyleId) { try { await text.setFillStyleIdAsync(lab.fillStyleId); filled = true; } catch (e) { filled = false; } }
+    if (!filled && lab.fills.length) text.fills = lab.fills;
+    if (ts.styleId) await text.setTextStyleIdAsync(ts.styleId);
+  } catch (e) {
+    try { text.remove(); } catch (e2) { /* */ }
+    return { attached: [] };
+  }
+
+  const wrap = figma.createFrame();
+  wrap.name = `${inst.name} + 라벨`;
+  wrap.fills = [];
+  wrap.clipsContent = false;
+  wrap.layoutMode = horizontal ? "HORIZONTAL" : "VERTICAL";
+  wrap.itemSpacing = lab.gap;
+  wrap.primaryAxisSizingMode = "AUTO";
+  wrap.counterAxisSizingMode = "AUTO";
+  wrap.counterAxisAlignItems = horizontal ? "CENTER" : "MIN";
+  (parent as BaseNode & ChildrenMixin).insertChild(Math.max(0, index), wrap);
+  if (!parentAuto) {
+    wrap.x = cap.parentX + Math.min(lab.relX, cap.boxX);
+    wrap.y = cap.parentY + Math.min(lab.relY, cap.boxY);
+  }
+  if (lab.side === "right") { wrap.appendChild(inst); wrap.appendChild(text); }
+  else { wrap.appendChild(text); wrap.appendChild(inst); }
+  try {
+    if (parentAuto && sizingH === "FILL") {
+      (wrap as any).layoutSizingHorizontal = "FILL";
+      if (!horizontal) (inst as any).layoutSizingHorizontal = "FILL";
+    }
+    if (parentAuto && typeof grow === "number") (wrap as any).layoutGrow = grow;
+    if (parentAuto && align === "STRETCH") (wrap as any).layoutAlign = "STRETCH";
+  } catch (e) { /* */ }
+  return { wrapperId: wrap.id, attached: [lab.characters] };
 }
 
 // ─── 교체한 부품을 화면 모드에 맞추기 (river 결정 2026-09-17 — "교체할 때 화면 모드에 맞춰줘") ───
@@ -3633,7 +3876,7 @@ async function swapInstanceTo(
   candidate: SwapCandidate,
   mode: SwapMode
 ): Promise<{ ok: boolean; result: SwapOutcome; reason?: string; variantReset?: boolean; axisLoss?: number; unpreserved?: string[]; modeFitted?: string }> {
-  const res = await resolveSwapTarget(candidate, mode, inst.variantProperties || null);
+  const res = await resolveSwapTarget(candidate, mode, inst.variantProperties || null, inst.height);
   if (!res.target) {
     if (res.reason === "no-variant-match") {
       return { ok: false, result: "demoted", reason: "정본에 같은 상태(변형) 조합이 없어 자동 교체하지 않았습니다.", axisLoss: res.axisLoss };
@@ -3642,14 +3885,22 @@ async function swapInstanceTo(
   }
   const captured = captureTextOverrides(inst);
   const widthSnap = captureWidth(inst);
+  const labelCap = captureLabels(inst);
+  const iconHints = await captureIconHints(inst);
   try {
     inst.swapComponent(res.target);
   } catch (e: any) {
     return { ok: false, result: "failed", reason: String((e && e.message) || e) };
   }
+  carryIconToggles(inst, iconHints);
   restoreWidth(inst, widthSnap);
+  await settleSizeAfterSwap(inst, widthSnap);
   let unpreserved: string[] = [];
   try { unpreserved = (await restoreTextOverrides(inst, captured)).unpreserved; } catch {}
+  try {
+    const lab = await attachLabels(inst, labelCap);
+    if (lab.attached.length) unpreserved = unpreserved.filter((t) => lab.attached.indexOf(t) < 0);
+  } catch {}
   const fitted = await fitInstanceToMode(inst);
   return { ok: true, result: "swapped", variantReset: res.variantReset, axisLoss: res.axisLoss, unpreserved, modeFitted: fitted.changed ? fitted.mode : undefined };
 }
@@ -3788,7 +4039,7 @@ async function importComponentCopy(
 ): Promise<{ ok: boolean; reason?: string; nodeId?: string; name?: string; variantReset?: boolean }> {
   const inst = await figma.getNodeByIdAsync(candidate.instanceId);
   const legacyVP = inst && inst.type === "INSTANCE" ? (inst as InstanceNode).variantProperties || null : null;
-  const res = await resolveSwapTarget(candidate, "lenient", legacyVP);
+  const res = await resolveSwapTarget(candidate, "lenient", legacyVP, inst && "height" in inst ? (inst as SceneNode & LayoutMixin).height : 0);
   if (!res.target) {
     return { ok: false, reason: "기준 컴포넌트를 찾지 못했습니다. 기준 파일에서 publish 되었는지 확인해주세요." };
   }
@@ -3842,7 +4093,9 @@ async function rollbackSwap(rollback: SwapRollback): Promise<{ ok: boolean; reas
     backup.visible = rollback.originalVisible;
     (parent as BaseNode & ChildrenMixin).insertChild(index, backup as InstanceNode);
     try { backup.x = rollback.originalX; backup.y = rollback.originalY; } catch {}
-    node.remove();
+    const wrapper = rollback.wrapperId ? await figma.getNodeByIdAsync(rollback.wrapperId) : null;
+    if (wrapper && "remove" in wrapper) (wrapper as SceneNode).remove();
+    else node.remove();
     if (rollbackFrameId) {
       const frame = await figma.getNodeByIdAsync(rollbackFrameId);
       if (frame && frame.type === "FRAME" && frame.children.length === 0) {

@@ -1643,13 +1643,25 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "AUTO"; comp.itemSpacing = 6;
           comp.fills = []; // 외곽 컨테이너는 투명 — createComponent 기본 흰색 fill 제거(미사용 FFFFFF, 2026-06-24)
           comp.appendChild(field);
+          // 입력칸이 부품 폭을 따라 늘어나게 한다(river 지시 2026-10-01). 종전엔 부품이 내용 맞춤(HUG)이고
+          //   입력칸이 200 고정이라, 화면에서 부품 폭을 460 으로 늘려도 입력칸은 200 에 머물러 글자가 두 줄로 꺾였다.
+          //   부품 폭을 200 고정(기본값 유지)으로 두고 입력칸은 그 폭을 채운다 — 기본 모습은 그대로, 늘리면 같이 늘어난다.
+          //   resize 는 두 방향 크기 방식을 FIXED 로 되돌리므로 resize 를 먼저 하고 방식을 다시 정한다(세로는 내용 맞춤 유지).
+          comp.resize(200, comp.height);
+          comp.primaryAxisSizingMode = "AUTO";
+          comp.counterAxisSizingMode = "FIXED";
+          field.layoutSizingHorizontal = "FILL";
           if (msg === "On") {
             // 안내메시지 = 글자(text) 역할 토큰. 보더/라벨 토큰 오연결 정정(2026-07-13):
             //   기본=text/state/caption · 오류=text/state/caution · 확인=text/state/correct · 비활성=text/state/disabled
             //   기본(caption gray/500 #757575)은 Figma 실측으로 확정(2026-07-14). helper(gray/400 #9D9D9D)는 페이지네이션 예정 토큰이라 여기서 사용 안 함.
             //   (최초엔 form-control/border·label = 테두리/라벨 토큰 오연결, 2026-07-13 정정 시 default 를 helper 로 잘못 둠 → caption 으로 재정정)
             const msgColor = dis ? "color/text/state/disabled" : st.name === "Error" ? "color/text/state/caution" : st.name === "Correct" ? "color/text/state/correct" : "color/text/state/caption";
-            comp.appendChild(await makeBoundText("안내 메세지", 12, "Regular", scv(maps, msgColor)));
+            const msgText = await makeBoundText("안내 메세지", 12, "Regular", scv(maps, msgColor));
+            comp.appendChild(msgText);
+            // 부품 폭이 고정이 됐으므로 안내 글은 그 폭 안에서 줄을 바꾼다(넘쳐 나가지 않게).
+            msgText.layoutSizingHorizontal = "FILL";
+            msgText.textAutoResize = "HEIGHT";
           }
           setLightMode(comp, maps);
           comps.push(comp);

@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:ec5fbdc40e17406e6b37dd5265f69821e5626b0b8e9332677e8f765dc1657ab0",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-10-01T07:49:31.142Z",
+  "notes": "buildInput: 루트 폭 200 고정+세로 내용맞춤 재설정(resize 후), field FILL, 안내글 FILL+HEIGHT — 인스턴스 폭 늘리면 입력칸 따라 늘어남. gen-component-facts 대표기하 규칙 보강으로 Input field 사실 원상(facts 는 sourceHash 만 변경, DESIGN.core.md 무변경). 캔버스 렌더 미검증"
+}

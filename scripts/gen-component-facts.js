@@ -75,20 +75,36 @@ function nodeGeometry(node) {
   return out;
 }
 
-function representativeGeometry(variant) {
-  const root = nodeGeometry(variant);
-  if (root.width || root.height) return { target: 'root', ...root };
-  // Input·Filter Chip처럼 외곽 variant는 hug이고 실제 고정 기하는 field/chip 자식에 있는 경우.
+function firstSizedDescendant(variant, needHeight, fullWidth) {
   const queue = [...(variant.children || [])];
   while (queue.length) {
     const n = queue.shift();
     const g = nodeGeometry(n);
-    if (g.width || g.height) {
+    const ok = needHeight ? (g.height && (!fullWidth || g.width === fullWidth)) : (g.width || g.height);
+    if (ok) {
       const targetName = typeof n.props.name === 'string' && n.props.name ? n.props.name : n.type.toLowerCase();
       return { target: targetName, ...g };
     }
     queue.push(...(n.children || []));
   }
+  return null;
+}
+
+function representativeGeometry(variant) {
+  const root = nodeGeometry(variant);
+  if (root.width && root.height) return { target: 'root', ...root };
+  // 외곽이 폭만 고정이고 높이는 내용 맞춤인 경우(Input — 2026-10-01 입력칸이 부품 폭을 채우도록 바꿈):
+  //   크기별 높이·여백 같은 실제 기하는 **외곽 폭을 그대로 채우는** 고정 높이 자식(field)에 있다. 그쪽을 대표로 둔다.
+  //   폭이 다른 자식(목록 줄의 아바타 등)은 대표가 아니다 — 외곽 사실을 그대로 쓴다.
+  if (root.width && !root.height) {
+    const sized = firstSizedDescendant(variant, true, root.width);
+    if (sized) return sized;
+    return { target: 'root', ...root };
+  }
+  if (root.height) return { target: 'root', ...root };
+  // Input·Filter Chip처럼 외곽 variant는 hug이고 실제 고정 기하는 field/chip 자식에 있는 경우.
+  const child = firstSizedDescendant(variant, false, 0);
+  if (child) return child;
   if (Object.keys(root).length) return { target: 'root', ...root };
   return null;
 }
