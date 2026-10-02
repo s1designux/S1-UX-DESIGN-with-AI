@@ -742,7 +742,41 @@
       "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id promoted-parts-4, 2026-09-30).",
       "note": "상태 축이 없는 표시 전용 라벨이다. 정본 세 축(Type × Variant × Color)을 블록으로 가르지 않고 한 표에서 본다 — 모양·형태를 행으로 겹쳐 쌓고 색을 열로 둔다(A-5). 색은 뱃지 전용 쓰임 이름(--color-tag-*)이 라이트·다크 값을 함께 가지므로 안내 화면에 다크 덮어쓰기를 두지 않는다.",
       "managedBy": "ui-library-guide"
+    },
+    "lnb": {
+      "platform": "pc",
+      "archetype": "set-based",
+      "actionRequired": true,
+      "sizePlacement": "per-set",
+      "sizes": [
+        "md",
+        "lg"
+      ],
+      "states": [
+        "expanded",
+        "collapsed"
+      ],
+      "extraAxes": {
+        "type": [
+          "menu",
+          "brand"
+        ],
+        "mode": [
+          "expanded",
+          "collapsed"
+        ],
+        "itemState": [
+          "default",
+          "hover",
+          "selected",
+          "disabled"
+        ]
+      },
+      "statesLayout": "matrix",
+      "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id promoted-parts-4, 2026-10-02 river \"남은 검수 마저 하고 사이트에 올려줘\").",
+      "note": "Figma 세트 이름 Side Nav · Side Nav Item · Side Nav Sub Item 을 표 세 개로 그대로 세운다 — 판은 Type×Size(행) × State(열) 여덟 칸, 메뉴 칸은 Mode(행) × State 4종(열) 여덟 칸, 하위 메뉴 줄은 State 3종. 크기(MD 240 · LG 280)는 판 표의 행에 함께 둔다(펼침 폭은 크기 토큰이 없어 결정 대기). Hover 는 검수 전용 data-force-state 로 표시. Action 은 기본·로고 두 벌의 실제 판(접기·하위메뉴 여닫이 동작).",
+      "managedBy": "ui-library-guide"
     }
   },
-  "updatedAt": "2026-09-30"
+  "updatedAt": "2026-10-02"
 }

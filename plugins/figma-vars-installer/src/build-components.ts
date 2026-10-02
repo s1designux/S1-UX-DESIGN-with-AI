@@ -7004,7 +7004,7 @@ async function buildCI(maps: BuildMaps, originY: number): Promise<{ set: Compone
 
 // ── Multi Toggle Element — 개별 셀 변형세트 ────────────────────────────────────
 // 정본: V2.4 pc_multi-toggle. 버튼 토큰(secondary/primary/disabled)을 직접 사용.
-// 32 variants = position(4) × state(4) × size(2). variant명: "position=first, state=default, size=md"
+// 48 variants = position(4) × state(4) × size(3). variant명: "position=first, state=default, size=md"
 // 위치별 코너 + 보더 변: first=좌상·좌하 / middle-left·middle-right=없음 / last=우상·우하
 // 보더 변(strokeTopWeight 등): first/middle-left=상·하·좌(우=0), middle-right/last=상·하·우(좌=0)
 async function buildMultiToggleElement(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
@@ -7015,6 +7015,10 @@ async function buildMultiToggleElement(maps: BuildMaps, originY: number): Promis
   const sizes   = [
     { id: "md", h: 44, padX: 12, font: 14, minW: 64 }, // 최소 width = sizing/64 (사용자 결정 2026-06-26)
     { id: "sm", h: 34, padX:  8, font: 14, minW: 56 }, // 최소 width = sizing/56
+    // xsm(28) — river 승인 2026-10-02 "응 새로 만들자 … 디자인기준값 가지고 새로 만들어서". 레거시엔 없다.
+    //   높이·글자·여백은 다른 28 부품(Button XXSM h28·spacing/8·body/12M)과 같은 기준,
+    //   최소 너비는 멀티토글이 버튼보다 한 단계 좁은 순서(80→64 · 64→56)를 이어 56→48.
+    { id: "xsm", h: 28, padX: 8, font: 12, minW: 48 }, // 최소 width = sizing/48
   ] as const;
 
   // 상태별 색 슬롯 — 버튼 토큰 직접 사용
@@ -7098,7 +7102,7 @@ async function buildMultiToggleElement(maps: BuildMaps, originY: number): Promis
         comp.appendChild(txt);
         try { (txt as any).layoutGrow = 1; } catch (e) { /* */ } // 셀 너비를 채워 중앙정렬 보장
         comp.resize(comp.width, sz.h);
-        try { comp.minWidth = sz.minW; } catch (e) { /* mock 미지원 무시 */ } // 셀 최소 너비(md 64 · sm 56)
+        try { comp.minWidth = sz.minW; } catch (e) { /* mock 미지원 무시 */ } // 셀 최소 너비(md 64 · sm 56 · xsm 48)
 
         setLightMode(comp, maps);
         comps.push(comp);
@@ -7114,7 +7118,7 @@ async function buildMultiToggleElement(maps: BuildMaps, originY: number): Promis
   set.x = 0; set.y = originY;
   BUILT_SETS["Multi Toggle Element"] = set;
 
-  // 스펙 시트: 행 = position×size(8행), 열 = state(4열)
+  // 스펙 시트: 행 = position×size(12행), 열 = state(4열)
   const ROW_DEFS: { pos: Pos; szId: string; szIdx: number; posIdx: number }[] = [];
   for (let szIdx = 0; szIdx < sizes.length; szIdx++) {
     for (let posIdx = 0; posIdx < positions.length; posIdx++) {
@@ -7139,13 +7143,13 @@ async function buildMultiToggleElement(maps: BuildMaps, originY: number): Promis
 }
 
 // ── Multi Toggle — 요소 셀(Multi Toggle Element)을 조합한 완성형 ─────────────────
-// 6 variants = Size(md·sm) × Selected(Left·Center·Right). variant명: "Size=md, Selected=Left"
+// 9 variants = Size(md·sm·xsm) × Selected(Left·Center·Right). variant명: "Size=md, Selected=Left"
 // 구성: Multi Toggle Element 셀 인스턴스 3개를 gap 0 가로 오토레이아웃으로 조립.
 // Left(선택=0): [first/selected][middle-right/default][last/default]
 // Center(선택=1): [first/default][middle-left/selected][last/default]
 // Right(선택=2): [first/default][middle-left/default][last/selected]
 async function buildMultiToggle(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
-  const sizes      = ["md", "sm"] as const;
+  const sizes      = ["md", "sm", "xsm"] as const;
   const selections = ["Left", "Center", "Right"] as const;
 
   // 각 칸(j=0·1·2)의 position·state 결정 규칙
@@ -7226,8 +7230,8 @@ async function buildMultiToggle(maps: BuildMaps, originY: number): Promise<{ set
   set.x = 0; set.y = originY;
   BUILT_SETS["Multi Toggle"] = set;
 
-  // 스펙 시트: 행 = Selected(3), 열 = Size(2)
-  const SIZE_LABELS  = ["md", "sm"];
+  // 스펙 시트: 행 = Selected(3), 열 = Size(3)
+  const SIZE_LABELS  = ["md", "sm", "xsm"];
   const SEL_LABELS   = ["Left", "Center", "Right"];
   const opts: SpecOpts = {
     title: "Multi Toggle",

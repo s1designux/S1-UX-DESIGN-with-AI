@@ -132,9 +132,9 @@
       "memberOrder": 5,
       "category": "Navigation",
       "name": "Side Nav",
-      "visibility": "internal",
-      "sectionId": null,
-      "reason": "사이드바 메뉴(LNB) 판 — 정본 buildSideNav 2026-09-30 신설(river \"LNB 부품도 이어서 만들어줘\"). 웹 배포본 원본(ui-library/src/components/lnb)은 있으나 손관리 components 페이지 섹션은 검증·river UX 승인 뒤 guide-builder 가 추가한다. HTML 섹션 생기면 sectionFor 로 이관."
+      "visibility": "public",
+      "sectionId": "lnb",
+      "reason": null
     },
     {
       "order": 12,
@@ -145,7 +145,7 @@
       "name": "Side Nav Item",
       "visibility": "internal",
       "sectionId": null,
-      "reason": "요소 — Side Nav 안 메뉴 칸(펼침 줄·접힘 칸)."
+      "reason": "요소 — Side Nav(lnb 섹션) 안 메뉴 칸(펼침 줄·접힘 칸). lnb 섹션 「메뉴 칸」 표로 표출(axisSource)."
     },
     {
       "order": 13,
@@ -156,7 +156,7 @@
       "name": "Side Nav Sub Item",
       "visibility": "internal",
       "sectionId": null,
-      "reason": "요소 — Side Nav 안 하위 메뉴(2뎁스) 줄."
+      "reason": "요소 — Side Nav(lnb 섹션) 안 하위 메뉴(2뎁스) 줄. lnb 섹션 「하위 메뉴 줄」 표로 표출(axisSource)."
     },
     {
       "order": 14,
@@ -43588,7 +43588,7 @@
     },
     {
       "name": "Side Nav",
-      "gridMembership": "internal",
+      "gridMembership": "public",
       "variantCount": 8,
       "axes": {
         "Type": [
@@ -106562,11 +106562,12 @@
     {
       "name": "Multi Toggle",
       "gridMembership": "public",
-      "variantCount": 6,
+      "variantCount": 9,
       "axes": {
         "Size": [
           "md",
-          "sm"
+          "sm",
+          "xsm"
         ],
         "Selected": [
           "Left",
@@ -109594,13 +109595,1519 @@
               }
             ]
           }
+        },
+        {
+          "name": "Size=xsm, Selected=Left",
+          "axes": {
+            "Size": "xsm",
+            "Selected": "Left"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Size=xsm, Selected=Left",
+            "dimensions": {
+              "width": null,
+              "height": null
+            },
+            "position": {
+              "x": 654,
+              "y": 82
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "AUTO",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": 0
+            },
+            "text": null,
+            "appearance": {
+              "fill": "(없음)",
+              "stroke": null,
+              "fillPaints": [],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "SLOT",
+                "name": "Items",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "AUTO",
+                  "counterAxisSizingMode": "AUTO",
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": 0,
+                    "right": 0,
+                    "bottom": 0,
+                    "left": 0
+                  },
+                  "gap": 0
+                },
+                "text": null,
+                "appearance": {
+                  "fill": "(없음)",
+                  "stroke": null,
+                  "fillPaints": [],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": [
+                  {
+                    "type": "INSTANCE",
+                    "name": "position=first, state=selected, size=xsm",
+                    "dimensions": {
+                      "width": 0,
+                      "height": 28
+                    },
+                    "position": {
+                      "x": 484,
+                      "y": 626
+                    },
+                    "layout": {
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "AUTO",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "CENTER",
+                      "counterAxisAlignItems": "CENTER",
+                      "layoutGrow": null,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": null,
+                      "layoutSizingVertical": null,
+                      "minWidth": 48,
+                      "padding": {
+                        "top": null,
+                        "right": 8,
+                        "bottom": null,
+                        "left": 8
+                      },
+                      "gap": null
+                    },
+                    "text": null,
+                    "appearance": {
+                      "fill": "color/button/bg/primary--default",
+                      "stroke": "color/button/border/primary--default",
+                      "fillPaints": [],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": 1,
+                      "strokeTopWeight": 1,
+                      "strokeRightWeight": 0,
+                      "strokeBottomWeight": 1,
+                      "strokeLeftWeight": 1,
+                      "cornerRadius": null,
+                      "topLeftRadius": 4,
+                      "topRightRadius": 0,
+                      "bottomLeftRadius": 4,
+                      "bottomRightRadius": 0,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": null,
+                    "boundVariables": {},
+                    "children": [
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": 1,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "항목",
+                          "fontSize": 12,
+                          "fontStyle": "Medium",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "body/12M",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/button/label/primary--default",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/button/label/primary--default",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "INSTANCE",
+                    "name": "position=middle-right, state=default, size=xsm",
+                    "dimensions": {
+                      "width": 0,
+                      "height": 28
+                    },
+                    "position": {
+                      "x": 244,
+                      "y": 762
+                    },
+                    "layout": {
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "AUTO",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "CENTER",
+                      "counterAxisAlignItems": "CENTER",
+                      "layoutGrow": null,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": null,
+                      "layoutSizingVertical": null,
+                      "minWidth": 48,
+                      "padding": {
+                        "top": null,
+                        "right": 8,
+                        "bottom": null,
+                        "left": 8
+                      },
+                      "gap": null
+                    },
+                    "text": null,
+                    "appearance": {
+                      "fill": "color/button/bg/secondary--default",
+                      "stroke": "color/button/border/secondary--default",
+                      "fillPaints": [],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": 1,
+                      "strokeTopWeight": 1,
+                      "strokeRightWeight": 1,
+                      "strokeBottomWeight": 1,
+                      "strokeLeftWeight": 0,
+                      "cornerRadius": null,
+                      "topLeftRadius": 0,
+                      "topRightRadius": 0,
+                      "bottomLeftRadius": 0,
+                      "bottomRightRadius": 0,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": null,
+                    "boundVariables": {},
+                    "children": [
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": 1,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "항목",
+                          "fontSize": 12,
+                          "fontStyle": "Medium",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "body/12M",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/button/label/secondary--default",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/button/label/secondary--default",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "INSTANCE",
+                    "name": "position=last, state=default, size=xsm",
+                    "dimensions": {
+                      "width": 0,
+                      "height": 28
+                    },
+                    "position": {
+                      "x": 244,
+                      "y": 830
+                    },
+                    "layout": {
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "AUTO",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "CENTER",
+                      "counterAxisAlignItems": "CENTER",
+                      "layoutGrow": null,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": null,
+                      "layoutSizingVertical": null,
+                      "minWidth": 48,
+                      "padding": {
+                        "top": null,
+                        "right": 8,
+                        "bottom": null,
+                        "left": 8
+                      },
+                      "gap": null
+                    },
+                    "text": null,
+                    "appearance": {
+                      "fill": "color/button/bg/secondary--default",
+                      "stroke": "color/button/border/secondary--default",
+                      "fillPaints": [],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": 1,
+                      "strokeTopWeight": 1,
+                      "strokeRightWeight": 1,
+                      "strokeBottomWeight": 1,
+                      "strokeLeftWeight": 0,
+                      "cornerRadius": null,
+                      "topLeftRadius": 0,
+                      "topRightRadius": 4,
+                      "bottomLeftRadius": 0,
+                      "bottomRightRadius": 4,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": null,
+                    "boundVariables": {},
+                    "children": [
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": 1,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "항목",
+                          "fontSize": 12,
+                          "fontStyle": "Medium",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "body/12M",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/button/label/secondary--default",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/button/label/secondary--default",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "componentProperties": [
+              {
+                "name": "Items",
+                "type": "SLOT",
+                "description": "토글 칸이 놓이는 자리. 기본은 3칸이며, Multi Toggle Element 인스턴스를 넣고 빼서 칸 수를 늘리고 줄인다. 칸을 바꾼 뒤에는 맨 앞 칸을 position=first, 맨 뒤 칸을 position=last 로 맞춘다."
+              }
+            ]
+          }
+        },
+        {
+          "name": "Size=xsm, Selected=Center",
+          "axes": {
+            "Size": "xsm",
+            "Selected": "Center"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Size=xsm, Selected=Center",
+            "dimensions": {
+              "width": null,
+              "height": null
+            },
+            "position": {
+              "x": 654,
+              "y": 154
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "AUTO",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": 0
+            },
+            "text": null,
+            "appearance": {
+              "fill": "(없음)",
+              "stroke": null,
+              "fillPaints": [],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "SLOT",
+                "name": "Items",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "AUTO",
+                  "counterAxisSizingMode": "AUTO",
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": 0,
+                    "right": 0,
+                    "bottom": 0,
+                    "left": 0
+                  },
+                  "gap": 0
+                },
+                "text": null,
+                "appearance": {
+                  "fill": "(없음)",
+                  "stroke": null,
+                  "fillPaints": [],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": [
+                  {
+                    "type": "INSTANCE",
+                    "name": "position=first, state=default, size=xsm",
+                    "dimensions": {
+                      "width": 0,
+                      "height": 28
+                    },
+                    "position": {
+                      "x": 244,
+                      "y": 626
+                    },
+                    "layout": {
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "AUTO",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "CENTER",
+                      "counterAxisAlignItems": "CENTER",
+                      "layoutGrow": null,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": null,
+                      "layoutSizingVertical": null,
+                      "minWidth": 48,
+                      "padding": {
+                        "top": null,
+                        "right": 8,
+                        "bottom": null,
+                        "left": 8
+                      },
+                      "gap": null
+                    },
+                    "text": null,
+                    "appearance": {
+                      "fill": "color/button/bg/secondary--default",
+                      "stroke": "color/button/border/secondary--default",
+                      "fillPaints": [],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": 1,
+                      "strokeTopWeight": 1,
+                      "strokeRightWeight": 0,
+                      "strokeBottomWeight": 1,
+                      "strokeLeftWeight": 1,
+                      "cornerRadius": null,
+                      "topLeftRadius": 4,
+                      "topRightRadius": 0,
+                      "bottomLeftRadius": 4,
+                      "bottomRightRadius": 0,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": null,
+                    "boundVariables": {},
+                    "children": [
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": 1,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "항목",
+                          "fontSize": 12,
+                          "fontStyle": "Medium",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "body/12M",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/button/label/secondary--default",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/button/label/secondary--default",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "INSTANCE",
+                    "name": "position=middle-left, state=selected, size=xsm",
+                    "dimensions": {
+                      "width": 0,
+                      "height": 28
+                    },
+                    "position": {
+                      "x": 484,
+                      "y": 694
+                    },
+                    "layout": {
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "AUTO",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "CENTER",
+                      "counterAxisAlignItems": "CENTER",
+                      "layoutGrow": null,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": null,
+                      "layoutSizingVertical": null,
+                      "minWidth": 48,
+                      "padding": {
+                        "top": null,
+                        "right": 8,
+                        "bottom": null,
+                        "left": 8
+                      },
+                      "gap": null
+                    },
+                    "text": null,
+                    "appearance": {
+                      "fill": "color/button/bg/primary--default",
+                      "stroke": "color/button/border/primary--default",
+                      "fillPaints": [],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": 1,
+                      "strokeTopWeight": 1,
+                      "strokeRightWeight": 0,
+                      "strokeBottomWeight": 1,
+                      "strokeLeftWeight": 1,
+                      "cornerRadius": null,
+                      "topLeftRadius": 0,
+                      "topRightRadius": 0,
+                      "bottomLeftRadius": 0,
+                      "bottomRightRadius": 0,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": null,
+                    "boundVariables": {},
+                    "children": [
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": 1,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "항목",
+                          "fontSize": 12,
+                          "fontStyle": "Medium",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "body/12M",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/button/label/primary--default",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/button/label/primary--default",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "INSTANCE",
+                    "name": "position=last, state=default, size=xsm",
+                    "dimensions": {
+                      "width": 0,
+                      "height": 28
+                    },
+                    "position": {
+                      "x": 244,
+                      "y": 830
+                    },
+                    "layout": {
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "AUTO",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "CENTER",
+                      "counterAxisAlignItems": "CENTER",
+                      "layoutGrow": null,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": null,
+                      "layoutSizingVertical": null,
+                      "minWidth": 48,
+                      "padding": {
+                        "top": null,
+                        "right": 8,
+                        "bottom": null,
+                        "left": 8
+                      },
+                      "gap": null
+                    },
+                    "text": null,
+                    "appearance": {
+                      "fill": "color/button/bg/secondary--default",
+                      "stroke": "color/button/border/secondary--default",
+                      "fillPaints": [],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": 1,
+                      "strokeTopWeight": 1,
+                      "strokeRightWeight": 1,
+                      "strokeBottomWeight": 1,
+                      "strokeLeftWeight": 0,
+                      "cornerRadius": null,
+                      "topLeftRadius": 0,
+                      "topRightRadius": 4,
+                      "bottomLeftRadius": 0,
+                      "bottomRightRadius": 4,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": null,
+                    "boundVariables": {},
+                    "children": [
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": 1,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "항목",
+                          "fontSize": 12,
+                          "fontStyle": "Medium",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "body/12M",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/button/label/secondary--default",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/button/label/secondary--default",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "componentProperties": [
+              {
+                "name": "Items",
+                "type": "SLOT",
+                "description": "토글 칸이 놓이는 자리. 기본은 3칸이며, Multi Toggle Element 인스턴스를 넣고 빼서 칸 수를 늘리고 줄인다. 칸을 바꾼 뒤에는 맨 앞 칸을 position=first, 맨 뒤 칸을 position=last 로 맞춘다."
+              }
+            ]
+          }
+        },
+        {
+          "name": "Size=xsm, Selected=Right",
+          "axes": {
+            "Size": "xsm",
+            "Selected": "Right"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "Size=xsm, Selected=Right",
+            "dimensions": {
+              "width": null,
+              "height": null
+            },
+            "position": {
+              "x": 654,
+              "y": 226
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "AUTO",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": null,
+              "padding": {
+                "top": null,
+                "right": null,
+                "bottom": null,
+                "left": null
+              },
+              "gap": 0
+            },
+            "text": null,
+            "appearance": {
+              "fill": "(없음)",
+              "stroke": null,
+              "fillPaints": [],
+              "strokePaints": [],
+              "opacity": null,
+              "strokeWeight": null,
+              "strokeTopWeight": null,
+              "strokeRightWeight": null,
+              "strokeBottomWeight": null,
+              "strokeLeftWeight": null,
+              "cornerRadius": null,
+              "topLeftRadius": null,
+              "topRightRadius": null,
+              "bottomLeftRadius": null,
+              "bottomRightRadius": null,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "SLOT",
+                "name": "Items",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": "HORIZONTAL",
+                  "primaryAxisSizingMode": "AUTO",
+                  "counterAxisSizingMode": "AUTO",
+                  "primaryAxisAlignItems": "CENTER",
+                  "counterAxisAlignItems": "CENTER",
+                  "layoutGrow": null,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": 0,
+                    "right": 0,
+                    "bottom": 0,
+                    "left": 0
+                  },
+                  "gap": 0
+                },
+                "text": null,
+                "appearance": {
+                  "fill": "(없음)",
+                  "stroke": null,
+                  "fillPaints": [],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": [
+                  {
+                    "type": "INSTANCE",
+                    "name": "position=first, state=default, size=xsm",
+                    "dimensions": {
+                      "width": 0,
+                      "height": 28
+                    },
+                    "position": {
+                      "x": 244,
+                      "y": 626
+                    },
+                    "layout": {
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "AUTO",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "CENTER",
+                      "counterAxisAlignItems": "CENTER",
+                      "layoutGrow": null,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": null,
+                      "layoutSizingVertical": null,
+                      "minWidth": 48,
+                      "padding": {
+                        "top": null,
+                        "right": 8,
+                        "bottom": null,
+                        "left": 8
+                      },
+                      "gap": null
+                    },
+                    "text": null,
+                    "appearance": {
+                      "fill": "color/button/bg/secondary--default",
+                      "stroke": "color/button/border/secondary--default",
+                      "fillPaints": [],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": 1,
+                      "strokeTopWeight": 1,
+                      "strokeRightWeight": 0,
+                      "strokeBottomWeight": 1,
+                      "strokeLeftWeight": 1,
+                      "cornerRadius": null,
+                      "topLeftRadius": 4,
+                      "topRightRadius": 0,
+                      "bottomLeftRadius": 4,
+                      "bottomRightRadius": 0,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": null,
+                    "boundVariables": {},
+                    "children": [
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": 1,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "항목",
+                          "fontSize": 12,
+                          "fontStyle": "Medium",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "body/12M",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/button/label/secondary--default",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/button/label/secondary--default",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "INSTANCE",
+                    "name": "position=middle-left, state=default, size=xsm",
+                    "dimensions": {
+                      "width": 0,
+                      "height": 28
+                    },
+                    "position": {
+                      "x": 244,
+                      "y": 694
+                    },
+                    "layout": {
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "AUTO",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "CENTER",
+                      "counterAxisAlignItems": "CENTER",
+                      "layoutGrow": null,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": null,
+                      "layoutSizingVertical": null,
+                      "minWidth": 48,
+                      "padding": {
+                        "top": null,
+                        "right": 8,
+                        "bottom": null,
+                        "left": 8
+                      },
+                      "gap": null
+                    },
+                    "text": null,
+                    "appearance": {
+                      "fill": "color/button/bg/secondary--default",
+                      "stroke": "color/button/border/secondary--default",
+                      "fillPaints": [],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": 1,
+                      "strokeTopWeight": 1,
+                      "strokeRightWeight": 0,
+                      "strokeBottomWeight": 1,
+                      "strokeLeftWeight": 1,
+                      "cornerRadius": null,
+                      "topLeftRadius": 0,
+                      "topRightRadius": 0,
+                      "bottomLeftRadius": 0,
+                      "bottomRightRadius": 0,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": null,
+                    "boundVariables": {},
+                    "children": [
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": 1,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "항목",
+                          "fontSize": 12,
+                          "fontStyle": "Medium",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "body/12M",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/button/label/secondary--default",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/button/label/secondary--default",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "type": "INSTANCE",
+                    "name": "position=last, state=selected, size=xsm",
+                    "dimensions": {
+                      "width": 0,
+                      "height": 28
+                    },
+                    "position": {
+                      "x": 484,
+                      "y": 830
+                    },
+                    "layout": {
+                      "layoutMode": "HORIZONTAL",
+                      "primaryAxisSizingMode": "AUTO",
+                      "counterAxisSizingMode": "FIXED",
+                      "primaryAxisAlignItems": "CENTER",
+                      "counterAxisAlignItems": "CENTER",
+                      "layoutGrow": null,
+                      "layoutAlign": null,
+                      "layoutSizingHorizontal": null,
+                      "layoutSizingVertical": null,
+                      "minWidth": 48,
+                      "padding": {
+                        "top": null,
+                        "right": 8,
+                        "bottom": null,
+                        "left": 8
+                      },
+                      "gap": null
+                    },
+                    "text": null,
+                    "appearance": {
+                      "fill": "color/button/bg/primary--default",
+                      "stroke": "color/button/border/primary--default",
+                      "fillPaints": [],
+                      "strokePaints": [],
+                      "opacity": null,
+                      "strokeWeight": 1,
+                      "strokeTopWeight": 1,
+                      "strokeRightWeight": 1,
+                      "strokeBottomWeight": 1,
+                      "strokeLeftWeight": 0,
+                      "cornerRadius": null,
+                      "topLeftRadius": 0,
+                      "topRightRadius": 4,
+                      "bottomLeftRadius": 0,
+                      "bottomRightRadius": 4,
+                      "visible": null,
+                      "effects": null
+                    },
+                    "asset": null,
+                    "boundVariables": {},
+                    "children": [
+                      {
+                        "type": "TEXT",
+                        "name": "",
+                        "dimensions": {
+                          "width": null,
+                          "height": null
+                        },
+                        "position": {
+                          "x": null,
+                          "y": null
+                        },
+                        "layout": {
+                          "layoutMode": null,
+                          "primaryAxisSizingMode": null,
+                          "counterAxisSizingMode": null,
+                          "primaryAxisAlignItems": null,
+                          "counterAxisAlignItems": null,
+                          "layoutGrow": 1,
+                          "layoutAlign": null,
+                          "layoutSizingHorizontal": null,
+                          "layoutSizingVertical": null,
+                          "minWidth": null,
+                          "padding": {
+                            "top": null,
+                            "right": null,
+                            "bottom": null,
+                            "left": null
+                          },
+                          "gap": null
+                        },
+                        "text": {
+                          "characters": "항목",
+                          "fontSize": 12,
+                          "fontStyle": "Medium",
+                          "fontFamily": "Pretendard",
+                          "textStyleId": "body/12M",
+                          "textAutoResize": null
+                        },
+                        "appearance": {
+                          "fill": "color/button/label/primary--default",
+                          "stroke": null,
+                          "fillPaints": [
+                            {
+                              "type": "SOLID",
+                              "__tokenKey": "color/button/label/primary--default",
+                              "color": {
+                                "r": 0,
+                                "g": 0,
+                                "b": 0
+                              }
+                            }
+                          ],
+                          "strokePaints": [],
+                          "opacity": null,
+                          "strokeWeight": null,
+                          "strokeTopWeight": null,
+                          "strokeRightWeight": null,
+                          "strokeBottomWeight": null,
+                          "strokeLeftWeight": null,
+                          "cornerRadius": null,
+                          "topLeftRadius": null,
+                          "topRightRadius": null,
+                          "bottomLeftRadius": null,
+                          "bottomRightRadius": null,
+                          "visible": null,
+                          "effects": null
+                        },
+                        "asset": null,
+                        "boundVariables": {},
+                        "children": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "componentProperties": [
+              {
+                "name": "Items",
+                "type": "SLOT",
+                "description": "토글 칸이 놓이는 자리. 기본은 3칸이며, Multi Toggle Element 인스턴스를 넣고 빼서 칸 수를 늘리고 줄인다. 칸을 바꾼 뒤에는 맨 앞 칸을 position=first, 맨 뒤 칸을 position=last 로 맞춘다."
+              }
+            ]
+          }
         }
       ]
     },
     {
       "name": "Multi Toggle Element",
       "gridMembership": "internal",
-      "variantCount": 32,
+      "variantCount": 48,
       "axes": {
         "position": [
           "first",
@@ -109616,7 +111123,8 @@
         ],
         "size": [
           "md",
-          "sm"
+          "sm",
+          "xsm"
         ]
       },
       "presentationAxes": {
@@ -114518,6 +116026,2470 @@
                   "fontStyle": "Medium",
                   "fontFamily": "Pretendard",
                   "textStyleId": "body/14M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/button/label/disabled",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/button/label/disabled",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "position=first, state=default, size=xsm",
+          "axes": {
+            "position": "first",
+            "state": "default",
+            "size": "xsm"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "position=first, state=default, size=xsm",
+            "dimensions": {
+              "width": 0,
+              "height": 28
+            },
+            "position": {
+              "x": 244,
+              "y": 626
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": 48,
+              "padding": {
+                "top": null,
+                "right": 8,
+                "bottom": null,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/button/bg/secondary--default",
+              "stroke": "color/button/border/secondary--default",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/bg/secondary--default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/border/secondary--default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": 1,
+              "strokeRightWeight": 0,
+              "strokeBottomWeight": 1,
+              "strokeLeftWeight": 1,
+              "cornerRadius": null,
+              "topLeftRadius": 4,
+              "topRightRadius": 0,
+              "bottomLeftRadius": 4,
+              "bottomRightRadius": 0,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": 1,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "항목",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/button/label/secondary--default",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/button/label/secondary--default",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "position=first, state=hover, size=xsm",
+          "axes": {
+            "position": "first",
+            "state": "hover",
+            "size": "xsm"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "position=first, state=hover, size=xsm",
+            "dimensions": {
+              "width": 0,
+              "height": 28
+            },
+            "position": {
+              "x": 364,
+              "y": 626
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": 48,
+              "padding": {
+                "top": null,
+                "right": 8,
+                "bottom": null,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/button/bg/secondary--hover",
+              "stroke": "color/button/border/secondary--hover",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/bg/secondary--hover",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/border/secondary--hover",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": 1,
+              "strokeRightWeight": 0,
+              "strokeBottomWeight": 1,
+              "strokeLeftWeight": 1,
+              "cornerRadius": null,
+              "topLeftRadius": 4,
+              "topRightRadius": 0,
+              "bottomLeftRadius": 4,
+              "bottomRightRadius": 0,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": 1,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "항목",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/button/label/secondary--hover",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/button/label/secondary--hover",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "position=first, state=selected, size=xsm",
+          "axes": {
+            "position": "first",
+            "state": "selected",
+            "size": "xsm"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "position=first, state=selected, size=xsm",
+            "dimensions": {
+              "width": 0,
+              "height": 28
+            },
+            "position": {
+              "x": 484,
+              "y": 626
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": 48,
+              "padding": {
+                "top": null,
+                "right": 8,
+                "bottom": null,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/button/bg/primary--default",
+              "stroke": "color/button/border/primary--default",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/bg/primary--default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/border/primary--default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": 1,
+              "strokeRightWeight": 0,
+              "strokeBottomWeight": 1,
+              "strokeLeftWeight": 1,
+              "cornerRadius": null,
+              "topLeftRadius": 4,
+              "topRightRadius": 0,
+              "bottomLeftRadius": 4,
+              "bottomRightRadius": 0,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": 1,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "항목",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/button/label/primary--default",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/button/label/primary--default",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "position=first, state=disabled, size=xsm",
+          "axes": {
+            "position": "first",
+            "state": "disabled",
+            "size": "xsm"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "position=first, state=disabled, size=xsm",
+            "dimensions": {
+              "width": 0,
+              "height": 28
+            },
+            "position": {
+              "x": 604,
+              "y": 626
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": 48,
+              "padding": {
+                "top": null,
+                "right": 8,
+                "bottom": null,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/button/bg/disabled",
+              "stroke": "color/button/border/disabled",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/bg/disabled",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/border/disabled",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": 1,
+              "strokeRightWeight": 0,
+              "strokeBottomWeight": 1,
+              "strokeLeftWeight": 1,
+              "cornerRadius": null,
+              "topLeftRadius": 4,
+              "topRightRadius": 0,
+              "bottomLeftRadius": 4,
+              "bottomRightRadius": 0,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": 1,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "항목",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/button/label/disabled",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/button/label/disabled",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "position=middle-left, state=default, size=xsm",
+          "axes": {
+            "position": "middle-left",
+            "state": "default",
+            "size": "xsm"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "position=middle-left, state=default, size=xsm",
+            "dimensions": {
+              "width": 0,
+              "height": 28
+            },
+            "position": {
+              "x": 244,
+              "y": 694
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": 48,
+              "padding": {
+                "top": null,
+                "right": 8,
+                "bottom": null,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/button/bg/secondary--default",
+              "stroke": "color/button/border/secondary--default",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/bg/secondary--default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/border/secondary--default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": 1,
+              "strokeRightWeight": 0,
+              "strokeBottomWeight": 1,
+              "strokeLeftWeight": 1,
+              "cornerRadius": null,
+              "topLeftRadius": 0,
+              "topRightRadius": 0,
+              "bottomLeftRadius": 0,
+              "bottomRightRadius": 0,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": 1,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "항목",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/button/label/secondary--default",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/button/label/secondary--default",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "position=middle-left, state=hover, size=xsm",
+          "axes": {
+            "position": "middle-left",
+            "state": "hover",
+            "size": "xsm"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "position=middle-left, state=hover, size=xsm",
+            "dimensions": {
+              "width": 0,
+              "height": 28
+            },
+            "position": {
+              "x": 364,
+              "y": 694
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": 48,
+              "padding": {
+                "top": null,
+                "right": 8,
+                "bottom": null,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/button/bg/secondary--hover",
+              "stroke": "color/button/border/secondary--hover",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/bg/secondary--hover",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/border/secondary--hover",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": 1,
+              "strokeRightWeight": 0,
+              "strokeBottomWeight": 1,
+              "strokeLeftWeight": 1,
+              "cornerRadius": null,
+              "topLeftRadius": 0,
+              "topRightRadius": 0,
+              "bottomLeftRadius": 0,
+              "bottomRightRadius": 0,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": 1,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "항목",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/button/label/secondary--hover",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/button/label/secondary--hover",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "position=middle-left, state=selected, size=xsm",
+          "axes": {
+            "position": "middle-left",
+            "state": "selected",
+            "size": "xsm"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "position=middle-left, state=selected, size=xsm",
+            "dimensions": {
+              "width": 0,
+              "height": 28
+            },
+            "position": {
+              "x": 484,
+              "y": 694
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": 48,
+              "padding": {
+                "top": null,
+                "right": 8,
+                "bottom": null,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/button/bg/primary--default",
+              "stroke": "color/button/border/primary--default",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/bg/primary--default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/border/primary--default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": 1,
+              "strokeRightWeight": 0,
+              "strokeBottomWeight": 1,
+              "strokeLeftWeight": 1,
+              "cornerRadius": null,
+              "topLeftRadius": 0,
+              "topRightRadius": 0,
+              "bottomLeftRadius": 0,
+              "bottomRightRadius": 0,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": 1,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "항목",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/button/label/primary--default",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/button/label/primary--default",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "position=middle-left, state=disabled, size=xsm",
+          "axes": {
+            "position": "middle-left",
+            "state": "disabled",
+            "size": "xsm"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "position=middle-left, state=disabled, size=xsm",
+            "dimensions": {
+              "width": 0,
+              "height": 28
+            },
+            "position": {
+              "x": 604,
+              "y": 694
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": 48,
+              "padding": {
+                "top": null,
+                "right": 8,
+                "bottom": null,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/button/bg/disabled",
+              "stroke": "color/button/border/disabled",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/bg/disabled",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/border/disabled",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": 1,
+              "strokeRightWeight": 0,
+              "strokeBottomWeight": 1,
+              "strokeLeftWeight": 1,
+              "cornerRadius": null,
+              "topLeftRadius": 0,
+              "topRightRadius": 0,
+              "bottomLeftRadius": 0,
+              "bottomRightRadius": 0,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": 1,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "항목",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/button/label/disabled",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/button/label/disabled",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "position=middle-right, state=default, size=xsm",
+          "axes": {
+            "position": "middle-right",
+            "state": "default",
+            "size": "xsm"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "position=middle-right, state=default, size=xsm",
+            "dimensions": {
+              "width": 0,
+              "height": 28
+            },
+            "position": {
+              "x": 244,
+              "y": 762
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": 48,
+              "padding": {
+                "top": null,
+                "right": 8,
+                "bottom": null,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/button/bg/secondary--default",
+              "stroke": "color/button/border/secondary--default",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/bg/secondary--default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/border/secondary--default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": 1,
+              "strokeRightWeight": 1,
+              "strokeBottomWeight": 1,
+              "strokeLeftWeight": 0,
+              "cornerRadius": null,
+              "topLeftRadius": 0,
+              "topRightRadius": 0,
+              "bottomLeftRadius": 0,
+              "bottomRightRadius": 0,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": 1,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "항목",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/button/label/secondary--default",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/button/label/secondary--default",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "position=middle-right, state=hover, size=xsm",
+          "axes": {
+            "position": "middle-right",
+            "state": "hover",
+            "size": "xsm"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "position=middle-right, state=hover, size=xsm",
+            "dimensions": {
+              "width": 0,
+              "height": 28
+            },
+            "position": {
+              "x": 364,
+              "y": 762
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": 48,
+              "padding": {
+                "top": null,
+                "right": 8,
+                "bottom": null,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/button/bg/secondary--hover",
+              "stroke": "color/button/border/secondary--hover",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/bg/secondary--hover",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/border/secondary--hover",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": 1,
+              "strokeRightWeight": 1,
+              "strokeBottomWeight": 1,
+              "strokeLeftWeight": 0,
+              "cornerRadius": null,
+              "topLeftRadius": 0,
+              "topRightRadius": 0,
+              "bottomLeftRadius": 0,
+              "bottomRightRadius": 0,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": 1,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "항목",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/button/label/secondary--hover",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/button/label/secondary--hover",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "position=middle-right, state=selected, size=xsm",
+          "axes": {
+            "position": "middle-right",
+            "state": "selected",
+            "size": "xsm"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "position=middle-right, state=selected, size=xsm",
+            "dimensions": {
+              "width": 0,
+              "height": 28
+            },
+            "position": {
+              "x": 484,
+              "y": 762
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": 48,
+              "padding": {
+                "top": null,
+                "right": 8,
+                "bottom": null,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/button/bg/primary--default",
+              "stroke": "color/button/border/primary--default",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/bg/primary--default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/border/primary--default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": 1,
+              "strokeRightWeight": 1,
+              "strokeBottomWeight": 1,
+              "strokeLeftWeight": 0,
+              "cornerRadius": null,
+              "topLeftRadius": 0,
+              "topRightRadius": 0,
+              "bottomLeftRadius": 0,
+              "bottomRightRadius": 0,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": 1,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "항목",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/button/label/primary--default",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/button/label/primary--default",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "position=middle-right, state=disabled, size=xsm",
+          "axes": {
+            "position": "middle-right",
+            "state": "disabled",
+            "size": "xsm"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "position=middle-right, state=disabled, size=xsm",
+            "dimensions": {
+              "width": 0,
+              "height": 28
+            },
+            "position": {
+              "x": 604,
+              "y": 762
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": 48,
+              "padding": {
+                "top": null,
+                "right": 8,
+                "bottom": null,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/button/bg/disabled",
+              "stroke": "color/button/border/disabled",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/bg/disabled",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/border/disabled",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": 1,
+              "strokeRightWeight": 1,
+              "strokeBottomWeight": 1,
+              "strokeLeftWeight": 0,
+              "cornerRadius": null,
+              "topLeftRadius": 0,
+              "topRightRadius": 0,
+              "bottomLeftRadius": 0,
+              "bottomRightRadius": 0,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": 1,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "항목",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/button/label/disabled",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/button/label/disabled",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "position=last, state=default, size=xsm",
+          "axes": {
+            "position": "last",
+            "state": "default",
+            "size": "xsm"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "position=last, state=default, size=xsm",
+            "dimensions": {
+              "width": 0,
+              "height": 28
+            },
+            "position": {
+              "x": 244,
+              "y": 830
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": 48,
+              "padding": {
+                "top": null,
+                "right": 8,
+                "bottom": null,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/button/bg/secondary--default",
+              "stroke": "color/button/border/secondary--default",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/bg/secondary--default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/border/secondary--default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": 1,
+              "strokeRightWeight": 1,
+              "strokeBottomWeight": 1,
+              "strokeLeftWeight": 0,
+              "cornerRadius": null,
+              "topLeftRadius": 0,
+              "topRightRadius": 4,
+              "bottomLeftRadius": 0,
+              "bottomRightRadius": 4,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": 1,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "항목",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/button/label/secondary--default",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/button/label/secondary--default",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "position=last, state=hover, size=xsm",
+          "axes": {
+            "position": "last",
+            "state": "hover",
+            "size": "xsm"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "position=last, state=hover, size=xsm",
+            "dimensions": {
+              "width": 0,
+              "height": 28
+            },
+            "position": {
+              "x": 364,
+              "y": 830
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": 48,
+              "padding": {
+                "top": null,
+                "right": 8,
+                "bottom": null,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/button/bg/secondary--hover",
+              "stroke": "color/button/border/secondary--hover",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/bg/secondary--hover",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/border/secondary--hover",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": 1,
+              "strokeRightWeight": 1,
+              "strokeBottomWeight": 1,
+              "strokeLeftWeight": 0,
+              "cornerRadius": null,
+              "topLeftRadius": 0,
+              "topRightRadius": 4,
+              "bottomLeftRadius": 0,
+              "bottomRightRadius": 4,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": 1,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "항목",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/button/label/secondary--hover",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/button/label/secondary--hover",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "position=last, state=selected, size=xsm",
+          "axes": {
+            "position": "last",
+            "state": "selected",
+            "size": "xsm"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "position=last, state=selected, size=xsm",
+            "dimensions": {
+              "width": 0,
+              "height": 28
+            },
+            "position": {
+              "x": 484,
+              "y": 830
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": 48,
+              "padding": {
+                "top": null,
+                "right": 8,
+                "bottom": null,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/button/bg/primary--default",
+              "stroke": "color/button/border/primary--default",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/bg/primary--default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/border/primary--default",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": 1,
+              "strokeRightWeight": 1,
+              "strokeBottomWeight": 1,
+              "strokeLeftWeight": 0,
+              "cornerRadius": null,
+              "topLeftRadius": 0,
+              "topRightRadius": 4,
+              "bottomLeftRadius": 0,
+              "bottomRightRadius": 4,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": 1,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "항목",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
+                  "textAutoResize": null
+                },
+                "appearance": {
+                  "fill": "color/button/label/primary--default",
+                  "stroke": null,
+                  "fillPaints": [
+                    {
+                      "type": "SOLID",
+                      "__tokenKey": "color/button/label/primary--default",
+                      "color": {
+                        "r": 0,
+                        "g": 0,
+                        "b": 0
+                      }
+                    }
+                  ],
+                  "strokePaints": [],
+                  "opacity": null,
+                  "strokeWeight": null,
+                  "strokeTopWeight": null,
+                  "strokeRightWeight": null,
+                  "strokeBottomWeight": null,
+                  "strokeLeftWeight": null,
+                  "cornerRadius": null,
+                  "topLeftRadius": null,
+                  "topRightRadius": null,
+                  "bottomLeftRadius": null,
+                  "bottomRightRadius": null,
+                  "visible": null,
+                  "effects": null
+                },
+                "asset": null,
+                "boundVariables": {},
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "name": "position=last, state=disabled, size=xsm",
+          "axes": {
+            "position": "last",
+            "state": "disabled",
+            "size": "xsm"
+          },
+          "node": {
+            "type": "COMPONENT",
+            "name": "position=last, state=disabled, size=xsm",
+            "dimensions": {
+              "width": 0,
+              "height": 28
+            },
+            "position": {
+              "x": 604,
+              "y": 830
+            },
+            "layout": {
+              "layoutMode": "HORIZONTAL",
+              "primaryAxisSizingMode": "AUTO",
+              "counterAxisSizingMode": "FIXED",
+              "primaryAxisAlignItems": "CENTER",
+              "counterAxisAlignItems": "CENTER",
+              "layoutGrow": null,
+              "layoutAlign": null,
+              "layoutSizingHorizontal": null,
+              "layoutSizingVertical": null,
+              "minWidth": 48,
+              "padding": {
+                "top": null,
+                "right": 8,
+                "bottom": null,
+                "left": 8
+              },
+              "gap": null
+            },
+            "text": null,
+            "appearance": {
+              "fill": "color/button/bg/disabled",
+              "stroke": "color/button/border/disabled",
+              "fillPaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/bg/disabled",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "strokePaints": [
+                {
+                  "type": "SOLID",
+                  "__tokenKey": "color/button/border/disabled",
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0
+                  }
+                }
+              ],
+              "opacity": null,
+              "strokeWeight": 1,
+              "strokeTopWeight": 1,
+              "strokeRightWeight": 1,
+              "strokeBottomWeight": 1,
+              "strokeLeftWeight": 0,
+              "cornerRadius": null,
+              "topLeftRadius": 0,
+              "topRightRadius": 4,
+              "bottomLeftRadius": 0,
+              "bottomRightRadius": 4,
+              "visible": null,
+              "effects": null
+            },
+            "asset": null,
+            "boundVariables": {},
+            "children": [
+              {
+                "type": "TEXT",
+                "name": "",
+                "dimensions": {
+                  "width": null,
+                  "height": null
+                },
+                "position": {
+                  "x": null,
+                  "y": null
+                },
+                "layout": {
+                  "layoutMode": null,
+                  "primaryAxisSizingMode": null,
+                  "counterAxisSizingMode": null,
+                  "primaryAxisAlignItems": null,
+                  "counterAxisAlignItems": null,
+                  "layoutGrow": 1,
+                  "layoutAlign": null,
+                  "layoutSizingHorizontal": null,
+                  "layoutSizingVertical": null,
+                  "minWidth": null,
+                  "padding": {
+                    "top": null,
+                    "right": null,
+                    "bottom": null,
+                    "left": null
+                  },
+                  "gap": null
+                },
+                "text": {
+                  "characters": "항목",
+                  "fontSize": 12,
+                  "fontStyle": "Medium",
+                  "fontFamily": "Pretendard",
+                  "textStyleId": "body/12M",
                   "textAutoResize": null
                 },
                 "appearance": {

@@ -3094,6 +3094,87 @@ _Don't_
 - 화살표 아이콘은 장식이다 — 이름은 제목 글자가 갖는다.
 - 비활성 줄은 초점 순서에서 뺀다.
 
+### LNB
+
+> ⚠️ 배포본에 아직 없는 컴포넌트입니다(codeStatus: `planned`). 아래 토큰은 `ui-library/dist` 로 값이 풀리지 않으니 이 절을 보고 구현하지 마세요.
+
+화면 왼쪽에 세로로 서는 메뉴 판(사이드바 메뉴). 우측 상단 접기 단추 하나로 펼침(240·280)과 접힘(80)을 오간다. 메뉴 칸·하위메뉴 줄·로고 얹음 두 벌(Menu·Brand)로 짜인다. 위쪽 메뉴 GNB 와 짝이다.
+
+**언제 쓰나**
+- 화면 왼쪽에 세로로 서서 같은 서비스 안의 큰 영역을 오가는 메뉴가 필요할 때.
+- 하위메뉴(2뎁스)까지 한 판에서 보여 줄 때.
+
+**쓰지 말아야 할 때**
+- 화면 위쪽 가로 메뉴가 필요할 때 — GNB 를 쓴다.
+- 모바일 하단 이동 막대가 필요할 때 — Mobile Bottom Nav 를 쓴다.
+
+**구성 (Anatomy)**
+
+| 요소 | 역할 |
+| --- | --- |
+| 머리줄(head) | 로고 자리(brand 벌만)와 우측 상단 접기 단추. |
+| 메뉴 칸(item) | 아이콘 + 메뉴명 + (하위메뉴가 있으면) 여닫이 화살표. 접힘에서는 아이콘 아래 메뉴명이 붙는 정사각 칸이 된다. |
+| 하위메뉴 줄(subitems) | 2뎁스 줄. 아이콘이 없고 글자색은 상위 메뉴와 같다. |
+
+| variant | default | hover | pressed | disabled |
+| --- | --- | --- | --- | --- |
+| default | color/button/bg/primary--default<br>color/button/label/primary--default | color/navigation/bg--hover | — | — |
+
+#### Agent-readable contract
+
+```yaml
+agent:
+  component: "LNB"
+  variantAxes: "not-defined"
+  states:
+    builder: "not-defined"
+    metadata: "unknown"
+  behavior:
+    platform: "PC"
+    status: "not-defined"
+  geometry: "not-defined"
+  composition:
+    mustReuse: "not-defined"
+    mustNotCreate: "not-defined"
+    declaredParts: "not-defined"
+  constraints: "unknown"
+  tokens:
+    figmaSemanticBindings: "not-defined"
+    aliasChains: "not-defined"
+  figma:
+    status: "available"
+    identifiers:
+      componentSetKey: "(미발행 — 라이브러리 publish 시 기록)"
+      fileKey: "cysG5U1udpQqVagYY1hWHW"
+    variants:
+      type:
+        - "menu"
+        - "brand"
+      size:
+        - "md"
+        - "lg"
+      state:
+        - "expanded"
+        - "collapsed"
+  icons:
+    allowed: "figma-unconfirmed"
+    slots: "unknown"
+```
+
+_Do_
+- 묶음 사이 간격이 필요하면 메뉴 목록(items)을 여러 개 나란히 둔다.
+- 접힌 상태에서는 title 속성으로 메뉴 이름을 함께 준다.
+
+_Don't_
+- 하위메뉴 글자를 연하게 낮추지 않는다(river 2026-09-29).
+- 로고에 집 아이콘을 넣지 않는다.
+- 접기 단추를 글자 단추로 만들지 않는다 — 아이콘 단추 하나만 둔다.
+
+**접근성 (a11y)**
+- nav 는 aria-label 로 이름을 갖는다.
+- 접기 단추는 aria-label 과 aria-pressed 를 갖는다.
+- 현재 위치는 aria-current=page 로 알린다.
+
 ### Mobile Bottom Nav
 
 모바일 하단 내비게이션의 탭 아이템(Tab Item) 컴포넌트. 정본은 '탭 1칸'이며 4탭 바 자체는 컴포넌트가 아니라 이 아이템의 인스턴스 조합이다. 아이콘 32 + 라벨 12 세로 배치, 60×60 고정, 배경 투명(바 배경은 화면이 갖는다).
@@ -3683,7 +3764,7 @@ _Don't_
 
 ### Multi Toggle
 
-여러 선택지 중 하나를 고르는 분절 컨트롤(segmented control). 정본은 두 세트다 — 셀 정의 'Multi Toggle Element'(position×state×size, 32 variants)와 그 셀 인스턴스 3개를 묶은 조합형 'Multi Toggle'(Size×Selected, 6 variants).
+여러 선택지 중 하나를 고르는 분절 컨트롤(segmented control). 정본은 두 세트다 — 셀 정의 'Multi Toggle Element'(position×state×size, 48 variants)와 그 셀 인스턴스 3개를 묶은 조합형 'Multi Toggle'(Size×Selected, 9 variants).
 
 **언제 쓰나**
 - 선택지가 2~4개로 적고 서로 배타적일 때(정렬 기준·기간 범위 등).
@@ -3698,8 +3779,8 @@ _Don't_
 
 | 요소 | 역할 |
 | --- | --- |
-| 셀(Multi Toggle Element) | 한 칸. position(first·middle-left·middle-right·last) × state(default·hover·selected·disabled) × size(md·sm). |
-| 라벨 | 셀 안 가운데 정렬 텍스트(Medium 14). 셀 폭을 채운다(layoutGrow=1). |
+| 셀(Multi Toggle Element) | 한 칸. position(first·middle-left·middle-right·last) × state(default·hover·selected·disabled) × size(md·sm·xsm). |
+| 라벨 | 셀 안 가운데 정렬 텍스트(Medium 14 · xsm 은 Medium 12). 셀 폭을 채운다(layoutGrow=1). |
 | 묶음(Multi Toggle) | 셀 인스턴스 3개를 간격 0 으로 가로 배열. 자체 배경 없음(투명). |
 
 | variant | default | hover | selected | disabled |
@@ -3716,6 +3797,7 @@ agent:
     Size:
       - "md"
       - "sm"
+      - "xsm"
     Selected:
       - "Left"
       - "Center"
@@ -3804,6 +3886,26 @@ agent:
         paddingRight: "8"
         paddingLeft: "8"
         minWidth: "56"
+      -
+        when:
+          Size: "xsm"
+          Selected: "Left"
+        target: "position=first, state=selected, size=xsm"
+        height: 28
+        paddingRight: "8"
+        paddingLeft: "8"
+        minWidth: "48"
+      -
+        when:
+          Size: "xsm"
+          Selected:
+            - "Center"
+            - "Right"
+        target: "position=first, state=default, size=xsm"
+        height: 28
+        paddingRight: "8"
+        paddingLeft: "8"
+        minWidth: "48"
   composition:
     mustReuse:
       - "Multi Toggle Element"
@@ -3875,6 +3977,7 @@ agent:
       size:
         - "md"
         - "sm"
+        - "xsm"
   icons:
     allowed: "figma-unconfirmed"
     slots: "unknown"
@@ -5498,4 +5601,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 15b4c5903a99 · 손편집 금지 -->
+<!-- generated-stamp: b40967d3f311 · 손편집 금지 -->

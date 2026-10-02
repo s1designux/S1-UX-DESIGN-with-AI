@@ -1,33 +1,33 @@
 <!-- 자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요. -->
-<!-- S1MultiToggle — 승인된 배포본을 그대로 마운트하는 Vue 껍데기.
-     MARKUPS 는 dist/examples/multi-toggle*.html 안의 승인된 인스턴스를 그대로 도려낸 것이다. -->
+<!-- S1Divider — 승인된 배포본을 그대로 마운트하는 Vue 껍데기.
+     MARKUPS 는 dist/examples/divider*.html 안의 승인된 인스턴스를 그대로 도려낸 것이다. -->
 <script setup>
 import { onBeforeUnmount, onMounted, ref, watch, watchEffect } from "vue";
-import { init, destroy } from "../../components/multi-toggle.js";
+// divider 는 JavaScript 런타임이 없다 — 브라우저 기본 동작만 쓴다.
 
 const MARKUPS = {
-  "pc": "<div data-s1-component=\"multi-toggle\" data-size=\"md\" role=\"radiogroup\" aria-label=\"정렬 기준\">\n  <button type=\"button\" data-s1-part=\"cell\" role=\"radio\" aria-checked=\"true\" data-value=\"left\">왼쪽</button>\n  <button type=\"button\" data-s1-part=\"cell\" role=\"radio\" aria-checked=\"false\" data-value=\"center\">가운데</button>\n  <button type=\"button\" data-s1-part=\"cell\" role=\"radio\" aria-checked=\"false\" data-value=\"right\">오른쪽</button>\n</div>"
+  "pc": "<hr data-s1-component=\"divider\" data-axis=\"x\">"
 };
 const DEFAULT_BREAK = "pc";
 const BREAKS = ["pc"];
-const VARIANTS = ["base"];
-const SIZES = ["md","sm","xsm"];
+const VARIANTS = ["x","y"];
+const SIZES = [];
 /* variant·size 속성 이름은 컴포넌트마다 다르다 — 승인된 마크업에서 읽어 온 것이다. */
-const VARIANT_ATTRIBUTE = null;
-const SIZE_ATTRIBUTE = "data-size";
+const VARIANT_ATTRIBUTE = "data-axis";
+const SIZE_ATTRIBUTE = null;
 
 /* defineProps 는 컴파일 타임 매크로라 인자가 setup() 밖으로 끌어올려진다 —
    여기서 위 상수들을 참조하면 SFC 가 컴파일되지 않는다(Vue 3.2+ 하드 제약).
    그래서 허용목록을 리터럴로 박아 넣는다. 값의 출처는 위 상수와 같은 manifest 다.
    (2026-09-04 독립 검증에서 19종 전부 컴파일 실패로 발견) */
 const props = defineProps({
-  variant: { type: String, default: undefined, validator: (value) => ["base"].includes(value) },
-  size: { type: String, default: undefined, validator: (value) => ["md","sm","xsm"].includes(value) },
+  variant: { type: String, default: undefined, validator: (value) => ["x","y"].includes(value) },
+  size: { type: String, default: undefined, validator: (value) => true },
   breakName: { type: String, default: "pc", validator: (value) => ["pc"].includes(value) },
   parts: { type: Object, default: () => ({}) },
   attrs: { type: Object, default: () => ({}) }
 });
-const emit = defineEmits(["change"]);
+const emit = defineEmits([]);
 
 /* root 는 반드시 ref 여야 한다 — 보통 변수로 두면 watchEffect 가 setup 중 한 번 돌 때
    root 가 아직 없어 그대로 끝나고, 의존성이 하나도 등록되지 않아 **영원히 다시 돌지 않는다.**
@@ -40,14 +40,13 @@ const listeners = [];
 /* React 껍데기와 같게 승인되지 않은 값을 막는다 — Vue 의 validator 는 개발 빌드에서만 돈다. */
 function assertAllowed(label, value, allowed) {
   if (value === undefined || allowed.length === 0 || allowed.includes(value)) return;
-  throw new Error(`[s1-ui] multi-toggle: 승인되지 않은 ${label} "${value}". 쓸 수 있는 값: ${allowed.join(", ")}`);
+  throw new Error(`[s1-ui] divider: 승인되지 않은 ${label} "${value}". 쓸 수 있는 값: ${allowed.join(", ")}`);
 }
 
 function mount() {
   host.value.innerHTML = MARKUPS[props.breakName] ?? MARKUPS[DEFAULT_BREAK];
   const element = host.value.firstElementChild;
-  init(element);
-  for (const [eventName, emitName] of [["s1:multi-toggle:change","change"]]) {
+  for (const [eventName, emitName] of []) {
     const handler = (event) => emit(emitName, event.detail ?? event);
     element.addEventListener(eventName, handler);
     listeners.push([eventName, handler]);
@@ -59,7 +58,6 @@ function unmount() {
   const element = root.value;
   if (!element) return;
   for (const [eventName, handler] of listeners.splice(0)) element.removeEventListener(eventName, handler);
-  destroy(element);
   root.value = null;
 }
 

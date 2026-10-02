@@ -1,10 +1,10 @@
 {
   "note": "자동 생성물 — ZIP 이 현재 배포본에서 나왔는지 확인하는 지문입니다.",
   "zip": "s1-ui-dev-package.zip",
-  "version": "0.14.14",
-  "canonicalFingerprint": "3c15a63bd706a5c4f1385ef0891828251797b824e9ef67b87d2df552ad53aa41",
-  "distFingerprint": "b079a85b8fffba7019ac307aa5737dac7140c3ae85326a9a0f5c7812d4c1638c",
-  "readmeFingerprint": "9c9fd908fe275b138a0e4affda60fceadc6be7a3b25ce3000ebfcfb797ecd703",
+  "version": "0.16.2",
+  "canonicalFingerprint": "a3a23a25de11dac6a6470f9a9e4bb9b6c84999d37590f09083adce159d20ee18",
+  "distFingerprint": "88167edf6675b41cb503e14593d54da0f3c46f741b69e1fc6cc40e460eac2de8",
+  "readmeFingerprint": "cd3f6e32c36ce5c8e8c343a8e02396abfd7efa9999e3ac6624bcfe8c2ae4e067",
   "components": [
     "input",
     "button",
@@ -29,52 +29,56 @@
     "text-button",
     "modal-content",
     "bottom-sheet-option",
-    "bottom-sheet"
+    "bottom-sheet",
+    "expandable-card",
+    "data-tag",
+    "divider",
+    "lnb"
   ],
   "tokenCount": 499,
-  "zipFingerprint": "8f01747a166ab50d121fd73b56e2e104824ee119b055b3c98cc954072b14733e",
+  "zipFingerprint": "084b38ca7d902f8e16ebff8fb07c604178730fef659824a1e3e203f1b8557e70",
   "packages": {
     "html-css-js": {
       "zip": "s1-ui-html-css-js.zip",
       "title": "HTML · CSS · JavaScript",
-      "files": 174,
-      "sizeKB": 356,
-      "zipFingerprint": "4b58ea55b83c5e66055b37845cd0f3ee2a2aa445fb1dd5937a6066a083390b3c"
+      "files": 178,
+      "sizeKB": 373,
+      "zipFingerprint": "cfe23a4d9acfbb1778db36941b4c561a9482783e8114294938836b09fe809be4"
     },
     "react": {
       "zip": "s1-ui-react.zip",
       "title": "React · Next.js",
-      "files": 96,
-      "sizeKB": 211,
-      "zipFingerprint": "87dc80d308e41bb258442e1c587e57527e86265935768a9a1b5387a0c37664d4"
+      "files": 101,
+      "sizeKB": 224,
+      "zipFingerprint": "54204ecb7e82fcfe8ef95cfd12e30c7fdf7b4c47187effa2916ae89812a24f57"
     },
     "vue": {
       "zip": "s1-ui-vue.zip",
       "title": "Vue",
-      "files": 93,
-      "sizeKB": 224,
-      "zipFingerprint": "2eb59dd110cdc95d67ca0b85f9e08f0d8920b6fd0c59a268fab411536d498b57"
+      "files": 98,
+      "sizeKB": 241,
+      "zipFingerprint": "c2544a382f6b1f45e323d81de4272e68ac617f0a53ac254ad1002b7a71998672"
     },
     "kotlin": {
       "zip": "s1-ui-kotlin.zip",
       "title": "Kotlin (Android)",
       "files": 53,
       "sizeKB": 118,
-      "zipFingerprint": "0778256afda3d7499070691f88b8ee117fc693a5ee85154e6b2894343bad669c"
+      "zipFingerprint": "5efa831156f88572cff88fbb9947404307ab35cfee06309750966e1c6c782a5d"
     },
     "swift": {
       "zip": "s1-ui-swift.zip",
       "title": "Swift (iOS)",
       "files": 6,
       "sizeKB": 45,
-      "zipFingerprint": "832133009aa872594ce11b914f60f98af49995aaaa36936dd01dea8753194482"
+      "zipFingerprint": "8f6b36cdaaf07ebbbebfc8c9e0ac143d04f25be78395ea3ba9d9c45bd12e2e09"
     },
     "cpp": {
       "zip": "s1-ui-cpp.zip",
       "title": "C++",
       "files": 6,
       "sizeKB": 45,
-      "zipFingerprint": "64930ecbf97386d1510286853de1813ea8c1d52d0ba296a028ddfb404693bf3e"
+      "zipFingerprint": "013069ef1771d38d6354f5898311c23b31f0f881bb63309a88e2cff90308298f"
     }
   }
 }

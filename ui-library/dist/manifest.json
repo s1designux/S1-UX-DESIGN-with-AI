@@ -1,9 +1,9 @@
 {
   "id": "s1-ui",
-  "version": "0.14.14",
-  "releasedAt": "2026-10-01",
+  "version": "0.16.2",
+  "releasedAt": "2026-10-02",
   "status": "approved",
-  "canonicalFingerprint": "3c15a63bd706a5c4f1385ef0891828251797b824e9ef67b87d2df552ad53aa41",
+  "canonicalFingerprint": "a3a23a25de11dac6a6470f9a9e4bb9b6c84999d37590f09083adce159d20ee18",
   "tokenMapFingerprint": "796fb798dd329910ba6c42a29fb4af9e0fd217446b3fa847e140bc70a0a8f4c7",
   "commonCssDependencies": [
     "assets/css/tokens.css",
@@ -843,11 +843,11 @@
     },
     {
       "id": "multi-toggle",
-      "version": "0.2.2",
+      "version": "0.3.0",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "1db5c62692a7f7adbc7f7d06d062c2add0fd55e4b1a10e38eca4b56a2929577a",
-      "sourceFingerprint": "cd613c83f941cde441eab9cb4112412fecc6405f14524842342f26555ded8b3f",
+      "canonicalFingerprint": "ced7200194ae2f94eddbbe676c6e5b2ec7480cd2cef708bffac53ef27c8e1a72",
+      "sourceFingerprint": "30ea9b873534cf4bbeb1900bc65230164e9840b60dff851e9fd6f337785408ce",
       "css": "components/multi-toggle.css",
       "js": "components/multi-toggle.js",
       "example": "examples/multi-toggle.html",
@@ -1071,10 +1071,10 @@
     {
       "id": "expandable-card",
       "version": "0.1.2",
-      "status": "candidate",
+      "status": "approved",
       "jsRequired": true,
       "canonicalFingerprint": "bbd89e3389153686038e77e02bcbb5c4bc9ecf169975205d6832b525d6831256",
-      "sourceFingerprint": "99c24c3da0f576f860e731cf6e9a73059287a2d4754c21ee57680797edd4c972",
+      "sourceFingerprint": "0fd6352940d6bca695e8ebab7fc91b6d156adde62caf89552448deb96890eafb",
       "css": "components/expandable-card.css",
       "js": "components/expandable-card.js",
       "example": "examples/expandable-card.html",
@@ -1085,10 +1085,10 @@
     {
       "id": "data-tag",
       "version": "0.1.0",
-      "status": "candidate",
+      "status": "approved",
       "jsRequired": false,
       "canonicalFingerprint": "317e13f72b6f1e9bfb3bb3fc9fff7fa11de9cb3084d61823f434029cabc956e2",
-      "sourceFingerprint": "e385eb8ff165ed47c89c2921ca35988c91569b6d8a6d3083722d0c677bc28bc2",
+      "sourceFingerprint": "809845e84876e45f3100bc9cf53c9b193b21ca25884efad3edfdef65bd9434a0",
       "css": "components/data-tag.css",
       "js": "components/data-tag.js",
       "example": "examples/data-tag.html",
@@ -1099,15 +1099,29 @@
     {
       "id": "divider",
       "version": "0.1.0",
-      "status": "candidate",
+      "status": "approved",
       "jsRequired": false,
       "canonicalFingerprint": "484a1115cf8af5a076754040ea3820151737d6f70121018aa2cb9bc9911d94b0",
-      "sourceFingerprint": "d960861345054455d97b28edf65b8209a787f844fb17faac656b64864e05aad2",
+      "sourceFingerprint": "8697fc87e3c7ef8cf16e43bc25f5b3c77d86126b9aa8916a4caaf12a7b56bbf5",
       "css": "components/divider.css",
       "js": "components/divider.js",
       "example": "examples/divider.html",
       "examples": {
         "pc": "examples/divider.html"
+      }
+    },
+    {
+      "id": "lnb",
+      "version": "0.2.1",
+      "status": "approved",
+      "jsRequired": true,
+      "canonicalFingerprint": "7b60b80b37067b402e3a3962fe436402107837feecbb53a68d0517bae570bf8f",
+      "sourceFingerprint": "6f98f3da4003428aae3d9f1de6278c34defbb9b5b2c8f6f80087e9f878f4ff57",
+      "css": "components/lnb.css",
+      "js": "components/lnb.js",
+      "example": "examples/lnb.html",
+      "examples": {
+        "pc": "examples/lnb.html"
       }
     }
   ],
@@ -1143,7 +1157,8 @@
       "list-row",
       "expandable-card",
       "data-tag",
-      "divider"
+      "divider",
+      "lnb"
     ],
     "source": "ui-library/src/components/*",
     "rule": "Full and individual outputs are generated in this build invocation from identical source strings."

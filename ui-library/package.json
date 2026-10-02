@@ -1,6 +1,6 @@
 {
   "name": "@s1/ui",
-  "version": "0.14.14",
+  "version": "0.16.2",
   "private": true,
   "type": "module",
   "description": "S1 canonical web UI library",
@@ -116,7 +116,10 @@
     "./components/divider/html": "./dist/examples/divider.html",
     "./components/data-tag": "./dist/components/data-tag.js",
     "./components/data-tag/css": "./dist/components/data-tag.css",
-    "./components/data-tag/html": "./dist/examples/data-tag.html"
+    "./components/data-tag/html": "./dist/examples/data-tag.html",
+    "./components/lnb": "./dist/components/lnb.js",
+    "./components/lnb/css": "./dist/components/lnb.css",
+    "./components/lnb/html": "./dist/examples/lnb.html"
   },
   "scripts": {
     "build": "node scripts/build.mjs",

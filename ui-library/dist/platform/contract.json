@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
     "purpose": "개발 툴과 검사기가 함께 읽는 허용목록. 여기 없는 variant·size·속성은 승인된 적이 없는 것이다.",
-    "canonicalFingerprint": "3c15a63bd706a5c4f1385ef0891828251797b824e9ef67b87d2df552ad53aa41"
+    "canonicalFingerprint": "a3a23a25de11dac6a6470f9a9e4bb9b6c84999d37590f09083adce159d20ee18"
   },
   "components": [
     {
@@ -576,7 +576,8 @@
       ],
       "sizes": [
         "md",
-        "sm"
+        "sm",
+        "xsm"
       ],
       "breaks": null,
       "states": [
@@ -604,8 +605,8 @@
         "init is idempotent",
         "destroy removes listeners"
       ],
-      "canonicalFingerprint": "1db5c62692a7f7adbc7f7d06d062c2add0fd55e4b1a10e38eca4b56a2929577a",
-      "sourceFingerprint": "cd613c83f941cde441eab9cb4112412fecc6405f14524842342f26555ded8b3f"
+      "canonicalFingerprint": "ced7200194ae2f94eddbbe676c6e5b2ec7480cd2cef708bffac53ef27c8e1a72",
+      "sourceFingerprint": "30ea9b873534cf4bbeb1900bc65230164e9840b60dff851e9fd6f337785408ce"
     },
     {
       "id": "modal",
@@ -1348,7 +1349,7 @@
     },
     {
       "id": "expandable-card",
-      "status": "candidate",
+      "status": "approved",
       "rootSelector": "[data-s1-component=\"expandable-card\"]",
       "root": "div[data-s1-component=expandable-card] > button[data-s1-part=header][aria-expanded][aria-controls] + div[data-s1-part=panel-wrap][id] > div[data-s1-part=panel]. header 안은 span[data-s1-part=text](title·subtitle·body·note·caption 중 필요한 것) + span[data-s1-part=toggle-icon].",
       "variants": [],
@@ -1388,11 +1389,11 @@
       ],
       "lifecycle": [],
       "canonicalFingerprint": "bbd89e3389153686038e77e02bcbb5c4bc9ecf169975205d6832b525d6831256",
-      "sourceFingerprint": "99c24c3da0f576f860e731cf6e9a73059287a2d4754c21ee57680797edd4c972"
+      "sourceFingerprint": "0fd6352940d6bca695e8ebab7fc91b6d156adde62caf89552448deb96890eafb"
     },
     {
       "id": "data-tag",
-      "status": "candidate",
+      "status": "approved",
       "rootSelector": "[data-s1-component=\"data-tag\"]",
       "root": "span[data-s1-component=data-tag] — 누르지 않는 표시. 안에는 글자만 둔다(부품 자리 없음).",
       "variants": [
@@ -1417,11 +1418,11 @@
       "events": [],
       "lifecycle": [],
       "canonicalFingerprint": "317e13f72b6f1e9bfb3bb3fc9fff7fa11de9cb3084d61823f434029cabc956e2",
-      "sourceFingerprint": "e385eb8ff165ed47c89c2921ca35988c91569b6d8a6d3083722d0c677bc28bc2"
+      "sourceFingerprint": "809845e84876e45f3100bc9cf53c9b193b21ca25884efad3edfdef65bd9434a0"
     },
     {
       "id": "divider",
-      "status": "candidate",
+      "status": "approved",
       "rootSelector": "[data-s1-component=\"divider\"]",
       "root": "hr[data-s1-component=divider]. 세로선(data-axis=y)에는 aria-orientation=vertical 을 함께 쓴다. 자식·부품 자리가 없다.",
       "variants": [
@@ -1444,7 +1445,60 @@
       "events": [],
       "lifecycle": [],
       "canonicalFingerprint": "484a1115cf8af5a076754040ea3820151737d6f70121018aa2cb9bc9911d94b0",
-      "sourceFingerprint": "d960861345054455d97b28edf65b8209a787f844fb17faac656b64864e05aad2"
+      "sourceFingerprint": "8697fc87e3c7ef8cf16e43bc25f5b3c77d86126b9aa8916a4caaf12a7b56bbf5"
+    },
+    {
+      "id": "lnb",
+      "status": "approved",
+      "rootSelector": "[data-s1-component=\"lnb\"]",
+      "root": "nav[data-s1-component=lnb][aria-label] > div[data-s1-part=head](brand? + button[data-s1-part=collapse]) + ul[data-s1-part=items] 하나 이상. 메뉴 항목은 li > a|button[data-s1-part=item](span[data-s1-part=item-icon] + 글자 [+ span[data-s1-part=item-toggle]]). 하위메뉴는 항목 button(aria-expanded·aria-controls) 바로 아래 ul[data-s1-part=subitems][id].",
+      "variants": [
+        "menu",
+        "brand"
+      ],
+      "sizes": [
+        "md",
+        "lg"
+      ],
+      "breaks": null,
+      "states": [
+        "expanded",
+        "collapsed",
+        "current",
+        "hover",
+        "disabled"
+      ],
+      "parts": [
+        "head",
+        "brand",
+        "brand-logo",
+        "collapse",
+        "collapse-icon",
+        "group",
+        "items",
+        "item",
+        "item-icon",
+        "item-toggle",
+        "subitems"
+      ],
+      "variantAttribute": "data-variant",
+      "sizeAttribute": "data-size",
+      "requiredAttributes": [],
+      "requiredParts": [
+        "head",
+        "collapse",
+        "collapse-icon",
+        "items",
+        "item"
+      ],
+      "jsRequired": true,
+      "events": [
+        "s1:lnb:collapse",
+        "s1:lnb:toggle"
+      ],
+      "lifecycle": [],
+      "canonicalFingerprint": "7b60b80b37067b402e3a3962fe436402107837feecbb53a68d0517bae570bf8f",
+      "sourceFingerprint": "6f98f3da4003428aae3d9f1de6278c34defbb9b5b2c8f6f80087e9f878f4ff57"
     }
   ]
 }

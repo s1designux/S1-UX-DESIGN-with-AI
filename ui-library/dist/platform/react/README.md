@@ -1,6 +1,6 @@
 # @s1/ui-react
 
-**배포본 번호 0.14.14** · 2026-10-01 판
+**배포본 번호 0.16.2** · 2026-10-02 판
 이 번호가 최신인지는 디자인가이드 내려받기 화면에서 확인하세요 — 번호가 다르면 새로 받으면 됩니다.
 코드에서 볼 때는 `import { S1_VERSION } from "@s1/ui-react"` 입니다.
 
@@ -85,7 +85,7 @@ import { S1Button, S1Input, S1Table } from "@s1/ui-react";
 | `S1Tab` | — | PC `md` `sm` `xsm` · 모바일 `sm` | `pc` `mobile` | `tabs` · `children` | 같은 화면에서 콘텐츠 영역을 전환할 때. 정본에 등록된 플랫폼과 크기 중 사용 맥락에 맞는 항목을 고른다. |
 | `S1Pagination` | — | `28` | — | `pages` | 긴 목록·표를 페이지로 나눠 이동할 때. |
 | `S1Textarea` | — | — | `pc` `mobile` | `value`·`onChange` | 여러 줄 텍스트를 입력받을 때(메모·설명 등). Input 과 시각 동일 — --input-* 토큰을 공유한다. |
-| `S1MultiToggle` | — | `md` `sm` | — | `cells` · `onChange` | 선택지가 2~4개로 적고 서로 배타적일 때(정렬 기준·기간 범위 등). 선택 결과가 즉시 화면에 반영돼야 할 때. |
+| `S1MultiToggle` | — | `md` `sm` `xsm` | — | `cells` · `onChange` | 선택지가 2~4개로 적고 서로 배타적일 때(정렬 기준·기간 범위 등). 선택 결과가 즉시 화면에 반영돼야 할 때. |
 | `S1Modal` | `single` `dual` | — | `pc` `mobile` | `onOpen` · `onClose` | 확인·알림 등 흐름을 멈추고 결정을 받을 때. Single=알림/설명체 1버튼, Dual=확인/질문체 2버튼. |
 | `S1Table` | — | PC `md` `sm` `xsm` | — | `headerCells` · `rows` · `onSelectionchange` | 행·열의 정형 데이터를 보여줄 때. 정렬·선택(체크박스)·행 hover/selected 가 필요할 때. |
 | `S1MobileBottomNav` | `home` `search` `notification` `settings` | — | — | `parts` | 모바일 화면에서 최상위 영역 간 이동을 항상 보이게 둘 때. 탭 수가 3~5개로 고정된 주요 메뉴 구조일 때. |
@@ -97,6 +97,10 @@ import { S1Button, S1Input, S1Table } from "@s1/ui-react";
 | `S1ModalContent` | `single` `dual` | PC `md` `lg` `xl` | — | `onOpen` · `onClose` | 입력창·표·이미지처럼 확인 계열(짧은 텍스트)보다 큰 본문이 필요할 때. Single=알림/설명체 1버튼, Dual=확인/질문체 2버튼(확인 계열과 같은 규칙). |
 | `S1BottomSheetOption` | `text` `checkbox` `radio` `list` | — | — | `parts` | 바텀시트 본문에 고를 것을 줄로 늘어놓을 때. Text = 한 값 고르기(고른 줄에 파란 체크), Checkbox = 여러 값 고르기, Radio = 한 값 고르기(동그라미 표시), List = 사람·항목처럼 아바타와 설명이 함께 있는 줄. |
 | `S1BottomSheet` | `none` `single` `dual` | — | — | `onOpen` · `onClose` | 모바일에서 목록을 띄워 고르게 할 때 — 드롭다운 대신 쓴다(density-policy mobileSubstitutes.dropdown). 모바일에서 날짜·시간처럼 넓은 선택 UI 를 띄울 때. Footer=None 은 고르는 즉시 적용되는 목록, Single 은 '적용' 하나, Dual 은 '취소+적용'. |
+| `S1ExpandableCard` | — | — | — | `onChange` | 한 화면에 여러 덩어리를 쌓아 두고, 필요한 것만 펴서 보게 할 때. 질문과 답처럼 제목만으로 고르고 내용은 접어 두는 목록. |
+| `S1DataTag` | `blue` `red` | — | — | `parts` | 표나 목록에서 한 줄의 상태를 한 눈에 보이게 할 때. 승인·확인(파랑), 주의·에러(빨강)처럼 뜻이 정해진 상태를 표시할 때. |
+| `S1Divider` | `x` `y` | — | — | `parts` | 목록 줄 사이를 나눌 때. 표 위·아래처럼 영역을 크게 끊을 때(강한선). 한 줄 안에서 값과 값을 끊을 때(세로선). |
+| `S1Lnb` | `menu` `brand` | `md` `lg` | — | `onCollapse` · `onToggle` | 화면 왼쪽에 세로로 서서 같은 서비스 안의 큰 영역을 오가는 메뉴가 필요할 때. 하위메뉴(2뎁스)까지 한 판에서 보여 줄 때. |
 
 크기·변형은 위에 적힌 값만 쓸 수 있습니다. 다른 값을 주면 그 자리에서 오류로 알려 줍니다.
 
@@ -128,6 +132,10 @@ import { S1Button, S1Input, S1Table } from "@s1/ui-react";
 | `S1ModalContent` | 짧은 확인 문구 하나면 확인 계열 Modal 을 쓴다. 페이지 전체를 차지하는 다단계 폼은 별도 페이지를 고려한다. |
 | `S1BottomSheetOption` | 바텀시트 밖 — PC 목록은 Dropdown 을 쓴다. 표의 행 — Table 을 쓴다. |
 | `S1BottomSheet` | PC 화면 — PC 는 드롭다운·팝오버·모달을 쓴다. 정본 시트는 모바일 폭(360) 기준이다. 확인·알림처럼 짧은 결정 — Modal 을 쓴다. 비차단 알림 — 토스트·인라인 메시지. |
+| `S1ExpandableCard` | 화면을 덮어야 하는 내용 — Bottom Sheet·Modal 을 쓴다. 같은 모양의 한 줄이 반복될 뿐 펼칠 내용이 없을 때 — List Row 를 쓴다. |
+| `S1DataTag` | 누르는 것 — Chip 이나 Button 을 쓴다. 고르는 것 — Filter Chip 을 쓴다. 뜻이 정해지지 않은 색을 쓰고 싶을 때 — 색을 늘리지 않는다. |
+| `S1Divider` | 바탕색이 이미 영역을 나누고 있을 때 — 선을 겹쳐 넣지 않는다. 카드 테두리 대신 쓰려 할 때 — 테두리는 그 부품이 갖는다. |
+| `S1Lnb` | 화면 위쪽 가로 메뉴가 필요할 때 — GNB 를 쓴다. 모바일 하단 이동 막대가 필요할 때 — Mobile Bottom Nav 를 쓴다. |
 
 ## 6. 고치지 마세요
 

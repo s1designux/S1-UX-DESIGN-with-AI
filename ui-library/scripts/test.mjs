@@ -15,7 +15,7 @@ const read = (relative) => readFile(path.join(libraryRoot, relative), "utf8");
 const build = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/build.mjs"), "--check"], { encoding: "utf8" });
 if (build.status !== 0) failures.push(`build freshness: ${build.stderr || build.stdout}`);
 
-const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker", "gnb", "gnb-sub-menu-item", "gnb-sub-menu", "assist-button", "text-button", "modal-content", "bottom-sheet-option", "bottom-sheet", "list-row", "expandable-card", "data-tag", "divider"];
+const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker", "gnb", "gnb-sub-menu-item", "gnb-sub-menu", "assist-button", "text-button", "modal-content", "bottom-sheet-option", "bottom-sheet", "list-row", "expandable-card", "data-tag", "divider", "lnb"];
 const individualCss = [];
 for (const id of componentIds) {
   const css = await read(`dist/components/${id}.css`);
@@ -289,11 +289,12 @@ for (const id of componentIds) {
   }
   if (id === "multi-toggle") {
     if (manifest.jsRequired !== true) failures.push("multi-toggle roving tabindex and selection require the declared runtime");
-    if (JSON.stringify(manifest.sizes) !== JSON.stringify(["md", "sm"])) failures.push("multi-toggle sizes differ from canon");
+    if (JSON.stringify(manifest.sizes) !== JSON.stringify(["md", "sm", "xsm"])) failures.push("multi-toggle sizes differ from canon");
     if (!("canonicalStateMap" in manifest)) failures.push("multi-toggle manifest must map canonical state names to web states");
     const expectedSizes = [
       ["md", "--sizing-44", "--spacing-12", "--sizing-64"],
-      ["sm", "--sizing-34", "--spacing-8", "--sizing-56"]
+      ["sm", "--sizing-34", "--spacing-8", "--sizing-56"],
+      ["xsm", "--sizing-28", "--spacing-8", "--sizing-48"]
     ];
     for (const [size, height, padding, minWidth] of expectedSizes) {
       const rule = css.match(new RegExp(`\\[data-s1-component="multi-toggle"\\]\\[data-size="${size}"\\] \\[data-s1-part="cell"\\]\\s*\\{([^}]*)\\}`));
@@ -301,6 +302,7 @@ for (const id of componentIds) {
       if (!rule[1].includes(`height: var(${height});`)) failures.push(`multi-toggle ${size} height differs from canon`);
       if (!rule[1].includes(`padding-inline: var(${padding});`)) failures.push(`multi-toggle ${size} padding differs from canon`);
       if (!rule[1].includes(`min-width: var(${minWidth});`)) failures.push(`multi-toggle ${size} minimum width differs from canon`);
+      if (size === "xsm" && !rule[1].includes("font-size: var(--font-size-12);")) failures.push("multi-toggle xsm font size differs from canon (12)");
     }
     if (!css.includes("--color-button-bg-secondary--default") || !css.includes("--color-button-bg-primary--default") || !css.includes("--color-button-bg-disabled")) {
       failures.push("multi-toggle is not bound to the canonical color/button tokens");
@@ -648,10 +650,10 @@ for (const id of componentIds) {
     if (JSON.stringify(manifest.sizes) !== JSON.stringify(["md", "lg"])) failures.push("lnb sizes must be md(240) and lg(280)");
     if (/data-variant="grouped"/.test(example)) failures.push("lnb example must not demonstrate the on-hold grouped variant");
     if (!/\[data-s1-component="lnb"\]\s*\{[^}]*width:\s*240px;/.test(css) || !/\[data-size="lg"\]\s*\{[^}]*width:\s*280px;/.test(css)) failures.push("lnb widths must be 240 (md, default) and 280 (lg)");
-    if (!/\[data-state="collapsed"\]\s*\{[^}]*width:\s*var\(--sizing-64\)/.test(css)) failures.push("lnb collapsed width must be sizing/64");
+    if (!/\[data-state="collapsed"\]\s*\{[^}]*width:\s*var\(--sizing-80\)/.test(css)) failures.push("lnb collapsed width must be sizing/80 (river 2026-09-30)");
     if (!/\[data-s1-component="lnb"\] button\s*\{\s*font-family:\s*inherit;/.test(css)) failures.push("lnb button items need font-family: inherit (button default font leaked in the prototype)");
     if (css.includes("--color-text-state-helper")) failures.push("lnb sub-menu text must keep the parent menu color — do not lower it with text/state/helper (river 2026-09-29)");
-    if (!/\[data-s1-component="lnb"\] \[data-s1-part="item"\]\s*\{[^}]*color:\s*var\(--color-text-body-secondary\)/.test(css)) failures.push("lnb menu label must use the text step text/body/secondary (river 2026-09-30)");
+    if (!/\[data-s1-component="lnb"\] \[data-s1-part="item"\]\s*\{[^}]*color:\s*var\(--color-navigation-label-default-side\)/.test(css)) failures.push("lnb menu label must use navigation/label/default-side (river 2026-10-01)");
     if (/\[data-theme="dark"\][^{]*\[data-s1-part="item"\][^{]*\{[^}]*\bcolor:/.test(css)) failures.push("lnb must not override text color per theme — the text step carries light/dark (river 2026-09-30)");
     if (!/aria-label="[^"]+"[\s\S]*?data-s1-part="collapse"/.test(example) || /data-s1-part="collapse"[^>]*>[^<]*[가-힣A-Za-z]/.test(example)) failures.push("lnb collapse control must be an icon-only button with an aria-label");
     if (!example.includes("data-variant=\"brand\"") || !example.includes('data-state="collapsed"') || !example.includes('data-size="lg"')) failures.push("lnb example must show brand, collapsed and lg");
