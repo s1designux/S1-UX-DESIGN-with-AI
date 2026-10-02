@@ -6,40 +6,227 @@
   "sectionName": "Pattern / PC Login",
   "buildCode": "build-code.js",
   "rounds": [
-    { "round": "pilot-2026-10-02", "screens": ["1", "4a1"], "result": "component-verifier PASS (❌0 ❓0)" },
-    { "round": "batch-2026-10-02", "screens": ["2", "3", "4", "4a2", "4a3"], "result": "built — verification pending" }
+    {
+      "round": "pilot-2026-10-02",
+      "screens": [
+        "1",
+        "4a1"
+      ],
+      "result": "component-verifier PASS (❌0 ❓0)"
+    },
+    {
+      "round": "batch-2026-10-02",
+      "screens": [
+        "2",
+        "3",
+        "4",
+        "4a2",
+        "4a3"
+      ],
+      "result": "built — verification pending"
+    },
+    {
+      "round": "change1-2026-10-02",
+      "screens": [
+        "all"
+      ],
+      "result": "간격 3군데 제자리 수정 — snapdiff violations 0"
+    },
+    {
+      "round": "change2-2026-10-02",
+      "screens": [
+        "all"
+      ],
+      "result": "WebTabBar 맨 첫 자식 추가 — snapdiff violations 5종(WebTabBar 하위 깊은 자식 84개, 선언 밖)"
+    }
   ],
-  "sectionChildOrder": ["2703:3", "2712:95", "2712:164", "2713:203", "2706:49", "2713:264", "2713:319"],
+  "sectionChildOrder": [
+    "2703:3",
+    "2712:95",
+    "2712:164",
+    "2713:203",
+    "2706:49",
+    "2713:264",
+    "2713:319"
+  ],
   "screens": {
     "1": {
-      "name": "PC/LOGIN/1 · 최초 진입", "id": "2703:3", "x": 80, "y": 100,
-      "nodes": { "LoginGNB": "2703:4", "Body": "2703:14", "LoginBox": "2703:15", "CI": "2703:16", "Spacer/CI-Fields": "2703:19", "Fields": "2703:20", "Input/ID": "2703:21", "Input/Password": "2703:26", "Spacer/Fields-SaveId": "2703:47", "SaveId": "2703:48", "Checkbox": "2703:49", "SaveId Label": "2703:50", "Spacer/SaveId-Login": "2703:51", "Button/로그인": "2703:52", "Footer": "2703:54" }
+      "name": "PC/LOGIN/1 · 최초 진입",
+      "id": "2703:3",
+      "x": 80,
+      "y": 100,
+      "nodes": {
+        "WebTabBar": "2723:331",
+        "LoginGNB": "2703:4",
+        "Body": "2703:14",
+        "LoginBox": "2703:15",
+        "CI": "2703:16",
+        "Spacer/CI-Fields": "2703:19",
+        "Fields": "2703:20",
+        "Input/ID": "2703:21",
+        "Input/Password": "2703:26",
+        "Spacer/Fields-SaveId": "2703:47",
+        "SaveId": "2703:48",
+        "Checkbox": "2703:49",
+        "SaveId Label": "2703:50",
+        "Spacer/SaveId-Login": "2703:51",
+        "Button/로그인": "2703:52",
+        "Footer": "2703:54"
+      }
     },
     "2": {
-      "name": "PC/LOGIN/2 · 아이디 입력 중", "id": "2712:95", "x": 2200, "y": 100,
-      "nodes": { "LoginGNB": "2712:96", "Body": "2712:104", "LoginBox": "2712:105", "CI": "2712:106", "Spacer/CI-Fields": "2712:109", "Fields": "2712:110", "Input/ID": "2712:111", "Input/Password": "2712:131", "Spacer/Fields-SaveId": "2712:145", "SaveId": "2712:146", "Checkbox": "2712:147", "SaveId Label": "2712:148", "Spacer/SaveId-Login": "2712:149", "Button/로그인": "2712:150", "Footer": "2712:152" }
+      "name": "PC/LOGIN/2 · 아이디 입력 중",
+      "id": "2712:95",
+      "x": 2200,
+      "y": 100,
+      "nodes": {
+        "WebTabBar": "2723:360",
+        "LoginGNB": "2712:96",
+        "Body": "2712:104",
+        "LoginBox": "2712:105",
+        "CI": "2712:106",
+        "Spacer/CI-Fields": "2712:109",
+        "Fields": "2712:110",
+        "Input/ID": "2712:111",
+        "Input/Password": "2712:131",
+        "Spacer/Fields-SaveId": "2712:145",
+        "SaveId": "2712:146",
+        "Checkbox": "2712:147",
+        "SaveId Label": "2712:148",
+        "Spacer/SaveId-Login": "2712:149",
+        "Button/로그인": "2712:150",
+        "Footer": "2712:152"
+      }
     },
     "3": {
-      "name": "PC/LOGIN/3 · 비밀번호 입력 중", "id": "2712:164", "x": 4320, "y": 100,
-      "nodes": { "LoginGNB": "2712:165", "Body": "2712:173", "LoginBox": "2712:174", "CI": "2712:175", "Spacer/CI-Fields": "2712:178", "Fields": "2712:179", "Input/ID": "2712:180", "Input/Password": "2712:185", "Spacer/Fields-SaveId": "2712:216", "SaveId": "2712:217", "Checkbox": "2712:218", "SaveId Label": "2712:219", "Spacer/SaveId-Login": "2712:220", "Button/로그인": "2712:221", "Footer": "2712:223" }
+      "name": "PC/LOGIN/3 · 비밀번호 입력 중",
+      "id": "2712:164",
+      "x": 4320,
+      "y": 100,
+      "nodes": {
+        "WebTabBar": "2723:389",
+        "LoginGNB": "2712:165",
+        "Body": "2712:173",
+        "LoginBox": "2712:174",
+        "CI": "2712:175",
+        "Spacer/CI-Fields": "2712:178",
+        "Fields": "2712:179",
+        "Input/ID": "2712:180",
+        "Input/Password": "2712:185",
+        "Spacer/Fields-SaveId": "2712:216",
+        "SaveId": "2712:217",
+        "Checkbox": "2712:218",
+        "SaveId Label": "2712:219",
+        "Spacer/SaveId-Login": "2712:220",
+        "Button/로그인": "2712:221",
+        "Footer": "2712:223"
+      }
     },
     "4": {
-      "name": "PC/LOGIN/4 · 입력 완료·로그인 활성", "id": "2713:203", "x": 6440, "y": 100,
-      "nodes": { "LoginGNB": "2713:204", "Body": "2713:212", "LoginBox": "2713:213", "CI": "2713:214", "Spacer/CI-Fields": "2713:217", "Fields": "2713:218", "Input/ID": "2713:219", "Input/Password": "2713:224", "Spacer/Fields-SaveId": "2713:245", "SaveId": "2713:246", "Checkbox": "2713:247", "SaveId Label": "2713:248", "Spacer/SaveId-Login": "2713:249", "Button/로그인": "2713:250", "Footer": "2713:252" }
+      "name": "PC/LOGIN/4 · 입력 완료·로그인 활성",
+      "id": "2713:203",
+      "x": 6440,
+      "y": 100,
+      "nodes": {
+        "WebTabBar": "2723:418",
+        "LoginGNB": "2713:204",
+        "Body": "2713:212",
+        "LoginBox": "2713:213",
+        "CI": "2713:214",
+        "Spacer/CI-Fields": "2713:217",
+        "Fields": "2713:218",
+        "Input/ID": "2713:219",
+        "Input/Password": "2713:224",
+        "Spacer/Fields-SaveId": "2713:245",
+        "SaveId": "2713:246",
+        "Checkbox": "2713:247",
+        "SaveId Label": "2713:248",
+        "Spacer/SaveId-Login": "2713:249",
+        "Button/로그인": "2713:250",
+        "Footer": "2713:252"
+      }
     },
     "4a1": {
-      "name": "PC/LOGIN/4a1 · 계정 불일치 오류", "id": "2706:49", "x": 80, "y": 1380,
-      "nodes": { "LoginGNB": "2706:50", "Body": "2706:58", "LoginBox": "2706:59", "CI": "2706:60", "Spacer/CI-Fields": "2706:63", "Fields": "2706:64", "Input/ID": "2706:65", "Input/Password": "2706:70", "Spacer/Fields-SaveId": "2706:92", "SaveId": "2706:93", "Checkbox": "2706:94", "SaveId Label": "2706:95", "Spacer/SaveId-Login": "2706:96", "Button/로그인": "2706:97", "Footer": "2706:99" }
+      "name": "PC/LOGIN/4a1 · 계정 불일치 오류",
+      "id": "2706:49",
+      "x": 80,
+      "y": 1380,
+      "nodes": {
+        "WebTabBar": "2723:447",
+        "LoginGNB": "2706:50",
+        "Body": "2706:58",
+        "LoginBox": "2706:59",
+        "CI": "2706:60",
+        "Spacer/CI-Fields": "2706:63",
+        "Fields": "2706:64",
+        "Input/ID": "2706:65",
+        "Input/Password": "2706:70",
+        "Spacer/Fields-SaveId": "2706:92",
+        "SaveId": "2706:93",
+        "Checkbox": "2706:94",
+        "SaveId Label": "2706:95",
+        "Spacer/SaveId-Login": "2706:96",
+        "Button/로그인": "2706:97",
+        "Footer": "2706:99"
+      }
     },
     "4a2": {
-      "name": "PC/LOGIN/4a2 · 5회 실패 잠금", "id": "2713:264", "x": 2200, "y": 1380,
-      "nodes": { "LoginGNB": "2713:265", "Body": "2713:273", "LoginBox": "2713:274", "CI": "2713:275", "Spacer/CI-Fields": "2713:278", "Fields": "2713:279", "Input/ID": "2713:280", "Input/Password": "2713:285", "Spacer/Fields-SaveId": "2713:300", "SaveId": "2713:301", "Checkbox": "2713:302", "SaveId Label": "2713:303", "Spacer/SaveId-Login": "2713:304", "Button/로그인": "2713:305", "Footer": "2713:307" }
+      "name": "PC/LOGIN/4a2 · 5회 실패 잠금",
+      "id": "2713:264",
+      "x": 2200,
+      "y": 1380,
+      "nodes": {
+        "WebTabBar": "2723:476",
+        "LoginGNB": "2713:265",
+        "Body": "2713:273",
+        "LoginBox": "2713:274",
+        "CI": "2713:275",
+        "Spacer/CI-Fields": "2713:278",
+        "Fields": "2713:279",
+        "Input/ID": "2713:280",
+        "Input/Password": "2713:285",
+        "Spacer/Fields-SaveId": "2713:300",
+        "SaveId": "2713:301",
+        "Checkbox": "2713:302",
+        "SaveId Label": "2713:303",
+        "Spacer/SaveId-Login": "2713:304",
+        "Button/로그인": "2713:305",
+        "Footer": "2713:307"
+      }
     },
     "4a3": {
-      "name": "PC/LOGIN/4a3 · 사용 중지된 계정", "id": "2713:319", "x": 4320, "y": 1380,
-      "nodes": { "LoginGNB": "2713:320", "Body": "2713:328", "LoginBox": "2713:329", "CI": "2713:330", "Spacer/CI-Fields": "2713:333", "Fields": "2713:334", "Input/ID": "2713:335", "Input/Password": "2713:340", "Spacer/Fields-SaveId": "2713:355", "SaveId": "2713:356", "Checkbox": "2713:357", "SaveId Label": "2713:358", "Spacer/SaveId-Login": "2713:359", "Button/로그인": "2713:360", "Footer": "2713:362" }
+      "name": "PC/LOGIN/4a3 · 사용 중지된 계정",
+      "id": "2713:319",
+      "x": 4320,
+      "y": 1380,
+      "nodes": {
+        "WebTabBar": "2723:505",
+        "LoginGNB": "2713:320",
+        "Body": "2713:328",
+        "LoginBox": "2713:329",
+        "CI": "2713:330",
+        "Spacer/CI-Fields": "2713:333",
+        "Fields": "2713:334",
+        "Input/ID": "2713:335",
+        "Input/Password": "2713:340",
+        "Spacer/Fields-SaveId": "2713:355",
+        "SaveId": "2713:356",
+        "Checkbox": "2713:357",
+        "SaveId Label": "2713:358",
+        "Spacer/SaveId-Login": "2713:359",
+        "Button/로그인": "2713:360",
+        "Footer": "2713:362"
+      }
     }
   },
   "pending": [],
-  "shots": { "1": "shots/PC-LOGIN-1.png", "2": "shots/PC-LOGIN-2.png", "3": "shots/PC-LOGIN-3.png", "4": "shots/PC-LOGIN-4.png", "4a1": "shots/PC-LOGIN-4a1.png", "4a2": "shots/PC-LOGIN-4a2.png", "4a3": "shots/PC-LOGIN-4a3.png" }
+  "shots": {
+    "1": "shots/PC-LOGIN-1.png",
+    "2": "shots/PC-LOGIN-2.png",
+    "3": "shots/PC-LOGIN-3.png",
+    "4": "shots/PC-LOGIN-4.png",
+    "4a1": "shots/PC-LOGIN-4a1.png",
+    "4a2": "shots/PC-LOGIN-4a2.png",
+    "4a3": "shots/PC-LOGIN-4a3.png"
+  }
 }

@@ -150,3 +150,77 @@ npm run snapdiff -- snapshot-before.json snapshot-after.json --expect snapshot-e
 ### 권장 상태 전환
 - `evidence.snapdiff` = { ranAt 2026-10-02, violations 0, by component-verifier(재실행), afterVerifiedBy: 검증자 실측 해시 8묶음 일치 }
 - `lastCompletedCheckpoint` = 4 유지 · `nextAction` = 5단계 패턴 등록
+
+---
+
+## 변경 2 — 맨 위 WebTabBar 추가 · 델타 재검증 · 2026-10-02 · component-verifier
+
+- 지시: river 「프레임을 그냥 넣자. 디자인가이드에 웹탭바를 쓰면 될듯」. 근거는 `intent.md` 「변경 2」 절이다. 증거 파일은 `snapshot-before-2.json` · `snapshot-after-2.json` · `snapshot-expect-2.json`(오케스트레이터 작성)이다.
+
+### 판정: **FAIL (문서 1건)** — ❌(a) 1 · ❓(c) 0 · 🟡(b) 0 · BLOCKED 0
+- Figma 캔버스 쪽 ❌ 는 0건이다. 7장 모두 의도 선언서대로다.
+- ❌(a)-1 **`2-mapping.md` 가 변경 2 를 반영하지 않았다.** 26행에 아직 「넣지 않는 것: WebTabBar」가 있고, 뼈대 표에 WebTabBar 행이 없으며, Body 높이·순서도 옛 값이다. 2단계 매핑표는 검증의 1차 기준표다. 이 상태로 두면 다음 재검증이 캔버스를 위반으로 오판하게 된다. 오케스트레이터가 매핑표를 갱신해야 한다. 캔버스 수정은 필요 없다.
+
+### snapdiff (검증자 재실행) — 기대 선언과 불일치 5종, 판정 결과 허용
+```
+노드 386 → 589 · 추가 203 · 삭제 0 · 변경 42 (자식순서 21 · y 14 · 높이 7)
+❌ [added] VECTOR|Vector · GROUP|Group 5 · GROUP|Group 4 · VECTOR|Stroke 2 · VECTOR|Stroke 3 — 기대 선언에 없음
+SNAPDIFF_SUMMARY added=203 removed=0 changed=42 violations=5  (EXIT 1)
+```
+- **불일치 5종이 모두 WebTabBar 안의 노드인지 직접 확인했다.** 추가 노드 203개 각각의 조상을 따라 올라가 봤다. **203개 모두 새 WebTabBar 인스턴스 7개 중 하나의 하위다(WebTabBar 밖에서 추가된 노드 0개).** 인스턴스마다 29개씩(선언 17 + 더 깊은 자식 12)이고, 7개 × 29 = 203 이다. 따라서 이 5종은 기대 선언이 부품 내부 깊이를 덜 적은 것이고, 선언 밖 변경이 아니다. note 에 적은 판정 기준을 충족한다.
+- **바뀐 값은 선언과 정확히 같다.** 화면마다 LoginGNB 의 순서·y(0→101), Body 의 순서·y(56→157)·높이(908→807), Footer 의 순서가 바뀌었고 각각 7건이다. 이 밖에 바뀐 속성은 0건이다(문구·스타일·폰트·채움·x·간격 모두 0).
+- before-2 는 변경 1 의 after 와 내용이 완전히 같다. 즉 변경 1 과 변경 2 사이에 다른 손댐이 없었다.
+- 기대 선언 보완 권고: 다음에는 `snapshot-expect-2.json` 에 깊은 자식 5종(Vector 49 · Group 5 7 · Group 4 7 · Stroke 2 7 · Stroke 3 7)을 넣거나, 「인스턴스 하위 와일드카드」 규칙을 snapdiff 에 두는 것을 권한다. 그래야 EXIT 0 으로 증명이 닫힌다.
+
+### after-2 가 실제 캡처인지
+- 실제 캔버스에서 §1 캡처 코드를 직접 다시 돌렸다(기본 설정, 숨은 인스턴스 자식은 빠짐 — 빌더 캡처와 같은 조건). id 순으로 정렬하고 화면별로 FNV-1a 해시를 냈다. **8묶음(루트 1 + 화면 7) 모두 로컬 `snapshot-after-2.json` 과 일치한다**(1 `52b0eb1d` · 2 `a79a7030` · 3 `d8abd765` · 4 `eea542c6` · 4a1 `d2c506f2` · 4a2 `217f1800` · 4a3 `5f6c27a8` · 루트 `70a1f7c5`, 노드 589). 따라서 after-2 는 현재 캔버스 그대로다.
+- 한계: 스냅샷은 숨은 인스턴스 자식(화면당 11개 — Input 안의 숨은 아이콘 칸 등)을 담지 않는다. 그 부분은 아래 재스캔(숨은 자식 포함)으로 보완했다.
+
+### WebTabBar 7개 직접 확인
+
+| 화면 | id | 부품 | 위치·크기 | 화면 안 순서 |
+|---|---|---|---|---|
+| 1 | 2723:331 | 로컬(remote=false) WebTabBar 세트 2614:74012 · `Property 1=Default` | 0,0 · 1920×101 · FILL | WebTabBar@0/101 → LoginGNB@101/56 → Body@157/807 → Footer@964/116 |
+| 2 | 2723:360 | 같음 | 같음 | 같음 |
+| 3 | 2723:389 | 같음 | 같음 | 같음 |
+| 4 | 2723:418 | 같음 | 같음 | 같음 |
+| 4a1 | 2723:447 | 같음 | 같음 | 같음 |
+| 4a2 | 2723:476 | 같음 | 같음 | 같음 |
+| 4a3 | 2723:505 | 같음 | 같음 | 같음 |
+
+- 문구는 부품 기본값 `[서비스명]` · `https://` 그대로다(덮어쓰기 없음).
+- 내부 인스턴스는 `tab-close` = remove 아이콘(허용 키 `24b2df62`) 1개다.
+- 화면은 1920×1080 을 유지한다. Body 위 패딩 123 그대로이고, 로고 상자는 화면 위에서 280(=101+56+123)에 있다. Footer y 964 도 그대로다.
+
+### 7장 재스캔 (숨은 인스턴스 자식 포함)
+- **부품 출처:** 인스턴스는 화면당 12~13개(종전 + WebTabBar + tab-close), 외부 위반 0건이다.
+- **폰트:** TEXT 13~14개, 비-Pretendard 0건, 스타일 없는 글자 0건이다.
+- **raw 색:** after-2 스냅샷 589개 노드 기준 raw hex 0건이다. 화면이 직접 만든 노드는 diff 상 채움 변경 0건이다.
+
+### 렌더 (1 · 4a1 · WebTabBar 확대)
+- 탭 줄과 주소 줄로 된 창틀이 맨 위에 붙어 있고, 그 아래에 LoginGNB 가 겹치지 않고 놓인다. 로그인 상자는 101 만큼 내려가 있고 Footer 는 그대로다. 4a1 의 2줄 오류 문구도 정상이다. 잘림·겹침은 없다.
+
+### 이번에 다시 보지 않은 것 (직전 PASS 를 이어받음 — 근거: diff 상 해당 속성 변경 0)
+- 로그인 상자 안의 모든 값(간격 34/10/8/32, 문구, variant/상태, 글자 근거)
+- 2 · 3 · 4 · 4a2 · 4a3 렌더
+- 다크 모드
+- 데스크톱의 `아이디 저장` 정렬 — 여전히 NOT_VERIFIED
+- Input `trail` 100×100 — 여전히 needs-core-update
+
+### 권장 상태 전환
+- `2-mapping.md` 갱신(WebTabBar 행 추가, 「넣지 않는 것」에서 WebTabBar 삭제, Body 807·순서 반영) → 문서만 델타 재확인 → PASS 처리.
+- `evidence.snapdiff` 에 변경 2 를 기록한다: violations 5 = 전부 WebTabBar 인스턴스 하위(검증자 조상 추적), after-2 는 검증자가 실측 해시로 확인.
+
+### 변경 2 — 문서 수정 확인 (❌(a)-1 재확인) · 2026-10-02 · component-verifier
+- `2-mapping.md`:
+  - 16행에 1b WebTabBar(2614:74012 · Property 1=Default · 맨 첫 자식 · FILL · 1920×101 · 문구 기본값) 행이 들어갔다.
+  - 17행에 LoginGNB y 101, 18행에 본문 807 · y 157 이 적혔다.
+  - 27행에 화면 안 순서 WebTabBar → LoginGNB → 본문 → Footer(y 964)가 추가됐다.
+  - 29행 「넣지 않는 것」에서 WebTabBar 가 빠졌다.
+  - 이 값들을 위에서 직접 잰 캔버스 값(0/101 · 101/56 · 157/807 · 964/116)과 대조했고 모두 일치한다.
+- `intent.md` 19행의 창틀 행이 「WebTabBar (2614:74012) — 넣는다(변경 2)」로 바뀌었고, 64행의 대체 문구와도 맞는다.
+- 캔버스는 다시 보지 않았다. 문서만 바뀐 델타라, 캔버스 판정은 위 변경 2 본문 그대로 이어받는다.
+
+**갱신 판정: PASS** — ❌(a) 0 · ❓(c) 0 · 🟡(b) 0 · BLOCKED 0. 아래 별도 항목은 계속 남는다.
+- NOT_VERIFIED: 데스크톱에서 `아이디 저장` 정렬.
+- needs-core-update: Input `trail` 100×100.

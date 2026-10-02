@@ -13,8 +13,9 @@
 | # | 요소 | 분류 | 정본 | 값 |
 |---|---|---|---|---|
 | 1 | 화면 프레임 | 토큰 프레임 | — | VERTICAL 오토레이아웃, 1920×1080 FIXED, fill `color/bg/level-0` |
-| 2 | 맨 위 줄 | 정본 인스턴스 | LoginGNB (2614:73971) | FILL 가로, 문구 기본값(`[서비스명]`·`한국어`) 그대로 |
-| 3 | 본문 | 토큰 프레임 | — | VERTICAL, FILL 가로·세로 grow 1, 가로 가운데, 위 패딩 123, 투명 |
+| 1b | 브라우저 창틀 (변경 2) | 정본 인스턴스 | WebTabBar (2614:74012) Property 1=Default | 화면 맨 첫 자식, FILL 가로, 1920×101, 문구 기본값(`[서비스명]`·`https://`) 그대로 |
+| 2 | 맨 위 줄 | 정본 인스턴스 | LoginGNB (2614:73971) | 창틀 바로 아래(y 101), FILL 가로, 문구 기본값(`[서비스명]`·`한국어`) 그대로 |
+| 3 | 본문 | 토큰 프레임 | — | VERTICAL, FILL 가로·세로 grow 1(=807, y 157), 가로 가운데, 위 패딩 123, 투명 |
 | 4 | 상자 | 토큰 프레임 | — | VERTICAL, 폭 300 FIXED, 높이 HUG, 투명 |
 | 5 | CI | 정본 인스턴스 | CI Brand=에스원 Color=Blue | 상자 안 가운데 정렬, 아래 간격 34 |
 | 6 | 아이디 칸 | 정본 인스턴스 | Input Size=MD Break=PC | FILL(폭 300), 안쪽 field 도 FILL. placeholder `아이디를 입력해 주세요.` |
@@ -23,7 +24,9 @@
 | 9 | 로그인 버튼 | 정본 인스턴스 | Button Variant=Primary Size=MD Break=PC | FILL(폭 300), 문구 `로그인` |
 | 10 | 맨 아래 띠 | 정본 인스턴스 | Footer Platform=PC (2614:74065) | FILL 가로, 문구 정본 그대로 |
 
-넣지 않는 것: WebTabBar, 찾기 링크, 언어 펼침, 약관 팝업, 비밀번호 보기/숨기기.
+화면 안 순서: WebTabBar → LoginGNB → 본문 → Footer(y 964).
+
+넣지 않는 것: 찾기 링크, 언어 펼침, 약관 팝업, 비밀번호 보기/숨기기.
 
 ## 화면별 차이 (screen-spec)
 

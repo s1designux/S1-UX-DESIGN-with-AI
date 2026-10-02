@@ -9,6 +9,7 @@ const SECTION_NAME = "Pattern / PC Login";
 const SET = {
   input: "2614:79536", checkbox: "2614:77248", button: "2614:76987",
   gnb: "2614:73971", ci: "2614:73962", footer: "2614:74065",
+  webTabBar: "2614:74012",               // 변경 2 (river 2026-10-02): 화면 맨 위 브라우저 탭바
 };
 const VAR = {
   bg0: "VariableID:687:17884",        // color/bg/level-0 (화면 바탕)
@@ -140,6 +141,11 @@ async function buildScreen(section, key) {
   scr.fills = [await paint(VAR.bg0)];
   scr.x = X0 + s.col * (SCREEN_W + GAP);
   scr.y = ROW_Y[s.row];
+
+  const tabBar = await inst(SET.webTabBar, ["Property 1=Default"]); // 변경 2: 맨 첫 자식, 문구는 부품 기본값
+  tabBar.name = "WebTabBar";
+  scr.appendChild(tabBar);
+  tabBar.layoutSizingHorizontal = "FILL";
 
   const gnb = await inst(SET.gnb, ["Property 1=Default"]);
   gnb.name = "LoginGNB";

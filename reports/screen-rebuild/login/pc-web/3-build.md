@@ -139,3 +139,67 @@ EXIT=0
 ## 권장 상태 전환
 - `evidence.baseline` += `existing-nodes`, `evidence.snapdiff` = { ranAt 2026-10-02, violations 0, by screen-rebuilder(선행 실행 — 검증자 재실행 필요) }
 - `nextAction` = component-verifier 로 변경 1 검증(snapdiff 재실행 + 렌더 표본 대조)
+
+---
+
+# 변경 2 — 화면 맨 위 WebTabBar 추가 (baseline existing-nodes, 2026-10-02)
+
+- 지시: 7장 모두 화면 프레임 맨 첫 자식으로 정본 WebTabBar(로컬 세트 2614:74012, `Property 1=Default`) 인스턴스. 이름 "WebTabBar", 가로 FILL. 문구 덮어쓰기 없음. 화면 1920×1080 FIXED 유지.
+
+## ① 변경 전 스냅샷 — `snapshot-before-2.json` (386 노드)
+- 첫 쓰기 전(01:18:47Z) §1 캡처 코드로 Figma 에서 화면별 7조각 해시를 받음 → 7조각 모두 `snapshot-after.json`(변경 1 after) 조각 해시와 일치. 내용이 바이트 동일하므로 그 조각으로 구성(meta.note 기록).
+
+## ② 추가 — 새 인스턴스 7개
+| 화면 | WebTabBar id |
+|---|---|
+| 1 (2703:3) | 2723:331 |
+| 2 (2712:95) | 2723:360 |
+| 3 (2712:164) | 2723:389 |
+| 4 (2713:203) | 2723:418 |
+| 4a1 (2706:49) | 2723:447 |
+| 4a2 (2713:264) | 2723:476 |
+| 4a3 (2713:319) | 2723:505 |
+- 결과(7장 동일): WebTabBar@0/101 (1920 FILL) → LoginGNB@101/56 → Body@157/807(grow) → Footer@964/116. 화면 1920×1080 유지, 로고 위 여백 123 그대로.
+- `build-code.js` 에 `SET.webTabBar = "2614:74012"` 와 맨 첫 자식 생성 추가.
+
+## ③ 변경 후 스냅샷 — `snapshot-after-2.json` (589 노드) — **실제 캡처**
+- §1 캡처 코드를 화면별 7조각으로 실행(01:19:12Z)한 반환값을 그대로 옮겨 합침. 조각별 FNV-1a 해시 7/7 Figma 측과 일치. 로컬 생성 없음.
+
+## ④ snapdiff (기대 선언 `snapshot-expect-2.json` 손대지 않음)
+```
+노드 386 → 589 · 추가 203 · 삭제 0 · 변경 42
+변경: 자식순서 21 · y 14 · 높이 7   ← 기대 선언과 일치
+❌ 의도하지 않은 변경 (기대 선언과 불일치):
+   [added] VECTOR|Vector · GROUP|Group 5 · GROUP|Group 4 · VECTOR|Stroke 2 · VECTOR|Stroke 3
+SNAPDIFF_SUMMARY added=203 removed=0 changed=42 violations=5   EXIT=1
+```
+불일치 5종 = 선언에 없는 더 깊은 자식 84개. **84개 전부 WebTabBar 인스턴스 하위**(WebTabBar 밖 추가 0 — 조상 추적으로 확인):
+| 종류 | 부모 | 개수 |
+|---|---|---|
+| GROUP Group 5 | tab-close | 7 |
+| VECTOR Vector | Group 5 | 7 |
+| GROUP Group 4 | Group 5 | 7 |
+| VECTOR Stroke 2 | Group 4 | 7 |
+| VECTOR Stroke 3 | Group 4 | 7 |
+| VECTOR Vector | minimize | 7 |
+| VECTOR Vector | maximize | 7 |
+| VECTOR Vector | close | 7 |
+| VECTOR Vector | icon(×2) | 14 |
+| VECTOR Vector | nav-refresh | 14 |
+선언된 17종(203−84=119 = 7×17)은 개수까지 일치.
+
+## ⑥ 스캔 (7장)
+| 화면 | INSTANCE / 외부 위반 | 저작 노드 raw SOLID | WebTabBar 내부 raw SOLID | TEXT 비-Pretendard / 스타일 없음 |
+|---|---|---|---|---|
+| 1 | 12 / 0 | 0 / 9 | 0 | 0 / 0 (13) |
+| 2 | 13 / 0 | 0 / 9 | 0 | 0 / 0 (13) |
+| 3 | 13 / 0 | 0 / 9 | 0 | 0 / 0 (13) |
+| 4 | 12 / 0 | 0 / 9 | 0 | 0 / 0 (13) |
+| 4a1 | 12 / 0 | 0 / 9 | 0 | 0 / 0 (14) |
+| 4a2 | 12 / 0 | 0 / 9 | 0 | 0 / 0 (14) |
+| 4a3 | 12 / 0 | 0 / 9 | 0 | 0 / 0 (14) |
+- 추가된 인스턴스: WebTabBar(로컬) 7 + 그 안 tab-close = `remove` 아이콘(허용키 24b2df62…) 7.
+- WebTabBar 글자: 탭 제목 `[서비스명]`, 주소 `https://` — 부품 기본값(body/14R, Pretendard).
+
+## ⑦ 스크린샷
+- `shots/PC-LOGIN-{1,2,3,4,4a1,4a2,4a3}.png` 7장 덮어씀(변경 2 후).

@@ -83,6 +83,12 @@
       "by": "river",
       "at": "2026-10-02",
       "quote": "창틀은 빼고 간격만 기준대로 바꿔줘"
+    },
+    {
+      "id": "change2-webtabbar",
+      "by": "river",
+      "at": "2026-10-02",
+      "quote": "프레임을 그냥 넣자. 디자인가이드에 웹탭바를 쓰면 될듯"
     }
   ],
   "blockers": [],
@@ -93,7 +99,7 @@
   "handoff": {
     "lastActor": "claude",
     "updatedAt": "2026-10-02",
-    "summary": "7장 + 변경 1(간격) 모두 component-verifier PASS. river 검수 대기."
+    "summary": "7장 + 변경1(간격) + 변경2(WebTabBar) component-verifier PASS. river 검수 대기."
   },
   "evidence": {
     "baseline": [
@@ -110,6 +116,12 @@
       "violations": 0,
       "by": "component-verifier",
       "note": "변경 1 간격 3군데, after 는 검증자 실측 해시로 확인"
+    },
+    "snapdiff2": {
+      "ranAt": "2026-10-02",
+      "violations": 5,
+      "by": "component-verifier",
+      "note": "5건 모두 WebTabBar 인스턴스 하위 깊은 자식(조상 추적 203/203), after-2 실측 해시 확인 -> PASS"
     }
   }
 }

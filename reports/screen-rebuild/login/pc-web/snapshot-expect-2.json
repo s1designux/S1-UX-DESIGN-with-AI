@@ -1,0 +1,27 @@
+{
+  "_note": "변경 2(river 2026-10-02 「프레임을 그냥 넣자. 디자인가이드에 웹탭바를 쓰면 될듯」) — 7화면 맨 위에 WebTabBar(2614:74012, 1920×101) 인스턴스 1개씩. 아래 descendant 이름은 정본 심볼 2614:73983 get_metadata 판독값. 더 깊은 자식(아이콘 내부 등)이 추가로 잡히면 검증자가 'WebTabBar 인스턴스 하위인지'로 판정한다(그 외 추가는 위반).",
+  "added": [
+    { "type": "INSTANCE", "name": "WebTabBar", "count": 7 },
+    { "name": "tab-row", "count": 7 },
+    { "name": "tab-active", "count": 7 },
+    { "name": "favicon", "count": 7 },
+    { "name": "tab-title", "count": 7 },
+    { "name": "tab-close", "count": 7 },
+    { "name": "spacer", "count": 7 },
+    { "name": "window-controls", "count": 7 },
+    { "name": "minimize", "count": 7 },
+    { "name": "maximize", "count": 7 },
+    { "name": "close", "count": 7 },
+    { "name": "address-row", "count": 7 },
+    { "name": "icon", "count": 14 },
+    { "name": "nav-refresh", "count": 7 },
+    { "name": "address-pill", "count": 7 },
+    { "name": "url-text", "count": 7 }
+  ],
+  "removed": [],
+  "changed": [
+    { "field": "y", "count": 14, "note": "화면당 2: LoginGNB·Body 가 101 내려감" },
+    { "field": "h", "count": 7, "note": "화면당 1: Body 908→807 (grow — 푸터 자리 그대로)" },
+    { "field": "i", "count": 21, "note": "화면당 3: 맨 앞에 WebTabBar 가 들어가 LoginGNB·Body·Footer 순서가 하나씩 밀림 (Footer 의 y 는 그대로)" }
+  ]
+}
