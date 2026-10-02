@@ -303,6 +303,12 @@ export interface S1BottomSheetProps extends S1BaseProps {
 }
 export declare function S1BottomSheet(props: S1BottomSheetProps): ReactElement;
 
+export interface S1ListRowProps extends S1BaseProps {
+  /** 승인된 변형: nav · value · read · pick · agree · switch · thumb */
+  variant?: "nav" | "value" | "read" | "pick" | "agree" | "switch" | "thumb";
+}
+export declare function S1ListRow(props: S1ListRowProps): ReactElement;
+
 export interface S1ExpandableCardProps extends S1BaseProps {
   /** s1:expandable-card:change */
   onChange?: (event: CustomEvent) => void;

@@ -776,6 +776,33 @@
       "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id promoted-parts-4, 2026-10-02 river \"남은 검수 마저 하고 사이트에 올려줘\").",
       "note": "Figma 세트 이름 Side Nav · Side Nav Item · Side Nav Sub Item 을 표 세 개로 그대로 세운다 — 판은 Type×Size(행) × State(열) 여덟 칸, 메뉴 칸은 Mode(행) × State 4종(열) 여덟 칸, 하위 메뉴 줄은 State 3종. 크기(MD 240 · LG 280)는 판 표의 행에 함께 둔다(펼침 폭은 크기 토큰이 없어 결정 대기). Hover 는 검수 전용 data-force-state 로 표시. Action 은 기본·로고 두 벌의 실제 판(접기·하위메뉴 여닫이 동작).",
       "managedBy": "ui-library-guide"
+    },
+    "list-row": {
+      "platform": "mobile",
+      "archetype": "current-plus-action",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "states": [
+        "default",
+        "pressed",
+        "disabled"
+      ],
+      "extraAxes": {
+        "type": [
+          "nav",
+          "value",
+          "read",
+          "pick",
+          "agree",
+          "switch",
+          "thumb"
+        ]
+      },
+      "statesLayout": "matrix",
+      "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id list-row, 2026-10-02 river \"승인할게, 사이트 메뉴랑 전달본에 넣어줘\").",
+      "note": "Type(행) × State(열) 21칸 전수 한 표. 모바일 전용이라 Hover 없음, 크기·촘촘함 축 없음. Pressed 는 documented data-state 로 켠 표본. Action 은 일곱 유형을 목록 폭(최대 360)에 쌓은 실제 쓰임(체크·토글 실물). 슬롯 3자리(왼쪽 칸 · 그림 · 오른쪽 칸) 갈아끼운 보기 4줄을 표 아래에 둔다. 동의 줄은 체크 영역과 약관 열기 버튼이 형제(river D-6).",
+      "managedBy": "ui-library-guide"
     }
   },
   "updatedAt": "2026-10-02"

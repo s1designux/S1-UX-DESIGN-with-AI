@@ -23,6 +23,7 @@ export { default as S1TextButton } from "./TextButton.vue";
 export { default as S1ModalContent } from "./ModalContent.vue";
 export { default as S1BottomSheetOption } from "./BottomSheetOption.vue";
 export { default as S1BottomSheet } from "./BottomSheet.vue";
+export { default as S1ListRow } from "./ListRow.vue";
 export { default as S1ExpandableCard } from "./ExpandableCard.vue";
 export { default as S1DataTag } from "./DataTag.vue";
 export { default as S1Divider } from "./Divider.vue";

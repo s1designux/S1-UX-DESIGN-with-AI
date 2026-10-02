@@ -1303,7 +1303,7 @@
     },
     {
       "id": "list-row",
-      "status": "candidate",
+      "status": "approved",
       "rootSelector": "[data-s1-component=\"list-row\"]",
       "root": "요소는 유형(Type)이 하는 일에 맞춘다 — Nav·Value(눌러서 이동/편집)=button, Read·Thumb(보여주기만)=div(누르지 않는다), Pick(고르기)=label(체크 코어를 감싸 클릭 영역을 넓힌다), Agree=div(체크 영역 label[check] + 오른쪽 칸의 약관 열기 button — label 안에 button 을 넣지 않는다), Switch=div(토글 컨트롤 자체가 상호작용 요소다). 공통 속성 data-s1-component=list-row, data-type, 선택 data-state. Density 축은 없다(2026-09-21 정정 — 한 벌만 쓴다).",
       "variants": [
@@ -1347,7 +1347,7 @@
       "events": [],
       "lifecycle": [],
       "canonicalFingerprint": "89280e4ae40a68b1a2d32bb2ae7e8550a75811f8559125bd5bb17e5f7518b199",
-      "sourceFingerprint": "fd9e1dace59de34e59c75cab05dc188d7476cbeec3dfe5821166d59a07f05afa"
+      "sourceFingerprint": "9900968c747a1a2ac19cd89b768a95f58f7c6f108522f370cd6636a0e7e7e67d"
     },
     {
       "id": "expandable-card",

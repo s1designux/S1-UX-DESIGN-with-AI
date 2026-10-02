@@ -23,6 +23,7 @@ export { default as S1TextButton } from "./text-button.jsx";
 export { default as S1ModalContent } from "./modal-content.jsx";
 export { default as S1BottomSheetOption } from "./bottom-sheet-option.jsx";
 export { default as S1BottomSheet } from "./bottom-sheet.jsx";
+export { default as S1ListRow } from "./list-row.jsx";
 export { default as S1ExpandableCard } from "./expandable-card.jsx";
 export { default as S1DataTag } from "./data-tag.jsx";
 export { default as S1Divider } from "./divider.jsx";

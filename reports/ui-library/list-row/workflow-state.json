@@ -38,11 +38,11 @@
       }
     }
   },
-  "currentPhase": "5-human-review",
-  "workflowStatus": "awaiting-user",
-  "uiLibraryStatus": "draft",
-  "lastCompletedCheckpoint": 4,
-  "nextAction": "river UX 검수 — pages/ui-review.html 26번(List Row). 승인 시 6-promotion: manifest approved → ui:build·ui:zip·devpanel:gen(React·Vue 등 전달본) → guide-builder 가 components.html 섹션·사이트 메뉴 등재 + component-presentation-policy · ui-library-migration approved.",
+  "currentPhase": "6-promotion",
+  "workflowStatus": "completed",
+  "uiLibraryStatus": "approved",
+  "lastCompletedCheckpoint": 6,
+  "nextAction": "완료 — 안내 페이지(Mobile Components › List › List Row)·전달본(HTML/CSS/JS·React·Vue) 반영. Kotlin Compose·Swift·C++ 부품 전달본은 별도 작업.",
   "canonicalInputs": [
     {
       "role": "component-visual",
@@ -108,6 +108,29 @@
       ],
       "deltaPass": "2026-10-02 델타 재검증 FAIL 0 · HOLD 1(C-1 river 결정)",
       "deltaPass2": "2026-10-02 델타 재검증 2(D-6 약관 열기 버튼) PASS — FAIL 0 · HOLD 0"
+    },
+    "riverApproval": {
+      "status": "approved",
+      "date": "2026-10-02",
+      "version": "0.17.0 (list-row 0.4.0)",
+      "scope": "List Row 21칸 + 슬롯 3자리 + 동의 줄 약관 열기 버튼",
+      "quote": "승인할게, 사이트 메뉴랑 전달본에 넣어줘"
+    },
+    "promotion": {
+      "date": "2026-10-02",
+      "distVersion": "0.17.1",
+      "guideScreens": [
+        "screens/guide-pc-light.png",
+        "screens/guide-pc-dark.png",
+        "screens/guide-mobile-390-light.png",
+        "screens/guide-mobile-390-dark.png"
+      ],
+      "deliverables": [
+        "html-css-js",
+        "react",
+        "vue"
+      ],
+      "notIncluded": "kotlin(부품 16종 한정 생성기)·swift·cpp(토큰만)"
     }
   },
   "artifacts": {
@@ -119,13 +142,14 @@
     "sourceRoot": "ui-library/src",
     "distManifest": "ui-library/dist/manifest.json",
     "reviewPage": "pages/ui-review.html",
-    "guidePage": "pages/components.html",
+    "guidePage": "pages/components.html#list-row",
     "migrationRecord": "registry/governance/ui-library-migration.json",
     "serviceProfile": "reports/pattern-builder/profiles/app-modu/list-row/",
     "canonReadiness": "reports/ui-library/list-row/2-canon-readiness.md",
     "build": "reports/ui-library/list-row/3-build.md",
     "reviewPageBuild": "reports/ui-library/list-row/3-build-review-page.md",
-    "verification": "reports/ui-library/list-row/4-verification-F.md"
+    "verification": "reports/ui-library/list-row/4-verification-F.md",
+    "promotion": "reports/ui-library/list-row/6-promotion.md"
   },
   "decisions": [
     {
@@ -174,6 +198,6 @@
   "handoff": {
     "lastActor": "orchestrator",
     "updatedAt": "2026-10-02",
-    "summary": "D-6(동의 줄 화살표=약관 열기 버튼) 반영, 배포본 0.17.0, 델타 재검증 2 PASS. river 검수 대기."
+    "summary": "river 승인 → approved. 안내 섹션·메뉴 등재, 전달본 재생성. 완료."
   }
 }
