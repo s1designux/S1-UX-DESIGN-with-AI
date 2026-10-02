@@ -1,8 +1,8 @@
 {
   "id": "gnb-sub-menu",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "status": "verified",
-  "canonicalFingerprint": "57617155778b14dd0dac68d9d484d80a0fa28377d6d005f27c399092b94f1169",
+  "canonicalFingerprint": "0be843a490dd61245a60c08d92371f265cf8a703df6ab676802cb52df23461fd",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -60,8 +60,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [

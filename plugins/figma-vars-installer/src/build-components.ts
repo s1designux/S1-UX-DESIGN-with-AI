@@ -19,6 +19,7 @@
  */
 
 import { SEMANTIC_SHADOW } from "./vars-data";
+import { TEXT_STYLE_FONT_FAMILY } from "./textstyles-data";
 import { toDropShadowEffects, shadowVarName } from "./shadow-parse";
 
 export interface BuildMaps {
@@ -558,9 +559,9 @@ async function buildOne(variant: VariantId, size: SizeId, state: StateId, maps: 
   comp.minWidth = cfg.minWidth; // 사이즈별 디폴트 최소 너비 (MD/LG=80, XSM=64, XXSM=56)
 
   // ── 텍스트 노드 (V2.4 텍스트 스타일 적용) ──
-  await figma.loadFontAsync({ family: "Pretendard", style: "Medium" });
+  await figma.loadFontAsync({ family: TEXT_STYLE_FONT_FAMILY, style: "Medium" });
   const text = figma.createText();
-  text.fontName = { family: "Pretendard", style: "Medium" };
+  text.fontName = { family: TEXT_STYLE_FONT_FAMILY, style: "Medium" };
   text.characters = "버튼";
   const ts = requireStyle(maps.textStyles, cfg.textStyle);
   await text.setTextStyleIdAsync(ts.id);
@@ -597,9 +598,9 @@ async function makeLabel(
   x: number, y: number, w: number,
   align: "LEFT" | "CENTER", role: SpecRole, dark: boolean
 ): Promise<TextNode> {
-  await figma.loadFontAsync({ family: "Pretendard", style });
+  await figma.loadFontAsync({ family: TEXT_STYLE_FONT_FAMILY, style });
   const t = figma.createText();
-  t.fontName = { family: "Pretendard", style };
+  t.fontName = { family: TEXT_STYLE_FONT_FAMILY, style };
   t.fontSize = fontSize;
   t.characters = text;
   // 정본 텍스트 스타일 바인딩 — 스타일이 없으면(mock·설치 누락) raw 글꼴로 폴백해 빌드는 계속한다.
@@ -970,9 +971,9 @@ function scv(maps: BuildMaps, key: string): Variable {
 
 /** 변수에 바인딩된 채움색을 가진 텍스트 노드. */
 async function makeBoundText(chars: string, fontSize: number, style: string, colorVar: Variable, requiredStyleKey?: string): Promise<TextNode> {
-  await figma.loadFontAsync({ family: "Pretendard", style });
+  await figma.loadFontAsync({ family: TEXT_STYLE_FONT_FAMILY, style });
   const t = figma.createText();
-  t.fontName = { family: "Pretendard", style };
+  t.fontName = { family: TEXT_STYLE_FONT_FAMILY, style };
   t.fontSize = fontSize;
   t.characters = chars;
   // V2.4 텍스트 스타일 바인딩 — 타이포(크기·행간·자간·폰트)를 정본 스타일에 연결(Button 과 동일 방식).
@@ -8915,12 +8916,12 @@ export async function buildAreaTitle(
   if (typeof figma.createText !== "function") return null;
   if (!SPEC_MAPS) return null;
   removeAreaTitle(label);
-  try { await figma.loadFontAsync({ family: "Pretendard", style: "Bold" }); } catch (e) { return null; }
+  try { await figma.loadFontAsync({ family: TEXT_STYLE_FONT_FAMILY, style: "Bold" }); } catch (e) { return null; }
   let t: TextNode;
   try { t = figma.createText(); } catch (e) { return null; }
   try {
     t.name = `${label} ${AREA_TITLE_SUFFIX}`;
-    t.fontName = { family: "Pretendard", style: "Bold" };
+    t.fontName = { family: TEXT_STYLE_FONT_FAMILY, style: "Bold" };
     t.characters = label;
     t.fontSize = AREA_TITLE_SIZE;
     t.textAutoResize = "WIDTH_AND_HEIGHT";
@@ -9029,9 +9030,9 @@ async function headerText(
   if (!ts && !rawSize) return null;
   const bold = styleKey.indexOf("B") === styleKey.length - 1;
   const style = bold ? "Bold" : "Medium";
-  try { await figma.loadFontAsync({ family: "Pretendard", style }); } catch (e) { return null; }
+  try { await figma.loadFontAsync({ family: TEXT_STYLE_FONT_FAMILY, style }); } catch (e) { return null; }
   const t = figma.createText();
-  t.fontName = { family: "Pretendard", style };
+  t.fontName = { family: TEXT_STYLE_FONT_FAMILY, style };
   t.characters = chars;
   if (rawSize) {
     // 정본 스타일에 없는 크기 — figma-font-policy.json 의 승인된 예외 자리에서만 쓴다.

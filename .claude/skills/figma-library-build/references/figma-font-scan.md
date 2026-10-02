@@ -17,7 +17,7 @@ MCP 렌더 환경엔 Pretendard 가 설치돼 있지 않다. 그래서 `get_scre
 
 ```js
 const SET_ID = '<세트 노드 id>';          // 예: '523:7771'
-const CANONICAL = 'Pretendard';            // figma-font-policy.json canonicalFamily
+const CANONICAL = 'Pretendard Variable';   // figma-font-policy.json canonicalFamily (2026-10-02 전환)
 
 const set = await figma.getNodeByIdAsync(SET_ID);
 if (!set || !('children' in set)) return { error: 'set not found', SET_ID };

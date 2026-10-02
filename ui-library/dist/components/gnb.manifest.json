@@ -1,8 +1,8 @@
 {
   "id": "gnb",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "status": "verified",
-  "canonicalFingerprint": "b7270eea4463271914ebc600e073a6717f193433a4b11f09a0a6546a1e6da4db",
+  "canonicalFingerprint": "14b1fbc1dc3dd48ad125463441e9cc2e5d31d0b61e895bebe9910ac5f79092e6",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -124,8 +124,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [
@@ -229,5 +229,5 @@
     },
     "behaviorContract": "registry/components/component-behavior.pc.json 의 \"GNB\" 장부."
   },
-  "sourceFingerprint": "4e9255630fcbf4a9a3d53c31b0482ff67b92340964eb9b9707e1840423741383"
+  "sourceFingerprint": "b41898e3988b2cb70f235e1c45ecc3997e5ba9e691d53755cada93a01d32ace9"
 }

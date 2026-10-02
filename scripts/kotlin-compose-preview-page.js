@@ -498,14 +498,14 @@ async function main() {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kotlin(Compose) 부품 검수 — S1 Design System</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
 /* 승인된 배포본 CSS 를 그대로 박아 넣는다 — 이 파일 한 장만 열어도 같은 모습이 나오게. */
 ${embeddedCss}
 </style>
 <style>
   :root { --gap: 16px; }
-  body { background: var(--color-bg-level-1); color: var(--color-text-body-primary); font-family: "Pretendard", sans-serif; margin: 0; padding: 0 0 120px; }
+  body { background: var(--color-bg-level-1); color: var(--color-text-body-primary); font-family: "Pretendard Variable", "Pretendard", sans-serif; margin: 0; padding: 0 0 120px; }
   .page { margin: 0 auto; max-width: 1400px; padding: 0 24px; }
   header.top { padding: 28px 0 12px; }
   h1 { font-size: 24px; margin: 0 0 10px; }

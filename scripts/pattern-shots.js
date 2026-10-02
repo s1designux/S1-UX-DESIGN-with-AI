@@ -62,7 +62,7 @@ const picked = idsArg ? idsArg.split(',').map((id) => all.find((s) => s.id === i
   }
   const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
   const html = `<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>${esc(title)} — ${esc(service)}</title>
-<style>body{font-family:Pretendard,-apple-system,sans-serif;margin:0;padding:28px;background:#fafafa;color:#1a1a1a}
+<style>body{font-family:Pretendard Variable, Pretendard,-apple-system,sans-serif;margin:0;padding:28px;background:#fafafa;color:#1a1a1a}
 h1{font-size:20px;margin:0 0 4px}p.sub{color:#666;font-size:13px;margin:0 0 24px}
 .grid{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}
 figure{margin:0;background:#fff;border:1px solid #e5e5e5;padding:10px;width:320px}

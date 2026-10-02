@@ -408,7 +408,7 @@ const SHELL_ICON = (() => {
     recents: s(P("M8 6V18") + P("M12 6V18") + P("M16 6V18")),
     androidHome: s(`<rect x="6" y="6" width="12" height="12" rx="3" stroke="currentColor" stroke-width="2"/>`),
     /* 탭 개수 글리프 — 둥근 사각 + 숫자 29(정본 navTabsIcon) */
-    tabs: s(`<rect x="4" y="5" width="16" height="14" rx="2" stroke="currentColor" stroke-width="2"/><text x="12" y="12" text-anchor="middle" dominant-baseline="central" font-size="9" font-weight="500" fill="currentColor" font-family="Pretendard, sans-serif">29</text>`),
+    tabs: s(`<rect x="4" y="5" width="16" height="14" rx="2" stroke="currentColor" stroke-width="2"/><text x="12" y="12" text-anchor="middle" dominant-baseline="central" font-size="9" font-weight="500" fill="currentColor" font-family="Pretendard Variable, Pretendard, sans-serif">29</text>`),
     /* 주소창 — 정본 SHELL_LOCK_SVG · SHELL_REFRESH_SVG (fill #757575 → currentColor) */
     lock: s(`<path d="M12.0002 3C9.16131 3 6.85731 5.39657 6.85731 8.33829V11.2286H5.31445V21H18.6859V11.2286H17.143V8.33829C17.143 5.39657 14.839 3 12.0002 3ZM14.4173 17.8114L13.687 18.5417L11.9899 16.8446L10.2927 18.5417L9.56245 17.8114L11.2596 16.1143L9.56245 14.4171L10.2927 13.6869L11.9899 15.384L13.687 13.6869L14.4173 14.4171L12.7202 16.1143L14.4173 17.8114ZM7.88588 11.2286V8.33829C7.88588 5.96229 9.72702 4.02857 12.0002 4.02857C14.2733 4.02857 16.1145 5.96229 16.1145 8.33829V11.2286H7.88588Z" fill="currentColor"/>`),
     refresh: s(`<path d="M12.0002 19.9411C9.74488 19.9411 7.61666 18.9776 6.12374 17.3364H9.0143V16.2776H5.02257C4.7261 16.2776 4.49316 16.5106 4.49316 16.807V20.7882H5.55198V18.2576C7.23549 19.9941 9.54371 20.9999 12.0002 20.9999C16.966 20.9999 21.0001 16.9659 21.0001 12C21.0001 11.2271 20.9048 10.4647 20.7142 9.72357L19.6871 9.98828C19.8566 10.6342 19.9413 11.3118 19.9413 12C19.9413 16.3835 16.3836 19.9411 12.0002 19.9411Z" fill="currentColor"/><path d="M18.4481 5.74282C16.7646 4.00636 14.4564 3.00049 11.9999 3.00049C7.03408 3.00049 3 7.03457 3 12.0004C3 12.7733 3.09529 13.5357 3.29647 14.2769L4.32352 14.0122C4.15411 13.3663 4.0694 12.6886 4.0694 12.0004C4.05881 7.61692 7.61643 4.0593 11.9999 4.0593C14.2552 4.0593 16.3834 5.02282 17.8763 6.66398H14.9858V7.7228H18.9669C19.2634 7.7228 19.4963 7.48986 19.4963 7.19339V3.21225H18.4375V5.74282H18.4481Z" fill="currentColor"/>`)
@@ -1802,7 +1802,7 @@ async function placeSuggestPart(key) {
 
 /* ── 내보내기 ───────────────────────────────────────────────── */
 const EXPORT_CSS = `
-.s1-screen { box-sizing: border-box; margin: 0 auto; background: var(--color-bg-level-0); color: var(--color-text-body-primary); font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+.s1-screen { box-sizing: border-box; margin: 0 auto; background: var(--color-bg-level-0); color: var(--color-text-body-primary); font-family: Pretendard Variable, Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
 .s1-screen[data-s1-header-bg="home"] { background: var(--color-bg-home); }   /* Home 유형 헤더 화면은 상단부터 본문까지 한 배경 */
 .s1-row { display: flex; flex-wrap: wrap; align-items: flex-start; }
 .s1-row[data-s1-bleed="true"] { flex-wrap: nowrap; }
@@ -1866,7 +1866,7 @@ async function buildExportHtml() {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHtml(title)}</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <link rel="stylesheet" href="${base}assets/css/tokens.css">
   <link rel="stylesheet" href="${base}assets/css/typography.css">
   <link rel="stylesheet" href="${base}s1-ui.css">

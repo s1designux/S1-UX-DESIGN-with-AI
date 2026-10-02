@@ -5,10 +5,188 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.16.2",
+  "version": "0.16.4",
   "releasedAt": "2026-10-02",
-  "canonicalFingerprint": "5ed89600903c77a4ef39326d816d525630bdb0b842b6c70d19931c9711394de2",
+  "canonicalFingerprint": "f9cd4a8a2170f091c92ebd99ec949621fc197f2dc3abb870219aa55825f6446a",
   "releases": [
+    {
+      "version": "0.16.4",
+      "date": "2026-10-02",
+      "kind": "patch",
+      "canonicalFingerprint": "1a6c0df6bb474fab71f454ba62e7f56721c286fd63d194d41e43fc34f05087a5",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "49244a4c925e175afb750277eecb6ab9aec73e38c19759fd7be0a19036b9597c"
+    },
+    {
+      "version": "0.16.3",
+      "date": "2026-10-02",
+      "kind": "patch",
+      "canonicalFingerprint": "1a6c0df6bb474fab71f454ba62e7f56721c286fd63d194d41e43fc34f05087a5",
+      "components": [
+        {
+          "id": "input",
+          "from": "0.3.7",
+          "to": "0.3.8"
+        },
+        {
+          "id": "button",
+          "from": "0.2.2",
+          "to": "0.2.3"
+        },
+        {
+          "id": "checkbox",
+          "from": "0.2.3",
+          "to": "0.2.4"
+        },
+        {
+          "id": "radio",
+          "from": "0.2.3",
+          "to": "0.2.4"
+        },
+        {
+          "id": "toggle",
+          "from": "0.2.2",
+          "to": "0.2.3"
+        },
+        {
+          "id": "chip",
+          "from": "0.2.2",
+          "to": "0.2.3"
+        },
+        {
+          "id": "dropdown",
+          "from": "0.2.3",
+          "to": "0.2.4"
+        },
+        {
+          "id": "select",
+          "from": "0.2.10",
+          "to": "0.2.11"
+        },
+        {
+          "id": "filter-chip",
+          "from": "0.2.4",
+          "to": "0.2.5"
+        },
+        {
+          "id": "tab",
+          "from": "0.2.5",
+          "to": "0.2.6"
+        },
+        {
+          "id": "pagination",
+          "from": "0.2.3",
+          "to": "0.2.4"
+        },
+        {
+          "id": "textarea",
+          "from": "0.2.4",
+          "to": "0.2.5"
+        },
+        {
+          "id": "multi-toggle",
+          "from": "0.3.0",
+          "to": "0.3.1"
+        },
+        {
+          "id": "modal",
+          "from": "0.2.3",
+          "to": "0.2.4"
+        },
+        {
+          "id": "table",
+          "from": "0.2.4",
+          "to": "0.2.5"
+        },
+        {
+          "id": "mobile-bottom-nav",
+          "from": "0.3.5",
+          "to": "0.3.6"
+        },
+        {
+          "id": "mobile-header",
+          "from": "0.2.3",
+          "to": "0.2.4"
+        },
+        {
+          "id": "time-picker",
+          "from": "0.3.15",
+          "to": "0.3.16"
+        },
+        {
+          "id": "date-picker",
+          "from": "0.2.11",
+          "to": "0.2.12"
+        },
+        {
+          "id": "gnb",
+          "from": "0.2.6",
+          "to": "0.2.7"
+        },
+        {
+          "id": "gnb-sub-menu-item",
+          "from": "0.2.4",
+          "to": "0.2.5"
+        },
+        {
+          "id": "gnb-sub-menu",
+          "from": "0.2.6",
+          "to": "0.2.7"
+        },
+        {
+          "id": "assist-button",
+          "from": "0.2.2",
+          "to": "0.2.3"
+        },
+        {
+          "id": "text-button",
+          "from": "0.2.2",
+          "to": "0.2.3"
+        },
+        {
+          "id": "modal-content",
+          "from": "0.2.3",
+          "to": "0.2.4"
+        },
+        {
+          "id": "bottom-sheet-option",
+          "from": "0.2.5",
+          "to": "0.2.6"
+        },
+        {
+          "id": "bottom-sheet",
+          "from": "0.2.5",
+          "to": "0.2.6"
+        },
+        {
+          "id": "list-row",
+          "from": "0.3.2",
+          "to": "0.3.3"
+        },
+        {
+          "id": "expandable-card",
+          "from": "0.1.2",
+          "to": "0.1.3"
+        },
+        {
+          "id": "data-tag",
+          "from": "0.1.0",
+          "to": "0.1.1"
+        },
+        {
+          "id": "divider",
+          "from": "0.1.0",
+          "to": "0.1.1"
+        },
+        {
+          "id": "lnb",
+          "from": "0.2.1",
+          "to": "0.2.2"
+        }
+      ],
+      "deliveryFingerprint": "d43eae8c1066744e22360b49e415a88cd139b1c1f4a640aa0abbb04f136853bb"
+    },
     {
       "version": "0.16.2",
       "date": "2026-10-02",
@@ -1621,5 +1799,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "65e2d11fd72804e6f95f11b43e4a5a976092d24ee68f40a0a4712684410c34a6"
+  "deliveryFingerprint": "49244a4c925e175afb750277eecb6ab9aec73e38c19759fd7be0a19036b9597c"
 }
