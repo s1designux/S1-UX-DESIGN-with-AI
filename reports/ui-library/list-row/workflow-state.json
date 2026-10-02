@@ -38,8 +38,8 @@
       }
     }
   },
-  "currentPhase": "6-promotion",
-  "workflowStatus": "completed",
+  "currentPhase": "complete",
+  "workflowStatus": "complete",
   "uiLibraryStatus": "approved",
   "lastCompletedCheckpoint": 6,
   "nextAction": "완료 — 안내 페이지(Mobile Components › List › List Row)·전달본(HTML/CSS/JS·React·Vue) 반영. Kotlin Compose·Swift·C++ 부품 전달본은 별도 작업.",
@@ -131,6 +131,14 @@
         "vue"
       ],
       "notIncluded": "kotlin(부품 16종 한정 생성기)·swift·cpp(토큰만)"
+    },
+    "independentVerification": {
+      "verdict": "PASS",
+      "by": "component-verifier",
+      "scenario": "F",
+      "date": "2026-10-02",
+      "report": "reports/ui-library/list-row/4-verification-F.md",
+      "note": "전수 1회(FAIL 2·HOLD 3) → 델타 2회 후 FAIL 0·HOLD 0"
     }
   },
   "artifacts": {
@@ -149,7 +157,8 @@
     "build": "reports/ui-library/list-row/3-build.md",
     "reviewPageBuild": "reports/ui-library/list-row/3-build-review-page.md",
     "verification": "reports/ui-library/list-row/4-verification-F.md",
-    "promotion": "reports/ui-library/list-row/6-promotion.md"
+    "promotion": "reports/ui-library/list-row/6-promotion.md",
+    "humanReview": "reports/ui-library/list-row/5-human-review.md"
   },
   "decisions": [
     {
