@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Foundation Tokens — S1 UX DESIGN GUIDE</title>
   <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/token-toolbar.css">
   <style>
     /* 전폭 사용 — 화면 폭에 맞춰 컨텐츠 영역 확장 (2026-07-03) */
     .page-content { max-width: none; }
@@ -366,6 +367,18 @@
       <button class="foundation-section-chip" data-target="section-radius">Radius</button>
       <button class="foundation-section-chip" data-target="section-opacity-breakpoint">Opacity · Breakpoint</button>
       <button class="foundation-section-chip" data-target="section-shadow">Shadow</button>
+      <div class="token-toolbar" data-items=".brand-card, .color-card, #section-typography tbody tr, .typo-weight-card, .spacing-row, .radius-card, .border-width-card" data-groups=".pal-pair-col | .palette-group" data-labels=".palette-label" data-sections="[id^='section-']">
+        <label class="token-search">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="토큰 이름·색 코드 검색  /" aria-label="토큰 검색">
+          <span class="token-search-count"></span>
+          <button type="button" class="token-search-clear" aria-label="검색어 지우기">×</button>
+        </label>
+        <div class="token-theme-toggle" role="group" aria-label="화면 테마">
+          <button type="button" data-theme="light">Light</button>
+          <button type="button" data-theme="dark">Dark</button>
+        </div>
+      </div>
     </nav>
 
     <div class="page-content">
@@ -468,6 +481,7 @@
 </div>
 
 <script src="../assets/js/main.js"></script>
+<script src="../assets/js/token-toolbar.js"></script>
 <script>
 /* ════════════════════════════════
    Foundation Token Data (inline)

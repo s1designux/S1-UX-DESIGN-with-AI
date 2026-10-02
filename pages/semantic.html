@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Semantic Token · S1 UX DESIGN GUIDE</title>
   <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/token-toolbar.css">
   <style>
     /* 전폭 사용 — 화면 폭에 맞춰 컨텐츠 영역 확장 (2026-07-03) */
     .page-content { max-width: none; }
@@ -13,41 +14,6 @@
 
     /* ── Semantic page ── */
     .sem-section { margin-bottom: 48px; }
-
-    /* ── Theme toggle ── */
-    .theme-bar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
-      padding: 12px 16px;
-      background: rgba(255,255,255,0.94);
-      border: 1px solid #e5e7eb;
-      border-radius: 12px;
-      flex-wrap: wrap;
-      position: sticky;
-      top: 160px; /* JS가 동적으로 덮어씀 — fallback only */
-      z-index: 9;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    }
-    .theme-bar-label { font-size: 12px; color: #6b7280; font-weight: 500; }
-    .theme-toggle {
-      display: flex;
-      background: #f3f4f6;
-      border-radius: 8px;
-      padding: 3px;
-      gap: 2px;
-    }
-    .theme-btn {
-      padding: 5px 16px;
-      font-size: 12px; font-weight: 500;
-      border-radius: 6px; border: none;
-      background: transparent; color: #6b7280;
-      transition: all 0.15s;
-    }
-    .theme-btn.active { background: #fff; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-    .theme-hint { font-size: 11px; color: #9ca3af; }
 
     /* ── Category group ── */
     .cat-group { margin-bottom: 36px; }
@@ -303,6 +269,18 @@
       <button class="foundation-section-chip" data-target="sec-radius">Radius</button>
       <button class="foundation-section-chip" data-target="sec-border-width">Border Width</button>
       <button class="foundation-section-chip" data-target="sec-changes">변경 이력</button>
+      <div class="token-toolbar" data-items=".token-row, #sec-spacing tbody tr, #sec-sizing tbody tr, .radius-card, .change-item" data-groups=".cat-group | .spec-table-wrap" data-sections=".sem-section">
+        <label class="token-search">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <input type="search" placeholder="토큰 이름·색 코드 검색  /" aria-label="토큰 검색">
+          <span class="token-search-count"></span>
+          <button type="button" class="token-search-clear" aria-label="검색어 지우기">×</button>
+        </label>
+        <div class="token-theme-toggle" role="group" aria-label="화면 테마">
+          <button type="button" data-theme="light">Light</button>
+          <button type="button" data-theme="dark">Dark</button>
+        </div>
+      </div>
     </nav>
 
     <div class="page-content">
@@ -312,16 +290,6 @@
         <div class="section-header">
           <h2 class="section-title">Color Tokens</h2>
           <p class="section-desc">Variables(Semantic Color) 정본을 컴포넌트 폴더 구조로 자동 미러링. 행을 클릭하면 CSS 변수명이 복사됩니다. <strong>이 표는 <code>npm run page:gen</code>으로 자동 생성</strong>되며 수동 편집하지 않습니다.</p>
-        </div>
-
-        <!-- Theme toggle -->
-        <div class="theme-bar">
-          <span class="theme-bar-label">미리보기 테마</span>
-          <div class="theme-toggle">
-            <button class="theme-btn active" id="btnLight" onclick="setTheme('light')">☀️ Light</button>
-            <button class="theme-btn" id="btnDark" onclick="setTheme('dark')">🌙 Dark</button>
-          </div>
-          <span class="theme-hint">Dark 값 — Dark Mode Foundation 설계안 기준. Figma 반영 전 확인 필요.</span>
         </div>
 
         <!-- color groups: SEMANTIC_PAGE 자동 렌더 (npm run page:gen). 수동 편집 금지 -->
@@ -665,7 +633,7 @@ const BORDER_WIDTHS = [
 ];
 
 // ── State ──
-let currentTheme = 'light';
+let currentTheme = (function () { try { return localStorage.getItem('sw-ds-theme') === 'dark' ? 'dark' : 'light'; } catch (e) { return 'light'; } })();
 
 function isRgba(v) { return typeof v === 'string' && v.startsWith('rgba'); }
 
@@ -780,12 +748,11 @@ function renderAll() {
   });
 }
 
-function setTheme(mode) {
+// 섹션 nav 의 Light/Dark(token-toolbar.js)가 사이트 테마를 바꾼 뒤 부른다 — 표 미리보기 값도 같이 전환
+window.onTokenTheme = function (mode) {
   currentTheme = mode;
-  document.getElementById('btnLight').classList.toggle('active', mode === 'light');
-  document.getElementById('btnDark').classList.toggle('active', mode === 'dark');
   renderAll();
-}
+};
 
 // ── Radius ──
 function renderRadius() {
@@ -828,13 +795,10 @@ renderBorderWidth();
   const sectionIds = ['sec-color','sec-spacing','sec-sizing','sec-radius','sec-border-width','sec-changes'];
   const sectionNav = document.getElementById('semantic-section-nav');
   const pageHeaderEl = document.querySelector('.page-header');
-  const themeBarEl = document.querySelector('.theme-bar');
 
   function updateStickyTops() {
-    const navH = sectionNav ? sectionNav.offsetHeight : 0;
-    /* page-header가 static이므로 nav는 top:0, theme-bar는 nav 바로 아래 */
+    /* page-header가 static이므로 nav는 top:0 */
     if (sectionNav) sectionNav.style.top = '0px';
-    if (themeBarEl) themeBarEl.style.top = navH + 'px';
   }
   updateStickyTops();
   window.addEventListener('resize', updateStickyTops);
@@ -870,5 +834,6 @@ renderBorderWidth();
 })();
 </script>
 <script src="../assets/js/main.js"></script>
+<script src="../assets/js/token-toolbar.js"></script>
 </body>
 </html>

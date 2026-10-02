@@ -1,0 +1,65 @@
+/* ── Token page toolbar — 섹션 nav 오른쪽: 검색창 + Light/Dark 전환 ──
+   foundation.html · semantic.html 공용. 동작은 assets/js/token-toolbar.js */
+.foundation-section-nav { align-items: center; }
+.token-toolbar {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 8px;
+}
+.token-search {
+  position: relative;
+  display: flex; align-items: center;
+}
+.token-search svg {
+  position: absolute; left: 10px;
+  width: 14px; height: 14px; color: #9ca3af; pointer-events: none;
+}
+.token-search input {
+  width: 240px; height: 32px;
+  padding: 0 56px 0 30px;
+  font: inherit; font-size: 12px; color: #111827;
+  background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;
+  outline: none; transition: border-color 0.15s;
+}
+.token-search input:focus { border-color: #0072ce; }
+.token-search input::placeholder { color: #9ca3af; }
+.token-search input::-webkit-search-cancel-button { display: none; }
+.token-search-count {
+  position: absolute; right: 28px;
+  font-size: 11px; color: #6b7280; pointer-events: none;
+}
+.token-search-clear {
+  position: absolute; right: 6px;
+  width: 18px; height: 18px; border: none; border-radius: 50%;
+  background: #e5e7eb; color: #6b7280;
+  font-size: 12px; line-height: 18px; text-align: center; padding: 0;
+  cursor: pointer;
+}
+.token-search:not(.has-query) .token-search-clear,
+.token-search:not(.has-query) .token-search-count { display: none; }
+
+.token-theme-toggle {
+  display: flex; background: #f3f4f6; border-radius: 8px; padding: 3px; gap: 2px;
+}
+.token-theme-toggle button {
+  padding: 5px 14px; font: inherit; font-size: 12px; font-weight: 500;
+  border-radius: 6px; border: none; background: transparent; color: #6b7280;
+  cursor: pointer; transition: all 0.15s;
+}
+.token-theme-toggle button.active { background: #fff; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+/* 검색 결과 — 안 맞는 칸·빈 묶음은 숨긴다 */
+.token-search-miss { display: none !important; }
+.token-search-empty {
+  display: none;
+  padding: 48px 0; text-align: center; font-size: 13px; color: #6b7280;
+}
+.token-search-empty.is-shown { display: block; }
+
+/* 섹션 nav 는 다크 테마에서도 밝은 판 그대로라 도구 모음도 밝은 판을 유지한다. 빈 결과 문구만 어두운 본문에 맞춘다 */
+[data-theme="dark"] .token-search-empty { color: #8A8C96; }
+
+@media (max-width: 900px) {
+  .token-toolbar { margin-left: 0; width: 100%; }
+  .token-search { flex: 1; }
+  .token-search input { width: 100%; }
+}
