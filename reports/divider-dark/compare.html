@@ -1,0 +1,37 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>구분선 다크 비교</title>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<style>
+body{margin:0;padding:24px;font-family:Pretendard,system-ui,sans-serif;background:#fff;color:#222}
+h1{font-size:20px;margin:0 0 4px}p.s{margin:0 0 20px;color:#666;font-size:13px}
+h2{font-size:15px;margin:28px 0 8px}
+table{border-collapse:collapse}
+th{font-size:12px;font-weight:600;padding:6px 8px;text-align:left;color:#444}
+td{padding:0}
+.cell{width:150px;height:74px;display:flex;flex-direction:column;justify-content:center;padding:0 14px;gap:6px;box-sizing:border-box}
+.cell .ln{height:1px}.cell .ln.s{height:2px}
+.cell small{font-size:11px;font-family:monospace}
+.cur{outline:2px solid #e5484d;outline-offset:-2px}
+</style></head><body>
+<h1>구분선(Divider) — 라이트·다크 바탕별 보이는 정도</h1>
+<p class="s">각 칸 = 그 바탕 위에 선. 숫자 = 선과 바탕의 대비(1.00 = 안 보임). 빨간 테두리 = 지금 정해진 값.</p>
+<div id="out"></div>
+<script>
+const cs=getComputedStyle(document.documentElement);
+const v=n=>cs.getPropertyValue(n).trim();
+const lightBg=[['바탕 0','#FFFFFF'],['바탕 1',v('--color-gray-0')],['바탕 2',v('--color-gray-50')],['바탕 3',v('--color-gray-100')]];
+const darkBg=[['바탕 0',v('--color-gray-dark-0')],['바탕 1',v('--color-gray-dark-50')],['바탕 2',v('--color-gray-dark-100')],['바탕 3',v('--color-gray-dark-200')]];
+function lum(h){h=h.replace('#','');const c=[0,2,4].map(i=>{let x=parseInt(h.substr(i,2),16)/255;return x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4)});return .2126*c[0]+.7152*c[1]+.0722*c[2]}
+function cr(a,b){const A=lum(a),B=lum(b);return ((Math.max(A,B)+.05)/(Math.min(A,B)+.05)).toFixed(2)}
+function block(title,bgs,lines,strong,curName){
+ let h=`<h2>${title}</h2><table><tr><th>선 색</th>${bgs.map(b=>`<th>${b[0]}</th>`).join('')}</tr>`;
+ for(const [name,hex] of lines){h+=`<tr><th>${name}${name===curName?' ★지금':''}</th>`;
+  for(const [,bg] of bgs){h+=`<td><div class="cell ${name===curName?'cur':''}" style="background:${bg}"><div class="ln ${strong?'s':''}" style="background:${hex}"></div><small style="color:${lum(bg)>.4?'#555':'#aaa'}">${cr(hex,bg)}</small></div></td>`}
+  h+='</tr>'}return h+'</table>'}
+const g=n=>[n,v('--color-'+n)];
+let o='';
+o+=block('라이트 · 기본 선 (1px)',lightBg,[g('gray-100'),g('gray-200'),g('gray-300')],false,'gray-100');
+o+=block('다크 · 기본 선 (1px)',darkBg,[g('gray-dark-300'),g('gray-dark-400'),g('gray-dark-500'),g('gray-dark-600')],false,'gray-dark-300');
+o+=block('라이트 · 진한 선 (2px)',lightBg,[g('gray-800')],true,'gray-800');
+o+=block('다크 · 진한 선 (2px)',darkBg,[g('gray-dark-700'),g('gray-dark-800'),g('gray-dark-900')],true,'gray-dark-700');
+document.getElementById('out').innerHTML=o;
+</script></body></html>

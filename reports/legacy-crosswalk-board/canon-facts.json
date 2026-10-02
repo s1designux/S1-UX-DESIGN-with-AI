@@ -369,7 +369,7 @@
     "divider": {
       "id": "divider",
       "status": "approved",
-      "version": "0.1.1",
+      "version": "0.1.2",
       "sizes": [],
       "breaks": {},
       "sizeBreakGrid": [],
@@ -383,7 +383,7 @@
       ],
       "canonicalStateMap": {},
       "absentCombinations": [],
-      "sourceFingerprint": "7ae208a0a1df51e92d1ebd336168a3d3f78807a521c60dcbc83fe2858287bc30"
+      "sourceFingerprint": "44ebb908f683285c3348e5ccf5f65f6ab5278c98c62614f3a2078a9b62bf46d8"
     },
     "dropdown": {
       "id": "dropdown",
@@ -424,7 +424,7 @@
     "expandable-card": {
       "id": "expandable-card",
       "status": "approved",
-      "version": "0.1.3",
+      "version": "0.1.4",
       "sizes": [],
       "breaks": {},
       "sizeBreakGrid": [],
@@ -437,7 +437,7 @@
       ],
       "canonicalStateMap": {},
       "absentCombinations": [],
-      "sourceFingerprint": "ab93f809383bd41df08198c95d28fabbfbe3a2286bd6f1487c1283f171060a03"
+      "sourceFingerprint": "3783d9a0c2a7d1c885d1f6d24b0e2e39837d6c55e2335f0c7ddb6b2d82cc7fb6"
     },
     "filter-chip": {
       "id": "filter-chip",
@@ -537,7 +537,7 @@
     "gnb-sub-menu": {
       "id": "gnb-sub-menu",
       "status": "approved",
-      "version": "0.2.7",
+      "version": "0.2.8",
       "sizes": [],
       "breaks": {},
       "sizeBreakGrid": [],
@@ -550,12 +550,12 @@
         "Type=compact-2": "compact-2"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "e3a4b71c0384f133ffb89ffb571c9660a0dedf241db7bfeadbdcfece8da6afe2"
+      "sourceFingerprint": "594c1a8a129b57d4e2eac7689edae7eae0aa3846b5bde4fd3dc37a64bec59034"
     },
     "gnb": {
       "id": "gnb",
       "status": "approved",
-      "version": "0.2.7",
+      "version": "0.2.8",
       "sizes": [
         "md",
         "sm",
@@ -588,7 +588,7 @@
           "reason": "GNB Utility Icon 세트는 language·menu·user on/off 5변형을 갖지만, GNB 바가 실제로 쓰는 것은 all-on(GNBUtil:full) 1개뿐이다(buildGNB:3607, registry 서술). 다른 4변형은 이 컴포넌트가 배포하지 않는다 — 유틸 영역 구성을 바꾸려면 host 화면이 data-s1-part 를 골라 빼고 넣는다."
         }
       ],
-      "sourceFingerprint": "a3c189c1136475d119ea3e6edcd795c7307caa7933475a3979b430eea01cd704"
+      "sourceFingerprint": "b034b0b56db005ff08016325b530e674a69ba2afc3669df9359058b0a3e5c4f5"
     },
     "input": {
       "id": "input",
@@ -697,7 +697,7 @@
     "lnb": {
       "id": "lnb",
       "status": "approved",
-      "version": "0.2.2",
+      "version": "0.2.3",
       "sizes": [
         "md",
         "lg"
@@ -718,7 +718,7 @@
       ],
       "canonicalStateMap": {},
       "absentCombinations": [],
-      "sourceFingerprint": "aa0c5e4e828a6266e245ac313ac4d353dd467776fb6c65b2df72552855096500"
+      "sourceFingerprint": "145aceeb2046ea8786f6509a5392422ef7347d91ea96e33beaf8bed8848bc66b"
     },
     "mobile-bottom-nav": {
       "id": "mobile-bottom-nav",
@@ -1239,7 +1239,7 @@
     "time-picker": {
       "id": "time-picker",
       "status": "approved",
-      "version": "0.3.16",
+      "version": "0.3.17",
       "sizes": [
         "xxsm",
         "xsm",
@@ -1312,7 +1312,7 @@
           "reason": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
         }
       ],
-      "sourceFingerprint": "e8b60b897cc36ce8dde08f86652827886ca7ae68f714962b80b1bdfa1ccd2113"
+      "sourceFingerprint": "b4a42073e95fa2be87be878a1150baa31c4fdae952a6b86d095714ed86ecb287"
     },
     "toggle": {
       "id": "toggle",
