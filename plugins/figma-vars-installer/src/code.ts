@@ -1547,6 +1547,7 @@ async function postPatternList(): Promise<void> {
     return {
       id: p.id,
       label: p.label,
+      platform: p.platform,
       desc: p.desc,
       screenCount: p.screens.length,
       section: p.section,

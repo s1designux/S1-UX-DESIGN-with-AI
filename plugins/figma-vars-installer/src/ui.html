@@ -139,6 +139,16 @@
   #pattern-label { font-size: 11px; color: var(--color-text-body-tertiary); margin: 8px 0 12px; word-break: break-all; text-align: center; min-height: 15px; }
   #pattern-bar-track { height: 6px; background: var(--color-bg-level-3); border-radius: 3px; overflow: hidden; }
   #pattern-bar-fill { height: 100%; background: var(--color-line-blue); border-radius: 3px; width: 0%; transition: width 0.2s ease; }
+  /* 매체 거르기 칩 — 디자인가이드 Chip(Line · PC SM) 그대로. ui-library/src/components/chip/chip.css 의 규칙을 옮긴 것이다. */
+  .pattern-filter { display: flex; gap: var(--spacing-8); margin-bottom: var(--spacing-12); }
+  .pattern-filter.hidden { display: none; }
+  [data-s1-component="chip"] { align-items: center; appearance: none; border-radius: var(--radius-full); border-style: solid; border-width: var(--border-width-1); box-sizing: border-box; cursor: pointer; display: inline-flex; flex: 0 0 auto; font-family: "Pretendard Variable", "Pretendard", sans-serif; font-weight: var(--font-weight-medium); justify-content: center; line-height: normal; margin: 0; padding-block: 0; text-align: center; user-select: none; white-space: nowrap; }
+  [data-s1-component="chip"] [data-s1-part="label"] { pointer-events: none; }
+  [data-s1-component="chip"][data-size="sm"][data-break="pc"] { font-size: var(--font-size-12); height: var(--sizing-28); letter-spacing: var(--letter-spacing-normal); padding-inline: var(--spacing-16); }
+  [data-s1-component="chip"][data-variant="line"] { background: var(--color-chip-line-bg-default); border-color: var(--color-chip-line-border-default); color: var(--color-chip-line-label-default); }
+  @media (hover: hover) { [data-s1-component="chip"][data-variant="line"]:hover:not(:disabled):not([aria-pressed="true"]) { background: var(--color-chip-line-bg-hover); } }
+  [data-s1-component="chip"][data-variant="line"][aria-pressed="true"]:not(:disabled) { background: var(--color-chip-line-bg-selected); border-color: var(--color-chip-line-border-selected); color: var(--color-chip-line-label-selected); }
+  .select-row.filtered-out { display: none; }
   .pattern-empty { font-size: 12px; color: var(--color-text-state-helper); padding: 24px 4px; text-align: center; }
   /* 설치 카드의 .select-date 와 같은 모양이지만 클래스는 따로 둔다 —
      Gate 6c 가 .select-date 개수로 '설치 카드 4장'을 세기 때문. */
@@ -162,6 +172,7 @@
   /* 만들 수 있는 패턴이 하나도 없을 때 — 지금 할 일은 설치뿐이므로 목록·설명·버튼줄을 모두 감추고
      안내와 버튼만 화면 가운데 둔다 (검수 탭의 '최신 가이드가 아닙니다' 화면과 같은 모양). */
   #pscreen-select.need-only #pattern-list,
+  #pscreen-select.need-only #pattern-filter,
   #pscreen-select.need-only #pattern-note,
   #pscreen-select.need-only .install-footer { display: none; }
   #pscreen-select.need-only .iscroll { display: flex; align-items: center; justify-content: center; }
@@ -207,7 +218,7 @@
      색은 빌드 때 들어오는 가이드 토큰을 그대로 쓴다(form-control-* — 다크도 토큰이 바꾼다). */
   .ds-select {
     flex: 0 0 140px; width: 140px; height: 28px;
-    font: 400 12px/1 -apple-system, "SF Pro Text", Pretendard, sans-serif;
+    font: 400 12px/1 -apple-system, "SF Pro Text", Pretendard Variable, Pretendard, sans-serif;
     padding: 0 28px 0 16px; margin: 0;
     border: 1px solid var(--color-form-control-border-default); border-radius: 4px;
     background-color: var(--color-form-control-bg-default); color: var(--color-form-control-text-default);
@@ -228,7 +239,7 @@
   .module-card button, #audit-root .swap-card button {
     height: 28px; min-width: 56px; padding: 0 8px; border-radius: 4px;
     border: 1px solid var(--color-button-border-secondary--default); background: var(--color-button-bg-secondary--default); color: var(--color-button-label-secondary--default);
-    font: 500 12px/1.3 -apple-system, "SF Pro Text", Pretendard, sans-serif;
+    font: 500 12px/1.3 -apple-system, "SF Pro Text", Pretendard Variable, Pretendard, sans-serif;
     white-space: nowrap;
   }
   .module-card button.primary, #audit-root .swap-card button.primary { background: var(--color-button-bg-primary--default); border-color: var(--color-button-border-primary--default); color: var(--color-button-label-primary--default); }
@@ -264,7 +275,7 @@
     --high: var(--color-text-state-accent); --med: var(--color-text-state-caution); --low: var(--color-text-body-tertiary);
     --btn-bg: var(--color-button-bg-primary--default); --btn-fg: var(--color-button-label-primary--default);
     --code-bg: var(--color-bg-level-2);
-    font:13px/1.45 -apple-system, "SF Pro Text", Pretendard, sans-serif;
+    font:13px/1.45 -apple-system, "SF Pro Text", Pretendard Variable, Pretendard, sans-serif;
     color:var(--fg); background:var(--bg);
     flex:1 1 auto; min-height:0; overflow-y:auto;
   }
@@ -677,6 +688,11 @@
     <div class="need-title">먼저 가이드를 설치해 주세요</div>
     <div class="need-desc" id="pattern-need-desc">패턴 화면은 설치된 컴포넌트를 조립해 만듭니다.</div>
     <button class="btn-need" onclick="goInstallFromPattern()">가이드 설치하러 가기</button>
+  </div>
+  <div class="pattern-filter" id="pattern-filter" role="group" aria-label="화면 매체로 거르기">
+    <button type="button" data-s1-component="chip" data-variant="line" data-size="sm" data-break="pc" aria-pressed="true" data-platform="all"><span data-s1-part="label">전체</span></button>
+    <button type="button" data-s1-component="chip" data-variant="line" data-size="sm" data-break="pc" aria-pressed="false" data-platform="pc"><span data-s1-part="label">PC</span></button>
+    <button type="button" data-s1-component="chip" data-variant="line" data-size="sm" data-break="pc" aria-pressed="false" data-platform="mobile"><span data-s1-part="label">모바일</span></button>
   </div>
   <div class="select-list" id="pattern-list">
     <div class="pattern-empty">패턴 목록을 불러오는 중…</div>
@@ -1205,7 +1221,7 @@
       const missing = it.ready ? '' :
         '<div class="pattern-missing">아직 없는 부품 · ' + esc(it.missing.join(', ')) + '</div>';
       return '' +
-        '<label class="select-row' + blocked + '" data-opt="' + id + '">' +
+        '<label class="select-row' + blocked + '" data-opt="' + id + '" data-platform="' + esc(it.platform || '') + '">' +
           '<input type="checkbox" id="' + id + '" value="' + esc(it.id) + '"' + (it.ready ? '' : ' disabled') + '>' +
           '<div class="select-body">' +
             '<div class="select-name">' + esc(it.label) +
@@ -1224,9 +1240,29 @@
         syncPatternButton();
       });
     });
+    applyPatternFilter();
     renderPatternNeedInstall();
     syncPatternButton();
   }
+
+  // 매체 거르기(전체/PC/모바일) — 디자인가이드 Chip 의 aria-pressed 로 선택을 표시한다.
+  //   가려진 패턴은 선택도 풀어, 보이지 않는 화면이 같이 만들어지지 않게 한다.
+  let PATTERN_FILTER = 'all';
+  function applyPatternFilter() {
+    document.querySelectorAll('#pattern-filter [data-s1-component="chip"]').forEach((chip) => {
+      chip.setAttribute('aria-pressed', chip.dataset.platform === PATTERN_FILTER ? 'true' : 'false');
+    });
+    document.querySelectorAll('#pattern-list .select-row').forEach((row) => {
+      const hide = PATTERN_FILTER !== 'all' && row.dataset.platform !== PATTERN_FILTER;
+      row.classList.toggle('filtered-out', hide);
+      const cb = row.querySelector('input[type=checkbox]');
+      if (hide && cb && cb.checked) { cb.checked = false; row.classList.remove('checked'); }
+    });
+    syncPatternButton();
+  }
+  document.querySelectorAll('#pattern-filter [data-s1-component="chip"]').forEach((chip) => {
+    chip.addEventListener('click', () => { PATTERN_FILTER = chip.dataset.platform; applyPatternFilter(); });
+  });
 
   // 만들 수 없는 패턴이 있으면 목록보다 먼저 '가이드부터 설치하세요'를 보여준다.
   // 전부 막혔으면 지금 할 일이 설치뿐이므로 문구를 그에 맞게 바꾼다.

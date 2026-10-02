@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
     "purpose": "개발 툴과 검사기가 함께 읽는 허용목록. 여기 없는 variant·size·속성은 승인된 적이 없는 것이다.",
-    "canonicalFingerprint": "a3a23a25de11dac6a6470f9a9e4bb9b6c84999d37590f09083adce159d20ee18"
+    "canonicalFingerprint": "1a6c0df6bb474fab71f454ba62e7f56721c286fd63d194d41e43fc34f05087a5"
   },
   "components": [
     {
@@ -64,8 +64,8 @@
         "init is idempotent",
         "destroy removes listeners and hides clear action"
       ],
-      "canonicalFingerprint": "83288ee211a9de772f7ad09fdcddfbc4014ba261ae8a61708ad05d692a843e00",
-      "sourceFingerprint": "e715da99262c7bc9874b943fea3ec8b60dfe6d7c465f5cafaaf6562b30f93c0c"
+      "canonicalFingerprint": "74d324b9b93b6d6de0ac2434a163f74814e35170f97097eee011bd8bb1b1f5e3",
+      "sourceFingerprint": "ce3f3232d60aa0f78edb1e37bd383dd279af495410840c2c4f03400efe4dc506"
     },
     {
       "id": "button",
@@ -115,8 +115,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "5ed82a9324a94cd624f8ec73aa4dca9a73570b5305a18ee55e6cbedb7204eba9",
-      "sourceFingerprint": "bfa846f3717a190e4cdb28a2078b68b070ad41a216a556ef7feb6ea14c6c6f87"
+      "canonicalFingerprint": "4227305ab757473c235e2f3d0b7b6c32503ea627056247c045b09c566e7e3380",
+      "sourceFingerprint": "a582f647cc65994a363b6878fe55b6a3cba6bf81b0d915f1fd6c4a2346ff2d70"
     },
     {
       "id": "checkbox",
@@ -148,8 +148,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "3ed1016c385c4e83be8da767f904537a50658fdff8801fc7facb7c2469c5f564",
-      "sourceFingerprint": "6f5aec093a9fe8e1913b1a01f8529edb8543090c16ea39e1511e45a2bef36bec"
+      "canonicalFingerprint": "9158001c35cb1a5e0d8ec536b3d702c7863f4a2e9821f4fc4fed96fcedb010b4",
+      "sourceFingerprint": "58962827af53b44e369bf44408aea537835389b9685e3fc1921f2d7832b4261e"
     },
     {
       "id": "radio",
@@ -181,8 +181,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "03e57c7e9ece53bd87409ea989e16be3bfbf1f04393c59acf2be54994022fa01",
-      "sourceFingerprint": "1b7436f6c712f2b3fec1c597e70b1ea92908a1fdbbbb0efd3d9ad29c210c3859"
+      "canonicalFingerprint": "65070e327eeea6b6328d04ccdf9b1e85c1ecfbbac4e27c05a8c0305b41254a57",
+      "sourceFingerprint": "417ff7727c21dd4668301c3bce54d746359dba1ca74193b8723d2f11c30301c3"
     },
     {
       "id": "toggle",
@@ -216,8 +216,8 @@
       "jsRequired": true,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "dac554053e1c0ee2e488cea931c1295dfc79c6a3dc88a9def1e94be69280a902",
-      "sourceFingerprint": "7916985417c702647aa75cfd7ae0c3fd5e5d8cf4b518b3ebd079a3bdd56b3386"
+      "canonicalFingerprint": "ba9919ac0abe1e1abf188873f3c2dcfc1d314ad526f0233a349df21747da87b7",
+      "sourceFingerprint": "0773f6eeb4cea2f7f79972e311f67023ac50a12be050b2f5736cdf786f3e65f5"
     },
     {
       "id": "chip",
@@ -265,8 +265,8 @@
       "jsRequired": true,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "3574b18f80aaed407cf6a057fbba276e7b9ceb9627008ba5b69a613eb6f75b04",
-      "sourceFingerprint": "eda60b714328db2019291a8ce0e71820a831234635332f73d30559d0dc1ce94b"
+      "canonicalFingerprint": "051db87b774f682680546323a06e735e53736f490705625d612fc3c7dd8800fb",
+      "sourceFingerprint": "bac474302052862f8dd8b887f0bee91b8a02e64732fcc5584e5bc614e8973bf1"
     },
     {
       "id": "dropdown",
@@ -313,8 +313,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "731e5fa8859446db163d1415812b891d32cc7fb9d3e503ac827c62f9f8644fb4",
-      "sourceFingerprint": "3e45ba74b3d0778f333d4d468755c9874fdcb07062cf5f5116fec85b4608fd9f"
+      "canonicalFingerprint": "96aabde81cd6daaeda8765c53408efe5c055ab3b25f69dde77cf473573301ea6",
+      "sourceFingerprint": "b636015689308be5549bb9ef8bd6c432251c44b482e060b8bd76aebe1424b37c"
     },
     {
       "id": "select",
@@ -374,8 +374,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "9e852c09c203627dc890b9801fa8b5342812caf8ec1c83ad65d2856bc61cbacc",
-      "sourceFingerprint": "d3da5a4702eed7af3b401f4791480f493d5ca9d7031c65957eaad9e220e3bbde"
+      "canonicalFingerprint": "f2b9d6f544916a29f16813ac9845b7553ba46223907311d1abf846b27be48566",
+      "sourceFingerprint": "1dcbce349202dfc5316b84c76c4b4d6a84ed1e99376830b24ffc283687d051a8"
     },
     {
       "id": "filter-chip",
@@ -437,8 +437,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "5dd105bc2204c945d8c6b66629c4eb687b870445ee6e578579976b25c6bdbfaf",
-      "sourceFingerprint": "c41328345db1bbac3bf0ce5c138680f4eb72050e9b44f4ed4bd23d702710614a"
+      "canonicalFingerprint": "920ddf4d0c1456c413bda3dbf0f2dbacfaeeaa335b3b85847a7beb80eb6be0d5",
+      "sourceFingerprint": "204c7f48c0d4140a110b41e22a3de9f8b00ec7ed73076ead9722b49f2d8fa7b1"
     },
     {
       "id": "tab",
@@ -486,8 +486,8 @@
       "jsRequired": true,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "d9ba2df4e82931e55ae29e2fbda141f230b6669fa2bf89b0450510df5e41a705",
-      "sourceFingerprint": "15eedea7e2cee313b4df15e0a6b96db9e0e7725b0a305d1ca2209a29cb191ca9"
+      "canonicalFingerprint": "875cb3ff86bf5e934831f74c4ad773151a8fe9cc9665be20a5d0335639e755cb",
+      "sourceFingerprint": "46f69c9eccc72b733349a707d02d78f819ee371d0ae40827b6870e15a47548ec"
     },
     {
       "id": "pagination",
@@ -529,8 +529,8 @@
       "jsRequired": true,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "34c94e76edee0081266f3a8ac74252e5633e29ef48b7a17026630e9761b0ee33",
-      "sourceFingerprint": "5fda599085c24709327ed110485b67e7eca6bc71d0b527937d8bb44db1e44393"
+      "canonicalFingerprint": "aa364a0c1c35c68ee93ffcd91191ad2933c8f905b9c9f51dbd7daf1b4445265e",
+      "sourceFingerprint": "f490ed7d6f973b1ce632d70e05935639a0865b847792319eefc3d57183b809ed"
     },
     {
       "id": "textarea",
@@ -563,8 +563,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "10f9384cabeb960c182b0fe2216f0ebbc9704e7a9006a9859927d07f5a124e56",
-      "sourceFingerprint": "498ea18652dd530aecd845bcf754fdd19327e9a83ebc4abd4b728d7b7bdb1f21"
+      "canonicalFingerprint": "a2de9d0962d59c774e7426fd518eb33e2f90767f4e24e62d19b4248dd560dc25",
+      "sourceFingerprint": "8de64bfd9d5a19af1525eea1906b3ed2eead53766a07e31c7aa8e751cf485408"
     },
     {
       "id": "multi-toggle",
@@ -605,8 +605,8 @@
         "init is idempotent",
         "destroy removes listeners"
       ],
-      "canonicalFingerprint": "ced7200194ae2f94eddbbe676c6e5b2ec7480cd2cef708bffac53ef27c8e1a72",
-      "sourceFingerprint": "30ea9b873534cf4bbeb1900bc65230164e9840b60dff851e9fd6f337785408ce"
+      "canonicalFingerprint": "7c7a56c9f74766e0f5943bab6627c89e73b3123f2cf53dfda204739fe3d4ebfa",
+      "sourceFingerprint": "c55972e512882e2c77dc3f59518c610441ff823997a464d5ccf69b4a950d828b"
     },
     {
       "id": "modal",
@@ -662,8 +662,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "477f84a5f02980172ee435d1ee0473d5b0365ea5b509bfd77ac8b797cc84c634",
-      "sourceFingerprint": "3324b7a26156916997dbe768548078e043c0eb40a3c4d2680474d40d6ae8945f"
+      "canonicalFingerprint": "4d9e6bc5d43f9b78092b07f50736fa260eb1a85a03cac702362265515049ba88",
+      "sourceFingerprint": "da246892df2fb6250e84653b01f12c5579f6e631749d337339f286269314182d"
     },
     {
       "id": "table",
@@ -712,8 +712,8 @@
         "s1:table:selectionchange"
       ],
       "lifecycle": [],
-      "canonicalFingerprint": "6eb9d840d47831b9ef9f5d9a7860727f9350054e928ef13f3d20428e5f5d735d",
-      "sourceFingerprint": "d44b78809012a0396ef95ba6b44e05e958529da48b8966b6aa48dd4ae18608c1"
+      "canonicalFingerprint": "71c795232f58cda8154d22f9c2f64a700adf1cf3cd28abde7000ab69008a88c9",
+      "sourceFingerprint": "5b543cc79d564da217c5b0302ec020af0a9bd109c811875f5148721d1499d0da"
     },
     {
       "id": "mobile-bottom-nav",
@@ -746,8 +746,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "66c1471b1eea9385f4035f90985e2b435c9092b4cfd25932a96ffe434de0609f",
-      "sourceFingerprint": "7fdb7228bca2413c7a8fd073bc804f52d2d1cdb4ea15a84677dfd0716459e145"
+      "canonicalFingerprint": "75282d7b2526b2960251072de14292536e4047c9ae5c560f7eefdbd93e92c6e8",
+      "sourceFingerprint": "28ca616445c4d850554a3ed579729c7888d97b740d9a65609cbf741539b35634"
     },
     {
       "id": "mobile-header",
@@ -786,8 +786,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "384d6e6c85588e577f7985b37f7638cd7606d7f17ff5f72437a8c969b3816fd1",
-      "sourceFingerprint": "34ba2ba82ddc4ba84b25c6e8da92680540868c5fc62730aab312cea9624baf23"
+      "canonicalFingerprint": "0ad04ab46f5c9d4e548bc1595eeeb5c6509e2bde44e8f8df26a4228c4bed1e9b",
+      "sourceFingerprint": "f1a62d830b84581b9f9c2df569f48ae4cf0e91383ae8bbcf74cdf419f48078cd"
     },
     {
       "id": "time-picker",
@@ -872,8 +872,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "ebf42fedcbc1703ecb827bed01f59739fcaee90ed00d501a69a45819c5f0f998",
-      "sourceFingerprint": "6906cc63b6514f8d5f138fcfffdd9c4427ef513bd5800a58396fe8042e80963e"
+      "canonicalFingerprint": "06a9f502de1d815d3666ed1739ed7df8bccd096cba017f6436aed0eb74161219",
+      "sourceFingerprint": "f512a639fc604c45951a6d3069f3f1c55048a759d413c7d0f6cbe99bdc3e5e65"
     },
     {
       "id": "date-picker",
@@ -960,8 +960,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "5a0acd77602e23b5e4a70dc4de27bcf8690941d67641794e1d8d444d632ce577",
-      "sourceFingerprint": "d4c310566bff749e6f64e5dd0672d8247a17664565422fdec5def7c1ca766c29"
+      "canonicalFingerprint": "8195b562f5911a5964367a3d0551aa1c93a6ed808aac4990900d18827907272f",
+      "sourceFingerprint": "fdef1ba82bbd8990f6e9027d292e8d8fda714b398a600f8b72d9c20a2d0cbaea"
     },
     {
       "id": "gnb",
@@ -1010,8 +1010,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "b7270eea4463271914ebc600e073a6717f193433a4b11f09a0a6546a1e6da4db",
-      "sourceFingerprint": "445c705616a09f3b85013486f21aa2e4006a1f7516e7a4e284c5f85a18d10716"
+      "canonicalFingerprint": "14b1fbc1dc3dd48ad125463441e9cc2e5d31d0b61e895bebe9910ac5f79092e6",
+      "sourceFingerprint": "db694cb914a8f9bebc12f7437659f5da7928883b441a03f8c90fc6a5bfd8741a"
     },
     {
       "id": "gnb-sub-menu-item",
@@ -1034,8 +1034,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "ae9e137f4cd8f18a29969eb4c80f38f4d1b58b28176f69d24f3990774a258dfe",
-      "sourceFingerprint": "cc95414bf7687d0ed6feb4ceab8f768069e2611a35cc52131ecb4202736f9972"
+      "canonicalFingerprint": "b07b354a23f96950f94e4eefabf8ac540723824a19d6bcbd2fe5b79a80683227",
+      "sourceFingerprint": "a8c0a89cd95c92dbfd9c3984e76045c26cf22d84dc09dda143861f0782aaa770"
     },
     {
       "id": "gnb-sub-menu",
@@ -1060,8 +1060,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "dd662efbdbc2266c4f9892cdf768529348d95577044eb6ff0242afe012bc020d",
-      "sourceFingerprint": "684715382fbe5c602a2feb2cc0c32bb4db82f05e9ff3e1d575c4fea5ea05a745"
+      "canonicalFingerprint": "1bf17732c3fb523bb523660a58f8f5f22a5276ba01e32b2d8f64e6b19bbc50a6",
+      "sourceFingerprint": "3f1d4daa3f38252b0351139056fdd9c036a8802840a15b8f937aa450d683afaf"
     },
     {
       "id": "assist-button",
@@ -1094,8 +1094,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "b15804563c67c8f5e5c1e9d2da23ad109fef1e1491481551a7276405d74e1c1b",
-      "sourceFingerprint": "44648bdb8607716509e66506dea4a4c5d5cd8d0909c22cd7cdbd584664cc152f"
+      "canonicalFingerprint": "33061be7e9d345752f2c533d8be4f5303b0904ff17f6d9bc0e079989773ae2e5",
+      "sourceFingerprint": "ad84b00ee7cc50868c0c2ce35a09232a462090daf9fb33a3376217a0698ac0f9"
     },
     {
       "id": "text-button",
@@ -1132,8 +1132,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "2fd0b287ddb85f252b13b9b645ccf20ad166b8cc1c2d59ecc89123f7aa123eae",
-      "sourceFingerprint": "94ec79a6829583b569f414c66caa3ec628fe77e5d26d69769d1d776e8a03b62a"
+      "canonicalFingerprint": "17da62a75a28ba51c74e6c3988f958f104245b178b76275b08bc896faf10a91e",
+      "sourceFingerprint": "6505d9c69269e3a4fa99cb1bffe6c95b8ed3e624d8f3680efaeee36f189bbcf8"
     },
     {
       "id": "modal-content",
@@ -1198,8 +1198,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "9229f752bcf2ffd275d74d854ecaef64b90de9469c519c74e443390ef7d8d545",
-      "sourceFingerprint": "30d22bacb5825a4a04001132a7e76c1f7f3de9ad224384ecbace74f4062e7d76"
+      "canonicalFingerprint": "d5097e2e711c10a331c73da4fd19a71f69ea85dae0b1860bddbadcbe51689b93",
+      "sourceFingerprint": "7f451371d4e2f1ed7dd6bbce914e55ff061358095c2e000ca143e55697ccb87d"
     },
     {
       "id": "bottom-sheet-option",
@@ -1243,8 +1243,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "dbd15c9dadd87792a595ef015a434077f88b220fd21f10bcf549994decbaefab",
-      "sourceFingerprint": "464cdab2f0d4a52f044cc263959c691357ef71a4faf5e73cda33b2fc89a3c70f"
+      "canonicalFingerprint": "8fc87d1e5a557d08f04ccbae6155b380aa64d1ad64d3ef355649c9f09bffb5c0",
+      "sourceFingerprint": "77f403f34d56dcfa90eda99cbe3dc4ab79a8bc185a515d9a7d3fb1b0f8c769af"
     },
     {
       "id": "bottom-sheet",
@@ -1298,8 +1298,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "91931a270107ec39ada864e2c9744d2c5d85c20c3e5078ea063f31fd3252a9b5",
-      "sourceFingerprint": "299489125a2fe78098c8249c8e7e024e3b1a193e16fbaf52c1eaa47a7087eb36"
+      "canonicalFingerprint": "2d12a2635628b8b362494c563c6813bb72c02b37fd695ca7ef5301e877967b22",
+      "sourceFingerprint": "24452d5cb98343257703ae95c47d9e9ba09117784fe6cd05e10acf096cfa7e6f"
     },
     {
       "id": "list-row",
@@ -1344,8 +1344,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "9c65f36023e022888d1f7bc6b7f9b442da3a8accf27acbc6c18fb00a968949f0",
-      "sourceFingerprint": "83f383394c893d7911540f0baed7d7ab74fa14088c7630c993e836d5dda0612f"
+      "canonicalFingerprint": "3c72a7b63d1c3006aedcc82da4ed081ba59b37690effbb83a1e6cca2344ef978",
+      "sourceFingerprint": "b5370800440c989622ae9ce722e8e2e7d4e96201ae323ef7b9da6c64c80c61d4"
     },
     {
       "id": "expandable-card",
@@ -1388,8 +1388,8 @@
         "s1:expandable-card:change"
       ],
       "lifecycle": [],
-      "canonicalFingerprint": "bbd89e3389153686038e77e02bcbb5c4bc9ecf169975205d6832b525d6831256",
-      "sourceFingerprint": "0fd6352940d6bca695e8ebab7fc91b6d156adde62caf89552448deb96890eafb"
+      "canonicalFingerprint": "e28904b5d2b4482669508a44cc3524ef12c730af3c92598a2011b82bf1c93e53",
+      "sourceFingerprint": "ab93f809383bd41df08198c95d28fabbfbe3a2286bd6f1487c1283f171060a03"
     },
     {
       "id": "data-tag",
@@ -1417,8 +1417,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "317e13f72b6f1e9bfb3bb3fc9fff7fa11de9cb3084d61823f434029cabc956e2",
-      "sourceFingerprint": "809845e84876e45f3100bc9cf53c9b193b21ca25884efad3edfdef65bd9434a0"
+      "canonicalFingerprint": "8077597dca7b6713be2727346a533f058e8b1c8f01f00cc19a90b1a9d6e5c337",
+      "sourceFingerprint": "b4f30132350a92c35e30c1eceb406f50259c9b1145988f51042bb33760d5c215"
     },
     {
       "id": "divider",
@@ -1444,8 +1444,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "484a1115cf8af5a076754040ea3820151737d6f70121018aa2cb9bc9911d94b0",
-      "sourceFingerprint": "8697fc87e3c7ef8cf16e43bc25f5b3c77d86126b9aa8916a4caaf12a7b56bbf5"
+      "canonicalFingerprint": "f6a55356ee1504284ec498baf06f837012232a67cf168f939bd68a53990efc05",
+      "sourceFingerprint": "7ae208a0a1df51e92d1ebd336168a3d3f78807a521c60dcbc83fe2858287bc30"
     },
     {
       "id": "lnb",
@@ -1497,8 +1497,8 @@
         "s1:lnb:toggle"
       ],
       "lifecycle": [],
-      "canonicalFingerprint": "7b60b80b37067b402e3a3962fe436402107837feecbb53a68d0517bae570bf8f",
-      "sourceFingerprint": "6f98f3da4003428aae3d9f1de6278c34defbb9b5b2c8f6f80087e9f878f4ff57"
+      "canonicalFingerprint": "127a5907ed303f593542af055ec76fe6cdd1050d2260c7c983065993684313e4",
+      "sourceFingerprint": "c101447c1e8928f67d046a450c15ad3541f7dcbfcbf6ed32a35d963a5f4842fb"
     }
   ]
 }

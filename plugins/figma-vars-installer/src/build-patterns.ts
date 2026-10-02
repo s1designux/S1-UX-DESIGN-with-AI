@@ -13,6 +13,7 @@
 
 import type { PatternDef, PatternScreen, PatternComponent, PNode, Override, SizeOverride, NestedProps } from "./pattern-data";
 import { sweepRawPaints } from "./build-components";
+import { TEXT_STYLE_FONT_FAMILY } from "./textstyles-data";
 
 export interface PatternMaps {
   /** "color/bg/level-0" → Variable (Semantic + Foundation 색 통합 맵) */
@@ -317,7 +318,7 @@ async function makeText(spec: PNode, maps: PatternMaps, warnings: string[]): Pro
   // 순서가 중요하다: ①스타일 폰트 로드 → ②스타일 적용 → ③적용된 폰트 재로드 → ④글자·속성.
   // 스타일을 입히면 노드의 폰트가 그 스타일 것으로 바뀌므로, 그 폰트를 다시 로드하지 않으면
   // characters·textAutoResize 를 쓸 때 "unloaded font" 로 막힌다.
-  const font: FontName = style ? (style.fontName as FontName) : { family: "Pretendard", style: "Regular" };
+  const font: FontName = style ? (style.fontName as FontName) : { family: TEXT_STYLE_FONT_FAMILY, style: "Regular" };
   const ok = await loadFont(font);
   if (!ok) warnings.push(`폰트를 불러오지 못했습니다: ${font.family} ${font.style} (${spec.n})`);
   if (style) {

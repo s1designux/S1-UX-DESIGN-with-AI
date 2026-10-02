@@ -19,7 +19,7 @@
 
 [data-s1-component="input"] [data-s1-part="label"] {
   color: var(--color-form-control-label-default);
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-14);
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--letter-spacing-tight);
@@ -44,7 +44,7 @@
   caret-color: var(--color-form-control-text-cursor);
   color: var(--color-form-control-text-default);
   flex: 1 1 auto;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-weight: var(--font-weight-regular);
   height: 100%;
   line-height: var(--line-height-130);
@@ -156,7 +156,7 @@
 
 [data-s1-component="input"] [data-s1-part="message"] {
   color: var(--color-text-state-caption);
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-12);
   font-weight: var(--font-weight-regular);
   letter-spacing: var(--letter-spacing-normal);
@@ -436,7 +436,7 @@
   box-sizing: border-box;
   cursor: pointer;
   display: inline-flex;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-weight: var(--font-weight-medium);
   justify-content: center;
   line-height: var(--line-height-130);
@@ -705,7 +705,7 @@
 [data-s1-component="checkbox"] [data-s1-part="label"] {
   color: var(--color-control-label-default);
   cursor: pointer;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-14);
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--letter-spacing-tight);
@@ -780,7 +780,7 @@
 [data-s1-component="radio"] [data-s1-part="label"] {
   color: var(--color-control-label-default);
   cursor: pointer;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-14);
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--letter-spacing-tight);
@@ -857,7 +857,7 @@
   cursor: pointer;
   display: inline-flex;
   flex: 0 0 auto;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-weight: var(--font-weight-medium);
   justify-content: center;
   /* line-height: normal — 정본에 텍스트 줄간격 값이 없다. 130%(문단용 배수)를 쓰면
@@ -1101,7 +1101,7 @@
   cursor: pointer;
   display: flex;
   flex: 0 0 auto;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-weight: var(--font-weight-regular);
   padding-block: var(--spacing-4);
   padding-inline: var(--spacing-12);
@@ -1206,7 +1206,7 @@
   color: var(--color-form-control-text-placeholder);
   cursor: pointer;
   display: flex;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-weight: var(--font-weight-regular);
   justify-content: space-between;
   min-width: 140px; /* 정본 trigger.resize(140, sc.h) — river 2차 지시(2026-09-01): 셀렉트박스 본체(트리거)에도 최소 폭. Filter Chip 트리거는 정본이 primaryAxisSizingMode=AUTO(내용에 맞춰 줄어듦)라 여기 적용 안 함(filter-chip.css는 손대지 않음). */
@@ -1365,7 +1365,7 @@
   box-sizing: border-box;
   cursor: pointer;
   display: inline-flex;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-14);
   font-weight: var(--font-weight-medium);
   gap: var(--spacing-4);
@@ -1621,7 +1621,7 @@
   cursor: pointer;
   display: inline-flex;
   flex: 1 1 0;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-weight: var(--font-weight-medium);
   justify-content: center;
   margin: 0;
@@ -1653,7 +1653,7 @@
 
 /* component:pagination */
 /* Pagination — 28px control, 화살표 그룹 4px · 페이지 그룹과 8px 간격. */
-[data-s1-component="pagination"] { align-items: center; display: inline-flex; font-family: "Pretendard", sans-serif; gap: var(--spacing-8); }
+[data-s1-component="pagination"] { align-items: center; display: inline-flex; font-family: "Pretendard Variable", "Pretendard", sans-serif; gap: var(--spacing-8); }
 [data-s1-component="pagination"] [data-s1-part="arrow-group"], [data-s1-component="pagination"] [data-s1-part="pages"] { align-items: center; display: inline-flex; gap: var(--spacing-4); }
 [data-s1-component="pagination"] [data-s1-part="pages"] { gap: 0; }
 [data-s1-component="pagination"] button { align-items: center; appearance: none; background: var(--color-pagination-control-bg-default); border: var(--border-width-1) solid var(--color-pagination-control-border-default); border-radius: var(--radius-control-xs); box-sizing: border-box; color: var(--color-pagination-control-icon-default); cursor: pointer; display: inline-flex; font: inherit; font-size: var(--font-size-14); font-weight: var(--font-weight-medium); height: var(--sizing-28); justify-content: center; margin: 0; min-width: var(--sizing-28); padding: 0; }
@@ -1684,7 +1684,7 @@
   caret-color: var(--color-form-control-text-cursor);
   color: var(--color-form-control-text-default);
   display: block;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-14);
   font-weight: var(--font-weight-regular);
   letter-spacing: var(--letter-spacing-tight);
@@ -1749,7 +1749,7 @@
   display: inline-flex;
   /* 선택 위치와 무관하게 각 칸의 외곽 폭을 고정한다. */
   flex: 0 0 auto;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-14);
   font-weight: var(--font-weight-medium);
   justify-content: center;
@@ -2028,7 +2028,7 @@
 [data-s1-component="table"] [data-s1-part="cell"] {
   border-bottom: var(--border-width-1) solid var(--color-table-border-default);
   box-sizing: border-box;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-14);
   height: var(--sizing-44);
   letter-spacing: var(--letter-spacing-tight);
@@ -2421,7 +2421,7 @@
   color: var(--color-form-control-text-placeholder);
   cursor: pointer;
   display: flex;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-weight: var(--font-weight-regular);
   gap: var(--spacing-8);
   justify-content: space-between;
@@ -2611,7 +2611,7 @@
   cursor: pointer;
   display: flex;
   flex: 0 0 auto;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-14);
   /* 호스트 페이지 상속 차단 — 정본 텍스트 스타일은 전부 130% 이고(10px 만 140%, 여기선 미사용),
      자간은 스타일마다 다르다: body/14·16 계열과 title/16M·18M 은 -2%(tight), 나머지는 0(normal).
@@ -2661,7 +2661,7 @@
   border: none;
   color: var(--color-text-state-accent);
   cursor: pointer;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-14);
   font-weight: var(--font-weight-medium);
   /* W-2 훑기에서 함께 발견 — footer 는 고정 높이가 없어(padding 만 있음) confirm 의 line-height 가
@@ -2698,7 +2698,7 @@
 }
 [data-s1-component="time-picker"] [data-s1-part="date-panel-note"] {
   color: var(--color-text-body-secondary);
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-14);
   /* 호스트 페이지 상속 차단 — 정본 텍스트 스타일은 전부 130% 이고(10px 만 140%, 여기선 미사용),
      자간은 스타일마다 다르다: body/14·16 계열과 title/16M·18M 은 -2%(tight), 나머지는 0(normal).
@@ -2764,7 +2764,7 @@
   color: var(--color-text-state-accent);
   display: flex;
   flex: 0 0 42px; /* 정본 텍스트 높이 그대로(Figma 실측 42) — 소수점 없이 피치 74(42+32)가 맞는다 */
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-32);
   /* 호스트 페이지 상속 차단 — 정본 텍스트 스타일은 전부 130% 이고(10px 만 140%, 여기선 미사용),
      자간은 스타일마다 다르다: body/14·16 계열과 title/16M·18M 은 -2%(tight), 나머지는 0(normal).
@@ -2916,7 +2916,7 @@
   color: var(--color-form-control-text-placeholder);
   cursor: pointer;
   display: flex;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-weight: var(--font-weight-regular);
   gap: var(--spacing-8);
   justify-content: space-between;
@@ -3110,7 +3110,7 @@
   border: none;
   color: var(--color-date-picker-text-primary);
   cursor: pointer;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-24);
   /* 호스트 페이지 상속 차단 — 정본 텍스트 스타일은 전부 130% 이고(10px 만 140%, 여기선 미사용),
      자간은 스타일마다 다르다: body/14·16 계열과 title/16M·18M 은 -2%(tight), 나머지는 0(normal).
@@ -3197,7 +3197,7 @@
 }
 [data-s1-component="date-picker"] [data-s1-part="cell-num"] {
   color: var(--color-date-picker-text-secondary);
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-16);
   /* 호스트 페이지 상속 차단 — 정본 텍스트 스타일은 전부 130% 이고(10px 만 140%, 여기선 미사용),
      자간은 스타일마다 다르다: body/14·16 계열과 title/16M·18M 은 -2%(tight), 나머지는 0(normal).
@@ -3286,7 +3286,7 @@
   color: var(--color-date-picker-text-primary);
   cursor: pointer;
   display: flex;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-16);
   /* 호스트 페이지 상속 차단 — 정본 텍스트 스타일은 전부 130% 이고(10px 만 140%, 여기선 미사용),
      자간은 스타일마다 다르다: body/14·16 계열과 title/16M·18M 은 -2%(tight), 나머지는 0(normal).
@@ -3926,7 +3926,7 @@
   color: var(--color-button-label-assist--default);
   cursor: pointer;
   display: inline-flex;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-14);
   font-weight: var(--font-weight-medium);
   height: var(--sizing-32);
@@ -3973,7 +3973,7 @@
   box-sizing: border-box;
   cursor: pointer;
   display: inline-flex;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-14);
   font-weight: var(--font-weight-medium);
   justify-content: center;
@@ -4209,7 +4209,7 @@
    ">" 직계 자식으로 좁혀서 코어 내부로 스타일이 새지 않게 막는다(계약 "다른 코어 내부 part 선택 금지"). */
 [data-s1-component="bottom-sheet-option"] > [data-s1-part="label"] {
   color: var(--color-text-body-primary);
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-16);
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--letter-spacing-tight);
@@ -4283,7 +4283,7 @@
 
 [data-s1-component="bottom-sheet-option"] [data-s1-part="list-title"] {
   color: var(--color-text-body-primary);
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-16);
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--letter-spacing-tight);
@@ -4292,7 +4292,7 @@
 
 [data-s1-component="bottom-sheet-option"] [data-s1-part="list-sub"] {
   color: var(--color-text-body-secondary);
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-14);
   font-weight: var(--font-weight-regular);
   letter-spacing: var(--letter-spacing-tight);
@@ -4392,7 +4392,7 @@
 
 [data-s1-component="bottom-sheet"] [data-s1-part="sheet-title"] {
   color: var(--color-text-title-primary);
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-20);
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--letter-spacing-normal);
@@ -4445,7 +4445,7 @@
   background: var(--color-bg-level-0);
   box-sizing: border-box;
   display: flex;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   gap: var(--spacing-12);
   padding: var(--spacing-12) var(--spacing-20);
   width: 100%;
@@ -4652,7 +4652,7 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   overflow: hidden;
   width: 100%;
 }
@@ -4824,7 +4824,7 @@
   box-sizing: border-box;
   color: var(--color-text-body-tertiary);
   display: inline-flex;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   font-size: var(--font-size-12);
   font-weight: var(--font-weight-medium);
   justify-content: center;
@@ -4943,7 +4943,7 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   padding: var(--spacing-12) var(--spacing-12) var(--spacing-16);
   transition: width .18s ease;
   width: 240px;

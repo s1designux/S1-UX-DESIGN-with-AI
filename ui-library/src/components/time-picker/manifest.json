@@ -1,8 +1,8 @@
 {
   "id": "time-picker",
-  "version": "0.3.15",
+  "version": "0.3.16",
   "status": "approved",
-  "canonicalFingerprint": "ebf42fedcbc1703ecb827bed01f59739fcaee90ed00d501a69a45819c5f0f998",
+  "canonicalFingerprint": "06a9f502de1d815d3666ed1739ed7df8bccd096cba017f6436aed0eb74161219",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -235,8 +235,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [

@@ -114,7 +114,7 @@ async function createOutputs() {
     canonicalFingerprint: canonicalFingerprintValue,
     tokenMapFingerprint: hash(tokenMap),
     commonCssDependencies: ["assets/css/tokens.css", "assets/css/typography.css"],
-    fontDependencies: [{ family: "Pretendard", source: "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" }],
+    fontDependencies: [{ family: "Pretendard Variable", source: "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" }],
     commonCssFingerprints: {
       "assets/css/tokens.css": hash(tokensCss),
       "assets/css/typography.css": hash(typographyCss)

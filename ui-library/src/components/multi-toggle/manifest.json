@@ -1,8 +1,8 @@
 {
   "id": "multi-toggle",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "status": "approved",
-  "canonicalFingerprint": "ced7200194ae2f94eddbbe676c6e5b2ec7480cd2cef708bffac53ef27c8e1a72",
+  "canonicalFingerprint": "7c7a56c9f74766e0f5943bab6627c89e73b3123f2cf53dfda204739fe3d4ebfa",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -98,8 +98,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [

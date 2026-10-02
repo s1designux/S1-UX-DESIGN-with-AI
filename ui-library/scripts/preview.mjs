@@ -117,13 +117,13 @@ export function buildPreviewPage({ componentOutputs, usageById, version, canonic
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>S1 UI 컴포넌트 미리보기 — ${approved.length}종</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <link rel="stylesheet" href="assets/css/tokens.css">
   <link rel="stylesheet" href="assets/css/typography.css">
   <link rel="stylesheet" href="s1-ui.css">
   <style>
     body { margin:0; background:#f6f7f9; color:#111827;
-           font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+           font-family:Pretendard Variable, Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
     .page { max-width:1080px; margin:0 auto; padding:40px 24px 80px; }
     .page-head h1 { font-size:24px; margin:0 0 6px; }
     .page-head p { margin:0; color:#6b7280; font-size:13px; line-height:1.7; }

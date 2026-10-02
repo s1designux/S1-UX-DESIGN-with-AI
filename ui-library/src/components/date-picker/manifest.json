@@ -1,8 +1,8 @@
 {
   "id": "date-picker",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "status": "approved",
-  "canonicalFingerprint": "5a0acd77602e23b5e4a70dc4de27bcf8690941d67641794e1d8d444d632ce577",
+  "canonicalFingerprint": "8195b562f5911a5964367a3d0551aa1c93a6ed808aac4990900d18827907272f",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -253,8 +253,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [

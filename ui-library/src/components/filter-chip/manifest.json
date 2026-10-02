@@ -1,8 +1,8 @@
 {
   "id": "filter-chip",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "status": "approved",
-  "canonicalFingerprint": "5dd105bc2204c945d8c6b66629c4eb687b870445ee6e578579976b25c6bdbfaf",
+  "canonicalFingerprint": "920ddf4d0c1456c413bda3dbf0f2dbacfaeeaa335b3b85847a7beb80eb6be0d5",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -143,8 +143,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [
