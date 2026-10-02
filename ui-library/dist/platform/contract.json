@@ -965,7 +965,7 @@
     },
     {
       "id": "gnb",
-      "status": "verified",
+      "status": "approved",
       "rootSelector": "[data-s1-component=\"gnb\"]",
       "root": "nav[data-s1-component=gnb][data-size][data-variant]",
       "variants": [
@@ -1011,11 +1011,11 @@
         "destroy(root)"
       ],
       "canonicalFingerprint": "b7270eea4463271914ebc600e073a6717f193433a4b11f09a0a6546a1e6da4db",
-      "sourceFingerprint": "4e9255630fcbf4a9a3d53c31b0482ff67b92340964eb9b9707e1840423741383"
+      "sourceFingerprint": "445c705616a09f3b85013486f21aa2e4006a1f7516e7a4e284c5f85a18d10716"
     },
     {
       "id": "gnb-sub-menu-item",
-      "status": "verified",
+      "status": "approved",
       "rootSelector": "[data-s1-component=\"gnb-sub-menu-item\"]",
       "root": "(a[href] | span)[data-s1-component=gnb-sub-menu-item][data-depth]",
       "variants": [],
@@ -1035,11 +1035,11 @@
       "events": [],
       "lifecycle": [],
       "canonicalFingerprint": "ae9e137f4cd8f18a29969eb4c80f38f4d1b58b28176f69d24f3990774a258dfe",
-      "sourceFingerprint": "8d02eac6232d54082159784d9b616753cc7e5b3914e0ed9c9bdebcb9a12cbd33"
+      "sourceFingerprint": "cc95414bf7687d0ed6feb4ceab8f768069e2611a35cc52131ecb4202736f9972"
     },
     {
       "id": "gnb-sub-menu",
-      "status": "verified",
+      "status": "approved",
       "rootSelector": "[data-s1-component=\"gnb-sub-menu\"]",
       "root": "div[data-s1-component=gnb-sub-menu][data-type]",
       "variants": [],
@@ -1061,7 +1061,7 @@
       "events": [],
       "lifecycle": [],
       "canonicalFingerprint": "dd662efbdbc2266c4f9892cdf768529348d95577044eb6ff0242afe012bc020d",
-      "sourceFingerprint": "90019b5c15d9d127ab520316a82d3e4b294f88c9a96025660032200cfcaa5189"
+      "sourceFingerprint": "684715382fbe5c602a2feb2cc0c32bb4db82f05e9ff3e1d575c4fea5ea05a745"
     },
     {
       "id": "assist-button",

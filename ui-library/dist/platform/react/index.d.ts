@@ -264,6 +264,29 @@ export interface S1DatePickerProps extends S1BaseProps {
 }
 export declare function S1DatePicker(props: S1DatePickerProps): ReactElement;
 
+export interface S1GnbProps extends S1BaseProps {
+  /** 승인된 변형: center-between · start */
+  variant?: "center-between" | "start";
+  /** 승인된 크기: md · sm · xsm */
+  size?: "md" | "sm" | "xsm";
+  /** s1:gnb:open */
+  onOpen?: (event: CustomEvent) => void;
+  /** s1:gnb:close */
+  onClose?: (event: CustomEvent) => void;
+}
+export declare function S1Gnb(props: S1GnbProps): ReactElement;
+
+export interface S1GnbSubMenuItemProps extends S1BaseProps {
+
+}
+export declare function S1GnbSubMenuItem(props: S1GnbSubMenuItemProps): ReactElement;
+
+export interface S1GnbSubMenuProps extends S1BaseProps {
+  /** 목록 데이터 — 주지 않으면 예제 내용이 그려진다. */
+  columns?: readonly S1ItemValue[];
+}
+export declare function S1GnbSubMenu(props: S1GnbSubMenuProps): ReactElement;
+
 export interface S1AssistButtonProps extends S1BaseProps {
 
 }

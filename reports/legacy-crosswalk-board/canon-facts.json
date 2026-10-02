@@ -508,7 +508,7 @@
     },
     "gnb-sub-menu-item": {
       "id": "gnb-sub-menu-item",
-      "status": "verified",
+      "status": "approved",
       "version": "0.2.4",
       "sizes": [],
       "breaks": {},
@@ -532,11 +532,11 @@
           "reason": "Depth 축은 크기·상태가 아니라 역할을 가른다 — 1depth=카테고리 제목(Bold 16), 2depth=항목(Medium 16). 두 값 모두 이 컴포넌트 하나가 낸다(build-components.ts:3807 주석)."
         }
       ],
-      "sourceFingerprint": "8d02eac6232d54082159784d9b616753cc7e5b3914e0ed9c9bdebcb9a12cbd33"
+      "sourceFingerprint": "cc95414bf7687d0ed6feb4ceab8f768069e2611a35cc52131ecb4202736f9972"
     },
     "gnb-sub-menu": {
       "id": "gnb-sub-menu",
-      "status": "verified",
+      "status": "approved",
       "version": "0.2.6",
       "sizes": [],
       "breaks": {},
@@ -550,11 +550,11 @@
         "Type=compact-2": "compact-2"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "90019b5c15d9d127ab520316a82d3e4b294f88c9a96025660032200cfcaa5189"
+      "sourceFingerprint": "684715382fbe5c602a2feb2cc0c32bb4db82f05e9ff3e1d575c4fea5ea05a745"
     },
     "gnb": {
       "id": "gnb",
-      "status": "verified",
+      "status": "approved",
       "version": "0.2.6",
       "sizes": [
         "md",
@@ -588,7 +588,7 @@
           "reason": "GNB Utility Icon 세트는 language·menu·user on/off 5변형을 갖지만, GNB 바가 실제로 쓰는 것은 all-on(GNBUtil:full) 1개뿐이다(buildGNB:3607, registry 서술). 다른 4변형은 이 컴포넌트가 배포하지 않는다 — 유틸 영역 구성을 바꾸려면 host 화면이 data-s1-part 를 골라 빼고 넣는다."
         }
       ],
-      "sourceFingerprint": "4e9255630fcbf4a9a3d53c31b0482ff67b92340964eb9b9707e1840423741383"
+      "sourceFingerprint": "445c705616a09f3b85013486f21aa2e4006a1f7516e7a4e284c5f85a18d10716"
     },
     "input": {
       "id": "input",

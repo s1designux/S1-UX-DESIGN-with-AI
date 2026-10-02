@@ -128,13 +128,58 @@ function signature(node) {
   return `${node.tag}|${attributes}|(${children})`;
 }
 
+/** 이름표(data-s1-part)가 없는 같은 모양 형제가 연달아 있으면 한 덩이(run)로 본다.
+ *  묶음마다 항목 개수가 다른 목록(칼럼마다 제목 1 + 항목 n)을 한 틀로 다루기 위한 것이다. */
+function runsOf(node) {
+  const entries = [];
+  for (const child of node.children) {
+    if (child.type !== "element") continue;
+    const last = entries[entries.length - 1];
+    if (!partOf(child) && last && last.bare && signature(last.members[0]) === signature(child)) { last.members.push(child); continue; }
+    entries.push({ members: [child], bare: !partOf(child) });
+  }
+  return entries;
+}
+
+/** 개수만 다른 것을 같은 모양으로 보는 서명 — 이름표 없는 연속 형제는 하나로 접는다. */
+function shape(node) {
+  if (!node.children.some((child) => child.type === "element")) return signature(node);
+  const attributes = node.attributes
+    .filter(([name]) => !ITEM_ATTRIBUTES.has(name.toLowerCase()))
+    .map(([name, value]) => `${name.toLowerCase()}=${value === true ? "" : value}`)
+    .sort()
+    .join(",");
+  const children = node.children
+    .filter((child) => child.type === "element")
+    .length === node.children.length
+    ? runsOf(node).map((entry) => `${shape(entry.members[0])}${entry.bare ? "*" : ""}`).join("+")
+    : signature(node);
+  return `${node.tag}|${attributes}|(${children})`;
+}
+
+/** 같은 모양이지만 이름표 없는 항목 개수가 다른 묶음인가. */
+const isVariable = (members) => {
+  const counts = (member) => runsOf(member).map((entry) => entry.members.length).join(",");
+  return members.some((member) => counts(member) !== counts(members[0]));
+};
+
+/** 묶음 안에서 "항목 목록"인 자리(어느 묶음에서든 2개 이상 연달아 나오는 덩이)의 순번. 나머지는 단독 요소(제목 등). */
+const listSlots = (members) => new Set(
+  runsOf(members[0]).map((_, index) => index).filter((index) => members.some((member) => runsOf(member)[index].members.length > 1))
+);
+
+const leafOf = (node) => {
+  const inner = node.children.find((child) => child.type === "element");
+  return inner ? leafOf(inner) : node;
+};
+
 function repeatGroups(node) {
   const groups = new Map();
   for (const child of node.children) {
     if (child.type !== "element") continue;
     const part = partOf(child);
     if (!part) continue;
-    const key = `${part}::${signature(child)}`;
+    const key = `${part}::${shape(child)}`;
     if (!groups.has(key)) groups.set(key, { part, members: [] });
     groups.get(key).members.push(child);
   }
@@ -257,9 +302,10 @@ class Emitter {
     this.nestedLists = [];
     this.hasChildrenSlot = false;
     this.counter = 0;
+    this.variableTemplates = new Map();   // 틀 요소 → 같은 묶음 구성원 전부(항목 개수가 제각각인 묶음)
   }
 
-  attributeText(node, { scope, isRoot, part, isTemplate }) {
+  attributeText(node, { scope, isRoot, part, isTemplate, leaf, extra }) {
     const pieces = [];
     for (const [name, value] of node.attributes) {
       const lower = name.toLowerCase();
@@ -279,19 +325,23 @@ class Emitter {
     if (node === this.controlNode) pieces.push("{...controlProps}");
     if (isRoot) pieces.push("ref={rootRef}", "className={className}", "style={style}", "{...rest}");
     if (isTemplate) pieces.push(`key={keyOf(item${scope.depth}, index${scope.depth})}`);
+    if (leaf && !part && isTextOnly(node) && node.children.length) pieces.push(`{...(${leaf.attrs} ?? {})}`);
+    if (extra) pieces.push(...extra);
     return pieces.length ? ` ${pieces.join(" ")}` : "";
   }
 
-  element(node, { scope, isRoot = false, isTemplate = false, indent }) {
+  element(node, { scope, isRoot = false, isTemplate = false, indent, leaf, extra }) {
     const part = partOf(node);
-    const attributes = this.attributeText(node, { scope, isRoot, part, isTemplate });
-    const children = this.childrenText(node, { scope, indent: `${indent}  `, part, isRoot });
+    const attributes = this.attributeText(node, { scope, isRoot, part, isTemplate, leaf, extra });
+    const children = this.childrenText(node, { scope, indent: `${indent}  `, part, isRoot, leaf });
     if (children === null) return `${indent}<${node.tag}${attributes} />`;
     return `${indent}<${node.tag}${attributes}>\n${children}\n${indent}</${node.tag}>`;
   }
 
-  childrenText(node, { scope, indent, part, isRoot }) {
+  childrenText(node, { scope, indent, part, isRoot, leaf }) {
     if (VOID_ELEMENTS.has(node.tag)) return null;
+    if (this.variableTemplates.has(node)) return this.variableChildren(node, { scope, indent });
+    if (leaf && !part && isTextOnly(node) && node.children.length) return `${indent}{${leaf.content(textOf(node))}}`;
     if (part && isTextOnly(node)) return `${indent}{${scope.content(part, textOf(node))}}`;
     if (node.children.length === 0) return part ? `${indent}{${scope.content(part, "")}}` : null;
 
@@ -303,7 +353,7 @@ class Emitter {
       if (repeats.get(child) === null) continue;
       if (repeats.has(child)) { pieces.push(this.listText(repeats.get(child), { scope, indent })); continue; }
       if (isRoot && !partOf(child)) { literalChildren.push(child); continue; }
-      pieces.push(this.element(child, { scope, indent }));
+      pieces.push(this.element(child, { scope, indent, leaf }));
     }
     if (literalChildren.length) {
       this.hasChildrenSlot = true;
@@ -313,9 +363,80 @@ class Emitter {
     return pieces.length ? pieces.join("\n") : null;
   }
 
+  /* 묶음마다 항목 개수가 다른 틀(제목 1 + 항목 n) — 단독 요소는 title·slot2…, 항목 덩이는 items·items2… 로 받는다.
+     묶음 하나는 { title, items } 이고, 항목은 글자 또는 { content, attrs } 이다. */
+  variableDefault(member, template, members) {
+    const lists = listSlots(members);
+    const templateRuns = runsOf(template);
+    const data = {};
+    let singles = 0;
+    let listCount = 0;
+    runsOf(member).forEach((run, index) => {
+      const twin = leafOf(templateRuns[index].members[0]);
+      const describe = (node) => {
+        const leaf = leafOf(node);
+        const attributes = itemAttributes(leaf, twin, this.ids);
+        return Object.keys(attributes).length ? { content: textOf(leaf), attrs: attributes } : textOf(leaf);
+      };
+      if (lists.has(index)) { listCount += 1; data[listCount === 1 ? "items" : `items${listCount}`] = run.members.map(describe); }
+      else { singles += 1; data[singles === 1 ? "title" : `slot${singles}`] = describe(run.members[0]); }
+    });
+    return data;
+  }
+
+  variableChildren(node, { scope, indent }) {
+    const lists = listSlots(this.variableTemplates.get(node));
+    const pieces = [];
+    let singles = 0;
+    let listCount = 0;
+    for (const [index, run] of runsOf(node).entries()) {
+      if (!lists.has(index)) {
+        singles += 1;
+        const key = singles === 1 ? "title" : `slot${singles}`;
+        const primary = singles === 1 ? "true" : "false";
+        const leaf = {
+          content: (fallback) => `slot(${scope.name}, ${literal(key)}, ${primary}).content ?? ${literal(fallback)}`,
+          attrs: `slot(${scope.name}, ${literal(key)}).attrs`
+        };
+        pieces.push(this.element(run.members[0], { scope, indent, leaf }));
+        continue;
+      }
+      listCount += 1;
+      const prop = listCount === 1 ? "items" : `items${listCount}`;
+      this.counter += 1;
+      const constant = `DEFAULT_ITEMS_${this.counter}${this.suffix}`;
+      const first = leafOf(run.members[0]);
+      this.nestedLists.push({
+        constant,
+        defaults: run.members.map((member) => {
+          const leaf = leafOf(member);
+          const attributes = itemAttributes(leaf, first, this.ids);
+          return Object.keys(attributes).length ? { content: textOf(leaf), attrs: attributes } : textOf(leaf);
+        })
+      });
+      const depth = scope.depth + 1;
+      const leaf = {
+        content: (fallback) => `slot(scope${depth}, "item", true).content ?? ${literal(fallback)}`,
+        attrs: `attrsOf(scope${depth})`
+      };
+      const body = this.element(run.members[0], {
+        scope: new ItemScope(depth), indent: `${indent}    `, leaf, extra: [`key={keyOf(item${depth}, index${depth})}`]
+      });
+      pieces.push(`${indent}{(${scope.name}.${prop} ?? ${constant}(uid)).map((item${depth}, index${depth}) => {\n`
+        + `${indent}  const scope${depth} = scopeOf(item${depth});\n`
+        + `${indent}  return (\n${body}\n${indent}  );\n`
+        + `${indent}})}`);
+    }
+    return pieces.join("\n");
+  }
+
   listText(group, { scope, indent }) {
     const template = group.members[0];
-    const defaults = group.members.map((member) => defaultItem(member, template, this.ids));
+    const variable = isVariable(group.members);
+    if (variable) this.variableTemplates.set(template, group.members);
+    const defaults = group.members.map((member) => variable
+      ? this.variableDefault(member, template, group.members)
+      : defaultItem(member, template, this.ids));
     const depth = scope.depth + 1;
     const innerScope = new ItemScope(depth);
     let source;
