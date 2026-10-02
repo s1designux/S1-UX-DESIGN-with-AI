@@ -34,6 +34,7 @@
   function apply() {
     const q = norm(input.value);
     field.classList.toggle('has-query', !!q);
+    content.classList.toggle('is-searching', !!q);
     content.querySelectorAll('.' + MISS).forEach(el => el.classList.remove(MISS));
     empty.classList.remove('is-shown');
     if (!q) return;

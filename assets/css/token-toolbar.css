@@ -54,6 +54,8 @@
   padding: 48px 0; text-align: center; font-size: 13px; color: #6b7280;
 }
 .token-search-empty.is-shown { display: block; }
+/* 남은 칸이 몇 개뿐이어도 줄 전체로 늘어나지 않게 — 검색 중에는 칸 폭 고정 */
+.page-content.is-searching .color-card { flex: 0 0 110px; }
 
 /* 섹션 nav 는 다크 테마에서도 밝은 판 그대로라 도구 모음도 밝은 판을 유지한다. 빈 결과 문구만 어두운 본문에 맞춘다 */
 [data-theme="dark"] .token-search-empty { color: #8A8C96; }
