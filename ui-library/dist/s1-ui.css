@@ -4474,7 +4474,7 @@
    data-state 양쪽으로 켜지며, Hover 가 쓰던 배경 한 단계(bg/level-1)를 그대로 쓴다.
    Disabled 는 button(Nav·Value) 의 native :disabled, 또는 상호작용 요소가 아닌 루트를 위한
    aria-disabled/data-state. ── */
-[data-s1-component="list-row"]:is([data-type="nav"], [data-type="value"]):active:not(:disabled) {
+[data-s1-component="list-row"]:is([data-type="nav"], [data-type="value"], [data-type="pick"], [data-type="agree"]):active:not(:disabled):not([aria-disabled="true"]):not([data-state="disabled"]) {
   background: var(--color-bg-level-1);
 }
 

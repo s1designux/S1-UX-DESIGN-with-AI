@@ -176,3 +176,12 @@ river 지시("둘 다 슬롯으로 바꿔줘") 반영. 정본은 이미 바뀌�
 - `registry/components/list-row.json`·`build-components.ts` 는 오케스트레이터가 이미 갱신해 둔 정본이라 손대지 않았다.
 - `workflow-state.json` 은 수정하지 않았다(오케스트레이터 소관).
 - `components:anatomy` 의 "오른쪽 칸 슬롯 속성을 찾지 못했습니다" 경고 원인 — `build-components.ts` 소관이라 판정하지 않았다(최종 PASS는 확인).
+
+## 후속 — 독립 검증 지적 반영 (2026-10-02)
+
+- F-1: example Switch 줄 토글을 켜짐(`aria-checked="true"`)으로 — 정본 buildListRow 가 세 상태 모두 Pressed=On.
+- F-2: 계약에 예시 전용 의존 필드가 없고 "사용한 코어를 dependencies.coreComponents 에 기록"(줄 자체엔 불필요)이라, radio·text-button 갈아끼움 예시 두 줄을 example 에서 걷고 manifest coreComponentsNote 에 "슬롯에 다른 부품을 갈아끼우면 그 배포본도 로드" 를 명시했다.
+- C-2: `:active` 눌림 배경을 pick·agree 까지 확대(비활성 aria-disabled·data-state=disabled 제외). manifest states.pressed 설명 정정.
+- C-3: example 그림 SVG HEX 를 currentColor+투명도로 교체(검수 화면과 같은 모양).
+- C-1(동의 줄 화살표)은 river 결정 대기라 손대지 않음.
+- 배포본 0.16.2 → 0.16.3 (patch: 상태 규칙·예시 변경, 공개 selector·구조 불변). ui:contract·ui:version·ui:build:check·ui:test:check·ui:icons·ui:zip·devpanel:gen·ui:zip:check 모두 exit 0.

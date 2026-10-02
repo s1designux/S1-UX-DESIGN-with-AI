@@ -38,31 +38,26 @@
       }
     }
   },
-  "currentPhase": "3-build",
-  "workflowStatus": "in-progress",
+  "currentPhase": "5-human-review",
+  "workflowStatus": "awaiting-user",
   "uiLibraryStatus": "draft",
-  "lastCompletedCheckpoint": 2,
-  "nextAction": "ui-library-builder 가 ui-library/src 와 생성 경로를 구현 중. 끝나면 4-verification.",
-  "ownership": {
-    "currentActor": "ui-library-builder",
-    "startedAt": "2026-09-21T00:00:00+09:00",
-    "note": "3-build 구현 중. 상태 파일은 오케스트레이터만 수정한다."
-  },
+  "lastCompletedCheckpoint": 4,
+  "nextAction": "river UX 검수 — pages/ui-review.html 26번(List Row). 승인 시 6-promotion: manifest approved → ui:build·ui:zip·devpanel:gen(React·Vue 등 전달본 자동 생성) → guide-builder 가 components.html 섹션·사이트 메뉴 등재 + component-presentation-policy managedBy · ui-library-migration approved. C-1(동의 줄 화살표) 결정 함께 받는다.",
   "canonicalInputs": [
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "51685fedf195c44eb6c0c043c465eba13195060ddb6e575bcc6adad618a30206"
+      "sha256": "43b9a91c0f5aca1a4685eba69cf83c6878e6d96be047504d1e93706af082433a"
     },
     {
       "role": "token-values",
       "path": "plugins/figma-vars-installer/src/vars-data.ts",
-      "sha256": "14c5df38e32f154da10e83370004726971c11511f0108b94719a08f109433bc0"
+      "sha256": "cb52040749c66d29ec7f0090788df3b63ebd91214b68be9992df646f68101283"
     },
     {
       "role": "text-styles",
       "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
-      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+      "sha256": "f43fa1c9ce2c1b1ffcc014a5ef57f84493327f62a011735ef3061af12a827da7"
     }
   ],
   "inventory": {
@@ -94,11 +89,30 @@
       }
     ]
   },
-  "blockers": [],
+  "blockers": [
+    {
+      "id": "C-1",
+      "kind": "needs-decision",
+      "summary": "동의 줄 오른쪽 화살표가 이름표 안 장식이라 누르면 약관 열기 대신 동의 체크가 켜진다 — 화살표를 따로 누르는 자리로 분리할지, 장식으로 둘지"
+    }
+  ],
   "evidence": {
     "sourceAudit": {
       "observedAt": "2026-09-21",
       "basis": "build-components.ts 빌드 함수 목록·ui-library/dist/components 목록·registry/components 목록 직접 확인(📖 source-reader 판독 포함)"
+    },
+    "verification": {
+      "observedAt": "2026-10-02",
+      "report": "reports/ui-library/list-row/4-verification-F.md",
+      "firstPass": "FAIL 2 (F-1 토글 꺼짐·F-2 개별 설치 깨짐) · HOLD 3 (C-1·C-2·C-3)",
+      "rework": "F-1·F-2·C-2·C-3 반영, 배포본 0.16.3. C-1 은 river 결정 대기",
+      "renders": [
+        "screens/review-pc-light.png",
+        "screens/review-pc-dark.png",
+        "screens/review-mobile-light.png",
+        "screens/review-mobile-dark.png"
+      ],
+      "deltaPass": "2026-10-02 델타 재검증 FAIL 0 · HOLD 1(C-1 river 결정)"
     }
   },
   "artifacts": {
@@ -113,7 +127,10 @@
     "guidePage": "pages/components.html",
     "migrationRecord": "registry/governance/ui-library-migration.json",
     "serviceProfile": "reports/pattern-builder/profiles/app-modu/list-row/",
-    "canonReadiness": "reports/ui-library/list-row/2-canon-readiness.md"
+    "canonReadiness": "reports/ui-library/list-row/2-canon-readiness.md",
+    "build": "reports/ui-library/list-row/3-build.md",
+    "reviewPageBuild": "reports/ui-library/list-row/3-build-review-page.md",
+    "verification": "reports/ui-library/list-row/4-verification-F.md"
   },
   "decisions": [
     {
@@ -154,7 +171,7 @@
   ],
   "handoff": {
     "lastActor": "orchestrator",
-    "updatedAt": "2026-09-21",
-    "summary": "정본 buildListRow 신설(Gate 34 승인)·registry/components/list-row.json 신설 완료. 3-build 를 ui-library-builder 에 넘김."
+    "updatedAt": "2026-10-02",
+    "summary": "별도 폴더(list-row-web)에서 재개. 검수 화면 슬롯 계약 반영 → 독립 검증 FAIL 2·HOLD 3 → 4건 수정(배포본 0.16.3) → 델타 재검증 FAIL 0·HOLD 1(C-1). river 검수 대기."
   }
 }

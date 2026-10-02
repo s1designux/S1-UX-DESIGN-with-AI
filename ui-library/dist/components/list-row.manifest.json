@@ -52,7 +52,7 @@
   },
   "states": {
     "default": "속성 생략 또는 [data-state=\"default\"]",
-    "pressed": "실제 :active(button 루트), 또는 documented [data-state=\"pressed\"] — 모바일 전용이라 Hover 가 없다(river 2026-09-21). 눌림 배경은 Hover 가 쓰던 한 단계(bg/level-1)를 그대로 쓴다.",
+    "pressed": "실제 :active(Nav·Value=button 루트, Pick·Agree=label 루트; 비활성 제외), 또는 documented [data-state=\"pressed\"] — 모바일 전용이라 Hover 가 없다(river 2026-09-21). 눌림 배경은 Hover 가 쓰던 한 단계(bg/level-1)를 그대로 쓴다.",
     "disabled": "button 의 native :disabled, 또는 [aria-disabled=\"true\"]/[data-state=\"disabled\"](div·label 루트)"
   },
   "canonicalStateMap": {
@@ -147,7 +147,7 @@
       "checkbox",
       "toggle"
     ],
-    "coreComponentsNote": "Pick·Agree 는 checkbox 코어(control 만)를, Switch 는 toggle 코어를 그대로 조립한다. list-row 를 개별 설치할 때 checkbox·toggle 의 CSS·JS 도 함께 로드해야 한다(Switch 는 toggle.js 런타임이 필요하다)."
+    "coreComponentsNote": "Pick·Agree 는 checkbox 코어(control 만)를, Switch 는 toggle 코어를 그대로 조립한다. list-row 를 개별 설치할 때 checkbox·toggle 의 CSS·JS 도 함께 로드해야 한다(Switch 는 toggle.js 런타임이 필요하다). lead·trail 슬롯에 radio·text-button 등 다른 부품을 갈아끼워 쓰는 화면은 그 부품의 배포본도 함께 로드한다(예시 페이지에는 기본 부품만 싣는다)."
   },
   "icons": [
     {
@@ -194,5 +194,5 @@
     "runtime": "none",
     "reason": "줄 모양·상태만 소유한다. 실제 이동·선택 반영·이벤트는 목록을 그리는 화면이 배선한다. Switch 의 아리아 전환은 toggle 코어 자신의 런타임이 담당한다(list-row 가 별도로 담당하지 않는다)."
   },
-  "sourceFingerprint": "83f383394c893d7911540f0baed7d7ab74fa14088c7630c993e836d5dda0612f"
+  "sourceFingerprint": "e4364f8c3ca93669d246ef4f5542adce38bcd7b06561ecb6ce130f1a94306e06"
 }
