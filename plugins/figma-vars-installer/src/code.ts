@@ -38,7 +38,7 @@ import {
 import { parseCssShadow, shadowVarName } from "./shadow-parse";
 import { installTextStyles } from "./install-textstyles";
 import { TEXT_STYLES } from "./textstyles-data";
-import { buildAllComponents, COMPONENT_CATEGORIES } from "./build-components";
+import { buildAllComponents, COMPONENT_CATEGORIES, findAllOfTypes } from "./build-components";
 import { buildTokenSheets } from "./build-token-sheets";
 import { PATTERNS } from "./pattern-data";
 import { buildPattern } from "./build-patterns";
@@ -1119,6 +1119,10 @@ async function runInstall(
   options: { stampCompleteGuide?: boolean; updateFlow?: boolean } = {},
 ): Promise<"ok" | "error" | "cancelled"> {
   CANCEL_INSTALL = false;   // 새 설치 시작 — 지난 중단 신호를 물려받지 않는다
+  // 걸린 시간을 단계별로 잰다 — 완료 화면에 한 줄로 보여 어디가 오래 걸리는지 사람이 바로 본다(river 2026-10-02).
+  const tStart = Date.now();
+  let tComponents = 0;
+  let tSheets = 0;
   try {
     if (!sel.foundation && !sel.semantic && !sel.textStyles && !sel.components) {
       throw new Error("설치할 항목을 하나 이상 선택하세요.");
@@ -1243,6 +1247,7 @@ async function runInstall(
         throw new Error("컴포넌트 세트 생성에는 Foundation 이 필요합니다. Foundation 도 함께 선택하거나 먼저 설치하세요.");
       }
       post("progress", { step: "컴포넌트 생성 중…", pct: 92 });
+      const tc = Date.now();
       const compResult = await buildAllComponents(
         {
           semanticColor: semanticColorMap,
@@ -1268,6 +1273,7 @@ async function runInstall(
       componentNoRunner = compResult.noRunner;    // 빌더 미등록으로 건너뛴 것(Gate 30 이 커밋 단계에서 차단)
       componentDegraded = compResult.degraded;    // 부품 누락으로 불완전하게 완성된 것
       componentRawPaints = compResult.rawPaints;  // 토큰에 연결되지 않은 색이 남은 자리(있으면 완료 화면에 표시)
+      tComponents = Date.now() - tc;
     }
 
     throwIfCancelled();
@@ -1280,6 +1286,8 @@ async function runInstall(
     let sheetNumbers = 0;
     let sheetSkipped: string[] = [];
     let sheetError = "";
+    let sheetReused = false;
+    const ts0 = Date.now();
     try {
       const semanticNumberMap = await loadExistingVarMap(SEMANTIC_NUMBER_COLLECTION, "FLOAT");
       const sheet = await buildTokenSheets(
@@ -1305,6 +1313,7 @@ async function runInstall(
       sheetStyles = sheet.styles;
       sheetNumbers = sheet.numbers;
       sheetSkipped = sheet.skipped;
+      sheetReused = sheet.reused === true;
     } catch (e) {
       // 견본 시트가 실패해도 설치 자체를 깨지 않는다 — 대신 완료 화면에 빠진 사실을 알린다.
       const reason = e instanceof Error ? e.message : String(e);
@@ -1313,6 +1322,7 @@ async function runInstall(
       // 재료가 없어 건너뛴 것과 **도중에 터진 것**은 원인이 다르다 — 화면에 그대로 구분해 알린다.
       sheetError = reason;
     }
+    tSheets = Date.now() - ts0;
 
     const componentProblems = componentFailed.length + componentNoRunner.length + componentDegraded.length;
     if (options.updateFlow && componentProblems > 0) {
@@ -1360,6 +1370,8 @@ async function runInstall(
       sheetNumbers,
       sheetSkipped,
       sheetError,
+      sheetReused,
+      elapsed: { totalMs: Date.now() - tStart, componentsMs: tComponents, sheetsMs: tSheets },
       removedCount: removedAll.length,
       removedNames: removedAll,
       guideUpdated: options.updateFlow === true,
@@ -1673,7 +1685,7 @@ async function removeInstalledComponents(): Promise<void> {
       await new Promise<void>((r) => setTimeout(r, 0));
       let found: SceneNode[] = [];
       try {
-        const r = page.findAll((n) => n.type === "SECTION" && n.name === cat.name);
+        const r = findAllOfTypes(page, ["SECTION"], (n) => n.name === cat.name);
         if (Array.isArray(r)) found = r as SceneNode[];
       } catch (e) { /* mock/page 없음 → 스킵 */ }
       for (const n of found) {

@@ -144,9 +144,36 @@ function textStyleKey(fontSize: number, style: string): string {
   return `${letter === "B" ? "title" : "body"}/${size}${letter}`;
 }
 
+/** 페이지 전체에서 **종류(type)가 맞는 노드만** 골라 조건으로 거른다.
+ *  findAll(콜백)은 페이지의 노드 하나하나마다 자바스크립트 함수를 불러, 부품이 깔린 큰 페이지에서는
+ *  한 번에 수 초씩 걸린다. 설치 한 번에 이런 전체 훑기가 수십 번 돌아 설치 시간을 늘렸다(2026-10-02).
+ *  findAllWithCriteria 는 종류 거르기를 Figma 가 직접 하므로 훨씬 빠르고, 찾는 범위·순서는 같다.
+ *  API 가 없는 환경(키체크용 가짜 Figma)에서는 종전 findAll 경로를 그대로 탄다 — 결과 지문이 바뀌지 않게. */
+export function findAllOfTypes(
+  root: PageNode | SceneNode, types: NodeType[], pred: (n: SceneNode) => boolean = () => true,
+): SceneNode[] {
+  try {
+    const hits = (root as any).findAllWithCriteria({ types });
+    if (Array.isArray(hits)) return (hits as SceneNode[]).filter(pred);
+  } catch (e) { /* 구버전·가짜 환경 → 아래 종전 경로 */ }
+  return (root as any).findAll((n: SceneNode) => types.indexOf(n.type as NodeType) >= 0 && pred(n));
+}
+
+/** findAllOfTypes 의 첫 번째 것(findOne 대체). 없는 환경에서는 종전 findOne 경로. */
+function findOneOfType(root: PageNode, types: NodeType[], pred: (n: SceneNode) => boolean): SceneNode | null {
+  try {
+    const hits = (root as any).findAllWithCriteria({ types });
+    if (Array.isArray(hits)) {
+      for (const n of hits as SceneNode[]) if (pred(n)) return n;
+      return null;
+    }
+  } catch (e) { /* 구버전·가짜 환경 → 아래 종전 경로 */ }
+  return (root as any).findOne((n: SceneNode) => types.indexOf(n.type as NodeType) >= 0 && pred(n));
+}
+
 async function getBuiltSet(name: string): Promise<ComponentSetNode | null> {
   if (BUILT_SETS[name]) return BUILT_SETS[name];
-  try { const f = figma.currentPage.findOne((n) => n.type === "COMPONENT_SET" && n.name === name); return (f as ComponentSetNode) || null; } catch (e) { return null; }
+  try { const f = findOneOfType(figma.currentPage, ["COMPONENT_SET"], (n) => n.name === name); return (f as ComponentSetNode) || null; } catch (e) { return null; }
 }
 
 /** 세트 안의 변형 컴포넌트를 BUILT_COMPS → 캔버스 순으로 찾고, 찾으면 BUILT_COMPS 에 **재등록**한다.
@@ -170,7 +197,7 @@ async function reuseVariant(setName: string, cacheKey: string, matches: string[]
 async function getBuiltComp(name: string): Promise<ComponentNode | null> {
   if (BUILT_COMPS[name]) return BUILT_COMPS[name];
   try {
-    const f = figma.currentPage.findOne((n) => n.type === "COMPONENT" && n.name === name && (!n.parent || n.parent.type !== "COMPONENT_SET"));
+    const f = findOneOfType(figma.currentPage, ["COMPONENT"], (n) => n.name === name && (!n.parent || n.parent.type !== "COMPONENT_SET"));
     return (f as ComponentNode) || null;
   } catch (e) { return null; }
 }
@@ -8191,7 +8218,7 @@ export async function buildAllComponents(
   const sectionByName = (nm: string): SectionNode | null => {
     let found: SectionNode | null = null;
     try {
-      const hits = page.findAll((n) => n.type === "SECTION" && n.name === nm);
+      const hits = findAllOfTypes(page, ["SECTION"], (n) => n.name === nm);
       if (Array.isArray(hits) && hits.length) found = hits[0] as SectionNode;
     } catch (e) {
       try {
@@ -8218,7 +8245,7 @@ export async function buildAllComponents(
   };
   let existing = new Set<string>();
   try {
-    const r = page.findAll((n) => n.type === "COMPONENT_SET");
+    const r = findAllOfTypes(page, ["COMPONENT_SET"]);
     if (Array.isArray(r)) existing = new Set((r as ComponentSetNode[]).map((n) => n.name));
   } catch (e) { /* mock/no-page → fresh */ }
 
@@ -8365,8 +8392,8 @@ export async function buildAllComponents(
   //   꺼내 놓으면 아래 1단계가 "보존한 기존 부품"으로 알아보고 새 카테고리 소유로 등록한다.
   try {
     const RETIRED = ["Line Tab", "Pagination", "Filter Chip", "Modal", "Bottom Sheet"];
-    const olds = figma.currentPage.findAll(
-      (n) => n.type === "SECTION" && RETIRED.indexOf(String(n.name)) >= 0,
+    const olds = findAllOfTypes(figma.currentPage, ["SECTION"],
+      (n) => RETIRED.indexOf(String(n.name)) >= 0,
     ) as SectionNode[];
     if (Array.isArray(olds)) {
       for (const sec of olds) {
@@ -8612,7 +8639,7 @@ export async function buildAllComponents(
   //   mock(키체크) 환경은 createSection/relocate no-op → 가드로 통과.
   try {
     const findSec = (nm: string): SectionNode | null => {
-      const a = figma.currentPage.findAll((n) => n.type === "SECTION" && n.name === nm);
+      const a = findAllOfTypes(figma.currentPage, ["SECTION"], (n) => n.name === nm);
       return Array.isArray(a) && a.length ? (a[0] as SectionNode) : null;
     };
     const widthOf = (s: SectionNode): number => {
@@ -8688,7 +8715,7 @@ export async function buildAllComponents(
     // 바깥 묶음("Mobile Pattern")은 걷어낸다(river 지시 2026-09-28) — 묶음 안 묶음 대신
     //   아주 큰 영역 제목으로 구분한다. 섹션을 그냥 지우면 자식까지 지워지므로 먼저 꺼낸다.
     try {
-      const mps = figma.currentPage.findAll((n) => n.type === "SECTION" && n.name === "Mobile Pattern");
+      const mps = findAllOfTypes(figma.currentPage, ["SECTION"], (n) => n.name === "Mobile Pattern");
       if (Array.isArray(mps)) {
         for (const mp of mps as SectionNode[]) {
           let kids: SceneNode[] = [];
@@ -8872,10 +8899,11 @@ export const AREA_RULE_GAP = 40;                 // 제목 글자와 줄 사이
 /** 같은 이름의 옛 영역 제목과 그 줄을 걷어낸다(멱등). 이 이름은 설치기만 쓴다. */
 export function removeAreaTitle(label: string): void {
   try {
-    const olds = figma.currentPage.findAll(
+    // 설치기가 만든 제목은 글자(TEXT), 옆 줄은 사각형(RECTANGLE)뿐이다 — 그 종류만 찾는다(속도).
+    const olds = findAllOfTypes(figma.currentPage, ["TEXT", "RECTANGLE", "FRAME", "LINE"],
       (n) => String(n.name) === `${label} ${AREA_TITLE_SUFFIX}`
         || String(n.name) === `${label} ${AREA_RULE_SUFFIX}`,
-    ) as SceneNode[];
+    );
     if (Array.isArray(olds)) for (const n of olds) { try { n.remove(); } catch (e) { /* 이미 지워짐 */ } }
   } catch (e) { /* mock/no-page */ }
 }
@@ -8940,7 +8968,7 @@ export const AREA_TITLE_SPACE = Math.round(AREA_TITLE_SIZE * 1.3) + 280;
 //  · 색은 전부 Variable 바인딩 — H2. 면=Foundation gray/700(Semantic 에 '진한 면' 역할이 없다 · river
 //    지시 2026-09-28 로 진하기 3회 조정), 글자=Semantic text/state/accent-inverse. 테두리는 쓰지 않는다.
 //  · 모서리는 Foundation radius/16 바인딩, 글자는 정본 텍스트 스타일 바인딩 — H3.
-const SECTION_HEADER_SUFFIX = "— Section Header";
+export const SECTION_HEADER_SUFFIX = "— Section Header";
 const SECTION_HEADER_H = 104;
 const SECTION_RADIUS_TOKEN = "radius/16";   // 섹션·머리띠 모서리 둥글기 = 정본 숫자 토큰
 const SECTION_RADIUS = 16;                  // 위 토큰의 값(Variable 바인딩이 안 될 때만 쓰는 대체값)
@@ -9037,9 +9065,10 @@ async function buildSectionHeaderInner(
   // 섹션 밖으로 꺼내진 옛 머리띠도 걷어낸다 — 섹션 직속만 보면 페이지에 영구 고아가 쌓인다
   //   (🤖 component-verifier 지적 2026-09-23). 이 이름은 설치기만 쓰므로 이름으로 지워도 안전하다.
   try {
-    const stale = figma.currentPage.findAll(
+    // 머리띠는 설치기가 늘 틀(FRAME)로 만든다 — 그 종류만 찾는다(속도).
+    const stale = findAllOfTypes(figma.currentPage, ["FRAME", "GROUP", "RECTANGLE", "TEXT"],
       (n) => String(n.name) === `${title} ${SECTION_HEADER_SUFFIX}`,
-    ) as SceneNode[];
+    );
     if (Array.isArray(stale)) for (const n of stale) { try { n.remove(); } catch (e) { /* 이미 지워짐 */ } }
   } catch (e) { /* mock/no-page */ }
   const band = figma.createFrame();
@@ -9130,7 +9159,7 @@ export async function wrapCategoryInSection(
   // 같은 이름 섹션 재사용(멱등) 또는 신규 생성
   let section: SectionNode | null = null;
   try {
-    const secs = figma.currentPage.findAll((n) => n.type === "SECTION" && n.name === title);
+    const secs = findAllOfTypes(figma.currentPage, ["SECTION"], (n) => n.name === title);
     if (Array.isArray(secs) && secs.length) section = secs[0] as SectionNode;
   } catch (e) { /* mock → 신규 */ }
   if (!section) section = figma.createSection();
