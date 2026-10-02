@@ -1,0 +1,56 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>승격 4종 남은 결정</title>
+<link rel="stylesheet" href="../../../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../../../assets/css/typography.css">
+<link rel="stylesheet" href="../../../../ui-library/dist/s1-ui.css">
+<style>
+body{margin:0;padding:28px;font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;background:#fff;color:#222}
+h1{font-size:20px;margin:0 0 4px}.s{color:#666;font-size:13px;margin:0 0 24px}
+section{border-top:1px solid #ddd;padding:20px 0}
+h2{font-size:16px;margin:0 0 6px}.q{font-size:13px;color:#444;margin:0 0 14px}
+.row{display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap}
+.opt{min-width:260px}.opt h3{font-size:13px;margin:0 0 8px}.opt h3 b{color:#1d6ceb}
+.zoom{zoom:3;transform-origin:0 0}
+.m{font:12px monospace;color:#555;margin-top:6px}
+/* 선택지 A: 테두리를 자리 안 차지하게(안쪽 그림자) */
+.inset [data-s1-component="expandable-card"]{border:0 !important;outline:1px solid var(--color-line-default);outline-offset:-1px}
+.canon [data-s1-component="data-tag"]{border:0 !important;line-height:1.3 !important;outline:1px solid var(--color-tag-line-border-blue);outline-offset:-1px}
+.canon [data-s1-component="data-tag"][data-solid="on"]{outline-color:var(--color-tag-solid-bg-blue)}
+.lh [data-s1-component="data-tag"]{line-height:1.3 !important}
+.list{width:300px;border:1px dashed #ccc}.list .it{padding:12px 20px;font-size:14px}
+</style></head><body>
+<h1>승격 4종 — 남은 결정 3가지</h1>
+<p class="s">왼쪽이 지금 웹 배포본, 오른쪽이 정본(Figma)에 맞춘 모양. 부품은 3배 확대. 숫자는 실제 크기(px).</p>
+
+<section>
+<h2>① 테두리가 자리를 차지하는 문제 (펼침 카드 · LNB · 뱃지)</h2>
+<p class="q">웹은 테두리 1px 이 안쪽 자리를 먹어서 글자·아이콘이 정본보다 1px 안쪽에 있고 카드가 2px 커요. 정본처럼 테두리를 겹쳐 그리면 정확히 같아져요.</p>
+<div class="row">
+ <div class="opt" style="width:340px"><h3>지금 — 펼침 카드</h3><div data-s1-component="expandable-card" id="c1" style="width:340px"><button type="button" data-s1-part="header" aria-expanded="false"><span data-s1-part="text"><span data-s1-part="title">타이틀</span><span data-s1-part="subtitle">서브타이틀</span></span><span data-s1-part="toggle-icon" aria-hidden="true"></span></button></div><div class="m" id="mc1"></div></div>
+ <div class="opt inset" style="width:340px"><h3><b>A</b> 정본과 같게</h3><div data-s1-component="expandable-card" id="c2" style="width:340px"><button type="button" data-s1-part="header" aria-expanded="false"><span data-s1-part="text"><span data-s1-part="title">타이틀</span><span data-s1-part="subtitle">서브타이틀</span></span><span data-s1-part="toggle-icon" aria-hidden="true"></span></button></div><div class="m" id="mc2"></div></div>
+</div>
+</section>
+
+<section>
+<h2>② 뱃지 높이</h2>
+<p class="q">웹은 글자를 가운데 맞추려고 줄 높이를 1로 줄여 26px (9/29 river 결정). 정본(Figma)은 본문 12 스타일(130%)에 테두리를 겹쳐 그려 27.6px. 뱃지는 ①과 ②를 같이 정해야 정본과 똑같아져요.</p>
+<div class="row">
+ <div class="opt"><h3>지금 웹 (26px)</h3><div class="zoom"><span data-s1-component="data-tag" data-shape="square" data-solid="on" data-tone="blue" id="t3">승인</span></div><div class="m" id="m3"></div></div>
+ <div class="opt canon"><h3>정본 Figma 값 (27.6px)</h3><div class="zoom"><span data-s1-component="data-tag" data-shape="square" data-solid="on" data-tone="blue" id="t4">승인</span></div><div class="m" id="m4"></div></div>
+</div>
+</section>
+
+<section>
+<h2>③ 구분선의 "글자 들여쓰기" 옵션</h2>
+<p class="q">웹 구분선에만 좌우 20px 들여쓰는 옵션이 있어요. 정본은 "들여쓰기는 구분선을 담는 목록이 정한다"고 적어 두었어요. 모양은 같고, 옵션을 부품이 갖느냐 목록이 갖느냐의 차이예요.</p>
+<div class="row">
+ <div class="opt"><h3>부품 옵션으로 들여쓰기 (지금)</h3><div class="list"><div class="it">목록 항목 1</div><div data-s1-component="divider" data-axis="x" data-inset="text"></div><div class="it">목록 항목 2</div></div></div>
+ <div class="opt"><h3>목록이 들여쓰기 (정본 원칙)</h3><div class="list"><div class="it">목록 항목 1</div><div style="padding:0 20px"><div data-s1-component="divider" data-axis="x"></div></div><div class="it">목록 항목 2</div></div></div>
+</div>
+</section>
+<script>
+const r=id=>document.getElementById(id).getBoundingClientRect();
+const z=(id,s=3)=>{const b=r(id);return (b.width/s).toFixed(1)+' × '+(b.height/s).toFixed(1)};
+m3.textContent=z('t3');m4.textContent=z('t4');
+const c=id=>{const b=r(id);const t=document.querySelector('#'+id+' [data-s1-part=title]').getBoundingClientRect();return '높이 '+b.height.toFixed(1)+' · 글자 시작 x '+(t.left-b.left).toFixed(0)};
+mc1.textContent=c('c1');mc2.textContent=c('c2');
+</script></body></html>
