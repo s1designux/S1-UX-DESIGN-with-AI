@@ -147,7 +147,7 @@
       "quote": "LNB 상태를 승인으로 바꾸고, 저장해서 원본 기본 버전(main)에 합친 뒤 올려줘",
       "scope": "LNB 한 부품만 approved — Expandable Card · Divider · Data Tag 는 candidate 그대로",
       "verification": "reports/figma-library-build/side-nav/4-verification.md 재검증 PASS(🤖 component-verifier, Gate 13 기록 11ff4314f59c8a9f)",
-      "openDecisions": "펼침 폭 240·280 · 로고 자리 150·178 raw(크기 토큰 부재) · 다크 메뉴명 밝기(B-3) — needs-decision 유지"
+      "openDecisions": "다크 메뉴명 밝기(B-3) — needs-decision 유지. 펼침 폭 240·280 은 D-8 로 raw 유지 확정."
     }
   },
   "artifacts": {
@@ -214,6 +214,13 @@
       "by": "river",
       "decision": "LNB 를 승인(approved)으로 올린다",
       "quote": "LNB 상태를 승인으로 바꾸고, 저장해서 원본 기본 버전(main)에 합친 뒤 올려줘"
+    },
+    {
+      "id": "D-8",
+      "at": "2026-10-02",
+      "by": "river",
+      "decision": "LNB 펼침 폭 240·280(로고 자리 150·178 포함)은 크기 토큰을 만들지 않고 raw 값 그대로 쓴다",
+      "quote": "지금 숫자 그대로 둘게"
     }
   ],
   "handoff": {
