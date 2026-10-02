@@ -23,7 +23,7 @@
  */
 
 import type { BuildMaps } from "./build-components";
-import { boundPaint, setMode, wrapCategoryInSection, primeSpecMaps, buildAreaTitle, AREA_TITLE_SPACE, AREA_TITLE_SUFFIX, AREA_RULE_SUFFIX } from "./build-components";
+import { boundPaint, setMode, findAllOfTypes, wrapCategoryInSection, primeSpecMaps, buildAreaTitle, AREA_TITLE_SPACE, AREA_TITLE_SUFFIX, AREA_RULE_SUFFIX, SECTION_HEADER_SUFFIX } from "./build-components";
 import { FOUNDATION_COLOR, FOUNDATION_NUMBER, SEMANTIC_COLOR, SEMANTIC_NUMBER } from "./vars-data";
 import { TEXT_STYLES as TEXT_STYLE_DEFS, TEXT_STYLE_FONT_FAMILY } from "./textstyles-data";
 
@@ -38,7 +38,15 @@ export interface TokenSheetResult {
   styles: number;          // 글자 표본 줄 수
   numbers: number;         // 숫자 토큰 줄 수
   skipped: string[];       // 재료가 없어 건너뛴 시트
+  reused?: boolean;        // 같은 판이 이미 있어 다시 그리지 않음
 }
+
+// 견본판 모양을 정하는 소스의 지문 — 빌드 때 넣는다(scripts/lib/token-sheet-fingerprint.js).
+//   빈 값이면(빌드 스크립트 밖에서 묶은 경우) 건너뛰기를 하지 않고 늘 새로 그린다.
+declare const __TOKEN_SHEET_FINGERPRINT__: string;
+const SHEET_BUILD_FP: string = typeof __TOKEN_SHEET_FINGERPRINT__ === "string" ? __TOKEN_SHEET_FINGERPRINT__ : "";
+// 깔린 판에 붙여 두는 표식(섹션 pluginData). 값 = 아래 sheetStamp() + 판 개수.
+const SHEET_STAMP_KEY = "s1.tokenSheetStamp";
 
 // 시트 섹션 이름 — 재설치 때 이 이름으로 옛 시트를 걷어낸다.
 export const TOKEN_SHEET_SECTIONS = [
@@ -429,15 +437,127 @@ async function buildNumber(maps: TokenSheetMaps): Promise<{ frame: FrameNode; co
   return { frame: f, count };
 }
 
+// ── 같은 판이 이미 있으면 건너뛰기 (river 2026-10-02 — 설치 시간 줄이기) ─────────────
+//   판의 색·글자는 변수·텍스트 스타일에 **묶여** 있어, 값만 바뀐 재설치라면 이미 깔린 판이 저절로 따라간다.
+//   그래서 다시 그려야 하는 경우는 셋뿐이다: ①판 그리는 소스·토큰 목록이 바뀜(빌드 지문)
+//   ②판이 가리키는 변수·스타일이 새로 만들어짐(id 가 바뀌면 옛 판의 묶음이 끊긴다) ③판이 지워졌거나 모자람.
+//   셋 다 아니면 그대로 두고 지난번 개수를 그대로 알린다.
+
+/** 판이 묶이는 재료의 신원(id)과 판 구성 조건을 한 줄로 — 짧은 해시로 줄인다. */
+function sheetStamp(maps: TokenSheetMaps, flags: string): string {
+  const parts: string[] = [SHEET_BUILD_FP, flags,
+    String(maps.semanticColorCollectionId || ""), String(maps.semanticLightModeId || ""), String(maps.semanticDarkModeId || "")];
+  const add = (tag: string, rec: Record<string, { id: string }> | undefined) => {
+    if (!rec) return;
+    for (const k of Object.keys(rec).sort()) {
+      let id = ""; try { id = String(rec[k].id); } catch (e) { /* */ }
+      parts.push(`${tag}:${k}=${id}`);
+    }
+  };
+  add("fc", maps.foundationColor); add("sc", maps.semanticColor);
+  add("fn", maps.foundationNumber); add("sn", maps.semanticNumber);
+  add("ts", maps.textStyles as unknown as Record<string, { id: string }>);
+  // FNV-1a 32비트 두 벌(정방향·역방향) — 충돌 걱정 없이 짧게.
+  const text = parts.join("\n");
+  let h1 = 0x811c9dc5, h2 = 0x811c9dc5;
+  for (let i = 0; i < text.length; i++) {
+    h1 = Math.imul(h1 ^ text.charCodeAt(i), 0x01000193) >>> 0;
+    h2 = Math.imul(h2 ^ text.charCodeAt(text.length - 1 - i), 0x01000193) >>> 0;
+  }
+  return `${SHEET_BUILD_FP}-${h1.toString(16)}${h2.toString(16)}`;
+}
+
+// 판 배치 수치 — 그리기 경로와 건너뛰기 경로가 같은 값을 쓴다.
+const SHEET_PAD = 64;           // 섹션 안쪽 좌우·아래 여백(wrapCategoryInSection 과 같은 값)
+const SHEET_TITLE_SPACE = 140;  // 섹션 머리말 자리
+
+// 판 안의 그림 수를 셀 때 보는 종류 — 판이 만드는 것은 틀·글자·사각형뿐이고, 나머지는 여유분이다.
+const SHEET_NODE_TYPES: NodeType[] = ["FRAME", "TEXT", "RECTANGLE", "LINE", "ELLIPSE", "GROUP", "VECTOR", "INSTANCE"];
+
+/** 섹션 안 그림 수(머리띠 포함). 셀 수 없는 환경이면 -1 → 건너뛰지 않는다. */
+function countSheetNodes(sec: SectionNode): number {
+  try {
+    const hits = (sec as any).findAllWithCriteria({ types: SHEET_NODE_TYPES });
+    return Array.isArray(hits) ? hits.length : -1;
+  } catch (e) { return -1; }
+}
+
+interface ReuseHit {
+  result: TokenSheetResult;
+  sections: SectionNode[];
+  totalW: number;
+  offX: number;   // 색 섹션 x − 판 원점 x (그렸을 때 기준)
+  offY: number;
+}
+
+/** 기대하는 판 섹션이 전부 한 장씩 있고, 표식·머리띠·그림 수가 그렸을 때와 같으면 재사용 정보를 돌려준다.
+ *  그림 수까지 대조한다 — 섹션에는 머리띠가 늘 들어 있어 "비어 있지 않음"만으로는 판 일부를 지운 것을 못 잡는다
+ *  (🤖 component-verifier 2026-10-02 a-3). 머리띠가 없는 판도 다시 그린다. */
+function reuseExistingSheets(stamp: string, titles: string[], skipped: string[]): ReuseHit | null {
+  if (!SHEET_BUILD_FP) return null;
+  const sections: SectionNode[] = [];
+  let saved: { swatches: number; styles: number; numbers: number; totalW: number; offX: number; offY: number } | null = null;
+  for (const title of titles) {
+    const secs = findAllOfTypes(figma.currentPage, ["SECTION"], (n) => n.name === title);
+    if (secs.length !== 1) return null;
+    const sec = secs[0] as SectionNode;
+    try { if (!sec.parent || sec.parent.type !== "PAGE") return null; } catch (e) { return null; }
+    let hasHeader = false;
+    try {
+      for (const k of sec.children) {
+        const nm = String(k.name);
+        if (nm.length >= SECTION_HEADER_SUFFIX.length && nm.slice(nm.length - SECTION_HEADER_SUFFIX.length) === SECTION_HEADER_SUFFIX) { hasHeader = true; break; }
+      }
+    } catch (e) { return null; }
+    if (!hasHeader) return null;
+    let raw = "";
+    try { raw = sec.getPluginData(SHEET_STAMP_KEY); } catch (e) { return null; }
+    if (!raw) return null;
+    try {
+      const v = JSON.parse(raw);
+      if (!v || v.stamp !== stamp) return null;
+      const n = countSheetNodes(sec);
+      if (n < 0 || n !== Number(v.nodes)) return null;
+      if (typeof v.totalW !== "number" || typeof v.offX !== "number" || typeof v.offY !== "number") return null;
+      saved = { swatches: Number(v.swatches) || 0, styles: Number(v.styles) || 0, numbers: Number(v.numbers) || 0,
+        totalW: v.totalW, offX: v.offX, offY: v.offY };
+    } catch (e) { return null; }
+    sections.push(sec);
+  }
+  if (!saved || !sections.length) return null;
+  return {
+    result: { sections: titles.slice(), swatches: saved.swatches, styles: saved.styles, numbers: saved.numbers, skipped: skipped.slice(), reused: true },
+    sections, totalW: saved.totalW, offX: saved.offX, offY: saved.offY,
+  };
+}
+
+/** 새로 그린 판 섹션마다 표식을 남긴다(다음 설치의 건너뛰기 판단용).
+ *  판 원점과 색 섹션의 거리도 함께 적는다 — 다음 설치에서 부품이 새로 깔려 빈자리가 바뀌면 판을 그만큼 옮긴다. */
+function stampSheets(stamp: string, result: TokenSheetResult, totalW: number, origin: { x: number; y: number }): void {
+  if (!SHEET_BUILD_FP) return;
+  const color = findAllOfTypes(figma.currentPage, ["SECTION"], (n) => n.name === result.sections[0]);
+  if (color.length !== 1) return;
+  let offX = 0, offY = 0;
+  try { offX = (color[0] as SectionNode).x - origin.x; offY = (color[0] as SectionNode).y - origin.y; } catch (e) { return; }
+  for (const title of result.sections) {
+    for (const sec of findAllOfTypes(figma.currentPage, ["SECTION"], (n) => n.name === title)) {
+      const nodes = countSheetNodes(sec as SectionNode);
+      if (nodes < 0) continue;   // 셀 수 없으면 표식을 남기지 않는다 → 다음에도 다시 그린다
+      const value = JSON.stringify({ stamp, swatches: result.swatches, styles: result.styles, numbers: result.numbers, nodes, totalW, offX, offY });
+      try { sec.setPluginData(SHEET_STAMP_KEY, value); } catch (e) { /* 표식 실패 → 다음엔 다시 그릴 뿐 */ }
+    }
+  }
+}
+
 // ── 배치 · 멱등 정리 ─────────────────────────────────────────────────────────
 
 /** 옛 시트를 통째로 걷어낸다(섹션 + 그 안의 내용). 시트 이름은 설치기만 쓰는 이름이다. */
 function removeOldSheets(): void {
   let sections: SceneNode[] = [];
   try {
-    sections = figma.currentPage.findAll(
-      (n) => n.type === "SECTION" && TOKEN_SHEET_SECTIONS.indexOf(n.name) >= 0,
-    ) as SceneNode[];
+    sections = findAllOfTypes(figma.currentPage, ["SECTION"],
+      (n) => TOKEN_SHEET_SECTIONS.indexOf(n.name) >= 0,
+    );
   } catch (e) { return; }
   if (!Array.isArray(sections)) return;
   for (const s of sections) { try { s.remove(); } catch (e) { /* 이미 지워짐 */ } }
@@ -522,6 +642,32 @@ export async function buildTokenSheets(
   //   한 섹션 안의 판은 **세로로 쌓는다** — 공통 역할색(Semantic)이 기본 팔레트(Foundation) 아래로 간다.
   //   한 섹션 = 세로로 쌓은 판 묶음(col) 여러 개를 좌우로. 색은 한 섹션 안에서 라이트|다크 두 줄기다.
   const rows: { title: string; cols: FrameNode[][] }[][] = [];
+
+  // 같은 판이 이미 깔려 있으면 다시 그리지 않는다. 기대 판 목록·건너뜀 안내는 아래 그리기와 같은 조건으로 만든다.
+  const expectTitles = ["Tokens · Color"];
+  if (hasAllStyles) expectTitles.push("Tokens · Typography");
+  if (hasNumbers) expectTitles.push("Tokens · Number");
+  const expectSkipped: string[] = [];
+  if (!hasFoundationColor) expectSkipped.push("Foundation 팔레트 판 — 기본 팔레트 변수가 이 파일에 없습니다");
+  if (!hasDarkMode) expectSkipped.push("색 Dark 섹션 — 이 파일에 Dark 모드가 없습니다");
+  if (!hasAllStyles) expectSkipped.push("글자 판 — 글자 스타일 일부가 이 파일에 없습니다");
+  if (!hasNumbers) expectSkipped.push("숫자 판 — 간격·반경 변수가 이 파일에 없습니다");
+  const stamp = sheetStamp(maps, [hasFoundationColor, hasDarkMode, hasAllStyles, hasNumbers].map((b) => (b ? 1 : 0)).join(""));
+  const reused = reuseExistingSheets(stamp, expectTitles, expectSkipped);
+  if (reused) {
+    if (onProgress) onProgress("토큰 견본 — 이미 최신이라 그대로 둡니다", 98);
+    // 자리는 다시 잡는다 — 그사이 부품이 새로 깔려 왼쪽 빈자리가 바뀌었으면 판이 부품과 겹친다
+    //   (🤖 component-verifier 2026-10-02 a-1: 토큰만 먼저 깔고 나중에 부품을 깐 경우). 새로 그릴 때와 같은 계산.
+    const origin = originLeftOfContent(reused.totalW, reused.sections);
+    const dx = origin.x - (reused.sections[0].x - reused.offX);
+    const dy = origin.y - (reused.sections[0].y - reused.offY);
+    if (dx !== 0 || dy !== 0) {
+      for (const sec of reused.sections) { try { sec.x += dx; sec.y += dy; } catch (e) { /* */ } }
+    }
+    await buildAreaTitle("Tokens", origin.x - SHEET_PAD, origin.y - SHEET_TITLE_SPACE - AREA_TITLE_SPACE, reused.totalW);
+    return reused.result;
+  }
+
   try {
     if (onProgress) onProgress("토큰 견본 — 색 시트 그리는 중…", 96);
     // 색은 **라이트 섹션 / 다크 섹션 두 덩어리**로 나눈다(river 요청 2026-09-23).
@@ -584,8 +730,8 @@ export async function buildTokenSheets(
   removeOldSheets();
 
   // 실제 폭 합으로 왼쪽 빈자리를 잡는다 — 어림값을 쓰지 않는다(겹침 위험 제거).
-  const PAD = 64;             // 섹션 안쪽 좌우·아래 여백(wrapCategoryInSection 과 같은 값)
-  const TITLE_SPACE = 140;    // 섹션 머리말 자리
+  const PAD = SHEET_PAD;
+  const TITLE_SPACE = SHEET_TITLE_SPACE;
   const STACK_GAP = 120;      // 한 섹션 안에서 판과 판 사이(세로)
   const SECTION_GAP = 240;    // 같은 줄의 섹션끼리(가로)
   const ROW_GAP = 320;        // 줄과 줄 사이(세로)
@@ -646,5 +792,6 @@ export async function buildTokenSheets(
     rowY = bottom + PAD + ROW_GAP + TITLE_SPACE;
   }
 
+  stampSheets(stamp, result, totalW, origin);
   return result;
 }
