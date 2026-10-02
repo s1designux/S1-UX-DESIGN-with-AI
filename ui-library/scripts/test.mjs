@@ -289,11 +289,12 @@ for (const id of componentIds) {
   }
   if (id === "multi-toggle") {
     if (manifest.jsRequired !== true) failures.push("multi-toggle roving tabindex and selection require the declared runtime");
-    if (JSON.stringify(manifest.sizes) !== JSON.stringify(["md", "sm"])) failures.push("multi-toggle sizes differ from canon");
+    if (JSON.stringify(manifest.sizes) !== JSON.stringify(["md", "sm", "xsm"])) failures.push("multi-toggle sizes differ from canon");
     if (!("canonicalStateMap" in manifest)) failures.push("multi-toggle manifest must map canonical state names to web states");
     const expectedSizes = [
       ["md", "--sizing-44", "--spacing-12", "--sizing-64"],
-      ["sm", "--sizing-34", "--spacing-8", "--sizing-56"]
+      ["sm", "--sizing-34", "--spacing-8", "--sizing-56"],
+      ["xsm", "--sizing-28", "--spacing-8", "--sizing-48"]
     ];
     for (const [size, height, padding, minWidth] of expectedSizes) {
       const rule = css.match(new RegExp(`\\[data-s1-component="multi-toggle"\\]\\[data-size="${size}"\\] \\[data-s1-part="cell"\\]\\s*\\{([^}]*)\\}`));
@@ -301,6 +302,7 @@ for (const id of componentIds) {
       if (!rule[1].includes(`height: var(${height});`)) failures.push(`multi-toggle ${size} height differs from canon`);
       if (!rule[1].includes(`padding-inline: var(${padding});`)) failures.push(`multi-toggle ${size} padding differs from canon`);
       if (!rule[1].includes(`min-width: var(${minWidth});`)) failures.push(`multi-toggle ${size} minimum width differs from canon`);
+      if (size === "xsm" && !rule[1].includes("font-size: var(--font-size-12);")) failures.push("multi-toggle xsm font size differs from canon (12)");
     }
     if (!css.includes("--color-button-bg-secondary--default") || !css.includes("--color-button-bg-primary--default") || !css.includes("--color-button-bg-disabled")) {
       failures.push("multi-toggle is not bound to the canonical color/button tokens");

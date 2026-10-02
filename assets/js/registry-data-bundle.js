@@ -105,7 +105,7 @@ window.REGISTRY_BUNDLE = {
           "name": "SW Foundation Colors",
           "version": "2.4",
           "status": "stable",
-          "updatedAt": "2026-10-01",
+          "updatedAt": "2026-10-02",
           "source": "plugins/figma-vars-installer/src/vars-data.ts (FOUNDATION_COLOR)",
           "description": "Official SW Design System V2.4 foundation color foundation. Raw HEX values are allowed here only.",
           "generated": true,
@@ -13216,7 +13216,7 @@ window.REGISTRY_BUNDLE = {
         "figmaStatus": "confirmed",
         "harnessStatus": "implemented",
         "figmaNodeId": "587:8029",
-        "description": "여러 선택지 중 하나를 고르는 분절 컨트롤(segmented control). 정본은 두 세트다 — 셀 정의 'Multi Toggle Element'(position×state×size, 32 variants)와 그 셀 인스턴스 3개를 묶은 조합형 'Multi Toggle'(Size×Selected, 6 variants).",
+        "description": "여러 선택지 중 하나를 고르는 분절 컨트롤(segmented control). 정본은 두 세트다 — 셀 정의 'Multi Toggle Element'(position×state×size, 48 variants)와 그 셀 인스턴스 3개를 묶은 조합형 'Multi Toggle'(Size×Selected, 9 variants).",
         "notes": [
           "색은 자체 토큰 없이 button/* 을 그대로 쓴다(선택=primary, 비선택=secondary, 비활성=disabled).",
           "조합형 세트는 scv 호출이 0건 — 색은 전부 자식 셀 인스턴스가 갖는다(build-components.ts:6545~6647).",
@@ -13239,11 +13239,11 @@ window.REGISTRY_BUNDLE = {
       "anatomy": [
         {
           "part": "셀(Multi Toggle Element)",
-          "role": "한 칸. position(first·middle-left·middle-right·last) × state(default·hover·selected·disabled) × size(md·sm)."
+          "role": "한 칸. position(first·middle-left·middle-right·last) × state(default·hover·selected·disabled) × size(md·sm·xsm)."
         },
         {
           "part": "라벨",
-          "role": "셀 안 가운데 정렬 텍스트(Medium 14). 셀 폭을 채운다(layoutGrow=1)."
+          "role": "셀 안 가운데 정렬 텍스트(Medium 14 · xsm 은 Medium 12). 셀 폭을 채운다(layoutGrow=1)."
         },
         {
           "part": "묶음(Multi Toggle)",
@@ -13285,11 +13285,17 @@ window.REGISTRY_BUNDLE = {
           "paddingInline": 8,
           "fontSize": 14,
           "minWidth": 56
+        },
+        "xsm": {
+          "height": 28,
+          "paddingInline": 8,
+          "fontSize": 12,
+          "minWidth": 48
         }
       },
       "variants": {
         "element": {
-          "description": "셀 정의 세트. position × state × size = 32 variants.",
+          "description": "셀 정의 세트. position × state × size = 48 variants.",
           "axes": {
             "position": [
               "first",
@@ -13305,7 +13311,8 @@ window.REGISTRY_BUNDLE = {
             ],
             "size": [
               "md",
-              "sm"
+              "sm",
+              "xsm"
             ]
           },
           "cornerRadius": {
@@ -13363,11 +13370,12 @@ window.REGISTRY_BUNDLE = {
           }
         },
         "composed": {
-          "description": "셀 3개 묶음. Size × Selected = 6 variants. 자체 색 토큰 없음.",
+          "description": "셀 3개 묶음. Size × Selected = 9 variants. 자체 색 토큰 없음.",
           "axes": {
             "Size": [
               "md",
-              "sm"
+              "sm",
+              "xsm"
             ],
             "Selected": [
               "Left",
@@ -13496,7 +13504,8 @@ window.REGISTRY_BUNDLE = {
           ],
           "size": [
             "md",
-            "sm"
+            "sm",
+            "xsm"
           ]
         },
         "_note": "componentSetKey 는 Figma Plugin 연동 전까지 보류. nodeId 는 reports/figma-library-build/multi-toggle/node-map.json 실측. 'Multi Toggle v2'(603:20, 8 variants)는 position 축 없는 비교용 실험본이며 정본 아님."
@@ -13751,13 +13760,6 @@ window.REGISTRY_BUNDLE = {
         }
       },
       "tokens": [
-        {
-          "name": "--color-navigation-bg",
-          "resolvedLight": "#FFFFFF",
-          "figmaVariable": "color/navigation/bg",
-          "status": "stable",
-          "description": "탭 배경"
-        },
         {
           "name": "--color-navigation-label-default",
           "resolvedLight": "#555555",

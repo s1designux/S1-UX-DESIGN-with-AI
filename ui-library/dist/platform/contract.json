@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
     "purpose": "개발 툴과 검사기가 함께 읽는 허용목록. 여기 없는 variant·size·속성은 승인된 적이 없는 것이다.",
-    "canonicalFingerprint": "3c15a63bd706a5c4f1385ef0891828251797b824e9ef67b87d2df552ad53aa41"
+    "canonicalFingerprint": "6fa21d2a790564e8d5e3b88823d86275936e31e474a11da486a2a0d11e65f93c"
   },
   "components": [
     {
@@ -576,7 +576,8 @@
       ],
       "sizes": [
         "md",
-        "sm"
+        "sm",
+        "xsm"
       ],
       "breaks": null,
       "states": [
@@ -604,8 +605,8 @@
         "init is idempotent",
         "destroy removes listeners"
       ],
-      "canonicalFingerprint": "1db5c62692a7f7adbc7f7d06d062c2add0fd55e4b1a10e38eca4b56a2929577a",
-      "sourceFingerprint": "cd613c83f941cde441eab9cb4112412fecc6405f14524842342f26555ded8b3f"
+      "canonicalFingerprint": "ced7200194ae2f94eddbbe676c6e5b2ec7480cd2cef708bffac53ef27c8e1a72",
+      "sourceFingerprint": "30ea9b873534cf4bbeb1900bc65230164e9840b60dff851e9fd6f337785408ce"
     },
     {
       "id": "modal",
