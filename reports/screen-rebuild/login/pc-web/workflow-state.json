@@ -1,36 +1,102 @@
 {
   "schemaVersion": 1,
   "workflow": "screen-rebuild",
-  "target": { "service": "login", "flow": "pc-web" },
+  "target": {
+    "service": "login",
+    "flow": "pc-web"
+  },
   "source": {
     "kind": "intent-spec",
     "doc": "intent.md",
-    "refs": ["~/dev-screen-qa/mvp0/auth.py 로그인화면()", "registry/patterns/mobile-login/content-rules.md", "0-intent-sources.md"]
+    "refs": [
+      "~/dev-screen-qa/mvp0/auth.py 로그인화면()",
+      "registry/patterns/mobile-login/content-rules.md",
+      "0-intent-sources.md"
+    ]
   },
-  "targetFigma": { "fileKey": "cysG5U1udpQqVagYY1hWHW", "pageId": "80:16697", "sectionId": null },
-  "currentPhase": "3-build",
-  "status": "in-progress",
-  "lastCompletedCheckpoint": 2,
-  "nextAction": "screen-rebuilder 로 pilot(1·4a1) 빌드 → component-verifier → 나머지 5장",
+  "targetFigma": {
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "pageId": "80:16697",
+    "sectionId": "2703:2"
+  },
+  "currentPhase": "4-verify",
+  "status": "awaiting-user",
+  "lastCompletedCheckpoint": 4,
+  "nextAction": "river 검수(Pretendard 데스크톱에서 아이디 저장 글자 정렬 1회 포함) -> OK 시 5단계 registry/patterns/pc-login 등록 + pattern-data.ts PC_LOGIN 캡처",
   "artifacts": {
     "intent": "intent.md",
     "sources": "0-intent-sources.md",
     "mapping": "2-mapping.md",
-    "build": null,
+    "build": "3-build.md",
     "nodeMap": "node-map.json",
-    "verification": null,
+    "verification": "4-verification.md",
     "registration": null,
-    "superseded": "_superseded-2026-07/ (외부 라이브러리로 만든 옛 결과 기록 — Figma 에서는 이미 삭제됨)"
+    "superseded": "_superseded-2026-07/ (외부 라이브러리로 만든 옛 결과 기록 — Figma 에서는 이미 삭제됨)",
+    "review": "review.html"
   },
-  "screens": [],
+  "screens": [
+    {
+      "code": "1",
+      "targetNodeId": "2703:3",
+      "status": "verified"
+    },
+    {
+      "code": "2",
+      "targetNodeId": "2712:95",
+      "status": "verified"
+    },
+    {
+      "code": "3",
+      "targetNodeId": "2712:164",
+      "status": "verified"
+    },
+    {
+      "code": "4",
+      "targetNodeId": "2713:203",
+      "status": "verified"
+    },
+    {
+      "code": "4a1",
+      "targetNodeId": "2706:49",
+      "status": "verified"
+    },
+    {
+      "code": "4a2",
+      "targetNodeId": "2713:264",
+      "status": "verified"
+    },
+    {
+      "code": "4a3",
+      "targetNodeId": "2713:319",
+      "status": "verified"
+    }
+  ],
   "decisions": [
-    { "id": "screens-7-copy-legacy", "by": "river", "at": "2026-10-02", "quote": "응 7장으로 진행하고 문구는 레거시 그대로 둬." }
+    {
+      "id": "screens-7-copy-legacy",
+      "by": "river",
+      "at": "2026-10-02",
+      "quote": "응 7장으로 진행하고 문구는 레거시 그대로 둬."
+    }
   ],
   "blockers": [],
-  "registration": { "status": "pending", "patternId": "pc-login" },
-  "handoff": { "lastActor": "claude", "updatedAt": "2026-10-02", "summary": "intent-spec 으로 새로 빌드. 옛 섹션 268:368 은 Figma 에서 이미 삭제됨." },
+  "registration": {
+    "status": "pending",
+    "patternId": "pc-login"
+  },
+  "handoff": {
+    "lastActor": "claude",
+    "updatedAt": "2026-10-02",
+    "summary": "7장 빌드, component-verifier 전체 PASS. river 검수 대기."
+  },
   "evidence": {
-    "baseline": ["intent-spec"],
-    "intent": { "doc": "intent.md", "approvedBy": "river", "approvedAt": "2026-10-02" }
+    "baseline": [
+      "intent-spec"
+    ],
+    "intent": {
+      "doc": "intent.md",
+      "approvedBy": "river",
+      "approvedAt": "2026-10-02"
+    }
   }
 }
