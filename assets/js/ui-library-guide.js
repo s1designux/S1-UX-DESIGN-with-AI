@@ -3095,10 +3095,6 @@ function dataTagStateMatrix() {
    ※ 하위메뉴 aria-controls/id 는 인스턴스마다 새로 만든다(함정 T5). */
 let lnbSeq = 0;
 /* 로고 자리 — 배포본 예제와 같은 빈 자리표시 그림. 실제 화면은 자기 서비스 로고를 넣는다. */
-/* 판 접기 아이콘 — 배포본은 이 그림을 자산으로 싣지 않고 쓰는 화면이 --s1-collapse-icon 으로 넣는다(manifest collapseIconAsset).
-   안내 화면도 「쓰는 화면」으로서 아이콘 가이드에 등록된 ic_패널접기 라인형·솔리드형을 넣는다.
-   상대 주소는 사용처(dist CSS) 기준으로 풀리므로 절대 주소로 만들어 인라인으로 준다. */
-const LNB_COLLAPSE_ICON_STYLE = `--s1-collapse-icon: url('${new URL("../img/candidate-icons/ic_패널접기_line.svg", import.meta.url).href}'); --s1-collapse-icon-solid: url('${new URL("../img/candidate-icons/ic_패널접기_solid.svg", import.meta.url).href}')`;
 const LNB_LOGO_PLACEHOLDER = "data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20150%2024%27%2F%3E";
 
 function lnbItemMarkup({ label, current = false, disabled = false, sub = null, open = false, force = "", isPreview = false }) {
@@ -3127,7 +3123,7 @@ function lnbMarkup({ type = "menu", size = "md", state = "expanded", open = fals
     lnbItemMarkup({ label: "컴포넌트", sub: [{ label: "PC 컴포넌트" }, { label: "Mobile 컴포넌트" }], open, isPreview }),
     lnbItemMarkup({ label: "준비 중", disabled: true, isPreview })
   ].join("");
-  return `<nav data-s1-component="lnb" data-guide-sample="set" data-variant="${type}" data-size="${size}" data-state="${state}" aria-label="${escapeHtml(label)}" style="${LNB_COLLAPSE_ICON_STYLE}"${isPreview ? ' class="is-preview"' : ""}>
+  return `<nav data-s1-component="lnb" data-guide-sample="set" data-variant="${type}" data-size="${size}" data-state="${state}" aria-label="${escapeHtml(label)}"${isPreview ? ' class="is-preview"' : ""}>
       <div data-s1-part="head">${brand}<button type="button" data-s1-part="collapse" aria-pressed="${collapsed}" aria-label="메뉴 접기"${tab}><span data-s1-part="collapse-icon" aria-hidden="true"></span></button></div>
       <ul data-s1-part="items">${items}</ul>
     </nav>`;

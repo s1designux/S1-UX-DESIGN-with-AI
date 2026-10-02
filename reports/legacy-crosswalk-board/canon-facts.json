@@ -76,7 +76,7 @@
         "Type=List × State=Disabled": "list:disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "77f403f34d56dcfa90eda99cbe3dc4ab79a8bc185a515d9a7d3fb1b0f8c769af"
+      "sourceFingerprint": "7b887c926fad9d1409080f044d2748ea2d9cef67552f5c7150e07526c944b36f"
     },
     "bottom-sheet": {
       "id": "bottom-sheet",
@@ -111,7 +111,7 @@
           "reason": "정본에 Break 축이 없다. 시트 자체가 모바일 전용이다."
         }
       ],
-      "sourceFingerprint": "24452d5cb98343257703ae95c47d9e9ba09117784fe6cd05e10acf096cfa7e6f"
+      "sourceFingerprint": "27fc2c01b125a27a187fe443e218429626ac2a4f45447edc6c6c6b8220a25e27"
     },
     "button": {
       "id": "button",
@@ -364,7 +364,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "fdef1ba82bbd8990f6e9027d292e8d8fda714b398a600f8b72d9c20a2d0cbaea"
+      "sourceFingerprint": "a7b6c0b494fe18872b8517c465234bf724f87f34ed5902c6f674cedb9affb3cd"
     },
     "divider": {
       "id": "divider",
@@ -419,7 +419,7 @@
           "reason": "정본 buildDropdown 은 패널 자체의 state 축이 없다(항상 State=Default) — 상태는 옵션 행이 담당한다. 패널에 별도 open/closed 시각 변형을 만들지 않았다."
         }
       ],
-      "sourceFingerprint": "b636015689308be5549bb9ef8bd6c432251c44b482e060b8bd76aebe1424b37c"
+      "sourceFingerprint": "f7bb9e882d54b9cd6eac22a9eab2dfe7647d78075413365d73fe6ef26a6519d3"
     },
     "expandable-card": {
       "id": "expandable-card",
@@ -504,7 +504,7 @@
           "reason": "정본에 Error 상태가 없다."
         }
       ],
-      "sourceFingerprint": "204c7f48c0d4140a110b41e22a3de9f8b00ec7ed73076ead9722b49f2d8fa7b1"
+      "sourceFingerprint": "f40107c1e876228d6ee4a4883fc2e71beba2f6f0956a3f7fd423a8f54cede2d6"
     },
     "gnb-sub-menu-item": {
       "id": "gnb-sub-menu-item",
@@ -550,7 +550,7 @@
         "Type=compact-2": "compact-2"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "9b70e7912a8ccf24c38fa71986e92741740f4a27e5cc30da5261c7adc614f260"
+      "sourceFingerprint": "fd28a5af096c6645ef9ff1890502c5ff3640624d638d766add12319360000232"
     },
     "gnb": {
       "id": "gnb",
@@ -588,7 +588,7 @@
           "reason": "GNB Utility Icon 세트는 language·menu·user on/off 5변형을 갖지만, GNB 바가 실제로 쓰는 것은 all-on(GNBUtil:full) 1개뿐이다(buildGNB:3607, registry 서술). 다른 4변형은 이 컴포넌트가 배포하지 않는다 — 유틸 영역 구성을 바꾸려면 host 화면이 data-s1-part 를 골라 빼고 넣는다."
         }
       ],
-      "sourceFingerprint": "b41898e3988b2cb70f235e1c45ecc3997e5ba9e691d53755cada93a01d32ace9"
+      "sourceFingerprint": "53826c45dd81f2164d86d863c658a42a2a5d9bb9833a0dc7b48347ce484edd4a"
     },
     "input": {
       "id": "input",
@@ -692,7 +692,7 @@
         "State=Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "b5370800440c989622ae9ce722e8e2e7d4e96201ae323ef7b9da6c64c80c61d4"
+      "sourceFingerprint": "1d4dc782eb62e989f3a9ad222d34854716a8427ea6e1f811b9309d706e574000"
     },
     "lnb": {
       "id": "lnb",
@@ -718,7 +718,7 @@
       ],
       "canonicalStateMap": {},
       "absentCombinations": [],
-      "sourceFingerprint": "c101447c1e8928f67d046a450c15ad3541f7dcbfcbf6ed32a35d963a5f4842fb"
+      "sourceFingerprint": "aa0c5e4e828a6266e245ac313ac4d353dd467776fb6c65b2df72552855096500"
     },
     "mobile-bottom-nav": {
       "id": "mobile-bottom-nav",
@@ -778,7 +778,7 @@
           "reason": "StatusBar 제외로 App/Web 차이(상태바 높이만 다름)가 사라져 Platform 축도 함께 뺀다 — Type 6종 1축만 배포한다."
         }
       ],
-      "sourceFingerprint": "f1a62d830b84581b9f9c2df569f48ae4cf0e91383ae8bbcf74cdf419f48078cd"
+      "sourceFingerprint": "1a349ee6cc283e5fc3a10d0ab4ebf269f75f97b6d18526c82f337075fe8e3755"
     },
     "modal-content": {
       "id": "modal-content",
@@ -838,7 +838,7 @@
           "reason": "확인 계열 Modal 에는 없는 크기 축이다. 콘텐츠 계열에만 있다(river 지시 2026-09-08 'MD 이상부터')."
         }
       ],
-      "sourceFingerprint": "7f451371d4e2f1ed7dd6bbce914e55ff061358095c2e000ca143e55697ccb87d"
+      "sourceFingerprint": "7ccc8e6589d8c5317ee74720658ebad56cc3b90b8a86cb6d4e1e5cf6eeab8c5e"
     },
     "modal": {
       "id": "modal",
@@ -872,7 +872,7 @@
           "reason": "정본에 크기 축이 없다 — Break(PC·Mobile)가 패널 폭과 밀도를 결정한다."
         }
       ],
-      "sourceFingerprint": "da246892df2fb6250e84653b01f12c5579f6e631749d337339f286269314182d"
+      "sourceFingerprint": "81b2ffbc856ddd30efb6852cc6ebc16f26864a157ddd46f2046984c409e55295"
     },
     "multi-toggle": {
       "id": "multi-toggle",
@@ -902,7 +902,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "c55972e512882e2c77dc3f59518c610441ff823997a464d5ccf69b4a950d828b"
+      "sourceFingerprint": "1641ce55be70858e20e800d0bc11bbcc0d8de092d93f5cf71377e075dfe75f89"
     },
     "pagination": {
       "id": "pagination",
@@ -932,7 +932,7 @@
         "Pagination Cell · Selected": "selected"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "f490ed7d6f973b1ce632d70e05935639a0865b847792319eefc3d57183b809ed"
+      "sourceFingerprint": "c38c6fe2d06ee67c06984645a7906946980831f8abb5ed4c9d7fe0355a67a052"
     },
     "radio": {
       "id": "radio",
@@ -1039,7 +1039,7 @@
           "reason": "정본에 Error 상태가 없다."
         }
       ],
-      "sourceFingerprint": "1dcbce349202dfc5316b84c76c4b4d6a84ed1e99376830b24ffc283687d051a8"
+      "sourceFingerprint": "58e13abacd18aea2525ffc0f5d33202d63ffcd51f0e303269661bf38b65bd2e3"
     },
     "tab": {
       "id": "tab",
@@ -1105,7 +1105,7 @@
         "Selected": "selected"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "46f69c9eccc72b733349a707d02d78f819ee371d0ae40827b6870e15a47548ec"
+      "sourceFingerprint": "b58358a966e40fcc49183aea5a14d61723ce19cda784af64a940faff188426a5"
     },
     "table": {
       "id": "table",
@@ -1166,7 +1166,7 @@
           "reason": "정본·Registry 모두 모바일 표 표출 규칙이 없다. 이번 배포는 PC 만 선언한다."
         }
       ],
-      "sourceFingerprint": "5b543cc79d564da217c5b0302ec020af0a9bd109c811875f5148721d1499d0da"
+      "sourceFingerprint": "4a1f9165f53e1f8a519159e76fbb9da79cf462e5b56b7a88706a0e17bb1b0273"
     },
     "text-button": {
       "id": "text-button",
@@ -1312,7 +1312,7 @@
           "reason": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
         }
       ],
-      "sourceFingerprint": "f512a639fc604c45951a6d3069f3f1c55048a759d413c7d0f6cbe99bdc3e5e65"
+      "sourceFingerprint": "e8b60b897cc36ce8dde08f86652827886ca7ae68f714962b80b1bdfa1ccd2113"
     },
     "toggle": {
       "id": "toggle",

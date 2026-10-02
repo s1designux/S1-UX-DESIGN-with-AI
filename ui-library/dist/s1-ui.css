@@ -5059,17 +5059,17 @@
   background: var(--color-navigation-bg--hover);
 }
 
-/* 판 접기 아이콘 — 아이콘 가이드에 등록된 ic_패널접기 를 화면이 --s1-collapse-icon(라인형) ·
-   --s1-collapse-icon-solid(다크용 솔리드형) 로 넣는다(river 승인 2026-09-29).
-   이 그림은 Figma 라이브러리 허용 키가 없어 배포본에 자산으로 싣지 못한다 — 주지 않으면 등록 자산 menu.svg 를 쓴다.
+/* 판 접기 아이콘 — 등록 자산 panel-fold(라인형)가 라이트·다크 공통 기본 그림이다
+   (Figma ic_패널접기, 허용 키 panelFold · river 결정 2026-10-02). 화면이 --s1-collapse-icon(라인형) ·
+   --s1-collapse-icon-solid(다크용 솔리드형) 로 다른 그림을 넣어 갈아 끼울 수도 있다.
    펼친 상태는 그림 그대로(왼쪽 판 + 왼쪽 꺾쇠 = 접기), 접힌 상태는 좌우를 뒤집어 펴기로 읽힌다.
    크기는 메뉴 아이콘과 같은 20 이어야 한다 — 같은 그림을 더 크게 그리면 선도 같이 굵어져
    옆 아이콘들과 두께가 달라 보인다(river 2026-09-29 지적). */
 [data-s1-component="lnb"] [data-s1-part="collapse-icon"] {
   background-color: var(--color-icon-gray-dark);
   height: var(--sizing-20);
-  -webkit-mask: var(--s1-collapse-icon, url("./assets/icons/menu.svg")) center / contain no-repeat;
-  mask: var(--s1-collapse-icon, url("./assets/icons/menu.svg")) center / contain no-repeat;
+  -webkit-mask: var(--s1-collapse-icon, url("./assets/icons/panel-fold.svg")) center / contain no-repeat;
+  mask: var(--s1-collapse-icon, url("./assets/icons/panel-fold.svg")) center / contain no-repeat;
   transition: transform .18s ease;
   width: var(--sizing-20);
 }
@@ -5079,8 +5079,8 @@
 }
 
 [data-theme="dark"] [data-s1-component="lnb"] [data-s1-part="collapse-icon"] {
-  -webkit-mask-image: var(--s1-collapse-icon-solid, var(--s1-collapse-icon, url("./assets/icons/menu.svg")));
-  mask-image: var(--s1-collapse-icon-solid, var(--s1-collapse-icon, url("./assets/icons/menu.svg")));
+  -webkit-mask-image: var(--s1-collapse-icon-solid, var(--s1-collapse-icon, url("./assets/icons/panel-fold.svg")));
+  mask-image: var(--s1-collapse-icon-solid, var(--s1-collapse-icon, url("./assets/icons/panel-fold.svg")));
 }
 
 [data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="collapse"] {
