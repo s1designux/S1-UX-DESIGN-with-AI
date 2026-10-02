@@ -224,3 +224,70 @@ SNAPDIFF_SUMMARY added=203 removed=0 changed=42 violations=5  (EXIT 1)
 **갱신 판정: PASS** — ❌(a) 0 · ❓(c) 0 · 🟡(b) 0 · BLOCKED 0. 아래 별도 항목은 계속 남는다.
 - NOT_VERIFIED: 데스크톱에서 `아이디 저장` 정렬.
 - needs-core-update: Input `trail` 100×100.
+
+---
+
+## 변경 3 — LoginBox 프레임 → 패턴 부품 `PC Login Box` 인스턴스 · 델타 재검증 · 2026-10-02 · component-verifier
+
+- 기준: `intent.md` 「변경 3」(구분선 1×12 결정 한 줄 포함) + `2-mapping.md` 4행·화면별 표. 부품 자체는 `reports/figma-library-build/pc-login-box/4-verification.md` 에서 PASS 받은 것.
+- 증거: `snapshot-before-3.json` · `snapshot-after-3.json` · `snapshot-expect-3.json`(오케스트레이터 작성).
+
+### 판정: **PASS** — ❌(a) 0 · ❓(c) 0 · 🟡(b) 1(구분선 색 — 부품 검증에서 넘어온 것, intent 변경 3 에 명시) · BLOCKED 0
+
+### snapdiff (검증자 재실행) — 선언 밖 종류 65건, 직접 판정 결과 허용
+```
+노드 589 → 631 · 추가 273 · 삭제 231 · 변경 0
+SNAPDIFF_SUMMARY added=273 removed=231 changed=0 violations=65  (EXIT 1)
+```
+- **조상 추적(검증자 직접 실행):**
+  - 추가 273 = 새 `PC Login Box` 인스턴스 7 + 그 하위. **새 인스턴스 밖에서 추가된 노드 0.**
+  - 삭제 231 = 옛 `LoginBox` 프레임 7 + 그 하위. **옛 LoginBox 밖에서 삭제된 노드 0.**
+  - 남아 있는 공통 노드(화면 프레임·WebTabBar·LoginGNB·Body·Footer와 그 하위)의 필드 변경 **0건**. Body 자식 순서도 그대로다.
+  - 기대 선언 note 의 판정 규칙을 충족한다. 위반 65 는 모두 선언에 개수를 적지 않은 하위 노드 종류다.
+- before-3 는 after-2 와 내용이 완전히 같다 → 변경 2 와 변경 3 사이에 다른 손댐이 없었다.
+
+### after-3 진위
+- 실제 캔버스에서 §1 캡처 코드를 다시 돌리고 화면별 FNV-1a 해시를 냈다. 로컬 `snapshot-after-3.json` 과 **8묶음(루트 + 7장), 노드 631 이 모두 일치**한다(1 `79a4e753` · 2 `f8b993a1` · 3 `86822df` · 4 `9fcdfaff` · 4a1 `ab8ac814` · 4a2 `b488fa90` · 4a3 `bf4c0428` · 루트 `70a1f7c5`). after-3 는 실제 캡처가 맞다.
+
+### 인스턴스 7개 직접 확인
+
+| 화면 | 인스턴스 | 자리 | 아이디 칸 | 비밀번호 칸 | 버튼 | 상자 |
+|---|---|---|---|---|---|---|
+| 1 | 2735:55 | Body 유일 자식 · 810,123 · 화면 y 280 | Default · `아이디를 입력해 주세요.` | Default · `비밀번호를 입력해 주세요.` | Disabled | 300×272 |
+| 2 | 2735:169 | 같음 | **Focus** · `s1desig` | Default · placeholder | Disabled | 300×272 |
+| 3 | 2735:279 | 같음 | Filled · `s1design` | **Focus** · `••••••••` | Default | 300×272 |
+| 4 | 2735:398 | 같음 | Filled · `s1design` | Filled · `••••••••` | Default | 300×272 |
+| 4a1 | 2735:500 | 같음 | Error · Msg Off · `s1design` | Error · Msg On · `••••••••` · 문구 A | Default | 300×310 |
+| 4a2 | 2735:617 | 같음 | Error · Msg Off · `s1design` | Error · Msg On · 문구 B | Default | 300×310 |
+| 4a3 | 2735:720 | 같음 | Error · Msg Off · `s1design` | Error · Msg On · 문구 C | Default | 300×294 |
+
+- 7개 모두 로컬 부품(2730:528, remote=false)이다. Body 가로 가운데 · 위 패딩 123 을 유지하고, 옛 LoginBox 와 같은 자리(index 0 · 810,123)에 있다.
+- 상자 안 간격(7장 같음): CI→칸 34 · 칸 사이 10 · 칸→버튼 32 · 버튼→링크 16. 부품 값 그대로이며 덮어쓰기로 바뀌지 않았다.
+- 칸·field 는 300 FILL, 비밀번호 칸 Password Icon 은 켜져 있다. 오류 문구는 300 폭 FILL/HUG(A·B 는 2줄 32, C 는 1줄 16) · body/12R · `color/text/state/caution` 이다.
+- 문구 A/B/C 는 글자 단위로 일치한다: A `…입력되었습니다.\n확인 후 다시 로그인 해주세요. (1/5)` · B `…해주세요.(최대 5분)` · C `사용이 중지된 계정입니다. 관리자에게 문의해 주세요.`
+- 아이디 저장(SaveId·Checkbox·라벨)은 7장 모두 0개다.
+- **슬롯 Links:** 7장 모두 type SLOT · 300×18 · 간격 12 이다. `회원가입` · 구분선 1×12 · `아이디 찾기` · 구분선 · `비밀번호 찾기` 5개가 모두 보인다.
+
+### 7장 재스캔 (숨은 인스턴스 자식 포함)
+- **부품 출처:** 인스턴스가 화면당 15~16개, 외부 위반 0 이다.
+- **폰트:** TEXT 15~16개, 비-Pretendard 0 · 스타일 없음 0 이다.
+- **raw SOLID fill·stroke:** 화면 안 전 노드 기준 0건이다. after-3 스냅샷 기준으로도 raw hex 0, 비-Pretendard 0 이다.
+
+### 렌더 (1 · 2 · 4a1 · 4a3)
+- 창틀 → 맨 위 줄 → 가운데 상자(CI · 두 칸 · 버튼 · 링크 3개) → 하단 띠 순서로 놓여 있다.
+- 2 는 포커스 테두리·커서·지우기 아이콘, 4a1 은 두 칸 붉은 테두리 + 2줄 문구, 4a3 은 1줄 문구다.
+- 링크 구분선은 옅은 회색 1×12 다. 잘림·겹침은 없다.
+
+### 앞선 항목 정리
+- 앞서 NOT_VERIFIED 였던 `아이디 저장` 글자 높이는 항목 자체가 없어져서 닫는다.
+- needs-core-update(Input `trail` 100×100)는 부품 안 아이디 칸에도 그대로 있다. 이건 기존 항목이다.
+- intent 「변경 3」이 구분선 길이(1×12 유지, Footer 1×8 은 부품 소속이라 맞추지 않음)를 정했으므로, 부품 검증 때 남긴 관찰 1 은 닫는다.
+
+### 이번에 다시 보지 않은 것
+- 3 · 4 · 4a2 렌더(데이터로는 확인했다)
+- 다크 모드
+- 부품 정의 자체(부품 검증 PASS 를 그대로 이어받음 — 마스터 2730:528 은 이번 변경 범위 밖)
+
+### 권장 상태 전환
+- 검문소 4 PASS(변경 3) → `nextAction` = 5단계 패턴 등록(`registry/patterns/pc-login/`). `dependencies` 에 패턴 전용 부품 `PC Login Box` 를 기록한다.
+- `evidence.snapdiff`(변경 3)에 기록할 것: violations 65 = 전부 새 인스턴스 하위 추가 / 옛 LoginBox 하위 삭제(검증자 조상 추적). after-3 는 검증자가 실측 해시로 확인.

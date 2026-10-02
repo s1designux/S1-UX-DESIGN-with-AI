@@ -11,12 +11,11 @@ const SET = {
   gnb: "2614:73971", ci: "2614:73962", footer: "2614:74065",
   webTabBar: "2614:74012",               // 변경 2 (river 2026-10-02): 화면 맨 위 브라우저 탭바
 };
+const LOGIN_BOX = "2730:528";             // 변경 3: 패턴 부품 PC Login Box (COMPONENT, 슬롯 Links#2730:0)
 const VAR = {
   bg0: "VariableID:687:17884",        // color/bg/level-0 (화면 바탕)
   bg3: "VariableID:687:17887",        // color/bg/level-3 (섹션 바탕)
-  ctlLabel: "VariableID:8:1028",      // color/control/label/default (체크박스 라벨 — registry checkbox anatomy · ui-library checkbox.css)
 };
-const STYLE_LABEL = "body/14M";        // 체크박스 라벨 = 본문 14 Medium (registry/components/checkbox.json anatomy)
 const NOTO = { family: "Noto Sans KR", style: "Medium" }; // figma-font-temp: 입력 직후 setTextStyleIdAsync 로 정본 스타일 재바인딩
 
 const MSG_A = "아이디 또는 비밀번호가 없거나 잘못 입력되었습니다.\n확인 후 다시 로그인 해주세요. (1/5)";
@@ -73,29 +72,6 @@ async function overrideText(t, chars, before) {
   if (typeof sid === "string" && sid) await t.setTextStyleIdAsync(sid);
   else notes.push("textStyleId 없음: " + t.id);
 }
-async function authoredText(chars, styleName, varId, name) {
-  const styles = await figma.getLocalTextStylesAsync();
-  const st = styles.find((s) => s.name === styleName);
-  if (!st) throw new Error("텍스트 스타일 없음: " + styleName);
-  const t = track(figma.createText());
-  await figma.loadFontAsync(NOTO); // figma-font-temp: 바로 아래 setTextStyleIdAsync 로 정본 스타일 바인딩
-  t.fontName = NOTO; // figma-font-temp: 바로 아래 setTextStyleIdAsync 로 정본 스타일 바인딩
-  t.characters = chars;
-  await t.setTextStyleIdAsync(st.id);
-  t.fills = [await paint(varId)];
-  t.name = name;
-  return t;
-}
-function spacer(parent, name, h) {
-  const s = track(figma.createFrame());
-  s.name = "Spacer / " + name;
-  s.fills = [];
-  parent.appendChild(s);
-  s.resize(300, h);
-  s.layoutSizingHorizontal = "FILL";
-  s.layoutSizingVertical = "FIXED";
-  return s;
-}
 function autoFrame(dir, name, spacing) {
   const f = track(figma.createAutoLayout(dir));
   f.name = name;
@@ -103,25 +79,33 @@ function autoFrame(dir, name, spacing) {
   f.fills = [];
   return f;
 }
-async function loginInput(parent, which, [state, msg, chars, message]) {
-  const i = await inst(SET.input, ["Size=MD", "State=" + state, "Message=" + msg, "Break=PC"]);
-  i.name = "Input / " + which;
-  const pwKey = Object.keys(i.componentProperties).find((k) => k.startsWith("Password Icon#"));
-  i.setProperties({ [pwKey]: which === "Password" });
-  parent.appendChild(i);
-  i.layoutSizingHorizontal = "FILL";
-  const field = i.children[0];
-  field.layoutSizingHorizontal = "FILL";            // 부품 기본 200 고정 → 칸 폭(300)을 채운다
+// 변경 3 (river 2026-10-02): 가운데 상자 = 패턴 부품 PC Login Box(2730:528) 인스턴스.
+// 화면별 차이는 인스턴스 안 덮어쓰기로만 — Input 의 State·Message, 입력값·안내 문구, 버튼 State.
+// 슬롯 Links(회원가입 | 아이디 찾기 | 비밀번호 찾기)는 부품 기본값 그대로.
+async function setInput(inp, [state, msg, chars, message]) {
+  inp.setProperties({ State: state, Message: msg });  // Password Icon 은 부품 기본(아이디 off / 비밀번호 on) 유지
+  const field = inp.children[0];
+  if (field.layoutSizingHorizontal !== "FILL") field.layoutSizingHorizontal = "FILL";
   const ft = field.findOne((n) => n.type === "TEXT");
-  await overrideText(ft, chars);
+  if (ft.characters !== chars) await overrideText(ft, chars);
   if (msg === "On") {
-    const m = i.children.find((n) => n.type === "TEXT");
+    const m = inp.children.find((n) => n.type === "TEXT");
     await overrideText(m, message, (n) => {
       n.textAutoResize = "HEIGHT";
       n.layoutSizingHorizontal = "FILL";            // 두 줄 문구가 접히지 않게 FILL 가로 · HUG 세로
     });
   }
-  return i;
+}
+async function loginBox(parent, s) {
+  const comp = await figma.getNodeByIdAsync(LOGIN_BOX);
+  const box = track(comp.createInstance());
+  box.name = "PC Login Box";
+  parent.appendChild(box);
+  await setInput(box.findOne((n) => n.type === "INSTANCE" && n.name === "Input / ID"), s.id);
+  await setInput(box.findOne((n) => n.type === "INSTANCE" && n.name === "Input / Password"), s.pw);
+  const btn = box.findOne((n) => n.type === "INSTANCE" && n.name === "Button / 로그인");
+  if (s.btn !== "Disabled") btn.setProperties({ State: s.btn }); // 부품 기본 = Disabled
+  return box;
 }
 
 // ── 화면 1장 ──
@@ -158,40 +142,7 @@ async function buildScreen(section, key) {
   scr.appendChild(body);
   body.layoutSizingHorizontal = "FILL";
 
-  const box = autoFrame("VERTICAL", "LoginBox", 0);
-  box.counterAxisAlignItems = "CENTER";
-  body.appendChild(box);
-  box.resize(300, box.height);
-  box.layoutSizingHorizontal = "FIXED";
-  box.layoutSizingVertical = "HUG";
-
-  const ci = await inst(SET.ci, ["Brand=에스원", "Color=Blue"]);
-  ci.name = "CI / 에스원 / Blue";
-  box.appendChild(ci);
-  spacer(box, "CI-Fields", 34);                     // 변경 1 (river 2026-10-02): 48→34
-
-  const fields = autoFrame("VERTICAL", "Fields", 10); // 변경 1: 칸 사이 8→10
-  box.appendChild(fields);
-  fields.layoutSizingHorizontal = "FILL";
-  await loginInput(fields, "ID", s.id);
-  await loginInput(fields, "Password", s.pw);
-
-  spacer(box, "Fields-SaveId", 8);
-  const row = autoFrame("HORIZONTAL", "SaveId", 8);
-  row.counterAxisAlignItems = "CENTER";
-  box.appendChild(row);
-  row.layoutSizingHorizontal = "FILL";
-  const chk = await inst(SET.checkbox, ["State=Default"]);
-  chk.name = "Checkbox";
-  row.appendChild(chk);
-  row.appendChild(await authoredText("아이디 저장", STYLE_LABEL, VAR.ctlLabel, "SaveId Label"));
-  spacer(box, "SaveId-Login", 32);                  // 변경 1: 24→32
-
-  const btn = await inst(SET.button, ["Size=MD", "State=" + s.btn, "Variant=Primary", "Break=PC"]);
-  btn.name = "Button / 로그인";
-  box.appendChild(btn);
-  btn.layoutSizingHorizontal = "FILL";
-  await overrideText(btn.findOne((n) => n.type === "TEXT"), "로그인");
+  await loginBox(body, s);                          // 변경 3: LoginBox 프레임 → PC Login Box 인스턴스
 
   const ft = await inst(SET.footer, ["Platform=PC"]);
   ft.name = "Footer";

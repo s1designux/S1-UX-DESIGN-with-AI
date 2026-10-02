@@ -16,17 +16,12 @@
 | 1b | 브라우저 창틀 (변경 2) | 정본 인스턴스 | WebTabBar (2614:74012) Property 1=Default | 화면 맨 첫 자식, FILL 가로, 1920×101, 문구 기본값(`[서비스명]`·`https://`) 그대로 |
 | 2 | 맨 위 줄 | 정본 인스턴스 | LoginGNB (2614:73971) | 창틀 바로 아래(y 101), FILL 가로, 문구 기본값(`[서비스명]`·`한국어`) 그대로 |
 | 3 | 본문 | 토큰 프레임 | — | VERTICAL, FILL 가로·세로 grow 1(=807, y 157), 가로 가운데, 위 패딩 123, 투명 |
-| 4 | 상자 | 토큰 프레임 | — | VERTICAL, 폭 300 FIXED, 높이 HUG, 투명 |
-| 5 | CI | 정본 인스턴스 | CI Brand=에스원 Color=Blue | 상자 안 가운데 정렬, 아래 간격 34 |
-| 6 | 아이디 칸 | 정본 인스턴스 | Input Size=MD Break=PC | FILL(폭 300), 안쪽 field 도 FILL. placeholder `아이디를 입력해 주세요.` |
-| 7 | 비밀번호 칸 | 정본 인스턴스 | Input Size=MD Break=PC, Password Icon=true | 6 과의 간격 10. placeholder `비밀번호를 입력해 주세요.` |
-| 8 | 아이디 저장 줄 | 토큰 프레임 | Checkbox State=Default + 텍스트 | HORIZONTAL, 위 8 · 아래 32, 박스–글자 간격 8, 글자 `아이디 저장`. 글자 스타일·색은 정본 Checkbox 라벨 규정(registry/components 의 checkbox 메타·가이드)을 따른다 — 근거를 못 찾으면 needs-decision |
-| 9 | 로그인 버튼 | 정본 인스턴스 | Button Variant=Primary Size=MD Break=PC | FILL(폭 300), 문구 `로그인` |
+| 4 | 상자 (변경 3) | 패턴 부품 인스턴스 | **PC Login Box (2730:528)** | 폭 300, 높이 HUG. 안쪽 = CI → 34 → 아이디·비밀번호 칸(사이 10, Input MD PC, field FILL, 비밀번호 Password Icon=true) → 32 → 로그인 버튼(Primary MD PC, FILL) → 16 → 슬롯 `Links`(회원가입 · 아이디 찾기 · 비밀번호 찾기). 화면별 차이는 이 인스턴스 안 덮어쓰기로만 |
 | 10 | 맨 아래 띠 | 정본 인스턴스 | Footer Platform=PC (2614:74065) | FILL 가로, 문구 정본 그대로 |
 
 화면 안 순서: WebTabBar → LoginGNB → 본문 → Footer(y 964).
 
-넣지 않는 것: 찾기 링크, 언어 펼침, 약관 팝업, 비밀번호 보기/숨기기.
+넣지 않는 것: 아이디 저장(변경 3에서 뺌), 언어 펼침, 약관 팝업, 비밀번호 보기/숨기기.
 
 ## 화면별 차이 (screen-spec)
 

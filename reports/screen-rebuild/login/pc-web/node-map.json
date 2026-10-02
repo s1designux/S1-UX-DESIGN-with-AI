@@ -38,6 +38,13 @@
         "all"
       ],
       "result": "WebTabBar 맨 첫 자식 추가 — snapdiff violations 5종(WebTabBar 하위 깊은 자식 84개, 선언 밖)"
+    },
+    {
+      "round": "change3-2026-10-02",
+      "screens": [
+        "all"
+      ],
+      "result": "LoginBox 프레임 → PC Login Box 인스턴스. snapdiff violations 65종(전부 새 인스턴스 하위 추가/옛 LoginBox 하위 삭제), 공통 노드 변경 0"
     }
   ],
   "sectionChildOrder": [
@@ -59,6 +66,10 @@
         "WebTabBar": "2723:331",
         "LoginGNB": "2703:4",
         "Body": "2703:14",
+        "Footer": "2703:54",
+        "PC Login Box": "2735:55"
+      },
+      "removedInChange3": {
         "LoginBox": "2703:15",
         "CI": "2703:16",
         "Spacer/CI-Fields": "2703:19",
@@ -70,8 +81,7 @@
         "Checkbox": "2703:49",
         "SaveId Label": "2703:50",
         "Spacer/SaveId-Login": "2703:51",
-        "Button/로그인": "2703:52",
-        "Footer": "2703:54"
+        "Button/로그인": "2703:52"
       }
     },
     "2": {
@@ -83,6 +93,10 @@
         "WebTabBar": "2723:360",
         "LoginGNB": "2712:96",
         "Body": "2712:104",
+        "Footer": "2712:152",
+        "PC Login Box": "2735:169"
+      },
+      "removedInChange3": {
         "LoginBox": "2712:105",
         "CI": "2712:106",
         "Spacer/CI-Fields": "2712:109",
@@ -94,8 +108,7 @@
         "Checkbox": "2712:147",
         "SaveId Label": "2712:148",
         "Spacer/SaveId-Login": "2712:149",
-        "Button/로그인": "2712:150",
-        "Footer": "2712:152"
+        "Button/로그인": "2712:150"
       }
     },
     "3": {
@@ -107,6 +120,10 @@
         "WebTabBar": "2723:389",
         "LoginGNB": "2712:165",
         "Body": "2712:173",
+        "Footer": "2712:223",
+        "PC Login Box": "2735:279"
+      },
+      "removedInChange3": {
         "LoginBox": "2712:174",
         "CI": "2712:175",
         "Spacer/CI-Fields": "2712:178",
@@ -118,8 +135,7 @@
         "Checkbox": "2712:218",
         "SaveId Label": "2712:219",
         "Spacer/SaveId-Login": "2712:220",
-        "Button/로그인": "2712:221",
-        "Footer": "2712:223"
+        "Button/로그인": "2712:221"
       }
     },
     "4": {
@@ -131,6 +147,10 @@
         "WebTabBar": "2723:418",
         "LoginGNB": "2713:204",
         "Body": "2713:212",
+        "Footer": "2713:252",
+        "PC Login Box": "2735:398"
+      },
+      "removedInChange3": {
         "LoginBox": "2713:213",
         "CI": "2713:214",
         "Spacer/CI-Fields": "2713:217",
@@ -142,8 +162,7 @@
         "Checkbox": "2713:247",
         "SaveId Label": "2713:248",
         "Spacer/SaveId-Login": "2713:249",
-        "Button/로그인": "2713:250",
-        "Footer": "2713:252"
+        "Button/로그인": "2713:250"
       }
     },
     "4a1": {
@@ -155,6 +174,10 @@
         "WebTabBar": "2723:447",
         "LoginGNB": "2706:50",
         "Body": "2706:58",
+        "Footer": "2706:99",
+        "PC Login Box": "2735:500"
+      },
+      "removedInChange3": {
         "LoginBox": "2706:59",
         "CI": "2706:60",
         "Spacer/CI-Fields": "2706:63",
@@ -166,8 +189,7 @@
         "Checkbox": "2706:94",
         "SaveId Label": "2706:95",
         "Spacer/SaveId-Login": "2706:96",
-        "Button/로그인": "2706:97",
-        "Footer": "2706:99"
+        "Button/로그인": "2706:97"
       }
     },
     "4a2": {
@@ -179,6 +201,10 @@
         "WebTabBar": "2723:476",
         "LoginGNB": "2713:265",
         "Body": "2713:273",
+        "Footer": "2713:307",
+        "PC Login Box": "2735:617"
+      },
+      "removedInChange3": {
         "LoginBox": "2713:274",
         "CI": "2713:275",
         "Spacer/CI-Fields": "2713:278",
@@ -190,8 +216,7 @@
         "Checkbox": "2713:302",
         "SaveId Label": "2713:303",
         "Spacer/SaveId-Login": "2713:304",
-        "Button/로그인": "2713:305",
-        "Footer": "2713:307"
+        "Button/로그인": "2713:305"
       }
     },
     "4a3": {
@@ -203,6 +228,10 @@
         "WebTabBar": "2723:505",
         "LoginGNB": "2713:320",
         "Body": "2713:328",
+        "Footer": "2713:362",
+        "PC Login Box": "2735:720"
+      },
+      "removedInChange3": {
         "LoginBox": "2713:329",
         "CI": "2713:330",
         "Spacer/CI-Fields": "2713:333",
@@ -214,8 +243,7 @@
         "Checkbox": "2713:357",
         "SaveId Label": "2713:358",
         "Spacer/SaveId-Login": "2713:359",
-        "Button/로그인": "2713:360",
-        "Footer": "2713:362"
+        "Button/로그인": "2713:360"
       }
     }
   },
@@ -228,5 +256,10 @@
     "4a1": "shots/PC-LOGIN-4a1.png",
     "4a2": "shots/PC-LOGIN-4a2.png",
     "4a3": "shots/PC-LOGIN-4a3.png"
+  },
+  "patternComponent": {
+    "name": "PC Login Box",
+    "id": "2730:528",
+    "slot": "Links#2730:0"
   }
 }

@@ -89,6 +89,12 @@
       "by": "river",
       "at": "2026-10-02",
       "quote": "프레임을 그냥 넣자. 디자인가이드에 웹탭바를 쓰면 될듯"
+    },
+    {
+      "id": "change3-links-slot",
+      "by": "river",
+      "at": "2026-10-02",
+      "quote": "로그인 묶음 부품으로 진행해줘"
     }
   ],
   "blockers": [],
@@ -99,7 +105,7 @@
   "handoff": {
     "lastActor": "claude",
     "updatedAt": "2026-10-02",
-    "summary": "7장 + 변경1(간격) + 변경2(WebTabBar) component-verifier PASS. river 검수 대기."
+    "summary": "7장 + 변경1~3 component-verifier PASS. river 검수 대기."
   },
   "evidence": {
     "baseline": [
@@ -122,6 +128,19 @@
       "violations": 5,
       "by": "component-verifier",
       "note": "5건 모두 WebTabBar 인스턴스 하위 깊은 자식(조상 추적 203/203), after-2 실측 해시 확인 -> PASS"
+    },
+    "snapdiff3": {
+      "ranAt": "2026-10-02",
+      "violations": 65,
+      "by": "component-verifier",
+      "note": "65종 모두 새 PC Login Box 하위 추가/옛 LoginBox 하위 삭제(조상 추적), 공통 노드 변경 0 -> PASS"
+    }
+  },
+  "dependencies": {
+    "patternComponent": {
+      "name": "PC Login Box",
+      "id": "2730:528",
+      "build": "reports/figma-library-build/pc-login-box/"
     }
   }
 }

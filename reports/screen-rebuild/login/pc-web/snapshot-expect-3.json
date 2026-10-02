@@ -1,0 +1,10 @@
+{
+  "_note": "변경 3(river 2026-10-02 「아이디 저장은 빼고 … 회원가입, 아이디찾기, 비밀번호 찾기 … 슬롯기능」 → 「로그인 묶음 부품으로 진행해줘」). 7화면 각각 Body 안 LoginBox 프레임 1개 → PC Login Box(2730:528) 인스턴스 1개로 교체. 판정 규칙: 아래 선언 외 added 는 전부 새 PC Login Box 인스턴스의 하위여야 하고, 선언 외 removed 는 전부 옛 LoginBox 프레임의 하위여야 한다(검증자가 조상 추적으로 판정). 그 밖의 노드(WebTabBar·LoginGNB·Body·Footer·화면 프레임)에서는 Body 의 자식 순서 외 변경 0 이어야 한다.",
+  "added": [
+    { "type": "INSTANCE", "name": "PC Login Box", "count": 7 }
+  ],
+  "removed": [
+    { "type": "FRAME", "name": "LoginBox", "count": 7 }
+  ],
+  "changed": []
+}

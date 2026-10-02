@@ -203,3 +203,58 @@ SNAPDIFF_SUMMARY added=203 removed=0 changed=42 violations=5   EXIT=1
 
 ## ⑦ 스크린샷
 - `shots/PC-LOGIN-{1,2,3,4,4a1,4a2,4a3}.png` 7장 덮어씀(변경 2 후).
+
+---
+
+# 변경 3 — LoginBox 프레임 → 패턴 부품 PC Login Box 인스턴스 (baseline existing-nodes, 2026-10-02)
+
+- 지시: 7장 Body 안 `LoginBox` 프레임을 `PC Login Box`(COMPONENT 2730:528, 슬롯 `Links#2730:0`) 인스턴스로 교체. 이름 "PC Login Box", Body 안 같은 자리. 화면별 덮어쓰기 = Input State·Message·입력값·안내 문구, 버튼 State. 아이디 저장 없음.
+
+## ① 변경 전 스냅샷 — `snapshot-before-3.json` (589 노드)
+- 첫 쓰기 전(01:51:44Z) §1 캡처 코드로 7조각 해시를 받음 → 7/7 이 `snapshot-after-2.json` 조각(01:19:12Z 실제 캡처 전사본)과 일치 → 그 실제 캡처 조각으로 구성(바이트 동일, meta.note 기록).
+
+## ② 교체 결과
+| 화면 | 옛 LoginBox (삭제) | 새 PC Login Box | 크기 | 아이디 / 비밀번호 / 버튼 (실제 variant) |
+|---|---|---|---|---|
+| 1 | 2703:15 | 2735:55 | 300×272 | Default / Default / Disabled |
+| 2 | 2712:105 | 2735:169 | 300×272 | Focus / Default / Disabled |
+| 3 | 2712:174 | 2735:279 | 300×272 | Filled / Focus / Default |
+| 4 | 2713:213 | 2735:398 | 300×272 | Filled / Filled / Default |
+| 4a1 | 2706:59 | 2735:500 | 300×310 | Error·Off / Error·On(문구 A) / Default |
+| 4a2 | 2713:274 | 2735:617 | 300×310 | Error·Off / Error·On(문구 B) / Default |
+| 4a3 | 2713:329 | 2735:720 | 300×294 | Error·Off / Error·On(문구 C) / Default |
+- 전부 Body 의 유일한 자식(index 0), 위치 810,123(가로 가운데·위 패딩 123 그대로). mainComponent 2730:528 remote=false.
+- 비밀번호 칸 Password Icon=true 유지, field 300 FILL, 안내 문구 FILL 가로·HUG 세로.
+- 슬롯 Links: 7장 모두 부품 기본 링크 3개가 보임(`회원가입` · `아이디 찾기` · `비밀번호 찾기`, 구분선 1×12 ×2) — 채움 작업 불필요.
+- 아이디 저장(SaveId·Checkbox·라벨) 7장 모두 사라짐(남은 노드 0).
+- `build-code.js`: 상자 조립 코드를 `loginBox()`(부품 인스턴스 + `setInput` 덮어쓰기)로 교체, 쓰지 않게 된 spacer·authoredText·체크박스 라벨 값 제거.
+
+## ③ 변경 후 스냅샷 — `snapshot-after-3.json` (631 노드) — 실제 캡처
+- §1 캡처 코드를 화면별 7조각으로 실행(01:52:56Z)한 반환값을 그대로 옮겨 합침. 조각별 FNV-1a 해시 7/7 Figma 측과 일치. 로컬 생성 없음.
+
+## ④ snapdiff (기대 선언 `snapshot-expect-3.json` 손대지 않음)
+```
+노드 589 → 631 · 추가 273 · 삭제 231 · 변경 0
+SNAPDIFF_SUMMARY added=273 removed=231 changed=0 violations=65   EXIT=1
+```
+- 불일치 65건 = 선언 밖 added/removed 종류(이름|유형 단위). 조상 추적 결과:
+  - 추가 273 = 새 PC Login Box 7 + 그 하위 266. **새 인스턴스 밖 추가 0.** (화면별 하위 35·44·44·35·36·36·36)
+  - 삭제 231 = 옛 LoginBox 7 + 그 하위 224. **옛 LoginBox 밖 삭제 0.** (화면별 하위 29·38·38·29·30·30·30)
+  - 공통 노드(WebTabBar·LoginGNB·Body·Footer·화면 프레임 포함) 필드 변경 **0건** — Body 자식 순서도 그대로(index 0).
+
+## ⑥ 스캔 (7장)
+| 화면 | INSTANCE / 외부 위반 | 저작 노드 raw SOLID | PC Login Box 내부 raw SOLID | TEXT 비-Pretendard / 스타일 없음 | 상자 안 글자 (verbatim) |
+|---|---|---|---|---|---|
+| 1 | 15 / 0 | 0 / 2 | 0 | 0 / 0 (15) | 아이디를 입력해 주세요. · 비밀번호를 입력해 주세요. · 로그인 · 회원가입 · 아이디 찾기 · 비밀번호 찾기 |
+| 2 | 16 / 0 | 0 / 2 | 0 | 0 / 0 (15) | s1desig · 비밀번호를 입력해 주세요. · 로그인 · 링크 3 |
+| 3 | 16 / 0 | 0 / 2 | 0 | 0 / 0 (15) | s1design · •••••••• · 로그인 · 링크 3 |
+| 4 | 15 / 0 | 0 / 2 | 0 | 0 / 0 (15) | s1design · •••••••• · 로그인 · 링크 3 |
+| 4a1 | 15 / 0 | 0 / 2 | 0 | 0 / 0 (16) | s1design · •••••••• · 문구 A · 로그인 · 링크 3 |
+| 4a2 | 15 / 0 | 0 / 2 | 0 | 0 / 0 (16) | s1design · •••••••• · 문구 B · 로그인 · 링크 3 |
+| 4a3 | 15 / 0 | 0 / 2 | 0 | 0 / 0 (16) | s1design · •••••••• · 문구 C · 로그인 · 링크 3 |
+- 저작 노드가 9→2(화면 프레임·Body)로 줄어듦: 상자 안이 전부 부품 인스턴스 소속이 됨.
+- 인스턴스 출처(7장 합): 로컬 = WebTabBar 7 · LoginGNB 7 · PC Login Box 7 · CI 7 · Input 14 · Button 7 · Text Button 21 · Footer 7 / 허용키 아이콘 = remove 9 · ic_인터넷 7 · ic_비밀번호미표시 14.
+- 글자 스타일: 입력값·placeholder body/14R, 문구 A/B/C body/12R, 로그인·링크 body/14M.
+
+## ⑦ 스크린샷
+- `shots/PC-LOGIN-{1,2,3,4,4a1,4a2,4a3}.png` 7장 덮어씀(변경 3 후).
