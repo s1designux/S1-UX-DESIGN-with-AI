@@ -5342,3 +5342,284 @@
     transition: none;
   }
 }
+
+/* component:footer */
+/* Footer (풋터) — 정본 buildFooter(build-components.ts:6429-6535) 기준. 축: data-platform=pc|mobile.
+   정본 PC 는 바 폭을 1920 고정(좌우 패딩 320)으로 표현하지만 웹은 GNB 와 같이 full-width 반응형이다
+   (gnb.css 선례, registry gnb.json 선언 · river 승인). 1920 에서는 정본 그대로 좌우 320 이 되고,
+   좁아지면 안쪽 폭 1280(= 1920 − 320×2)을 가운데에 두며 최소 좌우 여백 spacing/24 로 줄어든다.
+   정본에는 hover·pressed 가 없다 — 링크 색을 바꾸지 않는다. 키보드 초점은 다른 코어와 같이
+   브라우저 기본 표시에 맡긴다(2026-09-02 river 결정). */
+[data-s1-component="footer"] {
+  box-sizing: border-box;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
+  color: var(--color-text-body-tertiary);
+  display: flex;
+  margin: 0;
+  position: relative;
+  width: 100%;
+}
+
+[data-s1-component="footer"] p,
+[data-s1-component="footer"] ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* 링크 줄 — 글자 사이에 1px 세로 구분선. 정본은 글자·구분선·글자 순서로 같은 간격을 둔다. */
+[data-s1-component="footer"] [data-s1-part="links"] {
+  align-items: center;
+  display: flex;
+  list-style: none;
+}
+
+[data-s1-component="footer"] [data-s1-part="links"] > li {
+  align-items: center;
+  display: flex;
+}
+
+[data-s1-component="footer"] [data-s1-part="links"] > li + li::before {
+  background: currentColor;
+  content: "";
+  flex: none;
+  width: var(--border-width-default);
+}
+
+[data-s1-component="footer"] [data-s1-part="link"] {
+  color: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* 회사 정보 — 정본 글자에 연속 공백이 들어 있다(registry/content/footer.json). 공백을 접지 않는다. */
+[data-s1-component="footer"] [data-s1-part="company"] {
+  white-space: pre-wrap;
+}
+
+[data-s1-component="footer"] [data-s1-part="logo"] {
+  color: var(--color-icon-gray);
+  display: block;
+  flex: none;
+  height: var(--sizing-16);
+  width: 42px;
+}
+
+/* ── PC — 정본 1920×116, 가로·양끝·가운데, 위 1px 선(안쪽 선이라 높이를 깎지 않는 겹침 레이어) ── */
+[data-s1-component="footer"][data-platform="pc"] {
+  align-items: center;
+  background: var(--color-navigation-bg);
+  justify-content: space-between;
+  min-height: 116px;
+  padding-block: var(--spacing-28);
+  padding-inline: clamp(var(--spacing-24), calc((100% - 1280px) / 2), 320px);
+}
+
+[data-s1-component="footer"][data-platform="pc"]::before {
+  background: var(--color-line-default);
+  content: "";
+  height: var(--border-width-default);
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+[data-s1-component="footer"][data-platform="pc"] [data-s1-part="content"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+[data-s1-component="footer"][data-platform="pc"] [data-s1-part="links"] {
+  gap: var(--spacing-12);
+}
+
+[data-s1-component="footer"][data-platform="pc"] [data-s1-part="links"] > li {
+  gap: var(--spacing-12);
+}
+
+[data-s1-component="footer"][data-platform="pc"] [data-s1-part="links"] > li + li::before {
+  color: var(--color-icon-gray-light);
+  height: var(--spacing-8);
+}
+
+[data-s1-component="footer"][data-platform="pc"] :is([data-s1-part="link"], [data-s1-part="company"], [data-s1-part="copyright"]) {
+  font-size: var(--font-size-10);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-wide);
+  line-height: var(--line-height-140);
+}
+
+/* ── Mobile — 정본 가로·세로 모두 hug, 세로 쌓기·왼쪽 정렬, 배경·테두리 없음, 로고·회사 정보 없음 ── */
+[data-s1-component="footer"][data-platform="mobile"] {
+  /* 정본 Mobile 은 가로·세로 모두 hug 다 — 안쪽 내용 폭(링크 줄)이 카피라이트 가운데의 기준이다.
+     바깥은 폭 100% 를 유지하되 칸 하나를 내용 폭(max-content)으로 잡아 왼쪽에 둔다. */
+  align-items: start;
+  display: grid;
+  gap: var(--spacing-4);
+  grid-template-columns: max-content;
+  justify-content: start;
+  padding: var(--spacing-8) var(--spacing-16);
+}
+
+[data-s1-component="footer"][data-platform="mobile"] [data-s1-part="links"] {
+  gap: var(--spacing-8);
+}
+
+[data-s1-component="footer"][data-platform="mobile"] [data-s1-part="links"] > li {
+  gap: var(--spacing-8);
+}
+
+[data-s1-component="footer"][data-platform="mobile"] [data-s1-part="links"] > li + li::before {
+  color: var(--color-line-default);
+  height: var(--sizing-10);
+}
+
+[data-s1-component="footer"][data-platform="mobile"] :is([data-s1-part="link"], [data-s1-part="copyright"]) {
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-normal);
+  line-height: var(--line-height-130);
+}
+
+/* 카피라이트는 링크 줄 폭에 맞춰 가운데(정본 layoutAlign=STRETCH · 가운데 정렬) */
+[data-s1-component="footer"][data-platform="mobile"] [data-s1-part="copyright"] {
+  justify-self: stretch;
+  text-align: center;
+}
+
+/* component:ci */
+/* CI (브랜드 로고) — 정본 buildCI(build-components.ts:6970-7031) 기준.
+   축: data-brand=s1|samsung × data-color=white|blue|dark (정본 Brand=에스원·삼성 × Color=White·Blue·Dark 6칸).
+   에스원은 인라인 SVG(S1_LOGO_SVG, viewBox 42×16 고정)를 78.75×30 으로 비례 확대하고 fill 은 currentColor 다.
+   삼성은 134×36 칸에 정본 이미지를 scaleMode FILL(= cover)로 채운다.
+   다크 전용 변형은 없다 — Dark 는 icon/gray 토큰이 모드를 따라가고 White·Blue 는 모드 불변이다. */
+[data-s1-component="ci"] {
+  box-sizing: border-box;
+  display: block;
+  flex: none;
+}
+
+/* ── 에스원 ── */
+[data-s1-component="ci"][data-brand="s1"] {
+  height: var(--sizing-30);
+  width: 78.75px;
+}
+
+[data-s1-component="ci"][data-brand="s1"] svg {
+  display: block;
+  fill: currentColor;
+  height: 100%;
+  width: 100%;
+}
+
+[data-s1-component="ci"][data-brand="s1"][data-color="white"] {
+  color: var(--color-icon-white);
+}
+
+/* 정본은 Semantic 별칭 없이 Foundation brand/ci 를 직접 묶는다(별칭 color/icon/brand-ci 는 제거됨) — 정본을 따른다. */
+[data-s1-component="ci"][data-brand="s1"][data-color="blue"] {
+  color: var(--color-brand-ci);
+}
+
+[data-s1-component="ci"][data-brand="s1"][data-color="dark"] {
+  color: var(--color-icon-gray);
+}
+
+/* ── 삼성 ── */
+[data-s1-component="ci"][data-brand="samsung"] {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 36px;
+  width: 134px;
+}
+
+[data-s1-component="ci"][data-brand="samsung"][data-color="white"] {
+  background-image: url("./assets/images/samsung-white.png");
+}
+
+[data-s1-component="ci"][data-brand="samsung"][data-color="blue"] {
+  background-image: url("./assets/images/samsung-blue.png");
+}
+
+[data-s1-component="ci"][data-brand="samsung"][data-color="dark"] {
+  background-image: url("./assets/images/samsung-dark.png");
+}
+
+/* component:login-gnb */
+/* LoginGNB (로그인 상단바) — 정본 buildLoginGNB(build-components.ts:6786-6833) 기준. 변형 없음(단일).
+   정본은 바 폭을 1920 고정(좌우 패딩 320)으로 표현하지만 웹은 GNB 와 같이 full-width 반응형이다
+   (gnb.css 선례, registry gnb.json 선언 · river 승인). 1920 에서는 정본 그대로 좌우 320 이 되고,
+   좁아지면 안쪽 폭 1280 을 가운데에 두며 최소 좌우 여백 spacing/24 로 줄어든다.
+   GNB 의 값(지구본 32 · 글자색 text/body/primary · 간격 4)을 가져오지 않는다 — 정본 값은 따로 있다.
+   삼성 로고는 2026-06-24 정본에서 제거됐다 — 왼쪽은 서비스명 글자 자리 하나뿐. */
+[data-s1-component="login-gnb"] {
+  align-items: center;
+  background: var(--color-navigation-bg);
+  box-sizing: border-box;
+  display: flex;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
+  height: var(--sizing-56);
+  justify-content: space-between;
+  margin: 0;
+  padding-block: var(--spacing-12);
+  padding-inline: clamp(var(--spacing-24), calc((100% - 1280px) / 2), 320px);
+  position: relative;
+  width: 100%;
+}
+
+/* 하단 1px 선 — 정본은 안쪽 선이라 내용 높이를 깎지 않는다. 흐름에서 빠진 겹침 레이어로 그린다(gnb.css 선례). */
+[data-s1-component="login-gnb"]::after {
+  background: var(--color-line-default);
+  bottom: 0;
+  content: "";
+  height: var(--border-width-default);
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+}
+
+[data-s1-component="login-gnb"] [data-s1-part="service"] {
+  color: var(--color-text-title-primary);
+  flex: none;
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-normal);
+  line-height: var(--line-height-130);
+  white-space: nowrap;
+}
+
+/* 언어 — GNB 의 언어 조작과 같은 button 이다(새 동작을 만들지 않는다. 눌렀을 때 무엇을 할지는 화면이 배선). */
+[data-s1-component="login-gnb"] [data-s1-part="lang"] {
+  align-items: center;
+  appearance: none;
+  background: none;
+  border: 0;
+  box-sizing: border-box;
+  color: var(--color-icon-gray-dark);
+  cursor: pointer;
+  display: flex;
+  flex: none;
+  font: inherit;
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-medium);
+  gap: var(--spacing-8);
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: var(--line-height-130);
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+[data-s1-component="login-gnb"] [data-s1-part="lang-icon"] {
+  background-color: var(--color-icon-gray-dark);
+  display: block;
+  flex: none;
+  height: var(--sizing-24);
+  -webkit-mask: url("./assets/icons/globe.svg") center / contain no-repeat;
+  mask: url("./assets/icons/globe.svg") center / contain no-repeat;
+  width: var(--sizing-24);
+}

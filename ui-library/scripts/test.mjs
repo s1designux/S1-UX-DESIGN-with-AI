@@ -15,7 +15,7 @@ const read = (relative) => readFile(path.join(libraryRoot, relative), "utf8");
 const build = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/build.mjs"), "--check"], { encoding: "utf8" });
 if (build.status !== 0) failures.push(`build freshness: ${build.stderr || build.stdout}`);
 
-const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker", "gnb", "gnb-sub-menu-item", "gnb-sub-menu", "assist-button", "text-button", "modal-content", "bottom-sheet-option", "bottom-sheet", "list-row", "expandable-card", "data-tag", "divider", "lnb"];
+const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker", "gnb", "gnb-sub-menu-item", "gnb-sub-menu", "assist-button", "text-button", "modal-content", "bottom-sheet-option", "bottom-sheet", "list-row", "expandable-card", "data-tag", "divider", "lnb", "footer", "ci", "login-gnb"];
 const individualCss = [];
 for (const id of componentIds) {
   const css = await read(`dist/components/${id}.css`);
@@ -685,6 +685,55 @@ for (const id of componentIds) {
     if (!/data-axis="y"[^>]*aria-orientation="vertical"/.test(example)) failures.push("divider vertical example must carry aria-orientation=vertical");
   }
 
+  /* 플랫폼 부품 3종(platform-web-3, river 승인 2026-10-02) — 정본 buildFooter·buildLoginGNB·buildCI 수치와
+     "만들지 않기로 한 것"(hover 색·삼성 로고·GNB 값 복사)이 지켜지는지 잡는다. */
+  if (id === "footer") {
+    if (manifest.jsRequired !== false) failures.push("footer must remain jsRequired=false");
+    if (JSON.stringify(manifest.variants) !== JSON.stringify(["pc", "mobile"])) failures.push("footer variants must be exactly pc and mobile (canon Platform axis)");
+    if (/:hover|:active/.test(css)) failures.push("footer has no hover/pressed state in canon — do not invent link colors");
+    if (!/\[data-platform="pc"\][^{]*\{[^}]*padding-block:\s*var\(--spacing-28\)/.test(css)) failures.push("footer PC block padding must be spacing/28");
+    if (!/\[data-platform="pc"\][^{]*\{[^}]*320px/.test(css)) failures.push("footer PC inline padding must resolve to 320 at the canon 1920 width");
+    if (!/\[data-s1-part="company"\]\s*\{[^}]*white-space:\s*pre-wrap/.test(css)) failures.push("footer company info must keep consecutive spaces (white-space: pre-wrap)");
+    if (!/<a data-s1-part="link" href="[^"]*">/.test(example)) failures.push("footer links must be real <a> elements");
+    const content = JSON.parse(await readFile(path.join(repositoryRoot, "registry/content/footer.json"), "utf8"));
+    for (const text of [...content.links, content.companyInfo, content.copyright]) {
+      if (!example.includes(`>${text}<`)) failures.push(`footer example must carry the verified text verbatim: ${text}`);
+    }
+    if (/data-s1-part="(company|logo)"/.test(example.slice(example.indexOf('<footer data-s1-component="footer" data-platform="mobile"')))) failures.push("footer mobile must not carry company info or logo (canon)");
+  }
+  if (id === "login-gnb") {
+    if (manifest.jsRequired !== false) failures.push("login-gnb must remain jsRequired=false");
+    if (!/\[data-s1-component="login-gnb"\]\s*\{[^}]*height:\s*var\(--sizing-56\)/.test(css)) failures.push("login-gnb height must be sizing/56");
+    if (!/\[data-s1-part="lang-icon"\]\s*\{[^}]*height:\s*var\(--sizing-24\)/.test(css)) failures.push("login-gnb globe must be 24 (not GNB's 32)");
+    if (css.replace(/\/\*[\s\S]*?\*\//g, "").includes("--sizing-32")) failures.push("login-gnb must not copy GNB's 32px values");
+    if (!/<button type="button" data-s1-part="lang">/.test(example)) failures.push("login-gnb language control must be a button type=button, mirroring GNB");
+    if (/samsung|삼성/i.test(example.replace(/<!--[\s\S]*?-->/g, ""))) failures.push("login-gnb must not carry the Samsung logo (removed from canon 2026-06-24)");
+  }
+  if (id === "ci") {
+    if (manifest.jsRequired !== false) failures.push("ci must remain jsRequired=false");
+    for (const brand of ["s1", "samsung"]) for (const color of ["white", "blue", "dark"]) {
+      if (!new RegExp(`data-brand="${brand}"\\s+data-color="${color}"`).test(example)) failures.push(`ci example must show ${brand}/${color}`);
+    }
+    if (!css.includes("width: 78.75px") || !css.includes("height: var(--sizing-30)")) failures.push("ci s1 must be 78.75×30");
+    if (!css.includes("width: 134px") || !css.includes("height: 36px")) failures.push("ci samsung must be 134×36");
+    if (!css.includes("background-size: cover")) failures.push("ci samsung image must fill the box (canon scaleMode FILL = cover)");
+    if (!/\[data-color="blue"\]\s*\{\s*color:\s*var\(--color-brand-ci\)/.test(css)) failures.push("ci s1 blue must bind Foundation brand/ci directly (canon)");
+    const imageManifest = JSON.parse(await read("dist/assets/images/manifest.json"));
+    for (const color of ["white", "blue", "dark"]) {
+      if (!imageManifest.images.some((image) => image.file === `samsung-${color}.png`)) failures.push(`ci samsung-${color}.png is not registered for deployment`);
+    }
+    const canonSource = await readFile(path.join(repositoryRoot, "plugins/figma-vars-installer/src/build-components.ts"), "utf8");
+    const canonPath = canonSource.match(/const S1_LOGO_SVG = `([^`]+)`|const S1_LOGO_SVG = "((?:[^"\\]|\\.)*)"/);
+    const canonSvg = canonPath ? (canonPath[1] ?? canonPath[2]).replace(/\\"/g, '"') : "";
+    const canonD = canonSvg.match(/<path d="([^"]+)"/)?.[1];
+    if (!canonD) failures.push("ci could not read S1_LOGO_SVG from the canon source");
+    else {
+      for (const [, d] of example.matchAll(/<path d="([^"]+)"/g)) {
+        if (d !== canonD) failures.push("ci example logo path differs from canon S1_LOGO_SVG");
+      }
+    }
+  }
+
   const module = await import(`${pathToFileURL(path.join(libraryRoot, `dist/components/${id}.js`)).href}?check=${Date.now()}`);
   if (id === "input" && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
     failures.push("input runtime lifecycle is incomplete");
@@ -697,7 +746,7 @@ for (const id of componentIds) {
 }
 
 const fullCss = await read("dist/s1-ui.css");
-const expectedFullCss = `${individualCss.join("\n\n").replaceAll('url("../assets/icons/', 'url("./assets/icons/')}\n`;
+const expectedFullCss = `${individualCss.join("\n\n").replaceAll('url("../assets/', 'url("./assets/')}\n`;
 if (fullCss !== expectedFullCss) failures.push("full and individual CSS source parity differs");
 
 const iconManifest = JSON.parse(await read("dist/assets/icons/manifest.json"));

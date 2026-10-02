@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
     "purpose": "개발 툴과 검사기가 함께 읽는 허용목록. 여기 없는 variant·size·속성은 승인된 적이 없는 것이다.",
-    "canonicalFingerprint": "783486db3584b2bbee00a5fc50150916a1ce3b48c92369ccf8d0e6c6a6d0fd8c"
+    "canonicalFingerprint": "2de785cf4212a42ee6c8f47fcd4f48a190c05ad3cb6771583db71735774b1c5e"
   },
   "components": [
     {
@@ -1501,6 +1501,104 @@
       "lifecycle": [],
       "canonicalFingerprint": "76a99e7148f72a0adbfd7701394d19d48ba060f37a298e0ae2742d9be75841cf",
       "sourceFingerprint": "6900e615c50c7729d6d6e9584bd6e31d6adacc8569ccd299d3f110ccfdce7ed6"
+    },
+    {
+      "id": "footer",
+      "status": "candidate",
+      "rootSelector": "[data-s1-component=\"footer\"]",
+      "root": "footer[data-s1-component=footer][data-platform]. 화면 맨 아래 영역(contentinfo 랜드마크).",
+      "variants": [
+        "pc",
+        "mobile"
+      ],
+      "sizes": [],
+      "breaks": null,
+      "states": [
+        "default"
+      ],
+      "parts": [
+        "content",
+        "links",
+        "link",
+        "company",
+        "copyright",
+        "logo"
+      ],
+      "variantAttribute": "data-platform",
+      "sizeAttribute": null,
+      "requiredAttributes": [
+        "data-platform"
+      ],
+      "requiredParts": [
+        "links",
+        "link",
+        "copyright"
+      ],
+      "jsRequired": false,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "4b7fe600410c8cbb5777e7abf28b5a02128f15c32f8ea32eb786e3d6e2966181",
+      "sourceFingerprint": "63d75b5f63d99ba947507ab6dff8f8eadbd81db76035f7b1584d6d1ee4b7de72"
+    },
+    {
+      "id": "ci",
+      "status": "candidate",
+      "rootSelector": "[data-s1-component=\"ci\"]",
+      "root": "span[data-s1-component=ci][data-brand][data-color][role=img][aria-label]. 에스원은 안에 인라인 svg(viewBox 0 0 42 16, aria-hidden) 한 개, 삼성은 비어 있다.",
+      "variants": [
+        "s1",
+        "samsung"
+      ],
+      "sizes": [],
+      "breaks": null,
+      "states": [
+        "default"
+      ],
+      "parts": [],
+      "variantAttribute": "data-brand",
+      "sizeAttribute": null,
+      "requiredAttributes": [
+        "data-brand",
+        "data-color"
+      ],
+      "requiredParts": [],
+      "jsRequired": false,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "ee6bc53ebfbc31ef81122e030070cc57130f9c198331dbc8107ceeaadfd5324a",
+      "sourceFingerprint": "0f72f1d6d6f8f7021d2305e77ca4c65bb859be9ae6cb1fb4cb0070f7dbb50410"
+    },
+    {
+      "id": "login-gnb",
+      "status": "candidate",
+      "rootSelector": "[data-s1-component=\"login-gnb\"]",
+      "root": "header[data-s1-component=login-gnb]. 화면 맨 위 바(banner 랜드마크). 변형 속성이 없다.",
+      "variants": [],
+      "sizes": [],
+      "breaks": null,
+      "states": [
+        "default"
+      ],
+      "parts": [
+        "service",
+        "lang",
+        "lang-icon",
+        "lang-label"
+      ],
+      "variantAttribute": null,
+      "sizeAttribute": null,
+      "requiredAttributes": [],
+      "requiredParts": [
+        "service",
+        "lang",
+        "lang-icon",
+        "lang-label"
+      ],
+      "jsRequired": false,
+      "events": [],
+      "lifecycle": [],
+      "canonicalFingerprint": "59b4b6e9967f119d83caf77d6fd5d4eb86e5c5342d9e771f0441d928c59d0700",
+      "sourceFingerprint": "257bae1ddb4b2d21a9a82e149040d4b7782612aebebe74b98f099520318eee8a"
     }
   ]
 }

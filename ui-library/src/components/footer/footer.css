@@ -1,0 +1,144 @@
+/* Footer (풋터) — 정본 buildFooter(build-components.ts:6429-6535) 기준. 축: data-platform=pc|mobile.
+   정본 PC 는 바 폭을 1920 고정(좌우 패딩 320)으로 표현하지만 웹은 GNB 와 같이 full-width 반응형이다
+   (gnb.css 선례, registry gnb.json 선언 · river 승인). 1920 에서는 정본 그대로 좌우 320 이 되고,
+   좁아지면 안쪽 폭 1280(= 1920 − 320×2)을 가운데에 두며 최소 좌우 여백 spacing/24 로 줄어든다.
+   정본에는 hover·pressed 가 없다 — 링크 색을 바꾸지 않는다. 키보드 초점은 다른 코어와 같이
+   브라우저 기본 표시에 맡긴다(2026-09-02 river 결정). */
+[data-s1-component="footer"] {
+  box-sizing: border-box;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
+  color: var(--color-text-body-tertiary);
+  display: flex;
+  margin: 0;
+  position: relative;
+  width: 100%;
+}
+
+[data-s1-component="footer"] p,
+[data-s1-component="footer"] ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* 링크 줄 — 글자 사이에 1px 세로 구분선. 정본은 글자·구분선·글자 순서로 같은 간격을 둔다. */
+[data-s1-component="footer"] [data-s1-part="links"] {
+  align-items: center;
+  display: flex;
+  list-style: none;
+}
+
+[data-s1-component="footer"] [data-s1-part="links"] > li {
+  align-items: center;
+  display: flex;
+}
+
+[data-s1-component="footer"] [data-s1-part="links"] > li + li::before {
+  background: currentColor;
+  content: "";
+  flex: none;
+  width: var(--border-width-default);
+}
+
+[data-s1-component="footer"] [data-s1-part="link"] {
+  color: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* 회사 정보 — 정본 글자에 연속 공백이 들어 있다(registry/content/footer.json). 공백을 접지 않는다. */
+[data-s1-component="footer"] [data-s1-part="company"] {
+  white-space: pre-wrap;
+}
+
+[data-s1-component="footer"] [data-s1-part="logo"] {
+  color: var(--color-icon-gray);
+  display: block;
+  flex: none;
+  height: var(--sizing-16);
+  width: 42px;
+}
+
+/* ── PC — 정본 1920×116, 가로·양끝·가운데, 위 1px 선(안쪽 선이라 높이를 깎지 않는 겹침 레이어) ── */
+[data-s1-component="footer"][data-platform="pc"] {
+  align-items: center;
+  background: var(--color-navigation-bg);
+  justify-content: space-between;
+  min-height: 116px;
+  padding-block: var(--spacing-28);
+  padding-inline: clamp(var(--spacing-24), calc((100% - 1280px) / 2), 320px);
+}
+
+[data-s1-component="footer"][data-platform="pc"]::before {
+  background: var(--color-line-default);
+  content: "";
+  height: var(--border-width-default);
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+[data-s1-component="footer"][data-platform="pc"] [data-s1-part="content"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+[data-s1-component="footer"][data-platform="pc"] [data-s1-part="links"] {
+  gap: var(--spacing-12);
+}
+
+[data-s1-component="footer"][data-platform="pc"] [data-s1-part="links"] > li {
+  gap: var(--spacing-12);
+}
+
+[data-s1-component="footer"][data-platform="pc"] [data-s1-part="links"] > li + li::before {
+  color: var(--color-icon-gray-light);
+  height: var(--spacing-8);
+}
+
+[data-s1-component="footer"][data-platform="pc"] :is([data-s1-part="link"], [data-s1-part="company"], [data-s1-part="copyright"]) {
+  font-size: var(--font-size-10);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-wide);
+  line-height: var(--line-height-140);
+}
+
+/* ── Mobile — 정본 가로·세로 모두 hug, 세로 쌓기·왼쪽 정렬, 배경·테두리 없음, 로고·회사 정보 없음 ── */
+[data-s1-component="footer"][data-platform="mobile"] {
+  /* 정본 Mobile 은 가로·세로 모두 hug 다 — 안쪽 내용 폭(링크 줄)이 카피라이트 가운데의 기준이다.
+     바깥은 폭 100% 를 유지하되 칸 하나를 내용 폭(max-content)으로 잡아 왼쪽에 둔다. */
+  align-items: start;
+  display: grid;
+  gap: var(--spacing-4);
+  grid-template-columns: max-content;
+  justify-content: start;
+  padding: var(--spacing-8) var(--spacing-16);
+}
+
+[data-s1-component="footer"][data-platform="mobile"] [data-s1-part="links"] {
+  gap: var(--spacing-8);
+}
+
+[data-s1-component="footer"][data-platform="mobile"] [data-s1-part="links"] > li {
+  gap: var(--spacing-8);
+}
+
+[data-s1-component="footer"][data-platform="mobile"] [data-s1-part="links"] > li + li::before {
+  color: var(--color-line-default);
+  height: var(--sizing-10);
+}
+
+[data-s1-component="footer"][data-platform="mobile"] :is([data-s1-part="link"], [data-s1-part="copyright"]) {
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-normal);
+  line-height: var(--line-height-130);
+}
+
+/* 카피라이트는 링크 줄 폭에 맞춰 가운데(정본 layoutAlign=STRETCH · 가운데 정렬) */
+[data-s1-component="footer"][data-platform="mobile"] [data-s1-part="copyright"] {
+  justify-self: stretch;
+  text-align: center;
+}

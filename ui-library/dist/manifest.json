@@ -1,9 +1,9 @@
 {
   "id": "s1-ui",
-  "version": "0.18.3",
+  "version": "0.19.1",
   "releasedAt": "2026-10-02",
   "status": "approved",
-  "canonicalFingerprint": "783486db3584b2bbee00a5fc50150916a1ce3b48c92369ccf8d0e6c6a6d0fd8c",
+  "canonicalFingerprint": "2de785cf4212a42ee6c8f47fcd4f48a190c05ad3cb6771583db71735774b1c5e",
   "tokenMapFingerprint": "796fb798dd329910ba6c42a29fb4af9e0fd217446b3fa847e140bc70a0a8f4c7",
   "commonCssDependencies": [
     "assets/css/tokens.css",
@@ -713,6 +713,44 @@
       "sourceExport": "assets/icons/ic_패널접기_solid.figma-1767-24@2x.png"
     }
   ],
+  "images": [
+    {
+      "id": "samsung-white",
+      "file": "samsung-white.png",
+      "sha256": "1bc9ad20e3a01f3977f8fb16c0fd342a54b21115264d8b09b89096a2acccea78",
+      "width": 1600,
+      "height": 425,
+      "origin": "SW-UX-GUIDE V3.0 TEST(cysG5U1udpQqVagYY1hWHW) 파일 내장 이미지 — 정본 buildCI 의 imageHash White 5ef070ce43a101a072964c656c0e666fe81e4f78 를 REST /v1/files/{key}/images 로 내려받음(2026-10-02)",
+      "usedBy": [
+        "ci"
+      ],
+      "use": "CI Brand=삼성 Color=White 워드마크(134×36, scaleMode FILL)"
+    },
+    {
+      "id": "samsung-blue",
+      "file": "samsung-blue.png",
+      "sha256": "c4bd9477e460a2f924329aef53ff66e4d47b775a7d30f363dd73559586bb7a1c",
+      "width": 1600,
+      "height": 425,
+      "origin": "SW-UX-GUIDE V3.0 TEST(cysG5U1udpQqVagYY1hWHW) 파일 내장 이미지 — 정본 buildCI 의 imageHash Blue 8de26dc1976bd0a64ea5b7207b6bf6d9e0396053 를 REST /v1/files/{key}/images 로 내려받음(2026-10-02)",
+      "usedBy": [
+        "ci"
+      ],
+      "use": "CI Brand=삼성 Color=Blue 워드마크(134×36, scaleMode FILL)"
+    },
+    {
+      "id": "samsung-dark",
+      "file": "samsung-dark.png",
+      "sha256": "ade94e407d795c49b58e2711410b60c77f9c11771f9556d2c8cf455c31a3fc94",
+      "width": 1600,
+      "height": 425,
+      "origin": "SW-UX-GUIDE V3.0 TEST(cysG5U1udpQqVagYY1hWHW) 파일 내장 이미지 — 정본 buildCI 의 imageHash Dark 100a4d3fdd0a5a9304c8251792f2d96089ac458a 를 REST /v1/files/{key}/images 로 내려받음(2026-10-02)",
+      "usedBy": [
+        "ci"
+      ],
+      "use": "CI Brand=삼성 Color=Dark 워드마크(134×36, scaleMode FILL)"
+    }
+  ],
   "components": [
     {
       "id": "input",
@@ -1175,6 +1213,48 @@
       "examples": {
         "pc": "examples/lnb.html"
       }
+    },
+    {
+      "id": "footer",
+      "version": "0.1.0",
+      "status": "candidate",
+      "jsRequired": false,
+      "canonicalFingerprint": "4b7fe600410c8cbb5777e7abf28b5a02128f15c32f8ea32eb786e3d6e2966181",
+      "sourceFingerprint": "63d75b5f63d99ba947507ab6dff8f8eadbd81db76035f7b1584d6d1ee4b7de72",
+      "css": "components/footer.css",
+      "js": "components/footer.js",
+      "example": "examples/footer.html",
+      "examples": {
+        "pc": "examples/footer.html"
+      }
+    },
+    {
+      "id": "ci",
+      "version": "0.1.0",
+      "status": "candidate",
+      "jsRequired": false,
+      "canonicalFingerprint": "ee6bc53ebfbc31ef81122e030070cc57130f9c198331dbc8107ceeaadfd5324a",
+      "sourceFingerprint": "0f72f1d6d6f8f7021d2305e77ca4c65bb859be9ae6cb1fb4cb0070f7dbb50410",
+      "css": "components/ci.css",
+      "js": "components/ci.js",
+      "example": "examples/ci.html",
+      "examples": {
+        "pc": "examples/ci.html"
+      }
+    },
+    {
+      "id": "login-gnb",
+      "version": "0.1.0",
+      "status": "candidate",
+      "jsRequired": false,
+      "canonicalFingerprint": "59b4b6e9967f119d83caf77d6fd5d4eb86e5c5342d9e771f0441d928c59d0700",
+      "sourceFingerprint": "257bae1ddb4b2d21a9a82e149040d4b7782612aebebe74b98f099520318eee8a",
+      "css": "components/login-gnb.css",
+      "js": "components/login-gnb.js",
+      "example": "examples/login-gnb.html",
+      "examples": {
+        "pc": "examples/login-gnb.html"
+      }
     }
   ],
   "bundleParity": {
@@ -1210,7 +1290,10 @@
       "expandable-card",
       "data-tag",
       "divider",
-      "lnb"
+      "lnb",
+      "footer",
+      "ci",
+      "login-gnb"
     ],
     "source": "ui-library/src/components/*",
     "rule": "Full and individual outputs are generated in this build invocation from identical source strings."

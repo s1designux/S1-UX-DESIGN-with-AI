@@ -1,0 +1,57 @@
+/* CI (브랜드 로고) — 정본 buildCI(build-components.ts:6970-7031) 기준.
+   축: data-brand=s1|samsung × data-color=white|blue|dark (정본 Brand=에스원·삼성 × Color=White·Blue·Dark 6칸).
+   에스원은 인라인 SVG(S1_LOGO_SVG, viewBox 42×16 고정)를 78.75×30 으로 비례 확대하고 fill 은 currentColor 다.
+   삼성은 134×36 칸에 정본 이미지를 scaleMode FILL(= cover)로 채운다.
+   다크 전용 변형은 없다 — Dark 는 icon/gray 토큰이 모드를 따라가고 White·Blue 는 모드 불변이다. */
+[data-s1-component="ci"] {
+  box-sizing: border-box;
+  display: block;
+  flex: none;
+}
+
+/* ── 에스원 ── */
+[data-s1-component="ci"][data-brand="s1"] {
+  height: var(--sizing-30);
+  width: 78.75px;
+}
+
+[data-s1-component="ci"][data-brand="s1"] svg {
+  display: block;
+  fill: currentColor;
+  height: 100%;
+  width: 100%;
+}
+
+[data-s1-component="ci"][data-brand="s1"][data-color="white"] {
+  color: var(--color-icon-white);
+}
+
+/* 정본은 Semantic 별칭 없이 Foundation brand/ci 를 직접 묶는다(별칭 color/icon/brand-ci 는 제거됨) — 정본을 따른다. */
+[data-s1-component="ci"][data-brand="s1"][data-color="blue"] {
+  color: var(--color-brand-ci);
+}
+
+[data-s1-component="ci"][data-brand="s1"][data-color="dark"] {
+  color: var(--color-icon-gray);
+}
+
+/* ── 삼성 ── */
+[data-s1-component="ci"][data-brand="samsung"] {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 36px;
+  width: 134px;
+}
+
+[data-s1-component="ci"][data-brand="samsung"][data-color="white"] {
+  background-image: url("../assets/images/samsung-white.png");
+}
+
+[data-s1-component="ci"][data-brand="samsung"][data-color="blue"] {
+  background-image: url("../assets/images/samsung-blue.png");
+}
+
+[data-s1-component="ci"][data-brand="samsung"][data-color="dark"] {
+  background-image: url("../assets/images/samsung-dark.png");
+}
