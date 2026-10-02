@@ -185,3 +185,16 @@ river 지시("둘 다 슬롯으로 바꿔줘") 반영. 정본은 이미 바뀌�
 - C-3: example 그림 SVG HEX 를 currentColor+투명도로 교체(검수 화면과 같은 모양).
 - C-1(동의 줄 화살표)은 river 결정 대기라 손대지 않음.
 - 배포본 0.16.2 → 0.16.3 (patch: 상태 규칙·예시 변경, 공개 selector·구조 불변). ui:contract·ui:version·ui:build:check·ui:test:check·ui:icons·ui:zip·devpanel:gen·ui:zip:check 모두 exit 0.
+
+## 후속 — 동의 줄 약관 열기 버튼 (D-6, 2026-10-02)
+
+river 결정: Agree 줄 오른쪽 화살표는 꾸밈이 아니라 약관 열기 버튼이다(독립 검증 C-1 해소).
+
+- **새 구조:** `div[data-type=agree] > label[data-s1-part=check](lead 슬롯 + text) + span[data-s1-part=trail] > button[type=button][data-s1-part=open][aria-label="이용약관 보기"] > span[chevron aria-hidden]`. 루트를 label→div 로 바꾸고 체크 영역만 label 로 감쌌다(label 안 button 중첩 없음). 새 part 이름 `check`·`open` 을 manifest parts/optionalParts 에 추가.
+- **클릭 영역:** label 에 루트 여백(위12·아래12·왼20)만큼 음수 margin + 같은 padding 을 주어 줄 여백까지 눌리는 기존 동작 유지(안쪽 위치·줄 높이 불변). 버튼은 폭 24(화살표 그대로)·높이 44(기존 값 sizing/44 — 글 자리 최소 높이)만 써서 세로 누름 영역만 넓혔다. 새 수치·토큰 없음.
+- **눌림 배경:** 루트 `:active` 대신 `:has([data-s1-part=check]:active)` — 체크 영역을 누를 때만 줄이 눌림. 약관 열기는 체크가 바뀌는 동작이 아니라 줄 전체가 눌려 보이면 오해를 주므로 제외.
+- **동작:** jsRequired:false 유지. 버튼 click 은 쓰는 화면이 배선한다(manifest relations·javascript.reason 에 명시). 줄 비활성이면 쓰는 화면이 input·버튼에 disabled 를 준다(버튼 :disabled 스타일 준비됨).
+- **버전:** list-row 0.3.2 → 0.4.0, 배포본 0.17.0 (공개 HTML 계약 변경 → `ui:bump:minor`).
+- **검사:** ui:zip·devpanel:gen·ui:contract·ui:version·ui:build:check·ui:test:check·ui:icons 모두 exit 0. gate:check 는 error 6 — Gate 24(DESIGN.core.md 낡음)·Gate 47(검수판 list-row 사실표 낡음, registry 갱신 파생)·Gate 51(크롬 시간 초과). 내 변경 파일이 원인이 아니며 `design:md:write`·`board:refresh` 는 오케스트레이터 소관.
+- **http 실측(dist 예시 + 배포 CSS, 폭 390):** 동의 줄 높이 68(예시 10줄 전부 68) · 화살표 x=346 24×24(=390−20−24, 위치 불변) · 버튼 24×44 · 화살표 클릭 → 체크 불변·click 이벤트 1회 · 글 클릭 → 체크 토글 · label 여백 모서리도 label 로 히트 · Tab 순서 체크 input → 약관 버튼.
+- **손대지 않음:** `pages/ui-review.html`, `reports/ui-library/list-row/matrix-fixture.html` 은 옛 label 마크업 그대로 — 오케스트레이터가 새 구조로 갱신해야 한다.

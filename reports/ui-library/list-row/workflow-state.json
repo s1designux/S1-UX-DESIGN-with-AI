@@ -42,7 +42,7 @@
   "workflowStatus": "awaiting-user",
   "uiLibraryStatus": "draft",
   "lastCompletedCheckpoint": 4,
-  "nextAction": "river UX 검수 — pages/ui-review.html 26번(List Row). 승인 시 6-promotion: manifest approved → ui:build·ui:zip·devpanel:gen(React·Vue 등 전달본 자동 생성) → guide-builder 가 components.html 섹션·사이트 메뉴 등재 + component-presentation-policy managedBy · ui-library-migration approved. C-1(동의 줄 화살표) 결정 함께 받는다.",
+  "nextAction": "river UX 검수 — pages/ui-review.html 26번(List Row). 승인 시 6-promotion: manifest approved → ui:build·ui:zip·devpanel:gen(React·Vue 등 전달본) → guide-builder 가 components.html 섹션·사이트 메뉴 등재 + component-presentation-policy · ui-library-migration approved.",
   "canonicalInputs": [
     {
       "role": "component-visual",
@@ -89,13 +89,7 @@
       }
     ]
   },
-  "blockers": [
-    {
-      "id": "C-1",
-      "kind": "needs-decision",
-      "summary": "동의 줄 오른쪽 화살표가 이름표 안 장식이라 누르면 약관 열기 대신 동의 체크가 켜진다 — 화살표를 따로 누르는 자리로 분리할지, 장식으로 둘지"
-    }
-  ],
+  "blockers": [],
   "evidence": {
     "sourceAudit": {
       "observedAt": "2026-09-21",
@@ -112,7 +106,8 @@
         "screens/review-mobile-light.png",
         "screens/review-mobile-dark.png"
       ],
-      "deltaPass": "2026-10-02 델타 재검증 FAIL 0 · HOLD 1(C-1 river 결정)"
+      "deltaPass": "2026-10-02 델타 재검증 FAIL 0 · HOLD 1(C-1 river 결정)",
+      "deltaPass2": "2026-10-02 델타 재검증 2(D-6 약관 열기 버튼) PASS — FAIL 0 · HOLD 0"
     }
   },
   "artifacts": {
@@ -167,11 +162,18 @@
       "by": "river",
       "decision": "공용 목록 줄 높이를 치수 토큰 눈금에 맞추지 않는다 — 여백 토큰과 글 자리로 높이가 잡힌다",
       "quote": "간격을 패딩 토큰으로 적용하면 자연스럽게 전체 하이트가 잡히는거지"
+    },
+    {
+      "id": "D-6",
+      "at": "2026-10-02",
+      "by": "river",
+      "decision": "동의 줄 오른쪽 화살표는 꾸밈이 아니라 약관 열기 버튼으로 분리한다 — 화살표를 눌러도 동의 체크가 켜지지 않는다",
+      "quote": "약관열기 버튼으로 가야함."
     }
   ],
   "handoff": {
     "lastActor": "orchestrator",
     "updatedAt": "2026-10-02",
-    "summary": "별도 폴더(list-row-web)에서 재개. 검수 화면 슬롯 계약 반영 → 독립 검증 FAIL 2·HOLD 3 → 4건 수정(배포본 0.16.3) → 델타 재검증 FAIL 0·HOLD 1(C-1). river 검수 대기."
+    "summary": "D-6(동의 줄 화살표=약관 열기 버튼) 반영, 배포본 0.17.0, 델타 재검증 2 PASS. river 검수 대기."
   }
 }
