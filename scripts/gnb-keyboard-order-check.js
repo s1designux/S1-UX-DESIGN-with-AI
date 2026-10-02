@@ -180,9 +180,17 @@ emitOnce();
 </script></body>`;
 }
 
-function runChrome(html) {
-  const chrome = findChrome();
-  if (!chrome) return Promise.reject(Object.assign(new Error('크롬을 찾지 못했습니다'), { code: 2 }));
+// ★ 크롬 한 번이 결과를 못 내는 경우(2026-10-02 정리):
+//   9/16~10/02 커밋 검사에서 이 검사기가 "시간 초과"로 커밋을 막은 일이 반복됐는데, 진짜 결함을
+//   잡은 적은 0회였다. 원인은 시험이 아니라 크롬 한 번의 실행이었다 — 가상 시간(5초)이 먼저 끝나
+//   결과 없이 DOM 을 내보내거나 크롬이 먼저 꺼져도, 옛 코드는 그걸 알아채지 못하고 120초를 다 기다렸다.
+//   이제 그 세 경우(결과 없는 DOM · 먼저 꺼짐 · 30초 초과)를 바로 알아채고 **새 크롬으로 다시** 띄운다.
+//   ⚠️ 다시 띄우는 것은 「결과를 아예 못 받은 경우」뿐이다. 시험이 ❌ 를 낸 결과는 그대로 실패다 —
+//   결함을 재시도로 덮지 않는다. 세 번 다 결과를 못 받으면 여전히 실패로 막는다(경고로 내리지 않는다).
+const ATTEMPTS = 3;
+const ATTEMPT_TIMEOUT_MS = 30000;
+
+function runChromeOnce(chrome, html) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 's1-gnbkbd-'));
   const file = path.join(dir, 'fixture.html');
   fs.writeFileSync(file, html);
@@ -193,19 +201,44 @@ function runChrome(html) {
       '--dump-dom', `file://${file}`,
     ], { stdio: ['ignore', 'pipe', 'ignore'] });
     let buf = '';
-    const timer = setTimeout(() => { killChromeTree(child); reject(new Error('크롬이 시간 안에 끝내지 못했습니다')); }, 120000);
+    let settled = false;
+    const finish = (fn, arg) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer); killChromeTree(child);
+      try { fs.rmSync(dir, { recursive: true, force: true }); } catch (e) { /* */ }
+      fn(arg);
+    };
+    const infra = (reason) => finish(reject, Object.assign(new Error(reason), { infra: true }));
+    const timer = setTimeout(() => infra(`${ATTEMPT_TIMEOUT_MS / 1000}초 안에 끝내지 못함`), ATTEMPT_TIMEOUT_MS);
     child.stdout.on('data', (c) => {
       buf += c;
-      if (buf.includes('id="results"') && buf.includes('</html>')) {
-        clearTimeout(timer); killChromeTree(child);
-        const m = /<script type="application\/json" id="results">([\s\S]*?)<\/script>/.exec(buf);
-        try { fs.rmSync(dir, { recursive: true, force: true }); } catch (e) { /* */ }
-        if (!m) { reject(new Error('결과를 읽지 못했습니다')); return; }
-        resolve(JSON.parse(m[1]));
-      }
+      if (!buf.includes('</html>')) return;
+      const m = /<script type="application\/json" id="results">([\s\S]*?)<\/script>/.exec(buf);
+      if (!m) { infra('결과 없이 화면을 내보냄'); return; }
+      try { finish(resolve, JSON.parse(m[1])); } catch (e) { infra('결과를 읽지 못함'); }
     });
-    child.on('error', reject);
+    // 'close' 는 출력이 다 흘러나온 뒤에 온다 — 결과를 이미 받았으면 settled 라 무시된다.
+    child.on('close', () => infra('결과를 내기 전에 꺼짐'));
+    child.on('error', (e) => infra(`실행 오류: ${e.message}`));
   });
+}
+
+async function runChrome(html) {
+  const chrome = findChrome();
+  if (!chrome) throw Object.assign(new Error('크롬을 찾지 못했습니다'), { code: 2 });
+  const reasons = [];
+  for (let i = 1; i <= ATTEMPTS; i++) {
+    try {
+      const r = await runChromeOnce(chrome, html);
+      if (i > 1) console.log(`  ℹ️ 크롬 ${i}번째 실행에서 결과를 받음 (앞선 실행: ${reasons.join(' · ')})`);
+      return r;
+    } catch (e) {
+      if (!e.infra) throw e;
+      reasons.push(e.message);
+    }
+  }
+  throw new Error(`크롬이 ${ATTEMPTS}번 모두 결과를 내지 못했습니다 — ${reasons.join(' · ')}`);
 }
 
 async function main() {
@@ -225,7 +258,20 @@ async function main() {
   const all = await runChrome(page(variants));
   const base = all.filter((r) => r.variant === '현재');
   for (const r of base) console.log(`  ${r.pass ? '✅' : '❌'} ${r.id} — ${r.detail}`);
+  // 2026-10-02 (🤖 component-verifier 적발 — 이 정리 전부터 있던 구멍): 런타임이 시험 도중 오류를 던지면
+  //   페이지가 결과를 일찍 내보내 **시험 일부만 남은 채** "전부 통과"가 됐다. 페이지 오류는 실패로 세고,
+  //   시험 A–F 가 하나라도 빠지면 실패로 센다 — "안 돌았다"를 "통과"로 읽지 않는다.
   const bad = base.filter((r) => !r.pass);
+  for (const r of all.filter((r) => r.variant === 'PAGE')) {
+    console.log(`  ❌ 페이지 — ${r.detail}`);
+    bad.push(r);
+  }
+  const ran = new Set(base.map((r) => r.id));
+  for (const id of ['A', 'B', 'C', 'D', 'E', 'F']) {
+    if (ran.has(id) || ran.has('LOAD')) continue;
+    console.log(`  ❌ ${id} — 시험이 돌지 않았습니다(결과 없음)`);
+    bad.push({ id, pass: false });
+  }
   if (bad.length) {
     console.error(`\n❌ 키보드 순서 시험 ${bad.length}건 실패 — 하위메뉴를 키보드로 쓰는 길이 깨졌습니다.\n`);
     return 1;

@@ -71,7 +71,7 @@ function check({ pass, warn, fail }) {
   // ── A') foundation color 페이지 정합 (BRAND·PALETTES·DARK_PALETTES = vars-data FOUNDATION_COLOR) ──
   const rc = spawnSync('node', [path.join(ROOT, 'scripts/gen-foundation-color.js'), '--check'], { encoding: 'utf-8' });
   if (rc.status === 0) pass('foundation.html color(BRAND·PALETTES·DARK_PALETTES) = 정본 일치');
-  else fail((rc.stderr || rc.stdout || '').trim().split('\n').filter(Boolean).pop() || 'foundation color drift');
+  else fail(`${(rc.stderr || rc.stdout || '').trim().split('\n').filter(Boolean).pop() || 'foundation color drift'} — npm run color:gen 으로 재생성`);
 
   // ── B) 전 number 토큰 페이지 노출 ──
   const vd = read('plugins/figma-vars-installer/src/vars-data.ts');

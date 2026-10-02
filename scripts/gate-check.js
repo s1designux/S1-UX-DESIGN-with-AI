@@ -266,12 +266,22 @@ try {
 
 // ── Gate 7: Token Sync Monitor ───────────────────────────────────
 // 토큰 "값"이 모든 표면에서 정본(vars-data)과 일치하는지 기계 판정. (site-base 는 사이트 전용·검수 제외)
+// 2026-10-02: 옛 Gate 7b(표면 간 교차 대조)를 이 검사 안으로 합쳤다(river 결정). 7b 의 두 대조
+//   (A: tokens.css↔vars-data · B: semantic.html↔tokens.css)는 **빠짐없이 그대로** 아래에서 돈다.
+//   위 정본 대조와 거의 겹치지만 7b 만 보는 가장자리가 있다 — 정본 쪽 라이트/다크 중 한쪽만 색으로
+//   풀리는 토큰(위 대조는 둘 다 풀려야 올림), 그리고 정본에 없는 토큰의 semantic.html↔tokens.css 직접
+//   대조. 그래서 7b 를 지우지 않고 합쳤다. 같은 토큰·같은 모드를 위에서 이미 실패로 보고했으면 중복
+//   줄만 생략한다(실패 여부는 그대로 — 위에서 이미 fail 이 났다).
 gateHeader('[Gate 7] 토큰값일치 검사기 (Token Sync)');
 
+const gate7Reported = { 'tokens.css': new Set(), 'semantic.html': new Set() };
 try {
   const { monitor } = require('./token-sync-monitor');
   const r = monitor();
   for (const s of r.results) {
+    // 아래 tier1 분기가 **화면에 실제로 이름을 찍는 6건만** 넣는다 — 7번째부터는 "+N more" 로 접혀
+    //   이름이 안 보이므로, 교차 대조가 그 토큰을 따로 이름 대도록 생략 대상에서 뺀다(🤖 적발 2026-10-02).
+    if (gate7Reported[s.id]) for (const m of s.mismatches.slice(0, 6)) gate7Reported[s.id].add(`${m.token}|${m.mode}`);
     if (s.error) { fail(`${s.id} 추출 실패: ${s.error}`); continue; }
     if (s.unmonitored) { warn(`${s.id} 추출 0건 — 모니터 안 됨(셀렉터/네이밍 점검)`); continue; }
     // 완전성(B): 정본 집합과 페이지 토큰 집합 불일치 → 누락/잉여 (Tier1 fail)
@@ -296,22 +306,21 @@ try {
   fail(`token-sync-monitor 실패: ${e.message}`);
 }
 
-// ── Gate 7b: Token Value Consistency (표면 간 해석값 대조) ────────
-// 존재하나 gate:check 에 미연결이던 검사기를 배선(2026-07-10). token-sync-monitor 가
-// 정본↔각 표면을 보는 반면, 이건 tokens.css↔vars-data↔semantic.html 의 "해석된 HEX"가
-// Light/Dark 모두 일치하는지 교차 대조한다.
-gateHeader('[Gate 7b] 토큰값 표면일치 검사기 (Value Consistency)');
+// 교차 대조(옛 Gate 7b) — tokens.css↔vars-data↔semantic.html 의 "해석된 HEX"가 Light/Dark 모두 일치하는지.
 try {
   const { check: consistencyCheck } = require('./token-value-consistency-check');
   const { A, B } = consistencyCheck();
+  const seen = (id, m) => gate7Reported[id].has(`${m.token}|${m.mode}`);
   for (const m of A.mismatches) {
+    if (seen('tokens.css', m)) continue;
     fail(`tokens.css↔vars-data ${m.token} [${m.mode}] tokens.css=${m.tokensCss} ≠ vars-data ${m.varsData}`);
   }
   for (const m of B.mismatches) {
+    if (seen('tokens.css', m) || seen('semantic.html', m)) continue;
     fail(`semantic.html↔tokens.css ${m.token} [${m.mode}] tokens.css=${m.tokensCss} ≠ semantic.html=${m.semanticHtml}`);
   }
   if (A.mismatches.length === 0 && B.mismatches.length === 0) {
-    pass(`값 표면일치: A ${A.compared}건 + B ${B.compared}건 모두 일치`);
+    pass(`교차 대조: tokens.css↔vars-data ${A.compared}건 + semantic.html↔tokens.css ${B.compared}건 모두 일치`);
   }
 } catch (e) {
   fail(`token-value-consistency-check 실패: ${e.message}`);
@@ -348,26 +357,10 @@ try {
   fail(`number-page-check 실행 실패: ${e.message}`);
 }
 
-// ── Gate 9b: Foundation Color Page Consistency ────────────────────
-// foundation.html 의 색 팔레트 3블록(BRAND·PALETTES·DARK_PALETTES)이 vars-data 정본과 같은지.
-// 종전엔 `color:check` 가 존재하는데도 **어디에도 배선되지 않아** 색 스와치가 무게이트였다
-// (숫자 5블록만 Gate 9 가 지킴 — 2026-08-01 진단에서 적발한 사각지대).
-gateHeader('[Gate 9b] 파운데이션 색페이지 검사기 (Foundation Color Page)');
-try {
-  const { spawnSync } = require('child_process');
-  const r = spawnSync('node', [path.join(ROOT, 'scripts/gen-foundation-color.js'), '--check'], { encoding: 'utf-8' });
-  const out = ((r.stdout || '') + (r.stderr || '')).split('\n').filter((l) => l.trim());
-  if (r.status === 0) {
-    const ok = out.find((l) => l.includes('✅'));
-    pass(ok ? ok.replace(/^\s*\[color:gen\]\s*/, '').replace(/\s*✅\s*$/, '').trim() : 'foundation.html 색 팔레트 정본 일치');
-  } else {
-    const bad = out.filter((l) => l.includes('❌') || l.includes('불일치') || l.includes('drift'));
-    if (bad.length === 0) fail(`Gate 9b: foundation.html 색 블록이 정본과 어긋남 (exit ${r.status}) — npm run color:gen 으로 재생성`);
-    else for (const l of bad) fail(`Gate 9b: ${l.trim()} — npm run color:gen 으로 재생성`);
-  }
-} catch (e) {
-  fail(`Gate 9b 실행 실패: ${e.message}`);
-}
+// ── (옛 Gate 9b: Foundation Color Page — 2026-10-02 Gate 9 로 흡수) ───────
+// foundation.html 색 팔레트 3블록(BRAND·PALETTES·DARK_PALETTES) = vars-data 정본 대조는
+// Gate 9(number-page-check.js 의 A' 단계)가 **같은 명령**(gen-foundation-color.js --check)으로
+// 이미 돌려 막는다 — 실패 집합이 동일해 같은 검사가 두 번 돌던 것을 하나로 줄였다(river 결정).
 
 // ── Gate 9c: Registry Foundation Colors (생성물 드리프트) ──────────
 // registry/tokens/foundation.colors.json 은 2026-08-01 부터 vars-data 파생 생성물이다.
@@ -409,27 +402,10 @@ try {
   fail(`Gate 9d 실행 실패: ${e.message}`);
 }
 
-// ── Gate 9e: Component Facts (생성물 드리프트) ─────────────────────
-// registry/components/component-facts.json 은 build-components.ts 를 mock 실행해 뽑는 생성물이다.
-// 손편집하면 "기계가 뽑았으니 믿을 수 있다"는 전제가 조용히 깨진다 — 이 파일을 근거로 삼는
-// 도구가 10개다(gen-design-md·token-reconcile·component-geometry-check 등).
-// 계획 Phase 4 가 신설을 예고했으나 배선되지 않은 채 남아 있었다(2026-09-15 인계 감사에서 발견).
-gateHeader('[Gate 9e] 부품사실 생성물 검사기 (Component Facts)');
-try {
-  const { spawnSync } = require('child_process');
-  const r = spawnSync('node', [path.join(ROOT, 'scripts/gen-component-facts.js')], { encoding: 'utf-8' });
-  const out = ((r.stdout || '') + (r.stderr || '')).split('\n').filter((l) => l.trim());
-  if (r.status === 0) {
-    const ok = out.find((l) => l.includes('✅'));
-    pass(ok ? ok.replace(/^\s*✅\s*/, '').trim() : 'component facts 정본 일치');
-  } else {
-    const bad = out.filter((l) => l.includes('❌'));
-    if (bad.length === 0) fail(`Gate 9e: component-facts.json 이 정본과 어긋남 (exit ${r.status}) — npm run components:facts:write`);
-    else for (const l of bad) fail(`Gate 9e: ${l.replace(/^\s*❌\s*/, '').trim()}`);
-  }
-} catch (e) {
-  fail(`Gate 9e 실행 실패: ${e.message}`);
-}
+// ── (옛 Gate 9e: Component Facts — 2026-10-02 Gate 24 로 흡수) ──────────
+// registry/components/component-facts.json 이 build-components.ts mock 실행 결과와 같은지는
+// Gate 24(design-md-drift-check.js) 가 행동 계약 검사 다음 단계에서 **같은 명령**(gen-component-facts.js 무인자)을
+// 돌려 비0이면 막는다 — 실패 집합이 동일해 같은 검사가 두 번 돌던 것을 하나로 줄였다(river 결정).
 
 // ── Gate 10: Doc Token Reference Drift ────────────────────────────
 // 가이드/레퍼런스 HTML 이 rename·삭제된 토큰명을 쥐고 있는지 강제.
@@ -744,7 +720,9 @@ try {
   if (r.status === 0) {
     pass('DESIGN.md 최신 — 정본(tokens.css+registry)과 일치');
   } else {
-    const lines = out.split('\n').filter((l) => l.includes('•') || l.includes('낡음'));
+    // ❌·→ 줄도 싣는다 — 부품사실(component-facts) 낡음은 이 검사 둘째 단계가 잡는데(옛 Gate 9e 흡수,
+    //   2026-10-02), 그 실패 문구와 고치는 명령이 ❌/→ 로 시작해 종전 필터로는 안 보였다.
+    const lines = out.split('\n').filter((l) => l.includes('•') || l.includes('낡음') || /^\s*(❌|→)/.test(l));
     for (const l of lines) fail(l.replace(/^\s*[•❌]\s*/, '').trim());
     if (lines.length === 0) fail('DESIGN.md 드리프트 — npm run design:md:write 후 커밋 (상세: npm run design:md:check)');
   }
