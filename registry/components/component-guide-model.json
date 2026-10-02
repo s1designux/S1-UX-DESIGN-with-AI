@@ -132,9 +132,9 @@
       "memberOrder": 5,
       "category": "Navigation",
       "name": "Side Nav",
-      "visibility": "internal",
-      "sectionId": null,
-      "reason": "사이드바 메뉴(LNB) 판 — 정본 buildSideNav 2026-09-30 신설(river \"LNB 부품도 이어서 만들어줘\"). 웹 배포본 원본(ui-library/src/components/lnb)은 있으나 손관리 components 페이지 섹션은 검증·river UX 승인 뒤 guide-builder 가 추가한다. HTML 섹션 생기면 sectionFor 로 이관."
+      "visibility": "public",
+      "sectionId": "lnb",
+      "reason": null
     },
     {
       "order": 12,
@@ -145,7 +145,7 @@
       "name": "Side Nav Item",
       "visibility": "internal",
       "sectionId": null,
-      "reason": "요소 — Side Nav 안 메뉴 칸(펼침 줄·접힘 칸)."
+      "reason": "요소 — Side Nav(lnb 섹션) 안 메뉴 칸(펼침 줄·접힘 칸). lnb 섹션 「메뉴 칸」 표로 표출(axisSource)."
     },
     {
       "order": 13,
@@ -156,7 +156,7 @@
       "name": "Side Nav Sub Item",
       "visibility": "internal",
       "sectionId": null,
-      "reason": "요소 — Side Nav 안 하위 메뉴(2뎁스) 줄."
+      "reason": "요소 — Side Nav(lnb 섹션) 안 하위 메뉴(2뎁스) 줄. lnb 섹션 「하위 메뉴 줄」 표로 표출(axisSource)."
     },
     {
       "order": 14,
@@ -43588,7 +43588,7 @@
     },
     {
       "name": "Side Nav",
-      "gridMembership": "internal",
+      "gridMembership": "public",
       "variantCount": 8,
       "axes": {
         "Type": [

@@ -15,7 +15,7 @@ const read = (relative) => readFile(path.join(libraryRoot, relative), "utf8");
 const build = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/build.mjs"), "--check"], { encoding: "utf8" });
 if (build.status !== 0) failures.push(`build freshness: ${build.stderr || build.stdout}`);
 
-const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker", "gnb", "gnb-sub-menu-item", "gnb-sub-menu", "assist-button", "text-button", "modal-content", "bottom-sheet-option", "bottom-sheet", "list-row", "expandable-card", "data-tag", "divider"];
+const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker", "gnb", "gnb-sub-menu-item", "gnb-sub-menu", "assist-button", "text-button", "modal-content", "bottom-sheet-option", "bottom-sheet", "list-row", "expandable-card", "data-tag", "divider", "lnb"];
 const individualCss = [];
 for (const id of componentIds) {
   const css = await read(`dist/components/${id}.css`);
@@ -650,10 +650,10 @@ for (const id of componentIds) {
     if (JSON.stringify(manifest.sizes) !== JSON.stringify(["md", "lg"])) failures.push("lnb sizes must be md(240) and lg(280)");
     if (/data-variant="grouped"/.test(example)) failures.push("lnb example must not demonstrate the on-hold grouped variant");
     if (!/\[data-s1-component="lnb"\]\s*\{[^}]*width:\s*240px;/.test(css) || !/\[data-size="lg"\]\s*\{[^}]*width:\s*280px;/.test(css)) failures.push("lnb widths must be 240 (md, default) and 280 (lg)");
-    if (!/\[data-state="collapsed"\]\s*\{[^}]*width:\s*var\(--sizing-64\)/.test(css)) failures.push("lnb collapsed width must be sizing/64");
+    if (!/\[data-state="collapsed"\]\s*\{[^}]*width:\s*var\(--sizing-80\)/.test(css)) failures.push("lnb collapsed width must be sizing/80 (river 2026-09-30)");
     if (!/\[data-s1-component="lnb"\] button\s*\{\s*font-family:\s*inherit;/.test(css)) failures.push("lnb button items need font-family: inherit (button default font leaked in the prototype)");
     if (css.includes("--color-text-state-helper")) failures.push("lnb sub-menu text must keep the parent menu color — do not lower it with text/state/helper (river 2026-09-29)");
-    if (!/\[data-s1-component="lnb"\] \[data-s1-part="item"\]\s*\{[^}]*color:\s*var\(--color-text-body-secondary\)/.test(css)) failures.push("lnb menu label must use the text step text/body/secondary (river 2026-09-30)");
+    if (!/\[data-s1-component="lnb"\] \[data-s1-part="item"\]\s*\{[^}]*color:\s*var\(--color-navigation-label-default-side\)/.test(css)) failures.push("lnb menu label must use navigation/label/default-side (river 2026-10-01)");
     if (/\[data-theme="dark"\][^{]*\[data-s1-part="item"\][^{]*\{[^}]*\bcolor:/.test(css)) failures.push("lnb must not override text color per theme — the text step carries light/dark (river 2026-09-30)");
     if (!/aria-label="[^"]+"[\s\S]*?data-s1-part="collapse"/.test(example) || /data-s1-part="collapse"[^>]*>[^<]*[가-힣A-Za-z]/.test(example)) failures.push("lnb collapse control must be an icon-only button with an aria-label");
     if (!example.includes("data-variant=\"brand\"") || !example.includes('data-state="collapsed"') || !example.includes('data-size="lg"')) failures.push("lnb example must show brand, collapsed and lg");

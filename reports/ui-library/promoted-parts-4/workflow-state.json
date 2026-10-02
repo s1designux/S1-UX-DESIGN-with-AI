@@ -66,7 +66,7 @@
   "workflowStatus": "in-progress",
   "uiLibraryStatus": "draft",
   "lastCompletedCheckpoint": 3,
-  "nextAction": "Side Nav 3세트(Side Nav · Side Nav Item · Side Nav Sub Item) 정본 편입 — ic_패널접기 V2.2 라이브러리 게시 완료(2026-09-30, river). 설치기 재설치로 Figma 반영은 river 몫.",
+  "nextAction": "LNB 승인 완료(2026-10-02). 남은 것: components.html 안내 페이지 LNB 섹션 추가(guide-builder) · 나머지 3종 승인.",
   "ownership": {
     "currentActor": "orchestrator",
     "startedAt": "2026-09-29T00:00:00+09:00",
@@ -139,6 +139,15 @@
     "sourceAudit": {
       "observedAt": "2026-09-29",
       "basis": "site-restyle 작업 폴더의 승인 시제품(assets/css/restyle-candidates.css · pages/_restyle-test/parts.html) 실제 렌더 확인 + 접힘카드는 Figma REST 실측(540:6547·540:6555). 정본 build-components.ts 에는 네 부품 모두 없음(grep 확인)."
+    },
+    "lnbRiverApproval": {
+      "date": "2026-10-02",
+      "status": "approved",
+      "target": "ui-library lnb v0.2.0 (웹 배포본) · Figma Side Nav 3세트(정본 편입 8b385c0f)",
+      "quote": "LNB 상태를 승인으로 바꾸고, 저장해서 원본 기본 버전(main)에 합친 뒤 올려줘",
+      "scope": "LNB 한 부품만 approved — Expandable Card · Divider · Data Tag 는 candidate 그대로",
+      "verification": "reports/figma-library-build/side-nav/4-verification.md 재검증 PASS(🤖 component-verifier, Gate 13 기록 11ff4314f59c8a9f)",
+      "openDecisions": "펼침 폭 240·280 · 로고 자리 150·178 raw(크기 토큰 부재) · 다크 메뉴명 밝기(B-3) — needs-decision 유지"
     }
   },
   "artifacts": {
@@ -198,6 +207,13 @@
       "by": "river",
       "decision": "판 접기 아이콘을 Figma 아이콘으로 새로 만든다",
       "quote": "LNB로 확정하고, 아이콘도 만들어줘"
+    },
+    {
+      "id": "D-7",
+      "at": "2026-10-02",
+      "by": "river",
+      "decision": "LNB 를 승인(approved)으로 올린다",
+      "quote": "LNB 상태를 승인으로 바꾸고, 저장해서 원본 기본 버전(main)에 합친 뒤 올려줘"
     }
   ],
   "handoff": {
