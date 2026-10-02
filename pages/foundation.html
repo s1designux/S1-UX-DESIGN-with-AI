@@ -278,32 +278,10 @@
     .pal-pair-label .light-badge { background: #fef9c3; color: #854d0e; }
     .pal-pair-label .dark-badge  { background: #1e293b; color: #94a3b8; }
 
-    /* ── Dark palette column — gray-dark/50 배경 ──
-       gap 없이 light col 바로 아래서 시작, margin 음수로 body 패딩 돌파 → 카드 하단·좌우 full-bleed.
-       padding-top: 16px 으로 light col body-top(16px)과 동일한 리듬 유지.
-       palette-group overflow:hidden 이 border-radius 클리핑 처리. */
-    .pal-pair-col--dark {
-      background: #131418;               /* gray-dark/50 */
-      margin: 0 -20px -16px -20px;       /* body 패딩(16px 20px) 돌파 */
-      padding: 16px 20px 16px;           /* top: light col body-top 16px 과 동일 리듬 */
-    }
-    .pal-pair-col--dark .pal-pair-label {
-      color: #55575F;                    /* gray-dark/600 — placeholder 톤 */
-    }
-    .pal-pair-col--dark .pal-pair-label .dark-badge {
-      background: #24252C;
-      color: #8A8C96;
-    }
-    .pal-pair-col--dark .color-card {
-      background: #1C1D23;               /* gray-dark/100 — 카드 표면 */
-      border-color: rgba(255,255,255,0.08);
-    }
-    .pal-pair-col--dark .color-card:hover {
-      border-color: rgba(255,255,255,0.2);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-    }
-    .pal-pair-col--dark .color-step  { color: #B8BABF; }   /* gray-dark/800 */
-    .pal-pair-col--dark .color-hex   { color: #55575F; }   /* gray-dark/600 */
+    /* ── Dark palette column ──
+       바탕은 화면 테마를 따른다(river 2026-10-02) — 라이트·다크 칩 줄이 같은 바탕을 쓴다: 라이트=흰 바탕, 다크=어두운 바탕(token-page-dark.css).
+       종전엔 다크 줄만 테마와 무관하게 검은 띠(gray-dark/50)였다. */
+    .pal-pair-col--dark { padding-top: 16px; }
 
     /* ── Primary step badge ── */
     .color-card.is-primary { outline: 2px solid rgba(255,255,255,0.7); outline-offset: -2px; }
@@ -329,6 +307,7 @@
       background: rgba(255,255,255,0.25);
     }
   </style>
+  <link rel="stylesheet" href="../assets/css/token-page-dark.css">
 </head>
 <body>
 
@@ -374,6 +353,8 @@
           <span class="token-search-count"></span>
           <button type="button" class="token-search-clear" aria-label="검색어 지우기">×</button>
         </label>
+        <div class="token-toolbar-divider"></div>
+        <span class="token-toolbar-label">Preview Theme</span>
         <div class="token-theme-toggle" role="group" aria-label="화면 테마">
           <button type="button" data-theme="light">Light</button>
           <button type="button" data-theme="dark">Dark</button>

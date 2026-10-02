@@ -1,20 +1,27 @@
-/* ── Token page toolbar — 섹션 nav 오른쪽: 검색창 + Light/Dark 전환 ──
-   foundation.html · semantic.html 공용. 동작은 assets/js/token-toolbar.js */
+/* ── Token page toolbar — 섹션 칩 아래 떠 있는 띠: 검색창 + Light/Dark 전환 ──
+   foundation.html · semantic.html 공용. 동작은 assets/js/token-toolbar.js
+   PC/Mobile 컴포넌트 화면의 Preview Theme 띠(components.html .theme-bar)와 같은 모양 — 섹션 nav 와 함께 상단 고정 */
 .foundation-section-nav { align-items: center; }
 .token-toolbar {
-  margin-left: auto;
-  display: flex; align-items: center; gap: 8px;
+  flex-basis: 100%;
+  display: flex; align-items: center; gap: 12px;
+  margin-top: 6px; padding: 10px 16px;
+  background: rgba(255,255,255,0.94); border: 1px solid #e5e7eb; border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 }
+.token-toolbar-divider { width: 1px; height: 20px; background: #e5e7eb; flex-shrink: 0; }
+.token-toolbar-label { font-size: 12px; color: #6b7280; font-weight: 500; white-space: nowrap; }
 .token-search {
   position: relative;
   display: flex; align-items: center;
+  flex: 1; max-width: 480px;
 }
 .token-search svg {
   position: absolute; left: 10px;
   width: 14px; height: 14px; color: #9ca3af; pointer-events: none;
 }
 .token-search input {
-  width: 240px; height: 32px;
+  width: 100%; height: 34px;
   padding: 0 56px 0 30px;
   font: inherit; font-size: 12px; color: #111827;
   background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;
@@ -41,7 +48,7 @@
   display: flex; background: #f3f4f6; border-radius: 8px; padding: 3px; gap: 2px;
 }
 .token-theme-toggle button {
-  padding: 5px 14px; font: inherit; font-size: 12px; font-weight: 500;
+  padding: 5px 16px; font: inherit; font-size: 12px; font-weight: 500;
   border-radius: 6px; border: none; background: transparent; color: #6b7280;
   cursor: pointer; transition: all 0.15s;
 }
@@ -57,11 +64,15 @@
 /* 남은 칸이 몇 개뿐이어도 줄 전체로 늘어나지 않게 — 검색 중에는 칸 폭 고정 */
 .page-content.is-searching .color-card { flex: 0 0 110px; }
 
-/* 섹션 nav 는 다크 테마에서도 밝은 판 그대로라 도구 모음도 밝은 판을 유지한다. 빈 결과 문구만 어두운 본문에 맞춘다 */
+/* 상단(제목·섹션 nav·이 띠)은 컴포넌트 화면처럼 다크에서도 밝은 판 그대로. 빈 결과 문구만 어두운 본문에 맞춘다 */
 [data-theme="dark"] .token-search-empty { color: #8A8C96; }
 
-@media (max-width: 900px) {
-  .token-toolbar { margin-left: 0; width: 100%; }
-  .token-search { flex: 1; }
-  .token-search input { width: 100%; }
+/* 좁은 화면에서는 고정 모바일 헤더(54px, style.css .mobile-header) 아래에 붙는다 — 페이지 인라인의 top:0 !important 를 이기도록 선택자를 한 단계 높인다 */
+@media (max-width: 860px) {
+  .main-content :is(#foundation-section-nav, #semantic-section-nav) { top: 54px !important; }
+}
+@media (max-width: 600px) {
+  .token-toolbar { flex-wrap: wrap; gap: 8px; }
+  .token-search { flex-basis: 100%; max-width: none; }
+  .token-toolbar-divider { display: none; }
 }

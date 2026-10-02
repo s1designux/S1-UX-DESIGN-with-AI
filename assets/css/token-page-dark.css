@@ -1,0 +1,39 @@
+/* ── Token page 다크 테마 본문 — foundation.html · semantic.html 공용 ──
+   바탕은 화면 테마를 따른다 (river 2026-10-02: 라이트=흰 바탕, 다크=어두운 바탕).
+   상단(제목·섹션 nav·검색 띠)은 컴포넌트 화면처럼 밝은 판 그대로 두고, 본문(.page-content)만 어둡게 한다.
+   값은 gray-dark 단계: 0 #0D0E12 · 100 #1C1D23 · 200 #24252C · 700 #8A8C96 · 800 #B8BABF · 900 #ECEDF0
+   페이지 인라인 <style> 뒤에 링크해야 같은 우선순위에서 이긴다. */
+[data-theme="dark"] .page-content { background: #0D0E12; color: #ECEDF0; }
+[data-theme="dark"] .page-content :is(
+  .section-title, .cat-name, .typo-category-name, .palette-label,
+  .brand-name, .color-step, .radius-var, .spacing-var, .typo-token, .typo-preview,
+  .typo-weight-sample, .border-width-val,
+  .token-var, .token-role-cell, .token-value, .spec-var, .spec-val, .change-text, td
+) { color: #ECEDF0; }
+[data-theme="dark"] .page-content :is(
+  .section-desc, .section-desc strong, .section-desc code, .cat-desc, .typo-category-desc,
+  .typo-weight-header, .pal-pair-label, .color-hex, .brand-hex, .radius-val, .radius-role,
+  .spacing-val, .spacing-usage, .spacing-head-label, .typo-spec, .typo-note,
+  .token-foundation-ref, .spec-role
+) { color: #8A8C96; }
+[data-theme="dark"] .page-content .coming-soon-title { color: #B8BABF; }
+/* 파란 변수명·클래스명 — 어두운 바탕에서 읽히는 밝은 파랑 (일부는 인라인 color 라 !important) */
+[data-theme="dark"] .page-content :is(td code, .typo-weight-var, .border-width-var, [style*="color:#1d4ed8"], [style*="color: #1d4ed8"]) { color: #7AB0FF !important; }
+
+/* 표면 — 카드·표 */
+[data-theme="dark"] .page-content :is(
+  .brand-card, .color-card, .typo-weight-card, .typo-table-wrap, .spacing-scale,
+  .radius-card, .border-width-card, .coming-soon,
+  .token-table-wrap, .spec-table-wrap, .change-item
+) { background: #1C1D23; border-color: rgba(255,255,255,0.08); }
+/* 팔레트 묶음(#1C1D23) 안의 칸은 한 단계 올린다 */
+[data-theme="dark"] .page-content .palette-group :is(.brand-card, .color-card, .radius-card, .border-width-card, .typo-weight-card) { background: #24252C; }
+[data-theme="dark"] .page-content :is(th, .spacing-row.section-head, .spec-group-header, .cat-count, .typo-category-count) {
+  background: #24252C; color: #B8BABF; border-color: rgba(255,255,255,0.08);
+}
+/* 테두리 두께 견본은 파란 테두리 자체가 보여 줄 내용이라 테두리 색은 그대로 둔다 */
+[data-theme="dark"] .page-content .border-width-demo { background: #24252C; }
+[data-theme="dark"] .page-content :is(tr, td, th, .spacing-row) { border-color: rgba(255,255,255,0.08); }
+[data-theme="dark"] .page-content :is(.color-card, .brand-card):hover { border-color: rgba(255,255,255,0.2); box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+/* 어두운 색 견본이 어두운 바탕에 묻히지 않게 테두리 */
+[data-theme="dark"] .page-content .token-swatch { outline: 1px solid rgba(255,255,255,0.15); outline-offset: -1px; }
