@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>로그인 위치 대조</title>
+<style>
+  :root{--bg:#f5f5f5;--card:#fff;--text:#202020;--sub:#757575;--line:#e0e0e0;--accent:#1d6ceb;--red:#e5484d}
+  @media (prefers-color-scheme: dark){:root{--bg:#131418;--card:#1e2026;--text:#eee;--sub:#9a9a9a;--line:#33363d;--accent:#5b9bff;--red:#ff6b70}}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:Pretendard,-apple-system,"Apple SD Gothic Neo",sans-serif}
+  .wrap{max-width:1960px;margin:0 auto;padding:28px 32px 48px}
+  h1{font-size:22px;margin:0 0 6px}
+  p.lead{margin:0 0 20px;color:var(--sub);font-size:14px;line-height:1.6}
+  .tabs{display:flex;gap:8px;margin-bottom:16px}
+  .tabs button{font:inherit;font-size:14px;padding:8px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);cursor:pointer}
+  .tabs button.on{border-color:var(--accent);color:var(--accent);font-weight:600}
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .pair figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .pair img{display:block;width:100%}
+  figcaption{padding:10px 14px;font-size:14px}
+  .stage{position:relative;width:960px;max-width:100%;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .stage img{display:block;width:100%}
+  .stage .top{position:absolute;left:0;width:100%;top:0;mix-blend-mode:multiply}
+  .ctrl{display:flex;align-items:center;gap:12px;margin:12px 0;font-size:14px;color:var(--sub)}
+  table{border-collapse:collapse;margin-top:28px;font-size:14px;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  th,td{padding:9px 14px;border-bottom:1px solid var(--line);text-align:left}
+  th{color:var(--sub);font-weight:600}
+  td.diff{color:var(--red);font-weight:600}
+  .hide{display:none}
+  @media (max-width:720px){.wrap{padding:20px 16px}.pair{grid-template-columns:1fr}table{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>로그인 위치 대조 — 기준 자료 vs 지금 결과</h1>
+  <p class="lead">기준 자료는 맨 위에 브라우저 창틀(88)이 그려져 있어 전체가 그만큼 내려가 보입니다.<br>「창틀 맞춰 겹치기」에서 맨 위 줄 끝을 맞춰 겹쳐 보면 실제 차이만 남습니다.</p>
+  <div class="tabs">
+    <button class="on" data-v="side">나란히</button>
+    <button data-v="raw">그대로 겹치기</button>
+    <button data-v="align">창틀 맞춰 겹치기</button>
+  </div>
+
+  <div id="side" class="pair">
+    <figure><img src="R-1.png" alt=""><figcaption><b>기준</b> · 고객 계정 UX Guide</figcaption></figure>
+    <figure><img src="C-1.png" alt=""><figcaption><b>지금</b> · PC/LOGIN/1</figcaption></figure>
+  </div>
+
+  <div id="over" class="hide">
+    <div class="ctrl">지금 결과 진하기 <input type="range" id="op" min="0" max="100" value="50"> <span id="opv">50%</span></div>
+    <div class="stage" id="stage">
+      <img src="R-1.png" alt="">
+      <img src="C-1.png" alt="" class="top" id="top">
+    </div>
+  </div>
+
+  <table>
+    <tr><th>항목</th><th>기준</th><th>지금</th></tr>
+    <tr><td>맨 위 줄 끝 → 로고</td><td>123</td><td>123</td></tr>
+    <tr><td>로고 → 아이디 칸</td><td>34</td><td class="diff">48</td></tr>
+    <tr><td>입력칸 크기</td><td>320 × 48</td><td class="diff">300 × 44</td></tr>
+    <tr><td>칸 사이</td><td>10</td><td class="diff">8</td></tr>
+    <tr><td>비밀번호 칸 → 로그인 버튼</td><td>32</td><td>8 + 아이디 저장 + 24</td></tr>
+    <tr><td>버튼 크기</td><td>320 × 48</td><td class="diff">300 × 44</td></tr>
+    <tr><td>버튼 아래</td><td>찾기 링크 3개 · 휴대전화번호로 로그인</td><td>없음</td></tr>
+    <tr><td>브라우저 창틀</td><td>있음 (88)</td><td class="diff">없음</td></tr>
+  </table>
+</div>
+<script>
+  const top=document.getElementById('top'),op=document.getElementById('op'),opv=document.getElementById('opv');
+  function setOp(){top.style.opacity=op.value/100;opv.textContent=op.value+'%'}
+  op.oninput=setOp;setOp();
+  function show(v){
+    document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+    document.getElementById('side').classList.toggle('hide',v!=='side');
+    document.getElementById('over').classList.toggle('hide',v==='side');
+    // 기준 145(창틀 88+맨 위 줄 57) vs 지금 56 → 지금 결과를 89 내려 맞춘다(그림은 1/2 배율, 폭 비율로 환산)
+    top.style.top = v==='align' ? (89/1920*100)+'cqw' : '0';
+  }
+  document.getElementById('stage').style.containerType='inline-size';
+  document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>show(b.dataset.v));
+</script>
+</body>
+</html>

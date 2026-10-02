@@ -18,10 +18,10 @@
 | 맨 위 줄 | LoginGNB (2614:73971) | `[서비스명]` · 한국어 |
 | 브라우저 창틀 | — | **넣지 않는다**(포털과 같음 — 그림으로 그린 창틀) |
 | 가운데 상자 | 프레임 | 폭 300, 위 여백 123 (river 지시 2026-09-28) |
-| CI | CI Brand=에스원 Color=Blue | 상자 맨 위 가운데, 아래 48 |
+| CI | CI Brand=에스원 Color=Blue | 상자 맨 위 가운데, 아래 34 (변경 1) |
 | 아이디 칸 | Input Size=MD Break=PC | 폭 300(FILL), placeholder `아이디를 입력해 주세요.` |
-| 비밀번호 칸 | Input Size=MD Break=PC, Password Icon=on | 칸 사이 8, placeholder `비밀번호를 입력해 주세요.` |
-| 아이디 저장 | Checkbox + 글자 `아이디 저장` | 위 8 · 아래 24 |
+| 비밀번호 칸 | Input Size=MD Break=PC, Password Icon=on | 칸 사이 10 (변경 1), placeholder `비밀번호를 입력해 주세요.` |
+| 아이디 저장 | Checkbox + 글자 `아이디 저장` | 위 8 · 아래 32 (변경 1) |
 | 로그인 버튼 | Button Variant=Primary Size=MD Break=PC | 폭 300(FILL), `로그인` |
 | 찾기 링크 | — | **두지 않는다**(포털 river 확정 2026-09-28) |
 | 맨 아래 띠 | Footer Platform=PC (2614:74065) | 정본 그대로 |
@@ -49,6 +49,13 @@
 - 언어 목록 펼친 화면 — LoginGNB 에 펼친 상태가 없다.
 - 약관 팝업 — 포털 화면에 없고, 레거시 규격(500×700·확인 버튼 없음)이 정본 Modal 과 맞지 않다.
 - 회원가입·아이디/비밀번호 찾기 흐름.
+
+## 변경 1 — 간격 (river 2026-10-02)
+
+- 지시: 「창틀은 빼고 간격만 기준대로 바꿔줘」
+- 기준 자료: Figma `fIHTlq3ZAZXhHZGNnADD21` 2445:13768 (고객 계정 UX Guide) — 대조 `ref/compare.md`·`ref/compare.html`
+- 로고→아이디 칸 48→34 · 칸 사이 8→10 · 아이디 저장→버튼 24→32. 기준에는 아이디 저장이 없어 '마지막 입력 요소→버튼 32'로 적용하고, 비밀번호 칸→아이디 저장 8 은 유지한다.
+- 바꾸지 않는 것: 브라우저 창틀(넣지 않음) · 입력칸/버튼 크기 300×44(PC 정본 MD) · 맨 위 줄→로고 123
 
 ## 끝난 뒤
 

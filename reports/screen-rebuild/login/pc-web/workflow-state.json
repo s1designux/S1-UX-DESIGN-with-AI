@@ -22,7 +22,7 @@
   "currentPhase": "4-verify",
   "status": "awaiting-user",
   "lastCompletedCheckpoint": 4,
-  "nextAction": "river 검수(Pretendard 데스크톱에서 아이디 저장 글자 정렬 1회 포함) -> OK 시 5단계 registry/patterns/pc-login 등록 + pattern-data.ts PC_LOGIN 캡처",
+  "nextAction": "river 검수 -> OK 시 5단계 registry/patterns/pc-login 등록 + pattern-data.ts PC_LOGIN 캡처",
   "artifacts": {
     "intent": "intent.md",
     "sources": "0-intent-sources.md",
@@ -77,6 +77,12 @@
       "by": "river",
       "at": "2026-10-02",
       "quote": "응 7장으로 진행하고 문구는 레거시 그대로 둬."
+    },
+    {
+      "id": "change1-spacing",
+      "by": "river",
+      "at": "2026-10-02",
+      "quote": "창틀은 빼고 간격만 기준대로 바꿔줘"
     }
   ],
   "blockers": [],
@@ -87,16 +93,23 @@
   "handoff": {
     "lastActor": "claude",
     "updatedAt": "2026-10-02",
-    "summary": "7장 빌드, component-verifier 전체 PASS. river 검수 대기."
+    "summary": "7장 + 변경 1(간격) 모두 component-verifier PASS. river 검수 대기."
   },
   "evidence": {
     "baseline": [
-      "intent-spec"
+      "intent-spec",
+      "existing-nodes"
     ],
     "intent": {
       "doc": "intent.md",
       "approvedBy": "river",
       "approvedAt": "2026-10-02"
+    },
+    "snapdiff": {
+      "ranAt": "2026-10-02",
+      "violations": 0,
+      "by": "component-verifier",
+      "note": "변경 1 간격 3군데, after 는 검증자 실측 해시로 확인"
     }
   }
 }

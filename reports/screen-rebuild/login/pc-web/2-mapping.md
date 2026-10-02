@@ -16,10 +16,10 @@
 | 2 | 맨 위 줄 | 정본 인스턴스 | LoginGNB (2614:73971) | FILL 가로, 문구 기본값(`[서비스명]`·`한국어`) 그대로 |
 | 3 | 본문 | 토큰 프레임 | — | VERTICAL, FILL 가로·세로 grow 1, 가로 가운데, 위 패딩 123, 투명 |
 | 4 | 상자 | 토큰 프레임 | — | VERTICAL, 폭 300 FIXED, 높이 HUG, 투명 |
-| 5 | CI | 정본 인스턴스 | CI Brand=에스원 Color=Blue | 상자 안 가운데 정렬, 아래 간격 48 |
+| 5 | CI | 정본 인스턴스 | CI Brand=에스원 Color=Blue | 상자 안 가운데 정렬, 아래 간격 34 |
 | 6 | 아이디 칸 | 정본 인스턴스 | Input Size=MD Break=PC | FILL(폭 300), 안쪽 field 도 FILL. placeholder `아이디를 입력해 주세요.` |
-| 7 | 비밀번호 칸 | 정본 인스턴스 | Input Size=MD Break=PC, Password Icon=true | 6 과의 간격 8. placeholder `비밀번호를 입력해 주세요.` |
-| 8 | 아이디 저장 줄 | 토큰 프레임 | Checkbox State=Default + 텍스트 | HORIZONTAL, 위 8 · 아래 24, 박스–글자 간격 8, 글자 `아이디 저장`. 글자 스타일·색은 정본 Checkbox 라벨 규정(registry/components 의 checkbox 메타·가이드)을 따른다 — 근거를 못 찾으면 needs-decision |
+| 7 | 비밀번호 칸 | 정본 인스턴스 | Input Size=MD Break=PC, Password Icon=true | 6 과의 간격 10. placeholder `비밀번호를 입력해 주세요.` |
+| 8 | 아이디 저장 줄 | 토큰 프레임 | Checkbox State=Default + 텍스트 | HORIZONTAL, 위 8 · 아래 32, 박스–글자 간격 8, 글자 `아이디 저장`. 글자 스타일·색은 정본 Checkbox 라벨 규정(registry/components 의 checkbox 메타·가이드)을 따른다 — 근거를 못 찾으면 needs-decision |
 | 9 | 로그인 버튼 | 정본 인스턴스 | Button Variant=Primary Size=MD Break=PC | FILL(폭 300), 문구 `로그인` |
 | 10 | 맨 아래 띠 | 정본 인스턴스 | Footer Platform=PC (2614:74065) | FILL 가로, 문구 정본 그대로 |
 

@@ -162,9 +162,9 @@ async function buildScreen(section, key) {
   const ci = await inst(SET.ci, ["Brand=에스원", "Color=Blue"]);
   ci.name = "CI / 에스원 / Blue";
   box.appendChild(ci);
-  spacer(box, "CI-Fields", 48);
+  spacer(box, "CI-Fields", 34);                     // 변경 1 (river 2026-10-02): 48→34
 
-  const fields = autoFrame("VERTICAL", "Fields", 8);
+  const fields = autoFrame("VERTICAL", "Fields", 10); // 변경 1: 칸 사이 8→10
   box.appendChild(fields);
   fields.layoutSizingHorizontal = "FILL";
   await loginInput(fields, "ID", s.id);
@@ -179,7 +179,7 @@ async function buildScreen(section, key) {
   chk.name = "Checkbox";
   row.appendChild(chk);
   row.appendChild(await authoredText("아이디 저장", STYLE_LABEL, VAR.ctlLabel, "SaveId Label"));
-  spacer(box, "SaveId-Login", 24);
+  spacer(box, "SaveId-Login", 32);                  // 변경 1: 24→32
 
   const btn = await inst(SET.button, ["Size=MD", "State=" + s.btn, "Variant=Primary", "Break=PC"]);
   btn.name = "Button / 로그인";

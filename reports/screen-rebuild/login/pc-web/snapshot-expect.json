@@ -1,0 +1,10 @@
+{
+  "_note": "변경 1(river 2026-10-02 「창틀은 빼고 간격만 기준대로 바꿔줘」) — 7화면 × 같은 3군데. 로고→칸 48→34, 칸 사이 8→10, 아이디 저장→버튼 24→32.",
+  "added": [],
+  "removed": [],
+  "changed": [
+    { "field": "h", "count": 28, "note": "화면당 4: Spacer / CI-Fields 48→34, Spacer / SaveId-Login 24→32, Fields 높이 +2, LoginBox 높이 -4(HUG)" },
+    { "field": "is", "count": 7, "note": "화면당 1: Fields itemSpacing 8→10" },
+    { "field": "y", "count": 42, "note": "화면당 6: Fields(-14), Input / Password(+2, Fields 안), Spacer / Fields-SaveId, SaveId, Spacer / SaveId-Login, Button / 로그인 — 위 변경에 따른 흐름 재계산" }
+  ]
+}

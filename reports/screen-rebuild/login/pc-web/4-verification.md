@@ -96,3 +96,57 @@ pilot 의 별도 항목 2건은 그대로 이어진다: needs-core-update 1건(I
 ### 권장 상태 전환
 - `currentPhase` = 4-verify PASS(7장) · `lastCompletedCheckpoint` = 4 · `artifacts.verification` = `4-verification.md`
 - `nextAction` = 5단계 패턴 등록(`registry/patterns/pc-login/`). 그 전에 `아이디 저장` 데스크톱 눈 확인 1번을 권장한다.
+
+---
+
+## 변경 1 — 간격 3군데 델타 재검증 · 2026-10-02 · component-verifier
+
+- 지시: river 「창틀은 빼고 간격만 기준대로 바꿔줘」. `intent.md` 변경 1 절과 `2-mapping.md` 에 따라 바꾼 것은 세 가지다: 로고→칸 48→34, 칸 사이 8→10, 아이디 저장→버튼 24→32. 비번칸→아이디 저장 8 과 창틀·크기는 바꾸지 않는다.
+- baseline 은 existing-nodes 를 추가했다. 증거는 `snapshot-before.json` / `snapshot-after.json` / `snapshot-expect.json`(오케스트레이터 작성) 세 파일이다.
+
+### 판정: **PASS** — ❌(a) 0 · ❓(c) 0 · 🟡(b) 0 · BLOCKED 0
+
+### after 스냅샷이 증거로 충분한지 판단
+- 빌더는 before 에 기대 변경을 적용해 after 를 로컬에서 만들었다. 그 뒤 Figma 쪽 조각 해시와 같은지 확인했다고 적었다. 이 경우 해시를 비교한 사람이 빌더 자신이므로, 그 기록만으로는 독립 증거가 아니라고 봤다.
+- 그래서 검증자가 직접 다시 확인했다. 실제 캔버스에서 같은 캡처 코드(`snapshot-diff.md` §1)를 다시 돌리고, 노드 id 정렬 → 화면별로 묶음 → FNV-1a 해시 순서로 직접 계산했다. 같은 방식으로 로컬 `snapshot-after.json` 의 해시도 계산했다.
+  - 결과: 8묶음(루트 1 + 화면 7), 노드 386개가 모두 일치했다 (1 `fa0f0b9e`·2 `a83aa788`·3 `85c16965`·4 `c0988be`·4a1 `ca43f25c`·4a2 `cb86f43f`·4a3 `4efbc0b1`·루트 `70a1f7c5`). 캡처 시각은 2026-10-02T00:55Z.
+  - 결론: after 파일은 현재 캔버스와 내용이 같다. 증거로 인정한다.
+- before 는 지나간 상태라 다시 뜰 수 없다. 대신 직전 「전체 7장」 검증에서 직접 잰 값과 맞춰 봤다. 간격 48/8/24, 상자 높이 268·306·290 이 before 와 같으므로 before 도 믿을 만하다고 판단했다.
+
+### snapdiff (검증자 재실행)
+```
+npm run snapdiff -- snapshot-before.json snapshot-after.json --expect snapshot-expect.json
+노드 386 → 386 · 추가 0 · 삭제 0 · 변경 77 (y 42 · 높이 28 · itemSpacing 7)
+✅ diff 가 기대 선언과 정확히 일치 — 선언 밖 변경 0건   EXIT=0
+```
+
+### 실제 캔버스 값 직접 확인 (21개 노드 + 연동 값)
+
+| 화면 | CI-Fields 스페이서 | Fields 간격 / 높이 | Fields-SaveId | SaveId-Login 스페이서 | LoginBox |
+|---|---|---|---|---|---|
+| 1 | 2703:19 300×34 FILL/FIXED | 2703:20 10 / 98 | 8 | 2703:51 300×32 FILL/FIXED | 300×264 · y 123 |
+| 2 | 2712:109 34 | 2712:110 10 / 98 | 8 | 2712:149 32 | 264 |
+| 3 | 2712:178 34 | 2712:179 10 / 98 | 8 | 2712:220 32 | 264 |
+| 4 | 2713:217 34 | 2713:218 10 / 98 | 8 | 2713:249 32 | 264 |
+| 4a1 | 2706:63 34 | 2706:64 10 / 136 | 8 | 2706:96 32 | 302 |
+| 4a2 | 2713:278 34 | 2713:279 10 / 136 | 8 | 2713:304 32 | 302 |
+| 4a3 | 2713:333 34 | 2713:334 10 / 120 | 8 | 2713:359 32 | 286 |
+
+- 21개 노드 모두 34 / 10 / 32 이고, 스페이서는 300 FILL · 세로 FIXED 를 유지한다. 바꾸지 않기로 한 8 과 위 패딩 123 도 그대로다.
+
+### 간단 재스캔 (7장)
+- **부품 출처:** 인스턴스는 화면당 10~11개, 위반 0건이다(로컬 정본 + 허용 키 globe·eye_hide·remove).
+- **폰트:** TEXT 는 화면당 11~12개, 비-Pretendard 0건이다.
+- **raw 색:** after 스냅샷 386개 노드에서 raw hex 0건, 비-Pretendard TEXT 0건이다. 변수 바인딩은 diff 로 보면 `f` 변경이 0건이다.
+
+### 렌더 대조 (1 · 4a1 · 4a3)
+- 1·4a1 상자 2배 렌더와 4a3 전체 화면을 봤다. 로고→칸 간격이 줄었고, 칸 사이와 버튼 위 간격은 넓어졌다. 잘림·겹침이 없고 창틀도 없다. 4a1 의 2줄 문구와 4a3 의 1줄 문구는 정상이다.
+
+### 직전 PASS 를 그대로 이어받은 범위 (이번에 다시 확인하지 않음)
+- 텍스트 그대로인지, variant/상태, 글자 근거, 섹션 배치는 직전 「전체 7장」 PASS 를 그대로 이어받았다. 근거는 diff 에서 `tx`·`ts`·`fn`·`f`·`i`·`x` 변경이 0건이고 추가·삭제도 0건이라는 점이다.
+- 2·3·4·4a2 의 렌더는 이번에 보지 않았다(diff 상 y·높이 변경만 있음).
+- 다크 모드와 데스크톱의 `아이디 저장` 정렬은 여전히 NOT_VERIFIED 다. Input `trail` 100×100 은 needs-core-update 로 그대로 남는다.
+
+### 권장 상태 전환
+- `evidence.snapdiff` = { ranAt 2026-10-02, violations 0, by component-verifier(재실행), afterVerifiedBy: 검증자 실측 해시 8묶음 일치 }
+- `lastCompletedCheckpoint` = 4 유지 · `nextAction` = 5단계 패턴 등록

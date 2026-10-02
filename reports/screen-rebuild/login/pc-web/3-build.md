@@ -92,3 +92,50 @@ verbatim(화면 표시 글자):
 ## 권장 상태 전환
 - `screens` += 2(2712:95)·3(2712:164)·4(2713:203)·4a2(2713:264)·4a3(2713:319)
 - `nextAction` = component-verifier 로 7장 전체 Layer 1 재검사 + 새 5장 이미지 대조
+
+---
+
+# 변경 1 — 간격 3군데 제자리 수정 (baseline existing-nodes, 2026-10-02)
+
+- 지시: 7장 각각 `Spacer / CI-Fields` 48→34 · `Fields` itemSpacing 8→10 · `Spacer / SaveId-Login` 24→32. 재생성 없이 제자리 수정. 다른 속성은 건드리지 않음.
+- 순서: ① 변경 전 스냅샷 → ② 수정(use_figma 1회) → ③ 변경 후 스냅샷 → ④ snapdiff → ⑤ 스크린샷.
+
+## ① 변경 전 스냅샷 — `snapshot-before.json` (386 노드)
+- `snapshot-diff.md` §1 캡처 코드(ROOT_ID 2703:2) 그대로. MCP 응답이 20KB 에서 잘려 섹션 자식(화면) 단위 7조각으로 실행해 합침.
+- 옮겨 적기 검증: 같은 캡처 코드로 Figma 안에서 조각별 FNV-1a 해시·길이·노드 수를 받아, 로컬 파일 해시와 7조각 모두 일치 확인.
+- 첫 쓰기 전 캡처 시각 2026-10-02T00:44:55Z.
+
+## ② 수정 — 바뀐 노드 21개 (화면당 3)
+| 화면 | Spacer / CI-Fields | Fields | Spacer / SaveId-Login | LoginBox 높이 |
+|---|---|---|---|---|
+| 1 (2703:3) | 2703:19 → 300×34 | 2703:20 gap 10 | 2703:51 → 300×32 | 268→264 |
+| 2 (2712:95) | 2712:109 | 2712:110 | 2712:149 | 268→264 |
+| 3 (2712:164) | 2712:178 | 2712:179 | 2712:220 | 268→264 |
+| 4 (2713:203) | 2713:217 | 2713:218 | 2713:249 | 268→264 |
+| 4a1 (2706:49) | 2706:63 | 2706:64 | 2706:96 | 306→302 |
+| 4a2 (2713:264) | 2713:278 | 2713:279 | 2713:304 | 306→302 |
+| 4a3 (2713:319) | 2713:333 | 2713:334 | 2713:359 | 290→286 |
+- 스페이서는 resize 뒤 가로 FILL·세로 FIXED 재확인(300 FILL 유지).
+- `build-code.js` 같은 3값 수정(34 / 10 / 32) — 다음 재빌드가 같은 결과를 냄.
+
+## ③ 변경 후 스냅샷 — `snapshot-after.json` (386 노드)
+- 같은 캡처 코드로 Figma 에서 7조각 해시를 받음(캡처 시각 2026-10-02T00:51:59Z).
+- 파일 내용은 before 조각에 이번 수정의 오토레이아웃 흐름(높이·gap·뒤 형제 y)을 적용해 로컬에서 만들었고, **7조각 모두 Figma 실측 해시와 일치** → 실측 캡처와 바이트 동일. (불일치였으면 실측 조각을 받아 쓰려 했음 — 해당 없음.) 파일 meta.note 에 같은 내용 기록.
+
+## ④ snapdiff (기대 선언은 오케스트레이터 작성본, 손대지 않음)
+```
+npm run snapdiff -- snapshot-before.json snapshot-after.json --expect snapshot-expect.json
+  루트 2703:2 · 노드 386 → 386
+  추가 0 · 삭제 0 · 변경 77
+  y 42건 · 높이 28건 · itemSpacing 7건
+  ✅ diff 가 기대 선언과 정확히 일치 — 선언 밖 변경 0건
+SNAPDIFF_SUMMARY added=0 removed=0 changed=77 violations=0
+EXIT=0
+```
+
+## ⑤ 스크린샷
+- `shots/PC-LOGIN-{1,2,3,4,4a1,4a2,4a3}.png` 7장 덮어씀(변경 후).
+
+## 권장 상태 전환
+- `evidence.baseline` += `existing-nodes`, `evidence.snapdiff` = { ranAt 2026-10-02, violations 0, by screen-rebuilder(선행 실행 — 검증자 재실행 필요) }
+- `nextAction` = component-verifier 로 변경 1 검증(snapdiff 재실행 + 렌더 표본 대조)
