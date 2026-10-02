@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>S1 UI 컴포넌트 미리보기 — 29종</title>
+  <title>S1 UI 컴포넌트 미리보기 — 32종</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <link rel="stylesheet" href="assets/css/tokens.css">
   <link rel="stylesheet" href="assets/css/typography.css">
@@ -47,10 +47,10 @@
 <body>
   <div class="page">
     <div class="page-head">
-      <h1>S1 UI 컴포넌트 미리보기 — 29종</h1>
+      <h1>S1 UI 컴포넌트 미리보기 — 32종</h1>
       <p>이 페이지는 배포본에 들어 있는 마크업을 그대로 얹어 그린 것입니다. 여기 보이는 모습이 실제 모습입니다.<br>
          React·Vue 는 제목의 이름을 그대로 부르면 됩니다. 크기·변형은 각 이름 옆에 적힌 값만 쓸 수 있습니다.</p>
-      <p class="fingerprint">버전 0.17.0 · 정본 지문 6a41ac76a78bbfd90d8226cbf9e29addc02213b602ed70db775aa5c058f3af71</p>
+      <p class="fingerprint">버전 0.18.0 · 정본 지문 6a41ac76a78bbfd90d8226cbf9e29addc02213b602ed70db775aa5c058f3af71</p>
     </div>
     <nav class="index">
         <a href="#input">S1Input</a>
@@ -72,6 +72,9 @@
         <a href="#mobile-header">S1MobileHeader</a>
         <a href="#time-picker">S1TimePicker</a>
         <a href="#date-picker">S1DatePicker</a>
+        <a href="#gnb">S1Gnb</a>
+        <a href="#gnb-sub-menu-item">S1GnbSubMenuItem</a>
+        <a href="#gnb-sub-menu">S1GnbSubMenu</a>
         <a href="#assist-button">S1AssistButton</a>
         <a href="#text-button">S1TextButton</a>
         <a href="#modal-content">S1ModalContent</a>
@@ -1117,6 +1120,224 @@
             <div class="usage-block usage-block-avoid">
               <div class="usage-title">이럴 땐 다른 걸</div>
               <ul><li>시간만 고를 때는 TimePicker.</li><li>자유 텍스트 날짜 입력만 필요하면 Input.</li></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="component" id="gnb">
+        <header class="component-head">
+          <div>
+            <h2>S1Gnb</h2>
+            <p class="component-id">React·Vue 이름 · 마크업은 <code>data-s1-component="gnb"</code></p>
+          </div>
+          <dl class="component-axes">
+            <dt>크기</dt><dd><code>md</code> <code>sm</code> <code>xsm</code></dd>
+            <dt>변형</dt><dd><code>center-between</code> <code>start</code></dd>
+          </dl>
+        </header>
+        <div class="component-body">
+          <div class="samples">
+          <div class="sample">
+            <div class="sample-label">pc</div>
+            <div class="sample-stage" data-break="pc"><nav data-s1-component="gnb" data-size="sm" data-variant="start" aria-label="주 메뉴 · 레귤러 예시">
+    <div data-s1-part="leading">
+      <a data-s1-part="logo" href="#">SAMPLE LOGO</a>
+      <ul data-s1-part="menus">
+        <li><a data-s1-part="menu" href="#" aria-current="page">공지사항</a></li>
+        <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="gnb-sub-menu-a-service">서비스</a></li>
+        <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="gnb-sub-menu-a-stats">통계</a></li>
+      </ul>
+    </div>
+    <div data-s1-part="util">
+      <button type="button" data-s1-part="lang">
+        <span data-s1-part="lang-icon" aria-hidden="true"></span>
+        <span data-s1-part="lang-label">한국어</span>
+      </button>
+      <button type="button" data-s1-part="account" aria-label="계정">
+        <span data-s1-part="account-icon" aria-hidden="true"></span>
+      </button>
+      <button type="button" data-s1-part="menu-toggle" aria-label="전체 메뉴">
+        <span data-s1-part="menu-icon" aria-hidden="true"></span>
+      </button>
+    </div>
+  </nav>
+<nav data-s1-component="gnb" data-size="sm" data-variant="start" aria-label="주 메뉴 · 콤팩트1 예시">
+    <div data-s1-part="leading">
+      <a data-s1-part="logo" href="#">SAMPLE LOGO</a>
+      <ul data-s1-part="menus">
+        <li><a data-s1-part="menu" href="#" aria-current="page">공지사항</a></li>
+        <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="gnb-sub-menu-b-service">서비스</a></li>
+        <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="gnb-sub-menu-b-stats">통계</a></li>
+      </ul>
+    </div>
+    <div data-s1-part="util">
+      <button type="button" data-s1-part="lang">
+        <span data-s1-part="lang-icon" aria-hidden="true"></span>
+        <span data-s1-part="lang-label">한국어</span>
+      </button>
+      <button type="button" data-s1-part="account" aria-label="계정">
+        <span data-s1-part="account-icon" aria-hidden="true"></span>
+      </button>
+      <button type="button" data-s1-part="menu-toggle" aria-label="전체 메뉴">
+        <span data-s1-part="menu-icon" aria-hidden="true"></span>
+      </button>
+    </div>
+  </nav>
+<nav data-s1-component="gnb" data-size="sm" data-variant="start" aria-label="주 메뉴 · 콤팩트2 예시">
+    <div data-s1-part="leading">
+      <a data-s1-part="logo" href="#">SAMPLE LOGO</a>
+      <ul data-s1-part="menus">
+        <li><a data-s1-part="menu" href="#" aria-current="page">공지사항</a></li>
+        <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="gnb-sub-menu-c-service">서비스</a></li>
+        <li><a data-s1-part="menu" href="#" aria-expanded="false" aria-controls="gnb-sub-menu-c-stats">통계</a></li>
+      </ul>
+    </div>
+    <div data-s1-part="util">
+      <button type="button" data-s1-part="lang">
+        <span data-s1-part="lang-icon" aria-hidden="true"></span>
+        <span data-s1-part="lang-label">한국어</span>
+      </button>
+      <button type="button" data-s1-part="account" aria-label="계정">
+        <span data-s1-part="account-icon" aria-hidden="true"></span>
+      </button>
+      <button type="button" data-s1-part="menu-toggle" aria-label="전체 메뉴">
+        <span data-s1-part="menu-icon" aria-hidden="true"></span>
+      </button>
+    </div>
+  </nav></div>
+          </div>
+          </div>
+          <div class="component-usage">
+            <div class="usage-block">
+              <div class="usage-title">언제 쓰나</div>
+              <ul><li>PC 상단 글로벌 내비게이션이 필요할 때.</li><li>로고 + 메뉴 + 유틸(아이콘) 조립.</li></ul>
+            </div>
+            <div class="usage-block usage-block-avoid">
+              <div class="usage-title">이럴 땐 다른 걸</div>
+              <ul><li>사이드바 내비게이션은 Navigation.</li><li>모바일 하단 탭은 Mobile Bottom Nav.</li></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="component" id="gnb-sub-menu-item">
+        <header class="component-head">
+          <div>
+            <h2>S1GnbSubMenuItem</h2>
+            <p class="component-id">React·Vue 이름 · 마크업은 <code>data-s1-component="gnb-sub-menu-item"</code></p>
+          </div>
+          <dl class="component-axes">
+            <dt>크기</dt><dd>크기 축 없음</dd>
+            <dt>변형</dt><dd>변형 없음</dd>
+          </dl>
+        </header>
+        <div class="component-body">
+          <div class="samples">
+          <div class="sample">
+            <div class="sample-label">pc</div>
+            <div class="sample-stage" data-break="pc"><span data-s1-component="gnb-sub-menu-item" data-depth="1depth">카테고리 제목</span>
+<a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#" aria-current="page">하위 메뉴</a>
+<a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></div>
+          </div>
+          </div>
+          <div class="component-usage">
+            <div class="usage-block">
+              <div class="usage-title">언제 쓰나</div>
+              <ul><li>GNB 하위메뉴 패널의 카테고리 제목 또는 항목을 놓을 때.</li></ul>
+            </div>
+            <div class="usage-block usage-block-avoid">
+              <div class="usage-title">이럴 땐 다른 걸</div>
+              <ul><li>상단바의 주 메뉴는 GNB 의 메뉴 슬롯을 쓴다.</li><li>패널 없이 이 부품만 화면에 두지 않는다.</li></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="component" id="gnb-sub-menu">
+        <header class="component-head">
+          <div>
+            <h2>S1GnbSubMenu</h2>
+            <p class="component-id">React·Vue 이름 · 마크업은 <code>data-s1-component="gnb-sub-menu"</code></p>
+          </div>
+          <dl class="component-axes">
+            <dt>크기</dt><dd>크기 축 없음</dd>
+            <dt>변형</dt><dd>변형 없음</dd>
+          </dl>
+        </header>
+        <div class="component-body">
+          <div class="samples">
+          <div class="sample">
+            <div class="sample-label">pc</div>
+            <div class="sample-stage" data-break="pc"><div data-s1-component="gnb-sub-menu" data-type="regular" aria-label="하위 메뉴 · regular">
+  <div data-s1-part="columns">
+    <ul data-s1-part="column">
+      <li><span data-s1-component="gnb-sub-menu-item" data-depth="1depth">카테고리 제목</span></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+    </ul>
+    <ul data-s1-part="column">
+      <li><span data-s1-component="gnb-sub-menu-item" data-depth="1depth">카테고리 제목</span></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+    </ul>
+    <ul data-s1-part="column">
+      <li><span data-s1-component="gnb-sub-menu-item" data-depth="1depth">카테고리 제목</span></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+    </ul>
+    <ul data-s1-part="column">
+      <li><span data-s1-component="gnb-sub-menu-item" data-depth="1depth">카테고리 제목</span></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#" aria-current="page">단말기정보</a></li>
+    </ul>
+  </div>
+</div>
+<div data-s1-component="gnb-sub-menu" data-type="compact-1" aria-label="하위 메뉴 · compact-1">
+  <div data-s1-part="columns">
+    <ul data-s1-part="column"><li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li></ul>
+    <ul data-s1-part="column"><li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li></ul>
+    <ul data-s1-part="column"><li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li></ul>
+    <ul data-s1-part="column"><li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li></ul>
+    <ul data-s1-part="column"><li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li></ul>
+    <ul data-s1-part="column"><li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#" aria-current="page">하위 메뉴</a></li></ul>
+  </div>
+</div>
+<div data-s1-component="gnb-sub-menu" data-type="compact-2" aria-label="하위 메뉴 · compact-2">
+  <div data-s1-part="columns">
+    <ul data-s1-part="column">
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+    </ul>
+    <ul data-s1-part="column">
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+    </ul>
+    <ul data-s1-part="column">
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+    </ul>
+    <ul data-s1-part="column">
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#">하위 메뉴</a></li>
+    </ul>
+    <ul data-s1-part="column">
+      <li><a data-s1-component="gnb-sub-menu-item" data-depth="2depth" href="#" aria-current="page">하위 메뉴</a></li>
+    </ul>
+  </div>
+</div></div>
+          </div>
+          </div>
+          <div class="component-usage">
+            <div class="usage-block">
+              <div class="usage-title">언제 쓰나</div>
+              <ul><li>GNB 주 메뉴 아래로 하위 메뉴를 펼쳐 보일 때.</li></ul>
+            </div>
+            <div class="usage-block usage-block-avoid">
+              <div class="usage-title">이럴 땐 다른 걸</div>
+              <ul><li>모바일에는 쓰지 않는다(PC 전용).</li><li>단일 목록 하나만 띄우는 자리에는 Dropdown 을 쓴다.</li></ul>
             </div>
           </div>
         </div>

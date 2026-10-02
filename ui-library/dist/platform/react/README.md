@@ -1,6 +1,6 @@
 # @s1/ui-react
 
-**배포본 번호 0.17.0** · 2026-10-02 판
+**배포본 번호 0.18.0** · 2026-10-02 판
 이 번호가 최신인지는 디자인가이드 내려받기 화면에서 확인하세요 — 번호가 다르면 새로 받으면 됩니다.
 코드에서 볼 때는 `import { S1_VERSION } from "@s1/ui-react"` 입니다.
 
@@ -92,6 +92,9 @@ import { S1Button, S1Input, S1Table } from "@s1/ui-react";
 | `S1MobileHeader` | `home-title` `home-title-subtitle` `standard-title` `standard-title-close` `standard-no-title` `standard-no-title-close` | — | — | `parts` | 모바일 앱 또는 모바일 웹 화면에서 상단 전역 크롬과 화면 이동 동작을 제공할 때. 회원가입처럼 앱바 안 제목을 비우고 본문 큰 제목을 사용하는 화면에는 Standard / No Title을 쓴다. |
 | `S1TimePicker` | — | PC `xxsm` `xsm` `md` · 모바일 `md` | `pc` `mobile` | `onOpen` · `onClose` · `onChange` | 시간(시/분)을 드롭다운 목록에서 고를 때. |
 | `S1DatePicker` | `single` `range` | PC `xxsm` `xsm` `md` · 모바일 `md` | `pc` `mobile` | `onOpen` · `onClose` · `onChange` | 날짜(단일/기간)를 고를 때. 트리거는 Base Input 필드. PC 는 팝오버 캘린더, Mobile 은 바텀시트로 표출. |
+| `S1Gnb` | `center-between` `start` | `md` `sm` `xsm` | — | `onOpen` · `onClose` | PC 상단 글로벌 내비게이션이 필요할 때. 로고 + 메뉴 + 유틸(아이콘) 조립. |
+| `S1GnbSubMenuItem` | — | — | — | `parts` | GNB 하위메뉴 패널의 카테고리 제목 또는 항목을 놓을 때. |
+| `S1GnbSubMenu` | — | — | — | `columns` | GNB 주 메뉴 아래로 하위 메뉴를 펼쳐 보일 때. |
 | `S1AssistButton` | — | — | — | `parts` | 본문 옆이나 목록 행 안처럼 좁은 자리에서, 눈에 덜 띄는 보조 동작 하나를 둘 때. 코어 Button 의 4크기(MD·XSM·XXSM·LG) 어디에도 맞지 않는, 원본에 정의된 고정 32px 자리. |
 | `S1TextButton` | `primary` `secondary` | — | — | `parts` | 링크에 가까운 가벼운 보조 동작(더보기·자세히 등)을 텍스트만으로 표시할 때. Primary 는 강조가 필요한 텍스트 액션, Secondary 는 덜 중요한 텍스트 액션. |
 | `S1ModalContent` | `single` `dual` | PC `md` `lg` `xl` | — | `onOpen` · `onClose` | 입력창·표·이미지처럼 확인 계열(짧은 텍스트)보다 큰 본문이 필요할 때. Single=알림/설명체 1버튼, Dual=확인/질문체 2버튼(확인 계열과 같은 규칙). |
@@ -128,6 +131,9 @@ import { S1Button, S1Input, S1Table } from "@s1/ui-react";
 | `S1MobileHeader` | PC 화면의 전역 내비게이션에는 GNB를 쓴다. 모바일 화면이 아닌 PC 전용 헤더에는 사용하지 않는다. |
 | `S1TimePicker` | 날짜는 DatePicker. 자유 텍스트만 필요하면 Input. |
 | `S1DatePicker` | 시간만 고를 때는 TimePicker. 자유 텍스트 날짜 입력만 필요하면 Input. |
+| `S1Gnb` | 사이드바 내비게이션은 Navigation. 모바일 하단 탭은 Mobile Bottom Nav. |
+| `S1GnbSubMenuItem` | 상단바의 주 메뉴는 GNB 의 메뉴 슬롯을 쓴다. 패널 없이 이 부품만 화면에 두지 않는다. |
+| `S1GnbSubMenu` | 모바일에는 쓰지 않는다(PC 전용). 단일 목록 하나만 띄우는 자리에는 Dropdown 을 쓴다. |
 | `S1AssistButton` | 화면의 주 액션(저장·확인 등)에는 코어 Button 을 쓴다. 배경·테두리가 없는 링크형 액션은 Text Button 을 쓴다. |
 | `S1TextButton` | 배경·테두리가 있는 버튼이 필요하면 코어 Button 또는 Assist Button 을 쓴다. 페이지 이동 전용 링크는 <a> 를 우선 고려한다. |
 | `S1ModalContent` | 짧은 확인 문구 하나면 확인 계열 Modal 을 쓴다. 페이지 전체를 차지하는 다단계 폼은 별도 페이지를 고려한다. |
