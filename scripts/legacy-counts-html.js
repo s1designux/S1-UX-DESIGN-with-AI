@@ -46,7 +46,7 @@ const html=`<!DOCTYPE html>
 <style>
 :root{--bg:#fff;--fg:#1a1a1a;--dim:#666;--line:#e5e5e5;--head:#f6f7f8;--accent:#0b5fff;--warn:#b45309;--warnbg:#fffbeb}
 *{box-sizing:border-box}
-body{margin:0;padding:32px 16px 96px;font:15px/1.7 -apple-system,"Pretendard","Apple SD Gothic Neo",sans-serif;color:var(--fg);background:var(--bg)}
+body{margin:0;padding:32px 16px 96px;font:15px/1.7 -apple-system,"Pretendard Variable", "Pretendard","Apple SD Gothic Neo",sans-serif;color:var(--fg);background:var(--bg)}
 .wrap{max-width:900px;margin:0 auto}
 h1{font-size:26px;margin:0 0 4px}
 h2{font-size:20px;margin:48px 0 8px;padding-top:16px;border-top:2px solid var(--fg)}

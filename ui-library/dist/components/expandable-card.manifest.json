@@ -80,8 +80,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [
@@ -138,5 +138,5 @@
     ],
     "reason": "머리줄 클릭으로 aria-expanded 와 panel-wrap[data-open] 을 함께 바꾼다. 초기 표시는 마크업(aria-expanded)이 정한다."
   },
-  "sourceFingerprint": "bb49b739da3bd0afb33faa605628b03be655eef9ca363c50029269d3f1576221"
+  "sourceFingerprint": "ab93f809383bd41df08198c95d28fabbfbe3a2286bd6f1487c1283f171060a03"
 }

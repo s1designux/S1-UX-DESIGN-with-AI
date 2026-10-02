@@ -727,7 +727,7 @@ if (!fullModule.input || !fullModule.button || !fullModule.tab || !fullModule.pa
 
 for (const relative of ["verification/empty-consumer.html", "verification/empty-consumer-individual.html"]) {
   const html = await read(relative);
-  if (!html.includes("pretendard.min.css")) failures.push(`${relative} does not load the declared Pretendard dependency`);
+  if (!html.includes("pretendardvariable-dynamic-subset.min.css")) failures.push(`${relative} does not load the declared Pretendard dependency`);
   if (/\s(?:style|onclick|onchange)=/i.test(html)) failures.push(`${relative} contains an inline implementation`);
   if (!html.includes('data-action="clear"') || !html.includes("입력 내용 지우기")) failures.push(`${relative} omits the canonical Editing clear action`);
   const references = [...html.matchAll(/(?:href|src)="([^"]+)"/g)].map((match) => match[1]).filter((item) => item.startsWith("."));

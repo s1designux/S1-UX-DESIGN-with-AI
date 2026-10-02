@@ -125,8 +125,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [
@@ -171,5 +171,5 @@
     "runtime": "components/chip.js",
     "reason": "registry 가 선언한 aria-pressed 선택 상태 전환을 런타임이 담당한다."
   },
-  "sourceFingerprint": "28ddc48f0b59a0873acbdad5b0a2140d95daf644638b508de6dd35c3399caf12"
+  "sourceFingerprint": "bac474302052862f8dd8b887f0bee91b8a02e64732fcc5584e5bc614e8973bf1"
 }

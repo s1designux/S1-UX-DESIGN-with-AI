@@ -71,8 +71,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [
@@ -117,5 +117,5 @@
     "runtime": "none",
     "reason": "Native button semantics provide the complete approved behavior; hover/pressed underline is pure CSS."
   },
-  "sourceFingerprint": "ae4c9b26d4769321b343cb43c765ff5f4885008584933c5185bd34f57ab70c55"
+  "sourceFingerprint": "6505d9c69269e3a4fa99cb1bffe6c95b8ed3e624d8f3680efaeee36f189bbcf8"
 }

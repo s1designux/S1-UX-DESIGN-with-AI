@@ -112,8 +112,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [
@@ -172,5 +172,5 @@
     ],
     "behaviorLedger": "registry/components/component-behavior.pc.json > Table"
   },
-  "sourceFingerprint": "70ade86f4aa3ceb5fe692f5ccf9ab946a1688e56fed74007451c24cde430dd7a"
+  "sourceFingerprint": "5b543cc79d564da217c5b0302ec020af0a9bd109c811875f5148721d1499d0da"
 }

@@ -133,8 +133,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [
@@ -194,5 +194,5 @@
     "runtime": "none",
     "reason": "줄 모양·상태만 소유한다. 실제 이동·선택 반영·이벤트는 목록을 그리는 화면이 배선한다. Switch 의 아리아 전환은 toggle 코어 자신의 런타임이 담당한다(list-row 가 별도로 담당하지 않는다)."
   },
-  "sourceFingerprint": "26d99c86b9b7aa2361e457449b3e586bfba6318a69d5e267f876aa4913987654"
+  "sourceFingerprint": "b5370800440c989622ae9ce722e8e2e7d4e96201ae323ef7b9da6c64c80c61d4"
 }

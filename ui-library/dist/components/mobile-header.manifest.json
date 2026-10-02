@@ -116,8 +116,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [
@@ -207,5 +207,5 @@
     "runtime": "none",
     "reason": "정적 크롬이다 — 열림/닫힘 등 로컬 상태가 없어 native 시맨틱만으로 충분하다."
   },
-  "sourceFingerprint": "2030e9439efa95184afed06ab7ff09908d5876fe3755b1ba983d4c7cb6cbda0e"
+  "sourceFingerprint": "f1a62d830b84581b9f9c2df569f48ae4cf0e91383ae8bbcf74cdf419f48078cd"
 }

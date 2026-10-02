@@ -67,8 +67,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [
@@ -122,5 +122,5 @@
     "runtime": "components/pagination/pagination.js",
     "reason": "현재 페이지와 양 끝 비활성 상태를 동기화한다."
   },
-  "sourceFingerprint": "ac02b24f8ab8fcf5a793073a69109d5f4aa459ba7b4d3df5301750b00c926b8a"
+  "sourceFingerprint": "f490ed7d6f973b1ce632d70e05935639a0865b847792319eefc3d57183b809ed"
 }

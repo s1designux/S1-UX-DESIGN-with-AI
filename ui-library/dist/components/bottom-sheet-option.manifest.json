@@ -110,8 +110,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [
@@ -195,5 +195,5 @@
     "runtime": "none",
     "reason": "줄 모양만 소유한다. 고르기 동작(선택 반영·role·이벤트)은 시트를 여는 화면이 배선한다."
   },
-  "sourceFingerprint": "645e02bda56dda30b893a27f521c596c3c6f755c6d7904384d03535e9ffb08f6"
+  "sourceFingerprint": "77f403f34d56dcfa90eda99cbe3dc4ab79a8bc185a515d9a7d3fb1b0f8c769af"
 }
