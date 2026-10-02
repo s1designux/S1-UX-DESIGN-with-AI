@@ -1,8 +1,8 @@
 {
   "id": "data-tag",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "status": "approved",
-  "canonicalFingerprint": "317e13f72b6f1e9bfb3bb3fc9fff7fa11de9cb3084d61823f434029cabc956e2",
+  "canonicalFingerprint": "8077597dca7b6713be2727346a533f058e8b1c8f01f00cc19a90b1a9d6e5c337",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -62,8 +62,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [
@@ -108,5 +108,5 @@
     "runtime": "none",
     "reason": "보여주기만 하는 표시라 스크립트가 필요 없다."
   },
-  "sourceFingerprint": "809845e84876e45f3100bc9cf53c9b193b21ca25884efad3edfdef65bd9434a0"
+  "sourceFingerprint": "b4f30132350a92c35e30c1eceb406f50259c9b1145988f51042bb33760d5c215"
 }

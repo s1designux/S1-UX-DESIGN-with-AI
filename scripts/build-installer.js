@@ -15,6 +15,7 @@ const zlib = require("zlib");
 const { execFileSync } = require("child_process");
 const esbuild = require("esbuild");
 const { fingerprint } = require("./lib/installer-fingerprint");
+const { tokenSheetFingerprint } = require("./lib/token-sheet-fingerprint");
 
 const ROOT = path.resolve(__dirname, "..");
 const SRC_DIR = path.join(ROOT, "plugins/figma-vars-installer/src");
@@ -57,6 +58,8 @@ async function run() {
     platform: "browser",
     define: {
       __CURRENT_GUIDE_FINGERPRINT__: JSON.stringify(guideFingerprint.hash),
+      // 토큰 견본판을 다시 그릴지 가르는 지문 — 판 모양 소스가 그대로면 이미 깔린 판을 건너뛴다.
+      __TOKEN_SHEET_FINGERPRINT__: JSON.stringify(tokenSheetFingerprint(SRC_DIR)),
     },
   });
 

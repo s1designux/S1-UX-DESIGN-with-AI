@@ -1414,7 +1414,7 @@ async function applyTextStyleFix(styleName: string, targetIds: string[]): Promis
   try {
     await figma.loadFontAsync(style.fontName as FontName);
   } catch (e) {
-    return { ok: 0, fail: targetIds.length, reason: "Pretendard 글꼴을 불러오지 못했습니다" };
+    return { ok: 0, fail: targetIds.length, reason: `${TEXT_STYLE_FONT_FAMILY} 글꼴을 불러오지 못했습니다` };
   }
   let ok = 0;
   let fail = 0;
@@ -3727,13 +3727,13 @@ function captureLabels(inst: InstanceNode): CapturedLabels {
 const LABEL_SIDE_PARTS = ["checkbox", "radio", "toggle"];
 const LABEL_FORM_PARTS = ["input", "selectbox", "textarea", "searchinput"];
 // 라벨 글꼴 — 정본 글꼴(Pretendard)로 쓰고, 크기·굵기가 같은 정본 텍스트 스타일이 있으면 그것을 붙인다(하드룰 H3).
-//   레거시의 'Pretendard Variable' 은 같은 서체의 다른 배포본이라 Pretendard 로 읽는다.
+//   정본 글꼴은 'Pretendard Variable'(2026-10-02 river 결정) — 레거시의 일반 'Pretendard' 는 같은 서체라 같은 굵기로 옮긴다.
 async function labelTextStyle(lab: CapturedLabel): Promise<{ font: FontName; styleId: string | null }> {
   const style = lab.fontName && lab.fontName.style ? lab.fontName.style : "Regular";
-  const font: FontName = { family: "Pretendard", style };
+  const font: FontName = { family: TEXT_STYLE_FONT_FAMILY, style };
   try {
     const styles = await figma.getLocalTextStylesAsync();
-    const hit = styles.filter((st) => st.fontName.family === "Pretendard" && st.fontName.style === style && Math.abs(st.fontSize - lab.fontSize) < 0.01);
+    const hit = styles.filter((st) => st.fontName.family === TEXT_STYLE_FONT_FAMILY && st.fontName.style === style && Math.abs(st.fontSize - lab.fontSize) < 0.01);
     const pick = hit.filter((st) => /^body\//i.test(st.name))[0] || hit[0];
     if (pick) return { font: pick.fontName, styleId: pick.id };
   } catch (e) { /* */ }

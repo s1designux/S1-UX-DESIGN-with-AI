@@ -1,8 +1,8 @@
 {
   "id": "dropdown",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "status": "approved",
-  "canonicalFingerprint": "731e5fa8859446db163d1415812b891d32cc7fb9d3e503ac827c62f9f8644fb4",
+  "canonicalFingerprint": "4e89e12cf0da2ea199dfbb6a62cfc9a944ab8d600b7c1df0e4fffc3d1cbb3658",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -123,8 +123,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [

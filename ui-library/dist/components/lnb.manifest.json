@@ -1,8 +1,8 @@
 {
   "id": "lnb",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "status": "approved",
-  "canonicalFingerprint": "7b60b80b37067b402e3a3962fe436402107837feecbb53a68d0517bae570bf8f",
+  "canonicalFingerprint": "a7325b1004fb535736f159985f2b6b2fb5195c7e8167881472ba323cae6c4ea0",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -112,8 +112,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [
@@ -179,5 +179,5 @@
     ],
     "reason": "하위메뉴 여닫이(aria-expanded ↔ hidden)와 우측 상단 접기 단추(aria-pressed ↔ data-state)를 맞춘다."
   },
-  "sourceFingerprint": "6f98f3da4003428aae3d9f1de6278c34defbb9b5b2c8f6f80087e9f878f4ff57"
+  "sourceFingerprint": "83ac54194e04c9ff85254e25e6e322eb1d712158110e8557a9ea50acf4658e00"
 }

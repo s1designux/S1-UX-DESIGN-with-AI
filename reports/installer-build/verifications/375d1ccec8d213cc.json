@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:375d1ccec8d213cc0f123e1f4bca594887e5d8e0b5e1410c8bbc6251864aff82",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-10-02T04:28:28.851Z",
+  "notes": "설치 속도: findAllWithCriteria 교체(빌드 지문 83e9fbdf 불변) + 토큰 견본판 재사용(닫힘 추적 지문·그림 수·머리띠·자리 재계산) + 완료화면 시간 표시. 2회차 델타 재검증 a-1~a-3 해소. 실제 Figma 실행은 미검증."
+}
