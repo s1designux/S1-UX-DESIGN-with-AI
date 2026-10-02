@@ -303,6 +303,24 @@ export interface S1BottomSheetProps extends S1BaseProps {
 }
 export declare function S1BottomSheet(props: S1BottomSheetProps): ReactElement;
 
+export interface S1ExpandableCardProps extends S1BaseProps {
+  /** s1:expandable-card:change */
+  onChange?: (event: CustomEvent) => void;
+}
+export declare function S1ExpandableCard(props: S1ExpandableCardProps): ReactElement;
+
+export interface S1DataTagProps extends S1BaseProps {
+  /** 승인된 변형: blue · red */
+  variant?: "blue" | "red";
+}
+export declare function S1DataTag(props: S1DataTagProps): ReactElement;
+
+export interface S1DividerProps extends S1BaseProps {
+  /** 승인된 변형: x · y */
+  variant?: "x" | "y";
+}
+export declare function S1Divider(props: S1DividerProps): ReactElement;
+
 export interface S1LnbProps extends S1BaseProps {
   /** 승인된 변형: menu · brand */
   variant?: "menu" | "brand";

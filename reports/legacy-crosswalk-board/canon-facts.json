@@ -279,7 +279,7 @@
     },
     "data-tag": {
       "id": "data-tag",
-      "status": "candidate",
+      "status": "approved",
       "version": "0.1.0",
       "sizes": [],
       "breaks": {},
@@ -294,7 +294,7 @@
       ],
       "canonicalStateMap": {},
       "absentCombinations": [],
-      "sourceFingerprint": "e385eb8ff165ed47c89c2921ca35988c91569b6d8a6d3083722d0c677bc28bc2"
+      "sourceFingerprint": "809845e84876e45f3100bc9cf53c9b193b21ca25884efad3edfdef65bd9434a0"
     },
     "date-picker": {
       "id": "date-picker",
@@ -368,7 +368,7 @@
     },
     "divider": {
       "id": "divider",
-      "status": "candidate",
+      "status": "approved",
       "version": "0.1.0",
       "sizes": [],
       "breaks": {},
@@ -383,7 +383,7 @@
       ],
       "canonicalStateMap": {},
       "absentCombinations": [],
-      "sourceFingerprint": "d960861345054455d97b28edf65b8209a787f844fb17faac656b64864e05aad2"
+      "sourceFingerprint": "8697fc87e3c7ef8cf16e43bc25f5b3c77d86126b9aa8916a4caaf12a7b56bbf5"
     },
     "dropdown": {
       "id": "dropdown",
@@ -423,7 +423,7 @@
     },
     "expandable-card": {
       "id": "expandable-card",
-      "status": "candidate",
+      "status": "approved",
       "version": "0.1.2",
       "sizes": [],
       "breaks": {},
@@ -437,7 +437,7 @@
       ],
       "canonicalStateMap": {},
       "absentCombinations": [],
-      "sourceFingerprint": "99c24c3da0f576f860e731cf6e9a73059287a2d4754c21ee57680797edd4c972"
+      "sourceFingerprint": "0fd6352940d6bca695e8ebab7fc91b6d156adde62caf89552448deb96890eafb"
     },
     "filter-chip": {
       "id": "filter-chip",
@@ -693,6 +693,32 @@
       },
       "absentCombinations": [],
       "sourceFingerprint": "83f383394c893d7911540f0baed7d7ab74fa14088c7630c993e836d5dda0612f"
+    },
+    "lnb": {
+      "id": "lnb",
+      "status": "approved",
+      "version": "0.2.1",
+      "sizes": [
+        "md",
+        "lg"
+      ],
+      "breaks": {},
+      "sizeBreakGrid": [],
+      "variants": [
+        "menu",
+        "brand"
+      ],
+      "types": null,
+      "states": [
+        "expanded",
+        "collapsed",
+        "current",
+        "hover",
+        "disabled"
+      ],
+      "canonicalStateMap": {},
+      "absentCombinations": [],
+      "sourceFingerprint": "6f98f3da4003428aae3d9f1de6278c34defbb9b5b2c8f6f80087e9f878f4ff57"
     },
     "mobile-bottom-nav": {
       "id": "mobile-bottom-nav",

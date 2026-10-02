@@ -97,6 +97,9 @@ import { S1Button, S1Input, S1Table } from "@s1/ui-react";
 | `S1ModalContent` | `single` `dual` | PC `md` `lg` `xl` | — | `onOpen` · `onClose` | 입력창·표·이미지처럼 확인 계열(짧은 텍스트)보다 큰 본문이 필요할 때. Single=알림/설명체 1버튼, Dual=확인/질문체 2버튼(확인 계열과 같은 규칙). |
 | `S1BottomSheetOption` | `text` `checkbox` `radio` `list` | — | — | `parts` | 바텀시트 본문에 고를 것을 줄로 늘어놓을 때. Text = 한 값 고르기(고른 줄에 파란 체크), Checkbox = 여러 값 고르기, Radio = 한 값 고르기(동그라미 표시), List = 사람·항목처럼 아바타와 설명이 함께 있는 줄. |
 | `S1BottomSheet` | `none` `single` `dual` | — | — | `onOpen` · `onClose` | 모바일에서 목록을 띄워 고르게 할 때 — 드롭다운 대신 쓴다(density-policy mobileSubstitutes.dropdown). 모바일에서 날짜·시간처럼 넓은 선택 UI 를 띄울 때. Footer=None 은 고르는 즉시 적용되는 목록, Single 은 '적용' 하나, Dual 은 '취소+적용'. |
+| `S1ExpandableCard` | — | — | — | `onChange` | 한 화면에 여러 덩어리를 쌓아 두고, 필요한 것만 펴서 보게 할 때. 질문과 답처럼 제목만으로 고르고 내용은 접어 두는 목록. |
+| `S1DataTag` | `blue` `red` | — | — | `parts` | 표나 목록에서 한 줄의 상태를 한 눈에 보이게 할 때. 승인·확인(파랑), 주의·에러(빨강)처럼 뜻이 정해진 상태를 표시할 때. |
+| `S1Divider` | `x` `y` | — | — | `parts` | 목록 줄 사이를 나눌 때. 표 위·아래처럼 영역을 크게 끊을 때(강한선). 한 줄 안에서 값과 값을 끊을 때(세로선). |
 | `S1Lnb` | `menu` `brand` | `md` `lg` | — | `onCollapse` · `onToggle` | 화면 왼쪽에 세로로 서서 같은 서비스 안의 큰 영역을 오가는 메뉴가 필요할 때. 하위메뉴(2뎁스)까지 한 판에서 보여 줄 때. |
 
 크기·변형은 위에 적힌 값만 쓸 수 있습니다. 다른 값을 주면 그 자리에서 오류로 알려 줍니다.
@@ -129,6 +132,9 @@ import { S1Button, S1Input, S1Table } from "@s1/ui-react";
 | `S1ModalContent` | 짧은 확인 문구 하나면 확인 계열 Modal 을 쓴다. 페이지 전체를 차지하는 다단계 폼은 별도 페이지를 고려한다. |
 | `S1BottomSheetOption` | 바텀시트 밖 — PC 목록은 Dropdown 을 쓴다. 표의 행 — Table 을 쓴다. |
 | `S1BottomSheet` | PC 화면 — PC 는 드롭다운·팝오버·모달을 쓴다. 정본 시트는 모바일 폭(360) 기준이다. 확인·알림처럼 짧은 결정 — Modal 을 쓴다. 비차단 알림 — 토스트·인라인 메시지. |
+| `S1ExpandableCard` | 화면을 덮어야 하는 내용 — Bottom Sheet·Modal 을 쓴다. 같은 모양의 한 줄이 반복될 뿐 펼칠 내용이 없을 때 — List Row 를 쓴다. |
+| `S1DataTag` | 누르는 것 — Chip 이나 Button 을 쓴다. 고르는 것 — Filter Chip 을 쓴다. 뜻이 정해지지 않은 색을 쓰고 싶을 때 — 색을 늘리지 않는다. |
+| `S1Divider` | 바탕색이 이미 영역을 나누고 있을 때 — 선을 겹쳐 넣지 않는다. 카드 테두리 대신 쓰려 할 때 — 테두리는 그 부품이 갖는다. |
 | `S1Lnb` | 화면 위쪽 가로 메뉴가 필요할 때 — GNB 를 쓴다. 모바일 하단 이동 막대가 필요할 때 — Mobile Bottom Nav 를 쓴다. |
 
 ## 6. 고치지 마세요
