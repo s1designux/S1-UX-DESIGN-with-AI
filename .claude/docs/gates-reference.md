@@ -32,7 +32,7 @@ git 이력을 되짚거나(6c) 크롬을 띄워 화면을 그리거나(44·53) �
 | 1 | Registry | registry JSON 구조·Semantic 경유·네이밍·필드 |
 | 2 | Figma | 등록 nodeId/componentKey 유효성 — **gate:check 미배선 · 수동** |
 | 3 | Quality | Foundation 외 raw HEX 금지·rgba 예외만 |
-| 4 | Report | reports 색인 커버리지 |
+| 4 | Report | reports 색인 커버리지 — **2026-10-02 차단 승격** |
 | 5 | UI + Harness Audit | 사이즈 분기·다크 비교·아이콘 색 — **`npm run harness:audit` 단독 · UI 부분 수동** |
 | 6 | Installer Coverage | 설치기 토큰 커버리지 |
 | 6b | Installer Build Freshness | 커밋 zip 이 최신 빌드인지 |
@@ -61,7 +61,7 @@ git 이력을 되짚거나(6c) 크롬을 띄워 화면을 그리거나(44·53) �
 | 25 | Component Alias Canonical | 컴포넌트-별칭이 정본 토큰으로 해석되나 |
 | 26 | Icons Stats Consistency | 아이콘 개수가 정본(icons-data.js)과 일치 |
 | 27 | Token Role | **글자엔 글자 토큰** — border/bg/surface 오연결 차단 |
-| 28 | System Map Drift | 대시보드가 낡았나 — **불일치=경고(비차단)** |
+| 28 | System Map Drift | 대시보드가 낡았나 — **불일치=경고(비차단)** · 합칠 때(`wt:merge` 5c) 자동 재생성 |
 | 29 | Dark Divergence | 라이트 같은데 다크만 갈리는 이상치(래칫) |
 | 30 | Component Registration | 설치기 전집합 ↔ 등록 4면 차집합 대조 |
 | 31 | Icon Key Consistency | 설치기 `ICON_KEYS` ↔ provenance 3면 정합 |
@@ -73,8 +73,8 @@ git 이력을 되짚거나(6c) 크롬을 띄워 화면을 그리거나(44·53) �
 | 37 | Doc Budget | **CLAUDE.md 재비대화 차단** — 크기 래칫·참조 경로 실존·변경이력 3행 |
 | 38 | Component Guide Generation | `build-components.ts` → guide model 드리프트 차단 (메인 사이트는 손관리) |
 | 39 | Canonical Value → Web Guide | 정본 수치가 웹 가이드에 반영됐나 |
-| 40 | Screen Rebuild Evidence | 화면 재현 근거(기준 선언·스냅샷) 존재 — **warn** |
-| 41 | Screen Rebuild State | 화면 작업 상태 파일 정합, 전 플로우 일괄 — **warn** |
+| 40 | Screen Rebuild Evidence | 화면 재현 근거(기준 선언·스냅샷) 존재 — **2026-10-02 차단 승격** |
+| 41 | Screen Rebuild State | 화면 작업 상태 파일 정합, 전 플로우 일괄 — **2026-10-02 차단 승격** |
 | 42 | Screen Naming | 화면 프레임 이름과 흐름 코드 규칙 |
 | 43 | UI Icon Geometry | 누르는 영역과 분리된 SVG 틀·실제 도형 크기, source↔dist 일치 |
 | 44 | UI Guide Render | 안내 화면을 실제로 그려서 검사 — 개발 코드 플랫폼 일치 · 부품 표본이 세트 장식을 함께 보여주지 않는지 |
@@ -130,6 +130,7 @@ git 이력을 되짚거나(6c) 크롬을 띄워 화면을 그리거나(44·53) �
 - `reports/reports-index.json` vs 실제 `.md` 파일 커버리지
 - 미색인 report 파일 탐지
 **자동 스크립트:** `npm run reports:sync && npm run reports:check`
+**세기:** 2026-10-02 경고 → **차단**(river 결정) — 경고로는 9/16 이후 2주 넘게 미색인 3건이 방치됐다. 고치는 방법이 `npm run reports:sync` 한 번이라 막아도 부담이 적다.
 
 ### Gate 5: UI Gate + Harness Audit
 **파일:** `.claude/agents/guide-builder.md`
@@ -291,7 +292,7 @@ git 이력을 되짚거나(6c) 크롬을 띄워 화면을 그리거나(44·53) �
   25. Gate 25 (Component Alias Canonical) — pages/*.html 변경 시 / 항상. **활성 페이지에 정의된 컴포넌트-별칭 토큰(`--{button|chip|input|dropdown|select|table|nav|gnb|pagination|checkbox|radio|toggle|tab}-*`)의 var() 체인이 정본(tokens.css∪site-base∪페이지-로컬)까지 해석되는지** 검사. ❌차단 = ①유령참조(체인이 정의 없는 토큰에 닿음 = 정본 밖 별칭 이름·오타·삭제 토큰 재유입) ②표면드리프트(같은 별칭 이름이 페이지 간 다른 최종 HEX). 배경: 모든 토큰 게이트가 vars-data/tokens.css 만 봐서 그 바깥 `--{comp}-*` 별칭층은 사각지대였다(`--dropdown-trigger-*` 유출 계기). 은퇴 별칭 CSS(component-tokens.css)는 legacyFiles 라 제외. 단독 `node scripts/component-alias-canonical-check.js`
   26. Gate 26 (Icons Stats Consistency) — 표출용 아이콘 개수(icons-stats.js)가 정본(icons-data.js)과 일치하나(손편집 후 재생성 누락 차단·재생성 `npm run icons:stats`)
   27. Gate 27 (Token Role / 글자엔 글자 토큰) — 글자(TEXT) 색은 text/*·label/*·number/* 만 — border/*·bg/*·surface/* 오연결 차단(icon/*=허용목록만). build-components.ts mock 실행해 글자 fill 역할 대조. Input 안내메시지 테두리토큰 오연결(값 게이트 전부 ✅였던 사각지대) 재발 차단. 단독 `npm run tokens:rolecheck`
-  28. Gate 28 (System Map Drift) — `pipeline-status.js --self-check` 로 현재 코드에서 시스템 맵을 재생성해 커밋본과 대조(휘발성 제외) — pipeline-status.html 이 낡았나. **불일치=경고(비차단)**: 대시보드는 생성물이라 낡아도 빌드가 안 깨지고, error 로 걸면 타 세션 커밋까지 막혀 `--no-verify` 를 부르고 그러면 Gate 1~27 이 전부 무력화되기 때문(2026-07-14 결정 — 신선도보다 게이트 생태계 보존 우선). 재생성 `node pipeline-status.js --check --skip gate:check,components:presentation --out pages/pipeline-status.html`
+  28. Gate 28 (System Map Drift) — `pipeline-status.js --self-check` 로 현재 코드에서 시스템 맵을 재생성해 커밋본과 대조(휘발성 제외) — pipeline-status.html 이 낡았나. **불일치=경고(비차단)**: 대시보드는 생성물이라 낡아도 빌드가 안 깨지고, error 로 걸면 타 세션 커밋까지 막혀 `--no-verify` 를 부르고 그러면 Gate 1~27 이 전부 무력화되기 때문(2026-07-14 결정 — 신선도보다 게이트 생태계 보존 우선). 재생성 `node pipeline-status.js --check --skip gate:check,components:presentation --out pages/pipeline-status.html`. **2026-10-02(river 결정 A): 경고는 그대로 두고, `npm run wt:merge` 5c 단계가 합칠 때마다 낡았는지 보고 낡았으면 다시 만들어 커밋한다**(낡지 않았으면 아무것도 안 함 · 실패해도 합치기는 되돌리지 않음). 9/29 이후 경고가 떠 있어도 아무도 다시 만들지 않던 방치를 자동 연동으로 메운다.
   29. Gate 29 (Dark Divergence / 다크값갈림) — vars-data.ts 변경 시 / 항상. **라이트 최종값이 같은데 같은 비교 단위 안에서 다크 최종값만 갈리는 이상치 토큰**을 baseline(`registry/governance/dark-divergence-baseline.json`) 대조로 차단. 비교 단위 = 컴포넌트 계열은 `컴포넌트/역할`(예 chip/bg · chip/icon · form-control/icon — 역할 마디를 뒤에서부터 찾아 붙인다. 변형 이름이 역할 낱말과 겹치는 `chip/line/border/*` 오인 방지), 역할 계열(text·icon·bg·line·overlay·surface)은 seg1/seg2. **2026-09-10 river 지시로 컴포넌트 단위를 역할별로 좁혔다** — 종전에는 컴포넌트 하나로 묶어 라이트가 같은 흰색이면 배경과 글자·아이콘이 한 그룹이 됐고, 동수가 되면 무고한 토큰까지 신규 이상치로 승격됐다. 이상치 = 단위×라이트값 그룹에서 다수파와 다른 다크값(동수면 전원 등록·`[동수]` 표시, 옳은 쪽 판정 안 함). ❌차단 = baseline 에 없는 신규 이상치·끊긴 참조. ⚠️기록만 = 단위 간 갈림(의도 가능 — form-control 이 다크에서 밝게 가는 류)·baseline 해소분 알림·**역할을 가로지르는 갈림**(`crossRole` — 역할별로 좁히면서 차단 범위에서 빠진 유형. 도입 사유였던 '칩 선택 라벨만 다른 단계'가 여기 보인다. 사람이 판단). baseline 키 = `<단위>::<라이트값>::<토큰명>::<다크값>` (이상치 토큰 자체가 키 — 정상 토큰 추가로는 안 흔들림), reason 선택. **갱신은 줄이기 전용 래칫**(`--update-baseline` — 신규 있으면 기록 거부, gate20-fix A안 선반영). 도입 사유(2026-07-28): chip 선택 라벨 다크(blue-dark/350)가 같은 chip 선택 계열(300)과 홀로 어긋난 것을 사람이 발견 — 같은 유형을 기계가 잡도록 신설. 단독 `npm run tokens:darkdiv`
 ```
 
@@ -413,11 +414,15 @@ DESIGN.md(AI 소비용) 가 정본(tokens.css+registry)보다 낡으면 차단
 
 컴포넌트 정본의 실제 scene graph에서 생성한 `component-guide-model.json`이 최신인지 `--check` byte 대조로 차단한다. 메인 사이트 `components.html`은 기존 손관리 화면을 유지하며 자동 생성·byte 대조 대상이 아니다. Gate 18의 공개·제외 분류, Gate 19의 variant 커버리지, Gate 23의 실제 렌더, Gate 32의 크기 어휘가 사이트를 별도로 검증한다. 모델 재생성은 `npm run components:guide-model:write`, 일괄은 `npm run tokens:reconcile`이다. 단독 `npm run components:guide:check`.
 
+### Gate 40: Screen Rebuild Evidence (화면 재현 근거)
+
+화면 작업이 **무엇을 기준으로 맞다고 판정됐는지**의 근거가 남아 있나 — 선언한 기준(`legacy`·`existing-nodes`·`intent-spec`)마다 원본 전수표·스냅샷 3종(before·expect·after)+snapdiff 기록·의도 선언서+승인을 요구한다. **2026-10-02 차단으로 승격**(사용자 결정 2026-08-24 "안정되면 승격"의 이행). 남아 있던 경고 1건(modu-app/signup-mobile-web)은 고친 차례마다 이름을 붙인 스냅샷 묶음(`snapshot-fix3-before.json` 등)을 검사기가 못 알아본 오탐이었다 — 이제 **같은 이름의 before·expect·after 가 한 벌 이상 다 갖춰져** 있으면 기본 3종과 같은 근거로 인정한다(한 벌이라도 빠지면 종전처럼 누락). 기존 부채는 `evidence.exempt` 로 동결. 단독 `npm run screen-rebuild:evidence`
+
 ### Gate 41: Screen Rebuild State (화면 작업 상태 파일)
 
 `reports/screen-rebuild/*/*/workflow-state.json` 을 **전 플로우 일괄** 검사한다. 단건 검사기 `screen-rebuild:statecheck` 는 **존재했지만 수동이라** 2026-08-21~24 사이 실패를 아무도 몰랐다(반복 패턴 `rule-written-but-not-enforced` — Gate 35·7b·9b 와 같은 "존재하나 미연결" 유형). 배선하자마자 진행 중 플로우에서 아무도 모르던 불일치 1건이 드러났다.
 
-낡음(`_stale`) 규약을 존중한다: 사양이 축소되면 과거 산출물(`screen-spec.json`·`scan-summary.json`)은 당시 증거로 보존되므로 화면 수를 현재와 비교하면 영원히 실패한다. `_stale: true` **이면서 `_supersededBy`(대체 문서)가 있을 때만** 오류를 경고로 낮추고 제외 사유를 파일명과 함께 출력한다 — 도장만 찍어 검사를 피하는 것은 막는다. **현재 warn 단계**(래칫 — 진행 중 플로우의 기존 부채가 정리되면 승격 검토). 단독 `npm run screen-rebuild:statecheck:all`
+낡음(`_stale`) 규약을 존중한다: 사양이 축소되면 과거 산출물(`screen-spec.json`·`scan-summary.json`)은 당시 증거로 보존되므로 화면 수를 현재와 비교하면 영원히 실패한다. `_stale: true` **이면서 `_supersededBy`(대체 문서)가 있을 때만** 오류를 경고로 낮추고 제외 사유를 파일명과 함께 출력한다 — 도장만 찍어 검사를 피하는 것은 막는다. **2026-10-02 차단으로 승격**(river 지시). 남아 있던 실패 1건(login/pc-web)은 의도 선언서로 만든 화면(`source.kind: "intent-spec"`)을 레거시 재현 기준(원본 주소·원본 노드·원본 전수표)으로 따지던 검사기 쪽 오해였다 — 이제 intent-spec 화면은 원본 대신 **의도 선언서(`source.doc`)가 실제로 있어야** 하고, 화면마다 화면 번호(`code`)+만든 노드(`targetNodeId`), 완료 시 원본 전수표 대신 의도 선언서를 요구한다(요구를 빼지 않고 원본 자리에 원본에 해당하는 근거를 요구). 단독 `npm run screen-rebuild:statecheck:all`
 
 ### Gate 42: Screen Naming (화면 프레임 네이밍)
 

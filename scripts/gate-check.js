@@ -93,13 +93,15 @@ for (const rel of tokenRegistryFiles) {
 }
 
 // ── Gate 4: Report Gate ───────────────────────────────────────────
+// 2026-10-02 경고 → 차단 승격(river 결정): 경고로는 9/16 이후 2주 넘게 3건이 방치됐다.
+//   고치는 방법이 명령 하나(npm run reports:sync)라 막아도 부담이 적다.
 gateHeader('[Gate 4] 리포트색인 검사기 (Report)');
 
 const reportsDir = path.join(ROOT, 'reports');
 const reportsIndexPath = path.join(ROOT, 'data/reports-index.json');
 
 if (!fs.existsSync(reportsIndexPath)) {
-  warn('reports-index.json not found — run: npm run reports:sync');
+  fail('reports-index.json not found — run: npm run reports:sync');
 } else {
   try {
     const index = JSON.parse(fs.readFileSync(reportsIndexPath, 'utf-8'));
@@ -108,7 +110,7 @@ if (!fs.existsSync(reportsIndexPath)) {
     let unindexed = 0;
     for (const f of mdFiles) {
       if (!indexed.has(f)) {
-        warn(`Report not indexed: ${f} — run: npm run reports:sync`);
+        fail(`Report not indexed: ${f} — run: npm run reports:sync`);
         unindexed++;
       }
     }
@@ -1011,7 +1013,8 @@ try {
 // 2026-08-24 판독: 그 세션에서 터진 문제 3개 중 2개가 "규칙은 이미 있는데 안 걸림" 유형이었다
 // (fast-safe 미발동·상태검사기 미배선). 게이트는 '잊어버림'을 막는 유일한 층이다.
 // 무엇을 요구할지는 작업이 선언한 기준(legacy / existing-nodes / intent-spec)에 따라 달라진다.
-// **현재 warn 단계** — 스냅샷 흐름이 실전 1~2회 돌아 안정되면 --strict 로 승격(사용자 결정 2026-08-24).
+// 2026-10-02 차단으로 승격 — 사용자 결정 2026-08-24 "안정되면 승격"의 이행(river 지시 2026-10-02).
+//   남아 있던 경고 1건은 검사기가 이름 붙은 스냅샷 묶음(snapshot-<이름>-before 등)을 못 알아본 오탐이었다.
 // 기존 부채는 evidence.exempt 로 동결, 신규만 본다(래칫 — Gate 19/20/29/30 과 동일 방식).
 gateHeader('[Gate 40] 화면 재현 근거 검사기 (Screen Rebuild Evidence)');
 try {
@@ -1021,24 +1024,25 @@ try {
   const out = (r.stdout || '').trim();
   const m = out.match(/SREVIDENCE_SUMMARY flows=(\d+) ok=(\d+) missing=(\d+) undeclared=(\d+) exempt=(\d+)/);
   if (!m) {
-    warn(`Gate 40: 검사기 출력 해석 실패 (기록만)\n${out}`);
+    fail(`Gate 40: 검사기 출력 해석 실패\n${out}`);
   } else {
     const [, flows, ok, missing, undeclared, exempt] = m.map(Number.isNaN ? String : (x) => x);
     const bad = Number(missing) + Number(undeclared);
     if (bad > 0) {
-      warn(`Gate 40: 재현 근거 미비 ${bad}건(누락 ${missing} · 기준 미선언 ${undeclared}) — 지금은 기록만, 차단 아님. 상세: npm run screen-rebuild:evidence`);
+      fail(`Gate 40: 재현 근거 미비 ${bad}건(누락 ${missing} · 기준 미선언 ${undeclared}) — 상세: npm run screen-rebuild:evidence`);
     } else {
       pass(`화면 재현 근거 정합 — 플로우 ${flows}개(정합 ${ok} · 동결 ${exempt})`);
     }
   }
 } catch (e) {
-  warn(`Gate 40 실행 실패: ${e.message} (기록만)`);
+  fail(`Gate 40 실행 실패: ${e.message}`);
 }
 
 // ── Gate 41: Screen Rebuild State (화면 작업 상태 파일) ─────────────
 // 단건 검사기(screen-rebuild:statecheck)는 수동이라 2026-08-21~24 사이 실패를 아무도 몰랐다.
 // (반복 패턴 rule-written-but-not-enforced — 규칙을 만들고 자동 실행에 안 걸면 새는 것이 기본값)
-// **현재 warn 단계** — 진행 중 플로우의 기존 부채가 남아 있어 차단하지 않는다(래칫, Gate 40 과 동일).
+// 2026-10-02 차단으로 승격(river 지시) — 남아 있던 실패 1건은 의도 선언서로 만든 화면(intent-spec)을
+//   레거시 재현 기준(원본 주소·원본 노드)으로 따지던 검사기 쪽 오해였다. 검사기가 두 기준을 구분한다.
 gateHeader('[Gate 41] 화면 작업 상태 검사기 (Screen Rebuild State)');
 try {
   const { spawnSync } = require('child_process');
@@ -1047,17 +1051,17 @@ try {
   const out = (r.stdout || '').trim();
   const m = out.match(/SRSTATE_SUMMARY flows=(\d+) failed=(\d+) warnings=(\d+)/);
   if (!m) {
-    warn(`Gate 41: 검사기 출력 해석 실패 (기록만)\n${out}`);
+    fail(`Gate 41: 검사기 출력 해석 실패\n${out}`);
   } else {
     const [, flows, failed, warnN] = m;
     if (Number(failed) > 0) {
-      warn(`Gate 41: 상태 파일 불일치 ${failed}/${flows} 플로우 — 지금은 기록만, 차단 아님. 상세: npm run screen-rebuild:statecheck:all`);
+      fail(`Gate 41: 상태 파일 불일치 ${failed}/${flows} 플로우 — 상세: npm run screen-rebuild:statecheck:all`);
     } else {
       pass(`화면 작업 상태 정합 — 플로우 ${flows}개${Number(warnN) ? ` (낡음 제외 경고 ${warnN})` : ''}`);
     }
   }
 } catch (e) {
-  warn(`Gate 41 실행 실패: ${e.message} (기록만)`);
+  fail(`Gate 41 실행 실패: ${e.message}`);
 }
 
 // ── Gate 42: Screen Naming (화면 프레임 네이밍) ─────────────────────

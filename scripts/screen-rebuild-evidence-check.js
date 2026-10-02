@@ -21,8 +21,8 @@
  *   아니라 "기준을 사람이 줘야 한다"는 뜻이다. 근거 없이 에이전트가 빈자리를 메우는 것이
  *   하드룰 H6② 가 막는 바로 그 실패이고, 이 스킬이 태어난 원인(원본을 안 읽고 지어냄)이다.
  *
- * 판정: 현재 **warn 단계**(기록만, 커밋 차단 안 함). 스냅샷 흐름이 실전 1~2회 돌아
- *       안정되면 `--strict` 를 기본값으로 승격한다(사용자 결정 2026-08-24).
+ * 판정: 2026-10-02 부터 gate-check(Gate 40)가 **차단**으로 쓴다(사용자 결정 2026-08-24 "안정되면 승격"의 이행).
+ *       이 스크립트 자체의 종료코드는 종전대로 `--strict` 일 때만 비0 — 차단 판정은 SUMMARY 줄로 gate 가 한다.
  *       기존 부채는 evidence.exempt 로 동결 — 신규만 본다(래칫, Gate 19/20/29/30 과 동일 방식).
  *
  * 선언 위치: reports/screen-rebuild/{service}/{flow}/workflow-state.json 의 `evidence`
@@ -75,6 +75,26 @@ function listFlows() {
   return out;
 }
 
+/** 이름 붙은 스냅샷 묶음 중 before·expect·after 가 다 있는 묶음 이름들.
+ *  snapshot-<이름>-<역할>.json 과 snapshot-<역할>-<이름>.json 두 꼴을 읽는다.
+ *  after 는 뒤에 꼬리가 붙어도 된다(snapshot-full-after-final-v3.json) — 고친 뒤 여러 번 다시 뜬 경우. */
+function completeSnapshotSets(dir) {
+  const sets = {};
+  for (const name of fs.readdirSync(dir)) {
+    const m = /^snapshot-(.+)\.json$/.exec(name);
+    if (!m) continue;
+    const parts = m[1].split('-');
+    const i = parts.findIndex((p) => p === 'before' || p === 'expect' || p === 'after');
+    if (i < 0) continue;
+    const role = parts[i];
+    // 역할 앞이 이름(snapshot-fix3-before) — 없으면 역할 뒤가 이름(snapshot-before-2)
+    let tag = parts.slice(0, i).join('-');
+    if (!tag) tag = role === 'after' ? (parts[i + 1] || '') : parts.slice(i + 1).join('-');
+    (sets[tag] = sets[tag] || new Set()).add(role);
+  }
+  return Object.keys(sets).filter((t) => ['before', 'expect', 'after'].every((r) => sets[t].has(r)));
+}
+
 function checkFlow(f) {
   const rel = `${f.svc}/${f.flow}`;
   let st;
@@ -94,6 +114,11 @@ function checkFlow(f) {
 
   const notes = [];
   for (const b of ev.baseline) {
+    // existing-nodes 는 고친 차례마다 스냅샷 묶음에 이름을 붙이는 일이 많다
+    //   (snapshot-fix3-before.json · snapshot-before-2.json 처럼). 이름 없는 기본 3종이 없어도
+    //   **같은 이름의 before·expect·after 가 한 벌 이상 다 갖춰져** 있으면 같은 근거로 인정한다.
+    //   다 갖춘 묶음이 하나도 없으면 종전처럼 기본 3종 누락으로 보고한다(2026-10-02 — 오탐 교정).
+    if (b === 'existing-nodes' && completeSnapshotSets(f.dir).length) continue;
     for (const req of REQUIRED[b]) {
       if (!fs.existsSync(path.join(f.dir, req.file))) notes.push(`[${b}] ${req.file} 없음 — ${req.why}`);
     }
