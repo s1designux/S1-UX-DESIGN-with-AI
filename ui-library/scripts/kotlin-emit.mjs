@@ -71,15 +71,25 @@ function boxLiteral(box) {
     ["width", "width"], ["minWidth", "minWidth"], ["paddingStart", "paddingStart"], ["paddingEnd", "paddingEnd"],
     ["paddingTop", "paddingTop"], ["paddingBottom", "paddingBottom"], ["gap", "gap"], ["marginStart", "marginStart"], ["marginTop", "marginTop"],
     ["fontSize", "fontSize"], ["letterSpacing", "letterSpacing"], ["lineHeight", "lineHeight"],
-    ["opacity", "opacity"], ["rotation", "rotation"], ["left", "left"], ["right", "right"]
+    ["opacity", "opacity"], ["rotation", "rotation"], ["left", "left"], ["right", "right"], ["top", "top"],
+    ["marginEnd", "marginEnd"], ["marginBottom", "marginBottom"], ["maxWidth", "maxWidth"], ["maxHeight", "maxHeight"],
+    ["maxHeightVh", "maxHeightVh"], ["radiusTopStart", "radiusTopStart"], ["radiusTopEnd", "radiusTopEnd"],
+    ["scaleX", "scaleX"], ["flexBasis", "flexBasis"]
   ]) {
     const value = box[key];
     if (value === undefined || value === null) continue;
     if ((key === "borderWidth" || key === "radius" || key === "gap" || key === "marginStart" || key === "marginTop" ||
+         key === "marginEnd" || key === "marginBottom" ||
          key === "letterSpacing" || key.startsWith("padding")) && value === 0) continue;
     fields.push(`${field} = ${float(value)}`);
   }
   if (box.fontWeight) fields.push(`fontWeight = ${box.fontWeight}`);
+  if (box.spaceBetween) fields.push("spaceBetween = true");
+  if (box.durationMs) fields.push(`durationMs = ${box.durationMs}`);
+  if (box.gradient) {
+    const stops = box.gradient.map((stop) => `S1GradientStop(${float(stop.offset)}, ${stop.token ? `S1Palette.${camelToken(stop.token)}` : "null"}, ${float(stop.alpha)})`);
+    fields.push(`gradient = listOf(${stops.join(", ")})`);
+  }
   if (box.icon) fields.push(`icon = "${box.icon}"`);
   if (box.underline) fields.push("underline = true");
   if (box.shadow) {

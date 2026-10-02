@@ -103,11 +103,29 @@ const COMPARED = [
   ['paddingBottom', 'paddingBottom', 'px'],
   ['gap', 'rowGap', 'px'],
   ['marginStart', 'marginLeft', 'px'],
+  ['marginEnd', 'marginRight', 'px'],
+  ['marginTop', 'marginTop', 'px'],
+  ['marginBottom', 'marginBottom', 'px'],
+  ['maxWidth', 'maxWidth', 'px'],
+  ['maxHeight', 'maxHeight', 'px'],
+  ['radiusTopStart', 'borderTopLeftRadius', 'px'],
+  ['radiusTopEnd', 'borderTopRightRadius', 'px'],
+  ['top', 'top', 'px'],
+  ['left', 'left', 'px'],
+  ['right', 'right', 'px'],
   ['fontSize', 'fontSize', 'px'],
   ['fontWeight', 'fontWeight', 'number'],
   ['letterSpacing', 'letterSpacing', 'em'],
   ['lineHeight', 'lineHeight', 'ratio']
 ];
+
+/** 시트 푸터 버튼 크기 — 생성기와 같은 규칙(루트 시트의 푸터 버튼)으로 읽는다. */
+function sheetFooterSizeOf(base, manifest) {
+  const spec = (manifest.htmlContract.breakExamples ?? {}).mobile;
+  const file = path.join(base, spec ? path.basename(spec.source) : `${path.basename(base)}.example.html`);
+  const match = /data-s1-part="sheet-footer"[\s\S]*?data-s1-component="button"[^>]*data-size="([a-z]+)"/.exec(fs.readFileSync(file, 'utf8'));
+  return match ? match[1] : undefined;
+}
 
 function footerSizesOf(base, manifest) {
   const sizes = {};
@@ -121,7 +139,8 @@ function footerSizesOf(base, manifest) {
 }
 
 async function main() {
-  const { PLANS, EXTRA_PLANS, extractSpec, mobileOnly } = await import(path.join(ROOT, 'ui-library/scripts/kotlin-compose.mjs'));
+  const { PLANS, EXTRA_PLANS, EXTRA_CSS_OWNERS, extractSpec, mobileOnly } = await import(path.join(ROOT, 'ui-library/scripts/kotlin-compose.mjs'));
+  const { componentIds } = await import(path.join(ROOT, 'ui-library/scripts/component-ids.mjs'));
   const { readTextStyles } = await import(path.join(ROOT, 'ui-library/scripts/kotlin-typography.mjs'));
   const { readTokens } = await import(path.join(ROOT, 'ui-library/scripts/platform.mjs'));
 
@@ -130,7 +149,9 @@ async function main() {
   const tokenData = readTokens(tokensCss);
   const tokenValues = new Map(tokenData.tokens.map((token) => [token.name, token.value]));
 
-  const ids = Object.keys(PLANS);
+  /* 배포본 묶음과 같은 순서로 CSS 를 겹쳐야 캐스케이드(뒤에 오는 것이 이긴다)가 실제와 같다. */
+  const ids = Object.keys(PLANS).sort((a, b) => componentIds.indexOf(a) - componentIds.indexOf(b));
+  const cssOf = (id) => fs.readFileSync(path.join(ROOT, 'ui-library/src/components', id, `${id}.css`), 'utf8');
   const cases = [];
   const styleBlocks = [forceStates(tokensCss), typographyCss];
 
@@ -141,10 +162,13 @@ async function main() {
     styleBlocks.push(forceStates(css));
 
     /* 안드로이드는 모바일 한 벌만 쓴다 — 스타일 표와 같은 축으로 물어야 대조가 성립한다. */
-    const planOptions = id === 'modal' ? footerSizesOf(base, manifest) : undefined;
+    const planOptions = id === 'modal' ? footerSizesOf(base, manifest)
+      : id === 'bottom-sheet' ? { footerButtonSize: sheetFooterSizeOf(base, manifest) }
+      : undefined;
     const mobile = mobileOnly(manifest);
     const plans = [PLANS[id](mobile, planOptions), ...(EXTRA_PLANS[id] ?? []).map((factory) => factory(mobile))];
-    const spec = extractSpec({ id, css, manifest, tokenValues, planOptions });
+    const extraCss = (EXTRA_CSS_OWNERS[id] ?? []).map(cssOf);
+    const spec = extractSpec({ id, css, extraCss, manifest, tokenValues, planOptions });
     const tables = { [id]: spec.table, ...Object.fromEntries(Object.entries(spec.extras).map(([key, value]) => [key, value.table])) };
 
     for (const plan of plans) {
@@ -212,7 +236,12 @@ async function main() {
       if (kind === 'color' && expected.inherit) continue;
       checked += 1;
       const expectedText = normalizeExpected(expected, kind, probe.expected, tokenValues);
-      const actualText = normalizeActual(actual[cssProperty], kind, actual.fontSize);
+      let actualText = normalizeActual(actual[cssProperty], kind, actual.fontSize);
+      /* 표의 gap 은 row-gap·column-gap 한 축만 적은 것도 담는다 — 어느 한 축이라도 같으면 맞다. */
+      if (field === 'gap' && expectedText !== actualText) {
+        const column = normalizeActual(actual.columnGap, kind, actual.fontSize);
+        if (column === expectedText) actualText = column;
+      }
       if (expectedText !== actualText) {
         failures.push({ ...probe, property: cssProperty, expected: expectedText, actual: actualText });
       }
@@ -302,7 +331,7 @@ const results = probes.map((probe) => {
   for (const name of [
     'backgroundColor','color','borderTopColor','borderTopWidth','borderTopLeftRadius',
     'height','width','minWidth','minHeight','paddingLeft','paddingRight','paddingTop','paddingBottom',
-    'rowGap','marginLeft','fontSize','fontWeight','letterSpacing','lineHeight'
+    'rowGap','columnGap','marginLeft','marginRight','marginTop','marginBottom','maxWidth','maxHeight','borderTopRightRadius','top','left','right','fontSize','fontWeight','letterSpacing','lineHeight'
   ]) out[name] = style[name];
   return out;
 });

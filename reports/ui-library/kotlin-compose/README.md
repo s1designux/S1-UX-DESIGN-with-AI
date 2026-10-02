@@ -2,7 +2,9 @@
 
 ## 범위 (river 지시 2026-09-09)
 
-A안 10종: button · input · checkbox · radio · toggle · chip · dropdown · select · tab · modal
+23종 — 기존 16종(button · input · checkbox · radio · toggle · chip · dropdown · select · tab · modal · mobile-header · mobile-bottom-nav · textarea · text-button · assist-button · filter-chip)에
+**모바일 부품 7종**(river 승인 2026-10-02 "코틀린은 모바일버전만 들어가면 돼")을 더했다:
+date-picker · time-picker · bottom-sheet · bottom-sheet-option · expandable-card · divider · data-tag.
 값은 `S1Tokens`, 동작은 `dist/platform/behavior.json` 을 따른다.
 
 **모바일 한 벌만 만든다.** 안드로이드는 태블릿에서도 모바일을 쓴다(river 결정 2026-09-09).
@@ -21,6 +23,18 @@ A안 10종: button · input · checkbox · radio · toggle · chip · dropdown �
 | input | 7 | 없음 (mode 로 비밀번호·검색) |
 | dropdown | 18 | type(text·checkbox) · size(xxsm·xsm·md) |
 | modal | 2 | 푸터(취소 있음/없음) |
+| divider | 12 | axis(x·y) · weight · tone · inset |
+| data-tag | 8 | tone(blue·red) · shape · solid |
+| expandable-card | 3 | 없음 (expanded 는 화면이 쥔다) |
+| bottom-sheet | 3 | 푸터(라벨을 넘긴 만큼 none·single·dual) |
+| bottom-sheet-option | 9 | type(text·checkbox·radio·list) · selected · enabled |
+| date-picker | 5 (+조각 6벌) | 없음 (한 날짜 / 기간은 `S1DateRangePicker`) |
+| time-picker | 5 (+조각 2벌) | is24Hour · minuteStep · dateContent(날짜·시간 탭) |
+
+날짜·시간 선택은 트리거 한 벌 말고 **안쪽 조각 표**(시트 껍데기·달력 머리·요일줄·날짜 칸·기간 띠·연월 칸 / 시트·휠)가 따로 있다.
+시트는 `S1BottomSheet` 의 껍데기(`S1SheetFrame`)를 같이 쓰고, 날짜·시간 값은 `S1Date`·`S1Time`(java.time 없이 최소 버전 24 에서 동작)으로 주고받는다.
+동작(열림·닫힘·선택 규칙·휠 값 읽기)은 `dist/platform/behavior.json` 에 이 부품들 항목이 아직 없어 승인 웹 런타임(`date-picker.js`·`time-picker.js`·`bottom-sheet.js`·`expandable-card.js`)을 따랐다.
+호버 미리보기·초점 가둠·키보드 이동은 터치 화면에 쓰이지 않아 옮기지 않았다.
 
 ## 방식 — 손으로 옮겨 적지 않는다
 
@@ -57,8 +71,8 @@ BasicText(text = "본문", style = S1Type.body14r.textStyle(S1Palette.colorTextB
 
 | 검사 | 방법 | 결과 |
 |---|---|---|
-| 값이 배포본과 같은가 | 헤드리스 크롬에 같은 요소·같은 상태를 그려 `getComputedStyle` 과 대조 (`npm run kotlin:parity`) | ✅ 312건 질의 · 1603개 값 일치 |
-| 빠뜨린 CSS 선언이 있는가 | 어느 질의에도 읽히지 않은 선언을 두 갈래로 갈라 기록 (`dist/platform/kotlin/coverage.json`) | PC 전용 64건(안드로이드가 안 씀) · 표시·배치 규칙 9건(값 아님) · **빠뜨린 값 0건** |
+| 값이 배포본과 같은가 | 헤드리스 크롬에 같은 요소·같은 상태를 그려 `getComputedStyle` 과 대조 (`npm run kotlin:parity`) | ✅ 1017건 질의 · 5359개 값 일치 |
+| 빠뜨린 CSS 선언이 있는가 | 어느 질의에도 읽히지 않은 선언을 두 갈래로 갈라 기록 (`dist/platform/kotlin/coverage.json`) | PC 전용 371건(안드로이드가 안 씀) · 표시·배치 규칙 194건(값 아님 — 크기 없는 요소용 대체 규칙 포함) · **빠뜨린 값 0건** |
 | 참조가 실재하는가 | 팔레트 색·아이콘 이름·괄호 짝 (`npm run kotlin:lint`) | ✅ |
 | 사람이 보는 검수 | `reports/ui-library/kotlin-compose/preview.html` (`npm run kotlin:preview`) | 부품마다 표 한 장(가로=상태·세로=변형) · 필터·검색 · 칸을 누르면 값 전부와 붙여 쓸 코드 |
 

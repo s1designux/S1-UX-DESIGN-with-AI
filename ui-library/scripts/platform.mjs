@@ -635,7 +635,7 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
     _meta: {
       note: GENERATED_NOTE,
       purpose: "Compose 부품이 배포본 CSS 의 어느 선언을 읽었고 어느 선언을 읽지 않았는지 드러낸다.",
-      rule: "reason=pc-only 는 안드로이드가 쓰지 않는 PC 조합이라 안 읽은 것이고, reason=display-rule 은 값이 아니라 표시·배치 규칙이라 부품 뼈대가 직접 담당하는 것이다. 둘 중 어느 쪽도 아닌 색·치수가 남으면 부품이 그만큼 정본과 다르다는 뜻이다."
+      rule: "reason=pc-only 는 안드로이드가 쓰지 않는 PC 조합이라 안 읽은 것이고, reason=display-rule 은 값이 아니라 표시·배치 규칙이라 부품 뼈대가 직접 담당하는 것이다(크기 속성이 없는 요소용 대체 규칙 — 모바일 부품은 항상 크기가 정해져 걸리지 않는 것 — 도 여기에 담긴다). 둘 중 어느 쪽도 아닌 색·치수가 남으면 부품이 그만큼 정본과 다르다는 뜻이다."
     },
     icons: kotlin.icons,
     textStyles: kotlin.textStyles,

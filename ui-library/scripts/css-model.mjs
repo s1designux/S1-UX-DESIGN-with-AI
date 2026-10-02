@@ -53,6 +53,10 @@ export function parseStylesheet(css) {
         /* 웹 전용 보정 규칙 — 플랫폼 모델에서 제외 */
       } else if (prelude.startsWith("@media")) {
         consume(body, offset + brace + 1, prelude.replace(/^@media\s*/, "").trim());
+      } else if (prelude.startsWith("@supports")) {
+        /* 브라우저가 지원할 때만 켜지는 웹 전용 보정(글자 상자 자르기 등) — "supports:" 조건으로 펼쳐
+           mediaActive 가 끌 수 있게 하고, 읽히지 않은 선언 목록에는 그대로 드러낸다. */
+        consume(body, offset + brace + 1, `supports: ${prelude.replace(/^@supports\s*/, "").trim()}`);
       } else if (prelude.startsWith("@")) {
         /* @keyframes 등 — 배포본 컴포넌트 CSS 에는 없다. 있으면 알린다. */
         throw new Error(`지원하지 않는 at-rule: ${prelude}`);

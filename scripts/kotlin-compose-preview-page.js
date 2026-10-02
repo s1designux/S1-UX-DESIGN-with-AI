@@ -31,7 +31,20 @@ const PART_TEXT = {
   title: () => '제목 영역',
   subtitle: () => '부제목 영역',
   control: () => '',
-  message: () => '변경한 내용이 저장되지 않고 사라집니다.'
+  message: () => '변경한 내용이 저장되지 않고 사라집니다.',
+  body: () => '본문 글자',
+  note: () => '안내 글자',
+  caption: () => '캡션',
+  'sheet-title': () => '항목 선택',
+  'list-title': () => '이름',
+  'list-sub': () => '설명',
+  'year-label': () => '2026년',
+  'month-label': () => '10월',
+  weekday: () => '일',
+  'cell-num': () => '15',
+  tile: () => '2026',
+  'wheel-cell': () => '12',
+  'date-panel-note': () => '날짜 선택 화면은 Date Picker 가 따로 제공합니다.'
 };
 
 function serialize(node, text) {
@@ -60,7 +73,7 @@ function serialize(node, text) {
   }
   const inner = node.children.length > 0
     ? node.children.map((child) => serialize(child, text)).join('')
-    : (PART_TEXT[part] ? PART_TEXT[part](text) : '');
+    : (PART_TEXT[part] ? PART_TEXT[part](text) : (node.attributes['data-s1-component'] === 'data-tag' ? text : ''));
   return `<${node.tag}${attributeText}>${inner}</${node.tag}>`;
 }
 
@@ -85,7 +98,32 @@ const MATRIX = {
   textarea: { column: 'state', rows: [] },
   'text-button': { column: 'state', rows: ['variant'] },
   'assist-button': { column: 'state', rows: [] },
-  'filter-chip': { column: 'state', rows: ['variant', 'title', 'size', 'breakName'] }
+  'filter-chip': { column: 'state', rows: ['variant', 'title', 'size', 'breakName'] },
+  /* 모바일 부품 7종 */
+  divider: { column: 'tone', rows: ['axis', 'weight', 'inset'] },
+  'data-tag': { column: 'solid', rows: ['tone', 'shape'] },
+  'expandable-card': { column: 'state', rows: [] },
+  'bottom-sheet': { column: 'footer', rows: [] },
+  'bottom-sheet-option': { column: 'state', rows: ['type'] },
+  'date-picker': { column: 'state', rows: [] },
+  'time-picker': { column: 'state', rows: [] },
+  /* 날짜·시간 선택이 안쪽에서 쓰는 조각 — 직접 부르지 않지만 값은 이 표에서 검수한다. */
+  'date-picker/sheet': { column: 'state', rows: [] },
+  'date-picker/calendar': { column: 'nav', rows: ['view'] },
+  'date-picker/weekday': { column: 'kind', rows: [] },
+  'date-picker/cell': { column: 'hover', rows: ['kind', 'other', 'state'] },
+  'date-picker/band': { column: 'band', rows: [] },
+  'date-picker/tile': { column: 'state', rows: [] },
+  'time-picker/sheet': { column: 'content', rows: [] },
+  'time-picker/wheel': { column: 'type', rows: [] }
+};
+
+/** 안쪽 조각까지 따로 보여 줄 부품. */
+const EXTRA_SHOWN = new Set(['date-picker', 'time-picker']);
+const EXTRA_TITLE = {
+  'date-picker/sheet': '시트 껍데기', 'date-picker/calendar': '달력 머리', 'date-picker/weekday': '요일줄',
+  'date-picker/cell': '날짜 칸', 'date-picker/band': '기간 띠', 'date-picker/tile': '연·월 칸',
+  'time-picker/sheet': '시트 껍데기', 'time-picker/wheel': '휠'
 };
 
 /** 조합마다 값 칩으로 보여 줄 대표 부품 — 그 컴포넌트에서 상태가 실제로 드러나는 자리다. */
@@ -102,7 +140,9 @@ const SAMPLE_TEXT = {
   'mobile-header': '화면 제목',
   /* 하단 내비는 칸마다 라벨이 다르다 — 조합을 받아서 그 칸의 말을 돌려준다. */
   'mobile-bottom-nav': (combo) => ({ home: '홈', search: '검색', notification: '알림', settings: '설정' }[combo.variant] ?? '홈'),
-  textarea: '', 'text-button': '글자 버튼', 'assist-button': '보조 버튼', 'filter-chip': '최신순'
+  textarea: '', 'text-button': '글자 버튼', 'assist-button': '보조 버튼', 'filter-chip': '최신순',
+  divider: '', 'data-tag': '승인', 'expandable-card': '', 'bottom-sheet': '적용', 'bottom-sheet-option': '항목 이름',
+  'date-picker': '날짜 선택', 'time-picker': '시간 선택'
 };
 
 /** 보기 글자 — 컴포넌트 하나에 한 마디가 기본이고, 조합마다 달라야 하는 것만 함수로 준다. */
@@ -116,7 +156,9 @@ const COMPONENT_TITLE = {
   button: '버튼', chip: '칩', checkbox: '체크박스', radio: '라디오', toggle: '토글',
   tab: '라인 탭', select: '셀렉트 박스', dropdown: '드롭다운 목록', input: '입력칸', modal: '모달',
   'mobile-header': '모바일 헤더', 'mobile-bottom-nav': '모바일 하단 내비',
-  textarea: '여러 줄 입력', 'text-button': '글자 버튼', 'assist-button': '보조 버튼', 'filter-chip': '필터 칩'
+  textarea: '여러 줄 입력', 'text-button': '글자 버튼', 'assist-button': '보조 버튼', 'filter-chip': '필터 칩',
+  divider: '구분선', 'data-tag': '데이터 태그', 'expandable-card': '접힘 카드', 'bottom-sheet': '바텀 시트',
+  'bottom-sheet-option': '시트 옵션', 'date-picker': '날짜 선택', 'time-picker': '시간 선택'
 };
 
 /* ── 3. 붙여 쓸 Compose 코드 ────────────────────────────────────────── */
@@ -225,7 +267,46 @@ const SNIPPET = {
     ...(c.title === 'on' ? ['title = "정렬"'] : []),
     ...axisArg(api, 'variant', c.variant), ...axisArg(api, 'size', c.size),
     ...(c.state === 'disabled' ? ['enabled = false'] : [])
+  ]),
+  divider: (c) => call('S1Divider', [
+    `axis = "${c.axis}"`,
+    ...(c.weight === 'strong' ? ['weight = "strong"'] : []),
+    ...(c.tone === 'strong' ? ['tone = "strong"'] : []),
+    ...(c.inset === 'text' ? ['inset = "text"'] : [])
+  ]),
+  'data-tag': (c) => call('S1DataTag', [
+    'text = "승인"', `tone = "${c.tone}"`, `shape = "${c.shape}"`, `solid = ${c.solid === 'on'}`
+  ]),
+  'expandable-card': (c) => call('S1ExpandableCard', [
+    `expanded = ${c.state === 'open'}`, 'onExpandedChange = { }',
+    'header = S1CardTexts(title = "타이틀", subtitle = "서브타이틀")',
+    'panel = S1CardTexts(body = "본문 글자")'
+  ]),
+  'bottom-sheet': (c) => `${call('S1BottomSheet', [
+    'title = "항목 선택"', 'onDismissRequest = { }',
+    ...(c.footer === 'dual' ? ['secondaryLabel = "취소"'] : []),
+    ...(c.footer !== 'none' ? ['primaryLabel = "적용"'] : [])
+  ])} {\n    S1BottomSheetOption(label = "항목 1", selected = true)\n}`,
+  'bottom-sheet-option': (c) => call('S1BottomSheetOption', [
+    'label = "항목 이름"', `type = "${c.type}"`,
+    ...(c.state === 'selected' ? ['selected = true'] : []),
+    ...(c.state === 'disabled' ? ['enabled = false'] : []),
+    ...(c.type === 'list' ? ['subtitle = "설명"'] : [])
+  ]),
+  'date-picker': (c) => call('S1DatePicker', [
+    `value = ${c.state === 'filled' ? 'S1Date(2026, 10, 2)' : 'null'}`, 'onValueChange = { }',
+    ...(c.state === 'disabled' ? ['enabled = false'] : [])
+  ]),
+  'time-picker': (c) => call('S1TimePicker', [
+    `value = ${c.state === 'filled' ? 'S1Time(15, 5)' : 'null'}`, 'onValueChange = { }',
+    ...(c.state === 'disabled' ? ['enabled = false'] : [])
   ])
+};
+
+/** 안쪽 조각은 직접 부르는 부품이 아니다 — 값이 어디 있는지만 알려 준다. */
+const extraSnippet = (id, extra, key) => {
+  const spec = `S1${id.split('-').map((piece) => piece[0].toUpperCase() + piece.slice(1)).join('')}Spec`;
+  return `// ${id} 부품이 안쪽에서 쓰는 값 — 직접 부르는 부품이 아닙니다.\n${spec}.${extra}Box("${key}", "<부품 이름>")`;
 };
 
 const call = (name, args) => `${name}(\n${args.map((one) => `    ${one}`).join(',\n')}\n)`;
@@ -323,12 +404,24 @@ function footerSizesOf(base, manifest) {
   return sizes;
 }
 
+/** 시트 푸터 버튼 크기 — 생성기와 같은 규칙(루트 시트의 푸터 버튼)으로 읽는다. */
+function sheetFooterSizeOf(base, manifest) {
+  const spec = (manifest.htmlContract.breakExamples ?? {}).mobile;
+  const file = path.join(base, spec ? path.basename(spec.source) : `${path.basename(base)}.example.html`);
+  const match = /data-s1-part="sheet-footer"[\s\S]*?data-s1-component="button"[^>]*data-size="([a-z]+)"/.exec(fs.readFileSync(file, 'utf8'));
+  return match ? match[1] : undefined;
+}
+
 /* ── 6. 화면 만들기 ─────────────────────────────────────────────────── */
 
-const AXIS_LABEL = { state: '상태', footer: '푸터', size: '크기', breakName: '화면', variant: '변형', type: '유형' };
+const AXIS_LABEL = {
+  state: '상태', footer: '푸터', size: '크기', breakName: '화면', variant: '변형', type: '유형',
+  axis: '방향', weight: '굵기', tone: '색', inset: '들여쓰기', shape: '모양', solid: '채움', nav: '화살표·글자 상태',
+  view: '보기', kind: '요일', other: '옆 달', hover: '호버', band: '띠', content: '내용'
+};
 
 async function main() {
-  const { PLANS, extractSpec, planFor, apiOf } = await import(path.join(ROOT, 'ui-library/scripts/kotlin-compose.mjs'));
+  const { PLANS, EXTRA_PLANS, EXTRA_CSS_OWNERS, extractSpec, planFor, apiOf, mobileOnly } = await import(path.join(ROOT, 'ui-library/scripts/kotlin-compose.mjs'));
   const { readTextStyles } = await import(path.join(ROOT, 'ui-library/scripts/kotlin-typography.mjs'));
   const { readTokens } = await import(path.join(ROOT, 'ui-library/scripts/platform.mjs'));
   const tokensCss = fs.readFileSync(path.join(ROOT, 'assets/css/tokens.css'), 'utf8');
@@ -352,19 +445,38 @@ async function main() {
   const details = {};
   const filterValues = { size: new Set(), state: new Set(), variant: new Set(), breakName: new Set() };
 
-  for (const id of Object.keys(PLANS)) {
+  const orderedIds = Object.keys(PLANS);
+  const navIds = [];
+  for (const id of orderedIds) {
     const base = path.join(ROOT, 'ui-library/src/components', id);
     const css = fs.readFileSync(path.join(base, `${id}.css`), 'utf8');
     const manifest = JSON.parse(fs.readFileSync(path.join(base, 'manifest.json'), 'utf8'));
-    const planOptions = id === 'modal' ? footerSizesOf(base, manifest) : undefined;
-    const spec = extractSpec({ id, css, manifest, tokenValues, planOptions });
+    const planOptions = id === 'modal' ? footerSizesOf(base, manifest)
+      : id === 'bottom-sheet' ? { footerButtonSize: sheetFooterSizeOf(base, manifest) }
+      : undefined;
+    const extraCss = (EXTRA_CSS_OWNERS[id] ?? []).map((owner) => fs.readFileSync(path.join(ROOT, 'ui-library/src/components', owner, `${owner}.css`), 'utf8'));
+    const spec = extractSpec({ id, css, extraCss, manifest, tokenValues, planOptions });
     /* 안드로이드는 모바일 한 벌만 쓴다 — PC 조합은 아예 만들지 않는다(river 결정 2026-09-09). */
-    const plan = planFor(id, manifest, planOptions);
+    const mainPlan = planFor(id, manifest, planOptions);
     const api = apiOf(id, manifest);
     /* 값이 하나뿐인 축은 줄 이름에 쓰지 않는다 — 고를 것이 없는 것을 이름에 달면 읽는 사람이 헷갈린다. */
+    /* 한 부품이 보여 줄 표들 — 부품 자체 한 장, 그리고 안쪽에서 쓰는 조각(달력 칸·휠 등)이 있으면 조각마다 한 장. */
+    const views = [{ sectionId: id, matrixKey: id, plan: mainPlan, table: spec.table, label: COMPONENT_TITLE[id] ?? id, extra: null }];
+    if (EXTRA_SHOWN.has(id)) {
+      for (const factory of EXTRA_PLANS[id] ?? []) {
+        const extraPlan = factory(mobileOnly(manifest));
+        views.push({
+          sectionId: `${id}-${extraPlan.id}`, matrixKey: `${id}/${extraPlan.id}`, plan: extraPlan, table: spec.extras[extraPlan.id].table,
+          label: `${COMPONENT_TITLE[id] ?? id} · ${EXTRA_TITLE[`${id}/${extraPlan.id}`] ?? extraPlan.id}`, extra: extraPlan.id
+        });
+      }
+    }
+    navIds.push(...views.map((one) => [one.sectionId, one.label]));
+    for (const view of views) {
+    const { plan, table, sectionId, matrixKey, label } = view;
     const shape = {
-      column: MATRIX[id].column,
-      rows: MATRIX[id].rows.filter((axis) => new Set(plan.combos.map((combo) => combo[axis])).size > 1)
+      column: MATRIX[matrixKey].column,
+      rows: MATRIX[matrixKey].rows.filter((axis) => new Set(plan.combos.map((combo) => combo[axis])).size > 1)
     };
 
     const columns = [];
@@ -395,24 +507,24 @@ async function main() {
         const rootTarget = built.targets.root ?? Object.values(built.targets)[0];
         let root = rootTarget.node;
         while (root.parent) root = root.parent;
-        const detailId = `${id}|${key}`;
+        const detailId = `${sectionId}|${key}`;
         details[detailId] = {
-          component: id,
-          title: `${COMPONENT_TITLE[id] ?? id} — ${rowKey === '기본' ? '' : rowKey + ' · '}${columnValue}`,
+          component: sectionId,
+          title: `${label} — ${rowKey === '기본' ? '' : rowKey + ' · '}${columnValue}`,
           key,
           sample: serialize(root, sampleTextFor(id, combo)),
-          values: valueChips(spec.table[key].parts, tokenValues),
-          code: SNIPPET[id](combo, api),
+          values: valueChips(table[key].parts, tokenValues),
+          code: view.extra ? extraSnippet(id, view.extra, key) : SNIPPET[id](combo, api),
           note: AUTO_STATE[columnValue] ?? null
         };
         /* 칸은 div 다 — 부품 안에 button 이 있는 것(헤더의 뒤로·닫기)을 button 으로 감싸면
            브라우저가 중첩을 허용하지 않아 구조를 끊고 배치가 무너진다. */
         return `<td data-col="${escapeHtml(columnValue)}"><div role="button" tabindex="0" class="cell" data-detail="${escapeHtml(detailId)}">${serialize(root, sampleTextFor(id, combo))}</div></td>`;
       }).join('');
-      bodyRows.push(`<tr data-row="${escapeHtml(JSON.stringify(row.values))}" data-search="${escapeHtml((id + ' ' + rowKey).toLowerCase())}"><th scope="row">${escapeHtml(rowKey)}</th>${cells}</tr>`);
+      bodyRows.push(`<tr data-row="${escapeHtml(JSON.stringify(row.values))}" data-search="${escapeHtml((sectionId + ' ' + rowKey).toLowerCase())}"><th scope="row">${escapeHtml(rowKey)}</th>${cells}</tr>`);
     }
 
-    const unread = coverage.components.find((entry) => entry.component === id)?.unreadDeclarations ?? [];
+    const unread = view.extra ? [] : (coverage.components.find((entry) => entry.component === id)?.unreadDeclarations ?? []);
     const pcOnly = unread.filter((one) => one.reason === 'pc-only');
     const displayRules = unread.filter((one) => one.reason === 'display-rule');
     const summaryParts = [];
@@ -420,16 +532,16 @@ async function main() {
     if (displayRules.length > 0) summaryParts.push(`값이 아닌 표시·배치 규칙 ${displayRules.length}건`);
     const list = (items) => `<ul>${items.map((one) => `<li><code>${escapeHtml(one.property)}: ${escapeHtml(one.value)}</code> <span>${escapeHtml(one.selector)}</span></li>`).join('')}</ul>`;
     const unreadBlock = unread.length === 0
-      ? '<p class="ok">배포본 CSS 의 모든 선언을 읽었습니다.</p>'
+      ? (view.extra ? '' : '<p class="ok">배포본 CSS 의 모든 선언을 읽었습니다.</p>')
       : `<details class="unread"><summary>부품이 값으로 읽지 않은 선언 ${unread.length}건 — ${summaryParts.join(' · ')}</summary>
          ${pcOnly.length > 0 ? `<p class="unreadhead">안드로이드가 안 쓰는 PC 조합</p>${list(pcOnly)}` : ''}
          ${displayRules.length > 0 ? `<p class="unreadhead">값이 아닌 표시·배치 규칙 (부품 뼈대가 직접 담당)</p>${list(displayRules)}` : ''}
          </details>`;
 
     sections.push(`
-    <section id="${id}" data-component="${id}">
+    <section id="${sectionId}" data-component="${sectionId}">
       <div class="sectionhead">
-        <h2>${escapeHtml(COMPONENT_TITLE[id] ?? id)} <span class="en">${id}</span></h2>
+        <h2>${escapeHtml(label)} <span class="en">${view.extra ? sectionId : id}</span></h2>
         <p class="meta">승인 조합 ${plan.combos.length}가지 · 세로 ${shape.rows.map((axis) => AXIS_LABEL[axis] ?? axis).join('·') || '없음'} · 가로 ${AXIS_LABEL[shape.column]}</p>
       </div>
       <div class="tablewrap">
@@ -440,6 +552,7 @@ async function main() {
       </div>
       ${unreadBlock}
     </section>`);
+    }
   }
 
   const filterGroup = (bucket, label) => {
@@ -549,6 +662,11 @@ ${embeddedCss}
   .cell [data-s1-component="modal"] { display: inline-flex; inset: auto; position: relative; transform: scale(.62); transform-origin: top left; z-index: 0; }
   .cell [data-s1-component="modal"] [data-s1-part="overlay"] { display: none; }
   .cell [data-s1-component="select"] [data-s1-part="panel"] { display: none; }
+  /* 시트는 화면 아래에 붙는 부품이다 — 칸 안에 눕혀 놓고 딤은 숨긴다. */
+  .cell [data-s1-component="bottom-sheet"], .drawerSample [data-s1-component="bottom-sheet"] { display: flex; inset: auto; position: relative; z-index: 0; }
+  .cell [data-s1-component="bottom-sheet"] [data-s1-part="sheet-backdrop"], .drawerSample [data-s1-component="bottom-sheet"] [data-s1-part="sheet-backdrop"] { display: none; }
+  .cell [data-s1-component="date-picker"] [data-s1-part="panel"], .cell [data-s1-component="time-picker"] [data-s1-part="panel"] { display: none; }
+  .cell [data-s1-component="divider"][data-axis="x"] { min-width: 200px; }
   .cell [data-s1-component="tab"] { min-width: 240px; }
   /* 모바일 크롬은 폭을 다 쓰는 부품이다 — 실제 화면 폭(360)을 주지 않으면 칸에 눌려 모양이 무너진다. */
   .cell [data-s1-component="mobile-header"] { width: 360px; }
@@ -596,7 +714,7 @@ ${embeddedCss}
 <div class="toolbar">
   <div class="inner">
     <div class="row1">
-      <nav>${Object.keys(PLANS).map((id) => `<a href="#${id}">${escapeHtml(COMPONENT_TITLE[id] ?? id)}</a>`).join('')}<a href="#typography">텍스트 스타일</a></nav>
+      <nav>${navIds.map(([id, label]) => `<a href="#${id}">${escapeHtml(label)}</a>`).join('')}<a href="#typography">텍스트 스타일</a></nav>
       <input id="search" type="search" placeholder="찾기 (예: md, disabled, 버튼)" autocomplete="off">
       <button type="button" class="themebtn" id="light" aria-pressed="true">라이트</button>
       <button type="button" class="themebtn" id="dark" aria-pressed="false">다크</button>

@@ -15,11 +15,13 @@
  *   - 아무도 읽지 않은 CSS 선언은 coverage 보고서로 드러낸다(조용한 누락 방지).
  */
 
-import { parseStylesheet, element, computeStyle, unusedDeclarations } from "./css-model.mjs";
+import { parseStylesheet, splitTopLevel, element, computeStyle, unusedDeclarations } from "./css-model.mjs";
 import { runtimeKt } from "./kotlin-runtime.mjs";
 import { paletteKt, specKt } from "./kotlin-emit.mjs";
 import { readIcon, iconsKt } from "./kotlin-icons.mjs";
 import { readTextStyles, typeKt } from "./kotlin-typography.mjs";
+import { MOBILE_PLANS, MOBILE_EXTRA_PLANS, MOBILE_EXTRA_CSS, MOBILE_PC_ONLY_SELECTORS } from "./kotlin-plans-mobile.mjs";
+import { dividerKt, dataTagKt, expandableCardKt, bottomSheetKt, bottomSheetOptionKt, datePickerKt, timePickerKt } from "./kotlin-components-mobile.mjs";
 import { buttonKt, chipKt, controlKt, toggleKt, tabKt, selectKt, dropdownKt, inputKt, modalKt, mobileHeaderKt, mobileBottomNavKt, textareaKt, labelButtonKt, filterChipKt, galleryKt } from "./kotlin-components.mjs";
 
 const GENERATED_NOTE = "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run ui:build` 를 실행하세요.";
@@ -97,7 +99,7 @@ function numberOf(value, tokenValues, where) {
 
 /** box-shadow → 층 목록. Compose 에서 직접 그린다. */
 function shadowOf(value, tokenValues, where) {
-  if (!value) return null;
+  if (!value || String(value).trim() === "none") return null;
   const token = tokenOf(value);
   const raw = token ? tokenValues.get(token) : value;
   if (raw === undefined) throw new Error(`${where}: 그림자 토큰 ${token} 없음`);
@@ -136,6 +138,31 @@ function rgbaToArgb(text, where) {
   return `0x${channel(alpha)}${channel(match[1])}${channel(match[2])}${channel(match[3])}`;
 }
 
+/**
+ * linear-gradient(to bottom, color-mix(in srgb, var(--토큰) 90%, transparent) 0%, ... transparent 100%) →
+ * 세로 흐림 정거장 목록. 휠의 위·아래 흐림이 이 모양이다. 읽지 못하는 꼴은 멈춘다 — 조용히 건너뛰지 않는다.
+ */
+function gradientOf(value, where) {
+  const inner = /^linear-gradient\((.*)\)$/s.exec(value.trim());
+  if (!inner) throw new Error(`${where}: 그라데이션을 읽지 못했습니다 — "${value}"`);
+  const pieces = splitTopLevel(inner[1], ",").map((one) => one.trim());
+  if (pieces[0] !== "to bottom") throw new Error(`${where}: 위에서 아래로 가는 그라데이션만 지원합니다 — "${pieces[0]}"`);
+  const stops = [];
+  for (const piece of pieces.slice(1)) {
+    const at = /\s(-?\d*\.?\d+)%$/.exec(piece);
+    if (!at) throw new Error(`${where}: 정거장 위치가 없습니다 — "${piece}"`);
+    const colorText = piece.slice(0, at.index).trim();
+    const offset = Number(at[1]) / 100;
+    if (colorText === "transparent") { stops.push({ offset, token: null, alpha: 0 }); continue; }
+    const mix = /^color-mix\(\s*in srgb\s*,\s*var\(\s*(--[a-z0-9-]+)\s*\)\s+(\d*\.?\d+)%\s*,\s*transparent\s*\)$/i.exec(colorText);
+    if (mix) { stops.push({ offset, token: mix[1], alpha: Number(mix[2]) / 100 }); continue; }
+    const token = tokenOf(colorText);
+    if (token) { stops.push({ offset, token, alpha: 1 }); continue; }
+    throw new Error(`${where}: 그라데이션 색을 읽지 못했습니다 — "${colorText}"`);
+  }
+  return stops;
+}
+
 /* ── 2. 계산된 선언 → 스타일 상자 ───────────────────────────────────── */
 
 const BOX_PROPERTIES = new Set([
@@ -144,7 +171,18 @@ const BOX_PROPERTIES = new Set([
   "padding", "padding-inline", "padding-block", "padding-left", "padding-right", "padding-top", "padding-bottom",
   "padding-inline-start", "padding-inline-end", "padding-block-start", "padding-block-end", "inset",
   "gap", "margin-inline-start", "margin-top", "font-size", "font-weight", "letter-spacing", "line-height", "box-shadow", "left", "right", "top", "bottom",
-  "transform", "mask", "mask-image", "opacity", "flex", "text-decoration"
+  "transform", "mask", "mask-image", "opacity", "flex", "text-decoration",
+  "max-height", "margin", "margin-inline", "margin-inline-end", "margin-bottom",
+  "border-top-left-radius", "border-top-right-radius", "justify-content", "transition",
+  "row-gap", "column-gap", "flex-basis"
+]);
+
+/** 값이 아니라 표시·배치·동작 규칙이라 부품 뼈대가 직접 담당하는 속성 — 읽지 않아도 값이 새지 않는다. */
+export const DISPLAY_ONLY_PROPERTIES = new Set([
+  "display", "flex-direction", "align-items", "align-self", "align-content", "position", "z-index", "overflow", "overflow-x", "overflow-y",
+  "cursor", "appearance", "box-sizing", "font-family", "pointer-events", "white-space", "text-overflow", "text-align",
+  "visibility", "content", "flex-wrap", "scroll-snap-type", "scroll-snap-align", "scrollbar-width", "text-box",
+  "grid-template-rows", "-webkit-mask"
 ]);
 
 /** 계산된 선언 뭉치에서 Compose 가 쓰는 값만 뽑아 정규화한다. */
@@ -165,7 +203,10 @@ function toBox(style, tokenValues, where) {
   }
   if (style["border-width"] !== undefined) box.borderWidth = length(style["border-width"])?.px ?? 0;
   if (style["border-color"] !== undefined) box.borderColor = colorOf(style["border-color"], where);
-  if (style.background !== undefined) box.background = colorOf(style.background, where);
+  if (style.background !== undefined) {
+    if (/^linear-gradient\(/.test(style.background.trim())) box.gradient = gradientOf(style.background, where);
+    else box.background = colorOf(style.background, where);
+  }
   if (style["background-color"] !== undefined) box.background = colorOf(style["background-color"], where);
   if (style.color !== undefined) box.foreground = colorOf(style.color, where);
   if (style["border-radius"] !== undefined) box.radius = length(style["border-radius"])?.px ?? 0;
@@ -209,8 +250,51 @@ function toBox(style, tokenValues, where) {
   for (const [field, value] of Object.entries(sides)) if (value !== null) box[field] = value;
 
   if (style.gap !== undefined) box.gap = length(style.gap)?.px ?? 0;
+  /* row-gap·column-gap 은 gap 의 한 축만 적은 것이다. 한 부품에 한 축만 쓰므로 같은 칸에 담는다. */
+  if (style["row-gap"] !== undefined) box.gap = length(style["row-gap"])?.px ?? 0;
+  if (style["column-gap"] !== undefined) box.gap = length(style["column-gap"])?.px ?? 0;
+  /* margin 은 한 값짜리 줄임 표기만 읽는다(여러 값은 이 저장소에 없다 — 생기면 멈춘다).
+     자세한 변(margin-inline 등)이 뒤에 오면 그 변만 덮는다 — 이 저장소는 항상 줄임 표기가 앞이다. */
+  if (style.margin !== undefined) {
+    const pieces = splitOutside(style.margin);
+    if (pieces.length !== 1) throw new Error(`${where}: margin 값이 여러 개입니다 — "${style.margin}" (지원하지 않음)`);
+    const all = length(pieces[0])?.px ?? 0;
+    box.marginStart = all; box.marginEnd = all; box.marginTop = all; box.marginBottom = all;
+  }
+  if (style["margin-inline"] !== undefined) {
+    const pieces = splitOutside(style["margin-inline"]);
+    const first = length(pieces[0])?.px ?? 0;
+    const second = pieces[1] === undefined ? first : (length(pieces[1])?.px ?? 0);
+    box.marginStart = first; box.marginEnd = second;
+  }
   if (style["margin-inline-start"] !== undefined) box.marginStart = length(style["margin-inline-start"])?.px ?? 0;
+  if (style["margin-inline-end"] !== undefined) box.marginEnd = length(style["margin-inline-end"])?.px ?? 0;
   if (style["margin-top"] !== undefined) box.marginTop = length(style["margin-top"])?.px ?? 0;
+  if (style["margin-bottom"] !== undefined) box.marginBottom = length(style["margin-bottom"])?.px ?? 0;
+  if (style["max-width"] !== undefined) {
+    const measured = length(style["max-width"]);
+    if (measured) box.maxWidth = measured.px;
+  }
+  /* 화면 높이의 몇 퍼센트(vh) — 시트가 화면을 다 덮지 않게 하는 상한이다. 절대 길이는 그대로 dp 로 둔다. */
+  if (style["max-height"] !== undefined) {
+    const vh = /^(\d*\.?\d+)vh$/.exec(String(style["max-height"]).trim());
+    if (vh) box.maxHeightVh = Number(vh[1]);
+    else {
+      const measured = length(style["max-height"]);
+      if (measured) box.maxHeight = measured.px;
+    }
+  }
+  if (style["border-top-left-radius"] !== undefined) box.radiusTopStart = length(style["border-top-left-radius"])?.px ?? 0;
+  if (style["border-top-right-radius"] !== undefined) box.radiusTopEnd = length(style["border-top-right-radius"])?.px ?? 0;
+  if (style["justify-content"] !== undefined) box.spaceBetween = style["justify-content"].trim() === "space-between";
+  /* flex 줄임 표기의 마지막이 px 길이면 그 칸의 기본 크기다(휠 칸 높이 42 가 여기 있다). */
+  const basisSource = style["flex-basis"] ?? (style.flex === undefined ? undefined : splitOutside(style.flex).pop());
+  if (basisSource !== undefined && /^\d*\.?\d+px$/.test(String(basisSource).trim())) box.flexBasis = length(basisSource).px;
+  /* 전환 시간 — 첫 항목의 시간(s·ms)을 ms 로 읽는다. 0 이면 움직임이 없는 것이다. */
+  if (style.transition !== undefined && style.transition.trim() !== "none") {
+    const time = /(?:^|\s)(\d*\.?\d+)(ms|s)(?=\s|,|$)/.exec(style.transition);
+    if (time) box.durationMs = Math.round(Number(time[1]) * (time[2] === "s" ? 1000 : 1));
+  }
   if (style["font-size"] !== undefined) box.fontSize = length(style["font-size"])?.px ?? null;
   if (style["font-weight"] !== undefined) box.fontWeight = numberOf(style["font-weight"], tokenValues, where);
   if (style["letter-spacing"] !== undefined) box.letterSpacing = numberOf(style["letter-spacing"], tokenValues, where);
@@ -246,6 +330,9 @@ function toBox(style, tokenValues, where) {
   if (style.transform !== undefined) {
     const rotate = /rotate\((-?[\d.]+)deg\)/.exec(style.transform);
     if (rotate) box.rotation = Number(rotate[1]);
+    /* 좌우 뒤집기 — 접힘카드 화살표가 열리면 위를 가리키게 만드는 값이다. */
+    const flip = /scaleX\((-?[\d.]+)\)/.exec(style.transform);
+    if (flip) box.scaleX = Number(flip[1]);
   }
   return box;
 }
@@ -271,7 +358,7 @@ export const _internal = { tokenOf, lengthOf, colorOf, toBox, BOX_PROPERTIES };
    여기서 만드는 것은 "무엇을 물어볼지"이지 값이 아니다 — 값은 전부 CSS 가 답한다. */
 
 const el = (tag, attributes = {}, states = [], children = []) => element({ tag, attributes, states, children });
-const hoverOnly = (isHover) => (condition) => (/hover/.test(condition) ? isHover : true);
+const hoverOnly = (isHover) => (condition) => (/^supports:/.test(condition) ? false : /hover/.test(condition) ? isHover : true);
 
 function buttonPlan(manifest) {
   const states = ["default", "hover", "disabled"];
@@ -868,13 +955,19 @@ export const PLANS = {
   textarea: textareaPlan,
   "text-button": (manifest) => labelButtonPlan("text-button", manifest),
   "assist-button": (manifest) => labelButtonPlan("assist-button", manifest),
-  "filter-chip": filterChipPlan
+  "filter-chip": filterChipPlan,
+  /* 모바일 부품 7종 — 묶음 순서(component-ids.mjs)를 따른다. 대조 검사가 이 순서로 CSS 를 겹쳐 놓는다. */
+  ...MOBILE_PLANS
 };
 
 export const EXTRA_PLANS = {
   input: [inputActionsPlan],
-  modal: [modalCloseHoverPlan]
+  modal: [modalCloseHoverPlan],
+  ...MOBILE_EXTRA_PLANS
 };
+
+/** extractSpec 이 같은 묶음 안 다른 부품의 CSS 를 겹쳐 읽어야 하는 부품과 그 CSS 의 주인. */
+export const EXTRA_CSS_OWNERS = MOBILE_EXTRA_CSS;
 
 /* ── 4. 스펙 추출 ────────────────────────────────────────────────────── */
 
@@ -908,9 +1001,52 @@ export function planFor(id, manifest, planOptions) {
   return PLANS[id](mobileOnly(manifest), planOptions);
 }
 
-export function extractSpec({ id, css, manifest, tokenValues, planOptions }) {
-  const rules = parseStylesheet(css);
+/**
+ * 승인 CSS 가 쓰는 "공개 손잡이"(--s1-… 사용자 지정 속성)를 값으로 푼다.
+ * 손잡이는 감싸는 부품이 안쪽 부품의 값을 갈아 끼우는 통로다(시트의 간격·그림자).
+ * 토큰이 아닌 var() 만 여기서 푼다 — 토큰 참조(var(--spacing-48) 등)는 그대로 둬야 S1Tokens 를 가리킬 수 있다.
+ */
+function resolveHandles(node, style, rules, { mediaActive, usage, tokenValues }) {
+  const needs = Object.values(style).some((value) => /var\(\s*--s1-/.test(value));
+  if (!needs) return style;
+  const handles = new Map();
+  const chain = [];
+  for (let current = node; current; current = current.parent) chain.unshift(current);
+  for (const ancestor of chain) {
+    const own = computeStyle(ancestor, rules, { mediaActive, usage });
+    for (const [property, value] of Object.entries(own)) if (property.startsWith("--s1-")) handles.set(property, value);
+  }
+  const out = {};
+  for (const [property, value] of Object.entries(style)) {
+    out[property] = value.replace(/var\(\s*(--s1-[a-z0-9-]+)\s*\)/g, (whole, name) => {
+      if (tokenValues.has(name)) return whole;
+      if (!handles.has(name)) throw new Error(`손잡이 ${name} 의 값을 찾지 못했습니다 — 어느 조상도 정하지 않았습니다.`);
+      return handles.get(name);
+    });
+  }
+  return out;
+}
+
+/**
+ * 읽은 선언 중 toBox 가 값으로 옮기지도, 표시 규칙이라고 선언하지도 않은 속성.
+ * 이게 있으면 "계산은 했는데 표에는 안 들어간 값"이 있다는 뜻이다 — 조용히 넘기지 않고 드러낸다.
+ */
+function ignoredProperties(style) {
+  return Object.keys(style).filter((property) => !property.startsWith("--") && !BOX_PROPERTIES.has(property) && !DISPLAY_ONLY_PROPERTIES.has(property));
+}
+
+export function extractSpec({ id, css, extraCss = [], manifest, tokenValues, planOptions }) {
+  const own = parseStylesheet(css);
+  /* 같은 묶음 안에서 뒤에 오는 부품의 CSS — 시트처럼 다른 부품의 모양을 입는 부품이 쓴다.
+     읽히지 않은 선언은 이 부품 몫(own)만 센다. */
+  let offset = own.length;
+  const rules = [...own];
+  for (const extra of extraCss) {
+    for (const rule of parseStylesheet(extra)) { rule.order += offset; rules.push(rule); }
+    offset = rules.length;
+  }
   const usage = new Set();
+  const ignored = new Map();
   const collect = (plan) => {
     const table = {};
     for (const combo of plan.combos) {
@@ -918,11 +1054,17 @@ export function extractSpec({ id, css, manifest, tokenValues, planOptions }) {
       const key = plan.key(combo);
       table[key] = { combo, parts: {} };
       for (const [name, target] of Object.entries(targets)) {
-        const style = computeStyle(target.node, rules, {
+        const raw = computeStyle(target.node, rules, {
           pseudoElement: target.pseudoElement ?? null,
           mediaActive,
           usage
         });
+        const style = resolveHandles(target.node, raw, rules, { mediaActive, usage, tokenValues });
+        for (const property of ignoredProperties(style)) {
+          const entry = ignored.get(property) ?? { property, samples: new Set() };
+          entry.samples.add(`${plan.id}/${key}/${name}: ${style[property]}`);
+          ignored.set(property, entry);
+        }
         table[key].parts[name] = toBox(style, tokenValues, `${id}/${key}/${name}`);
       }
     }
@@ -935,13 +1077,20 @@ export function extractSpec({ id, css, manifest, tokenValues, planOptions }) {
     const plan = factory(mobileOnly(manifest));
     extras[plan.id] = collect(plan);
   }
-  return { id, axes: main.axes, table: main.table, extras, unused: unusedDeclarations(rules, usage) };
+  return {
+    id, axes: main.axes, table: main.table, extras,
+    unused: unusedDeclarations(own, usage),
+    ignored: [...ignored.values()].map((entry) => ({ property: entry.property, samples: [...entry.samples].slice(0, 3) }))
+  };
 }
 
 /* ── 5. 묶어서 파일로 ────────────────────────────────────────────────── */
 
-/** A안 범위 — 화면 부품으로 옮기는 열 가지. 여기 없는 컴포넌트는 값(S1Tokens)만 제공한다. */
-export const COMPOSE_COMPONENTS = ["button", "input", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "tab", "modal", "mobile-header", "mobile-bottom-nav", "textarea", "text-button", "assist-button", "filter-chip"];
+/** A안 범위 — 화면 부품으로 옮기는 스물세 가지. 여기 없는 컴포넌트는 값(S1Tokens)만 제공한다. */
+export const COMPOSE_COMPONENTS = ["button", "input", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "tab", "modal", "mobile-header", "mobile-bottom-nav", "textarea", "text-button", "assist-button", "filter-chip", "bottom-sheet-option", "bottom-sheet", "date-picker", "time-picker", "expandable-card", "divider", "data-tag"];
+
+/** 값이 하나라도 표에 옮겨지지 않으면 빌드가 서는 부품 — 새로 들어온 모바일 부품이다(기존 부품의 알려진 잔여는 coverage 에만 남긴다). */
+const STRICT_COMPONENTS = new Set(["bottom-sheet-option", "bottom-sheet", "date-picker", "time-picker", "expandable-card", "divider", "data-tag"]);
 
 const COMPONENT_FILE = {
   button: (pkg, api) => buttonKt(pkg, api),
@@ -956,7 +1105,14 @@ const COMPONENT_FILE = {
   textarea: (pkg) => textareaKt(pkg),
   "text-button": (pkg, api) => labelButtonKt(pkg, api, "text-button"),
   "assist-button": (pkg, api) => labelButtonKt(pkg, api, "assist-button"),
-  "filter-chip": (pkg, api) => filterChipKt(pkg, api)
+  "filter-chip": (pkg, api) => filterChipKt(pkg, api),
+  divider: (pkg, api) => dividerKt(pkg, api),
+  "data-tag": (pkg, api) => dataTagKt(pkg, api),
+  "expandable-card": (pkg, api) => expandableCardKt(pkg, api),
+  "bottom-sheet": (pkg, api) => bottomSheetKt(pkg, api),
+  "bottom-sheet-option": (pkg, api) => bottomSheetOptionKt(pkg, api),
+  "date-picker": (pkg, api) => datePickerKt(pkg, api),
+  "time-picker": (pkg, api) => timePickerKt(pkg, api)
 };
 
 /**
@@ -966,12 +1122,14 @@ const COMPONENT_FILE = {
  */
 function classifyUnread(unread, api) {
   const mobileSizes = new Set(api.sizes);
+  const hints = MOBILE_PC_ONLY_SELECTORS[api.id] ?? [];
   return unread.map((one) => {
     const selector = one.selector;
     const sizes = [...selector.matchAll(/data-size="([a-z]+)"/g)].map((match) => match[1]);
     const pcOnly = selector.includes('data-break="pc"')
       || selector.includes(':not([data-break="mobile"])')
-      || (sizes.length > 0 && sizes.every((size) => !mobileSizes.has(size)));
+      || (sizes.length > 0 && sizes.every((size) => !mobileSizes.has(size)))
+      || hints.some((pattern) => pattern.test(selector));
     return { ...one, reason: pcOnly ? "pc-only" : "display-rule" };
   });
 }
@@ -987,6 +1145,14 @@ function modalFooterButtonSizes(component) {
   return sizes;
 }
 
+/** 시트 푸터 버튼 크기 — 승인 예제(루트 시트의 푸터 버튼)에서 읽는다. 예제에 없으면 멈춘다. */
+function footerButtonSizeOf(component, breakName) {
+  const html = component.exampleByBreak?.[breakName] ?? component.example;
+  const match = /data-s1-part="sheet-footer"[\s\S]*?data-s1-component="button"[^>]*data-size="([a-z]+)"/.exec(html);
+  if (!match) throw new Error(`${component.id}: 예제에서 푸터 버튼 크기를 찾지 못했습니다.`);
+  return match[1];
+}
+
 export function buildKotlinOutputs({ componentOutputs, tokenData, iconAssets, typographyCss, pkg = PACKAGE }) {
   const tokenValues = new Map(tokenData.tokens.map((token) => [token.name, token.value]));
   const byId = new Map(componentOutputs.map((component) => [component.id, component]));
@@ -999,8 +1165,18 @@ export function buildKotlinOutputs({ componentOutputs, tokenData, iconAssets, ty
     const component = byId.get(id);
     if (!component) throw new Error(`Compose 범위에 있는 ${id} 가 배포본에 없습니다.`);
     if (component.manifest.status !== "approved") throw new Error(`${id} 는 승인 상태가 아닙니다(${component.manifest.status}).`);
-    const planOptions = id === "modal" ? modalFooterButtonSizes(component) : undefined;
-    const spec = extractSpec({ id, css: component.css, manifest: component.manifest, tokenValues, planOptions });
+    const planOptions = id === "modal" ? modalFooterButtonSizes(component)
+      : id === "bottom-sheet" ? { footerButtonSize: footerButtonSizeOf(component, "mobile") }
+      : undefined;
+    const extraCss = (EXTRA_CSS_OWNERS[id] ?? []).map((owner) => {
+      const other = byId.get(owner);
+      if (!other) throw new Error(`${id} 가 겹쳐 읽는 ${owner} 의 CSS 가 배포본에 없습니다.`);
+      return other.css;
+    });
+    const spec = extractSpec({ id, css: component.css, extraCss, manifest: component.manifest, tokenValues, planOptions });
+    if (STRICT_COMPONENTS.has(id) && spec.ignored.length > 0) {
+      throw new Error(`${id}: 계산은 했지만 표에 옮기지 못한 속성이 있습니다 — ${spec.ignored.map((one) => `${one.property} (${one.samples[0]})`).join(" · ")}. toBox 에 옮기거나 DISPLAY_ONLY_PROPERTIES 에 이유와 함께 올리세요.`);
+    }
     specs.push(spec);
     const api = apiOf(id, component.manifest);
     const unread = classifyUnread(spec.unused, api);
@@ -1010,7 +1186,9 @@ export function buildKotlinOutputs({ componentOutputs, tokenData, iconAssets, ty
       parts: Object.keys(Object.values(spec.table)[0].parts),
       unreadPcOnly: unread.filter((one) => one.reason === "pc-only").length,
       unreadDisplayRules: unread.filter((one) => one.reason === "display-rule").length,
-      unreadDeclarations: unread
+      unreadDeclarations: unread,
+      /* 계산은 했지만 표에 옮기지 않은 속성 — 값이면 빠뜨린 것이다. 비어 있어야 한다. */
+      ignoredProperties: spec.ignored
     });
     outputs.set(`platform/kotlin/S1${pascal(id)}Spec.kt`, specKt(pkg, spec, GENERATED_NOTE));
     apis[id] = api;
