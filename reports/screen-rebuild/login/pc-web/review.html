@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PC 로그인 검수</title>
+<style>
+  :root{--bg:#f5f5f5;--card:#fff;--text:#202020;--sub:#757575;--line:#e0e0e0;--accent:#1d6ceb}
+  @media (prefers-color-scheme: dark){:root{--bg:#131418;--card:#1e2026;--text:#eee;--sub:#9a9a9a;--line:#33363d;--accent:#5b9bff}}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:Pretendard,-apple-system,"Apple SD Gothic Neo",sans-serif}
+  header{padding:28px 32px 8px;max-width:1400px;margin:0 auto}
+  h1{font-size:22px;margin:0 0 6px}
+  header p{margin:0;color:var(--sub);font-size:14px;line-height:1.6}
+  h2{font-size:15px;margin:28px 0 12px;color:var(--sub);font-weight:600}
+  main{padding:0 32px 48px;max-width:1400px;margin:0 auto}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(420px,1fr));gap:20px}
+  figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  figure img{display:block;width:100%;height:auto;cursor:zoom-in;border-bottom:1px solid var(--line)}
+  figcaption{padding:12px 14px;font-size:14px;line-height:1.5}
+  figcaption b{display:block;margin-bottom:2px}
+  figcaption span{color:var(--sub);font-size:13px}
+  .big{position:fixed;inset:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;padding:24px;cursor:zoom-out}
+  .big img{max-width:100%;max-height:100%}
+  .big.on{display:flex}
+  @media (max-width:520px){header,main{padding-left:16px;padding-right:16px}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>PC 로그인 패턴 — 7장</h1>
+  <p>Figma 「SW UX GUIDE V3.0 TEST」 › Patterns PC › Pattern / PC Login. 그림을 누르면 크게 보입니다.</p>
+</header>
+<main>
+  <h2>기본 흐름</h2>
+  <div class="grid">
+    <figure><img src="shots/PC-LOGIN-1.png" alt=""><figcaption><b>1 · 최초 진입</b><span>두 칸 비어 있음 · 로그인 버튼 꺼짐</span></figcaption></figure>
+    <figure><img src="shots/PC-LOGIN-2.png" alt=""><figcaption><b>2 · 아이디 입력 중</b><span>아이디 칸 선택됨 · 버튼 꺼짐</span></figcaption></figure>
+    <figure><img src="shots/PC-LOGIN-3.png" alt=""><figcaption><b>3 · 비밀번호 입력 중</b><span>비밀번호 칸 선택됨 · 버튼 켜짐</span></figcaption></figure>
+    <figure><img src="shots/PC-LOGIN-4.png" alt=""><figcaption><b>4 · 입력 완료</b><span>두 칸 채워짐 · 버튼 켜짐</span></figcaption></figure>
+  </div>
+  <h2>로그인 실패</h2>
+  <div class="grid">
+    <figure><img src="shots/PC-LOGIN-4a1.png" alt=""><figcaption><b>4a1 · 아이디·비밀번호 틀림</b><span>“…다시 로그인 해주세요. (1/5)”</span></figcaption></figure>
+    <figure><img src="shots/PC-LOGIN-4a2.png" alt=""><figcaption><b>4a2 · 5회 틀려서 잠김</b><span>“…다시 로그인 해주세요.(최대 5분)” — 레거시 문장 그대로</span></figcaption></figure>
+    <figure><img src="shots/PC-LOGIN-4a3.png" alt=""><figcaption><b>4a3 · 사용이 중지된 계정</b><span>“사용이 중지된 계정입니다. 관리자에게 문의해 주세요.”</span></figcaption></figure>
+  </div>
+</main>
+<div class="big" id="big"><img alt=""></div>
+<script>
+  const big=document.getElementById('big'),bi=big.querySelector('img');
+  document.querySelectorAll('figure img').forEach(i=>i.onclick=()=>{bi.src=i.src;big.classList.add('on')});
+  big.onclick=()=>big.classList.remove('on');
+</script>
+</body>
+</html>

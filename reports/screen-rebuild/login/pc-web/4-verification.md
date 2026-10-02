@@ -1,149 +1,98 @@
-# screen-rebuild 4단계 — 3층 검증: PC 웹 로그인 화면
+# PC 로그인 — 4단계 독립 검증
 
-- **검증 주체:** 🤖 원본대조 검증 에이전트 (component-verifier) — 빌더(screen-rebuilder)와 분리된 컨텍스트
-- **원본:** 261:13153 "웹_로그인 화면"
-- **재현(검증 대상):** 268:369 "웹_로그인 화면" (Patterns PC 80:16697 · Section 268:368 "로그인 (PC Web)")
-- **파일 key:** cysG5U1udpQqVagYY1hWHW
-- **기준 문서:** 1-inventory.md (전수표 21요소) · 2-mapping.md (허용편차 5건) · node-map.json
-- **읽은 도구:** use_figma 트리 스캔(73노드) + boundVariables 스캔 + getMainComponentAsync 프로비넌스 + get_screenshot 시각대조
+## Pilot (1 · 4a1) — 2026-10-02 · component-verifier
 
----
+- 기준: `intent.md`(river 승인 2026-10-02) + `2-mapping.md` · 오류 표현 `registry/patterns/mobile-login/content-rules.md`. baseline intent-spec — 레거시 수치·부품 대조 없음(문구만).
+- 대상: 파일 `cysG5U1udpQqVagYY1hWHW` · 페이지 80:16697 · Section 2703:2 → `PC/LOGIN/1 · 최초 진입`(2703:3) · `PC/LOGIN/4a1 · 계정 불일치 오류`(2706:49)
+- 검증자가 직접 실행: use_figma 읽기 전용 스캔 4회(provenance·폰트·저작노드 채움·텍스트·variant·레이아웃 실측, 숨은 인스턴스 자식 포함) + 박스 3배 렌더. 빌더 선행 스캔 결과는 참고만 하고 재사용하지 않음.
 
-## Layer 1 — 기계(결정론) 검증 결과
+### 판정: **PASS (pilot)** — ❌(a) 0 · ❓(c) 0 · 🟡(b) 0 · BLOCKED 0
+별도: 정본 부품 결함 1건(needs-core-update, 기존에 알려진 것) · 데스크톱 미확인 1건(NOT_VERIFIED). 둘 다 화면 빌드 실수가 아니며 일괄 생성을 막지 않는다.
 
-### 1) 텍스트 정확 일치 — ✅ 전건 일치
-재현 프레임의 모든 TEXT 노드 characters를 원본 전수표 verbatim과 대조:
+### Layer 1 — 결정론
 
-| 요소 | 원본 verbatim | 재현 characters | 판정 |
-|------|--------------|-----------------|------|
-| GNB 서비스명 | `통근버스 운영 시스템` | `[서비스명]` | 🟡 허용편차1(브랜딩) |
-| 언어 | `한국어` | `한국어` | ✅ |
-| 중앙 로고 | (SAMSUNG 이미지) | `[서비스 로고]` | 🟡 허용편차1(브랜딩) |
-| 아이디 placeholder | `아이디를 입력해 주세요.` | `아이디를 입력해 주세요.` | ✅ |
-| 비밀번호 placeholder | `비밀번호를 입력해 주세요.` | `비밀번호를 입력해 주세요.` | ✅ |
-| 체크박스 | `아이디 저장` | `아이디 저장` | ✅ |
-| 버튼 | `로그인` | `로그인` | ✅ |
-| 링크1 | `아이디 찾기` | `아이디 찾기` | ✅ |
-| 링크2 | `비밀번호 찾기` | `비밀번호 찾기` (노드명 `비밀번호 초기화`이나 렌더 verbatim 일치) | ✅ |
-| 약관1 | `이용약관` | `이용약관` | ✅ |
-| 약관2 | `개인정보 처리방침` | `개인정보 처리방침` | ✅ |
-| 약관3 | `위치기반 서비스 이용약관` | `위치기반 서비스 이용약관` | ✅ |
-| 사업자정보 | `(주)에스원   사업자등록번호 208-81-13302    대표이사 정해린    04511 서울특별시 중구 세종대로 7길 25 에스원 빌딩` | 동일 (다중 공백 포함 일치) | ✅ |
-| 카피라이트 | `© S-1 Corp. All Rights Reserved.` | `© S-1 Corp. All Rights Reserved.` | ✅ |
+| 항목 | 1 (2703:3) | 4a1 (2706:49) | 판정 |
+|---|---|---|---|
+| provenance (INSTANCE / 위반) | 10 / 0 — 로컬: LoginGNB·CI·Input×2·Checkbox·Button·Footer, 허용키: globe `dee16df7`·eye_hide `d4e9eb5b`×2 | 10 / 0 (동일 구성) | ✅ |
+| 폰트 (TEXT / 비-Pretendard / 스타일 없음, 숨은 자식 포함) | 11 / 0 / 0 | 12 / 0 / 0 | ✅ |
+| 저작 노드 채움 | 화면 `color/bg/level-0` 바인딩, 투명 컨테이너 fills=[], 라벨 `color/control/label/default`, stroke 0 | 동일 | ✅ |
+| 섹션 바탕 | `color/bg/level-3` 바인딩 · 자식 순서 1 → 4a1 | | ✅ |
+| 아이디 칸 | Size=MD · State=Default · Message=Off · Break=PC · Password Icon=false | State=Error · Message=Off · `s1design` | ✅ |
+| 비밀번호 칸 | State=Default · Message=Off · Password Icon=true | State=Error · Message=On · `••••••••` · 문구 A | ✅ |
+| 버튼 | Primary · MD · PC · **Disabled** · `로그인` | **Default** · `로그인` | ✅ |
+| 체크박스 | State=Default (18×18) | State=Default | ✅ |
+| 텍스트 verbatim | `아이디를 입력해 주세요.` · `비밀번호를 입력해 주세요.` · `아이디 저장` · `로그인` · GNB/Footer 정본 기본값 | 문구 A = `아이디 또는 비밀번호가 없거나 잘못 입력되었습니다.\n확인 후 다시 로그인 해주세요. (1/5)` 글자 단위 일치 | ✅ |
+| 오류 표현 규칙 | — | 두 칸 모두 Error · 문구는 비밀번호 칸 아래 1회 · 상자 위 빨간 박스 없음 | ✅ |
+| 폭 300·FILL | LoginBox 300 FIXED/HUG · Input·field 300 FILL · 버튼 300 FILL | 동일 + 안내 문구 300 FILL/HUG(2줄 32) | ✅ |
+| 위 패딩 123 | Body pad-top 123 · LoginBox y=123 · Body 908 = 1080−56−116 (grow) | 동일 | ✅ |
+| 간격 | CI(30)→48→칸, 칸 사이 8, 칸→8→저장 줄, 저장 줄→24→버튼, 박스–글자 8 | 동일 (Fields 134 = 44+8+82) | ✅ |
+| CI 가운데 | x 110.625 (= (300−78.75)/2) | 동일 | ✅ |
+| figma-use 잔재 (화면 저작 노드) | 고정 100 없음 · hug 누락 없음 · spacer 는 의도된 FIXED 높이 | 동일 | ✅ |
+| 넣지 말 것 | WebTabBar·찾기/회원가입·창틀 0건 | 0건 | ✅ |
 
-→ **1글자 불일치 0건.** 브랜딩 제네릭화 2건만 허용편차1로 정상 제외.
+**`아이디 저장` 글자 근거** — 인정. `registry/components/checkbox.json` anatomy「라벨(선택) — 본문 14 Medium, 간격 8」(메타 정본) + `ui-library/src/components/checkbox/checkbox.css:61-67`(color `--color-control-label-default`, 14 · medium · line-height 130 · tight) + `textstyles-data.ts:63` body/14M(14 · Medium · 130% · −2%) 수치 일치 + `vars-data.ts:572` 토큰 실재. needs-decision 대상 아님.
 
-### 2) fills/strokes Variable 바인딩 — ✅ raw 0건 (화면 저작 노드)
-화면 저작 프레임/텍스트/장식 23노드 boundVariables 스캔:
-- 루트 268:369 fill = `color/navigation/background` ✅
-- 중앙 로고·하단 링크 ×2·약관 ×3·사업자·카피 텍스트 = 전부 `color/text/body/tertiary` ✅
-- 링크 구분선·푸터 구분선 ×2 = `color/icon/gray-light` ✅
-- 푸터 269:5722 fill = `color/navigation/background`, stroke = `color/line/gray/subtle` ✅
-- 헤더/본문/카드 컨테이너 프레임 = fill 없음(투명) — raw 아님 ✅
+### Layer 2 — 렌더 대조 (선언서 대비)
 
-→ **화면 저작 raw fill/stroke 0건.** web tab bar(268:5646) 브라우저 크롬 목업은 허용편차4로 검사 제외. 인스턴스 내부 색은 컴포넌트 소관(검사 범위 밖).
+- 빌더 선캡처 `shots/PC-LOGIN-1.png`·`shots/PC-LOGIN-4a1.png`(1024×576) + 검증자 박스 3배 렌더로 대조.
+- 맨 위 줄 → 가운데 300 상자(CI · 두 칸 · 아이디 저장 · 버튼) → 맨 아래 띠, 선언서 뼈대와 일치. 글자 잘림·겹침 없음. 4a1 두 줄 문구 접힘 없음, 두 칸 붉은 테두리, 버튼 활성 파랑. 1 버튼 비활성 회색.
+- 폰트 정체성은 렌더로 판정하지 않음(데이터 스캔으로 대체 — 위 표).
 
-### 3) 인스턴스 프로비넌스 — ✅ 외부/레거시 라이브러리 instance 0건
-교체 가능한 6개 instance의 mainComponent 출처:
+### 별도 항목 (화면 판정 불산입)
 
-| instance | mainComponent set | state/props | remote | 판정 |
-|----------|------------------|-------------|--------|------|
-| web tab bar 268:5646 | `web tab bar` | Property 1=1920 | true | ✅ 정본 세트 |
-| login_GNB 268:5647 | `login_GNB` | state=ver1 | true | ✅ 정본 세트 |
-| 아이디 입력 269:4559 | `input` | platform=pc-md, **state=default**, option=off | true | ✅ |
-| 비번 입력 269:4560 | `input` | platform=pc-md, **state=default**, option=icon_1 | true | ✅ |
-| 체크박스 269:4561 | `checkbox` | size=pc, **state=default**, label=on | true | ✅ |
-| 로그인 버튼 269:4562 | `button` | variant=primary, size=medium, **state=disabled**, icon=off | true | ✅ |
-| eye-off 아이콘 I269:4560;1980:48706 | (V2.2 ic_비밀번호미표시) | Property 1=Solid | true | ✅ 원본 아이콘 |
-| globe 아이콘 (GNB 언어) | (V2.2 아이콘) Component 80 | Property 1=Line | true | ✅ 원본 아이콘 |
+1. **needs-core-update — 정본 Input 의 `trail` 유령 100×100.** 아이디 칸(Password Icon=false)에서 눈 아이콘이 숨으면 trail 이 100×100 으로 남아 field 내용 폭을 잡아먹는다(아이디 글자 칸 174 vs 비밀번호 246). 정본 변형 `Size=MD, State=Default, Message=Off, Break=PC` 자체가 trail 100×100 이며, `reports/figma-library-build/input-show-message-preview/4-verification.md` O1 로 이미 알려진 특성. 이 화면 문구는 모두 들어가 시각 영향 없음. 고치면 7장 모두 자동 반영되므로 일괄 생성을 막지 않는다.
+2. **NOT_VERIFIED — `아이디 저장` 글자 상자 높이.** 노드 높이 14(body/14M 기준 18.2 기대). MCP 에 Pretendard 가 없어 줄높이 재계산이 안 된 흔적. MCP 렌더에서는 체크박스와 세로 정렬이 맞음. 데스크톱(Pretendard 설치) 에서 줄 정렬 1회 눈 확인 필요 — 어긋나면 ❌(a) 로 재분류.
 
-- `remote: true`는 **이 파일이 참조하는 발행 라이브러리(V3.0 정본)** 의 컴포넌트로, 원본 화면도 동일 세트를 사용했다(input/checkbox/button/login_GNB/web tab bar 세트 동일). 외부·레거시 라이브러리 instance 아님.
-- 입력·체크박스·버튼·GNB·tab bar·eye-off·globe 모두 임의 제작이 아닌 **정본 세트의 INSTANCE**임을 확인. 임의 제작 적발 0건.
+### 이번에 확인하지 않은 것
+- 나머지 5장(2 · 3 · 4 · 4a2 · 4a3) — 아직 없음. 일괄 생성 후 Layer 1 전체 재실행 필요(pilot PASS 승계 금지).
+- 다크 모드 렌더.
 
-### 4) variant/상태 — ✅ 원본 일치
-- 로그인 버튼 269:4562 = **state=disabled** ✅ (원본도 disabled — 허용편차2로 사용자 확정)
-- 입력 ×2 = **state=default** (empty placeholder) ✅
-- 체크박스 269:4561 = **state=default, 체크마크 vector 없음(unchecked)** ✅
-- 비번 입력 = option=icon_1 (eye-off) ✅
-
-### 5) figma-use 잔재 — ✅ 0건
-- 루트 268:369 = **VERTICAL auto-layout**, 1920×1080 ✅ (createFrame 100px 고정 함정 없음)
-- 헤더 268:5645 = sizeH=**FILL** / sizeV=**HUG** ✅
-- 본문 269:4553 = sizeH=FILL / sizeV=FILL / **layoutGrow=1** (세로 grow) / CENTER·CENTER ✅
-- 푸터 269:5722 = sizeH=**FILL** / sizeV=**HUG** ✅
-- 카드 269:4555 = 460 고정폭 / HUG height ✅, 입력·버튼 내부 sizeH=FILL ✅
-- 미성장 spacer·고정 100px·hug 누락 없음.
-
-### 6) 원본 요소 누락 — ✅ 0건 (21요소 전수 대조)
-| 전수표 # | 요소 | 재현 노드 | 판정 |
-|---|------|----------|------|
-| 1 | 크롬 탭바 | 268:5646 | ✅ |
-| 2 | GNB 바 | 268:5647 | ✅ |
-| 3 | GNB 로고 | I268:5647;8177:208696 (visible=false, 브랜딩 제거) | 🟡 허용편차1 |
-| 4 | GNB 서비스명 | I268:5647;8177:208697 `[서비스명]` | 🟡 허용편차1 |
-| 5 | 언어 선택 | slot_utility + 한국어 | ✅ |
-| 6 | 중앙 로고 | 269:4554 `[서비스 로고]` | 🟡 허용편차1 |
-| 7 | 아이디 입력 | 269:4559 | ✅ |
-| 8 | 비밀번호 입력 | 269:4560 (+eye-off) | ✅ |
-| 9 | 체크박스 | 269:4561 | ✅ |
-| 10 | 로그인 버튼 | 269:4562 (disabled) | ✅ |
-| 11 | 아이디 찾기 | 269:4565 | ✅ |
-| 12 | 구분선(링크) | 269:4566 (1×12) | ✅ |
-| 13 | 비밀번호 찾기 | 269:4567 | ✅ |
-| 14 | 푸터 바 | 269:5722 | ✅ |
-| 15 | 약관1 이용약관 | 269:5725 | ✅ |
-| 16 | 약관2 개인정보 처리방침 | 269:5727 | ✅ |
-| 17 | 약관3 위치기반… | 269:5729 | ✅ |
-| 18 | 푸터 구분선 ×2 | 269:5726 / 269:5728 (1×8) | ✅ |
-| 19 | 사업자 정보 | 269:5730 | ✅ |
-| 20 | 카피라이트 | 269:5731 | ✅ |
-| 21 | 푸터 S1 로고 | 269:5732 (C/IMG/Logo/S1_g 벡터) | ✅ |
-
-→ 제외 합의 항목(261:13171 스트레이 푸터 / 261:13161 숨김텍스트)은 재현에서 정상 제외됨(node-map removed.strayHiddenText 269:4558). **누락 0건.**
+### 권장 상태 전환
+- `currentPhase` 4-verify pilot PASS → `nextAction` = `RUN=["2","3","4","4a2","4a3"]` 일괄 생성 → 7장 전체 재검증.
+- `artifacts.verification` = `4-verification.md`.
 
 ---
 
-## Layer 2 — 이미지 대조 결과
+## 전체 7장 — 2026-10-02 · component-verifier
 
-원본 261:13153 vs 재현 268:369 get_screenshot 나란히 시각 대조:
-- 헤더 크롬 목업·GNB 라인·언어 globe = 시각 동일 ✅
-- 입력 2필드(placeholder 회색)·eye-off 아이콘·체크박스(빈 박스)·**disabled 회색 버튼**·하단 링크 구분선 = 동일 ✅
-- 푸터 약관3·구분선2·사업자정보·카피라이트·에스원 워드마크(우측) = 동일 ✅
-- 브랜딩만 `[서비스명]`/`[서비스 로고]` 로 치환 = 허용편차1 ✅
+- 대상: Section 2703:2 의 7장 — 1(2703:3) · 2(2712:95) · 3(2712:164) · 4(2713:203) · 4a1(2706:49) · 4a2(2713:264) · 4a3(2713:319)
+- pilot PASS 를 넘겨 쓰지 않았다. 7장 모두 Layer 1 을 다시 직접 실행했다(use_figma 읽기 전용, 숨은 인스턴스 자식 포함). 새로 만든 5장은 Layer 2 렌더 대조도 했다(LoginBox 2배 렌더).
 
-### 시각 차이(허용편차 범위 내)
-- **로고+카드 묶음의 세로 위치**: 원본은 카드 상단 y≈324(화면 30% 지점, 로고가 그 위)로 다소 위쪽 배치. 재현은 본문이 CENTER/CENTER auto-layout이라 로고+카드 묶음이 본문 높이(807) 중앙에 정렬됨(카드 더 아래). → **허용편차3(반응형 재구성: 절대좌표→FILL/center)** 에 해당. 로고↔카드 gap(50px)·카드 폭(460)·요소 구성은 동일. (a)코드실수 아님.
-- 그 외 색·치수·정렬·간격은 시각 동일.
+### 판정: **PASS** — ❌(a) 0 · ❓(c) 0 · 🟡(b) 0 · BLOCKED 0
+pilot 의 별도 항목 2건은 그대로 이어진다: needs-core-update 1건(Input trail 100×100) · NOT_VERIFIED 1건(`아이디 저장` 글자 높이 14). 7장 모두 같은 값이고, 화면 빌드 실수가 아니다.
 
-### 반응형(1440×1000) 대응
-- 헤더/푸터 FILL·본문 grow·카드 460 중앙·버튼 FILL 구조가 갖춰져 있어 리사이즈 대응 가능(node-map responsiveVerified 기록과 구조 일치 확인). 별도 write 검증은 검증 단계에서 수행하지 않음(구조 근거로 판정).
+### Layer 1 — 결정론 (7장 전부)
 
----
+| 화면 | 인스턴스 / 위반 | TEXT / 비-Pretendard / 스타일 없음 | 저작 노드 raw | 아이디 칸 | 비밀번호 칸 | 버튼 | 상자 높이 |
+|---|---|---|---|---|---|---|---|
+| 1 | 10 / 0 | 11 / 0 / 0 | 0 | Default · placeholder | Default · placeholder | Disabled | 268 |
+| 2 | 11 / 0 (+remove 허용키) | 11 / 0 / 0 | 0 | **Focus** · `s1desig` | Default · placeholder | Disabled | 268 |
+| 3 | 11 / 0 (+remove 허용키) | 11 / 0 / 0 | 0 | Filled · `s1design` | **Focus** · `••••••••` | Default | 268 |
+| 4 | 10 / 0 | 11 / 0 / 0 | 0 | Filled · `s1design` | Filled · `••••••••` | Default | 268 |
+| 4a1 | 10 / 0 | 12 / 0 / 0 | 0 | Error · Msg Off · `s1design` | Error · Msg On · 문구 A | Default | 306 |
+| 4a2 | 10 / 0 | 12 / 0 / 0 | 0 | Error · Msg Off · `s1design` | Error · Msg On · 문구 B | Default | 306 |
+| 4a3 | 10 / 0 | 12 / 0 / 0 | 0 | Error · Msg Off · `s1design` | Error · Msg On · 문구 C | Default | 290 |
 
-## Layer 3 — 적대적 분류
+- **부품 출처:** 로컬은 LoginGNB·CI(에스원/Blue)·Input×2·Checkbox(Default)·Button(Primary/MD/PC)·Footer(PC)이다. 허용 키 아이콘은 globe `dee16df7`·eye_hide `d4e9eb5b`×2이고, 2·3 은 Focus 부품에 들어 있는 remove `24b2df62` 가 더 있다(부품 소속). 위반은 0건이다.
+- **글자 그대로인지:** 문구 B `아이디 또는 비밀번호가 없거나 잘못 입력되었습니다.\n확인 후 다시 로그인 해주세요.(최대 5분)`, 문구 C `사용이 중지된 계정입니다. 관리자에게 문의해 주세요.` 모두 글자 단위로 일치한다. 문구 B 는 2줄(300×32), 문구 C 는 1줄(300×16)이며 안내 문구는 FILL/HUG 로 잡혀 있다. 안내 문구 색은 `color/text/state/caution`, 스타일은 body/12R 이다.
+- **크기·간격 (7장 같음):** 화면 1920×1080, VERTICAL, clip, 바탕 `color/bg/level-0`. Body 908 · 위 패딩 123 · grow 1. LoginBox 300 FIXED/HUG · y 123. 칸·field·버튼 300 FILL. 간격은 CI 아래 48 · 칸 사이 8 · 체크 줄 위 8 · 아래 24 로 같다.
+- **배치:** 첫 줄 y=100 에 1·2·3·4 가 x 80/2200/4320/6440, 둘째 줄 y=1380 에 4a1·4a2·4a3 이 x 80/2200/4320. 섹션 자식 순서는 1,2,3,4,4a1,4a2,4a3 로 2-mapping 과 일치한다.
+- **넣지 말 것:** WebTabBar·찾기/회원가입·창틀이 7장 모두 0건이다.
+- **오류 표시 규칙 (4a1~4a3):** 두 칸 모두 Error 이고, 문구는 비밀번호 칸 아래 1번만 나온다.
 
-### ❌ (a) 코드 실수 — **0건**
-색 오바인딩·variant 누락·텍스트 오타·누락 요소·raw 색·임의 제작·외부 라이브러리 instance·figma-use 잔재 — **전 항목 적발 없음.**
+### Layer 2 — 렌더 대조 (새 5장)
+- 2: 아이디 칸이 파란 포커스 테두리에 커서와 지우기 아이콘을 보인다. 비밀번호는 placeholder, 버튼은 회색 비활성이다.
+- 3: 아이디 칸은 입력값이 들어간 회색 테두리, 비밀번호 칸은 포커스(커서·눈·지우기) 상태이고, 버튼은 파랑 활성이다.
+- 4: 두 칸 모두 입력값이 있고 버튼은 활성이다.
+- 4a2: 두 칸 모두 붉은 테두리이고, 2줄 문구가 접히지 않았다.
+- 4a3: 두 칸 모두 붉은 테두리이고, 1줄 문구다.
+- 잘림·겹침이 없고 의도 선언서 뼈대와 일치한다. 폰트는 렌더로 판정하지 않았다(데이터 스캔 결과로 대신함).
 
-### 🟡 (b) 의도된 편차 (허용편차 선언서) — 정상
-- 🟡 GNB 서비스명 `[서비스명]` + GNB 로고 hidden + 중앙 로고 `[서비스 로고]` — 허용편차1(브랜딩 제네릭화, 사용자 확정)
-- 🟡 로그인 버튼 state=disabled — 허용편차2(사용자 확정)
-- 🟡 로고+카드 세로 중앙 정렬(절대좌표→CENTER/CENTER) — 허용편차3(반응형 재구성)
-- 🟡 web tab bar raw 색 유지 — 허용편차4(브라우저 크롬 목업)
+### 이번에 확인하지 않은 것
+- 다크 모드 렌더.
+- 데스크톱(Pretendard 설치)에서 `아이디 저장` 글자 정렬 — NOT_VERIFIED 로 이어진다.
+- 1·4a1 의 Layer 2 는 pilot 렌더를 그대로 썼다(이번에 다시 렌더하지 않음). Layer 1 은 다시 실행해서 값이 같았다.
 
-### ❓ (c) 확인 요청 — **0건**
-애매 항목 없음. (node-map의 needsDecision "GNB 로고 placeholder 텍스트 삽입 불가→visible=false 처리"는 빌드 시점 결정사항으로, 결과상 브랜딩 제거가 허용편차1을 충족하므로 검증 ❌ 아님. 단, **GNB 자리에 `[서비스 로고]` 텍스트 placeholder가 들어가지 않고 빈 자리로 남은 점**은 향후 GNB 컴포넌트에 로고 슬롯을 추가할지 여부의 디자인 결정 사항으로 오케스트레이터에 보고만 — 현 화면 충실도에는 영향 없음.)
-
----
-
-## 종합 판정
-
-| Layer | 결과 |
-|-------|------|
-| Layer 1 (기계) | ✅ 텍스트 일치·raw 0·프로비넌스 정본·variant 일치·잔재 0·누락 0 |
-| Layer 2 (이미지) | ✅ 시각 동일 (차이는 허용편차1·3 범위 내) |
-| Layer 3 (적대적) | ❌(a) **0건** · 🟡(b) 4건(전부 선언된 허용편차) · ❓(c) 0건 |
-
-### → **PASS — ❌(a) = 0건.** 4단계 검문소 통과.
-
-보고만(차단 아님): GNB 로고 자리는 브랜딩 제거(hidden)로 처리됐고 `[서비스 로고]` 텍스트 placeholder는 GNB 인스턴스 내부라 삽입 불가했음. 공통 패턴화 시 GNB 정본 컴포넌트에 로고 슬롯(INSTANCE_SWAP/placeholder variant) 추가 여부는 오케스트레이터/디자인 결정 사항.
+### 권장 상태 전환
+- `currentPhase` = 4-verify PASS(7장) · `lastCompletedCheckpoint` = 4 · `artifacts.verification` = `4-verification.md`
+- `nextAction` = 5단계 패턴 등록(`registry/patterns/pc-login/`). 그 전에 `아이디 저장` 데스크톱 눈 확인 1번을 권장한다.
