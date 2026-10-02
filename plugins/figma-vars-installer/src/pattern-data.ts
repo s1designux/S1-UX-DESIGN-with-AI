@@ -3,8 +3,9 @@
  * ─────────────────────────────────────────────────────────────────────────
  * 이 파일은 **정본이 아니라 캡처본(파생)** 이다.
  *
- *   정본  = Figma 파일 cysG5U1udpQqVagYY1hWHW · page 173:2431 · section 1562:2
- *           (registry/patterns/index.json 의 mobile-login — 검증 PASS·등록 완료)
+ *   정본  = Figma 파일 cysG5U1udpQqVagYY1hWHW 의 패턴 섹션들 — 패턴마다 source 에 적혀 있다
+ *           (mobile-login = page 173:2431 · section 1562:2, pc-login = page 80:16697 · section 2703:2.
+ *            registry/patterns/index.json — 검증 PASS·등록 완료)
  *   캡처본 = 이 파일. 위 정본을 그대로 읽어 옮겨 적은 값이며, 손으로 새 값을 만들지 않는다.
  *
  * 왜 코드로 다시 그리지 않고 값을 저장하는가(river 결정 2026-09-02):
@@ -49,8 +50,14 @@ export type Override = [string, string | null];
  *  폭·높이는 FIXED 인데 부품 기본값과 다를 때만 적는다(예: Modal 의 content 260 vs 부품 258). */
 export type SizeOverride = [string, Sizing, Sizing] | [string, Sizing, Sizing, number] | [string, Sizing, Sizing, number, number];
 
+/** 인스턴스 안쪽 '중첩 인스턴스'의 속성 덮어쓰기: [자식 인덱스 경로, {속성 이름: 값}]
+ *  예) PC Login Box 안의 Input 을 화면마다 Error·Message=On 으로 바꾼 것.
+ *  속성 이름은 '#id' 를 뗀 이름이다(파일마다 id 가 다르다). variant·BOOLEAN 모두 같은 자리에 적는다. */
+export type NestedProps = [string, Record<string, string | boolean>];
+
 export interface PNode {
-  t: "FRAME" | "TEXT" | "RECT" | "INST";
+  /** COMP = 패턴 전용 부품 정의(PatternDef.components 의 루트에만), SLOT = 그 부품 안의 끼워 넣는 자리. */
+  t: "FRAME" | "TEXT" | "RECT" | "INST" | "COMP" | "SLOT";
   n: string;
   w?: number;
   h?: number;
@@ -82,9 +89,27 @@ export interface PNode {
   key?: string;
   /** 컴포넌트 속성 — 키는 '#id' 를 뗀 이름. 파일마다 id 가 달라지므로 이름으로 맞춘다. */
   pr?: Record<string, string | boolean>;
+  /** 패턴 전용 부품(PatternDef.components 의 name)을 쓸 때 — set 대신 이 이름으로 찾는다. */
+  local?: string;
+  /** 중첩 인스턴스 속성 덮어쓰기 — 글자(ov)·크기(szOv)보다 먼저 건다(변형이 바뀌면 안쪽 자식이 바뀌므로). */
+  nestedPr?: NestedProps[];
   ov?: Override[];
   szOv?: SizeOverride[];
+  /** COMP 의 설명(description) · SLOT 의 속성 설명. */
+  desc?: string;
   c?: PNode[];
+}
+
+/** 패턴 전용 부품 — 디자인가이드 정본(설치기 컴포넌트)에는 없고 이 패턴 섹션 안에만 만든다.
+ *  재생기는 화면보다 **먼저** 만들고, 화면의 `local` 인스턴스가 이것을 쓴다.
+ *  슬롯(SLOT 노드)은 반드시 진짜 createSlot() 으로 만든다 — 실패하면 겉모습만 같은 프레임으로 대신하지 않고 멈춘다. */
+export interface PatternComponent {
+  name: string;
+  /** 섹션 안 배치 좌표 */
+  x: number;
+  y: number;
+  /** t: "COMP" 루트 */
+  root: PNode;
 }
 
 export interface PatternScreen {
@@ -110,6 +135,8 @@ export interface PatternDef {
   requires: string[];
   /** 캡처 출처(정본) — 사람이 되짚을 수 있게 남긴다. */
   source: { fileKey: string; pageId: string; sectionId: string; capturedAt: string };
+  /** 패턴 전용 부품 — 화면보다 먼저 만든다. 없으면 생략. */
+  components?: PatternComponent[];
   screens: PatternScreen[];
 }
 
@@ -728,5 +755,176 @@ export const MOBILE_WEB_SIGNUP: PatternDef = {
   ],
 };
 
+// ══════════ PC 로그인 (7화면 + 패턴 전용 부품 1개) ══════════
+// 캡처 정본: 같은 Figma 파일 · page 80:16697(Patterns PC) · section 2703:2 (화면 7장)
+//            + 패턴 전용 부품 `PC Login Box` 2730:528 (section 2730:527, 슬롯 속성 `Links`)
+// 2026-10-02 use_figma 읽기 전용으로 실측해 옮겼다(화면 트리 · 부품 트리 · 인스턴스↔원본 부품 차이).
+//
+// 모바일 두 패턴과 다른 점 세 가지.
+//   ① 가운데 상자가 정본 세트가 아닌 **패턴 전용 부품**이다 — 설치기 컴포넌트 목록에는 없고(river 결정),
+//      재생할 때 섹션 안에 먼저 만들고 화면들이 그 인스턴스를 쓴다(components · local).
+//   ② 그 부품 안의 Links 는 진짜 슬롯(SLOT)이다 — 재생기가 createSlot() 으로 만든다.
+//   ③ 화면마다 다른 것은 부품 인스턴스 안쪽 Input·Button 의 상태다 — nestedPr 로 바꾼다.
+//
+// 정본에서 부품은 화면 섹션 밖(따로 둔 섹션 2730:527)에 있다. 설치기는 패턴 1개 = 섹션 1개라
+// 부품을 화면 섹션 안의 **빈 칸**(둘째 줄 넷째 자리 6440,1380 — 정본 격자에서 비어 있는 자리)에 둔다.
+// 화면 좌표·크기는 정본 그대로다.
+//
+// 링크 구분선 색: 정본 부품은 이 파일의 옛 이름 변수 `color/line/gray/subtle`(VariableID:8:1076)에 걸려 있다.
+//   그 변수의 정본 이름이 `color/line/default`(gray/100 · gray-dark/300)라 정본 이름으로 적는다
+//   색 선택은 확정이다 — 기준 자료 #d9d9d9 는 레거시 값, 정본 선 토큰으로 둔다(intent.md 변경 3 · 두 갈래 (b)).
+
+const PC_SLOT_DESC = "로그인 버튼 아래 보조 링크 자리 — 서비스마다 바꿔 끼운다";
+
+function pcSpacer(name: string, h: number): PNode {
+  return { t: "FRAME", n: `Spacer / ${name}`, w: 300, h, sz: ["FILL", "FIXED"], clip: true };
+}
+
+function pcInput(which: "ID" | "Password", placeholder: string): PNode {
+  return {
+    t: "INST", n: `Input / ${which}`, set: "Input", w: 300, h: 44, sz: ["FILL", "HUG"],
+    pr: { "Password Icon": which === "Password", Size: "MD", State: "Default", Message: "Off", Break: "PC" },
+    // 부품의 입력칸(field)은 기본 폭 200 고정 — 정본은 FILL 로 펴서 300 을 채운다.
+    szOv: [["0", "FILL", "FIXED"]],
+    ov: [["0.0", placeholder]],
+  };
+}
+
+/** 글자 단추 — 폭·높이는 내용이 정한다(HUG). */
+function pcTextButton(label: string): PNode {
+  return {
+    t: "INST", n: `Text Button / ${label}`, set: "Text Button", sz: ["HUG", "HUG"],
+    pr: { Variant: "Secondary", State: "Default" },
+    ov: [["0", label]],
+  };
+}
+
+const PC_LINK_DIVIDER: PNode = {
+  t: "RECT", n: "Divider", w: 1, h: 12, sz: ["FIXED", "FIXED"], fillVar: "color/line/default",
+};
+
+/** 패턴 전용 부품 — CI → 34 → 칸 2개(사이 10) → 32 → 로그인 버튼 → 16 → 슬롯 Links */
+const PC_LOGIN_BOX: PNode = {
+  t: "COMP", n: "PC Login Box", w: 300, h: 272,
+  desc: "PC 웹 로그인 묶음 — CI · 아이디/비밀번호 칸 · 로그인 버튼 · 보조 링크 슬롯(Links). 패턴 전용 부품.",
+  al: ["VERTICAL", 0, 0, 0, 0, 0, "AUTO", "FIXED", "MIN", "CENTER"],
+  c: [
+    { t: "INST", n: "CI / 에스원 / Blue", set: "CI", pr: { Brand: "에스원", Color: "Blue" },
+      w: 78.75, h: 30, sz: ["FIXED", "FIXED"] },
+    pcSpacer("CI-Fields", 34),
+    { t: "FRAME", n: "Fields", w: 300, h: 98, sz: ["FILL", "HUG"], clip: true,
+      al: ["VERTICAL", 10, 0, 0, 0, 0, "AUTO", "FIXED", "MIN", "MIN"],
+      c: [pcInput("ID", "아이디를 입력해 주세요."), pcInput("Password", "비밀번호를 입력해 주세요.")] },
+    pcSpacer("Fields-Login", 32),
+    { t: "INST", n: "Button / 로그인", set: "Button", w: 300, h: 44, sz: ["FILL", "FIXED"],
+      pr: { Size: "MD", State: "Disabled", Variant: "Primary", Break: "PC" }, ov: [["0", "로그인"]] },
+    pcSpacer("Login-Links", 16),
+    { t: "SLOT", n: "Links", desc: PC_SLOT_DESC, w: 300, h: 18, sz: ["FILL", "HUG"],
+      al: ["HORIZONTAL", 12, 0, 0, 0, 0, "FIXED", "AUTO", "CENTER", "CENTER"],
+      c: [
+        pcTextButton("회원가입"), PC_LINK_DIVIDER,
+        pcTextButton("아이디 찾기"), PC_LINK_DIVIDER,
+        pcTextButton("비밀번호 찾기"),
+      ] },
+  ],
+};
+
+/** 화면별로 다른 것 = PC Login Box 안쪽 Input(2.0 아이디 · 2.1 비밀번호)·Button(4)의 상태와 문구. */
+interface PcBoxState {
+  h: number;
+  nestedPr?: NestedProps[];
+  szOv?: SizeOverride[];
+  ov?: Override[];
+}
+
+/** 화면 1벌 = 프레임(세로 스택) → [WebTabBar, LoginGNB, Body(위 123, 가운데) → PC Login Box, Footer] */
+function pcScreen(name: string, x: number, y: number, box: PcBoxState): PatternScreen {
+  const loginBox: PNode = {
+    t: "INST", n: "PC Login Box", local: "PC Login Box", w: 300, h: box.h, sz: ["FIXED", "HUG"],
+  };
+  if (box.nestedPr) loginBox.nestedPr = box.nestedPr;
+  if (box.szOv) loginBox.szOv = box.szOv;
+  if (box.ov) loginBox.ov = box.ov;
+  return {
+    name, x, y,
+    root: {
+      t: "FRAME", n: name, w: 1920, h: 1080, x, y, clip: true, fillVar: "color/bg/level-0",
+      al: ["VERTICAL", 0, 0, 0, 0, 0, "FIXED", "FIXED", "MIN", "MIN"],
+      c: [
+        // WebTabBar·LoginGNB 는 변형이 하나뿐인 세트라 variant 를 적지 않는다(첫 변형 = 유일한 변형).
+        { t: "INST", n: "WebTabBar", set: "WebTabBar", w: 1920, h: 101, sz: ["FILL", "FIXED"] },
+        { t: "INST", n: "LoginGNB", set: "LoginGNB", w: 1920, h: 56, sz: ["FILL", "FIXED"] },
+        { t: "FRAME", n: "Body", w: 1920, h: 807, sz: ["FILL", "FILL"], clip: true,
+          al: ["VERTICAL", 0, 123, 0, 0, 0, "FIXED", "FIXED", "MIN", "CENTER"],
+          c: [loginBox] },
+        { t: "INST", n: "Footer", set: "Footer", pr: { Platform: "PC" }, w: 1920, h: 116, sz: ["FILL", "FIXED"] },
+      ],
+    },
+  };
+}
+
+const PC_ID_VALUE = "s1design";
+const PC_PW_VALUE = "••••••••";
+
+/** 4a 계열 — 두 칸 오류 테두리, 안내 문구는 비밀번호 칸 아래 한 번(문구 자리는 FILL 가로·HUG 세로). */
+function pcErrorBox(h: number, message: string): PcBoxState {
+  return {
+    h,
+    nestedPr: [["2.0", { State: "Error" }], ["2.1", { State: "Error", Message: "On" }], ["4", { State: "Default" }]],
+    szOv: [["2.1.1", "FILL", "HUG"]],
+    ov: [["2.0.0.0", PC_ID_VALUE], ["2.1.0.0", PC_PW_VALUE], ["2.1.1", message]],
+  };
+}
+
+export const PC_LOGIN: PatternDef = {
+  id: "pc-login",
+  label: "PC 로그인",
+  desc: "브라우저 창틀·맨 위 줄 아래 로그인 상자(아이디·비밀번호·로그인·보조 링크 슬롯), 입력 중·로그인 실패 3종까지 7개 화면",
+  section: "Pattern / PC Login",
+  sectionFillVar: "color/bg/level-3",
+  requires: ["WebTabBar", "LoginGNB", "Footer", "CI", "Input", "Button", "Text Button"],
+  source: {
+    fileKey: "cysG5U1udpQqVagYY1hWHW",
+    pageId: "80:16697",
+    sectionId: "2703:2",
+    capturedAt: "2026-10-02",
+  },
+  components: [
+    { name: "PC Login Box", x: 6440, y: 1380, root: PC_LOGIN_BOX },
+  ],
+  screens: [
+    // ── 기본 흐름 ──
+    pcScreen("PC/LOGIN/1 · 최초 진입", 80, 100, { h: 272 }),
+
+    pcScreen("PC/LOGIN/2 · 아이디 입력 중", 2200, 100, {
+      h: 272,
+      nestedPr: [["2.0", { State: "Focus" }]],
+      ov: [["2.0.0.0.0", "s1desig"]],
+    }),
+
+    pcScreen("PC/LOGIN/3 · 비밀번호 입력 중", 4320, 100, {
+      h: 272,
+      nestedPr: [["2.0", { State: "Filled" }], ["2.1", { State: "Focus" }], ["4", { State: "Default" }]],
+      ov: [["2.0.0.0", PC_ID_VALUE], ["2.1.0.0.0", PC_PW_VALUE]],
+    }),
+
+    pcScreen("PC/LOGIN/4 · 입력 완료·로그인 활성", 6440, 100, {
+      h: 272,
+      nestedPr: [["2.0", { State: "Filled" }], ["2.1", { State: "Filled" }], ["4", { State: "Default" }]],
+      ov: [["2.0.0.0", PC_ID_VALUE], ["2.1.0.0", PC_PW_VALUE]],
+    }),
+
+    // ── 분기 a — 로그인 실패 ──
+    pcScreen("PC/LOGIN/4a1 · 계정 불일치 오류", 80, 1380, pcErrorBox(310,
+      "아이디 또는 비밀번호가 없거나 잘못 입력되었습니다.\n확인 후 다시 로그인 해주세요. (1/5)")),
+
+    pcScreen("PC/LOGIN/4a2 · 5회 실패 잠금", 2200, 1380, pcErrorBox(310,
+      "아이디 또는 비밀번호가 없거나 잘못 입력되었습니다.\n확인 후 다시 로그인 해주세요.(최대 5분)")),
+
+    pcScreen("PC/LOGIN/4a3 · 사용 중지된 계정", 4320, 1380, pcErrorBox(294,
+      "사용이 중지된 계정입니다. 관리자에게 문의해 주세요.")),
+  ],
+};
+
 /** 설치기 '패턴' 탭 목록. 새 패턴은 여기에 추가한다. */
-export const PATTERNS: PatternDef[] = [MOBILE_LOGIN, MOBILE_WEB_SIGNUP];
+export const PATTERNS: PatternDef[] = [MOBILE_LOGIN, MOBILE_WEB_SIGNUP, PC_LOGIN];

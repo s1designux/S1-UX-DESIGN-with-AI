@@ -19,10 +19,10 @@
     "pageId": "80:16697",
     "sectionId": "2703:2"
   },
-  "currentPhase": "4-verify",
-  "status": "awaiting-user",
-  "lastCompletedCheckpoint": 4,
-  "nextAction": "river 검수 -> OK 시 5단계 registry/patterns/pc-login 등록 + pattern-data.ts PC_LOGIN 캡처",
+  "currentPhase": "5-registration",
+  "status": "complete",
+  "lastCompletedCheckpoint": 5,
+  "nextAction": "없음. 참고: snapshot-after-3.json 의 화면 3 글자폭 4개 값은 Figma 재측정으로 옛 값 — 다음 비교 기준으로 쓰려면 다시 뜬다.",
   "artifacts": {
     "intent": "intent.md",
     "sources": "0-intent-sources.md",
@@ -30,7 +30,7 @@
     "build": "3-build.md",
     "nodeMap": "node-map.json",
     "verification": "4-verification.md",
-    "registration": null,
+    "registration": "5-registration.md",
     "superseded": "_superseded-2026-07/ (외부 라이브러리로 만든 옛 결과 기록 — Figma 에서는 이미 삭제됨)",
     "review": "review.html"
   },
@@ -95,6 +95,12 @@
       "by": "river",
       "at": "2026-10-02",
       "quote": "로그인 묶음 부품으로 진행해줘"
+    },
+    {
+      "id": "register-installer",
+      "by": "river",
+      "at": "2026-10-02",
+      "quote": "응 넣자"
     }
   ],
   "blockers": [],
@@ -105,7 +111,7 @@
   "handoff": {
     "lastActor": "claude",
     "updatedAt": "2026-10-02",
-    "summary": "7장 + 변경1~3 component-verifier PASS. river 검수 대기."
+    "summary": "7장·변경1~3·설치기 등록 모두 component-verifier PASS. 설치기 실제 재생은 구현자 임시 페이지 테스트만(검증자 직접 재생 못 함)."
   },
   "evidence": {
     "baseline": [

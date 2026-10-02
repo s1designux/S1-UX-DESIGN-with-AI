@@ -258,3 +258,17 @@ SNAPDIFF_SUMMARY added=273 removed=231 changed=0 violations=65   EXIT=1
 
 ## ⑦ 스크린샷
 - `shots/PC-LOGIN-{1,2,3,4,4a1,4a2,4a3}.png` 7장 덮어씀(변경 3 후).
+
+---
+
+# 섹션 테두리 (2026-10-02)
+
+- 지시: 정본 섹션 2곳의 테두리를 설치기 선례(커밋 cd059a15)와 같게 `color/line/default`(이 파일 이름 `color/line/gray/subtle`, VariableID:8:1076)에 바인딩. 두께·정렬 유지, 다른 노드 손대지 않음.
+- 수정은 두 섹션 노드의 `strokes` 만(use_figma 1회). 쓰기 직후 같은 호출에서 다시 읽어 확인.
+
+| 섹션 | 전 stroke | 후 stroke | 두께 / 정렬 (전→후) |
+|---|---|---|---|
+| 2703:2 `Pattern / PC Login` | SOLID 검정(0,0,0) 불투명도 0.10, 바인딩 없음 | SOLID 233,233,233 불투명도 1, **VariableID:8:1076 바인딩** | 1 / INSIDE → 1 / INSIDE |
+| 2730:527 `Pattern / PC Login — 부품` | SOLID 검정(0,0,0) 불투명도 0.10, 바인딩 없음 | SOLID 233,233,233 불투명도 1, **VariableID:8:1076 바인딩** | 1 / INSIDE → 1 / INSIDE |
+
+- 바인딩 후 색 233,233,233(#E9E9E9)은 변수의 라이트 모드 값이 표시된 것. 불투명도는 기본 0.10 → 1(변수 색 그대로 표출).

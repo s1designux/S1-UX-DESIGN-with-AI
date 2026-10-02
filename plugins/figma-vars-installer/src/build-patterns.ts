@@ -11,7 +11,7 @@
  *   · 못 찾은 것은 조용히 대충 그리지 않는다 — warnings 에 담아 그대로 보고한다.
  */
 
-import type { PatternDef, PatternScreen, PNode, Override, SizeOverride } from "./pattern-data";
+import type { PatternDef, PatternScreen, PatternComponent, PNode, Override, SizeOverride, NestedProps } from "./pattern-data";
 import { sweepRawPaints } from "./build-components";
 
 export interface PatternMaps {
@@ -27,6 +27,14 @@ export interface PatternBuildResult {
   sectionId: string;
   screenCount: number;
   warnings: string[];
+}
+
+/** 한 번의 패턴 재생 동안 함께 들고 다니는 것.
+ *  locals = 이 재생에서 먼저 만든 패턴 전용 부품(이름 → COMPONENT).
+ *  owner  = 지금 그리고 있는 패턴 부품(SLOT 은 이 부품의 속성으로 만들어진다). */
+interface RenderCtx {
+  locals: Record<string, ComponentNode>;
+  owner?: ComponentNode;
 }
 
 /** 이미 로드한 폰트 — 같은 폰트를 반복해서 기다리지 않는다. */
@@ -152,11 +160,90 @@ function applySizeOverrides(inst: InstanceNode, szOv: SizeOverride[], warnings: 
   }
 }
 
+/** 이름('#id' 를 뗀 것) → 실제 속성 키로 바꿔 인스턴스에 건다. 없는 이름은 경고만 남기고 건너뛴다. */
+function setPropsByName(
+  inst: InstanceNode, props: Record<string, string | boolean>, where: string, warnings: string[],
+): void {
+  let keys: string[] = [];
+  try { keys = Object.keys(inst.componentProperties); } catch (e) { /* 못 읽으면 아래에서 전부 경고 */ }
+  const out: Record<string, string | boolean> = {};
+  for (const name of Object.keys(props)) {
+    const key = keys.find((k) => k.split("#")[0] === name);
+    if (!key) {
+      warnings.push(`지금 부품에 없는 속성이라 건너뛰었습니다: ${where} · ${name}`);
+      continue;
+    }
+    out[key] = props[name];
+  }
+  if (Object.keys(out).length === 0) return;
+  try { inst.setProperties(out); } catch (e) {
+    warnings.push(`속성을 걸지 못했습니다: ${where} — ${(e as Error).message}`);
+  }
+}
+
+/** 인스턴스 안쪽 '중첩 인스턴스'의 속성(variant·BOOLEAN)을 바꾼다.
+ *  예) 패턴 부품 안 Input 을 화면마다 Error·Message=On 으로. */
+function applyNestedProps(inst: InstanceNode, list: NestedProps[], warnings: string[]): void {
+  for (const [path, props] of list) {
+    const target = childAt(inst, path);
+    if (!target) {
+      warnings.push(`속성을 바꿀 자리를 찾지 못했습니다: ${inst.name} / ${path}`);
+      continue;
+    }
+    if (target.type !== "INSTANCE") {
+      warnings.push(`부품 자리가 아닙니다: ${inst.name} / ${path} (${target.type})`);
+      continue;
+    }
+    setPropsByName(target, props, `${inst.name} / ${path}`, warnings);
+  }
+}
+
+/** 패턴 부품 안에 진짜 슬롯을 만든다(설치기 build-components.ts 의 makeSlot 과 같은 배선).
+ *  createSlot() 이 부품에 SLOT 속성을 함께 만들고, finishSlot 이 그 속성의 이름·설명을 붙인다.
+ *  폴백 없음 — 슬롯이 안 생기면 겉모습만 같은 프레임으로 대신하지 않고 경고를 남긴 뒤 멈춘다. */
+function startSlot(spec: PNode, ctx: RenderCtx, warnings: string[]): { node: SceneNode; before: Set<string> } {
+  const owner = ctx.owner;
+  if (!owner) {
+    warnings.push(`슬롯은 패턴 부품 안에서만 만들 수 있습니다: ${spec.n}`);
+    throw new Error(`[패턴 슬롯] ${spec.n} — 패턴 부품 밖의 슬롯이라 만들지 않고 멈춥니다.`);
+  }
+  if (typeof (owner as any).createSlot !== "function") {
+    warnings.push(`이 Figma 에서는 슬롯을 만들 수 없습니다: ${owner.name} / ${spec.n}`);
+    throw new Error(`[패턴 슬롯] ${owner.name} / ${spec.n} — 슬롯을 만들 수 없어 멈춥니다(겉모습만 같은 프레임으로 대신하지 않음).`);
+  }
+  const before = new Set(Object.entries(owner.componentPropertyDefinitions || {})
+    .filter(([, d]) => d.type === "SLOT").map(([n]) => n));
+  const slot = owner.createSlot() as unknown as SceneNode;
+  return { node: slot, before };
+}
+
+function finishSlot(spec: PNode, ctx: RenderCtx, before: Set<string>, warnings: string[]): void {
+  const owner = ctx.owner as ComponentNode;
+  const defs = Object.entries(owner.componentPropertyDefinitions || {});
+  const added = defs.find(([n, d]) => d.type === "SLOT" && !before.has(n));
+  if (!added) {
+    warnings.push(`슬롯 속성이 만들어지지 않았습니다: ${owner.name} / ${spec.n}`);
+    throw new Error(`[패턴 슬롯] ${owner.name} / ${spec.n} — 슬롯 속성을 찾지 못해 멈춥니다.`);
+  }
+  owner.editComponentProperty(added[0], { name: spec.n, description: spec.desc || "", preferredValues: [] });
+}
+
 /** 세트 안에서 variant 조합이 맞는 변형을 고르고, 나머지 속성(BOOLEAN 등)은 인스턴스에 건다.
  *  외부 라이브러리 부품(아이콘 등)은 설치기가 만들지 않으므로 키로 불러온다. */
 async function makeInstance(
-  spec: PNode, maps: PatternMaps, warnings: string[],
+  spec: PNode, maps: PatternMaps, warnings: string[], ctx: RenderCtx,
 ): Promise<InstanceNode | null> {
+  if (spec.local) {
+    // 패턴 전용 부품 — 같은 재생에서 화면보다 먼저 만들어 둔 것을 쓴다.
+    const comp = ctx.locals[spec.local];
+    if (!comp) {
+      warnings.push(`패턴 부품을 찾지 못했습니다: ${spec.local} (${spec.n})`);
+      return null;
+    }
+    const inst = comp.createInstance();
+    if (spec.pr && Object.keys(spec.pr).length) setPropsByName(inst, spec.pr, spec.n, warnings);
+    return inst;
+  }
   if (spec.remote && spec.key) {
     // 키는 그 '변형' 자체를 가리키므로 variant 를 따로 고를 필요가 없다.
     try {
@@ -261,31 +348,42 @@ async function makeText(spec: PNode, maps: PatternMaps, warnings: string[]): Pro
 /** 노드 하나를 만들고 부모에 붙인다. 자식은 재귀로 이어 붙인다. */
 async function renderNode(
   spec: PNode, parent: BaseNode & ChildrenMixin, parentAuto: boolean,
-  maps: PatternMaps, warnings: string[],
+  maps: PatternMaps, warnings: string[], ctx: RenderCtx = { locals: {} },
 ): Promise<SceneNode | null> {
   let node: SceneNode | null = null;
+  let slotBefore: Set<string> | null = null;
 
-  if (spec.t === "INST") node = await makeInstance(spec, maps, warnings);
+  if (spec.t === "INST") node = await makeInstance(spec, maps, warnings, ctx);
   else if (spec.t === "TEXT") node = await makeText(spec, maps, warnings);
   else if (spec.t === "RECT") node = figma.createRectangle();
-  else node = figma.createFrame();
+  else if (spec.t === "COMP") {
+    const comp = figma.createComponent();
+    ctx = { locals: ctx.locals, owner: comp };
+    node = comp;
+  } else if (spec.t === "SLOT") {
+    const made = startSlot(spec, ctx, warnings);
+    node = made.node;
+    slotBefore = made.before;
+  } else node = figma.createFrame();
 
   if (!node) return null;
   node.name = spec.n;
   parent.appendChild(node);
+  if (spec.t === "COMP" && spec.desc) (node as ComponentNode).description = spec.desc;
 
   if (spec.abs && "layoutPositioning" in node) node.layoutPositioning = "ABSOLUTE";
 
   // 오토레이아웃 설정은 크기보다 먼저 — resize 가 sizing mode 를 FIXED 로 되돌리기 때문.
-  if (spec.al && node.type === "FRAME") {
+  if (spec.al && (node.type === "FRAME" || node.type === "COMPONENT" || (node.type as string) === "SLOT")) {
+    const n = node as FrameNode;
     const [mode, gap, pt, pr, pb, pl, pri, ctr, pa, ca] = spec.al;
-    node.layoutMode = mode;
-    node.itemSpacing = gap;
-    node.paddingTop = pt; node.paddingRight = pr; node.paddingBottom = pb; node.paddingLeft = pl;
-    node.primaryAxisSizingMode = pri;
-    node.counterAxisSizingMode = ctr;
-    node.primaryAxisAlignItems = pa as any;
-    node.counterAxisAlignItems = ca as any;
+    n.layoutMode = mode;
+    n.itemSpacing = gap;
+    n.paddingTop = pt; n.paddingRight = pr; n.paddingBottom = pb; n.paddingLeft = pl;
+    n.primaryAxisSizingMode = pri;
+    n.counterAxisSizingMode = ctr;
+    n.primaryAxisAlignItems = pa as any;
+    n.counterAxisAlignItems = ca as any;
   }
 
   // 크기: HUG 축은 내용이 정하므로 건드리지 않는다.
@@ -296,6 +394,14 @@ async function renderNode(
     const h = vHug ? node.height : spec.h;
     try { (node as LayoutMixin).resize(w, h); } catch (e) {
       warnings.push(`크기를 맞추지 못했습니다: ${spec.n} — ${(e as Error).message}`);
+    }
+    // resize 는 오토레이아웃의 '내용에 맞춤(AUTO)'을 FIXED 로 되돌린다. 부모가 오토레이아웃이면 아래
+    // 늘림/줄임(sz) 설정이 되살리지만, 섹션에 바로 놓인 것(패턴 부품 루트 등)은 되살릴 길이 없어 여기서 다시 건다.
+    // (2026-10-02 재생 대조에서 발견 — PC Login Box 높이가 HUG 가 아니라 272 고정으로 남았다)
+    const resetBySz = parentAuto && !spec.abs && spec.sz !== undefined;
+    if (spec.al && !resetBySz && (spec.al[6] === "AUTO" || spec.al[7] === "AUTO") && "primaryAxisSizingMode" in node) {
+      (node as FrameNode).primaryAxisSizingMode = spec.al[6];
+      (node as FrameNode).counterAxisSizingMode = spec.al[7];
     }
   }
 
@@ -322,7 +428,7 @@ async function renderNode(
   if (spec.fillVar) bindFill(node, maps, spec.fillVar, warnings);
   // 색을 정해 주지 않은 자리는 **Figma 기본색(프레임 흰색·사각형 회색)을 남기지 않는다.**
   //   남기면 부품이 아닌 요소가 검수기에 "hex 직접 사용"으로 걸린다(river 지적 2026-09-21).
-  else if (spec.t === "FRAME" || spec.t === "RECT") (node as GeometryMixin).fills = [];
+  else if (spec.t === "FRAME" || spec.t === "RECT" || spec.t === "COMP" || spec.t === "SLOT") (node as GeometryMixin).fills = [];
   else if (spec.t === "TEXT") warnings.push(`글자색이 토큰에 연결되지 않았습니다: ${spec.n}`);
   if (spec.strokeVar) {
     bindStroke(node, maps, spec.strokeVar, warnings);
@@ -330,7 +436,12 @@ async function renderNode(
     if (spec.strokeAlign) (node as GeometryMixin).strokeAlign = spec.strokeAlign;
   }
 
-  // 크기 방식 → 글자 순서. 폭이 정해진 뒤에 글자를 넣어야 줄바꿈이 정본과 같아진다.
+  // 중첩 속성 → 크기 방식 → 글자 순서.
+  //   중첩 인스턴스의 변형이 바뀌면 그 안쪽 자식이 바뀌므로 속성을 가장 먼저 건다.
+  //   폭이 정해진 뒤에 글자를 넣어야 줄바꿈이 정본과 같아진다.
+  if (spec.t === "INST" && spec.nestedPr && spec.nestedPr.length) {
+    applyNestedProps(node as InstanceNode, spec.nestedPr, warnings);
+  }
   if (spec.t === "INST" && spec.szOv && spec.szOv.length) {
     applySizeOverrides(node as InstanceNode, spec.szOv, warnings);
   }
@@ -341,9 +452,10 @@ async function renderNode(
   if (spec.c && "appendChild" in node) {
     const auto = spec.al !== undefined;
     for (const child of spec.c) {
-      await renderNode(child, node as FrameNode, auto, maps, warnings);
+      await renderNode(child, node as FrameNode, auto, maps, warnings, ctx);
     }
   }
+  if (spec.t === "SLOT" && slotBefore) finishSlot(spec, ctx, slotBefore, warnings);
 
   return node;
 }
@@ -407,11 +519,20 @@ export async function buildPattern(
     }
   } catch (e) { /* strokes 를 못 읽는 환경 → 그대로 둔다 */ }
 
-  // 섹션 크기 = 화면 배치 범위 + 정본과 같은 여백(좌우/상하 80·100).
+  // 섹션 크기 = 화면(과 패턴 부품) 배치 범위 + 정본과 같은 여백(좌우/상하 80·100).
+  //   화면 크기는 각 화면 틀의 w·h 를 쓴다(모바일 360×780, PC 1920×1080). 안 적혀 있으면 모바일 값.
   let maxX = 0, maxY = 0;
   for (const s of def.screens) {
-    if (s.x + 360 > maxX) maxX = s.x + 360;
-    if (s.y + 780 > maxY) maxY = s.y + 780;
+    const sw = s.root.w !== undefined ? s.root.w : 360;
+    const sh = s.root.h !== undefined ? s.root.h : 780;
+    if (s.x + sw > maxX) maxX = s.x + sw;
+    if (s.y + sh > maxY) maxY = s.y + sh;
+  }
+  for (const c of def.components || []) {
+    const cw = c.root.w !== undefined ? c.root.w : 0;
+    const ch = c.root.h !== undefined ? c.root.h : 0;
+    if (c.x + cw > maxX) maxX = c.x + cw;
+    if (c.y + ch > maxY) maxY = c.y + ch;
   }
   section.resizeWithoutConstraints(maxX + 80, maxY + 100);
 
@@ -428,10 +549,17 @@ export async function buildPattern(
   section.x = 200;
   section.y = top;
 
+  // 패턴 전용 부품을 화면보다 먼저 만든다 — 화면의 local 인스턴스가 이것을 쓴다.
+  const ctx: RenderCtx = { locals: {} };
+  for (const pc of def.components || []) {
+    if (onProgress) onProgress(0, def.screens.length, pc.name);
+    await renderComponent(pc, section, maps, warnings, ctx);
+  }
+
   let done = 0;
   for (const screen of def.screens) {
     if (onProgress) onProgress(done, def.screens.length, screen.name);
-    await renderScreen(screen, section, maps, warnings);
+    await renderScreen(screen, section, maps, warnings, ctx);
     done++;
   }
   if (onProgress) onProgress(done, def.screens.length, "");
@@ -446,8 +574,23 @@ export async function buildPattern(
 }
 
 async function renderScreen(
-  screen: PatternScreen, section: SectionNode, maps: PatternMaps, warnings: string[],
+  screen: PatternScreen, section: SectionNode, maps: PatternMaps, warnings: string[], ctx: RenderCtx,
 ): Promise<void> {
-  const frame = await renderNode(screen.root, section, false, maps, warnings);
+  const frame = await renderNode(screen.root, section, false, maps, warnings, ctx);
   if (frame) { frame.x = screen.x; frame.y = screen.y; }
+}
+
+/** 패턴 전용 부품 1개를 섹션 안에 만들고, 화면이 쓸 수 있게 ctx.locals 에 이름으로 올린다. */
+async function renderComponent(
+  pc: PatternComponent, section: SectionNode, maps: PatternMaps, warnings: string[], ctx: RenderCtx,
+): Promise<void> {
+  if (pc.root.t !== "COMP") {
+    throw new Error(`[패턴 부품] ${pc.name} — 맨 위가 부품(COMP)이 아니라 만들지 않고 멈춥니다.`);
+  }
+  const comp = await renderNode({ ...pc.root, n: pc.name }, section, false, maps, warnings, ctx);
+  if (!comp || comp.type !== "COMPONENT") {
+    throw new Error(`[패턴 부품] ${pc.name} 을(를) 만들지 못했습니다.`);
+  }
+  comp.x = pc.x; comp.y = pc.y;
+  ctx.locals[pc.name] = comp;
 }

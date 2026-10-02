@@ -291,3 +291,127 @@ SNAPDIFF_SUMMARY added=273 removed=231 changed=0 violations=65  (EXIT 1)
 ### 권장 상태 전환
 - 검문소 4 PASS(변경 3) → `nextAction` = 5단계 패턴 등록(`registry/patterns/pc-login/`). `dependencies` 에 패턴 전용 부품 `PC Login Box` 를 기록한다.
 - `evidence.snapdiff`(변경 3)에 기록할 것: violations 65 = 전부 새 인스턴스 하위 추가 / 옛 LoginBox 하위 삭제(검증자 조상 추적). after-3 는 검증자가 실측 해시로 확인.
+
+---
+
+## 설치기 등록 — 캡처본·재생기 확장·registry 문서 · 2026-10-02 · component-verifier
+
+- 대상(아직 커밋 안 된 변경): `build-patterns.ts` · `pattern-data.ts`(PC_LOGIN) · `registry/patterns/index.json` · `registry/patterns/pc-login/*.md` · `5-registration.md` · 설치기 zip.
+- 판단 원칙(오케스트레이터 지시): 구분선 색 `color/line/default` 는 (b) 로 이미 확정. 부품을 같은 섹션 빈칸(6440,1380)에 두는 것은 그대로 둔다.
+
+### 판정: **HOLD** — ❌(a) 1 · ❓(c) 1 · 🟡(b) 1(구분선 색, 이미 확정된 것) · BLOCKED 0
+
+### ① 캡처가 정본과 같은지 (Figma 정본에서 직접 확인)
+- **부품 `PC_LOGIN_BOX`:** 2730:528 과 대조했다.
+  - 루트 오토레이아웃 `VERTICAL,0,0,0,0,0,AUTO,FIXED,MIN,CENTER`, 클립 없음.
+  - 자식 7개의 이름·순서·크기·FILL/HUG·클립이 같다. 스페이서와 Fields 는 clip=true, Fields 는 `VERTICAL,10,…,AUTO,FIXED,MIN,MIN`.
+  - 슬롯 `Links` 는 `HORIZONTAL,12,…,FIXED,AUTO,CENTER,CENTER`, 설명 문구가 같다.
+  - Text Button 은 Secondary/Default 이고, 글자 자리 `0` = TEXT `텍스트버튼`.
+  - 입력칸 placeholder 자리 `0.0` = `field` 안 TEXT, 버튼 글자 자리 `0` = `로그인`. 모두 일치한다.
+- **화면별 경로가 실제 노드를 가리키는지:** 정본 인스턴스에서 각 경로를 직접 따라가 봤다. 모두 맞다.
+
+  | 화면 | 경로 | 정본에서 가리키는 것 |
+  |---|---|---|
+  | 2 (2735:169) | `2.0` | Input/ID State=Focus |
+  | 2 | `2.0.0.0.0` | TEXT `s1desig` (Focus 변형은 한 단계 더 깊음 — 캡처 경로와 일치) |
+  | 3 (2735:279) | `2.0` · `2.1` · `4` | Filled · Focus · Button Default |
+  | 3 | `2.0.0.0` | `s1design` |
+  | 3 | `2.1.0.0.0` | `••••••••` |
+  | 4 (2735:398) | `2.0` · `2.1` · `4` | Filled · Filled · Default |
+  | 4 | `2.0.0.0` · `2.1.0.0` | `s1design` · `••••••••` |
+  | 4a1 (2735:500) | `2.0` · `2.1` | Error·Off · Error·On |
+  | 4a1 | `2.1.1` | `안내 메세지` FILL/HUG, 문구 A |
+  | 4a2 · 4a3 | `2.1.1` | 문구 B · 문구 C |
+
+- **문구:** 캡처본의 문구 A/B/C·placeholder·링크 3개·`s1desig`/`s1design`/`••••••••` 가 정본 글자와 정확히 같다. B 는 `해주세요.(최대 5분)` 처럼 괄호 앞 띄어쓰기가 없는 것까지 같다.
+- **화면 뼈대:**
+  - 화면 `VERTICAL…FIXED,FIXED,MIN,MIN`, 클립 있음.
+  - Body `VERTICAL,0,123,…,FIXED,FIXED,MIN,CENTER`, 클립 있음, FILL/FILL. 인스턴스는 FIXED/HUG.
+  - 높이 272/310/294 와 좌표(x 80·2200·4320·6440, y 100·1380)가 정본과 같다.
+- 지어낸 값은 없다. 다르게 둔 곳은 `knownDivergence` 에 적힌 것뿐이다(부품 위치 · 색 변수 이름 · 섹션 테두리).
+
+### ② 재생기 확장 (코드를 읽고 분석)
+- **슬롯은 대체하지 않고 멈춘다:**
+  - `startSlot` 은 부품 밖에 있거나 `createSlot` 이 없으면 경고 후 throw 한다.
+  - `finishSlot` 은 새 SLOT 속성이 안 생기면 throw 한다.
+  - `renderComponent` 는 맨 위가 COMP 가 아니거나 생성에 실패하면 throw 한다.
+  - 겉모습만 비슷한 프레임으로 대신 그리는 코드는 없다. ✅
+- **`local` 부품을 찾지 못하면** 경고를 남기고 그 노드만 건너뛴다(null). 이 파일의 기존 원칙(못 찾으면 warnings 로 보고)과 같다. 부품 생성이 실패하면 그 전에 throw 하므로, 이름이 어긋날 때만 해당된다.
+- **기존 두 패턴 하위 호환 — 캡처본을 tsx 로 불러 직접 분석했다:**
+  - 새로 넣은 「resize 뒤 AUTO 다시 걸기」 조건에 해당하는 노드: MOBILE_LOGIN 234개 중 0, MOBILE_WEB_SIGNUP 145개 중 0, PC_LOGIN 은 부품 루트 1개뿐(의도한 대상).
+  - 새 종류(COMP/SLOT/local/nestedPr) 사용: 모바일 두 패턴 0건.
+  - 섹션 크기 계산식이 바뀌었지만 결과는 같다: 모바일 로그인 2720×1880 = 2720×1880, 모바일 웹 가입 2520×1880 = 2520×1880. PC 는 8440×2560 으로 정본과 같다.
+  - 결론: 기존 두 패턴의 재생 결과는 코드상 바뀌지 않는다. ✅
+- **직접 재생은 하지 못했다 (NOT_VERIFIED).** 설치기 번들(code.js 1MB)이 use_figma 한 번에 넣을 수 있는 크기(50KB)를 넘는다. 실제 재생 결과는 구현자 테스트 기록(5-registration — 차이 0, 경고 0, MOBILE_LOGIN 신·구 1083=1083)에 기댄다. 검증자가 독립으로 확인한 것은 위의 코드·데이터 분석까지다. MOBILE_WEB_SIGNUP 은 구현자도 실제로 재생해 비교하지 않았다(데이터 분석상 영향 0).
+
+### ③ registry 문서 ↔ intent/2-mapping
+- README · flow · states · copy · content-rules · index.json 을 대조했다. 아래 항목이 모두 반영돼 있다.
+  - 변경 1: 간격 34/10/32/16
+  - 변경 2: WebTabBar 101, 화면 쌓는 순서
+  - 변경 3: PC Login Box, 슬롯 Links, 아이디 저장 없음(제거된 상태로 기록)
+  - 화면 7장의 상태·노드 id, 문구 A/B/C, 「넣지 않는 것」
+  - 버튼 상태(1·2 Disabled, 3 이후 Default)도 2-mapping 과 같다.
+- **❌(a)-1 — 「구분선 색이 미결」이라는 낡은 문장이 세 곳에 남아 있다.**
+  - `registry/patterns/pc-login/content-rules.md` 보조 링크 절: 「색 선택 자체는 … needs-decision #1 로 남아 있다」
+  - `5-registration.md` 「남은 것」 첫 줄: 「링크 구분선 색 … 미결」
+  - `pattern-data.ts` PC_LOGIN 머리 주석: 「색 선택 자체는 미결로 남아 있다」
+  - intent 「변경 3」과 부품 검증이 이미 (b) 로 확정했으므로 이 세 문장은 사실과 다르다. 다음 사람이 이 문장을 보고 다시 결정을 올리게 만든다. 문장만 고치면 되고 값은 바뀌지 않는다.
+
+### ④ 설치기 검사·빌드 (검증자 재실행)
+- `npm run installer:check`(tsc --noEmit) → EXIT 0.
+- `npm run installer:build` → 완료. 컴포넌트 56종, ui.html 스크립트 문법 2개 정상. 다크 사본 대체 경고(Footer 3종)는 기존 출력이다.
+  - 새 dist `code.js` 에 `pc-login`/`PC Login Box` 5곳, `createSlot` 4곳이 들어 있다.
+  - zip 은 다시 만들어지면서 빌드 시각이 바뀌어 해시가 달라졌다(`23b5dd15…` → `3077186f…`). 내용 차이는 빌드 스탬프뿐이다. **검증자가 다시 빌드했기 때문에 zip 파일이 바뀐 상태다.**
+
+### ⑤ 테스트 잔여물
+- 페이지 목록에 새 페이지는 없다(기존 13개 그대로).
+- `test`(302:19291)와 `S-1 S/W UX Pattern`(2381:44746) 에 최근 id(2700 이후) 노드가 0개이고, PC 로그인 이름의 노드도 0개다.
+- Patterns PC 페이지에는 정본 섹션 2개(2703:2 · 2730:527)만 있다. 잔여물 0. 다른 페이지는 전부 훑지 않았다.
+
+### ❓(c)-1 — 정본 섹션 테두리가 토큰에 연결되지 않은 색이다
+- 정본 섹션 2703:2 와 2730:527 둘 다 테두리가 `#000000` 10% 이고 **변수에 연결되지 않았다**(Figma 가 섹션을 만들 때 넣는 기본 테두리). 바탕은 `color/bg/level-3` 에 연결돼 있다.
+- 앞선 검증들은 섹션의 바탕만 봤고 **테두리는 보지 않았다.** 이번에 처음 발견했다.
+- 설치기 캡처본은 이 테두리를 `color/line/default` 에 걸기로 하고 `knownDivergence` 에 적어 두었다. 이 경우 Figma 의 정본보다 설치기 쪽이 하드룰 H2 에 더 맞는 상태가 된다.
+- 결정이 필요한 것: Figma 기본 섹션 테두리가 H2(use_figma 로 그린 노드는 색을 모두 변수에 연결)의 대상인지. 대상이면 정본 섹션 테두리를 `color/line/default` 로 연결하는 수정이 필요하고, 그러면 knownDivergence 의 이 항목은 사라진다. 대상이 아니면 장식용 크롬 예외로 기록한다.
+- 참고: 모바일 쪽 섹션들(173:2431 페이지)도 같은 기본 테두리를 연결 없이 갖고 있다.
+
+### 이번에 다시 보지 않은 것
+- 설치기를 직접 재생한 결과(위 NOT_VERIFIED)
+- 다크 모드
+- Pretendard 가 깔린 데스크톱 설치기에서 글자 폭
+
+### 권장 상태 전환
+- ❌(a)-1: 세 문장을 「확정 (b)」로 고친 뒤, 문서만 다시 확인한다.
+- ❓(c)-1: river 결정을 받는다. 그 전에는 HOLD.
+- 커밋할 때 zip 이 검증자가 다시 빌드한 것이라는 점을 함께 적는다.
+
+### 설치기 등록 — HOLD 처리 델타 확인 · 2026-10-02 · component-verifier
+
+**갱신 판정: PASS** — ❌(a) 0 · ❓(c) 0 · 🟡(b) 1(구분선 색, 확정) · BLOCKED 0
+
+- **❌(a)-1 해소:** 「미결」로 적혀 있던 세 곳이 모두 「확정 (b)」로 바뀌었다.
+  - `registry/patterns/pc-login/content-rules.md` 23행: 「이 선택은 확정이다(intent.md 변경 3 · 부품 검증 🟡(b))」
+  - `5-registration.md` 73행: 「`color/line/default` 로 확정 … needs-decision #1 은 이로써 닫힘」
+  - `pattern-data.ts` 775행: 「색 선택은 확정이다」
+  - pc-login 문서와 index.json 을 다시 찾아봤고 「미결」·「needs-decision #1」이 남은 곳은 없다.
+- **❓(c)-1 해소 — 이미 정해진 규칙이 있다:**
+  - 커밋 `cd059a15` 를 직접 열어 봤다. river 의 실측 경고 「Pattern / App Login (선)」(2026-09-21)를 받아, 설치기가 섹션 기본 테두리를 정본 선 토큰에 걸고 실제로 걸렸는지 다시 읽어 확인하도록 고친 커밋이다. 따라서 이 건은 새 판단이 아니라 기존 규칙을 정본에 맞춘 것이다.
+  - 정본 쪽도 실측했다. 섹션 2703:2 와 2730:527 의 테두리가 `VariableID:8:1076`(`color/line/gray/subtle` = 정본 `color/line/default`)에 바인딩돼 있다.
+  - 두께 1 · 정렬 INSIDE 는 그대로다. 불투명도는 0.1 → 1 이 됐다. 설치기 `bindStroke` 도 불투명도를 기본 1 로 둔 새 칠을 만들기 때문에 결과가 같다.
+  - 바탕은 `color/bg/level-3` 그대로다. 두 섹션 아래 전체 노드(숨은 자식 포함)의 fill·stroke 를 훑었고, 바인딩 안 된 색은 0건이다.
+- **index.json:** pc-login `knownDivergence` 에서 「섹션 테두리」 항목이 빠지고 2건(부품 위치 · 구분선 변수 이름)만 남았다. JSON 은 정상적으로 읽힌다.
+- **다른 노드가 바뀌지 않았는지 (해시로 대조):**
+  - 섹션 2703:2 의 루트와 화면 6장(1·2·4·4a1·4a2·4a3)은 `snapshot-after-3.json` 과 해시가 같다.
+  - **화면 3(2712:164)만 해시가 달랐다.** 노드별로 다시 계산해 보니 차이는 정확히 글자 폭 4개 필드다.
+    - `••••••••` 폭 38 → 56
+    - 그 옆 커서 x 42 → 60
+    - 버튼 `로그인` 폭 39 → 36, x 130.5 → 132
+    - 문구·글자 스타일·폰트·색·구조는 그대로다. 이 4개만 반영하면 해시가 정확히 일치한다(96:e35f9f89).
+  - 판단: Figma 가 Pretendard 기준으로 글자 폭을 다시 계산한 결과다. 테두리 바인딩 작업과는 관계가 없다(그 작업은 섹션 노드의 `strokes` 만 건드렸다). 구현자의 재생 기록에 있는 「정본 56 / 버튼 36」과도 맞는다.
+  - 판정 건수에는 넣지 않는다. 다만 **`snapshot-after-3.json` 의 화면 3 값 4개는 이제 옛 값이다.** 다음에 이 파일을 비교 기준으로 쓰려면 다시 떠야 한다.
+- 부품 섹션 2730:527 은 루트 해시가 테두리 때문에 바뀌었고, 부품 2730:528 은 노드 36개 그대로다. 테두리 외 변경은 위의 raw 0 스캔과 섹션 자식 목록이 그대로인 것으로 확인했다. 부품만 따로 비교할 이전 기준 해시는 없다.
+
+**아직 남은 것:**
+- 설치기를 직접 재생해 보지는 못했다(NOT_VERIFIED — 번들 크기 문제). 구현자 테스트에 기댄다.
+- 검증자가 다시 빌드한 zip 이 그대로 작업 폴더에 있다.
+- 모바일 섹션 테두리는 이번 범위 밖이다.

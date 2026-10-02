@@ -3,7 +3,7 @@
     "name": "SW Pattern Registry Index",
     "version": "0.3.0",
     "status": "mvp-pattern",
-    "updatedAt": "2026-09-02",
+    "updatedAt": "2026-10-02",
     "description": "Pattern Harness entry point. 패턴은 코어 컴포넌트를 조합한 반복 레이아웃이며 components/index.json과 분리 관리한다."
   },
   "patterns": [
@@ -199,6 +199,98 @@
         "knownDivergence": [
           "입력창 라벨(비밀번호·비밀번호 확인) — 캡처 당시에는 Input 의 Label variant 였으나, 정본은 'Label 은 Input 의 variant 가 아니며 화면에서 따로 조합한다'(build-components.ts)로 정해져 있다. 그 규칙대로 화면의 글자로 옮겼고, 문구·스타일(body/14M)·색(color/form-control/label/default)·간격(18+6)은 원본 실측값 그대로다. 바깥 경계는 정본과 동일(2026-09-02 대조).",
           "더보기(›)·닫기(×) 아이콘은 설치기가 만들지 않는 외부 라이브러리 부품이라 컴포넌트 키로 불러온다."
+        ]
+      }
+    },
+    {
+      "id": "pc-login",
+      "name": "PC Login",
+      "status": "promoted",
+      "platform": "pc",
+      "description": "PC 웹(1920×1080) 로그인 패턴 — 창틀·맨 위 줄 아래 패턴 전용 로그인 묶음(CI·아이디/비밀번호 칸·로그인 버튼·보조 링크 슬롯), 입력 중 상태와 로그인 실패 3종(계정 불일치·5회 잠금·사용 중지)",
+      "source": {
+        "kind": "intent-spec",
+        "intent": "reports/screen-rebuild/login/pc-web/intent.md",
+        "refs": [
+          "~/dev-screen-qa/mvp0/auth.py 로그인화면()",
+          "registry/patterns/mobile-login/content-rules.md",
+          "reports/screen-rebuild/login/pc-web/0-intent-sources.md"
+        ]
+      },
+      "figma": {
+        "fileKey": "cysG5U1udpQqVagYY1hWHW",
+        "pageId": "80:16697",
+        "sectionId": "2703:2",
+        "patternComponents": [
+          {
+            "name": "PC Login Box",
+            "nodeId": "2730:528",
+            "sectionId": "2730:527",
+            "slots": [
+              "Links"
+            ]
+          }
+        ]
+      },
+      "dependencies": {
+        "coreComponents": [
+          "WebTabBar",
+          "LoginGNB",
+          "Footer",
+          "CI",
+          "Input",
+          "Button",
+          "Text Button"
+        ],
+        "patternComponents": [
+          "PC Login Box"
+        ],
+        "_note": "PC Login Box 는 패턴 전용 부품이다 — 디자인가이드 정본(build-components.ts·설치기 컴포넌트 목록)에는 넣지 않는다(river 결정 2026-10-02)."
+      },
+      "documentation": {
+        "entry": "registry/patterns/pc-login/README.md",
+        "flow": "registry/patterns/pc-login/flow.md",
+        "states": "registry/patterns/pc-login/states.md",
+        "copy": "registry/patterns/pc-login/copy.md",
+        "contentRules": "registry/patterns/pc-login/content-rules.md",
+        "screenNaming": "registry/governance/screen-naming-policy.json"
+      },
+      "evidence": {
+        "buildHistory": "reports/screen-rebuild/login/pc-web/",
+        "patternComponentBuild": "reports/figma-library-build/pc-login-box/",
+        "verification": "reports/screen-rebuild/login/pc-web/4-verification.md",
+        "patternComponentVerification": "reports/figma-library-build/pc-login-box/4-verification.md",
+        "registration": "reports/screen-rebuild/login/pc-web/5-registration.md"
+      },
+      "verification": {
+        "status": "PASS",
+        "screenCount": 7,
+        "report": "reports/screen-rebuild/login/pc-web/4-verification.md",
+        "_note": "변경 3(LoginBox → PC Login Box 인스턴스) 델타 재검증 PASS — ❌(a) 0 · ❓(c) 0 · 🟡(b) 1(링크 구분선 색, 부품 검증에서 넘어옴)."
+      },
+      "registeredAt": "2026-10-02",
+      "screens": {
+        "total": 7,
+        "main": 4,
+        "branch": 3,
+        "namingPolicy": "registry/governance/screen-naming-policy.json",
+        "namePrefix": "PC/LOGIN/",
+        "note": "프레임 이름은 고정 식별자가 아니다. 화면을 가리킬 때는 states.md 의 Figma 노드 ID 를 쓴다."
+      },
+      "distribution": {
+        "installer": "plugins/figma-vars-installer/src/pattern-data.ts",
+        "kind": "capture",
+        "_note": "설치기 '패턴' 탭이 쓰는 캡처본(파생)이다. 정본은 위 figma 섹션과 패턴 부품이며, 정본이 바뀌면 캡처본을 다시 떠야 한다.",
+        "capturedAt": "2026-10-02",
+        "capturedFrom": {
+          "fileKey": "cysG5U1udpQqVagYY1hWHW",
+          "pageId": "80:16697",
+          "sectionId": "2703:2",
+          "patternComponent": "2730:528"
+        },
+        "knownDivergence": [
+          "패턴 부품 위치 — 정본은 화면 섹션 밖의 따로 둔 섹션(2730:527)에 있다. 설치기는 패턴 1개 = 섹션 1개라 화면 섹션 안의 빈 칸(6440,1380)에 둔다. 화면 좌표·섹션 크기(8440×2560)는 정본과 같다.",
+          "링크 구분선 색 이름 — 정본 파일은 옛 이름 변수 color/line/gray/subtle 에 걸려 있다. 정본 이름 color/line/default(같은 gray/100 · gray-dark/300)로 적었다."
         ]
       }
     }
