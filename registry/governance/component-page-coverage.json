@@ -30,7 +30,8 @@
     "Expandable Card": "expandable-card",
     "Divider": "divider",
     "Data Tag": "data-tag",
-    "Side Nav": "lnb"
+    "Side Nav": "lnb",
+    "List Row": "list-row"
   },
   "_sectionForNote": {
     "Search Input": "input 섹션 안에 변형(variant-group)으로 임베드 — 독립 섹션 불요, input 섹션 존재로 충족",
@@ -38,7 +39,8 @@
     "Expandable Card": "HTML 섹션 id=expandable-card — ui-library dist 배포본을 소비하는 승인 배포본 틀(§A) 빈 mount. 모바일 한 유형이라 comp-nav 는 data-platforms=\"mobile\".",
     "Divider": "HTML 섹션 id=divider — 승인 배포본 틀(§A) 빈 mount. 상태 축이 없고 Axis × Weight 두 축(data-cov-axis · data-cov-weight).",
     "Data Tag": "HTML 섹션 id=data-tag — 승인 배포본 틀(§A) 빈 mount. 상태 축이 없고 Type × Variant × Color 세 축을 한 표에서 본다.",
-    "Side Nav": "HTML 섹션 id=lnb — ui-library dist 배포본을 소비하는 승인 배포본 틀(§A) 빈 mount(2026-10-02 river \"남은 검수 마저 하고 사이트에 올려줘\"). 사이트 이름은 LNB(river 2026-09-30 확정), Figma 세트 이름은 Side Nav. 판(Type × Size × State) 표에 더해 요소 두 세트(Side Nav Item · Side Nav Sub Item)의 축을 axisSource 로 합산해 같은 섹션의 표 두 개로 보인다. PC 전용이라 comp-nav 는 data-platforms=\"pc\"."
+    "Side Nav": "HTML 섹션 id=lnb — ui-library dist 배포본을 소비하는 승인 배포본 틀(§A) 빈 mount(2026-10-02 river \"남은 검수 마저 하고 사이트에 올려줘\"). 사이트 이름은 LNB(river 2026-09-30 확정), Figma 세트 이름은 Side Nav. 판(Type × Size × State) 표에 더해 요소 두 세트(Side Nav Item · Side Nav Sub Item)의 축을 axisSource 로 합산해 같은 섹션의 표 두 개로 보인다. PC 전용이라 comp-nav 는 data-platforms=\"pc\".",
+    "List Row": "HTML 섹션 id=list-row — ui-library dist 배포본을 소비하는 승인 배포본 틀(§A) 빈 mount(2026-10-02 river \"승인할게, 사이트 메뉴랑 전달본에 넣어줘\"). Type 7 × State 3 을 한 표(유형 행 × 상태 열)에서 보고, 슬롯 갈아끼운 보기 4줄을 덧붙인다. 모바일 전용이라 comp-nav 는 data-platforms=\"mobile\"(List 묶음, Expandable Card 다음)."
   },
   "_variantCoverageNote": "Gate 19(variant-coverage) 용. 각 HTML 섹션이 보여줘야 할 '상태(State)'의 정본 = 설치기 변형의 State 축. stateSource 는 상태가 메인이 아니라 요소 컴포넌트에 있는 예외만 명시(기본=섹션의 main 컴포넌트). HTML 섹션은 data-cov-states 속성으로 자기 커버리지를 선언하고, Gate 19 가 설치기 State ⊆ 선언 인지 대조한다. 미선언 섹션은 '미계측'으로 정직 보고(거짓 완전성 차단).",
   "noSectionNeeded": [
@@ -143,10 +145,6 @@
     {
       "name": "Mobile Header",
       "reason": "모바일 상단 앱바 shell — Figma·설치기 정본만 신설하며 손관리 components 페이지는 별도 웹 UI 라이브러리 작업 전까지 제외(2026-08-25 사용자 승인)."
-    },
-    {
-      "name": "List Row",
-      "reason": "정본 buildListRow 2026-09-21 신설, work-id list-row 3-build 완료(ui-library/dist 배포본 있음) — 손관리 components 페이지 섹션은 4-verification·river UX 승인 뒤 guide-builder 가 추가한다. HTML 섹션 생기면 sectionFor 로 이관."
     },
     {
       "name": "Side Nav Item",

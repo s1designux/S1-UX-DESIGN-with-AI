@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GNB 묶음 검수</title>
+<style>
+  :root { --bg:#f4f5f7; --card:#fff; --text:#1d1e22; --sub:#5b5e66; --line:#e3e5e9; --accent:#2563eb; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#16171b; --card:#1f2026; --text:#ecedf0; --sub:#a3a6ad; --line:#30323a; --accent:#6ea0ff; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:15px/1.6 Pretendard, -apple-system, "Apple SD Gothic Neo", sans-serif; }
+  main { max-width:1180px; margin:0 auto; padding:32px 16px 80px; }
+  h1 { font-size:24px; margin:0 0 6px; }
+  h2 { font-size:18px; margin:40px 0 8px; }
+  p.lead { color:var(--sub); margin:0 0 20px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; margin-bottom:16px; }
+  .check { display:grid; grid-template-columns:28px 1fr; gap:6px 8px; }
+  .check b { color:var(--accent); }
+  .pair { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .pair figure, .one figure { margin:0; }
+  figcaption { font-size:13px; color:var(--sub); margin:6px 0 0; }
+  img { width:100%; height:auto; display:block; border:1px solid var(--line); border-radius:8px; background:#fff; }
+  .c1 img { max-width:420px; }
+  a { color:var(--accent); }
+  details summary { cursor:pointer; color:var(--accent); margin:8px 0; }
+  .ask { border-left:4px solid var(--accent); }
+  @media (max-width:720px) { .pair { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>GNB 묶음 검수</h1>
+  <p class="lead">GNB · GNB 하위 메뉴 · GNB 하위 메뉴 항목 — 지금 개발자에게 나가는 배포본을 그대로 띄운 화면입니다. 메뉴에 마우스를 올린 상태로 찍었습니다. 직접 만져보려면 <a href="http://localhost:4173/pages/components.html#gnb">디자인가이드 GNB 화면</a>을 여세요.</p>
+
+  <div class="card">
+    <b>9/10에 고친 여섯 가지 — 지금 화면에 그대로 살아 있습니다</b>
+    <div class="check" style="margin-top:10px">
+      <b>①</b><span>로고 · 메뉴 · 오른쪽 아이콘이 가운데 정렬로 셋으로 나뉨</span>
+      <b>②</b><span>판이 펼쳐질 자리를 미리 비워 둠 — 열고 닫아도 아래가 밀리지 않음(실측 0px)</span>
+      <b>③</b><span>예시 칸 배경만 옅은 회색 — 흰 판이 보이게</span>
+      <b>④</b><span>선택된 메뉴의 파란 밑줄이 회색 선 아래로 흘러내리지 않음</span>
+      <b>⑤</b><span>공지사항도 하위 메뉴를 가짐 — 세 메뉴가 같은 종류의 판을 엶</span>
+      <b>⑥</b><span>판의 굵은 제목(카테고리)은 색이 바뀌지 않음 — 누를 수 없는 글자</span>
+    </div>
+  </div>
+
+  <h2>판 세 종류 — 라이트 / 다크</h2>
+  <p class="lead">한 GNB 안에서는 모든 메뉴가 같은 종류의 판을 엽니다.</p>
+  <div class="card"><b>기본형</b>
+    <div class="pair" style="margin-top:10px">
+      <figure><img src="gnb-open-regular-light.png" alt="기본형 라이트"><figcaption>라이트</figcaption></figure>
+      <figure><img src="gnb-open-regular-dark.png" alt="기본형 다크"><figcaption>다크</figcaption></figure>
+    </div>
+  </div>
+  <div class="card"><b>콤팩트 1</b>
+    <div class="pair" style="margin-top:10px">
+      <figure><img src="gnb-open-compact-1-light.png" alt="콤팩트1 라이트"><figcaption>라이트</figcaption></figure>
+      <figure><img src="gnb-open-compact-1-dark.png" alt="콤팩트1 다크"><figcaption>다크</figcaption></figure>
+    </div>
+  </div>
+  <div class="card"><b>콤팩트 2</b>
+    <div class="pair" style="margin-top:10px">
+      <figure><img src="gnb-open-compact-2-light.png" alt="콤팩트2 라이트"><figcaption>라이트</figcaption></figure>
+      <figure><img src="gnb-open-compact-2-dark.png" alt="콤팩트2 다크"><figcaption>다크</figcaption></figure>
+    </div>
+  </div>
+
+  <h2 id="c1">정해주실 것 하나 — 판 제목 글자 1px</h2>
+  <div class="card ask c1">
+    <p style="margin-top:0">지난 9/30 "한글이 위로 떠 보이는 곳만 1px 내리기"를 할 때, 판 안의 <b>작은 항목 글자만</b> 내리고 <b>굵은 제목</b>은 빠졌습니다. 그래서 제목과 첫 항목 사이가 1px 더 벌어져 있습니다. 3배로 키운 그림입니다.</p>
+    <div class="pair">
+      <figure><img src="c1-B-now.png" alt="지금"><figcaption>(B) 지금 — 항목만 1px 내려가 있음</figcaption></figure>
+      <figure><img src="c1-A-title-too.png" alt="제목도 보정"><figcaption>(A) 제목도 같이 1px 내림</figcaption></figure>
+    </div>
+    <p style="margin-bottom:0">안 고르시면 (B) 그대로 승인 절차를 밟습니다.</p>
+  </div>
+
+  <h2>디자인가이드 화면 전체</h2>
+  <details><summary>GNB 섹션 (라이트 / 다크)</summary>
+    <div class="pair"><figure><img src="gnb-section-light.png" alt=""></figure><figure><img src="gnb-section-dark.png" alt=""></figure></div>
+  </details>
+  <details><summary>GNB 하위 메뉴 섹션 (라이트 / 다크)</summary>
+    <div class="pair"><figure><img src="gnb-sub-menu-section-light.png" alt=""></figure><figure><img src="gnb-sub-menu-section-dark.png" alt=""></figure></div>
+  </details>
+  <details><summary>GNB 하위 메뉴 항목 섹션 (라이트 / 다크)</summary>
+    <div class="pair"><figure><img src="gnb-sub-menu-item-section-light.png" alt=""></figure><figure><img src="gnb-sub-menu-item-section-dark.png" alt=""></figure></div>
+  </details>
+</main>
+</body>
+</html>

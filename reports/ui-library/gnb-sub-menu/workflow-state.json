@@ -42,7 +42,11 @@
     "build": "reports/ui-library/gnb-sub-menu/3-build.md",
     "verification": "reports/ui-library/gnb-sub-menu/4-verification.md",
     "canonVerification": "reports/ui-library/gnb-sub-menu/5-canon-verification.md",
-    "figmaRead": "reports/ui-library/gnb-sub-menu/figma-compact-read.md"
+    "figmaRead": "reports/ui-library/gnb-sub-menu/figma-compact-read.md",
+    "deltaVerification": "reports/ui-library/gnb-sub-menu/6-delta-verification.md",
+    "riverReview": "reports/ui-library/gnb-sub-menu/review/index.html",
+    "humanReview": "reports/ui-library/gnb-sub-menu/review/gnb-review.html",
+    "promotion": "reports/ui-library/gnb-sub-menu/7-promotion.md"
   },
   "contract": {
     "path": "registry/governance/ui-library-code-contract.json",
@@ -78,30 +82,30 @@
   },
   "handoff": {
     "lastActor": "orchestrator",
-    "updatedAt": "2026-09-10",
-    "summary": "river 사이트 수정 2차: GNB 액션 정렬 center-between·패널 자리예약·액션 칸 회색 배경, GNB 메뉴 강조선 bottom 0 교정, 공지사항 하위메뉴 신설(콤팩트2 10항목), 1depth 상태 제거(정본 포함). 정본 변경분 재검증 대기."
+    "updatedAt": "2026-10-02",
+    "summary": "river 승인(C-1=B). manifest 3종 approved · migration 장부 · 전달본 재생성."
   },
-  "currentPhase": "5-human-review",
-  "workflowStatus": "awaiting-user",
-  "uiLibraryStatus": "draft",
-  "lastCompletedCheckpoint": 4,
-  "nextAction": "🤖 component-verifier 재검증 → ❌ 0 이면 Gate 13 기록 후 커밋.",
+  "currentPhase": "complete",
+  "workflowStatus": "complete",
+  "uiLibraryStatus": "approved",
+  "lastCompletedCheckpoint": 6,
+  "nextAction": "없음 — GNB 묶음 3종 approved, 개발 도구 전달본 반영 완료.",
   "blockers": [],
   "canonicalInputs": [
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "77518a239c898c35dbe1a07e9f3f409b2462e47be892e6e8f536a1cd5f388c05"
+      "sha256": "43b9a91c0f5aca1a4685eba69cf83c6878e6d96be047504d1e93706af082433a"
     },
     {
       "role": "token-values",
       "path": "plugins/figma-vars-installer/src/vars-data.ts",
-      "sha256": "02140f6ec58e4c97ed26ba7921ff3758612ca7dd5976a8e2ba8ade109f014934"
+      "sha256": "cb52040749c66d29ec7f0090788df3b63ebd91214b68be9992df646f68101283"
     },
     {
       "role": "text-styles",
       "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
-      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+      "sha256": "f43fa1c9ce2c1b1ffcc014a5ef57f84493327f62a011735ef3061af12a827da7"
     },
     {
       "role": "ui-library-contract",
@@ -200,6 +204,27 @@
       "by": "orchestrator",
       "what": "25개 컴포넌트 manifest 의 canonicalFingerprint 를 일괄 갱신했다.",
       "why": "build-components.ts 는 25종 전부의 canonicalSource 라 한 줄만 바뀌어도 전부 stale 이 된다. 실제 변경 hunk 는 buildGNBSubMenuItem 세 곳(@@3705·@@3717·@@3743)뿐이고 다른 컴포넌트 빌더와 무관하다 — wiring-and-traps §3 의 '무관하면 지문만 갱신하고 근거를 남긴다' 경로를 따랐다."
+    },
+    {
+      "id": "D14",
+      "at": "2026-10-02",
+      "by": "orchestrator",
+      "what": "정본 지문 3개(build-components · vars-data · textstyles)를 현재 값으로 갱신했다.",
+      "why": "21c61008..HEAD 사이 GNB 함수 변경은 buildGNB 바 하단선 · buildGNBSubMenu 패널 하단선의 토큰 이름 2곳(line/gray/subtle → line/default, 값 동일)과 주석뿐이다. fillGnbMenu · buildGNBSubMenuItem · buildGNBUtilIcon · buildLanguageIcon 변경 0, textstyles 는 title/12B 신설만(GNB 미사용). 🤖 component-verifier 델타 검증(6-delta-verification.md)이 직접 대조했다 — wiring-and-traps §3 의 「무관하면 지문만 갱신하고 근거를 남긴다」 경로."
+    },
+    {
+      "id": "D15",
+      "at": "2026-10-02",
+      "by": "river",
+      "what": "C-1: 하위메뉴 판의 굵은 제목(1depth)은 한글 세로 보정 대상에 넣지 않는다 — 항목(2depth)만 1px 보정한 지금 그대로(B).",
+      "why": "river 발화 2026-10-02 \"b로하고 승인\". 검수 화면에서 A/B 3배 확대 비교를 보고 골랐다."
+    },
+    {
+      "id": "D16",
+      "at": "2026-10-02",
+      "by": "river",
+      "what": "GNB · GNB Sub Menu · GNB Sub Menu Item 웹 배포본을 승인(approved)한다.",
+      "why": "river 발화 2026-10-02 \"b로하고 승인\"."
     }
   ],
   "evidence": {
@@ -228,19 +253,31 @@
         "reports/ui-library/gnb-sub-menu/screens/review-panel.png"
       ],
       "measured": "DOM 이벤트 실측 — 시작 false/hidden → mouseenter true/보임 → 바→패널 이동 중 유지(깜빡임 0) → 벗어난 뒤 60ms 유지·310ms 닫힘 → 포커스 진입 열림 → Esc 닫힘 + activeElement 가 메뉴로 복귀"
+    },
+    "riverApproval": {
+      "status": "approved",
+      "date": "2026-10-02",
+      "scope": "gnb · gnb-sub-menu · gnb-sub-menu-item",
+      "quote": "b로하고 승인",
+      "reviewPage": "reports/ui-library/gnb-sub-menu/review/gnb-review.html"
     }
   },
   "verificationOutcome": {
-    "scope": "canon(build-components.ts)",
-    "round": 3,
-    "at": "2026-09-09",
+    "scope": "delta(21c61008..HEAD) — 웹 배포본 · 안내 화면 · 정본 GNB 함수",
+    "round": 4,
+    "at": "2026-10-02",
     "by": "component-verifier",
     "result": "PASS",
     "fail": 0,
     "hold": 0,
     "blocked": 0,
-    "report": "reports/ui-library/gnb-sub-menu/5-canon-verification.md",
-    "gate13": "reports/installer-build/verifications/18860eed398bd28e.json",
-    "note": "3회차 HOLD 1(crosswalk.json D-18 결정 장부 서술)은 ⭐ 가 갈음 추기로 닫았다 — 선례(같은 항목에 'A로 가' 추기)를 따랐다."
+    "report": "reports/ui-library/gnb-sub-menu/6-delta-verification.md",
+    "note": "HOLD C-1 = 하위메뉴 1depth 제목이 한글 세로 보정(4caee453)에서 빠져 regular 판 제목→첫 항목 간격이 25 로 그려진다. 사람이 정할 일(A 제목도 보정 / B 그대로)이라 river 검수와 함께 묻는다. 정본 위반·회귀·9/10 수정 2차 퇴행 0. 이전 회차(3회차 canon PASS)는 보존. → C-1 은 river 가 B 로 정해 닫혔다(D15).",
+    "previous": {
+      "round": 3,
+      "at": "2026-09-09",
+      "result": "PASS",
+      "report": "reports/ui-library/gnb-sub-menu/5-canon-verification.md"
+    }
   }
 }
