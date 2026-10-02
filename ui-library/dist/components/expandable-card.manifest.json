@@ -1,8 +1,8 @@
 {
   "id": "expandable-card",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "status": "approved",
-  "canonicalFingerprint": "bbd89e3389153686038e77e02bcbb5c4bc9ecf169975205d6832b525d6831256",
+  "canonicalFingerprint": "e28904b5d2b4482669508a44cc3524ef12c730af3c92598a2011b82bf1c93e53",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -138,5 +138,5 @@
     ],
     "reason": "머리줄 클릭으로 aria-expanded 와 panel-wrap[data-open] 을 함께 바꾼다. 초기 표시는 마크업(aria-expanded)이 정한다."
   },
-  "sourceFingerprint": "0fd6352940d6bca695e8ebab7fc91b6d156adde62caf89552448deb96890eafb"
+  "sourceFingerprint": "bb49b739da3bd0afb33faa605628b03be655eef9ca363c50029269d3f1576221"
 }
