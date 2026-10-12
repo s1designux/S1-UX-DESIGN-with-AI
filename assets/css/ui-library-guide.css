@@ -395,6 +395,9 @@
   position: relative;
 }
 
+/* 크기마다 여는 버튼 1개씩(MD·LG·XL) — 버튼과 그 모달이 한 묶음(.uilg-modal-content-action)이라
+   배선이 묶음 안에서 짝을 찾는다(river 2026-10-12). */
+.uilg-modal-content-actions { display: flex; flex-wrap: wrap; gap: var(--spacing-8); }
 .uilg-modal-content-action { display: flex; }
 
 /* ── Modal Content 크기 비교표 축소 표시 (river 2026-09-08 지적 — 실제 폭 그대로면 한 화면에

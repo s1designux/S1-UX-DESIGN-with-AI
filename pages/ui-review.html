@@ -263,6 +263,8 @@
        크기를 지정하지 않는다(내용이 줄어든 만큼 스스로 줄어든다). 상세 사유는 위 JS
        scaledModalContentOverflowSample() 주석. */
     .review-modal-content-zoom { display: inline-block; }
+    /* 크기마다 여는 버튼 1개씩 — 버튼·모달 짝을 한 묶음에 넣어 배선이 parentElement 로 자기 버튼을 찾는다(river 2026-10-12). */
+    .review-modal-content-openers { display: flex; flex-wrap: wrap; gap: var(--spacing-8); }
 
     /* GNB — 배치 전용(컴포넌트 시각 아님). 바는 dist 계약대로 full-width 반응형이라 검수 칸(≈630px)보다
        넓다. 폭 값·배율은 건드리지 않고, 넘치는 만큼만 슬롯 안에서 가로 스크롤한다 —
@@ -1706,10 +1708,12 @@
           <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">정본 변형 6가지(Size MD·LG·XL × Footer Single·Dual) · PC 전용</p></div>
           <div class="review-group">
             <h4 class="review-group-title">실제로 열어보기</h4>
-            <p class="review-panel-description">누르면 화면 전체를 덮는 진짜 팝업이 뜹니다. Esc로 닫히고 닫으면 초점이 이 버튼으로 돌아옵니다.</p>
-            <div class="review-component-slot">
-              <button type="button" data-s1-component="button" data-variant="secondary" data-size="md" data-modal-content-open><span data-s1-part="label">모달 열기</span></button>
-              ${modalContentMarkup({ size: "md", footer: "dual" })}
+            <p class="review-panel-description">크기(MD 520 · LG 1000 · XL 1200)를 골라 누르면 그 폭 그대로 화면 전체를 덮는 진짜 팝업이 뜹니다. Esc로 닫히고 닫으면 초점이 누른 버튼으로 돌아옵니다.</p>
+            <div class="review-component-slot review-modal-content-openers">${Object.entries(MODAL_CONTENT_REVIEW_DIMS).map(([size, [w]]) => `
+              <span class="review-modal-content-opener">
+                <button type="button" data-s1-component="button" data-variant="secondary" data-size="md" data-modal-content-open><span data-s1-part="label">${size.toUpperCase()} 열기 (${w})</span></button>
+                ${modalContentMarkup({ size, footer: "dual" })}
+              </span>`).join("")}
             </div>
           </div>
           <hr class="review-separator">

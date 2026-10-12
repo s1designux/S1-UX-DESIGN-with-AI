@@ -1580,7 +1580,8 @@ function multiToggleStateMatrix() {
 
 /* ── State matrix: Modal ──
    정본 buildModalShell 의 변형은 Break(PC·Mobile) × Footer(Single·Dual) 4가지뿐이고 상태 축이 없다.
-   Action 은 실제로 열리는 진짜 모달(딤이 화면을 덮는다)이고, 아래 칸은 지면에 눕혀 보여주는 검수 표시다. */
+   Action 은 실제로 열리는 진짜 모달(딤이 화면을 덮는다)이며 크기마다 여는 버튼을 하나씩 둔다
+   (river 2026-10-12 "모달의 경우 사이즈별로 볼 수 있어야해"), 아래 칸은 지면에 눕혀 보여주는 검수 표시다. */
 
 let modalId = 0;
 
@@ -1662,7 +1663,8 @@ function modalStateMatrix() {
 /* ── State matrix: Modal Content ──
    정본 buildModalContent 의 변형은 Size(MD·LG·XL) × Footer(Single·Dual) 6가지뿐이고 PC 전용이다
    (breaks.mobile 없음 — river 지시 2026-09-08 "확인계열은 360으로만, 컨텐츠계열은 MD 이상부터").
-   Action 은 실제로 열리는 진짜 모달(딤이 화면을 덮는다)이고, 아래 칸은 지면에 눕혀 보여주는 검수 표시다. */
+   Action 은 실제로 열리는 진짜 모달(딤이 화면을 덮는다)이며 크기마다 여는 버튼을 하나씩 둔다
+   (river 2026-10-12 "모달의 경우 사이즈별로 볼 수 있어야해"), 아래 칸은 지면에 눕혀 보여주는 검수 표시다. */
 
 let modalContentId = 0;
 
@@ -1710,11 +1712,13 @@ function modalContentStateMatrix() {
 
   const action = `<div class="comp-action-top">
     <div class="matrix-col-header-action">Action</div>
-    <div class="uilg-modal-content-action">
-      <button type="button" data-s1-component="button" data-variant="secondary" data-size="md" data-modal-open><span data-s1-part="label">콘텐츠 모달 열기</span></button>
-      ${modalContentMarkup({ size: "lg", footer: "dual" })}
+    <div class="uilg-modal-content-actions">${sizes.map(([size, sLabel, w]) => `
+      <div class="uilg-modal-content-action">
+        <button type="button" data-s1-component="button" data-variant="secondary" data-size="md" data-modal-open><span data-s1-part="label">${sLabel} 열기 (${w})</span></button>
+        ${modalContentMarkup({ size, footer: "dual" })}
+      </div>`).join("")}
     </div>
-    <p class="uilg-demo-note">눌러서 열어 보세요. 본문은 입력창·표·이미지가 들어갈 자리표시입니다(실제 화면에서 교체). 콘텐츠가 늘면 패널이 커지다가 화면 높이의 85%에서 멈추고 본문 안에서만 스크롤합니다.</p>
+    <p class="uilg-demo-note">크기(MD 520 · LG 1000 · XL 1200)를 골라 눌러 보세요 — 그 폭 그대로 진짜 모달이 열립니다. 본문은 입력창·표·이미지가 들어갈 자리표시입니다(실제 화면에서 교체). 콘텐츠가 늘면 패널이 커지다가 화면 높이의 85%에서 멈추고 본문 안에서만 스크롤합니다.</p>
   </div>`;
 
   const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
