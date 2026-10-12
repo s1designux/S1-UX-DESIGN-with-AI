@@ -60,7 +60,7 @@ export default function S1ModalContent({ variant, size, parts, onOpen, onClose, 
 
   if (tpl === 0) {
     return (
-      <Root t={SPEC.templates[tpl]} k="n0" a={{ "data-s1-component": "modal-content", "data-size": size ?? "md", "data-footer": variant ?? "dual", "hidden": open ? undefined : "" }} controller={controller} partProps={partProps} style={style} outer={outer} omit={omit} lifted={lifted} forceState={forceState} {...rest}>
+      <Root t={SPEC.templates[tpl]} k="n0" a={{ "id": "content-modal", "data-s1-component": "modal-content", "data-size": size ?? "md", "data-footer": variant ?? "dual", "hidden": open ? undefined : "" }} controller={controller} partProps={partProps} style={style} outer={outer} omit={omit} lifted={lifted} forceState={forceState} {...rest}>
         <El k="n1" a={{ "data-s1-part": "overlay", ...(slot(partScope, "overlay").attrs ?? {}) }}>
           {slot(partScope, "overlay").content ?? ""}
         </El>

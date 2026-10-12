@@ -627,7 +627,12 @@ export function init(root) {
     close();
   };
 
+  // 포커스가 트리거에 있을 때도(Shift+Tab 으로 돌아온 경우 등) Esc 로 닫는다 — select·time-picker·filter-chip 과 같다.
+  const handleTriggerKeydown = (event) => {
+    if (event.key === "Escape" && isOpen(root, trigger)) { event.preventDefault(); close(); }
+  };
   trigger.addEventListener("click", handleTriggerClick);
+  trigger.addEventListener("keydown", handleTriggerKeydown);
   container.addEventListener("click", handleContainerClick);
   container.addEventListener("keydown", handleContainerKeydown);
   if (mode === "range") {
@@ -677,6 +682,7 @@ export function init(root) {
       close({ returnFocus: false });
       for (const input of hiddenInputs) input.remove();
       trigger.removeEventListener("click", handleTriggerClick);
+      trigger.removeEventListener("keydown", handleTriggerKeydown);
       container.removeEventListener("click", handleContainerClick);
       container.removeEventListener("keydown", handleContainerKeydown);
       container.removeEventListener("mouseover", handleContainerMouseover);

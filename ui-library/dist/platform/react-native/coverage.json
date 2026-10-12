@@ -10,9 +10,8 @@
     "consumed:mask-position": 864,
     "consumed:mask-repeat": 864,
     "consumed:mask-size": 864,
-    "consumer-provided:-webkit-mask": 4,
-    "consumer-provided:background": 2,
-    "consumer-provided:mask": 4,
+    "consumer-provided:-webkit-mask": 2,
+    "consumer-provided:mask": 2,
     "custom-property:--s1-bottom-sheet-gap": 8,
     "custom-property:--s1-bottom-sheet-shadow": 8,
     "custom-property:--s1-brand-logo": 16,
@@ -40,8 +39,8 @@
   "components": {
     "input": {
       "templates": 6,
-      "styles": 112,
-      "tableEntries": 6911,
+      "styles": 111,
+      "tableEntries": 6899,
       "ignored": {
         "web-only:appearance": 2664,
         "text-input-prop:caret-color": 96,
@@ -63,8 +62,8 @@
     },
     "checkbox": {
       "templates": 1,
-      "styles": 10,
-      "tableEntries": 13,
+      "styles": 9,
+      "tableEntries": 11,
       "ignored": {
         "web-only:appearance": 16,
         "pointer-only:cursor": 20,
@@ -73,8 +72,8 @@
     },
     "radio": {
       "templates": 1,
-      "styles": 10,
-      "tableEntries": 13,
+      "styles": 9,
+      "tableEntries": 11,
       "ignored": {
         "web-only:appearance": 16,
         "pointer-only:cursor": 20,
@@ -132,8 +131,8 @@
     },
     "tab": {
       "templates": 2,
-      "styles": 18,
-      "tableEntries": 46,
+      "styles": 16,
+      "tableEntries": 34,
       "ignored": {
         "web-only:appearance": 48,
         "pointer-only:cursor": 48,
@@ -154,8 +153,8 @@
     },
     "textarea": {
       "templates": 2,
-      "styles": 7,
-      "tableEntries": 22,
+      "styles": 6,
+      "tableEntries": 18,
       "ignored": {
         "web-only:appearance": 32,
         "text-input-prop:caret-color": 16,
@@ -177,8 +176,8 @@
     },
     "modal": {
       "templates": 2,
-      "styles": 22,
-      "tableEntries": 27,
+      "styles": 21,
+      "tableEntries": 26,
       "ignored": {
         "web-only:appearance": 4,
         "pointer-only:cursor": 4
@@ -208,7 +207,7 @@
     "mobile-header": {
       "templates": 1,
       "styles": 11,
-      "tableEntries": 18,
+      "tableEntries": 17,
       "ignored": {
         "font-provider:font-family": 7,
         "web-only:appearance": 2,
@@ -219,7 +218,7 @@
     "time-picker": {
       "templates": 4,
       "styles": 81,
-      "tableEntries": 1473,
+      "tableEntries": 1471,
       "ignored": {
         "web-only:appearance": 1164,
         "pointer-only:cursor": 1304,
@@ -234,8 +233,8 @@
     },
     "date-picker": {
       "templates": 2,
-      "styles": 143,
-      "tableEntries": 1994,
+      "styles": 134,
+      "tableEntries": 1963,
       "ignored": {
         "web-only:appearance": 874,
         "pointer-only:cursor": 874,
@@ -247,8 +246,8 @@
     },
     "gnb": {
       "templates": 1,
-      "styles": 28,
-      "tableEntries": 130,
+      "styles": 24,
+      "tableEntries": 76,
       "ignored": {
         "font-provider:font-family": 6,
         "web-only:list-style": 1,
@@ -297,8 +296,8 @@
     },
     "modal-content": {
       "templates": 1,
-      "styles": 16,
-      "tableEntries": 17,
+      "styles": 15,
+      "tableEntries": 16,
       "ignored": {
         "web-only:appearance": 4,
         "pointer-only:cursor": 4
@@ -306,16 +305,16 @@
     },
     "bottom-sheet-option": {
       "templates": 6,
-      "styles": 15,
-      "tableEntries": 138,
+      "styles": 14,
+      "tableEntries": 136,
       "ignored": {
         "font-provider:font-family": 33
       }
     },
     "bottom-sheet": {
       "templates": 1,
-      "styles": 13,
-      "tableEntries": 18,
+      "styles": 12,
+      "tableEntries": 17,
       "ignored": {
         "custom-property:--s1-bottom-sheet-gap": 2,
         "custom-property:--s1-bottom-sheet-shadow": 2,
@@ -362,8 +361,8 @@
     },
     "lnb": {
       "templates": 2,
-      "styles": 51,
-      "tableEntries": 1612,
+      "styles": 50,
+      "tableEntries": 1604,
       "ignored": {
         "font-provider:font-family": 104,
         "animation:transition": 128,
@@ -380,9 +379,8 @@
         "duplicate:-webkit-mask-size": 864,
         "consumed:mask-size": 864,
         "custom-property:--s1-brand-logo-w": 8,
-        "consumer-provided:-webkit-mask": 4,
-        "consumer-provided:mask": 4,
-        "consumer-provided:background": 2
+        "consumer-provided:-webkit-mask": 2,
+        "consumer-provided:mask": 2
       }
     }
   }

@@ -98,6 +98,7 @@ export function buildComponentDoc({ id, manifest, contract, usage, css, exampleP
     lines.push(`const api = ${camelName}.init(document.getElementById("my-${id}"));`);
     lines.push("api.open();  api.close();  api.isOpen;");
     lines.push("```", "");
+    lines.push("**창을 겹쳐 쌓는 것(열린 창 안에서 다른 창 열기)은 지원하지 않습니다.** 열리기는 하지만 초점 가둠과 Esc 는 맨 위 한 겹만 맡을 뿐, 쌓는 사용법을 설계에 넣지 마세요. 확인이 끝난 뒤 다음 창을 여세요.", "");
     lines.push("Esc 는 맨 위 겹 하나만 닫습니다 — 창 안에서 달력·시간·드롭다운·셀렉트·필터칩이 열려 있으면 그것만 닫히고 창은 남습니다.", "");
   }
 

@@ -19,13 +19,13 @@ object S1TabSpec {
             "root" to S1Box(),
             "baseline" to S1Box(background = S1Palette.colorNavigationIndicatorDefault, height = 1f, left = 0f, right = 0f),
             "tab" to S1Box(foreground = S1Palette.colorNavigationLabelHover, height = 32f, minWidth = 76f, paddingStart = 16f, paddingEnd = 16f, paddingBottom = 2f, fontSize = 16f, fontWeight = 500),
-            "indicator" to S1Box(background = S1Palette.colorNavigationIndicatorHover, height = 2f, left = 0f, right = 0f)
+            "indicator" to S1Box()
         ),
         "sm|mobile|selected" to mapOf(
             "root" to S1Box(),
             "baseline" to S1Box(background = S1Palette.colorNavigationIndicatorDefault, height = 1f, left = 0f, right = 0f),
             "tab" to S1Box(foreground = S1Palette.colorNavigationLabelSelected, height = 32f, minWidth = 76f, paddingStart = 16f, paddingEnd = 16f, paddingBottom = 2f, fontSize = 16f, fontWeight = 500),
-            "indicator" to S1Box(background = S1Palette.colorNavigationIndicatorSelected, height = 2f, left = 0f, right = 0f)
+            "indicator" to S1Box()
         )
     )
 

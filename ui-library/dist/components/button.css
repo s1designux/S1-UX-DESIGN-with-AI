@@ -19,13 +19,13 @@
   white-space: nowrap;
 }
 
-[data-s1-component="button"] [data-s1-part="label"] {
+[data-s1-component="button"] [data-s1-part="label"]:where(:not([data-s1-component="button"] [data-s1-component]:not([data-s1-component="button"]) *)) {
   pointer-events: none;
   text-align: center;
 }
 
 /* 한글 세로 보정 — 웹 전용 */
-[data-s1-component="button"][data-size="xxsm"] [data-s1-part="label"] {
+[data-s1-component="button"][data-size="xxsm"] [data-s1-part="label"]:where(:not([data-s1-component="button"] [data-s1-component]:not([data-s1-component="button"]) *)) {
   position: relative;
   top: 1px;
 }
@@ -62,7 +62,7 @@
   letter-spacing: var(--letter-spacing-tight);
 }
 
-[data-s1-component="button"][data-size="lg"] [data-s1-part="label"] {
+[data-s1-component="button"][data-size="lg"] [data-s1-part="label"]:where(:not([data-s1-component="button"] [data-s1-component]:not([data-s1-component="button"]) *)) {
   align-items: center;
   display: flex;
   justify-content: center;
@@ -71,7 +71,7 @@
 }
 
 /* 한글 세로 보정 — 웹 전용 */
-[data-s1-component="button"][data-size="lg"] [data-s1-part="label"] {
+[data-s1-component="button"][data-size="lg"] [data-s1-part="label"]:where(:not([data-s1-component="button"] [data-s1-component]:not([data-s1-component="button"]) *)) {
   position: relative;
   top: 1px;
 }
@@ -160,7 +160,7 @@
 }
 
 /* 한글 세로 보정 — 웹 전용 */
-[data-s1-density="narrow"] [data-s1-component="button"]:not([data-size]) [data-s1-part="label"] {
+[data-s1-density="narrow"] [data-s1-component="button"]:not([data-size]) [data-s1-part="label"]:where(:not([data-s1-component="button"] [data-s1-component]:not([data-s1-component="button"]) *)) {
   position: relative;
   top: 1px;
 }
@@ -181,7 +181,7 @@
   letter-spacing: var(--letter-spacing-tight);
 }
 
-[data-s1-break="mobile"] [data-s1-component="button"]:not([data-size]) [data-s1-part="label"] {
+[data-s1-break="mobile"] [data-s1-component="button"]:not([data-size]) [data-s1-part="label"]:where(:not([data-s1-component="button"] [data-s1-component]:not([data-s1-component="button"]) *)) {
   align-items: center;
   display: flex;
   justify-content: center;
@@ -190,7 +190,7 @@
 }
 
 /* 한글 세로 보정 — 웹 전용 */
-[data-s1-break="mobile"] [data-s1-component="button"]:not([data-size]) [data-s1-part="label"] {
+[data-s1-break="mobile"] [data-s1-component="button"]:not([data-size]) [data-s1-part="label"]:where(:not([data-s1-component="button"] [data-s1-component]:not([data-s1-component="button"]) *)) {
   position: relative;
   top: 1px;
 }

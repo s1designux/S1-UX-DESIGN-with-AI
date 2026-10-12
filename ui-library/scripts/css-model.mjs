@@ -146,7 +146,7 @@ export function parseSelector(selector) {
 
 const PSEUDO_CLASSES = new Set([
   "hover", "active", "focus", "focus-within", "focus-visible",
-  "disabled", "checked", "not", "is", "has", "first-child", "last-child", "empty"
+  "disabled", "checked", "not", "is", "where", "has", "first-child", "last-child", "empty"
 ]);
 const PSEUDO_ELEMENTS = new Set(["before", "after", "placeholder"]);
 
@@ -281,6 +281,7 @@ function matchesPseudoClass(node, pseudo, options) {
     case "not":
       return splitTopLevel(pseudo.args, ",").every((one) => !matchesRelative(node, one.trim(), options));
     case "is":
+    case "where":   // :where 는 :is 와 같게 맞춘다(명시도만 0 — specificity 참고)
       return splitTopLevel(pseudo.args, ",").some((one) => matchesRelative(node, one.trim(), options));
     case "has":
       return splitTopLevel(pseudo.args, ",").some((one) => matchesHas(node, one.trim(), options));
@@ -361,6 +362,7 @@ export function specificity(sequence) {
   for (const { compound } of sequence) {
     b += compound.attributes.length;
     for (const pseudo of compound.pseudoClasses) {
+      if (pseudo.name === "where") continue;   // :where() 는 명시도에 더하지 않는다
       if (pseudo.name === "not" || pseudo.name === "is" || pseudo.name === "has") {
         const inner = splitTopLevel(pseudo.args, ",").map((one) => specificity(parseSelector(one.replace(/^\s*\+/, "").trim())));
         const best = inner.sort((x, y) => y[0] - x[0] || y[1] - x[1])[0] ?? [0, 0];

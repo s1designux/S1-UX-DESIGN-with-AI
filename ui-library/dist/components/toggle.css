@@ -15,7 +15,7 @@
   width: var(--sizing-40);
 }
 
-[data-s1-component="toggle"] [data-s1-part="knob"] {
+[data-s1-component="toggle"] [data-s1-part="knob"]:where(:not([data-s1-component="toggle"] [data-s1-component]:not([data-s1-component="toggle"]) *)) {
   background: var(--color-control-indicator-selected);
   border-radius: var(--radius-full);
   height: var(--sizing-16);
@@ -29,7 +29,7 @@
   background: var(--color-control-bg-selected);
 }
 
-[data-s1-component="toggle"][aria-checked="true"] [data-s1-part="knob"] {
+[data-s1-component="toggle"][aria-checked="true"] [data-s1-part="knob"]:where(:not([data-s1-component="toggle"] [data-s1-component]:not([data-s1-component="toggle"]) *)) {
   left: auto;
   right: var(--spacing-2);
 }
@@ -39,6 +39,6 @@
   cursor: not-allowed;
 }
 
-[data-s1-component="toggle"]:disabled [data-s1-part="knob"] {
+[data-s1-component="toggle"]:disabled [data-s1-part="knob"]:where(:not([data-s1-component="toggle"] [data-s1-component]:not([data-s1-component="toggle"]) *)) {
   background: var(--color-control-indicator-disabled);
 }

@@ -378,6 +378,8 @@ export interface S1BottomSheetProps extends S1BaseProps {
   onClose?: (detail: any) => void;
   onConfirm?: (detail: any) => void;
   onCancel?: (detail: any) => void;
+  /** 열려 있나 — 안 주면 닫힘(그려지지 않음). */
+  open?: boolean;
 }
 export declare function S1BottomSheet(props: S1BottomSheetProps): ReactElement;
 

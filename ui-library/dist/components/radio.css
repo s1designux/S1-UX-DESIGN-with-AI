@@ -5,7 +5,7 @@
   gap: var(--spacing-8);
 }
 
-[data-s1-component="radio"] [data-s1-part="control"] {
+[data-s1-component="radio"] [data-s1-part="control"]:where(:not([data-s1-component="radio"] [data-s1-component]:not([data-s1-component="radio"]) *)) {
   align-items: center;
   appearance: none;
   background: var(--color-control-bg-default);
@@ -23,7 +23,7 @@
   width: var(--sizing-18);
 }
 
-[data-s1-component="radio"] [data-s1-part="control"]:checked::before {
+[data-s1-component="radio"] [data-s1-part="control"]:checked:where(:not([data-s1-component="radio"] [data-s1-component]:not([data-s1-component="radio"]) *))::before {
   background-color: currentColor;
   border-radius: var(--radius-full);
   content: "";
@@ -33,28 +33,28 @@
 }
 
 @media (hover: hover) {
-  [data-s1-component="radio"] [data-s1-part="control"]:hover:not(:disabled):not(:checked) {
+  [data-s1-component="radio"] [data-s1-part="control"]:hover:not(:disabled):not(:checked):where(:not([data-s1-component="radio"] [data-s1-component]:not([data-s1-component="radio"]) *)) {
     background: var(--color-control-bg-hover);
   }
 }
 
-[data-s1-component="radio"] [data-s1-part="control"]:checked {
+[data-s1-component="radio"] [data-s1-part="control"]:checked:where(:not([data-s1-component="radio"] [data-s1-component]:not([data-s1-component="radio"]) *)) {
   background: var(--color-control-bg-default);
   border-color: var(--color-control-border-selected);
   color: var(--color-control-indicator-selected-alt);
 }
 
-[data-s1-component="radio"] [data-s1-part="control"]:disabled {
+[data-s1-component="radio"] [data-s1-part="control"]:disabled:where(:not([data-s1-component="radio"] [data-s1-component]:not([data-s1-component="radio"]) *)) {
   background: var(--color-control-bg-disabled);
   border-color: var(--color-control-border-disabled);
   cursor: not-allowed;
 }
 
-[data-s1-component="radio"] [data-s1-part="control"]:disabled:checked {
+[data-s1-component="radio"] [data-s1-part="control"]:disabled:checked:where(:not([data-s1-component="radio"] [data-s1-component]:not([data-s1-component="radio"]) *)) {
   color: var(--color-control-indicator-disabled);
 }
 
-[data-s1-component="radio"] [data-s1-part="label"] {
+[data-s1-component="radio"] [data-s1-part="label"]:where(:not([data-s1-component="radio"] [data-s1-component]:not([data-s1-component="radio"]) *)) {
   color: var(--color-control-label-default);
   cursor: pointer;
   font-family: "Pretendard Variable", "Pretendard", sans-serif;
@@ -64,7 +64,7 @@
   line-height: var(--line-height-130);
 }
 
-[data-s1-component="radio"]:has([data-s1-part="control"]:disabled) [data-s1-part="label"] {
+[data-s1-component="radio"]:has([data-s1-part="control"]:disabled) [data-s1-part="label"]:where(:not([data-s1-component="radio"] [data-s1-component]:not([data-s1-component="radio"]) *)) {
   color: var(--color-control-label-disabled);
   cursor: not-allowed;
 }

@@ -42,7 +42,7 @@ export default function S1ModalContent({ variant, size, parts, onOpen, onClose, 
   });
 
   return (
-      <div data-s1-component="modal-content" data-size={size ?? "md"} data-footer={variant ?? "dual"} hidden ref={rootRef} className={className} style={style} {...rest}>
+      <div id={`${uid}-content-modal`} data-s1-component="modal-content" data-size={size ?? "md"} data-footer={variant ?? "dual"} hidden ref={rootRef} className={className} style={style} {...rest}>
         <div data-s1-part="overlay" {...(slot(partScope, "overlay").attrs ?? {})}>
           {slot(partScope, "overlay").content ?? ""}
         </div>

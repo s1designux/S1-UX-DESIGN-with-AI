@@ -112,6 +112,8 @@ export function init(root) {
     if (!isOpen(pair)) return;
     pair.trigger.setAttribute("aria-expanded", "false");
     pair.panel.hidden = true;
+    clearOverlay(pair.panel);
+    if (!pairs.some(isOpen)) window.removeEventListener("resize", handleResize);
     if (returnFocus) {
       // Esc 로 닫을 때만: focusin 이 이 focus() 를 "다시 들어옴"으로 읽어 즉시 재오픈하지
       // 않도록 한 번 건너뛴다. focus() 가 동기 이벤트를 못 낼 수도 있어(이미 그 요소가
@@ -123,6 +125,21 @@ export function init(root) {
     root.dispatchEvent(new CustomEvent("s1:gnb:close", { bubbles: true, detail: { trigger: pair.trigger, panel: pair.panel } }));
   };
 
+  /* 겹침 패널을 GNB 바 자기 상자(왼쪽 끝·폭)에 맞춰 바 바로 아래에 붙인다.
+     기준이 되는 조상(position 잡힌 상자)이 있든 없든 같은 자리에 오도록, 좌표 0,0 에서의 실제 위치를 재서 보정한다. */
+  const placeOverlay = (panel) => {
+    if (panel.getAttribute("data-s1-layer") !== "overlay") return;
+    panel.style.left = "0px";
+    panel.style.top = "0px";
+    panel.style.width = `${root.getBoundingClientRect().width}px`;
+    const bar = root.getBoundingClientRect();
+    const origin = panel.getBoundingClientRect();
+    panel.style.left = `${Math.round(bar.left - origin.left)}px`;
+    panel.style.top = `${Math.round(bar.bottom - origin.top)}px`;
+  };
+  const clearOverlay = (panel) => { panel.style.left = ""; panel.style.top = ""; panel.style.width = ""; };
+  const handleResize = () => { for (const pair of pairs) if (isOpen(pair)) placeOverlay(pair.panel); };
+
   const openPair = (pair) => {
     clearTimer(pair);
     if (isOpen(pair)) return;
@@ -130,6 +147,8 @@ export function init(root) {
     for (const other of pairs) if (other !== pair) closePair(other, { returnFocus: false });
     pair.trigger.setAttribute("aria-expanded", "true");
     pair.panel.hidden = false;
+    placeOverlay(pair.panel);
+    window.addEventListener("resize", handleResize);
     root.dispatchEvent(new CustomEvent("s1:gnb:open", { bubbles: true, detail: { trigger: pair.trigger, panel: pair.panel } }));
   };
 

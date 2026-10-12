@@ -10,22 +10,22 @@ object S1TextareaSpec {
         "default" to mapOf(
             "root" to S1Box(),
             "control" to S1Box(background = S1Palette.colorFormControlBgDefault, foreground = S1Palette.colorFormControlTextDefault, borderColor = S1Palette.colorFormControlBorderDefault, borderWidth = 1f, radius = 4f, minHeight = 80f, paddingStart = 10f, paddingEnd = 12f, paddingTop = 12f, paddingBottom = 10f, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 400),
-            "placeholder" to S1Box(foreground = S1Palette.colorFormControlTextPlaceholder, opacity = 1f)
+            "placeholder" to S1Box()
         ),
         "focus" to mapOf(
             "root" to S1Box(),
             "control" to S1Box(background = S1Palette.colorFormControlBgSelected, foreground = S1Palette.colorFormControlTextSelected, borderColor = S1Palette.colorFormControlBorderSelected, borderWidth = 1f, radius = 4f, minHeight = 80f, paddingStart = 10f, paddingEnd = 12f, paddingTop = 12f, paddingBottom = 10f, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 400),
-            "placeholder" to S1Box(foreground = S1Palette.colorFormControlTextPlaceholder, opacity = 1f)
+            "placeholder" to S1Box()
         ),
         "readOnly" to mapOf(
             "root" to S1Box(),
             "control" to S1Box(background = S1Palette.colorFormControlBgDisabled, foreground = S1Palette.colorFormControlTextReadOnly, borderColor = S1Palette.colorFormControlBorderDefault, borderWidth = 1f, radius = 4f, minHeight = 80f, paddingStart = 10f, paddingEnd = 12f, paddingTop = 12f, paddingBottom = 10f, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 400),
-            "placeholder" to S1Box(foreground = S1Palette.colorFormControlTextPlaceholder, opacity = 1f)
+            "placeholder" to S1Box()
         ),
         "disabled" to mapOf(
             "root" to S1Box(),
             "control" to S1Box(background = S1Palette.colorFormControlBgDisabled, foreground = S1Palette.colorFormControlTextDisabled, borderColor = S1Palette.colorFormControlBorderDisabled, borderWidth = 1f, radius = 4f, minHeight = 80f, paddingStart = 10f, paddingEnd = 12f, paddingTop = 12f, paddingBottom = 10f, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 400),
-            "placeholder" to S1Box(foreground = S1Palette.colorFormControlTextDisabled, opacity = 1f)
+            "placeholder" to S1Box()
         )
     )
 

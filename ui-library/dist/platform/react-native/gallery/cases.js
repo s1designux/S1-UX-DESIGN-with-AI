@@ -5266,7 +5266,8 @@ export const CASES = [
   },
   "props": {
    "breakName": "pc",
-   "variant": "none"
+   "variant": "none",
+   "open": true
   },
   "web": {
    "example": "pc",
@@ -5288,7 +5289,8 @@ export const CASES = [
   },
   "props": {
    "breakName": "pc",
-   "variant": "single"
+   "variant": "single",
+   "open": true
   },
   "web": {
    "example": "pc",
@@ -5310,7 +5312,8 @@ export const CASES = [
   },
   "props": {
    "breakName": "pc",
-   "variant": "dual"
+   "variant": "dual",
+   "open": true
   },
   "web": {
    "example": "pc",

@@ -111,7 +111,7 @@
           "reason": "정본에 Break 축이 없다. 시트 자체가 모바일 전용이다."
         }
       ],
-      "sourceFingerprint": "92279750d5d3738397f305c206197106cde8de7a2466860ac478ae9afd999c1c"
+      "sourceFingerprint": "a05edefbbec1ae799da4835af05b9b6e6c2f4062914c8adf4e00cfb51800280c"
     },
     "button": {
       "id": "button",
@@ -364,7 +364,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "969f0ea7d65c315d571246e60bd1d1e2d8820a318b71e12626e1d0561dbd2308"
+      "sourceFingerprint": "daab71f42a1a93c80bc6d32153f75867e63ff3e46af59c1db73447fbd135b32e"
     },
     "divider": {
       "id": "divider",
@@ -550,7 +550,7 @@
         "Type=compact-2": "compact-2"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "7c6a197f5291cd27caa399a48185fca80375cb423ddd450d92061aec8c4fd275"
+      "sourceFingerprint": "e9600d7abe47cdda1070b2cbe26e1c2d087269388ff6a57d0a5d93506d1ec1b3"
     },
     "gnb": {
       "id": "gnb",
@@ -588,7 +588,7 @@
           "reason": "GNB Utility Icon 세트는 language·menu·user on/off 5변형을 갖지만, GNB 바가 실제로 쓰는 것은 all-on(GNBUtil:full) 1개뿐이다(buildGNB:3607, registry 서술). 다른 4변형은 이 컴포넌트가 배포하지 않는다 — 유틸 영역 구성을 바꾸려면 host 화면이 data-s1-part 를 골라 빼고 넣는다."
         }
       ],
-      "sourceFingerprint": "d8d54be475aa66b7c1d549bb733a8cd08dd778307c6b5b508a026a3c9247a363"
+      "sourceFingerprint": "0525d79f01ef80ec02dcb5bddfbb1287613c11a3057ca86acf2319bbc2cda040"
     },
     "input": {
       "id": "input",
@@ -838,7 +838,7 @@
           "reason": "확인 계열 Modal 에는 없는 크기 축이다. 콘텐츠 계열에만 있다(river 지시 2026-09-08 'MD 이상부터')."
         }
       ],
-      "sourceFingerprint": "c71e1aa0f3a8445c91d49008785c0e8c0e4fc9de16a533f716f935d0b0feb05c"
+      "sourceFingerprint": "9a5d015f678d619aebbc39557b3bc8a7a6d648820f85ae8f55e8ef61afc19685"
     },
     "modal": {
       "id": "modal",
@@ -872,7 +872,7 @@
           "reason": "정본에 크기 축이 없다 — Break(PC·Mobile)가 패널 폭과 밀도를 결정한다."
         }
       ],
-      "sourceFingerprint": "f8fa49a4a47d073dd0b0e4221515ea8f0a8e6211de88abc458dbee9185b871f9"
+      "sourceFingerprint": "d251c393ba65219747e8197d85c89040bf61947c240901c8e1bc08c48098ebe8"
     },
     "multi-toggle": {
       "id": "multi-toggle",

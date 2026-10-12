@@ -224,6 +224,12 @@ async function darkPass(page, shotFile) {
   await sleep(150);
   const dark = await snap();
   const autoBody = await page.eval("getComputedStyle(document.body).backgroundColor");
+  /* README 가 안내하는 선택 파일(s1-ui.base.css)을 붙이면 바탕이 따라오는가 — 안내를 따른 퍼블리셔의 화면을 본다 */
+  await page.eval(`(()=>{const l=document.createElement("link"); l.rel="stylesheet"; l.id="__audit_base"; l.href="s1-ui/s1-ui.base.css"; document.head.appendChild(l); return true;})()`);
+  await sleep(250);
+  const baseBody = await page.eval("getComputedStyle(document.body).backgroundColor");
+  await page.eval(`(()=>{document.getElementById("__audit_base")?.remove(); return true;})()`);
+  await sleep(100);
   await page.eval(`document.body.style.background="var(--color-bg-level-0)"; document.body.style.color="var(--color-text-body-primary)"; true`);
   await sleep(100);
   await fullShot(page, shotFile);
@@ -231,7 +237,7 @@ async function darkPass(page, shotFile) {
   await page.eval(`document.documentElement.removeAttribute("data-theme"); document.body.style.background=""; document.body.style.color=""; true`);
   await sleep(100);
   const changed = light.filter((value, i) => value !== dark[i]).length;
-  return { components: light.length, changed, pageBackgroundFollows: lightBody !== autoBody, contrast };
+  return { components: light.length, changed, pageBackgroundFollows: lightBody !== autoBody, pageBackgroundFollowsWithBase: lightBody !== baseBody, contrast };
 }
 
 function exampleLabel(file) { return file.replace(/\.html$/, ""); }
@@ -319,7 +325,7 @@ async function auditExample(cdp, origin, siteDir, spec) {
       const darkShot = path.join(SHOTS_DIR, `${label}.dark.png`);
       const dark = await darkPass(page, darkShot);
       facts.darkScreenshot = path.relative(ROOT, darkShot);
-      facts.dark = { components: dark.components, changed: dark.changed, pageBackgroundFollows: dark.pageBackgroundFollows, contrastFailing: dark.contrast.failing.length, worst: dark.contrast.failing.slice(0, 3) };
+      facts.dark = { components: dark.components, changed: dark.changed, pageBackgroundFollows: dark.pageBackgroundFollows, pageBackgroundFollowsWithBase: dark.pageBackgroundFollowsWithBase, contrastFailing: dark.contrast.failing.length, worst: dark.contrast.failing.slice(0, 3) };
       checks.dark = dark.components === 0 ? "notApplicable" : (dark.changed > 0 ? "pass" : "fail");
       if (dark.components > 0 && dark.changed === 0) add("dark", "friction", "html 에 data-theme=\"dark\" 를 줘도 이 부품 색이 하나도 바뀌지 않습니다.", `보이는 부품 ${dark.components}개 중 색 변화 0`, "컴포넌트 CSS 가 Semantic 토큰을 쓰는지 확인");
     } catch (error) { skip("dark", error.message); }
@@ -672,6 +678,101 @@ function packageStatic(pkgDir, manifest, readme, contract, exampleFiles) {
   return { findings, checks };
 }
 
+
+/* ── 겹쳐 쓰기 검사: 창 안에 넣은 팝업의 크기 · 창 안에서 창 열기 ───────────────────────────── */
+function extractDiv(html, component) {
+  const start = html.search(new RegExp(`<div[^>]*data-s1-component="${component}"`));
+  if (start === -1) return null;
+  const tag = /<(\/?)div\b/g;
+  tag.lastIndex = start;
+  let depth = 0;
+  let m;
+  while ((m = tag.exec(html))) {
+    depth += m[1] ? -1 : 1;
+    if (depth === 0) return html.slice(start, html.indexOf(">", m.index) + 1);
+  }
+  return null;
+}
+
+const POPOVERS = [["date-picker", true], ["time-picker", true], ["select", false], ["filter-chip", false]];
+
+async function nestedLayerChecks(cdp, origin, siteDir, pkgDir) {
+  const read = (rel) => fs.readFileSync(path.join(pkgDir, rel), "utf8");
+  const out = { popovers: [], modalOpenFromModal: null };
+  const snippets = {};
+  for (const [name] of POPOVERS) snippets[name] = extractDiv(read(`examples/${name}.html`), name);
+  const wrappers = [["modal", read("examples/modal.html")], ["modal-content", read("examples/modal-content.html")]];
+  const nestedBlock = POPOVERS.map(([name]) => `<div class="__nest" data-nest="${name}">${snippets[name] ?? ""}</div>`).join("\n");
+  const stdBlock = POPOVERS.map(([name]) => `<div class="__std" data-nest="${name}">${snippets[name] ?? ""}</div>`).join("\n");
+  const stripOpener = (html) => html.replace(/<!--[\s\S]*?-->\s*/g, "").replace(/<button[^>]*data-s1-open[^>]*>[\s\S]*?<\/button>\s*/, "");
+  const measure = `(async () => {
+    const results = {};
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    for (const holder of document.querySelectorAll("[data-nest]")) {
+      const name = holder.dataset.nest;
+      const root = holder.querySelector('[data-s1-component="' + name + '"]');
+      if (!root) continue;
+      const trigger = root.querySelector('[data-s1-part="trigger"]');
+      trigger.click();
+      await sleep(150);
+      const panel = root.querySelector('[data-s1-part="panel"]');
+      const cs = getComputedStyle(panel);
+      const rect = panel.getBoundingClientRect();
+      const key = holder.classList.contains("__std") ? "std" : holder.closest('[data-s1-component="modal-content"]') ? "modal-content" : "modal";
+      (results[name] ||= {})[key] = { width: Math.round(rect.width), height: Math.round(rect.height), border: cs.borderTopWidth, overflowY: cs.overflowY, padding: cs.paddingTop, bg: cs.backgroundColor, display: cs.display };
+      trigger.click();
+      await sleep(80);
+    }
+    return JSON.stringify(results);
+  })()`;
+  for (const [wrapperName, wrapperHtml] of wrappers) {
+    const html = stripOpener(wrapperHtml);
+    const at = html.search(/<div data-s1-part="footer"/);
+    if (at === -1) continue;
+    const withNested = html.slice(0, at) + nestedBlock + html.slice(at);
+    const page = await pageProbe(cdp, origin, siteDir, `__audit_nested_${wrapperName}.html`, readmePage(`<div style="padding:16px">${stdBlock}</div>${withNested}`, { title: "nested" }));
+    try {
+      await waitFor(page, "window.__s1ready === true", 5000);
+      await page.eval(`(()=>{const m=document.querySelector('[data-s1-component="${wrapperName}"]'); m.hidden=false; return true;})()`);
+      await sleep(200);
+      const got = JSON.parse(await page.eval(measure));
+      for (const [name, byContext] of Object.entries(got)) {
+        const std = byContext.std;
+        const inner = byContext[wrapperName];
+        if (!std || !inner) continue;
+        const fixedWidth = POPOVERS.find(([n]) => n === name)[1];
+        const diffs = [];
+        for (const key of ["border", "overflowY", "padding", "bg"]) if (std[key] !== inner[key]) diffs.push(`${key} ${std[key]} → ${inner[key]}`);
+        if (fixedWidth && std.width !== inner.width) diffs.push(`폭 ${std.width}px → ${inner.width}px`);
+        out.popovers.push({ wrapper: wrapperName, component: name, std, inner, diffs });
+      }
+    } finally { await page.close(); }
+  }
+
+  /* 창 안에서 다른 창 열기 — 예외 없이 응답해야 한다 */
+  /* 예시에 id 가 있든 없든 같은 조건으로 시험한다 — 루트 id 를 우리가 지정한다 */
+  const withRootId = (html, id) => html.replace(/^(\s*)<div\b([^>]*?)>/, (m, lead, attrs) => `${lead}<div id="${id}"${attrs.replace(/\sid="[^"]*"/, "")}>`);
+  const base = stripOpener(read("examples/modal.html"));
+  const second = withRootId(base, "__second").replace(/confirm-modal-(title|message)/g, "second-modal-$1");
+  const first = withRootId(base, "__first").replace(/(<div data-s1-part="footer")/, `<div style="padding:8px"><button type="button" id="__inner" data-s1-open="__second">다음 창</button></div>$1`);
+  const page = await pageProbe(cdp, origin, siteDir, "__audit_modal_stack.html", readmePage(`<button type="button" id="__outer" data-s1-open="__first">열기</button>${first}${second}`, { title: "stack" }));
+  try {
+    await waitFor(page, "window.__s1ready === true", 5000);
+    try {
+      await page.eval(`document.getElementById("__outer").click(), true`);
+      await sleep(200);
+      await page.eval(`document.getElementById("__inner").click(), true`);
+      await sleep(400);
+      const alive = await Promise.race([page.eval("1+1").then((v) => v === 2), sleep(4000).then(() => false)]);
+      out.modalOpenFromModal = { responsive: alive, exceptions: page.exceptions.slice(0, 3).map((e) => e.text.slice(0, 160)) };
+    } catch (error) {
+      /* 페이지가 멈추면 CDP 응답이 끊긴다 — 그 자체가 고장이다 */
+      out.modalOpenFromModal = { responsive: false, exceptions: [...page.exceptions.slice(0, 3).map((e) => e.text.slice(0, 160)), `페이지가 응답하지 않음: ${error.message.slice(0, 80)}`] };
+    }
+  } finally { try { await page.close(); } catch { /* 멈춘 페이지 */ } }
+  return out;
+}
+
 /* ── 자가시험 ─────────────────────────────────────────────── */
 async function selftest(cdp, origin, siteDir, tmp) {
   const planted = `<button type="button" data-s1-component="button" data-variant="primary" data-size="md"><span data-s1-part="label">정상 버튼</span></button>
@@ -744,10 +845,18 @@ async function main() {
     process.exit(ok ? 0 : 1);
   }
 
+  if (args.includes("--nested-only")) {
+    /* 빠른 확인용: 겹쳐 쓰기 검사만 돌린다(결과 파일은 쓰지 않는다) */
+    const nested = await nestedLayerChecks(cdp, origin, siteDir, pkgDir);
+    console.log(JSON.stringify({ popoverDiffs: nested.popovers.filter((p) => p.diffs.length).map((p) => `${p.component} in ${p.wrapper}: ${p.diffs.join(", ")}`), modalOpenFromModal: nested.modalOpenFromModal }, null, 2));
+    cleanupAll();
+    process.exit(0);
+  }
   const manifest = JSON.parse(fs.readFileSync(path.join(pkgDir, "manifest.json"), "utf8"));
   const readme = fs.readFileSync(path.join(pkgDir, "README.md"), "utf8");
   const contractPath = [path.join(tmp, "ref/s1-ui/platform/contract.json"), path.join(ROOT, "ui-library/dist/platform/contract.json")].find((p) => fs.existsSync(p));
   const contract = contractPath ? JSON.parse(fs.readFileSync(contractPath, "utf8")) : null;
+  const baseCssName = ((manifest.optionalCssDependencies || [])[0] || {}).file || "s1-ui.base.css";
   const exampleFiles = fs.readdirSync(path.join(pkgDir, "examples")).filter((f) => f.endsWith(".html")).sort();
   const fileToComponent = {};
   for (const entry of manifest.components) for (const rel of Object.values(entry.examples || { pc: entry.example })) fileToComponent[path.basename(rel)] = entry.id;
@@ -802,7 +911,9 @@ async function main() {
   const darkFacts = examples.filter((e) => e.dark && e.dark.components > 0);
   if (darkFacts.length) {
     const changedPages = darkFacts.filter((e) => e.dark.changed > 0).length;
-    const followsBg = darkFacts.some((e) => e.dark.pageBackgroundFollows);
+    /* README 가 선택 파일(s1-ui.base.css)을 안내하고, 그 파일을 붙이면 바탕이 따라오면 통과 — 안내대로 한 퍼블리셔의 화면이 기준이다 */
+    const baseDocumented = new RegExp(`${baseCssName.replace(/\./g, "\\.")}`).test(readme) && /선택|옵션|optional/i.test(readme.slice(Math.max(0, readme.indexOf(baseCssName) - 200), readme.indexOf(baseCssName) + 200));
+    const followsBg = darkFacts.some((e) => e.dark.pageBackgroundFollows) || (baseDocumented && darkFacts.every((e) => e.dark.pageBackgroundFollowsWithBase));
     pkgChecks.darkWorks = changedPages === darkFacts.length ? "pass" : "fail";
     if (!followsBg) pkgAdd("dark-page-bg", "dark", "friction", "다크 모드를 켜도 페이지 바탕은 흰색 그대로라, 퍼블리셔가 body 바탕을 직접 칠해야 합니다(안내 없음). 칠하지 않으면 어두운 부품이 흰 바탕 위에 뜹니다.", `data-theme="dark" 적용 후 body 배경 변화 0/${darkFacts.length} 페이지`, "s1-ui.css 에 [data-theme=dark] body 바탕 지정 또는 README 안내");
     const darkContrast = darkFacts.filter((e) => e.dark.contrastFailing > 0);
@@ -858,6 +969,17 @@ async function main() {
       if (target) target.evidence += ` · 실제로 <script src="s1-ui/s1-ui.auto.js"> 로 넣어 본 결과: ${dyn.classicScript.errors.join(" / ").slice(0, 200)}`;
     }
   } catch (error) { pkgNotChecked.push({ check: "나중에 넣은 마크업·개별 초기화", reason: error.message }); }
+
+  /* 겹쳐 쓰기: 창 안에 넣은 팝업이 자기 정본 크기로 열리나 · 창 안에서 창을 열면 멈추지 않나 */
+  try {
+    const nested = await nestedLayerChecks(cdp, origin, siteDir, pkgDir);
+    const bad = nested.popovers.filter((p) => p.diffs.length);
+    pkgChecks.nestedPopoverSize = nested.popovers.length ? (bad.length ? "fail" : "pass") : "notChecked";
+    if (bad.length) pkgAdd("nested-popover-size", "nested", "broken", `창(modal·modal-content) 안에 넣은 팝업이 창 밖에서 열 때와 다른 모양으로 열립니다 — 창 CSS 가 안쪽 부품의 부분까지 먹고 있습니다(${bad.length}건).`, bad.map((p) => `${p.component} in ${p.wrapper}: ${p.diffs.join(", ")}`).join(" | "), "창 CSS 의 부분 선택자를 그 부품 자신의 부분만 고르게 좁힌다");
+    pkgChecks.nestedModalOpen = nested.modalOpenFromModal && nested.modalOpenFromModal.responsive && !nested.modalOpenFromModal.exceptions.length ? "pass" : "fail";
+    if (pkgChecks.nestedModalOpen === "fail") pkgAdd("nested-modal-crash", "nested", "broken", "열린 창 안의 버튼으로 다른 창을 열면 오류가 나거나 페이지가 멈춥니다.", js(nested.modalOpenFromModal), "열린 겹 중 맨 위 하나만 초점 가둠을 맡게 한다");
+    pkgChecks.nestedDetail = nested;
+  } catch (error) { pkgNotChecked.push({ check: "겹쳐 쓰기(팝업 크기·창 안에서 창 열기)", reason: error.message }); }
 
   /* preview.html — README 2단계 "브라우저로 열면" */
   try {

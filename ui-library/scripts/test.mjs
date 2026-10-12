@@ -5,12 +5,19 @@ import { spawnSync } from "node:child_process";
 import iconGeometryCheck from "../../scripts/ui-library-icon-geometry-check.js";
 
 import { extractInstance } from "./platform.mjs";
+import { scopeSelector } from "./css-scope.mjs";
 
 const libraryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repositoryRoot = path.resolve(libraryRoot, "..");
 const checkOnly = process.argv.includes("--check");
 const failures = [];
-const read = (relative) => readFile(path.join(libraryRoot, relative), "utf8");
+/* 배포 CSS 는 안쪽 부품의 부분까지 먹지 않게 부분 선택자 끝에 :where(:not(…)) 안전띠를 붙여 나간다(scripts/css-scope.mjs).
+   안전띠는 선택 범위만 좁힐 뿐 값은 그대로이므로, 규칙 모양을 보는 아래 검사들은 띠를 걷어낸 글자로 읽는다. */
+const SCOPE_GUARD = /:where\(:not\(\[data-s1-component="[^"]+"\] \[data-s1-component\](?::not\(\[data-s1-component="[^"]+"\]\))+ \*\)\)/g;
+const read = async (relative) => {
+  const text = await readFile(path.join(libraryRoot, relative), "utf8");
+  return /\.css$/.test(relative) ? text.replace(SCOPE_GUARD, "") : text;
+};
 
 const build = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/build.mjs"), "--check"], { encoding: "utf8" });
 if (build.status !== 0) failures.push(`build freshness: ${build.stderr || build.stdout}`);
@@ -1085,6 +1092,24 @@ if (renderCheck.status !== 0) failures.push(`guide render check: ${(renderCheck.
 /* 건너뛴 사실은 반드시 눈에 보여야 한다 — 크롬 없는 환경 + S1_SKIP_RENDER_CHECK 조합에서
    렌더 검사가 통째로 사라졌는데 "PASS" 로만 보이던 문제(2026-09-02 재검증 지적). */
 else if (renderCheck.stdout.trim()) console.log(`[guide render check] ${renderCheck.stdout.trim()}`);
+
+
+/* 부분 선택자 좁히기(css-scope) — 안에 끼운 다른 부품의 부분을 먹지 않는가 */
+{
+  const guarded = scopeSelector('[data-s1-component="modal-content"][data-size="md"] [data-s1-part="panel"]', "modal-content", ["button"]);
+  if (!guarded.includes(":where(:not(") || !guarded.includes(':not([data-s1-component="button"])')) failures.push("descendant part selector must be scoped away from nested components");
+  const untouched = [
+    '[data-s1-component="modal"] > [data-s1-part="panel"]',
+    '[data-s1-component="modal"] [data-s1-component="button"] [data-s1-part="label"]',
+    '[data-s1-component="modal"] [data-s1-part="panel"]::after:hover'
+  ].map((selector) => scopeSelector(selector, "modal", []));
+  if (untouched[0] !== '[data-s1-component="modal"] > [data-s1-part="panel"]') failures.push("child-only part selector must not be rewritten");
+  if (untouched[1].includes(":where(")) failures.push("selector that names a nested component must not be rewritten");
+  const sheet = await read("dist/components/modal-content.css");
+  const rawSheet = await readFile(path.join(libraryRoot, "dist/components/modal-content.css"), "utf8");
+  if (rawSheet === sheet) failures.push("dist modal-content.css must carry the nested-part guard");
+  if (!/\[data-size="md"\] \[data-s1-part="panel"\]:where\(:not\(/.test(rawSheet)) failures.push("modal-content panel width rule must be guarded against nested panels");
+}
 
 if (failures.length) {
   console.error(`UI library technical checks found ${failures.length} issue(s):\n- ${failures.join("\n- ")}`);

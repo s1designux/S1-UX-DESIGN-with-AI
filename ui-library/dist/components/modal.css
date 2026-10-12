@@ -9,13 +9,13 @@
 
 [data-s1-component="modal"][hidden] { display: none; }
 
-[data-s1-component="modal"] [data-s1-part="overlay"] {
+[data-s1-component="modal"] [data-s1-part="overlay"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) {
   background: var(--color-overlay);
   inset: 0;
   position: absolute;
 }
 
-[data-s1-component="modal"] [data-s1-part="panel"] {
+[data-s1-component="modal"] [data-s1-part="panel"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) {
   background: var(--color-surface-raised);
   border: var(--border-width-1) solid var(--color-modal-panel-border);
   border-radius: var(--radius-8);
@@ -30,32 +30,32 @@
   position: relative;
 }
 
-[data-s1-component="modal"] [data-s1-part="content"] {
+[data-s1-component="modal"] [data-s1-part="content"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) {
   display: flex;
   flex-direction: column;
 }
 
-[data-s1-component="modal"] [data-s1-part="header"] {
+[data-s1-component="modal"] [data-s1-part="header"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) {
   align-items: flex-end;
   display: flex;
   gap: var(--spacing-8);
   justify-content: space-between;
 }
 
-[data-s1-component="modal"] [data-s1-part="title"] {
+[data-s1-component="modal"] [data-s1-part="title"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) {
   color: var(--color-text-title-primary);
   letter-spacing: var(--letter-spacing-normal);
   line-height: var(--line-height-130);
   margin: 0;
 }
 
-[data-s1-component="modal"] [data-s1-part="body"] {
+[data-s1-component="modal"] [data-s1-part="body"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-8);
 }
 
-[data-s1-component="modal"] [data-s1-part="message"] {
+[data-s1-component="modal"] [data-s1-part="message"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) {
   color: var(--color-text-body-primary);
   letter-spacing: var(--letter-spacing-tight);
   line-height: var(--line-height-130);
@@ -63,12 +63,12 @@
   white-space: pre-line;
 }
 
-[data-s1-component="modal"] [data-s1-part="footer"] {
+[data-s1-component="modal"] [data-s1-part="footer"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) {
   display: flex;
   gap: var(--spacing-8);
 }
 
-[data-s1-component="modal"] [data-s1-part="close"] {
+[data-s1-component="modal"] [data-s1-part="close"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) {
   align-items: center;
   appearance: none;
   background: transparent;
@@ -84,7 +84,7 @@
   width: var(--sizing-24);
 }
 
-[data-s1-component="modal"] [data-s1-part="close"]::after {
+[data-s1-component="modal"] [data-s1-part="close"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *))::after {
   background: var(--color-icon-gray-dark);
   content: "";
   display: block;
@@ -94,50 +94,50 @@
 }
 
 @media (hover: hover) {
-  [data-s1-component="modal"]:not([data-break="mobile"]) [data-s1-part="close"]:hover {
+  [data-s1-component="modal"]:not([data-break="mobile"]) [data-s1-part="close"]:hover:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) {
     background: var(--color-control-bg-hover);
   }
 }
 
-[data-s1-component="modal"][data-break="pc"] [data-s1-part="panel"] {
+[data-s1-component="modal"][data-break="pc"] [data-s1-part="panel"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) {
   gap: var(--spacing-32);
   width: 360px;
 }
 
-[data-s1-component="modal"][data-break="pc"] [data-s1-part="content"] { gap: var(--spacing-32); }
+[data-s1-component="modal"][data-break="pc"] [data-s1-part="content"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) { gap: var(--spacing-32); }
 
-[data-s1-component="modal"][data-break="pc"] [data-s1-part="header"],
-[data-s1-component="modal"][data-break="pc"] [data-s1-part="body"],
-[data-s1-component="modal"][data-break="pc"] [data-s1-part="footer"] {
+[data-s1-component="modal"][data-break="pc"] [data-s1-part="header"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)),
+[data-s1-component="modal"][data-break="pc"] [data-s1-part="body"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)),
+[data-s1-component="modal"][data-break="pc"] [data-s1-part="footer"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) {
   padding-inline: var(--spacing-24);
 }
 
-[data-s1-component="modal"][data-break="pc"] [data-s1-part="title"] {
+[data-s1-component="modal"][data-break="pc"] [data-s1-part="title"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) {
   font-size: var(--font-size-16);
   font-weight: var(--font-weight-bold);
 }
 
-[data-s1-component="modal"][data-break="pc"] [data-s1-part="message"] {
+[data-s1-component="modal"][data-break="pc"] [data-s1-part="message"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) {
   font-size: var(--font-size-14);
   font-weight: var(--font-weight-regular);
 }
 
-[data-s1-component="modal"][data-break="pc"] [data-s1-part="footer"] { justify-content: flex-end; }
+[data-s1-component="modal"][data-break="pc"] [data-s1-part="footer"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) { justify-content: flex-end; }
 
-[data-s1-component="modal"][data-break="mobile"] [data-s1-part="panel"] {
+[data-s1-component="modal"][data-break="mobile"] [data-s1-part="panel"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) {
   gap: 30px;
   padding-inline: var(--spacing-20);
   width: 300px;
 }
 
-[data-s1-component="modal"][data-break="mobile"] [data-s1-part="content"] { gap: var(--spacing-24); }
+[data-s1-component="modal"][data-break="mobile"] [data-s1-part="content"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) { gap: var(--spacing-24); }
 
-[data-s1-component="modal"][data-break="mobile"] [data-s1-part="title"] {
+[data-s1-component="modal"][data-break="mobile"] [data-s1-part="title"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) {
   font-size: var(--font-size-18);
   font-weight: var(--font-weight-bold);
 }
 
-[data-s1-component="modal"][data-break="mobile"] [data-s1-part="message"] {
+[data-s1-component="modal"][data-break="mobile"] [data-s1-part="message"]:where(:not([data-s1-component="modal"] [data-s1-component]:not([data-s1-component="modal"]):not([data-s1-component="button"]) *)) {
   font-size: var(--font-size-16);
   font-weight: var(--font-weight-regular);
 }

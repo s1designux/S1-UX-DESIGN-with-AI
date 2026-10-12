@@ -63,7 +63,7 @@ export default function S1Modal({ variant, breakName = DEFAULT_BREAK, parts, onO
 
   if (tpl === 0) {
     return (
-      <Root t={SPEC.templates[tpl]} k="n0" a={{ "data-s1-component": "modal", "data-break": "pc", "data-footer": variant ?? "dual", "hidden": open ? undefined : "" }} controller={controller} partProps={partProps} style={style} outer={outer} omit={omit} lifted={lifted} forceState={forceState} {...rest}>
+      <Root t={SPEC.templates[tpl]} k="n0" a={{ "id": "confirm-modal", "data-s1-component": "modal", "data-break": "pc", "data-footer": variant ?? "dual", "hidden": open ? undefined : "" }} controller={controller} partProps={partProps} style={style} outer={outer} omit={omit} lifted={lifted} forceState={forceState} {...rest}>
         <El k="n1" a={{ "data-s1-part": "overlay", ...(slot(partScope, "overlay").attrs ?? {}) }}>
           {slot(partScope, "overlay").content ?? ""}
         </El>
@@ -93,7 +93,7 @@ export default function S1Modal({ variant, breakName = DEFAULT_BREAK, parts, onO
   }
   if (tpl === 1) {
     return (
-      <Root t={SPEC.templates[tpl]} k="n0" a={{ "data-s1-component": "modal", "data-break": "mobile", "data-footer": variant ?? "dual", "hidden": open ? undefined : "" }} controller={controller} partProps={partProps} style={style} outer={outer} omit={omit} lifted={lifted} forceState={forceState} {...rest}>
+      <Root t={SPEC.templates[tpl]} k="n0" a={{ "id": "confirm-modal", "data-s1-component": "modal", "data-break": "mobile", "data-footer": variant ?? "dual", "hidden": open ? undefined : "" }} controller={controller} partProps={partProps} style={style} outer={outer} omit={omit} lifted={lifted} forceState={forceState} {...rest}>
         <El k="n1" a={{ "data-s1-part": "overlay", ...(slot(partScope, "overlay").attrs ?? {}) }}>
           {slot(partScope, "overlay").content ?? ""}
         </El>

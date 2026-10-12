@@ -26,6 +26,7 @@
 - regular 컬럼 구성 = 제목(1depth) <li> 1개 + 항목(2depth) <li> N개(묶음별 5·3·4·5). compact-1 컬럼 구성 = 항목(2depth) <li> 1개씩(묶음 6개, 제목 없음). compact-2 컬럼 구성 = 항목(2depth) <li> 2개씩(마지막 묶음만 1개, 묶음 5개, 제목 없음).
 - Selected 항목 위치는 유형마다 다르다 — regular 는 4번째 묶음의 4번째 항목, compact-1·compact-2 는 마지막 묶음의 (유일한) 마지막 항목. host 가 aria-current="page" 를 정적으로 설정한다.
 - 패널을 여는 GNB 메뉴가 aria-expanded 와 aria-controls 로 이 패널의 id 를 가리킨다. 열고 닫는 동작·Esc·포커스 복귀는 이 패널을 여는 gnb 가 소유한다(river 결정 2026-09-09, D4·D5 — gnb.js, jsRequired=true) — 이 컴포넌트 자신은 여전히 펼쳐진 모양만 낸다(jsRequired=false).
+- 하위메뉴 패널은 열려도 본문을 아래로 밀지 않고 GNB 바 바로 아래에 본문 위로 겹쳐 뜬다(river 결정 2026-10-12). 왼쪽 끝·폭·세로 위치는 gnb.js 가 열 때 바의 상자에 맞춰 채우므로 position 이 잡힌 조상 상자를 따로 둘 필요는 없다. 단 gnb.js 로 이어 준(aria-controls) 패널만 겹침이 된다.
 
 ## 접근성 — 퍼블리셔가 지킬 것
 

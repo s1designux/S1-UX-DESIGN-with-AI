@@ -26,7 +26,7 @@
   white-space: nowrap;
 }
 
-[data-s1-component="assist-button"] [data-s1-part="label"] {
+[data-s1-component="assist-button"] [data-s1-part="label"]:where(:not([data-s1-component="assist-button"] [data-s1-component]:not([data-s1-component="assist-button"]) *)) {
   pointer-events: none;
   text-align: center;
 }

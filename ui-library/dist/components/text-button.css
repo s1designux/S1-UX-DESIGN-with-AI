@@ -19,7 +19,7 @@
   white-space: nowrap;
 }
 
-[data-s1-component="text-button"] [data-s1-part="label"] {
+[data-s1-component="text-button"] [data-s1-part="label"]:where(:not([data-s1-component="text-button"] [data-s1-component]:not([data-s1-component="text-button"]) *)) {
   pointer-events: none;
 }
 

@@ -33,6 +33,12 @@ function unlockScroll() {
   if (scrollLock.count === 0) document.body.style.overflow = scrollLock.previous;
 }
 
+/* 겹 목록 — 열린 창(modal·modal-content·bottom-sheet)이 열린 순서대로 쌓인다. 별도 모듈끼리 보도록 전역 심볼에 둔다.
+   초점 가둠·Esc 는 맨 위 한 겹만 맡는다 — 두 창이 서로 초점을 되돌리려 다투면 무한 재귀로 페이지가 멈춘다.
+   (창을 겹쳐 쌓는 사용법은 지원하지 않는다. 이 장치는 그래도 멈추지 않게 하는 안전장치다.) */
+const layers = (globalThis[Symbol.for("s1.ui.layers")] ??= []);
+const dropLayer = (root) => { const index = layers.indexOf(root); if (index >= 0) layers.splice(index, 1); };
+
 /* 겹 순서 — 이 창 안에서 팝오버(달력·시간·드롭다운·셀렉트·필터칩)가 열려 있으면 Esc 는 그 팝오버 몫이다.
    창까지 같이 닫으면 입력하던 내용이 날아간다. 포커스가 팝오버 밖(트리거 등)에 있으면 그 트리거를
    눌러 팝오버만 닫는다. 팝오버는 열릴 때 트리거에 aria-haspopup·aria-expanded="true" 를 단다. */
@@ -74,6 +80,7 @@ export function init(root) {
   let locked = false;
 
   const isOpen = () => !root.hidden;
+  const isTop = () => layers[layers.length - 1] === root;
 
   const dispatch = (name, detail = {}) => {
     root.dispatchEvent(new CustomEvent(`s1:modal:${name}`, { bubbles: true, detail }));
@@ -106,7 +113,7 @@ export function init(root) {
   };
 
   const handleKeydown = (event) => {
-    if (!isOpen()) return;
+    if (!isOpen() || !isTop()) return;
     if (event.key === "Escape") {
       if (closeTopPopover(panel)) return;
       event.preventDefault();
@@ -118,17 +125,17 @@ export function init(root) {
 
   // 초점이 다른 방법으로 모달 밖에 나가면(브라우저 주소창 복귀·프로그램 호출 등) 되돌린다.
   const handleFocusIn = (event) => {
-    if (!isOpen()) return;
+    if (!isOpen() || !isTop()) return;
     if (!root.contains(event.target)) focusFirst();
   };
 
   /* 초점이 아무 요소도 아닌 곳(document.body)으로 빠지면 focusin 이 아예 오지 않는다.
      그 상태로 Tab 을 누르면 페이지 처음으로 새어 나가므로 여기서 되돌린다. */
   const handleFocusOut = (event) => {
-    if (!isOpen()) return;
+    if (!isOpen() || !isTop()) return;
     if (event.relatedTarget && root.contains(event.relatedTarget)) return;
     queueMicrotask(() => {
-      if (!isOpen()) return;
+      if (!isOpen() || !isTop()) return;
       if (!root.contains(document.activeElement)) focusFirst();
     });
   };
@@ -144,6 +151,7 @@ export function init(root) {
     if (isOpen()) return;
     lastFocused = detail.trigger instanceof Element ? detail.trigger : document.activeElement;
     root.hidden = false;
+    if (!layers.includes(root)) layers.push(root);
     if (!locked) { lockScroll(); locked = true; }
     document.addEventListener("keydown", handleKeydown, true);
     document.addEventListener("focusin", handleFocusIn, true);
@@ -155,6 +163,7 @@ export function init(root) {
   function close(detail = {}) {
     if (!isOpen()) return;
     root.hidden = true;
+    dropLayer(root);
     document.removeEventListener("keydown", handleKeydown, true);
     document.removeEventListener("focusin", handleFocusIn, true);
     document.removeEventListener("focusout", handleFocusOut, true);
@@ -170,6 +179,7 @@ export function init(root) {
 
   // 이미 열린 채로 마크업이 들어온 경우(검수 화면·정적 예시)도 계약대로 배선한다.
   if (isOpen()) {
+    if (!layers.includes(root)) layers.push(root);
     if (!locked) { lockScroll(); locked = true; }
     document.addEventListener("keydown", handleKeydown, true);
     document.addEventListener("focusin", handleFocusIn, true);
@@ -186,6 +196,7 @@ export function init(root) {
       document.removeEventListener("keydown", handleKeydown, true);
       document.removeEventListener("focusin", handleFocusIn, true);
       document.removeEventListener("focusout", handleFocusOut, true);
+      dropLayer(root);
       if (locked) { unlockScroll(); locked = false; }
       instances.delete(root);
     }

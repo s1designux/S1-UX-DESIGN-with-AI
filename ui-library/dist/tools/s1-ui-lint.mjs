@@ -140,11 +140,23 @@ function checkComponentUsage(text, contract, findings, file) {
     }
     /* 이름이 aria 속성으로만 생기는 부품(예: 스위치) — 계약이 선언한 부품만 검사한다. */
     const nameAttributes = component.nameFromAttributes ?? [];
-    if (nameAttributes.length && !nameAttributes.some((attribute) => new RegExp(`(^|\\s)${attribute}\\s*=`).test(tag))) {
+    if (nameAttributes.length && !nameAttributes.some((attribute) => new RegExp(`(^|\\s)${attribute}\\s*=`).test(tag)) && !hasAssociatedLabel(text, tag, tagStart)) {
       findings.push({ severity: "error", rule: "S1-A11Y", file, line,
-        message: `${id} 에 접근 가능한 이름이 없습니다. ${nameAttributes.join(" 또는 ")} 를 달아 주세요.` });
+        message: `${id} 에 접근 가능한 이름이 없습니다. ${nameAttributes.join(" 또는 ")} 를 달거나 <label for="…"> 로 연결해 주세요.` });
     }
   }
+}
+
+/** 이름표(label)로 이름이 붙어 있는가 — <label for="id"> 로 연결됐거나, 이 요소를 <label> 이 감싸고 있으면 이름이 있는 것이다. */
+function hasAssociatedLabel(text, tag, tagStart) {
+  const idMatch = /(?:^|\s)id\s*=\s*["']([^"']+)["']/.exec(tag);
+  if (idMatch) {
+    const escaped = idMatch[1].replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    if (new RegExp(`<label\\b[^>]*\\bfor\\s*=\\s*["']${escaped}["']`).test(text)) return true;
+  }
+  const open = text.lastIndexOf("<label", tagStart);
+  if (open === -1) return false;
+  return text.indexOf("</label>", open) === -1 || text.indexOf("</label>", open) > tagStart;
 }
 
 /** 재구현 의심 — 확실히 가를 수 없으므로 경고로만 알린다(오류로 만들면 검사기를 끄게 된다).
@@ -209,7 +221,12 @@ async function main() {
   }
   console.log(`\n파일 ${scanned}개 검사 · 오류 ${errors.length} · 경고 ${warnings.length}`);
   if (errors.length) {
-    console.log("오류는 디자인 시스템에 없는 것을 쓴 자리입니다. 필요한 것이 정말 없다면 만들지 말고 디자인팀에 요청해 주세요.");
+    if (errors.some(({ rule }) => rule !== "S1-A11Y")) {
+      console.log("오류는 디자인 시스템에 없는 것을 쓴 자리입니다. 필요한 것이 정말 없다면 만들지 말고 디자인팀에 요청해 주세요.");
+    }
+    if (errors.some(({ rule }) => rule === "S1-A11Y")) {
+      console.log("이름이 없으면 화면 낭독기 사용자가 이 조작이 무엇인지 알 수 없습니다. aria-label 로 이름을 직접 달거나, <label for=\"id\"> 로 연결하거나, <label> 로 감싸 주세요.");
+    }
     process.exit(1);
   }
 }

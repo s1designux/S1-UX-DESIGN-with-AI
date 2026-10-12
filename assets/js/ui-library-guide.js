@@ -2220,8 +2220,7 @@ function gnbAssembledUnitMarkup(type, typeLabel) {
   const statsPanel = `<div data-s1-component="gnb-sub-menu" data-type="${type}" id="${statsId}" aria-label="통계 하위 메뉴 ${gnbId}" hidden>
       <div data-s1-part="columns">${gnbAssembledColumnsMarkup(type, "stats")}</div>
     </div>`;
-  /* 패널 2개는 자리 예약 슬롯 안에 겹쳐 둔다 — 열고 닫아도 아래 내용이 밀리지 않는다(river 지시 2026-09-10).
-     슬롯 높이는 그 벌에서 가장 높은 패널이 정하므로 host 가 높이를 지어내지 않는다. */
+  /* 패널은 본문을 밀지 않고 바 아래에 겹쳐 뜬다(river 결정 2026-10-12). 슬롯은 안내 칸에서 잘리지 않게 앉을 높이만 비워 둔다. */
   return `
     <div class="uilg-gnb-assembled-item">
       <p class="uilg-gnb-row-label">Center-Between · SM · ${typeLabel}</p>
@@ -2259,7 +2258,7 @@ function gnbStateMatrix() {
   return `
     <div class="platform-section">
       <div class="preview-area uilg-gnb-action-area">
-        <p class="uilg-demo-note">조립 액션 3벌 — 하단메뉴 유형에 맞춰 낸 실제 배선입니다(river 지시 2026-09-09). 세 벌 모두 Center-Between 정렬·SM 크기이고, 벌마다 유형만 다릅니다(레귤러 → 콤팩트1 → 콤팩트2). 메뉴에 마우스를 올리면(또는 Tab 으로 들어가면) 아래 패널이 펼쳐지고, 바깥으로 나가면 짧은 유예 뒤 닫힙니다. Esc 로 닫으면 초점이 그 메뉴로 돌아옵니다. 한 벌 안에서는 세 메뉴가 항상 같은 유형의 패널을 엽니다 — 유형은 메뉴마다 고르는 게 아니라 사이트가 하나 고르는 것입니다. 패널이 펼쳐질 자리는 미리 비워 두어 열고 닫아도 아래 내용이 밀리지 않습니다 — 흰 패널이 잘 보이도록 이 칸 배경만 옅은 회색입니다(실제 화면 배경은 아닙니다).</p>
+        <p class="uilg-demo-note">조립 액션 3벌 — 하단메뉴 유형에 맞춰 낸 실제 배선입니다(river 지시 2026-09-09). 세 벌 모두 Center-Between 정렬·SM 크기이고, 벌마다 유형만 다릅니다(레귤러 → 콤팩트1 → 콤팩트2). 메뉴에 마우스를 올리면(또는 Tab 으로 들어가면) 아래 패널이 펼쳐지고, 바깥으로 나가면 짧은 유예 뒤 닫힙니다. Esc 로 닫으면 초점이 그 메뉴로 돌아옵니다. 한 벌 안에서는 세 메뉴가 항상 같은 유형의 패널을 엽니다 — 유형은 메뉴마다 고르는 게 아니라 사이트가 하나 고르는 것입니다. 패널은 아래 내용을 밀어내지 않고 바 위에 겹쳐 뜹니다(안내 칸은 패널이 앉을 높이만 비워 둡니다) — 흰 패널이 잘 보이도록 이 칸 배경만 옅은 회색입니다(실제 화면 배경은 아닙니다).</p>
         <div class="uilg-gnb-assembled-wrap">${gnbAssembledMarkup()}</div>
       </div>
       <div class="preview-area">

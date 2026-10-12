@@ -41,7 +41,7 @@ export default function S1BottomSheet({ variant, parts, onOpen, onClose, classNa
   });
 
   return (
-      <div data-s1-component="bottom-sheet" data-s1-part="sheet" data-break="mobile" data-footer={variant ?? "single"} {...(slot(partScope, "sheet").attrs ?? {})} ref={rootRef} className={className} style={style} {...rest}>
+      <div id={`${uid}-sheet`} data-s1-component="bottom-sheet" data-s1-part="sheet" data-break="mobile" data-footer={variant ?? "single"} hidden {...(slot(partScope, "sheet").attrs ?? {})} ref={rootRef} className={className} style={style} {...rest}>
         <div data-s1-part="sheet-backdrop" {...(slot(partScope, "sheetBackdrop").attrs ?? {})}>
           {slot(partScope, "sheetBackdrop").content ?? ""}
         </div>

@@ -173,7 +173,7 @@ function testPseudo(node, pseudo, context) {
     }
     return deps;
   }
-  if (name === "is") {
+  if (name === "is" || name === "where") {
     const deps = [];
     let any = false;
     for (const one of splitTopLevel(args, ",")) {
