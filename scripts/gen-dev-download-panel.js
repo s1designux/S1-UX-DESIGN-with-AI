@@ -137,8 +137,8 @@ const TOOL_CARDS = [
     key: 'react',
     title: 'React · Next.js',
     note: `${approved.length}종 전부 · 웹 전용 · JSX 빌드 도구 필요 · 서버 렌더링·타입 정의 포함`,
+    warn: 'Expo·React Native 앱(iOS·Android)은 아래 <strong>React Native (Expo)</strong> 를 받으세요',
     install: [
-      '<strong>웹 브라우저 전용입니다.</strong> Expo·React Native 앱(iOS·Android)에서는 깨지니 아래 <strong>React Native (Expo)</strong> 묶음을 받으세요',
       `압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 ${approved.length}종이 실제 모습으로 보입니다`,
       '앱 진입 파일에서 겉모습 CSS 를 한 번 읽힙니다 (<code>tokens.css</code> · <code>s1-ui.css</code>)',
       '쓸 컴포넌트만 이름으로 꺼내 씁니다 — 아래는 그 한 줄입니다'
@@ -234,7 +234,7 @@ function toolCard(tool) {
     process.exit(1);
   }
   /* 사람이 적은 설치 순서·예시 코드가 배포본과 어긋나면 여기서 멈춘다. */
-  const problems = assertProse(facts, [...tool.install, tool.code, noteOf(tool, facts)]);
+  const problems = assertProse(facts, [...tool.install, tool.code, noteOf(tool, facts), tool.warn ?? '']);
   if (problems.length) {
     console.error(`❌ ${tool.key} 카드 문장이 배포본과 다릅니다:\n   - ${problems.join('\n   - ')}`);
     process.exit(1);
@@ -243,35 +243,36 @@ function toolCard(tool) {
   const lint = facts.lint
     ? '<span class="devtool-check">자가 검사기 사용 가능</span>'
     : '<span class="devtool-check devtool-check-off">자가 검사기 없음 — 값 대조까지만</span>';
+  const warn = tool.warn ? `\n            <p class="devtool-warn">${tool.warn}</p>` : '';
   return `          <div class="devtool-card">
             <div class="devtool-head">
-              <div>
-                <div class="devtool-title">${escape(tool.title)}</div>
-                <div class="devtool-note">${escape(noteOf(tool, facts))}</div>
-              </div>
-              <div class="devtool-head-right">
-                ${badge}
-                <span class="devtool-updated">v${escape(manifest.version)} · 업데이트 ${escape(updatedAt[tool.key] ?? '—')}</span>
-              </div>
+              <div class="devtool-title">${escape(tool.title)}</div>
+              ${badge}
             </div>
-            <div class="devtool-section">설치</div>
-            <ol class="devtool-steps">
-              ${tool.install.map((step) => `<li>${step}</li>`).join('\n              ')}
-            </ol>
-            <pre class="devtool-code"><code>${escape(tool.code)}</code></pre>
-            <div class="devtool-section">들어있는 것</div>
-            <p class="devtool-contains">${facts.contains}</p>
+            <p class="devtool-note">${escape(noteOf(tool, facts))}</p>${warn}
             <div class="devtool-get">
               <a class="devtool-btn" href="../assets/downloads/${escape(packageInfo.zip)}" download>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 다운로드
               </a>
-              <span class="devtool-size">${packageInfo.sizeKB}KB · 파일 ${packageInfo.files}개</span>
+              <span class="devtool-meta">
+                <span class="devtool-size">${packageInfo.sizeKB}KB · 파일 ${packageInfo.files}개</span>
+                <span class="devtool-updated">v${escape(manifest.version)} · 업데이트 ${escape(updatedAt[tool.key] ?? '—')}</span>
+              </span>
             </div>
-            <div class="devtool-foot">
-              <span class="devtool-files">${facts.files.map((file) => `<code>${escape(file)}</code>`).join(' ')}</span>
-              ${lint}
-            </div>
+            <details class="devtool-more">
+              <summary>설치 방법 · 들어있는 것</summary>
+              <ol class="devtool-steps">
+                ${tool.install.map((step) => `<li>${step}</li>`).join('\n                ')}
+              </ol>
+              <pre class="devtool-code"><code>${escape(tool.code)}</code></pre>
+              <div class="devtool-section">들어있는 것</div>
+              <p class="devtool-contains">${facts.contains}</p>
+              <div class="devtool-foot">
+                <span class="devtool-files">${facts.files.map((file) => `<code>${escape(file)}</code>`).join(' ')}</span>
+                ${lint}
+              </div>
+            </details>
           </div>`;
 }
 
