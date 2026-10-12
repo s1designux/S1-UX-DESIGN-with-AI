@@ -56,7 +56,7 @@
     "property": [],
     "values": {},
     "absentCombinations": [],
-    "sizeAxis": "없음 — 높이 56 단일. 폭은 웹에서 full-width 반응형."
+    "sizeAxis": "없음 — 높이 56 단일. 폭은 웹에서 바 배경 full-width·안쪽 가운데 1280 열(1280 아래로 줄지 않음)."
   },
   "scope": "light+dark",
   "tokens": {
@@ -108,10 +108,10 @@
   "geometry": {
     "size": "1920×56 (웹: 폭 100%, 높이 sizing/56)",
     "paddingBlock": "spacing/12",
-    "paddingInline": "320 (웹: 안쪽 폭 1280 을 가운데에 두고 최소 spacing/24 까지 줄어든다)",
+    "paddingInline": "320 (웹: 가운데 1280 열 — 좌우 여백 (100%−1280)/2 를 320 까지로 제한, 1280 아래로는 줄지 않음 · river D-2 2026-10-12 \"가운데 1280폭을 지키고 그 이후로는 대응 안함.\")",
     "languageGap": "spacing/8",
     "globe": "24",
-    "provenance": "정본 buildLoginGNB(build-components.ts:6786-6833). 웹의 폭 처리는 GNB 와 같은 full-width 반응형(registry gnb.json 선언)."
+    "provenance": "정본 buildLoginGNB(build-components.ts:6786-6833). 웹의 폭 처리는 바 배경 full-width·안쪽 가운데 1280 열(river D-2)."
   },
   "platformSupport": {
     "mobile": false,

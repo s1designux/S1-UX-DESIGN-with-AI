@@ -1,8 +1,8 @@
 {
   "id": "login-gnb",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "status": "candidate",
-  "canonicalFingerprint": "59b4b6e9967f119d83caf77d6fd5d4eb86e5c5342d9e771f0441d928c59d0700",
+  "canonicalFingerprint": "bf6aee70e5529103d10d9d1e0ddf647cbbba66ff5664997afbc2484b59b3189a",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -16,8 +16,8 @@
     "root": {
       "height": "--sizing-56",
       "paddingBlock": "--spacing-12",
-      "paddingInline": "clamp(--spacing-24, (100% - 1280px) / 2, 320px)",
-      "note": "정본은 폭 1920 고정·좌우 패딩 320 이지만 웹은 GNB 와 같은 full-width 반응형이다. 1920 에서는 정본 그대로 320 이고 좁아지면 안쪽 폭 1280 을 가운데에 두며 최소 좌우 여백 spacing/24 까지 줄어든다."
+      "paddingInline": "clamp(0px, (100% - --breakpoint-xl) / 2, 320px), min-width --breakpoint-xl",
+      "note": "정본은 폭 1920 고정·좌우 패딩 320 이다. 웹은 바 배경이 화면 폭을 채우고 안쪽 내용은 가운데 1280(canon breakpoint/xl) 열이다 — 좌우 여백은 (100% − 1280)/2 를 320 까지로 제한(1920 → 320, 1600 → 160, 1280 → 0). 1280 보다 좁아도 줄어들지 않고 가로로 넘친다(river D-2, 2026-10-12: \"가운데 1280폭을 지키고 그 이후로는 대응 안함.\")."
     },
     "language": {
       "gap": "--spacing-8",

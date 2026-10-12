@@ -1,7 +1,10 @@
 /* Footer (풋터) — 정본 buildFooter(build-components.ts:6429-6535) 기준. 축: data-platform=pc|mobile.
-   정본 PC 는 바 폭을 1920 고정(좌우 패딩 320)으로 표현하지만 웹은 GNB 와 같이 full-width 반응형이다
-   (gnb.css 선례, registry gnb.json 선언 · river 승인). 1920 에서는 정본 그대로 좌우 320 이 되고,
-   좁아지면 안쪽 폭 1280(= 1920 − 320×2)을 가운데에 두며 최소 좌우 여백 spacing/24 로 줄어든다.
+   정본 PC 는 바 폭을 1920 고정(좌우 패딩 320)으로 표현한다. 웹은 바 배경이 화면 폭을 채우되 안쪽 내용은
+   가운데 1280(canon breakpoint/xl = --breakpoint-xl) 열이다 — 좌우 여백 = (100% − 1280)/2 를 320 까지로 제한
+   (1920 → 320 · 1600 → 160 · 1280 → 0). 1280 보다 좁아져도 줄어들지 않는다(min-width 1280 — 넘치면 가로로 민다)
+   (river D-2 2026-10-12 "가운데 1280폭을 지키고 그 이후로는 대응 안함.").
+   canon breakpoint/md(768) 미만에서는 PC 도 Mobile 모양으로 바뀐다(river D-3 2026-10-12
+   "브레이크포인트에 따라 모바일 모양으로 바뀜", 파일 맨 아래 @media). 명시 data-platform="mobile" 은 그대로.
    정본에는 hover·pressed 가 없다 — 링크 색을 바꾸지 않는다. 키보드 초점은 다른 코어와 같이
    브라우저 기본 표시에 맡긴다(2026-09-02 river 결정). */
 [data-s1-component="footer"] {
@@ -65,7 +68,8 @@
   justify-content: space-between;
   min-height: 116px;
   padding-block: var(--spacing-28);
-  padding-inline: clamp(var(--spacing-24), calc((100% - 1280px) / 2), 320px);
+  min-width: var(--breakpoint-xl);
+  padding-inline: clamp(0px, calc((100% - var(--breakpoint-xl)) / 2), 320px);
 }
 
 [data-s1-component="footer"][data-platform="pc"]::before {
@@ -141,4 +145,52 @@
 [data-s1-component="footer"][data-platform="mobile"] [data-s1-part="copyright"] {
   justify-self: stretch;
   text-align: center;
+}
+
+/* ── PC → Mobile 자동 전환 — canon breakpoint/md(768) 미만(river D-3). 값은 위 Mobile 블록과 같다.
+   @media 조건에는 CSS 변수를 쓸 수 없어 768 을 직접 적는다(= --breakpoint-md). ── */
+@media (max-width: 767.98px) {
+  [data-s1-component="footer"][data-platform="pc"] {
+    align-items: start;
+    background: none;
+    display: grid;
+    gap: var(--spacing-4);
+    grid-template-columns: max-content;
+    justify-content: start;
+    min-height: 0;
+    min-width: 0;
+    padding: var(--spacing-8) var(--spacing-16);
+  }
+
+  [data-s1-component="footer"][data-platform="pc"]::before,
+  [data-s1-component="footer"][data-platform="pc"] [data-s1-part="company"],
+  [data-s1-component="footer"][data-platform="pc"] [data-s1-part="logo"] {
+    display: none;
+  }
+
+  [data-s1-component="footer"][data-platform="pc"] [data-s1-part="content"] {
+    display: contents;
+  }
+
+  [data-s1-component="footer"][data-platform="pc"] [data-s1-part="links"],
+  [data-s1-component="footer"][data-platform="pc"] [data-s1-part="links"] > li {
+    gap: var(--spacing-8);
+  }
+
+  [data-s1-component="footer"][data-platform="pc"] [data-s1-part="links"] > li + li::before {
+    color: var(--color-line-default);
+    height: var(--sizing-10);
+  }
+
+  [data-s1-component="footer"][data-platform="pc"] :is([data-s1-part="link"], [data-s1-part="copyright"]) {
+    font-size: var(--font-size-12);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: var(--letter-spacing-normal);
+    line-height: var(--line-height-130);
+  }
+
+  [data-s1-component="footer"][data-platform="pc"] [data-s1-part="copyright"] {
+    justify-self: stretch;
+    text-align: center;
+  }
 }

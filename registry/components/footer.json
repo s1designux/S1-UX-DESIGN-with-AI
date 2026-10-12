@@ -73,7 +73,7 @@
       ]
     },
     "absentCombinations": [],
-    "sizeAxis": "없음 — PC 는 1920×116 고정(웹은 full-width 반응형), Mobile 은 가로·세로 모두 hug."
+    "sizeAxis": "없음 — PC 는 1920×116 고정(웹은 바 배경 full-width·안쪽 가운데 1280 열, 768 미만은 Mobile 모양), Mobile 은 가로·세로 모두 hug."
   },
   "scope": "light+dark",
   "tokens": {
@@ -136,7 +136,7 @@
     "pc": {
       "size": "1920×116 (웹: 폭 100%, 최소 높이 116)",
       "paddingBlock": "spacing/28",
-      "paddingInline": "320 (웹: 안쪽 폭 1280 을 가운데에 두고 최소 spacing/24 까지 줄어든다)",
+      "paddingInline": "320 (웹: 가운데 1280 열 — 좌우 여백 (100%−1280)/2 를 320 까지로 제한, 1280 아래로는 줄지 않음 · river D-2 2026-10-12 \"가운데 1280폭을 지키고 그 이후로는 대응 안함.\" · 768 미만은 Mobile 모양 · river D-3 \"브레이크포인트에 따라 모바일 모양으로 바뀜\")",
       "contentGap": "spacing/4",
       "linkGap": "spacing/12",
       "separator": "1×8",
@@ -151,7 +151,7 @@
       "separator": "1×10",
       "typography": "body/12R"
     },
-    "provenance": "정본 buildFooter(build-components.ts:6429-6535). 웹의 폭 처리는 GNB 와 같은 full-width 반응형(registry gnb.json 선언)."
+    "provenance": "정본 buildFooter(build-components.ts:6429-6535). 웹의 폭 처리는 바 배경 full-width·안쪽 가운데 1280 열(river D-2)·768 미만 Mobile 자동 전환(river D-3)."
   },
   "platformSupport": {
     "mobile": true,

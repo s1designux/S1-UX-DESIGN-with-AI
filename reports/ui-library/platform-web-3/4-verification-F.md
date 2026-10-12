@@ -167,3 +167,54 @@
 CI 전체(크기·색·삼성 이미지 원본·cover) · 이미지 빌드 파이프라인·url 치환·zip · 접근성(contentinfo·banner·button·role=img·aria-hidden) · 안내/검수 화면의 dist 전용 사용 · S1 로고 path.
 
 권장 상태: `workflowStatus=in-progress`(C-1·C-2 결정 대기), `uiLibraryStatus=candidate`, `nextAction`=「river 가 C-1·C-2 를 정하면 그 반영분만 델타 재검증 후 6-promotion」.
+
+---
+
+## delta 2 — 재검증 (2026-10-12, ui-library 0.19.2, river D-2·D-3 반영)
+
+**판정: FAIL** — ❌(a) 1건(안내 화면 문구) · ❓(c) 0건(**C-1·C-2 종결**) · BLOCKED 0건.
+
+승계 조건: 정본 지문 동일(`ff7fbdb3…`) · 검사 규칙 추가 없음 · 변경 목록 제공(3-build.md「rework 2」) → 델타 범위만.
+
+### 재실행 종료코드
+ui:contract 0 · ui:build:check 0 · ui:test:check 0 · ui:guide:render 0 · gate:check 0 · ui:state 0 · 버전 0.19.2.
+
+### 근거 결정
+- D-2(river, 인용 "가운데 1280폭을 지키고 그 이후로는 대응 안함.") — workflow-state decisions 에 기록됨.
+- D-3(river, 인용 "브레이크포인트에 따라 모바일 모양으로 바뀜", 기준 768 = 정본 breakpoint/md, `--breakpoint-md: 768px`·`--breakpoint-xl: 1280px` 정본 vars-data 389-390 과 일치).
+
+### (1) D-2 — 폭별 실측 (빈 소비자, iframe 뷰포트 = 폭, body margin 0)
+| 뷰포트 | Login GNB 폭 · 좌우 여백 · 안쪽 폭 | Footer PC 폭 · 좌우 여백 · 안쪽 폭 | 문서 가로 스크롤 폭 | 판정 |
+|---|---|---|---|---|
+| 1920 | 1920 · 320/320 · 1280 (서비스명 x=320, 언어 오른끝 1600) | 1920 · 320 · 1280 (로고 오른끝 1600) | 1920 (넘침 없음) | PASS |
+| 1600 | 1600 · 160/160 · 1280 | 1600 · 160 · 1280 (로고 오른끝 1440) | 1600 | PASS |
+| 1280 | 1280 · 0/0 · 1280 | 1280 · 0 · 1280, 높이 116 | 1280 | PASS (빌더 미확인분 — 캡처 rework2-1280.png 육안 확인 포함) |
+| 1000 | 1280 · 0/0 · 1280 (min-width) | 1280 · 0 · 1280, PC 모양 | 1280 | PASS (결정대로 가로 넘침) |
+- box-sizing: border-box — 바 바깥 폭 = 뷰포트(≥1280) 또는 1280(미만). 바 자신의 scrollWidth = 바 폭(안쪽 넘침 0) → **이중 넘침 없음**, 문서 넘침은 1280 한 겹뿐.
+
+### (2) D-3 — 768 경계
+| 뷰포트 | Footer PC 모양 | 판정 |
+|---|---|---|
+| 1280 · 1000 · 800 · **768** | flex · 높이 116 · 패딩 28 · 배경 · 위 선 · 회사정보·로고 표시 (PC 모양 유지, 폭 1280) | PASS |
+| **767** · 700 · 375 | grid · 패딩 8/16 · 배경 없음 · 위 선 없음(::before display none) · 회사정보·로고 display none · 폭 = 뷰포트(min-width 0) | PASS |
+
+**명시 Mobile 변형과 나란히 대조**(375·767 × Light·Dark, 같은 문서 안 두 풋터, 루트 기준 상대좌표): 박스 크기·패딩·gap·grid 칸(281.578px)·링크 3개와 li 위치/폭·카피라이트 위치(16, 27.59)·폭 281.58·글자 12px/15.6px/0·색(Light #757575, Dark #8A8C96)·구분선 1×10(Light #E9E9E9, Dark #35363F)·글꼴·정렬, 링크 줄 중심 = 카피라이트 글자 중심 156.79 — **전부 동일**. 유일한 차이는 PC 쪽 `::before` 의 content 값("")이며 display none 이라 렌더 영향 0. → PASS
+
+### (3) 묶음 ↔ 개별 동일성
+375 · 1000 · 1920 × Light · Dark 6조합 — 9개 인스턴스의 outerHTML·박스·색·패딩·display·의사요소·하위 전 요소 **완전 동일**. → PASS
+
+### (4) 검수·안내 화면
+- ui-review.html: 이번 변경은 설명 문구·표본 라벨뿐(레이아웃 CSS 무변경), 표본은 계속 dist examples fetch. ui:guide:render 0 · gate:check 0. → PASS
+- **❌ D2-1 (a) 안내 화면(components.html, `assets/js/ui-library-guide.js`) 표본 라벨이 옛 규칙을 말한다.** `loginGnbStateMatrix` 3336행 「칸에 맞춰 늘어남 · 좌우 여백 최소 24」, `footerStateMatrix` 3359행 「카드 폭 · 좌우 여백 최소 24」. D-2 이후 실제 동작은 「여백 최소 0, 1280 아래로 줄지 않고 넘침」이라 화면 설명이 배포본과 반대다. ui-review.html 쪽 라벨은 이미 「1280 아래로는 줄지 않음」으로 고쳐져 있어 두 화면이 서로 다른 말을 한다. (라벨 문구만 고치면 됨 — 레이아웃 무관)
+
+### (5) 문구 — manifest·registry
+footer/login-gnb manifest(src·dist)·registry json 4곳 모두 옛 「최소 24」 0건, D-2 인용 포함, footer 는 D-3 인용·768 포함, login-gnb 는 D-2 만(정확 — D-3 은 풋터 한정). 수식 표기 `clamp(0px, (100% - --breakpoint-xl) / 2, 320px), min-width --breakpoint-xl` 가 CSS 와 일치. → PASS
+
+### 종결 / 남은 것
+- **C-1 종결**(D-2 대로 구현·실측 일치) · **C-2 종결**(D-3 대로 768 미만 Mobile 전환, 명시 Mobile 과 값 동일).
+- 남은 것: D2-1 안내 화면 라벨 2줄.
+
+### 이번에 재확인하지 않음 (승계)
+CI 전체 · 이미지 파이프라인·zip · 접근성 · S1 로고 path · F-1(글꼴)·F-2(Mobile 카피라이트) 값 — 단, F-2 값은 (2) 나란히 대조에서 명시 Mobile 측정으로 사실상 재확인됨(변화 없음).
+
+권장 상태: `workflowStatus=in-progress`, `uiLibraryStatus=candidate`, `nextAction`=「guide-builder 가 ui-library-guide.js 라벨 2줄을 D-2 문구로 고친 뒤 그 줄만 델타 확인 → 6-promotion(river UX 승인)」.

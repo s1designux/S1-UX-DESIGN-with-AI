@@ -71,3 +71,11 @@ Gate 14 문구 검사기: appearsIn 추가 불필요(기존 통과).
 | ui:version | 0 (bump 후; bump 전 1) |
 | ui:guide:render | 0 |
 | gate:check | 0 |
+
+## rework 2 (2026-10-12, river D-2 · D-3)
+
+- **D-2 (C-1)** — river "가운데 1280폭을 지키고 그 이후로는 대응 안함." footer(PC)·login-gnb: `padding-inline: clamp(0px, calc((100% - var(--breakpoint-xl)) / 2), 320px)` + `min-width: var(--breakpoint-xl)`(canon breakpoint/xl 1280, tokens.css 에 `--breakpoint-xl` 존재해 변수 사용). 옛 최소 24 clamp 제거. 1280 아래로는 줄지 않고 넘치면 가로로 민다.
+- **D-3 (C-2)** — river "브레이크포인트에 따라 모바일 모양으로 바뀜". footer.css 맨 아래 `@media (max-width: 767.98px)`(= --breakpoint-md 768, 조건식엔 변수 불가 → 주석) 에서 PC 풋터가 Mobile 값 그대로: 세로 grid·패딩 8/16·gap 4·링크 gap 8·body/12R·구분선 1×10 line/default·카피라이트 링크 줄 아래 가운데·배경/위 선/회사 정보/로고 없음. 명시 `data-platform="mobile"` 은 그대로. login-gnb 는 D-2 만.
+- 변경 파일: footer.css · login-gnb.css · footer/login-gnb manifest.json(폭 설명, river 인용) · footer.example.html(주석) · registry/components/footer.json · login-gnb.json(geometry·provenance 문구) · pages/ui-review.html 28·27번 설명 문구와 표본 라벨(레이아웃 CSS 무변경) · 재생성물(dist, zip, devpanel, DESIGN.core.md, guide-model) · `ui:bump` 0.19.1 → 0.19.2. empty-consumer 쌍은 마크업 불변.
+- 측정(http 헤드리스, `screens/rework2-{1920,1600,1280,1000,700}.png` — 임시 측정 페이지는 삭제): 1920 → 좌우 320/320 · 1600 → 160/160 · 1000 → 0/0, 바 폭 1280(scrollWidth 1280, 가로 넘침) · 1280 → 0(1000 과 같은 식) · footer PC 700 → display grid, 패딩 16, 배경 없음, 로고·회사 정보 none, 링크 12px, 카피라이트 링크 줄 아래 가운데. login-gnb 700 → 1280 유지.
+- 실행: ui:contract 0 · ui:icons 0 · ui:build:check 0 · ui:test 0 · ui:test:check 0 · ui:version 0 · ui:guide:render 0 · ui:liveness 0 · gate:check 0. 독립 검증은 미실시(구현자 확인).

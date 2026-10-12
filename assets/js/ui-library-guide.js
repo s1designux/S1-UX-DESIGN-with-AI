@@ -3333,7 +3333,7 @@ function loginGnbStateMatrix(html) {
       <p class="uilg-demo-note">로그인 화면 맨 위에 그대로 놓습니다. 언어 버튼은 눌러지는 실제 버튼이며, 눌렀을 때 무엇을 할지는 쓰는 화면이 정합니다. 마우스를 올려도 색이 바뀌지 않습니다(정본에 올림 상태가 없습니다).</p>
     </div>`;
     const rows = [
-      ["카드 폭", "칸에 맞춰 늘어남 · 좌우 여백 최소 24", bar(true)],
+      ["카드 폭", "가운데 1280 폭 · 1280 보다 좁으면 줄지 않음", bar(true)],
       ["실제 1920 폭", "좌우 여백 320(정본 그대로) · 좌우로 밀어 보세요", `<div class="uilg-wide-frame">${bar(true)}</div>`]
     ];
     const header = `<div class="matrix-col-header" style="grid-column:1"></div><div class="matrix-col-header">Default</div>`;
@@ -3356,7 +3356,7 @@ function footerStateMatrix(html) {
       <p class="uilg-demo-note">화면 맨 아래에 놓습니다. 링크는 실제 링크라 Tab 으로 들어가 Enter 로 이동하며, 이동할 주소는 쓰는 화면이 채웁니다. 글자는 회사 정본 문구 그대로입니다.</p>
     </div>`;
     const body = [
-      ["Platform=PC", "카드 폭 · 좌우 여백 최소 24", pc(true)],
+      ["Platform=PC", "가운데 1280 폭 · 768 미만은 모바일 모양", pc(true)],
       ["Platform=PC", "실제 1920 폭 · 좌우 여백 320 · 좌우로 밀어 보세요", `<div class="uilg-wide-frame">${pc(true)}</div>`]
     ].map(([label, dim, markup]) =>
       `<div class="matrix-row-label">${label}<span class="uilg-size-dim">${dim}</span></div><div class="comp-state-cell uilg-bar-cell">${markup}</div>`).join("");

@@ -1,8 +1,8 @@
 {
   "id": "footer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "status": "candidate",
-  "canonicalFingerprint": "4b7fe600410c8cbb5777e7abf28b5a02128f15c32f8ea32eb786e3d6e2966181",
+  "canonicalFingerprint": "af199f71161c44d1573f7aff00a2c3812082e333d07c6286e870784ade1247c1",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -23,12 +23,12 @@
     "pc": {
       "minHeight": "116px",
       "paddingBlock": "--spacing-28",
-      "paddingInline": "clamp(--spacing-24, (100% - 1280px) / 2, 320px)",
+      "paddingInline": "clamp(0px, (100% - --breakpoint-xl) / 2, 320px), min-width --breakpoint-xl",
       "contentGap": "--spacing-4",
       "linkGap": "--spacing-12",
       "separator": "width --border-width-default × height --spacing-8",
       "logo": "42px × --sizing-16",
-      "note": "정본은 폭 1920 고정·좌우 패딩 320 이지만 웹은 GNB 와 같은 full-width 반응형이다. 1920 에서는 정본 그대로 320 이고 좁아지면 안쪽 폭 1280 을 가운데에 두며 최소 좌우 여백 spacing/24 까지 줄어든다."
+      "note": "정본은 폭 1920 고정·좌우 패딩 320 이다. 웹은 바 배경이 화면 폭을 채우고 안쪽 내용은 가운데 1280(canon breakpoint/xl) 열이다 — 좌우 여백은 (100% − 1280)/2 를 320 까지로 제한(1920 → 320, 1600 → 160, 1280 → 0). 1280 보다 좁아도 줄어들지 않고 가로로 넘친다(river D-2, 2026-10-12: \"가운데 1280폭을 지키고 그 이후로는 대응 안함.\"). 또 canon breakpoint/md(768) 미만에서는 PC 풋터가 자동으로 Mobile 모양(세로·패딩 8/16·본문 12R·회사 정보와 로고 없음)이 된다(river D-3, 2026-10-12: \"브레이크포인트에 따라 모바일 모양으로 바뀜\"). 명시 data-platform=mobile 은 그대로."
     },
     "mobile": {
       "padding": "--spacing-8 --spacing-16",
@@ -147,5 +147,5 @@
     "runtime": "none",
     "reason": "정적 표시 영역이라 스크립트가 필요 없다."
   },
-  "sourceFingerprint": "63d75b5f63d99ba947507ab6dff8f8eadbd81db76035f7b1584d6d1ee4b7de72"
+  "sourceFingerprint": "c40acb82955205e3c1f3d24e708f16f821ee0f0b555b13955efd2249462fad4d"
 }

@@ -1,7 +1,8 @@
 /* LoginGNB (로그인 상단바) — 정본 buildLoginGNB(build-components.ts:6786-6833) 기준. 변형 없음(단일).
-   정본은 바 폭을 1920 고정(좌우 패딩 320)으로 표현하지만 웹은 GNB 와 같이 full-width 반응형이다
-   (gnb.css 선례, registry gnb.json 선언 · river 승인). 1920 에서는 정본 그대로 좌우 320 이 되고,
-   좁아지면 안쪽 폭 1280 을 가운데에 두며 최소 좌우 여백 spacing/24 로 줄어든다.
+   정본은 바 폭을 1920 고정(좌우 패딩 320)으로 표현한다. 웹은 바 배경이 화면 폭을 채우되 안쪽 내용은
+   가운데 1280(canon breakpoint/xl = --breakpoint-xl) 열이다 — 좌우 여백 = (100% − 1280)/2 를 320 까지로 제한
+   (1920 → 320 · 1600 → 160 · 1280 → 0). 1280 보다 좁아져도 줄어들지 않는다(min-width 1280 — 넘치면 가로로 민다)
+   (river D-2 2026-10-12 "가운데 1280폭을 지키고 그 이후로는 대응 안함.").
    GNB 의 값(지구본 32 · 글자색 text/body/primary · 간격 4)을 가져오지 않는다 — 정본 값은 따로 있다.
    삼성 로고는 2026-06-24 정본에서 제거됐다 — 왼쪽은 서비스명 글자 자리 하나뿐. */
 [data-s1-component="login-gnb"] {
@@ -14,7 +15,8 @@
   justify-content: space-between;
   margin: 0;
   padding-block: var(--spacing-12);
-  padding-inline: clamp(var(--spacing-24), calc((100% - 1280px) / 2), 320px);
+  min-width: var(--breakpoint-xl);
+  padding-inline: clamp(0px, calc((100% - var(--breakpoint-xl)) / 2), 320px);
   position: relative;
   width: 100%;
 }

@@ -55,7 +55,7 @@
   "workflowStatus": "awaiting-user",
   "uiLibraryStatus": "candidate",
   "lastCompletedCheckpoint": 4,
-  "nextAction": "river UX 검수 + C-1(바 좌우 여백)·C-2(좁은 화면 PC 푸터) 결정. 결정이 코드를 바꾸면 그 부분만 델타 재검증 후 6-promotion.",
+  "nextAction": "river UX 검수 → 승인 시 6-promotion(사이트 메뉴 등재·전달본).",
   "canonicalInputs": [
     {
       "role": "component-visual",
@@ -102,18 +102,7 @@
     "distComponent": "없음",
     "siteSection": "pages/components.html 에 토큰 표만 있는 낡은 섹션(login-gnb · ci · footer), 내비 버튼 disabled"
   },
-  "blockers": [
-    {
-      "id": "C-1",
-      "kind": "needs-decision",
-      "summary": "바 좌우 여백 규칙(정본은 1920 고정 320만 말함)"
-    },
-    {
-      "id": "C-2",
-      "kind": "needs-decision",
-      "summary": "좁은 화면에서 Footer PC 처리"
-    }
-  ],
+  "blockers": [],
   "evidence": {
     "sourceAudit": {
       "observedAt": "2026-10-02",
@@ -124,13 +113,14 @@
       "report": "reports/ui-library/platform-web-3/4-verification-F.md",
       "firstPass": "FAIL 2 (F-1·F-2) · HOLD 2 (C-1·C-2) · H-0 상태파일",
       "rework": "F-1·F-2·H-0 반영, 0.19.1",
-      "deltaPass": "2026-10-02 델타 1 — FAIL 0 · HOLD 2(C-1·C-2 river 결정)"
+      "deltaPass": "2026-10-02 델타 1 — FAIL 0 · HOLD 2(C-1·C-2 river 결정)",
+      "deltaPass2": "2026-10-12 델타 2 — D-2·D-3 PASS, C-1·C-2 종결. D2-1(안내 화면 옛 설명 2줄) ⭐ 문구 수정(기계적, 렌더·liveness 검사 통과)"
     }
   },
   "handoff": {
     "lastActor": "orchestrator",
-    "updatedAt": "2026-10-02",
-    "summary": "기술 검증 통과(남은 HOLD 는 river 결정 2건). river 검수 대기."
+    "updatedAt": "2026-10-12",
+    "summary": "0.19.2 기술 검증 통과. river 검수 대기."
   },
   "decisions": [
     {
@@ -139,6 +129,20 @@
       "by": "river",
       "decision": "Platform 묶음 중 Footer · CI · LoginGNB 3종을 웹 배포본으로 옮긴다(StatusBar·NavBar·WebTabBar 제외)",
       "quote": "응 맞아, 진행해"
+    },
+    {
+      "id": "D-2",
+      "at": "2026-10-12",
+      "by": "river",
+      "decision": "C-1 바 좌우 여백 — 가운데 1280 폭을 지키고, 그보다 좁은 화면에는 대응하지 않는다(1280 아래로 줄어들지 않음)",
+      "quote": "가운데 1280폭을 지키고 그 이후로는 대응 안함."
+    },
+    {
+      "id": "D-3",
+      "at": "2026-10-12",
+      "by": "river",
+      "decision": "C-2 좁은 화면 Footer — 정본 브레이크포인트에 따라 모바일 모양으로 바뀐다. 기준은 정본 breakpoint/md(768) 미만(⭐ 선택 — river 가 다른 값을 고르면 교체)",
+      "quote": "브레이크포인트에 따라 모바일 모양으로 바뀜"
     }
   ],
   "artifacts": {
