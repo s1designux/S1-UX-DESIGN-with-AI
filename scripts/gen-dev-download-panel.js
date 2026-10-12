@@ -136,8 +136,9 @@ const TOOL_CARDS = [
   {
     key: 'react',
     title: 'React · Next.js',
-    note: `${approved.length}종 전부 · JSX 빌드 도구 필요 · 서버 렌더링·타입 정의 포함`,
+    note: `${approved.length}종 전부 · 웹 전용 · JSX 빌드 도구 필요 · 서버 렌더링·타입 정의 포함`,
     install: [
+      '<strong>웹 브라우저 전용입니다.</strong> Expo·React Native 앱(iOS·Android)에서는 깨지니 아래 <strong>React Native (Expo)</strong> 묶음을 받으세요',
       `압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 ${approved.length}종이 실제 모습으로 보입니다`,
       '앱 진입 파일에서 겉모습 CSS 를 한 번 읽힙니다 (<code>tokens.css</code> · <code>s1-ui.css</code>)',
       '쓸 컴포넌트만 이름으로 꺼내 씁니다 — 아래는 그 한 줄입니다'
@@ -163,7 +164,7 @@ const TOOL_CARDS = [
     note: (facts) => `${facts.componentCount}종 전부 · PC·Mobile 모두 · iOS·Android·웹 · 텍스트 스타일 ${facts.textStyles}종`,
     install: [
       '압축을 풀면 나오는 <code>platform/react-native</code> 폴더를 프로젝트에 넣고 <code>npx expo install react-native-svg</code> 를 실행합니다',
-      '<code>platform/react-native-sample</code> 을 <code>npx expo start</code> 로 열면 승인된 조합이 한 화면에 보입니다',
+      '<code>platform/react-native-sample</code> 폴더에서 먼저 <code>npm install</code> 을 한 번 실행한 뒤 <code>npx expo start</code> 로 열면 승인된 조합이 한 화면에 보입니다',
       '앱 맨 위를 <code>S1Provider</code> 로 감싸면 다크 모드와 서체(Pretendard)가 정해집니다',
       '부품은 이름으로 부르고 화면은 <code>breakName="pc" | "mobile"</code> 로 고릅니다 — 값을 눈으로 보고 옮겨 적지 마세요'
     ],
