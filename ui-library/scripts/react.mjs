@@ -896,3 +896,11 @@ export function keyOf(item, index) {
 }
 
 export const _internal = { repeatGroups, defaultItem, pluralize, signature };
+
+/* React Native 생성기(react-native-emit.mjs)가 같은 분석(슬롯·반복 목록 판정)을 그대로 쓰도록 연다.
+   이 export 는 React 산출물에 영향을 주지 않는다. */
+export {
+  Emitter, primaryControl, collectIds, idSlugMap, partOf, attributeValue, camel, constantName, literal, textOf,
+  ITEM_ATTRIBUTES, reactAttributeName, BOOLEAN_ATTRIBUTES, VOID_ELEMENTS, eventPropName, isTextOnly, runsOf, repeatGroups, pluralize, signature, shape,
+  ItemScope, isVariable, itemAttributes
+};

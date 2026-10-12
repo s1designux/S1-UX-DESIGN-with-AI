@@ -155,6 +155,10 @@
     "rr": "node scripts/repeated-requests.js",
     "rr:check": "node scripts/repeated-requests.js check",
     "ui:react": "node ui-library/scripts/react-parity-check.mjs",
+    "rn:parity": "node ui-library/scripts/react-native-parity-check.mjs && node ui-library/scripts/react-native-icon-check.mjs",
+    "rn:icons": "node ui-library/scripts/react-native-icon-check.mjs",
+    "rn:compare": "node ui-library/scripts/react-native-render-compare.mjs",
+    "rn:behavior": "node ui-library/scripts/react-native-behavior-check.mjs",
     "kotlin:parity": "node scripts/kotlin-compose-parity-check.js",
     "kotlin:lint": "node scripts/kotlin-compose-lint.js",
     "kotlin:preview": "node scripts/kotlin-compose-preview-page.js",
@@ -179,6 +183,10 @@
     "@figma/plugin-typings": "^1.138.0",
     "@vue/compiler-sfc": "^3.5.42",
     "esbuild": "^0.21.5",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-native-svg": "^15.15.5",
+    "react-native-web": "^0.21.4",
     "typescript": "^5.4.5",
     "vue": "^3.5.42"
   }

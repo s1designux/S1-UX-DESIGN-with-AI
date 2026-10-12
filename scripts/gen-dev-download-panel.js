@@ -57,6 +57,7 @@ const TOOL_SOURCES = {
   'html-css-js': ['s1-ui.css', 's1-ui.js', 's1-ui.auto.js', 'components', 'examples', 'assets', 'tools'],
   react: ['platform/react'],
   vue: ['platform/vue'],
+  'react-native': ['platform/react-native', 'platform/behavior.json'],
   kotlin: ['platform/kotlin', 'platform/behavior.json'],
   swift: ['platform/swift', 'platform/behavior.json'],
   cpp: ['platform/cpp', 'platform/behavior.json']
@@ -155,6 +156,21 @@ const TOOL_CARDS = [
     ],
     code: `import { S1Button, S1DatePicker }
   from "./s1-ui/platform/vue";`,
+  },
+  {
+    key: 'react-native',
+    title: 'React Native (Expo)',
+    note: (facts) => `${facts.componentCount}종 전부 · PC·Mobile 모두 · iOS·Android·웹 · 텍스트 스타일 ${facts.textStyles}종`,
+    install: [
+      '압축을 풀면 나오는 <code>platform/react-native</code> 폴더를 프로젝트에 넣고 <code>npx expo install react-native-svg</code> 를 실행합니다',
+      '<code>platform/react-native-sample</code> 을 <code>npx expo start</code> 로 열면 승인된 조합이 한 화면에 보입니다',
+      '앱 맨 위를 <code>S1Provider</code> 로 감싸면 다크 모드와 서체(Pretendard)가 정해집니다',
+      '부품은 이름으로 부르고 화면은 <code>breakName="pc" | "mobile"</code> 로 고릅니다 — 값을 눈으로 보고 옮겨 적지 마세요'
+    ],
+    code: `<S1Provider dark={isDark} fontFamily="Pretendard">
+  <S1Button variant="primary" size="lg" breakName="mobile"
+    parts={{ label: "확인" }} onPress={save} />
+</S1Provider>`,
   },
   {
     key: 'kotlin',
@@ -295,7 +311,7 @@ const PANELS = {
     id: 'top-dev',
     toolKeys: TOOL_CARDS.map((tool) => tool.key),
     kitTitle: 'S-1 UI 개발 키트',
-    versionHowTo: '번호 읽는 법 — 웹·React·Vue <code>node s1-ui/tools/s1-ui-lint.mjs --version</code> · Kotlin <code>S1Version.VERSION</code> · Swift <code>S1Version.version</code> · C++ <code>S1_UI_VERSION</code>',
+    versionHowTo: '번호 읽는 법 — 웹·React·Vue <code>node s1-ui/tools/s1-ui-lint.mjs --version</code> · React Native <code>S1_VERSION</code> · Kotlin <code>S1Version.VERSION</code> · Swift <code>S1Version.version</code> · C++ <code>S1_UI_VERSION</code>',
     toolTitle: '내 개발 툴에서 시작하기',
     caveat: true,
     componentDesc: `${approved.length}종 전부 들어 있습니다. HTML 은 <code>examples/</code> 파일을 복사해 쓰고(모바일용 <code>*.mobile.html</code>), React·Vue 는 이름 앞에 <code>S1</code> 을 붙입니다 — <code>input → S1Input</code>.`

@@ -18,6 +18,7 @@
 
 import { buildKotlinOutputs, COMPOSE_COMPONENTS } from "./kotlin-compose.mjs";
 import { sampleFiles } from "./kotlin-sample.mjs";
+import { buildReactNativeOutputs } from "./react-native.mjs";
 import { buildReactComponent, buildReactPackage, buildReactReadme, buildReactRuntime, buildReactTypes, reactComponentFacts } from "./react.mjs";
 
 const GENERATED_NOTE = "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.";
@@ -642,6 +643,10 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
     components: kotlin.coverage
   }));
 
+  /* React Native(Expo) 부품 — Kotlin 과 같은 원칙: 배포본 CSS 를 계산해 굳힌 표 + 승인 예제에서 옮긴 구조. */
+  const reactNative = buildReactNativeOutputs({ componentOutputs, tokenData, iconAssets, typographyCss, usageById, release, behaviorLedger });
+  for (const [relative, content] of reactNative.outputs) outputs.set(relative, content);
+
   outputs.set("platform/contract.json", stable(buildContract(componentOutputs, distManifest)));
   outputs.set("platform/behavior.json", stable({
     _meta: {
@@ -678,6 +683,19 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
       "html-css-js": { entry: "s1-ui.css · s1-ui.auto.js", componentSupport: "full", lint: true },
       react: { entry: "platform/react/index.js", componentSupport: "full", lint: true, requires: "JSX 빌드 도구", note: "진짜 React 컴포넌트 — 서버 렌더링·데이터 목록·자식 요소·폼 연결을 지원한다." },
       vue: { entry: "platform/vue/index.js", componentSupport: "full", lint: true, requires: "SFC 빌드 도구" },
+      "react-native": {
+        entry: "platform/react-native/index.js",
+        componentSupport: "full",
+        ui: "React Native (Expo)",
+        lint: false,
+        requires: "Expo / React Native 0.76 이상 · react-native-svg",
+        textStyles: reactNative.textStyles.length,
+        icons: reactNative.icons.length,
+        sample: "platform/react-native-sample",
+        preview: "platform/react-native/gallery/S1Gallery.js",
+        readme: "platform/react-native/README.md",
+        note: "PC·Mobile 화면 축을 모두 낸다 — 배포본 CSS 를 계산해 굳힌 표를 그리는 엔진(iOS·Android·웹)."
+      },
       kotlin: {
         entry: "platform/kotlin/S1Tokens.kt",
         componentSupport: "components",

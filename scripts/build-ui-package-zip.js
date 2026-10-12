@@ -47,6 +47,11 @@ const TOOL_PACKAGES = {
     filter: (relative) => !relative.startsWith('components/') || relative.endsWith('.js'),
     start: ['압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.', '**`preview.html` 을 브라우저로 열면 컴포넌트 22종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.', '앱 진입 파일에서 `assets/css/tokens.css` 와 `s1-ui.css` 를 한 번 읽힙니다.', '`import { S1Button } from "./s1-ui/platform/vue";` 처럼 쓸 것만 꺼내 씁니다.']
   },
+  'react-native': {
+    title: 'React Native (Expo)',
+    include: ['manifest.json', 'platform/react-native', 'platform/react-native-sample', 'platform/behavior.json', 'platform/tokens.json'],
+    start: ['압축을 풀면 나오는 `s1-ui` 폴더에서 `platform/react-native` 폴더를 프로젝트에 넣습니다(예: `src/s1-ui`). `react-native-svg` 를 설치합니다(`npx expo install react-native-svg`).', '**`platform/react-native-sample` 을 `npm install` · `npx expo start` 로 열면 승인된 조합이 한 화면에 보입니다** — PC·Mobile 모두 담겨 있습니다.', '앱 맨 위를 `S1Provider` 로 감쌉니다 — 다크 모드와 서체(Pretendard)가 여기서 정해집니다.', '부품은 이름으로 부릅니다 — `S1Button` 처럼 `S1` 로 시작하고, 화면은 `breakName="pc" | "mobile"` 로 고릅니다.', '쓰는 법과 RN 에서 원리상 다른 점은 `platform/react-native/README.md` 에 있습니다.']
+  },
   kotlin: {
     title: 'Kotlin (Android)',
     include: ['manifest.json', 'platform/kotlin', 'platform/kotlin-sample', 'platform/behavior.json', 'platform/tokens.json'],
@@ -144,6 +149,7 @@ ${toolRows}
 
 - **React**: \`import { S1Button } from "./s1-ui/platform/react/index.js"\` — 승인된 마크업을 그대로 마운트하는 껍데기입니다. JSX 빌드 도구가 필요하고, **JSX 런타임은 automatic 이어야 합니다**(요즘 기본값입니다. \`tsconfig\` 의 \`"jsx": "react-jsx"\`, Babel 의 \`runtime: "automatic"\`). 옛 classic 설정이면 컴파일되지 않습니다.
 - **Vue**: \`import { S1Button } from "./s1-ui/platform/vue/index.js"\` — SFC(.vue) 빌드 도구가 필요합니다.
+- **React Native(Expo)**: \`import { S1Provider, S1Button } from "./s1-ui/platform/react-native"\` — iOS·Android·웹. 위 React 는 React DOM(웹)이라 RN 에서 쓰지 못합니다. PC·Mobile 두 화면 기준을 모두 담았습니다.
 - **이벤트 받는 모양이 둘이 다릅니다**: React 는 핸들러가 **이벤트 객체**를 받고(\`event.detail\` 로 값을 꺼냅니다), Vue 는 emit 이 **detail 값 자체**를 바로 넘깁니다.
 - **화면 크기별 마크업**: PC·Mobile 마크업이 다른 컴포넌트는 \`breakName\` 으로 고릅니다(\`"pc"\` / \`"mobile"\`). 값을 바꾸면 마크업이 다시 마운트됩니다.
 ${nativeLines}

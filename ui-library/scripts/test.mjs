@@ -1014,6 +1014,61 @@ for (const entry of platformContract.components) {
   if (skipped.length) console.log(`[platform compile check] 건너뜀: ${skipped.join(" · ")} — 이 항목은 이번 실행에서 검증되지 않았습니다.`);
 }
 
+/* React Native 전달본 — 전달본이 배포본과 같은 정본에서 나왔고, 부품마다 표·부품 파일이 있고, 번들이 되며,
+   표의 값이 CSS 계산과 한 자리도 어긋나지 않는다. 화면을 실제로 그려 웹과 견주는 일(react-native-render-compare)과
+   눌러 보는 일(react-native-behavior-check)은 크롬이 필요해 `npm run rn:compare` · `npm run rn:behavior` 로 따로 돈다. */
+{
+  const rnManifest = platformManifest.platforms["react-native"];
+  if (!rnManifest) failures.push("platform/manifest.json 에 react-native 선언이 없습니다");
+  else {
+    const rnVersion = await read("dist/platform/react-native/version.js");
+    if (!rnVersion.includes(`"${platformManifest.version}"`)) failures.push("react-native/version.js 의 번호가 배포본과 다릅니다");
+    for (const id of approvedIds) {
+      for (const file of [`components/${id}.js`, `specs/${id}.js`]) {
+        try { await read(`dist/platform/react-native/${file}`); } catch { failures.push(`react-native/${file} 가 없습니다`); }
+      }
+    }
+    /* 부품 코드에는 치수·색 리터럴이 없다 — 값은 표(specs)와 토큰(tokens.js)에만 있다.
+       검사기(react-native-literals.mjs)는 키 이름이 아니라 "키: 숫자" 꼴 전부를 리터럴로 본다(동작 키만 허용). */
+    const { scanLiterals, ADVERSARIAL_SAMPLES } = await import("./react-native-literals.mjs");
+    let sampleSource = "";
+    for (const id of approvedIds) {
+      const source = await read(`dist/platform/react-native/components/${id}.js`);
+      sampleSource = sampleSource || source;
+      const hits = scanLiterals(source);
+      if (hits.length) failures.push(`react-native/components/${id}.js 에 직접 적은 치수·색이 있습니다 (${hits.slice(0, 5).join(" · ")})`);
+    }
+    /* 적대 테스트 — 진짜 부품 코드 사본에 일부러 리터럴을 심어, 검사기가 반드시 실패하는지 본다(구멍이 나면 여기서 잡힌다). */
+    if (scanLiterals(sampleSource).length !== 0) failures.push("react-native 리터럴 검사의 적대 테스트: 깨끗한 사본이 이미 실패합니다");
+    for (const sample of ADVERSARIAL_SAMPLES) {
+      if (scanLiterals(`${sampleSource}\n${sample}\n`).length === 0) failures.push(`react-native 리터럴 검사에 구멍이 있습니다 — 심은 리터럴을 못 잡았습니다: ${sample}`);
+    }
+    let esbuildRn = null;
+    try { esbuildRn = (await import("esbuild")).default ?? await import("esbuild"); } catch { console.log("[react-native bundle check] 건너뜀: esbuild 없음 — 이 항목은 검증되지 않았습니다."); }
+    if (esbuildRn) {
+      try {
+        await esbuildRn.build({
+          entryPoints: [path.join(libraryRoot, "dist/platform/react-native/index.js")],
+          bundle: true,
+          write: false,
+          format: "esm",
+          jsx: "automatic",
+          loader: { ".js": "jsx" },
+          external: ["react", "react-native", "react-native-svg", "react/jsx-runtime"],
+          logLevel: "silent"
+        });
+      } catch (error) {
+        const detail = (error.errors ?? []).slice(0, 5).map((item) => `${item.location?.file ?? "?"}: ${item.text}`).join("\n");
+        failures.push(`React Native 전달본이 번들되지 않습니다:\n${detail || error.message}`);
+      }
+      const rnParity = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/react-native-parity-check.mjs")], { encoding: "utf8" });
+      if (rnParity.status !== 0) failures.push(`${(rnParity.stdout || "")}${(rnParity.stderr || "")}`.trim());
+      const rnIcons = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/react-native-icon-check.mjs")], { encoding: "utf8" });
+      if (rnIcons.status !== 0) failures.push(`${(rnIcons.stdout || "")}${(rnIcons.stderr || "")}`.trim());
+    }
+  }
+}
+
 /* 동작 검사 — 컴파일은 "열리는가"까지만 증명한다.
    2026-09-04 독립 검증 3차: Vue 19종이 컴파일도 마운트도 됐는데 prop 을 조용히 버렸다.
    사다리의 마지막 칸 — 실제로 값을 주입하고 DOM 을 읽는다. */
