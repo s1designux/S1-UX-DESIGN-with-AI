@@ -1,0 +1,4830 @@
+{
+  "tool": "scripts/publisher-audit/web.mjs",
+  "generatedAt": "2026-10-12T07:07:40.242Z",
+  "package": {
+    "zip": "assets/downloads/s1-ui-html-css-js.zip",
+    "version": "0.19.0",
+    "canonicalFingerprint": "783486db3584b2bbee00a5fc50150916a1ce3b48c92369ccf8d0e6c6a6d0fd8c",
+    "components": 32,
+    "readmeStartSteps": [
+      "1. 압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.",
+      "2. **`preview.html` 을 브라우저로 열면 컴포넌트 22종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.",
+      "3. `assets/css/tokens.css` 와 `s1-ui.css` 를 `<head>` 에서 읽힙니다.",
+      "4. `s1-ui.auto.js` 의 `autoInit()` 을 한 번 부르면 동작이 전부 붙습니다.",
+      "5. 마크업은 `examples/` 폴더의 파일을 복사해서 씁니다(모바일용은 `*.mobile.html`)."
+    ]
+  },
+  "method": {
+    "pageTemplate": "README 3·4단계만: <link tokens.css> <link s1-ui.css> + <script type=module> import { autoInit } … autoInit()",
+    "viewports": {
+      "pc": {
+        "width": 1280,
+        "height": 900,
+        "mobile": false
+      },
+      "mobile": {
+        "width": 375,
+        "height": 812,
+        "mobile": true
+      },
+      "rule": "*.mobile.html · *-mobile.html → mobile, 나머지 → pc"
+    },
+    "server": "임시 폴더에 zip 해제 → 127.0.0.1 http",
+    "iconPaint": "아이콘 하나씩 켠 화면/끈 화면(opacity:0) 픽셀 비교 — 같으면 '그려지지 않음'",
+    "contrast": "WCAG 2.x 비율, 일반 4.5:1 · 큰 글자 3:1, disabled 제외, 배경 이미지 위 글자는 '판정 불가'로 셈",
+    "keyboard": "CDP 실제 Tab 키 — 닿은 요소마다 초점 있을 때/없을 때 스타일(자신+조상 3단, ::before/::after) 비교",
+    "lintReference": "묶음 lint 가 안 돌면 s1-ui-dev-package.zip 의 같은 lint 로 대신 돌려 증거로 싣는다"
+  },
+  "summary": {
+    "examplesChecked": 46,
+    "broken": 2,
+    "friction": 15,
+    "note": 12,
+    "notChecked": [
+      {
+        "example": "divider.html",
+        "check": "font",
+        "reason": "보이는 부품 글자가 없음"
+      },
+      {
+        "example": "input.html",
+        "check": "font",
+        "reason": "보이는 부품 글자가 없음"
+      },
+      {
+        "example": "input.mobile.html",
+        "check": "font",
+        "reason": "보이는 부품 글자가 없음"
+      },
+      {
+        "example": "input.password-mobile.html",
+        "check": "font",
+        "reason": "보이는 부품 글자가 없음"
+      },
+      {
+        "example": "input.password.html",
+        "check": "font",
+        "reason": "보이는 부품 글자가 없음"
+      },
+      {
+        "example": "input.search-mobile.html",
+        "check": "font",
+        "reason": "보이는 부품 글자가 없음"
+      },
+      {
+        "example": "input.search.html",
+        "check": "font",
+        "reason": "보이는 부품 글자가 없음"
+      },
+      {
+        "example": "modal-content.html",
+        "check": "font",
+        "reason": "보이는 부품 글자가 없음"
+      },
+      {
+        "example": "modal.html",
+        "check": "font",
+        "reason": "보이는 부품 글자가 없음"
+      },
+      {
+        "example": "modal.mobile.html",
+        "check": "font",
+        "reason": "보이는 부품 글자가 없음"
+      },
+      {
+        "example": "textarea.html",
+        "check": "font",
+        "reason": "보이는 부품 글자가 없음"
+      },
+      {
+        "example": "textarea.mobile.html",
+        "check": "font",
+        "reason": "보이는 부품 글자가 없음"
+      },
+      {
+        "example": "toggle.html",
+        "check": "font",
+        "reason": "보이는 부품 글자가 없음"
+      }
+    ]
+  },
+  "packageChecks": {
+    "readmePaths": "pass",
+    "readmeCount": "fail",
+    "autoInitExport": "pass",
+    "readmeModule": "fail",
+    "readmeCssDeps": "fail",
+    "readmeFont": "fail",
+    "readmeDark": "fail",
+    "readmeOpen": "fail",
+    "exampleReadmeRefs": "fail",
+    "mobileNaming": "fail",
+    "examplesExist": "pass",
+    "variantCoverage": "fail",
+    "attributeConsistency": "fail",
+    "fontRendered": "fail",
+    "darkWorks": "pass",
+    "lintRuns": "fail",
+    "lintCatchesVariant": "pass",
+    "lintCatchesMissingName": "fail",
+    "dynamicInsert": "pass",
+    "singleInit": "pass",
+    "doubleInitSafe": "pass",
+    "classicScript": "fail",
+    "previewHttp": "pass",
+    "previewFile": "fail",
+    "previewDetail": {
+      "http": {
+        "url": "/s1-ui/preview.html",
+        "errors": [],
+        "failedRequests": [],
+        "icons": {
+          "total": 65,
+          "checked": 40,
+          "painted": 40
+        },
+        "toggleWorks": true
+      },
+      "file": {
+        "url": "file://…/s1-ui/preview.html",
+        "errors": [
+          "Access to script at '<압축푼폴더>/site/s1-ui/s1-ui.auto.js' from origin 'null' has been blocked by CORS policy: Cross origin requests are ",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/eye_hide.svg' from origin 'null' has been blocked by CORS policy: Cross origin re",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/search.svg' from origin 'null' has been blocked by CORS policy: Cross origin requ",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/check.svg' from origin 'null' has been blocked by CORS policy: Cross origin reque",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/chevron.svg' from origin 'null' has been blocked by CORS policy: Cross origin req",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/pagination-edge.svg' from origin 'null' has been blocked by CORS policy: Cross or",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/mobile-nav-home.svg' from origin 'null' has been blocked by CORS policy: Cross or",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/nav-search.svg' from origin 'null' has been blocked by CORS policy: Cross origin ",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/nav-notification.svg' from origin 'null' has been blocked by CORS policy: Cross o",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/nav-settings.svg' from origin 'null' has been blocked by CORS policy: Cross origi",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/mobile-header-back.svg' from origin 'null' has been blocked by CORS policy: Cross",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/clock.svg' from origin 'null' has been blocked by CORS policy: Cross origin reque",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/calendar.svg' from origin 'null' has been blocked by CORS policy: Cross origin re",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/globe.svg' from origin 'null' has been blocked by CORS policy: Cross origin reque",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/account.svg' from origin 'null' has been blocked by CORS policy: Cross origin req",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/menu.svg' from origin 'null' has been blocked by CORS policy: Cross origin reques",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/check24.svg' from origin 'null' has been blocked by CORS policy: Cross origin req",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/lock.svg' from origin 'null' has been blocked by CORS policy: Cross origin reques",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/close.svg' from origin 'null' has been blocked by CORS policy: Cross origin reque",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/panel-fold.svg' from origin 'null' has been blocked by CORS policy: Cross origin ",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/mobile-nav-home.svg' from origin 'null' has been blocked by CORS policy: Cross or",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/nav-search.svg' from origin 'null' has been blocked by CORS policy: Cross origin ",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/nav-notification.svg' from origin 'null' has been blocked by CORS policy: Cross o",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/nav-settings.svg' from origin 'null' has been blocked by CORS policy: Cross origi",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/panel-fold.svg' from origin 'null' has been blocked by CORS policy: Cross origin ",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/menu.svg' from origin 'null' has been blocked by CORS policy: Cross origin reques",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/mobile-nav-home.svg' from origin 'null' has been blocked by CORS policy: Cross or",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/mobile-nav-home.svg' from origin 'null' has been blocked by CORS policy: Cross or",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/nav-search.svg' from origin 'null' has been blocked by CORS policy: Cross origin ",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/nav-search.svg' from origin 'null' has been blocked by CORS policy: Cross origin ",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/nav-notification.svg' from origin 'null' has been blocked by CORS policy: Cross o",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/nav-notification.svg' from origin 'null' has been blocked by CORS policy: Cross o",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/nav-settings.svg' from origin 'null' has been blocked by CORS policy: Cross origi",
+          "Access to image at '<압축푼폴더>/site/s1-ui/assets/icons/nav-settings.svg' from origin 'null' has been blocked by CORS policy: Cross origi"
+        ],
+        "failedRequests": [
+          "net::ERR_FAILED <압축푼폴더>/site/s1-ui/s1-ui.auto.js",
+          "net::ERR_FAILED <압축푼폴더>/site/s1-ui/assets/icons/eye_hide.svg",
+          "net::ERR_FAILED <압축푼폴더>/site/s1-ui/assets/icons/search.svg",
+          "net::ERR_FAILED <압축푼폴더>/site/s1-ui/assets/icons/check.svg",
+          "net::ERR_FAILED <압축푼폴더>/site/s1-ui/assets/icons/chevron.svg",
+          "net::ERR_FAILED <압축푼폴더>/site/s1-ui/assets/icons/pagination-edge.svg",
+          "net::ERR_FAILED <압축푼폴더>/site/s1-ui/assets/icons/mobile-nav-home.svg",
+          "net::ERR_FAILED <압축푼폴더>/site/s1-ui/assets/icons/nav-search.svg",
+          "net::ERR_FAILED <압축푼폴더>/site/s1-ui/assets/icons/nav-notification.svg",
+          "net::ERR_FAILED <압축푼폴더>/site/s1-ui/assets/icons/nav-settings.svg"
+        ],
+        "icons": {
+          "total": 65,
+          "checked": 40,
+          "painted": 0
+        },
+        "toggleWorks": false
+      }
+    }
+  },
+  "lint": {
+    "packaged": {
+      "ran": false,
+      "startError": "s1-ui-lint 를 실행하지 못했습니다: ENOENT: no such file or directory, open '<압축푼폴더>/site/s1-ui/platform/manifest.json'"
+    },
+    "reference": {
+      "ran": true,
+      "examples": {
+        "errors": 0,
+        "summary": "파일 46개 검사 · 오류 0 · 경고 0"
+      },
+      "broken": {
+        "exitCode": 1,
+        "items": [
+          {
+            "level": "error",
+            "file": "broken-example.html",
+            "line": 2,
+            "message": "button 에 없는 data-variant=\"nope\" 입니다. 쓸 수 있는 값: primary, secondary, blue-line",
+            "rule": "S1-VARIANT"
+          }
+        ],
+        "variantCaught": true,
+        "ariaLabelCaught": false,
+        "variantMessage": "button 에 없는 data-variant=\"nope\" 입니다. 쓸 수 있는 값: primary, secondary, blue-line"
+      }
+    }
+  },
+  "findings": [
+    {
+      "id": "package:lint:packaged:1",
+      "area": "lint",
+      "severity": "broken",
+      "what": "묶음에 들어 있는 검사 도구(s1-ui-lint)가 아예 실행되지 않습니다. README 가 알려 준 '최신인지 확인(--version)'도 실패합니다.",
+      "evidence": "s1-ui-lint 를 실행하지 못했습니다: ENOENT: no such file or directory, open '<압축푼폴더>/site/s1-ui/platform/manifest.json' · --version: s1-ui-lint 를 실행하지 못했습니다: ENOENT: no such file or directory, open '/private/var/folders/11/b7lpss0n0vl6grzjq6vvwlw40000gn",
+      "suggestedFix": "html-css-js 묶음 include 에 platform/manifest.json·contract.json·tokens.json 추가 (build-ui-package-zip.js)"
+    },
+    {
+      "id": "package:preview-file",
+      "area": "readme",
+      "severity": "broken",
+      "what": "README 2단계대로 preview.html 을 더블클릭해 브라우저로 열면(file://) 제대로 안 보입니다 — 아이콘 40/40개가 빈 칸이고, 동작 스크립트도 붙지 않습니다. 로컬 서버(http)로 열면 정상입니다.",
+      "evidence": "file://: 오류 34건(Access to script at '<압축푼폴더>/site/s1-ui/s1-ui.auto.js' from origin 'null' has been blocked by CORS policy: Cross origin requests are ) · http: 오류 0건, 아이콘 40/40 그려짐",
+      "suggestedFix": "README 에 'npx serve s1-ui 처럼 로컬 서버로 여세요' 안내, 또는 preview 를 file:// 에서도 되게(아이콘 data URI·classic script 번들)"
+    },
+    {
+      "id": "package:readme-count",
+      "area": "readme",
+      "severity": "friction",
+      "what": "README 안에서 컴포넌트 개수가 엇갈립니다 — 실제 32종인데 '22종'이라고 적힌 곳이 있습니다.",
+      "evidence": "README: 32종, 22종 / manifest.json components=32",
+      "suggestedFix": "build-ui-package-zip.js TOOL_PACKAGES['html-css-js'].start 의 숫자를 manifest 에서 계산"
+    },
+    {
+      "id": "package:readme-module",
+      "area": "readme",
+      "severity": "friction",
+      "what": "README 가 s1-ui.auto.js 를 '어떻게' 부르는지(<script type=\"module\"> 과 import 한 줄) 알려주지 않습니다. 평소처럼 <script src> 로 넣으면 오류가 나고 아무것도 동작하지 않습니다.",
+      "evidence": "README 4단계: '`s1-ui.auto.js` 의 `autoInit()` 을 한 번 부르면…' — 코드 예시 없음 · 실제로 <script src=\"s1-ui/s1-ui.auto.js\"> 로 넣어 본 결과: SyntaxError: Cannot use import statement outside a module / autoInit 호출 실패: autoInit is not defined",
+      "suggestedFix": "README 에 <script type=\"module\">import { autoInit } from \"./s1-ui/s1-ui.auto.js\"; autoInit();</script> 예시 추가"
+    },
+    {
+      "id": "package:readme-font",
+      "area": "font",
+      "severity": "friction",
+      "what": "부품이 쓰는 글꼴(Pretendard)이 묶음에 들어 있지 않고, README 에도 따로 넣으라는 말이 없습니다. README 대로만 하면 글꼴이 깔리지 않은 컴퓨터에서는 다른 글꼴로 보입니다.",
+      "evidence": "manifest.fontDependencies: https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css · 묶음 안 @font-face 0개",
+      "suggestedFix": "README 3단계에 Pretendard CDN <link> 한 줄 추가(또는 woff2 동봉)"
+    },
+    {
+      "id": "package:readme-dark",
+      "area": "dark",
+      "severity": "friction",
+      "what": "다크 모드를 켜는 방법(html 에 data-theme=\"dark\")이 README 어디에도 없습니다. 토큰 파일 안을 열어 봐야 알 수 있습니다.",
+      "evidence": "tokens.css 에 [data-theme=\"dark\"] 블록 존재 · README 언급 0",
+      "suggestedFix": "README 에 다크 모드 한 줄 + 페이지 바탕은 var(--color-bg-level-0) 로 직접 칠해야 한다는 안내 추가"
+    },
+    {
+      "id": "package:readme-open",
+      "area": "readme",
+      "severity": "friction",
+      "what": "팝업(modal)·바텀시트 예시는 처음에 숨어 있는데, 버튼을 눌러 여는 방법이 README·예시 어디에도 없습니다. 각 부품 manifest 의 methods(open/close)를 읽고 모듈을 직접 import 해야 합니다.",
+      "evidence": "examples/modal.html: <div … hidden> · README 'open' 언급 0 · components/modal.manifest.json javascript.methods=[open(detail), close(detail), isOpen]",
+      "suggestedFix": "README 에 import { modal } from './s1-ui/s1-ui.js'; modal.init(el).open() 예시, 또는 data-s1-open 같은 선언형 트리거 제공"
+    },
+    {
+      "id": "package:readme-dangling",
+      "area": "readme",
+      "severity": "friction",
+      "what": "예시 주석이 '쓰는 법은 배포본 README' 라고 안내하는데, 묶음 README 에는 그 내용(아이콘 바꾸는 CSS 변수)이 없습니다.",
+      "evidence": "lnb.html: --s1-icon, --s1-icon-solid | mobile-bottom-nav.html: --s1-mobile-nav-icon",
+      "suggestedFix": "README 에 아이콘 교체 변수(--s1-icon 등) 사용법 추가"
+    },
+    {
+      "id": "package:mobile-naming",
+      "area": "mobile",
+      "severity": "friction",
+      "what": "README 는 모바일용을 '*.mobile.html' 로 찾으라는데, 그 규칙을 따르지 않는 모바일 예시가 있습니다.",
+      "evidence": "input.password-mobile.html, input.search-mobile.html",
+      "suggestedFix": "input.password.mobile.html 처럼 이름 통일"
+    },
+    {
+      "id": "package:mobile-unnamed",
+      "area": "mobile",
+      "severity": "friction",
+      "what": "모바일 전용 부품인데 파일 이름에 mobile 표시가 없어, README 규칙만 보면 PC 용으로 착각합니다.",
+      "evidence": "bottom-sheet.html, mobile-bottom-nav.html, mobile-header.html",
+      "suggestedFix": "*.mobile.html 로 이름 변경 또는 README 에 '모바일 전용 부품' 목록 표기"
+    },
+    {
+      "id": "package:coverage-undocumented",
+      "area": "coverage",
+      "severity": "friction",
+      "what": "예시에 안 나오는 종류·크기가 있는데, 그걸 고르는 속성 이름도 그 부품 안내(manifest)의 필수 속성 목록에 없습니다 — 3건.",
+      "evidence": "mobile-header data-variant: 예시엔 standard-title, 빠진 값 home-title/home-title-subtitle/standard-title-close/standard-no-title/standard-no-title-close | gnb data-variant: 예시엔 start, 빠진 값 center-between | gnb data-size: 예시엔 sm, 빠진 값 md/xsm",
+      "suggestedFix": "예시에 나머지 값 추가 또는 manifest.htmlContract 에 속성 명시"
+    },
+    {
+      "id": "package:consistency-variant-attr",
+      "area": "consistency",
+      "severity": "friction",
+      "what": "'종류'를 고르는 속성 이름이 부품마다 7가지로 다릅니다. 퍼블리셔가 부품마다 따로 외워야 합니다.",
+      "evidence": "data-variant: button, chip, filter-chip, mobile-header, gnb, text-button, lnb | data-type: dropdown, bottom-sheet-option, list-row | data-footer: modal, modal-content, bottom-sheet | data-icon: mobile-bottom-nav | data-mode: date-picker | data-tone: data-tag | data-axis: divider",
+      "suggestedFix": "data-variant 로 통일하거나 README 에 부품별 속성 표 제공"
+    },
+    {
+      "id": "package:font-undeclared",
+      "area": "font",
+      "severity": "friction",
+      "what": "일부 부품은 글꼴을 스스로 정하지 않고 페이지 글꼴을 그대로 물려받습니다(5종). README 대로 만든 빈 페이지에서는 이 부품들만 다른 글꼴(브라우저 기본)로 보입니다.",
+      "evidence": "gnb-sub-menu-item(span/a), gnb(logo/menu/lang-label), list-row(title/description/value), mobile-bottom-nav(label), mobile-header(title) · 예: gnb-sub-menu-item.html \"카테고리 제목\" → \"Apple SD Gothic Neo\"",
+      "suggestedFix": "해당 components/*.css 루트에 font-family: \"Pretendard Variable\", \"Pretendard\", sans-serif 지정"
+    },
+    {
+      "id": "package:dark-page-bg",
+      "area": "dark",
+      "severity": "friction",
+      "what": "다크 모드를 켜도 페이지 바탕은 흰색 그대로라, 퍼블리셔가 body 바탕을 직접 칠해야 합니다(안내 없음). 칠하지 않으면 어두운 부품이 흰 바탕 위에 뜹니다.",
+      "evidence": "data-theme=\"dark\" 적용 후 body 배경 변화 0/43 페이지",
+      "suggestedFix": "s1-ui.css 에 [data-theme=dark] body 바탕 지정 또는 README 안내"
+    },
+    {
+      "id": "package:lint:reference:1",
+      "area": "lint",
+      "severity": "friction",
+      "what": "(전체 묶음의 같은 lint 로 대신 돌려 본 결과) 이름(aria-label) 없는 스위치를 넣어도 검사 도구가 아무 말을 안 합니다 — 접근성 필수 속성은 검사하지 않습니다.",
+      "evidence": "검사 결과: ✖ <압축푼폴더>/lint-broken/broken-example.html:2  button 에 없는 data-variant=\"nope\" 입니다. 쓸 수 있는 값: primary, secondary, blue-line  [S1-VARIANT] / 파일 1개 검사 · 오류 1 · 경고 0",
+      "suggestedFix": "contract.requiredAttributes(toggle: aria-checked 등) + a11y.accessibleName 을 lint 규칙에 추가"
+    },
+    {
+      "id": "package:dynamic-doc",
+      "area": "init",
+      "severity": "friction",
+      "what": "페이지가 뜬 뒤에 넣은 부품(예: 목록을 불러와 그린 화면)은 자동으로 동작하지 않습니다. autoInit(감쌀 요소) 를 한 번 더 부르면 되고 두 번 불러도 겹치지 않지만, README 에는 이 방법이 없습니다.",
+      "evidence": "나중에 넣은 스위치 클릭 → 변화 없음 · autoInit(#late) 후 → 동작=true, select 열림=true · 전체 autoInit() 재호출 후 클릭 1번에 change 이벤트 1회",
+      "suggestedFix": "README 에 '나중에 넣은 마크업은 autoInit(그 요소)' 한 줄 추가"
+    },
+    {
+      "id": "bottom-sheet:keyboard:1",
+      "example": "bottom-sheet.html",
+      "area": "keyboard",
+      "severity": "friction",
+      "what": "Tab 으로 초점이 가도 겉모습이 전혀 안 바뀌는 요소가 1개 있습니다 — 키보드 사용자는 지금 어디 있는지 모릅니다.",
+      "evidence": "div[data-s1-component=\"bottom-sheet\"] > div[data-s1-part=\"sheet-panel\"]:nth-of-type(2) > div[data-s1-part=\"sheet-content\"]:nth-of-type(1) > div[data-s1-part=\"sheet-header\"]:nth-of-type(1) > button[data-s1-part=\"sheet-close\"]",
+      "suggestedFix": ":focus-visible 스타일 추가"
+    },
+    {
+      "id": "package:readme-typography",
+      "area": "readme",
+      "severity": "note",
+      "what": "묶음 정보(manifest.json)는 공통 CSS 로 assets/css/typography.css 도 꼽는데 README 시작하기에는 빠져 있습니다. 부품 겉모습엔 영향이 없지만(부품은 자체 글자 설정을 가짐) 일반 글자용 typo-* 클래스를 쓰려면 필요합니다.",
+      "evidence": "manifest.commonCssDependencies=[\"assets/css/tokens.css\",\"assets/css/typography.css\"]",
+      "suggestedFix": "README 3단계에 typography.css 를 선택 항목으로 안내"
+    },
+    {
+      "id": "package:coverage-documented",
+      "area": "coverage",
+      "severity": "note",
+      "what": "예시에는 일부 종류·크기만 나옵니다(17건). 나머지는 속성 값만 바꾸면 되고, 쓸 수 있는 값은 각 부품 manifest.json 에 적혀 있습니다 — 다만 README 는 manifest 를 보라고 안내하지 않습니다.",
+      "evidence": "input data-size: 예시 md / 빠짐 xxsm/xsm | button data-variant: 예시 primary / 빠짐 secondary/blue-line | button data-size: 예시 md/lg / 빠짐 xsm/xxsm | chip data-variant: 예시 line / 빠짐 solid | dropdown data-size: 예시 md / 빠짐 xxsm/xsm | select data-size: 예시 md / 빠짐 xxsm/xsm | filter-chip data-variant: 예시 line / 빠짐 solid | tab data-size: 예시 md/sm / 빠짐 xsm | multi-toggle data-size: 예시 md / 빠짐 sm/xsm | modal data-footer: 예시 dual / 빠짐 single | table data-size: 예시 md / 빠짐 sm/xsm | time-picker data-size: 예시 md / 빠짐 xxsm/xsm | date-picker data-size: 예시 md/xsm / 빠짐 xxsm | text-button data-variant: 예시 primary / 빠짐 secondary | modal-content data-footer: 예시 dual / 빠짐 single | modal-content data-size: 예시 md / 빠짐 lg/xl | bottom-sheet data-footer: 예시 single / 빠짐 none/dual",
+      "suggestedFix": "README 에 'variant·size 값 목록은 components/<id>.manifest.json' 안내, 또는 preview.html 에 값 표"
+    },
+    {
+      "id": "package:consistency-size-values",
+      "area": "consistency",
+      "severity": "note",
+      "what": "크기 값 이름 규칙이 섞여 있습니다 — 대부분 xxsm·xsm·sm·md·lg 인데 숫자로 된 것이 있습니다.",
+      "evidence": "pagination: 28",
+      "suggestedFix": "크기 이름 규칙 통일"
+    },
+    {
+      "id": "package:consistency-break",
+      "area": "consistency",
+      "severity": "note",
+      "what": "PC/모바일 두 벌이 있다고 적힌 부품 중 일부는 data-break 로 고르고, 일부는 data-break 를 받지 않습니다(속성 없이 한 벌로 자동).",
+      "evidence": "data-break 필수 아님: button, table, assist-button, text-button, modal-content, bottom-sheet-option",
+      "suggestedFix": "README 에 부품별 PC/모바일 전환 방법 표"
+    },
+    {
+      "id": "package:consistency-state",
+      "area": "consistency",
+      "severity": "note",
+      "what": "상태를 대부분 aria-* (aria-pressed·aria-checked·aria-expanded)로 표현하는데, 일부는 data-state 를 씁니다.",
+      "evidence": "bottom-sheet-option(default), bottom-sheet-option(selected), bottom-sheet-option(disabled), list-row(default), list-row(pressed), lnb(expanded), lnb(collapsed)",
+      "suggestedFix": "상태 표현 규칙 안내"
+    },
+    {
+      "id": "package:font-local-only",
+      "area": "font",
+      "severity": "note",
+      "what": "이 검사 컴퓨터에서는 Pretendard 로 보였지만(28/28 페이지), 웹 글꼴로 받은 게 아니라 이 컴퓨터에 깔린 글꼴을 쓴 것입니다. 글꼴이 깔리지 않은 사용자 PC 에서는 다른 글꼴로 보입니다.",
+      "evidence": "예: assist-button.html → Pretendard Variable(이 컴퓨터에 설치된 글꼴) · 페이지에 등록된 웹 글꼴 0개",
+      "suggestedFix": "README 에 Pretendard CDN link 안내 또는 woff2 동봉"
+    },
+    {
+      "id": "package:dark-contrast",
+      "area": "a11y-contrast",
+      "severity": "note",
+      "what": "다크 모드(바탕을 --color-bg-level-0 으로 칠한 상태)에서 글자 대비가 기준보다 낮은 곳이 5개 예시에 있습니다. 디자인 의도일 수 있어 알려만 드립니다.",
+      "evidence": "pagination.html \"2\" 2.68:1 (#55575f/#0d0e12) | pagination.html \"3\" 2.68:1 (#55575f/#0d0e12) | pagination.html \"4\" 2.68:1 (#55575f/#0d0e12) | data-tag.html \"주의\" 3.18:1 (#ffffff/#f06070) | data-tag.html \"주의\" 3.18:1 (#ffffff/#f06070)",
+      "suggestedFix": "다크 Semantic 토큰 조합 재검토"
+    },
+    {
+      "id": "package:single-init-doc",
+      "area": "init",
+      "severity": "note",
+      "what": "autoInit 없이 부품 하나만 붙이는 길(import { toggle } from './s1-ui/s1-ui.js' → toggle.init(요소))은 실제로 동작하지만 README 에는 없습니다. 부품 manifest 의 lifecycle 에만 적혀 있습니다.",
+      "evidence": "s1-ui.js 경유=true, components/toggle.js 직접=true",
+      "suggestedFix": "README 에 개별 초기화 예시 추가"
+    },
+    {
+      "id": "data-tag:a11y-contrast:1",
+      "example": "data-tag.html",
+      "area": "a11y-contrast",
+      "severity": "note",
+      "what": "글자와 바탕의 명암 대비가 기준(일반 글자 4.5:1)보다 낮은 곳이 4곳 있습니다. 디자인 의도일 수 있어 판정하지 않고 알려만 드립니다.",
+      "evidence": "\"주의\" 3.37:1 (글자 #ffffff / 바탕 #ff4554, 12px) @ div > span[data-s1-component=\"data-tag\"]:nth-of-type(2) | \"에러\" 3.37:1 (글자 #ff4554 / 바탕 #ffffff, 12px) @ div > span[data-s1-component=\"data-tag\"]:nth-of-type(4) | \"주의\" 3.37:1 (글자 #ffffff / 바탕 #ff4554, 12px) @ div > span[data-s1-component=\"data-tag\"]:nth-of-type(6) | \"에러\" 3.37:1 (글자 #ff4554 / 바탕 #ffffff, 12px) @ div > span[data-s1-component=\"data-tag\"]:nth-of-type(8)",
+      "suggestedFix": "해당 Semantic 토큰 조합 재검토"
+    },
+    {
+      "id": "expandable-card:a11y-contrast:1",
+      "example": "expandable-card.html",
+      "area": "a11y-contrast",
+      "severity": "note",
+      "what": "글자와 바탕의 명암 대비가 기준(일반 글자 4.5:1)보다 낮은 곳이 1곳 있습니다. 디자인 의도일 수 있어 판정하지 않고 알려만 드립니다.",
+      "evidence": "\"서브타이틀\" 4.23:1 (글자 #757575 / 바탕 #f5f5f5, 12px) @ #exp-card-example-open > div[data-s1-part=\"panel\"] > span[data-s1-part=\"caption\"]:nth-of-type(5)",
+      "suggestedFix": "해당 Semantic 토큰 조합 재검토"
+    },
+    {
+      "id": "list-row:a11y-contrast:1",
+      "example": "list-row.html",
+      "area": "a11y-contrast",
+      "severity": "note",
+      "what": "글자와 바탕의 명암 대비가 기준(일반 글자 4.5:1)보다 낮은 곳이 1곳 있습니다. 디자인 의도일 수 있어 판정하지 않고 알려만 드립니다.",
+      "evidence": "\"실제로는 :active 로 켜진다\" 4.41:1 (글자 #757575 / 바탕 #fafafa, 14px) @ div > button[data-s1-component=\"list-row\"]:nth-of-type(3) > div[data-s1-part=\"text\"] > span[data-s1-part=\"description\"]:nth-of-type(2)",
+      "suggestedFix": "해당 Semantic 토큰 조합 재검토"
+    },
+    {
+      "id": "pagination:a11y-contrast:1",
+      "example": "pagination.html",
+      "area": "a11y-contrast",
+      "severity": "note",
+      "what": "글자와 바탕의 명암 대비가 기준(일반 글자 4.5:1)보다 낮은 곳이 5곳 있습니다. 디자인 의도일 수 있어 판정하지 않고 알려만 드립니다.",
+      "evidence": "\"2\" 2.71:1 (글자 #9d9d9d / 바탕 #ffffff, 14px) @ nav[data-s1-component=\"pagination\"] > span[data-s1-part=\"pages\"]:nth-of-type(2) > button[data-s1-part=\"page\"]:nth-of-type(2) | \"3\" 2.71:1 (글자 #9d9d9d / 바탕 #ffffff, 14px) @ nav[data-s1-component=\"pagination\"] > span[data-s1-part=\"pages\"]:nth-of-type(2) > button[data-s1-part=\"page\"]:nth-of-type(3) | \"4\" 2.71:1 (글자 #9d9d9d / 바탕 #ffffff, 14px) @ nav[data-s1-component=\"pagination\"] > span[data-s1-part=\"pages\"]:nth-of-type(2) > button[data-s1-part=\"page\"]:nth-of-type(4) | \"5\" 2.71:1 (글자 #9d9d9d / 바탕 #ffffff, 14px) @ nav[data-s1-component=\"pagination\"] > span[data-s1-part=\"pages\"]:nth-of-type(2) > button[data-s1-part=\"page\"]:nth-of-type(5) | \"6\" 2.71:1 (글자 #9d9d9d / 바탕 #ffffff, 14px) @ nav[data-s1-component=\"pagination\"] > span[data-s1-part=\"pages\"]:nth-of-type(2) > button[data-s1-part=\"page\"]:nth-of-type(6)",
+      "suggestedFix": "해당 Semantic 토큰 조합 재검토"
+    }
+  ],
+  "examples": [
+    {
+      "example": "assist-button.html",
+      "component": "assist-button",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/assist-button.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/assist-button.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "Enter 키로 눌린다",
+          "status": "pass",
+          "evidence": "click 이벤트 1회"
+        },
+        {
+          "root": 1,
+          "name": "Space 키로 눌린다",
+          "status": "pass",
+          "evidence": "click 이벤트 누적 2회"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": "button[data-s1-component=\"assist-button\"] > span[data-s1-part=\"label\"]",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 1,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "bottom-sheet-option.html",
+      "component": "bottom-sheet-option",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/bottom-sheet-option.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/bottom-sheet-option.dark.png",
+      "interactions": [],
+      "componentCount": 13,
+      "font": {
+        "sel": "div > div[data-s1-component=\"bottom-sheet-option\"]:nth-of-type(1) > span[data-s1-part=\"label\"]",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 8,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 3
+      },
+      "accessibleNames": {
+        "checked": 4,
+        "missing": 0
+      },
+      "icons": {
+        "total": 6,
+        "checked": 6,
+        "blank": 0
+      },
+      "dark": {
+        "components": 13,
+        "changed": 13,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 1,
+        "worst": [
+          {
+            "sel": "div > div[data-s1-component=\"bottom-sheet-option\"]:nth-of-type(2) > span[data-s1-part=\"label\"]:nth-of-type(1)",
+            "text": "항목 2",
+            "ratio": 3.55,
+            "need": 4.5,
+            "fg": "#3070d8",
+            "bg": "#1c1d23",
+            "size": 16
+          }
+        ]
+      },
+      "keyboard": {
+        "expected": 3,
+        "reached": 3,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "notApplicable",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "bottom-sheet.html",
+      "component": "bottom-sheet",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/bottom-sheet.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/bottom-sheet.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "열린 채 들어온 시트도 Esc 로 닫힌다",
+          "status": "pass",
+          "evidence": "hidden=true"
+        },
+        {
+          "root": 1,
+          "name": "스크립트로 열 수 있다(init(root).open())",
+          "status": "pass",
+          "evidence": "결과: ok"
+        },
+        {
+          "root": 1,
+          "name": "열리면 화면에 보인다",
+          "status": "pass",
+          "evidence": "hidden=false"
+        },
+        {
+          "root": 1,
+          "name": "열리면 초점이 창 안으로 들어간다",
+          "status": "pass",
+          "evidence": "지금 초점: div[data-s1-component=\"bottom-sheet\"] > div[data-s1-part=\"sheet-panel\"]:nth-of-type(2) > div[data-s1-part=\"sheet-content\"]:nth-of-type(1) > div[data-s1-part=\"sheet-header\"]:nth-of-type(1) > button[data-s1-part=\"sheet-close\"]"
+        },
+        {
+          "root": 1,
+          "name": "Tab 을 여러 번 눌러도 초점이 창 밖으로 새지 않는다",
+          "status": "pass",
+          "evidence": "6회 Tab 모두 창 안"
+        },
+        {
+          "root": 1,
+          "name": "Esc 로 닫힌다",
+          "status": "pass",
+          "evidence": "hidden=true"
+        },
+        {
+          "root": 1,
+          "name": "닫히면 초점이 열었던 버튼으로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: #__audit_opener"
+        },
+        {
+          "root": 1,
+          "name": "바깥 어두운 곳을 누르면 닫힌다",
+          "status": "pass",
+          "evidence": "hidden=true"
+        }
+      ],
+      "componentCount": 6,
+      "font": {
+        "sel": "#bottom-sheet-example-title",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 6,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 3,
+        "missing": 0
+      },
+      "icons": {
+        "total": 2,
+        "checked": 2,
+        "blank": 0
+      },
+      "dark": {
+        "components": 6,
+        "changed": 6,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 1,
+        "worst": [
+          {
+            "sel": "div[data-s1-component=\"bottom-sheet\"] > div[data-s1-part=\"sheet-panel\"]:nth-of-type(2) > div[data-s1-part=\"sheet-content\"]:nth-of-type(1) > div[data-s1-part=\"sheet-body\"]:nth-of-type(2) > div[data-s1-component=\"bottom-sheet-option\"]:nth-of-type(2) > span[data-s1-part=\"label\"]:nth-of-type(1)",
+            "text": "항목 2",
+            "ratio": 3.55,
+            "need": 4.5,
+            "fg": "#3070d8",
+            "bg": "#1c1d23",
+            "size": 16
+          }
+        ]
+      },
+      "keyboard": {
+        "expected": 2,
+        "reached": 2,
+        "unreachable": 0,
+        "noRing": 1
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "fail",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": [
+        "bottom-sheet:keyboard:1"
+      ]
+    },
+    {
+      "example": "button.html",
+      "component": "button",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/button.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/button.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "Enter 키로 눌린다",
+          "status": "pass",
+          "evidence": "click 이벤트 1회"
+        },
+        {
+          "root": 1,
+          "name": "Space 키로 눌린다",
+          "status": "pass",
+          "evidence": "click 이벤트 누적 2회"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": "button[data-s1-component=\"button\"] > span[data-s1-part=\"label\"]",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 1,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "button.mobile.html",
+      "component": "button",
+      "viewport": "mobile(375)",
+      "screenshot": "reports/publisher-audit/web/shots/button.mobile.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/button.mobile.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "Enter 키로 눌린다",
+          "status": "pass",
+          "evidence": "click 이벤트 1회"
+        },
+        {
+          "root": 1,
+          "name": "Space 키로 눌린다",
+          "status": "pass",
+          "evidence": "click 이벤트 누적 2회"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": "button[data-s1-component=\"button\"] > span[data-s1-part=\"label\"]",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 1,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "checkbox.html",
+      "component": "checkbox",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/checkbox.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/checkbox.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "글자(라벨)를 눌러도 체크된다",
+          "status": "pass",
+          "evidence": "checked: false → true"
+        },
+        {
+          "root": 1,
+          "name": "Space 키로 체크가 바뀐다",
+          "status": "pass",
+          "evidence": "checked: true → false"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": "div[data-s1-component=\"checkbox\"] > label[data-s1-part=\"label\"]",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 1,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "chip.html",
+      "component": "chip",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/chip.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/chip.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "마우스로 누르면 상태가 바뀐다",
+          "status": "pass",
+          "evidence": "aria-pressed: false → true"
+        },
+        {
+          "root": 1,
+          "name": "Space 키로 상태가 바뀐다",
+          "status": "pass",
+          "evidence": "aria-pressed: true → false"
+        },
+        {
+          "root": 1,
+          "name": "Enter 키로 상태가 바뀐다",
+          "status": "pass",
+          "evidence": "aria-pressed: false → true"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": "button[data-s1-component=\"chip\"] > span[data-s1-part=\"label\"]",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 1,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "chip.mobile.html",
+      "component": "chip",
+      "viewport": "mobile(375)",
+      "screenshot": "reports/publisher-audit/web/shots/chip.mobile.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/chip.mobile.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "마우스로 누르면 상태가 바뀐다",
+          "status": "pass",
+          "evidence": "aria-pressed: false → true"
+        },
+        {
+          "root": 1,
+          "name": "Space 키로 상태가 바뀐다",
+          "status": "pass",
+          "evidence": "aria-pressed: true → false"
+        },
+        {
+          "root": 1,
+          "name": "Enter 키로 상태가 바뀐다",
+          "status": "pass",
+          "evidence": "aria-pressed: false → true"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": "button[data-s1-component=\"chip\"] > span[data-s1-part=\"label\"]",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 1,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "data-tag.html",
+      "component": "data-tag",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/data-tag.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/data-tag.dark.png",
+      "interactions": [],
+      "componentCount": 8,
+      "font": {
+        "sel": "div > span[data-s1-component=\"data-tag\"]:nth-of-type(1)",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 8,
+        "failing": 4,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 0,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 8,
+        "changed": 8,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 4,
+        "worst": [
+          {
+            "sel": "div > span[data-s1-component=\"data-tag\"]:nth-of-type(2)",
+            "text": "주의",
+            "ratio": 3.18,
+            "need": 4.5,
+            "fg": "#ffffff",
+            "bg": "#f06070",
+            "size": 12
+          },
+          {
+            "sel": "div > span[data-s1-component=\"data-tag\"]:nth-of-type(6)",
+            "text": "주의",
+            "ratio": 3.18,
+            "need": 4.5,
+            "fg": "#ffffff",
+            "bg": "#f06070",
+            "size": 12
+          },
+          {
+            "sel": "div > span[data-s1-component=\"data-tag\"]:nth-of-type(3)",
+            "text": "확인",
+            "ratio": 4.07,
+            "need": 4.5,
+            "fg": "#3070d8",
+            "bg": "#0d0e12",
+            "size": 12
+          }
+        ]
+      },
+      "keyboard": {
+        "expected": 0,
+        "reached": 0,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "fail",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "notApplicable",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": [
+        "data-tag:a11y-contrast:1"
+      ]
+    },
+    {
+      "example": "date-picker.html",
+      "component": "date-picker",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/date-picker.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/date-picker.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "트리거를 누르면 달력이 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 달력 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "달력에 날짜 칸이 그려진다",
+          "status": "pass",
+          "evidence": "보이는 날짜 칸 35개"
+        },
+        {
+          "root": 1,
+          "name": "날짜를 고르면 값이 바뀐다",
+          "status": "pass",
+          "evidence": "값: \"날짜 선택\" → \"26.10.15\""
+        },
+        {
+          "root": 1,
+          "name": "고른 뒤 달력이 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 달력 보임=false"
+        },
+        {
+          "root": 1,
+          "name": "트리거에 초점을 두고 Enter 를 누르면 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "Esc 를 누르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 1,
+          "name": "닫힌 뒤 초점이 트리거로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: div[data-s1-component=\"date-picker\"]:nth-of-type(1) > button[data-s1-part=\"trigger\"]"
+        },
+        {
+          "root": 2,
+          "name": "트리거를 누르면 달력이 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 달력 보임=true"
+        },
+        {
+          "root": 2,
+          "name": "달력에 날짜 칸이 그려진다",
+          "status": "pass",
+          "evidence": "보이는 날짜 칸 35개"
+        },
+        {
+          "root": 2,
+          "name": "시작·끝 날짜를 고르면 값이 바뀐다",
+          "status": "pass",
+          "evidence": "값: \"날짜 선택\" → \"26.10.10 ~ 26.10.20\""
+        },
+        {
+          "root": 2,
+          "name": "고른 뒤 달력이 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 달력 보임=false"
+        },
+        {
+          "root": 2,
+          "name": "트리거에 초점을 두고 Enter 를 누르면 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 2,
+          "name": "Esc 를 누르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 2,
+          "name": "닫힌 뒤 초점이 트리거로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: div[data-s1-component=\"date-picker\"]:nth-of-type(2) > button[data-s1-part=\"trigger\"]"
+        },
+        {
+          "root": 3,
+          "name": "트리거를 누르면 달력이 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 달력 보임=true"
+        },
+        {
+          "root": 3,
+          "name": "달력에 날짜 칸이 그려진다",
+          "status": "pass",
+          "evidence": "보이는 날짜 칸 35개"
+        },
+        {
+          "root": 3,
+          "name": "날짜를 고르면 값이 바뀐다",
+          "status": "pass",
+          "evidence": "값: \"날짜 선택\" → \"26.10.15\""
+        },
+        {
+          "root": 3,
+          "name": "고른 뒤 달력이 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 달력 보임=false"
+        },
+        {
+          "root": 3,
+          "name": "트리거에 초점을 두고 Enter 를 누르면 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 3,
+          "name": "Esc 를 누르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 3,
+          "name": "닫힌 뒤 초점이 트리거로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: div[data-s1-component=\"date-picker\"]:nth-of-type(3) > button[data-s1-part=\"trigger\"]"
+        }
+      ],
+      "componentCount": 3,
+      "font": {
+        "sel": "div[data-s1-component=\"date-picker\"]:nth-of-type(1) > button[data-s1-part=\"trigger\"] > span[data-s1-part=\"value\"]:nth-of-type(1)",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 3,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 3,
+        "missing": 0
+      },
+      "icons": {
+        "total": 3,
+        "checked": 3,
+        "blank": 0
+      },
+      "dark": {
+        "components": 3,
+        "changed": 3,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 3,
+        "reached": 3,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "date-picker.mobile.html",
+      "component": "date-picker",
+      "viewport": "mobile(375)",
+      "screenshot": "reports/publisher-audit/web/shots/date-picker.mobile.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/date-picker.mobile.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "트리거를 누르면 달력이 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 달력 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "달력에 날짜 칸이 그려진다",
+          "status": "pass",
+          "evidence": "보이는 날짜 칸 35개"
+        },
+        {
+          "root": 1,
+          "name": "날짜를 고르면 값이 바뀐다",
+          "status": "pass",
+          "evidence": "값: \"날짜 선택\" → \"26.10.15\""
+        },
+        {
+          "root": 1,
+          "name": "고른 뒤 달력이 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 달력 보임=false"
+        },
+        {
+          "root": 1,
+          "name": "트리거에 초점을 두고 Enter 를 누르면 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "Esc 를 누르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 1,
+          "name": "닫힌 뒤 초점이 트리거로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: div[data-s1-component=\"date-picker\"] > button[data-s1-part=\"trigger\"]"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": "div[data-s1-component=\"date-picker\"] > button[data-s1-part=\"trigger\"] > span[data-s1-part=\"value\"]:nth-of-type(1)",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 1,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "divider.html",
+      "component": "divider",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/divider.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/divider.dark.png",
+      "interactions": [],
+      "componentCount": 6,
+      "font": {
+        "sel": null,
+        "family": null,
+        "undeclared": [],
+        "faces": [],
+        "platform": null
+      },
+      "contrast": {
+        "checked": 2,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 0,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 6,
+        "changed": 6,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 0,
+        "reached": 0,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "notChecked",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "notApplicable",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [
+        {
+          "example": "divider.html",
+          "check": "font",
+          "reason": "보이는 부품 글자가 없음"
+        }
+      ],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "dropdown.html",
+      "component": "dropdown",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/dropdown.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/dropdown.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "항목을 누르면 그 항목만 선택된다",
+          "status": "pass",
+          "evidence": "선택됨: [\"인기순\"]"
+        },
+        {
+          "root": 1,
+          "name": "↓ 키로 다음 항목으로 초점이 옮겨진다",
+          "status": "pass",
+          "evidence": "지금 초점: div[data-s1-component=\"dropdown\"]:nth-of-type(1) > div[data-s1-part=\"option\"]:nth-of-type(3)"
+        },
+        {
+          "root": 1,
+          "name": "Enter 키로 고를 수 있다",
+          "status": "pass",
+          "evidence": "aria-selected=true"
+        },
+        {
+          "root": 1,
+          "name": "체크형: 항목을 누르면 체크된다",
+          "status": "pass",
+          "evidence": "aria-checked=true"
+        }
+      ],
+      "componentCount": 5,
+      "font": {
+        "sel": "div[data-s1-component=\"dropdown\"]:nth-of-type(1) > div[data-s1-part=\"option\"]:nth-of-type(1) > span[data-s1-part=\"option-label\"]",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 6,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 7,
+        "missing": 0
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "blank": 0
+      },
+      "dark": {
+        "components": 5,
+        "changed": 5,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 2,
+        "reached": 2,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "expandable-card.html",
+      "component": "expandable-card",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/expandable-card.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/expandable-card.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "머리줄을 누르면 펼쳐진다",
+          "status": "pass",
+          "evidence": "aria-expanded: false → true, 펼친 칸 높이 160px"
+        },
+        {
+          "root": 1,
+          "name": "Enter 키로 다시 접힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false"
+        }
+      ],
+      "componentCount": 2,
+      "font": {
+        "sel": "div > div[data-s1-component=\"expandable-card\"]:nth-of-type(1) > button[data-s1-part=\"header\"] > span[data-s1-part=\"text\"]:nth-of-type(1) > span[data-s1-part=\"title\"]:nth-of-type(1)",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 15,
+        "failing": 1,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 2,
+        "missing": 0
+      },
+      "icons": {
+        "total": 2,
+        "checked": 2,
+        "blank": 0
+      },
+      "dark": {
+        "components": 2,
+        "changed": 2,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 2,
+        "reached": 2,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "fail",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": [
+        "expandable-card:a11y-contrast:1"
+      ]
+    },
+    {
+      "example": "filter-chip.html",
+      "component": "filter-chip",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/filter-chip.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/filter-chip.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "트리거를 누르면 펼쳐진다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "항목을 고르면 값이 바뀐다",
+          "status": "pass",
+          "evidence": "값: \"최신순\" → \"인기순\" (고른 항목 \"인기순\")"
+        },
+        {
+          "root": 1,
+          "name": "항목을 고르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 1,
+          "name": "트리거에 초점을 두고 Enter 를 누르면 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "Esc 를 누르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 1,
+          "name": "닫힌 뒤 초점이 트리거로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: div[data-s1-component=\"filter-chip\"] > button[data-s1-part=\"trigger\"]"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": "div[data-s1-component=\"filter-chip\"] > button[data-s1-part=\"trigger\"] > span[data-s1-part=\"title\"]:nth-of-type(1)",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 2,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "filter-chip.mobile.html",
+      "component": "filter-chip",
+      "viewport": "mobile(375)",
+      "screenshot": "reports/publisher-audit/web/shots/filter-chip.mobile.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/filter-chip.mobile.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "트리거를 누르면 펼쳐진다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "항목을 고르면 값이 바뀐다",
+          "status": "pass",
+          "evidence": "값: \"최신순\" → \"인기순\" (고른 항목 \"인기순\")"
+        },
+        {
+          "root": 1,
+          "name": "항목을 고르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 1,
+          "name": "트리거에 초점을 두고 Enter 를 누르면 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "Esc 를 누르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 1,
+          "name": "닫힌 뒤 초점이 트리거로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: div[data-s1-component=\"filter-chip\"] > button[data-s1-part=\"trigger\"]"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": "div[data-s1-component=\"filter-chip\"] > button[data-s1-part=\"trigger\"] > span[data-s1-part=\"title\"]:nth-of-type(1)",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 2,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "gnb-sub-menu-item.html",
+      "component": "gnb-sub-menu-item",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/gnb-sub-menu-item.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/gnb-sub-menu-item.dark.png",
+      "interactions": [],
+      "componentCount": 3,
+      "font": {
+        "sel": null,
+        "family": null,
+        "undeclared": [
+          {
+            "component": "gnb-sub-menu-item",
+            "part": "span",
+            "text": "카테고리 제목",
+            "family": "\"Apple SD Gothic Neo\""
+          },
+          {
+            "component": "gnb-sub-menu-item",
+            "part": "a",
+            "text": "하위 메뉴",
+            "family": "\"Apple SD Gothic Neo\""
+          }
+        ],
+        "faces": [],
+        "platform": null
+      },
+      "contrast": {
+        "checked": 3,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 2,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 3,
+        "changed": 3,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 2,
+        "reached": 2,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "fail",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "notApplicable",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "gnb-sub-menu.html",
+      "component": "gnb-sub-menu",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/gnb-sub-menu.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/gnb-sub-menu.dark.png",
+      "interactions": [],
+      "componentCount": 35,
+      "font": {
+        "sel": null,
+        "family": null,
+        "undeclared": [
+          {
+            "component": "gnb-sub-menu-item",
+            "part": "span",
+            "text": "카테고리 제목",
+            "family": "\"Apple SD Gothic Neo\""
+          },
+          {
+            "component": "gnb-sub-menu-item",
+            "part": "a",
+            "text": "하위 메뉴",
+            "family": "\"Apple SD Gothic Neo\""
+          }
+        ],
+        "faces": [],
+        "platform": null
+      },
+      "contrast": {
+        "checked": 32,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 28,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 30,
+        "changed": 30,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 28,
+        "reached": 28,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "fail",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "notApplicable",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "gnb.html",
+      "component": "gnb",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/gnb.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/gnb.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "하위메뉴가 있는 메뉴에 Tab 으로 가면 하위메뉴가 펼쳐진다",
+          "status": "pass",
+          "evidence": "#gnb-sub-menu-a-service 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "Esc 를 누르면 하위메뉴가 닫힌다",
+          "status": "pass",
+          "evidence": "#gnb-sub-menu-a-service 보임=false"
+        },
+        {
+          "root": 1,
+          "name": "닫힌 뒤 초점이 그 메뉴로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: div:nth-of-type(1) > nav[data-s1-component=\"gnb\"] > div[data-s1-part=\"leading\"]:nth-of-type(1) > ul[data-s1-part=\"menus\"] > li:nth-of-type(2) > a[data-s1-part=\"menu\"]"
+        }
+      ],
+      "componentCount": 3,
+      "font": {
+        "sel": null,
+        "family": null,
+        "undeclared": [
+          {
+            "component": "gnb",
+            "part": "logo",
+            "text": "SAMPLE LOGO",
+            "family": "\"Apple SD Gothic Neo\""
+          },
+          {
+            "component": "gnb",
+            "part": "menu",
+            "text": "공지사항",
+            "family": "\"Apple SD Gothic Neo\""
+          },
+          {
+            "component": "gnb",
+            "part": "lang-label",
+            "text": "한국어",
+            "family": "\"Apple SD Gothic Neo\""
+          }
+        ],
+        "faces": [],
+        "platform": null
+      },
+      "contrast": {
+        "checked": 15,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 21,
+        "missing": 0
+      },
+      "icons": {
+        "total": 9,
+        "checked": 9,
+        "blank": 0
+      },
+      "dark": {
+        "components": 3,
+        "changed": 3,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 21,
+        "reached": 41,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "fail",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "input.html",
+      "component": "input",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/input.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/input.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "빈 칸일 때는 지우기 버튼이 숨어 있다",
+          "status": "pass",
+          "evidence": "보임=false"
+        },
+        {
+          "root": 1,
+          "name": "글자를 치면 지우기 버튼이 나타난다",
+          "status": "pass",
+          "evidence": "value=\"테스트\", 지우기 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "지우기 버튼을 누르면 글자가 지워진다",
+          "status": "pass",
+          "evidence": "value=\"\""
+        },
+        {
+          "root": 1,
+          "name": "지운 뒤 지우기 버튼이 다시 숨는다",
+          "status": "pass",
+          "evidence": "보임=false"
+        },
+        {
+          "root": 1,
+          "name": "지운 뒤 초점이 입력칸으로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: #profile-name"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": null,
+        "family": null,
+        "undeclared": [],
+        "faces": [],
+        "platform": null
+      },
+      "contrast": {
+        "checked": 0,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "notChecked",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [
+        {
+          "example": "input.html",
+          "check": "font",
+          "reason": "보이는 부품 글자가 없음"
+        }
+      ],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "input.mobile.html",
+      "component": "input",
+      "viewport": "mobile(375)",
+      "screenshot": "reports/publisher-audit/web/shots/input.mobile.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/input.mobile.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "빈 칸일 때는 지우기 버튼이 숨어 있다",
+          "status": "pass",
+          "evidence": "보임=false"
+        },
+        {
+          "root": 1,
+          "name": "글자를 치면 지우기 버튼이 나타난다",
+          "status": "pass",
+          "evidence": "value=\"테스트\", 지우기 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "지우기 버튼을 누르면 글자가 지워진다",
+          "status": "pass",
+          "evidence": "value=\"\""
+        },
+        {
+          "root": 1,
+          "name": "지운 뒤 지우기 버튼이 다시 숨는다",
+          "status": "pass",
+          "evidence": "보임=false"
+        },
+        {
+          "root": 1,
+          "name": "지운 뒤 초점이 입력칸으로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: #profile-name"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": null,
+        "family": null,
+        "undeclared": [],
+        "faces": [],
+        "platform": null
+      },
+      "contrast": {
+        "checked": 0,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "notChecked",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [
+        {
+          "example": "input.mobile.html",
+          "check": "font",
+          "reason": "보이는 부품 글자가 없음"
+        }
+      ],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "input.password-mobile.html",
+      "component": "input",
+      "viewport": "mobile(375)",
+      "screenshot": "reports/publisher-audit/web/shots/input.password-mobile.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/input.password-mobile.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "눈 버튼을 누르면 비밀번호가 보인다",
+          "status": "pass",
+          "evidence": "type: password → text, aria-pressed=true"
+        },
+        {
+          "root": 1,
+          "name": "한 번 더 누르면 다시 가려진다",
+          "status": "pass",
+          "evidence": "type=password"
+        },
+        {
+          "root": 1,
+          "name": "빈 칸일 때는 지우기 버튼이 숨어 있다",
+          "status": "pass",
+          "evidence": "보임=false"
+        },
+        {
+          "root": 1,
+          "name": "글자를 치면 지우기 버튼이 나타난다",
+          "status": "pass",
+          "evidence": "value=\"테스트\", 지우기 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "지우기 버튼을 누르면 글자가 지워진다",
+          "status": "pass",
+          "evidence": "value=\"\""
+        },
+        {
+          "root": 1,
+          "name": "지운 뒤 지우기 버튼이 다시 숨는다",
+          "status": "pass",
+          "evidence": "보임=false"
+        },
+        {
+          "root": 1,
+          "name": "지운 뒤 초점이 입력칸으로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: #profile-password-mobile"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": null,
+        "family": null,
+        "undeclared": [],
+        "faces": [],
+        "platform": null
+      },
+      "contrast": {
+        "checked": 0,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 2,
+        "missing": 0
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 2,
+        "reached": 2,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "notChecked",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [
+        {
+          "example": "input.password-mobile.html",
+          "check": "font",
+          "reason": "보이는 부품 글자가 없음"
+        }
+      ],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "input.password.html",
+      "component": "input",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/input.password.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/input.password.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "눈 버튼을 누르면 비밀번호가 보인다",
+          "status": "pass",
+          "evidence": "type: password → text, aria-pressed=true"
+        },
+        {
+          "root": 1,
+          "name": "한 번 더 누르면 다시 가려진다",
+          "status": "pass",
+          "evidence": "type=password"
+        },
+        {
+          "root": 1,
+          "name": "빈 칸일 때는 지우기 버튼이 숨어 있다",
+          "status": "pass",
+          "evidence": "보임=false"
+        },
+        {
+          "root": 1,
+          "name": "글자를 치면 지우기 버튼이 나타난다",
+          "status": "pass",
+          "evidence": "value=\"테스트\", 지우기 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "지우기 버튼을 누르면 글자가 지워진다",
+          "status": "pass",
+          "evidence": "value=\"\""
+        },
+        {
+          "root": 1,
+          "name": "지운 뒤 지우기 버튼이 다시 숨는다",
+          "status": "pass",
+          "evidence": "보임=false"
+        },
+        {
+          "root": 1,
+          "name": "지운 뒤 초점이 입력칸으로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: #profile-password"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": null,
+        "family": null,
+        "undeclared": [],
+        "faces": [],
+        "platform": null
+      },
+      "contrast": {
+        "checked": 0,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 2,
+        "missing": 0
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 2,
+        "reached": 2,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "notChecked",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [
+        {
+          "example": "input.password.html",
+          "check": "font",
+          "reason": "보이는 부품 글자가 없음"
+        }
+      ],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "input.search-mobile.html",
+      "component": "input",
+      "viewport": "mobile(375)",
+      "screenshot": "reports/publisher-audit/web/shots/input.search-mobile.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/input.search-mobile.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "빈 칸일 때는 지우기 버튼이 숨어 있다",
+          "status": "pass",
+          "evidence": "보임=false"
+        },
+        {
+          "root": 1,
+          "name": "글자를 치면 지우기 버튼이 나타난다",
+          "status": "pass",
+          "evidence": "value=\"테스트\", 지우기 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "지우기 버튼을 누르면 글자가 지워진다",
+          "status": "pass",
+          "evidence": "value=\"\""
+        },
+        {
+          "root": 1,
+          "name": "지운 뒤 지우기 버튼이 다시 숨는다",
+          "status": "pass",
+          "evidence": "보임=false"
+        },
+        {
+          "root": 1,
+          "name": "지운 뒤 초점이 입력칸으로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: #profile-search-mobile"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": null,
+        "family": null,
+        "undeclared": [],
+        "faces": [],
+        "platform": null
+      },
+      "contrast": {
+        "checked": 0,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 2,
+        "missing": 0
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 2,
+        "reached": 2,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "notChecked",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [
+        {
+          "example": "input.search-mobile.html",
+          "check": "font",
+          "reason": "보이는 부품 글자가 없음"
+        }
+      ],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "input.search.html",
+      "component": "input",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/input.search.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/input.search.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "빈 칸일 때는 지우기 버튼이 숨어 있다",
+          "status": "pass",
+          "evidence": "보임=false"
+        },
+        {
+          "root": 1,
+          "name": "글자를 치면 지우기 버튼이 나타난다",
+          "status": "pass",
+          "evidence": "value=\"테스트\", 지우기 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "지우기 버튼을 누르면 글자가 지워진다",
+          "status": "pass",
+          "evidence": "value=\"\""
+        },
+        {
+          "root": 1,
+          "name": "지운 뒤 지우기 버튼이 다시 숨는다",
+          "status": "pass",
+          "evidence": "보임=false"
+        },
+        {
+          "root": 1,
+          "name": "지운 뒤 초점이 입력칸으로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: #profile-search"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": null,
+        "family": null,
+        "undeclared": [],
+        "faces": [],
+        "platform": null
+      },
+      "contrast": {
+        "checked": 0,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 2,
+        "missing": 0
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 2,
+        "reached": 2,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "notChecked",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [
+        {
+          "example": "input.search.html",
+          "check": "font",
+          "reason": "보이는 부품 글자가 없음"
+        }
+      ],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "list-row.html",
+      "component": "list-row",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/list-row.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/list-row.dark.png",
+      "interactions": [],
+      "componentCount": 13,
+      "font": {
+        "sel": "div > div[data-s1-component=\"list-row\"]:nth-of-type(1) > div[data-s1-part=\"text\"] > span[data-s1-part=\"title\"]:nth-of-type(1)",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [
+          {
+            "component": "list-row",
+            "part": "title",
+            "text": "설정",
+            "family": "\"Apple SD Gothic Neo\""
+          },
+          {
+            "component": "list-row",
+            "part": "description",
+            "text": "환경설정 및 계정 관리",
+            "family": "\"Apple SD Gothic Neo\""
+          },
+          {
+            "component": "list-row",
+            "part": "value",
+            "text": "라이트",
+            "family": "\"Apple SD Gothic Neo\""
+          }
+        ],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 19,
+        "failing": 1,
+        "unknown": 0,
+        "skippedDisabled": 2
+      },
+      "accessibleNames": {
+        "checked": 8,
+        "missing": 0
+      },
+      "icons": {
+        "total": 5,
+        "checked": 5,
+        "blank": 0
+      },
+      "dark": {
+        "components": 13,
+        "changed": 13,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 7,
+        "reached": 7,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "fail",
+        "contrast": "fail",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "notApplicable",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": [
+        "list-row:a11y-contrast:1"
+      ]
+    },
+    {
+      "example": "lnb.html",
+      "component": "lnb",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/lnb.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/lnb.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "접기 단추를 누르면 메뉴가 접힌다",
+          "status": "pass",
+          "evidence": "aria-pressed=true, 폭 240 → 80px, data-state=collapsed"
+        },
+        {
+          "root": 1,
+          "name": "하위메뉴 항목을 누르면 하위메뉴가 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, #lnb-example-sub-1 보임=true"
+        }
+      ],
+      "componentCount": 4,
+      "font": {
+        "sel": "div > nav[data-s1-component=\"lnb\"]:nth-of-type(1) > ul[data-s1-part=\"items\"] > li:nth-of-type(1) > a[data-s1-part=\"item\"]",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 9,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 1
+      },
+      "accessibleNames": {
+        "checked": 15,
+        "missing": 0
+      },
+      "icons": {
+        "total": 15,
+        "checked": 15,
+        "blank": 0
+      },
+      "dark": {
+        "components": 4,
+        "changed": 4,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 14,
+        "reached": 14,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "mobile-bottom-nav.html",
+      "component": "mobile-bottom-nav",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/mobile-bottom-nav.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/mobile-bottom-nav.dark.png",
+      "interactions": [],
+      "componentCount": 4,
+      "font": {
+        "sel": null,
+        "family": null,
+        "undeclared": [
+          {
+            "component": "mobile-bottom-nav",
+            "part": "label",
+            "text": "홈",
+            "family": "\"Apple SD Gothic Neo\""
+          }
+        ],
+        "faces": [],
+        "platform": null
+      },
+      "contrast": {
+        "checked": 4,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 4,
+        "missing": 0
+      },
+      "icons": {
+        "total": 4,
+        "checked": 4,
+        "blank": 0
+      },
+      "dark": {
+        "components": 4,
+        "changed": 4,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 4,
+        "reached": 4,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "fail",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "notApplicable",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "mobile-header.html",
+      "component": "mobile-header",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/mobile-header.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/mobile-header.dark.png",
+      "interactions": [],
+      "componentCount": 1,
+      "font": {
+        "sel": null,
+        "family": null,
+        "undeclared": [
+          {
+            "component": "mobile-header",
+            "part": "title",
+            "text": "스탠다드형 타이틀",
+            "family": "\"Apple SD Gothic Neo\""
+          }
+        ],
+        "faces": [],
+        "platform": null
+      },
+      "contrast": {
+        "checked": 1,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "fail",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "notApplicable",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "modal-content.html",
+      "component": "modal-content",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/modal-content.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/modal-content.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "스크립트로 열 수 있다(init(root).open())",
+          "status": "pass",
+          "evidence": "결과: ok"
+        },
+        {
+          "root": 1,
+          "name": "열리면 화면에 보인다",
+          "status": "pass",
+          "evidence": "hidden=false"
+        },
+        {
+          "root": 1,
+          "name": "열리면 초점이 창 안으로 들어간다",
+          "status": "pass",
+          "evidence": "지금 초점: div[data-s1-component=\"modal-content\"] > div[data-s1-part=\"panel\"]:nth-of-type(2) > div[data-s1-part=\"header\"]:nth-of-type(1) > button[data-s1-part=\"close\"]"
+        },
+        {
+          "root": 1,
+          "name": "Tab 을 여러 번 눌러도 초점이 창 밖으로 새지 않는다",
+          "status": "pass",
+          "evidence": "6회 Tab 모두 창 안"
+        },
+        {
+          "root": 1,
+          "name": "Esc 로 닫힌다",
+          "status": "pass",
+          "evidence": "hidden=true"
+        },
+        {
+          "root": 1,
+          "name": "닫히면 초점이 열었던 버튼으로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: #__audit_opener"
+        }
+      ],
+      "componentCount": 0,
+      "font": {
+        "sel": null,
+        "family": null,
+        "undeclared": [],
+        "faces": [],
+        "platform": null
+      },
+      "contrast": {
+        "checked": 0,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 0,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 0,
+        "changed": 0,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 0,
+        "reached": 0,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "notChecked",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "notApplicable",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [
+        {
+          "example": "modal-content.html",
+          "check": "font",
+          "reason": "보이는 부품 글자가 없음"
+        }
+      ],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "modal.html",
+      "component": "modal",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/modal.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/modal.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "스크립트로 열 수 있다(init(root).open())",
+          "status": "pass",
+          "evidence": "결과: ok"
+        },
+        {
+          "root": 1,
+          "name": "열리면 화면에 보인다",
+          "status": "pass",
+          "evidence": "hidden=false"
+        },
+        {
+          "root": 1,
+          "name": "열리면 초점이 창 안으로 들어간다",
+          "status": "pass",
+          "evidence": "지금 초점: div[data-s1-component=\"modal\"] > div[data-s1-part=\"panel\"]:nth-of-type(2) > div[data-s1-part=\"content\"]:nth-of-type(1) > div[data-s1-part=\"header\"]:nth-of-type(1) > button[data-s1-part=\"close\"]"
+        },
+        {
+          "root": 1,
+          "name": "Tab 을 여러 번 눌러도 초점이 창 밖으로 새지 않는다",
+          "status": "pass",
+          "evidence": "6회 Tab 모두 창 안"
+        },
+        {
+          "root": 1,
+          "name": "Esc 로 닫힌다",
+          "status": "pass",
+          "evidence": "hidden=true"
+        },
+        {
+          "root": 1,
+          "name": "닫히면 초점이 열었던 버튼으로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: #__audit_opener"
+        }
+      ],
+      "componentCount": 0,
+      "font": {
+        "sel": null,
+        "family": null,
+        "undeclared": [],
+        "faces": [],
+        "platform": null
+      },
+      "contrast": {
+        "checked": 0,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 0,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 0,
+        "changed": 0,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 0,
+        "reached": 0,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "notChecked",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "notApplicable",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [
+        {
+          "example": "modal.html",
+          "check": "font",
+          "reason": "보이는 부품 글자가 없음"
+        }
+      ],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "modal.mobile.html",
+      "component": "modal",
+      "viewport": "mobile(375)",
+      "screenshot": "reports/publisher-audit/web/shots/modal.mobile.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/modal.mobile.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "스크립트로 열 수 있다(init(root).open())",
+          "status": "pass",
+          "evidence": "결과: ok"
+        },
+        {
+          "root": 1,
+          "name": "열리면 화면에 보인다",
+          "status": "pass",
+          "evidence": "hidden=false"
+        },
+        {
+          "root": 1,
+          "name": "열리면 초점이 창 안으로 들어간다",
+          "status": "pass",
+          "evidence": "지금 초점: div[data-s1-component=\"modal\"] > div[data-s1-part=\"panel\"]:nth-of-type(2) > div[data-s1-part=\"footer\"]:nth-of-type(2) > button[data-s1-component=\"button\"]:nth-of-type(1)"
+        },
+        {
+          "root": 1,
+          "name": "Tab 을 여러 번 눌러도 초점이 창 밖으로 새지 않는다",
+          "status": "pass",
+          "evidence": "6회 Tab 모두 창 안"
+        },
+        {
+          "root": 1,
+          "name": "Esc 로 닫힌다",
+          "status": "pass",
+          "evidence": "hidden=true"
+        },
+        {
+          "root": 1,
+          "name": "닫히면 초점이 열었던 버튼으로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: #__audit_opener"
+        }
+      ],
+      "componentCount": 0,
+      "font": {
+        "sel": null,
+        "family": null,
+        "undeclared": [],
+        "faces": [],
+        "platform": null
+      },
+      "contrast": {
+        "checked": 0,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 0,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 0,
+        "changed": 0,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 0,
+        "reached": 0,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "notChecked",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "notApplicable",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [
+        {
+          "example": "modal.mobile.html",
+          "check": "font",
+          "reason": "보이는 부품 글자가 없음"
+        }
+      ],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "multi-toggle.html",
+      "component": "multi-toggle",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/multi-toggle.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/multi-toggle.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "칸을 누르면 그 칸이 선택된다",
+          "status": "pass",
+          "evidence": "aria-checked=true"
+        },
+        {
+          "root": 1,
+          "name": "→ 키로 옆 칸이 선택된다",
+          "status": "pass",
+          "evidence": "초점 div[data-s1-component=\"multi-toggle\"] > button[data-s1-part=\"cell\"]:nth-of-type(3), aria-checked=true"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": "div[data-s1-component=\"multi-toggle\"] > button[data-s1-part=\"cell\"]:nth-of-type(1)",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 3,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 3,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "pagination.html",
+      "component": "pagination",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/pagination.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/pagination.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "3쪽을 누르면 3쪽이 현재 쪽이 된다",
+          "status": "pass",
+          "evidence": "현재 쪽 표시=\"3\", data-page=3"
+        },
+        {
+          "root": 1,
+          "name": "다음 버튼을 누르면 한 쪽 넘어간다",
+          "status": "pass",
+          "evidence": "현재 쪽 표시=\"4\""
+        },
+        {
+          "root": 1,
+          "name": "Enter 키로 쪽을 고를 수 있다",
+          "status": "pass",
+          "evidence": "현재 쪽 표시=\"2\""
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": "nav[data-s1-component=\"pagination\"] > span[data-s1-part=\"pages\"]:nth-of-type(2) > button[data-s1-part=\"page\"]:nth-of-type(1)",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 6,
+        "failing": 5,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 10,
+        "missing": 0
+      },
+      "icons": {
+        "total": 4,
+        "checked": 4,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 5,
+        "worst": [
+          {
+            "sel": "nav[data-s1-component=\"pagination\"] > span[data-s1-part=\"pages\"]:nth-of-type(2) > button[data-s1-part=\"page\"]:nth-of-type(2)",
+            "text": "2",
+            "ratio": 2.68,
+            "need": 4.5,
+            "fg": "#55575f",
+            "bg": "#0d0e12",
+            "size": 14
+          },
+          {
+            "sel": "nav[data-s1-component=\"pagination\"] > span[data-s1-part=\"pages\"]:nth-of-type(2) > button[data-s1-part=\"page\"]:nth-of-type(3)",
+            "text": "3",
+            "ratio": 2.68,
+            "need": 4.5,
+            "fg": "#55575f",
+            "bg": "#0d0e12",
+            "size": 14
+          },
+          {
+            "sel": "nav[data-s1-component=\"pagination\"] > span[data-s1-part=\"pages\"]:nth-of-type(2) > button[data-s1-part=\"page\"]:nth-of-type(4)",
+            "text": "4",
+            "ratio": 2.68,
+            "need": 4.5,
+            "fg": "#55575f",
+            "bg": "#0d0e12",
+            "size": 14
+          }
+        ]
+      },
+      "keyboard": {
+        "expected": 8,
+        "reached": 8,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "fail",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": [
+        "pagination:a11y-contrast:1"
+      ]
+    },
+    {
+      "example": "radio.html",
+      "component": "radio",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/radio.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/radio.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "글자(라벨)를 누르면 선택된다",
+          "status": "pass",
+          "evidence": "checked=true"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": "div[data-s1-component=\"radio\"] > label[data-s1-part=\"label\"]",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 1,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "select.html",
+      "component": "select",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/select.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/select.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "트리거를 누르면 펼쳐진다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "항목을 고르면 값이 바뀐다",
+          "status": "pass",
+          "evidence": "값: \"선택\" → \"부산\" (고른 항목 \"부산\")"
+        },
+        {
+          "root": 1,
+          "name": "항목을 고르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 1,
+          "name": "트리거에 초점을 두고 Enter 를 누르면 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "Esc 를 누르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 1,
+          "name": "닫힌 뒤 초점이 트리거로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: div[data-s1-component=\"select\"] > button[data-s1-part=\"trigger\"]"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": "div[data-s1-component=\"select\"] > button[data-s1-part=\"trigger\"] > span[data-s1-part=\"value\"]:nth-of-type(1)",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 1,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "select.mobile.html",
+      "component": "select",
+      "viewport": "mobile(375)",
+      "screenshot": "reports/publisher-audit/web/shots/select.mobile.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/select.mobile.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "트리거를 누르면 펼쳐진다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "항목을 고르면 값이 바뀐다",
+          "status": "pass",
+          "evidence": "값: \"선택\" → \"부산\" (고른 항목 \"부산\")"
+        },
+        {
+          "root": 1,
+          "name": "항목을 고르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 1,
+          "name": "트리거에 초점을 두고 Enter 를 누르면 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "Esc 를 누르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 1,
+          "name": "닫힌 뒤 초점이 트리거로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: div[data-s1-component=\"select\"] > button[data-s1-part=\"trigger\"]"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": "div[data-s1-component=\"select\"] > button[data-s1-part=\"trigger\"] > span[data-s1-part=\"value\"]:nth-of-type(1)",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 1,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "tab.html",
+      "component": "tab",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/tab.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/tab.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "탭을 누르면 그 탭이 선택된다",
+          "status": "pass",
+          "evidence": "aria-selected=true"
+        },
+        {
+          "root": 1,
+          "name": "선택한 탭의 내용이 보인다",
+          "status": "pass",
+          "evidence": "#tab-panel-two 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "→ 키로 다음 탭으로 옮겨 선택된다",
+          "status": "pass",
+          "evidence": "초점 div[data-s1-component=\"tab\"] > button[data-s1-part=\"tab\"]:nth-of-type(3), aria-selected=true"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": "div[data-s1-component=\"tab\"] > button[data-s1-part=\"tab\"]:nth-of-type(1)",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 4,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 3,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "tab.mobile.html",
+      "component": "tab",
+      "viewport": "mobile(375)",
+      "screenshot": "reports/publisher-audit/web/shots/tab.mobile.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/tab.mobile.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "탭을 누르면 그 탭이 선택된다",
+          "status": "pass",
+          "evidence": "aria-selected=true"
+        },
+        {
+          "root": 1,
+          "name": "→ 키로 다음 탭으로 옮겨 선택된다",
+          "status": "pass",
+          "evidence": "초점 div[data-s1-component=\"tab\"] > button[data-s1-part=\"tab\"]:nth-of-type(3), aria-selected=true"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": "div[data-s1-component=\"tab\"] > button[data-s1-part=\"tab\"]:nth-of-type(1)",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 3,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 3,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "table.html",
+      "component": "table",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/table.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/table.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "전체 선택을 누르면 모든 줄이 선택된다",
+          "status": "pass",
+          "evidence": "줄 체크 3/3"
+        },
+        {
+          "root": 1,
+          "name": "한 줄을 풀면 전체 선택 표시도 풀린다",
+          "status": "pass",
+          "evidence": "전체 선택 checked=false, 일부 표시=false"
+        }
+      ],
+      "componentCount": 5,
+      "font": {
+        "sel": "div[data-s1-component=\"table\"] > table[data-s1-part=\"table\"] > thead > tr > th[data-s1-part=\"header-cell\"]:nth-of-type(2)",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 16,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 4,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 5,
+        "changed": 5,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 4,
+        "reached": 4,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "text-button.html",
+      "component": "text-button",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/text-button.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/text-button.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "Enter 키로 눌린다",
+          "status": "pass",
+          "evidence": "click 이벤트 1회"
+        },
+        {
+          "root": 1,
+          "name": "Space 키로 눌린다",
+          "status": "pass",
+          "evidence": "click 이벤트 누적 2회"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": "button[data-s1-component=\"text-button\"] > span[data-s1-part=\"label\"]",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 1,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 1,
+        "worst": [
+          {
+            "sel": "button[data-s1-component=\"text-button\"] > span[data-s1-part=\"label\"]",
+            "text": "텍스트버튼",
+            "ratio": 4.07,
+            "need": 4.5,
+            "fg": "#3070d8",
+            "bg": "#0d0e12",
+            "size": 14
+          }
+        ]
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "textarea.html",
+      "component": "textarea",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/textarea.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/textarea.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "글자를 입력할 수 있다",
+          "status": "pass",
+          "evidence": "value=\"여러 줄 확인\""
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": null,
+        "family": null,
+        "undeclared": [],
+        "faces": [],
+        "platform": null
+      },
+      "contrast": {
+        "checked": 0,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "notChecked",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [
+        {
+          "example": "textarea.html",
+          "check": "font",
+          "reason": "보이는 부품 글자가 없음"
+        }
+      ],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "textarea.mobile.html",
+      "component": "textarea",
+      "viewport": "mobile(375)",
+      "screenshot": "reports/publisher-audit/web/shots/textarea.mobile.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/textarea.mobile.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "글자를 입력할 수 있다",
+          "status": "pass",
+          "evidence": "value=\"여러 줄 확인\""
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": null,
+        "family": null,
+        "undeclared": [],
+        "faces": [],
+        "platform": null
+      },
+      "contrast": {
+        "checked": 0,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "notChecked",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [
+        {
+          "example": "textarea.mobile.html",
+          "check": "font",
+          "reason": "보이는 부품 글자가 없음"
+        }
+      ],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "time-picker.html",
+      "component": "time-picker",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/time-picker.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/time-picker.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "트리거를 누르면 시간 목록이 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "시·분을 고르면 확인 버튼을 누를 수 있게 된다",
+          "status": "pass",
+          "evidence": "확인 버튼 disabled=false"
+        },
+        {
+          "root": 1,
+          "name": "확인을 누르면 값이 바뀐다",
+          "status": "pass",
+          "evidence": "값: \"시간 선택\" → \"01:01\""
+        },
+        {
+          "root": 1,
+          "name": "확인을 누르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 1,
+          "name": "트리거에 초점을 두고 Enter 를 누르면 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "Esc 를 누르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 1,
+          "name": "닫힌 뒤 초점이 트리거로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: div[data-s1-component=\"time-picker\"]:nth-of-type(1) > button[data-s1-part=\"trigger\"]"
+        },
+        {
+          "root": 2,
+          "name": "트리거를 누르면 시간 목록이 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 2,
+          "name": "시·분을 고르면 확인 버튼을 누를 수 있게 된다",
+          "status": "pass",
+          "evidence": "확인 버튼 disabled=false"
+        },
+        {
+          "root": 2,
+          "name": "확인을 누르면 값이 바뀐다",
+          "status": "pass",
+          "evidence": "값: \"시간 선택\" → \"오후 2:05\""
+        },
+        {
+          "root": 2,
+          "name": "확인을 누르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 2,
+          "name": "트리거에 초점을 두고 Enter 를 누르면 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 2,
+          "name": "Esc 를 누르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 2,
+          "name": "닫힌 뒤 초점이 트리거로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: div[data-s1-component=\"time-picker\"]:nth-of-type(2) > button[data-s1-part=\"trigger\"]"
+        }
+      ],
+      "componentCount": 2,
+      "font": {
+        "sel": "div[data-s1-component=\"time-picker\"]:nth-of-type(1) > button[data-s1-part=\"trigger\"] > span[data-s1-part=\"value\"]:nth-of-type(1)",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 2,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 2,
+        "missing": 0
+      },
+      "icons": {
+        "total": 2,
+        "checked": 2,
+        "blank": 0
+      },
+      "dark": {
+        "components": 2,
+        "changed": 2,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 2,
+        "reached": 2,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "time-picker.mobile.html",
+      "component": "time-picker",
+      "viewport": "mobile(375)",
+      "screenshot": "reports/publisher-audit/web/shots/time-picker.mobile.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/time-picker.mobile.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "트리거를 누르면 시간 목록이 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "시·분을 고르면 확인 버튼을 누를 수 있게 된다",
+          "status": "pass",
+          "evidence": "확인 버튼 disabled=false"
+        },
+        {
+          "root": 1,
+          "name": "확인을 누르면 값이 바뀐다",
+          "status": "pass",
+          "evidence": "값: \"시간 선택\" → \"오후 2:01\""
+        },
+        {
+          "root": 1,
+          "name": "확인을 누르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 1,
+          "name": "트리거에 초점을 두고 Enter 를 누르면 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "Esc 를 누르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 1,
+          "name": "닫힌 뒤 초점이 트리거로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: div[data-s1-component=\"time-picker\"]:nth-of-type(1) > button[data-s1-part=\"trigger\"]"
+        },
+        {
+          "root": 2,
+          "name": "트리거를 누르면 시간 목록이 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 2,
+          "name": "시·분을 고르면 확인 버튼을 누를 수 있게 된다",
+          "status": "pass",
+          "evidence": "확인 버튼 disabled=false"
+        },
+        {
+          "root": 2,
+          "name": "확인을 누르면 값이 바뀐다",
+          "status": "pass",
+          "evidence": "값: \"시작 일시 선택\" → \"오후 2:01\""
+        },
+        {
+          "root": 2,
+          "name": "확인을 누르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 2,
+          "name": "트리거에 초점을 두고 Enter 를 누르면 열린다",
+          "status": "pass",
+          "evidence": "aria-expanded=true, 패널 보임=true"
+        },
+        {
+          "root": 2,
+          "name": "Esc 를 누르면 닫힌다",
+          "status": "pass",
+          "evidence": "aria-expanded=false, 패널 보임=false"
+        },
+        {
+          "root": 2,
+          "name": "닫힌 뒤 초점이 트리거로 돌아온다",
+          "status": "pass",
+          "evidence": "지금 초점: div[data-s1-component=\"time-picker\"]:nth-of-type(2) > button[data-s1-part=\"trigger\"]"
+        }
+      ],
+      "componentCount": 2,
+      "font": {
+        "sel": "div[data-s1-component=\"time-picker\"]:nth-of-type(1) > button[data-s1-part=\"trigger\"] > span[data-s1-part=\"value\"]:nth-of-type(1)",
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "undeclared": [],
+        "faces": [],
+        "platform": [
+          "Pretendard Variable(이 컴퓨터에 설치된 글꼴)"
+        ]
+      },
+      "contrast": {
+        "checked": 2,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 2,
+        "missing": 0
+      },
+      "icons": {
+        "total": 2,
+        "checked": 2,
+        "blank": 0
+      },
+      "dark": {
+        "components": 2,
+        "changed": 2,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 2,
+        "reached": 2,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "pass",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "pass",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    },
+    {
+      "example": "toggle.html",
+      "component": "toggle",
+      "viewport": "pc(1280)",
+      "screenshot": "reports/publisher-audit/web/shots/toggle.png",
+      "darkScreenshot": "reports/publisher-audit/web/shots/toggle.dark.png",
+      "interactions": [
+        {
+          "root": 1,
+          "name": "마우스로 누르면 상태가 바뀐다",
+          "status": "pass",
+          "evidence": "aria-checked: false → true"
+        },
+        {
+          "root": 1,
+          "name": "Space 키로 상태가 바뀐다",
+          "status": "pass",
+          "evidence": "aria-checked: true → false"
+        },
+        {
+          "root": 1,
+          "name": "Enter 키로 상태가 바뀐다",
+          "status": "pass",
+          "evidence": "aria-checked: false → true"
+        }
+      ],
+      "componentCount": 1,
+      "font": {
+        "sel": null,
+        "family": null,
+        "undeclared": [],
+        "faces": [],
+        "platform": null
+      },
+      "contrast": {
+        "checked": 0,
+        "failing": 0,
+        "unknown": 0,
+        "skippedDisabled": 0
+      },
+      "accessibleNames": {
+        "checked": 1,
+        "missing": 0
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "blank": 0
+      },
+      "dark": {
+        "components": 1,
+        "changed": 1,
+        "pageBackgroundFollows": false,
+        "contrastFailing": 0,
+        "worst": []
+      },
+      "keyboard": {
+        "expected": 1,
+        "reached": 1,
+        "unreachable": 0,
+        "noRing": 0
+      },
+      "consoleWarnings": 0,
+      "checks": {
+        "autoInit": "pass",
+        "componentSize": "pass",
+        "overflow": "pass",
+        "font": "notChecked",
+        "contrast": "pass",
+        "accessibleName": "pass",
+        "icons": "notApplicable",
+        "dark": "pass",
+        "keyboard": "pass",
+        "interaction": "pass",
+        "console": "pass",
+        "network": "pass",
+        "lint": "pass"
+      },
+      "notChecked": [
+        {
+          "example": "toggle.html",
+          "check": "font",
+          "reason": "보이는 부품 글자가 없음"
+        }
+      ],
+      "lintBy": "reference(dev-package)",
+      "findingIds": []
+    }
+  ]
+}

@@ -130,6 +130,7 @@
     "screen-rebuild:evidence": "node scripts/screen-rebuild-evidence-check.js",
     "map:verify": "node pipeline-status.js --self-check --skip gate:check,components:presentation",
     "harness:audit": "node scripts/harness-audit.js",
+    "audit:publisher:web": "node --experimental-websocket --no-warnings scripts/publisher-audit/web.mjs",
     "harness:fix": "node scripts/harness-audit.js --fix",
     "screen-rebuild:statecheck": "node scripts/screen-rebuild-state-check.js",
     "screen-rebuild:statecheck:all": "node scripts/screen-rebuild-state-check.js --all",
