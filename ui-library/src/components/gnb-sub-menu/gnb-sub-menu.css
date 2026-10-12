@@ -13,6 +13,17 @@
   width: 100%;
 }
 
+/* 겹쳐 뜨기 — gnb.js 가 메뉴와 이어 준 패널에 data-s1-layer="overlay" 를 단다(river 결정 2026-10-12).
+   흐름에서 빠져 본문을 밀지 않고, 자기 자리(GNB 바 바로 아래)에서 가로로 꽉 차게 본문 위에 뜬다.
+   기준이 되는 가로 범위는 가장 가까운 position 잡힌 조상(없으면 화면 전체)이다. */
+[data-s1-component="gnb-sub-menu"][data-s1-layer="overlay"] {
+  left: 0;
+  position: absolute;
+  right: 0;
+  width: auto;
+  z-index: 100;
+}
+
 /* 이 패널을 여닫는 host(gnb)가 hidden 속성으로 접고 편다 — 위 display:flex 는 같은 요소에
    author 스타일로 얹혀 있어 UA 기본 [hidden]{display:none} 규칙을 덮어써 버린다(select.css·
    date-picker.css 의 패널 선례와 같은 함정). 이 규칙이 없으면 hidden 을 줘도 화면에서 안 사라진다. */

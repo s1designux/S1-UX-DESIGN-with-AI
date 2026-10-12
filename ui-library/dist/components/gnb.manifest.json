@@ -55,6 +55,10 @@
   ],
   "htmlContract": {
     "root": "nav[data-s1-component=gnb][data-size][data-variant]",
+    "requiredAttributes": [
+      "data-size",
+      "data-variant"
+    ],
     "perVariantParts": {
       "center-between": [
         "logo",
@@ -229,5 +233,5 @@
     },
     "behaviorContract": "registry/components/component-behavior.pc.json 의 \"GNB\" 장부."
   },
-  "sourceFingerprint": "b034b0b56db005ff08016325b530e674a69ba2afc3669df9359058b0a3e5c4f5"
+  "sourceFingerprint": "d8d54be475aa66b7c1d549bb733a8cd08dd778307c6b5b508a026a3c9247a363"
 }

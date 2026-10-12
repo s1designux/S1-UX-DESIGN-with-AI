@@ -339,13 +339,21 @@
     },
     "methods": [
       "openPanel()",
-      "closePanel()"
+      "closePanel()",
+      "value",
+      "setValue(value)"
     ],
     "lifecycle": [
       "init(root)",
       "destroy(root)"
     ],
     "controlMode": "uncontrolled",
-    "progressiveEnhancementNote": "JavaScript 없이는 캘린더가 렌더되지 않아 날짜를 고를 수 없다 — 복합 Picker(정본 계약)라 native fallback이 없다. 트리거는 native button 이라 포커스·이름은 유지된다."
+    "progressiveEnhancementNote": "JavaScript 없이는 캘린더가 렌더되지 않아 날짜를 고를 수 없다 — 복합 Picker(정본 계약)라 native fallback이 없다. 트리거는 native button 이라 포커스·이름은 유지된다.",
+    "attributes": {
+      "data-value": "단일 모드의 처음 날짜(YYYY-MM-DD)",
+      "data-range-start": "기간 모드의 처음 시작일(YYYY-MM-DD)",
+      "data-range-end": "기간 모드의 처음 종료일(YYYY-MM-DD)",
+      "data-name": "폼 전송용 숨은 입력의 name (단일: name · 기간: name-start, name-end)"
+    }
   }
 }

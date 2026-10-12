@@ -331,6 +331,14 @@ function attributeOf(componentOutputs, id, allowed) {
   }
 }
 
+/** 이름이 aria-label·aria-labelledby 로만 생기는 부품이면 그 속성 목록을 돌려준다(a11y.accessibleName 이 그렇게 선언한 경우만).
+ *  "보이는 글자가 이름"인 부품은 비운다 — 검사기가 짐작으로 요구하지 않는다. */
+function nameFromAttributesOf(manifest) {
+  const name = manifest.a11y?.accessibleName;
+  if (name?.status !== "required" || typeof name.value !== "string") return [];
+  return /^(root )?aria-label( or aria-labelledby)?$/i.test(name.value.trim()) ? ["aria-label", "aria-labelledby"] : [];
+}
+
 export function buildContract(componentOutputs, distManifest) {
   return {
     _meta: {
@@ -354,6 +362,7 @@ export function buildContract(componentOutputs, distManifest) {
       sizeAttribute: attributeOf(componentOutputs, id, manifest.sizes ?? []),
       requiredAttributes: manifest.htmlContract.requiredAttributes ?? [],
       requiredParts: manifest.htmlContract.requiredParts ?? [],
+      nameFromAttributes: nameFromAttributesOf(manifest),
       jsRequired: manifest.jsRequired,
       events: manifest.javascript?.events ?? [],
       lifecycle: manifest.javascript?.lifecycle ?? [],

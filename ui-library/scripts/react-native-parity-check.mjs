@@ -86,7 +86,7 @@ async function main() {
     const manifest = manifests.get(id);
     for (const template of spec.templates) {
       templates += 1;
-      const exampleFile = template.src.example === "pc" ? `${id}.html` : manifest.htmlContract.breakExamples?.[template.src.example]?.distribution?.replace(/^examples\//, "") ?? `${id}.${template.src.example}.html`;
+      const exampleFile = template.src.example === "pc" ? (manifest.htmlContract.distribution ?? `examples/${id}.html`).replace(/^examples\//, "") : manifest.htmlContract.breakExamples?.[template.src.example]?.distribution?.replace(/^examples\//, "") ?? `${id}.${template.src.example}.html`;
       const html = fs.readFileSync(path.join(dist, "examples", exampleFile), "utf8");
       const instance = allInstances(parseHtml(augmentExample(id, html), id), id)[template.src.instance];
       const nestedOf = (parsed, isRoot) => nestedIdOf(parsed, { id, isRoot, manifests });

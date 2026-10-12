@@ -82,7 +82,7 @@ export default function S1BottomSheet({ variant, parts, onOpen, onClose, classNa
             </div>
           </div>
           <div data-s1-part="sheet-footer" {...(slot(partScope, "sheetFooter").attrs ?? {})}>
-            <button type="button" data-s1-component="button" data-variant="primary" data-size="lg">
+            <button type="button" data-s1-component="button" data-variant="primary" data-size="lg" data-s1-close="apply">
               <span data-s1-part="label" {...(slot(partScope, "label").attrs ?? {})}>
                 {slot(partScope, "label").content ?? "적용"}
               </span>

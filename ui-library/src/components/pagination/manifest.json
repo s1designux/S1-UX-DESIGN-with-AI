@@ -120,6 +120,16 @@
   "jsRequired": true,
   "javascript": {
     "runtime": "components/pagination/pagination.js",
-    "reason": "현재 페이지와 양 끝 비활성 상태를 동기화한다."
+    "reason": "현재 페이지와 양 끝 비활성 상태를 동기화한다.",
+    "methods": [
+      "setPage(page)",
+      "setTotalPages(count)",
+      "page",
+      "totalPages"
+    ],
+    "attributes": {
+      "data-total-pages": "총 쪽수(처음 값). 나중에 바꿀 때는 setTotalPages(count) 를 부른다 — 번호 창을 다시 그리고 현재 쪽 표시를 유지한다",
+      "data-page": "현재 쪽"
+    }
   }
 }

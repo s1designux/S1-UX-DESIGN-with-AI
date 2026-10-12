@@ -138,6 +138,12 @@ function checkComponentUsage(text, contract, findings, file) {
       findings.push({ severity: "error", rule: "S1-CONTRACT", file, line,
         message: `${id} 에 필수 속성 ${required} 가 없습니다.` });
     }
+    /* 이름이 aria 속성으로만 생기는 부품(예: 스위치) — 계약이 선언한 부품만 검사한다. */
+    const nameAttributes = component.nameFromAttributes ?? [];
+    if (nameAttributes.length && !nameAttributes.some((attribute) => new RegExp(`(^|\\s)${attribute}\\s*=`).test(tag))) {
+      findings.push({ severity: "error", rule: "S1-A11Y", file, line,
+        message: `${id} 에 접근 가능한 이름이 없습니다. ${nameAttributes.join(" 또는 ")} 를 달아 주세요.` });
+    }
   }
 }
 
@@ -159,11 +165,14 @@ function checkReimplementation(text, contract, findings, file) {
 async function main() {
   const args = process.argv.slice(2);
   const distManifest = await readJson("manifest.json");
-  const platformManifest = await readJson("platform/manifest.json");
 
   if (args.includes("--version") || args.includes("-v")) {
+    /* 묶음에 platform/manifest.json 이 없어도(툴별 부분 묶음) 번호와 지문은 보여 준다. */
+    const platformManifest = await readJson("platform/manifest.json").catch(() => null);
     console.log(`s1-ui ${distManifest.version} (${distManifest.releasedAt} 판)`);
-    console.log(`컴포넌트 ${platformManifest.components.length}종 · 토큰 ${platformManifest.tokenCount}개`);
+    console.log(platformManifest
+      ? `컴포넌트 ${platformManifest.components.length}종 · 토큰 ${platformManifest.tokenCount}개`
+      : `컴포넌트 ${distManifest.components.length}종`);
     console.log(`정본 지문 ${distManifest.canonicalFingerprint}`);
     console.log("최신인지 확인: 디자인가이드 내려받기 화면의 번호와 이 번호가 같으면 최신입니다.");
     return;

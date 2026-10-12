@@ -64,12 +64,12 @@ export default function S1Modal({ variant, breakName = DEFAULT_BREAK, parts, onO
             </div>
           </div>
           <div data-s1-part="footer" {...(slot(partScope, "footer").attrs ?? {})}>
-            <button type="button" data-s1-component="button" data-variant="secondary" data-size="xxsm">
+            <button type="button" data-s1-component="button" data-variant="secondary" data-size="xxsm" data-s1-close="cancel">
               <span data-s1-part="label" {...(slot(partScope, "label").attrs ?? {})}>
                 {slot(partScope, "label").content ?? "취소"}
               </span>
             </button>
-            <button type="button" data-s1-component="button" data-variant="primary" data-size="xxsm">
+            <button type="button" data-s1-component="button" data-variant="primary" data-size="xxsm" data-s1-close="confirm">
               <span data-s1-part="label" {...(slot(partScope, "label").attrs ?? {})}>
                 {slot(partScope, "label").content ?? "확인"}
               </span>
@@ -98,12 +98,12 @@ export default function S1Modal({ variant, breakName = DEFAULT_BREAK, parts, onO
             </div>
           </div>
           <div data-s1-part="footer" {...(slot(partScope, "footer").attrs ?? {})}>
-            <button type="button" data-s1-component="button" data-variant="secondary" data-size="lg">
+            <button type="button" data-s1-component="button" data-variant="secondary" data-size="lg" data-s1-close="cancel">
               <span data-s1-part="label" {...(slot(partScope, "label").attrs ?? {})}>
                 {slot(partScope, "label").content ?? "아니오"}
               </span>
             </button>
-            <button type="button" data-s1-component="button" data-variant="primary" data-size="lg">
+            <button type="button" data-s1-component="button" data-variant="primary" data-size="lg" data-s1-close="confirm">
               <span data-s1-part="label" {...(slot(partScope, "label").attrs ?? {})}>
                 {slot(partScope, "label").content ?? "네"}
               </span>

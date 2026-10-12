@@ -1,16 +1,12 @@
-/* Base Input + Password Field (type=password 옵션) + Search Input (data-mode=search 옵션).
-   둘 다 별도 컴포넌트가 아니라 이 Input을 조립한다(river D1, 2026-09-04). */
 [data-s1-component="input"] {
   box-sizing: border-box;
-  display: inline-flex; /* 기본 폭을 부품이 스스로 갖는다 — 종전 flex + width:100% 는 부모에 따라 제멋대로 늘어났다(river 지시 2026-09-23) */
+  display: inline-flex;
   flex-direction: column;
   gap: var(--spacing-6);
   max-width: 100%;
-  width: 200px; /* 정본 field.resize(200, sc.h) — 글을 쓰는 칸이라 날짜·시간·선택(140)보다 넓다. 더 넓게 쓰려면 쓰는 쪽에서 width 를 준다 */
+  width: 200px;
 }
 
-/* Search 최소 폭 — 정본 SEARCH_MIN_W(build-components.ts) 와 같은 200px.
-   좁아지면 좌우 아이콘이 서로 붙어 보인다(river 지시 2026-09-09). 늘어나는 것은 그대로 둔다. */
 [data-s1-component="input"][data-mode="search"],
 [data-s1-component="input"][data-mode="search"] [data-s1-part="field"] {
   min-width: 200px;
@@ -80,8 +76,6 @@
   display: none;
 }
 
-/* 트레일링 액션 사이 간격. Password = [눈][지우기] 2px(정본 trail itemSpacing:2, build-components.ts:1246).
-   Search = [지우기][돋보기] 4px(정본 trail itemSpacing:4, build-components.ts:1591) — data-mode=search 로 override. */
 [data-s1-component="input"] [data-s1-part="action"] + [data-s1-part="action"] {
   margin-inline-start: var(--spacing-2);
 }
@@ -90,10 +84,6 @@
   margin-inline-start: var(--spacing-4);
 }
 
-/* Mobile 에서 아이콘이 두 개 보일 때 — 누르는 영역 48×48 은 그대로 두고 그림만 안쪽으로 당긴다.
-   48 칸 정중앙에 24 그림을 두면 양쪽 12px 씩이 비어 보이는 간격이 PC 8px 대비 28px 까지 벌어진다.
-   칸 사이 간격을 0 으로 맞붙이고 왼쪽 그림을 자기 칸 오른쪽 끝에 붙여 좁힌다(river HD-3 A, 2026-09-07).
-   오른쪽 그림 위치(칸 끝에서 12px)는 river 승인값이라 건드리지 않는다. 칸은 겹치지 않는다. */
 [data-s1-component="input"][data-break="mobile"] [data-s1-part="action"] + [data-s1-part="action"] {
   margin-inline-start: 0;
 }
@@ -102,11 +92,6 @@
   justify-content: flex-end;
 }
 
-/* Mobile break 는 hover 를 내지 않는다 — 손가락에는 hover 가 없고,
-   PC 브라우저에서 Mobile 화면을 볼 때 48×48 누르는 영역이 통째로 칠해져
-   실제 아이콘보다 훨씬 큰 면이 반응하는 것처럼 보이기 때문이다(river 지시 2026-09-07).
-   화면 구분을 감싸는 요소에만 적었을 때도 같아야 한다 — 자기 [data-break] 가 없어도
-   모바일 감싸개 안이면 hover 를 내지 않는다(2026-09-15). 자기가 pc 라고 적었으면 그쪽이 이긴다. */
 @media (hover: hover) {
   [data-s1-component="input"]:not([data-break="mobile"]):is([data-break="pc"], :not([data-s1-break="mobile"] *)) [data-s1-part="action"]:hover:not(:disabled) {
     background: var(--color-form-control-bg-hover);
@@ -122,8 +107,6 @@
   width: var(--sizing-24);
 }
 
-/* 비밀번호 표시 전환 — 숨김 중(aria-pressed=false)은 eye_hide, 표시 중(aria-pressed=true)은 eye_show.
-   눈 아이콘 색은 정본이 모든 상태에서 icon/default 하나만 쓴다(build-components.ts:1229 — 상태별 분기 없음). */
 [data-s1-component="input"] [data-s1-part="action"][data-action="password"] [data-s1-part="action-icon"] {
   mask: url("../assets/icons/eye_hide.svg") center / contain no-repeat;
 }
@@ -132,13 +115,10 @@
   mask: url("../assets/icons/eye_show.svg") center / contain no-repeat;
 }
 
-/* 검색 실행(돋보기) — 항상 표시, 값 유무와 무관(river D4). */
 [data-s1-component="input"] [data-s1-part="action"][data-action="search"] [data-s1-part="action-icon"] {
   mask: url("../assets/icons/search.svg") center / contain no-repeat;
 }
 
-/* Search 돋보기만 Disabled 에서 색을 낮춘다 — 정본 buildSearch 의 Disabled state 만 icon/disabled 를 쓴다
-   (build-components.ts:1520). Password 눈·clear 는 정본에 disabled 전용 아이콘 색이 없어 그대로 둔다. */
 [data-s1-component="input"][data-mode="search"]:has([data-s1-part="control"]:disabled) [data-s1-part="action"][data-action="search"] {
   color: var(--color-form-control-icon-disabled);
 }
@@ -163,7 +143,6 @@
   margin: 0;
 }
 
-/* 왼쪽 안쪽 여백은 크기와 상관없이 12 — 낮은 칸에서 16 은 글자가 가운데서 밀려 보였다(river 결정 2026-09-23). */
 [data-s1-component="input"][data-break="pc"][data-size="xxsm"] [data-s1-part="field"] {
   height: var(--sizing-28);
   padding-inline: var(--spacing-12) var(--spacing-8);
@@ -197,8 +176,6 @@
   padding-inline: 0;
 }
 
-/* Mobile 오른쪽 안쪽 여백은 0 — 누르는 영역 48×48 을 칸 끝에 붙여
-   아이콘이 안쪽으로 밀리지 않게 한다. (river 지시 2026-09-04) */
 [data-s1-component="input"][data-break="mobile"][data-size="md"] [data-s1-part="field"] {
   height: var(--sizing-48);
   min-height: var(--sizing-48);
@@ -269,15 +246,10 @@
   color: var(--color-form-control-text-disabled);
 }
 
-/* Error·Correct·Read-only 의미는 유지하되 키보드 초점은 정본 Selected border로 구분한다.
-   (2026-09-02 focus-visible 철회 때 함께 지워졌던 규칙 — 2026-09-04 river 지시로 복원) */
 [data-s1-component="input"]:has([data-s1-part="control"]:focus-visible) [data-s1-part="field"] {
   border-color: var(--color-form-control-border-selected);
 }
 
-
-/* ── 밀도(density) — registry/governance/density-policy.json 에서 생성. 손편집 금지 ── */
-/* density:wide 넓게(44px) — data-size 를 직접 주면 그쪽이 이긴다 */
 [data-s1-density="wide"] [data-s1-component="input"]:not([data-break="mobile"]):not([data-size]) [data-s1-part="field"] {
   height: var(--sizing-44);
   padding-inline: var(--spacing-12) var(--spacing-12);
@@ -300,7 +272,6 @@
   padding-inline: 0;
 }
 
-/* density:normal 보통(34px) — data-size 를 직접 주면 그쪽이 이긴다 */
 [data-s1-density="normal"] [data-s1-component="input"]:not([data-break="mobile"]):not([data-size]) [data-s1-part="field"] {
   height: var(--sizing-34);
   padding-inline: var(--spacing-12) var(--spacing-8);
@@ -323,7 +294,6 @@
   padding-inline: 0;
 }
 
-/* density:narrow 좁게(28px) — data-size 를 직접 주면 그쪽이 이긴다 */
 [data-s1-density="narrow"] [data-s1-component="input"]:not([data-size]) [data-s1-part="action-icon"] {
   height: var(--sizing-20);
   width: var(--sizing-20);
@@ -351,7 +321,6 @@
   padding-inline: 0;
 }
 
-/* bridge:pc 감싸기에 화면 구분을 적었으면 컴포넌트가 안 적어도 같은 규칙이 선다 */
 :is([data-s1-break="pc"], [data-s1-density="wide"], [data-s1-density="normal"], [data-s1-density="narrow"]) [data-s1-component="input"]:not([data-break="mobile"])[data-size="xxsm"] [data-s1-part="field"] {
   height: var(--sizing-28);
   padding-inline: var(--spacing-12) var(--spacing-8);
@@ -385,7 +354,6 @@
   padding-inline: 0;
 }
 
-/* bridge:mobile 감싸기에 화면 구분을 적었으면 컴포넌트가 안 적어도 같은 규칙이 선다 */
 [data-s1-break="mobile"] [data-s1-component="input"]:not([data-break="pc"]) [data-s1-part="action"] + [data-s1-part="action"] {
   margin-inline-start: 0;
 }
@@ -411,7 +379,6 @@
   padding-inline: 0;
 }
 
-/* density:mobile 모바일은 밀도 축이 없다 — 손가락 기준 높이 하나 */
 [data-s1-break="mobile"] [data-s1-component="input"]:not([data-break="pc"]):not([data-size]) [data-s1-part="field"] {
   height: var(--sizing-48);
   min-height: var(--sizing-48);

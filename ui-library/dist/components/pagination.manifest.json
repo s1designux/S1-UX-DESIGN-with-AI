@@ -120,7 +120,17 @@
   "jsRequired": true,
   "javascript": {
     "runtime": "components/pagination/pagination.js",
-    "reason": "현재 페이지와 양 끝 비활성 상태를 동기화한다."
+    "reason": "현재 페이지와 양 끝 비활성 상태를 동기화한다.",
+    "methods": [
+      "setPage(page)",
+      "setTotalPages(count)",
+      "page",
+      "totalPages"
+    ],
+    "attributes": {
+      "data-total-pages": "총 쪽수(처음 값). 나중에 바꿀 때는 setTotalPages(count) 를 부른다 — 번호 창을 다시 그리고 현재 쪽 표시를 유지한다",
+      "data-page": "현재 쪽"
+    }
   },
-  "sourceFingerprint": "c38c6fe2d06ee67c06984645a7906946980831f8abb5ed4c9d7fe0355a67a052"
+  "sourceFingerprint": "de6541b5b7f6f60ee654863199d2ebf2cb30fc2301d8e90fdb56e110a75039c0"
 }

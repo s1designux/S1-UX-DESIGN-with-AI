@@ -82,7 +82,7 @@ export default function S1BottomSheet({ variant, parts, onOpen, onClose, onConfi
             </El>
           </El>
           <El k="n12" a={{ "data-s1-part": "sheet-footer", ...(slot(partScope, "sheetFooter").attrs ?? {}) }}>
-            <N k="n13" as={S1Button} a={{ "type": "button", "data-s1-component": "button", "data-variant": "primary", "data-size": "lg" }} p={{ variant: "primary", size: "lg", parts: {"label":"적용"}, ...attrProps(slot(partScope, "nested:button").attrs) }} />
+            <N k="n13" as={S1Button} a={{ "type": "button", "data-s1-component": "button", "data-variant": "primary", "data-size": "lg", "data-s1-close": "apply" }} p={{ variant: "primary", size: "lg", parts: {"label":"적용"}, ...attrProps(slot(partScope, "nested:button").attrs) }} />
           </El>
         </El>
       </Root>

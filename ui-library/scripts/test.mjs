@@ -23,12 +23,14 @@ for (const id of componentIds) {
   if (/#[0-9a-f]{3,8}\b/i.test(css)) failures.push(`${id}.css contains raw HEX`);
   if (/!important\b/.test(css)) failures.push(`${id}.css contains !important`);
   if (/(^|[,{]\s*)(body|html|input|button)(?=[\s,.:{#[])/m.test(css)) failures.push(`${id}.css contains an unscoped tag selector`);
-  const example = await read(`dist/examples/${id}.html`);
   const manifest = JSON.parse(await read(`dist/components/${id}.manifest.json`));
+  /* 기본 예시 경로 — 모바일 전용 부품(bottom-sheet·mobile-bottom-nav·mobile-header)은 examples/{id}.mobile.html. */
+  const example = await read(`dist/${manifest.htmlContract.distribution ?? `examples/${id}.html`}`);
   for (const field of ["id", "version", "status", "canonicalFingerprint", "rootSelector", "variants", "sizes", "states", "parts", "htmlContract", "cssContract", "dependencies", "icons", "a11y", "jsRequired"]) {
     if (!(field in manifest)) failures.push(`${id} manifest missing ${field}`);
   }
-  if (manifest.htmlContract.distribution !== `examples/${id}.html`) failures.push(`${id} HTML contract distribution path differs from build output`);
+  const expectedMainExample = manifest.htmlContract.mobileOnly === true ? `examples/${id}.mobile.html` : `examples/${id}.html`;
+  if (manifest.htmlContract.distribution !== expectedMainExample) failures.push(`${id} HTML contract distribution path differs from build output`);
   /* 플랫폼별 예제 — Mobile 크기·break 가 따로 있는 컴포넌트는 mobile 예제를 배포해야 한다.
      퍼블리셔가 Mobile 화면에서 PC 마크업을 복사하는 사고를 막는다(river 결정 2026-09-02). */
   if (manifest.breaks?.mobile?.length) {
@@ -101,11 +103,11 @@ for (const id of componentIds) {
       failures.push("input.search example search action must always be visible (no hidden attribute)");
     }
 
-    const passwordMobileExample = await read(`dist/examples/input.password-mobile.html`);
-    if (!passwordMobileExample.includes('data-break="mobile"')) failures.push("input.password-mobile example must declare data-break=mobile");
-    const searchMobileExample = await read(`dist/examples/input.search-mobile.html`);
+    const passwordMobileExample = await read(`dist/examples/input.password.mobile.html`);
+    if (!passwordMobileExample.includes('data-break="mobile"')) failures.push("input.password.mobile example must declare data-break=mobile");
+    const searchMobileExample = await read(`dist/examples/input.search.mobile.html`);
     if (!searchMobileExample.includes('data-break="mobile"') || !searchMobileExample.includes('data-mode="search"')) {
-      failures.push("input.search-mobile example must declare data-break=mobile and data-mode=search");
+      failures.push("input.search.mobile example must declare data-break=mobile and data-mode=search");
     }
 
     for (const iconId of ["eye_hide", "eye_show", "search"]) {
@@ -928,7 +930,7 @@ for (const id of approvedIds) {
   const vueMarkupBlock = /const MARKUPS = (\{[\s\S]*?\n\});/.exec(vueText);
   if (!vueMarkupBlock) { failures.push(`${id} Vue wrapper does not expose MARKUPS`); continue; }
   const vueMarkups = JSON.parse(vueMarkupBlock[1]);
-  const declaredExamples = Object.entries(manifest.htmlContract.breakExamples ?? { pc: { distribution: `examples/${id}.html` } });
+  const declaredExamples = Object.entries(manifest.htmlContract.breakExamples ?? { pc: { distribution: manifest.htmlContract.distribution ?? `examples/${id}.html` } });
   for (const [breakName, spec] of declaredExamples) {
     /* 예제 파일은 인스턴스 1개가 아닐 수 있다(변형 나열·화면 소유 껍데기).
        껍데기는 그 안의 승인된 인스턴스 하나와 글자 단위로 같아야 한다. */

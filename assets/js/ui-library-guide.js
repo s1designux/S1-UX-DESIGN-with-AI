@@ -3473,10 +3473,14 @@ async function mountGuide(id) {
   const sourceUrls = urls(id);
 
   try {
-    const [manifest, registry, htmlPc, css, js] = await Promise.all([
-      fetchJson(sourceUrls.manifest),
+    /* 기본 예시 파일 이름은 배포본 manifest 가 선언한다(모바일 전용 부품은 examples/{id}.mobile.html). */
+    const manifest = await fetchJson(sourceUrls.manifest);
+    const mainExampleUrl = manifest.htmlContract?.distribution
+      ? new URL(`../../ui-library/dist/${manifest.htmlContract.distribution}`, import.meta.url)
+      : sourceUrls.html;
+    const [registry, htmlPc, css, js] = await Promise.all([
       fetchJson(sourceUrls.registry),
-      fetchText(sourceUrls.html),
+      fetchText(mainExampleUrl),
       fetchText(sourceUrls.css),
       fetchText(sourceUrls.js)
     ]);
@@ -3505,7 +3509,7 @@ async function mountGuide(id) {
       const mainExample = hasMobileExample && platform === "mobile"
         ? declaredExamples(manifest).mobile?.distribution
         : declaredExamples(manifest).pc?.distribution;
-      blocks.push({ key: "", uid: id, title: "실제 동작과 상태", note: scopeText, matrix, html, first: true, example: mainExample ?? `examples/${id}.html` });
+      blocks.push({ key: "", uid: id, title: "실제 동작과 상태", note: scopeText, matrix, html, first: true, example: mainExample ?? manifest.htmlContract?.distribution ?? `examples/${id}.html` });
     } else {
       const declared = manifest.htmlContract?.breakExamples ?? {};
       const parts = demoBlockConfig[id] ?? [];

@@ -98,7 +98,7 @@ const distManifest = JSON.parse(fs.readFileSync(path.join(dist, "manifest.json")
 const componentManifests = new Map(distManifest.components.map(({ id }) => [id, JSON.parse(fs.readFileSync(path.join(dist, "components", `${id}.manifest.json`), "utf8"))]));
 
 function exampleFile(id, key) {
-  if (key === "pc") return path.join(dist, "examples", `${id}.html`);
+  if (key === "pc") return path.join(dist, componentManifests.get(id).htmlContract.distribution ?? `examples/${id}.html`);
   const spec = componentManifests.get(id).htmlContract.breakExamples?.[key];
   return path.join(dist, spec ? spec.distribution : `examples/${id}.${key}.html`);
 }

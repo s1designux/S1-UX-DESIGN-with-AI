@@ -63,12 +63,12 @@ export default function S1ModalContent({ variant, size, parts, onOpen, onClose, 
             </div>
           </div>
           <div data-s1-part="footer" {...(slot(partScope, "footer").attrs ?? {})}>
-            <button type="button" data-s1-component="button" data-variant="secondary" data-size="xxsm">
+            <button type="button" data-s1-component="button" data-variant="secondary" data-size="xxsm" data-s1-close="cancel">
               <span data-s1-part="label" {...(slot(partScope, "label").attrs ?? {})}>
                 {slot(partScope, "label").content ?? "취소"}
               </span>
             </button>
-            <button type="button" data-s1-component="button" data-variant="primary" data-size="xxsm">
+            <button type="button" data-s1-component="button" data-variant="primary" data-size="xxsm" data-s1-close="confirm">
               <span data-s1-part="label" {...(slot(partScope, "label").attrs ?? {})}>
                 {slot(partScope, "label").content ?? "확인"}
               </span>

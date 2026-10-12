@@ -49,7 +49,8 @@
     ],
     "grouping": "코어는 아이템 1칸만 소유한다. 4탭 바 조립·배경·role=tablist 컨테이너는 화면(패턴)이 소유한다.",
     "source": "components/mobile-bottom-nav/mobile-bottom-nav.example.html",
-    "distribution": "examples/mobile-bottom-nav.html"
+    "distribution": "examples/mobile-bottom-nav.mobile.html",
+    "mobileOnly": true
   },
   "cssContract": {
     "entry": "components/mobile-bottom-nav.css",
@@ -161,5 +162,5 @@
     "notification": "icon=notification",
     "settings": "icon=settings"
   },
-  "sourceFingerprint": "28ca616445c4d850554a3ed579729c7888d97b740d9a65609cbf741539b35634"
+  "sourceFingerprint": "b627ca915805896f970c416d39416a3b14a93dc997cd4359c241c6f40e83419d"
 }

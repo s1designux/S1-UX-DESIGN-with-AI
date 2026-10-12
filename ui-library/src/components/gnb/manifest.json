@@ -55,6 +55,10 @@
   ],
   "htmlContract": {
     "root": "nav[data-s1-component=gnb][data-size][data-variant]",
+    "requiredAttributes": [
+      "data-size",
+      "data-variant"
+    ],
     "perVariantParts": {
       "center-between": [
         "logo",

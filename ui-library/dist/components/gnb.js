@@ -95,6 +95,9 @@ export function init(root) {
     // 닫힌 상태는 접근성 트리에서도 빠져야 한다(registry a11y) — hidden 이 그 역할이다.
     // (gnb-sub-menu.css 의 [hidden]{display:none} 이 화면에서도 실제로 사라지게 한다.)
     panel.hidden = true;
+    // river 결정 2026-10-12 — 「GNB 하위메뉴는 겹쳐 뜰 것」: 열려도 본문을 아래로 밀지 않고 위에 겹친다.
+    // 이 표시가 붙은 패널만 겹침 배치가 된다(gnb-sub-menu.css) — 단독 표본·안내 화면의 정적 나열은 그대로다.
+    panel.setAttribute("data-s1-layer", "overlay");
   }
 
   const isOpen = (pair) => pair.trigger.getAttribute("aria-expanded") === "true";
@@ -281,7 +284,7 @@ export function init(root) {
       document.removeEventListener("focusin", handleFocusin, true);
       document.removeEventListener("keydown", handleKeydown, true);
       document.removeEventListener("pointerdown", handlePointerdown, true);
-      for (const pair of pairs) closePair(pair, { returnFocus: false });
+      for (const pair of pairs) { closePair(pair, { returnFocus: false }); pair.panel.removeAttribute("data-s1-layer"); }
       instances.delete(root);
     }
   });

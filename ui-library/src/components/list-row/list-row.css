@@ -135,6 +135,7 @@
 }
 
 [data-s1-component="list-row"] [data-s1-part="title"] {
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   color: var(--color-text-title-primary);
   font-size: var(--font-size-16);
   font-weight: var(--font-weight-medium);
@@ -146,6 +147,7 @@
 }
 
 [data-s1-component="list-row"] [data-s1-part="description"] {
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   color: var(--color-text-body-tertiary);
   font-size: var(--font-size-14);
   font-weight: var(--font-weight-regular);
@@ -186,6 +188,7 @@
 }
 
 [data-s1-component="list-row"] [data-s1-part="value"] {
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   color: var(--color-text-body-primary);
   font-size: var(--font-size-14);
   font-weight: var(--font-weight-regular);

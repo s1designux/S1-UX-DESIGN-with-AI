@@ -49,6 +49,9 @@
   ],
   "htmlContract": {
     "root": "header[data-s1-component=mobile-header][data-variant]",
+    "requiredAttributes": [
+      "data-variant"
+    ],
     "perVariantParts": {
       "home-title": [
         "title"
@@ -97,7 +100,8 @@
     ],
     "grouping": "코어는 AppBar 56px 한 줄만 소유한다. StatusBar·모바일 목업 크롬은 화면(안내 페이지)이 소유한다.",
     "source": "components/mobile-header/mobile-header.example.html",
-    "distribution": "examples/mobile-header.html"
+    "distribution": "examples/mobile-header.mobile.html",
+    "mobileOnly": true
   },
   "cssContract": {
     "entry": "components/mobile-header.css",
