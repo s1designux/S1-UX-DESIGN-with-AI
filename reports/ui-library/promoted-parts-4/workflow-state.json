@@ -66,32 +66,32 @@
   "workflowStatus": "in-progress",
   "uiLibraryStatus": "approved",
   "lastCompletedCheckpoint": 3,
-  "nextAction": "승격 4종 모두 approved(2026-10-02). 남은 결정: B-3 다크 메뉴명 밝기(LNB).",
+  "nextAction": "독립 검증 코드 결함 해소(0.18.4). 남은 것: river 결정 C-1·C-2·C-3(verify-f/decisions.html) → 반영·델타 재검증 → complete.",
   "ownership": {
     "currentActor": "orchestrator",
     "startedAt": "2026-09-29T00:00:00+09:00",
-    "note": "site-restyle 작업 폴더에서 진행. 상태 파일은 오케스트레이터만 수정한다."
+    "note": "상태 파일은 오케스트레이터만 수정한다."
   },
   "canonicalInputs": [
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "80bbf33724e572be4a1ebac2bd646bff8a068e8307636345467d100164b4725b"
+      "sha256": "ff7fbdb30bf167a2e324619d3d019f2d5c6d251d916bcfaa66d77af8b51f030b"
     },
     {
       "role": "token-values",
       "path": "plugins/figma-vars-installer/src/vars-data.ts",
-      "sha256": "ebf1ef2f712e522788c7ff54fb39a6b3a3d961cb99017a5dfbf25dbf7a4b3a36"
+      "sha256": "7b171e55bb86f1e98f176130662e07c3216773f09320eb107ddd9a19d6265885"
     },
     {
       "role": "text-styles",
       "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
-      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+      "sha256": "ca379bfa2203aa12e647e636a561cc84fe925af11fef5df6194a13b248625fb5"
     },
     {
       "role": "approved-prototype",
       "path": "assets/css/restyle-candidates.css",
-      "sha256": "4a4addb718c03522dc052fd34170f628c9fb1f99d2c77fed244185b81b313614"
+      "sha256": "2a67f9027c3490f5c9fc7ee98d76125675b0aea3c5a5c50173d39b6cef39e15b"
     }
   ],
   "installerGroups": {
@@ -120,7 +120,14 @@
       "component": "lnb",
       "what": "정본 navigation 라벨의 다크값이 아이콘보다 어둡다",
       "impact": "지금은 이 부품 안에서만 밝은 글자 토큰으로 덮어 두었다",
-      "needs": "river 결정 — 정본을 고칠지"
+      "needs": "해소 2026-10-01 — navigation/label/default-side 신설(라이트 gray/600 · 다크 gray-dark/900), LNB 메뉴명 전용. river \"승인할게, 넷 다 같이 바꿔줘\" (813dfad2)"
+    },
+    {
+      "id": "B-4",
+      "component": "lnb·expandable-card·data-tag·divider",
+      "what": "독립 검증 HOLD 3건(C-1·C-2·C-3) — 정본과 1~2px 차이·옵션 소유",
+      "impact": "검증 PASS 기록이 없어 complete 로 닫지 못한다",
+      "needs": "river 결정 — verify-f/decisions.html"
     }
   ],
   "evidence": {
@@ -155,6 +162,18 @@
       "scope": "승격 4종 전부 approved — LNB(D-7) · Expandable Card · Divider · Data Tag(D-9)",
       "quote": "나머지 3종도 승인으로 바꿔줘",
       "lnb": "evidence.lnbRiverApproval 참조"
+    },
+    "verification": {
+      "observedAt": "2026-10-02",
+      "by": "component-verifier (scenario F)",
+      "firstPass": "FAIL — LNB A-1(비활성 메뉴 Enter 로 열림)·A-2(키보드 포커스 유실)·A-4(manifest 낡은 서술), Expandable Card A-3(포커스 유실) · HOLD C-1·C-2·C-3·C-4",
+      "rework": "ui-library-builder — A-1~A-4·C-4 수정, empty-consumer 에 LNB 추가, 배포본 0.18.4",
+      "deltaPass": "2026-10-02 델타 재검증 — 코드 결함 전부 해소, A-4 잔여 문구 2건은 오케스트레이터가 manifest 문구 정정(기계적)",
+      "renders": [
+        "verify-f/consumer-bundle-pc-tall-light.png",
+        "verify-f/consumer-bundle-pc-tall-dark.png"
+      ],
+      "openHold": "C-1 테두리 자리 차지(1px) · C-2 뱃지 높이 26 vs 27.6 · C-3 구분선 data-inset 옵션 — river 결정 대기, 비교 화면 verify-f/decisions.html"
     }
   },
   "artifacts": {
@@ -235,6 +254,13 @@
       "by": "river",
       "decision": "Expandable Card · Divider · Data Tag 를 승인(approved)으로 올린다",
       "quote": "나머지 3종도 승인으로 바꿔줘"
+    },
+    {
+      "id": "D-10",
+      "at": "2026-10-02",
+      "by": "orchestrator",
+      "decision": "정본 지문 재기록 — 승인 이후 정본 변경은 모두 각자 river 결정·검증을 거친 별도 작업이라 이 4종 승인 검증을 무효로 하지 않는다",
+      "basis": "813dfad2 LNB 메뉴명 다크 토큰 신설(river 승인) · 04b0bb3a/6486ae33 글꼴 Pretendard Variable 상수화(구조 무변경) · 9ea0f94e 구분선 다크 기본선 gray-dark/400(river 지시) · 90eb7284/96782862 LNB 접기 아이콘 Line·Solid 웹 자산(component-verifier F PASS) · restyle-candidates.css 후보 시험 화면 동기화. 4종 빌더의 구조·variant 변경 없음."
     }
   ],
   "handoff": {

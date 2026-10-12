@@ -380,10 +380,25 @@
         </div>
       </div>
     </div>
+    <nav data-s1-component="lnb" data-variant="menu" data-size="md" data-state="expanded" aria-label="소비자 메뉴">
+      <div data-s1-part="head">
+        <button type="button" data-s1-part="collapse" aria-pressed="false" aria-label="메뉴 접기"><span data-s1-part="collapse-icon" aria-hidden="true"></span></button>
+      </div>
+      <ul data-s1-part="items">
+        <li><a data-s1-part="item" href="#" aria-current="page"><span data-s1-part="item-icon" aria-hidden="true"></span>개요</a></li>
+        <li>
+          <button type="button" data-s1-part="item" aria-expanded="false" aria-controls="consumer-lnb-sub"><span data-s1-part="item-icon" aria-hidden="true"></span>컴포넌트<span data-s1-part="item-toggle" aria-hidden="true"></span></button>
+          <ul data-s1-part="subitems" id="consumer-lnb-sub" hidden>
+            <li><a data-s1-part="item" href="#">PC 컴포넌트</a></li>
+          </ul>
+        </li>
+        <li><a data-s1-part="item" href="#" aria-disabled="true" tabindex="-1"><span data-s1-part="item-icon" aria-hidden="true"></span>준비 중</a></li>
+      </ul>
+    </nav>
   </main>
   <script type="module">
     import { autoInit } from "../dist/s1-ui.auto.js";
-    import { checkbox, radio, textarea, modal, mobileBottomNav, mobileHeader, gnb, gnbSubMenuItem, gnbSubMenu, assistButton, textButton, modalContent, bottomSheet, bottomSheetOption, expandableCard, dataTag, divider } from "../dist/s1-ui.js";
+    import { checkbox, radio, textarea, modal, mobileBottomNav, mobileHeader, gnb, gnbSubMenuItem, gnbSubMenu, assistButton, textButton, modalContent, bottomSheet, bottomSheetOption, expandableCard, dataTag, divider, lnb } from "../dist/s1-ui.js";
     if (checkbox.jsRequired || radio.jsRequired || textarea.jsRequired || mobileBottomNav.jsRequired || mobileHeader.jsRequired || gnbSubMenuItem.jsRequired || gnbSubMenu.jsRequired || assistButton.jsRequired || textButton.jsRequired || bottomSheetOption.jsRequired) {
       throw new Error("checkbox·radio·textarea·mobile-bottom-nav·mobile-header·gnb-sub-menu-item·gnb-sub-menu·assist-button·text-button·bottom-sheet-option은 런타임 없이 동작해야 합니다.");
     }
@@ -392,6 +407,9 @@
     }
     if (!expandableCard.jsRequired) {
       throw new Error("expandable-card는 런타임이 필요합니다(여닫이).");
+    }
+    if (!lnb.jsRequired) {
+      throw new Error("lnb는 런타임이 필요합니다(하위메뉴·접기).");
     }
     if (!modalContent.jsRequired) {
       throw new Error("modal-content는 런타임이 필요합니다.");
