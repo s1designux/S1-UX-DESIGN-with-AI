@@ -55,7 +55,7 @@ const TOOL_PACKAGES = {
   swift: {
     title: 'Swift (iOS)',
     include: ['manifest.json', 'platform/swift', 'platform/behavior.json', 'platform/tokens.json'],
-    start: ['`platform/swift/S1Tokens.swift` 를 프로젝트에 넣습니다.', '색은 `0xAARRGGBB` 정수입니다.', '상태 변화는 `platform/behavior.json` 을 그대로 따릅니다.', '**화면 부품은 들어있지 않습니다 — 직접 그려야 합니다.**']
+    start: ['`platform/swift` 폴더가 곧 Swift Package(`S1DesignSystem`)입니다 — Xcode 에서 Add Package Dependencies ▸ Add Local 로 고르거나 폴더째 프로젝트에 넣습니다(iOS 16+).', '부품은 이름으로 부릅니다 — `S1Button` 처럼 `S1` 로 시작합니다. 쓸 수 있는 조합은 `S1*Spec.swift` 에 있습니다. 모바일 한 벌만 들어 있습니다(iPad 도 같습니다).', '글자는 이름 붙은 스타일(`S1Type`)로 부릅니다 — 크기·굵기를 따로 적지 마세요. 서체 Pretendard 는 앱이 등록하고 이름만 `S1Theme(fontFamily:)` 에 넘깁니다.', '색·크기는 `S1Palette`·`S1Tokens` 상수를 부릅니다 — 값을 눈으로 보고 옮겨 적지 마세요.', '부품에 없는 화면을 직접 그릴 때만 상태 변화를 `platform/behavior.json` 으로 맞춥니다.']
   },
   cpp: {
     title: 'C++',

@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요."
   },
-  "version": "0.17.0",
+  "version": "0.18.0",
   "releasedAt": "2026-10-02",
   "canonicalFingerprint": "a3a23a25de11dac6a6470f9a9e4bb9b6c84999d37590f09083adce159d20ee18",
   "generatedAt": null,
@@ -63,7 +63,38 @@
     },
     "swift": {
       "entry": "platform/swift/S1Tokens.swift",
-      "componentSupport": "tokens-only",
+      "componentSupport": "components",
+      "ui": "SwiftUI",
+      "components": [
+        "button",
+        "input",
+        "checkbox",
+        "radio",
+        "toggle",
+        "chip",
+        "dropdown",
+        "select",
+        "tab",
+        "modal",
+        "mobile-header",
+        "mobile-bottom-nav",
+        "textarea",
+        "text-button",
+        "assist-button",
+        "filter-chip",
+        "bottom-sheet-option",
+        "bottom-sheet",
+        "date-picker",
+        "time-picker",
+        "expandable-card",
+        "divider",
+        "data-tag"
+      ],
+      "textStyles": 21,
+      "icons": 21,
+      "package": "platform/swift/Package.swift",
+      "preview": "platform/swift/preview/S1Gallery.swift",
+      "readme": "platform/swift/README.md",
       "lint": false
     },
     "cpp": {

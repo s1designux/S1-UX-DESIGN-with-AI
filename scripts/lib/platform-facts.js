@@ -42,7 +42,11 @@ const EXTRA_CANDIDATES = {
     ifExists(platform.preview ?? '', '부품을 한 화면에 늘어놓은 미리보기(<code>preview/S1Gallery.kt</code>)'),
     ifExists('platform/behavior.json', '컴포넌트 동작 명세(<code>behavior.json</code>)')
   ],
-  swift: () => [ifExists('platform/behavior.json', '컴포넌트 동작 명세(<code>behavior.json</code>)')],
+  swift: (platform) => [
+    ifExists(platform.package ?? '', 'Swift Package 선언(<code>Package.swift</code>)'),
+    ifExists(platform.preview ?? '', '부품을 한 화면에 늘어놓은 미리보기(<code>preview/S1Gallery.swift</code>)'),
+    ifExists('platform/behavior.json', '컴포넌트 동작 명세(<code>behavior.json</code>)')
+  ],
   cpp: () => [ifExists('platform/tokens.json', '같은 값의 JSON 사본(<code>tokens.json</code>)')]
 };
 

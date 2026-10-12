@@ -21,6 +21,8 @@ const { spawn } = require('child_process');
 const ROOT = path.resolve(__dirname, '..');
 const KEEP = process.argv.includes('--keep');
 const VERBOSE = process.argv.includes('--verbose');
+/* --swift: 같은 대조(표 ↔ 크롬)에 더해, 생성된 Swift 표를 컴파일해서 찍은 값이 표와 같은지도 본다(scripts/swift-parity-check.js). */
+const SWIFT = process.argv.includes('--swift');
 
 /* ── 검사용 CSS 변환 — 상태 가상 클래스를 같은 명시도의 속성으로 ───────── */
 const FORCED = [
@@ -139,9 +141,9 @@ function footerSizesOf(base, manifest) {
 }
 
 async function main() {
-  const { PLANS, EXTRA_PLANS, EXTRA_CSS_OWNERS, extractSpec, mobileOnly } = await import(path.join(ROOT, 'ui-library/scripts/kotlin-compose.mjs'));
+  const { PLANS, EXTRA_PLANS, EXTRA_CSS_OWNERS, extractSpec, mobileOnly } = await import(path.join(ROOT, 'ui-library/scripts/kotlin-compose.mjs'));  /* 추출 층은 platform-spec.mjs 로 옮겨 갔고 kotlin-compose.mjs 가 다시 내보낸다 */
   const { componentIds } = await import(path.join(ROOT, 'ui-library/scripts/component-ids.mjs'));
-  const { readTextStyles } = await import(path.join(ROOT, 'ui-library/scripts/kotlin-typography.mjs'));
+  const { readTextStyles } = await import(path.join(ROOT, 'ui-library/scripts/platform-typography.mjs'));
   const { readTokens } = await import(path.join(ROOT, 'ui-library/scripts/platform.mjs'));
 
   const tokensCss = fs.readFileSync(path.join(ROOT, 'assets/css/tokens.css'), 'utf8');
@@ -153,6 +155,7 @@ async function main() {
   const ids = Object.keys(PLANS).sort((a, b) => componentIds.indexOf(a) - componentIds.indexOf(b));
   const cssOf = (id) => fs.readFileSync(path.join(ROOT, 'ui-library/src/components', id, `${id}.css`), 'utf8');
   const cases = [];
+  const specs = [];
   const styleBlocks = [forceStates(tokensCss), typographyCss];
 
   for (const id of ids) {
@@ -169,6 +172,7 @@ async function main() {
     const plans = [PLANS[id](mobile, planOptions), ...(EXTRA_PLANS[id] ?? []).map((factory) => factory(mobile))];
     const extraCss = (EXTRA_CSS_OWNERS[id] ?? []).map(cssOf);
     const spec = extractSpec({ id, css, extraCss, manifest, tokenValues, planOptions });
+    specs.push(spec);
     const tables = { [id]: spec.table, ...Object.fromEntries(Object.entries(spec.extras).map(([key, value]) => [key, value.table])) };
 
     for (const plan of plans) {
@@ -248,17 +252,48 @@ async function main() {
     }
   }
 
-  console.log(`🔎 Compose 스타일 표 ↔ 브라우저 실측 대조`);
+  const label = SWIFT ? 'SwiftUI' : 'Compose';
+  console.log(`🔎 ${label} 스타일 표 ↔ 브라우저 실측 대조`);
   console.log(`   질의 ${cases.length}건 · 값 ${checked}개 대조${skipped ? ` · 측정 불가로 건너뜀 ${skipped}건(::placeholder — 크롬이 가상요소 값을 내주지 않음)` : ''}`);
+  let code = 0;
   if (failures.length === 0) {
     console.log('✅ PASS — 표의 모든 값이 브라우저 계산과 같습니다.');
+  } else {
+    code = 1;
+    console.log(`❌ FAIL — ${failures.length}건 불일치`);
+    for (const failure of failures.slice(0, VERBOSE ? failures.length : 40)) {
+      console.log(`   · ${failure.component}/${failure.plan} ${failure.key} ${failure.part}${failure.pseudoElement ?? ''} ${failure.property}: 표 ${failure.expected} ≠ 브라우저 ${failure.actual}`);
+    }
+    if (!VERBOSE && failures.length > 40) console.log(`   … 외 ${failures.length - 40}건 (--verbose)`);
+  }
+  if (SWIFT) code = Math.max(code, await swiftCheck(specs, tokenData));
+  return code;
+}
+
+/** 생성된 Swift 표를 컴파일해 값을 찍고, 추출 표(= 위에서 브라우저와 맞춘 표)와 한 칸씩 맞춰 본다. */
+async function swiftCheck(specs, tokenData) {
+  const { dumpSwiftSpecs, compareDump } = require('./lib/swift-spec-dump.js');
+  const { toArgb } = await import(path.join(ROOT, 'ui-library/scripts/swift-emit.mjs'));
+  const byName = new Map(tokenData.tokens.map((token) => [token.name, token]));
+  const colorOf = (name) => {
+    const token = byName.get(name);
+    if (!token) throw new Error(`토큰 ${name} 을 tokens.css 에서 찾지 못했습니다.`);
+    const light = toArgb(token.value);
+    const dark = toArgb(token.darkValue ?? token.value);
+    return [Number(light), Number(dark)];
+  };
+  console.log('🔎 Swift 스타일 표 ↔ 추출 표 대조 — 생성된 S1*Spec.swift 를 컴파일해서 값을 찍습니다…');
+  const dumped = dumpSwiftSpecs(specs);
+  if (dumped.skipped) { console.error(`❌ 실행 불가 — ${dumped.skipped}`); return 2; }
+  if (dumped.error) { console.error(`❌ ${dumped.error}`); return 1; }
+  const { checked, failures } = compareDump(specs, dumped.data, colorOf);
+  console.log(`   부품 ${specs.length}종 · 값 ${checked}개 대조`);
+  if (failures.length === 0) {
+    console.log('✅ PASS — Swift 표의 모든 값이 추출 표(브라우저와 일치 확인)와 같습니다.');
     return 0;
   }
   console.log(`❌ FAIL — ${failures.length}건 불일치`);
-  for (const failure of failures.slice(0, VERBOSE ? failures.length : 40)) {
-    console.log(`   · ${failure.component}/${failure.plan} ${failure.key} ${failure.part}${failure.pseudoElement ?? ''} ${failure.property}: 표 ${failure.expected} ≠ 브라우저 ${failure.actual}`);
-  }
-  if (!VERBOSE && failures.length > 40) console.log(`   … 외 ${failures.length - 40}건 (--verbose)`);
+  for (const failure of failures.slice(0, VERBOSE ? failures.length : 40)) console.log(`   · ${failure}`);
   return 1;
 }
 

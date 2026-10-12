@@ -18,6 +18,8 @@
 
 import { buildKotlinOutputs, COMPOSE_COMPONENTS } from "./kotlin-compose.mjs";
 import { sampleFiles } from "./kotlin-sample.mjs";
+import { buildSwiftOutputs } from "./swift-compose.mjs";
+import { swiftReadme } from "./swift-readme.mjs";
 import { buildReactComponent, buildReactPackage, buildReactReadme, buildReactRuntime, buildReactTypes, reactComponentFacts } from "./react.mjs";
 
 const GENERATED_NOTE = "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.";
@@ -642,6 +644,21 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
     components: kotlin.coverage
   }));
 
+  /* SwiftUI 부품 — Kotlin 과 같은 중립 추출 층(platform-spec.mjs)에서 같은 표를 받아 Swift 로 굳힌다. */
+  const swift = buildSwiftOutputs({ componentOutputs, tokenData, iconAssets, typographyCss });
+  for (const [relative, content] of swift.outputs) outputs.set(relative, content);
+  outputs.set("platform/swift/README.md", swiftReadme({ release, components: COMPOSE_COMPONENTS, textStyles: swift.textStyles.length, icons: swift.icons.length, tokenCount: tokenData.tokens.length }));
+  outputs.set("platform/swift/coverage.json", stable({
+    _meta: {
+      note: GENERATED_NOTE,
+      purpose: "SwiftUI 부품이 배포본 CSS 의 어느 선언을 읽었고 어느 선언을 읽지 않았는지 드러낸다.",
+      rule: "reason=pc-only 는 iOS 가 쓰지 않는 PC 조합이라 안 읽은 것이고, reason=display-rule 은 값이 아니라 표시·배치 규칙이라 부품 뼈대가 직접 담당하는 것이다(크기 속성이 없는 요소용 대체 규칙 — 모바일 부품은 항상 크기가 정해져 걸리지 않는 것 — 도 여기에 담긴다). 둘 중 어느 쪽도 아닌 색·치수가 남으면 부품이 그만큼 정본과 다르다는 뜻이다."
+    },
+    icons: swift.icons,
+    textStyles: swift.textStyles,
+    components: swift.coverage
+  }));
+
   outputs.set("platform/contract.json", stable(buildContract(componentOutputs, distManifest)));
   outputs.set("platform/behavior.json", stable({
     _meta: {
@@ -691,7 +708,18 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
         readme: "platform/kotlin/README.md",
         lint: false
       },
-      swift: { entry: "platform/swift/S1Tokens.swift", componentSupport: "tokens-only", lint: false },
+      swift: {
+        entry: "platform/swift/S1Tokens.swift",
+        componentSupport: "components",
+        ui: "SwiftUI",
+        components: COMPOSE_COMPONENTS,
+        textStyles: swift.textStyles.length,
+        icons: swift.icons.length,
+        package: "platform/swift/Package.swift",
+        preview: "platform/swift/preview/S1Gallery.swift",
+        readme: "platform/swift/README.md",
+        lint: false
+      },
       cpp: { entry: "platform/cpp/s1_tokens.h", componentSupport: "tokens-only", lint: false, note: "UI 프레임워크 미확정 — 상수와 JSON 까지만 제공한다." }
     },
     components: approved.map(({ id }) => id),

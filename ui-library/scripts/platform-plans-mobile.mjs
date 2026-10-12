@@ -1,11 +1,11 @@
 /**
- * kotlin-plans-mobile.mjs — 모바일 부품 7종의 "무엇을 물어볼지"(검사 트리).
+ * platform-plans-mobile.mjs — 모바일 부품 7종의 "무엇을 물어볼지"(검사 트리).
  * --------------------------------------------------------------------------
  * 구분선 · 데이터 태그 · 접힘 카드 · 바텀 시트 · 시트 옵션 · 날짜 선택 · 시간 선택
  * (river 승인 2026-10-02 "코틀린은 모바일버전만 들어가면 돼").
  *
  * 값은 여기 없다. 승인 예제 마크업과 같은 모양의 요소 트리를 세우고 상태마다 CSS 를 질의할 뿐이다.
- * 질의 규칙(요소 만들기·표 추출)은 kotlin-compose.mjs 의 extractSpec 이 소유한다 —
+ * 질의 규칙(요소 만들기·표 추출)은 platform-spec.mjs 의 extractSpec 이 소유한다 —
  * 이 파일의 plan 은 {id, axes, combos, key, build} 한 벌이면 어느 플랫폼 생성기든 그대로 읽을 수 있다.
  *
  * 움직임이 있는 부품은 "줄임 모션" 미디어 규칙을 끈다 — 그 규칙이 켜지면 전환 시간이 0 이 되어
@@ -574,7 +574,7 @@ function timePickerWheelPlan() {
   };
 }
 
-/** id → plan 만드는 함수. kotlin-compose.mjs 의 PLANS 에 그대로 펼쳐 넣는다. */
+/** id → plan 만드는 함수. platform-spec.mjs 의 MOBILE_PROFILE.plans 에 그대로 펼쳐 넣는다. */
 export const MOBILE_PLANS = {
   divider: dividerPlan,
   "data-tag": dataTagPlan,

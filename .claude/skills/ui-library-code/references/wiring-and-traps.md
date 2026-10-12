@@ -76,6 +76,24 @@ npm run ui:state -- reports/ui-library/{work-id}/workflow-state.json
 `registry/components/*.json` 을 고쳤으면 파생 검사도 함께:
 `components:facts:check` · `components:guide-model:check` · `design:md:check` · `components:behavior:check`
 
+### 1-6. 네이티브(Kotlin · Swift · C++) 전달본 — 공유 추출 층 + 플랫폼 출력부
+
+값은 한 곳에서만 뽑는다(`ui-library/scripts/platform-spec.mjs`). 플랫폼 파일은 그 표를 각자 문법으로 굳힌 출력부다.
+
+| 층 | 파일 | 무엇을 |
+|---|---|---|
+| 중립(공유) | `platform-values.mjs` | CSS 선언 → 정규화 상자 값(`toBox`) |
+| 중립(공유) | `platform-plans-core.mjs` · `platform-plans-mobile.mjs` | 무엇을 물을지(검사 트리) — 코어 16 · 모바일 7 |
+| 중립(공유) | `platform-spec.mjs` | `profile`(화면 한 벌) · `extractSpec` · `extractComponents` · `MOBILE_COMPONENTS` |
+| 중립(공유) | `platform-icons.mjs` · `platform-typography.mjs` | 아이콘 SVG · 텍스트 스타일 읽기 |
+| Kotlin | `kotlin-compose.mjs`(+ emit·runtime·components·sample) | `platform/kotlin` |
+| Swift | `swift-compose.mjs`(+ emit·runtime·components·components-mobile·icons·gallery·readme) | `platform/swift` (Package.swift 포함) |
+
+- **모바일 부품을 늘릴 때**: ① `platform-plans-mobile.mjs` 에 plan 추가 ② `MOBILE_COMPONENTS`(platform-spec.mjs) ③ **Kotlin·Swift 양쪽** 부품 템플릿 ④ 갤러리 ⑤ `component-ids.mjs` 순서. 한쪽만 하면 두 플랫폼이 갈라진다.
+- **새 플랫폼(C++/Qt)**: `makeProfile({ breakName: "pc", plans: {...CORE_PLANS, ...PC_PLANS}, … })` 로 PC profile 을 만들어 `extractComponents({ profile })` 를 부르고 출력부만 쓴다(사용법은 platform-spec.mjs 머리말).
+- **검사**: `kotlin:lint` · `kotlin:parity` · `swift:lint` · `swift:parity`(표↔크롬 + 컴파일한 Swift 값) · `swift:typecheck`(macOS 13 + iOS 16 면). 렌더: `swift:shots` → `swift:preview`.
+- **함정**: ① 이 맥에는 iOS SDK 가 없다 — `swift:typecheck` 의 iOS 쪽은 Mac Catalyst 면이라 시뮬레이터 실행과 같지 않다. ② `ImageRenderer` 는 `TextField` 를 못 그린다(내부 `s1StaticFields` 환경값으로 글자로 대체해 찍는다). ③ `platform-icons.mjs` 는 `<circle>` 도 읽지만 Kotlin 출력부는 그 필드를 안 본다(Kotlin 시계·돋보기 아이콘에 원이 빠짐 — 별도 결정). ④ Kotlin dist 를 바꾸면 안 되는 리팩터는 빌드 전후 `diff -r ui-library/dist/platform/kotlin` 으로 확인한다.
+
 ---
 
 ## 2. 검증 함정 — 도구가 거짓 결과를 주는 지점

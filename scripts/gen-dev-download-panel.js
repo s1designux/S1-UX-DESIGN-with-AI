@@ -174,14 +174,17 @@ const TOOL_CARDS = [
   {
     key: 'swift',
     title: 'Swift (iOS)',
-    note: 'UIKit · SwiftUI 공용 상수',
+    note: (facts) => `${facts.componentCount}종 부품 · 텍스트 스타일 ${facts.textStyles}종 · SwiftUI · iOS 16+`,
     install: [
-      '<code>S1Tokens.swift</code> 를 프로젝트에 넣습니다',
-      '색·크기는 이 상수를 부릅니다 — 색은 <code>0xAARRGGBB</code> 정수입니다',
-      '눌렀을 때·꺼졌을 때 같은 상태 변화는 <code>behavior.json</code> 을 그대로 따릅니다'
+      '<code>platform/swift</code> 폴더가 곧 Swift Package(<code>S1DesignSystem</code>)입니다 — Xcode 에서 Add Package Dependencies ▸ Add Local 로 고릅니다',
+      '부품은 이름으로 부릅니다 — <code>S1Button</code> 처럼 <code>S1</code> 로 시작합니다. 모바일 한 벌만 들어 있습니다(iPad 도 같습니다)',
+      '글자는 이름 붙은 스타일(<code>S1Type</code>)로, 색·크기는 상수로 부릅니다 — 값을 눈으로 보고 옮겨 적지 마세요. 서체 Pretendard 는 앱이 등록하고 이름만 넘깁니다',
+      '부품에 없는 화면을 직접 그릴 때만 상태 변화를 <code>behavior.json</code> 으로 맞춥니다'
     ],
-    code: `let bg = S1Tokens.Colors.colorBgLevel0
-let radius = S1Tokens.Dimens.radiusControlSm`,
+    code: `S1Theme(.system, fontFamily: "Pretendard") {
+  S1Button(text: "확인") { }
+  S1Text("본문", type: S1Type.body14r)
+}`,
   },
   {
     key: 'cpp',
