@@ -203,16 +203,69 @@ async function getBuiltComp(name: string): Promise<ComponentNode | null> {
   } catch (e) { return null; }
 }
 
+// ── 모드 고정(Appearance) — 컬렉션 **개체**로 건다 ─────────────────────────────
+// 🚨 id 문자열판 set/clearExplicitVariableModeForCollection(cid: string, …) 은 manifest 에
+//   "documentAccess": "dynamic-page" 가 있으면 **예외를 던진다**(plugin-typings @deprecated 문구).
+//   2026-10-01 dynamic-page 전환(6979fd40) 뒤로 모든 모드 고정이 조용히 실패해, 10-02 재설치부터
+//   Spec Dark 56개가 이름만 Dark 이고 라이트로 그려졌다(river 발견 2026-10-13).
+//   → 설치 시작 때 컬렉션 개체를 한 번 받아 두고(primeModeCollections) 개체판으로만 건다.
+//   실패는 삼키지 않고 세어서 설치 끝에 알린다(MODE_PIN_FAILURES).
+const MODE_COLLECTIONS: Record<string, VariableCollection> = {};
+let MODE_PIN_FAILURES = 0;
+let MODE_PIN_LAST_ERROR = "";
+
+/** 설치 시작 때 한 번 — 모드를 걸 컬렉션 개체를 받아 둔다(동기 setMode 가 쓸 수 있게). */
+export async function primeModeCollections(maps: { semanticColorCollectionId?: string; semanticShadowCollectionId?: string }): Promise<void> {
+  MODE_PIN_FAILURES = 0;
+  MODE_PIN_LAST_ERROR = "";
+  for (const cid of [maps.semanticColorCollectionId, maps.semanticShadowCollectionId]) {
+    if (!cid || MODE_COLLECTIONS[cid]) continue;
+    try {
+      const c = await figma.variables.getVariableCollectionByIdAsync(cid);
+      if (c) MODE_COLLECTIONS[cid] = c;
+    } catch (e) { /* 모의 실행 — 아래 pinMode 가 실패로 센다 */ }
+  }
+}
+
+/** 이번 설치에서 모드 고정에 실패한 횟수와 마지막 오류. */
+export function modePinFailures(): { count: number; lastError: string } {
+  return { count: MODE_PIN_FAILURES, lastError: MODE_PIN_LAST_ERROR };
+}
+
+function noteModeFailure(e: unknown): void {
+  MODE_PIN_FAILURES++;
+  MODE_PIN_LAST_ERROR = String((e as Error)?.message ?? e);
+}
+
+/** cid 컬렉션의 모드를 node 에 고정한다. 성공 여부를 돌려준다. */
+function pinMode(node: SceneNode, cid: string | undefined, modeId: string | undefined): boolean {
+  if (!cid || !modeId) return false;
+  const coll = MODE_COLLECTIONS[cid];
+  if (!coll) { noteModeFailure(`컬렉션 ${cid} 개체를 받지 못함(primeModeCollections 누락)`); return false; }
+  try {
+    (node as unknown as {
+      setExplicitVariableModeForCollection: (c: VariableCollection, mid: string) => void;
+    }).setExplicitVariableModeForCollection(coll, modeId);
+    return true;
+  } catch (e) { noteModeFailure(e); return false; }
+}
+
+/** cid 컬렉션의 모드 고정을 푼다. 성공 여부를 돌려준다. */
+function unpinMode(node: SceneNode, cid: string | undefined): boolean {
+  if (!cid) return false;
+  const coll = MODE_COLLECTIONS[cid];
+  if (!coll) { noteModeFailure(`컬렉션 ${cid} 개체를 받지 못함(primeModeCollections 누락)`); return false; }
+  try {
+    (node as unknown as {
+      clearExplicitVariableModeForCollection: (c: VariableCollection) => void;
+    }).clearExplicitVariableModeForCollection(coll);
+    return true;
+  } catch (e) { noteModeFailure(e); return false; }
+}
+
 /** 노드 Appearance 에 Semantic Color V2 컬렉션의 특정 모드를 명시적으로 연결한다. */
 export function setMode(node: SceneNode, maps: BuildMaps, modeId: string): void {
-  try {
-    // 프로젝트 표준 시그니처: (collectionId, modeId), 타이핑 차이로 any 캐스팅 (figma-component-audit 동일)
-    (node as unknown as {
-      setExplicitVariableModeForCollection: (cid: string, mid: string) => void;
-    }).setExplicitVariableModeForCollection(maps.semanticColorCollectionId, modeId);
-  } catch (e) {
-    console.warn("[SW Installer] 모드 연결 실패:", e);
-  }
+  pinMode(node, maps.semanticColorCollectionId, modeId);
 }
 
 /** 이미 깔려 있는 부품 마스터에 박혀 있던 모드 고정을 걷어낸다(2026-09-21).
@@ -271,11 +324,7 @@ async function unpinInstalledMasters(maps: BuildMaps): Promise<number> {
         if (!pins) continue;
         const clear = (cid: string | undefined): boolean => {
           if (!cid || !pins[cid]) return false;
-          try {
-            (child as unknown as { clearExplicitVariableModeForCollection: (c: string) => void })
-              .clearExplicitVariableModeForCollection(cid);
-            return true;
-          } catch (e) { return false; }
+          return unpinMode(child, cid);
         };
         const a = clear(colorCid);
         const b = clear(shadowCid);
@@ -292,13 +341,7 @@ async function unpinInstalledMasters(maps: BuildMaps): Promise<number> {
  * 라이트로 남는다(2026-08-25 Mobile Header 안 StatusBar 가 흰 띠로 남던 원인).
  */
 function clearMode(node: SceneNode, maps: BuildMaps): void {
-  try {
-    (node as unknown as {
-      clearExplicitVariableModeForCollection: (cid: string) => void;
-    }).clearExplicitVariableModeForCollection(maps.semanticColorCollectionId);
-  } catch (e) {
-    console.warn("[SW Installer] 모드 핀 해제 실패:", e);
-  }
+  unpinMode(node, maps.semanticColorCollectionId);
 }
 
 /**
@@ -314,11 +357,50 @@ function setShadowMode(node: SceneNode, maps: BuildMaps, modeId: string | undefi
   let kind = "";
   try { kind = String(node.type); } catch (e) { kind = ""; }
   if (kind === "COMPONENT") return;
-  try {
-    (node as unknown as {
-      setExplicitVariableModeForCollection: (cid: string, mid: string) => void;
-    }).setExplicitVariableModeForCollection(sCid, modeId);
-  } catch (e) { /* 컬렉션 미설치·모의 실행 */ }
+  pinMode(node, sCid, modeId);
+}
+
+/** 그림자 모드까지 함께 거는 다크 스펙 — buildGroupedSpec 에 `shadowMode: true` 로 넘기는 세트 제목. */
+const SHADOW_SPEC_TITLES = new Set(["Modal", "Modal Content"]);
+
+/** 이미 깔린 `<이름> — Spec Dark` 프레임에 Dark 를 다시 건다.
+ *  설치기는 있는 세트를 건너뛰므로(기존 보존), 모드 고정이 빠진 채 깔린 다크 스펙은 재설치로도
+ *  고쳐지지 않는다(2026-10-02~13 dynamic-page 사고 — primeModeCollections 주석). 그래서 설치할 때마다
+ *  다크 스펙 프레임과 그 안 인스턴스를 새로 만들 때와 같은 방식(buildGroupedSpec·buildSpec)으로 다시 건다.
+ *  대상은 설치기만 붙이는 접미사 ` — Spec Dark` 를 가진 프레임뿐이다. 이미 Dark 면 건드리지 않는다. */
+async function repinInstalledDarkSpecs(maps: BuildMaps): Promise<number> {
+  const cid = maps.semanticColorCollectionId;
+  const dark = maps.semanticDarkModeId;
+  if (!cid || !dark || dark === maps.semanticLightModeId) return 0;
+  const SUFFIX = " — Spec Dark";
+  let count = 0;
+  let pages: readonly PageNode[] = [];
+  try { pages = figma.root.children; } catch (e) { return 0; }
+  if (!Array.isArray(pages)) return 0;
+  for (const page of pages) {
+    try { await page.loadAsync(); } catch (e) { continue; }
+    let frames: SceneNode[] = [];
+    try { frames = page.findAllWithCriteria({ types: ["FRAME"] }) as SceneNode[]; } catch (e) { continue; }
+    if (!Array.isArray(frames)) continue;
+    for (const frame of frames) {
+      const nm = String(frame.name || "");
+      if (!(nm.length > SUFFIX.length && nm.slice(nm.length - SUFFIX.length) === SUFFIX)) continue;
+      const withShadow = SHADOW_SPEC_TITLES.has(nm.slice(0, nm.length - SUFFIX.length));
+      const targets: SceneNode[] = [frame];
+      try { (frame as FrameNode).findAll((n) => n.type === "INSTANCE").forEach((n) => targets.push(n)); } catch (e) { /* */ }
+      let touched = false;
+      for (const t of targets) {
+        const pins = ((t as any).explicitVariableModes || {}) as { [c: string]: string };
+        if (pins[cid] !== dark && pinMode(t, cid, dark)) touched = true;
+        if (withShadow && maps.semanticShadowCollectionId && maps.semanticShadowDarkModeId
+          && pins[maps.semanticShadowCollectionId] !== maps.semanticShadowDarkModeId) {
+          if (pinMode(t, maps.semanticShadowCollectionId, maps.semanticShadowDarkModeId)) touched = true;
+        }
+      }
+      if (touched) count++;
+    }
+  }
+  return count;
 }
 
 // ── 그림자 Effect 생성 (2026-07-29) ──────────────────────────────────────────
@@ -8119,6 +8201,7 @@ export async function buildAllComponents(
   for (const key of Object.keys(BUILT_COMPS)) delete BUILT_COMPS[key];
   TEXT_STYLES = maps.textStyles || {};  // makeBoundText 가 텍스트 스타일 바인딩에 사용
   SPEC_MAPS = maps;                     // 스펙 시트 라벨·밴드·배경의 토큰 바인딩에 사용
+  await primeModeCollections(maps);     // 모드 고정은 컬렉션 개체로만 건다(dynamic-page — pinMode 주석)
   const page = figma.currentPage;
   // 가이드 페이지 바탕도 정본 토큰(섹션보다 한 단계 아래 면). Figma 기본 배경은 raw 색이라 토큰 밖이었다.
   bindSurface("page", (paint) => { page.backgrounds = [paint]; });
@@ -8836,6 +8919,17 @@ export async function buildAllComponents(
     const unpinned = await unpinInstalledMasters(maps);
     if (unpinned) console.log(`[installer] 옛 부품 ${unpinned}개의 모드 고정을 걷어냈습니다(다크 화면에서 따라 뒤집히게).`);
   } catch (e) { console.warn("[installer] 모드 고정 정리 실패(설치 자체는 정상):", e); }
+  if (onProgress) onProgress("다크 스펙에 Dark 모드를 다시 거는 중…", 99);
+  try {
+    const repinned = await repinInstalledDarkSpecs(maps);
+    if (repinned) console.log(`[installer] 다크 스펙 ${repinned}개에 Dark 모드를 다시 걸었습니다.`);
+  } catch (e) { console.warn("[installer] 다크 스펙 재고정 실패:", e); }
+  const pinFail = modePinFailures();
+  if (pinFail.count) {
+    // 조용히 넘기지 않는다 — 다크가 통째로 사라진 사고(2026-10-02)는 이 실패를 삼켜서 몰랐다.
+    console.error(`[installer] 모드 고정 실패 ${pinFail.count}건 — 다크/라이트가 의도대로 안 걸린 자리가 있습니다. 마지막 오류: ${pinFail.lastError}`);
+    failed.push({ name: "다크/라이트 모드 고정", reason: `${pinFail.count}건 실패 — ${pinFail.lastError}` });
+  }
   if (onProgress) {
     onProgress(
       `완료 — 추가 ${added.length}개 · 기존 보존 ${skipped.length}개` +
