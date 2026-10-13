@@ -5,10 +5,24 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.22.0",
+  "version": "0.22.1",
   "releasedAt": "2026-10-13",
   "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71",
   "releases": [
+    {
+      "version": "0.22.1",
+      "date": "2026-10-13",
+      "kind": "patch",
+      "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71",
+      "components": [
+        "gnb"
+      ],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "changes": [
+        "GNB 유틸 아이콘(지구본·계정·메뉴)을 24×24 로 그립니다 — 그동안 32 로 그려 그림이 4/3 배 컸습니다. 계정·메뉴 버튼 칸 32×32 는 그대로, 언어 버튼의 지구본은 32 칸 안에 24 아이콘(사방 4 여백)으로 Figma 와 같습니다. md·sm·xsm 공통."
+      ],
+      "deliveryFingerprint": "970c027e4c5b48f743f411adedfee41ae55aef0ff7ace0f011b7342e354c73f0"
+    },
     {
       "version": "0.22.0",
       "date": "2026-10-13",
@@ -2006,5 +2020,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "a67aee81a129bb50decc8b8df94a527e8c0b0471ba34c49c8fdf80f86ab4070e"
+  "deliveryFingerprint": "970c027e4c5b48f743f411adedfee41ae55aef0ff7ace0f011b7342e354c73f0"
 }
