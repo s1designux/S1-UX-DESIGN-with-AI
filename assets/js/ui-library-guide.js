@@ -201,7 +201,7 @@ const componentConfig = {
     title: "Bottom Sheet Option",
     description: "바텀시트 안에 놓이는 한 줄입니다. 단독으로 쓰지 않고 시트 본문에 넣어 씁니다.",
     approvedScope: "유형 4종(글자 · 체크박스 · 라디오 · 목록) × 상태 3종 중 정본에 실재하는 9칸 · 글자·체크박스·라디오 줄은 높이 48 고정 · 목록 줄은 내용만큼 · 크기 축 없음 · JavaScript 불필요",
-    runtime: null
+    runtime: S1UI.bottomSheetOption
   }
 };
 
@@ -3571,11 +3571,15 @@ async function mountGuide(id) {
       const scope = section.querySelector(`[data-guide-block="${block.key || "main"}"]`);
       if (scope) wireCodeViewer(scope, { html: block.html, css, js });
     }
-    if (id === "toggle" || id === "chip" || id === "select" || id === "dropdown" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "table" || id === "time-picker" || id === "date-picker" || id === "expandable-card" || id === "lnb") {
+    if (id === "toggle" || id === "chip" || id === "select" || id === "dropdown" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "table" || id === "time-picker" || id === "date-picker" || id === "expandable-card" || id === "lnb" || id === "bottom-sheet-option" || id === "mobile-bottom-nav") {
       /* 미리보기 칸(.is-preview)은 init 하지 않는다 — 런타임이 패널을 다시 닫아
          Open/Selected 칸이 사라진다. Action 영역의 실물만 살린다. */
       section.querySelectorAll(`[data-s1-component="${id}"]:not(.is-preview)`).forEach((root) => config.runtime.init(root));
     }
+    /* 시트 목록 줄·하단 탭은 어느 섹션(예: bottom-sheet 안의 줄)에 놓여도 살아 있는 표본이면 배포본 런타임을 깨운다.
+       묶음에 data-s1-select 가 없으면 이 init 은 아무것도 바꾸지 않는다. */
+    section.querySelectorAll('[data-s1-component="bottom-sheet-option"]:not(.is-preview)').forEach((root) => S1UI.bottomSheetOption.init(root));
+    section.querySelectorAll('[data-s1-component="mobile-bottom-nav"]:not(.is-preview)').forEach((root) => S1UI.mobileBottomNav.init(root));
     if (id === "list-row") {
       /* 줄 자체는 런타임이 없다(jsRequired:false). Action 의 토글 줄만 승인된 toggle 배포본 런타임으로 살린다 —
          미리보기 칸은 지면에 눕힌 표본이라 init 하지 않는다. */

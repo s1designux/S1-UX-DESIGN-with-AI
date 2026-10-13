@@ -36,6 +36,7 @@ export default function S1Tab({ size, breakName = DEFAULT_BREAK, parts, tabs, ch
     return () => { destroy(root); };
   }, [breakName]);
 
+
   if (breakName === "pc") {
     return (
       <div data-s1-component="tab" data-size={size ?? "md"} data-break="pc" role="tablist" aria-label="콘텐츠 보기 선택" ref={rootRef} className={className} style={style} {...rest}>

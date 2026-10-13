@@ -30,6 +30,7 @@ export default function S1Toggle({ parts, className, style, ...rest }) {
     return () => { destroy(root); };
   }, []);
 
+
   return (
       <button type="button" data-s1-component="toggle" role="switch" aria-checked="false" aria-label="알림 받기" ref={rootRef} className={className} style={style} {...rest}>
         <span data-s1-part="knob" aria-hidden="true" {...(slot(partScope, "knob").attrs ?? {})}>

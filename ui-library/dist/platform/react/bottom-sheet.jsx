@@ -34,6 +34,7 @@ export default function S1BottomSheet({ variant, parts, onOpen, onClose, open = 
     return () => { apiRef.current = null; destroy(root); };
   }, []);
 
+
   /* open 이 바뀌면 배포본 api 로 열고 닫는다(스크롤 잠금·초점·Esc·onOpen/onClose 가 함께 따라온다).
      첫 그리기는 건너뛴다 — 기본(보임)은 마크업 그대로다. hidden 은 처음 값만 쓰고 이후는 api 가 바꾼다. */
   useEffect(() => {

@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
     "purpose": "개발 툴과 검사기가 함께 읽는 허용목록. 여기 없는 variant·size·속성은 승인된 적이 없는 것이다.",
-    "canonicalFingerprint": "3e26c0547b60cfb2fc29649fe95b8cc4ef8ca58f55c652f2054ecf68713f6f51"
+    "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71"
   },
   "components": [
     {
@@ -272,10 +272,16 @@
       ],
       "nameFromAttributes": [],
       "jsRequired": true,
-      "events": [],
-      "lifecycle": [],
-      "canonicalFingerprint": "051db87b774f682680546323a06e735e53736f490705625d612fc3c7dd8800fb",
-      "sourceFingerprint": "bac474302052862f8dd8b887f0bee91b8a02e64732fcc5584e5bc614e8973bf1"
+      "events": [
+        "s1:chip:beforechange",
+        "s1:chip:change"
+      ],
+      "lifecycle": [
+        "init(root)",
+        "destroy(root)"
+      ],
+      "canonicalFingerprint": "1f0b8c5410b47101605777c88ff1723c1ac73d7ffd0feaa2ad7a58a0f0475844",
+      "sourceFingerprint": "4d75fb4ad66ec96919faa6b6acacfe94f9bb985cda22418e1847aebeebe05435"
     },
     {
       "id": "dropdown",
@@ -499,8 +505,8 @@
       "jsRequired": true,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "1489523e41fe215d47ab297c10681acb6a6e86049131a8f6194079dd61eecf7d",
-      "sourceFingerprint": "e0dc4fdc98bed98156f3e6ea8b877b6ee07a2cbef05db15435a7a0b1efec8ec2"
+      "canonicalFingerprint": "eeaf83184c7561620d8c6a07dc5047071722afe3fc71a1fa7c7ea30781359d43",
+      "sourceFingerprint": "50dfcdefe74e26182327f045c4d0742b69c0e9bc55911f6c495b258d47f0b8cf"
     },
     {
       "id": "pagination",
@@ -543,8 +549,8 @@
       "jsRequired": true,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "3c065e580950a408cdec221e7bb4d802facbe15a6fb8faa981e29dd9019dd0e1",
-      "sourceFingerprint": "3a6c7216898e61f9df1f821e54255773aaef4bb343a69dbb4cc32e46111da1df"
+      "canonicalFingerprint": "95a5a628a194ca148ac1ade50e28460d8c0a0d939923d7892568c98fb7bc8867",
+      "sourceFingerprint": "423f0be06f4dc28b14ecea688e2fda114b225a007351d4d0ea3aa362f0de22c3"
     },
     {
       "id": "textarea",
@@ -765,11 +771,17 @@
         "label"
       ],
       "nameFromAttributes": [],
-      "jsRequired": false,
-      "events": [],
-      "lifecycle": [],
-      "canonicalFingerprint": "75282d7b2526b2960251072de14292536e4047c9ae5c560f7eefdbd93e92c6e8",
-      "sourceFingerprint": "b627ca915805896f970c416d39416a3b14a93dc997cd4359c241c6f40e83419d"
+      "jsRequired": true,
+      "events": [
+        "s1:mobile-bottom-nav:beforechange",
+        "s1:mobile-bottom-nav:change"
+      ],
+      "lifecycle": [
+        "init(root)",
+        "destroy(root)"
+      ],
+      "canonicalFingerprint": "62707df0e7d095e3cbebb5e57131102dafe50566e3a6959b01d0bbb83a3b1408",
+      "sourceFingerprint": "be361ca318a6b5eb4b06171f5cb71d07383989d9a352c927670683df210e13b4"
     },
     {
       "id": "mobile-header",
@@ -898,8 +910,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "d013d8a074953b21edd0ee1eeadb3de9209de8bff1228739bad18ee8eca00143",
-      "sourceFingerprint": "64ca1d601e6b26e25c39bf5afdbfc98492c7519391eb4c7983de03e5e1fc78cd"
+      "canonicalFingerprint": "7b0e5cd5fa4d574ad220d1ff129fe04fcc686bddaed60850cc2987c1fb4bda82",
+      "sourceFingerprint": "5a354ee42c51261567d9a7f5dc3e78c3bc8d5c79fdca1761a18999520dc7b032"
     },
     {
       "id": "date-picker",
@@ -987,8 +999,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "9739fe37156eac28dd467b2df2ddaabe1f7948e374c9acf08b71143a7ebd125f",
-      "sourceFingerprint": "4c260076fd28b1ed0ec0bc1ce2cb82b569abce4b10db7841004736cff90f220a"
+      "canonicalFingerprint": "58222df141bbfa0787e41becfe79afefe74d76c35352453ae88ecead4e09bf3d",
+      "sourceFingerprint": "c11c54a586c461bccfe16282516c052f9c4aa7c38c9b26527f3f11a8b15608d9"
     },
     {
       "id": "gnb",
@@ -1277,11 +1289,17 @@
       ],
       "requiredParts": [],
       "nameFromAttributes": [],
-      "jsRequired": false,
-      "events": [],
-      "lifecycle": [],
-      "canonicalFingerprint": "1c27893fba149cfeb2915b88896b154c5ba8ce303caa5c8f9b12fdd8e214c902",
-      "sourceFingerprint": "7b887c926fad9d1409080f044d2748ea2d9cef67552f5c7150e07526c944b36f"
+      "jsRequired": true,
+      "events": [
+        "s1:bottom-sheet-option:beforechange",
+        "s1:bottom-sheet-option:change"
+      ],
+      "lifecycle": [
+        "init(root)",
+        "destroy(root)"
+      ],
+      "canonicalFingerprint": "b92a63b6b2560b6c520a2261aa3dfbe147ad7db2f5e942ffee2b900fb1ab00fe",
+      "sourceFingerprint": "634b70e7e9c9a7ba28b00be6c92f47156f3325acf4b14dc78a4d38d345117a04"
     },
     {
       "id": "bottom-sheet",
@@ -1336,8 +1354,8 @@
         "init(root)",
         "destroy(root)"
       ],
-      "canonicalFingerprint": "14035c5c6f0403cfc0a58b3b65c8421e649bbd013a6777266844fe0bb86bc23a",
-      "sourceFingerprint": "3a9aabfe02cdd2bbe7929b99772af19f205e194a3cfc1156da18e0021e7798e4"
+      "canonicalFingerprint": "adf33ea9dca4a8fcae6ba556b6ab9643a10b083ebdb4ac961b3cd2c5c6fdce4f",
+      "sourceFingerprint": "f61e3272a10900ffe3b786767a36418a8fe4389e987885a213ab24c77815ef19"
     },
     {
       "id": "list-row",

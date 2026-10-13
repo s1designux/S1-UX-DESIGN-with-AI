@@ -265,7 +265,13 @@ globalThis.__s1Harness = (Component) => {
     render(props) {
       current = h; h.refIndex = 0; h.effects = [];
       const element = Component(props);
-      if (element.props.ref) element.props.ref.current = { fake: true };
+      if (element.props.ref) {
+        h.root ??= { fake: true, listeners: {},
+          addEventListener(name, handler) { (this.listeners[name] ??= new Set()).add(handler); },
+          removeEventListener(name, handler) { this.listeners[name]?.delete(handler); },
+          dispatch(name, detail) { let prevented = false; const event = { detail, preventDefault() { prevented = true; } }; for (const handler of [...(this.listeners[name] ?? [])]) handler(event); return prevented; } };
+        element.props.ref.current = h.root;
+      }
       h.effects.forEach(({ fn, deps }, index) => {
         const before = h.prev[index];
         const changed = !before || !deps || !before.deps || deps.length !== before.deps.length || deps.some((value, k) => !Object.is(value, before.deps[k]));
@@ -276,13 +282,14 @@ globalThis.__s1Harness = (Component) => {
       });
       return element;
     },
+    get root() { return h.root; },
     unmount() { for (const cleanup of h.cleanups) if (typeof cleanup === "function") cleanup(); }
   };
 };
 export default { createElement, Fragment, isValidElement, useId, useRef, useEffect };
 `;
 const RECORDING_STUB = `
-export function init() { globalThis.__s1Calls.push("init"); return { open() { globalThis.__s1Calls.push("open"); }, close() { globalThis.__s1Calls.push("close"); } }; }
+export function init() { globalThis.__s1Calls.push("init"); return { open() { globalThis.__s1Calls.push("open"); }, close() { globalThis.__s1Calls.push("close"); }, setSelected(value) { globalThis.__s1Calls.push("setSelected:" + value); } }; }
 export function destroy() { globalThis.__s1Calls.push("destroy"); }
 `;
 const openToggle = [];
@@ -324,7 +331,56 @@ const openToggle = [];
   expect("처음 닫힘→열기는 api.open()", globalThis.__s1Calls, ["init", "open"]);
 }
 
-if (failures.length || capability.length || openToggle.length) {
+
+/* ── 4단계: 선택형(chip · bottom-sheet-option · mobile-bottom-nav)의 제어형/비제어형 ─────────────
+   river 결정 2026-10-13 「전부 부품이 알아서」. selected 를 주면 제어형 — 눌러도 부품이 스스로 바뀌면 안 된다(런타임이 React 몰래
+   모양을 뒤집는 사고를 막는다): beforechange 를 막고 onSelectedChange 만 부른다. 값이 바뀌면 이벤트 없이 api.setSelected 로 넣는다.
+   안 주면(비제어형) 부품이 알아서 바꾸고 change 뒤에 알린다. */
+const selectableProblems = [];
+{
+  const dir = await mkdtemp(path.join(tmpdir(), "s1-react-select-"));
+  await writeFile(path.join(dir, "shim.js"), STATEFUL_SHIM);
+  await writeFile(path.join(dir, "stub.js"), RECORDING_STUB);
+  for (const [id, eventPrefix] of [["chip", "s1:chip"], ["bottom-sheet-option", "s1:bottom-sheet-option"], ["mobile-bottom-nav", "s1:mobile-bottom-nav"]]) {
+    const out = path.join(dir, `${id}.mjs`);
+    await esbuild.build({
+      entryPoints: [path.join(distRoot, "platform", "react", `${id}.jsx`)],
+      outfile: out, bundle: true, format: "esm", platform: "neutral", jsx: "transform", jsxFactory: "createElement", jsxFragment: "Fragment",
+      inject: [path.join(dir, "shim.js")], logLevel: "silent",
+      plugins: [{ name: "select-alias", setup(build) {
+        build.onResolve({ filter: /^react$/ }, () => ({ path: path.join(dir, "shim.js") }));
+        build.onResolve({ filter: /\/components\/[a-z-]+\.js$/ }, () => ({ path: path.join(dir, "stub.js") }));
+      } }] });
+    const component = await import(pathToFileURL(out).href);
+    const expect = (label, actual, wanted) => { if (JSON.stringify(actual) !== JSON.stringify(wanted)) selectableProblems.push(`${id}: ${label} — 기대 ${JSON.stringify(wanted)} / 실제 ${JSON.stringify(actual)}`); };
+
+    /* 제어형 */
+    globalThis.__s1Calls = [];
+    const told = [];
+    const controlled = globalThis.__s1Harness(component.default);
+    controlled.render({ selected: false, onSelectedChange: (value) => told.push(value) });
+    expect("제어형: 처음 값은 이벤트 없이 api.setSelected", globalThis.__s1Calls, ["init", "setSelected:false"]);
+    const prevented = controlled.root.dispatch(`${eventPrefix}:beforechange`, { selected: true });
+    expect("제어형: 눌러도 부품이 스스로 바뀌지 않게 beforechange 를 막고 알리기만 한다", [prevented, told], [true, [true]]);
+    controlled.render({ selected: true, onSelectedChange: (value) => told.push(value) });
+    expect("제어형: 값이 바뀌어야 부품 모양이 바뀐다", globalThis.__s1Calls.at(-1), "setSelected:true");
+    controlled.root.dispatch(`${eventPrefix}:change`, { selected: true });
+    expect("제어형: change 로는 다시 알리지 않는다(이중 호출 없음)", told, [true]);
+
+    /* 비제어형 */
+    globalThis.__s1Calls = [];
+    const toldFree = [];
+    const free = globalThis.__s1Harness(component.default);
+    free.render({ defaultSelected: true, onSelectedChange: (value) => toldFree.push(value) });
+    expect("비제어형: defaultSelected 가 처음 값", globalThis.__s1Calls, ["init", "setSelected:true"]);
+    const freePrevented = free.root.dispatch(`${eventPrefix}:beforechange`, { selected: true });
+    expect("비제어형: beforechange 를 막지 않는다", [freePrevented, toldFree], [false, []]);
+    free.root.dispatch(`${eventPrefix}:change`, { selected: true });
+    expect("비제어형: 바뀐 뒤 알린다", toldFree, [true]);
+  }
+}
+
+if (failures.length || capability.length || openToggle.length || selectableProblems.length) {
   if (failures.length) {
     console.error(`❌ React 컴포넌트가 승인 마크업과 다릅니다 (${failures.length}건 / ${compared}벌 대조)\n`);
     for (const failure of failures) console.error(`- ${failure}\n`);
@@ -332,6 +388,10 @@ if (failures.length || capability.length || openToggle.length) {
   if (capability.length) {
     console.error(`❌ 밖에서 넣은 값이 화면에 반영되지 않습니다 (${capability.length}건)\n`);
     for (const item of capability) console.error(`- ${item}`);
+  }
+  if (selectableProblems.length) {
+    console.error(`❌ 선택형 껍데기의 제어형/비제어형이 어긋납니다 (${selectableProblems.length}건)\n`);
+    for (const item of selectableProblems) console.error(`- ${item}`);
   }
   if (openToggle.length) {
     console.error(`❌ bottom-sheet 의 open 속성이 배포본 api 를 부르지 않습니다 (${openToggle.length}건)\n`);

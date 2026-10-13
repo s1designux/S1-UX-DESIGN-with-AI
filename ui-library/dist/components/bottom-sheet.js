@@ -95,6 +95,7 @@ export function init(root) {
 
   let lastFocused = null;
   let locked = false;
+  let openedBy = null;   // data-s1-open 으로 연 경우의 열기 요소 — 고른 값을 그 안의 [data-s1-part="value"] 에 보여 준다
 
   const isOpen = () => !root.hidden;
   const isTop = () => layers[layers.length - 1] === root;
@@ -154,6 +155,16 @@ export function init(root) {
   };
 
   const handleCloseClick = () => close({ reason: "close-button" });
+  /* 목록 줄(bottom-sheet-option)이 알아서 고른 결과 — 줄의 이벤트만 듣고 서로 import 하지 않는다(개별 설치에서 끊기지 않게).
+     · 값이 바뀌면 이 시트를 연 요소(data-s1-open) 안의 [data-s1-part="value"] 글자를 고른 글자로 바꾼다. 연 요소를 모르면(스크립트로 열었다면) 이벤트만 나간다.
+     · 묶음에 data-s1-close-on-select 가 있으면 줄이 닫기를 요청한다. */
+  const handleOptionChange = (event) => {
+    const target = openedBy?.querySelector('[data-s1-part="value"]');
+    if (!target || typeof event.detail?.label !== "string") return;
+    target.textContent = event.detail.label;
+    openedBy.dataset.filled = "true";
+  };
+  const handleOptionCloseRequest = (event) => close({ reason: event.detail?.reason ?? "select" });
   const handleDeclarativeClose = (event) => {
     const closer = event.target instanceof Element ? event.target.closest("[data-s1-close]") : null;
     if (!closer || !root.contains(closer) || closer.disabled) return;
@@ -164,6 +175,7 @@ export function init(root) {
   function open(detail = {}) {
     if (isOpen()) return;
     lastFocused = detail.trigger instanceof Element ? detail.trigger : document.activeElement;
+    openedBy = detail.trigger instanceof Element ? detail.trigger : null;
     root.hidden = false;
     if (!layers.includes(root)) layers.push(root);
     if (!locked) { lockScroll(); locked = true; }
@@ -188,6 +200,8 @@ export function init(root) {
   }
 
   closeButton?.addEventListener("click", handleCloseClick);
+  root.addEventListener("s1:bottom-sheet-option:change", handleOptionChange);
+  root.addEventListener("s1:bottom-sheet-option:close-request", handleOptionCloseRequest);
   root.addEventListener("click", handleDeclarativeClose);
   installDeclarativeOpen();
   backdrop?.addEventListener("click", handleBackdropClick);
@@ -207,6 +221,8 @@ export function init(root) {
     close,
     destroy() {
       closeButton?.removeEventListener("click", handleCloseClick);
+      root.removeEventListener("s1:bottom-sheet-option:change", handleOptionChange);
+      root.removeEventListener("s1:bottom-sheet-option:close-request", handleOptionCloseRequest);
       root.removeEventListener("click", handleDeclarativeClose);
       backdrop?.removeEventListener("click", handleBackdropClick);
       document.removeEventListener("keydown", handleKeydown, true);

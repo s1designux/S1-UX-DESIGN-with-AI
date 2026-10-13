@@ -32,6 +32,7 @@ export default function S1Gnb({ variant, size, parts, onOpen, onClose, className
     return () => { destroy(root); };
   }, []);
 
+
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return undefined;

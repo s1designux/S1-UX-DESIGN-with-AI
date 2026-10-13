@@ -36,6 +36,7 @@ export default function S1Select({ size, breakName = DEFAULT_BREAK, parts, optio
     return () => { destroy(root); };
   }, [breakName]);
 
+
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return undefined;

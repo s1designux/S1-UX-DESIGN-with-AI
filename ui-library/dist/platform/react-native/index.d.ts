@@ -115,6 +115,10 @@ export interface S1ChipProps extends S1BaseProps {
   size?: "sm" | "md";
   /** 화면 기준: pc · mobile (기본 pc) */
   breakName?: "pc" | "mobile";
+  /** s1:chip:beforechange */
+  onBeforechange?: (detail: any) => void;
+  /** s1:chip:change */
+  onChange?: (detail: any) => void;
   selected?: boolean;
   defaultSelected?: boolean;
   onSelectedChange?: (value: boolean) => void;
@@ -262,6 +266,13 @@ export declare function S1Table(props: S1TableProps): ReactElement;
 export interface S1MobileBottomNavProps extends S1BaseProps {
   /** 승인된 변형: home · search · notification · settings */
   variant?: "home" | "search" | "notification" | "settings";
+  /** s1:mobile-bottom-nav:beforechange */
+  onBeforechange?: (detail: any) => void;
+  /** s1:mobile-bottom-nav:change */
+  onChange?: (detail: any) => void;
+  selected?: boolean;
+  defaultSelected?: boolean;
+  onSelectedChange?: (value: boolean) => void;
 }
 export declare function S1MobileBottomNav(props: S1MobileBottomNavProps): ReactElement;
 
@@ -364,6 +375,13 @@ export declare function S1ModalContent(props: S1ModalContentProps): ReactElement
 export interface S1BottomSheetOptionProps extends S1BaseProps {
   /** 승인된 변형: text · checkbox · radio · list */
   variant?: "text" | "checkbox" | "radio" | "list";
+  /** s1:bottom-sheet-option:beforechange */
+  onBeforechange?: (detail: any) => void;
+  /** s1:bottom-sheet-option:change */
+  onChange?: (detail: any) => void;
+  selected?: boolean;
+  defaultSelected?: boolean;
+  onSelectedChange?: (value: boolean) => void;
   /** 앱이 소유하는 내용(탭 내용 등). 주면 예제 내용을 대신한다. */
   children?: ReactNode;
 }

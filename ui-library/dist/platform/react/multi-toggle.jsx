@@ -34,6 +34,7 @@ export default function S1MultiToggle({ size, parts, cells, onChange, className,
     return () => { destroy(root); };
   }, []);
 
+
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return undefined;

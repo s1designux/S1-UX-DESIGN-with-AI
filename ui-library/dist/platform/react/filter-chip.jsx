@@ -37,6 +37,7 @@ export default function S1FilterChip({ variant, size, breakName = DEFAULT_BREAK,
     return () => { destroy(root); };
   }, [breakName]);
 
+
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return undefined;

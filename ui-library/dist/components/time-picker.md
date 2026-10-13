@@ -84,4 +84,4 @@
 
 ---
 
-정본 지문 `d013d8a074953b21edd0ee1eeadb3de9209de8bff1228739bad18ee8eca00143` · 부품 버전 0.4.0
+정본 지문 `7b0e5cd5fa4d574ad220d1ff129fe04fcc686bddaed60850cc2987c1fb4bda82` · 부품 버전 0.5.0

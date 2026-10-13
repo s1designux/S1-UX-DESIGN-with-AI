@@ -2671,6 +2671,8 @@
     document.querySelectorAll('[data-s1-component="multi-toggle"]:not([data-review-static])').forEach((root) => S1UI.multiToggle.init(root));
     /* 표도 정적 표본(data-review-static)은 초기화하지 않는다 — 초기화하면 강제 표시한 Hover·선택 칸이 풀린다. */
     document.querySelectorAll('[data-s1-component="table"]:not([data-review-static])').forEach((root) => S1UI.table.init(root));
+    document.querySelectorAll('[data-s1-component="bottom-sheet-option"]:not([data-review-static])').forEach((root) => S1UI.bottomSheetOption.init(root));
+    document.querySelectorAll('[data-s1-component="mobile-bottom-nav"]:not([data-review-static])').forEach((root) => S1UI.mobileBottomNav.init(root));
     /* 모달도 정적 표본(data-review-static)은 초기화하지 않는다 — 초기화하면 배경 스크롤이 잠긴 채 남는다. */
     document.querySelectorAll('[data-s1-component="modal"]:not([data-review-static])').forEach((root) => {
       const opener = root.parentElement?.querySelector("[data-modal-open]");

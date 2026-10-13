@@ -43,6 +43,26 @@
 - 꼭 있어야 하는 속성: `type` `data-variant` `data-size` `data-break` `aria-pressed`
 - 꼭 있어야 하는 부분(`data-s1-part`): `label`
 
+## 값·옵션 속성
+
+| 속성 | 뜻 |
+|---|---|
+| `data-s1-select` | 칩을 감싼 요소에 single 을 달면 하나만 켠다(켜진 칩을 다시 눌러도 꺼지지 않는다). 없으면 칩마다 따로 켜고 끈다 |
+| `data-value` | 칩의 값(detail.value). 없으면 글자 |
+
+## 스크립트로 부르기
+
+`init(요소)` 가 돌려주는 객체의 `set(next)` · `setSelected(next)` · `selected`.
+
+## 이벤트
+
+요소에서 올라오는 사용자 정의 이벤트입니다(`element.addEventListener(...)`). 값은 `event.detail` 에 있습니다.
+
+| 이벤트 | detail |
+|---|---|
+| `s1:chip:beforechange` | `{ selected(다음 값), value, group } — 취소 가능(preventDefault 하면 모양이 그대로)` |
+| `s1:chip:change` | `{ selected, value, group }` |
+
 ## 접근성 — 퍼블리셔가 지킬 것
 
 - **역할**: button with aria-pressed
@@ -53,4 +73,4 @@
 
 ---
 
-정본 지문 `051db87b774f682680546323a06e735e53736f490705625d612fc3c7dd8800fb` · 부품 버전 0.2.3
+정본 지문 `1f0b8c5410b47101605777c88ff1723c1ac73d7ffd0feaa2ad7a58a0f0475844` · 부품 버전 0.3.0

@@ -42,10 +42,15 @@ function useToggle(config, props) {
   return useMemo(() => ({
     bind(part, at, ctx) {
       if (!ctx.isRoot) return NONE;
+      /* config.values: 켜짐·꺼짐 값이 true/false 글자가 아닌 속성(예: data-state=selected|default). config.also: 함께 맞출 속성. */
+      const shown = config.values ? (on ? config.values[0] : config.values[1]) : String(on);
+      const also = Object.fromEntries(Object.entries(config.also ?? {}).map(([name, pair]) => [name, on ? pair[0] : pair[1]]));
       return {
-        a: { [config.attr]: String(on) },
+        a: { [config.attr]: shown, ...also },
         onPress: () => {
           if (disabled) return;
+          /* 선택형(탭·시트 줄)은 켜진 것을 다시 눌러도 꺼지지 않는다 — 웹 런타임과 같다. */
+          if (config.values || config.also) { if (on) return; }
           const next = !on;
           setOn(next);
           props.onChange?.(next);

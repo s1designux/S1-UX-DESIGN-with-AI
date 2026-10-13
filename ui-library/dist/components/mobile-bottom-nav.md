@@ -17,7 +17,8 @@
 
 1. 마크업은 예시 파일을 복사해서 씁니다: `examples/mobile-bottom-nav.mobile.html`
 2. 겉모습: 전체 묶음 `s1-ui.css` 한 줄이면 됩니다. 이 부품만 쓰려면 `assets/css/tokens.css` · `assets/css/typography.css` · `components/mobile-bottom-nav.css` 를 읽습니다.
-3. 동작(JS)은 필요 없습니다 — 마크업과 CSS 만으로 동작합니다.
+3. 동작: `autoInit()` 이 이 부품을 찾아 붙입니다. 이 부품만 쓰려면 `import { init } from "./s1-ui/components/mobile-bottom-nav.js"` 후 `const api = init(요소)` 를 부릅니다.
+4. 페이지가 뜬 뒤에 넣은 마크업은 `autoInit(감쌀요소)` 를 한 번 더 부르면 붙습니다(두 번 불러도 겹치지 않습니다).
 
 ## 종류를 고르는 속성
 
@@ -39,13 +40,34 @@
 - 라벨 텍스트가 곧 접근성 이름이다 — 아이콘은 항상 aria-hidden="true" 로 장식 처리한다.
 - data-icon 이 **예시 아이콘**을 고른다(기본값 home — 속성을 빼면 홈으로 그려진다). 예시는 home·search·notification·settings 네 가지다. 실제 화면은 대개 다른 칸 구성을 쓰므로, 받은 아이콘을 style="--s1-mobile-nav-icon: url('…')" 로 끼워 교체한다. 라벨 텍스트는 화면이 정한다.
 
+## 값·옵션 속성
+
+| 속성 | 뜻 |
+|---|---|
+| `data-value` | 탭의 값(이벤트 detail.value). 없으면 data-icon, 그것도 없으면 라벨 글자 |
+| `aria-selected` | 활성 탭이면 true — 화면이 라우팅으로 직접 정할 때도 그대로 읽힌다 |
+| `aria-current` | 활성 탭에 page 를 부품이 함께 맞춘다 |
+
+## 스크립트로 부르기
+
+`init(요소)` 가 돌려주는 객체의 `setActive(next = true)` · `setSelected(next)` · `selected`.
+
+## 이벤트
+
+요소에서 올라오는 사용자 정의 이벤트입니다(`element.addEventListener(...)`). 값은 `event.detail` 에 있습니다.
+
+| 이벤트 | detail |
+|---|---|
+| `s1:mobile-bottom-nav:beforechange` | `{ value, selected: true, tab, previous } — 취소 가능(preventDefault 하면 탭이 그대로)` |
+| `s1:mobile-bottom-nav:change` | `{ value, selected: true, tab, previous }` |
+
 ## 접근성 — 퍼블리셔가 지킬 것
 
 - **역할**: button[role=tab][aria-selected] — 여러 아이템을 담는 role=tablist 컨테이너는 화면이 소유하되, 배포 예시에는 꾸미기 없는 껍데기를 함께 싣는다(river 결정 2026-09-02 HD-1 B)
 - **이름**: 라벨 텍스트가 접근성 이름이다. 아이콘만으로 의미를 전달하지 않는다(registry a11y).
-- **키보드**: native button Enter·Space 활성화. 여러 탭 사이 화살표 키 이동은 이번 범위 밖(HD-1 선택지 A).
+- **키보드**: Enter·Space 로 고른다(native button). ←→ 는 탭 사이로 초점만 옮긴다 — 고르기는 Enter/Space. Tab 은 네 칸 모두 거친다(roving 하지 않음).
 - **초점**: 브라우저 기본 포커스 표시를 그대로 쓴다 — 정본에 focus 표현이 없어 웹에서 만들지 않는다(2026-09-02 river 결정).
-- **상태 표시**: 호스트 화면이 현재 경로에 맞춰 aria-selected 를 정적으로 설정한다. CSS 가 [aria-selected="true"] 로 색을 반영하며 별도 런타임은 필요 없다.
+- **상태 표시**: 누르면 런타임이 aria-selected 와 aria-current=page 를 옮긴다(취소되면 그대로). 화면이 라우팅으로 직접 aria-selected 를 정해도 CSS 가 그대로 읽는다.
 - **touchTarget**: 60×60 고정 크기라 최소 44px 권장치를 이미 만족한다(D4).
 
 ## 바꿀 수 있는 CSS 변수
@@ -54,4 +76,4 @@
 
 ---
 
-정본 지문 `75282d7b2526b2960251072de14292536e4047c9ae5c560f7eefdbd93e92c6e8` · 부품 버전 0.3.6
+정본 지문 `62707df0e7d095e3cbebb5e57131102dafe50566e3a6959b01d0bbb83a3b1408` · 부품 버전 0.4.0

@@ -32,6 +32,7 @@ export default function S1ModalContent({ variant, size, parts, onOpen, onClose, 
     return () => { destroy(root); };
   }, []);
 
+
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return undefined;

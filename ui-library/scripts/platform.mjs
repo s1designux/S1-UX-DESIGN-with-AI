@@ -526,6 +526,7 @@ function wrapperFacts({ id, manifest, example, exampleByBreak }) {
     parts: manifest.parts ?? [],
     jsRequired: Boolean(manifest.jsRequired),
     defaultOpen: isPlatformDefaultOpen(manifest),
+    selectable: manifest.javascript?.selectable === true,
     events: events.map((eventName) => ({ eventName, propName: eventPropName(eventName) }))
   };
 }
@@ -535,7 +536,7 @@ export function buildVueComponent(component) {
   const runtimeImport = facts.jsRequired
     ? `import { init, destroy } from "../../components/${facts.id}.js";`
     : `// ${facts.id} 는 JavaScript 런타임이 없다 — 브라우저 기본 동작만 쓴다.`;
-  const emitNames = facts.events.map(({ propName }) => propName.replace(/^on/, "").toLowerCase());
+  const emitNames = [...facts.events.map(({ propName }) => propName.replace(/^on/, "").toLowerCase()), ...(facts.selectable ? ["update:modelValue"] : [])];
   return `<!-- ${GENERATED_NOTE} -->
 <!-- ${facts.componentName} — 승인된 배포본을 그대로 마운트하는 Vue 껍데기.
      MARKUPS 는 dist/examples/${facts.id}*.html 안의 승인된 인스턴스를 그대로 도려낸 것이다. -->
@@ -561,7 +562,7 @@ const props = defineProps({
   size: { type: String, default: undefined, validator: (value) => ${facts.sizes.length ? `${JSON.stringify(facts.sizes)}.includes(value)` : "true"} },
   breakName: { type: String, default: ${JSON.stringify(facts.defaultBreak)}, validator: (value) => ${JSON.stringify(Object.keys(facts.markups))}.includes(value) },
   parts: { type: Object, default: () => ({}) },
-  attrs: { type: Object, default: () => ({}) }${facts.defaultOpen ? ",\n  open: { type: Boolean, default: true }" : ""}
+  attrs: { type: Object, default: () => ({}) }${facts.defaultOpen ? ",\n  open: { type: Boolean, default: true }" : ""}${facts.selectable ? ",\n  modelValue: { type: Boolean, default: undefined },\n  defaultSelected: { type: Boolean, default: undefined }" : ""}
 });
 const emit = defineEmits(${JSON.stringify(emitNames)});
 
@@ -595,12 +596,20 @@ function uniquifyIds(element) {
     }
   }
 }
-${facts.defaultOpen ? "let api = null;\n" : ""}
+${facts.defaultOpen || facts.selectable ? "let api = null;\n" : ""}
 function mount() {
   host.value.innerHTML = MARKUPS[props.breakName] ?? MARKUPS[DEFAULT_BREAK];
   const element = host.value.firstElementChild;
   uniquifyIds(element);
-${facts.defaultOpen ? "  if (!props.open) element.hidden = true;\n" : ""}${facts.jsRequired ? `  ${facts.defaultOpen ? "api = " : ""}init(element);\n` : ""}  for (const [eventName, emitName] of ${JSON.stringify(facts.events.map(({ eventName, propName }) => [eventName, propName.replace(/^on/, "").toLowerCase()]))}) {
+${facts.defaultOpen ? "  if (!props.open) element.hidden = true;\n" : ""}${facts.jsRequired ? `  ${facts.defaultOpen || facts.selectable ? "api = " : ""}init(element);\n` : ""}${facts.selectable ? `  /* 제어형(v-model)이면 부품이 스스로 모양을 바꾸지 못하게 막고 알리기만 한다. 비제어형이면 바뀐 뒤에 알린다. */
+  const before = (event) => { if (props.modelValue !== undefined) { event.preventDefault(); emit("update:modelValue", event.detail?.selected ?? true); } };
+  const after = (event) => { if (props.modelValue === undefined) emit("update:modelValue", event.detail?.selected ?? true); };
+  element.addEventListener(${JSON.stringify(`s1:${facts.id}:beforechange`)}, before);
+  element.addEventListener(${JSON.stringify(`s1:${facts.id}:change`)}, after);
+  listeners.push([${JSON.stringify(`s1:${facts.id}:beforechange`)}, before], [${JSON.stringify(`s1:${facts.id}:change`)}, after]);
+  if (props.modelValue !== undefined) api?.setSelected(props.modelValue);
+  else if (props.defaultSelected !== undefined) api?.setSelected(props.defaultSelected);
+` : ""}  for (const [eventName, emitName] of ${JSON.stringify(facts.events.map(({ eventName, propName }) => [eventName, propName.replace(/^on/, "").toLowerCase()]))}) {
     const handler = (event) => emit(emitName, event.detail ?? event);
     element.addEventListener(eventName, handler);
     listeners.push([eventName, handler]);
@@ -612,12 +621,17 @@ function unmount() {
   const element = root.value;
   if (!element) return;
   for (const [eventName, handler] of listeners.splice(0)) element.removeEventListener(eventName, handler);
-${facts.jsRequired ? "  destroy(element);\n" : ""}${facts.defaultOpen ? "  api = null;\n" : ""}  root.value = null;
+${facts.jsRequired ? "  destroy(element);\n" : ""}${facts.defaultOpen || facts.selectable ? "  api = null;\n" : ""}  root.value = null;
 }
 
 onMounted(mount);
 onBeforeUnmount(unmount);
-${facts.defaultOpen ? `
+${facts.selectable ? `
+/* v-model 값이 바뀌면 이벤트 없이 부품에 넣는다(제어형). */
+watch(() => props.modelValue, (value) => {
+  if (value !== undefined) api?.setSelected(value);
+});
+` : ""}${facts.defaultOpen ? `
 /* open 속성 — 기본 true(처음부터 보임). false 로 바꾸면 닫고, 다시 true 면 연다. */
 watch(() => props.open, (value) => {
   if (!api) return;

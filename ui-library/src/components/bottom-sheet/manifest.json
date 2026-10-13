@@ -1,8 +1,8 @@
 {
   "id": "bottom-sheet",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "status": "approved",
-  "canonicalFingerprint": "14035c5c6f0403cfc0a58b3b65c8421e649bbd013a6777266844fe0bb86bc23a",
+  "canonicalFingerprint": "adf33ea9dca4a8fcae6ba556b6ab9643a10b083ebdb4ac961b3cd2c5c6fdce4f",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -212,6 +212,7 @@
     "attributes": {
       "data-s1-open": "다른 요소(버튼 등)에 달면 누를 때 id 가 같은 이 시트가 열린다",
       "data-s1-close": "시트 안 요소에 달면 누를 때 닫힌다. 값은 닫힌 이유(cancel·apply 등, 없으면 close)로 s1:bottom-sheet:close 의 detail.reason 에 실린다"
-    }
+    },
+    "optionEvents": "목록 줄(bottom-sheet-option)의 s1:bottom-sheet-option:change 를 들어, 시트를 연 요소(data-s1-open) 안 [data-s1-part=\"value\"] 글자를 고른 라벨로 바꾸고, 묶음의 data-s1-close-on-select 요청이 오면 닫는다(reason=select)."
   }
 }

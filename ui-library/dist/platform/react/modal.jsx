@@ -32,6 +32,7 @@ export default function S1Modal({ variant, breakName = DEFAULT_BREAK, parts, onO
     return () => { destroy(root); };
   }, [breakName]);
 
+
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return undefined;

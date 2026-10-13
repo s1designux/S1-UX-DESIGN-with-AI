@@ -50,7 +50,7 @@ function pickTemplate(breakName, mode, current) {
   return 0;
 }
 
-export default function S1Chip({ variant, size, breakName = DEFAULT_BREAK, parts, selected, defaultSelected, onSelectedChange, partProps, style, outer, omit, lifted: initialLifted, forceState, ...rest }) {
+export default function S1Chip({ variant, size, breakName = DEFAULT_BREAK, parts, onBeforechange, onChange, selected, defaultSelected, onSelectedChange, partProps, style, outer, omit, lifted: initialLifted, forceState, ...rest }) {
   const uid = useId();
   const partScope = scopeOf(parts);
   assertAllowed("variant", variant, VARIANTS);

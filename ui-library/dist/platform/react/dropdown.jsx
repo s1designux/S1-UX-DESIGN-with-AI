@@ -35,6 +35,7 @@ export default function S1Dropdown({ variant, size, parts, options, onChange, cl
     return () => { destroy(root); };
   }, []);
 
+
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return undefined;

@@ -828,6 +828,45 @@ async function nestedLayerChecks(cdp, origin, siteDir, pkgDir) {
   return out;
 }
 
+
+/* ── 부품이 알아서 고르기(river 결정 2026-10-13 「전부 부품이 알아서」) — 퍼블리셔가 README 대로 표시만 달면 되는가 ─────── */
+async function selectionChecks(cdp, origin, siteDir, pkgDir) {
+  const read = (rel) => fs.readFileSync(path.join(pkgDir, rel), "utf8");
+  const strip = (html) => html.replace(/<!--[\s\S]*?-->\s*/g, "").trim();
+  const out = [];
+  const record = (label, actual, wanted) => out.push({ label, ok: JSON.stringify(actual) === JSON.stringify(wanted), actual, wanted });
+  const chipHtml = strip(read("examples/chip.html"));
+  const chip = (label) => chipHtml.replace(/<span data-s1-part="label">[^<]*<\/span>/, `<span data-s1-part="label">${label}</span>`);
+  const navHtml = strip(read("examples/mobile-bottom-nav.mobile.html"));
+  const sheetHtml = strip(read("examples/bottom-sheet.mobile.html")).replace(/<button[^>]*data-s1-open[^>]*>[\s\S]*?<\/button>/, '<button type="button" id="opener" data-s1-open="bottom-sheet-example"><span data-s1-part="value">선택</span></button>');
+  const sheetWith = (attrs) => sheetHtml.replace('<div data-s1-part="sheet-body">', `<div data-s1-part="sheet-body"${attrs}>`);
+  const markup = `<div id="g1" data-s1-select="single">${chip("가")}${chip("나")}${chip("다")}</div><div id="g2">${chip("라")}${chip("마")}</div>
+<div id="navbox">${navHtml}</div><div id="sheet-on">${sheetWith(' data-s1-select="single" data-s1-close-on-select')}</div>`;
+  const page = await pageProbe(cdp, origin, siteDir, "__audit_selection.html", readmePage(markup, { title: "selection" }), MOBILE);
+  try {
+    await waitFor(page, "window.__s1ready === true", 5000);
+    const run = (expression) => page.eval(expression);
+    const chipOn = (id) => run(`JSON.stringify([...document.querySelectorAll('#${id} [data-s1-component="chip"]')].map((c) => c.getAttribute("aria-pressed") === "true"))`);
+    await run(`document.querySelectorAll('#g1 [data-s1-component="chip"]')[1].click(), document.querySelectorAll('#g1 [data-s1-component="chip"]')[2].click(), true`);
+    record("칩 묶음에 표시를 달면 하나만 켜진다", await chipOn("g1"), JSON.stringify([false, false, true]));
+    await run(`document.querySelectorAll('#g2 [data-s1-component="chip"]')[0].click(), document.querySelectorAll('#g2 [data-s1-component="chip"]')[1].click(), true`);
+    record("표시가 없는 칩은 종전처럼 여러 개 켜진다", await chipOn("g2"), JSON.stringify([true, true]));
+
+    const tabs = `document.querySelectorAll('#navbox [data-s1-component="mobile-bottom-nav"]')`;
+    await run(`${tabs}[2].click(), true`);
+    record("하단 탭을 누르면 부품이 활성 탭을 옮긴다", await run(`${tabs}[2].getAttribute("aria-selected") + "/" + ${tabs}[2].getAttribute("aria-current") + "/" + ${tabs}[0].getAttribute("aria-selected")`), "true/page/false");
+    await run(`document.querySelector('#navbox nav').addEventListener("s1:mobile-bottom-nav:beforechange", (e) => e.preventDefault()), ${tabs}[3].click(), true`);
+    record("화면이 beforechange 를 막으면 탭이 그대로다", await run(`${tabs}[3].getAttribute("aria-selected") + "/" + ${tabs}[2].getAttribute("aria-selected")`), "false/true");
+
+    await run(`document.getElementById("opener").click(), true`);
+    await sleep(200);
+    await run(`document.querySelectorAll('#sheet-on [data-s1-component="bottom-sheet-option"]')[2].click(), true`);
+    await sleep(150);
+    record("시트 목록에 표시를 달면 줄을 눌러 고르고(체크 하나) 값이 연 버튼에 들어가고 시트가 닫힌다", await run(`JSON.stringify([[...document.querySelectorAll('#sheet-on [data-s1-component="bottom-sheet-option"]')].map((o) => o.dataset.state), document.querySelector('#opener [data-s1-part="value"]').textContent, document.getElementById("bottom-sheet-example").hidden])`), JSON.stringify([["default", "default", "selected", "default"], "항목 3", true]));
+  } finally { await page.close(); }
+  return out;
+}
+
 /* ── 자가시험 ─────────────────────────────────────────────── */
 async function selftest(cdp, origin, siteDir, tmp) {
   const planted = `<button type="button" data-s1-component="button" data-variant="primary" data-size="md"><span data-s1-part="label">정상 버튼</span></button>
@@ -903,7 +942,7 @@ async function main() {
   if (args.includes("--nested-only")) {
     /* 빠른 확인용: 겹쳐 쓰기 검사만 돌린다(결과 파일은 쓰지 않는다) */
     const nested = await nestedLayerChecks(cdp, origin, siteDir, pkgDir);
-    console.log(JSON.stringify({ popoverDiffs: nested.popovers.filter((p) => p.diffs.length).map((p) => `${p.component} in ${p.wrapper}: ${p.diffs.join(", ")}`), sheetDiffs: (nested.sheets || []).map((s) => `${s.component}: ${s.diffs.join(", ") || "same"}`), modalOpenFromModal: nested.modalOpenFromModal }, null, 2));
+    console.log(JSON.stringify({ popoverDiffs: nested.popovers.filter((p) => p.diffs.length).map((p) => `${p.component} in ${p.wrapper}: ${p.diffs.join(", ")}`), sheetDiffs: (nested.sheets || []).map((s) => `${s.component}: ${s.diffs.join(", ") || "same"}`), modalOpenFromModal: nested.modalOpenFromModal, autoSelect: (await selectionChecks(cdp, origin, siteDir, pkgDir)).map((item) => `${item.ok ? "ok" : "FAIL"} ${item.label}`) }, null, 2));
     cleanupAll();
     process.exit(0);
   }
@@ -1038,6 +1077,15 @@ async function main() {
     if (pkgChecks.nestedModalOpen === "fail") pkgAdd("nested-modal-crash", "nested", "broken", "열린 창 안의 버튼으로 다른 창을 열면 오류가 나거나 페이지가 멈춥니다.", js(nested.modalOpenFromModal), "열린 겹 중 맨 위 하나만 초점 가둠을 맡게 한다");
     pkgChecks.nestedDetail = nested;
   } catch (error) { pkgNotChecked.push({ check: "겹쳐 쓰기(팝업 크기·창 안에서 창 열기)", reason: error.message }); }
+
+  /* 부품이 알아서 고르기: 표시를 달면 되고, 표시가 없으면 그대로이고, 화면이 막을 수 있다 */
+  try {
+    const picked = await selectionChecks(cdp, origin, siteDir, pkgDir);
+    const bad = picked.filter((item) => !item.ok);
+    pkgChecks.autoSelect = bad.length ? "fail" : "pass";
+    if (bad.length) pkgAdd("auto-select", "interaction", "broken", `부품이 알아서 고르기가 약속대로 되지 않습니다(${bad.length}건).`, bad.map((item) => `${item.label} — 기대 ${item.wanted} / 실제 ${item.actual}`).join(" | "), "칩 묶음·시트 목록(data-s1-select=single)·하단 탭 런타임 확인");
+    pkgChecks.autoSelectDetail = picked;
+  } catch (error) { pkgNotChecked.push({ check: "부품이 알아서 고르기", reason: error.message }); }
 
   /* preview.html — README 2단계 "브라우저로 열면" */
   try {

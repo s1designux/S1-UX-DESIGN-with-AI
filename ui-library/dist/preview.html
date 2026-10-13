@@ -4680,7 +4680,7 @@
       <h1>S1 UI 컴포넌트 미리보기 — 32종</h1>
       <p>이 페이지는 배포본에 들어 있는 마크업을 그대로 얹어 그린 것입니다. 여기 보이는 모습이 실제 모습입니다.<br>
          React·Vue 는 제목의 이름을 그대로 부르면 됩니다. 크기·변형은 각 이름 옆에 적힌 값만 쓸 수 있습니다.</p>
-      <p class="fingerprint">버전 0.21.0 · 정본 지문 3e26c0547b60cfb2fc29649fe95b8cc4ef8ca58f55c652f2054ecf68713f6f51</p>
+      <p class="fingerprint">버전 0.22.0 · 정본 지문 3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71</p>
     </div>
     <nav class="index">
         <a href="#input">S1Input</a>
@@ -6803,28 +6803,58 @@ var S1UI = (() => {
   __export(chip_exports, {
     componentId: () => componentId3,
     destroy: () => destroy3,
+    getGroupValue: () => getGroupValue,
     init: () => init3,
     jsRequired: () => jsRequired3,
-    runtime: () => runtime3
+    runtime: () => runtime3,
+    setGroupValue: () => setGroupValue
   });
   var componentId3 = "chip";
   var jsRequired3 = true;
   var instances3 = /* @__PURE__ */ new WeakMap();
+  var GROUP = '[data-s1-select="single"]';
   function isSelected(root) {
     return root.getAttribute("aria-pressed") === "true";
+  }
+  var valueOf = (root) => root.dataset.value ?? root.textContent.trim();
+  var chipsOf = (group) => [...group.querySelectorAll('[data-s1-component="chip"]')].filter((chip) => chip.closest(GROUP) === group);
+  function getGroupValue(group) {
+    const on = chipsOf(group).find(isSelected);
+    return on ? valueOf(on) : null;
+  }
+  function setGroupValue(group, value) {
+    const chips = chipsOf(group);
+    const target = chips.find((chip) => valueOf(chip) === String(value));
+    for (const chip of chips) chip.setAttribute("aria-pressed", String(chip === target));
+    return Boolean(target);
   }
   function init3(root) {
     if (!(root instanceof Element) || root.dataset.s1Component !== componentId3) return null;
     if (instances3.has(root)) return instances3.get(root);
     if (!root.hasAttribute("aria-pressed")) root.setAttribute("aria-pressed", "false");
+    const flip = (chip, value, group) => {
+      chip.setAttribute("aria-pressed", String(value));
+      chip.dispatchEvent(new CustomEvent("s1:chip:change", { bubbles: true, detail: { selected: value, value: valueOf(chip), group } }));
+    };
+    const request = (next) => {
+      if (root.disabled) return;
+      const group = root.closest(GROUP);
+      if (group && next === false) return;
+      if (next === isSelected(root)) return;
+      const before = new CustomEvent("s1:chip:beforechange", { bubbles: true, cancelable: true, detail: { selected: next, value: valueOf(root), group: Boolean(group) } });
+      if (!root.dispatchEvent(before)) return;
+      if (group) {
+        for (const other of chipsOf(group)) if (other !== root && isSelected(other)) flip(other, false, true);
+      }
+      flip(root, next, Boolean(group));
+    };
     const set = (next) => {
       if (root.disabled) return;
       const value = Boolean(next);
       if (value === isSelected(root)) return;
-      root.setAttribute("aria-pressed", String(value));
-      root.dispatchEvent(new CustomEvent("s1:chip:change", { bubbles: true, detail: { selected: value } }));
+      flip(root, value, false);
     };
-    const handleClick = () => set(!isSelected(root));
+    const handleClick = () => request(!isSelected(root));
     root.addEventListener("click", handleClick);
     const api = Object.freeze({
       get selected() {
@@ -6832,6 +6862,10 @@ var S1UI = (() => {
       },
       set(next) {
         set(next);
+      },
+      /** 이벤트 없이 켜고 끈다(제어형 껍데기가 값을 넣을 때) */
+      setSelected(next) {
+        root.setAttribute("aria-pressed", String(Boolean(next)));
       },
       destroy() {
         root.removeEventListener("click", handleClick);
@@ -7920,18 +7954,94 @@ var S1UI = (() => {
   }
   var runtime11 = Object.freeze({ init: init11, destroy: destroy11 });
 
-  // dist-virtual:components/time-picker.js
-  var time_picker_exports = {};
-  __export(time_picker_exports, {
+  // dist-virtual:components/mobile-bottom-nav.js
+  var mobile_bottom_nav_exports = {};
+  __export(mobile_bottom_nav_exports, {
     componentId: () => componentId12,
     destroy: () => destroy12,
     init: () => init12,
     jsRequired: () => jsRequired12,
     runtime: () => runtime12
   });
-  var componentId12 = "time-picker";
+  var componentId12 = "mobile-bottom-nav";
   var jsRequired12 = true;
   var instances12 = /* @__PURE__ */ new WeakMap();
+  var TAB = '[data-s1-component="mobile-bottom-nav"]';
+  var listOf = (root) => root.closest('[role="tablist"]') ?? root.parentElement;
+  var tabsOf = (root) => [...listOf(root)?.querySelectorAll(TAB) ?? [root]].filter((tab) => listOf(tab) === listOf(root));
+  var valueOf2 = (tab) => tab.dataset.value ?? tab.dataset.icon ?? tab.querySelector('[data-s1-part="label"]')?.textContent.trim() ?? "";
+  function activate(root) {
+    for (const tab of tabsOf(root)) {
+      const on = tab === root;
+      tab.setAttribute("aria-selected", String(on));
+      if (on) tab.setAttribute("aria-current", "page");
+      else tab.removeAttribute("aria-current");
+    }
+  }
+  function init12(root) {
+    if (!(root instanceof Element) || root.dataset.s1Component !== componentId12) return null;
+    if (instances12.has(root)) return instances12.get(root);
+    const isActive = () => root.getAttribute("aria-selected") === "true";
+    if (isActive() && !root.hasAttribute("aria-current")) root.setAttribute("aria-current", "page");
+    const handleClick = () => {
+      if (root.disabled || isActive()) return;
+      const previous = tabsOf(root).find((tab) => tab.getAttribute("aria-selected") === "true") ?? null;
+      const detail = { value: valueOf2(root), selected: true, tab: root, previous };
+      if (!root.dispatchEvent(new CustomEvent("s1:mobile-bottom-nav:beforechange", { bubbles: true, cancelable: true, detail }))) return;
+      activate(root);
+      root.dispatchEvent(new CustomEvent("s1:mobile-bottom-nav:change", { bubbles: true, detail }));
+    };
+    const handleKeydown = (event) => {
+      if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+      const tabs2 = tabsOf(root);
+      const index = tabs2.indexOf(root);
+      const step = event.key === "ArrowRight" ? 1 : -1;
+      tabs2[(index + step + tabs2.length) % tabs2.length]?.focus();
+      event.preventDefault();
+    };
+    root.addEventListener("click", handleClick);
+    root.addEventListener("keydown", handleKeydown);
+    const api = Object.freeze({
+      get selected() {
+        return isActive();
+      },
+      /** 이벤트 없이 이 탭을 활성으로 만든다(라우팅이 정하는 화면·제어형 껍데기). false 면 이 탭만 끈다. */
+      setActive(next = true) {
+        if (next) activate(root);
+        else {
+          root.setAttribute("aria-selected", "false");
+          root.removeAttribute("aria-current");
+        }
+      },
+      setSelected(next) {
+        api.setActive(Boolean(next));
+      },
+      destroy() {
+        root.removeEventListener("click", handleClick);
+        root.removeEventListener("keydown", handleKeydown);
+        instances12.delete(root);
+      }
+    });
+    instances12.set(root, api);
+    return api;
+  }
+  function destroy12(root) {
+    instances12.get(root)?.destroy();
+  }
+  var runtime12 = Object.freeze({ init: init12, destroy: destroy12 });
+
+  // dist-virtual:components/time-picker.js
+  var time_picker_exports = {};
+  __export(time_picker_exports, {
+    componentId: () => componentId13,
+    destroy: () => destroy13,
+    init: () => init13,
+    jsRequired: () => jsRequired13,
+    runtime: () => runtime13
+  });
+  var componentId13 = "time-picker";
+  var jsRequired13 = true;
+  var instances13 = /* @__PURE__ */ new WeakMap();
   var PANEL_VIEWPORT_MARGIN3 = 8;
   function floatPanel3(trigger, panel, { gap = 8, widthFrom = null, minWidthFrom = null } = {}) {
     if (widthFrom) panel.style.width = `${widthFrom.getBoundingClientRect().width}px`;
@@ -8054,9 +8164,9 @@ var S1UI = (() => {
       col.appendChild(cell);
     }
   }
-  function init12(root) {
-    if (!(root instanceof Element) || root.dataset.s1Component !== componentId12) return null;
-    if (instances12.has(root)) return instances12.get(root);
+  function init13(root) {
+    if (!(root instanceof Element) || root.dataset.s1Component !== componentId13) return null;
+    if (instances13.has(root)) return instances13.get(root);
     const { trigger, value, panel, columns, confirm, sheet, sheetBackdrop, sheetPanel, sheetClose, tabsRoot, datePanel, wheelCols, apply } = getParts4(root);
     const hasListPanel = !!(panel && confirm && columns.length > 0);
     const hasWheelSheet = !!sheet;
@@ -8451,29 +8561,29 @@ var S1UI = (() => {
         disabledObserver.disconnect();
         root.removeEventListener("s1:time-picker:change", handleChangeForValue);
         hidden?.remove();
-        instances12.delete(root);
+        instances13.delete(root);
       }
     });
-    instances12.set(root, api);
+    instances13.set(root, api);
     return api;
   }
-  function destroy12(root) {
-    instances12.get(root)?.destroy();
+  function destroy13(root) {
+    instances13.get(root)?.destroy();
   }
-  var runtime12 = Object.freeze({ init: init12, destroy: destroy12 });
+  var runtime13 = Object.freeze({ init: init13, destroy: destroy13 });
 
   // dist-virtual:components/date-picker.js
   var date_picker_exports = {};
   __export(date_picker_exports, {
-    componentId: () => componentId13,
-    destroy: () => destroy13,
-    init: () => init13,
-    jsRequired: () => jsRequired13,
-    runtime: () => runtime13
+    componentId: () => componentId14,
+    destroy: () => destroy14,
+    init: () => init14,
+    jsRequired: () => jsRequired14,
+    runtime: () => runtime14
   });
-  var componentId13 = "date-picker";
-  var jsRequired13 = true;
-  var instances13 = /* @__PURE__ */ new WeakMap();
+  var componentId14 = "date-picker";
+  var jsRequired14 = true;
+  var instances14 = /* @__PURE__ */ new WeakMap();
   var WEEKDAY_LABELS = ["\uC77C", "\uC6D4", "\uD654", "\uC218", "\uBAA9", "\uAE08", "\uD1A0"];
   var MONTH_LABELS = ["1\uC6D4", "2\uC6D4", "3\uC6D4", "4\uC6D4", "5\uC6D4", "6\uC6D4", "7\uC6D4", "8\uC6D4", "9\uC6D4", "10\uC6D4", "11\uC6D4", "12\uC6D4"];
   var PLACEHOLDER_DEFAULT = "\uB0A0\uC9DC \uC120\uD0DD";
@@ -8731,8 +8841,8 @@ var S1UI = (() => {
         tile.disabled = disabled;
         tile.textContent = kind === "year" ? String(value) : MONTH_LABELS[value];
         tile.dataset.value = String(value);
-        const isSelected2 = kind === "year" ? value === s.viewYear : value === s.viewMonth;
-        tile.setAttribute("aria-selected", String(isSelected2));
+        const isSelected3 = kind === "year" ? value === s.viewYear : value === s.viewMonth;
+        tile.setAttribute("aria-selected", String(isSelected3));
       }
     }
   }
@@ -8784,9 +8894,9 @@ var S1UI = (() => {
       renderTileView(view, s.view, s, ctx);
     }
   }
-  function init13(root) {
-    if (!(root instanceof Element) || root.dataset.s1Component !== componentId13) return null;
-    if (instances13.has(root)) return instances13.get(root);
+  function init14(root) {
+    if (!(root instanceof Element) || root.dataset.s1Component !== componentId14) return null;
+    if (instances14.has(root)) return instances14.get(root);
     const { trigger, value, panel, panelCalendar, sheet, sheetBackdrop, sheetPanel, sheetClose, sheetCalendar, apply } = getParts5(root);
     if (!trigger || !value) return null;
     const ownBreak = root.dataset.break;
@@ -9185,29 +9295,29 @@ var S1UI = (() => {
         window.removeEventListener("scroll", handleReposition, true);
         window.removeEventListener("resize", handleReposition);
         disabledObserver.disconnect();
-        instances13.delete(root);
+        instances14.delete(root);
       }
     });
-    instances13.set(root, api);
+    instances14.set(root, api);
     return api;
   }
-  function destroy13(root) {
-    instances13.get(root)?.destroy();
+  function destroy14(root) {
+    instances14.get(root)?.destroy();
   }
-  var runtime13 = Object.freeze({ init: init13, destroy: destroy13 });
+  var runtime14 = Object.freeze({ init: init14, destroy: destroy14 });
 
   // dist-virtual:components/gnb.js
   var gnb_exports = {};
   __export(gnb_exports, {
-    componentId: () => componentId14,
-    destroy: () => destroy14,
-    init: () => init14,
-    jsRequired: () => jsRequired14,
-    runtime: () => runtime14
+    componentId: () => componentId15,
+    destroy: () => destroy15,
+    init: () => init15,
+    jsRequired: () => jsRequired15,
+    runtime: () => runtime15
   });
-  var componentId14 = "gnb";
-  var jsRequired14 = true;
-  var instances14 = /* @__PURE__ */ new WeakMap();
+  var componentId15 = "gnb";
+  var jsRequired15 = true;
+  var instances15 = /* @__PURE__ */ new WeakMap();
   var CLOSE_DELAY_MS = 150;
   function getPairs(root) {
     const doc = root.ownerDocument || document;
@@ -9234,15 +9344,15 @@ var S1UI = (() => {
   function getFocusables(container) {
     return Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR)).filter(isFocusableElement);
   }
-  function init14(root) {
-    if (!(root instanceof Element) || root.dataset.s1Component !== componentId14) return null;
-    if (instances14.has(root)) return instances14.get(root);
+  function init15(root) {
+    if (!(root instanceof Element) || root.dataset.s1Component !== componentId15) return null;
+    if (instances15.has(root)) return instances15.get(root);
     const pairs = getPairs(root);
     if (!pairs.length) {
       const api2 = Object.freeze({ destroy() {
-        instances14.delete(root);
+        instances15.delete(root);
       } });
-      instances14.set(root, api2);
+      instances15.set(root, api2);
       return api2;
     }
     const hoverCapable = () => window.matchMedia ? window.matchMedia("(hover: hover)").matches : true;
@@ -9455,29 +9565,29 @@ var S1UI = (() => {
           closePair(pair, { returnFocus: false });
           pair.panel.removeAttribute("data-s1-layer");
         }
-        instances14.delete(root);
+        instances15.delete(root);
       }
     });
-    instances14.set(root, api);
+    instances15.set(root, api);
     return api;
   }
-  function destroy14(root) {
-    instances14.get(root)?.destroy();
+  function destroy15(root) {
+    instances15.get(root)?.destroy();
   }
-  var runtime14 = Object.freeze({ init: init14, destroy: destroy14 });
+  var runtime15 = Object.freeze({ init: init15, destroy: destroy15 });
 
   // dist-virtual:components/modal-content.js
   var modal_content_exports = {};
   __export(modal_content_exports, {
-    componentId: () => componentId15,
-    destroy: () => destroy15,
-    init: () => init15,
-    jsRequired: () => jsRequired15,
-    runtime: () => runtime15
+    componentId: () => componentId16,
+    destroy: () => destroy16,
+    init: () => init16,
+    jsRequired: () => jsRequired16,
+    runtime: () => runtime16
   });
-  var componentId15 = "modal-content";
-  var jsRequired15 = true;
-  var instances15 = /* @__PURE__ */ new WeakMap();
+  var componentId16 = "modal-content";
+  var jsRequired16 = true;
+  var instances16 = /* @__PURE__ */ new WeakMap();
   var FOCUSABLE2 = [
     "a[href]",
     "button:not([disabled])",
@@ -9522,16 +9632,16 @@ var S1UI = (() => {
       const trigger = event.target instanceof Element ? event.target.closest("[data-s1-open]") : null;
       if (!trigger || trigger.disabled) return;
       const target = document.getElementById(trigger.getAttribute("data-s1-open"));
-      if (!target || target.dataset.s1Component !== componentId15) return;
-      const api = init15(target);
+      if (!target || target.dataset.s1Component !== componentId16) return;
+      const api = init16(target);
       if (!api) return;
       event.preventDefault();
       api.open({ reason: "trigger", trigger });
     });
   }
-  function init15(root) {
-    if (!(root instanceof Element) || root.dataset.s1Component !== componentId15) return null;
-    if (instances15.has(root)) return instances15.get(root);
+  function init16(root) {
+    if (!(root instanceof Element) || root.dataset.s1Component !== componentId16) return null;
+    if (instances16.has(root)) return instances16.get(root);
     const panel = root.querySelector('[data-s1-part="panel"]');
     if (!panel) return null;
     const closeButton = root.querySelector('[data-s1-part="close"]');
@@ -9656,29 +9766,214 @@ var S1UI = (() => {
           unlockScroll2();
           locked = false;
         }
-        instances15.delete(root);
+        instances16.delete(root);
       }
     });
-    instances15.set(root, api);
+    instances16.set(root, api);
     return api;
   }
-  function destroy15(root) {
-    instances15.get(root)?.destroy();
+  function destroy16(root) {
+    instances16.get(root)?.destroy();
   }
-  var runtime15 = Object.freeze({ init: init15, destroy: destroy15 });
+  var runtime16 = Object.freeze({ init: init16, destroy: destroy16 });
+
+  // dist-virtual:components/bottom-sheet-option.js
+  var bottom_sheet_option_exports = {};
+  __export(bottom_sheet_option_exports, {
+    componentId: () => componentId17,
+    destroy: () => destroy17,
+    init: () => init17,
+    jsRequired: () => jsRequired17,
+    runtime: () => runtime17
+  });
+  var componentId17 = "bottom-sheet-option";
+  var jsRequired17 = true;
+  var instances17 = /* @__PURE__ */ new WeakMap();
+  var groups = /* @__PURE__ */ new WeakMap();
+  var GROUP2 = '[data-s1-select="single"]';
+  var OPTION = '[data-s1-component="bottom-sheet-option"]';
+  var SELECTABLE = /* @__PURE__ */ new Set(["text", "radio"]);
+  var typeOf = (option) => option.dataset.type;
+  var isEnabled = (option) => option.dataset.state !== "disabled";
+  var labelOf = (option) => option.querySelector('[data-s1-part="label"]')?.textContent.trim() ?? option.textContent.trim();
+  var valueOf3 = (option) => option.dataset.value ?? labelOf(option);
+  var radioOf = (option) => option.querySelector('input[type="radio"]');
+  var isSelected2 = (option) => typeOf(option) === "radio" ? Boolean(radioOf(option)?.checked) : option.dataset.state === "selected";
+  function setupGroup(group) {
+    const known = groups.get(group);
+    if (known) {
+      known.count += 1;
+      return known;
+    }
+    const options = () => [...group.querySelectorAll(OPTION)].filter((option) => SELECTABLE.has(typeOf(option)) && option.closest(GROUP2) === group);
+    const enabledOptions = () => options().filter(isEnabled);
+    if (!group.hasAttribute("role")) group.setAttribute("role", options().some((option) => typeOf(option) === "text") ? "listbox" : "radiogroup");
+    if (!group.hasAttribute("aria-labelledby") && !group.hasAttribute("aria-label")) {
+      const title = group.closest('[data-s1-component="bottom-sheet"]')?.querySelector('[data-s1-part="sheet-title"]');
+      if (title?.id) group.setAttribute("aria-labelledby", title.id);
+    }
+    const paint = () => {
+      const list = options();
+      const current2 = list.find((option) => isSelected2(option)) ?? enabledOptions()[0];
+      for (const option of list) {
+        if (typeOf(option) === "radio") {
+          if (isEnabled(option)) option.dataset.state = radioOf(option)?.checked ? "selected" : "default";
+          continue;
+        }
+        const on = option.dataset.state === "selected";
+        option.setAttribute("role", "option");
+        option.setAttribute("aria-selected", String(on));
+        if (option.dataset.state === "disabled") option.setAttribute("aria-disabled", "true");
+        option.tabIndex = option === current2 ? 0 : -1;
+        option.style.cursor = isEnabled(option) ? "pointer" : "";
+      }
+    };
+    const mark = (option, on) => {
+      if (!isEnabled(option)) return;
+      option.dataset.state = on ? "selected" : "default";
+      if (typeOf(option) === "radio") {
+        const radio = radioOf(option);
+        if (radio) radio.checked = on;
+        return;
+      }
+      const check = option.querySelector('[data-s1-part="check"]');
+      if (!on && check) check.remove();
+      if (on && !check) {
+        const added = document.createElement("span");
+        added.setAttribute("data-s1-part", "check");
+        added.setAttribute("aria-hidden", "true");
+        option.appendChild(added);
+      }
+    };
+    const apply = (option) => {
+      for (const other of options()) if (other !== option) mark(other, false);
+      mark(option, true);
+      paint();
+    };
+    const pick = (option) => {
+      if (!isEnabled(option)) return;
+      const detail = { value: valueOf3(option), label: labelOf(option), selected: true, option };
+      const changed = option.dataset.state !== "selected";
+      if (changed) {
+        const before = new CustomEvent("s1:bottom-sheet-option:beforechange", { bubbles: true, cancelable: true, detail });
+        if (!option.dispatchEvent(before)) {
+          for (const other of options()) {
+            const radio = typeOf(other) === "radio" ? radioOf(other) : null;
+            if (radio) radio.checked = other.dataset.state === "selected";
+          }
+          return;
+        }
+        apply(option);
+        option.dispatchEvent(new CustomEvent("s1:bottom-sheet-option:change", { bubbles: true, detail }));
+      }
+      if (group.hasAttribute("data-s1-close-on-select")) {
+        option.dispatchEvent(new CustomEvent("s1:bottom-sheet-option:close-request", { bubbles: true, detail: { reason: "select" } }));
+      }
+    };
+    const handleClick = (event) => {
+      const option = event.target instanceof Element ? event.target.closest(OPTION) : null;
+      if (!option || option.closest(GROUP2) !== group || !SELECTABLE.has(typeOf(option))) return;
+      pick(option);
+    };
+    const handleKeydown = (event) => {
+      const option = event.target instanceof Element ? event.target.closest(OPTION) : null;
+      if (!option || option.closest(GROUP2) !== group || typeOf(option) !== "text") return;
+      const list = enabledOptions().filter((one) => typeOf(one) === "text");
+      const index = list.indexOf(option);
+      if (index < 0) return;
+      const move = (target) => {
+        for (const one of list) one.tabIndex = one === target ? 0 : -1;
+        target.focus();
+      };
+      if (event.key === "ArrowDown") move(list[Math.min(index + 1, list.length - 1)]);
+      else if (event.key === "ArrowUp") move(list[Math.max(index - 1, 0)]);
+      else if (event.key === "Home") move(list[0]);
+      else if (event.key === "End") move(list[list.length - 1]);
+      else if (event.key === "Enter" || event.key === " ") pick(option);
+      else return;
+      event.preventDefault();
+    };
+    group.addEventListener("click", handleClick);
+    group.addEventListener("keydown", handleKeydown);
+    paint();
+    const entry = {
+      count: 1,
+      options,
+      paint,
+      apply,
+      teardown() {
+        group.removeEventListener("click", handleClick);
+        group.removeEventListener("keydown", handleKeydown);
+      }
+    };
+    groups.set(group, entry);
+    return entry;
+  }
+  function init17(root) {
+    if (!(root instanceof Element) || root.dataset.s1Component !== componentId17) return null;
+    if (instances17.has(root)) return instances17.get(root);
+    const group = root.closest(GROUP2);
+    const entry = group && SELECTABLE.has(typeOf(root)) ? setupGroup(group) : null;
+    const api = Object.freeze({
+      /** 이 줄이 골라져 있나 */
+      get selected() {
+        return isSelected2(root);
+      },
+      /** 묶음에서 지금 골라진 값(없으면 null) */
+      get value() {
+        const on = entry?.options().find((option) => isSelected2(option));
+        return on ? valueOf3(on) : null;
+      },
+      /** 이벤트 없이 이 줄을 고르거나(true) 비운다(false) — 제어형 껍데기·화면이 값을 넣을 때 쓴다. */
+      setSelected(next) {
+        if (!entry || !isEnabled(root)) return;
+        if (next) entry.apply(root);
+        else {
+          root.dataset.state = "default";
+          if (typeOf(root) === "radio") {
+            const radio = radioOf(root);
+            if (radio) radio.checked = false;
+          } else root.querySelector('[data-s1-part="check"]')?.remove();
+          entry.paint();
+        }
+      },
+      /** 값(data-value 또는 글자)으로 묶음의 줄을 고른다 — 이벤트 없음 */
+      setValue(value) {
+        const target = entry?.options().find((option) => valueOf3(option) === String(value));
+        if (target) entry.apply(target);
+        return Boolean(target);
+      },
+      destroy() {
+        if (entry) {
+          entry.count -= 1;
+          if (entry.count <= 0) {
+            entry.teardown();
+            groups.delete(group);
+          }
+        }
+        instances17.delete(root);
+      }
+    });
+    instances17.set(root, api);
+    return api;
+  }
+  function destroy17(root) {
+    instances17.get(root)?.destroy();
+  }
+  var runtime17 = Object.freeze({ init: init17, destroy: destroy17 });
 
   // dist-virtual:components/bottom-sheet.js
   var bottom_sheet_exports = {};
   __export(bottom_sheet_exports, {
-    componentId: () => componentId16,
-    destroy: () => destroy16,
-    init: () => init16,
-    jsRequired: () => jsRequired16,
-    runtime: () => runtime16
+    componentId: () => componentId18,
+    destroy: () => destroy18,
+    init: () => init18,
+    jsRequired: () => jsRequired18,
+    runtime: () => runtime18
   });
-  var componentId16 = "bottom-sheet";
-  var jsRequired16 = true;
-  var instances16 = /* @__PURE__ */ new WeakMap();
+  var componentId18 = "bottom-sheet";
+  var jsRequired18 = true;
+  var instances18 = /* @__PURE__ */ new WeakMap();
   var FOCUSABLE3 = [
     "a[href]",
     "button:not([disabled])",
@@ -9724,22 +10019,23 @@ var S1UI = (() => {
       const trigger = event.target instanceof Element ? event.target.closest("[data-s1-open]") : null;
       if (!trigger || trigger.disabled) return;
       const target = document.getElementById(trigger.getAttribute("data-s1-open"));
-      if (!target || target.dataset.s1Component !== componentId16) return;
-      const api = init16(target);
+      if (!target || target.dataset.s1Component !== componentId18) return;
+      const api = init18(target);
       if (!api) return;
       event.preventDefault();
       api.open({ reason: "trigger", trigger });
     });
   }
-  function init16(root) {
-    if (!(root instanceof Element) || root.dataset.s1Component !== componentId16) return null;
-    if (instances16.has(root)) return instances16.get(root);
+  function init18(root) {
+    if (!(root instanceof Element) || root.dataset.s1Component !== componentId18) return null;
+    if (instances18.has(root)) return instances18.get(root);
     const panel = root.querySelector('[data-s1-part="sheet-panel"]');
     if (!panel) return null;
     const closeButton = root.querySelector('[data-s1-part="sheet-close"]');
     const backdrop = root.querySelector('[data-s1-part="sheet-backdrop"]');
     let lastFocused = null;
     let locked = false;
+    let openedBy = null;
     const isOpen5 = () => !root.hidden;
     const isTop = () => layers3[layers3.length - 1] === root;
     const dispatch = (name, detail = {}) => {
@@ -9794,6 +10090,13 @@ var S1UI = (() => {
       });
     };
     const handleCloseClick = () => close({ reason: "close-button" });
+    const handleOptionChange = (event) => {
+      const target = openedBy?.querySelector('[data-s1-part="value"]');
+      if (!target || typeof event.detail?.label !== "string") return;
+      target.textContent = event.detail.label;
+      openedBy.dataset.filled = "true";
+    };
+    const handleOptionCloseRequest = (event) => close({ reason: event.detail?.reason ?? "select" });
     const handleDeclarativeClose = (event) => {
       const closer = event.target instanceof Element ? event.target.closest("[data-s1-close]") : null;
       if (!closer || !root.contains(closer) || closer.disabled) return;
@@ -9803,6 +10106,7 @@ var S1UI = (() => {
     function open(detail = {}) {
       if (isOpen5()) return;
       lastFocused = detail.trigger instanceof Element ? detail.trigger : document.activeElement;
+      openedBy = detail.trigger instanceof Element ? detail.trigger : null;
       root.hidden = false;
       if (!layers3.includes(root)) layers3.push(root);
       if (!locked) {
@@ -9831,6 +10135,8 @@ var S1UI = (() => {
       dispatch("close", detail);
     }
     closeButton?.addEventListener("click", handleCloseClick);
+    root.addEventListener("s1:bottom-sheet-option:change", handleOptionChange);
+    root.addEventListener("s1:bottom-sheet-option:close-request", handleOptionCloseRequest);
     root.addEventListener("click", handleDeclarativeClose);
     installDeclarativeOpen3();
     backdrop?.addEventListener("click", handleBackdropClick);
@@ -9852,6 +10158,8 @@ var S1UI = (() => {
       close,
       destroy() {
         closeButton?.removeEventListener("click", handleCloseClick);
+        root.removeEventListener("s1:bottom-sheet-option:change", handleOptionChange);
+        root.removeEventListener("s1:bottom-sheet-option:close-request", handleOptionCloseRequest);
         root.removeEventListener("click", handleDeclarativeClose);
         backdrop?.removeEventListener("click", handleBackdropClick);
         document.removeEventListener("keydown", handleKeydown, true);
@@ -9862,37 +10170,37 @@ var S1UI = (() => {
           unlockScroll3();
           locked = false;
         }
-        instances16.delete(root);
+        instances18.delete(root);
       }
     });
-    instances16.set(root, api);
+    instances18.set(root, api);
     return api;
   }
-  function destroy16(root) {
-    instances16.get(root)?.destroy();
+  function destroy18(root) {
+    instances18.get(root)?.destroy();
   }
-  var runtime16 = Object.freeze({ init: init16, destroy: destroy16 });
+  var runtime18 = Object.freeze({ init: init18, destroy: destroy18 });
 
   // dist-virtual:components/expandable-card.js
   var expandable_card_exports = {};
   __export(expandable_card_exports, {
-    componentId: () => componentId17,
-    destroy: () => destroy17,
-    init: () => init17,
-    jsRequired: () => jsRequired17,
-    runtime: () => runtime17
+    componentId: () => componentId19,
+    destroy: () => destroy19,
+    init: () => init19,
+    jsRequired: () => jsRequired19,
+    runtime: () => runtime19
   });
-  var componentId17 = "expandable-card";
-  var jsRequired17 = true;
-  var instances17 = /* @__PURE__ */ new WeakMap();
+  var componentId19 = "expandable-card";
+  var jsRequired19 = true;
+  var instances19 = /* @__PURE__ */ new WeakMap();
   function findPanelWrap(root, header) {
     const id = header.getAttribute("aria-controls");
     const doc = root.ownerDocument || document;
     return id && doc.getElementById(id) || root.querySelector('[data-s1-part="panel-wrap"]');
   }
-  function init17(root) {
-    if (!(root instanceof Element) || root.dataset.s1Component !== componentId17) return null;
-    if (instances17.has(root)) return instances17.get(root);
+  function init19(root) {
+    if (!(root instanceof Element) || root.dataset.s1Component !== componentId19) return null;
+    if (instances19.has(root)) return instances19.get(root);
     const header = root.querySelector('[data-s1-part="header"]');
     if (!header) return null;
     const panelWrap = findPanelWrap(root, header);
@@ -9927,32 +10235,32 @@ var S1UI = (() => {
       },
       destroy() {
         header.removeEventListener("click", handleClick);
-        instances17.delete(root);
+        instances19.delete(root);
       }
     });
-    instances17.set(root, api);
+    instances19.set(root, api);
     return api;
   }
-  function destroy17(root) {
-    instances17.get(root)?.destroy();
+  function destroy19(root) {
+    instances19.get(root)?.destroy();
   }
-  var runtime17 = Object.freeze({ init: init17, destroy: destroy17 });
+  var runtime19 = Object.freeze({ init: init19, destroy: destroy19 });
 
   // dist-virtual:components/lnb.js
   var lnb_exports = {};
   __export(lnb_exports, {
-    componentId: () => componentId18,
-    destroy: () => destroy18,
-    init: () => init18,
-    jsRequired: () => jsRequired18,
-    runtime: () => runtime18
+    componentId: () => componentId20,
+    destroy: () => destroy20,
+    init: () => init20,
+    jsRequired: () => jsRequired20,
+    runtime: () => runtime20
   });
-  var componentId18 = "lnb";
-  var jsRequired18 = true;
-  var instances18 = /* @__PURE__ */ new WeakMap();
-  function init18(root) {
-    if (!(root instanceof Element) || root.dataset.s1Component !== componentId18) return null;
-    if (instances18.has(root)) return instances18.get(root);
+  var componentId20 = "lnb";
+  var jsRequired20 = true;
+  var instances20 = /* @__PURE__ */ new WeakMap();
+  function init20(root) {
+    if (!(root instanceof Element) || root.dataset.s1Component !== componentId20) return null;
+    if (instances20.has(root)) return instances20.get(root);
     const doc = root.ownerDocument || document;
     const collapseButton = root.querySelector('[data-s1-part="collapse"]');
     const isCollapsed = () => root.getAttribute("data-state") === "collapsed";
@@ -10041,135 +10349,113 @@ var S1UI = (() => {
       },
       destroy() {
         root.removeEventListener("click", handleClick);
-        instances18.delete(root);
+        instances20.delete(root);
       }
     });
-    instances18.set(root, api);
+    instances20.set(root, api);
     return api;
   }
-  function destroy18(root) {
-    instances18.get(root)?.destroy();
+  function destroy20(root) {
+    instances20.get(root)?.destroy();
   }
-  var runtime18 = Object.freeze({ init: init18, destroy: destroy18 });
+  var runtime20 = Object.freeze({ init: init20, destroy: destroy20 });
 
   // dist-virtual:components/button.js
   var button_exports = {};
   __export(button_exports, {
-    componentId: () => componentId19,
-    jsRequired: () => jsRequired19,
-    runtime: () => runtime19
-  });
-  var componentId19 = "button";
-  var jsRequired19 = false;
-  var runtime19 = null;
-
-  // dist-virtual:components/checkbox.js
-  var checkbox_exports = {};
-  __export(checkbox_exports, {
-    componentId: () => componentId20,
-    jsRequired: () => jsRequired20,
-    runtime: () => runtime20
-  });
-  var componentId20 = "checkbox";
-  var jsRequired20 = false;
-  var runtime20 = null;
-
-  // dist-virtual:components/radio.js
-  var radio_exports = {};
-  __export(radio_exports, {
     componentId: () => componentId21,
     jsRequired: () => jsRequired21,
     runtime: () => runtime21
   });
-  var componentId21 = "radio";
+  var componentId21 = "button";
   var jsRequired21 = false;
   var runtime21 = null;
 
-  // dist-virtual:components/textarea.js
-  var textarea_exports = {};
-  __export(textarea_exports, {
+  // dist-virtual:components/checkbox.js
+  var checkbox_exports = {};
+  __export(checkbox_exports, {
     componentId: () => componentId22,
     jsRequired: () => jsRequired22,
     runtime: () => runtime22
   });
-  var componentId22 = "textarea";
+  var componentId22 = "checkbox";
   var jsRequired22 = false;
   var runtime22 = null;
 
-  // dist-virtual:components/mobile-bottom-nav.js
-  var mobile_bottom_nav_exports = {};
-  __export(mobile_bottom_nav_exports, {
+  // dist-virtual:components/radio.js
+  var radio_exports = {};
+  __export(radio_exports, {
     componentId: () => componentId23,
     jsRequired: () => jsRequired23,
     runtime: () => runtime23
   });
-  var componentId23 = "mobile-bottom-nav";
+  var componentId23 = "radio";
   var jsRequired23 = false;
   var runtime23 = null;
 
-  // dist-virtual:components/mobile-header.js
-  var mobile_header_exports = {};
-  __export(mobile_header_exports, {
+  // dist-virtual:components/textarea.js
+  var textarea_exports = {};
+  __export(textarea_exports, {
     componentId: () => componentId24,
     jsRequired: () => jsRequired24,
     runtime: () => runtime24
   });
-  var componentId24 = "mobile-header";
+  var componentId24 = "textarea";
   var jsRequired24 = false;
   var runtime24 = null;
 
-  // dist-virtual:components/gnb-sub-menu-item.js
-  var gnb_sub_menu_item_exports = {};
-  __export(gnb_sub_menu_item_exports, {
+  // dist-virtual:components/mobile-header.js
+  var mobile_header_exports = {};
+  __export(mobile_header_exports, {
     componentId: () => componentId25,
     jsRequired: () => jsRequired25,
     runtime: () => runtime25
   });
-  var componentId25 = "gnb-sub-menu-item";
+  var componentId25 = "mobile-header";
   var jsRequired25 = false;
   var runtime25 = null;
 
-  // dist-virtual:components/gnb-sub-menu.js
-  var gnb_sub_menu_exports = {};
-  __export(gnb_sub_menu_exports, {
+  // dist-virtual:components/gnb-sub-menu-item.js
+  var gnb_sub_menu_item_exports = {};
+  __export(gnb_sub_menu_item_exports, {
     componentId: () => componentId26,
     jsRequired: () => jsRequired26,
     runtime: () => runtime26
   });
-  var componentId26 = "gnb-sub-menu";
+  var componentId26 = "gnb-sub-menu-item";
   var jsRequired26 = false;
   var runtime26 = null;
 
-  // dist-virtual:components/assist-button.js
-  var assist_button_exports = {};
-  __export(assist_button_exports, {
+  // dist-virtual:components/gnb-sub-menu.js
+  var gnb_sub_menu_exports = {};
+  __export(gnb_sub_menu_exports, {
     componentId: () => componentId27,
     jsRequired: () => jsRequired27,
     runtime: () => runtime27
   });
-  var componentId27 = "assist-button";
+  var componentId27 = "gnb-sub-menu";
   var jsRequired27 = false;
   var runtime27 = null;
 
-  // dist-virtual:components/text-button.js
-  var text_button_exports = {};
-  __export(text_button_exports, {
+  // dist-virtual:components/assist-button.js
+  var assist_button_exports = {};
+  __export(assist_button_exports, {
     componentId: () => componentId28,
     jsRequired: () => jsRequired28,
     runtime: () => runtime28
   });
-  var componentId28 = "text-button";
+  var componentId28 = "assist-button";
   var jsRequired28 = false;
   var runtime28 = null;
 
-  // dist-virtual:components/bottom-sheet-option.js
-  var bottom_sheet_option_exports = {};
-  __export(bottom_sheet_option_exports, {
+  // dist-virtual:components/text-button.js
+  var text_button_exports = {};
+  __export(text_button_exports, {
     componentId: () => componentId29,
     jsRequired: () => jsRequired29,
     runtime: () => runtime29
   });
-  var componentId29 = "bottom-sheet-option";
+  var componentId29 = "text-button";
   var jsRequired29 = false;
   var runtime29 = null;
 
@@ -10208,7 +10494,7 @@ var S1UI = (() => {
 
   // s1-ui.auto.js
   function autoInit(scope = document) {
-    const instances19 = [
+    const instances21 = [
       ...[...scope.querySelectorAll('[data-s1-component="input"]')].map((root) => init(root)),
       ...[...scope.querySelectorAll('[data-s1-component="toggle"]')].map((root) => init2(root)),
       ...[...scope.querySelectorAll('[data-s1-component="chip"]')].map((root) => init3(root)),
@@ -10220,15 +10506,17 @@ var S1UI = (() => {
       ...[...scope.querySelectorAll('[data-s1-component="multi-toggle"]')].map((root) => init9(root)),
       ...[...scope.querySelectorAll('[data-s1-component="modal"]')].map((root) => init10(root)),
       ...[...scope.querySelectorAll('[data-s1-component="table"]')].map((root) => init11(root)),
-      ...[...scope.querySelectorAll('[data-s1-component="time-picker"]')].map((root) => init12(root)),
-      ...[...scope.querySelectorAll('[data-s1-component="date-picker"]')].map((root) => init13(root)),
-      ...[...scope.querySelectorAll('[data-s1-component="gnb"]')].map((root) => init14(root)),
-      ...[...scope.querySelectorAll('[data-s1-component="modal-content"]')].map((root) => init15(root)),
-      ...[...scope.querySelectorAll('[data-s1-component="bottom-sheet"]')].map((root) => init16(root)),
-      ...[...scope.querySelectorAll('[data-s1-component="expandable-card"]')].map((root) => init17(root)),
-      ...[...scope.querySelectorAll('[data-s1-component="lnb"]')].map((root) => init18(root))
+      ...[...scope.querySelectorAll('[data-s1-component="mobile-bottom-nav"]')].map((root) => init12(root)),
+      ...[...scope.querySelectorAll('[data-s1-component="time-picker"]')].map((root) => init13(root)),
+      ...[...scope.querySelectorAll('[data-s1-component="date-picker"]')].map((root) => init14(root)),
+      ...[...scope.querySelectorAll('[data-s1-component="gnb"]')].map((root) => init15(root)),
+      ...[...scope.querySelectorAll('[data-s1-component="modal-content"]')].map((root) => init16(root)),
+      ...[...scope.querySelectorAll('[data-s1-component="bottom-sheet-option"]')].map((root) => init17(root)),
+      ...[...scope.querySelectorAll('[data-s1-component="bottom-sheet"]')].map((root) => init18(root)),
+      ...[...scope.querySelectorAll('[data-s1-component="expandable-card"]')].map((root) => init19(root)),
+      ...[...scope.querySelectorAll('[data-s1-component="lnb"]')].map((root) => init20(root))
     ];
-    return Object.freeze(instances19.filter(Boolean));
+    return Object.freeze(instances21.filter(Boolean));
   }
   return __toCommonJS(s1_ui_auto_exports);
 })();

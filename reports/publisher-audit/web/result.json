@@ -1,10 +1,10 @@
 {
   "tool": "scripts/publisher-audit/web.mjs",
-  "generatedAt": "2026-10-13T00:58:51.946Z",
+  "generatedAt": "2026-10-13T01:48:24.875Z",
   "package": {
     "zip": "assets/downloads/s1-ui-html-css-js.zip",
-    "version": "0.21.0",
-    "canonicalFingerprint": "39e664b6eb97c6a20f8773b0ea73703654ae1e58aaab759b17f366335d9cfe17",
+    "version": "0.22.0",
+    "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71",
     "components": 32,
     "readmeStartSteps": [
       "1. 압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.",
@@ -345,6 +345,39 @@
         }
       ]
     },
+    "autoSelect": "pass",
+    "autoSelectDetail": [
+      {
+        "label": "칩 묶음에 표시를 달면 하나만 켜진다",
+        "ok": true,
+        "actual": "[false,false,true]",
+        "wanted": "[false,false,true]"
+      },
+      {
+        "label": "표시가 없는 칩은 종전처럼 여러 개 켜진다",
+        "ok": true,
+        "actual": "[true,true]",
+        "wanted": "[true,true]"
+      },
+      {
+        "label": "하단 탭을 누르면 부품이 활성 탭을 옮긴다",
+        "ok": true,
+        "actual": "true/page/false",
+        "wanted": "true/page/false"
+      },
+      {
+        "label": "화면이 beforechange 를 막으면 탭이 그대로다",
+        "ok": true,
+        "actual": "false/true",
+        "wanted": "false/true"
+      },
+      {
+        "label": "시트 목록에 표시를 달면 줄을 눌러 고르고(체크 하나) 값이 연 버튼에 들어가고 시트가 닫힌다",
+        "ok": true,
+        "actual": "[[\"default\",\"default\",\"selected\",\"default\"],\"항목 3\",true]",
+        "wanted": "[[\"default\",\"default\",\"selected\",\"default\"],\"항목 3\",true]"
+      }
+    ],
     "previewHttp": "pass",
     "previewFile": "pass",
     "previewDetail": {

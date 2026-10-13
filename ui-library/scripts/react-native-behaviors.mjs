@@ -43,6 +43,21 @@ export function behaviorFor(id, { instance, rootAttributes }) {
         config: { attr: "aria-pressed", initial: rootAttributes["aria-pressed"] === "true" },
         props: { value: "selected", defaultValue: "defaultSelected", onChange: "onSelectedChange" }
       };
+    /* 선택형 — river 결정 2026-10-13 「전부 부품이 알아서」. 웹 런타임이 없는 RN 은 같은 규칙을 여기서 지킨다:
+       selected 를 주면 제어형(눌러도 값이 바뀌기 전엔 모양이 안 바뀌고 onSelectedChange 만 부른다), 안 주면 부품이 알아서 바꾸고 알린다.
+       하나만 고르는 묶음은 화면이 각 항목의 selected 를 정한다(웹의 data-s1-select 에 해당). */
+    case "mobile-bottom-nav":
+      return {
+        kind: "toggle",
+        config: { attr: "aria-selected", initial: rootAttributes["aria-selected"] === "true", also: { "aria-current": ["page", undefined] } },
+        props: { value: "selected", defaultValue: "defaultSelected", onChange: "onSelectedChange" }
+      };
+    case "bottom-sheet-option":
+      return {
+        kind: "toggle",
+        config: { attr: "data-state", values: ["selected", "default"], initial: rootAttributes["data-state"] === "selected", also: { "aria-selected": ["true", "false"] } },
+        props: { value: "selected", defaultValue: "defaultSelected", onChange: "onSelectedChange" }
+      };
     case "toggle":
       return {
         kind: "toggle",

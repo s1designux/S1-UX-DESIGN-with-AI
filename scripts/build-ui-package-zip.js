@@ -190,6 +190,20 @@ const api = toggle.init(document.querySelector('[data-s1-component="toggle"]'));
 
 셀렉트·달력·시간 선택은 \`data-name="이름"\` 을 주면 숨은 입력이 만들어져 \`<form>\` 으로 함께 전송됩니다. 셀렉트는 \`data-value\`(처음 값)·\`api.value\`·\`api.setValue()\`, 달력은 \`data-value\`(단일)·\`data-range-start\`/\`data-range-end\`(기간)·\`api.value\`·\`api.setValue()\`, 페이지네이션은 총 쪽수만 \`api.setTotalPages(n)\` 으로 주면 번호 줄을 다시 그립니다.
 
+### 고르기는 부품이 알아서 (표시만 달면 됩니다)
+
+칩·시트 목록·하단 탭은 고르는 동작을 스크립트로 짜지 않아도 됩니다. **표시가 없으면 종전과 똑같이 아무것도 바뀌지 않습니다.**
+
+| 부품 | 표시 | 하는 일 | 이벤트(\`element.addEventListener\`) |
+|---|---|---|---|
+| chip | 칩을 감싼 요소에 \`data-s1-select="single"\` | 하나만 켜진다(켜진 칩을 다시 눌러도 꺼지지 않음). 표시가 없으면 칩마다 따로 켜고 끈다 | \`s1:chip:beforechange\` → \`s1:chip:change\` |
+| bottom-sheet-option | 목록 묶음(시트 본문)에 \`data-s1-select="single"\`, 고른 뒤 닫으려면 \`data-s1-close-on-select\` | 줄을 누르면 고르고 나머지는 풀림 · ↑↓·Home·End 이동, Enter/Space 선택 · 시트를 연 요소(\`data-s1-open\`) 안 \`[data-s1-part="value"]\` 글자가 고른 라벨로 바뀜 | \`s1:bottom-sheet-option:beforechange\` → \`s1:bottom-sheet-option:change\` |
+| mobile-bottom-nav | (표시 없이 기본 동작) | 탭을 누르면 활성 탭과 \`aria-current\` 가 옮겨감 · ←→ 로 탭 사이 초점 이동 | \`s1:mobile-bottom-nav:beforechange\` → \`s1:mobile-bottom-nav:change\` |
+
+- **막고 싶을 때**: \`beforechange\` 에서 \`event.preventDefault()\` 하면 모양이 바뀌지 않습니다(로그인 확인·저장 안 한 변경 등). 막은 뒤 화면이 직접 정합니다 — 탭은 \`mobileBottomNav.init(탭).setActive()\`, 칩 묶음은 \`chip.setGroupValue(묶음, 값)\`, 시트 목록은 \`bottomSheetOption.init(줄).setValue(값)\`(모두 이벤트 없음).
+- **라우팅이 정하는 화면**: 활성 탭을 \`aria-selected\` 로 직접 정해도 그대로 읽힙니다.
+- **React·Vue·React Native**: 제어형/비제어형을 모두 지원합니다. React·RN 은 \`selected\`(제어형) · \`defaultSelected\` · \`onSelectedChange(selected)\`, Vue 는 \`v-model\`(제어형) · \`defaultSelected\`. 값을 주면(제어형) 눌러도 부품이 스스로 바뀌지 않고, 값이 바뀔 때만 모양이 바뀝니다.
+
 ### 모바일
 
 모바일용 마크업은 \`*.mobile.html\` 입니다(비밀번호·검색 입력도 \`examples/input.password.mobile.html\` · \`examples/input.search.mobile.html\` 처럼 같은 규칙입니다). 모바일에만 쓰는 부품은 PC 용 파일이 따로 없고 파일 이름에 \`.mobile\` 이 붙습니다: **${mobileOnly.join(' · ')}**.

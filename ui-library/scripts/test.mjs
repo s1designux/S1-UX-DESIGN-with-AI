@@ -608,7 +608,8 @@ for (const id of componentIds) {
   /* Bottom Sheet Option — 정본 buildBottomSheetOption(build-components.ts:4957-5150). 실제로 존재하는
      칸은 9개(12칸 매트릭스가 아니다) — absentCombinations 3건이 만들어지지 않았는지도 여기서 지킨다. */
   if (id === "bottom-sheet-option") {
-    if (manifest.jsRequired !== false) failures.push("bottom-sheet-option must remain jsRequired=false; row shape only, no local state or events");
+    /* river 결정 2026-10-13 「전부 부품이 알아서」 — 종전 "줄 모양만, 런타임 없음" 을 뒤집었다. 목록 묶음에 data-s1-select 가 있을 때만 고른다. */
+    if (manifest.jsRequired !== true) failures.push("bottom-sheet-option must have a runtime (opt-in single select via data-s1-select)");
     if (JSON.stringify(manifest.variants) !== JSON.stringify(["text", "checkbox", "radio", "list"])) failures.push("bottom-sheet-option variants differ from canon Type axis");
     if (!Array.isArray(manifest.absentCombinations) || manifest.absentCombinations.length !== 3) {
       failures.push("bottom-sheet-option manifest must declare exactly 3 absentCombinations (checkbox:disabled, radio:disabled, list:selected)");
@@ -698,7 +699,7 @@ for (const id of componentIds) {
     failures.push("input runtime lifecycle is incomplete");
   }
   if (id === "button" && (module.jsRequired !== false || module.runtime !== null)) failures.push("button module unexpectedly requires runtime");
-  if ((id === "checkbox" || id === "radio" || id === "textarea" || id === "assist-button" || id === "text-button" || id === "gnb-sub-menu-item" || id === "gnb-sub-menu" || id === "bottom-sheet-option") && (module.jsRequired !== false || module.runtime !== null)) failures.push(`${id} module unexpectedly requires runtime`);
+  if ((id === "checkbox" || id === "radio" || id === "textarea" || id === "assist-button" || id === "text-button" || id === "gnb-sub-menu-item" || id === "gnb-sub-menu") && (module.jsRequired !== false || module.runtime !== null)) failures.push(`${id} module unexpectedly requires runtime`);
   if ((id === "toggle" || id === "chip" || id === "dropdown" || id === "select" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "modal" || id === "modal-content" || id === "table" || id === "time-picker" || id === "gnb" || id === "bottom-sheet") && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
     failures.push(`${id} runtime lifecycle is incomplete`);
   }

@@ -33,6 +33,7 @@ export default function S1Pagination({ parts, pages, className, style, ...rest }
     return () => { destroy(root); };
   }, []);
 
+
   return (
       <nav data-s1-component="pagination" data-total-pages="6" data-page="1" aria-label="페이지 탐색" ref={rootRef} className={className} style={style} {...rest}>
         <span data-s1-part="arrow-group" {...(slot(partScope, "arrowGroup").attrs ?? {})}>
