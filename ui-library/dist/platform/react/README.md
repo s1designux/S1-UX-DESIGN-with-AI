@@ -63,7 +63,7 @@ import { S1Button, S1Input } from "./s1-ui/platform/react";
 ### 견본 글자는 언제 나오나
 
 - 부품에 **내용 prop(`label` · `children` · `title` · `message` · `description` …)을 하나도 주지 않으면** 승인 예제의 견본 글자가 그대로 그려집니다(보기용).
-- **하나라도 주면** 주지 않은 글자 칸은 비어 있거나 그려지지 않습니다 — 견본 문구가 실서비스 화면에 새어 나오지 않습니다. 예: `<S1Modal title="삭제" message="지울까요?" />` 는 단추 글자도 `confirmLabel` · `cancelLabel` 로 줘야 합니다.
+- **하나라도 주면** 주지 않은 글자 칸은 비어 있거나 그려지지 않습니다 — 견본 문구가 실서비스 화면에 새어 나오지 않습니다. 단, 꼭 필요한 단추 글자(모달 취소·확인, 시트 적용)와 aria-label 은 견본이 아니라 기본 글자라 그대로 남습니다 — 바꾸려면 `confirmLabel` · `cancelLabel` · `applyLabel` 을 주세요.
 - `parts` 로만 쓰던 0.22.0 코드는 예전 그대로 견본이 남습니다(리스트 행의 새 종류(value · read · pick · agree · switch · thumb)는 예외 — `parts` 를 주면 안 준 칸이 비어 있습니다).
 - 목록(메뉴·선택지·탭…)은 목록 prop 을 안 줬을 때만 견본 목록이 나옵니다.
 

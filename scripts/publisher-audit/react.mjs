@@ -1313,10 +1313,36 @@ async function interactionScenarios(holder) {
     check("아무것도 안 주면 견본(테마·라이트)이 그려진다 — 보기용", /라이트/.test(bareValue), `"${bareValue}"`);
     await mount(P, { name: "S1Modal", props: { title: "삭제" } });
     const modal = await P.eval(`({message: document.querySelector('#stage [data-s1-part="message"]')?.textContent.trim() ?? null, labels: [...document.querySelectorAll('#stage [data-s1-part="label"]')].map((e) => e.textContent.trim())})`);
-    check("모달에 title 만 주면 안 준 글자 칸(본문·단추)은 비어 있다 — 견본 문구가 새지 않는다", modal.message === "" && modal.labels.every((t) => t === ""), js(modal));
+    check("모달에 title 만 주면 본문 견본은 비고, 꼭 필요한 단추 글자(취소·확인)는 기본으로 남는다", modal.message === "" && js(modal.labels) === js(["취소", "확인"]), js(modal));
     await mount(P, { name: "S1Modal", props: {} });
     const modalBare = await P.eval(`[...document.querySelectorAll('#stage [data-s1-part="label"]')].map((e) => e.textContent.trim())`);
     check("모달에 아무것도 안 주면 견본(취소·확인)이 그려진다 — 0.22.0 과 같다", js(modalBare) === js(["취소", "확인"]), js(modalBare));
+  });
+
+  await pc("accessible-names", "내용 prop 을 준 렌더 — 단추·입력 등 누를 수 있는 요소의 접근 가능한 이름이 비어 있지 않다(견본 정책이 꼭 필요한 글자를 비우지 않는다)", async (check) => {
+    const cases = [
+      ["S1Modal", { title: "x" }], ["S1Modal", { title: "x", breakName: "mobile" }], ["S1ModalContent", { title: "x" }],
+      ["S1BottomSheet", { title: "x", variant: "dual" }], ["S1BottomSheet", { title: "x", options: ["a", "b"] }],
+      ["S1ExpandableCard", { title: "x" }], ["S1Button", { label: "x" }], ["S1TextButton", { label: "x" }], ["S1AssistButton", { label: "x" }],
+      ["S1Checkbox", { label: "x" }], ["S1Radio", { label: "x" }], ["S1Chip", { label: "x" }], ["S1Toggle", { label: "x" }],
+      ["S1ListRow", { variant: "nav", title: "x" }], ["S1ListRow", { variant: "pick", title: "x" }], ["S1ListRow", { variant: "agree", title: "x" }],
+      ["S1ListRow", { variant: "switch", title: "x" }], ["S1ListRow", { variant: "value", title: "x" }],
+      ["S1Gnb", { logo: "x" }], ["S1Lnb", { items: ["a", { label: "b", children: ["c"] }] }], ["S1MobileHeader", { title: "x" }],
+      ["S1Select", { options: ["a"], placeholder: "x" }], ["S1FilterChip", { title: "x", options: ["a"] }], ["S1Dropdown", { options: ["a"] }],
+      ["S1Tab", { tabs: ["a", "b"] }], ["S1MultiToggle", { cells: ["a", "b"] }], ["S1Pagination", { totalPages: 5 }],
+      ["S1Input", { label: "x" }], ["S1Input", { label: "x", type: "password" }], ["S1Input", { label: "x", type: "search" }], ["S1Textarea", { label: "x" }],
+      ["S1DatePicker", {}], ["S1TimePicker", {}], ["S1MobileBottomNav", { label: "x" }], ["S1Table", { headerCells: ["a"], rows: [["1"]] }]
+    ];
+    const bad = [];
+    for (const [name, props] of cases) {
+      if (ONLY.length && !ONLY.includes(name) && !LEGACY) continue;
+      await mount(P, { name, props, wait: 200 });
+      const empty = await P.eval(`(()=>{const out=[]; const stage=document.getElementById("stage"); const sel='button,a[href],input:not([type=hidden]),textarea,[role=button],[role=tab],[role=switch],[role=option]';
+        const nameOf=(e)=>{ if(e.getAttribute("aria-label")) return e.getAttribute("aria-label"); const lb=e.getAttribute("aria-labelledby"); if(lb){ const t=lb.split(/\\s+/).map(i=>document.getElementById(i)?.textContent||"").join(" ").trim(); if(t) return t;} if(e.id){ const l=document.querySelector('label[for="'+e.id+'"]'); if(l&&l.textContent.trim()) return l.textContent.trim(); } if(e.closest("label")?.textContent.trim()) return "label"; if(e.getAttribute("title")) return "t"; if(e.getAttribute("placeholder")) return "p"; return e.textContent.trim(); };
+        for(const e of stage.querySelectorAll(sel)){ if(!nameOf(e)) out.push(e.tagName.toLowerCase()+"["+(e.getAttribute("data-s1-part")||e.getAttribute("data-s1-component")||"")+"]"); } return out; })()`);
+      if (empty.length) bad.push(`${name} ${js(props)} → 이름 없음: ${[...new Set(empty)].join(", ")}`);
+    }
+    check("내용 prop 을 준 렌더에서 이름 없는 단추·입력이 없다", bad.length === 0, bad.length ? bad.slice(0, 8).join(" | ") : `${cases.length}개 렌더 모두 이름 있음`, "broken", "꼭 필요한 단추 글자(취소·확인·적용)·aria-label 은 견본 규칙에서 빼고 기본 글자를 남기기");
   });
 
   await pc("input-types", "입력칸(S1Input) — type · breakName 분리와 옛 이름", async (check) => {

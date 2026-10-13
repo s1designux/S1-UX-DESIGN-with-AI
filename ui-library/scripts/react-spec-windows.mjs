@@ -49,6 +49,7 @@ function dialogController(b, c, o) {
 }
 
 const MODAL_RULES = {
+  keepSamples: ["cancelLabel", "confirmLabel"],
   /* 동작 스크립트가 건드리지 않는 빈 칸은 0.22.0 처럼 내용을 받는다. */
   keepEmptySlots: ["overlay", "close"],
   renames: [
@@ -83,6 +84,7 @@ WINDOWS["modal-content"] = {
 };
 
 WINDOWS["bottom-sheet"] = {
+  keepSamples: ["applyLabel"],
   keepEmptySlots: ["sheet-backdrop", "sheet-close"],
   renames: [{ part: "label", within: closeReason("apply"), as: "apply-label" }],
   attrs: [

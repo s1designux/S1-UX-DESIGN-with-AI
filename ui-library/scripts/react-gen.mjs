@@ -317,6 +317,8 @@ function assemble(b, c) {
     let guarded = false;
     for (const form of rendered) {
       form.body = form.body.replace(/(slot\(partScope, "\w+"\)\.content) \?\? ("(?:[^"\\]|\\.)+")/g, (all, left, sample) => {
+        /* 꼭 있어야 하는 단추 글자(모달 취소·확인, 시트 적용)는 견본이 아니라 기본 글자다 — 내용을 줘도 남긴다. */
+        if ((spec.keepSamples ?? []).some((name) => left.includes(`"${name}"`))) return all;
         guarded = true;
         return `${left} ?? (bare ? ${sample} : undefined)`;
       });

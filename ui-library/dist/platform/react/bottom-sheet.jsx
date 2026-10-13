@@ -85,7 +85,7 @@ const S1BottomSheet = forwardRef(function S1BottomSheet({ variant, parts, open, 
           <div data-s1-part="sheet-footer" {...(slot(partScope, "sheetFooter").attrs ?? {})}>
             <button type="button" data-s1-component="button" data-variant="primary" data-size="lg" data-s1-close="apply">
               <span data-s1-part="label" {...(slot(partScope, "applyLabel").attrs ?? {})}>
-                {slot(partScope, "applyLabel").content ?? (bare ? "적용" : undefined)}
+                {slot(partScope, "applyLabel").content ?? "적용"}
               </span>
             </button>
           </div>

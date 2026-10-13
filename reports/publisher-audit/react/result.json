@@ -1,7 +1,7 @@
 {
   "tool": "scripts/publisher-audit/react.mjs",
-  "generatedAt": "2026-10-13T07:26:41.139Z",
-  "durationSec": 178,
+  "generatedAt": "2026-10-13T07:43:05.374Z",
+  "durationSec": 184,
   "environment": {
     "node": "v20.19.4",
     "react": "19.3.0",
@@ -54,7 +54,7 @@
   "summary": {
     "components": 32,
     "cases": 46,
-    "scenarios": 42,
+    "scenarios": 43,
     "broken": 0,
     "friction": 0,
     "note": 2,
@@ -285,8 +285,8 @@
       "warnings": [],
       "errors": [],
       "js": {
-        "raw": 385469,
-        "gz": 103763
+        "raw": 385381,
+        "gz": 103755
       }
     },
     "reactOnly": {
@@ -299,9 +299,9 @@
     "treeShaking": {
       "reactOnlyGz": 67830,
       "oneComponentGz": 68588,
-      "allComponentsGz": 103763,
+      "allComponentsGz": 103755,
       "oneOwnGz": 758,
-      "allOwnGz": 35933,
+      "allOwnGz": 35925,
       "ratio": 0.021
     },
     "readmeExamples": {
@@ -348,7 +348,7 @@
       "area": "build",
       "severity": "note",
       "what": "버튼 하나만 쓰면 부품 코드는 32종의 2% 만 들어옵니다(트리 셰이킹 됨).",
-      "evidence": "JS gzip: React 만 67830B · 버튼 1종 앱 68588B · 32종 앱 103763B",
+      "evidence": "JS gzip: React 만 67830B · 버튼 1종 앱 68588B · 32종 앱 103755B",
       "suggestedFix": "—"
     }
   ],
@@ -3797,7 +3797,7 @@
           "name": "본문을 children 으로 줬을 때 견본 문장이 남지 않는다",
           "ok": true,
           "severity": null,
-          "evidence": "처음부터 열림내가 만든 본문"
+          "evidence": "처음부터 열림내가 만든 본문취소확인"
         }
       ],
       "status": "pass",
@@ -4402,16 +4402,30 @@
           "evidence": "\"테마화면 표시 방식라이트\""
         },
         {
-          "name": "모달에 title 만 주면 안 준 글자 칸(본문·단추)은 비어 있다 — 견본 문구가 새지 않는다",
+          "name": "모달에 title 만 주면 본문 견본은 비고, 꼭 필요한 단추 글자(취소·확인)는 기본으로 남는다",
           "ok": true,
           "severity": null,
-          "evidence": "{\"message\":\"\",\"labels\":[\"\",\"\"]}"
+          "evidence": "{\"message\":\"\",\"labels\":[\"취소\",\"확인\"]}"
         },
         {
           "name": "모달에 아무것도 안 주면 견본(취소·확인)이 그려진다 — 0.22.0 과 같다",
           "ok": true,
           "severity": null,
           "evidence": "[\"취소\",\"확인\"]"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "accessible-names",
+      "title": "내용 prop 을 준 렌더 — 단추·입력 등 누를 수 있는 요소의 접근 가능한 이름이 비어 있지 않다(견본 정책이 꼭 필요한 글자를 비우지 않는다)",
+      "checks": [
+        {
+          "name": "내용 prop 을 준 렌더에서 이름 없는 단추·입력이 없다",
+          "ok": true,
+          "severity": null,
+          "evidence": "35개 렌더 모두 이름 있음"
         }
       ],
       "status": "pass",
@@ -4475,7 +4489,7 @@
           "name": "메뉴가 가리키는 하위 메뉴 판이 부품 안에서 함께 그려진다",
           "ok": true,
           "severity": null,
-          "evidence": "{\"controls\":\"_r_4t_-sub-1\",\"panelExists\":true}"
+          "evidence": "{\"controls\":\"_r_66_-sub-1\",\"panelExists\":true}"
         },
         {
           "name": "메뉴를 누르면 하위 메뉴가 펼쳐지고 onOpen 한 번",
@@ -4689,7 +4703,7 @@
           "name": "예시 3: 그려진다(부품 10개)",
           "ok": true,
           "severity": null,
-          "evidence": "삭제삭제할까요?되돌릴 수 없습니다.취소삭제글자 크기: 보통글자 크기작게보통크게"
+          "evidence": "삭제삭제할까요?되돌릴 수 없습니다.취소삭제글자 크기: 보통글자 크기작게보통크게적용"
         },
         {
           "name": "예시 4: 그려진다(부품 2개)",
@@ -4701,7 +4715,7 @@
           "name": "예시 5: 그려진다(부품 8개)",
           "ok": true,
           "severity": null,
-          "evidence": "S1 관제공지사항서비스출입출입 기록방문 예약개요설비목록점검준비 중알림새 출입 기록 알려 주기"
+          "evidence": "S1 관제공지사항서비스한국어출입출입 기록방문 예약개요설비목록점검준비 중알림새 출입 기록 알려 주기"
         },
         {
           "name": "예시 6: 그려진다(부품 13개)",

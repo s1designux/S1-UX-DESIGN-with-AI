@@ -74,12 +74,12 @@ const S1Modal = forwardRef(function S1Modal({ variant, breakName = DEFAULT_BREAK
           <div data-s1-part="footer" {...(slot(partScope, "footer").attrs ?? {})}>
             <button type="button" data-s1-component="button" data-variant="secondary" data-size="xxsm" data-s1-close="cancel">
               <span data-s1-part="label" {...(slot(partScope, "cancelLabel").attrs ?? {})}>
-                {slot(partScope, "cancelLabel").content ?? (bare ? "취소" : undefined)}
+                {slot(partScope, "cancelLabel").content ?? "취소"}
               </span>
             </button>
             <button type="button" data-s1-component="button" data-variant="primary" data-size="xxsm" data-s1-close="confirm">
               <span data-s1-part="label" {...(slot(partScope, "confirmLabel").attrs ?? {})}>
-                {slot(partScope, "confirmLabel").content ?? (bare ? "확인" : undefined)}
+                {slot(partScope, "confirmLabel").content ?? "확인"}
               </span>
             </button>
           </div>
@@ -112,12 +112,12 @@ const S1Modal = forwardRef(function S1Modal({ variant, breakName = DEFAULT_BREAK
           <div data-s1-part="footer" {...(slot(partScope, "footer").attrs ?? {})}>
             <button type="button" data-s1-component="button" data-variant="secondary" data-size="lg" data-s1-close="cancel">
               <span data-s1-part="label" {...(slot(partScope, "cancelLabel").attrs ?? {})}>
-                {slot(partScope, "cancelLabel").content ?? (bare ? "아니오" : undefined)}
+                {slot(partScope, "cancelLabel").content ?? "아니오"}
               </span>
             </button>
             <button type="button" data-s1-component="button" data-variant="primary" data-size="lg" data-s1-close="confirm">
               <span data-s1-part="label" {...(slot(partScope, "confirmLabel").attrs ?? {})}>
-                {slot(partScope, "confirmLabel").content ?? (bare ? "네" : undefined)}
+                {slot(partScope, "confirmLabel").content ?? "네"}
               </span>
             </button>
           </div>

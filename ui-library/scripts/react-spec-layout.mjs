@@ -152,6 +152,7 @@ function gnbMenusOf(view) {
 }
 
 LAYOUT["gnb"] = {
+  keepSamples: ["langLabel"],
   legacyParts: ["menu"],
   contentOverride: { menus: "{menuList.map(renderGnbMenu)}" },
   afterRoot: (body) => `      <>\n${body}\n        {menuList.map(renderGnbPanel)}\n      </>`,

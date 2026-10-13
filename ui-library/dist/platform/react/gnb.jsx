@@ -71,7 +71,7 @@ const S1Gnb = forwardRef(function S1Gnb({ variant, size, parts, onOpen, onClose,
               {slot(partScope, "langIcon").content ?? ""}
             </span>
             <span data-s1-part="lang-label" {...(slot(partScope, "langLabel").attrs ?? {})}>
-              {slot(partScope, "langLabel").content ?? (bare ? "한국어" : undefined)}
+              {slot(partScope, "langLabel").content ?? "한국어"}
             </span>
           </button>
           <button type="button" data-s1-part="account" aria-label="계정" {...(slot(partScope, "account").attrs ?? {})}>
