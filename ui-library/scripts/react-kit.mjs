@@ -70,9 +70,21 @@ export function keyOf(item, index) {
   return index;
 }
 
-/** parts 에 이름 붙은 prop(title · message …)을 합친다 — 같은 칸이면 prop 이 이긴다. */
-export function mergeParts(parts, direct) {
+/** parts 에 이름 붙은 prop(title · message …)을 합친다 — 같은 칸이면 prop 이 이긴다.
+ *  aliases: 옛 슬롯 이름 → 새 슬롯 이름들. 옛 이름으로 준 값은 새 이름 칸에도 들어간다(0.22.0 에서 쓰던 코드가 그대로 도는 길).
+ *  새 이름으로 직접 준 값(parts 의 새 이름 · prop)이 있으면 그쪽이 이기고, 옛 이름은 비어 있는 칸만 채운다. */
+export function mergeParts(parts, direct, aliases) {
   let merged = parts;
+  if (aliases && isPlainObject(parts)) {
+    for (const [oldName, targets] of Object.entries(aliases)) {
+      if (parts[oldName] === undefined) continue;
+      for (const target of targets) {
+        if (parts[target] !== undefined) continue;
+        if (merged === parts) merged = { ...parts };
+        merged[target] = parts[oldName];
+      }
+    }
+  }
   for (const [name, value] of Object.entries(direct)) {
     if (value === undefined) continue;
     if (merged === parts) merged = isPlainObject(parts) ? { ...parts } : {};

@@ -51,7 +51,8 @@ const S1Dropdown = forwardRef(function S1Dropdown({ variant, size, parts, value,
     }
   }, []);
   useApply(apiRef, (api) => {
-    const wanted = currentValue === undefined || currentValue === null ? "" : String(currentValue);
+    if (currentValue === undefined) return;
+    const wanted = currentValue === null ? "" : String(currentValue);
     if (api.value !== wanted) api.setValue(wanted);
   });
   return (

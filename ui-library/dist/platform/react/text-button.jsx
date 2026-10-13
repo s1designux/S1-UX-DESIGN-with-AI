@@ -24,11 +24,13 @@ const S1TextButton = forwardRef(function S1TextButton({ variant, parts, label, c
   const uid = useId();
   const rootAttr = forwardedRef;
   assertAllowed("variant", variant, VARIANTS);
+  /* 견본 글자는 내용 prop 을 하나도 주지 않았을 때만 그린다. */
+  const bare = children === undefined && label === undefined;
   const partScope = scopeOf(mergeParts(parts, { label: children !== undefined ? children : label }));
   return (
       <button type="button" data-s1-component="text-button" data-variant={variant ?? "primary"} ref={rootAttr} className={className} style={style} {...rest}>
         <span data-s1-part="label" {...(slot(partScope, "label").attrs ?? {})}>
-          {slot(partScope, "label").content ?? "텍스트버튼"}
+          {slot(partScope, "label").content ?? (bare ? "텍스트버튼" : undefined)}
         </span>
       </button>
   );

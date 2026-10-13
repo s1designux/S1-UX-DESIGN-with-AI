@@ -24,10 +24,12 @@ const S1DataTag = forwardRef(function S1DataTag({ variant, parts, children, labe
   const uid = useId();
   const rootAttr = forwardedRef;
   assertAllowed("variant", variant, VARIANTS);
+  /* 견본 글자는 내용 prop 을 하나도 주지 않았을 때만 그린다. */
+  const bare = label === undefined && children === undefined;
   const partScope = scopeOf(mergeParts(parts, { label: label }));
   return (
       <span data-s1-component="data-tag" data-shape="chips" data-solid="on" data-tone={variant ?? "blue"} ref={rootAttr} className={className} style={style} {...rest}>
-        {children === undefined ? (slot(partScope, "label").content ?? "승인") : children}
+        {children === undefined ? (slot(partScope, "label").content ?? (bare ? "승인" : undefined)) : children}
       </span>
   );
 });

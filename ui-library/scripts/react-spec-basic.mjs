@@ -57,7 +57,7 @@ BASIC["data-tag"] = {
 /* ── 칩 ── */
 BASIC["chip"] = {
   attrs: [{ root: true, pieces: ["data-value={value}"] }],
-  rootEnd: (indent) => `${indent}{name ? <input type="hidden" name={name} value={value ?? (typeof labelText === "string" ? labelText : "")} disabled={!isOn} /> : null}`,
+  rootEnd: (indent) => `${indent}{name ? <input type="hidden" name={name} value={value ?? rest["data-value"] ?? (typeof labelText === "string" ? labelText : typeof slot(partScope, "label").content === "string" ? slot(partScope, "label").content : "")} disabled={!isOn} /> : null}`,
   controller(b, c) {
     selectableController(b, c, { onChange: "setOn(Boolean(event.detail?.selected)); " });
     labelProps(b, { slot: "label" });

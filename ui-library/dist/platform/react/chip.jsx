@@ -28,6 +28,8 @@ const S1Chip = forwardRef(function S1Chip({ variant, size, breakName = DEFAULT_B
   assertAllowed("size", size, SIZES);
   assertAllowed("breakName", breakName, BREAKS);
   const formKey = breakName;
+  /* 견본 글자는 내용 prop 을 하나도 주지 않았을 때만 그린다. */
+  const bare = children === undefined && label === undefined;
   const initialSelected = useRef(selected ?? defaultSelected ?? false).current;
   const [on, setOn] = useState(initialSelected);
   const isOn = selected !== undefined ? selected : on;
@@ -47,18 +49,18 @@ const S1Chip = forwardRef(function S1Chip({ variant, size, breakName = DEFAULT_B
     return (
       <button data-value={value} type="button" data-s1-component="chip" data-variant={variant ?? "line"} data-size={size ?? "md"} data-break="pc" aria-pressed="false" ref={rootAttr} className={className} style={style} {...rest}>
         <span data-s1-part="label" {...(slot(partScope, "label").attrs ?? {})}>
-          {slot(partScope, "label").content ?? "라벨"}
+          {slot(partScope, "label").content ?? (bare ? "라벨" : undefined)}
         </span>
-        {name ? <input type="hidden" name={name} value={value ?? (typeof labelText === "string" ? labelText : "")} disabled={!isOn} /> : null}
+        {name ? <input type="hidden" name={name} value={value ?? rest["data-value"] ?? (typeof labelText === "string" ? labelText : typeof slot(partScope, "label").content === "string" ? slot(partScope, "label").content : "")} disabled={!isOn} /> : null}
       </button>
     );
   } else if (formKey === "mobile") {
     return (
       <button data-value={value} type="button" data-s1-component="chip" data-variant={variant ?? "line"} data-size={size ?? "sm"} data-break="mobile" aria-pressed="false" ref={rootAttr} className={className} style={style} {...rest}>
         <span data-s1-part="label" {...(slot(partScope, "label").attrs ?? {})}>
-          {slot(partScope, "label").content ?? "라벨"}
+          {slot(partScope, "label").content ?? (bare ? "라벨" : undefined)}
         </span>
-        {name ? <input type="hidden" name={name} value={value ?? (typeof labelText === "string" ? labelText : "")} disabled={!isOn} /> : null}
+        {name ? <input type="hidden" name={name} value={value ?? rest["data-value"] ?? (typeof labelText === "string" ? labelText : typeof slot(partScope, "label").content === "string" ? slot(partScope, "label").content : "")} disabled={!isOn} /> : null}
       </button>
     );
   }

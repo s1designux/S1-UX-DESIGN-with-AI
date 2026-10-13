@@ -115,12 +115,31 @@ import { S1Button, S1Input } from "./s1-ui/platform/react";
 | DOM 잡기 | \`ref\` | 루트 요소로 전달됩니다(부품 동작은 그대로) |
 | 모양 덧입히기 | \`className\` · \`style\` · 그 밖의 HTML 속성 | 루트 요소에 붙습니다 |
 
-### 이벤트 받는 모양 (\`onChange\` 와 \`onValueChange\` 의 차이)
+### 이벤트 받는 모양 (\`onChange\` 는 이벤트, \`onValueChange\` 는 값)
 
-- **입력칸·여러 줄 입력·체크박스·라디오**: 브라우저 표준 \`onChange(event)\` 입니다 — \`event.target.value\` · \`event.target.checked\`.
-- **고르는 부품** (${code(valueComponents.length ? valueComponents : ["S1Select"])}): \`onValueChange(value, detail)\` 가 **고른 값만** 줍니다(준 \`value\` 그대로 — 숫자면 숫자). \`onChange(event)\` 는 배포본 사용자 이벤트(\`CustomEvent\`)를 그대로 줍니다 — \`event.detail.value\` · \`event.detail.option\`. 값을 쥘 때는 \`onValueChange\` 가 간단합니다.
+| 부품 | \`onChange\` 가 주는 것 | \`onValueChange\` 가 주는 것 |
+|---|---|---|
+| 입력칸·여러 줄 입력·체크박스·라디오·리스트 행의 체크 | 브라우저 표준 \`ChangeEvent\` — \`event.target.value\` · \`event.target.checked\` | (없음) |
+| 고르는 부품 (${code(valueComponents.length ? valueComponents : ["S1Select"])}) | 배포본 사용자 이벤트 \`CustomEvent\` — \`event.detail.value\` · \`event.detail.option\` (**0.22.0 과 똑같은 모양**이라 옛 코드가 그대로 돕니다) | **고른 값 하나** — 준 \`value\` 그대로(숫자로 줬으면 숫자). 두 번째 인자 \`detail\` 이 이벤트의 detail |
+
+- 규칙은 하나입니다: **\`onChange\` = 이벤트를 받는 옛 방식(바뀌지 않았습니다), \`onValueChange\` = 값만 받는 새 방식**. 값을 상태에 쥘 때는 \`onValueChange\` 가 간단합니다. 타입 정의(\`index.d.ts\`)에도 같은 설명이 적혀 있습니다.
 - 이벤트 이름은 React 대소문자입니다: \`onBeforeChange\` · \`onSelectionChange\`. 옛 이름(\`onBeforechange\` · \`onSelectionchange\`)도 한동안 함께 받습니다.
 - 화면이 정한 변화(\`open\`·\`value\`·\`page\` 를 바꿔서 생긴 열림·고름)는 \`onOpenChange\`·\`onValueChange\`·\`onPageChange\` 로 **되알리지 않습니다** — 상태가 루프를 돌지 않습니다.
+
+### 견본 글자는 언제 나오나
+
+- 부품에 **내용 prop(\`label\` · \`children\` · \`title\` · \`message\` · \`description\` …)을 하나도 주지 않으면** 승인 예제의 견본 글자가 그대로 그려집니다(보기용).
+- **하나라도 주면** 주지 않은 글자 칸은 비어 있거나 그려지지 않습니다 — 견본 문구가 실서비스 화면에 새어 나오지 않습니다. 예: \`<S1Modal title="삭제" message="지울까요?" />\` 는 단추 글자도 \`confirmLabel\` · \`cancelLabel\` 로 줘야 합니다.
+- \`parts\` 로만 쓰던 0.22.0 코드는 예전 그대로 견본이 남습니다(리스트 행의 새 종류(value · read · pick · agree · switch · thumb)는 예외 — \`parts\` 를 주면 안 준 칸이 비어 있습니다).
+- 목록(메뉴·선택지·탭…)은 목록 prop 을 안 줬을 때만 견본 목록이 나옵니다.
+
+### 0.22.0 에서 올릴 때
+
+- **옛 코드는 그대로 돕니다**: \`parts\` 슬롯 이름(\`parts.label\`(모달·시트 단추) · 접힘 카드의 \`parts.title\` 등 · LNB \`parts.item\`/\`itemIcon\` · 리스트 행 \`parts.chevron\` 에 준 토글)과 \`onChange(event)\` 를 바꾸지 않아도 됩니다. 새 이름(\`cancelLabel\` · \`confirmLabel\` · \`applyLabel\` · \`items\`)을 같이 주면 새 이름이 이깁니다.
+- **타입이 엄격해졌습니다**: 아무 prop 이나 통과시키던 열린 타입을 닫았기 때문에, TypeScript 를 쓰는 프로젝트는 0.22.0 코드에서 **타입 오류가 새로 보일 수 있습니다**(동작은 같습니다). 흔한 고침:
+  - \`aria-checked={String(on)}\` → \`aria-checked={on}\` 또는 \`on ? "true" : "false"\` (React 의 표준 타입이 \`boolean | "true" | "false" | "mixed"\` 입니다 — \`string\` 은 안 됩니다).
+  - 표의 \`control.attrs.onClick\` · 슬롯 \`attrs\` 의 이벤트 핸들러 → 매개변수 타입을 DOM 의 \`MouseEvent\` 가 아니라 React 의 \`React.MouseEvent\` 로(또는 타입을 생략).
+  - 오타 난 prop 이름 → 타입 정의가 가리키는 이름으로.
 
 ## 3. 예시 (그대로 붙여 넣으면 됩니다)
 

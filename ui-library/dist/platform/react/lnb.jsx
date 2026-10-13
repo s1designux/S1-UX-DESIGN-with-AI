@@ -13,7 +13,9 @@ export const DEFAULT_BREAK = "pc";
 export const VARIANTS = ["menu","brand"];
 export const SIZES = ["md","lg"];
 /* parts 로 줄 수 있는 슬롯 이름(낙타 표기) — 타입 정의의 parts 키와 같다. */
-export const PARTS = ["head","collapse","collapseIcon","items","brand","brandLogo"];
+export const PARTS = ["head","collapse","collapseIcon","items","brand","brandLogo","item","itemIcon","itemToggle","subitems","group"];
+/* 0.22.0 에서 쓰던 슬롯 이름 — 계속 받는다(옛 이름 하나가 여러 자리를 함께 채우는 것도 그때 그대로). 새 코드는 위 이름을 쓰세요. */
+export const LEGACY_PARTS = ["item","itemIcon","itemToggle","subitems","group"];
 export const DEFAULT_VARIANT = "menu";
 export const STRUCTURAL = {"attribute":"data-variant","prop":"variant"};
 
@@ -43,7 +45,7 @@ const S1Lnb = forwardRef(function S1Lnb({ variant, size, parts, onCollapse, onTo
     const key = item.key ?? index;
     const title = item.title ?? (typeof item.label === "string" ? item.label : undefined);
     const iconAttrs = slot(partScope, "itemIcon").attrs ?? {};
-    const icon = <span data-s1-part="item-icon" aria-hidden="true" {...iconAttrs}>{item.icon ?? ""}</span>;
+    const icon = <span data-s1-part="item-icon" aria-hidden="true" {...iconAttrs}>{item.icon ?? slot(partScope, "itemIcon").content ?? ""}</span>;
     if (item.children) {
       const subId = uid + "-sub-" + index;
       const open = Boolean(item.expanded);
@@ -52,14 +54,14 @@ const S1Lnb = forwardRef(function S1Lnb({ variant, size, parts, onCollapse, onTo
           <button type="button" data-s1-part="item" aria-expanded={String(open)} aria-controls={subId} title={title} {...(slot(partScope, "item").attrs ?? {})}>
             {icon}
             {item.label}
-            <span data-s1-part="item-toggle" aria-hidden="true" {...(slot(partScope, "itemToggle").attrs ?? {})}></span>
+            <span data-s1-part="item-toggle" aria-hidden="true" {...(slot(partScope, "itemToggle").attrs ?? {})}>{slot(partScope, "itemToggle").content ?? ""}</span>
           </button>
           <ul data-s1-part="subitems" id={subId} hidden={!open} {...(slot(partScope, "subitems").attrs ?? {})}>
             {item.children.map((child, childIndex) => {
               const sub = typeof child === "string" || typeof child === "number" ? { label: String(child) } : child;
               return (
                 <li key={sub.key ?? childIndex}>
-                  <a data-s1-part="item" href={sub.href ?? "#"} aria-current={sub.current ? "page" : undefined} {...(slot(partScope, "item").attrs ?? {})}>{sub.label}</a>
+                  <a data-s1-part="item" href={sub.href ?? "#"} aria-current={sub.current ? "page" : undefined} {...(slot(partScope, "item").attrs ?? {})}>{slot(partScope, "item").content ?? sub.label}</a>
                 </li>
               );
             })}

@@ -43,6 +43,15 @@ export function Ok() {
       <S1Tab tabs={[{ value: "a", label: "가", panel: "내용" }]} defaultValue="a" onValueChange={(next) => console.log(next)} />
       <S1Toggle checked={on} onCheckedChange={setOn} name="notify" />
       <S1MultiToggle cells={[{ value: "a", label: "왼쪽" }, { value: "b", label: "오른쪽", disabled: true }]} defaultValue="a" />
+      {/* 0.22.0 코드가 쓰던 모양 — 문자열 aria-checked · 옛 슬롯 이름 · 옛 목록 모양이 타입에서 막히지 않는다 */}
+      <S1Toggle aria-checked={String(on)} aria-label="푸시" onClick={() => setOn(!on)} />
+      <S1Modal variant="dual" parts={{ title: "T", message: "M", label: "예" }} />
+      <S1BottomSheet variant="single" parts={{ sheetTitle: "정렬", label: "완료" }} />
+      <S1ListRow variant="switch" parts={{ title: "푸시", chevron: <S1Toggle aria-checked={String(on)} aria-label="푸시" /> }} />
+      <S1Lnb parts={{ item: { attrs: { "data-test": "x" } }, itemIcon: "★" }} />
+      <S1Select options={[{ optionLabel: "A", attrs: { "data-value": "a" } }]} parts={{ value: "A" }} />
+      {/* onChange 는 이벤트(CustomEvent) · onValueChange 는 값 — 둘의 모양이 타입으로 구분된다 */}
+      <S1Select options={["a", "b"]} onChange={(event) => console.log(event.detail.value, event.type)} onValueChange={(value, detail) => console.log(value, detail.option)} />
     </div>
   );
 }
@@ -80,6 +89,12 @@ export function Expect() {
       {/* EXPECT:parts-key — parts 에 없는 슬롯 이름 */}
       {/* @ts-expect-error */}
       <S1Button parts={{ lable: "확인" }} />
+      {/* EXPECT:onchange-is-event — 고르는 부품의 onChange 는 값이 아니라 이벤트를 받는다(값을 받는 함수는 안 된다) */}
+      {/* @ts-expect-error */}
+      <S1Select options={["a"]} onChange={(value: string) => value.toUpperCase()} />
+      {/* EXPECT:onvaluechange-is-value — onValueChange 는 이벤트가 아니라 값을 받는다(이벤트를 받는 함수는 안 된다) */}
+      {/* @ts-expect-error */}
+      <S1Select options={["a"]} onValueChange={(event: CustomEvent) => event.detail} />
       {/* EXPECT:disabled-type — disabled 에 글자 */}
       {/* @ts-expect-error */}
       <S1Button disabled="yes" />

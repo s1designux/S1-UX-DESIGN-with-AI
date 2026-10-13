@@ -23,11 +23,13 @@ function assertAllowed(label, value, allowed) {
 const S1AssistButton = forwardRef(function S1AssistButton({ parts, label, children, className, style, ...rest }, forwardedRef) {
   const uid = useId();
   const rootAttr = forwardedRef;
+  /* 견본 글자는 내용 prop 을 하나도 주지 않았을 때만 그린다. */
+  const bare = children === undefined && label === undefined;
   const partScope = scopeOf(mergeParts(parts, { label: children !== undefined ? children : label }));
   return (
       <button type="button" data-s1-component="assist-button" ref={rootAttr} className={className} style={style} {...rest}>
         <span data-s1-part="label" {...(slot(partScope, "label").attrs ?? {})}>
-          {slot(partScope, "label").content ?? "보조버튼"}
+          {slot(partScope, "label").content ?? (bare ? "보조버튼" : undefined)}
         </span>
       </button>
   );

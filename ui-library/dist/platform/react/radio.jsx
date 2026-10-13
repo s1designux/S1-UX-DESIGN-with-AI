@@ -23,6 +23,8 @@ function assertAllowed(label, value, allowed) {
 const S1Radio = forwardRef(function S1Radio({ parts, value, defaultValue, onChange, onInput, onBlur, onFocus, name, placeholder, disabled, required, readOnly, checked, defaultChecked, inputRef, label, children, className, style, ...rest }, forwardedRef) {
   const uid = useId();
   const rootAttr = forwardedRef;
+  /* 견본 글자는 내용 prop 을 하나도 주지 않았을 때만 그린다. */
+  const bare = children === undefined && label === undefined;
   /* 입력 요소로 그대로 넘어가는 값 — 정의되지 않은 것은 넘기지 않는다(비제어 상태 유지). */
   const controlProps = {};
   if (value !== undefined) controlProps.value = value;
@@ -44,7 +46,7 @@ const S1Radio = forwardRef(function S1Radio({ parts, value, defaultValue, onChan
       <div data-s1-component="radio" ref={rootAttr} className={className} style={style} {...rest}>
         <input type="radio" id={`${uid}-control`} name="s1-radio-example-group" data-s1-part="control" {...(slot(partScope, "control").attrs ?? {})} {...controlProps} />
         <label data-s1-part="label" htmlFor={`${uid}-control`} {...(slot(partScope, "label").attrs ?? {})}>
-          {slot(partScope, "label").content ?? "옵션 1"}
+          {slot(partScope, "label").content ?? (bare ? "옵션 1" : undefined)}
         </label>
       </div>
   );

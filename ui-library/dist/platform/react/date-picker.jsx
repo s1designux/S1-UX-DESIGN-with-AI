@@ -28,6 +28,8 @@ const S1DatePicker = forwardRef(function S1DatePicker({ variant, size, breakName
   assertAllowed("size", size, SIZES);
   assertAllowed("breakName", breakName, BREAKS);
   const formKey = breakName;
+  /* 견본 글자는 내용 prop 을 하나도 주지 않았을 때만 그린다. */
+  const bare = placeholder === undefined;
   const initialValue = useRef(value !== undefined ? value : defaultValue).current;
   const initialSingle = typeof initialValue === "string" ? initialValue : undefined;
   const initialStart = initialValue && typeof initialValue === "object" ? initialValue.start ?? undefined : undefined;
@@ -59,7 +61,7 @@ const S1DatePicker = forwardRef(function S1DatePicker({ variant, size, breakName
       <div data-name={name} data-placeholder={placeholder} data-value={initialSingle} data-range-start={initialStart} data-range-end={initialEnd} data-s1-component="date-picker" data-size={size ?? "md"} data-break="pc" data-mode={variant ?? "single"} ref={rootAttr} className={className} style={style} {...rest}>
         <button disabled={disabled} type="button" data-s1-part="trigger" aria-haspopup="dialog" aria-expanded="false" {...(slot(partScope, "trigger").attrs ?? {})}>
           <span data-s1-part="value" {...(slot(partScope, "value").attrs ?? {})}>
-            {slot(partScope, "value").content ?? "날짜 선택"}
+            {slot(partScope, "value").content ?? (bare ? "날짜 선택" : undefined)}
           </span>
           <span data-s1-part="icon" aria-hidden="true" {...(slot(partScope, "icon").attrs ?? {})}>
             {slot(partScope, "icon").content ?? ""}
@@ -75,7 +77,7 @@ const S1DatePicker = forwardRef(function S1DatePicker({ variant, size, breakName
       <div data-name={name} data-placeholder={placeholder} data-value={initialSingle} data-range-start={initialStart} data-range-end={initialEnd} data-s1-component="date-picker" data-size={size ?? "md"} data-break="mobile" data-mode={variant ?? "single"} ref={rootAttr} className={className} style={style} {...rest}>
         <button disabled={disabled} type="button" data-s1-part="trigger" aria-haspopup="dialog" aria-expanded="false" {...(slot(partScope, "trigger").attrs ?? {})}>
           <span data-s1-part="value" {...(slot(partScope, "value").attrs ?? {})}>
-            {slot(partScope, "value").content ?? "날짜 선택"}
+            {slot(partScope, "value").content ?? (bare ? "날짜 선택" : undefined)}
           </span>
           <span data-s1-part="icon" aria-hidden="true" {...(slot(partScope, "icon").attrs ?? {})}>
             {slot(partScope, "icon").content ?? ""}
@@ -86,7 +88,7 @@ const S1DatePicker = forwardRef(function S1DatePicker({ variant, size, breakName
           <div data-s1-part="sheet-panel" role="dialog" aria-modal="true" aria-labelledby={`${uid}-sheet-title`} tabIndex="-1" {...(slot(partScope, "sheetPanel").attrs ?? {})}>
             <div data-s1-part="sheet-header" {...(slot(partScope, "sheetHeader").attrs ?? {})}>
               <span data-s1-part="sheet-title" id={`${uid}-sheet-title`} {...(slot(partScope, "sheetTitle").attrs ?? {})}>
-                {slot(partScope, "sheetTitle").content ?? "날짜 선택"}
+                {slot(partScope, "sheetTitle").content ?? (bare ? "날짜 선택" : undefined)}
               </span>
               <button type="button" data-s1-part="sheet-close" aria-label="닫기" {...(slot(partScope, "sheetClose").attrs ?? {})} />
             </div>
@@ -96,7 +98,7 @@ const S1DatePicker = forwardRef(function S1DatePicker({ variant, size, breakName
             <div data-s1-part="sheet-footer" {...(slot(partScope, "sheetFooter").attrs ?? {})}>
               <button type="button" data-s1-part="apply" data-s1-component="button" data-variant="primary" data-size="lg" {...(slot(partScope, "apply").attrs ?? {})}>
                 <span data-s1-part="label" {...(slot(partScope, "label").attrs ?? {})}>
-                  {slot(partScope, "label").content ?? "적용"}
+                  {slot(partScope, "label").content ?? (bare ? "적용" : undefined)}
                 </span>
               </button>
             </div>

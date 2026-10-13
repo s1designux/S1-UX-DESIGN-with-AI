@@ -14,6 +14,8 @@ export const VARIANTS = [];
 export const SIZES = [];
 /* parts 로 줄 수 있는 슬롯 이름(낙타 표기) — 타입 정의의 parts 키와 같다. */
 export const PARTS = ["header","text","title","subtitle","body","note","caption","toggleIcon","panelWrap","panel","panelTitle","panelSubtitle","panelBody","panelNote","panelCaption"];
+/* 0.22.0 에서 쓰던 슬롯 이름 — 계속 받는다(옛 이름 하나가 여러 자리를 함께 채우는 것도 그때 그대로). 새 코드는 위 이름을 쓰세요. */
+export const LEGACY_PARTS = ["title","subtitle","body","note","caption"];
 
 function assertAllowed(label, value, allowed) {
   if (value === undefined || allowed.length === 0 || allowed.includes(value)) return;
@@ -24,10 +26,12 @@ const S1ExpandableCard = forwardRef(function S1ExpandableCard({ parts, open, def
   const uid = useId();
   const rootRef = useRef(null);
   const rootAttr = useMergedRef(rootRef, forwardedRef);
+  /* 견본 글자는 내용 prop 을 하나도 주지 않았을 때만 그린다. */
+  const bare = title === undefined && subtitle === undefined && body === undefined && note === undefined && caption === undefined && children === undefined;
   const initialOpen = useRef(open ?? defaultOpen ?? false).current;
   const syncing = useRef(false);
   const rerender = useRerender();
-  const partScope = scopeOf(mergeParts(parts, { title: title, subtitle: subtitle, body: body, note: note, caption: caption }));
+  const partScope = scopeOf(mergeParts(parts, { title: title, subtitle: subtitle, body: body, note: note, caption: caption }, {"title":["panelTitle"],"subtitle":["panelSubtitle"],"body":["panelBody"],"note":["panelNote"],"caption":["panelCaption"]}));
   const apiRef = useRuntime(rootRef, { init, destroy }, {
     "s1:expandable-card:change": (event) => {
       onChange?.(event);
@@ -45,19 +49,19 @@ const S1ExpandableCard = forwardRef(function S1ExpandableCard({ parts, open, def
         <button aria-expanded={String(initialOpen)} type="button" data-s1-part="header" aria-controls={`${uid}-panel-wrap`} {...(slot(partScope, "header").attrs ?? {})}>
           <span data-s1-part="text" {...(slot(partScope, "text").attrs ?? {})}>
             <span data-s1-part="title" {...(slot(partScope, "title").attrs ?? {})}>
-              {slot(partScope, "title").content ?? "타이틀"}
+              {slot(partScope, "title").content ?? (bare ? "타이틀" : undefined)}
             </span>
             <span data-s1-part="subtitle" {...(slot(partScope, "subtitle").attrs ?? {})}>
-              {slot(partScope, "subtitle").content ?? "서브타이틀"}
+              {slot(partScope, "subtitle").content ?? (bare ? "서브타이틀" : undefined)}
             </span>
             <span data-s1-part="body" {...(slot(partScope, "body").attrs ?? {})}>
-              {slot(partScope, "body").content ?? "서브타이틀"}
+              {slot(partScope, "body").content ?? (bare ? "서브타이틀" : undefined)}
             </span>
             <span data-s1-part="note" {...(slot(partScope, "note").attrs ?? {})}>
-              {slot(partScope, "note").content ?? "서브타이틀"}
+              {slot(partScope, "note").content ?? (bare ? "서브타이틀" : undefined)}
             </span>
             <span data-s1-part="caption" {...(slot(partScope, "caption").attrs ?? {})}>
-              {slot(partScope, "caption").content ?? "서브타이틀"}
+              {slot(partScope, "caption").content ?? (bare ? "서브타이틀" : undefined)}
             </span>
           </span>
           <span data-s1-part="toggle-icon" aria-hidden="true" {...(slot(partScope, "toggleIcon").attrs ?? {})}>
@@ -69,19 +73,19 @@ const S1ExpandableCard = forwardRef(function S1ExpandableCard({ parts, open, def
             {children === undefined ? (
               <>
             <span data-s1-part="title" {...(slot(partScope, "panelTitle").attrs ?? {})}>
-              {slot(partScope, "panelTitle").content ?? "타이틀"}
+              {slot(partScope, "panelTitle").content ?? (bare ? "타이틀" : undefined)}
             </span>
             <span data-s1-part="subtitle" {...(slot(partScope, "panelSubtitle").attrs ?? {})}>
-              {slot(partScope, "panelSubtitle").content ?? "서브타이틀"}
+              {slot(partScope, "panelSubtitle").content ?? (bare ? "서브타이틀" : undefined)}
             </span>
             <span data-s1-part="body" {...(slot(partScope, "panelBody").attrs ?? {})}>
-              {slot(partScope, "panelBody").content ?? "서브타이틀"}
+              {slot(partScope, "panelBody").content ?? (bare ? "서브타이틀" : undefined)}
             </span>
             <span data-s1-part="note" {...(slot(partScope, "panelNote").attrs ?? {})}>
-              {slot(partScope, "panelNote").content ?? "서브타이틀"}
+              {slot(partScope, "panelNote").content ?? (bare ? "서브타이틀" : undefined)}
             </span>
             <span data-s1-part="caption" {...(slot(partScope, "panelCaption").attrs ?? {})}>
-              {slot(partScope, "panelCaption").content ?? "서브타이틀"}
+              {slot(partScope, "panelCaption").content ?? (bare ? "서브타이틀" : undefined)}
             </span>
               </>
             ) : children}

@@ -24,6 +24,8 @@ const S1MobileHeader = forwardRef(function S1MobileHeader({ variant, parts, titl
   const uid = useId();
   const rootAttr = forwardedRef;
   assertAllowed("variant", variant, VARIANTS);
+  /* 견본 글자는 내용 prop 을 하나도 주지 않았을 때만 그린다. */
+  const bare = title === undefined;
   const partScope = scopeOf(mergeParts(parts, { title: title }));
   return (
       <header data-s1-component="mobile-header" data-variant={variant ?? "standard-title"} ref={rootAttr} className={className} style={style} {...rest}>
@@ -33,7 +35,7 @@ const S1MobileHeader = forwardRef(function S1MobileHeader({ variant, parts, titl
           </span>
         </button>
         <h1 data-s1-part="title" {...(slot(partScope, "title").attrs ?? {})}>
-          {slot(partScope, "title").content ?? "스탠다드형 타이틀"}
+          {slot(partScope, "title").content ?? (bare ? "스탠다드형 타이틀" : undefined)}
         </h1>
         <span data-s1-part="spacer" aria-hidden="true" {...(slot(partScope, "spacer").attrs ?? {})}>
           {slot(partScope, "spacer").content ?? ""}

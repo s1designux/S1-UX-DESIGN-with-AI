@@ -1,7 +1,7 @@
 {
   "tool": "scripts/publisher-audit/react.mjs",
-  "generatedAt": "2026-10-13T06:30:05.786Z",
-  "durationSec": 165,
+  "generatedAt": "2026-10-13T07:26:41.139Z",
+  "durationSec": 178,
   "environment": {
     "node": "v20.19.4",
     "react": "19.3.0",
@@ -17,7 +17,7 @@
   },
   "package": {
     "zip": "assets/downloads/s1-ui-react.zip",
-    "version": "0.23.0",
+    "version": "0.23.1",
     "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71",
     "exportedComponents": 32,
     "readmeStartSteps": [
@@ -54,9 +54,9 @@
   "summary": {
     "components": 32,
     "cases": 46,
-    "scenarios": 40,
+    "scenarios": 42,
     "broken": 0,
-    "friction": 1,
+    "friction": 0,
     "note": 2,
     "notChecked": [
       {
@@ -97,10 +97,6 @@
       },
       {
         "check": "S1Input[search-mobile] propUpdate",
-        "reason": "글자 슬롯이 없는 부품"
-      },
-      {
-        "check": "S1Lnb propUpdate",
         "reason": "글자 슬롯이 없는 부품"
       },
       {
@@ -162,7 +158,7 @@
     "typescriptCatchesMistakes": "pass",
     "ssrRenderToString": "pass",
     "nextjsBuild": "notChecked",
-    "fontResolved": "fail"
+    "fontResolved": "pass"
   },
   "packageFacts": {
     "exported": 32,
@@ -280,8 +276,8 @@
       "warnings": [],
       "errors": [],
       "js": {
-        "raw": 221209,
-        "gz": 68535
+        "raw": 221383,
+        "gz": 68588
       }
     },
     "readmeAll": {
@@ -289,8 +285,8 @@
       "warnings": [],
       "errors": [],
       "js": {
-        "raw": 381362,
-        "gz": 102928
+        "raw": 385469,
+        "gz": 103763
       }
     },
     "reactOnly": {
@@ -302,11 +298,11 @@
     },
     "treeShaking": {
       "reactOnlyGz": 67830,
-      "oneComponentGz": 68535,
-      "allComponentsGz": 102928,
-      "oneOwnGz": 705,
-      "allOwnGz": 35098,
-      "ratio": 0.02
+      "oneComponentGz": 68588,
+      "allComponentsGz": 103763,
+      "oneOwnGz": 758,
+      "allOwnGz": 35933,
+      "ratio": 0.021
     },
     "readmeExamples": {
       "count": 7,
@@ -340,14 +336,6 @@
   },
   "findings": [
     {
-      "id": "react:font:not-loaded",
-      "area": "font",
-      "severity": "friction",
-      "what": "README 대로 하면 Pretendard 웹폰트가 읽히지 않습니다 — 33개 조합 중 0개는 다른 글꼴로, 2개는 이 컴퓨터에 깔린 Pretendard 로 그려졌습니다(사용자 컴퓨터엔 없을 수 있음).",
-      "evidence": "실제 렌더 글꼴: Pretendard Medium(설치 글꼴) | Pretendard(설치 글꼴)+Pretendard Variable(웹폰트) | Pretendard Variable(웹폰트)+Pretendard Medium(설치 글꼴) · CSS 지정: \"Pretendard Variable\", Pretendard, sans-serif",
-      "suggestedFix": "시작하기에 Pretendard 읽히기(웹폰트 import) 단계 추가 또는 s1-ui.css 에 @font-face 포함"
-    },
-    {
       "id": "react:api:open-prop",
       "area": "api",
       "severity": "note",
@@ -360,7 +348,7 @@
       "area": "build",
       "severity": "note",
       "what": "버튼 하나만 쓰면 부품 코드는 32종의 2% 만 들어옵니다(트리 셰이킹 됨).",
-      "evidence": "JS gzip: React 만 67830B · 버튼 1종 앱 68535B · 32종 앱 102928B",
+      "evidence": "JS gzip: React 만 67830B · 버튼 1종 앱 68588B · 32종 앱 103763B",
       "suggestedFix": "—"
     }
   ],
@@ -400,7 +388,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Medium(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1AssistButton-pc.png",
@@ -458,7 +446,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Medium(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1BottomSheetOption-pc.png",
@@ -530,13 +518,14 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard(설치 글꼴)",
           "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1BottomSheet-pc.png",
       "slotCounts": {
+        "sheetBackdrop": 1,
         "sheetTitle": 1,
+        "sheetClose": 1,
         "applyLabel": 1
       },
       "unmount": {
@@ -587,8 +576,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(웹폰트)",
-          "Pretendard Medium(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Button-pc.png",
@@ -818,8 +806,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(웹폰트)",
-          "Pretendard Medium(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Chip-mobile.png",
@@ -874,8 +861,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(웹폰트)",
-          "Pretendard Medium(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1DataTag-pc.png",
@@ -938,8 +924,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(웹폰트)",
-          "Pretendard(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1DatePicker-pc.png",
@@ -1008,8 +993,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(웹폰트)",
-          "Pretendard(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1DatePicker-mobile.png",
@@ -1174,7 +1158,6 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard(설치 글꼴)",
           "Pretendard Variable(웹폰트)"
         ]
       },
@@ -1486,6 +1469,7 @@
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Gnb-pc.png",
       "slotCounts": {
+        "menu": 3,
         "logo": 1,
         "langIcon": 1,
         "langLabel": 1,
@@ -1907,9 +1891,9 @@
       },
       "screenshot": "reports/publisher-audit/react/shots/S1ListRow-pc.png",
       "slotCounts": {
+        "chevron": 1,
         "title": 1,
         "description": 1,
-        "chevron": 1,
         "value": 0,
         "knob": 0,
         "thumbnail": 0
@@ -1935,7 +1919,8 @@
         "consoleClean": "pass",
         "size": "pass",
         "icons": "pass",
-        "propUpdate": "notChecked",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
         "className": "pass",
         "unmountClean": "pass",
         "strictModeSingleBind": "pass",
@@ -1969,6 +1954,12 @@
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Lnb-pc.png",
+      "slotCounts": {
+        "itemIcon": 4,
+        "itemToggle": 1,
+        "item": 2,
+        "collapseIcon": 1
+      },
       "unmount": {
         "leakedGlobalListeners": 0,
         "overflow": "|"
@@ -2078,8 +2069,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(웹폰트)",
-          "Pretendard Medium(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1MobileHeader-pc.png",
@@ -2134,7 +2124,9 @@
       },
       "screenshot": "reports/publisher-audit/react/shots/S1ModalContent-pc.png",
       "slotCounts": {
+        "overlay": 1,
         "title": 1,
+        "close": 1,
         "contentLabel": 1,
         "cancelLabel": 1,
         "confirmLabel": 1
@@ -2185,7 +2177,9 @@
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Modal-pc.png",
       "slotCounts": {
+        "overlay": 1,
         "title": 1,
+        "close": 1,
         "message": 1,
         "cancelLabel": 1,
         "confirmLabel": 1
@@ -2235,7 +2229,9 @@
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Modal-mobile.png",
       "slotCounts": {
+        "overlay": 1,
         "title": 1,
+        "close": 0,
         "message": 1,
         "cancelLabel": 1,
         "confirmLabel": 1
@@ -2291,8 +2287,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(웹폰트)",
-          "Pretendard Medium(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1MultiToggle-pc.png",
@@ -3439,6 +3434,12 @@
           "ok": true,
           "severity": null,
           "evidence": "목록 [\"대구\",\"광주\"]"
+        },
+        {
+          "name": "옛 방식: 고른 뒤 parts.value 로 트리거 글자를 바꾸면 화면이 따라온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "트리거 \"직접 지정\""
         }
       ],
       "status": "pass",
@@ -3796,7 +3797,7 @@
           "name": "본문을 children 으로 줬을 때 견본 문장이 남지 않는다",
           "ok": true,
           "severity": null,
-          "evidence": "처음부터 열림내가 만든 본문취소확인"
+          "evidence": "처음부터 열림내가 만든 본문"
         }
       ],
       "status": "pass",
@@ -4349,6 +4350,74 @@
       "console": []
     },
     {
+      "key": "list-row-switch",
+      "title": "리스트 행 스위치 — 안 주면 꺼진 채 · checked/defaultChecked 를 따른다 · name 이 폼에 실린다 · 견본 글자가 끼어들지 않는다",
+      "checks": [
+        {
+          "name": "내용 prop 을 일부만 주면(title) 안 준 설명 칸은 그려지지 않고 견본(새 소식 알림 받기)이 끼어들지 않는다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"checked\":\"false\",\"text\":\"알림\",\"desc\":0}"
+        },
+        {
+          "name": "스위치는 안 주면 꺼진 채 시작한다(0.22.0 과 같다)",
+          "ok": true,
+          "severity": null,
+          "evidence": "aria-checked=false"
+        },
+        {
+          "name": "defaultChecked 를 주면 켜진 채 시작한다",
+          "ok": true,
+          "severity": null,
+          "evidence": "aria-checked=true"
+        },
+        {
+          "name": "checked 를 주면 그 값을 따른다",
+          "ok": true,
+          "severity": null,
+          "evidence": "aria-checked=true"
+        },
+        {
+          "name": "스위치 줄에 name 을 주면: 꺼진 줄은 폼에 안 실리고 켜진 줄은 실린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"on\":\"on\"}"
+        },
+        {
+          "name": "꺼진 줄을 눌러 켜면 그 name 의 값이 실린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"off\":\"on\",\"on\":\"on\"}"
+        },
+        {
+          "name": "값 표시형에 title 만 주면 견본 값(라이트)·견본 설명이 끼어들지 않는다",
+          "ok": true,
+          "severity": null,
+          "evidence": "\"글자 크기\""
+        },
+        {
+          "name": "아무것도 안 주면 견본(테마·라이트)이 그려진다 — 보기용",
+          "ok": true,
+          "severity": null,
+          "evidence": "\"테마화면 표시 방식라이트\""
+        },
+        {
+          "name": "모달에 title 만 주면 안 준 글자 칸(본문·단추)은 비어 있다 — 견본 문구가 새지 않는다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"message\":\"\",\"labels\":[\"\",\"\"]}"
+        },
+        {
+          "name": "모달에 아무것도 안 주면 견본(취소·확인)이 그려진다 — 0.22.0 과 같다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"취소\",\"확인\"]"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
       "key": "input-types",
       "title": "입력칸(S1Input) — type · breakName 분리와 옛 이름",
       "checks": [
@@ -4406,7 +4475,7 @@
           "name": "메뉴가 가리키는 하위 메뉴 판이 부품 안에서 함께 그려진다",
           "ok": true,
           "severity": null,
-          "evidence": "{\"controls\":\"_r_4k_-sub-1\",\"panelExists\":true}"
+          "evidence": "{\"controls\":\"_r_4t_-sub-1\",\"panelExists\":true}"
         },
         {
           "name": "메뉴를 누르면 하위 메뉴가 펼쳐지고 onOpen 한 번",
@@ -4504,7 +4573,7 @@
           "name": "접힘 카드: title·subtitle 은 머리줄에, children 은 펼침 내용에 들어간다(두 군데에 겹쳐 들어가지 않는다)",
           "ok": true,
           "severity": null,
-          "evidence": "{\"head\":[\"제목부제서브타이틀서브타이틀서브타이틀\",\"제목\",\"부제\",\"서브타이틀\",\"서브타이틀\",\"서브타이틀\"],\"panel\":true,\"sample\":false}"
+          "evidence": "{\"head\":[\"제목부제\",\"제목\",\"부제\"],\"panel\":true,\"sample\":false}"
         },
         {
           "name": "모바일 헤더: title 이 제목이 된다",
@@ -4620,7 +4689,7 @@
           "name": "예시 3: 그려진다(부품 10개)",
           "ok": true,
           "severity": null,
-          "evidence": "삭제삭제할까요?되돌릴 수 없습니다.취소삭제글자 크기: 보통글자 크기작게보통크게적용"
+          "evidence": "삭제삭제할까요?되돌릴 수 없습니다.취소삭제글자 크기: 보통글자 크기작게보통크게"
         },
         {
           "name": "예시 4: 그려진다(부품 2개)",
@@ -4632,7 +4701,7 @@
           "name": "예시 5: 그려진다(부품 8개)",
           "ok": true,
           "severity": null,
-          "evidence": "S1 관제공지사항서비스한국어출입출입 기록방문 예약개요설비목록점검준비 중알림새 출입 기록 알려 주기"
+          "evidence": "S1 관제공지사항서비스출입출입 기록방문 예약개요설비목록점검준비 중알림새 출입 기록 알려 주기"
         },
         {
           "name": "예시 6: 그려진다(부품 13개)",
@@ -4717,6 +4786,140 @@
           "ok": true,
           "severity": null,
           "evidence": "탭 2"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "legacy-usage",
+      "title": "0.22.0 코드 그대로 — 옛 슬롯 이름(parts.label · parts.chevron · 카드 판 안쪽 · LNB item/itemIcon · 셀렉트 parts.value …)이 0.22.0 처럼 일한다",
+      "checks": [
+        {
+          "name": "모달 parts.label — 두 단추 글자를 함께 정한다(pc · 단추 둘)",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: [\"modal |  | ,,,,,,,,,,, | 숨김\",\"overlay |  | ,,,,,,,,,,,\",\"panel |  | ,,,,,,,,,,,\",\"content |  | ,,,,,,,,,,,\",\"header |  | ,,,,,,,,,,,\",\"title | T | ,,,,,,,,,,,\",\"close |  | ,,,,,,,,,,,\",\"body |  | ,,,,,,,,,,,\",\"message | M | ,,,,,,,,,,,\",\"footer |  | ,,,,,,,,,,,\",\"button |  | ,,,,,,,,,,,\",\"label | 예 | ,,,,,,,,,,,\",\"button |  | ,,,,,,,,,,,\",\"label | 예 | ,,,,,,,,,,,\"] · 지금: [\"modal |  | ,,,,,,,,,,, | 숨김\",\"overlay |  | ,,,,,,,,,,,\",\"panel |  | ,,,,,,,,,,,\",\"content |  | ,,,,,,,,,,,\",\"header |  | ,,,,,,,,,,,\",\"title | T | ,,,,,,,,,,,\",\"close |  | ,,,,,,,,,,,\",\"body |  | ,,,,,,,,,,,\",\"message | M | ,,,,,,,,,,,\",\"footer |  | ,,,,,,,,,,,\",\"button |  | ,,,,,,,,,,,\",\"label | 예 | ,,,,,,,,,,,\",\"button |  | ,,,,,,,,,,,\",\"label | 예 | ,,,,,,,,,,,\"]"
+        },
+        {
+          "name": "모달 parts.label(모바일)",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: [\"modal |  | ,,,,,,,,,,, | 숨김\",\"overlay |  | ,,,,,,,,,,,\",\"panel |  | ,,,,,,,,,,,\",\"content |  | ,,,,,,,,,,,\",\"header |  | ,,,,,,,,,,,\",\"title | 자동 로그인 설정 | ,,,,,,,,,,,\",\"body |  | ,,,,,,,,,,,\",\"message | 로그인되었어요. 다음부터 자동으로 로그인할까요? | ,,,,,,,,,,,\",\"footer |  | ,,,,,,,,,,,\",\"button |  | ,,,,,,,,,,,\",\"label | 닫기 | ,,,,,,,,,,,\",\"button |  | ,,,,,,,,,,,\",\"label | 닫기 | ,,,,,,,,,,,\"] · 지금: [\"modal |  | ,,,,,,,,,,, | 숨김\",\"overlay |  | ,,,,,,,,,,,\",\"panel |  | ,,,,,,,,,,,\",\"content |  | ,,,,,,,,,,,\",\"header |  | ,,,,,,,,,,,\",\"title | 자동 로그인 설정 | ,,,,,,,,,,,\",\"body |  | ,,,,,,,,,,,\",\"message | 로그인되었어요. 다음부터 자동으로 로그인할까요? | ,,,,,,,,,,,\",\"footer |  | ,,,,,,,,,,,\",\"button |  | ,,,,,,,,,,,\",\"label | 닫기 | ,,,,,,,,,,,\",\"button |  | ,,,,,,,,,,,\",\"label | 닫기 | ,,,,,,,,,,,\"]"
+        },
+        {
+          "name": "모달 parts.title·message 만 주면 단추 글자는 견본이 남는다(0.22.0 쓰는 법)",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: [\"modal |  | ,,,,,,,,,,, | 숨김\",\"overlay |  | ,,,,,,,,,,,\",\"panel |  | ,,,,,,,,,,,\",\"content |  | ,,,,,,,,,,,\",\"header |  | ,,,,,,,,,,,\",\"title | 알림 화면으로 이동 | ,,,,,,,,,,,\",\"body |  | ,,,,,,,,,,,\",\"message | 이동할까요? | ,,,,,,,,,,,\",\"footer |  | ,,,,,,,,,,,\",\"button |  | ,,,,,,,,,,,\",\"label | 아니오 | ,,,,,,,,,,,\",\"button |  | ,,,,,,,,,,,\",\"label | 네 | ,,,,,,,,,,,\"] · 지금: [\"modal |  | ,,,,,,,,,,, | 숨김\",\"overlay |  | ,,,,,,,,,,,\",\"panel |  | ,,,,,,,,,,,\",\"content |  | ,,,,,,,,,,,\",\"header |  | ,,,,,,,,,,,\",\"title | 알림 화면으로 이동 | ,,,,,,,,,,,\",\"body |  | ,,,,,,,,,,,\",\"message | 이동할까요? | ,,,,,,,,,,,\",\"footer |  | ,,,,,,,,,,,\",\"button |  | ,,,,,,,,,,,\",\"label | 아니오 | ,,,,,,,,,,,\",\"button |  | ,,,,,,,,,,,\",\"label | 네 | ,,,,,,,,,,,\"]"
+        },
+        {
+          "name": "모달 콘텐츠 parts.label — 두 단추 글자를 함께 정한다",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: [\"modal-content |  | ,,,,,,,,,,, | 숨김\",\"overlay |  | ,,,,,,,,,,,\",\"panel |  | ,,,,,,,,,,,\",\"header |  | ,,,,,,,,,,,\",\"title | 수정 | ,,,,,,,,,,,\",\"close |  | ,,,,,,,,,,,\",\"content-area |  | ,,,,,,,,,,,\",\"content |  | ,,,,,,,,,,,\",\"content-label | 컨텐츠 영역 | ,,,,,,,,,,,\",\"footer |  | ,,,,,,,,,,,\",\"button |  | ,,,,,,,,,,,\",\"label | 닫기 | ,,,,,,,,,,,\",\"button |  | ,,,,,,,,,,,\",\"label | 닫기 | ,,,,,,,,,,,\"] · 지금: [\"modal-content |  | ,,,,,,,,,,, | 숨김\",\"overlay |  | ,,,,,,,,,,,\",\"panel |  | ,,,,,,,,,,,\",\"header |  | ,,,,,,,,,,,\",\"title | 수정 | ,,,,,,,,,,,\",\"close |  | ,,,,,,,,,,,\",\"content-area |  | ,,,,,,,,,,,\",\"content |  | ,,,,,,,,,,,\",\"content-label | 컨텐츠 영역 | ,,,,,,,,,,,\",\"footer |  | ,,,,,,,,,,,\",\"button |  | ,,,,,,,,,,,\",\"label | 닫기 | ,,,,,,,,,,,\",\"button |  | ,,,,,,,,,,,\",\"label | 닫기 | ,,,,,,,,,,,\"]"
+        },
+        {
+          "name": "바텀시트 parts.label — 아래 단추(와 견본 줄) 글자를 정한다",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: [\"sheet |  | ,,,,,,,,,,,\",\"sheet-backdrop |  | ,,,,,,,,,,,\",\"sheet-panel |  | ,,,,,,,,,,,\",\"sheet-content |  | ,,,,,,,,,,,\",\"sheet-header |  | ,,,,,,,,,,,\",\"sheet-title | 정렬 | ,,,,,,,,,,,\",\"sheet-close |  | ,,,,,,,,,,,\",\"sheet-body |  | ,,,,,,,,,,,\",\"bottom-sheet-option |  | ,,,,,default,,,,,,\",\"label | 완료 | ,,,,,,,,,,,\",\"bottom-sheet-option |  | ,,,,,selected,,,,,,\",\"label | 완료 | ,,,,,,,,,,,\",\"check |  | ,,,,,,,,,,,\",\"bottom-sheet-option |  | ,,,,,default,,,,,,\",\"label | 완료 | ,,,,,,,,,,,\",\"bottom-sheet-option |  | ,,,,,default,,,,,,\",\"label | 완료 | ,,,,,,,,,,,\",\"sheet-footer |  | ,,,,,,,,,,,\",\"button |  | ,,,,,,,,,,,\",\"label | 완료 | ,,,,,,,,,,,\"] · 지금: [\"sheet |  | ,,,,,,,,,,,\",\"sheet-backdrop |  | ,,,,,,,,,,,\",\"sheet-panel |  | ,,,,,,,,,,,\",\"sheet-content |  | ,,,,,,,,,,,\",\"sheet-header |  | ,,,,,,,,,,,\",\"sheet-title | 정렬 | ,,,,,,,,,,,\",\"sheet-close |  | ,,,,,,,,,,,\",\"sheet-body "
+        },
+        {
+          "name": "바텀시트 parts.sheetTitle 만 — 나머지는 견본 그대로",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: [\"sheet |  | ,,,,,,,,,,,\",\"sheet-backdrop |  | ,,,,,,,,,,,\",\"sheet-panel |  | ,,,,,,,,,,,\",\"sheet-content |  | ,,,,,,,,,,,\",\"sheet-header |  | ,,,,,,,,,,,\",\"sheet-title | 글자 크기 | ,,,,,,,,,,,\",\"sheet-close |  | ,,,,,,,,,,,\",\"sheet-body |  | ,,,,,,,,,,,\",\"bottom-sheet-option |  | ,,,,,default,,,,,,\",\"label | 항목 1 | ,,,,,,,,,,,\",\"bottom-sheet-option |  | ,,,,,selected,,,,,,\",\"label | 항목 2 | ,,,,,,,,,,,\",\"check |  | ,,,,,,,,,,,\",\"bottom-sheet-option |  | ,,,,,default,,,,,,\",\"label | 항목 3 | ,,,,,,,,,,,\",\"bottom-sheet-option |  | ,,,,,default,,,,,,\",\"label | 항목 4 | ,,,,,,,,,,,\",\"sheet-footer |  | ,,,,,,,,,,,\",\"button |  | ,,,,,,,,,,,\",\"label | 적용 | ,,,,,,,,,,,\"] · 지금: [\"sheet |  | ,,,,,,,,,,,\",\"sheet-backdrop |  | ,,,,,,,,,,,\",\"sheet-panel |  | ,,,,,,,,,,,\",\"sheet-content |  | ,,,,,,,,,,,\",\"sheet-header |  | ,,,,,,,,,,,\",\"sheet-title | 글자 크기 | ,,,,,,,,,,,\",\"sheet-close |  | ,,,,,,,,,,,"
+        },
+        {
+          "name": "접힘 카드 parts.title·subtitle·body — 머리줄과 펼침 판 안쪽 둘 다 채운다",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: [\"expandable-card |  | ,,,,,,,,,,,\",\"header |  | ,,false,,,,,,,,,\",\"text |  | ,,,,,,,,,,,\",\"title | 질문1 | ,,,,,,,,,,,\",\"subtitle | 부제 | ,,,,,,,,,,,\",\"body | 본문1 | ,,,,,,,,,,,\",\"note | 서브타이틀 | ,,,,,,,,,,,\",\"caption | 서브타이틀 | ,,,,,,,,,,,\",\"toggle-icon |  | ,,,,,,,,,,,\",\"panel-wrap |  | ,,,,,,,,,,,\",\"panel |  | ,,,,,,,,,,,\",\"title | 질문1 | ,,,,,,,,,,,\",\"subtitle | 부제 | ,,,,,,,,,,,\",\"body | 본문1 | ,,,,,,,,,,,\",\"note | 서브타이틀 | ,,,,,,,,,,,\",\"caption | 서브타이틀 | ,,,,,,,,,,,\"] · 지금: [\"expandable-card |  | ,,,,,,,,,,,\",\"header |  | ,,false,,,,,,,,,\",\"text |  | ,,,,,,,,,,,\",\"title | 질문1 | ,,,,,,,,,,,\",\"subtitle | 부제 | ,,,,,,,,,,,\",\"body | 본문1 | ,,,,,,,,,,,\",\"note | 서브타이틀 | ,,,,,,,,,,,\",\"caption | 서브타이틀 | ,,,,,,,,,,,\",\"toggle-icon |  | ,,,,,,,,,,,\",\"panel-wrap |  | ,,,,,,,,,,,\",\"panel |  | ,,,,,,,,,,,\",\"title | 질문1 | ,,,,,,,,,,,\",\"subtitle | 부제 | ,,,,,,,,,,,\",\"body | 본문1 | ,,,,,,,,,,,\",\"note | "
+        },
+        {
+          "name": "접힘 카드 parts.note·caption",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: [\"expandable-card |  | ,,,,,,,,,,,\",\"header |  | ,,false,,,,,,,,,\",\"text |  | ,,,,,,,,,,,\",\"title | 타이틀 | ,,,,,,,,,,,\",\"subtitle | 서브타이틀 | ,,,,,,,,,,,\",\"body | 서브타이틀 | ,,,,,,,,,,,\",\"note | 메모 | ,,,,,,,,,,,\",\"caption | 설명 | ,,,,,,,,,,,\",\"toggle-icon |  | ,,,,,,,,,,,\",\"panel-wrap |  | ,,,,,,,,,,,\",\"panel |  | ,,,,,,,,,,,\",\"title | 타이틀 | ,,,,,,,,,,,\",\"subtitle | 서브타이틀 | ,,,,,,,,,,,\",\"body | 서브타이틀 | ,,,,,,,,,,,\",\"note | 메모 | ,,,,,,,,,,,\",\"caption | 설명 | ,,,,,,,,,,,\"] · 지금: [\"expandable-card |  | ,,,,,,,,,,,\",\"header |  | ,,false,,,,,,,,,\",\"text |  | ,,,,,,,,,,,\",\"title | 타이틀 | ,,,,,,,,,,,\",\"subtitle | 서브타이틀 | ,,,,,,,,,,,\",\"body | 서브타이틀 | ,,,,,,,,,,,\",\"note | 메모 | ,,,,,,,,,,,\",\"caption | 설명 | ,,,,,,,,,,,\",\"toggle-icon |  | ,,,,,,,,,,,\",\"panel-wrap |  | ,,,,,,,,,,,\",\"panel |  | ,,,,,,,,,,,\",\"title | 타이틀 | ,,,,,,,,,,,\",\"subtitle | 서브타이틀 | ,,,,,,,,,,,\",\"body | 서브타이틀 | ,,,,,,,,,,,\",\"note "
+        },
+        {
+          "name": "LNB parts.item — 모든 항목(하위 포함)에 같은 속성",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: [\"lnb |  | ,,,,,expanded,,,,,,\",\"head |  | ,,,,,,,,,,,\",\"collapse |  | ,,,false,,,,,,,,\",\"collapse-icon |  | ,,,,,,,,,,,\",\"items |  | ,,,,,,,,,,,\",\"item | 개요 | ,,,,page,,,it,,,#,공통\",\"item-icon |  | ,,,,,,,,,,,\",\"item | 기반 토큰 | ,,,,,,,it,,,#,공통\",\"item-icon |  | ,,,,,,,,,,,\",\"item | 컴포넌트 | ,,false,,,,,it,,,,공통\",\"item-icon |  | ,,,,,,,,,,,\",\"item-toggle |  | ,,,,,,,,,,,\",\"subitems |  | ,,,,,,,,,,, | 숨김\",\"item | PC 컴포넌트 | ,,,,,,,it,,,#,공통\",\"item | Mobile 컴포넌트 | ,,,,,,,it,,,#,공통\",\"item | 준비 중 | ,,,,,,,it,,,#,공통\",\"item-icon |  | ,,,,,,,,,,,\"] · 지금: [\"lnb |  | ,,,,,expanded,,,,,,\",\"head |  | ,,,,,,,,,,,\",\"collapse |  | ,,,false,,,,,,,,\",\"collapse-icon |  | ,,,,,,,,,,,\",\"items |  | ,,,,,,,,,,,\",\"item | 개요 | ,,,,page,,,it,,,#,공통\",\"item-icon |  | ,,,,,,,,,,,\",\"item | 기반 토큰 | ,,,,,,,it,,,#,공통\",\"item-icon |  | ,,,,,,,,,,,\",\"item | 컴포넌트 | ,,false,,,,,it,,,,공통\",\"item-icon |  | ,,,,,,,,,,,\",\"it"
+        },
+        {
+          "name": "LNB parts.itemIcon · itemToggle · item 글자 — 모든 항목에 같은 내용",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: [\"lnb |  | ,,,,,expanded,,,,,,\",\"head |  | ,,,,,,,,,,,\",\"collapse |  | ,,,false,,,,,,,,\",\"collapse-icon |  | ,,,,,,,,,,,\",\"items |  | ,,,,,,,,,,,\",\"item | 개요 | ,,,,page,,,,,,#,개요\",\"item-icon | ★ | ,,,,,,,,,,,\",\"item | 기반 토큰 | ,,,,,,,,,,#,기반 토큰\",\"item-icon | ★ | ,,,,,,,,,,,\",\"item | 컴포넌트 | ,,false,,,,,,,,,컴포넌트\",\"item-icon | ★ | ,,,,,,,,,,,\",\"item-toggle | ▾ | ,,,,,,,,,,,\",\"subitems |  | ,,,,,,,,,,, | 숨김\",\"item | 하위 | ,,,,,,,,,,#,\",\"item | 하위 | ,,,,,,,,,,#,\",\"item | 준비 중 | ,,,,,,,,,,#,준비 중\",\"item-icon | ★ | ,,,,,,,,,,,\"] · 지금: [\"lnb |  | ,,,,,expanded,,,,,,\",\"head |  | ,,,,,,,,,,,\",\"collapse |  | ,,,false,,,,,,,,\",\"collapse-icon |  | ,,,,,,,,,,,\",\"items |  | ,,,,,,,,,,,\",\"item | 개요 | ,,,,page,,,,,,#,개요\",\"item-icon | ★ | ,,,,,,,,,,,\",\"item | 기반 토큰 | ,,,,,,,,,,#,기반 토큰\",\"item-icon | ★ | ,,,,,,,,,,,\",\"item | 컴포넌트 | ,,false,,,,,,,,,컴포넌트\",\"item-icon | ★ | ,,,,,,,,,,,\",\"item-toggle | ▾ | "
+        },
+        {
+          "name": "리스트 행 variant=nav, parts.title 만 — 설명은 견본이 남는다(0.22.0)",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: [\"list-row |  | ,,,,,default,,,,,,\",\"text |  | ,,,,,,,,,,,\",\"title | 버전 정보 | ,,,,,,,,,,,\",\"description | 환경설정 및 계정 관리 | ,,,,,,,,,,,\",\"trail |  | ,,,,,,,,,,,\",\"chevron |  | ,,,,,,,,,,,\"] · 지금: [\"list-row |  | ,,,,,default,,,,,,\",\"text |  | ,,,,,,,,,,,\",\"title | 버전 정보 | ,,,,,,,,,,,\",\"description | 환경설정 및 계정 관리 | ,,,,,,,,,,,\",\"trail |  | ,,,,,,,,,,,\",\"chevron |  | ,,,,,,,,,,,\"]"
+        },
+        {
+          "name": "리스트 행 variant=nav, parts.title·description",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: [\"list-row |  | ,,,,,default,,,,,,\",\"text |  | ,,,,,,,,,,,\",\"title | 버전 정보 | ,,,,,,,,,,,\",\"description | 0.22.0 | ,,,,,,,,,,,\",\"trail |  | ,,,,,,,,,,,\",\"chevron |  | ,,,,,,,,,,,\"] · 지금: [\"list-row |  | ,,,,,default,,,,,,\",\"text |  | ,,,,,,,,,,,\",\"title | 버전 정보 | ,,,,,,,,,,,\",\"description | 0.22.0 | ,,,,,,,,,,,\",\"trail |  | ,,,,,,,,,,,\",\"chevron |  | ,,,,,,,,,,,\"]"
+        },
+        {
+          "name": "리스트 행 variant=value, parts.title·description — 값 칸에 견본 글자(라이트)가 끼어들지 않는다",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: {\"title\":[\"글자 크기\"],\"description\":[\"보통\"],\"value\":[]} · 지금: {\"title\":[\"글자 크기\"],\"description\":[\"보통\"],\"value\":[]}"
+        },
+        {
+          "name": "리스트 행 variant=switch, parts.chevron 에 준 토글 — 보이고 · 눌러지고 · 상태가 그 토글 것이다",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: {\"texts\":[\"푸시 알림\",\"새 출입 기록을 알려 드려요\"],\"before\":[\"false\"],\"after\":[\"true\"],\"userClicks\":1} · 지금: {\"texts\":[\"푸시 알림\",\"새 출입 기록을 알려 드려요\"],\"before\":[\"false\"],\"after\":[\"true\"],\"userClicks\":1}"
+        },
+        {
+          "name": "리스트 행 variant=switch, parts.chevron 에 켜진 토글을 준다(앱 상태가 켜짐)",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: {\"before\":[\"true\"],\"after\":[\"false\"]} · 지금: {\"before\":[\"true\"],\"after\":[\"false\"]}"
+        },
+        {
+          "name": "셀렉트 parts.value — 트리거 글자를 정하고, 고른 뒤 React 가 parts.value 를 바꾸면 따라온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: {\"first\":\"도시 선택\",\"afterPick\":\"부산\",\"afterSet\":\"직접 지정\",\"onChange\":1,\"picked\":\"busan\"} · 지금: {\"first\":\"도시 선택\",\"afterPick\":\"부산\",\"afterSet\":\"직접 지정\",\"onChange\":1,\"picked\":\"busan\"}"
+        },
+        {
+          "name": "드롭다운에 아무것도 안 주면 처음에 고른 줄(최신순)이 켜진 채 보인다",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: [\"최신순|true|0\",\"인기순|false|-1\",\"과거순|false|-1\"] · 지금: [\"최신순|true|0\",\"인기순|false|-1\",\"과거순|false|-1\"]"
+        },
+        {
+          "name": "드롭다운 옛 항목 모양({ optionLabel, attrs })",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: [\"A|true|a\",\"B|true|b\"] · 지금: [\"A|true|a\",\"B|true|b\"]"
+        },
+        {
+          "name": "GNB parts.logo — 메뉴는 견본 그대로",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: {\"menus\":[\"공지사항\",\"서비스\",\"통계\"],\"logo\":[\"S1 관제\"]} · 지금: {\"menus\":[\"공지사항\",\"서비스\",\"통계\"],\"logo\":[\"S1 관제\"]}"
+        },
+        {
+          "name": "필터 칩 parts.title·value",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: [\"filter-chip |  | ,,,,,,,,,,,\",\"trigger |  | ,,false,,,,,,,,,\",\"title | 정렬 | ,,,,,,,,,,,\",\"value | 최신순 | ,,,,,,,,,,,\",\"icon |  | ,,,,,,,,,,,\",\"panel |  | ,,,,,,,,,,, | 숨김\",\"dropdown |  | ,,,,,,,,,,,\",\"option |  | ,true,,,,,,,,latest,,\",\"option-label | 최신순 | ,,,,,,,,,,,\",\"option |  | ,false,,,,,,,,popular,,\",\"option-label | 인기순 | ,,,,,,,,,,,\",\"option |  | ,false,,,,,,,,past,,\",\"option-label | 과거순 | ,,,,,,,,,,,\"] · 지금: [\"filter-chip |  | ,,,,,,,,,,,\",\"trigger |  | ,,false,,,,,,,,,\",\"title | 정렬 | ,,,,,,,,,,,\",\"value | 최신순 | ,,,,,,,,,,,\",\"icon |  | ,,,,,,,,,,,\",\"panel |  | ,,,,,,,,,,, | 숨김\",\"dropdown |  | ,,,,,,,,,,,\",\"option |  | ,true,,,,,,,,latest,,\",\"option-label | 최신순 | ,,,,,,,,,,,\",\"option |  | ,false,,,,,,,,popular,,\",\"option-label | 인기순 | ,,,,,,,,,,,\",\"option |  | ,false,,,,,,,,past,,\",\"option-label | 과거순 | ,,,,,,,,,,,\"]"
+        },
+        {
+          "name": "시간 선택 parts.value",
+          "ok": true,
+          "severity": null,
+          "evidence": "0.22.0: {\"value\":[\"09:10\"]} · 지금: {\"value\":[\"09:10\"]}"
         }
       ],
       "status": "pass",

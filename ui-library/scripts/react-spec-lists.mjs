@@ -58,10 +58,22 @@ function optionController(b, c, o) {
     handlers[`s1:${id}:close`] = "(event) => { onClose?.(event); if (!syncing.current) onOpenChange?.(false); }";
   }
   b.runtime(handlers, c.hasBreaks ? ["breakName"] : []);
+  /* 고른 값을 한 번도 안 줬고 고른 적도 없으면 예제가 정한 처음 모양(드롭다운은 첫 줄이 켜진 채)을 그대로 둔다 — 비우지 않는다. */
   b.post(`useApply(apiRef, (api) => {
-    const wanted = currentValue === undefined || currentValue === null ? "" : String(currentValue);
+    if (currentValue === undefined) return;
+    const wanted = currentValue === null ? "" : String(currentValue);
     if (api.value !== wanted) api.setValue(wanted);
   });`);
+  if (o.display) {
+    /* 0.22.0 방식: parts.value 로 트리거 글자를 정한다. 고른 뒤 동작 스크립트가 글자를 직접 바꿔 두면 React 가 그린 글자 노드가 떨어져 나가므로, value·defaultValue 를 쓰지 않는 코드(0.22.0 방식)에서는 parts.value 가 바뀔 때 그 칸을 직접 맞춘다. */
+    b.hook("useEffect");
+    b.post(`const valueOverride = slot(scopeOf(parts), "value").content;
+  useEffect(() => {
+    if (value !== undefined || defaultValue !== undefined || (typeof valueOverride !== "string" && typeof valueOverride !== "number")) return;
+    const element = rootRef.current?.querySelector('[data-s1-part="value"]');
+    if (element && element.textContent !== String(valueOverride)) element.textContent = String(valueOverride);
+  }, [valueOverride]);`);
+  }
   if (o.popover) b.post('useControlledOpen(apiRef, open, syncing, { isOpen: "open", open: "openPanel", close: "closePanel" });');
 }
 

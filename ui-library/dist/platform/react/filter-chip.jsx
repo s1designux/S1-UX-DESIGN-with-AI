@@ -3,7 +3,7 @@
 /* S1FilterChip — 승인된 배포본 마크업을 그대로 옮긴 React 컴포넌트.
    마크업을 새로 쓰지 않는다. dist/examples/filter-chip*.html 의 승인 인스턴스를 JSX 로 옮긴 것이다.
    서버에서 그려도 같은 마크업이 나온다. */
-import { forwardRef, useId, useRef } from "react";
+import { forwardRef, useId, useRef, useEffect } from "react";
 import { attrsOf, findLabel, itemValue, keyOf, mergeParts, originalValue, s1Item, scopeOf, slot, useApply, useControlledOpen, useMergedRef, useRerender, useRuntime } from "./kit.js";
 import { init, destroy } from "../../components/filter-chip.js";
 
@@ -34,6 +34,8 @@ const S1FilterChip = forwardRef(function S1FilterChip({ variant, size, breakName
   assertAllowed("size", size, SIZES);
   assertAllowed("breakName", breakName, BREAKS);
   const formKey = breakName;
+  /* 견본 글자는 내용 prop 을 하나도 주지 않았을 때만 그린다. */
+  const bare = title === undefined;
   const initialValue = useRef(value !== undefined ? value : defaultValue).current;
   const chosen = useRef(initialValue);
   const currentValue = value !== undefined ? value : chosen.current;
@@ -56,19 +58,26 @@ const S1FilterChip = forwardRef(function S1FilterChip({ variant, size, breakName
     "s1:filter-chip:close": (event) => { onClose?.(event); if (!syncing.current) onOpenChange?.(false); }
   }, [breakName, formKey]);
   useApply(apiRef, (api) => {
-    const wanted = currentValue === undefined || currentValue === null ? "" : String(currentValue);
+    if (currentValue === undefined) return;
+    const wanted = currentValue === null ? "" : String(currentValue);
     if (api.value !== wanted) api.setValue(wanted);
   });
+  const valueOverride = slot(scopeOf(parts), "value").content;
+  useEffect(() => {
+    if (value !== undefined || defaultValue !== undefined || (typeof valueOverride !== "string" && typeof valueOverride !== "number")) return;
+    const element = rootRef.current?.querySelector('[data-s1-part="value"]');
+    if (element && element.textContent !== String(valueOverride)) element.textContent = String(valueOverride);
+  }, [valueOverride]);
   useControlledOpen(apiRef, open, syncing, { isOpen: "open", open: "openPanel", close: "closePanel" });
   if (formKey === "pc") {
     return (
       <div data-name={name} data-value={initialValue !== undefined && initialValue !== null ? String(initialValue) : undefined} data-s1-component="filter-chip" data-variant={variant ?? "line"} data-size={size ?? "sm"} data-break="pc" data-title="on" ref={rootAttr} className={className} style={style} {...rest}>
         <button disabled={disabled} type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false" {...(slot(partScope, "trigger").attrs ?? {})}>
           <span data-s1-part="title" {...(slot(partScope, "title").attrs ?? {})}>
-            {slot(partScope, "title").content ?? "정렬"}
+            {slot(partScope, "title").content ?? (bare ? "정렬" : undefined)}
           </span>
           <span data-s1-part="value" {...(slot(partScope, "value").attrs ?? {})}>
-            {slot(partScope, "value").content ?? "최신순"}
+            {slot(partScope, "value").content ?? (bare ? "최신순" : undefined)}
           </span>
           <span data-s1-part="icon" aria-hidden="true" {...(slot(partScope, "icon").attrs ?? {})}>
             {slot(partScope, "icon").content ?? ""}
@@ -95,10 +104,10 @@ const S1FilterChip = forwardRef(function S1FilterChip({ variant, size, breakName
       <div data-name={name} data-value={initialValue !== undefined && initialValue !== null ? String(initialValue) : undefined} data-s1-component="filter-chip" data-variant={variant ?? "line"} data-size={size ?? "md"} data-break="mobile" data-title="on" ref={rootAttr} className={className} style={style} {...rest}>
         <button disabled={disabled} type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false" {...(slot(partScope, "trigger").attrs ?? {})}>
           <span data-s1-part="title" {...(slot(partScope, "title").attrs ?? {})}>
-            {slot(partScope, "title").content ?? "정렬"}
+            {slot(partScope, "title").content ?? (bare ? "정렬" : undefined)}
           </span>
           <span data-s1-part="value" {...(slot(partScope, "value").attrs ?? {})}>
-            {slot(partScope, "value").content ?? "최신순"}
+            {slot(partScope, "value").content ?? (bare ? "최신순" : undefined)}
           </span>
           <span data-s1-part="icon" aria-hidden="true" {...(slot(partScope, "icon").attrs ?? {})}>
             {slot(partScope, "icon").content ?? ""}

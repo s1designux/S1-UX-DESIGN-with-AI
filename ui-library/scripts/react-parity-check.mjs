@@ -89,6 +89,12 @@ function renderNode(node, into) {
 
 /* ── 예제 → 비교용 트리 ───────────────────────────────────────────────── */
 
+function hasCheckedToggle(node) {
+  if (node.type !== "element") return false;
+  if (attributeValue(node, "data-s1-component") === "toggle" && attributeValue(node, "aria-checked") === "true") return true;
+  return node.children.some(hasCheckedToggle);
+}
+
 function fromExample(node) {
   const attributes = new Map();
   for (const [name, value] of node.attributes) attributes.set(name.toLowerCase(), value === true ? "" : String(value));
@@ -178,7 +184,10 @@ for (const component of approved) {
         const value = attributeValue(instance, module.STRUCTURAL.attribute);
         if (value === undefined || seen.has(value)) continue;
         seen.add(value);
-        targets.push({ label: `${breakName}:${value}`, props: { [module.STRUCTURAL.prop]: value }, node: instance });
+        const props = { [module.STRUCTURAL.prop]: value };
+        /* 스위치 줄은 안 주면 꺼진 채 시작한다(0.22.0 과 같다). 예제는 켜진 토글을 보여 주므로 같은 모양을 prop 으로 준다. */
+        if (component.id === "list-row" && hasCheckedToggle(instance)) props.defaultChecked = true;
+        targets.push({ label: `${breakName}:${value}`, props, node: instance });
       }
     } else {
       let props = module.BREAKS.length > 1 ? { breakName } : {};

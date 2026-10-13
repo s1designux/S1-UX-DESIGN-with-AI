@@ -13,7 +13,9 @@ export const DEFAULT_BREAK = "pc";
 export const VARIANTS = ["center-between","start"];
 export const SIZES = ["md","sm","xsm"];
 /* parts 로 줄 수 있는 슬롯 이름(낙타 표기) — 타입 정의의 parts 키와 같다. */
-export const PARTS = ["leading","logo","menus","util","lang","langIcon","langLabel","account","accountIcon","menuToggle","menuIcon"];
+export const PARTS = ["leading","logo","menus","util","lang","langIcon","langLabel","account","accountIcon","menuToggle","menuIcon","menu"];
+/* 0.22.0 에서 쓰던 슬롯 이름 — 계속 받는다(옛 이름 하나가 여러 자리를 함께 채우는 것도 그때 그대로). 새 코드는 위 이름을 쓰세요. */
+export const LEGACY_PARTS = ["menu"];
 
 const DEFAULT_GNB_MENUS = [{"label":"공지사항","current":true},{"label":"서비스","controls":"gnb-sub-menu-a-service"},{"label":"통계","controls":"gnb-sub-menu-a-stats"}];
 
@@ -28,6 +30,8 @@ const S1Gnb = forwardRef(function S1Gnb({ variant, size, parts, onOpen, onClose,
   const rootAttr = useMergedRef(rootRef, forwardedRef);
   assertAllowed("variant", variant, VARIANTS);
   assertAllowed("size", size, SIZES);
+  /* 견본 글자는 내용 prop 을 하나도 주지 않았을 때만 그린다. */
+  const bare = logo === undefined && langLabel === undefined;
   const menuSig = (menus ?? []).map((entry) => (entry && typeof entry === "object" && (entry.columns || entry.children || entry.controls) ? "1" : "0")).join("");
   const menuList = menus ?? DEFAULT_GNB_MENUS;
   const partScope = scopeOf(mergeParts(parts, { logo: logo, langLabel: langLabel }));
@@ -40,7 +44,7 @@ const S1Gnb = forwardRef(function S1Gnb({ variant, size, parts, onOpen, onClose,
     const columns = menu.columns ?? menu.children;
     return (
       <li key={menu.key ?? index}>
-        <a data-s1-part="menu" href={menu.href ?? "#"} aria-current={menu.current ? "page" : undefined} aria-expanded={columns || menu.controls ? "false" : undefined} aria-controls={menu.controls ?? (columns ? uid + "-sub-" + index : undefined)} {...(slot(partScope, "menu").attrs ?? {})}>{menu.label}</a>
+        <a data-s1-part="menu" href={menu.href ?? "#"} aria-current={menu.current ? "page" : undefined} aria-expanded={columns || menu.controls ? "false" : undefined} aria-controls={menu.controls ?? (columns ? uid + "-sub-" + index : undefined)} {...(slot(partScope, "menu").attrs ?? {})}>{slot(partScope, "menu").content ?? menu.label}</a>
       </li>
     );
   };
@@ -55,7 +59,7 @@ const S1Gnb = forwardRef(function S1Gnb({ variant, size, parts, onOpen, onClose,
       <nav data-s1-component="gnb" data-size={size ?? "sm"} data-variant={variant ?? "start"} aria-label="주 메뉴 · 레귤러 예시" ref={rootAttr} className={className} style={style} {...rest}>
         <div data-s1-part="leading" {...(slot(partScope, "leading").attrs ?? {})}>
           <a data-s1-part="logo" href="#" {...(slot(partScope, "logo").attrs ?? {})}>
-            {slot(partScope, "logo").content ?? "SAMPLE LOGO"}
+            {slot(partScope, "logo").content ?? (bare ? "SAMPLE LOGO" : undefined)}
           </a>
           <ul data-s1-part="menus" {...(slot(partScope, "menus").attrs ?? {})}>
             {menuList.map(renderGnbMenu)}
@@ -67,7 +71,7 @@ const S1Gnb = forwardRef(function S1Gnb({ variant, size, parts, onOpen, onClose,
               {slot(partScope, "langIcon").content ?? ""}
             </span>
             <span data-s1-part="lang-label" {...(slot(partScope, "langLabel").attrs ?? {})}>
-              {slot(partScope, "langLabel").content ?? "한국어"}
+              {slot(partScope, "langLabel").content ?? (bare ? "한국어" : undefined)}
             </span>
           </button>
           <button type="button" data-s1-part="account" aria-label="계정" {...(slot(partScope, "account").attrs ?? {})}>

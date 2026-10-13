@@ -94,8 +94,15 @@ class ReactEmitter extends Emitter {
     this.ancestors.push(node);
     const children = this.childrenText(node, { scope, indent: `${indent}  `, part, isRoot, leaf });
     this.ancestors.pop();
-    if (children === null) return `${indent}<${node.tag}${attributes} />`;
-    return `${indent}<${node.tag}${attributes}>\n${children}\n${indent}</${node.tag}>`;
+    const jsx = children === null
+      ? `${indent}<${node.tag}${attributes} />`
+      : `${indent}<${node.tag}${attributes}>\n${children}\n${indent}</${node.tag}>`;
+    /* SPEC.wrapNode — 이 자리를 밖에서 통째로 바꿔 끼울 수 있게 감싼다(스위치 줄의 토글 · 0.22.0 의 parts.chevron 에 준 토글). */
+    for (const rule of this.spec.wrapNode ?? []) {
+      if (rule.form && rule.form !== this.formKey) continue;
+      if (rule.match(node, this)) return rule.wrap(jsx, indent, node);
+    }
+    return jsx;
   }
 
   /** SPEC.attrs 규칙에 걸리는 속성은 예제의 고정값 대신 식으로 낸다. */
@@ -154,7 +161,7 @@ class ReactEmitter extends Emitter {
     }
     /* 동작 스크립트가 채우는 빈 칸(달력 · 열 · 휠)에는 글자 칸을 주지 않는다 — 아이콘(aria-hidden)만 내용을 받는다. */
     if (!isRoot && rawPart && node.children.length === 0 && !VOID_ELEMENTS.has(node.tag)) {
-      const decorative = attributeValue(node, "aria-hidden") === "true";
+      const decorative = attributeValue(node, "aria-hidden") === "true" || (this.spec.keepEmptySlots ?? []).includes(rawPart);
       if (!decorative) return null;
     }
     let text = super.childrenText(node, { ...options, part });
@@ -296,7 +303,26 @@ function assemble(b, c) {
 
   const slotNames = new Set();
   for (const { body } of rendered) for (const match of body.matchAll(/slot\(partScope, "(\w+)"\)/g)) slotNames.add(match[1]);
+  /* 0.22.0 에서 쓰던 슬롯 이름(별칭 · 옛 이름)도 parts 로 계속 받는다 — 타입에도 남긴다. */
+  for (const legacy of [...Object.keys(b.aliases), ...(spec.legacyParts ?? [])]) slotNames.add(legacy);
   b.slotNames = [...slotNames];
+
+  /* 견본 글자 정책 — 견본은 "내용 prop 이 하나도 없을 때"만 나온다. 한 번이라도 내용을 주면 비워 둔 글자 칸은 비어 있다.
+     (parts 만 쓰는 0.22.0 코드는 그대로 견본이 남는다 · 목록 견본(메뉴 · 선택지)은 목록 prop 을 안 줬을 때만 나온다.) */
+  const contentProps = new Set();
+  for (const expression of b.direct.values()) for (const token of expression.match(/[A-Za-z_$][\w$]*/g) ?? []) if (b.props.has(token)) contentProps.add(token);
+  if (c.hasChildrenSlot) contentProps.add("children");
+  if (contentProps.size || spec.bareParts) {
+    const conditions = [...[...contentProps].map((name) => `${name} === undefined`), ...(spec.bareParts ? [typeof spec.bareParts === "string" ? spec.bareParts : "parts === undefined"] : [])];
+    let guarded = false;
+    for (const form of rendered) {
+      form.body = form.body.replace(/(slot\(partScope, "\w+"\)\.content) \?\? ("(?:[^"\\]|\\.)+")/g, (all, left, sample) => {
+        guarded = true;
+        return `${left} ?? (bare ? ${sample} : undefined)`;
+      });
+    }
+    if (guarded) b.preLines.unshift(`/* 견본 글자는 내용 prop 을 하나도 주지 않았을 때만 그린다. */\n  const bare = ${conditions.join(" && ")};`);
+  }
 
   const listCode = [...rootLists, ...nestedLists]
     .map(({ constant, defaults }) => `const ${constant} = (uid) => [${defaults.map(dataSourceOf).join(", ")}];`)
@@ -315,6 +341,7 @@ function assemble(b, c) {
   const usedListHelpers = rendered.flatMap(({ body }) => ["s1Item", "s1Row", "s1Link"].filter((name) => body.includes(`${name}(`)));
   const kitImports = [...new Set(["scopeOf", "slot", "mergeParts", ...(rootLists.length || nestedLists.length ? ["attrsOf", "keyOf"] : []), ...(nestedLists.length ? ["list"] : []), ...usedListHelpers, ...b.kitNames])].sort();
 
+  const legacyParts = [...new Set([...Object.keys(b.aliases), ...(spec.legacyParts ?? [])])];
   const destructure = b.destructure();
   const hooks = b.hookLines();
   const source = `"use client";
@@ -333,7 +360,7 @@ export const VARIANTS = ${JSON.stringify(structural ? forms.map((form) => form.k
 export const SIZES = ${JSON.stringify(sizes)};
 /* parts 로 줄 수 있는 슬롯 이름(낙타 표기) — 타입 정의의 parts 키와 같다. */
 export const PARTS = ${JSON.stringify(b.slotNames)};
-${structural ? `export const DEFAULT_VARIANT = ${literal(forms[0].key)};\nexport const STRUCTURAL = ${JSON.stringify({ attribute: spec.structural.attribute, prop: spec.structural.prop ?? "variant" })};\n` : ""}${listCode ? `\n/* 예제에 있던 내용 — prop 을 주지 않으면 이게 그려진다. */\n${listCode}\n` : ""}${b.moduleConsts.length ? `\n${b.moduleConsts.join("\n")}\n` : ""}
+${legacyParts.length ? `/* 0.22.0 에서 쓰던 슬롯 이름 — 계속 받는다(옛 이름 하나가 여러 자리를 함께 채우는 것도 그때 그대로). 새 코드는 위 이름을 쓰세요. */\nexport const LEGACY_PARTS = ${JSON.stringify(legacyParts)};\n` : ""}${structural ? `export const DEFAULT_VARIANT = ${literal(forms[0].key)};\nexport const STRUCTURAL = ${JSON.stringify({ attribute: spec.structural.attribute, prop: spec.structural.prop ?? "variant" })};\n` : ""}${listCode ? `\n/* 예제에 있던 내용 — prop 을 주지 않으면 이게 그려진다. */\n${listCode}\n` : ""}${b.moduleConsts.length ? `\n${b.moduleConsts.join("\n")}\n` : ""}
 function assertAllowed(label, value, allowed) {
   if (value === undefined || allowed.length === 0 || allowed.includes(value)) return;
   throw new Error(\`[s1-ui] ${id}: 승인되지 않은 \${label} "\${value}". 쓸 수 있는 값: \${allowed.join(", ")}\`);

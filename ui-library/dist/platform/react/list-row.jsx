@@ -3,7 +3,7 @@
 /* S1ListRow — 승인된 배포본 마크업을 그대로 옮긴 React 컴포넌트.
    마크업을 새로 쓰지 않는다. dist/examples/list-row*.html 의 승인 인스턴스를 JSX 로 옮긴 것이다.
    서버에서 그려도 같은 마크업이 나온다. */
-import { forwardRef, useId, useRef } from "react";
+import { forwardRef, useId, useRef, useState } from "react";
 import { mergeParts, scopeOf, slot, useApply, useMergedRef, useRerender, useRuntime } from "./kit.js";
 // list-row 는 JavaScript 런타임이 없다 — 브라우저 기본 동작만 쓴다.
 import { init as initToggle, destroy as destroyToggle } from "../../components/toggle.js";
@@ -34,7 +34,11 @@ const S1ListRow = forwardRef(function S1ListRow({ variant, parts, title, descrip
   const rootAttr = useMergedRef(rootRef, forwardedRef);
   assertAllowed("variant", variant, VARIANTS);
   const formKey = (variant ?? DEFAULT_VARIANT);
-  const initialChecked = useRef(checked ?? defaultChecked ?? true).current;
+  /* 견본 글자는 내용 prop 을 하나도 주지 않았을 때만 그린다. */
+  const bare = title === undefined && description === undefined && value === undefined && (formKey === "nav" || parts === undefined);
+  const initialChecked = useRef(checked ?? defaultChecked ?? false).current;
+  const [on, setOn] = useState(initialChecked);
+  const isOn = checked !== undefined ? checked : on;
   const syncing = useRef(false);
   const rerender = useRerender();
   const checkProps = {};
@@ -43,9 +47,10 @@ const S1ListRow = forwardRef(function S1ListRow({ variant, parts, title, descrip
   if (name !== undefined) checkProps.name = name;
   checkProps.onChange = (event) => { onChange?.(event); onCheckedChange?.(event.target.checked); };
   const partScope = scopeOf(mergeParts(parts, { title: title, description: description, value: value }));
-  const apiRef = useRuntime(rootRef, toggleInRow, {
-    "s1:toggle:change": (event) => { if (!syncing.current) onCheckedChange?.(Boolean(event.detail?.checked)); rerender(); }
-  }, [formKey]);
+  const ownToggle = slot(partScope, "chevron").content !== undefined && formKey === "switch";
+  const apiRef = useRuntime(rootRef, ownToggle ? null : toggleInRow, {
+    "s1:toggle:change": (event) => { setOn(Boolean(event.detail?.checked)); if (!syncing.current) onCheckedChange?.(Boolean(event.detail?.checked)); rerender(); }
+  }, [ownToggle, formKey]);
   useApply(apiRef, (api) => {
     if (checked === undefined || !api || api.checked === checked) return;
     syncing.current = true;
@@ -56,17 +61,20 @@ const S1ListRow = forwardRef(function S1ListRow({ variant, parts, title, descrip
       <button type="button" data-s1-component="list-row" data-type="nav" data-state="default" ref={rootAttr} className={className} style={style} {...rest}>
         <div data-s1-part="text" {...(slot(partScope, "text").attrs ?? {})}>
           <span data-s1-part="title" {...(slot(partScope, "title").attrs ?? {})}>
-            {slot(partScope, "title").content ?? "설정"}
+            {slot(partScope, "title").content ?? (bare ? "설정" : undefined)}
           </span>
+          {bare || slot(partScope, "description").content !== undefined ? (
           <span data-s1-part="description" {...(slot(partScope, "description").attrs ?? {})}>
-            {slot(partScope, "description").content ?? "환경설정 및 계정 관리"}
+            {slot(partScope, "description").content ?? (bare ? "환경설정 및 계정 관리" : undefined)}
           </span>
+          ) : null}
         </div>
         <span data-s1-part="trail" {...(slot(partScope, "trail").attrs ?? {})}>
           <span data-s1-part="chevron" aria-hidden="true" {...(slot(partScope, "chevron").attrs ?? {})}>
             {slot(partScope, "chevron").content ?? ""}
           </span>
         </span>
+        {formKey === "switch" && name ? <input type="hidden" name={name} value="on" disabled={!isOn} /> : null}
       </button>
     );
   } else if (formKey === "value") {
@@ -74,20 +82,25 @@ const S1ListRow = forwardRef(function S1ListRow({ variant, parts, title, descrip
       <button type="button" data-s1-component="list-row" data-type="value" data-state="default" ref={rootAttr} className={className} style={style} {...rest}>
         <div data-s1-part="text" {...(slot(partScope, "text").attrs ?? {})}>
           <span data-s1-part="title" {...(slot(partScope, "title").attrs ?? {})}>
-            {slot(partScope, "title").content ?? "테마"}
+            {slot(partScope, "title").content ?? (bare ? "테마" : undefined)}
           </span>
+          {bare || slot(partScope, "description").content !== undefined ? (
           <span data-s1-part="description" {...(slot(partScope, "description").attrs ?? {})}>
-            {slot(partScope, "description").content ?? "화면 표시 방식"}
+            {slot(partScope, "description").content ?? (bare ? "화면 표시 방식" : undefined)}
           </span>
+          ) : null}
         </div>
         <span data-s1-part="trail" {...(slot(partScope, "trail").attrs ?? {})}>
+          {bare || slot(partScope, "value").content !== undefined ? (
           <span data-s1-part="value" {...(slot(partScope, "value").attrs ?? {})}>
-            {slot(partScope, "value").content ?? "라이트"}
+            {slot(partScope, "value").content ?? (bare ? "라이트" : undefined)}
           </span>
+          ) : null}
           <span data-s1-part="chevron" aria-hidden="true" {...(slot(partScope, "chevron").attrs ?? {})}>
             {slot(partScope, "chevron").content ?? ""}
           </span>
         </span>
+        {formKey === "switch" && name ? <input type="hidden" name={name} value="on" disabled={!isOn} /> : null}
       </button>
     );
   } else if (formKey === "read") {
@@ -95,12 +108,15 @@ const S1ListRow = forwardRef(function S1ListRow({ variant, parts, title, descrip
       <div data-s1-component="list-row" data-type="read" data-state="default" ref={rootAttr} className={className} style={style} {...rest}>
         <div data-s1-part="text" {...(slot(partScope, "text").attrs ?? {})}>
           <span data-s1-part="title" {...(slot(partScope, "title").attrs ?? {})}>
-            {slot(partScope, "title").content ?? "버전"}
+            {slot(partScope, "title").content ?? (bare ? "버전" : undefined)}
           </span>
+          {bare || slot(partScope, "description").content !== undefined ? (
           <span data-s1-part="description" {...(slot(partScope, "description").attrs ?? {})}>
-            {slot(partScope, "description").content ?? "현재 설치된 버전 정보"}
+            {slot(partScope, "description").content ?? (bare ? "현재 설치된 버전 정보" : undefined)}
           </span>
+          ) : null}
         </div>
+        {formKey === "switch" && name ? <input type="hidden" name={name} value="on" disabled={!isOn} /> : null}
       </div>
     );
   } else if (formKey === "pick") {
@@ -113,12 +129,15 @@ const S1ListRow = forwardRef(function S1ListRow({ variant, parts, title, descrip
         </span>
         <div data-s1-part="text" {...(slot(partScope, "text").attrs ?? {})}>
           <span data-s1-part="title" id={`${uid}-title`} {...(slot(partScope, "title").attrs ?? {})}>
-            {slot(partScope, "title").content ?? "빠른 배송"}
+            {slot(partScope, "title").content ?? (bare ? "빠른 배송" : undefined)}
           </span>
+          {bare || slot(partScope, "description").content !== undefined ? (
           <span data-s1-part="description" {...(slot(partScope, "description").attrs ?? {})}>
-            {slot(partScope, "description").content ?? "당일 도착 옵션"}
+            {slot(partScope, "description").content ?? (bare ? "당일 도착 옵션" : undefined)}
           </span>
+          ) : null}
         </div>
+        {formKey === "switch" && name ? <input type="hidden" name={name} value="on" disabled={!isOn} /> : null}
       </label>
     );
   } else if (formKey === "agree") {
@@ -132,11 +151,13 @@ const S1ListRow = forwardRef(function S1ListRow({ variant, parts, title, descrip
           </span>
           <div data-s1-part="text" {...(slot(partScope, "text").attrs ?? {})}>
             <span data-s1-part="title" id={`${uid}-title`} {...(slot(partScope, "title").attrs ?? {})}>
-              {slot(partScope, "title").content ?? "이용약관 동의"}
+              {slot(partScope, "title").content ?? (bare ? "이용약관 동의" : undefined)}
             </span>
+            {bare || slot(partScope, "description").content !== undefined ? (
             <span data-s1-part="description" {...(slot(partScope, "description").attrs ?? {})}>
-              {slot(partScope, "description").content ?? "필수 동의 항목입니다"}
+              {slot(partScope, "description").content ?? (bare ? "필수 동의 항목입니다" : undefined)}
             </span>
+            ) : null}
           </div>
         </label>
         <span data-s1-part="trail" {...(slot(partScope, "trail").attrs ?? {})}>
@@ -146,6 +167,7 @@ const S1ListRow = forwardRef(function S1ListRow({ variant, parts, title, descrip
             </span>
           </button>
         </span>
+        {formKey === "switch" && name ? <input type="hidden" name={name} value="on" disabled={!isOn} /> : null}
       </div>
     );
   } else if (formKey === "switch") {
@@ -153,19 +175,24 @@ const S1ListRow = forwardRef(function S1ListRow({ variant, parts, title, descrip
       <div data-s1-component="list-row" data-type="switch" data-state="default" ref={rootAttr} className={className} style={style} {...rest}>
         <div data-s1-part="text" {...(slot(partScope, "text").attrs ?? {})}>
           <span data-s1-part="title" id={`${uid}-title`} {...(slot(partScope, "title").attrs ?? {})}>
-            {slot(partScope, "title").content ?? "알림"}
+            {slot(partScope, "title").content ?? (bare ? "알림" : undefined)}
           </span>
+          {bare || slot(partScope, "description").content !== undefined ? (
           <span data-s1-part="description" {...(slot(partScope, "description").attrs ?? {})}>
-            {slot(partScope, "description").content ?? "새 소식 알림 받기"}
+            {slot(partScope, "description").content ?? (bare ? "새 소식 알림 받기" : undefined)}
           </span>
+          ) : null}
         </div>
         <span data-s1-part="trail" {...(slot(partScope, "trail").attrs ?? {})}>
+          {slot(partScope, "chevron").content !== undefined ? slot(partScope, "chevron").content : (
           <button aria-checked={String(initialChecked)} type="button" data-s1-component="toggle" role="switch" aria-labelledby={`${uid}-title`}>
             <span data-s1-part="knob" aria-hidden="true" {...(slot(partScope, "knob").attrs ?? {})}>
               {slot(partScope, "knob").content ?? ""}
             </span>
           </button>
+          )}
         </span>
+        {formKey === "switch" && name ? <input type="hidden" name={name} value="on" disabled={!isOn} /> : null}
       </div>
     );
   } else if (formKey === "thumb") {
@@ -176,12 +203,15 @@ const S1ListRow = forwardRef(function S1ListRow({ variant, parts, title, descrip
         </div>
         <div data-s1-part="text" {...(slot(partScope, "text").attrs ?? {})}>
           <span data-s1-part="title" {...(slot(partScope, "title").attrs ?? {})}>
-            {slot(partScope, "title").content ?? "여행 사진"}
+            {slot(partScope, "title").content ?? (bare ? "여행 사진" : undefined)}
           </span>
+          {bare || slot(partScope, "description").content !== undefined ? (
           <span data-s1-part="description" {...(slot(partScope, "description").attrs ?? {})}>
-            {slot(partScope, "description").content ?? "2026년 9월 14일"}
+            {slot(partScope, "description").content ?? (bare ? "2026년 9월 14일" : undefined)}
           </span>
+          ) : null}
         </div>
+        {formKey === "switch" && name ? <input type="hidden" name={name} value="on" disabled={!isOn} /> : null}
       </div>
     );
   }

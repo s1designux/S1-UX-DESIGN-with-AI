@@ -27,17 +27,19 @@ const S1GnbSubMenuItem = forwardRef(function S1GnbSubMenuItem({ depth, parts, ch
   const rootAttr = forwardedRef;
   assertAllowed("depth", depth, VARIANTS);
   const formKey = (depth ?? DEFAULT_VARIANT);
+  /* 견본 글자는 내용 prop 을 하나도 주지 않았을 때만 그린다. */
+  const bare = label === undefined && children === undefined;
   const partScope = scopeOf(mergeParts(parts, { label: label }));
   if (formKey === "1depth") {
     return (
       <span data-s1-component="gnb-sub-menu-item" data-depth="1depth" ref={rootAttr} className={className} style={style} {...rest}>
-        {children === undefined ? (slot(partScope, "label").content ?? "카테고리 제목") : children}
+        {children === undefined ? (slot(partScope, "label").content ?? (bare ? "카테고리 제목" : undefined)) : children}
       </span>
     );
   } else if (formKey === "2depth") {
     return (
       <a href={href ?? "#"} aria-current={current === undefined ? "page" : current ? "page" : undefined} data-s1-component="gnb-sub-menu-item" data-depth="2depth" ref={rootAttr} className={className} style={style} {...rest}>
-        {children === undefined ? (slot(partScope, "label").content ?? "하위 메뉴") : children}
+        {children === undefined ? (slot(partScope, "label").content ?? (bare ? "하위 메뉴" : undefined)) : children}
       </a>
     );
   }

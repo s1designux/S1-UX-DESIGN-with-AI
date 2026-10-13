@@ -43,10 +43,14 @@ function dialogController(b, c, o) {
     b.prop("onCancel", "(event: S1Event<S1OpenDetail>) => void", "취소 단추로 닫힐 때");
     b.slotProp("confirmLabel", "confirmLabel");
     b.slotProp("cancelLabel", "cancelLabel");
+    /* 0.22.0 의 parts.label 은 두 단추의 글자를 함께 정했다 — 그대로 둘 다 채운다(새 이름이 있으면 새 이름이 이긴다). */
+    b.alias("label", ["cancelLabel", "confirmLabel"]);
   }
 }
 
 const MODAL_RULES = {
+  /* 동작 스크립트가 건드리지 않는 빈 칸은 0.22.0 처럼 내용을 받는다. */
+  keepEmptySlots: ["overlay", "close"],
   renames: [
     { part: "label", within: closeReason("cancel"), as: "cancel-label" },
     { part: "label", within: closeReason("confirm"), as: "confirm-label" }
@@ -79,6 +83,7 @@ WINDOWS["modal-content"] = {
 };
 
 WINDOWS["bottom-sheet"] = {
+  keepEmptySlots: ["sheet-backdrop", "sheet-close"],
   renames: [{ part: "label", within: closeReason("apply"), as: "apply-label" }],
   attrs: [
     { root: true, set: { hidden: "initialOpen ? undefined : true" } },
@@ -120,7 +125,11 @@ WINDOWS["bottom-sheet"] = {
     b.prop("children", "ReactNode", "시트 본문 전체 — 주면 options 를 대신한다");
     b.slotProp("sheetTitle", "title");
     b.slotProp("applyLabel", "applyLabel");
-    b.pre(`const sheetItems = options ?? DEFAULT_SHEET_OPTIONS;
+    /* 0.22.0 의 parts.label 은 아래 단추와 견본 줄의 글자를 함께 정했다 — apply 단추는 별칭으로, 견본 줄은 아래 legacyLabel 로 그대로 따른다. */
+    b.alias("label", ["applyLabel"]);
+    b.kit("slot");
+    b.pre(`const legacyLabel = options === undefined && parts && typeof parts === "object" && !isValidElement(parts) && !Array.isArray(parts) && parts.label !== undefined ? slot(parts, "label") : undefined;
+  const sheetItems = options ?? DEFAULT_SHEET_OPTIONS;
   const selectable = options !== undefined || value !== undefined || defaultValue !== undefined;
   const initialSheetValue = useRef(value !== undefined ? value : defaultValue).current;
   const sheetSelected = initialSheetValue !== undefined && initialSheetValue !== null ? String(initialSheetValue) : undefined;
@@ -128,7 +137,7 @@ WINDOWS["bottom-sheet"] = {
     const item = typeof entry === "object" && entry !== null && !isValidElement(entry) ? entry : { label: entry, value: entry };
     const entryValue = itemValue(item, index);
     const on = sheetSelected !== undefined ? entryValue === sheetSelected : Boolean(item.selected);
-    return <S1BottomSheetOption key={entryValue + ":" + index} variant="text" value={item.value !== undefined ? String(item.value) : undefined} label={item.label} disabled={item.disabled} defaultSelected={on} />;
+    return <S1BottomSheetOption key={entryValue + ":" + index} variant="text" value={item.value !== undefined ? String(item.value) : undefined} label={legacyLabel ? { content: legacyLabel.content !== undefined ? legacyLabel.content : item.label, attrs: legacyLabel.attrs } : item.label} disabled={item.disabled} defaultSelected={on} />;
   });`);
     b.post(`useApply(apiRef, () => {
     const wanted = value === undefined || value === null ? "" : String(value);
@@ -157,6 +166,8 @@ WINDOWS["expandable-card"] = {
       b.slotProp(name, name);
     }
     b.prop("children", "ReactNode", "펼쳐지는 내용 — 주면 예제 견본을 대신한다");
+    /* 0.22.0 의 parts.title · subtitle · body · note · caption 은 머리줄과 펼침 판 안쪽을 함께 채웠다 — 판 안쪽은 별칭으로 그대로 받는다. */
+    for (const name of ["title", "subtitle", "body", "note", "caption"]) b.alias(name, [`panel${name[0].toUpperCase()}${name.slice(1)}`]);
     const events = b.eventProps();
     b.hook("useRef");
     b.kit("useApply", "useRerender");

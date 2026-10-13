@@ -45,6 +45,7 @@ const require = createRequire(import.meta.url);
 const { spawnChrome: spawnGroup, killChromeTree: killGroup } = require("../lib/chrome-proc.js");
 const { findChrome, launchChrome, openPage, sleep } = await import("./cdp.mjs");
 const { installHelper } = await import("./page-helpers.mjs");
+const Legacy = await import("./react-legacy.mjs");
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, "../..");
@@ -53,6 +54,8 @@ const OUT_DIR = path.join(ROOT, "reports/publisher-audit/react");
 const SHOTS_DIR = path.join(OUT_DIR, "shots");
 const args = process.argv.slice(2);
 const SELFTEST = args.includes("--selftest");
+const LEGACY_RECORD = args.includes("--legacy-record");   // 0.22.0 zip 으로 돌려 옛 코드의 실측값(골든)을 기록한다
+const LEGACY = LEGACY_RECORD || args.includes("--legacy"); // --only 로 좁혀도 "옛 코드 그대로" 시험은 돈다
 const KEEP = args.includes("--keep");
 const argValue = (name) => { const i = args.indexOf(name); return i !== -1 ? args[i + 1] : null; };
 const ZIP = path.resolve(argValue("--zip") || path.join(ROOT, "assets/downloads/s1-ui-react.zip"));
@@ -344,7 +347,7 @@ function casesFor(catalog, reactDir) {
     const slots = entry.planted ? ["label"] : slotKeysOf(entry.file, reactDir);
     for (const breakName of breaks) {
       const mobile = /mobile/.test(breakName) || isMobileOnly(entry.name);
-      out.push({ name: entry.name, file: entry.file, breakName, multiBreak: breaks.length > 1, slots, parts: entry.parts, viewport: mobile ? "mobile" : "pc", planted: !!entry.planted });
+      out.push({ name: entry.name, file: entry.file, breakName, multiBreak: breaks.length > 1, slots, parts: entry.parts, legacyParts: entry.legacyParts || [], viewport: mobile ? "mobile" : "pc", planted: !!entry.planted });
     }
   }
   return out;
@@ -423,7 +426,8 @@ async function auditCase(page, c, { shots = true } = {}) {
       await page.eval(`window.__s1.set(${js({ ...baseProps, parts })})`);
       await sleep(120);
       const counts = await page.eval(`(()=>{const t=document.getElementById("stage").textContent; const out={}; for(const k of ${js(c.slots)}){ out[k]=t.split("⟦"+k+"⟧").length-1; } return out;})()`);
-      const multi = Object.entries(counts).filter(([, n]) => n > 1);
+      /* 0.22.0 에서 쓰던 슬롯 이름(LEGACY_PARTS)은 옛 코드가 그대로 돌게 일부러 여러 자리를 함께 채운다 — 겹침으로 세지 않는다. */
+      const multi = Object.entries(counts).filter(([k, n]) => n > 1 && !(c.legacyParts || []).includes(k));
       result.slotCounts = counts;
       result.checks.slotUnique = multi.length ? "fail" : "pass";
       if (multi.length) local("slot-shared", "api", "friction", `${label} 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.`, multi.map(([k, n]) => `parts.${k} → ${n}군데에 동시에 들어감`).join(" · "), "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기");
@@ -759,6 +763,10 @@ async function interactionScenarios(holder) {
     await sleep(150);
     const opts = await P.eval(`[...document.querySelectorAll('#stage [data-s1-part="option"]')].map(o=>o.textContent.trim())`);
     check("options 를 바꾸면 목록이 바뀐다", js(opts) === js(["대구", "광주"]), `목록 ${js(opts)}`);
+    await P.eval(`window.__s1.ctl.select.setLabel("직접 지정")`);
+    await sleep(150);
+    const v2 = await P.eval(`document.querySelector('#stage [data-s1-part="value"]').textContent.trim()`);
+    check("옛 방식: 고른 뒤 parts.value 로 트리거 글자를 바꾸면 화면이 따라온다", v2 === "직접 지정", `트리거 "${v2}"`, "friction", "parts.value 로 준 글자가 런타임이 쓴 글자를 이기게(값 표시는 React 가 소유)");
   });
 
   if (want("S1Dropdown")) await pc("dropdown", "드롭다운(S1Dropdown) 고르기", async (check) => {
@@ -1280,6 +1288,37 @@ async function interactionScenarios(holder) {
     try { await viewportShot(P, path.join(SHOTS_DIR, "scenario-list-rows.png")); } catch { /* 무시 */ }
   });
 
+  await pc("list-row-switch", "리스트 행 스위치 — 안 주면 꺼진 채 · checked/defaultChecked 를 따른다 · name 이 폼에 실린다 · 견본 글자가 끼어들지 않는다", async (check) => {
+    await mount(P, { name: "S1ListRow", props: { variant: "switch", title: "알림" } });
+    const bare = await P.eval(`({checked: document.querySelector('#stage [data-s1-component="toggle"]')?.getAttribute('aria-checked'), text: document.getElementById('stage').textContent.replace(/\\s+/g,' ').trim(), desc: document.querySelectorAll('#stage [data-s1-part="description"]').length})`);
+    check("내용 prop 을 일부만 주면(title) 안 준 설명 칸은 그려지지 않고 견본(새 소식 알림 받기)이 끼어들지 않는다", bare.text === "알림" && bare.desc === 0, js(bare));
+    check("스위치는 안 주면 꺼진 채 시작한다(0.22.0 과 같다)", bare.checked === "false", `aria-checked=${bare.checked}`);
+    await mount(P, { name: "S1ListRow", props: { variant: "switch", title: "알림", defaultChecked: true } });
+    check("defaultChecked 를 주면 켜진 채 시작한다", (await attr(P, '#stage [data-s1-component="toggle"]', "aria-checked")) === "true", `aria-checked=${await attr(P, '#stage [data-s1-component="toggle"]', "aria-checked")}`);
+    await mount(P, { name: "S1ListRow", props: { variant: "switch", title: "알림", checked: true } });
+    check("checked 를 주면 그 값을 따른다", (await attr(P, '#stage [data-s1-component="toggle"]', "aria-checked")) === "true", `aria-checked=${await attr(P, '#stage [data-s1-component="toggle"]', "aria-checked")}`);
+    await mount(P, { scenario: "listRowForm" });
+    await click(P, "#lr-submit");
+    let sent = (await events(P)).find((e) => e.label === "lr:submit")?.detail ?? {};
+    check("스위치 줄에 name 을 주면: 꺼진 줄은 폼에 안 실리고 켜진 줄은 실린다", !("off" in sent) && sent.on === "on", js(sent));
+    await click(P, '#stage [data-s1-component="list-row"]:first-of-type [data-s1-component="toggle"]');
+    await click(P, "#lr-submit");
+    sent = (await events(P)).filter((e) => e.label === "lr:submit").at(-1)?.detail ?? {};
+    check("꺼진 줄을 눌러 켜면 그 name 의 값이 실린다", sent.off === "on", js(sent));
+    await mount(P, { name: "S1ListRow", props: { variant: "value", title: "글자 크기" } });
+    const value = await P.eval(`document.getElementById('stage').textContent.replace(/\\s+/g,' ').trim()`);
+    check("값 표시형에 title 만 주면 견본 값(라이트)·견본 설명이 끼어들지 않는다", value === "글자 크기", `"${value}"`);
+    await mount(P, { name: "S1ListRow", props: { variant: "value" } });
+    const bareValue = await P.eval(`document.getElementById('stage').textContent.replace(/\\s+/g,' ').trim()`);
+    check("아무것도 안 주면 견본(테마·라이트)이 그려진다 — 보기용", /라이트/.test(bareValue), `"${bareValue}"`);
+    await mount(P, { name: "S1Modal", props: { title: "삭제" } });
+    const modal = await P.eval(`({message: document.querySelector('#stage [data-s1-part="message"]')?.textContent.trim() ?? null, labels: [...document.querySelectorAll('#stage [data-s1-part="label"]')].map((e) => e.textContent.trim())})`);
+    check("모달에 title 만 주면 안 준 글자 칸(본문·단추)은 비어 있다 — 견본 문구가 새지 않는다", modal.message === "" && modal.labels.every((t) => t === ""), js(modal));
+    await mount(P, { name: "S1Modal", props: {} });
+    const modalBare = await P.eval(`[...document.querySelectorAll('#stage [data-s1-part="label"]')].map((e) => e.textContent.trim())`);
+    check("모달에 아무것도 안 주면 견본(취소·확인)이 그려진다 — 0.22.0 과 같다", js(modalBare) === js(["취소", "확인"]), js(modalBare));
+  });
+
   await pc("input-types", "입력칸(S1Input) — type · breakName 분리와 옛 이름", async (check) => {
     await mount(P, { scenario: "inputTypes" });
     const kinds = await P.eval(`[...document.querySelectorAll('#stage [data-s1-component="input"]')].map(r=>({breakName: r.getAttribute("data-break"), password: !!r.querySelector('[data-action="password"]'), search: !!r.querySelector('[data-action="search"]'), controlType: r.querySelector('[data-s1-part="control"]').getAttribute("type") || "text", label: r.querySelector('[data-s1-part="control"]').getAttribute("aria-label")}))`);
@@ -1445,6 +1484,27 @@ async function interactionScenarios(holder) {
       await click(P, '#stage [data-s1-part="tab"]:nth-child(2)');
       check("예시 7: 탭을 누르면 그 탭의 패널이 보인다", (await P.eval(`[...document.querySelectorAll('#stage [role="tabpanel"]')].filter(p=>!p.hidden).map(p=>p.textContent.trim())`))[0] === "상세 내용", "탭 2");
     });
+  });
+
+  /* 옛 코드 그대로(0.22.0): 옛 슬롯 이름 · 옛 목록 모양으로만 쓴 사례를 0.22.0 실측값과 견준다(react-legacy.mjs). */
+  if (!ONLY.length || LEGACY) await pc("legacy-usage", "0.22.0 코드 그대로 — 옛 슬롯 이름(parts.label · parts.chevron · 카드 판 안쪽 · LNB item/itemIcon · 셀렉트 parts.value …)이 0.22.0 처럼 일한다", async (check) => {
+    const helpers = { mount, click, sleep, events };
+    const facts = {};
+    for (const c of Legacy.LEGACY_CASES) {
+      try { facts[c.key] = await Legacy.collectFacts(P, c, helpers); } catch (error) { facts[c.key] = { __error: String(error.message).slice(0, 200) }; }
+    }
+    if (LEGACY_RECORD) {
+      Legacy.writeGolden(HARNESS, facts, `0.22.0 묶음(${path.basename(ZIP)})을 같은 시험대에서 돌려 얻은 실측값 — 새 버전이 옛 코드를 깨지 않는지 견주는 기준. node scripts/publisher-audit/react.mjs --zip <0.22.0 zip> --legacy-record 로 다시 만든다.`);
+      check(`옛 코드 실측값 ${Object.keys(facts).length}건을 기록했다`, true, `${Legacy.goldenPath(HARNESS)}`);
+      return;
+    }
+    const golden = Legacy.readGolden(HARNESS);
+    if (!golden) throw new Error(`${Legacy.GOLDEN_FILE} 이 없습니다 — 0.22.0 zip 으로 --legacy-record 를 먼저 돌려야 합니다`);
+    for (const c of Legacy.LEGACY_CASES) {
+      const was = JSON.stringify(golden.facts[c.key]);
+      const now = JSON.stringify(facts[c.key]);
+      check(c.title, was !== undefined && was === now, `0.22.0: ${was} · 지금: ${now}`.slice(0, 900), "broken", "옛 슬롯 이름은 새 이름의 별칭으로 계속 받아야 한다(kit.mergeParts 의 aliases) — 0.22.0 에서 쓰던 코드가 같은 모양·같은 동작이어야 한다");
+    }
   });
 
   await pc("ref", "ref 로 루트 DOM 받기 · ref 를 줘도 동작 유지", async (check) => {
@@ -1695,7 +1755,8 @@ function typeCheck(env, appDir) {
   const what = {
     variant: '없는 variant("danger")', "typo-prop": "오타 난 prop(varaint)", "size-type": "size 에 숫자", "onchange-param": "onSelectedChange 에 잘못된 함수",
     "input-onchange-any": "Input onChange 의 event 가 any", "modal-typo": "Modal 의 오타 prop", "value-change-param": "onValueChange 에 잘못된 함수",
-    "option-shape": "value 없는 목록 항목", "event-detail": "이벤트 detail 에 없는 속성", "parts-key": "parts 에 없는 슬롯 이름", "disabled-type": "disabled 에 글자"
+    "option-shape": "value 없는 목록 항목", "event-detail": "이벤트 detail 에 없는 속성", "parts-key": "parts 에 없는 슬롯 이름", "disabled-type": "disabled 에 글자",
+    "onchange-is-event": "고르는 부품 onChange 가 값을 받는 함수도 통과", "onvaluechange-is-value": "onValueChange 가 이벤트를 받는 함수도 통과"
   };
   if (notCaught.length) add("types:not-caught", "types", "friction", `타입 정의가 흔한 실수를 못 잡습니다: ${notCaught.map((k) => what[k] || k).join(" · ")} — 오류 없이 통과해 실행해 봐야 압니다.`, `strict tsc 에서 @ts-expect-error 가 쓰이지 않음(TS2578) ${notCaught.length}/${expectCount}건 — S1BaseProps 의 [attribute: string]: unknown(아무 prop 이나 통과) · event: any`, "인덱스 시그니처 대신 React.HTMLAttributes<HTMLElement> 상속 + data-*/aria-* 만 허용, onChange 에 구체 이벤트 타입");
   return out;
@@ -1804,7 +1865,8 @@ async function main() {
     examples: [...readmeText.matchAll(/```jsx\n([\s\S]*?)```/g)].map((m) => m[1])
   };
   README_FONT_LINK = /<link rel="stylesheet" href="(https:[^"]*pretendard[^"]*)">/i.exec(readmeText)?.[1] ?? null;
-  readme.examples.forEach((source, index) => fs.writeFileSync(path.join(appDir, `src/readme-example-${index}.jsx`), source));
+  /* 0.22.0 zip 으로 옛 코드 실측값을 기록할 때(--legacy-record)는 옛 README 의 조각 예시(그대로 붙이면 빌드 안 되는 것)를 시험대에 넣지 않는다. */
+  if (!LEGACY_RECORD) readme.examples.forEach((source, index) => fs.writeFileSync(path.join(appDir, `src/readme-example-${index}.jsx`), source));
   if (README_FONT_LINK) fs.writeFileSync(path.join(appDir, "index.html"), indexHtml("harness.jsx"));
 
   let builds = null;

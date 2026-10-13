@@ -68,6 +68,7 @@ export class Builder {
     this.preLines = [];
     this.postLines = [];
     this.direct = new Map();         // 슬롯 이름 → 식(parts 에 합쳐지는 직접 prop)
+    this.aliases = {};               // 옛 슬롯 이름 → 새 슬롯 이름들(0.22.0 에서 쓰던 parts 이름이 그대로 도는 길)
     this.moduleImports = [];
     this.moduleConsts = [];
     this.runtimeModules = [];        // 동작 스크립트가 없어도 가져올 배포본 모듈 [{ names, id }]
@@ -88,6 +89,7 @@ export class Builder {
   pre(code) { this.preLines.push(code); return this; }
   post(code) { this.postLines.push(code); return this; }
   slotProp(slot, expression) { this.direct.set(slot, expression); return this; }
+  alias(oldName, targets) { this.aliases[oldName] = targets; return this; }
   moduleImport(line) { this.moduleImports.push(line); return this; }
   moduleConst(code) { this.moduleConsts.push(code); return this; }
 
@@ -213,7 +215,8 @@ export class Builder {
     if (this.c.forms.length > 1) lines.push(`  const formKey = ${this.formKeyExpr ?? "breakName"};`);
     for (const line of this.preLines) lines.push(`  ${line}`);
     const direct = [...this.direct.entries()].map(([slot, expression]) => `${camelSlot(slot)}: ${expression}`);
-    lines.push(`  const partScope = scopeOf(${direct.length ? `mergeParts(parts, { ${direct.join(", ")} })` : "parts"});`);
+    const aliasLiteral = Object.keys(this.aliases).length ? `, ${JSON.stringify(this.aliases)}` : "";
+    lines.push(`  const partScope = scopeOf(${direct.length || aliasLiteral ? `mergeParts(parts, { ${direct.join(", ")} }${aliasLiteral})` : "parts"});`);
     for (const line of this.postLines) lines.push(`  ${line}`);
     return lines.join("\n");
   }

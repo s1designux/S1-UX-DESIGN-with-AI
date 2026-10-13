@@ -14,7 +14,7 @@ const TS_ATTRS = { button: "ButtonHTMLAttributes", a: "AnchorHTMLAttributes", la
 
 const HEADER = `/* ${GENERATED_NOTE} */
 import type {
-  AllHTMLAttributes, AnchorHTMLAttributes, ButtonHTMLAttributes, ChangeEventHandler, CSSProperties, FocusEventHandler, FormEventHandler,
+  AllHTMLAttributes, AnchorHTMLAttributes, AriaAttributes, ButtonHTMLAttributes, ChangeEventHandler, CSSProperties, FocusEventHandler, FormEventHandler,
   HTMLAttributes, Key, LabelHTMLAttributes, ReactElement, ReactNode, Ref
 } from "react";
 
@@ -22,15 +22,17 @@ import type {
 export declare const S1_VERSION: string;
 export declare const S1_RELEASED_AT: string;
 
+/** aria-* 속성 — React 의 표준 타입(boolean · "true" · "false" · "mixed" …)을 다 받고, 0.22.0 코드가 쓰던 문자열(String(on) 등)도 막지 않는다. */
+export type S1Aria = { [K in keyof AriaAttributes]?: AriaAttributes[K] | (string & {}) };
 /** 요소에 덧붙이는 속성(data-* · aria-* 포함). */
-export type S1Attrs = AllHTMLAttributes<HTMLElement> & { [name: \`data-\${string}\`]: string | number | boolean | undefined };
+export type S1Attrs = Omit<AllHTMLAttributes<HTMLElement>, keyof AriaAttributes> & S1Aria & { [name: \`data-\${string}\`]: string | number | boolean | undefined };
 /** 슬롯 한 칸에 넣을 수 있는 값. 글자·요소를 그대로 주거나, 속성까지 함께 준다. */
 export type S1SlotValue = ReactNode | { content?: ReactNode; attrs?: S1Attrs };
 /** 슬롯 이름별 내용 — 부품마다 받는 이름만 열려 있다(오타가 나면 잡힌다). */
 export type S1Parts<Name extends string = string> = { [K in Name]?: S1SlotValue };
 /** 옛 모양 목록 항목(글자 · {content, attrs} · 안쪽 목록). 새 코드는 S1Item 을 쓰세요. */
 export type S1Entry = ReactNode | { key?: Key; content?: ReactNode; attrs?: S1Attrs } | readonly S1Entry[];
-/** 사용자 이벤트(CustomEvent) — event.detail 모양은 이벤트마다 정해져 있다. */
+/** 사용자 이벤트(CustomEvent) — event.detail 모양은 이벤트마다 정해져 있다. 고르는 부품의 onChange 는 이 이벤트를 받고(0.22.0 과 같다), 값만 받는 길은 onValueChange 다. */
 export type S1Event<Detail> = CustomEvent<Detail>;
 
 /** 목록 한 줄의 공통 모양 — 모든 부품이 같다. 값(value)은 문자열이거나 숫자(콜백에는 준 그대로 돌아온다). */
@@ -85,8 +87,14 @@ export function buildReactTypes(factsList) {
     const own = ["parts", "className", "style", "children", "ref", ...typed.map((prop) => prop.name)];
     const partsType = facts.partNames.length ? `S1Parts<${facts.partNames.map((name) => JSON.stringify(name)).join(" | ")}>` : "S1Parts<never>";
     const partsLine = `  /** 슬롯 이름별 내용·속성. 예: parts={{ ${facts.partNames[0] ?? "label"}: "확인" }} */\n  parts?: ${partsType};`;
-    const lines = typed.filter((prop) => prop.name !== "parts").map((prop) => ({ ...prop, ts: prop.ts.replace(/\bS1Parts\b/g, partsType) }));
-    return `export interface ${componentName}Props extends Omit<${attrs}, ${[...new Set(own)].map((name) => JSON.stringify(name)).join(" | ")}> {
+    const hasValueChange = typed.some((prop) => prop.name === "onValueChange");
+    const lines = typed.filter((prop) => prop.name !== "parts").map((prop) => ({
+      ...prop,
+      ts: prop.ts.replace(/\bS1Parts\b/g, partsType),
+      /* onChange 는 이벤트, onValueChange 는 값 — 한 군데에서 분명히 적는다. */
+      doc: hasValueChange && prop.name === "onChange" ? `바뀔 때 — 배포본 사용자 이벤트(CustomEvent)를 그대로 받는다: event.detail.value 등(0.22.0 과 같은 모양). 값만 받으려면 onValueChange 를 쓰세요. ${prop.doc}` : prop.doc
+    }));
+    return `export interface ${componentName}Props extends Omit<${attrs}, keyof AriaAttributes | ${[...new Set(own)].map((name) => JSON.stringify(name)).join(" | ")}>, S1Aria {
 ${partsLine}
 ${propLines(lines)}
   className?: string;

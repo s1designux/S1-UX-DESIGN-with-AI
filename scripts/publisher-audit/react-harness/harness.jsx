@@ -26,7 +26,8 @@ const catalog = Object.entries(modules).map(([file, mod]) => ({
   breaks: mod.FORMS || mod.BREAKS || [],
   variants: mod.VARIANTS || [],
   sizes: mod.SIZES || [],
-  parts: mod.PARTS || []
+  parts: mod.PARTS || [],
+  legacyParts: mod.LEGACY_PARTS || []
 })).concat(plantedCatalog || []);
 
 /* ── 기록 ─────────────────────────────────────────────── */
@@ -53,6 +54,8 @@ function revive(value) {
     if (value.startsWith("$prevent:")) { const k = value; if (!fnCache.has(k)) fnCache.set(k, (e) => { e?.preventDefault?.(); rec(value.slice(9), e); }); return fnCache.get(k); }
     if (value.startsWith("$ref:")) { const name = value.slice(5); refs[name] ??= { current: null }; return refs[name]; }
     if (value.startsWith("$el:")) return h("b", { "data-audit-el": value.slice(4) }, value.slice(4));
+    /* "$toggle:꺼짐|켜짐:이름" — 0.22.0 개발자가 parts.chevron 에 넣던 모양의 토글(aria-checked 를 문자열로, onClick 만) */
+    if (value.startsWith("$toggle:")) { const [, on, name] = value.split(":"); return h(S1.S1Toggle, { "aria-checked": on === "true" ? "true" : "false", "aria-label": name, onClick: () => rec(name, "click") }); }
     return value;
   }
   if (Array.isArray(value)) return value.map(revive);
@@ -236,6 +239,14 @@ SCENARIOS.select = function SelectCase() {
   const [label, setLabel] = useState(undefined);
   ctl.select = { setOptions, setLabel };
   return h(S1.S1Select, { options, parts: label ? { value: label } : undefined, onChange: (e) => rec("select:onChange", e), onOpen: (e) => rec("select:onOpen", e), onClose: (e) => rec("select:onClose", e) });
+};
+
+/* 0.22.0 쓰는 법 그대로: 옛 항목 모양({ optionLabel, attrs })과 parts.value — 새 prop 을 쓰지 않는다(react-legacy.mjs). */
+SCENARIOS.legacySelect = function LegacySelectCase() {
+  const [label, setLabel] = useState("도시 선택");
+  ctl.legacySelect = { setLabel };
+  const options = ["서울", "부산", "제주"].map((optionLabel, i) => ({ optionLabel, attrs: { "data-value": ["seoul", "busan", "jeju"][i] } }));
+  return h(S1.S1Select, { options, parts: { value: label }, onChange: (e) => rec("legacySelect:onChange", e) });
 };
 
 SCENARIOS.dropdown = function DropdownCase() {
@@ -444,6 +455,14 @@ SCENARIOS.listRows = function ListRows() {
     h(S1.S1ListRow, { variant: "agree", title: "약관 동의", description: "필수", checked: agree, onCheckedChange: (v) => { rec("rows:agree", v); setAgree(v); } }),
     h(S1.S1ListRow, { variant: "switch", title: "푸시 알림", description: "새 소식", checked: push, onCheckedChange: (v) => { rec("rows:push", v); setPush(v); } }),
     h(S1.S1ListRow, { variant: "thumb", title: "사진", description: "2026-10-13" }));
+};
+
+/* 리스트 행 스위치를 폼 안에 두고 name 으로 보낸다 — 꺼진 채 시작(기본), defaultChecked 로 켠 채 시작. */
+SCENARIOS.listRowForm = function ListRowForm() {
+  return h("form", { id: "lr-form", onSubmit: (e) => { e.preventDefault(); rec("lr:submit", Object.fromEntries([...new FormData(e.currentTarget).entries()])); } },
+    h(S1.S1ListRow, { variant: "switch", title: "기본(꺼짐)", name: "off" }),
+    h(S1.S1ListRow, { variant: "switch", title: "켜진 채", name: "on", defaultChecked: true }),
+    h("button", { type: "submit", id: "lr-submit" }, "보내기"));
 };
 
 SCENARIOS.inputTypes = function InputTypes() {

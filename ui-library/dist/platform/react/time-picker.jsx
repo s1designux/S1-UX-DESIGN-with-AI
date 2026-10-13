@@ -27,6 +27,8 @@ const S1TimePicker = forwardRef(function S1TimePicker({ size, breakName = DEFAUL
   assertAllowed("size", size, SIZES);
   assertAllowed("breakName", breakName, BREAKS);
   const formKey = breakName;
+  /* 견본 글자는 내용 prop 을 하나도 주지 않았을 때만 그린다. */
+  const bare = placeholder === undefined;
   const initialValue = useRef(value !== undefined ? value : defaultValue).current;
   const chosen = useRef(initialValue);
   const currentValue = value !== undefined ? value : chosen.current;
@@ -55,7 +57,7 @@ const S1TimePicker = forwardRef(function S1TimePicker({ size, breakName = DEFAUL
       <div data-name={name} data-placeholder={placeholder} data-value={initialValue || undefined} data-s1-component="time-picker" data-size={size ?? "md"} data-break="pc" data-type="24h" data-minute-step="1" ref={rootAttr} className={className} style={style} {...rest}>
         <button disabled={disabled} type="button" data-s1-part="trigger" aria-haspopup="listbox" aria-expanded="false" aria-label="시간" {...(slot(partScope, "trigger").attrs ?? {})}>
           <span data-s1-part="value" {...(slot(partScope, "value").attrs ?? {})}>
-            {slot(partScope, "value").content ?? "시간 선택"}
+            {slot(partScope, "value").content ?? (bare ? "시간 선택" : undefined)}
           </span>
           <span data-s1-part="icon" aria-hidden="true" {...(slot(partScope, "icon").attrs ?? {})}>
             {slot(partScope, "icon").content ?? ""}
@@ -69,7 +71,7 @@ const S1TimePicker = forwardRef(function S1TimePicker({ size, breakName = DEFAUL
           </div>
           <div data-s1-part="footer" {...(slot(partScope, "footer").attrs ?? {})}>
             <button type="button" data-s1-part="confirm" disabled {...(slot(partScope, "confirm").attrs ?? {})}>
-              {slot(partScope, "confirm").content ?? "확인"}
+              {slot(partScope, "confirm").content ?? (bare ? "확인" : undefined)}
             </button>
           </div>
         </div>
@@ -80,7 +82,7 @@ const S1TimePicker = forwardRef(function S1TimePicker({ size, breakName = DEFAUL
       <div data-name={name} data-placeholder={placeholder} data-value={initialValue || undefined} data-s1-component="time-picker" data-size={size ?? "md"} data-break="mobile" data-type="12h" data-minute-step="1" data-mobile-ui="wheel" data-mobile-content="time-only" ref={rootAttr} className={className} style={style} {...rest}>
         <button disabled={disabled} type="button" data-s1-part="trigger" aria-haspopup="dialog" aria-expanded="false" aria-label="시간" {...(slot(partScope, "trigger").attrs ?? {})}>
           <span data-s1-part="value" {...(slot(partScope, "value").attrs ?? {})}>
-            {slot(partScope, "value").content ?? "시간 선택"}
+            {slot(partScope, "value").content ?? (bare ? "시간 선택" : undefined)}
           </span>
           <span data-s1-part="icon" aria-hidden="true" {...(slot(partScope, "icon").attrs ?? {})}>
             {slot(partScope, "icon").content ?? ""}
@@ -91,7 +93,7 @@ const S1TimePicker = forwardRef(function S1TimePicker({ size, breakName = DEFAUL
           <div data-s1-part="sheet-panel" role="dialog" aria-modal="true" aria-labelledby={`${uid}-sheet-title`} tabIndex="-1" {...(slot(partScope, "sheetPanel").attrs ?? {})}>
             <div data-s1-part="sheet-header" {...(slot(partScope, "sheetHeader").attrs ?? {})}>
               <span data-s1-part="sheet-title" id={`${uid}-sheet-title`} {...(slot(partScope, "sheetTitle").attrs ?? {})}>
-                {slot(partScope, "sheetTitle").content ?? "시간 선택"}
+                {slot(partScope, "sheetTitle").content ?? (bare ? "시간 선택" : undefined)}
               </span>
               <button type="button" data-s1-part="sheet-close" aria-label="닫기" {...(slot(partScope, "sheetClose").attrs ?? {})} />
             </div>
@@ -112,7 +114,7 @@ const S1TimePicker = forwardRef(function S1TimePicker({ size, breakName = DEFAUL
             <div data-s1-part="sheet-footer" {...(slot(partScope, "sheetFooter").attrs ?? {})}>
               <button type="button" data-s1-part="apply" data-s1-component="button" data-variant="primary" data-size="lg" {...(slot(partScope, "apply").attrs ?? {})}>
                 <span data-s1-part="label" {...(slot(partScope, "label").attrs ?? {})}>
-                  {slot(partScope, "label").content ?? "적용"}
+                  {slot(partScope, "label").content ?? (bare ? "적용" : undefined)}
                 </span>
               </button>
             </div>

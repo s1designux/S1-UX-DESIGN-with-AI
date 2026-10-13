@@ -25,6 +25,8 @@ const S1MobileBottomNav = forwardRef(function S1MobileBottomNav({ variant, parts
   const rootRef = useRef(null);
   const rootAttr = useMergedRef(rootRef, forwardedRef);
   assertAllowed("variant", variant, VARIANTS);
+  /* 견본 글자는 내용 prop 을 하나도 주지 않았을 때만 그린다. */
+  const bare = children === undefined && label === undefined;
   const initialSelected = useRef(selected ?? defaultSelected ?? true).current;
   const partScope = scopeOf(mergeParts(parts, { label: children !== undefined ? children : label }));
   const apiRef = useRuntime(rootRef, { init, destroy }, {
@@ -43,7 +45,7 @@ const S1MobileBottomNav = forwardRef(function S1MobileBottomNav({ variant, parts
           {slot(partScope, "icon").content ?? ""}
         </span>
         <span data-s1-part="label" {...(slot(partScope, "label").attrs ?? {})}>
-          {slot(partScope, "label").content ?? "홈"}
+          {slot(partScope, "label").content ?? (bare ? "홈" : undefined)}
         </span>
       </button>
   );

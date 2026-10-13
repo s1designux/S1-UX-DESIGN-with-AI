@@ -5,10 +5,26 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.23.0",
+  "version": "0.23.1",
   "releasedAt": "2026-10-13",
   "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71",
   "releases": [
+    {
+      "version": "0.23.1",
+      "date": "2026-10-13",
+      "kind": "patch",
+      "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "dc8635a970e4cf4bec30a03206f783a50737ade76178717fef122bac8d249f77",
+      "changes": [
+        "0.22.0 코드가 그대로 도는 길을 복원했습니다(0.23.0 검증에서 옛 코드가 달라진 것을 찾아 고침). 옛 슬롯 이름은 새 이름의 별칭으로 계속 받습니다: 모달·모달 콘텐츠 parts.label → 취소·확인 단추 둘 다, 바텀시트 parts.label → applyLabel(견본 줄 글자도 예전처럼 따라감), 접힘 카드 parts.title·subtitle·body·note·caption → 펼침 판 안쪽까지, LNB parts.item·itemIcon·itemToggle(글자 포함)은 items 를 안 줘도·줘도 모든 항목에 같게. 새 이름(prop·parts)을 같이 주면 새 이름이 이깁니다. 리스트 행 스위치형은 parts.chevron 에 준 토글을 예전처럼 씁니다.",
+        "고장 수리: 드롭다운에 아무것도 안 주거나 값을 안 주면 처음에 켜진 줄(최신순)이 마운트 직후 꺼지던 것(드롭다운·필터 칩·셀렉트 공통), 리스트 행 스위치의 기본이 켜짐이던 것(이제 꺼진 채 시작, checked·defaultChecked 를 따름), 스위치 줄에 name 을 줘도 폼에 안 실리던 것(켜져 있을 때 \"on\").",
+        "견본 글자 규칙: 견본은 내용 prop(label·children·title·message·description …)을 하나도 안 줬을 때만 그려집니다. 하나라도 주면 안 준 글자 칸은 비거나 그려지지 않습니다(예: 리스트 행 값 표시형에 title 만 주면 \"라이트\" 가 끼지 않음). parts 로만 쓰던 0.22.0 코드는 예전 그대로 견본이 남습니다.",
+        "타입이 엄격해졌다는 안내(0.23.0 부터): 아무 prop 이나 통과시키던 열린 타입을 닫았기 때문에 TypeScript 프로젝트는 0.22.0 코드에서 타입 오류가 새로 보일 수 있습니다(동작은 같음). 흔한 고침 — 오타 난 prop 이름은 타입이 가리키는 이름으로, 슬롯 attrs 의 이벤트 핸들러는 DOM 의 MouseEvent 대신 React 의 MouseEvent 로, aria-* 는 문자열도 받도록 넓혔습니다(aria-checked={String(on)} 도 통과, 표준 boolean·\"true\"·\"false\"·\"mixed\" 도 통과).",
+        "onChange / onValueChange 구분을 설명서와 타입 정의에 분명히 적었습니다: 고르는 부품의 onChange 는 0.22.0 과 같은 이벤트(CustomEvent, event.detail.value), 값만 받는 새 길은 onValueChange(value, detail). 입력칸·체크박스·라디오의 onChange 는 브라우저 표준 ChangeEvent 입니다."
+      ]
+    },
     {
       "version": "0.23.0",
       "date": "2026-10-13",
@@ -2024,5 +2040,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "c943f143751695092eb018c6db03da54045b583bbc08b37bb2c9dead307d06ff"
+  "deliveryFingerprint": "dc8635a970e4cf4bec30a03206f783a50737ade76178717fef122bac8d249f77"
 }
