@@ -1,0 +1,4097 @@
+{
+  "tool": "scripts/publisher-audit/react.mjs",
+  "generatedAt": "2026-10-13T04:22:57.251Z",
+  "durationSec": 162,
+  "environment": {
+    "node": "v20.19.4",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "vite": "8.3.4",
+    "@vitejs/plugin-react": "6.1.2",
+    "typescript": "6.0.3",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "chrome": "Chrome/154.0.8037.100",
+    "runtimeMode": "Vite 개발 서버(React development 빌드 · StrictMode)",
+    "setup": "scripts/publisher-audit/react-env-setup.sh"
+  },
+  "package": {
+    "zip": "assets/downloads/s1-ui-react.zip",
+    "version": "0.22.0",
+    "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71",
+    "exportedComponents": 32,
+    "readmeStartSteps": [
+      "1. 압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.",
+      "2. **`preview.html` 을 브라우저로 열면 컴포넌트 32종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.",
+      "3. 앱 진입 파일에서 `assets/css/tokens.css` 와 `s1-ui.css` 를 한 번 읽힙니다.",
+      "4. `import { S1Button } from \"./s1-ui/platform/react\";` 처럼 쓸 것만 꺼내 씁니다.",
+      "5. 받는 값과 쓰는 법은 `platform/react/README.md` 에 있습니다."
+    ]
+  },
+  "method": {
+    "app": "Vite 기본 틀(@vitejs/plugin-react) 임시 앱의 src/ 에 zip 을 그대로 풀고, README 시작하기 3·4단계대로 tokens.css → s1-ui.css → ./s1-ui/platform/react 에서 import",
+    "runtime": "Vite 개발 서버(React 개발 빌드 — 경고·StrictMode 이중 실행이 살아 있음) + 헤드리스 크롬(CDP 실제 마우스·키)",
+    "perComponent": "StrictMode 로 붙이기 → 콘솔/React 경고 · 크기 · 아이콘(켠/끈 화면 픽셀 비교) · 실제 렌더 글꼴 · parts 값 A→B 갱신 · 슬롯 겹침 · className 갱신 · 떼기(문서 듣기·스크롤 잠금) · StrictMode 아닌 때와 듣기 수 비교 · renderToString 마크업 위 hydrateRoot",
+    "listenerCount": "앱보다 먼저 EventTarget.addEventListener/removeEventListener 를 감싸 대상별 살아 있는 듣기 수를 센다",
+    "viewports": {
+      "pc": {
+        "width": 1280,
+        "height": 900,
+        "mobile": false
+      },
+      "mobile": {
+        "width": 375,
+        "height": 812,
+        "mobile": true
+      },
+      "rule": "breakName 에 mobile 이 들었거나 이름이 Mobile*/BottomSheet* 인 부품 → 375 폭"
+    },
+    "typescript": "strict · skipLibCheck=false · README 예시(OK 구역) + 일부러 틀린 코드 5줄(@ts-expect-error)",
+    "treeShaking": "같은 Vite 설정으로 React 만 / 버튼 1종 / 전 종 앱을 각각 build 해 JS gzip 크기 비교",
+    "ssr": "vite build --ssr 로 묶어 Node 에서 모든 부품·breakName renderToString"
+  },
+  "summary": {
+    "components": 32,
+    "cases": 46,
+    "scenarios": 21,
+    "broken": 17,
+    "friction": 24,
+    "note": 6,
+    "notChecked": [
+      {
+        "check": "nextjsBuild",
+        "reason": "Next.js 는 설치하지 않았다(수백 MB) — \"use client\" 표시 여부만 정적으로 봤다(ssr:use-client 항목)"
+      },
+      {
+        "check": "S1DataTag propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      },
+      {
+        "check": "S1Divider propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      },
+      {
+        "check": "S1Dropdown propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      },
+      {
+        "check": "S1GnbSubMenuItem propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      },
+      {
+        "check": "S1GnbSubMenu propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      },
+      {
+        "check": "S1Input[pc] propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      },
+      {
+        "check": "S1Input[mobile] propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      },
+      {
+        "check": "S1Input[password] propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      },
+      {
+        "check": "S1Input[password-mobile] propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      },
+      {
+        "check": "S1Input[search] propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      },
+      {
+        "check": "S1Input[search-mobile] propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      },
+      {
+        "check": "S1ModalContent size",
+        "reason": "처음에 닫힌 채(hidden) 그려지는 부품 — 크기·아이콘은 열린 상태 시나리오에서 본다"
+      },
+      {
+        "check": "S1Modal[pc] size",
+        "reason": "처음에 닫힌 채(hidden) 그려지는 부품 — 크기·아이콘은 열린 상태 시나리오에서 본다"
+      },
+      {
+        "check": "S1Modal[mobile] size",
+        "reason": "처음에 닫힌 채(hidden) 그려지는 부품 — 크기·아이콘은 열린 상태 시나리오에서 본다"
+      },
+      {
+        "check": "S1MultiToggle propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      },
+      {
+        "check": "S1Pagination propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      },
+      {
+        "check": "S1Tab[pc] propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      },
+      {
+        "check": "S1Tab[mobile] propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      },
+      {
+        "check": "S1Table propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      },
+      {
+        "check": "S1Textarea[pc] propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      },
+      {
+        "check": "S1Textarea[mobile] propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      }
+    ]
+  },
+  "packageChecks": {
+    "typedExports": "fail",
+    "readmeFont": "fail",
+    "nextUseClient": "fail",
+    "propNaming": "fail",
+    "viteBuild": "pass",
+    "viteBuildAll": "pass",
+    "treeShaking": "pass",
+    "innerReadmeImports": "fail",
+    "typescriptAccepts": "fail",
+    "typescriptCatchesMistakes": "fail",
+    "ssrRenderToString": "pass",
+    "nextjsBuild": "notChecked",
+    "fontResolved": "fail"
+  },
+  "packageFacts": {
+    "exported": 32,
+    "readmeStartSteps": [
+      "1. 압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.",
+      "2. **`preview.html` 을 브라우저로 열면 컴포넌트 32종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.",
+      "3. 앱 진입 파일에서 `assets/css/tokens.css` 와 `s1-ui.css` 를 한 번 읽힙니다.",
+      "4. `import { S1Button } from \"./s1-ui/platform/react\";` 처럼 쓸 것만 꺼내 씁니다.",
+      "5. 받는 값과 쓰는 법은 `platform/react/README.md` 에 있습니다."
+    ],
+    "importPaths": {
+      "top": "./s1-ui/platform/react",
+      "inner": [
+        "@s1/ui-react"
+      ],
+      "topCss": [
+        "assets/css/tokens.css",
+        "s1-ui.css"
+      ],
+      "innerCss": [
+        "@s1/ui/assets/css/tokens.css",
+        "@s1/ui/assets/css/typography.css",
+        "@s1/ui/s1-ui.css"
+      ]
+    },
+    "readmeControlled": {
+      "selectedProp": true,
+      "openProp": false,
+      "modalHowToOpen": false
+    },
+    "nextjs": {
+      "readmeMentionsNextUsage": false,
+      "filesWithHooks": 32,
+      "filesWithUseClient": 0
+    },
+    "eventProps": [
+      "onChange",
+      "onInput",
+      "onBlur",
+      "onFocus",
+      "onClear",
+      "onSearch",
+      "onBeforechange",
+      "onSelectedChange",
+      "onOpen",
+      "onClose",
+      "onSelectionchange",
+      "onCollapse",
+      "onToggle"
+    ],
+    "onChangeKinds": {
+      "native": [
+        "S1Input",
+        "S1Checkbox",
+        "S1Radio",
+        "S1Textarea"
+      ],
+      "custom": [
+        "S1Chip",
+        "S1Dropdown",
+        "S1Select",
+        "S1FilterChip",
+        "S1MultiToggle",
+        "S1MobileBottomNav",
+        "S1TimePicker",
+        "S1DatePicker",
+        "S1BottomSheetOption",
+        "S1ExpandableCard"
+      ]
+    },
+    "controlledSurface": {
+      "withOpen": [
+        "S1BottomSheet"
+      ],
+      "withOnOpen": [
+        "S1Select",
+        "S1FilterChip",
+        "S1Modal",
+        "S1TimePicker",
+        "S1DatePicker",
+        "S1Gnb",
+        "S1ModalContent",
+        "S1BottomSheet"
+      ],
+      "customOnChangeWithoutValue": [
+        "S1Dropdown",
+        "S1Select",
+        "S1FilterChip",
+        "S1MultiToggle",
+        "S1TimePicker",
+        "S1DatePicker",
+        "S1ExpandableCard"
+      ]
+    },
+    "indexSignature": true,
+    "sideEffects": false
+  },
+  "builds": {
+    "readmeOne": {
+      "ok": true,
+      "warnings": [],
+      "errors": [],
+      "js": {
+        "raw": 221005,
+        "gz": 68433
+      }
+    },
+    "readmeAll": {
+      "ok": true,
+      "warnings": [],
+      "errors": [],
+      "js": {
+        "raw": 362450,
+        "gz": 95798
+      }
+    },
+    "reactOnly": {
+      "ok": true,
+      "js": {
+        "raw": 219468,
+        "gz": 67830
+      }
+    },
+    "treeShaking": {
+      "reactOnlyGz": 67830,
+      "oneComponentGz": 68433,
+      "allComponentsGz": 95798,
+      "oneOwnGz": 603,
+      "allOwnGz": 27968,
+      "ratio": 0.022
+    },
+    "readmeInner": {
+      "ok": false,
+      "errors": [
+        "error during build:",
+        "Build failed with 1 error:",
+        "Error: [vite]: Rolldown failed to resolve import \"@s1/ui/assets/css/tokens.css\" from \"<환경폴더>/apps/readme-inner-93407/src/main.jsx\"."
+      ]
+    }
+  },
+  "typescript": {
+    "version": "6.0.3",
+    "strict": true,
+    "skipLibCheck": false,
+    "exitCode": 2,
+    "okErrors": [
+      "줄 7: TS2305 Module '\"./s1-ui/platform/react\"' has no exported member 'S1_VERSION'."
+    ],
+    "dtsErrors": [],
+    "notCaught": [
+      "typo-prop",
+      "input-onchange-any"
+    ],
+    "otherErrors": []
+  },
+  "ssr": {
+    "built": true,
+    "ran": true,
+    "cases": 46,
+    "failed": [],
+    "warnings": []
+  },
+  "findings": [
+    {
+      "id": "react:build:inner-readme",
+      "area": "readme",
+      "severity": "broken",
+      "what": "React README(platform/react/README.md) 예시를 그대로 붙여 넣으면 빌드가 실패합니다 — \"@s1/ui-react\"·\"@s1/ui/…\" 는 설치 안내가 없는 패키지 이름입니다.",
+      "evidence": "error during build: | Build failed with 1 error: | Error: [vite]: Rolldown failed to resolve import \"@s1/ui/assets/css/tokens.css\" from \"<환경폴더>/apps/readme-inner-93407/src/main.jsx\".",
+      "suggestedFix": "예시 경로를 바깥 README 와 같은 상대 경로로 바꾸거나 설치 단계 추가"
+    },
+    {
+      "id": "react:types:readme-code",
+      "area": "types",
+      "severity": "broken",
+      "what": "README 예시·타입 정의대로 쓴 TSX 가 TypeScript(strict)에서 오류가 납니다.",
+      "evidence": "줄 7: TS2305 Module '\"./s1-ui/platform/react\"' has no exported member 'S1_VERSION'.",
+      "suggestedFix": "타입 정의를 README 예시와 맞추기"
+    },
+    {
+      "id": "react:S1Textarea:pc:console-error",
+      "area": "console",
+      "severity": "broken",
+      "what": "S1Textarea[pc] 를 그리기만 해도 콘솔에 오류가 납니다.",
+      "evidence": "Use the `defaultValue` or `value` props instead of setting children on <textarea>.",
+      "suggestedFix": "오류가 나는 부품 생성 코드/런타임 확인",
+      "component": "S1Textarea",
+      "breakName": "pc"
+    },
+    {
+      "id": "react:S1Textarea:mobile:console-error",
+      "area": "console",
+      "severity": "broken",
+      "what": "S1Textarea[mobile] 를 그리기만 해도 콘솔에 오류가 납니다.",
+      "evidence": "Use the `defaultValue` or `value` props instead of setting children on <textarea>.",
+      "suggestedFix": "오류가 나는 부품 생성 코드/런타임 확인",
+      "component": "S1Textarea",
+      "breakName": "mobile"
+    },
+    {
+      "id": "react:S1TimePicker:mobile:strict-double-bind",
+      "area": "lifecycle",
+      "severity": "broken",
+      "what": "S1TimePicker[mobile] 는 React 개발 모드(StrictMode)에서 동작 스크립트가 두 번 붙습니다 — 한 번 눌러도 두 번 반응할 수 있습니다.",
+      "evidence": "살아 있는 듣기 수 StrictMode: 부품 17 + 문서 0 · 일반: 부품 15 + 문서 0 · StrictMode 에만 더 붙은 것: button[sheet-close]:click, div[sheet-backdrop]:click",
+      "suggestedFix": "init 을 같은 요소에 두 번 불러도 한 번만 붙게, 정리(return) 때 전부 떼기",
+      "component": "S1TimePicker",
+      "breakName": "mobile"
+    },
+    {
+      "id": "react:input-controlled:4",
+      "area": "interaction",
+      "severity": "broken",
+      "what": "입력칸(S1Input)을 React 상태로 제어 — 지우기(X) 버튼을 누르면 React 상태도 비워진다(onChange 가 온다)",
+      "evidence": "입력칸 \"\" · React 상태 \"새 값\" · onChange 0회 · onClear 1회",
+      "suggestedFix": "지우기 때 React 가 듣는 input 이벤트를 쏘거나(네이티브 setter + input 이벤트), onClear 로 상태를 비우라고 README 에 적기"
+    },
+    {
+      "id": "react:modal-open-prop:1",
+      "area": "interaction",
+      "severity": "broken",
+      "what": "모달(S1Modal) 을 React 상태 open 으로 열기 — open={true} 를 주면 모달이 열린다",
+      "evidence": "보임=false · 타입 정의 S1ModalProps 에 open 없음 · 루트에 open 속성만 붙음=true · README 에 모달 여는 법 없음",
+      "suggestedFix": "S1Modal·S1ModalContent 에도 S1BottomSheet 처럼 open prop(+onClose 로 상태 되돌리기)을 생성하기"
+    },
+    {
+      "id": "react:sheet-open-prop:3",
+      "area": "interaction",
+      "severity": "broken",
+      "what": "바텀시트(S1BottomSheet) open prop + onClose 로 상태 되돌리기 — open prop 으로 열어도 onOpen 이 한 번 온다",
+      "evidence": "onOpen 0회 — 시트 자체는 열렸음. Esc 처럼 런타임이 스스로 닫을 땐 onClose 가 오는데, prop 으로 여닫을 땐 이벤트가 듣기 연결보다 먼저 쏘아진다(여닫기 효과가 듣기 연결 효과보다 앞에 선언됨)",
+      "suggestedFix": "듣기 연결 효과를 여닫기 효과보다 먼저 두거나, prop 으로 여닫을 때 콜백을 직접 부르기"
+    },
+    {
+      "id": "react:sheet-open-prop:14",
+      "area": "interaction",
+      "severity": "broken",
+      "what": "바텀시트(S1BottomSheet) open prop + onClose 로 상태 되돌리기 — 시트 본문에 내 목록(children 또는 parts.sheetBody)을 넣을 수 있다",
+      "evidence": "children 들어감=false · parts.sheetBody 들어감=false · 예제 줄 4개가 그대로",
+      "suggestedFix": "S1BottomSheet 에 children(또는 sheetBody 내용)을 받게 생성하기"
+    },
+    {
+      "id": "react:select:4",
+      "area": "interaction",
+      "severity": "broken",
+      "what": "셀렉트(S1Select) — 고르기·값·다시 그리기 — options 를 글자 목록으로 주면 onChange 의 value 가 고른 항목을 가리킨다",
+      "evidence": "event.detail.value = \"seoul\" (고른 것: 부산)",
+      "suggestedFix": "글자만 준 항목은 data-value 를 그 글자로(또는 순번으로) 채우기 — 지금은 예제 값이 모든 줄에 박힘"
+    },
+    {
+      "id": "react:pagination:3",
+      "area": "interaction",
+      "severity": "broken",
+      "what": "페이지네이션(S1Pagination) — 페이지가 바뀐 걸 React 가 받을 prop(onChange·onPageChange)이 있다",
+      "evidence": "onChange prop 으로 0회 받음 — 타입 정의에 이벤트 prop 없음(배포본은 s1:pagination:change 를 쏨)",
+      "suggestedFix": "S1Pagination 에 page/onPageChange(또는 onChange) prop 생성"
+    },
+    {
+      "id": "react:date-picker:1",
+      "area": "interaction",
+      "severity": "broken",
+      "what": "날짜 선택(S1DatePicker) — 값 넣고 빼기 — value=\"2026-10-01\" 을 주면 그 날짜가 보인다(값 넣기)",
+      "evidence": "트리거 \"날짜 선택\" — 타입 정의에 value·defaultValue 없음",
+      "suggestedFix": "S1DatePicker 에 value/defaultValue/onValueChange 생성(런타임 setValue 연결)"
+    },
+    {
+      "id": "react:time-picker:1",
+      "area": "interaction",
+      "severity": "broken",
+      "what": "시간 선택(S1TimePicker) — 값 넣고 빼기 — value=\"09:30\" 을 주면 그 시간이 보인다(값 넣기)",
+      "evidence": "트리거 \"시간 선택\" — 타입 정의에 value 없음",
+      "suggestedFix": "S1TimePicker 에 value/defaultValue 생성(런타임 setValue 연결)"
+    },
+    {
+      "id": "react:gnb:1",
+      "area": "interaction",
+      "severity": "broken",
+      "what": "GNB 하위 메뉴 펼침(오버레이) — 메뉴를 누르면 하위 메뉴가 펼쳐지고 onOpen 한 번",
+      "evidence": "{\"expanded\":\"false\",\"panel\":false} · onOpen 0회 · 메뉴가 가리키는 하위 메뉴 판(#gnb-sub-menu-a-service) 존재=false",
+      "suggestedFix": "S1Gnb 안에 하위 메뉴 판(S1GnbSubMenu)을 함께 그리거나 children/columns 로 받게"
+    },
+    {
+      "id": "react:textarea:1",
+      "area": "interaction",
+      "severity": "broken",
+      "what": "여러 줄 입력(S1Textarea) — defaultValue·value — defaultValue 를 주면 그 글자로 그려진다(비제어형)",
+      "evidence": "화면이 그려지지 않고 오류: 오류: If you supply `defaultValue` on a <textarea>, do not pass children.",
+      "suggestedFix": "textarea 에 예제 글자를 children 으로 넣지 말고 defaultValue 로(값이 오면 children 생략)"
+    },
+    {
+      "id": "react:textarea:console",
+      "area": "console",
+      "severity": "broken",
+      "what": "여러 줄 입력(S1Textarea) — defaultValue·value — 쓰는 도중 콘솔에 오류가 납니다.",
+      "evidence": "%o %s %s Error: If you supply `defaultValue` on a <textarea>, do not pass children. at initTextarea (http://127.0.0.1:63286/node_modules/.vite/deps/react-dom_client.js?v=73b4d25a:1535:38) at setInitialProperties (http://127.0.0.1:63286/node_modules/.vite/deps/react-dom_client.js?v=73b4d25a:10636:6) ",
+      "suggestedFix": "오류 문구의 원인 확인"
+    },
+    {
+      "id": "react:ref:2",
+      "area": "interaction",
+      "severity": "broken",
+      "what": "ref 로 루트 DOM 받기 · ref 를 줘도 동작 유지 — ref 를 줘도 부품 동작(눌러서 켜기)이 그대로다",
+      "evidence": "S1Chip 에 ref 를 주고 한 번 누름 → aria-pressed=false · onChange 0회",
+      "suggestedFix": "React 19 에서 ref 는 일반 prop 으로 {...rest} 에 섞여 내부 rootRef 를 덮는다 — ref 를 받아 내부 ref 와 합치기(mergeRefs)"
+    },
+    {
+      "id": "react:readme:two-import-paths",
+      "area": "readme",
+      "severity": "friction",
+      "what": "README 두 개가 서로 다른 import 경로를 알려 줍니다 — 바깥 README 는 \"./s1-ui/platform/react\", 안쪽 React README 는 \"@s1/ui-react\". 안쪽 것은 설치 안내가 없는 패키지 이름이라 그대로 붙이면 빌드가 실패합니다.",
+      "evidence": "바깥 시작하기 4단계 vs platform/react/README.md 1·2장 · CSS: 바깥 [\"assets/css/tokens.css\",\"s1-ui.css\"] / 안쪽 [\"@s1/ui/assets/css/tokens.css\",\"@s1/ui/assets/css/typography.css\",\"@s1/ui/s1-ui.css\"]",
+      "suggestedFix": "안쪽 README 예시를 압축 푼 폴더 기준 상대 경로로 통일하거나, 패키지로 쓰려면 설치(npm i ./s1-ui/platform/react) 안내를 추가"
+    },
+    {
+      "id": "react:readme:typography",
+      "area": "readme",
+      "severity": "friction",
+      "what": "안쪽 README 는 typography.css 도 읽히라는데, 바깥 시작하기에는 없습니다 — 어느 쪽을 따라야 할지 모릅니다.",
+      "evidence": "바깥 [\"assets/css/tokens.css\",\"s1-ui.css\"] · 안쪽 [\"@s1/ui/assets/css/tokens.css\",\"@s1/ui/assets/css/typography.css\",\"@s1/ui/s1-ui.css\"]",
+      "suggestedFix": "두 README 의 CSS 목록·순서를 하나로"
+    },
+    {
+      "id": "react:readme:font",
+      "area": "readme",
+      "severity": "friction",
+      "what": "React README 어디에도 글꼴(Pretendard)을 읽히라는 안내가 없습니다.",
+      "evidence": "README.md · platform/react/README.md 에 Pretendard/글꼴 언급 0건 (웹 묶음 README 는 head 에 글꼴 링크를 안내함) — 실제 렌더 결과는 font:not-loaded 항목",
+      "suggestedFix": "시작하기에 글꼴 import(또는 link) 한 줄 추가"
+    },
+    {
+      "id": "react:readme:controlled",
+      "area": "readme",
+      "severity": "friction",
+      "what": "README 가 고르기·열기를 React 상태로 다루는 법(칩 selected/onSelectedChange, 바텀시트 open/onClose)을 알려 주지 않고, 모달은 여는 방법 자체가 없습니다 — 타입 정의나 런타임 코드를 열어 봐야 압니다.",
+      "evidence": "README 언급: selected/onSelectedChange=true · open=false · 모달 여는 법=false",
+      "suggestedFix": "README 2장에 칩 selected · 바텀시트 open/onClose · 모달 여는 법 예시 추가"
+    },
+    {
+      "id": "react:ssr:use-client",
+      "area": "ssr",
+      "severity": "friction",
+      "what": "묶음 제목이 \"React · Next.js\" 인데, Next.js(App Router) 서버 컴포넌트 파일에서 그대로 import 하면 오류가 날 구조입니다 — 훅(useEffect 등)을 쓰는 32개 파일 중 \"use client\" 표시가 있는 파일이 0개이고, README 에도 Next.js 쓰는 법이 없습니다.",
+      "evidence": "\"use client\" 없음: assist-button.jsx, bottom-sheet-option.jsx, bottom-sheet.jsx, button.jsx, checkbox.jsx 외 (정적 확인 — Next.js 로 직접 빌드해 보지는 않음)",
+      "suggestedFix": "생성되는 .jsx 맨 위에 \"use client\" 를 넣거나, README 4장에 \"Next.js 에서는 use client 파일 안에서 쓰세요\" 안내"
+    },
+    {
+      "id": "react:api:event-casing",
+      "area": "api",
+      "severity": "friction",
+      "what": "이벤트 prop 이름 일부가 React 관례(낱말마다 대문자, onSelectionChange)와 다릅니다 — 자동완성에서 못 찾거나 오타로 씁니다.",
+      "evidence": "onBeforechange, onSelectionchange (같은 묶음 안에 onSelectedChange 는 관례대로)",
+      "suggestedFix": "onBeforeChange · onSelectionChange 로 이름 짓고 옛 이름은 한동안 같이 받기"
+    },
+    {
+      "id": "react:api:onchange-shape",
+      "area": "api",
+      "severity": "friction",
+      "what": "같은 이름 onChange 가 부품마다 다른 것을 넘깁니다 — 입력칸류는 브라우저 이벤트(event.target.value), 고르기류는 배포본 사용자 이벤트(event.detail.value). 부품마다 확인해야 합니다.",
+      "evidence": "event.target 쪽: S1Input, S1Checkbox, S1Radio, S1Textarea · event.detail 쪽: S1Chip, S1Dropdown, S1Select, S1FilterChip, S1MultiToggle, S1MobileBottomNav, S1TimePicker, S1DatePicker, S1BottomSheetOption, S1ExpandableCard",
+      "suggestedFix": "고르기류에 값만 넘기는 onValueChange(value) 를 따로 두거나 README 에 표로 정리"
+    },
+    {
+      "id": "react:api:open-prop",
+      "area": "api",
+      "severity": "friction",
+      "what": "열고 닫히는 부품 8종 중 open prop 으로 React 상태와 이을 수 있는 건 S1BottomSheet 뿐입니다 — 나머지는 열리고 닫힌 걸 듣기만 하고, React 가 열고 닫지는 못합니다.",
+      "evidence": "onOpen 있음: S1Select, S1FilterChip, S1Modal, S1TimePicker, S1DatePicker, S1Gnb, S1ModalContent, S1BottomSheet · open 있음: S1BottomSheet",
+      "suggestedFix": "모달·모달콘텐츠는 open 필수, 팝오버류(셀렉트·날짜·시간·필터칩·GNB)는 선택적 open"
+    },
+    {
+      "id": "react:api:no-value-prop",
+      "area": "api",
+      "severity": "friction",
+      "what": "고르는 부품 7종은 고른 값을 React 상태로 넣는(value/defaultValue) 길이 없습니다 — 바뀐 걸 듣기만 할 수 있습니다.",
+      "evidence": "S1Dropdown, S1Select, S1FilterChip, S1MultiToggle, S1TimePicker, S1DatePicker, S1ExpandableCard",
+      "suggestedFix": "value·defaultValue 를 받아 런타임 setValue 와 잇기(제어형/비제어형)"
+    },
+    {
+      "id": "react:types:not-caught",
+      "area": "types",
+      "severity": "friction",
+      "what": "타입 정의가 흔한 실수를 못 잡습니다: 오타 난 prop(varaint) · Input onChange 의 event 가 any — 오류 없이 통과해 실행해 봐야 압니다.",
+      "evidence": "strict tsc 에서 @ts-expect-error 가 쓰이지 않음(TS2578) 2/5건 — S1BaseProps 의 [attribute: string]: unknown(아무 prop 이나 통과) · event: any",
+      "suggestedFix": "인덱스 시그니처 대신 React.HTMLAttributes<HTMLElement> 상속 + data-*/aria-* 만 허용, onChange 에 구체 이벤트 타입"
+    },
+    {
+      "id": "react:S1BottomSheet:pc:slot-shared",
+      "area": "api",
+      "severity": "friction",
+      "what": "S1BottomSheet 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.",
+      "evidence": "parts.label → 5군데에 동시에 들어감",
+      "suggestedFix": "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기",
+      "component": "S1BottomSheet",
+      "breakName": "pc"
+    },
+    {
+      "id": "react:S1ExpandableCard:pc:slot-shared",
+      "area": "api",
+      "severity": "friction",
+      "what": "S1ExpandableCard 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.",
+      "evidence": "parts.title → 2군데에 동시에 들어감 · parts.subtitle → 2군데에 동시에 들어감 · parts.body → 2군데에 동시에 들어감 · parts.note → 2군데에 동시에 들어감 · parts.caption → 2군데에 동시에 들어감",
+      "suggestedFix": "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기",
+      "component": "S1ExpandableCard",
+      "breakName": "pc"
+    },
+    {
+      "id": "react:S1Gnb:pc:slot-shared",
+      "area": "api",
+      "severity": "friction",
+      "what": "S1Gnb 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.",
+      "evidence": "parts.menu → 3군데에 동시에 들어감",
+      "suggestedFix": "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기",
+      "component": "S1Gnb",
+      "breakName": "pc"
+    },
+    {
+      "id": "react:S1Lnb:pc:slot-shared",
+      "area": "api",
+      "severity": "friction",
+      "what": "S1Lnb 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.",
+      "evidence": "parts.itemIcon → 4군데에 동시에 들어감 · parts.item → 2군데에 동시에 들어감",
+      "suggestedFix": "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기",
+      "component": "S1Lnb",
+      "breakName": "pc"
+    },
+    {
+      "id": "react:S1ModalContent:pc:slot-shared",
+      "area": "api",
+      "severity": "friction",
+      "what": "S1ModalContent 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.",
+      "evidence": "parts.label → 2군데에 동시에 들어감",
+      "suggestedFix": "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기",
+      "component": "S1ModalContent",
+      "breakName": "pc"
+    },
+    {
+      "id": "react:S1Modal:pc:slot-shared",
+      "area": "api",
+      "severity": "friction",
+      "what": "S1Modal[pc] 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.",
+      "evidence": "parts.label → 2군데에 동시에 들어감",
+      "suggestedFix": "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기",
+      "component": "S1Modal",
+      "breakName": "pc"
+    },
+    {
+      "id": "react:S1Modal:mobile:slot-shared",
+      "area": "api",
+      "severity": "friction",
+      "what": "S1Modal[mobile] 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.",
+      "evidence": "parts.label → 2군데에 동시에 들어감",
+      "suggestedFix": "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기",
+      "component": "S1Modal",
+      "breakName": "mobile"
+    },
+    {
+      "id": "react:S1TimePicker:pc:slot-shared",
+      "area": "api",
+      "severity": "friction",
+      "what": "S1TimePicker[pc] 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.",
+      "evidence": "parts.column → 2군데에 동시에 들어감",
+      "suggestedFix": "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기",
+      "component": "S1TimePicker",
+      "breakName": "pc"
+    },
+    {
+      "id": "react:S1TimePicker:mobile:slot-shared",
+      "area": "api",
+      "severity": "friction",
+      "what": "S1TimePicker[mobile] 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.",
+      "evidence": "parts.wheelCol → 4군데에 동시에 들어감",
+      "suggestedFix": "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기",
+      "component": "S1TimePicker",
+      "breakName": "mobile"
+    },
+    {
+      "id": "react:font:not-loaded",
+      "area": "font",
+      "severity": "friction",
+      "what": "README 대로 하면 Pretendard 웹폰트가 읽히지 않습니다 — 33개 조합 중 0개는 다른 글꼴로, 33개는 이 컴퓨터에 깔린 Pretendard 로 그려졌습니다(사용자 컴퓨터엔 없을 수 있음).",
+      "evidence": "실제 렌더 글꼴: Pretendard Variable(설치 글꼴) · CSS 지정: \"Pretendard Variable\", Pretendard, sans-serif",
+      "suggestedFix": "시작하기에 Pretendard 읽히기(웹폰트 import) 단계 추가 또는 s1-ui.css 에 @font-face 포함"
+    },
+    {
+      "id": "react:select:7",
+      "area": "interaction",
+      "severity": "friction",
+      "what": "셀렉트(S1Select) — 고르기·값·다시 그리기 — 제어형 value prop 이 있다(타입 정의 기준)",
+      "evidence": "S1SelectProps 에 value·defaultValue 없음 — 고른 값을 React 상태로 넣을 길이 없음(빼기는 onChange 의 event.detail 로만)",
+      "suggestedFix": "value/defaultValue + 값만 넘기는 onValueChange 추가"
+    },
+    {
+      "id": "react:pagination:7",
+      "area": "interaction",
+      "severity": "friction",
+      "what": "페이지네이션(S1Pagination) — pages 를 3개 주면 전체 쪽수도 3 으로 맞춰진다",
+      "evidence": "data-total-pages=\"6\"",
+      "suggestedFix": "data-total-pages 를 pages 길이(또는 total prop)로"
+    },
+    {
+      "id": "react:table:5",
+      "area": "interaction",
+      "severity": "friction",
+      "what": "표(S1Table) — 행 데이터·선택 — 행 체크박스 접근 이름이 줄마다 다르다",
+      "evidence": "[\"항목 1 선택\",\"항목 1 선택\",\"항목 1 선택\"]",
+      "suggestedFix": "행 체크박스 aria-label 을 줄 내용/번호로 채우기(지금은 예제 문구가 모든 줄에 같음)"
+    },
+    {
+      "id": "react:form:2",
+      "area": "interaction",
+      "severity": "friction",
+      "what": "폼 안에서 name 으로 값 보내기 — 셀렉트·시간·날짜도 name 을 주면 폼에 실린다",
+      "evidence": "빠진 name: city, time, day — 배포본 런타임은 name 이 아니라 data-name 을 보고 숨은 input 을 만든다 · 보낸 값 {\"nm\":\"홍길동\",\"agree\":\"yes\",\"pick\":\"a\"}",
+      "suggestedFix": "S1Select·S1TimePicker·S1DatePicker 에 name prop 을 받아 data-name 으로 넘기거나, README 에 data-name 을 쓰라고 적기"
+    },
+    {
+      "id": "react:types:untyped-named",
+      "area": "types",
+      "severity": "note",
+      "what": "index.js 가 내보내는 값 S1_VERSION, S1_RELEASED_AT 의 타입이 index.d.ts 에 없습니다 — TypeScript 에서 import 하면 오류가 납니다(README 1장이 S1_VERSION 을 쓰라고 안내함).",
+      "evidence": "index.js: export { S1_VERSION, S1_RELEASED_AT } · index.d.ts 에 선언 없음",
+      "suggestedFix": "index.d.ts 에 export declare const 추가"
+    },
+    {
+      "id": "react:readme:count",
+      "area": "readme",
+      "severity": "note",
+      "what": "React README 가 부품 수를 22종이라 적었는데 실제로는 32종입니다.",
+      "evidence": "platform/react/README.md 5장 \"22종\"",
+      "suggestedFix": "숫자를 생성 값으로 채우기"
+    },
+    {
+      "id": "react:types:odd-props",
+      "area": "types",
+      "severity": "note",
+      "what": "타입 정의에 그 부품에 뜻이 없는 prop 이 섞여 있습니다(입력칸용 공통 묶음을 그대로 붙인 흔적).",
+      "evidence": "S1Input.name: string|number · S1Checkbox.placeholder · S1Checkbox.defaultValue · S1Checkbox.name: string|number · S1Radio.placeholder · S1Radio.defaultValue · S1Radio.name: string|number · S1Textarea.name: string|number",
+      "suggestedFix": "부품 종류별로 받는 prop 을 나누기"
+    },
+    {
+      "id": "react:api:parts-names",
+      "area": "api",
+      "severity": "note",
+      "what": "부품이 내보내는 PARTS 목록은 \"sheet-title\" 처럼 줄표 이름인데, parts prop 은 sheetTitle 처럼 낙타 이름만 받습니다 — 목록을 보고 그대로 쓰면 무시됩니다.",
+      "evidence": "11개 파일 · bottom-sheet.jsx: sheet-backdrop,sheet-panel,sheet-content | date-picker.jsx: sheet-backdrop,sheet-panel,sheet-header | expandable-card.jsx: toggle-icon,panel-wrap | gnb.jsx: lang-icon,lang-label,account-icon",
+      "suggestedFix": "PARTS 를 parts 키 이름으로 내보내거나 두 이름을 다 받기"
+    },
+    {
+      "id": "react:build:tree-shaking-ok",
+      "area": "build",
+      "severity": "note",
+      "what": "버튼 하나만 쓰면 부품 코드는 32종의 2% 만 들어옵니다(트리 셰이킹 됨).",
+      "evidence": "JS gzip: React 만 67830B · 버튼 1종 앱 68433B · 32종 앱 95798B",
+      "suggestedFix": "—"
+    },
+    {
+      "id": "react:gnb:hang-once",
+      "area": "interaction",
+      "severity": "note",
+      "what": "GNB 하위 메뉴 펼침(오버레이) — 검수기가 앞 시나리오들을 한 페이지에서 이어 돌린 뒤에는 이 시나리오에서 페이지가 멈췄지만, 새 페이지에서는 멈추지 않았습니다(원인 미확정 — 화면을 오래 쓰면 생길 수 있는 누적 문제인지 검수기 탓인지 가려지지 않음).",
+      "evidence": "첫 시도 마지막 확인: 메뉴를 누르면 하위 메뉴가 펼쳐지고 onOpen 한 번",
+      "suggestedFix": "같은 순서로 손으로 재현해 보기"
+    }
+  ],
+  "cases": [
+    {
+      "component": "S1AssistButton",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 1,
+      "mount": {
+        "root": true,
+        "component": "assist-button",
+        "hidden": false,
+        "w": 73,
+        "h": 32,
+        "subtree": 0,
+        "subtreeTypes": [],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1AssistButton-pc.png",
+      "slotCounts": {
+        "label": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 0,
+        "plainSubtree": 0,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1BottomSheetOption",
+      "breakName": "pc",
+      "viewport": "mobile",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 1,
+      "mount": {
+        "root": true,
+        "component": "bottom-sheet-option",
+        "hidden": false,
+        "w": 200,
+        "h": 48,
+        "subtree": 2,
+        "subtreeTypes": [
+          "div[bottom-sheet-option]:s1:bottom-sheet-option:beforechange",
+          "div[bottom-sheet-option]:s1:bottom-sheet-option:change"
+        ],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1BottomSheetOption-pc.png",
+      "slotCounts": {
+        "label": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 2,
+        "plainSubtree": 2,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1BottomSheet",
+      "breakName": "pc",
+      "viewport": "mobile",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "pass",
+        "slotUnique": "fail",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 1,
+      "mount": {
+        "root": true,
+        "component": "bottom-sheet",
+        "hidden": false,
+        "w": 375,
+        "h": 812,
+        "subtree": 5,
+        "subtreeTypes": [
+          "button[sheet-close]:click",
+          "div[sheet-backdrop]:click",
+          "div[sheet]:click",
+          "div[sheet]:s1:bottom-sheet-option:change",
+          "div[sheet]:s1:bottom-sheet-option:close-request"
+        ],
+        "globals": 8,
+        "overflow": "hidden|"
+      },
+      "icons": {
+        "total": 2,
+        "checked": 2,
+        "painted": 2
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1BottomSheet-pc.png",
+      "slotCounts": {
+        "sheetBackdrop": 1,
+        "sheetTitle": 1,
+        "sheetClose": 1,
+        "label": 5,
+        "check": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 5,
+        "plainSubtree": 5,
+        "strictGlobals": 3,
+        "plainGlobals": 3,
+        "extraInStrict": []
+      },
+      "findingIds": [
+        "react:S1BottomSheet:pc:slot-shared"
+      ]
+    },
+    {
+      "component": "S1Button",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "button",
+        "hidden": false,
+        "w": 80,
+        "h": 44,
+        "subtree": 0,
+        "subtreeTypes": [],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Button-pc.png",
+      "slotCounts": {
+        "label": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 0,
+        "plainSubtree": 0,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Button",
+      "breakName": "mobile",
+      "viewport": "mobile",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "button",
+        "hidden": false,
+        "w": 80,
+        "h": 48,
+        "subtree": 0,
+        "subtreeTypes": [],
+        "globals": 5,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Button-mobile.png",
+      "slotCounts": {
+        "label": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 0,
+        "plainSubtree": 0,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Checkbox",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "checkbox",
+        "hidden": false,
+        "w": 76,
+        "h": 18,
+        "subtree": 1,
+        "subtreeTypes": [
+          "input[control]:invalid"
+        ],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Checkbox-pc.png",
+      "slotCounts": {
+        "label": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 1,
+        "plainSubtree": 1,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Chip",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "chip",
+        "hidden": false,
+        "w": 58,
+        "h": 34,
+        "subtree": 3,
+        "subtreeTypes": [
+          "button[chip]:click",
+          "button[chip]:s1:chip:beforechange",
+          "button[chip]:s1:chip:change"
+        ],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Chip-pc.png",
+      "slotCounts": {
+        "label": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 3,
+        "plainSubtree": 3,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Chip",
+      "breakName": "mobile",
+      "viewport": "mobile",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "chip",
+        "hidden": false,
+        "w": 50,
+        "h": 30,
+        "subtree": 3,
+        "subtreeTypes": [
+          "button[chip]:click",
+          "button[chip]:s1:chip:beforechange",
+          "button[chip]:s1:chip:change"
+        ],
+        "globals": 5,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Chip-mobile.png",
+      "slotCounts": {
+        "label": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 3,
+        "plainSubtree": 3,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1DataTag",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "notChecked",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "data-tag",
+        "hidden": false,
+        "w": 39,
+        "h": 26,
+        "subtree": 0,
+        "subtreeTypes": [],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1DataTag-pc.png",
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 0,
+        "plainSubtree": 0,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1DatePicker",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "date-picker",
+        "hidden": false,
+        "w": 140,
+        "h": 44,
+        "subtree": 4,
+        "subtreeTypes": [
+          "button[trigger]:click",
+          "button[trigger]:keydown",
+          "div[calendar]:click",
+          "div[calendar]:keydown"
+        ],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "painted": 1
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1DatePicker-pc.png",
+      "slotCounts": {
+        "value": 1,
+        "icon": 1,
+        "calendar": 1,
+        "sheetBackdrop": 0,
+        "sheetTitle": 0,
+        "sheetClose": 0,
+        "label": 0
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 4,
+        "plainSubtree": 4,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1DatePicker",
+      "breakName": "mobile",
+      "viewport": "mobile",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "date-picker",
+        "hidden": false,
+        "w": 140,
+        "h": 48,
+        "subtree": 7,
+        "subtreeTypes": [
+          "button[apply]:click",
+          "button[sheet-close]:click",
+          "button[trigger]:click",
+          "button[trigger]:keydown",
+          "div[calendar]:click",
+          "div[calendar]:keydown",
+          "div[sheet-backdrop]:click"
+        ],
+        "globals": 5,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "painted": 1
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1DatePicker-mobile.png",
+      "slotCounts": {
+        "value": 1,
+        "icon": 1,
+        "calendar": 1,
+        "sheetBackdrop": 1,
+        "sheetTitle": 1,
+        "sheetClose": 1,
+        "label": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 7,
+        "plainSubtree": 7,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Divider",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "notChecked",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "divider",
+        "hidden": false,
+        "w": 200,
+        "h": 1,
+        "subtree": 0,
+        "subtreeTypes": [],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": null,
+        "platform": null
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Divider-pc.png",
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 0,
+        "plainSubtree": 0,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Dropdown",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "notChecked",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "dropdown",
+        "hidden": false,
+        "w": 100,
+        "h": 142,
+        "subtree": 2,
+        "subtreeTypes": [
+          "div[dropdown]:click",
+          "div[dropdown]:keydown"
+        ],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Dropdown-pc.png",
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 2,
+        "plainSubtree": 2,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1ExpandableCard",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "pass",
+        "slotUnique": "fail",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "expandable-card",
+        "hidden": false,
+        "w": 200,
+        "h": 166,
+        "subtree": 1,
+        "subtreeTypes": [
+          "button[header]:click"
+        ],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "painted": 1
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1ExpandableCard-pc.png",
+      "slotCounts": {
+        "title": 2,
+        "subtitle": 2,
+        "body": 2,
+        "note": 2,
+        "caption": 2,
+        "toggleIcon": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 1,
+        "plainSubtree": 1,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": [
+        "react:S1ExpandableCard:pc:slot-shared"
+      ]
+    },
+    {
+      "component": "S1FilterChip",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "filter-chip",
+        "hidden": false,
+        "w": 109,
+        "h": 28,
+        "subtree": 5,
+        "subtreeTypes": [
+          "button[trigger]:click",
+          "div[dropdown]:click",
+          "div[dropdown]:keydown",
+          "div[filter-chip]:keydown",
+          "div[filter-chip]:s1:dropdown:change"
+        ],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "painted": 1
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1FilterChip-pc.png",
+      "slotCounts": {
+        "title": 1,
+        "value": 1,
+        "icon": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 5,
+        "plainSubtree": 5,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1FilterChip",
+      "breakName": "mobile",
+      "viewport": "mobile",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "filter-chip",
+        "hidden": false,
+        "w": 109,
+        "h": 30,
+        "subtree": 5,
+        "subtreeTypes": [
+          "button[trigger]:click",
+          "div[dropdown]:click",
+          "div[dropdown]:keydown",
+          "div[filter-chip]:keydown",
+          "div[filter-chip]:s1:dropdown:change"
+        ],
+        "globals": 5,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "painted": 1
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1FilterChip-mobile.png",
+      "slotCounts": {
+        "title": 1,
+        "value": 1,
+        "icon": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 5,
+        "plainSubtree": 5,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1GnbSubMenuItem",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "notChecked",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "gnb-sub-menu-item",
+        "hidden": false,
+        "w": 87,
+        "h": 21,
+        "subtree": 0,
+        "subtreeTypes": [],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1GnbSubMenuItem-pc.png",
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 0,
+        "plainSubtree": 0,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1GnbSubMenu",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "notChecked",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "gnb-sub-menu",
+        "hidden": false,
+        "w": 635,
+        "h": 296,
+        "subtree": 0,
+        "subtreeTypes": [],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1GnbSubMenu-pc.png",
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 0,
+        "plainSubtree": 0,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Gnb",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "pass",
+        "slotUnique": "fail",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "gnb",
+        "hidden": false,
+        "w": 763,
+        "h": 48,
+        "subtree": 0,
+        "subtreeTypes": [],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 3,
+        "checked": 3,
+        "painted": 3
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Gnb-pc.png",
+      "slotCounts": {
+        "logo": 1,
+        "menu": 3,
+        "langIcon": 1,
+        "langLabel": 1,
+        "accountIcon": 1,
+        "menuIcon": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 0,
+        "plainSubtree": 0,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": [
+        "react:S1Gnb:pc:slot-shared"
+      ]
+    },
+    {
+      "component": "S1Input",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "notChecked",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "input",
+        "hidden": false,
+        "w": 200,
+        "h": 44,
+        "subtree": 7,
+        "subtreeTypes": [
+          "button[action]:click",
+          "div[input]:focusin",
+          "div[input]:focusout",
+          "div[input]:pointerdown",
+          "div[input]:pointerup",
+          "input[control]:input",
+          "input[control]:invalid"
+        ],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": null,
+        "platform": null
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Input-pc.png",
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 7,
+        "plainSubtree": 7,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Input",
+      "breakName": "mobile",
+      "viewport": "mobile",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "notChecked",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "input",
+        "hidden": false,
+        "w": 200,
+        "h": 48,
+        "subtree": 7,
+        "subtreeTypes": [
+          "button[action]:click",
+          "div[input]:focusin",
+          "div[input]:focusout",
+          "div[input]:pointerdown",
+          "div[input]:pointerup",
+          "input[control]:input",
+          "input[control]:invalid"
+        ],
+        "globals": 5,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": null,
+        "platform": null
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Input-mobile.png",
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 7,
+        "plainSubtree": 7,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Input",
+      "breakName": "password",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "notChecked",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "input",
+        "hidden": false,
+        "w": 200,
+        "h": 44,
+        "subtree": 8,
+        "subtreeTypes": [
+          "button[action]:click",
+          "button[action]:click",
+          "div[input]:focusin",
+          "div[input]:focusout",
+          "div[input]:pointerdown",
+          "div[input]:pointerup",
+          "input[control]:input",
+          "input[control]:invalid"
+        ],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "painted": 1
+      },
+      "font": {
+        "family": null,
+        "platform": null
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Input-password.png",
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 8,
+        "plainSubtree": 8,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Input",
+      "breakName": "password-mobile",
+      "viewport": "mobile",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "notChecked",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "input",
+        "hidden": false,
+        "w": 200,
+        "h": 48,
+        "subtree": 8,
+        "subtreeTypes": [
+          "button[action]:click",
+          "button[action]:click",
+          "div[input]:focusin",
+          "div[input]:focusout",
+          "div[input]:pointerdown",
+          "div[input]:pointerup",
+          "input[control]:input",
+          "input[control]:invalid"
+        ],
+        "globals": 5,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "painted": 1
+      },
+      "font": {
+        "family": null,
+        "platform": null
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Input-password-mobile.png",
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 8,
+        "plainSubtree": 8,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Input",
+      "breakName": "search",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "notChecked",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "input",
+        "hidden": false,
+        "w": 200,
+        "h": 44,
+        "subtree": 9,
+        "subtreeTypes": [
+          "button[action]:click",
+          "button[action]:click",
+          "div[input]:focusin",
+          "div[input]:focusout",
+          "div[input]:pointerdown",
+          "div[input]:pointerup",
+          "input[control]:input",
+          "input[control]:invalid",
+          "input[control]:keydown"
+        ],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "painted": 1
+      },
+      "font": {
+        "family": null,
+        "platform": null
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Input-search.png",
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 9,
+        "plainSubtree": 9,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Input",
+      "breakName": "search-mobile",
+      "viewport": "mobile",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "notChecked",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "input",
+        "hidden": false,
+        "w": 200,
+        "h": 48,
+        "subtree": 9,
+        "subtreeTypes": [
+          "button[action]:click",
+          "button[action]:click",
+          "div[input]:focusin",
+          "div[input]:focusout",
+          "div[input]:pointerdown",
+          "div[input]:pointerup",
+          "input[control]:input",
+          "input[control]:invalid",
+          "input[control]:keydown"
+        ],
+        "globals": 5,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "painted": 1
+      },
+      "font": {
+        "family": null,
+        "platform": null
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Input-search-mobile.png",
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 9,
+        "plainSubtree": 9,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1ListRow",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "list-row",
+        "hidden": false,
+        "w": 200,
+        "h": 68,
+        "subtree": 0,
+        "subtreeTypes": [],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "painted": 1
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1ListRow-pc.png",
+      "slotCounts": {
+        "title": 1,
+        "description": 1,
+        "chevron": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 0,
+        "plainSubtree": 0,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Lnb",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "pass",
+        "slotUnique": "fail",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "lnb",
+        "hidden": false,
+        "w": 240,
+        "h": 228,
+        "subtree": 1,
+        "subtreeTypes": [
+          "nav[lnb]:click"
+        ],
+        "globals": 4,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 6,
+        "checked": 6,
+        "painted": 6
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Lnb-pc.png",
+      "slotCounts": {
+        "collapseIcon": 1,
+        "itemIcon": 4,
+        "itemToggle": 1,
+        "item": 2
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 1,
+        "plainSubtree": 1,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": [
+        "react:S1Lnb:pc:slot-shared"
+      ]
+    },
+    {
+      "component": "S1MobileBottomNav",
+      "breakName": "pc",
+      "viewport": "mobile",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "mobile-bottom-nav",
+        "hidden": false,
+        "w": 60,
+        "h": 60,
+        "subtree": 4,
+        "subtreeTypes": [
+          "button[mobile-bottom-nav]:click",
+          "button[mobile-bottom-nav]:keydown",
+          "button[mobile-bottom-nav]:s1:mobile-bottom-nav:beforechange",
+          "button[mobile-bottom-nav]:s1:mobile-bottom-nav:change"
+        ],
+        "globals": 5,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "painted": 1
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1MobileBottomNav-pc.png",
+      "slotCounts": {
+        "icon": 1,
+        "label": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 4,
+        "plainSubtree": 4,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1MobileHeader",
+      "breakName": "pc",
+      "viewport": "mobile",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "mobile-header",
+        "hidden": false,
+        "w": 238,
+        "h": 56,
+        "subtree": 0,
+        "subtreeTypes": [],
+        "globals": 5,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "painted": 1
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1MobileHeader-pc.png",
+      "slotCounts": {
+        "backIcon": 1,
+        "title": 1,
+        "spacer": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 0,
+        "plainSubtree": 0,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1ModalContent",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "notChecked",
+        "propUpdate": "pass",
+        "slotUnique": "fail",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 1,
+      "mount": {
+        "root": true,
+        "component": "modal-content",
+        "hidden": true,
+        "w": 0,
+        "h": 0,
+        "subtree": 2,
+        "subtreeTypes": [
+          "button[close]:click",
+          "div[modal-content]:click"
+        ],
+        "globals": 5,
+        "overflow": "|"
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1ModalContent-pc.png",
+      "slotCounts": {
+        "overlay": 1,
+        "title": 1,
+        "close": 1,
+        "contentLabel": 1,
+        "label": 2
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 2,
+        "plainSubtree": 2,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": [
+        "react:S1ModalContent:pc:slot-shared"
+      ]
+    },
+    {
+      "component": "S1Modal",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "notChecked",
+        "propUpdate": "pass",
+        "slotUnique": "fail",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 1,
+      "mount": {
+        "root": true,
+        "component": "modal",
+        "hidden": true,
+        "w": 0,
+        "h": 0,
+        "subtree": 2,
+        "subtreeTypes": [
+          "button[close]:click",
+          "div[modal]:click"
+        ],
+        "globals": 6,
+        "overflow": "|"
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Modal-pc.png",
+      "slotCounts": {
+        "overlay": 1,
+        "title": 1,
+        "close": 1,
+        "message": 1,
+        "label": 2
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 2,
+        "plainSubtree": 2,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": [
+        "react:S1Modal:pc:slot-shared"
+      ]
+    },
+    {
+      "component": "S1Modal",
+      "breakName": "mobile",
+      "viewport": "mobile",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "notChecked",
+        "propUpdate": "pass",
+        "slotUnique": "fail",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 1,
+      "mount": {
+        "root": true,
+        "component": "modal",
+        "hidden": true,
+        "w": 0,
+        "h": 0,
+        "subtree": 1,
+        "subtreeTypes": [
+          "div[modal]:click"
+        ],
+        "globals": 6,
+        "overflow": "|"
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Modal-mobile.png",
+      "slotCounts": {
+        "overlay": 1,
+        "title": 1,
+        "close": 0,
+        "message": 1,
+        "label": 2
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 1,
+        "plainSubtree": 1,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": [
+        "react:S1Modal:mobile:slot-shared"
+      ]
+    },
+    {
+      "component": "S1MultiToggle",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "notChecked",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "multi-toggle",
+        "hidden": false,
+        "w": 190,
+        "h": 44,
+        "subtree": 2,
+        "subtreeTypes": [
+          "div[multi-toggle]:click",
+          "div[multi-toggle]:keydown"
+        ],
+        "globals": 6,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1MultiToggle-pc.png",
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 2,
+        "plainSubtree": 2,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Pagination",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "notChecked",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "pagination",
+        "hidden": false,
+        "w": 304,
+        "h": 28,
+        "subtree": 1,
+        "subtreeTypes": [
+          "nav[pagination]:click"
+        ],
+        "globals": 6,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 4,
+        "checked": 4,
+        "painted": 4
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Pagination-pc.png",
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 1,
+        "plainSubtree": 1,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Radio",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "radio",
+        "hidden": false,
+        "w": 59,
+        "h": 18,
+        "subtree": 1,
+        "subtreeTypes": [
+          "input[control]:invalid"
+        ],
+        "globals": 6,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Radio-pc.png",
+      "slotCounts": {
+        "label": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 1,
+        "plainSubtree": 1,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Select",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "select",
+        "hidden": false,
+        "w": 140,
+        "h": 44,
+        "subtree": 5,
+        "subtreeTypes": [
+          "button[trigger]:click",
+          "div[dropdown]:click",
+          "div[dropdown]:keydown",
+          "div[select]:keydown",
+          "div[select]:s1:dropdown:change"
+        ],
+        "globals": 6,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "painted": 1
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Select-pc.png",
+      "slotCounts": {
+        "value": 1,
+        "icon": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 5,
+        "plainSubtree": 5,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Select",
+      "breakName": "mobile",
+      "viewport": "mobile",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "select",
+        "hidden": false,
+        "w": 140,
+        "h": 48,
+        "subtree": 5,
+        "subtreeTypes": [
+          "button[trigger]:click",
+          "div[dropdown]:click",
+          "div[dropdown]:keydown",
+          "div[select]:keydown",
+          "div[select]:s1:dropdown:change"
+        ],
+        "globals": 6,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "painted": 1
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Select-mobile.png",
+      "slotCounts": {
+        "value": 1,
+        "icon": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 5,
+        "plainSubtree": 5,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Tab",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "notChecked",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "tab",
+        "hidden": false,
+        "w": 370,
+        "h": 44,
+        "subtree": 2,
+        "subtreeTypes": [
+          "div[tab]:click",
+          "div[tab]:keydown"
+        ],
+        "globals": 6,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Tab-pc.png",
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 2,
+        "plainSubtree": 2,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Tab",
+      "breakName": "mobile",
+      "viewport": "mobile",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "notChecked",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "tab",
+        "hidden": false,
+        "w": 271,
+        "h": 32,
+        "subtree": 2,
+        "subtreeTypes": [
+          "div[tab]:click",
+          "div[tab]:keydown"
+        ],
+        "globals": 6,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Tab-mobile.png",
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 2,
+        "plainSubtree": 2,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Table",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "notChecked",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "table",
+        "hidden": false,
+        "w": 331,
+        "h": 180,
+        "subtree": 8,
+        "subtreeTypes": [
+          "input[control]:change",
+          "input[control]:change",
+          "input[control]:change",
+          "input[control]:change",
+          "input[control]:invalid",
+          "input[control]:invalid",
+          "input[control]:invalid",
+          "input[control]:invalid"
+        ],
+        "globals": 6,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Table-pc.png",
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 8,
+        "plainSubtree": 8,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1TextButton",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "text-button",
+        "hidden": false,
+        "w": 59,
+        "h": 18,
+        "subtree": 0,
+        "subtreeTypes": [],
+        "globals": 6,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1TextButton-pc.png",
+      "slotCounts": {
+        "label": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 0,
+        "plainSubtree": 0,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    },
+    {
+      "component": "S1Textarea",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "fail",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "notChecked",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "textarea",
+        "hidden": false,
+        "w": 200,
+        "h": 80,
+        "subtree": 1,
+        "subtreeTypes": [
+          "textarea[control]:invalid"
+        ],
+        "globals": 6,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": null,
+        "platform": null
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Textarea-pc.png",
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 1,
+        "plainSubtree": 1,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": [
+        "react:S1Textarea:pc:console-error"
+      ]
+    },
+    {
+      "component": "S1Textarea",
+      "breakName": "mobile",
+      "viewport": "mobile",
+      "checks": {
+        "consoleClean": "fail",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "notChecked",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "textarea",
+        "hidden": false,
+        "w": 200,
+        "h": 80,
+        "subtree": 1,
+        "subtreeTypes": [
+          "textarea[control]:invalid"
+        ],
+        "globals": 6,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": null,
+        "platform": null
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Textarea-mobile.png",
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 1,
+        "plainSubtree": 1,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": [
+        "react:S1Textarea:mobile:console-error"
+      ]
+    },
+    {
+      "component": "S1TimePicker",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "pass",
+        "slotUnique": "fail",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "time-picker",
+        "hidden": false,
+        "w": 140,
+        "h": 44,
+        "subtree": 7,
+        "subtreeTypes": [
+          "button[confirm]:click",
+          "button[trigger]:click",
+          "button[trigger]:keydown",
+          "div[panel]:click",
+          "div[panel]:keydown",
+          "div[time-picker]:keydown",
+          "div[time-picker]:s1:time-picker:change"
+        ],
+        "globals": 6,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "painted": 1
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1TimePicker-pc.png",
+      "slotCounts": {
+        "value": 1,
+        "icon": 1,
+        "column": 2,
+        "divider": 1,
+        "confirm": 1,
+        "sheetBackdrop": 0,
+        "sheetTitle": 0,
+        "sheetClose": 0,
+        "wheelCol": 0,
+        "fadeTop": 0,
+        "fadeBottom": 0,
+        "label": 0
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 7,
+        "plainSubtree": 7,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": [
+        "react:S1TimePicker:pc:slot-shared"
+      ]
+    },
+    {
+      "component": "S1TimePicker",
+      "breakName": "mobile",
+      "viewport": "mobile",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "pass",
+        "propUpdate": "pass",
+        "slotUnique": "fail",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "fail",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "time-picker",
+        "hidden": false,
+        "w": 140,
+        "h": 48,
+        "subtree": 17,
+        "subtreeTypes": [
+          "button[apply]:click",
+          "button[sheet-close]:click",
+          "button[sheet-close]:click",
+          "button[trigger]:click",
+          "button[trigger]:keydown",
+          "div[sheet-backdrop]:click",
+          "div[sheet-backdrop]:click",
+          "div[time-picker]:keydown",
+          "div[time-picker]:s1:time-picker:change",
+          "div[wheel-col]:click",
+          "div[wheel-col]:click",
+          "div[wheel-col]:click",
+          "div[wheel-col]:click",
+          "div[wheel-col]:keydown",
+          "div[wheel-col]:keydown",
+          "div[wheel-col]:keydown",
+          "div[wheel-col]:keydown"
+        ],
+        "globals": 6,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 1,
+        "checked": 1,
+        "painted": 1
+      },
+      "font": {
+        "family": "\"Pretendard Variable\", Pretendard, sans-serif",
+        "platform": [
+          "Pretendard Variable(설치 글꼴)"
+        ]
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1TimePicker-mobile.png",
+      "slotCounts": {
+        "value": 1,
+        "icon": 1,
+        "column": 0,
+        "divider": 0,
+        "confirm": 0,
+        "sheetBackdrop": 1,
+        "sheetTitle": 1,
+        "sheetClose": 1,
+        "wheelCol": 4,
+        "fadeTop": 1,
+        "fadeBottom": 1,
+        "label": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 17,
+        "plainSubtree": 15,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": [
+          "button[sheet-close]:click",
+          "div[sheet-backdrop]:click"
+        ]
+      },
+      "findingIds": [
+        "react:S1TimePicker:mobile:slot-shared",
+        "react:S1TimePicker:mobile:strict-double-bind"
+      ]
+    },
+    {
+      "component": "S1Toggle",
+      "breakName": "pc",
+      "viewport": "pc",
+      "checks": {
+        "consoleClean": "pass",
+        "size": "pass",
+        "icons": "none",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
+        "className": "pass",
+        "unmountClean": "pass",
+        "strictModeSingleBind": "pass",
+        "hydration": "pass"
+      },
+      "oneTimeGlobalListeners": 0,
+      "mount": {
+        "root": true,
+        "component": "toggle",
+        "hidden": false,
+        "w": 40,
+        "h": 20,
+        "subtree": 1,
+        "subtreeTypes": [
+          "button[toggle]:click"
+        ],
+        "globals": 6,
+        "overflow": "|"
+      },
+      "icons": {
+        "total": 0,
+        "checked": 0,
+        "painted": 0
+      },
+      "font": {
+        "family": null,
+        "platform": null
+      },
+      "screenshot": "reports/publisher-audit/react/shots/S1Toggle-pc.png",
+      "slotCounts": {
+        "knob": 1
+      },
+      "unmount": {
+        "leakedGlobalListeners": 0,
+        "overflow": "|"
+      },
+      "strictMode": {
+        "strictSubtree": 1,
+        "plainSubtree": 1,
+        "strictGlobals": 0,
+        "plainGlobals": 0,
+        "extraInStrict": []
+      },
+      "findingIds": []
+    }
+  ],
+  "scenarios": [
+    {
+      "key": "input-controlled",
+      "title": "입력칸(S1Input)을 React 상태로 제어",
+      "checks": [
+        {
+          "name": "글자 하나 치면 onChange 가 한 번 온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "onChange 1회"
+        },
+        {
+          "name": "친 글자가 React 상태에 들어간다",
+          "ok": true,
+          "severity": null,
+          "evidence": "상태 \"가나다\""
+        },
+        {
+          "name": "상태를 바꾸면 입력칸 글자가 따라 바뀐다",
+          "ok": true,
+          "severity": null,
+          "evidence": "입력칸 \"새 값\""
+        },
+        {
+          "name": "지우기(X) 버튼을 누르면 React 상태도 비워진다(onChange 가 온다)",
+          "ok": false,
+          "severity": "broken",
+          "evidence": "입력칸 \"\" · React 상태 \"새 값\" · onChange 0회 · onClear 1회"
+        }
+      ],
+      "status": "fail",
+      "console": []
+    },
+    {
+      "key": "checkbox-controlled",
+      "title": "체크박스(S1Checkbox)를 React 상태로 제어",
+      "checks": [
+        {
+          "name": "라벨을 누르면 onChange 가 한 번 온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "onChange 1회"
+        },
+        {
+          "name": "누르면 상태·화면이 함께 켜진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "상태 true · 화면 true"
+        },
+        {
+          "name": "상태를 끄면 화면도 꺼진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "set(false) 후"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "chip-controlled",
+      "title": "칩(S1Chip) 제어형 selected/onSelectedChange",
+      "checks": [
+        {
+          "name": "한 번 누르면 onSelectedChange 가 한 번(true) 온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[true]"
+        },
+        {
+          "name": "부모가 상태를 바꾸면 칩이 켜진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "aria-pressed=true"
+        },
+        {
+          "name": "다시 누르면 꺼진다(false 한 번)",
+          "ok": true,
+          "severity": null,
+          "evidence": "[false] · aria-pressed=false"
+        },
+        {
+          "name": "제어형인데 부모가 값을 안 바꾸면 눌러도 모양이 그대로다",
+          "ok": true,
+          "severity": null,
+          "evidence": "aria-pressed=false"
+        },
+        {
+          "name": "비제어형 defaultSelected 가 처음 모양에 반영된다",
+          "ok": true,
+          "severity": null,
+          "evidence": "aria-pressed=true"
+        },
+        {
+          "name": "비제어형은 눌러서 꺼지고 onSelectedChange·onChange 가 각각 한 번",
+          "ok": true,
+          "severity": null,
+          "evidence": "aria-pressed=false · onSelectedChange 1회 · onChange 1회"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "chip-group",
+      "title": "칩 묶음 하나만 고르기",
+      "checks": [
+        {
+          "name": "React 상태로 묶으면 누른 칩 하나만 켜진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "aria-pressed [\"false\",\"true\",\"false\"]"
+        },
+        {
+          "name": "data-s1-select=\"single\" 로 감싸면 부품이 알아서 하나만 켠다",
+          "ok": true,
+          "severity": null,
+          "evidence": "aria-pressed [\"false\",\"false\",\"true\"]"
+        },
+        {
+          "name": "묶음에서 하나 고를 때 onChange 는 누른 칩 한 번(+꺼진 칩 한 번까지)",
+          "ok": true,
+          "severity": null,
+          "evidence": "onChange 2회 [{\"selected\":false,\"value\":\"전체\",\"group\":true},{\"selected\":true,\"value\":\"완료\",\"group\":true}]"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "modal-open-prop",
+      "title": "모달(S1Modal) 을 React 상태 open 으로 열기",
+      "checks": [
+        {
+          "name": "open={true} 를 주면 모달이 열린다",
+          "ok": false,
+          "severity": "broken",
+          "evidence": "보임=false · 타입 정의 S1ModalProps 에 open 없음 · 루트에 open 속성만 붙음=true · README 에 모달 여는 법 없음"
+        }
+      ],
+      "status": "fail",
+      "console": []
+    },
+    {
+      "key": "modal-declarative",
+      "title": "모달 — 배포본 런타임의 data-s1-open 길로 열기(README 에 없음)",
+      "checks": [
+        {
+          "name": "열린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "data-s1-open 클릭 후"
+        },
+        {
+          "name": "onOpen 이 한 번 온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "onOpen 1회"
+        },
+        {
+          "name": "열리면 스크롤이 잠긴다",
+          "ok": true,
+          "severity": null,
+          "evidence": "overflow (없음) → hidden"
+        },
+        {
+          "name": "열리면 초점이 창 안으로",
+          "ok": true,
+          "severity": null,
+          "evidence": "초점: <button type=\"button\" data-s1-part=\"close\" aria-label=\"닫기\"></button>"
+        },
+        {
+          "name": "Esc 로 닫힌다",
+          "ok": true,
+          "severity": null,
+          "evidence": "Esc 후"
+        },
+        {
+          "name": "onClose 가 한 번 온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "onClose 1회"
+        },
+        {
+          "name": "닫히면 초점이 연 버튼으로 돌아온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "초점: modal-opener"
+        },
+        {
+          "name": "닫히면 스크롤 잠금이 풀린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "overflow (없음)"
+        },
+        {
+          "name": "열린 채 화면에서 떼도 스크롤 잠금이 풀린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "떼고 난 overflow (없음)"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "sheet-open-prop",
+      "title": "바텀시트(S1BottomSheet) open prop + onClose 로 상태 되돌리기",
+      "checks": [
+        {
+          "name": "open={false} 로 시작하면 닫혀 있다",
+          "ok": true,
+          "severity": null,
+          "evidence": "처음"
+        },
+        {
+          "name": "상태를 true 로 바꾸면 열린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "열기 버튼 후"
+        },
+        {
+          "name": "open prop 으로 열어도 onOpen 이 한 번 온다",
+          "ok": false,
+          "severity": "broken",
+          "evidence": "onOpen 0회 — 시트 자체는 열렸음. Esc 처럼 런타임이 스스로 닫을 땐 onClose 가 오는데, prop 으로 여닫을 땐 이벤트가 듣기 연결보다 먼저 쏘아진다(여닫기 효과가 듣기 연결 효과보다 앞에 선언됨)"
+        },
+        {
+          "name": "열리면 스크롤이 잠긴다",
+          "ok": true,
+          "severity": null,
+          "evidence": "overflow hidden"
+        },
+        {
+          "name": "열리면 초점이 시트 안으로",
+          "ok": true,
+          "severity": null,
+          "evidence": "초점: <button type=\"button\" data-s1-part=\"sheet-close\" aria-label=\"닫기\"></button>"
+        },
+        {
+          "name": "Esc 로 닫힌다",
+          "ok": true,
+          "severity": null,
+          "evidence": "Esc 후"
+        },
+        {
+          "name": "Esc 로 닫을 때 onClose 가 한 번만 온다(상태를 false 로 되돌려도 두 번 오지 않는다)",
+          "ok": true,
+          "severity": null,
+          "evidence": "onClose 1회"
+        },
+        {
+          "name": "React 상태도 닫힘(false)으로 맞춰진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "open 상태 false"
+        },
+        {
+          "name": "닫히면 초점이 연 버튼으로",
+          "ok": true,
+          "severity": null,
+          "evidence": "초점: sheet-opener"
+        },
+        {
+          "name": "닫히면 스크롤 잠금이 풀린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "overflow (없음)"
+        },
+        {
+          "name": "다시 열 수 있다",
+          "ok": true,
+          "severity": null,
+          "evidence": "두 번째 열기"
+        },
+        {
+          "name": "열린 채 화면에서 떼도 스크롤 잠금이 풀린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "떼고 난 overflow (없음)"
+        },
+        {
+          "name": "open 을 안 주면(기본 true) 보이고 열린 창처럼 스크롤도 잠긴다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"shown\":true,\"lock\":\"hidden\"}"
+        },
+        {
+          "name": "시트 본문에 내 목록(children 또는 parts.sheetBody)을 넣을 수 있다",
+          "ok": false,
+          "severity": "broken",
+          "evidence": "children 들어감=false · parts.sheetBody 들어감=false · 예제 줄 4개가 그대로"
+        }
+      ],
+      "status": "fail",
+      "console": []
+    },
+    {
+      "key": "sheet-option-single",
+      "title": "바텀시트 목록(S1BottomSheetOption) 하나만 고르기",
+      "checks": [
+        {
+          "name": "누른 줄 하나만 selected",
+          "ok": true,
+          "severity": null,
+          "evidence": "data-state [\"default\",\"selected\",\"default\"]"
+        },
+        {
+          "name": "onChange 가 온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "onChange 1회"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "select",
+      "title": "셀렉트(S1Select) — 고르기·값·다시 그리기",
+      "checks": [
+        {
+          "name": "트리거를 누르면 열리고 onOpen 한 번",
+          "ok": true,
+          "severity": null,
+          "evidence": "aria-expanded=true · onOpen 1회"
+        },
+        {
+          "name": "항목을 고르면 onChange 가 한 번",
+          "ok": true,
+          "severity": null,
+          "evidence": "onChange 1회"
+        },
+        {
+          "name": "고른 항목 글자가 트리거에 보인다",
+          "ok": true,
+          "severity": null,
+          "evidence": "트리거 \"부산\""
+        },
+        {
+          "name": "options 를 글자 목록으로 주면 onChange 의 value 가 고른 항목을 가리킨다",
+          "ok": false,
+          "severity": "broken",
+          "evidence": "event.detail.value = \"seoul\" (고른 것: 부산)"
+        },
+        {
+          "name": "options 를 바꾸면 목록이 바뀐다",
+          "ok": true,
+          "severity": null,
+          "evidence": "목록 [\"대구\",\"광주\"]"
+        },
+        {
+          "name": "고른 뒤 parts.value 로 트리거 글자를 바꾸면 화면이 따라온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "트리거 \"직접 지정\""
+        },
+        {
+          "name": "제어형 value prop 이 있다(타입 정의 기준)",
+          "ok": false,
+          "severity": "friction",
+          "evidence": "S1SelectProps 에 value·defaultValue 없음 — 고른 값을 React 상태로 넣을 길이 없음(빼기는 onChange 의 event.detail 로만)"
+        }
+      ],
+      "status": "fail",
+      "console": []
+    },
+    {
+      "key": "dropdown",
+      "title": "드롭다운(S1Dropdown) 고르기",
+      "checks": [
+        {
+          "name": "항목을 누르면 onChange 가 한 번",
+          "ok": true,
+          "severity": null,
+          "evidence": "onChange 1회 [\"latest\"]"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "pagination",
+      "title": "페이지네이션(S1Pagination)",
+      "checks": [
+        {
+          "name": "화살표 버튼 4개(처음·이전·다음·끝)",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"first\",\"previous\",\"next\",\"last\"]"
+        },
+        {
+          "name": "페이지 3 을 누르면 3 이 현재 페이지",
+          "ok": true,
+          "severity": null,
+          "evidence": "현재 [\"3\"]"
+        },
+        {
+          "name": "페이지가 바뀐 걸 React 가 받을 prop(onChange·onPageChange)이 있다",
+          "ok": false,
+          "severity": "broken",
+          "evidence": "onChange prop 으로 0회 받음 — 타입 정의에 이벤트 prop 없음(배포본은 s1:pagination:change 를 쏨)"
+        },
+        {
+          "name": "\"last\" 화살표를 누르면 현재 페이지가 하나로 옮겨 간다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"pages\":[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\"],\"cur\":[\"3\"]}"
+        },
+        {
+          "name": "런타임이 번호를 다시 그린 뒤에도 React 가 pages 를 바꿔 그릴 수 있다(충돌·중복 없음)",
+          "ok": true,
+          "severity": null,
+          "evidence": "번호 [\"1\",\"2\",\"3\",\"4\",\"5\",\"6\",\"7\",\"8\",\"9\",\"10\"]"
+        },
+        {
+          "name": "pages={[\"1\",\"2\",\"3\"]} 처럼 글자만 주면 현재 페이지 표시가 하나뿐이다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[{\"t\":\"1\",\"p\":\"1\",\"c\":\"page\"},{\"t\":\"2\",\"p\":\"2\",\"c\":null},{\"t\":\"3\",\"p\":\"3\",\"c\":null}]"
+        },
+        {
+          "name": "pages 를 3개 주면 전체 쪽수도 3 으로 맞춰진다",
+          "ok": false,
+          "severity": "friction",
+          "evidence": "data-total-pages=\"6\""
+        }
+      ],
+      "status": "fail",
+      "console": []
+    },
+    {
+      "key": "table",
+      "title": "표(S1Table) — 행 데이터·선택",
+      "checks": [
+        {
+          "name": "rows 2줄이 그려진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "2줄"
+        },
+        {
+          "name": "행 체크박스를 누르면 onSelectionchange 가 한 번",
+          "ok": true,
+          "severity": null,
+          "evidence": "onSelectionchange 1회"
+        },
+        {
+          "name": "전체 선택을 누르면 모든 행이 켜지고 onSelectionchange 한 번",
+          "ok": true,
+          "severity": null,
+          "evidence": "[true,true] · 1회"
+        },
+        {
+          "name": "rows 를 바꾸면 줄 수가 따라 바뀐다",
+          "ok": true,
+          "severity": null,
+          "evidence": "3줄"
+        },
+        {
+          "name": "행 체크박스 접근 이름이 줄마다 다르다",
+          "ok": false,
+          "severity": "friction",
+          "evidence": "[\"항목 1 선택\",\"항목 1 선택\",\"항목 1 선택\"]"
+        }
+      ],
+      "status": "fail",
+      "console": []
+    },
+    {
+      "key": "date-picker",
+      "title": "날짜 선택(S1DatePicker) — 값 넣고 빼기",
+      "checks": [
+        {
+          "name": "value=\"2026-10-01\" 을 주면 그 날짜가 보인다(값 넣기)",
+          "ok": false,
+          "severity": "broken",
+          "evidence": "트리거 \"날짜 선택\" — 타입 정의에 value·defaultValue 없음"
+        },
+        {
+          "name": "트리거를 누르면 열리고 onOpen 한 번",
+          "ok": true,
+          "severity": null,
+          "evidence": "onOpen 1회"
+        },
+        {
+          "name": "날짜를 누르면 onChange 가 한 번(값 빼기)",
+          "ok": true,
+          "severity": null,
+          "evidence": "onChange 1회 · detail {\"value\":\"2026-10-15\",\"mode\":\"single\"}"
+        },
+        {
+          "name": "고른 날짜가 트리거에 보인다",
+          "ok": true,
+          "severity": null,
+          "evidence": "트리거 \"26.10.15\" (고른 칸 15)"
+        }
+      ],
+      "status": "fail",
+      "console": []
+    },
+    {
+      "key": "date-picker-mobile",
+      "title": "날짜 선택 모바일(바텀시트로 열림)",
+      "checks": [
+        {
+          "name": "모바일 트리거를 누르면 시트가 열리고 onOpen 한 번",
+          "ok": true,
+          "severity": null,
+          "evidence": "시트 보임=true · onOpen 1회"
+        },
+        {
+          "name": "Esc 로 닫히고 onClose 한 번",
+          "ok": true,
+          "severity": null,
+          "evidence": "onClose 1회"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "time-picker",
+      "title": "시간 선택(S1TimePicker) — 값 넣고 빼기",
+      "checks": [
+        {
+          "name": "value=\"09:30\" 을 주면 그 시간이 보인다(값 넣기)",
+          "ok": false,
+          "severity": "broken",
+          "evidence": "트리거 \"시간 선택\" — 타입 정의에 value 없음"
+        },
+        {
+          "name": "트리거를 누르면 onOpen 한 번",
+          "ok": true,
+          "severity": null,
+          "evidence": "onOpen 1회"
+        },
+        {
+          "name": "열마다 고르고 확인을 누르면 onChange 가 한 번(값 빼기)",
+          "ok": true,
+          "severity": null,
+          "evidence": "열 2개 · onChange 1회 · 확인 버튼 누름 · detail {\"value\":\"01:01\",\"hour\":\"01\",\"minute\":\"01\",\"ampm\":null,\"type\":\"24h\"}"
+        }
+      ],
+      "status": "fail",
+      "console": []
+    },
+    {
+      "key": "bottom-nav",
+      "title": "모바일 하단 탭(S1MobileBottomNav) 자동 이동 · preventDefault",
+      "checks": [
+        {
+          "name": "defaultSelected 를 첫 칸에만 주면 첫 칸만 켜진 채 시작",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"true\",\"false\",\"false\",\"false\"]"
+        },
+        {
+          "name": "세 번째를 누르면 그 칸 하나만 켜진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"false\",\"false\",\"true\",\"false\"]"
+        },
+        {
+          "name": "onBeforechange·onChange 가 각각 한 번",
+          "ok": true,
+          "severity": null,
+          "evidence": "before 1회 · change 1회"
+        },
+        {
+          "name": "onBeforechange 에서 preventDefault 하면 움직이지 않는다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"true\",\"false\",\"false\",\"false\"] · change 0회"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "gnb",
+      "title": "GNB 하위 메뉴 펼침(오버레이)",
+      "checks": [
+        {
+          "name": "메뉴를 누르면 하위 메뉴가 펼쳐지고 onOpen 한 번",
+          "ok": false,
+          "severity": "broken",
+          "evidence": "{\"expanded\":\"false\",\"panel\":false} · onOpen 0회 · 메뉴가 가리키는 하위 메뉴 판(#gnb-sub-menu-a-service) 존재=false"
+        }
+      ],
+      "status": "fail",
+      "hungOnFirstTry": {
+        "key": "gnb",
+        "lastStep": "메뉴를 누르면 하위 메뉴가 펼쳐지고 onOpen 한 번"
+      },
+      "console": []
+    },
+    {
+      "key": "form",
+      "title": "폼 안에서 name 으로 값 보내기",
+      "checks": [
+        {
+          "name": "입력·체크박스·라디오는 name/defaultValue/defaultChecked 로 폼에 실린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "보낸 값 {\"nm\":\"홍길동\",\"agree\":\"yes\",\"pick\":\"a\"}"
+        },
+        {
+          "name": "셀렉트·시간·날짜도 name 을 주면 폼에 실린다",
+          "ok": false,
+          "severity": "friction",
+          "evidence": "빠진 name: city, time, day — 배포본 런타임은 name 이 아니라 data-name 을 보고 숨은 input 을 만든다 · 보낸 값 {\"nm\":\"홍길동\",\"agree\":\"yes\",\"pick\":\"a\"}"
+        }
+      ],
+      "status": "fail",
+      "console": []
+    },
+    {
+      "key": "textarea",
+      "title": "여러 줄 입력(S1Textarea) — defaultValue·value",
+      "checks": [
+        {
+          "name": "defaultValue 를 주면 그 글자로 그려진다(비제어형)",
+          "ok": false,
+          "severity": "broken",
+          "evidence": "화면이 그려지지 않고 오류: 오류: If you supply `defaultValue` on a <textarea>, do not pass children."
+        },
+        {
+          "name": "value(제어형)를 주면 그 글자로 그려진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "값 \"처음\""
+        },
+        {
+          "name": "상태를 바꾸면 글자가 따라 바뀐다",
+          "ok": true,
+          "severity": null,
+          "evidence": "값 \"바뀜\""
+        }
+      ],
+      "status": "fail",
+      "console": [
+        "%o %s %s Error: If you supply `defaultValue` on a <textarea>, do not pass children. at initTextarea (http://127.0.0.1:63286/node_modules/.vite/deps/react-dom_client.js?v=73b4d25a:1535:38) at setInitialProperties (http://127.0.0.1:63286/node_modules/.vite/deps/react-dom_client.js?v=73b4d25a:10636:6) "
+      ]
+    },
+    {
+      "key": "gnb-composed",
+      "title": "GNB + GNB 하위 메뉴를 함께 두고 id 를 맞춰 쓰기(개발자 우회로)",
+      "checks": [
+        {
+          "name": "하위 메뉴에 id 를 직접 주고 같이 두면 펼쳐진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"expanded\":\"true\",\"panel\":true,\"subMenuHasIdProp\":true} · onOpen 1회"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "ref",
+      "title": "ref 로 루트 DOM 받기 · ref 를 줘도 동작 유지",
+      "checks": [
+        {
+          "name": "ref 를 주면 부품마다 루트 DOM 요소가 들어온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "전부 루트 요소"
+        },
+        {
+          "name": "ref 를 줘도 부품 동작(눌러서 켜기)이 그대로다",
+          "ok": false,
+          "severity": "broken",
+          "evidence": "S1Chip 에 ref 를 주고 한 번 누름 → aria-pressed=false · onChange 0회"
+        }
+      ],
+      "status": "fail",
+      "console": []
+    }
+  ]
+}
