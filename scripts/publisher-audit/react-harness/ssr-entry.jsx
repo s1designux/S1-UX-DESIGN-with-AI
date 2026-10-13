@@ -8,18 +8,30 @@ import { createElement as h } from "react";
 import * as S1 from "./s1-ui/platform/react";
 
 const modules = import.meta.glob("./s1-ui/platform/react/*.jsx", { eager: true });
-const nameOf = new Map(Object.entries(S1).filter(([, v]) => typeof v === "function").map(([k, v]) => [v, k]));
+const isComponent = (v) => typeof v === "function" || (v && typeof v === "object" && v.$$typeof);   // forwardRef 로 감싼 부품은 객체다
+const nameOf = new Map(Object.entries(S1).filter(([, v]) => isComponent(v)).map(([k, v]) => [v, k]));
 const out = [];
 for (const [file, mod] of Object.entries(modules)) {
   const name = nameOf.get(mod.default);
-  for (const breakName of mod.BREAKS || ["pc"]) {
-    const props = (mod.BREAKS || []).length > 1 ? { breakName } : {};
+  const forms = mod.FORMS || mod.BREAKS || ["pc"];
+  for (const breakName of forms) {
+    const props = forms.length > 1 ? { breakName } : {};
     try {
       const html = renderToString(h(S1[name], props));
       out.push({ name, breakName, ok: true, bytes: html.length, hasRoot: /data-s1-component=/.test(html) });
     } catch (error) {
       out.push({ name, breakName, ok: false, error: String(error && error.message || error).slice(0, 300) });
     }
+  }
+}
+/* README 예시 — 서버에서도 그려져야 한다 */
+const readmeModules = import.meta.glob("./readme-example-*.jsx", { eager: true });
+for (const [file, mod] of Object.entries(readmeModules)) {
+  try {
+    const html = renderToString(h(mod.default));
+    out.push({ name: file.replace("./", ""), breakName: "readme", ok: true, bytes: html.length, hasRoot: /data-s1-component=/.test(html) });
+  } catch (error) {
+    out.push({ name: file.replace("./", ""), breakName: "readme", ok: false, error: String(error && error.message || error).slice(0, 300) });
   }
 }
 console.log(`__SSR_RESULT__${JSON.stringify({ windowDefined: typeof window !== "undefined", out })}`);

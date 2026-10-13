@@ -1,7 +1,7 @@
 {
   "tool": "scripts/publisher-audit/react.mjs",
-  "generatedAt": "2026-10-13T04:22:57.251Z",
-  "durationSec": 162,
+  "generatedAt": "2026-10-13T06:30:05.786Z",
+  "durationSec": 165,
   "environment": {
     "node": "v20.19.4",
     "react": "19.3.0",
@@ -11,21 +11,22 @@
     "typescript": "6.0.3",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "chrome": "Chrome/154.0.8037.100",
+    "chrome": "Chrome/155.0.8059.40",
     "runtimeMode": "Vite 개발 서버(React development 빌드 · StrictMode)",
     "setup": "scripts/publisher-audit/react-env-setup.sh"
   },
   "package": {
     "zip": "assets/downloads/s1-ui-react.zip",
-    "version": "0.22.0",
+    "version": "0.23.0",
     "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71",
     "exportedComponents": 32,
     "readmeStartSteps": [
-      "1. 압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.",
+      "1. 압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트의 `src/` 안에 그대로 넣습니다.",
       "2. **`preview.html` 을 브라우저로 열면 컴포넌트 32종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.",
-      "3. 앱 진입 파일에서 `assets/css/tokens.css` 와 `s1-ui.css` 를 한 번 읽힙니다.",
-      "4. `import { S1Button } from \"./s1-ui/platform/react\";` 처럼 쓸 것만 꺼내 씁니다.",
-      "5. 받는 값과 쓰는 법은 `platform/react/README.md` 에 있습니다."
+      "3. 앱 진입 파일(Vite `src/main.jsx` · Next.js `app/layout.tsx`)에서 CSS 를 한 번, 이 순서로 읽힙니다: `assets/css/tokens.css`(필수) · `assets/css/typography.css`(선택) · `s1-ui.base.css`(선택 — 페이지 바탕·기본 글자색) · `s1-ui.css`(필수).",
+      "4. 글꼴 Pretendard 는 묶음에 들어 있지 않습니다 — `index.html` 의 `<head>` 에 `<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css\">` 를 넣습니다. 다크 모드는 `<html data-theme=\"dark\">` 입니다.",
+      "5. `import { S1Button } from \"./s1-ui/platform/react\";` 처럼 쓸 것만 꺼내 씁니다(Next.js 에서도 그대로 — 부품 파일마다 \"use client\" 가 들어 있습니다).",
+      "6. 받는 값과 쓰는 법·예시는 `platform/react/README.md` 에 있습니다."
     ]
   },
   "method": {
@@ -46,25 +47,21 @@
       },
       "rule": "breakName 에 mobile 이 들었거나 이름이 Mobile*/BottomSheet* 인 부품 → 375 폭"
     },
-    "typescript": "strict · skipLibCheck=false · README 예시(OK 구역) + 일부러 틀린 코드 5줄(@ts-expect-error)",
+    "typescript": "strict · skipLibCheck=false · README 예시(OK 구역) + 일부러 틀린 코드(@ts-expect-error)",
     "treeShaking": "같은 Vite 설정으로 React 만 / 버튼 1종 / 전 종 앱을 각각 build 해 JS gzip 크기 비교",
     "ssr": "vite build --ssr 로 묶어 Node 에서 모든 부품·breakName renderToString"
   },
   "summary": {
     "components": 32,
     "cases": 46,
-    "scenarios": 21,
-    "broken": 17,
-    "friction": 24,
-    "note": 6,
+    "scenarios": 40,
+    "broken": 0,
+    "friction": 1,
+    "note": 2,
     "notChecked": [
       {
         "check": "nextjsBuild",
         "reason": "Next.js 는 설치하지 않았다(수백 MB) — \"use client\" 표시 여부만 정적으로 봤다(ssr:use-client 항목)"
-      },
-      {
-        "check": "S1DataTag propUpdate",
-        "reason": "글자 슬롯이 없는 부품"
       },
       {
         "check": "S1Divider propUpdate",
@@ -72,10 +69,6 @@
       },
       {
         "check": "S1Dropdown propUpdate",
-        "reason": "글자 슬롯이 없는 부품"
-      },
-      {
-        "check": "S1GnbSubMenuItem propUpdate",
         "reason": "글자 슬롯이 없는 부품"
       },
       {
@@ -104,6 +97,10 @@
       },
       {
         "check": "S1Input[search-mobile] propUpdate",
+        "reason": "글자 슬롯이 없는 부품"
+      },
+      {
+        "check": "S1Lnb propUpdate",
         "reason": "글자 슬롯이 없는 부품"
       },
       {
@@ -149,16 +146,20 @@
     ]
   },
   "packageChecks": {
-    "typedExports": "fail",
-    "readmeFont": "fail",
-    "nextUseClient": "fail",
-    "propNaming": "fail",
+    "typedExports": "pass",
+    "readmeFont": "pass",
+    "nextUseClient": "pass",
+    "propNaming": "pass",
     "viteBuild": "pass",
     "viteBuildAll": "pass",
     "treeShaking": "pass",
-    "innerReadmeImports": "fail",
-    "typescriptAccepts": "fail",
-    "typescriptCatchesMistakes": "fail",
+    "readmeExamplesBuild": "pass",
+    "innerReadmeImports": "pass",
+    "lintSkipsOwnFiles": "pass",
+    "lintCatchesRealProblem": "pass",
+    "typescriptAccepts": "pass",
+    "readmeExamplesTypeCheck": "pass",
+    "typescriptCatchesMistakes": "pass",
     "ssrRenderToString": "pass",
     "nextjsBuild": "notChecked",
     "fontResolved": "fail"
@@ -166,36 +167,40 @@
   "packageFacts": {
     "exported": 32,
     "readmeStartSteps": [
-      "1. 압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.",
+      "1. 압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트의 `src/` 안에 그대로 넣습니다.",
       "2. **`preview.html` 을 브라우저로 열면 컴포넌트 32종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.",
-      "3. 앱 진입 파일에서 `assets/css/tokens.css` 와 `s1-ui.css` 를 한 번 읽힙니다.",
-      "4. `import { S1Button } from \"./s1-ui/platform/react\";` 처럼 쓸 것만 꺼내 씁니다.",
-      "5. 받는 값과 쓰는 법은 `platform/react/README.md` 에 있습니다."
+      "3. 앱 진입 파일(Vite `src/main.jsx` · Next.js `app/layout.tsx`)에서 CSS 를 한 번, 이 순서로 읽힙니다: `assets/css/tokens.css`(필수) · `assets/css/typography.css`(선택) · `s1-ui.base.css`(선택 — 페이지 바탕·기본 글자색) · `s1-ui.css`(필수).",
+      "4. 글꼴 Pretendard 는 묶음에 들어 있지 않습니다 — `index.html` 의 `<head>` 에 `<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css\">` 를 넣습니다. 다크 모드는 `<html data-theme=\"dark\">` 입니다.",
+      "5. `import { S1Button } from \"./s1-ui/platform/react\";` 처럼 쓸 것만 꺼내 씁니다(Next.js 에서도 그대로 — 부품 파일마다 \"use client\" 가 들어 있습니다).",
+      "6. 받는 값과 쓰는 법·예시는 `platform/react/README.md` 에 있습니다."
     ],
     "importPaths": {
       "top": "./s1-ui/platform/react",
       "inner": [
-        "@s1/ui-react"
+        "./s1-ui/platform/react"
       ],
       "topCss": [
         "assets/css/tokens.css",
+        "assets/css/typography.css",
+        "s1-ui.base.css",
         "s1-ui.css"
       ],
       "innerCss": [
-        "@s1/ui/assets/css/tokens.css",
-        "@s1/ui/assets/css/typography.css",
-        "@s1/ui/s1-ui.css"
+        "./s1-ui/assets/css/tokens.css",
+        "./s1-ui/assets/css/typography.css",
+        "./s1-ui/s1-ui.base.css",
+        "./s1-ui/s1-ui.css"
       ]
     },
     "readmeControlled": {
       "selectedProp": true,
-      "openProp": false,
-      "modalHowToOpen": false
+      "openProp": true,
+      "modalHowToOpen": true
     },
     "nextjs": {
-      "readmeMentionsNextUsage": false,
+      "readmeMentionsNextUsage": true,
       "filesWithHooks": 32,
-      "filesWithUseClient": 0
+      "filesWithUseClient": 32
     },
     "eventProps": [
       "onChange",
@@ -204,11 +209,17 @@
       "onFocus",
       "onClear",
       "onSearch",
-      "onBeforechange",
+      "onCheckedChange",
       "onSelectedChange",
+      "onBeforeChange",
+      "onValueChange",
       "onOpen",
       "onClose",
-      "onSelectionchange",
+      "onOpenChange",
+      "onPageChange",
+      "onConfirm",
+      "onCancel",
+      "onSelectionChange",
       "onCollapse",
       "onToggle"
     ],
@@ -217,24 +228,36 @@
         "S1Input",
         "S1Checkbox",
         "S1Radio",
-        "S1Textarea"
+        "S1Textarea",
+        "S1ListRow"
       ],
       "custom": [
+        "S1Toggle",
         "S1Chip",
         "S1Dropdown",
         "S1Select",
         "S1FilterChip",
+        "S1Tab",
+        "S1Pagination",
         "S1MultiToggle",
         "S1MobileBottomNav",
         "S1TimePicker",
         "S1DatePicker",
         "S1BottomSheetOption",
         "S1ExpandableCard"
-      ]
+      ],
+      "customWithoutValueCallback": []
     },
     "controlledSurface": {
       "withOpen": [
-        "S1BottomSheet"
+        "S1Select",
+        "S1FilterChip",
+        "S1Modal",
+        "S1TimePicker",
+        "S1DatePicker",
+        "S1ModalContent",
+        "S1BottomSheet",
+        "S1ExpandableCard"
       ],
       "withOnOpen": [
         "S1Select",
@@ -246,17 +269,9 @@
         "S1ModalContent",
         "S1BottomSheet"
       ],
-      "customOnChangeWithoutValue": [
-        "S1Dropdown",
-        "S1Select",
-        "S1FilterChip",
-        "S1MultiToggle",
-        "S1TimePicker",
-        "S1DatePicker",
-        "S1ExpandableCard"
-      ]
+      "customOnChangeWithoutValue": []
     },
-    "indexSignature": true,
+    "indexSignature": false,
     "sideEffects": false
   },
   "builds": {
@@ -265,8 +280,8 @@
       "warnings": [],
       "errors": [],
       "js": {
-        "raw": 221005,
-        "gz": 68433
+        "raw": 221209,
+        "gz": 68535
       }
     },
     "readmeAll": {
@@ -274,8 +289,8 @@
       "warnings": [],
       "errors": [],
       "js": {
-        "raw": 362450,
-        "gz": 95798
+        "raw": 381362,
+        "gz": 102928
       }
     },
     "reactOnly": {
@@ -287,443 +302,66 @@
     },
     "treeShaking": {
       "reactOnlyGz": 67830,
-      "oneComponentGz": 68433,
-      "allComponentsGz": 95798,
-      "oneOwnGz": 603,
-      "allOwnGz": 27968,
-      "ratio": 0.022
+      "oneComponentGz": 68535,
+      "allComponentsGz": 102928,
+      "oneOwnGz": 705,
+      "allOwnGz": 35098,
+      "ratio": 0.02
     },
-    "readmeInner": {
-      "ok": false,
-      "errors": [
-        "error during build:",
-        "Build failed with 1 error:",
-        "Error: [vite]: Rolldown failed to resolve import \"@s1/ui/assets/css/tokens.css\" from \"<환경폴더>/apps/readme-inner-93407/src/main.jsx\"."
-      ]
+    "readmeExamples": {
+      "count": 7,
+      "ok": true,
+      "warnings": [],
+      "errors": []
+    },
+    "lint": {
+      "totalLines": 1,
+      "inPackage": 0,
+      "caughtRealProblem": true
     }
   },
   "typescript": {
     "version": "6.0.3",
     "strict": true,
     "skipLibCheck": false,
-    "exitCode": 2,
-    "okErrors": [
-      "줄 7: TS2305 Module '\"./s1-ui/platform/react\"' has no exported member 'S1_VERSION'."
-    ],
+    "exitCode": 0,
+    "okErrors": [],
+    "readmeTsErrors": [],
     "dtsErrors": [],
-    "notCaught": [
-      "typo-prop",
-      "input-onchange-any"
-    ],
+    "notCaught": [],
     "otherErrors": []
   },
   "ssr": {
     "built": true,
     "ran": true,
-    "cases": 46,
+    "cases": 53,
     "failed": [],
     "warnings": []
   },
   "findings": [
     {
-      "id": "react:build:inner-readme",
-      "area": "readme",
-      "severity": "broken",
-      "what": "React README(platform/react/README.md) 예시를 그대로 붙여 넣으면 빌드가 실패합니다 — \"@s1/ui-react\"·\"@s1/ui/…\" 는 설치 안내가 없는 패키지 이름입니다.",
-      "evidence": "error during build: | Build failed with 1 error: | Error: [vite]: Rolldown failed to resolve import \"@s1/ui/assets/css/tokens.css\" from \"<환경폴더>/apps/readme-inner-93407/src/main.jsx\".",
-      "suggestedFix": "예시 경로를 바깥 README 와 같은 상대 경로로 바꾸거나 설치 단계 추가"
-    },
-    {
-      "id": "react:types:readme-code",
-      "area": "types",
-      "severity": "broken",
-      "what": "README 예시·타입 정의대로 쓴 TSX 가 TypeScript(strict)에서 오류가 납니다.",
-      "evidence": "줄 7: TS2305 Module '\"./s1-ui/platform/react\"' has no exported member 'S1_VERSION'.",
-      "suggestedFix": "타입 정의를 README 예시와 맞추기"
-    },
-    {
-      "id": "react:S1Textarea:pc:console-error",
-      "area": "console",
-      "severity": "broken",
-      "what": "S1Textarea[pc] 를 그리기만 해도 콘솔에 오류가 납니다.",
-      "evidence": "Use the `defaultValue` or `value` props instead of setting children on <textarea>.",
-      "suggestedFix": "오류가 나는 부품 생성 코드/런타임 확인",
-      "component": "S1Textarea",
-      "breakName": "pc"
-    },
-    {
-      "id": "react:S1Textarea:mobile:console-error",
-      "area": "console",
-      "severity": "broken",
-      "what": "S1Textarea[mobile] 를 그리기만 해도 콘솔에 오류가 납니다.",
-      "evidence": "Use the `defaultValue` or `value` props instead of setting children on <textarea>.",
-      "suggestedFix": "오류가 나는 부품 생성 코드/런타임 확인",
-      "component": "S1Textarea",
-      "breakName": "mobile"
-    },
-    {
-      "id": "react:S1TimePicker:mobile:strict-double-bind",
-      "area": "lifecycle",
-      "severity": "broken",
-      "what": "S1TimePicker[mobile] 는 React 개발 모드(StrictMode)에서 동작 스크립트가 두 번 붙습니다 — 한 번 눌러도 두 번 반응할 수 있습니다.",
-      "evidence": "살아 있는 듣기 수 StrictMode: 부품 17 + 문서 0 · 일반: 부품 15 + 문서 0 · StrictMode 에만 더 붙은 것: button[sheet-close]:click, div[sheet-backdrop]:click",
-      "suggestedFix": "init 을 같은 요소에 두 번 불러도 한 번만 붙게, 정리(return) 때 전부 떼기",
-      "component": "S1TimePicker",
-      "breakName": "mobile"
-    },
-    {
-      "id": "react:input-controlled:4",
-      "area": "interaction",
-      "severity": "broken",
-      "what": "입력칸(S1Input)을 React 상태로 제어 — 지우기(X) 버튼을 누르면 React 상태도 비워진다(onChange 가 온다)",
-      "evidence": "입력칸 \"\" · React 상태 \"새 값\" · onChange 0회 · onClear 1회",
-      "suggestedFix": "지우기 때 React 가 듣는 input 이벤트를 쏘거나(네이티브 setter + input 이벤트), onClear 로 상태를 비우라고 README 에 적기"
-    },
-    {
-      "id": "react:modal-open-prop:1",
-      "area": "interaction",
-      "severity": "broken",
-      "what": "모달(S1Modal) 을 React 상태 open 으로 열기 — open={true} 를 주면 모달이 열린다",
-      "evidence": "보임=false · 타입 정의 S1ModalProps 에 open 없음 · 루트에 open 속성만 붙음=true · README 에 모달 여는 법 없음",
-      "suggestedFix": "S1Modal·S1ModalContent 에도 S1BottomSheet 처럼 open prop(+onClose 로 상태 되돌리기)을 생성하기"
-    },
-    {
-      "id": "react:sheet-open-prop:3",
-      "area": "interaction",
-      "severity": "broken",
-      "what": "바텀시트(S1BottomSheet) open prop + onClose 로 상태 되돌리기 — open prop 으로 열어도 onOpen 이 한 번 온다",
-      "evidence": "onOpen 0회 — 시트 자체는 열렸음. Esc 처럼 런타임이 스스로 닫을 땐 onClose 가 오는데, prop 으로 여닫을 땐 이벤트가 듣기 연결보다 먼저 쏘아진다(여닫기 효과가 듣기 연결 효과보다 앞에 선언됨)",
-      "suggestedFix": "듣기 연결 효과를 여닫기 효과보다 먼저 두거나, prop 으로 여닫을 때 콜백을 직접 부르기"
-    },
-    {
-      "id": "react:sheet-open-prop:14",
-      "area": "interaction",
-      "severity": "broken",
-      "what": "바텀시트(S1BottomSheet) open prop + onClose 로 상태 되돌리기 — 시트 본문에 내 목록(children 또는 parts.sheetBody)을 넣을 수 있다",
-      "evidence": "children 들어감=false · parts.sheetBody 들어감=false · 예제 줄 4개가 그대로",
-      "suggestedFix": "S1BottomSheet 에 children(또는 sheetBody 내용)을 받게 생성하기"
-    },
-    {
-      "id": "react:select:4",
-      "area": "interaction",
-      "severity": "broken",
-      "what": "셀렉트(S1Select) — 고르기·값·다시 그리기 — options 를 글자 목록으로 주면 onChange 의 value 가 고른 항목을 가리킨다",
-      "evidence": "event.detail.value = \"seoul\" (고른 것: 부산)",
-      "suggestedFix": "글자만 준 항목은 data-value 를 그 글자로(또는 순번으로) 채우기 — 지금은 예제 값이 모든 줄에 박힘"
-    },
-    {
-      "id": "react:pagination:3",
-      "area": "interaction",
-      "severity": "broken",
-      "what": "페이지네이션(S1Pagination) — 페이지가 바뀐 걸 React 가 받을 prop(onChange·onPageChange)이 있다",
-      "evidence": "onChange prop 으로 0회 받음 — 타입 정의에 이벤트 prop 없음(배포본은 s1:pagination:change 를 쏨)",
-      "suggestedFix": "S1Pagination 에 page/onPageChange(또는 onChange) prop 생성"
-    },
-    {
-      "id": "react:date-picker:1",
-      "area": "interaction",
-      "severity": "broken",
-      "what": "날짜 선택(S1DatePicker) — 값 넣고 빼기 — value=\"2026-10-01\" 을 주면 그 날짜가 보인다(값 넣기)",
-      "evidence": "트리거 \"날짜 선택\" — 타입 정의에 value·defaultValue 없음",
-      "suggestedFix": "S1DatePicker 에 value/defaultValue/onValueChange 생성(런타임 setValue 연결)"
-    },
-    {
-      "id": "react:time-picker:1",
-      "area": "interaction",
-      "severity": "broken",
-      "what": "시간 선택(S1TimePicker) — 값 넣고 빼기 — value=\"09:30\" 을 주면 그 시간이 보인다(값 넣기)",
-      "evidence": "트리거 \"시간 선택\" — 타입 정의에 value 없음",
-      "suggestedFix": "S1TimePicker 에 value/defaultValue 생성(런타임 setValue 연결)"
-    },
-    {
-      "id": "react:gnb:1",
-      "area": "interaction",
-      "severity": "broken",
-      "what": "GNB 하위 메뉴 펼침(오버레이) — 메뉴를 누르면 하위 메뉴가 펼쳐지고 onOpen 한 번",
-      "evidence": "{\"expanded\":\"false\",\"panel\":false} · onOpen 0회 · 메뉴가 가리키는 하위 메뉴 판(#gnb-sub-menu-a-service) 존재=false",
-      "suggestedFix": "S1Gnb 안에 하위 메뉴 판(S1GnbSubMenu)을 함께 그리거나 children/columns 로 받게"
-    },
-    {
-      "id": "react:textarea:1",
-      "area": "interaction",
-      "severity": "broken",
-      "what": "여러 줄 입력(S1Textarea) — defaultValue·value — defaultValue 를 주면 그 글자로 그려진다(비제어형)",
-      "evidence": "화면이 그려지지 않고 오류: 오류: If you supply `defaultValue` on a <textarea>, do not pass children.",
-      "suggestedFix": "textarea 에 예제 글자를 children 으로 넣지 말고 defaultValue 로(값이 오면 children 생략)"
-    },
-    {
-      "id": "react:textarea:console",
-      "area": "console",
-      "severity": "broken",
-      "what": "여러 줄 입력(S1Textarea) — defaultValue·value — 쓰는 도중 콘솔에 오류가 납니다.",
-      "evidence": "%o %s %s Error: If you supply `defaultValue` on a <textarea>, do not pass children. at initTextarea (http://127.0.0.1:63286/node_modules/.vite/deps/react-dom_client.js?v=73b4d25a:1535:38) at setInitialProperties (http://127.0.0.1:63286/node_modules/.vite/deps/react-dom_client.js?v=73b4d25a:10636:6) ",
-      "suggestedFix": "오류 문구의 원인 확인"
-    },
-    {
-      "id": "react:ref:2",
-      "area": "interaction",
-      "severity": "broken",
-      "what": "ref 로 루트 DOM 받기 · ref 를 줘도 동작 유지 — ref 를 줘도 부품 동작(눌러서 켜기)이 그대로다",
-      "evidence": "S1Chip 에 ref 를 주고 한 번 누름 → aria-pressed=false · onChange 0회",
-      "suggestedFix": "React 19 에서 ref 는 일반 prop 으로 {...rest} 에 섞여 내부 rootRef 를 덮는다 — ref 를 받아 내부 ref 와 합치기(mergeRefs)"
-    },
-    {
-      "id": "react:readme:two-import-paths",
-      "area": "readme",
+      "id": "react:font:not-loaded",
+      "area": "font",
       "severity": "friction",
-      "what": "README 두 개가 서로 다른 import 경로를 알려 줍니다 — 바깥 README 는 \"./s1-ui/platform/react\", 안쪽 React README 는 \"@s1/ui-react\". 안쪽 것은 설치 안내가 없는 패키지 이름이라 그대로 붙이면 빌드가 실패합니다.",
-      "evidence": "바깥 시작하기 4단계 vs platform/react/README.md 1·2장 · CSS: 바깥 [\"assets/css/tokens.css\",\"s1-ui.css\"] / 안쪽 [\"@s1/ui/assets/css/tokens.css\",\"@s1/ui/assets/css/typography.css\",\"@s1/ui/s1-ui.css\"]",
-      "suggestedFix": "안쪽 README 예시를 압축 푼 폴더 기준 상대 경로로 통일하거나, 패키지로 쓰려면 설치(npm i ./s1-ui/platform/react) 안내를 추가"
-    },
-    {
-      "id": "react:readme:typography",
-      "area": "readme",
-      "severity": "friction",
-      "what": "안쪽 README 는 typography.css 도 읽히라는데, 바깥 시작하기에는 없습니다 — 어느 쪽을 따라야 할지 모릅니다.",
-      "evidence": "바깥 [\"assets/css/tokens.css\",\"s1-ui.css\"] · 안쪽 [\"@s1/ui/assets/css/tokens.css\",\"@s1/ui/assets/css/typography.css\",\"@s1/ui/s1-ui.css\"]",
-      "suggestedFix": "두 README 의 CSS 목록·순서를 하나로"
-    },
-    {
-      "id": "react:readme:font",
-      "area": "readme",
-      "severity": "friction",
-      "what": "React README 어디에도 글꼴(Pretendard)을 읽히라는 안내가 없습니다.",
-      "evidence": "README.md · platform/react/README.md 에 Pretendard/글꼴 언급 0건 (웹 묶음 README 는 head 에 글꼴 링크를 안내함) — 실제 렌더 결과는 font:not-loaded 항목",
-      "suggestedFix": "시작하기에 글꼴 import(또는 link) 한 줄 추가"
-    },
-    {
-      "id": "react:readme:controlled",
-      "area": "readme",
-      "severity": "friction",
-      "what": "README 가 고르기·열기를 React 상태로 다루는 법(칩 selected/onSelectedChange, 바텀시트 open/onClose)을 알려 주지 않고, 모달은 여는 방법 자체가 없습니다 — 타입 정의나 런타임 코드를 열어 봐야 압니다.",
-      "evidence": "README 언급: selected/onSelectedChange=true · open=false · 모달 여는 법=false",
-      "suggestedFix": "README 2장에 칩 selected · 바텀시트 open/onClose · 모달 여는 법 예시 추가"
-    },
-    {
-      "id": "react:ssr:use-client",
-      "area": "ssr",
-      "severity": "friction",
-      "what": "묶음 제목이 \"React · Next.js\" 인데, Next.js(App Router) 서버 컴포넌트 파일에서 그대로 import 하면 오류가 날 구조입니다 — 훅(useEffect 등)을 쓰는 32개 파일 중 \"use client\" 표시가 있는 파일이 0개이고, README 에도 Next.js 쓰는 법이 없습니다.",
-      "evidence": "\"use client\" 없음: assist-button.jsx, bottom-sheet-option.jsx, bottom-sheet.jsx, button.jsx, checkbox.jsx 외 (정적 확인 — Next.js 로 직접 빌드해 보지는 않음)",
-      "suggestedFix": "생성되는 .jsx 맨 위에 \"use client\" 를 넣거나, README 4장에 \"Next.js 에서는 use client 파일 안에서 쓰세요\" 안내"
-    },
-    {
-      "id": "react:api:event-casing",
-      "area": "api",
-      "severity": "friction",
-      "what": "이벤트 prop 이름 일부가 React 관례(낱말마다 대문자, onSelectionChange)와 다릅니다 — 자동완성에서 못 찾거나 오타로 씁니다.",
-      "evidence": "onBeforechange, onSelectionchange (같은 묶음 안에 onSelectedChange 는 관례대로)",
-      "suggestedFix": "onBeforeChange · onSelectionChange 로 이름 짓고 옛 이름은 한동안 같이 받기"
-    },
-    {
-      "id": "react:api:onchange-shape",
-      "area": "api",
-      "severity": "friction",
-      "what": "같은 이름 onChange 가 부품마다 다른 것을 넘깁니다 — 입력칸류는 브라우저 이벤트(event.target.value), 고르기류는 배포본 사용자 이벤트(event.detail.value). 부품마다 확인해야 합니다.",
-      "evidence": "event.target 쪽: S1Input, S1Checkbox, S1Radio, S1Textarea · event.detail 쪽: S1Chip, S1Dropdown, S1Select, S1FilterChip, S1MultiToggle, S1MobileBottomNav, S1TimePicker, S1DatePicker, S1BottomSheetOption, S1ExpandableCard",
-      "suggestedFix": "고르기류에 값만 넘기는 onValueChange(value) 를 따로 두거나 README 에 표로 정리"
+      "what": "README 대로 하면 Pretendard 웹폰트가 읽히지 않습니다 — 33개 조합 중 0개는 다른 글꼴로, 2개는 이 컴퓨터에 깔린 Pretendard 로 그려졌습니다(사용자 컴퓨터엔 없을 수 있음).",
+      "evidence": "실제 렌더 글꼴: Pretendard Medium(설치 글꼴) | Pretendard(설치 글꼴)+Pretendard Variable(웹폰트) | Pretendard Variable(웹폰트)+Pretendard Medium(설치 글꼴) · CSS 지정: \"Pretendard Variable\", Pretendard, sans-serif",
+      "suggestedFix": "시작하기에 Pretendard 읽히기(웹폰트 import) 단계 추가 또는 s1-ui.css 에 @font-face 포함"
     },
     {
       "id": "react:api:open-prop",
       "area": "api",
-      "severity": "friction",
-      "what": "열고 닫히는 부품 8종 중 open prop 으로 React 상태와 이을 수 있는 건 S1BottomSheet 뿐입니다 — 나머지는 열리고 닫힌 걸 듣기만 하고, React 가 열고 닫지는 못합니다.",
-      "evidence": "onOpen 있음: S1Select, S1FilterChip, S1Modal, S1TimePicker, S1DatePicker, S1Gnb, S1ModalContent, S1BottomSheet · open 있음: S1BottomSheet",
-      "suggestedFix": "모달·모달콘텐츠는 open 필수, 팝오버류(셀렉트·날짜·시간·필터칩·GNB)는 선택적 open"
-    },
-    {
-      "id": "react:api:no-value-prop",
-      "area": "api",
-      "severity": "friction",
-      "what": "고르는 부품 7종은 고른 값을 React 상태로 넣는(value/defaultValue) 길이 없습니다 — 바뀐 걸 듣기만 할 수 있습니다.",
-      "evidence": "S1Dropdown, S1Select, S1FilterChip, S1MultiToggle, S1TimePicker, S1DatePicker, S1ExpandableCard",
-      "suggestedFix": "value·defaultValue 를 받아 런타임 setValue 와 잇기(제어형/비제어형)"
-    },
-    {
-      "id": "react:types:not-caught",
-      "area": "types",
-      "severity": "friction",
-      "what": "타입 정의가 흔한 실수를 못 잡습니다: 오타 난 prop(varaint) · Input onChange 의 event 가 any — 오류 없이 통과해 실행해 봐야 압니다.",
-      "evidence": "strict tsc 에서 @ts-expect-error 가 쓰이지 않음(TS2578) 2/5건 — S1BaseProps 의 [attribute: string]: unknown(아무 prop 이나 통과) · event: any",
-      "suggestedFix": "인덱스 시그니처 대신 React.HTMLAttributes<HTMLElement> 상속 + data-*/aria-* 만 허용, onChange 에 구체 이벤트 타입"
-    },
-    {
-      "id": "react:S1BottomSheet:pc:slot-shared",
-      "area": "api",
-      "severity": "friction",
-      "what": "S1BottomSheet 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.",
-      "evidence": "parts.label → 5군데에 동시에 들어감",
-      "suggestedFix": "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기",
-      "component": "S1BottomSheet",
-      "breakName": "pc"
-    },
-    {
-      "id": "react:S1ExpandableCard:pc:slot-shared",
-      "area": "api",
-      "severity": "friction",
-      "what": "S1ExpandableCard 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.",
-      "evidence": "parts.title → 2군데에 동시에 들어감 · parts.subtitle → 2군데에 동시에 들어감 · parts.body → 2군데에 동시에 들어감 · parts.note → 2군데에 동시에 들어감 · parts.caption → 2군데에 동시에 들어감",
-      "suggestedFix": "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기",
-      "component": "S1ExpandableCard",
-      "breakName": "pc"
-    },
-    {
-      "id": "react:S1Gnb:pc:slot-shared",
-      "area": "api",
-      "severity": "friction",
-      "what": "S1Gnb 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.",
-      "evidence": "parts.menu → 3군데에 동시에 들어감",
-      "suggestedFix": "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기",
-      "component": "S1Gnb",
-      "breakName": "pc"
-    },
-    {
-      "id": "react:S1Lnb:pc:slot-shared",
-      "area": "api",
-      "severity": "friction",
-      "what": "S1Lnb 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.",
-      "evidence": "parts.itemIcon → 4군데에 동시에 들어감 · parts.item → 2군데에 동시에 들어감",
-      "suggestedFix": "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기",
-      "component": "S1Lnb",
-      "breakName": "pc"
-    },
-    {
-      "id": "react:S1ModalContent:pc:slot-shared",
-      "area": "api",
-      "severity": "friction",
-      "what": "S1ModalContent 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.",
-      "evidence": "parts.label → 2군데에 동시에 들어감",
-      "suggestedFix": "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기",
-      "component": "S1ModalContent",
-      "breakName": "pc"
-    },
-    {
-      "id": "react:S1Modal:pc:slot-shared",
-      "area": "api",
-      "severity": "friction",
-      "what": "S1Modal[pc] 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.",
-      "evidence": "parts.label → 2군데에 동시에 들어감",
-      "suggestedFix": "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기",
-      "component": "S1Modal",
-      "breakName": "pc"
-    },
-    {
-      "id": "react:S1Modal:mobile:slot-shared",
-      "area": "api",
-      "severity": "friction",
-      "what": "S1Modal[mobile] 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.",
-      "evidence": "parts.label → 2군데에 동시에 들어감",
-      "suggestedFix": "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기",
-      "component": "S1Modal",
-      "breakName": "mobile"
-    },
-    {
-      "id": "react:S1TimePicker:pc:slot-shared",
-      "area": "api",
-      "severity": "friction",
-      "what": "S1TimePicker[pc] 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.",
-      "evidence": "parts.column → 2군데에 동시에 들어감",
-      "suggestedFix": "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기",
-      "component": "S1TimePicker",
-      "breakName": "pc"
-    },
-    {
-      "id": "react:S1TimePicker:mobile:slot-shared",
-      "area": "api",
-      "severity": "friction",
-      "what": "S1TimePicker[mobile] 는 서로 다른 자리가 같은 슬롯 이름을 함께 씁니다 — 한 곳 글자를 바꾸면 다른 곳까지 같이 바뀝니다.",
-      "evidence": "parts.wheelCol → 4군데에 동시에 들어감",
-      "suggestedFix": "자리마다 다른 슬롯 이름(예: cancelLabel·confirmLabel)을 주거나 목록 prop 으로 받기",
-      "component": "S1TimePicker",
-      "breakName": "mobile"
-    },
-    {
-      "id": "react:font:not-loaded",
-      "area": "font",
-      "severity": "friction",
-      "what": "README 대로 하면 Pretendard 웹폰트가 읽히지 않습니다 — 33개 조합 중 0개는 다른 글꼴로, 33개는 이 컴퓨터에 깔린 Pretendard 로 그려졌습니다(사용자 컴퓨터엔 없을 수 있음).",
-      "evidence": "실제 렌더 글꼴: Pretendard Variable(설치 글꼴) · CSS 지정: \"Pretendard Variable\", Pretendard, sans-serif",
-      "suggestedFix": "시작하기에 Pretendard 읽히기(웹폰트 import) 단계 추가 또는 s1-ui.css 에 @font-face 포함"
-    },
-    {
-      "id": "react:select:7",
-      "area": "interaction",
-      "severity": "friction",
-      "what": "셀렉트(S1Select) — 고르기·값·다시 그리기 — 제어형 value prop 이 있다(타입 정의 기준)",
-      "evidence": "S1SelectProps 에 value·defaultValue 없음 — 고른 값을 React 상태로 넣을 길이 없음(빼기는 onChange 의 event.detail 로만)",
-      "suggestedFix": "value/defaultValue + 값만 넘기는 onValueChange 추가"
-    },
-    {
-      "id": "react:pagination:7",
-      "area": "interaction",
-      "severity": "friction",
-      "what": "페이지네이션(S1Pagination) — pages 를 3개 주면 전체 쪽수도 3 으로 맞춰진다",
-      "evidence": "data-total-pages=\"6\"",
-      "suggestedFix": "data-total-pages 를 pages 길이(또는 total prop)로"
-    },
-    {
-      "id": "react:table:5",
-      "area": "interaction",
-      "severity": "friction",
-      "what": "표(S1Table) — 행 데이터·선택 — 행 체크박스 접근 이름이 줄마다 다르다",
-      "evidence": "[\"항목 1 선택\",\"항목 1 선택\",\"항목 1 선택\"]",
-      "suggestedFix": "행 체크박스 aria-label 을 줄 내용/번호로 채우기(지금은 예제 문구가 모든 줄에 같음)"
-    },
-    {
-      "id": "react:form:2",
-      "area": "interaction",
-      "severity": "friction",
-      "what": "폼 안에서 name 으로 값 보내기 — 셀렉트·시간·날짜도 name 을 주면 폼에 실린다",
-      "evidence": "빠진 name: city, time, day — 배포본 런타임은 name 이 아니라 data-name 을 보고 숨은 input 을 만든다 · 보낸 값 {\"nm\":\"홍길동\",\"agree\":\"yes\",\"pick\":\"a\"}",
-      "suggestedFix": "S1Select·S1TimePicker·S1DatePicker 에 name prop 을 받아 data-name 으로 넘기거나, README 에 data-name 을 쓰라고 적기"
-    },
-    {
-      "id": "react:types:untyped-named",
-      "area": "types",
       "severity": "note",
-      "what": "index.js 가 내보내는 값 S1_VERSION, S1_RELEASED_AT 의 타입이 index.d.ts 에 없습니다 — TypeScript 에서 import 하면 오류가 납니다(README 1장이 S1_VERSION 을 쓰라고 안내함).",
-      "evidence": "index.js: export { S1_VERSION, S1_RELEASED_AT } · index.d.ts 에 선언 없음",
-      "suggestedFix": "index.d.ts 에 export declare const 추가"
-    },
-    {
-      "id": "react:readme:count",
-      "area": "readme",
-      "severity": "note",
-      "what": "React README 가 부품 수를 22종이라 적었는데 실제로는 32종입니다.",
-      "evidence": "platform/react/README.md 5장 \"22종\"",
-      "suggestedFix": "숫자를 생성 값으로 채우기"
-    },
-    {
-      "id": "react:types:odd-props",
-      "area": "types",
-      "severity": "note",
-      "what": "타입 정의에 그 부품에 뜻이 없는 prop 이 섞여 있습니다(입력칸용 공통 묶음을 그대로 붙인 흔적).",
-      "evidence": "S1Input.name: string|number · S1Checkbox.placeholder · S1Checkbox.defaultValue · S1Checkbox.name: string|number · S1Radio.placeholder · S1Radio.defaultValue · S1Radio.name: string|number · S1Textarea.name: string|number",
-      "suggestedFix": "부품 종류별로 받는 prop 을 나누기"
-    },
-    {
-      "id": "react:api:parts-names",
-      "area": "api",
-      "severity": "note",
-      "what": "부품이 내보내는 PARTS 목록은 \"sheet-title\" 처럼 줄표 이름인데, parts prop 은 sheetTitle 처럼 낙타 이름만 받습니다 — 목록을 보고 그대로 쓰면 무시됩니다.",
-      "evidence": "11개 파일 · bottom-sheet.jsx: sheet-backdrop,sheet-panel,sheet-content | date-picker.jsx: sheet-backdrop,sheet-panel,sheet-header | expandable-card.jsx: toggle-icon,panel-wrap | gnb.jsx: lang-icon,lang-label,account-icon",
-      "suggestedFix": "PARTS 를 parts 키 이름으로 내보내거나 두 이름을 다 받기"
+      "what": "마우스를 올리거나 초점이 가면 펼쳐지는 부품(S1Gnb)은 open prop 없이 펼침·접힘을 onOpen/onOpenChange 로 알려 주기만 합니다(창과 달리 사용자 동작이 정하는 부품).",
+      "evidence": "open 있음: S1Select, S1FilterChip, S1Modal, S1TimePicker, S1DatePicker, S1ModalContent, S1BottomSheet, S1ExpandableCard · 알리기만: S1Gnb",
+      "suggestedFix": "필요하면 선택적 open 추가"
     },
     {
       "id": "react:build:tree-shaking-ok",
       "area": "build",
       "severity": "note",
       "what": "버튼 하나만 쓰면 부품 코드는 32종의 2% 만 들어옵니다(트리 셰이킹 됨).",
-      "evidence": "JS gzip: React 만 67830B · 버튼 1종 앱 68433B · 32종 앱 95798B",
+      "evidence": "JS gzip: React 만 67830B · 버튼 1종 앱 68535B · 32종 앱 102928B",
       "suggestedFix": "—"
-    },
-    {
-      "id": "react:gnb:hang-once",
-      "area": "interaction",
-      "severity": "note",
-      "what": "GNB 하위 메뉴 펼침(오버레이) — 검수기가 앞 시나리오들을 한 페이지에서 이어 돌린 뒤에는 이 시나리오에서 페이지가 멈췄지만, 새 페이지에서는 멈추지 않았습니다(원인 미확정 — 화면을 오래 쓰면 생길 수 있는 누적 문제인지 검수기 탓인지 가려지지 않음).",
-      "evidence": "첫 시도 마지막 확인: 메뉴를 누르면 하위 메뉴가 펼쳐지고 onOpen 한 번",
-      "suggestedFix": "같은 순서로 손으로 재현해 보기"
     }
   ],
   "cases": [
@@ -762,7 +400,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Medium(설치 글꼴)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1AssistButton-pc.png",
@@ -820,7 +458,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Medium(설치 글꼴)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1BottomSheetOption-pc.png",
@@ -849,7 +487,7 @@
         "size": "pass",
         "icons": "pass",
         "propUpdate": "pass",
-        "slotUnique": "fail",
+        "slotUnique": "pass",
         "className": "pass",
         "unmountClean": "pass",
         "strictModeSingleBind": "pass",
@@ -862,13 +500,24 @@
         "hidden": false,
         "w": 375,
         "h": 812,
-        "subtree": 5,
+        "subtree": 16,
         "subtreeTypes": [
           "button[sheet-close]:click",
+          "div[bottom-sheet-option]:s1:bottom-sheet-option:beforechange",
+          "div[bottom-sheet-option]:s1:bottom-sheet-option:beforechange",
+          "div[bottom-sheet-option]:s1:bottom-sheet-option:beforechange",
+          "div[bottom-sheet-option]:s1:bottom-sheet-option:beforechange",
+          "div[bottom-sheet-option]:s1:bottom-sheet-option:change",
+          "div[bottom-sheet-option]:s1:bottom-sheet-option:change",
+          "div[bottom-sheet-option]:s1:bottom-sheet-option:change",
+          "div[bottom-sheet-option]:s1:bottom-sheet-option:change",
           "div[sheet-backdrop]:click",
           "div[sheet]:click",
           "div[sheet]:s1:bottom-sheet-option:change",
-          "div[sheet]:s1:bottom-sheet-option:close-request"
+          "div[sheet]:s1:bottom-sheet-option:change",
+          "div[sheet]:s1:bottom-sheet-option:close-request",
+          "div[sheet]:s1:bottom-sheet:close",
+          "div[sheet]:s1:bottom-sheet:open"
         ],
         "globals": 8,
         "overflow": "hidden|"
@@ -881,31 +530,27 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard(설치 글꼴)",
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1BottomSheet-pc.png",
       "slotCounts": {
-        "sheetBackdrop": 1,
         "sheetTitle": 1,
-        "sheetClose": 1,
-        "label": 5,
-        "check": 1
+        "applyLabel": 1
       },
       "unmount": {
         "leakedGlobalListeners": 0,
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 5,
-        "plainSubtree": 5,
+        "strictSubtree": 16,
+        "plainSubtree": 16,
         "strictGlobals": 3,
         "plainGlobals": 3,
         "extraInStrict": []
       },
-      "findingIds": [
-        "react:S1BottomSheet:pc:slot-shared"
-      ]
+      "findingIds": []
     },
     {
       "component": "S1Button",
@@ -942,7 +587,8 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)",
+          "Pretendard Medium(설치 글꼴)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Button-pc.png",
@@ -997,7 +643,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Button-mobile.png",
@@ -1054,7 +700,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Checkbox-pc.png",
@@ -1113,7 +759,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Chip-pc.png",
@@ -1172,7 +818,8 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)",
+          "Pretendard Medium(설치 글꼴)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Chip-mobile.png",
@@ -1200,7 +847,8 @@
         "consoleClean": "pass",
         "size": "pass",
         "icons": "none",
-        "propUpdate": "notChecked",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
         "className": "pass",
         "unmountClean": "pass",
         "strictModeSingleBind": "pass",
@@ -1226,10 +874,14 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)",
+          "Pretendard Medium(설치 글꼴)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1DataTag-pc.png",
+      "slotCounts": {
+        "label": 1
+      },
       "unmount": {
         "leakedGlobalListeners": 0,
         "overflow": "|"
@@ -1265,12 +917,15 @@
         "hidden": false,
         "w": 140,
         "h": 44,
-        "subtree": 4,
+        "subtree": 7,
         "subtreeTypes": [
           "button[trigger]:click",
           "button[trigger]:keydown",
           "div[calendar]:click",
-          "div[calendar]:keydown"
+          "div[calendar]:keydown",
+          "div[date-picker]:s1:date-picker:change",
+          "div[date-picker]:s1:date-picker:close",
+          "div[date-picker]:s1:date-picker:open"
         ],
         "globals": 4,
         "overflow": "|"
@@ -1283,17 +938,15 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)",
+          "Pretendard(설치 글꼴)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1DatePicker-pc.png",
       "slotCounts": {
         "value": 1,
         "icon": 1,
-        "calendar": 1,
-        "sheetBackdrop": 0,
         "sheetTitle": 0,
-        "sheetClose": 0,
         "label": 0
       },
       "unmount": {
@@ -1301,8 +954,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 4,
-        "plainSubtree": 4,
+        "strictSubtree": 7,
+        "plainSubtree": 7,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -1331,7 +984,7 @@
         "hidden": false,
         "w": 140,
         "h": 48,
-        "subtree": 7,
+        "subtree": 10,
         "subtreeTypes": [
           "button[apply]:click",
           "button[sheet-close]:click",
@@ -1339,6 +992,9 @@
           "button[trigger]:keydown",
           "div[calendar]:click",
           "div[calendar]:keydown",
+          "div[date-picker]:s1:date-picker:change",
+          "div[date-picker]:s1:date-picker:close",
+          "div[date-picker]:s1:date-picker:open",
           "div[sheet-backdrop]:click"
         ],
         "globals": 5,
@@ -1352,17 +1008,15 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)",
+          "Pretendard(설치 글꼴)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1DatePicker-mobile.png",
       "slotCounts": {
         "value": 1,
         "icon": 1,
-        "calendar": 1,
-        "sheetBackdrop": 1,
         "sheetTitle": 1,
-        "sheetClose": 1,
         "label": 1
       },
       "unmount": {
@@ -1370,8 +1024,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 7,
-        "plainSubtree": 7,
+        "strictSubtree": 10,
+        "plainSubtree": 10,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -1448,10 +1102,11 @@
         "hidden": false,
         "w": 100,
         "h": 142,
-        "subtree": 2,
+        "subtree": 3,
         "subtreeTypes": [
           "div[dropdown]:click",
-          "div[dropdown]:keydown"
+          "div[dropdown]:keydown",
+          "div[dropdown]:s1:dropdown:change"
         ],
         "globals": 4,
         "overflow": "|"
@@ -1464,7 +1119,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Dropdown-pc.png",
@@ -1473,8 +1128,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 2,
-        "plainSubtree": 2,
+        "strictSubtree": 3,
+        "plainSubtree": 3,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -1490,7 +1145,7 @@
         "size": "pass",
         "icons": "pass",
         "propUpdate": "pass",
-        "slotUnique": "fail",
+        "slotUnique": "pass",
         "className": "pass",
         "unmountClean": "pass",
         "strictModeSingleBind": "pass",
@@ -1503,9 +1158,10 @@
         "hidden": false,
         "w": 200,
         "h": 166,
-        "subtree": 1,
+        "subtree": 2,
         "subtreeTypes": [
-          "button[header]:click"
+          "button[header]:click",
+          "div[expandable-card]:s1:expandable-card:change"
         ],
         "globals": 4,
         "overflow": "|"
@@ -1518,32 +1174,36 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard(설치 글꼴)",
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1ExpandableCard-pc.png",
       "slotCounts": {
-        "title": 2,
-        "subtitle": 2,
-        "body": 2,
-        "note": 2,
-        "caption": 2,
-        "toggleIcon": 1
+        "title": 1,
+        "subtitle": 1,
+        "body": 1,
+        "note": 1,
+        "caption": 1,
+        "toggleIcon": 1,
+        "panelTitle": 1,
+        "panelSubtitle": 1,
+        "panelBody": 1,
+        "panelNote": 1,
+        "panelCaption": 1
       },
       "unmount": {
         "leakedGlobalListeners": 0,
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 1,
-        "plainSubtree": 1,
+        "strictSubtree": 2,
+        "plainSubtree": 2,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
       },
-      "findingIds": [
-        "react:S1ExpandableCard:pc:slot-shared"
-      ]
+      "findingIds": []
     },
     {
       "component": "S1FilterChip",
@@ -1567,13 +1227,16 @@
         "hidden": false,
         "w": 109,
         "h": 28,
-        "subtree": 5,
+        "subtree": 8,
         "subtreeTypes": [
           "button[trigger]:click",
           "div[dropdown]:click",
           "div[dropdown]:keydown",
           "div[filter-chip]:keydown",
-          "div[filter-chip]:s1:dropdown:change"
+          "div[filter-chip]:s1:dropdown:change",
+          "div[filter-chip]:s1:filter-chip:change",
+          "div[filter-chip]:s1:filter-chip:close",
+          "div[filter-chip]:s1:filter-chip:open"
         ],
         "globals": 4,
         "overflow": "|"
@@ -1586,7 +1249,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1FilterChip-pc.png",
@@ -1600,8 +1263,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 5,
-        "plainSubtree": 5,
+        "strictSubtree": 8,
+        "plainSubtree": 8,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -1630,13 +1293,16 @@
         "hidden": false,
         "w": 109,
         "h": 30,
-        "subtree": 5,
+        "subtree": 8,
         "subtreeTypes": [
           "button[trigger]:click",
           "div[dropdown]:click",
           "div[dropdown]:keydown",
           "div[filter-chip]:keydown",
-          "div[filter-chip]:s1:dropdown:change"
+          "div[filter-chip]:s1:dropdown:change",
+          "div[filter-chip]:s1:filter-chip:change",
+          "div[filter-chip]:s1:filter-chip:close",
+          "div[filter-chip]:s1:filter-chip:open"
         ],
         "globals": 5,
         "overflow": "|"
@@ -1649,7 +1315,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1FilterChip-mobile.png",
@@ -1663,8 +1329,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 5,
-        "plainSubtree": 5,
+        "strictSubtree": 8,
+        "plainSubtree": 8,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -1679,7 +1345,8 @@
         "consoleClean": "pass",
         "size": "pass",
         "icons": "none",
-        "propUpdate": "notChecked",
+        "propUpdate": "pass",
+        "slotUnique": "pass",
         "className": "pass",
         "unmountClean": "pass",
         "strictModeSingleBind": "pass",
@@ -1705,10 +1372,13 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1GnbSubMenuItem-pc.png",
+      "slotCounts": {
+        "label": 1
+      },
       "unmount": {
         "leakedGlobalListeners": 0,
         "overflow": "|"
@@ -1756,7 +1426,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1GnbSubMenu-pc.png",
@@ -1782,7 +1452,7 @@
         "size": "pass",
         "icons": "pass",
         "propUpdate": "pass",
-        "slotUnique": "fail",
+        "slotUnique": "pass",
         "className": "pass",
         "unmountClean": "pass",
         "strictModeSingleBind": "pass",
@@ -1795,8 +1465,11 @@
         "hidden": false,
         "w": 763,
         "h": 48,
-        "subtree": 0,
-        "subtreeTypes": [],
+        "subtree": 2,
+        "subtreeTypes": [
+          "nav[gnb]:s1:gnb:close",
+          "nav[gnb]:s1:gnb:open"
+        ],
         "globals": 4,
         "overflow": "|"
       },
@@ -1808,13 +1481,12 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Gnb-pc.png",
       "slotCounts": {
         "logo": 1,
-        "menu": 3,
         "langIcon": 1,
         "langLabel": 1,
         "accountIcon": 1,
@@ -1825,15 +1497,13 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 0,
-        "plainSubtree": 0,
+        "strictSubtree": 2,
+        "plainSubtree": 2,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
       },
-      "findingIds": [
-        "react:S1Gnb:pc:slot-shared"
-      ]
+      "findingIds": []
     },
     {
       "component": "S1Input",
@@ -1856,13 +1526,15 @@
         "hidden": false,
         "w": 200,
         "h": 44,
-        "subtree": 7,
+        "subtree": 9,
         "subtreeTypes": [
           "button[action]:click",
           "div[input]:focusin",
           "div[input]:focusout",
           "div[input]:pointerdown",
           "div[input]:pointerup",
+          "div[input]:s1:input:clear",
+          "div[input]:s1:input:search",
           "input[control]:input",
           "input[control]:invalid"
         ],
@@ -1884,8 +1556,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 7,
-        "plainSubtree": 7,
+        "strictSubtree": 9,
+        "plainSubtree": 9,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -1913,13 +1585,15 @@
         "hidden": false,
         "w": 200,
         "h": 48,
-        "subtree": 7,
+        "subtree": 9,
         "subtreeTypes": [
           "button[action]:click",
           "div[input]:focusin",
           "div[input]:focusout",
           "div[input]:pointerdown",
           "div[input]:pointerup",
+          "div[input]:s1:input:clear",
+          "div[input]:s1:input:search",
           "input[control]:input",
           "input[control]:invalid"
         ],
@@ -1941,8 +1615,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 7,
-        "plainSubtree": 7,
+        "strictSubtree": 9,
+        "plainSubtree": 9,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -1970,7 +1644,7 @@
         "hidden": false,
         "w": 200,
         "h": 44,
-        "subtree": 8,
+        "subtree": 10,
         "subtreeTypes": [
           "button[action]:click",
           "button[action]:click",
@@ -1978,6 +1652,8 @@
           "div[input]:focusout",
           "div[input]:pointerdown",
           "div[input]:pointerup",
+          "div[input]:s1:input:clear",
+          "div[input]:s1:input:search",
           "input[control]:input",
           "input[control]:invalid"
         ],
@@ -1999,8 +1675,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 8,
-        "plainSubtree": 8,
+        "strictSubtree": 10,
+        "plainSubtree": 10,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -2028,7 +1704,7 @@
         "hidden": false,
         "w": 200,
         "h": 48,
-        "subtree": 8,
+        "subtree": 10,
         "subtreeTypes": [
           "button[action]:click",
           "button[action]:click",
@@ -2036,6 +1712,8 @@
           "div[input]:focusout",
           "div[input]:pointerdown",
           "div[input]:pointerup",
+          "div[input]:s1:input:clear",
+          "div[input]:s1:input:search",
           "input[control]:input",
           "input[control]:invalid"
         ],
@@ -2057,8 +1735,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 8,
-        "plainSubtree": 8,
+        "strictSubtree": 10,
+        "plainSubtree": 10,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -2086,7 +1764,7 @@
         "hidden": false,
         "w": 200,
         "h": 44,
-        "subtree": 9,
+        "subtree": 11,
         "subtreeTypes": [
           "button[action]:click",
           "button[action]:click",
@@ -2094,6 +1772,8 @@
           "div[input]:focusout",
           "div[input]:pointerdown",
           "div[input]:pointerup",
+          "div[input]:s1:input:clear",
+          "div[input]:s1:input:search",
           "input[control]:input",
           "input[control]:invalid",
           "input[control]:keydown"
@@ -2116,8 +1796,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 9,
-        "plainSubtree": 9,
+        "strictSubtree": 11,
+        "plainSubtree": 11,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -2145,7 +1825,7 @@
         "hidden": false,
         "w": 200,
         "h": 48,
-        "subtree": 9,
+        "subtree": 11,
         "subtreeTypes": [
           "button[action]:click",
           "button[action]:click",
@@ -2153,6 +1833,8 @@
           "div[input]:focusout",
           "div[input]:pointerdown",
           "div[input]:pointerup",
+          "div[input]:s1:input:clear",
+          "div[input]:s1:input:search",
           "input[control]:input",
           "input[control]:invalid",
           "input[control]:keydown"
@@ -2175,8 +1857,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 9,
-        "plainSubtree": 9,
+        "strictSubtree": 11,
+        "plainSubtree": 11,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -2205,8 +1887,10 @@
         "hidden": false,
         "w": 200,
         "h": 68,
-        "subtree": 0,
-        "subtreeTypes": [],
+        "subtree": 1,
+        "subtreeTypes": [
+          "button[list-row]:s1:toggle:change"
+        ],
         "globals": 4,
         "overflow": "|"
       },
@@ -2218,22 +1902,25 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1ListRow-pc.png",
       "slotCounts": {
         "title": 1,
         "description": 1,
-        "chevron": 1
+        "chevron": 1,
+        "value": 0,
+        "knob": 0,
+        "thumbnail": 0
       },
       "unmount": {
         "leakedGlobalListeners": 0,
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 0,
-        "plainSubtree": 0,
+        "strictSubtree": 1,
+        "plainSubtree": 1,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -2248,8 +1935,7 @@
         "consoleClean": "pass",
         "size": "pass",
         "icons": "pass",
-        "propUpdate": "pass",
-        "slotUnique": "fail",
+        "propUpdate": "notChecked",
         "className": "pass",
         "unmountClean": "pass",
         "strictModeSingleBind": "pass",
@@ -2262,9 +1948,11 @@
         "hidden": false,
         "w": 240,
         "h": 228,
-        "subtree": 1,
+        "subtree": 3,
         "subtreeTypes": [
-          "nav[lnb]:click"
+          "nav[lnb]:click",
+          "nav[lnb]:s1:lnb:collapse",
+          "nav[lnb]:s1:lnb:toggle"
         ],
         "globals": 4,
         "overflow": "|"
@@ -2277,30 +1965,22 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Lnb-pc.png",
-      "slotCounts": {
-        "collapseIcon": 1,
-        "itemIcon": 4,
-        "itemToggle": 1,
-        "item": 2
-      },
       "unmount": {
         "leakedGlobalListeners": 0,
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 1,
-        "plainSubtree": 1,
+        "strictSubtree": 3,
+        "plainSubtree": 3,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
       },
-      "findingIds": [
-        "react:S1Lnb:pc:slot-shared"
-      ]
+      "findingIds": []
     },
     {
       "component": "S1MobileBottomNav",
@@ -2342,7 +2022,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1MobileBottomNav-pc.png",
@@ -2398,7 +2078,8 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)",
+          "Pretendard Medium(설치 글꼴)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1MobileHeader-pc.png",
@@ -2428,7 +2109,7 @@
         "consoleClean": "pass",
         "size": "notChecked",
         "propUpdate": "pass",
-        "slotUnique": "fail",
+        "slotUnique": "pass",
         "className": "pass",
         "unmountClean": "pass",
         "strictModeSingleBind": "pass",
@@ -2441,36 +2122,35 @@
         "hidden": true,
         "w": 0,
         "h": 0,
-        "subtree": 2,
+        "subtree": 4,
         "subtreeTypes": [
           "button[close]:click",
-          "div[modal-content]:click"
+          "div[modal-content]:click",
+          "div[modal-content]:s1:modal-content:close",
+          "div[modal-content]:s1:modal-content:open"
         ],
         "globals": 5,
         "overflow": "|"
       },
       "screenshot": "reports/publisher-audit/react/shots/S1ModalContent-pc.png",
       "slotCounts": {
-        "overlay": 1,
         "title": 1,
-        "close": 1,
         "contentLabel": 1,
-        "label": 2
+        "cancelLabel": 1,
+        "confirmLabel": 1
       },
       "unmount": {
         "leakedGlobalListeners": 0,
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 2,
-        "plainSubtree": 2,
+        "strictSubtree": 4,
+        "plainSubtree": 4,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
       },
-      "findingIds": [
-        "react:S1ModalContent:pc:slot-shared"
-      ]
+      "findingIds": []
     },
     {
       "component": "S1Modal",
@@ -2480,7 +2160,7 @@
         "consoleClean": "pass",
         "size": "notChecked",
         "propUpdate": "pass",
-        "slotUnique": "fail",
+        "slotUnique": "pass",
         "className": "pass",
         "unmountClean": "pass",
         "strictModeSingleBind": "pass",
@@ -2493,36 +2173,35 @@
         "hidden": true,
         "w": 0,
         "h": 0,
-        "subtree": 2,
+        "subtree": 4,
         "subtreeTypes": [
           "button[close]:click",
-          "div[modal]:click"
+          "div[modal]:click",
+          "div[modal]:s1:modal:close",
+          "div[modal]:s1:modal:open"
         ],
         "globals": 6,
         "overflow": "|"
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Modal-pc.png",
       "slotCounts": {
-        "overlay": 1,
         "title": 1,
-        "close": 1,
         "message": 1,
-        "label": 2
+        "cancelLabel": 1,
+        "confirmLabel": 1
       },
       "unmount": {
         "leakedGlobalListeners": 0,
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 2,
-        "plainSubtree": 2,
+        "strictSubtree": 4,
+        "plainSubtree": 4,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
       },
-      "findingIds": [
-        "react:S1Modal:pc:slot-shared"
-      ]
+      "findingIds": []
     },
     {
       "component": "S1Modal",
@@ -2532,7 +2211,7 @@
         "consoleClean": "pass",
         "size": "notChecked",
         "propUpdate": "pass",
-        "slotUnique": "fail",
+        "slotUnique": "pass",
         "className": "pass",
         "unmountClean": "pass",
         "strictModeSingleBind": "pass",
@@ -2545,35 +2224,34 @@
         "hidden": true,
         "w": 0,
         "h": 0,
-        "subtree": 1,
+        "subtree": 3,
         "subtreeTypes": [
-          "div[modal]:click"
+          "div[modal]:click",
+          "div[modal]:s1:modal:close",
+          "div[modal]:s1:modal:open"
         ],
         "globals": 6,
         "overflow": "|"
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Modal-mobile.png",
       "slotCounts": {
-        "overlay": 1,
         "title": 1,
-        "close": 0,
         "message": 1,
-        "label": 2
+        "cancelLabel": 1,
+        "confirmLabel": 1
       },
       "unmount": {
         "leakedGlobalListeners": 0,
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 1,
-        "plainSubtree": 1,
+        "strictSubtree": 3,
+        "plainSubtree": 3,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
       },
-      "findingIds": [
-        "react:S1Modal:mobile:slot-shared"
-      ]
+      "findingIds": []
     },
     {
       "component": "S1MultiToggle",
@@ -2596,10 +2274,11 @@
         "hidden": false,
         "w": 190,
         "h": 44,
-        "subtree": 2,
+        "subtree": 3,
         "subtreeTypes": [
           "div[multi-toggle]:click",
-          "div[multi-toggle]:keydown"
+          "div[multi-toggle]:keydown",
+          "div[multi-toggle]:s1:multi-toggle:change"
         ],
         "globals": 6,
         "overflow": "|"
@@ -2612,7 +2291,8 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)",
+          "Pretendard Medium(설치 글꼴)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1MultiToggle-pc.png",
@@ -2621,8 +2301,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 2,
-        "plainSubtree": 2,
+        "strictSubtree": 3,
+        "plainSubtree": 3,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -2650,9 +2330,10 @@
         "hidden": false,
         "w": 304,
         "h": 28,
-        "subtree": 1,
+        "subtree": 2,
         "subtreeTypes": [
-          "nav[pagination]:click"
+          "nav[pagination]:click",
+          "nav[pagination]:s1:pagination:change"
         ],
         "globals": 6,
         "overflow": "|"
@@ -2665,7 +2346,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Pagination-pc.png",
@@ -2674,8 +2355,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 1,
-        "plainSubtree": 1,
+        "strictSubtree": 2,
+        "plainSubtree": 2,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -2719,7 +2400,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Radio-pc.png",
@@ -2761,13 +2442,16 @@
         "hidden": false,
         "w": 140,
         "h": 44,
-        "subtree": 5,
+        "subtree": 8,
         "subtreeTypes": [
           "button[trigger]:click",
           "div[dropdown]:click",
           "div[dropdown]:keydown",
           "div[select]:keydown",
-          "div[select]:s1:dropdown:change"
+          "div[select]:s1:dropdown:change",
+          "div[select]:s1:select:change",
+          "div[select]:s1:select:close",
+          "div[select]:s1:select:open"
         ],
         "globals": 6,
         "overflow": "|"
@@ -2780,7 +2464,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Select-pc.png",
@@ -2793,8 +2477,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 5,
-        "plainSubtree": 5,
+        "strictSubtree": 8,
+        "plainSubtree": 8,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -2823,13 +2507,16 @@
         "hidden": false,
         "w": 140,
         "h": 48,
-        "subtree": 5,
+        "subtree": 8,
         "subtreeTypes": [
           "button[trigger]:click",
           "div[dropdown]:click",
           "div[dropdown]:keydown",
           "div[select]:keydown",
-          "div[select]:s1:dropdown:change"
+          "div[select]:s1:dropdown:change",
+          "div[select]:s1:select:change",
+          "div[select]:s1:select:close",
+          "div[select]:s1:select:open"
         ],
         "globals": 6,
         "overflow": "|"
@@ -2842,7 +2529,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Select-mobile.png",
@@ -2855,8 +2542,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 5,
-        "plainSubtree": 5,
+        "strictSubtree": 8,
+        "plainSubtree": 8,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -2884,10 +2571,11 @@
         "hidden": false,
         "w": 370,
         "h": 44,
-        "subtree": 2,
+        "subtree": 3,
         "subtreeTypes": [
           "div[tab]:click",
-          "div[tab]:keydown"
+          "div[tab]:keydown",
+          "div[tab]:s1:tab:change"
         ],
         "globals": 6,
         "overflow": "|"
@@ -2900,7 +2588,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Tab-pc.png",
@@ -2909,8 +2597,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 2,
-        "plainSubtree": 2,
+        "strictSubtree": 3,
+        "plainSubtree": 3,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -2938,10 +2626,11 @@
         "hidden": false,
         "w": 271,
         "h": 32,
-        "subtree": 2,
+        "subtree": 3,
         "subtreeTypes": [
           "div[tab]:click",
-          "div[tab]:keydown"
+          "div[tab]:keydown",
+          "div[tab]:s1:tab:change"
         ],
         "globals": 6,
         "overflow": "|"
@@ -2954,7 +2643,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Tab-mobile.png",
@@ -2963,8 +2652,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 2,
-        "plainSubtree": 2,
+        "strictSubtree": 3,
+        "plainSubtree": 3,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -2992,8 +2681,9 @@
         "hidden": false,
         "w": 331,
         "h": 180,
-        "subtree": 8,
+        "subtree": 9,
         "subtreeTypes": [
+          "div[table]:s1:table:selectionchange",
           "input[control]:change",
           "input[control]:change",
           "input[control]:change",
@@ -3014,7 +2704,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1Table-pc.png",
@@ -3023,8 +2713,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 8,
-        "plainSubtree": 8,
+        "strictSubtree": 9,
+        "plainSubtree": 9,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -3066,7 +2756,7 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1TextButton-pc.png",
@@ -3091,7 +2781,7 @@
       "breakName": "pc",
       "viewport": "pc",
       "checks": {
-        "consoleClean": "fail",
+        "consoleClean": "pass",
         "size": "pass",
         "icons": "none",
         "propUpdate": "notChecked",
@@ -3135,16 +2825,14 @@
         "plainGlobals": 0,
         "extraInStrict": []
       },
-      "findingIds": [
-        "react:S1Textarea:pc:console-error"
-      ]
+      "findingIds": []
     },
     {
       "component": "S1Textarea",
       "breakName": "mobile",
       "viewport": "mobile",
       "checks": {
-        "consoleClean": "fail",
+        "consoleClean": "pass",
         "size": "pass",
         "icons": "none",
         "propUpdate": "notChecked",
@@ -3188,9 +2876,7 @@
         "plainGlobals": 0,
         "extraInStrict": []
       },
-      "findingIds": [
-        "react:S1Textarea:mobile:console-error"
-      ]
+      "findingIds": []
     },
     {
       "component": "S1TimePicker",
@@ -3201,7 +2887,7 @@
         "size": "pass",
         "icons": "pass",
         "propUpdate": "pass",
-        "slotUnique": "fail",
+        "slotUnique": "pass",
         "className": "pass",
         "unmountClean": "pass",
         "strictModeSingleBind": "pass",
@@ -3214,7 +2900,7 @@
         "hidden": false,
         "w": 140,
         "h": 44,
-        "subtree": 7,
+        "subtree": 10,
         "subtreeTypes": [
           "button[confirm]:click",
           "button[trigger]:click",
@@ -3222,7 +2908,10 @@
           "div[panel]:click",
           "div[panel]:keydown",
           "div[time-picker]:keydown",
-          "div[time-picker]:s1:time-picker:change"
+          "div[time-picker]:s1:time-picker:change",
+          "div[time-picker]:s1:time-picker:change",
+          "div[time-picker]:s1:time-picker:close",
+          "div[time-picker]:s1:time-picker:open"
         ],
         "globals": 6,
         "overflow": "|"
@@ -3235,19 +2924,15 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1TimePicker-pc.png",
       "slotCounts": {
         "value": 1,
         "icon": 1,
-        "column": 2,
-        "divider": 1,
         "confirm": 1,
-        "sheetBackdrop": 0,
         "sheetTitle": 0,
-        "sheetClose": 0,
         "wheelCol": 0,
         "fadeTop": 0,
         "fadeBottom": 0,
@@ -3258,15 +2943,13 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 7,
-        "plainSubtree": 7,
+        "strictSubtree": 10,
+        "plainSubtree": 10,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
       },
-      "findingIds": [
-        "react:S1TimePicker:pc:slot-shared"
-      ]
+      "findingIds": []
     },
     {
       "component": "S1TimePicker",
@@ -3277,10 +2960,10 @@
         "size": "pass",
         "icons": "pass",
         "propUpdate": "pass",
-        "slotUnique": "fail",
+        "slotUnique": "pass",
         "className": "pass",
         "unmountClean": "pass",
-        "strictModeSingleBind": "fail",
+        "strictModeSingleBind": "pass",
         "hydration": "pass"
       },
       "oneTimeGlobalListeners": 0,
@@ -3290,17 +2973,18 @@
         "hidden": false,
         "w": 140,
         "h": 48,
-        "subtree": 17,
+        "subtree": 18,
         "subtreeTypes": [
           "button[apply]:click",
-          "button[sheet-close]:click",
           "button[sheet-close]:click",
           "button[trigger]:click",
           "button[trigger]:keydown",
           "div[sheet-backdrop]:click",
-          "div[sheet-backdrop]:click",
           "div[time-picker]:keydown",
           "div[time-picker]:s1:time-picker:change",
+          "div[time-picker]:s1:time-picker:change",
+          "div[time-picker]:s1:time-picker:close",
+          "div[time-picker]:s1:time-picker:open",
           "div[wheel-col]:click",
           "div[wheel-col]:click",
           "div[wheel-col]:click",
@@ -3321,20 +3005,16 @@
       "font": {
         "family": "\"Pretendard Variable\", Pretendard, sans-serif",
         "platform": [
-          "Pretendard Variable(설치 글꼴)"
+          "Pretendard Variable(웹폰트)"
         ]
       },
       "screenshot": "reports/publisher-audit/react/shots/S1TimePicker-mobile.png",
       "slotCounts": {
         "value": 1,
         "icon": 1,
-        "column": 0,
-        "divider": 0,
         "confirm": 0,
-        "sheetBackdrop": 1,
         "sheetTitle": 1,
-        "sheetClose": 1,
-        "wheelCol": 4,
+        "wheelCol": 1,
         "fadeTop": 1,
         "fadeBottom": 1,
         "label": 1
@@ -3344,19 +3024,13 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 17,
-        "plainSubtree": 15,
+        "strictSubtree": 18,
+        "plainSubtree": 18,
         "strictGlobals": 0,
         "plainGlobals": 0,
-        "extraInStrict": [
-          "button[sheet-close]:click",
-          "div[sheet-backdrop]:click"
-        ]
+        "extraInStrict": []
       },
-      "findingIds": [
-        "react:S1TimePicker:mobile:slot-shared",
-        "react:S1TimePicker:mobile:strict-double-bind"
-      ]
+      "findingIds": []
     },
     {
       "component": "S1Toggle",
@@ -3380,9 +3054,10 @@
         "hidden": false,
         "w": 40,
         "h": 20,
-        "subtree": 1,
+        "subtree": 2,
         "subtreeTypes": [
-          "button[toggle]:click"
+          "button[toggle]:click",
+          "button[toggle]:s1:toggle:change"
         ],
         "globals": 6,
         "overflow": "|"
@@ -3405,8 +3080,8 @@
         "overflow": "|"
       },
       "strictMode": {
-        "strictSubtree": 1,
-        "plainSubtree": 1,
+        "strictSubtree": 2,
+        "plainSubtree": 2,
         "strictGlobals": 0,
         "plainGlobals": 0,
         "extraInStrict": []
@@ -3439,12 +3114,12 @@
         },
         {
           "name": "지우기(X) 버튼을 누르면 React 상태도 비워진다(onChange 가 온다)",
-          "ok": false,
-          "severity": "broken",
-          "evidence": "입력칸 \"\" · React 상태 \"새 값\" · onChange 0회 · onClear 1회"
+          "ok": true,
+          "severity": null,
+          "evidence": "입력칸 \"\" · React 상태 \"\" · onChange 1회 · onClear 1회"
         }
       ],
-      "status": "fail",
+      "status": "pass",
       "console": []
     },
     {
@@ -3548,13 +3223,13 @@
       "title": "모달(S1Modal) 을 React 상태 open 으로 열기",
       "checks": [
         {
-          "name": "open={true} 를 주면 모달이 열린다",
-          "ok": false,
-          "severity": "broken",
-          "evidence": "보임=false · 타입 정의 S1ModalProps 에 open 없음 · 루트에 open 속성만 붙음=true · README 에 모달 여는 법 없음"
+          "name": "open={true} 를 주면 모달이 열린다(옛 방식: onOpen/onClose 로 상태를 되돌린다)",
+          "ok": true,
+          "severity": null,
+          "evidence": "보임=true"
         }
       ],
-      "status": "fail",
+      "status": "pass",
       "console": []
     },
     {
@@ -3637,9 +3312,9 @@
         },
         {
           "name": "open prop 으로 열어도 onOpen 이 한 번 온다",
-          "ok": false,
-          "severity": "broken",
-          "evidence": "onOpen 0회 — 시트 자체는 열렸음. Esc 처럼 런타임이 스스로 닫을 땐 onClose 가 오는데, prop 으로 여닫을 땐 이벤트가 듣기 연결보다 먼저 쏘아진다(여닫기 효과가 듣기 연결 효과보다 앞에 선언됨)"
+          "ok": true,
+          "severity": null,
+          "evidence": "onOpen 1회 — 시트 자체는 열렸음. Esc 처럼 런타임이 스스로 닫을 땐 onClose 가 오는데, prop 으로 여닫을 땐 이벤트가 듣기 연결보다 먼저 쏘아진다(여닫기 효과가 듣기 연결 효과보다 앞에 선언됨)"
         },
         {
           "name": "열리면 스크롤이 잠긴다",
@@ -3703,12 +3378,12 @@
         },
         {
           "name": "시트 본문에 내 목록(children 또는 parts.sheetBody)을 넣을 수 있다",
-          "ok": false,
-          "severity": "broken",
-          "evidence": "children 들어감=false · parts.sheetBody 들어감=false · 예제 줄 4개가 그대로"
+          "ok": true,
+          "severity": null,
+          "evidence": "children 들어감=true · parts.sheetBody 들어감=false · 예제 줄 0개가 그대로"
         }
       ],
-      "status": "fail",
+      "status": "pass",
       "console": []
     },
     {
@@ -3755,30 +3430,18 @@
         },
         {
           "name": "options 를 글자 목록으로 주면 onChange 의 value 가 고른 항목을 가리킨다",
-          "ok": false,
-          "severity": "broken",
-          "evidence": "event.detail.value = \"seoul\" (고른 것: 부산)"
+          "ok": true,
+          "severity": null,
+          "evidence": "event.detail.value = \"부산\" (고른 것: 부산)"
         },
         {
           "name": "options 를 바꾸면 목록이 바뀐다",
           "ok": true,
           "severity": null,
           "evidence": "목록 [\"대구\",\"광주\"]"
-        },
-        {
-          "name": "고른 뒤 parts.value 로 트리거 글자를 바꾸면 화면이 따라온다",
-          "ok": true,
-          "severity": null,
-          "evidence": "트리거 \"직접 지정\""
-        },
-        {
-          "name": "제어형 value prop 이 있다(타입 정의 기준)",
-          "ok": false,
-          "severity": "friction",
-          "evidence": "S1SelectProps 에 value·defaultValue 없음 — 고른 값을 React 상태로 넣을 길이 없음(빼기는 onChange 의 event.detail 로만)"
         }
       ],
-      "status": "fail",
+      "status": "pass",
       "console": []
     },
     {
@@ -3789,7 +3452,7 @@
           "name": "항목을 누르면 onChange 가 한 번",
           "ok": true,
           "severity": null,
-          "evidence": "onChange 1회 [\"latest\"]"
+          "evidence": "onChange 1회 [\"나\"]"
         }
       ],
       "status": "pass",
@@ -3813,9 +3476,9 @@
         },
         {
           "name": "페이지가 바뀐 걸 React 가 받을 prop(onChange·onPageChange)이 있다",
-          "ok": false,
-          "severity": "broken",
-          "evidence": "onChange prop 으로 0회 받음 — 타입 정의에 이벤트 prop 없음(배포본은 s1:pagination:change 를 쏨)"
+          "ok": true,
+          "severity": null,
+          "evidence": "onChange prop 으로 1회 받음 — 타입 정의에 이벤트 prop 없음(배포본은 s1:pagination:change 를 쏨)"
         },
         {
           "name": "\"last\" 화살표를 누르면 현재 페이지가 하나로 옮겨 간다",
@@ -3827,7 +3490,7 @@
           "name": "런타임이 번호를 다시 그린 뒤에도 React 가 pages 를 바꿔 그릴 수 있다(충돌·중복 없음)",
           "ok": true,
           "severity": null,
-          "evidence": "번호 [\"1\",\"2\",\"3\",\"4\",\"5\",\"6\",\"7\",\"8\",\"9\",\"10\"]"
+          "evidence": "번호 [\"1\",\"2\",\"3\",\"4\",\"5\",\"6\"]"
         },
         {
           "name": "pages={[\"1\",\"2\",\"3\"]} 처럼 글자만 주면 현재 페이지 표시가 하나뿐이다",
@@ -3837,12 +3500,12 @@
         },
         {
           "name": "pages 를 3개 주면 전체 쪽수도 3 으로 맞춰진다",
-          "ok": false,
-          "severity": "friction",
-          "evidence": "data-total-pages=\"6\""
+          "ok": true,
+          "severity": null,
+          "evidence": "data-total-pages=\"3\""
         }
       ],
-      "status": "fail",
+      "status": "pass",
       "console": []
     },
     {
@@ -3875,12 +3538,12 @@
         },
         {
           "name": "행 체크박스 접근 이름이 줄마다 다르다",
-          "ok": false,
-          "severity": "friction",
-          "evidence": "[\"항목 1 선택\",\"항목 1 선택\",\"항목 1 선택\"]"
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"가 선택\",\"다 선택\",\"마 선택\"]"
         }
       ],
-      "status": "fail",
+      "status": "pass",
       "console": []
     },
     {
@@ -3888,10 +3551,10 @@
       "title": "날짜 선택(S1DatePicker) — 값 넣고 빼기",
       "checks": [
         {
-          "name": "value=\"2026-10-01\" 을 주면 그 날짜가 보인다(값 넣기)",
-          "ok": false,
-          "severity": "broken",
-          "evidence": "트리거 \"날짜 선택\" — 타입 정의에 value·defaultValue 없음"
+          "name": "defaultValue=\"2026-10-01\" 을 주면 그 날짜가 보인다(값 넣기)",
+          "ok": true,
+          "severity": null,
+          "evidence": "트리거 \"26.10.01\" — 타입 정의에 value·defaultValue 없음"
         },
         {
           "name": "트리거를 누르면 열리고 onOpen 한 번",
@@ -3912,7 +3575,7 @@
           "evidence": "트리거 \"26.10.15\" (고른 칸 15)"
         }
       ],
-      "status": "fail",
+      "status": "pass",
       "console": []
     },
     {
@@ -3940,10 +3603,10 @@
       "title": "시간 선택(S1TimePicker) — 값 넣고 빼기",
       "checks": [
         {
-          "name": "value=\"09:30\" 을 주면 그 시간이 보인다(값 넣기)",
-          "ok": false,
-          "severity": "broken",
-          "evidence": "트리거 \"시간 선택\" — 타입 정의에 value 없음"
+          "name": "defaultValue=\"09:30\" 을 주면 그 시간이 보인다(값 넣기)",
+          "ok": true,
+          "severity": null,
+          "evidence": "트리거 \"09:30\" — 타입 정의에 value 없음"
         },
         {
           "name": "트리거를 누르면 onOpen 한 번",
@@ -3958,7 +3621,7 @@
           "evidence": "열 2개 · onChange 1회 · 확인 버튼 누름 · detail {\"value\":\"01:01\",\"hour\":\"01\",\"minute\":\"01\",\"ampm\":null,\"type\":\"24h\"}"
         }
       ],
-      "status": "fail",
+      "status": "pass",
       "console": []
     },
     {
@@ -3994,24 +3657,6 @@
       "console": []
     },
     {
-      "key": "gnb",
-      "title": "GNB 하위 메뉴 펼침(오버레이)",
-      "checks": [
-        {
-          "name": "메뉴를 누르면 하위 메뉴가 펼쳐지고 onOpen 한 번",
-          "ok": false,
-          "severity": "broken",
-          "evidence": "{\"expanded\":\"false\",\"panel\":false} · onOpen 0회 · 메뉴가 가리키는 하위 메뉴 판(#gnb-sub-menu-a-service) 존재=false"
-        }
-      ],
-      "status": "fail",
-      "hungOnFirstTry": {
-        "key": "gnb",
-        "lastStep": "메뉴를 누르면 하위 메뉴가 펼쳐지고 onOpen 한 번"
-      },
-      "console": []
-    },
-    {
       "key": "form",
       "title": "폼 안에서 name 으로 값 보내기",
       "checks": [
@@ -4019,16 +3664,16 @@
           "name": "입력·체크박스·라디오는 name/defaultValue/defaultChecked 로 폼에 실린다",
           "ok": true,
           "severity": null,
-          "evidence": "보낸 값 {\"nm\":\"홍길동\",\"agree\":\"yes\",\"pick\":\"a\"}"
+          "evidence": "보낸 값 {\"nm\":\"홍길동\",\"agree\":\"yes\",\"pick\":\"a\",\"city\":\"\",\"time\":\"\",\"day\":\"\"}"
         },
         {
           "name": "셀렉트·시간·날짜도 name 을 주면 폼에 실린다",
-          "ok": false,
-          "severity": "friction",
-          "evidence": "빠진 name: city, time, day — 배포본 런타임은 name 이 아니라 data-name 을 보고 숨은 input 을 만든다 · 보낸 값 {\"nm\":\"홍길동\",\"agree\":\"yes\",\"pick\":\"a\"}"
+          "ok": true,
+          "severity": null,
+          "evidence": "빠진 name: 없음 — 배포본 런타임은 name 이 아니라 data-name 을 보고 숨은 input 을 만든다 · 보낸 값 {\"nm\":\"홍길동\",\"agree\":\"yes\",\"pick\":\"a\",\"city\":\"\",\"time\":\"\",\"day\":\"\"}"
         }
       ],
-      "status": "fail",
+      "status": "pass",
       "console": []
     },
     {
@@ -4037,9 +3682,15 @@
       "checks": [
         {
           "name": "defaultValue 를 주면 그 글자로 그려진다(비제어형)",
-          "ok": false,
-          "severity": "broken",
-          "evidence": "화면이 그려지지 않고 오류: 오류: If you supply `defaultValue` on a <textarea>, do not pass children."
+          "ok": true,
+          "severity": null,
+          "evidence": "값 \"메모\""
+        },
+        {
+          "name": "폼으로 보내면 name 으로 실린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"memo\":\"메모\"}"
         },
         {
           "name": "value(제어형)를 주면 그 글자로 그려진다",
@@ -4054,10 +3705,8 @@
           "evidence": "값 \"바뀜\""
         }
       ],
-      "status": "fail",
-      "console": [
-        "%o %s %s Error: If you supply `defaultValue` on a <textarea>, do not pass children. at initTextarea (http://127.0.0.1:63286/node_modules/.vite/deps/react-dom_client.js?v=73b4d25a:1535:38) at setInitialProperties (http://127.0.0.1:63286/node_modules/.vite/deps/react-dom_client.js?v=73b4d25a:10636:6) "
-      ]
+      "status": "pass",
+      "console": []
     },
     {
       "key": "gnb-composed",
@@ -4068,6 +3717,1006 @@
           "ok": true,
           "severity": null,
           "evidence": "{\"expanded\":\"true\",\"panel\":true,\"subMenuHasIdProp\":true} · onOpen 1회"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "modal-state",
+      "title": "모달(S1Modal) — open · onOpenChange · onConfirm/onCancel · 글자 props",
+      "checks": [
+        {
+          "name": "open=false 로 시작하면 닫혀 있다",
+          "ok": true,
+          "severity": null,
+          "evidence": "처음"
+        },
+        {
+          "name": "open=true 로 바꾸면 열린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "상태 true 후"
+        },
+        {
+          "name": "열릴 때 onOpen 은 한 번, 화면이 연 것은 onOpenChange 로 되알리지 않는다",
+          "ok": true,
+          "severity": null,
+          "evidence": "onOpen 1회 · onOpenChange 0회"
+        },
+        {
+          "name": "열리면 스크롤이 잠기고 초점이 창 안으로 들어간다",
+          "ok": true,
+          "severity": null,
+          "evidence": "overflow hidden · 초점 안=true"
+        },
+        {
+          "name": "title · message · cancelLabel · confirmLabel 로 넣은 글자가 각자 자리에 그려진다(견본 글자가 남지 않는다)",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"title\":\"삭제할까요?\",\"message\":\"되돌릴 수 없습니다\",\"cancel\":\"그만두기\",\"confirm\":\"지우기\"}"
+        },
+        {
+          "name": "Esc 로 닫히면 onClose 한 번 + onOpenChange(false, escape) 한 번이고 React 상태도 false",
+          "ok": true,
+          "severity": null,
+          "evidence": "onClose 1회 · onOpenChange [{\"next\":false,\"reason\":\"escape\"}] · 상태 false"
+        },
+        {
+          "name": "닫히면 스크롤 잠금이 풀린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "overflow (없음)"
+        },
+        {
+          "name": "확인 단추를 누르면 onConfirm 한 번 + 닫힌 이유 confirm",
+          "ok": true,
+          "severity": null,
+          "evidence": "onConfirm 1회 · [{\"next\":false,\"reason\":\"confirm\"}]"
+        },
+        {
+          "name": "취소 단추를 누르면 onCancel 한 번 + 닫힌 이유 cancel",
+          "ok": true,
+          "severity": null,
+          "evidence": "onCancel 1회"
+        },
+        {
+          "name": "열린 채 화면에서 떼도 스크롤 잠금이 풀린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "떼고 난 overflow (없음)"
+        },
+        {
+          "name": "defaultOpen 은 처음부터 열려 있고, children 이 본문(message 자리)을 대신한다",
+          "ok": true,
+          "severity": null,
+          "evidence": "보임=true · 내 본문=true"
+        },
+        {
+          "name": "본문을 children 으로 줬을 때 견본 문장이 남지 않는다",
+          "ok": true,
+          "severity": null,
+          "evidence": "처음부터 열림내가 만든 본문취소확인"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "modal-content-state",
+      "title": "모달 콘텐츠(S1ModalContent) — open · onOpenChange · children",
+      "checks": [
+        {
+          "name": "open=false 로 시작하면 닫혀 있다",
+          "ok": true,
+          "severity": null,
+          "evidence": "처음"
+        },
+        {
+          "name": "open=true 로 바꾸면 열리고 onOpen 한 번, onOpenChange 는 오지 않는다",
+          "ok": true,
+          "severity": null,
+          "evidence": "onOpen 1회 · onOpenChange 0회"
+        },
+        {
+          "name": "children 이 내용 영역을 대신하고 견본 글자가 남지 않는다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"mine\":true,\"sample\":false}"
+        },
+        {
+          "name": "title · cancelLabel · confirmLabel 글자가 반영된다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"닫기\",\"저장\",\"내용 창\"]"
+        },
+        {
+          "name": "확인으로 닫히면 onClose 한 번 + onOpenChange(false, confirm) 한 번 + 상태 false",
+          "ok": true,
+          "severity": null,
+          "evidence": "onClose 1회 · [{\"next\":false,\"reason\":\"confirm\"}]"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "sheet-state",
+      "title": "바텀시트(S1BottomSheet) — options · value · onValueChange · onOpenChange",
+      "checks": [
+        {
+          "name": "처음엔 닫혀 있다",
+          "ok": true,
+          "severity": null,
+          "evidence": "open=false"
+        },
+        {
+          "name": "options 로 준 줄만 그려진다(견본 \"항목 1~4\" 가 남지 않는다)",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"작게\",\"보통\",\"크게\"]"
+        },
+        {
+          "name": "value 가 가리키는 줄이 처음부터 선택돼 있다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"default\",\"selected\",\"default\"]"
+        },
+        {
+          "name": "줄을 누르면 onValueChange 가 한 번, 준 그대로의 값(숫자 3)으로 온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[3]"
+        },
+        {
+          "name": "고르면 시트가 닫히고(closeOnSelect) onClose 한 번 + onOpenChange(false) + 상태 false",
+          "ok": true,
+          "severity": null,
+          "evidence": "보임=false · onClose 1회 · 상태 false"
+        },
+        {
+          "name": "부모가 value 를 바꾸면 선택된 줄이 따라 바뀐다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"selected\",\"default\",\"default\"]"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "select-value",
+      "title": "셀렉트(S1Select) — options 의 고유 값 · value/onValueChange · name · open",
+      "checks": [
+        {
+          "name": "value=\"busan\" 이면 트리거에 처음부터 \"부산\" 이 보인다",
+          "ok": true,
+          "severity": null,
+          "evidence": "트리거 \"부산\""
+        },
+        {
+          "name": "항목마다 고유한 value 가 붙는다(모두 같아지지 않는다)",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"seoul\",\"busan\",\"3\"]"
+        },
+        {
+          "name": "고른 항목에만 선택 표시가 있다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"false\",\"true\",\"false\"]"
+        },
+        {
+          "name": "항목을 고르면 onValueChange 가 한 번, 준 그대로의 값(숫자 3)으로 온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[3]"
+        },
+        {
+          "name": "onChange(옛 방식 이벤트)도 그대로 와서 event.detail.value 가 고른 항목을 가리킨다",
+          "ok": true,
+          "severity": null,
+          "evidence": "event.detail.value = \"3\""
+        },
+        {
+          "name": "트리거에 고른 글자가 보인다",
+          "ok": true,
+          "severity": null,
+          "evidence": "트리거 \"제주\""
+        },
+        {
+          "name": "부모가 value 를 바꾸면 트리거 글자도 따라 바뀐다",
+          "ok": true,
+          "severity": null,
+          "evidence": "트리거 \"서울\""
+        },
+        {
+          "name": "화면이 정한 값은 onValueChange 로 되알리지 않는다",
+          "ok": true,
+          "severity": null,
+          "evidence": "onValueChange 1회"
+        },
+        {
+          "name": "name 을 주면 폼 전송에 고른 값이 실린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"city\":\"seoul\"}"
+        },
+        {
+          "name": "open=true 를 주면 목록이 열린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "aria-expanded=true"
+        },
+        {
+          "name": "Esc 로 닫히면 onOpenChange(false) 가 한 번 오고 상태가 맞춰진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "onOpenChange 1회 · aria-expanded=false"
+        },
+        {
+          "name": "defaultValue 는 처음 값만 정한다(비제어형)",
+          "ok": true,
+          "severity": null,
+          "evidence": "트리거 \"비\""
+        },
+        {
+          "name": "비제어형은 눌러서 바뀌고 onValueChange 가 값으로 온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "트리거 \"에이\""
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "dropdown-value",
+      "title": "드롭다운 · 필터 칩 — value/onValueChange · name",
+      "checks": [
+        {
+          "name": "드롭다운: value 가 가리키는 항목이 처음부터 선택돼 있다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"false\",\"false\",\"true\"]"
+        },
+        {
+          "name": "드롭다운: 누르면 onValueChange 가 한 번 \"popular\" 로 온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"popular\"]"
+        },
+        {
+          "name": "드롭다운: 부모가 value 를 바꾸면 선택 표시가 따라 바뀐다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"true\",\"false\",\"false\"]"
+        },
+        {
+          "name": "필터 칩: value=\"name\" 이면 처음부터 \"이름순\" 이 보인다",
+          "ok": true,
+          "severity": null,
+          "evidence": "\"이름순\""
+        },
+        {
+          "name": "필터 칩: 고르면 onValueChange(\"latest\") 한 번 + 글자가 바뀐다",
+          "ok": true,
+          "severity": null,
+          "evidence": "onValueChange [\"latest\"] · \"최신순\""
+        },
+        {
+          "name": "필터 칩: 부모가 value 를 바꾸면 글자도 따라 바뀐다",
+          "ok": true,
+          "severity": null,
+          "evidence": "\"이름순\""
+        },
+        {
+          "name": "필터 칩: name 을 주면 폼에 값이 실린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"sort\":\"name\"}"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "multi-toggle-tab",
+      "title": "멀티 토글 · 탭 — 목록 항목 · value · name",
+      "checks": [
+        {
+          "name": "멀티 토글: cells 로 준 글자가 그려지고 value 가 가리키는 칸이 켜져 있다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"왼쪽\",\"가운데\",\"오른쪽\"] · [\"false\",\"true\",\"false\"]"
+        },
+        {
+          "name": "멀티 토글: disabled 칸은 비활성 표시가 붙는다",
+          "ok": true,
+          "severity": null,
+          "evidence": "비활성 1칸"
+        },
+        {
+          "name": "멀티 토글: 누르면 onValueChange(\"a\") 한 번 + 켜진 칸이 옮겨진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"a\"] · [\"true\",\"false\",\"false\"]"
+        },
+        {
+          "name": "멀티 토글: 부모가 value 를 바꾸면 켜진 칸이 따라 바뀌고 되알리지 않는다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"false\",\"true\",\"false\"]"
+        },
+        {
+          "name": "멀티 토글: name 을 주면 켜진 칸의 값이 폼에 실린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"align\":\"b\"}"
+        },
+        {
+          "name": "탭: tabs 의 { value, label, panel } 대로 탭과 패널이 그려지고 value 가 가리키는 탭이 켜진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"하나\",\"둘\",\"셋\"] · [\"false\",\"true\",\"false\"] · [\"\",\"둘째 내용\",\"\"]"
+        },
+        {
+          "name": "탭: 누르면 onValueChange(\"three\") 한 번 + 패널이 따라 바뀐다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[{\"type\":\"s1:tab:change\",\"detail\":{\"tab\":\"<button three>\",\"value\":\"three\"},\"defaultPrevented\":false},\"three\"] · [\"\",\"\",\"셋째 내용\"]"
+        },
+        {
+          "name": "탭: 부모가 value 를 바꾸면 탭과 패널이 따라 바뀐다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"true\",\"false\",\"false\"] · [\"첫 내용\",\"\",\"\"]"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "pagination-state",
+      "title": "페이지네이션(S1Pagination) — page · totalPages · onPageChange",
+      "checks": [
+        {
+          "name": "처음 6쪽 · 현재 1쪽이 그려진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"1\",\"2\",\"3\",\"4\",\"5\",\"6\"] · 현재 [\"1\"]"
+        },
+        {
+          "name": "3쪽을 누르면 onPageChange(3) 가 한 번 오고 React 상태도 3 이다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[3] · 상태 3"
+        },
+        {
+          "name": "옛 방식 onChange(이벤트)도 그대로 한 번 온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "1회"
+        },
+        {
+          "name": "부모가 totalPages · page 를 바꾸면 번호 줄이 다시 그려지고 8쪽이 현재가 된다(다음 묶음 7~12)",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"7\",\"8\",\"9\",\"10\",\"11\",\"12\"] · 현재 [\"8\"]"
+        },
+        {
+          "name": "화면이 정한 쪽은 onPageChange 로 되알리지 않는다",
+          "ok": true,
+          "severity": null,
+          "evidence": "0회"
+        },
+        {
+          "name": "다음 쪽 단추를 누르면 onPageChange(9)",
+          "ok": true,
+          "severity": null,
+          "evidence": "[9] · 현재 [\"9\"] · last단추=1"
+        },
+        {
+          "name": "총 쪽수가 줄어 현재 쪽이 밀려나면 그 사실을 onPageChange 로 알린다(마지막 쪽 4)",
+          "ok": true,
+          "severity": null,
+          "evidence": "[4] · 상태 4"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "table-state",
+      "title": "표 — onSelectionChange(새 이름) · 옛 이름 · 줄마다 다른 선택 이름",
+      "checks": [
+        {
+          "name": "행 체크박스 접근 이름이 줄마다 다르다(첫 칸 글자로 채워진다)",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"김하늘 선택\",\"박바다 선택\",\"이구름 선택\"]"
+        },
+        {
+          "name": "행을 고르면 onSelectionChange 와 옛 이름 onSelectionchange 가 각각 한 번, detail 에 선택 수가 온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "새 1회 · 옛 1회 · {\"selectedCount\":1,\"totalCount\":3}"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "date-state",
+      "title": "날짜 선택 — value · onValueChange · name · 기간 · open",
+      "checks": [
+        {
+          "name": "value=\"2026-10-01\" 이면 트리거에 그 날짜가 처음부터 보인다",
+          "ok": true,
+          "severity": null,
+          "evidence": "\"26.10.01\""
+        },
+        {
+          "name": "날짜를 누르면 onValueChange 가 \"YYYY-MM-DD\" 문자열로 한 번 오고 React 상태가 된다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"2026-10-15\"] · 상태 2026-10-15"
+        },
+        {
+          "name": "부모가 value 를 바꾸면 트리거 글자가 따라 바뀌고 되알리지 않는다",
+          "ok": true,
+          "severity": null,
+          "evidence": "\"26.11.20\""
+        },
+        {
+          "name": "name 을 주면 고른 날짜가 폼에 실린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"day\":\"2026-11-20\"}"
+        },
+        {
+          "name": "기간(variant=\"range\"): value={start,end} 이면 시작~끝이 보인다",
+          "ok": true,
+          "severity": null,
+          "evidence": "\"26.10.03 ~ 26.10.09\""
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "time-state",
+      "title": "시간 선택 — value(24시간) · onValueChange · name",
+      "checks": [
+        {
+          "name": "value=\"09:30\" 이면 트리거에 처음부터 그 시간이 보인다",
+          "ok": true,
+          "severity": null,
+          "evidence": "\"09:30\""
+        },
+        {
+          "name": "부모가 value=\"14:05\" 로 바꾸면 트리거가 따라 바뀐다",
+          "ok": true,
+          "severity": null,
+          "evidence": "\"14:05\""
+        },
+        {
+          "name": "name 을 주면 시간이 폼에 실린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"clock\":\"14:05\"}"
+        },
+        {
+          "name": "시간을 고르고 확인하면 onValueChange 가 24시간 \"HH:mm\" 문자열로 한 번 온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "\"07:30\" · 상태 07:30"
+        },
+        {
+          "name": "열고 닫음은 onOpen/onClose 가 각각 한 번, 사용자가 연 것은 onOpenChange 로도 온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "onClose 1회 · onOpenChange [{\"next\":false,\"reason\":null}]"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "time-mobile-sheet",
+      "title": "시간 선택 모바일 — StrictMode 에서 한 번만 반응",
+      "checks": [
+        {
+          "name": "open=true 로 시트가 열리고 onOpen 한 번(onOpenChange 는 되알리지 않음)",
+          "ok": true,
+          "severity": null,
+          "evidence": "보임=true · onOpen 1회"
+        },
+        {
+          "name": "닫기 단추 한 번에 onClose 가 한 번만 온다(StrictMode 이중 등록 없음)",
+          "ok": true,
+          "severity": null,
+          "evidence": "onClose 1회"
+        },
+        {
+          "name": "닫히면 onOpenChange(false) 한 번 + 상태 false",
+          "ok": true,
+          "severity": null,
+          "evidence": "onOpenChange 1회 · 상태 false"
+        },
+        {
+          "name": "바탕을 눌러 닫을 때도 onClose 한 번",
+          "ok": true,
+          "severity": null,
+          "evidence": "onClose 1회"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "form-all",
+      "title": "폼 — 토글 · 칩 · 멀티 토글에도 name 이 실린다",
+      "checks": [
+        {
+          "name": "토글: 꺼져 있으면 폼에 실리지 않는다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{}"
+        },
+        {
+          "name": "토글: 누르면 onCheckedChange(true) 가 한 번 오고 React 상태가 켜진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[true]"
+        },
+        {
+          "name": "토글: 켜지면 폼에 name 으로 실린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"notify\":\"on\"}"
+        },
+        {
+          "name": "토글: 부모가 checked 를 바꾸면 모양도 따라 바뀐다",
+          "ok": true,
+          "severity": null,
+          "evidence": "aria-checked=false"
+        },
+        {
+          "name": "칩: 켜진 칩의 값만 name 으로 실린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"gate\":\"북문\"}"
+        },
+        {
+          "name": "칩: 묶음에서 다른 칩을 켜면 폼 값도 따라 바뀐다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"gate\":\"남문\"}"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "list-rows",
+      "title": "리스트 행(S1ListRow) — 7가지 종류가 웹 예시와 같은 마크업으로 나온다",
+      "checks": [
+        {
+          "name": "7종이 모두 그려진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"nav\",\"value\",\"read\",\"pick\",\"agree\",\"switch\",\"thumb\"]"
+        },
+        {
+          "name": "스위치 형: 줄은 button 이 아니고 안에 스위치(토글)가 있다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"type\":\"switch\",\"tag\":\"div\",\"buttonsInside\":1,\"hasToggle\":true,\"hasValue\":false,\"nestedButton\":false}"
+        },
+        {
+          "name": "값 표시 형: 줄은 button 이고 오른쪽에 값 글자가 있다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"type\":\"value\",\"tag\":\"button\",\"buttonsInside\":0,\"hasToggle\":false,\"hasValue\":true,\"nestedButton\":false}"
+        },
+        {
+          "name": "읽기 형은 button 이 아니다(눌리는 것처럼 보이지 않는다)",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"type\":\"read\",\"tag\":\"div\",\"buttonsInside\":0,\"hasToggle\":false,\"hasValue\":false,\"nestedButton\":false}"
+        },
+        {
+          "name": "value prop 으로 준 글자가 오른쪽 값 자리에 그려진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "\"라이트\""
+        },
+        {
+          "name": "스위치를 누르면 onCheckedChange(false) 가 한 번 오고 모양이 꺼진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[false] · aria-checked=false"
+        },
+        {
+          "name": "동의 줄의 체크를 누르면 onCheckedChange(true) 가 한 번",
+          "ok": true,
+          "severity": null,
+          "evidence": "[true]"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "input-types",
+      "title": "입력칸(S1Input) — type · breakName 분리와 옛 이름",
+      "checks": [
+        {
+          "name": "type=\"password\" 는 보기/숨기기 단추와 password 입력이 나온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"breakName\":\"pc\",\"password\":true,\"search\":false,\"controlType\":\"password\",\"label\":\"비밀번호\"}"
+        },
+        {
+          "name": "type=\"search\" 는 돋보기 단추가 나온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"breakName\":\"pc\",\"password\":false,\"search\":true,\"controlType\":\"text\",\"label\":\"검색\"}"
+        },
+        {
+          "name": "옛 이름 breakName=\"password-mobile\" 도 같은 결과(모바일 비밀번호)",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"breakName\":\"mobile\",\"password\":true,\"search\":false,\"controlType\":\"password\",\"label\":\"옛 이름\"}"
+        },
+        {
+          "name": "breakName=\"mobile\" + type=\"search\" 로 조합된다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"breakName\":\"mobile\",\"password\":false,\"search\":true,\"controlType\":\"text\",\"label\":\"모바일 검색\"}"
+        },
+        {
+          "name": "label prop 이 입력 요소의 접근 이름(aria-label)이 된다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"비밀번호\",\"검색\",\"옛 이름\",\"모바일 검색\"]"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "gnb-data",
+      "title": "GNB — menus 로 메뉴 글자를 넣고, 하위 메뉴(columns)를 함께 그려 펼친다",
+      "checks": [
+        {
+          "name": "menus 로 준 글자가 그려진다(메뉴마다 따로, 견본 \"공지사항·서비스·통계\" 가 남지 않는다)",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"대시보드\",\"출입\",\"설정\"]"
+        },
+        {
+          "name": "logo · langLabel 로 준 글자가 그려진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"관제 시스템\"] · [\"English\"]"
+        },
+        {
+          "name": "메뉴가 가리키는 하위 메뉴 판이 부품 안에서 함께 그려진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"controls\":\"_r_4k_-sub-1\",\"panelExists\":true}"
+        },
+        {
+          "name": "메뉴를 누르면 하위 메뉴가 펼쳐지고 onOpen 한 번",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"expanded\":\"true\",\"panel\":true} · onOpen 1회"
+        },
+        {
+          "name": "onOpenChange(true) 도 한 번 온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "1회"
+        },
+        {
+          "name": "하위 메뉴 제목·항목·링크·현재 표시가 columns 대로 그려진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"expanded\":\"true\",\"panel\":true,\"titles\":[\"출입 관리\",\"기록\"],\"links\":[{\"t\":\"출입 기록\",\"href\":\"/log\",\"current\":null},{\"t\":\"방문 예약\",\"href\":\"#\",\"current\":null},{\"t\":\"현재\",\"href\":\"#\",\"current\":\"page\"},{\"t\":\"감사 로그\",\"href\":\"#\",\"current\":null}]}"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "data-driven",
+      "title": "데이터로 그리는 부품 — LNB · 하위 메뉴 · 꼬리표 · 버튼 · 칩 글자가 견본으로 남지 않는다",
+      "checks": [
+        {
+          "name": "LNB: items 로 준 메뉴·하위 메뉴·현재·비활성이 그려지고 견본(개요·기반 토큰·컴포넌트)이 남지 않는다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"items\":[\"알파\",\"베타\",\"감마\",\"델타\",\"엡실론\"],\"current\":[\"알파\"],\"disabled\":[\"엡실론\"],\"sub\":true,\"aria\":\"내 메뉴\"}"
+        },
+        {
+          "name": "LNB: 묶음 메뉴를 누르면 접히고 다시 누르면 펼쳐진다(동작 유지)",
+          "ok": true,
+          "severity": null,
+          "evidence": "하위 보임=false · 감마"
+        },
+        {
+          "name": "GNB 하위 메뉴: columns 의 제목·링크({label, href, current})·글자 항목이 그려지고 type 이 반영된다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"type\":\"compact-2\",\"links\":[{\"t\":\"링크1\",\"href\":\"/1\",\"cur\":\"page\"},{\"t\":\"링크2\",\"href\":\"#\",\"cur\":null},{\"t\":\"링크3\",\"href\":\"#\",\"cur\":null}],\"titles\":[\"제목A\"]}"
+        },
+        {
+          "name": "GNB 하위 메뉴 항목: depth · href · current · children 이 반영된다",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"tag\":\"a\",\"text\":\"내 항목\",\"href\":\"/x\",\"cur\":\"page\",\"depth\":\"2depth\"}"
+        },
+        {
+          "name": "꼬리표: children 이 글자가 된다(견본 \"승인\" 이 남지 않는다)",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"점검\"]"
+        },
+        {
+          "name": "꼬리표: label prop 도 글자가 된다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"라벨로\"]"
+        },
+        {
+          "name": "S1Button: children 이 라벨이 된다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"저장\"]"
+        },
+        {
+          "name": "S1TextButton: children 이 라벨이 된다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"저장\"]"
+        },
+        {
+          "name": "S1AssistButton: children 이 라벨이 된다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"저장\"]"
+        },
+        {
+          "name": "S1Chip: children 이 라벨이 된다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"저장\"]"
+        },
+        {
+          "name": "탭: tabs 글자 + children(패널) 을 직접 둘 수 있다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"가\",\"나\"]"
+        },
+        {
+          "name": "접힘 카드: title·subtitle 은 머리줄에, children 은 펼침 내용에 들어간다(두 군데에 겹쳐 들어가지 않는다)",
+          "ok": true,
+          "severity": null,
+          "evidence": "{\"head\":[\"제목부제서브타이틀서브타이틀서브타이틀\",\"제목\",\"부제\",\"서브타이틀\",\"서브타이틀\",\"서브타이틀\"],\"panel\":true,\"sample\":false}"
+        },
+        {
+          "name": "모바일 헤더: title 이 제목이 된다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"내 화면\"]"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "expandable-card-open",
+      "title": "접힘 카드 — open/defaultOpen/onOpenChange",
+      "checks": [
+        {
+          "name": "defaultOpen 은 처음부터 펼쳐져 있다",
+          "ok": true,
+          "severity": null,
+          "evidence": "aria-expanded=true"
+        },
+        {
+          "name": "눌러 접으면 onOpenChange(false) 가 한 번",
+          "ok": true,
+          "severity": null,
+          "evidence": "1회"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "bottom-nav-new-name",
+      "title": "하단 탭 — 새 이름 onBeforeChange 로 막고 통과시킨다",
+      "checks": [
+        {
+          "name": "onBeforeChange(새 이름)를 거쳐 둘째 탭이 켜진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"false\",\"true\",\"false\"] · before 1회"
+        },
+        {
+          "name": "onBeforeChange 에서 preventDefault 하면 그 탭으로 안 넘어가고 onChange 도 오지 않는다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"false\",\"true\",\"false\"] · change 0회"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "locked-controls",
+      "title": "제어형 — 부모가 값을 안 바꾸면 눌러도 모양이 value 로 되돌아온다",
+      "checks": [
+        {
+          "name": "셀렉트: value=\"a\" 로 처음 \"에이\"",
+          "ok": true,
+          "severity": null,
+          "evidence": "\"에이\""
+        },
+        {
+          "name": "셀렉트: 눌러도 부모가 안 바꾸면 글자가 \"에이\" 로 되돌아오고, onValueChange 는 한 번 불린다",
+          "ok": true,
+          "severity": null,
+          "evidence": "\"에이\" · 1회"
+        },
+        {
+          "name": "토글: 눌러도 checked=false 라 모양이 그대로 꺼져 있다(onCheckedChange 는 불린다)",
+          "ok": true,
+          "severity": null,
+          "evidence": "aria-checked=false"
+        },
+        {
+          "name": "페이지네이션: 눌러도 page=1 이라 현재 쪽이 1 로 되돌아온다(onPageChange(3) 는 불린다)",
+          "ok": true,
+          "severity": null,
+          "evidence": "현재 [\"1\"]"
+        },
+        {
+          "name": "멀티 토글: 눌러도 value=\"x\" 라 켜진 칸이 그대로 첫 칸이다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"true\",\"false\"]"
+        }
+      ],
+      "status": "pass",
+      "console": []
+    },
+    {
+      "key": "readme-examples",
+      "title": "README 예시 코드를 그대로 붙여 넣으면 돌아가고, 눌러 보면 README 가 말한 대로 움직인다",
+      "checks": [
+        {
+          "name": "README 의 예시가 하나 이상 있다",
+          "ok": true,
+          "severity": null,
+          "evidence": "7개"
+        },
+        {
+          "name": "예시 1: 그려진다(부품 4개)",
+          "ok": true,
+          "severity": null,
+          "evidence": "처음 메모약관에 동의합니다저장"
+        },
+        {
+          "name": "예시 2: 그려진다(부품 4개)",
+          "ok": true,
+          "severity": null,
+          "evidence": "부산서울부산제주정렬최신순최신순이름순busan · latest"
+        },
+        {
+          "name": "예시 3: 그려진다(부품 10개)",
+          "ok": true,
+          "severity": null,
+          "evidence": "삭제삭제할까요?되돌릴 수 없습니다.취소삭제글자 크기: 보통글자 크기작게보통크게적용"
+        },
+        {
+          "name": "예시 4: 그려진다(부품 2개)",
+          "ok": true,
+          "severity": null,
+          "evidence": "26.10.2009:300001020304050607080910111213141516171819202122230001020304050607080"
+        },
+        {
+          "name": "예시 5: 그려진다(부품 8개)",
+          "ok": true,
+          "severity": null,
+          "evidence": "S1 관제공지사항서비스한국어출입출입 기록방문 예약개요설비목록점검준비 중알림새 출입 기록 알려 주기"
+        },
+        {
+          "name": "예시 6: 그려진다(부품 13개)",
+          "ok": true,
+          "severity": null,
+          "evidence": "이름상태장비 1정상장비 2점검장비 3정상장비 4점검장비 5정상장비 6점검장비 7정상장비 8점검장비 9정상장비 10점검123"
+        },
+        {
+          "name": "예시 7: 그려진다(부품 6개)",
+          "ok": true,
+          "severity": null,
+          "evidence": "전체진행완료개요상세개요 내용상세 내용홈검색"
+        },
+        {
+          "name": "예시 1: 입력칸에 친 글자가 React 상태를 거쳐 그대로 남는다",
+          "ok": true,
+          "severity": null,
+          "evidence": "값 \"가나\""
+        },
+        {
+          "name": "예시 1: 체크박스 라벨(children 으로 준 글자)을 누르면 켜진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "누른 뒤"
+        },
+        {
+          "name": "예시 1: 여러 줄 입력의 defaultValue 가 그려진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "\"처음 메모\""
+        },
+        {
+          "name": "예시 2: value=\"busan\" 이라 처음 줄에 busan 이 나온다",
+          "ok": true,
+          "severity": null,
+          "evidence": "busan · latest"
+        },
+        {
+          "name": "예시 2: 셀렉트에서 서울을 고르면 아래 줄이 seoul 로 바뀐다",
+          "ok": true,
+          "severity": null,
+          "evidence": "seoul · latest"
+        },
+        {
+          "name": "예시 2: 필터 칩에서 이름순을 고르면 아래 줄이 name 으로 바뀐다",
+          "ok": true,
+          "severity": null,
+          "evidence": "seoul · name"
+        },
+        {
+          "name": "예시 3: 삭제 단추를 누르면 모달이 열리고 글자 props 가 반영된다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"삭제할까요?\"]"
+        },
+        {
+          "name": "예시 3: Esc 로 닫히면 onOpenChange={setConfirmOpen} 으로 상태가 맞춰져 다시 열 수 있다",
+          "ok": true,
+          "severity": null,
+          "evidence": "Esc 후"
+        },
+        {
+          "name": "예시 6: 처음 표 첫 줄이 장비 1",
+          "ok": true,
+          "severity": null,
+          "evidence": "\"장비 1\""
+        },
+        {
+          "name": "예시 6: 2쪽을 누르면 표가 11번부터 다시 그려진다(onPageChange={setPage})",
+          "ok": true,
+          "severity": null,
+          "evidence": "\"장비 11\""
+        },
+        {
+          "name": "예시 7: 칩 묶음에서 진행을 누르면 그 칩 하나만 켜진다",
+          "ok": true,
+          "severity": null,
+          "evidence": "[\"false\",\"true\",\"false\"]"
+        },
+        {
+          "name": "예시 7: 탭을 누르면 그 탭의 패널이 보인다",
+          "ok": true,
+          "severity": null,
+          "evidence": "탭 2"
         }
       ],
       "status": "pass",
@@ -4085,12 +4734,12 @@
         },
         {
           "name": "ref 를 줘도 부품 동작(눌러서 켜기)이 그대로다",
-          "ok": false,
-          "severity": "broken",
-          "evidence": "S1Chip 에 ref 를 주고 한 번 누름 → aria-pressed=false · onChange 0회"
+          "ok": true,
+          "severity": null,
+          "evidence": "S1Chip 에 ref 를 주고 한 번 누름 → aria-pressed=true · onChange 1회"
         }
       ],
-      "status": "fail",
+      "status": "pass",
       "console": []
     }
   ]

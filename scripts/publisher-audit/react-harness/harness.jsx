@@ -18,11 +18,12 @@ const ALL = { ...S1, ...planted };
 
 /* 부품마다 BREAKS·PARTS 를 읽으려고 개별 모듈도 연다(검수기 전용 — 개발자 사용법 아님). */
 const modules = import.meta.glob("./s1-ui/platform/react/*.jsx", { eager: true });
-const exportNameOf = new Map(Object.entries(S1).filter(([, v]) => typeof v === "function").map(([k, v]) => [v, k]));
+const isComponent = (v) => typeof v === "function" || (v && typeof v === "object" && v.$$typeof);   // forwardRef 로 감싼 부품은 함수가 아니라 객체다
+const exportNameOf = new Map(Object.entries(S1).filter(([, v]) => isComponent(v)).map(([k, v]) => [v, k]));
 const catalog = Object.entries(modules).map(([file, mod]) => ({
   file: file.split("/").pop(),
   name: exportNameOf.get(mod.default) || null,
-  breaks: mod.BREAKS || [],
+  breaks: mod.FORMS || mod.BREAKS || [],
   variants: mod.VARIANTS || [],
   sizes: mod.SIZES || [],
   parts: mod.PARTS || []
@@ -258,11 +259,11 @@ SCENARIOS.table = function TableCase() {
 };
 
 SCENARIOS.datePicker = function DatePickerCase({ breakName = "pc" }) {
-  return h(S1.S1DatePicker, { breakName, value: "2026-10-01", defaultValue: "2026-10-01", onChange: (e) => rec("date:onChange", e), onOpen: (e) => rec("date:onOpen", e), onClose: (e) => rec("date:onClose", e) });
+  return h(S1.S1DatePicker, { breakName, defaultValue: "2026-10-01", onChange: (e) => rec("date:onChange", e), onOpen: (e) => rec("date:onOpen", e), onClose: (e) => rec("date:onClose", e) });
 };
 
 SCENARIOS.timePicker = function TimePickerCase({ breakName = "pc" }) {
-  return h(S1.S1TimePicker, { breakName, value: "09:30", onChange: (e) => rec("time:onChange", e), onOpen: (e) => rec("time:onOpen", e), onClose: (e) => rec("time:onClose", e) });
+  return h(S1.S1TimePicker, { breakName, defaultValue: "09:30", onChange: (e) => rec("time:onChange", e), onOpen: (e) => rec("time:onOpen", e), onClose: (e) => rec("time:onClose", e) });
 };
 
 SCENARIOS.gnb = function GnbCase() {
@@ -283,6 +284,219 @@ SCENARIOS.chipWithRef = function ChipWithRef() {
   const ref = useRef(null);
   return h(S1.S1Chip, { ref, onChange: (e) => rec("refChip:onChange", e) });
 };
+
+/* ══ 새 길 — value/defaultValue · open/defaultOpen/onOpenChange · 데이터 목록 · name ══════════════════
+   위쪽 시나리오는 옛 방식(options 글자 목록 · onChange 이벤트 · 방치된 우회로)을 그대로 두어 "옛 코드가 계속 된다" 를 본다.
+   아래는 새 방식이다. */
+
+const OPEN_LOG = (label) => ({
+  onOpen: (e) => rec(`${label}:onOpen`, e),
+  onClose: (e) => rec(`${label}:onClose`, e),
+  onOpenChange: (next, detail) => rec(`${label}:onOpenChange`, { next, reason: detail?.reason ?? null })
+});
+
+SCENARIOS.modalState = function ModalState() {
+  const [open, setOpen] = useState(false);
+  ctl.modal = { get: () => open, set: setOpen };
+  return h(S1.S1Modal, {
+    open, title: "삭제할까요?", message: "되돌릴 수 없습니다", cancelLabel: "그만두기", confirmLabel: "지우기",
+    ...OPEN_LOG("modal"),
+    onOpenChange: (next, detail) => { rec("modal:onOpenChange", { next, reason: detail?.reason ?? null }); setOpen(next); },
+    onConfirm: () => rec("modal:onConfirm", 1), onCancel: () => rec("modal:onCancel", 1)
+  });
+};
+
+SCENARIOS.modalDefaultOpen = function ModalDefaultOpen() {
+  return h(S1.S1Modal, { defaultOpen: true, title: "처음부터 열림", ...OPEN_LOG("modal") }, h("p", { "data-audit-el": "본문" }, "내가 만든 본문"));
+};
+
+SCENARIOS.modalContentState = function ModalContentState() {
+  const [open, setOpen] = useState(false);
+  ctl.modalContent = { get: () => open, set: setOpen };
+  return h(S1.S1ModalContent, {
+    open, title: "내용 창", confirmLabel: "저장", cancelLabel: "닫기",
+    onOpenChange: (next, detail) => { rec("modalContent:onOpenChange", { next, reason: detail?.reason ?? null }); setOpen(next); },
+    onOpen: (e) => rec("modalContent:onOpen", e), onClose: (e) => rec("modalContent:onClose", e)
+  }, h("div", { "data-audit-el": "내용" }, "내가 만든 내용"));
+};
+
+SCENARIOS.sheetState = function SheetState() {
+  const [open, setOpen] = useState(false);
+  const [size, setSize] = useState("보통");
+  ctl.sheetState = { get: () => open, set: setOpen, size: () => size, setSize };
+  return h("div", null,
+    h("button", { type: "button", id: "sheet-opener", onClick: () => setOpen(true) }, "시트 열기"),
+    h(S1.S1BottomSheet, {
+      open, title: "글자 크기", options: ["작게", { value: "보통", label: "보통" }, { value: 3, label: "크게" }], value: size,
+      onOpen: (e) => rec("sheetState:onOpen", e), onClose: (e) => rec("sheetState:onClose", e),
+      onOpenChange: (next, detail) => { rec("sheetState:onOpenChange", { next, reason: detail?.reason ?? null }); setOpen(next); },
+      onValueChange: (value) => { rec("sheetState:onValueChange", value); setSize(value); }
+    }));
+};
+
+SCENARIOS.selectValue = function SelectValue() {
+  const [value, setValue] = useState("busan");
+  const [open, setOpen] = useState(undefined);
+  ctl.selectValue = { get: () => value, set: setValue, setOpen };
+  return h("form", { id: "sel-form", onSubmit: (e) => { e.preventDefault(); rec("sel:submit", Object.fromEntries(new FormData(e.currentTarget).entries())); } },
+    h(S1.S1Select, {
+      name: "city", placeholder: "도시 선택", open, value,
+      options: [{ value: "seoul", label: "서울" }, { value: "busan", label: "부산" }, { value: 3, label: "제주" }],
+      onValueChange: (v) => { rec("select:onValueChange", v); setValue(v); },
+      onChange: (e) => rec("select:onChange", e),
+      onOpen: (e) => rec("select:onOpen", e), onClose: (e) => rec("select:onClose", e),
+      onOpenChange: (next) => { rec("select:onOpenChange", next); if (open !== undefined) setOpen(next); }
+    }),
+    h("button", { type: "submit", id: "sel-submit" }, "보내기"));
+};
+
+SCENARIOS.selectUncontrolled = function SelectUncontrolled() {
+  return h(S1.S1Select, { defaultValue: "b", options: [{ value: "a", label: "에이" }, { value: "b", label: "비" }], onValueChange: (v) => rec("selectU:onValueChange", v) });
+};
+
+SCENARIOS.dropdownValue = function DropdownValue() {
+  const [value, setValue] = useState("past");
+  ctl.dropdownValue = { get: () => value, set: setValue };
+  return h(S1.S1Dropdown, { options: [{ value: "latest", label: "최신순" }, { value: "popular", label: "인기순" }, { value: "past", label: "과거순" }], value, onValueChange: (v) => { rec("dropdown:onValueChange", v); setValue(v); } });
+};
+
+SCENARIOS.filterChipValue = function FilterChipValue() {
+  const [value, setValue] = useState("name");
+  ctl.filterChipValue = { get: () => value, set: setValue };
+  return h("form", { id: "fc-form", onSubmit: (e) => { e.preventDefault(); rec("fc:submit", Object.fromEntries(new FormData(e.currentTarget).entries())); } },
+    h(S1.S1FilterChip, { name: "sort", title: "정렬", options: [{ value: "latest", label: "최신순" }, { value: "name", label: "이름순" }], value, onValueChange: (v) => { rec("filterChip:onValueChange", v); setValue(v); } }),
+    h("button", { type: "submit", id: "fc-submit" }, "보내기"));
+};
+
+SCENARIOS.multiToggleValue = function MultiToggleValue() {
+  const [value, setValue] = useState("b");
+  ctl.multiToggle = { get: () => value, set: setValue };
+  return h("form", { id: "mt-form", onSubmit: (e) => { e.preventDefault(); rec("mt:submit", Object.fromEntries(new FormData(e.currentTarget).entries())); } },
+    h(S1.S1MultiToggle, { name: "align", cells: [{ value: "a", label: "왼쪽" }, { value: "b", label: "가운데" }, { value: "c", label: "오른쪽", disabled: true }], value, onValueChange: (v) => { rec("multiToggle:onValueChange", v); setValue(v); }, onChange: (e) => rec("multiToggle:onChange", e) }),
+    h("button", { type: "submit", id: "mt-submit" }, "보내기"));
+};
+
+SCENARIOS.tabValue = function TabValue() {
+  const [value, setValue] = useState("two");
+  ctl.tab = { get: () => value, set: setValue };
+  return h(S1.S1Tab, { tabs: [{ value: "one", label: "하나", panel: "첫 내용" }, { value: "two", label: "둘", panel: "둘째 내용" }, { value: "three", label: "셋", panel: "셋째 내용" }], value, onValueChange: (v) => { rec("tab:onValueChange", v); setValue(v); }, onChange: (e) => rec("tab:onChange", e) });
+};
+
+SCENARIOS.paginationState = function PaginationState() {
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(6);
+  ctl.pager = { get: () => page, set: setPage, setTotal };
+  return h(S1.S1Pagination, { page, totalPages: total, onPageChange: (p) => { rec("pager:onPageChange", p); setPage(p); }, onChange: (e) => rec("pager:onChange", e) });
+};
+
+SCENARIOS.tableState = function TableState() {
+  const [rows, setRows] = useState([["김하늘", "디자인", 3], ["박바다", "개발", 5], ["이구름", "디자인", 2]]);
+  ctl.tableRows = { setRows };
+  return h(S1.S1Table, { headerCells: ["이름", "부서", "수량"], rows, onSelectionChange: (e) => rec("table:onSelectionChange", e.detail), onSelectionchange: (e) => rec("table:onSelectionchange(old)", e.detail) });
+};
+
+SCENARIOS.dateState = function DateState({ breakName = "pc" }) {
+  const [value, setValue] = useState("2026-10-01");
+  ctl.date = { get: () => value, set: setValue };
+  return h("form", { id: "dt-form", onSubmit: (e) => { e.preventDefault(); rec("dt:submit", Object.fromEntries(new FormData(e.currentTarget).entries())); } },
+    h(S1.S1DatePicker, { breakName, name: "day", value, onValueChange: (v) => { rec("date:onValueChange", v); setValue(v); }, ...OPEN_LOG("date") }),
+    h("button", { type: "submit", id: "dt-submit" }, "보내기"));
+};
+
+SCENARIOS.dateRange = function DateRange() {
+  const [value, setValue] = useState({ start: "2026-10-03", end: "2026-10-09" });
+  ctl.dateRange = { get: () => value, set: setValue };
+  return h(S1.S1DatePicker, { variant: "range", value, onValueChange: (v) => { rec("dateRange:onValueChange", v); setValue(v); } });
+};
+
+SCENARIOS.timeState = function TimeState({ breakName = "pc" }) {
+  const [value, setValue] = useState("09:30");
+  ctl.time = { get: () => value, set: setValue };
+  return h("form", { id: "tm-form", onSubmit: (e) => { e.preventDefault(); rec("tm:submit", Object.fromEntries(new FormData(e.currentTarget).entries())); } },
+    h(S1.S1TimePicker, { breakName, name: "clock", value, onValueChange: (v) => { rec("time:onValueChange", v); setValue(v); }, ...OPEN_LOG("time") }),
+    h("button", { type: "submit", id: "tm-submit" }, "보내기"));
+};
+
+SCENARIOS.toggleState = function ToggleState() {
+  const [checked, setChecked] = useState(false);
+  ctl.toggle = { get: () => checked, set: setChecked };
+  return h("form", { id: "tg-form", onSubmit: (e) => { e.preventDefault(); rec("tg:submit", Object.fromEntries(new FormData(e.currentTarget).entries())); } },
+    h(S1.S1Toggle, { name: "notify", checked, onCheckedChange: (v) => { rec("toggle:onCheckedChange", v); setChecked(v); }, label: "알림" }),
+    h("button", { type: "submit", id: "tg-submit" }, "보내기"));
+};
+
+SCENARIOS.chipForm = function ChipForm() {
+  return h("form", { id: "chip-form", onSubmit: (e) => { e.preventDefault(); rec("chipForm:submit", Object.fromEntries(new FormData(e.currentTarget).entries())); } },
+    h("div", { "data-s1-select": "single" },
+      ["북문", "남문"].map((label, i) => h(S1.S1Chip, { key: label, name: "gate", value: label, defaultSelected: i === 0 }, label))),
+    h("button", { type: "submit", id: "chip-submit" }, "보내기"));
+};
+
+SCENARIOS.listRows = function ListRows() {
+  const [push, setPush] = useState(true);
+  const [agree, setAgree] = useState(false);
+  ctl.rows = { push: () => push, setPush, agree: () => agree };
+  return h("div", { style: { width: 375 } },
+    h(S1.S1ListRow, { variant: "nav", title: "설정", description: "환경설정" }),
+    h(S1.S1ListRow, { variant: "value", title: "테마", description: "표시 방식", value: "라이트" }),
+    h(S1.S1ListRow, { variant: "read", title: "버전", description: "0.23.0" }),
+    h(S1.S1ListRow, { variant: "pick", title: "빠른 배송", description: "당일", name: "fast" }),
+    h(S1.S1ListRow, { variant: "agree", title: "약관 동의", description: "필수", checked: agree, onCheckedChange: (v) => { rec("rows:agree", v); setAgree(v); } }),
+    h(S1.S1ListRow, { variant: "switch", title: "푸시 알림", description: "새 소식", checked: push, onCheckedChange: (v) => { rec("rows:push", v); setPush(v); } }),
+    h(S1.S1ListRow, { variant: "thumb", title: "사진", description: "2026-10-13" }));
+};
+
+SCENARIOS.inputTypes = function InputTypes() {
+  return h("div", null,
+    h(S1.S1Input, { type: "password", label: "비밀번호" }),
+    h(S1.S1Input, { type: "search", label: "검색", onSearch: (e) => rec("input:onSearch", e.detail) }),
+    h(S1.S1Input, { breakName: "password-mobile", label: "옛 이름" }),
+    h(S1.S1Input, { breakName: "mobile", type: "search", label: "모바일 검색" }));
+};
+
+SCENARIOS.gnbMenus = function GnbMenus() {
+  return h("div", { style: { position: "relative" } },
+    h(S1.S1Gnb, {
+      logo: "관제 시스템", langLabel: "English",
+      menus: [{ label: "대시보드", current: true, href: "/dash" }, { label: "출입", columns: [{ title: "출입 관리", items: [{ label: "출입 기록", href: "/log" }, "방문 예약", { label: "현재", current: true }] }, { title: "기록", items: ["감사 로그"] }] }, "설정"],
+      onOpen: (e) => rec("gnb:onOpen", e), onClose: (e) => rec("gnb:onClose", e),
+      onOpenChange: (next) => rec("gnb:onOpenChange", next)
+    }));
+};
+
+SCENARIOS.timeMobileSheet = function TimeMobileSheet() {
+  const [open, setOpen] = useState(false);
+  ctl.timeSheet = { get: () => open, set: setOpen };
+  return h(S1.S1TimePicker, { breakName: "mobile", open, onOpenChange: (next) => { rec("timeSheet:onOpenChange", next); setOpen(next); }, onOpen: (e) => rec("timeSheet:onOpen", e), onClose: (e) => rec("timeSheet:onClose", e) });
+};
+
+
+
+/* 부모가 값을 안 바꾸는 제어형 — 눌러도 부품 모양이 value 로 되돌아와야 한다(진짜 제어형) */
+SCENARIOS.lockedControls = function LockedControls() {
+  return h("div", null,
+    h(S1.S1Select, { value: "a", options: [{ value: "a", label: "에이" }, { value: "b", label: "비" }], onValueChange: (v) => rec("locked:select", v) }),
+    h(S1.S1Toggle, { checked: false, onCheckedChange: (v) => rec("locked:toggle", v), label: "잠금" }),
+    h(S1.S1Pagination, { page: 1, totalPages: 6, onPageChange: (p) => rec("locked:page", p) }),
+    h(S1.S1MultiToggle, { value: "x", cells: [{ value: "x", label: "엑스" }, { value: "y", label: "와이" }], onValueChange: (v) => rec("locked:multi", v) }));
+};
+
+
+/* 새 이벤트 이름(onBeforeChange) 으로 하단 탭 이동을 막는다 */
+SCENARIOS.bottomNavNewName = function BottomNavNewName() {
+  return h("div", { role: "tablist", style: { display: "flex", width: 375 } },
+    ["home", "search", "notification"].map((variant, i) => h(S1.S1MobileBottomNav, {
+      key: variant, variant, defaultSelected: i === 0,
+      onBeforeChange: (e) => { rec("navNew:onBeforeChange", e.detail?.value); if (variant === "notification") e.preventDefault(); },
+      onChange: (e) => rec("navNew:onChange", e.detail?.value)
+    })));
+};
+
+/* README 의 예시 코드(```jsx) — 검수기가 README 에서 꺼내 src/readme-example-N.jsx 로 써 둔다. 그대로 붙여 넣은 코드가 돌아가는지 본다. */
+const readmeModules = import.meta.glob("./readme-example-*.jsx", { eager: true });
+const readmeExamples = Object.keys(readmeModules).sort((a, b) => Number(a.match(/(\d+)/)[1]) - Number(b.match(/(\d+)/)[1])).map((key) => readmeModules[key].default);
+SCENARIOS.readmeExample = function ReadmeExample({ index }) { return h(readmeExamples[index]); };
+window.__s1.readmeCount = readmeExamples.length;
 
 /* 시험대가 준비됐다는 표시 */
 window.__s1ready = true;

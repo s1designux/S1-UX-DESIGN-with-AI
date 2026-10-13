@@ -49,9 +49,16 @@
 - trigger accessible name = title+value 결합(예: '정렬, 최신순')
 - Esc 키로 패널을 닫는다(registry filter-chip.json a11y 요구) — 트리거뿐 아니라 root(트리거+패널) 전체에서 받는다(open() 이 포커스를 패널로 옮기므로 트리거 전용이면 열린 직후 Esc 가 안 먹는다)
 
+## 값·옵션 속성
+
+| 속성 | 뜻 |
+|---|---|
+| `data-value` | 처음에 골라 둘 옵션의 값 |
+| `data-name` | 폼 전송용 숨은 입력의 name (고른 옵션 값이 실린다) |
+
 ## 스크립트로 부르기
 
-`init(요소)` 가 돌려주는 객체의 `openPanel()` · `closePanel()`.
+`init(요소)` 가 돌려주는 객체의 `openPanel()` · `closePanel()` · `value` · `setValue(value)`.
 
 ## 이벤트
 

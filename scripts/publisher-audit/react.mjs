@@ -133,13 +133,15 @@ globalTypes(){return {document:types(document),window:types(window),body:types(d
 subtree(root){let c=0;if(!root)return 0;for(const e of [root,...root.querySelectorAll("*")])c+=(reg.get(e)?.size||0);return c;},
 subtreeTypes(root){const out=[];if(!root)return out;for(const e of [root,...root.querySelectorAll("*")]){const part=e.getAttribute("data-s1-part")||e.getAttribute("data-s1-component")||"";for(const t of types(e))out.push(e.tagName.toLowerCase()+(part?"["+part+"]":"")+":"+t);}return out.sort();}};})();`;
 
+/** README 가 head 에 넣으라고 한 글꼴 링크(있으면). 개발자가 README 대로 한 모습을 만들려고 검수 앱에도 똑같이 넣는다. */
+let README_FONT_LINK = null;
 function indexHtml(entry) {
   return `<!doctype html>
 <html lang="ko">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>s1 react audit</title>
+<title>s1 react audit</title>${README_FONT_LINK ? `\n<link rel="stylesheet" href="${README_FONT_LINK}">` : ""}
 <script>${LISTENER_PROBE}</script>
 </head>
 <body>
@@ -490,6 +492,13 @@ async function click(page, selector) {
   await page.mouseClickAt(r.x, r.y);
   await sleep(150);
 }
+/** 겹쳐 덮인 바탕(시트 뒤 어두운 판)을 누를 때 — 가운데는 패널에 덮이니 왼쪽 위 모서리 가까이를 누른다. */
+async function clickCorner(page, selector) {
+  const r = await page.eval(`(()=>{const e=document.querySelector(${js(selector)}); if(!e) return null; const b=e.getBoundingClientRect(); return {x:b.left+8, y:b.top+8, w:b.width, h:b.height};})()`);
+  if (!r || !r.w || !r.h) throw new Error(`누를 요소가 없거나 크기 0: ${selector}`);
+  await page.mouseClickAt(r.x, r.y);
+  await sleep(150);
+}
 const attr = (page, selector, name) => page.eval(`document.querySelector(${js(selector)})?.getAttribute(${js(name)}) ?? null`);
 const visible = (page, selector) => page.eval(`(()=>{const e=document.querySelector(${js(selector)}); return !!e && window.__A.vis(e);})()`);
 const scrollLock = (page) => page.eval("[document.documentElement.style.overflow, document.body.style.overflow].filter(Boolean).join('|') || ''");
@@ -653,7 +662,7 @@ async function interactionScenarios(holder) {
     await P.eval("window.__s1.ctl.modal.set(true)");
     await sleep(250);
     const shown = await visible(P, '#stage [data-s1-component="modal"] [role="dialog"]');
-    check("open={true} 를 주면 모달이 열린다", shown, `보임=${shown} · 타입 정의 S1ModalProps 에 open 없음 · 루트에 open 속성만 붙음=${(await attr(P, '#stage [data-s1-component="modal"]', "open")) !== null} · README 에 모달 여는 법 없음`, "broken", "S1Modal·S1ModalContent 에도 S1BottomSheet 처럼 open prop(+onClose 로 상태 되돌리기)을 생성하기");
+    check("open={true} 를 주면 모달이 열린다(옛 방식: onOpen/onClose 로 상태를 되돌린다)", shown, `보임=${shown}`, "broken", "S1Modal·S1ModalContent 에도 S1BottomSheet 처럼 open prop(+onClose 로 상태 되돌리기)을 생성하기");
   });
 
   if (want("S1Modal")) await pc("modal-declarative", "모달 — 배포본 런타임의 data-s1-open 길로 열기(README 에 없음)", async (check) => {
@@ -750,11 +759,6 @@ async function interactionScenarios(holder) {
     await sleep(150);
     const opts = await P.eval(`[...document.querySelectorAll('#stage [data-s1-part="option"]')].map(o=>o.textContent.trim())`);
     check("options 를 바꾸면 목록이 바뀐다", js(opts) === js(["대구", "광주"]), `목록 ${js(opts)}`);
-    await P.eval(`window.__s1.ctl.select.setLabel("직접 지정")`);
-    await sleep(150);
-    const v2 = await P.eval(`document.querySelector('#stage [data-s1-part="value"]').textContent.trim()`);
-    check("고른 뒤 parts.value 로 트리거 글자를 바꾸면 화면이 따라온다", v2 === "직접 지정", `트리거 "${v2}"`, "friction", "값 표시는 React 가 소유하게(value/onChange 제어형 prop) — 런타임이 textContent 로 덮으면 React 갱신이 화면에 안 닿는다");
-    check("제어형 value prop 이 있다(타입 정의 기준)", false, "S1SelectProps 에 value·defaultValue 없음 — 고른 값을 React 상태로 넣을 길이 없음(빼기는 onChange 의 event.detail 로만)", "friction", "value/defaultValue + 값만 넘기는 onValueChange 추가");
   });
 
   if (want("S1Dropdown")) await pc("dropdown", "드롭다운(S1Dropdown) 고르기", async (check) => {
@@ -811,7 +815,7 @@ async function interactionScenarios(holder) {
   if (want("S1DatePicker")) await pc("date-picker", "날짜 선택(S1DatePicker) — 값 넣고 빼기", async (check) => {
     await mount(P, { scenario: "datePicker", options: { breakName: "pc" } });
     const shownValue = await P.eval(`document.querySelector('#stage [data-s1-part="value"]').textContent.trim()`);
-    check('value="2026-10-01" 을 주면 그 날짜가 보인다(값 넣기)', /2026|10/.test(shownValue), `트리거 "${shownValue}" — 타입 정의에 value·defaultValue 없음`, "broken", "S1DatePicker 에 value/defaultValue/onValueChange 생성(런타임 setValue 연결)");
+    check('defaultValue="2026-10-01" 을 주면 그 날짜가 보인다(값 넣기)', /2026|10/.test(shownValue), `트리거 "${shownValue}" — 타입 정의에 value·defaultValue 없음`, "broken", "S1DatePicker 에 value/defaultValue/onValueChange 생성(런타임 setValue 연결)");
     await click(P, '#stage [data-s1-part="trigger"]');
     await sleep(200);
     let ev = await events(P);
@@ -844,7 +848,7 @@ async function interactionScenarios(holder) {
   if (want("S1TimePicker")) await pc("time-picker", "시간 선택(S1TimePicker) — 값 넣고 빼기", async (check) => {
     await mount(P, { scenario: "timePicker", options: { breakName: "pc" } });
     const shownValue = await P.eval(`document.querySelector('#stage [data-s1-part="value"]').textContent.trim()`);
-    check('value="09:30" 을 주면 그 시간이 보인다(값 넣기)', /0?9/.test(shownValue) && /30/.test(shownValue), `트리거 "${shownValue}" — 타입 정의에 value 없음`, "broken", "S1TimePicker 에 value/defaultValue 생성(런타임 setValue 연결)");
+    check('defaultValue="09:30" 을 주면 그 시간이 보인다(값 넣기)', /0?9/.test(shownValue) && /30/.test(shownValue), `트리거 "${shownValue}" — 타입 정의에 value 없음`, "broken", "S1TimePicker 에 value/defaultValue 생성(런타임 setValue 연결)");
     await click(P, '#stage [data-s1-part="trigger"]');
     await sleep(200);
     let ev = await events(P);
@@ -878,20 +882,6 @@ async function interactionScenarios(holder) {
     ev = await events(M);
     s = await sel();
     check("onBeforechange 에서 preventDefault 하면 움직이지 않는다", js(s) === js(["true", "false", "false", "false"]) && count(ev, "nav:onChange") === 0, `${js(s)} · change ${count(ev, "nav:onChange")}회`);
-  });
-
-  if (want("S1Gnb")) await pc("gnb", "GNB 하위 메뉴 펼침(오버레이)", async (check) => {
-    await mount(P, { scenario: "gnb" });
-    const menu = await P.eval(`(()=>{const m=document.querySelector('#stage [data-s1-part="menu"][aria-expanded]'); if(!m) return null; m.setAttribute("data-audit-m","menu"); return {controls:m.getAttribute("aria-controls"), panelExists: !!document.getElementById(m.getAttribute("aria-controls"))};})()`);
-    if (!menu) throw new Error("펼침 메뉴(aria-expanded 달린 menu)가 없음");
-    await click(P, '[data-audit-m="menu"]');
-    await sleep(250);
-    const ev = await events(P);
-    const opened = await P.eval(`(()=>{const m=document.querySelector('[data-audit-m="menu"]'); const p=document.getElementById(m.getAttribute("aria-controls")); return {expanded:m.getAttribute("aria-expanded"), panel: !!p && window.__A.vis(p)};})()`);
-    check("메뉴를 누르면 하위 메뉴가 펼쳐지고 onOpen 한 번", opened.expanded === "true" && opened.panel && count(ev, "gnb:onOpen") === 1, `${js(opened)} · onOpen ${count(ev, "gnb:onOpen")}회 · 메뉴가 가리키는 하위 메뉴 판(#${menu.controls}) 존재=${menu.panelExists}`, "broken", "S1Gnb 안에 하위 메뉴 판(S1GnbSubMenu)을 함께 그리거나 children/columns 로 받게");
-    try { await viewportShot(P, path.join(SHOTS_DIR, "scenario-gnb-open.png")); } catch { /* 무시 */ }
-    await P.key("Escape");
-    await sleep(150);
   });
 
   if (!ONLY.length) await pc("form", "폼 안에서 name 으로 값 보내기", async (check) => {
@@ -937,6 +927,524 @@ async function interactionScenarios(holder) {
     const st = await P.eval(`(()=>{const p=document.getElementById("gnb-sub-menu-a-service"); return {expanded: document.querySelector('[data-audit-m="menu2"]').getAttribute("aria-expanded"), panel: !!p && window.__A.vis(p), subMenuHasIdProp: !!p};})()`);
     check("하위 메뉴에 id 를 직접 주고 같이 두면 펼쳐진다", st.expanded === "true" && st.panel, `${js(st)} · onOpen ${count(ev, "gnb:onOpen")}회`, "friction", "README 에 조합법(같은 id) 안내 또는 S1Gnb 가 하위 메뉴를 함께 그리기");
     try { await viewportShot(P, path.join(SHOTS_DIR, "scenario-gnb-composed.png")); } catch { /* 무시 */ }
+  });
+
+  /* ══ 새 길을 진짜 React 로 눌러 보는 시나리오 (R1~R17) ═════════════════════════════════
+     위쪽 시나리오는 옛 방식 그대로 — "옛 코드가 계속 된다" 를 본다. 아래는 새 방식이다. */
+  const texts = (page, selector) => page.eval(`[...document.querySelectorAll(${js(selector)})].map(e=>e.textContent.replace(/\\s+/g," ").trim())`);
+  const stageText = (page) => page.eval(`document.getElementById("stage").textContent.replace(/\\s+/g," ")`);
+
+  if (want("S1Modal")) await pc("modal-state", "모달(S1Modal) — open · onOpenChange · onConfirm/onCancel · 글자 props", async (check) => {
+    const root = '#stage [data-s1-component="modal"]';
+    await mount(P, { scenario: "modalState" });
+    check("open=false 로 시작하면 닫혀 있다", !(await visible(P, `${root} [role="dialog"]`)), "처음");
+    const before = await scrollLock(P);
+    await P.eval("window.__s1.ctl.modal.set(true)");
+    await sleep(250);
+    let ev = await events(P);
+    check("open=true 로 바꾸면 열린다", await visible(P, `${root} [role="dialog"]`), "상태 true 후");
+    check("열릴 때 onOpen 은 한 번, 화면이 연 것은 onOpenChange 로 되알리지 않는다", count(ev, "modal:onOpen") === 1 && count(ev, "modal:onOpenChange") === 0, `onOpen ${count(ev, "modal:onOpen")}회 · onOpenChange ${count(ev, "modal:onOpenChange")}회`);
+    check("열리면 스크롤이 잠기고 초점이 창 안으로 들어간다", (await scrollLock(P)) !== before && (await activeInside(P, root)), `overflow ${await scrollLock(P) || "(없음)"} · 초점 안=${await activeInside(P, root)}`);
+    const shown = {
+      title: (await texts(P, `${root} [data-s1-part="title"]`))[0],
+      message: (await texts(P, `${root} [data-s1-part="message"]`))[0],
+      cancel: (await texts(P, `${root} [data-s1-close="cancel"]`))[0],
+      confirm: (await texts(P, `${root} [data-s1-close="confirm"]`))[0]
+    };
+    check("title · message · cancelLabel · confirmLabel 로 넣은 글자가 각자 자리에 그려진다(견본 글자가 남지 않는다)", shown.title === "삭제할까요?" && shown.message === "되돌릴 수 없습니다" && shown.cancel === "그만두기" && shown.confirm === "지우기", js(shown));
+    try { await viewportShot(P, path.join(SHOTS_DIR, "scenario-modal-state.png")); } catch { /* 무시 */ }
+    await P.eval("window.__s1.clearEvents()");
+    await P.key("Escape");
+    await sleep(250);
+    ev = await events(P);
+    check("Esc 로 닫히면 onClose 한 번 + onOpenChange(false, escape) 한 번이고 React 상태도 false", count(ev, "modal:onClose") === 1 && ev.filter((e) => e.label === "modal:onOpenChange" && e.detail?.next === false && e.detail?.reason === "escape").length === 1 && (await P.eval("window.__s1.ctl.modal.get()")) === false, `onClose ${count(ev, "modal:onClose")}회 · onOpenChange ${js(ev.filter((e) => e.label === "modal:onOpenChange").map((e) => e.detail))} · 상태 ${await P.eval("window.__s1.ctl.modal.get()")}`);
+    check("닫히면 스크롤 잠금이 풀린다", (await scrollLock(P)) === before, `overflow ${await scrollLock(P) || "(없음)"}`);
+    await P.eval("window.__s1.ctl.modal.set(true)");
+    await sleep(250);
+    await P.eval("window.__s1.clearEvents()");
+    await click(P, `${root} [data-s1-close="confirm"]`);
+    await sleep(200);
+    ev = await events(P);
+    check("확인 단추를 누르면 onConfirm 한 번 + 닫힌 이유 confirm", count(ev, "modal:onConfirm") === 1 && ev.some((e) => e.label === "modal:onOpenChange" && e.detail?.reason === "confirm"), `onConfirm ${count(ev, "modal:onConfirm")}회 · ${js(ev.filter((e) => e.label === "modal:onOpenChange").map((e) => e.detail))}`);
+    await P.eval("window.__s1.ctl.modal.set(true)");
+    await sleep(250);
+    await P.eval("window.__s1.clearEvents()");
+    await click(P, `${root} [data-s1-close="cancel"]`);
+    await sleep(200);
+    ev = await events(P);
+    check("취소 단추를 누르면 onCancel 한 번 + 닫힌 이유 cancel", count(ev, "modal:onCancel") === 1 && ev.some((e) => e.label === "modal:onOpenChange" && e.detail?.reason === "cancel"), `onCancel ${count(ev, "modal:onCancel")}회`);
+    await P.eval("window.__s1.ctl.modal.set(true)");
+    await sleep(250);
+    await P.eval("window.__s1.unmount()");
+    await sleep(150);
+    check("열린 채 화면에서 떼도 스크롤 잠금이 풀린다", (await scrollLock(P)) === before, `떼고 난 overflow ${await scrollLock(P) || "(없음)"}`);
+    await resetLock(P);
+    await mount(P, { scenario: "modalDefaultOpen" });
+    await sleep(250);
+    const mine = await P.eval(`!!document.querySelector('#stage [data-audit-el="본문"]')`);
+    check("defaultOpen 은 처음부터 열려 있고, children 이 본문(message 자리)을 대신한다", (await visible(P, `${root} [role="dialog"]`)) && mine, `보임=${await visible(P, `${root} [role="dialog"]`)} · 내 본문=${mine}`);
+    check("본문을 children 으로 줬을 때 견본 문장이 남지 않는다", !(await stageText(P)).includes("변경한 내용이 저장되지 않고"), (await stageText(P)).slice(0, 120));
+  });
+
+  if (want("S1ModalContent")) await pc("modal-content-state", "모달 콘텐츠(S1ModalContent) — open · onOpenChange · children", async (check) => {
+    const root = '#stage [data-s1-component="modal-content"]';
+    await mount(P, { scenario: "modalContentState" });
+    check("open=false 로 시작하면 닫혀 있다", !(await visible(P, `${root} [role="dialog"]`)), "처음");
+    await P.eval("window.__s1.ctl.modalContent.set(true)");
+    await sleep(250);
+    let ev = await events(P);
+    check("open=true 로 바꾸면 열리고 onOpen 한 번, onOpenChange 는 오지 않는다", (await visible(P, `${root} [role="dialog"]`)) && count(ev, "modalContent:onOpen") === 1 && count(ev, "modalContent:onOpenChange") === 0, `onOpen ${count(ev, "modalContent:onOpen")}회 · onOpenChange ${count(ev, "modalContent:onOpenChange")}회`);
+    const body = await P.eval(`({mine: !!document.querySelector('#stage [data-audit-el="내용"]'), sample: document.getElementById("stage").textContent.includes("컨텐츠 영역")})`);
+    check("children 이 내용 영역을 대신하고 견본 글자가 남지 않는다", body.mine && !body.sample, js(body));
+    const labels = [(await texts(P, `${root} [data-s1-close="cancel"]`))[0], (await texts(P, `${root} [data-s1-close="confirm"]`))[0], (await texts(P, `${root} [data-s1-part="title"]`))[0]];
+    check("title · cancelLabel · confirmLabel 글자가 반영된다", js(labels) === js(["닫기", "저장", "내용 창"]), js(labels));
+    await P.eval("window.__s1.clearEvents()");
+    await click(P, `${root} [data-s1-close="confirm"]`);
+    await sleep(200);
+    ev = await events(P);
+    check("확인으로 닫히면 onClose 한 번 + onOpenChange(false, confirm) 한 번 + 상태 false", count(ev, "modalContent:onClose") === 1 && ev.filter((e) => e.label === "modalContent:onOpenChange" && e.detail?.reason === "confirm").length === 1 && (await P.eval("window.__s1.ctl.modalContent.get()")) === false, `onClose ${count(ev, "modalContent:onClose")}회 · ${js(ev.filter((e) => e.label === "modalContent:onOpenChange").map((e) => e.detail))}`);
+    await resetLock(P);
+  });
+
+  if (want("S1BottomSheet")) await mo("sheet-state", "바텀시트(S1BottomSheet) — options · value · onValueChange · onOpenChange", async (check) => {
+    const dialog = '#stage [data-s1-component="bottom-sheet"] [role="dialog"]';
+    await mount(M, { scenario: "sheetState" });
+    check("처음엔 닫혀 있다", !(await visible(M, dialog)), "open=false");
+    const rowTexts = await texts(M, '#stage [data-s1-component="bottom-sheet-option"] [data-s1-part="label"]');
+    check("options 로 준 줄만 그려진다(견본 \"항목 1~4\" 가 남지 않는다)", js(rowTexts) === js(["작게", "보통", "크게"]), js(rowTexts));
+    await click(M, "#sheet-opener");
+    await sleep(300);
+    const selected = await M.eval(`[...document.querySelectorAll('#stage [data-s1-component="bottom-sheet-option"]')].map(o=>o.getAttribute("data-state"))`);
+    check("value 가 가리키는 줄이 처음부터 선택돼 있다", js(selected) === js(["default", "selected", "default"]), js(selected));
+    await M.eval("window.__s1.clearEvents()");
+    await click(M, '#stage [data-s1-component="bottom-sheet-option"]:nth-child(3)');
+    await sleep(300);
+    const ev = await events(M);
+    check("줄을 누르면 onValueChange 가 한 번, 준 그대로의 값(숫자 3)으로 온다", count(ev, "sheetState:onValueChange") === 1 && ev.find((e) => e.label === "sheetState:onValueChange")?.detail === 3, js(ev.filter((e) => e.label === "sheetState:onValueChange").map((e) => e.detail)));
+    check("고르면 시트가 닫히고(closeOnSelect) onClose 한 번 + onOpenChange(false) + 상태 false", !(await visible(M, dialog)) && count(ev, "sheetState:onClose") === 1 && (await M.eval("window.__s1.ctl.sheetState.get()")) === false, `보임=${await visible(M, dialog)} · onClose ${count(ev, "sheetState:onClose")}회 · 상태 ${await M.eval("window.__s1.ctl.sheetState.get()")}`);
+    await M.eval(`window.__s1.ctl.sheetState.setSize("작게")`);
+    await sleep(200);
+    const after = await M.eval(`[...document.querySelectorAll('#stage [data-s1-component="bottom-sheet-option"]')].map(o=>o.getAttribute("data-state"))`);
+    check("부모가 value 를 바꾸면 선택된 줄이 따라 바뀐다", js(after) === js(["selected", "default", "default"]), js(after));
+    await resetLock(M);
+  });
+
+  if (want("S1Select")) await pc("select-value", "셀렉트(S1Select) — options 의 고유 값 · value/onValueChange · name · open", async (check) => {
+    const trigger = '#stage [data-s1-part="trigger"]';
+    const shownValue = () => P.eval(`document.querySelector('#stage [data-s1-part="value"]').textContent.trim()`);
+    await mount(P, { scenario: "selectValue" });
+    check("value=\"busan\" 이면 트리거에 처음부터 \"부산\" 이 보인다", (await shownValue()) === "부산", `트리거 "${await shownValue()}"`);
+    const values = await P.eval(`[...document.querySelectorAll('#stage [data-s1-part="option"]')].map(o=>o.getAttribute("data-value"))`);
+    check("항목마다 고유한 value 가 붙는다(모두 같아지지 않는다)", js(values) === js(["seoul", "busan", "3"]), js(values));
+    const selected = await P.eval(`[...document.querySelectorAll('#stage [data-s1-part="option"]')].map(o=>o.getAttribute("aria-selected"))`);
+    check("고른 항목에만 선택 표시가 있다", js(selected) === js(["false", "true", "false"]), js(selected));
+    await click(P, trigger);
+    await sleep(150);
+    await P.eval("window.__s1.clearEvents()");
+    await click(P, '#stage [data-s1-part="option"]:nth-child(3)');
+    await sleep(200);
+    let ev = await events(P);
+    const raw = ev.find((e) => e.label === "select:onChange")?.detail?.detail?.value;
+    check("항목을 고르면 onValueChange 가 한 번, 준 그대로의 값(숫자 3)으로 온다", count(ev, "select:onValueChange") === 1 && ev.find((e) => e.label === "select:onValueChange")?.detail === 3, js(ev.filter((e) => e.label === "select:onValueChange").map((e) => e.detail)));
+    check("onChange(옛 방식 이벤트)도 그대로 와서 event.detail.value 가 고른 항목을 가리킨다", count(ev, "select:onChange") === 1 && raw === "3", `event.detail.value = ${js(raw)}`);
+    check("트리거에 고른 글자가 보인다", (await shownValue()) === "제주", `트리거 "${await shownValue()}"`);
+    await P.eval(`window.__s1.ctl.selectValue.set("seoul")`);
+    await sleep(200);
+    ev = await events(P);
+    check("부모가 value 를 바꾸면 트리거 글자도 따라 바뀐다", (await shownValue()) === "서울", `트리거 "${await shownValue()}"`);
+    check("화면이 정한 값은 onValueChange 로 되알리지 않는다", count(ev, "select:onValueChange") === 1, `onValueChange ${count(ev, "select:onValueChange")}회`);
+    await click(P, "#sel-submit");
+    ev = await events(P);
+    check("name 을 주면 폼 전송에 고른 값이 실린다", ev.find((e) => e.label === "sel:submit")?.detail?.city === "seoul", js(ev.find((e) => e.label === "sel:submit")?.detail));
+    await P.eval(`window.__s1.ctl.selectValue.setOpen(true)`);
+    await sleep(250);
+    check("open=true 를 주면 목록이 열린다", (await attr(P, trigger, "aria-expanded")) === "true", `aria-expanded=${await attr(P, trigger, "aria-expanded")}`);
+    await P.eval("window.__s1.clearEvents()");
+    await P.key("Escape");
+    await sleep(250);
+    ev = await events(P);
+    check("Esc 로 닫히면 onOpenChange(false) 가 한 번 오고 상태가 맞춰진다", count(ev, "select:onOpenChange") === 1 && (await attr(P, trigger, "aria-expanded")) === "false", `onOpenChange ${count(ev, "select:onOpenChange")}회 · aria-expanded=${await attr(P, trigger, "aria-expanded")}`);
+    await mount(P, { scenario: "selectUncontrolled" });
+    check("defaultValue 는 처음 값만 정한다(비제어형)", (await shownValue()) === "비", `트리거 "${await shownValue()}"`);
+    await click(P, trigger);
+    await click(P, '#stage [data-s1-part="option"]:nth-child(1)');
+    await sleep(150);
+    check("비제어형은 눌러서 바뀌고 onValueChange 가 값으로 온다", (await shownValue()) === "에이" && (await events(P)).some((e) => e.label === "selectU:onValueChange" && e.detail === "a"), `트리거 "${await shownValue()}"`);
+  });
+
+  if (want("S1Dropdown")) await pc("dropdown-value", "드롭다운 · 필터 칩 — value/onValueChange · name", async (check) => {
+    await mount(P, { scenario: "dropdownValue" });
+    let selected = await P.eval(`[...document.querySelectorAll('#stage [data-s1-part="option"]')].map(o=>o.getAttribute("aria-selected"))`);
+    check("드롭다운: value 가 가리키는 항목이 처음부터 선택돼 있다", js(selected) === js(["false", "false", "true"]), js(selected));
+    await click(P, '#stage [data-s1-part="option"]:nth-child(2)');
+    let ev = await events(P);
+    check("드롭다운: 누르면 onValueChange 가 한 번 \"popular\" 로 온다", count(ev, "dropdown:onValueChange") === 1 && ev.find((e) => e.label === "dropdown:onValueChange")?.detail === "popular", js(ev.map((e) => e.detail)));
+    await P.eval(`window.__s1.ctl.dropdownValue.set("latest")`);
+    await sleep(150);
+    selected = await P.eval(`[...document.querySelectorAll('#stage [data-s1-part="option"]')].map(o=>o.getAttribute("aria-selected"))`);
+    check("드롭다운: 부모가 value 를 바꾸면 선택 표시가 따라 바뀐다", js(selected) === js(["true", "false", "false"]), js(selected));
+    await mount(P, { scenario: "filterChipValue" });
+    const shown = () => P.eval(`document.querySelector('#stage [data-s1-part="value"]').textContent.trim()`);
+    check("필터 칩: value=\"name\" 이면 처음부터 \"이름순\" 이 보인다", (await shown()) === "이름순", `"${await shown()}"`);
+    await click(P, '#stage [data-s1-part="trigger"]');
+    await click(P, '#stage [data-s1-part="option"]:nth-child(1)');
+    await sleep(150);
+    ev = await events(P);
+    check("필터 칩: 고르면 onValueChange(\"latest\") 한 번 + 글자가 바뀐다", count(ev, "filterChip:onValueChange") === 1 && (await shown()) === "최신순", `onValueChange ${js(ev.filter((e) => e.label === "filterChip:onValueChange").map((e) => e.detail))} · "${await shown()}"`);
+    await P.eval(`window.__s1.ctl.filterChipValue.set("name")`);
+    await sleep(200);
+    check("필터 칩: 부모가 value 를 바꾸면 글자도 따라 바뀐다", (await shown()) === "이름순", `"${await shown()}"`);
+    await click(P, "#fc-submit");
+    ev = await events(P);
+    check("필터 칩: name 을 주면 폼에 값이 실린다", ev.find((e) => e.label === "fc:submit")?.detail?.sort === "name", js(ev.find((e) => e.label === "fc:submit")?.detail));
+  });
+
+  if (want("S1MultiToggle")) await pc("multi-toggle-tab", "멀티 토글 · 탭 — 목록 항목 · value · name", async (check) => {
+    await mount(P, { scenario: "multiToggleValue" });
+    const checked = () => P.eval(`[...document.querySelectorAll('#stage [data-s1-part="cell"]')].map(c=>c.getAttribute("aria-checked"))`);
+    check("멀티 토글: cells 로 준 글자가 그려지고 value 가 가리키는 칸이 켜져 있다", js(await texts(P, '#stage [data-s1-part="cell"]')) === js(["왼쪽", "가운데", "오른쪽"]) && js(await checked()) === js(["false", "true", "false"]), `${js(await texts(P, '#stage [data-s1-part="cell"]'))} · ${js(await checked())}`);
+    const disabled = await P.eval(`document.querySelectorAll('#stage [data-s1-part="cell"][aria-disabled="true"]').length`);
+    check("멀티 토글: disabled 칸은 비활성 표시가 붙는다", disabled === 1, `비활성 ${disabled}칸`);
+    await click(P, '#stage [data-s1-part="cell"]:nth-child(1)');
+    let ev = await events(P);
+    check("멀티 토글: 누르면 onValueChange(\"a\") 한 번 + 켜진 칸이 옮겨진다", count(ev, "multiToggle:onValueChange") === 1 && ev.find((e) => e.label === "multiToggle:onValueChange")?.detail === "a" && js(await checked()) === js(["true", "false", "false"]), `${js(ev.filter((e) => e.label === "multiToggle:onValueChange").map((e) => e.detail))} · ${js(await checked())}`);
+    await P.eval(`window.__s1.ctl.multiToggle.set("b")`);
+    await sleep(150);
+    check("멀티 토글: 부모가 value 를 바꾸면 켜진 칸이 따라 바뀌고 되알리지 않는다", js(await checked()) === js(["false", "true", "false"]) && count(await events(P), "multiToggle:onValueChange") === 1, `${js(await checked())}`);
+    await click(P, "#mt-submit");
+    ev = await events(P);
+    check("멀티 토글: name 을 주면 켜진 칸의 값이 폼에 실린다", ev.find((e) => e.label === "mt:submit")?.detail?.align === "b", js(ev.find((e) => e.label === "mt:submit")?.detail));
+
+    await mount(P, { scenario: "tabValue" });
+    const selTabs = () => P.eval(`[...document.querySelectorAll('#stage [data-s1-part="tab"]')].map(t=>t.getAttribute("aria-selected"))`);
+    const panels = () => P.eval(`[...document.querySelectorAll('#stage [role="tabpanel"]')].map(p=>p.hidden ? "" : p.textContent.trim())`);
+    check("탭: tabs 의 { value, label, panel } 대로 탭과 패널이 그려지고 value 가 가리키는 탭이 켜진다", js(await texts(P, '#stage [data-s1-part="tab"]')) === js(["하나", "둘", "셋"]) && js(await selTabs()) === js(["false", "true", "false"]) && js(await panels()) === js(["", "둘째 내용", ""]), `${js(await texts(P, '#stage [data-s1-part="tab"]'))} · ${js(await selTabs())} · ${js(await panels())}`);
+    await P.eval("window.__s1.clearEvents()");
+    await click(P, '#stage [data-s1-part="tab"]:nth-child(3)');
+    ev = await events(P);
+    check("탭: 누르면 onValueChange(\"three\") 한 번 + 패널이 따라 바뀐다", count(ev, "tab:onValueChange") === 1 && ev.find((e) => e.label === "tab:onValueChange")?.detail === "three" && js(await panels()) === js(["", "", "셋째 내용"]), `${js(ev.map((e) => e.detail))} · ${js(await panels())}`);
+    await P.eval(`window.__s1.ctl.tab.set("one")`);
+    await sleep(150);
+    check("탭: 부모가 value 를 바꾸면 탭과 패널이 따라 바뀐다", js(await selTabs()) === js(["true", "false", "false"]) && js(await panels()) === js(["첫 내용", "", ""]), `${js(await selTabs())} · ${js(await panels())}`);
+  });
+
+  if (want("S1Pagination")) await pc("pagination-state", "페이지네이션(S1Pagination) — page · totalPages · onPageChange", async (check) => {
+    const current = () => P.eval(`[...document.querySelectorAll('#stage [data-s1-part="page"][aria-current="page"]')].map(b=>b.textContent.trim())`);
+    const numbers = () => texts(P, '#stage [data-s1-part="page"]');
+    await mount(P, { scenario: "paginationState" });
+    check("처음 6쪽 · 현재 1쪽이 그려진다", js(await numbers()) === js(["1", "2", "3", "4", "5", "6"]) && js(await current()) === js(["1"]), `${js(await numbers())} · 현재 ${js(await current())}`);
+    await click(P, '#stage [data-s1-part="page"]:nth-child(3)');
+    let ev = await events(P);
+    check("3쪽을 누르면 onPageChange(3) 가 한 번 오고 React 상태도 3 이다", count(ev, "pager:onPageChange") === 1 && ev.find((e) => e.label === "pager:onPageChange")?.detail === 3 && (await P.eval("window.__s1.ctl.pager.get()")) === 3, `${js(ev.filter((e) => e.label === "pager:onPageChange").map((e) => e.detail))} · 상태 ${await P.eval("window.__s1.ctl.pager.get()")}`);
+    check("옛 방식 onChange(이벤트)도 그대로 한 번 온다", count(ev, "pager:onChange") === 1, `${count(ev, "pager:onChange")}회`);
+    await P.eval("window.__s1.clearEvents()");
+    await P.eval("window.__s1.ctl.pager.setTotal(25)");
+    await sleep(200);
+    await P.eval("window.__s1.ctl.pager.set(8)");
+    await sleep(250);
+    ev = await events(P);
+    check("부모가 totalPages · page 를 바꾸면 번호 줄이 다시 그려지고 8쪽이 현재가 된다(다음 묶음 7~12)", js(await numbers()) === js(["7", "8", "9", "10", "11", "12"]) && js(await current()) === js(["8"]), `${js(await numbers())} · 현재 ${js(await current())}`);
+    check("화면이 정한 쪽은 onPageChange 로 되알리지 않는다", count(ev, "pager:onPageChange") === 0, `${count(ev, "pager:onPageChange")}회`);
+    const last = await P.eval(`document.querySelector('#stage [data-s1-action="last"]') ? 1 : 0`);
+    await click(P, '#stage [data-s1-action="next"]');
+    ev = await events(P);
+    check("다음 쪽 단추를 누르면 onPageChange(9)", ev.some((e) => e.label === "pager:onPageChange" && e.detail === 9) && js(await current()) === js(["9"]), `${js(ev.filter((e) => e.label === "pager:onPageChange").map((e) => e.detail))} · 현재 ${js(await current())} · last단추=${last}`);
+    await P.eval("window.__s1.clearEvents()");
+    await P.eval("window.__s1.ctl.pager.setTotal(4)");
+    await sleep(300);
+    ev = await events(P);
+    check("총 쪽수가 줄어 현재 쪽이 밀려나면 그 사실을 onPageChange 로 알린다(마지막 쪽 4)", ev.some((e) => e.label === "pager:onPageChange" && e.detail === 4) && (await P.eval("window.__s1.ctl.pager.get()")) === 4, `${js(ev.filter((e) => e.label === "pager:onPageChange").map((e) => e.detail))} · 상태 ${await P.eval("window.__s1.ctl.pager.get()")}`);
+  });
+
+  if (want("S1Table")) await pc("table-state", "표 — onSelectionChange(새 이름) · 옛 이름 · 줄마다 다른 선택 이름", async (check) => {
+    await mount(P, { scenario: "tableState" });
+    const labels = await P.eval(`[...document.querySelectorAll('#stage tbody input[type="checkbox"]')].map(i=>i.getAttribute("aria-label"))`);
+    check("행 체크박스 접근 이름이 줄마다 다르다(첫 칸 글자로 채워진다)", js(labels) === js(["김하늘 선택", "박바다 선택", "이구름 선택"]), js(labels));
+    await click(P, '#stage tbody tr:nth-child(2) input[type="checkbox"]');
+    const ev = await events(P);
+    check("행을 고르면 onSelectionChange 와 옛 이름 onSelectionchange 가 각각 한 번, detail 에 선택 수가 온다", count(ev, "table:onSelectionChange") === 1 && count(ev, "table:onSelectionchange(old)") === 1 && ev.find((e) => e.label === "table:onSelectionChange")?.detail?.selectedCount === 1, `새 ${count(ev, "table:onSelectionChange")}회 · 옛 ${count(ev, "table:onSelectionchange(old)")}회 · ${js(ev.find((e) => e.label === "table:onSelectionChange")?.detail)}`);
+  });
+
+  if (want("S1DatePicker")) await pc("date-state", "날짜 선택 — value · onValueChange · name · 기간 · open", async (check) => {
+    const shown = () => P.eval(`document.querySelector('#stage [data-s1-part="value"]').textContent.trim()`);
+    await mount(P, { scenario: "dateState", options: { breakName: "pc" } });
+    check("value=\"2026-10-01\" 이면 트리거에 그 날짜가 처음부터 보인다", /26\.10\.01/.test(await shown()), `"${await shown()}"`);
+    await click(P, '#stage [data-s1-part="trigger"]');
+    await sleep(250);
+    const cell = await P.eval(`(()=>{const cs=[...document.querySelectorAll('#stage button')].filter(b=>/^\\d{1,2}$/.test(b.textContent.trim()) && !b.disabled && b.getAttribute("aria-disabled")!=="true" && window.__A.vis(b) && !b.closest('[data-s1-part="trigger"]')); const c=cs.find(b=>b.textContent.trim()==="15")||cs[10]; if(!c) return null; c.setAttribute("data-audit-m","day"); return c.textContent.trim();})()`);
+    if (!cell) throw new Error("달력 날짜 칸을 찾지 못함");
+    await P.eval("window.__s1.clearEvents()");
+    await click(P, '[data-audit-m="day"]');
+    await sleep(250);
+    let ev = await events(P);
+    const picked = await P.eval("window.__s1.ctl.date.get()");
+    check("날짜를 누르면 onValueChange 가 \"YYYY-MM-DD\" 문자열로 한 번 오고 React 상태가 된다", count(ev, "date:onValueChange") === 1 && /^2026-10-\d\d$/.test(picked) && ev.find((e) => e.label === "date:onValueChange")?.detail === picked, `${js(ev.filter((e) => e.label === "date:onValueChange").map((e) => e.detail))} · 상태 ${picked}`);
+    await P.eval(`window.__s1.ctl.date.set("2026-11-20")`);
+    await sleep(250);
+    check("부모가 value 를 바꾸면 트리거 글자가 따라 바뀌고 되알리지 않는다", /11/.test(await shown()) && count(await events(P), "date:onValueChange") === 1, `"${await shown()}"`);
+    await click(P, "#dt-submit");
+    ev = await events(P);
+    check("name 을 주면 고른 날짜가 폼에 실린다", ev.find((e) => e.label === "dt:submit")?.detail?.day === "2026-11-20", js(ev.find((e) => e.label === "dt:submit")?.detail));
+    await mount(P, { scenario: "dateRange" });
+    const rangeText = await shown();
+    check("기간(variant=\"range\"): value={start,end} 이면 시작~끝이 보인다", /~/.test(rangeText) && /3/.test(rangeText) && /9/.test(rangeText), `"${rangeText}"`);
+  });
+
+  if (want("S1TimePicker")) await pc("time-state", "시간 선택 — value(24시간) · onValueChange · name", async (check) => {
+    const shown = () => P.eval(`document.querySelector('#stage [data-s1-part="value"]').textContent.trim()`);
+    await mount(P, { scenario: "timeState", options: { breakName: "pc" } });
+    check("value=\"09:30\" 이면 트리거에 처음부터 그 시간이 보인다", /09:30/.test(await shown()), `"${await shown()}"`);
+    await P.eval(`window.__s1.ctl.time.set("14:05")`);
+    await sleep(250);
+    check("부모가 value=\"14:05\" 로 바꾸면 트리거가 따라 바뀐다", /14:05/.test(await shown()) && count(await events(P), "time:onValueChange") === 0, `"${await shown()}"`);
+    await click(P, "#tm-submit");
+    let ev = await events(P);
+    check("name 을 주면 시간이 폼에 실린다", /14:05/.test(ev.find((e) => e.label === "tm:submit")?.detail?.clock ?? ""), js(ev.find((e) => e.label === "tm:submit")?.detail));
+    await click(P, '#stage [data-s1-part="trigger"]');
+    await sleep(250);
+    const columns = await P.eval(`(()=>{const cols=[...document.querySelectorAll('#stage [data-s1-part="column"]')].filter(c=>window.__A.vis(c)); cols.forEach((col,i)=>{const cells=[...col.querySelectorAll('[data-s1-part="cell"]')].filter(c=>window.__A.vis(c)); const c=cells[i===0?7:30] || cells[cells.length-1]; if(c) c.setAttribute("data-audit-m","t"+i);}); return cols.length;})()`);
+    for (let i = 0; i < columns; i += 1) { try { await click(P, `[data-audit-m="t${i}"]`); } catch { /* 건너뜀 */ } }
+    await P.eval("window.__s1.clearEvents()");
+    const ok = await P.eval(`(()=>{const b=[...document.querySelectorAll('#stage button')].find(b=>/확인|적용|완료/.test(b.textContent) && window.__A.vis(b)); if(!b) return false; b.setAttribute("data-audit-m","ok"); return true;})()`);
+    if (ok) { await click(P, '[data-audit-m="ok"]'); await sleep(250); }
+    ev = await events(P);
+    const got = ev.find((e) => e.label === "time:onValueChange")?.detail;
+    check("시간을 고르고 확인하면 onValueChange 가 24시간 \"HH:mm\" 문자열로 한 번 온다", count(ev, "time:onValueChange") === 1 && /^\d\d:\d\d$/.test(got ?? "") && got === (await P.eval("window.__s1.ctl.time.get()")), `${js(got)} · 상태 ${await P.eval("window.__s1.ctl.time.get()")}`);
+    check("열고 닫음은 onOpen/onClose 가 각각 한 번, 사용자가 연 것은 onOpenChange 로도 온다", count(ev, "time:onClose") === 1, `onClose ${count(ev, "time:onClose")}회 · onOpenChange ${js(ev.filter((e) => e.label === "time:onOpenChange").map((e) => e.detail))}`, "friction");
+  });
+
+  if (want("S1TimePicker")) await mo("time-mobile-sheet", "시간 선택 모바일 — StrictMode 에서 한 번만 반응", async (check) => {
+    await mount(M, { scenario: "timeMobileSheet" });
+    await M.eval("window.__s1.ctl.timeSheet.set(true)");
+    await sleep(350);
+    const sheet = '#stage [data-s1-component="time-picker"] [data-s1-part="sheet"]';
+    check("open=true 로 시트가 열리고 onOpen 한 번(onOpenChange 는 되알리지 않음)", (await visible(M, sheet)) && count(await events(M), "timeSheet:onOpen") === 1 && count(await events(M), "timeSheet:onOpenChange") === 0, `보임=${await visible(M, sheet)} · onOpen ${count(await events(M), "timeSheet:onOpen")}회`);
+    await M.eval("window.__s1.clearEvents()");
+    await click(M, '#stage [data-s1-part="sheet-close"]');
+    await sleep(300);
+    const ev = await events(M);
+    check("닫기 단추 한 번에 onClose 가 한 번만 온다(StrictMode 이중 등록 없음)", count(ev, "timeSheet:onClose") === 1, `onClose ${count(ev, "timeSheet:onClose")}회`);
+    check("닫히면 onOpenChange(false) 한 번 + 상태 false", count(ev, "timeSheet:onOpenChange") === 1 && (await M.eval("window.__s1.ctl.timeSheet.get()")) === false, `onOpenChange ${count(ev, "timeSheet:onOpenChange")}회 · 상태 ${await M.eval("window.__s1.ctl.timeSheet.get()")}`);
+    await M.eval("window.__s1.ctl.timeSheet.set(true)");
+    await sleep(350);
+    await M.eval("window.__s1.clearEvents()");
+    await clickCorner(M, '#stage [data-s1-part="sheet-backdrop"]');
+    await sleep(300);
+    check("바탕을 눌러 닫을 때도 onClose 한 번", count(await events(M), "timeSheet:onClose") === 1, `onClose ${count(await events(M), "timeSheet:onClose")}회`);
+    await resetLock(M);
+  });
+
+  if (!ONLY.length) await pc("form-all", "폼 — 토글 · 칩 · 멀티 토글에도 name 이 실린다", async (check) => {
+    await mount(P, { scenario: "toggleState" });
+    await click(P, "#tg-submit");
+    let sent = (await events(P)).find((e) => e.label === "tg:submit")?.detail ?? {};
+    check("토글: 꺼져 있으면 폼에 실리지 않는다", !("notify" in sent), js(sent));
+    await P.eval("window.__s1.clearEvents()");
+    await click(P, '#stage [data-s1-component="toggle"]');
+    let ev = await events(P);
+    check("토글: 누르면 onCheckedChange(true) 가 한 번 오고 React 상태가 켜진다", count(ev, "toggle:onCheckedChange") === 1 && ev.find((e) => e.label === "toggle:onCheckedChange")?.detail === true && (await P.eval("window.__s1.ctl.toggle.get()")) === true, js(ev.map((e) => e.detail)));
+    await click(P, "#tg-submit");
+    sent = (await events(P)).find((e) => e.label === "tg:submit")?.detail ?? {};
+    check("토글: 켜지면 폼에 name 으로 실린다", sent.notify === "on", js(sent));
+    await P.eval("window.__s1.ctl.toggle.set(false)");
+    await sleep(150);
+    check("토글: 부모가 checked 를 바꾸면 모양도 따라 바뀐다", (await attr(P, '#stage [data-s1-component="toggle"]', "aria-checked")) === "false", `aria-checked=${await attr(P, '#stage [data-s1-component="toggle"]', "aria-checked")}`);
+    await mount(P, { scenario: "chipForm" });
+    await click(P, "#chip-submit");
+    sent = (await events(P)).find((e) => e.label === "chipForm:submit")?.detail ?? {};
+    check("칩: 켜진 칩의 값만 name 으로 실린다", sent.gate === "북문", js(sent));
+    await click(P, '#stage [data-s1-component="chip"]:nth-child(2)');
+    await click(P, "#chip-submit");
+    const events2 = await events(P);
+    sent = events2.filter((e) => e.label === "chipForm:submit").at(-1)?.detail ?? {};
+    check("칩: 묶음에서 다른 칩을 켜면 폼 값도 따라 바뀐다", sent.gate === "남문", js(sent));
+  });
+
+  await pc("list-rows", "리스트 행(S1ListRow) — 7가지 종류가 웹 예시와 같은 마크업으로 나온다", async (check) => {
+    await mount(P, { scenario: "listRows" });
+    const rows = await P.eval(`[...document.querySelectorAll('#stage [data-s1-component="list-row"]')].map(r=>({type:r.getAttribute("data-type"), tag:r.tagName.toLowerCase(), buttonsInside:r.querySelectorAll("button").length, hasToggle: !!r.querySelector('[data-s1-component="toggle"]'), hasValue: !!r.querySelector('[data-s1-part="value"]'), nestedButton: !!r.closest("button") && r.tagName!=="BUTTON" }))`);
+    const byType = Object.fromEntries(rows.map((r) => [r.type, r]));
+    check("7종이 모두 그려진다", js(Object.keys(byType)) === js(["nav", "value", "read", "pick", "agree", "switch", "thumb"]), js(Object.keys(byType)));
+    check("스위치 형: 줄은 button 이 아니고 안에 스위치(토글)가 있다", byType.switch?.tag === "div" && byType.switch?.hasToggle, js(byType.switch));
+    check("값 표시 형: 줄은 button 이고 오른쪽에 값 글자가 있다", byType.value?.tag === "button" && byType.value?.hasValue, js(byType.value));
+    check("읽기 형은 button 이 아니다(눌리는 것처럼 보이지 않는다)", byType.read?.tag === "div", js(byType.read));
+    const valueText = (await texts(P, '#stage [data-s1-component="list-row"][data-type="value"] [data-s1-part="value"]'))[0];
+    check("value prop 으로 준 글자가 오른쪽 값 자리에 그려진다", valueText === "라이트", `"${valueText}"`);
+    await P.eval("window.__s1.clearEvents()");
+    await click(P, '#stage [data-s1-component="list-row"][data-type="switch"] [data-s1-component="toggle"]');
+    const ev = await events(P);
+    check("스위치를 누르면 onCheckedChange(false) 가 한 번 오고 모양이 꺼진다", count(ev, "rows:push") === 1 && ev.find((e) => e.label === "rows:push")?.detail === false && (await attr(P, '#stage [data-s1-component="list-row"][data-type="switch"] [data-s1-component="toggle"]', "aria-checked")) === "false", `${js(ev.map((e) => e.detail))} · aria-checked=${await attr(P, '#stage [data-s1-component="list-row"][data-type="switch"] [data-s1-component="toggle"]', "aria-checked")}`);
+    await P.eval("window.__s1.clearEvents()");
+    await click(P, '#stage [data-s1-component="list-row"][data-type="agree"] input[type="checkbox"]');
+    check("동의 줄의 체크를 누르면 onCheckedChange(true) 가 한 번", count(await events(P), "rows:agree") === 1 && (await P.eval(`document.querySelector('#stage [data-s1-component="list-row"][data-type="agree"] input[type="checkbox"]').checked`)) === true, js((await events(P)).map((e) => e.detail)));
+    try { await viewportShot(P, path.join(SHOTS_DIR, "scenario-list-rows.png")); } catch { /* 무시 */ }
+  });
+
+  await pc("input-types", "입력칸(S1Input) — type · breakName 분리와 옛 이름", async (check) => {
+    await mount(P, { scenario: "inputTypes" });
+    const kinds = await P.eval(`[...document.querySelectorAll('#stage [data-s1-component="input"]')].map(r=>({breakName: r.getAttribute("data-break"), password: !!r.querySelector('[data-action="password"]'), search: !!r.querySelector('[data-action="search"]'), controlType: r.querySelector('[data-s1-part="control"]').getAttribute("type") || "text", label: r.querySelector('[data-s1-part="control"]').getAttribute("aria-label")}))`);
+    check("type=\"password\" 는 보기/숨기기 단추와 password 입력이 나온다", kinds[0]?.password && kinds[0]?.controlType === "password" && kinds[0]?.breakName === "pc", js(kinds[0]));
+    check("type=\"search\" 는 돋보기 단추가 나온다", kinds[1]?.search && kinds[1]?.breakName === "pc", js(kinds[1]));
+    check("옛 이름 breakName=\"password-mobile\" 도 같은 결과(모바일 비밀번호)", kinds[2]?.password && kinds[2]?.breakName === "mobile", js(kinds[2]));
+    check("breakName=\"mobile\" + type=\"search\" 로 조합된다", kinds[3]?.search && kinds[3]?.breakName === "mobile", js(kinds[3]));
+    check("label prop 이 입력 요소의 접근 이름(aria-label)이 된다", js(kinds.map((k) => k.label)) === js(["비밀번호", "검색", "옛 이름", "모바일 검색"]), js(kinds.map((k) => k.label)));
+  });
+
+  if (want("S1Gnb")) await pc("gnb-data", "GNB — menus 로 메뉴 글자를 넣고, 하위 메뉴(columns)를 함께 그려 펼친다", async (check) => {
+    await mount(P, { scenario: "gnbMenus" });
+    const labels = await texts(P, '#stage [data-s1-part="menu"]');
+    check("menus 로 준 글자가 그려진다(메뉴마다 따로, 견본 \"공지사항·서비스·통계\" 가 남지 않는다)", js(labels) === js(["대시보드", "출입", "설정"]), js(labels));
+    check("logo · langLabel 로 준 글자가 그려진다", (await texts(P, '#stage [data-s1-part="logo"]'))[0] === "관제 시스템" && (await texts(P, '#stage [data-s1-part="lang-label"]'))[0] === "English", `${js(await texts(P, '#stage [data-s1-part="logo"]'))} · ${js(await texts(P, '#stage [data-s1-part="lang-label"]'))}`);
+    const menu = await P.eval(`(()=>{const m=[...document.querySelectorAll('#stage [data-s1-part="menu"]')].find(m=>m.hasAttribute("aria-controls")); if(!m) return null; m.setAttribute("data-audit-m","menu"); return {controls:m.getAttribute("aria-controls"), panelExists: !!document.getElementById(m.getAttribute("aria-controls"))};})()`);
+    if (!menu) throw new Error("하위 메뉴가 있는 메뉴(aria-controls)가 없음");
+    check("메뉴가 가리키는 하위 메뉴 판이 부품 안에서 함께 그려진다", menu.panelExists, js(menu));
+    await click(P, '[data-audit-m="menu"]');
+    await sleep(300);
+    const ev = await events(P);
+    const st = await P.eval(`(()=>{const m=document.querySelector('[data-audit-m="menu"]'); const p=document.getElementById(m.getAttribute("aria-controls")); return {expanded:m.getAttribute("aria-expanded"), panel: !!p && window.__A.vis(p), titles:[...p.querySelectorAll('[data-depth="1depth"]')].map(e=>e.textContent.trim()), links:[...p.querySelectorAll('[data-depth="2depth"]')].map(e=>({t:e.textContent.trim(), href:e.getAttribute("href"), current:e.getAttribute("aria-current")}))};})()`);
+    check("메뉴를 누르면 하위 메뉴가 펼쳐지고 onOpen 한 번", st.expanded === "true" && st.panel && count(ev, "gnb:onOpen") === 1, `${js({ expanded: st.expanded, panel: st.panel })} · onOpen ${count(ev, "gnb:onOpen")}회`);
+    check("onOpenChange(true) 도 한 번 온다", count(ev, "gnb:onOpenChange") === 1, `${count(ev, "gnb:onOpenChange")}회`);
+    check("하위 메뉴 제목·항목·링크·현재 표시가 columns 대로 그려진다", js(st.titles) === js(["출입 관리", "기록"]) && st.links.some((l) => l.t === "출입 기록" && l.href === "/log") && st.links.some((l) => l.t === "현재" && l.current === "page") && st.links.some((l) => l.t === "방문 예약"), js(st));
+    try { await viewportShot(P, path.join(SHOTS_DIR, "scenario-gnb-menus.png")); } catch { /* 무시 */ }
+    await P.key("Escape");
+    await sleep(200);
+  });
+
+  await pc("data-driven", "데이터로 그리는 부품 — LNB · 하위 메뉴 · 꼬리표 · 버튼 · 칩 글자가 견본으로 남지 않는다", async (check) => {
+    await mount(P, { name: "S1Lnb", props: { items: [{ label: "알파", current: true, href: "/a" }, { label: "베타", children: [{ label: "감마", href: "/c" }, "델타"], expanded: true }, { label: "엡실론", disabled: true }], "aria-label": "내 메뉴" } });
+    const lnb = await P.eval(`({items:[...document.querySelectorAll('#stage [data-s1-part="item"]')].map(e=>e.textContent.trim()), current:[...document.querySelectorAll('#stage [data-s1-part="item"][aria-current="page"]')].map(e=>e.textContent.trim()), disabled:[...document.querySelectorAll('#stage [data-s1-part="item"][aria-disabled="true"]')].map(e=>e.textContent.trim()), sub: !!document.querySelector('#stage [data-s1-part="subitems"]:not([hidden])'), aria:document.querySelector('#stage [data-s1-component="lnb"]').getAttribute("aria-label")})`);
+    check("LNB: items 로 준 메뉴·하위 메뉴·현재·비활성이 그려지고 견본(개요·기반 토큰·컴포넌트)이 남지 않는다", js(lnb.items) === js(["알파", "베타", "감마", "델타", "엡실론"]) && js(lnb.current) === js(["알파"]) && js(lnb.disabled) === js(["엡실론"]) && lnb.sub, js(lnb));
+    const sub = (await texts(P, '#stage [data-s1-part="item"]'))[2];
+    await click(P, '#stage [data-s1-part="item"][aria-controls]');
+    check("LNB: 묶음 메뉴를 누르면 접히고 다시 누르면 펼쳐진다(동작 유지)", (await visible(P, '#stage [data-s1-part="subitems"]')) === false, `하위 보임=${await visible(P, '#stage [data-s1-part="subitems"]')} · ${sub}`);
+
+    await mount(P, { name: "S1GnbSubMenu", props: { type: "compact-2", columns: [{ title: "제목A", items: [{ label: "링크1", href: "/1", current: true }, "링크2"] }, { items: ["링크3"] }] } });
+    const subMenu = await P.eval(`({type:document.querySelector('#stage [data-s1-component="gnb-sub-menu"]').getAttribute("data-type"), links:[...document.querySelectorAll('#stage [data-depth="2depth"]')].map(e=>({t:e.textContent.trim(),href:e.getAttribute("href"),cur:e.getAttribute("aria-current")})), titles:[...document.querySelectorAll('#stage [data-depth="1depth"]')].map(e=>e.textContent.trim())})`);
+    check("GNB 하위 메뉴: columns 의 제목·링크({label, href, current})·글자 항목이 그려지고 type 이 반영된다", subMenu.type === "compact-2" && js(subMenu.titles) === js(["제목A"]) && js(subMenu.links.map((l) => l.t)) === js(["링크1", "링크2", "링크3"]) && subMenu.links[0].href === "/1" && subMenu.links[0].cur === "page", js(subMenu));
+
+    await mount(P, { name: "S1GnbSubMenuItem", props: { depth: "2depth", href: "/x", current: true, children: "내 항목" } });
+    const item = await P.eval(`(()=>{const e=document.querySelector('#stage [data-s1-component="gnb-sub-menu-item"]'); return {tag:e.tagName.toLowerCase(), text:e.textContent.trim(), href:e.getAttribute("href"), cur:e.getAttribute("aria-current"), depth:e.getAttribute("data-depth")};})()`);
+    check("GNB 하위 메뉴 항목: depth · href · current · children 이 반영된다", js(item) === js({ tag: "a", text: "내 항목", href: "/x", cur: "page", depth: "2depth" }), js(item));
+
+    await mount(P, { name: "S1DataTag", props: { variant: "red", children: "점검" } });
+    check("꼬리표: children 이 글자가 된다(견본 \"승인\" 이 남지 않는다)", (await texts(P, '#stage [data-s1-component="data-tag"]'))[0] === "점검", js(await texts(P, '#stage [data-s1-component="data-tag"]')));
+    await mount(P, { name: "S1DataTag", props: { label: "라벨로", variant: "blue" } });
+    check("꼬리표: label prop 도 글자가 된다", (await texts(P, '#stage [data-s1-component="data-tag"]'))[0] === "라벨로", js(await texts(P, '#stage [data-s1-component="data-tag"]')));
+
+    for (const [name, selector, expected] of [["S1Button", '[data-s1-part="label"]', "저장"], ["S1TextButton", '[data-s1-part="label"]', "저장"], ["S1AssistButton", '[data-s1-part="label"]', "저장"], ["S1Chip", '[data-s1-part="label"]', "저장"]]) {
+      await mount(P, { name, props: { children: "저장" } });
+      check(`${name}: children 이 라벨이 된다`, (await texts(P, `#stage ${selector}`))[0] === expected, js(await texts(P, `#stage ${selector}`)));
+    }
+    await mount(P, { name: "S1Tab", props: { tabs: ["가", "나"], children: "$el:내 패널" } });
+    check("탭: tabs 글자 + children(패널) 을 직접 둘 수 있다", js(await texts(P, '#stage [data-s1-part="tab"]')) === js(["가", "나"]) && (await P.eval(`!!document.querySelector('#stage [data-audit-el="내 패널"]')`)), js(await texts(P, '#stage [data-s1-part="tab"]')));
+    await mount(P, { name: "S1ExpandableCard", props: { title: "제목", subtitle: "부제", children: "$el:펼친 내용" } });
+    const card = await P.eval(`({head:[...document.querySelectorAll('#stage [data-s1-part="header"] [data-s1-part]')].map(e=>e.textContent.trim()).filter(Boolean), panel: !!document.querySelector('#stage [data-audit-el="펼친 내용"]'), sample: document.getElementById("stage").textContent.includes("서브타이틀") && document.querySelectorAll('#stage [data-s1-part="panel"] [data-s1-part="subtitle"]').length>0})`);
+    check("접힘 카드: title·subtitle 은 머리줄에, children 은 펼침 내용에 들어간다(두 군데에 겹쳐 들어가지 않는다)", card.head.includes("제목") && card.head.includes("부제") && card.panel && !card.sample, js(card));
+    await mount(P, { name: "S1MobileHeader", props: { title: "내 화면" } });
+    check("모바일 헤더: title 이 제목이 된다", (await texts(P, '#stage [data-s1-part="title"]'))[0] === "내 화면", js(await texts(P, '#stage [data-s1-part="title"]')));
+  });
+
+  if (want("S1ExpandableCard")) await pc("expandable-card-open", "접힘 카드 — open/defaultOpen/onOpenChange", async (check) => {
+    await mount(P, { name: "S1ExpandableCard", props: { defaultOpen: true, onOpenChange: "$fn:card:onOpenChange" } });
+    check("defaultOpen 은 처음부터 펼쳐져 있다", (await attr(P, '#stage [data-s1-part="header"]', "aria-expanded")) === "true", `aria-expanded=${await attr(P, '#stage [data-s1-part="header"]', "aria-expanded")}`);
+    await click(P, '#stage [data-s1-part="header"]');
+    const ev = await events(P);
+    check("눌러 접으면 onOpenChange(false) 가 한 번", count(ev, "card:onOpenChange") === 1 && (await attr(P, '#stage [data-s1-part="header"]', "aria-expanded")) === "false", `${count(ev, "card:onOpenChange")}회`);
+  });
+
+  if (want("S1MobileBottomNav")) await mo("bottom-nav-new-name", "하단 탭 — 새 이름 onBeforeChange 로 막고 통과시킨다", async (check) => {
+    const sel = () => M.eval(`[...document.querySelectorAll('#stage [data-s1-component="mobile-bottom-nav"]')].map(b=>b.getAttribute("aria-selected"))`);
+    await mount(M, { scenario: "bottomNavNewName" });
+    await click(M, '#stage [data-s1-component="mobile-bottom-nav"]:nth-child(2)');
+    check("onBeforeChange(새 이름)를 거쳐 둘째 탭이 켜진다", js(await sel()) === js(["false", "true", "false"]) && count(await events(M), "navNew:onBeforeChange") === 1, `${js(await sel())} · before ${count(await events(M), "navNew:onBeforeChange")}회`);
+    await M.eval("window.__s1.clearEvents()");
+    await click(M, '#stage [data-s1-component="mobile-bottom-nav"]:nth-child(3)');
+    const ev = await events(M);
+    check("onBeforeChange 에서 preventDefault 하면 그 탭으로 안 넘어가고 onChange 도 오지 않는다", js(await sel()) === js(["false", "true", "false"]) && count(ev, "navNew:onChange") === 0 && count(ev, "navNew:onBeforeChange") === 1, `${js(await sel())} · change ${count(ev, "navNew:onChange")}회`);
+  });
+
+  if (!ONLY.length) await pc("locked-controls", "제어형 — 부모가 값을 안 바꾸면 눌러도 모양이 value 로 되돌아온다", async (check) => {
+    await mount(P, { scenario: "lockedControls" });
+    const shown = () => P.eval(`document.querySelector('#stage [data-s1-component="select"] [data-s1-part="value"]').textContent.trim()`);
+    check("셀렉트: value=\"a\" 로 처음 \"에이\"", (await shown()) === "에이", `"${await shown()}"`);
+    await click(P, '#stage [data-s1-component="select"] [data-s1-part="trigger"]');
+    await click(P, '#stage [data-s1-component="select"] [data-s1-part="option"]:nth-child(2)');
+    await sleep(250);
+    let ev = await events(P);
+    check("셀렉트: 눌러도 부모가 안 바꾸면 글자가 \"에이\" 로 되돌아오고, onValueChange 는 한 번 불린다", (await shown()) === "에이" && count(ev, "locked:select") === 1, `"${await shown()}" · ${count(ev, "locked:select")}회`);
+    await click(P, '#stage [data-s1-component="toggle"]');
+    await sleep(200);
+    check("토글: 눌러도 checked=false 라 모양이 그대로 꺼져 있다(onCheckedChange 는 불린다)", (await attr(P, '#stage [data-s1-component="toggle"]', "aria-checked")) === "false" && count(await events(P), "locked:toggle") === 1, `aria-checked=${await attr(P, '#stage [data-s1-component="toggle"]', "aria-checked")}`);
+    await click(P, '#stage [data-s1-part="page"]:nth-child(3)');
+    await sleep(250);
+    const cur = await P.eval(`[...document.querySelectorAll('#stage [data-s1-part="page"][aria-current="page"]')].map(b=>b.textContent.trim())`);
+    check("페이지네이션: 눌러도 page=1 이라 현재 쪽이 1 로 되돌아온다(onPageChange(3) 는 불린다)", js(cur) === js(["1"]) && count(await events(P), "locked:page") === 1, `현재 ${js(cur)}`);
+    await click(P, '#stage [data-s1-part="cell"]:nth-child(2)');
+    await sleep(250);
+    const checked = await P.eval(`[...document.querySelectorAll('#stage [data-s1-component="multi-toggle"] [data-s1-part="cell"]')].map(c=>c.getAttribute("aria-checked"))`);
+    check("멀티 토글: 눌러도 value=\"x\" 라 켜진 칸이 그대로 첫 칸이다", js(checked) === js(["true", "false"]) && count(await events(P), "locked:multi") === 1, js(checked));
+  });
+
+  if (!ONLY.length) await pc("readme-examples", "README 예시 코드를 그대로 붙여 넣으면 돌아가고, 눌러 보면 README 가 말한 대로 움직인다", async (check) => {
+    const count0 = await P.eval("window.__s1.readmeCount");
+    check("README 의 예시가 하나 이상 있다", count0 > 0, `${count0}개`);
+    const rendered = [];
+    for (let index = 0; index < count0; index += 1) {
+      await mount(P, { scenario: "readmeExample", options: { index }, wait: 350 });
+      const probe = await P.eval(`({parts: document.querySelectorAll('#stage [data-s1-component]').length, text: document.getElementById("stage").textContent.replace(/\\s+/g," ").slice(0, 80)})`);
+      rendered.push(probe.parts);
+      check(`예시 ${index + 1}: 그려진다(부품 ${probe.parts}개)`, probe.parts > 0, probe.text);
+    }
+    const run = async (index, fn) => { await mount(P, { scenario: "readmeExample", options: { index }, wait: 350 }); await fn(); };
+    /* 3-1 입력과 폼 */
+    await run(0, async () => {
+      await click(P, '#stage [data-s1-part="control"]');
+      await P.typeText("가나");
+      await sleep(100);
+      check("예시 1: 입력칸에 친 글자가 React 상태를 거쳐 그대로 남는다", (await P.eval(`document.querySelector('#stage input[data-s1-part="control"]').value`)) === "가나", `값 "${await P.eval(`document.querySelector('#stage input[data-s1-part="control"]').value`)}"`);
+      await click(P, '#stage [data-s1-component="checkbox"] [data-s1-part="label"]');
+      check("예시 1: 체크박스 라벨(children 으로 준 글자)을 누르면 켜진다", (await P.eval(`document.querySelector('#stage [data-s1-component="checkbox"] input').checked`)) === true, "누른 뒤");
+      check("예시 1: 여러 줄 입력의 defaultValue 가 그려진다", (await P.eval(`document.querySelector('#stage textarea').value`)) === "처음 메모", `"${await P.eval(`document.querySelector('#stage textarea').value`)}"`);
+    });
+    /* 3-2 목록 고르기 */
+    await run(1, async () => {
+      const line = () => P.eval(`document.querySelector('#stage p').textContent.trim()`);
+      check("예시 2: value=\"busan\" 이라 처음 줄에 busan 이 나온다", (await line()).startsWith("busan"), await line());
+      await click(P, '#stage [data-s1-component="select"] [data-s1-part="trigger"]');
+      await click(P, '#stage [data-s1-component="select"] [data-s1-part="option"]:nth-child(1)');
+      await sleep(150);
+      check("예시 2: 셀렉트에서 서울을 고르면 아래 줄이 seoul 로 바뀐다", (await line()).startsWith("seoul"), await line());
+      await click(P, '#stage [data-s1-component="filter-chip"] [data-s1-part="trigger"]');
+      await click(P, '#stage [data-s1-component="filter-chip"] [data-s1-part="option"]:nth-child(2)');
+      await sleep(150);
+      check("예시 2: 필터 칩에서 이름순을 고르면 아래 줄이 name 으로 바뀐다", (await line()).endsWith("name"), await line());
+    });
+    /* 3-3 창 */
+    await run(2, async () => {
+      await click(P, '#stage > div > button[data-s1-component="button"]:nth-of-type(1)');
+      await sleep(250);
+      check("예시 3: 삭제 단추를 누르면 모달이 열리고 글자 props 가 반영된다", (await visible(P, '#stage [data-s1-component="modal"] [role="dialog"]')) && (await texts(P, '#stage [data-s1-component="modal"] [data-s1-close="confirm"]'))[0] === "삭제" && (await texts(P, '#stage [data-s1-component="modal"] [data-s1-part="title"]'))[0] === "삭제할까요?", js(await texts(P, '#stage [data-s1-component="modal"] [data-s1-part="title"]')));
+      await P.key("Escape");
+      await sleep(250);
+      check("예시 3: Esc 로 닫히면 onOpenChange={setConfirmOpen} 으로 상태가 맞춰져 다시 열 수 있다", !(await visible(P, '#stage [data-s1-component="modal"] [role="dialog"]')), "Esc 후");
+      await resetLock(P);
+    });
+    /* 3-6 표와 페이지 */
+    await run(5, async () => {
+      const first = () => P.eval(`document.querySelector('#stage tbody tr td:nth-child(2)')?.textContent.trim()`);
+      check("예시 6: 처음 표 첫 줄이 장비 1", (await first()) === "장비 1", `"${await first()}"`);
+      await click(P, '#stage [data-s1-part="page"]:nth-child(2)');
+      await sleep(250);
+      check("예시 6: 2쪽을 누르면 표가 11번부터 다시 그려진다(onPageChange={setPage})", (await first()) === "장비 11", `"${await first()}"`);
+    });
+    /* 3-7 칩 · 탭 */
+    await run(6, async () => {
+      await click(P, '#stage [data-s1-component="chip"]:nth-child(2)');
+      const pressed = await P.eval(`[...document.querySelectorAll('#stage [data-s1-component="chip"]')].map(c=>c.getAttribute("aria-pressed"))`);
+      check("예시 7: 칩 묶음에서 진행을 누르면 그 칩 하나만 켜진다", js(pressed) === js(["false", "true", "false"]), js(pressed));
+      await click(P, '#stage [data-s1-part="tab"]:nth-child(2)');
+      check("예시 7: 탭을 누르면 그 탭의 패널이 보인다", (await P.eval(`[...document.querySelectorAll('#stage [role="tabpanel"]')].filter(p=>!p.hidden).map(p=>p.textContent.trim())`))[0] === "상세 내용", "탭 2");
+    });
   });
 
   await pc("ref", "ref 로 루트 DOM 받기 · ref 를 줘도 동작 유지", async (check) => {
@@ -989,7 +1497,7 @@ function packageStatic(pkgDir) {
   const missingCss = cssInTop.filter((p) => !fs.existsSync(path.join(pkgDir, p)));
   if (missingCss.length) add("readme:css-missing", "readme", "broken", "README 시작하기가 가리키는 CSS 파일이 묶음에 없습니다.", missingCss.join(", "), "경로 바로잡기");
   const innerCss = [...inner.matchAll(/import "([^"]+\.css)"/g)].map((m) => m[1]);
-  const innerPkg = [...new Set([...inner.matchAll(/from "([^"]+)"/g)].map((m) => m[1]))];
+  const innerPkg = [...new Set([...inner.matchAll(/from "([^"]+)"/g)].map((m) => m[1]))].filter((p) => !/^react(-dom(\/.*)?)?$/.test(p));
   const topImport = (/from "([^"]+)"/.exec(steps) || [])[1];
   facts.importPaths = { top: topImport, inner: innerPkg, topCss: cssInTop, innerCss };
   if (topImport && innerPkg.some((p) => p !== topImport)) add("readme:two-import-paths", "readme", "friction", `README 두 개가 서로 다른 import 경로를 알려 줍니다 — 바깥 README 는 "${topImport}", 안쪽 React README 는 "${innerPkg.join('", "')}". 안쪽 것은 설치 안내가 없는 패키지 이름이라 그대로 붙이면 빌드가 실패합니다.`, `바깥 시작하기 4단계 vs platform/react/README.md 1·2장 · CSS: 바깥 ${js(cssInTop)} / 안쪽 ${js(innerCss)}`, "안쪽 README 예시를 압축 푼 폴더 기준 상대 경로로 통일하거나, 패키지로 쓰려면 설치(npm i ./s1-ui/platform/react) 안내를 추가");
@@ -1013,23 +1521,37 @@ function packageStatic(pkgDir) {
   packageChecks.nextUseClient = useClient.length === withHooks.length ? "pass" : "fail";
   if (useClient.length < withHooks.length) add("ssr:use-client", "ssr", "friction", `묶음 제목이 "React · Next.js" 인데, Next.js(App Router) 서버 컴포넌트 파일에서 그대로 import 하면 오류가 날 구조입니다 — 훅(useEffect 등)을 쓰는 ${withHooks.length}개 파일 중 "use client" 표시가 있는 파일이 ${useClient.length}개이고, README 에도 Next.js 쓰는 법이 ${nextMention ? "있습니다" : "없습니다"}.`, `"use client" 없음: ${withHooks.filter((f) => !useClient.includes(f)).slice(0, 5).join(", ")} 외 (정적 확인 — Next.js 로 직접 빌드해 보지는 않음)`, '생성되는 .jsx 맨 위에 "use client" 를 넣거나, README 4장에 "Next.js 에서는 use client 파일 안에서 쓰세요" 안내');
   /* prop 이름 일관성 */
-  const eventProps = [...new Set([...dts.matchAll(/^\s+(on[A-Z]\w*)\?:/gm)].map((m) => m[1]))];
+  /* @deprecated 로 표시된 옛 이름은 "함께 받는 별칭" 이다 — 새 이름이 있으니 이름 일관성 검사에서 뺀다(옛 코드가 계속 되게 두는 것이 제안된 해법이다). */
+  const dtsLines = dts.split("\n");
+  const eventProps = [...new Set(dtsLines.flatMap((line, index) => {
+    const m = /^\s+(on[A-Z]\w*)\?:/.exec(line);
+    return m && !/@deprecated/.test(dtsLines[index - 1] ?? "") ? [m[1]] : [];
+  }))];
   const lowerJoined = eventProps.filter((n) => /^on[A-Z][a-z]{3,}(change|close|open|toggle|collapse|select)$/.test(n));
   facts.eventProps = eventProps;
   packageChecks.propNaming = lowerJoined.length ? "fail" : "pass";
   if (lowerJoined.length) add("api:event-casing", "api", "friction", "이벤트 prop 이름 일부가 React 관례(낱말마다 대문자, onSelectionChange)와 다릅니다 — 자동완성에서 못 찾거나 오타로 씁니다.", `${lowerJoined.join(", ")} (같은 묶음 안에 onSelectedChange 는 관례대로)`, "onBeforeChange · onSelectionChange 로 이름 짓고 옛 이름은 한동안 같이 받기");
-  const onChangeKinds = { native: [], custom: [] };
+  /* onChange 는 입력칸류는 브라우저 이벤트(event.target.value), 고르기류는 배포본 사용자 이벤트(event.detail)다.
+     같은 이름이 다른 것을 주는 것 자체는 하위 호환(옛 코드가 event.detail 을 읽는다) 때문에 남긴다 —
+     그 대신 고르기류마다 "값만 주는 짝(onValueChange · onSelectedChange · onCheckedChange · onPageChange · onOpenChange)"이 있는지를 본다. */
+  const onChangeKinds = { native: [], custom: [], customWithoutValueCallback: [] };
   for (const m of interfaces) {
-    const sig = /onChange\?: \(event: (\w+)\)/.exec(m[0]);
-    if (sig) (sig[1] === "CustomEvent" ? onChangeKinds.custom : onChangeKinds.native).push(m[1]);
+    if (/(?<![A-Za-z])onChange\?: ChangeEventHandler/.test(m[0])) onChangeKinds.native.push(m[1]);
+    else if (/(?<![A-Za-z])onChange\?: \(event: S1Event/.test(m[0])) {
+      onChangeKinds.custom.push(m[1]);
+      if (!/(onValueChange|onSelectedChange|onCheckedChange|onPageChange|onOpenChange)\?:/.test(m[0])) onChangeKinds.customWithoutValueCallback.push(m[1]);
+    }
   }
   facts.onChangeKinds = onChangeKinds;
-  if (onChangeKinds.native.length && onChangeKinds.custom.length) add("api:onchange-shape", "api", "friction", "같은 이름 onChange 가 부품마다 다른 것을 넘깁니다 — 입력칸류는 브라우저 이벤트(event.target.value), 고르기류는 배포본 사용자 이벤트(event.detail.value). 부품마다 확인해야 합니다.", `event.target 쪽: ${onChangeKinds.native.join(", ")} · event.detail 쪽: ${onChangeKinds.custom.join(", ")}`, "고르기류에 값만 넘기는 onValueChange(value) 를 따로 두거나 README 에 표로 정리");
+  if (onChangeKinds.customWithoutValueCallback.length) add("api:onchange-shape", "api", "friction", "고르기류 onChange 는 이벤트(event.detail)를 주는데 값만 주는 짝 콜백이 없는 부품이 있습니다.", `짝 콜백 없음: ${onChangeKinds.customWithoutValueCallback.join(", ")} · event.target 쪽: ${onChangeKinds.native.join(", ")} · event.detail 쪽: ${onChangeKinds.custom.join(", ")}`, "고르기류에 값만 넘기는 onValueChange(value) 를 두기");
   const withOpen = interfaces.filter((m) => /\bopen\?: boolean/.test(m[0])).map((m) => m[1]);
   const withOnOpen = interfaces.filter((m) => /onOpen\?:/.test(m[0])).map((m) => m[1]);
-  const valueless = interfaces.filter((m) => /onChange\?: \(event: CustomEvent\)/.test(m[0]) && !/\bvalue\?:|selected\?:/.test(m[0])).map((m) => m[1]);
+  const valueless = interfaces.filter((m) => /(?<![A-Za-z])onChange\?: \(event: S1Event/.test(m[0]) && !/\b(value|selected|checked|open|page)\?:/.test(m[0])).map((m) => m[1]);
   facts.controlledSurface = { withOpen, withOnOpen, customOnChangeWithoutValue: valueless };
-  if (withOnOpen.length > withOpen.length) add("api:open-prop", "api", "friction", `열고 닫히는 부품 ${withOnOpen.length}종 중 open prop 으로 React 상태와 이을 수 있는 건 ${withOpen.join(", ") || "없음"} 뿐입니다 — 나머지는 열리고 닫힌 걸 듣기만 하고, React 가 열고 닫지는 못합니다.`, `onOpen 있음: ${withOnOpen.join(", ")} · open 있음: ${withOpen.join(", ")}`, "모달·모달콘텐츠는 open 필수, 팝오버류(셀렉트·날짜·시간·필터칩·GNB)는 선택적 open");
+  const missingOpen = withOnOpen.filter((name) => !withOpen.includes(name));
+  const windowsMissingOpen = missingOpen.filter((name) => ["S1Modal", "S1ModalContent", "S1BottomSheet"].includes(name));
+  if (windowsMissingOpen.length) add("api:open-prop", "api", "friction", `창(${windowsMissingOpen.join(", ")})은 React 상태로 열고 닫을 open prop 이 있어야 합니다.`, `open 없음: ${windowsMissingOpen.join(", ")} · open 있음: ${withOpen.join(", ")}`, "모달·모달콘텐츠·바텀시트에 open/defaultOpen/onOpenChange 생성");
+  else if (missingOpen.length) add("api:open-prop", "api", "note", `마우스를 올리거나 초점이 가면 펼쳐지는 부품(${missingOpen.join(", ")})은 open prop 없이 펼침·접힘을 onOpen/onOpenChange 로 알려 주기만 합니다(창과 달리 사용자 동작이 정하는 부품).`, `open 있음: ${withOpen.join(", ")} · 알리기만: ${missingOpen.join(", ")}`, "필요하면 선택적 open 추가");
   if (valueless.length) add("api:no-value-prop", "api", "friction", `고르는 부품 ${valueless.length}종은 고른 값을 React 상태로 넣는(value/defaultValue) 길이 없습니다 — 바뀐 걸 듣기만 할 수 있습니다.`, valueless.join(", "), "value·defaultValue 를 받아 런타임 setValue 와 잇기(제어형/비제어형)");
   const weird = [];
   for (const m of interfaces) {
@@ -1064,9 +1586,10 @@ createRoot(document.getElementById("root")).render(<StrictMode>${body.jsx}</Stri
 `;
 }
 
-function buildChecks(env, exported) {
+function buildChecks(env, exported, readme) {
   const out = {};
-  const README_CSS = ["./s1-ui/assets/css/tokens.css", "./s1-ui/s1-ui.css"];
+  /* README 가 시키는 CSS 를 그 순서 그대로 읽힌다(없으면 필수 둘). */
+  const README_CSS = readme.css.length ? readme.css : ["./s1-ui/assets/css/tokens.css", "./s1-ui/s1-ui.css"];
   const oneBody = { imports: 'import { S1Button } from "__PATH__";', jsx: '<S1Button variant="primary" size="md" parts={{ label: "확인" }} />' };
   const allBody = { imports: `import { ${exported.join(", ")} } from "__PATH__";`, jsx: `<>${exported.map((n) => `<${n} />`).join("")}</>` };
   const errLines = (res) => res.out.split("\n").filter((l) => /error|Error|resolve/.test(l)).slice(0, 4).join(" | ").slice(0, 400);
@@ -1096,25 +1619,57 @@ function buildChecks(env, exported) {
     if (packageChecks.treeShaking === "fail") add("build:tree-shaking", "build", "friction", `버튼 하나만 import 해도 부품 ${exported.length}종 코드의 ${Math.round(out.treeShaking.ratio * 100)}% 가 따라 들어옵니다 — 쓸 것만 꺼내 써도 앱이 가벼워지지 않습니다.`, `JS gzip: React 만 ${out.reactOnly.js.gz}B · 버튼 1종 앱 ${out.readmeOne.js.gz}B(+${oneOwn}) · ${exported.length}종 앱 ${out.readmeAll.js.gz}B(+${allOwn})`, "index.js 재수출·런타임 모듈의 부작용 확인(sideEffects 선언이 이 경로에 적용되는지)");
     else add("build:tree-shaking-ok", "build", "note", `버튼 하나만 쓰면 부품 코드는 ${exported.length}종의 ${Math.round(out.treeShaking.ratio * 100)}% 만 들어옵니다(트리 셰이킹 됨).`, `JS gzip: React 만 ${out.reactOnly.js.gz}B · 버튼 1종 앱 ${out.readmeOne.js.gz}B · ${exported.length}종 앱 ${out.readmeAll.js.gz}B`, "—");
   } else skip("treeShaking", "빌드 실패로 크기 비교 불가");
-  /* ③ 안쪽 README 예시 그대로(@s1/ui-react) */
-  const innerDir = makeApp(env, "readme-inner", { "index.html": indexHtml("main.jsx"), "src/main.jsx": appMain("@s1/ui-react", ["@s1/ui/assets/css/tokens.css", "@s1/ui/assets/css/typography.css", "@s1/ui/s1-ui.css"], oneBody) });
-  const innerB = viteBuild(env, innerDir);
-  out.readmeInner = { ok: innerB.ok, errors: innerB.out.split("\n").filter((l) => /resolve|error/i.test(l)).slice(0, 3) };
-  packageChecks.innerReadmeImports = innerB.ok ? "pass" : "fail";
-  if (!innerB.ok) add("build:inner-readme", "readme", "broken", 'React README(platform/react/README.md) 예시를 그대로 붙여 넣으면 빌드가 실패합니다 — "@s1/ui-react"·"@s1/ui/…" 는 설치 안내가 없는 패키지 이름입니다.', out.readmeInner.errors.join(" | ").slice(0, 300), "예시 경로를 바깥 README 와 같은 상대 경로로 바꾸거나 설치 단계 추가");
+  /* ③ 안쪽 README 의 예시 코드를 그대로 붙여 넣은 앱 — 전부 빌드되고(경고 0) 서버에서도 그려져야 한다 */
+  if (readme.examples.length) {
+    const files = { "index.html": indexHtml("main.jsx") };
+    readme.examples.forEach((source, index) => { files[`src/readme-example-${index}.jsx`] = source; });
+    files["src/main.jsx"] = `${README_CSS.map((c) => `import "${c}";`).join("\n")}
+import { createRoot } from "react-dom/client";
+import { StrictMode } from "react";
+${readme.examples.map((_, index) => `import Example${index} from "./readme-example-${index}.jsx";`).join("\n")}
+createRoot(document.getElementById("root")).render(<StrictMode>{[${readme.examples.map((_, index) => `<Example${index} key={${index}} />`).join(", ")}]}</StrictMode>);
+`;
+    const exDir = makeApp(env, "readme-examples", files);
+    const exB = viteBuild(env, exDir);
+    out.readmeExamples = { count: readme.examples.length, ok: exB.ok, warnings: exB.warnings, errors: exB.errors.slice(0, 5) };
+    packageChecks.readmeExamplesBuild = exB.ok && exB.warnings.length === 0 ? "pass" : "fail";
+    packageChecks.innerReadmeImports = exB.ok ? "pass" : "fail";
+    if (!exB.ok) add("build:readme-examples", "readme", "broken", "React README 의 예시 코드를 그대로 붙여 넣으면 빌드가 실패합니다.", errLines(exB), "예시의 import 경로·prop 이름을 실제 묶음과 맞추기");
+    else if (exB.warnings.length) add("build:readme-examples-warn", "readme", "friction", "React README 예시를 붙여 넣은 앱 빌드에 경고가 찍힙니다.", exB.warnings.slice(0, 3).join(" | ").slice(0, 400), "경고 원인 제거");
+    /* lint: 소스 폴더 안에 s1-ui 를 넣은 모습 그대로 검사 — 묶음 자기 파일에서는 오류가 나오면 안 되고, 내가 쓴 진짜 문제는 잡아야 한다 */
+    fs.writeFileSync(path.join(exDir, "src/zz-bad.jsx"), 'import { S1Button } from "./s1-ui/platform/react";\nexport default function Bad() { return <S1Button style={{ color: "#ff0000" }} />; }\n');
+    const lint = runNode(exDir, [path.join(exDir, "src/s1-ui/tools/s1-ui-lint.mjs"), "src"]);
+    const lintLines = lint.out.split("\n").filter((l) => /^✖|^⚠/.test(l));
+    const inPackage = lintLines.filter((l) => /src\/s1-ui\//.test(l));
+    const mine = lintLines.filter((l) => /zz-bad\.jsx/.test(l));
+    out.lint = { totalLines: lintLines.length, inPackage: inPackage.length, caughtRealProblem: mine.length > 0 };
+    packageChecks.lintSkipsOwnFiles = inPackage.length === 0 ? "pass" : "fail";
+    packageChecks.lintCatchesRealProblem = mine.length > 0 ? "pass" : "fail";
+    if (inPackage.length) add("lint:own-files", "lint", "friction", `묶음에 든 규칙 검사 도구가 묶음 자기 파일에서 ${inPackage.length}건을 잡습니다 — 내가 쓴 코드의 진짜 문제가 묻힙니다.`, inPackage.slice(0, 2).join(" | ").slice(0, 300), "검사에서 s1-ui 폴더 자신을 빼기");
+    if (!mine.length) add("lint:misses-real", "lint", "friction", "내가 쓴 코드의 진짜 문제(직접 적은 색)를 규칙 검사 도구가 잡지 못합니다.", lint.out.slice(0, 300), "검사 규칙 확인");
+  } else {
+    add("readme:no-examples", "readme", "friction", "React README 에 그대로 붙여 넣을 예시 코드(```jsx)가 없습니다.", "platform/react/README.md", "예시 추가");
+  }
   return out;
 }
 
 function typeCheck(env, appDir) {
   if (!env.tsc) { skip("typescript", "환경에 typescript 가 없음"); return null; }
   fs.copyFileSync(path.join(HARNESS, "usage.tsx"), path.join(appDir, "src/usage.tsx"));
-  fs.writeFileSync(path.join(appDir, "tsconfig.audit.json"), `${js({ compilerOptions: { target: "es2022", lib: ["ES2022", "DOM"], module: "esnext", moduleResolution: "bundler", jsx: "react-jsx", strict: true, noEmit: true, skipLibCheck: false, types: [] }, files: ["src/usage.tsx"] })}\n`);
+  /* README 예시도 TypeScript 로 받아 본다 — .tsx 로 복사해 strict 로 검사(TS 개발자가 그대로 붙여 넣는 경우). */
+  const readmeTs = fs.readdirSync(path.join(appDir, "src")).filter((f) => /^readme-example-\d+\.jsx$/.test(f)).map((f) => {
+    const target = f.replace("readme-example-", "readme-ts-").replace(".jsx", ".tsx");
+    fs.copyFileSync(path.join(appDir, "src", f), path.join(appDir, "src", target));
+    return `src/${target}`;
+  });
+  fs.writeFileSync(path.join(appDir, "tsconfig.audit.json"), `${js({ compilerOptions: { target: "es2022", lib: ["ES2022", "DOM"], module: "esnext", moduleResolution: "bundler", jsx: "react-jsx", strict: true, noEmit: true, skipLibCheck: false, types: [] }, files: ["src/usage.tsx", ...readmeTs] })}\n`);
   const res = runNode(appDir, [env.tsc, "-p", "tsconfig.audit.json", "--pretty", "false"]);
   const lines = res.out.split("\n").filter((l) => /error TS/.test(l));
   const usage = fs.readFileSync(path.join(appDir, "src/usage.tsx"), "utf8").split("\n");
   const expectLabelAt = (lineNo) => { for (let i = lineNo - 1; i >= 0; i -= 1) { const m = /EXPECT:([\w-]+)/.exec(usage[i]); if (m) return m[1]; } return null; };
   const okEnd = usage.findIndex((l) => /export function Expect/.test(l)) + 1;
   const okErrors = [];
+  const readmeTsErrors = [];
   const dtsErrors = [];
   const notCaught = [];
   const otherErrors = [];
@@ -1123,18 +1678,26 @@ function typeCheck(env, appDir) {
     if (!m) { otherErrors.push(line.trim()); continue; }
     const [, file, lineNo, code, message] = m;
     if (/index\.d\.ts/.test(file)) dtsErrors.push(`${code} ${message}`);
+    else if (/readme-ts-\d+\.tsx/.test(file)) readmeTsErrors.push(`${path.basename(file)} 줄 ${lineNo}: ${code} ${message}`);
     else if (/usage\.tsx/.test(file)) {
       if (code === "TS2578") notCaught.push(expectLabelAt(Number(lineNo)) || `줄 ${lineNo}`);
       else if (Number(lineNo) < okEnd) okErrors.push(`줄 ${lineNo}: ${code} ${message}`);
     } else otherErrors.push(line.trim());
   }
-  const out = { version: env.versions.typescript, strict: true, skipLibCheck: false, exitCode: res.code, okErrors, dtsErrors, notCaught, otherErrors: otherErrors.slice(0, 5) };
+  const out = { version: env.versions.typescript, strict: true, skipLibCheck: false, exitCode: res.code, okErrors, readmeTsErrors, dtsErrors, notCaught, otherErrors: otherErrors.slice(0, 5) };
   packageChecks.typescriptAccepts = okErrors.length === 0 && dtsErrors.length === 0 ? "pass" : "fail";
+  packageChecks.readmeExamplesTypeCheck = readmeTsErrors.length === 0 ? "pass" : "fail";
+  if (readmeTsErrors.length) add("types:readme-examples", "types", "friction", "README 예시를 TypeScript(strict) 파일에 그대로 붙여 넣으면 타입 오류가 납니다.", readmeTsErrors.slice(0, 4).join(" | ").slice(0, 400), "예시를 TS 에서도 통과하게(as const · 타입 좁히기)");
   packageChecks.typescriptCatchesMistakes = notCaught.length === 0 ? "pass" : "fail";
   if (dtsErrors.length) add("types:dts-errors", "types", "broken", "TypeScript(strict)가 index.d.ts 자체에서 오류를 냅니다.", dtsErrors.slice(0, 3).join(" | "), "index.d.ts 생성 바로잡기");
   if (okErrors.length) add("types:readme-code", "types", "broken", "README 예시·타입 정의대로 쓴 TSX 가 TypeScript(strict)에서 오류가 납니다.", okErrors.slice(0, 3).join(" | "), "타입 정의를 README 예시와 맞추기");
-  const what = { variant: '없는 variant("danger")', "typo-prop": "오타 난 prop(varaint)", "size-type": "size 에 숫자", "onchange-param": "onSelectedChange 에 잘못된 함수", "input-onchange-any": "Input onChange 의 event 가 any" };
-  if (notCaught.length) add("types:not-caught", "types", "friction", `타입 정의가 흔한 실수를 못 잡습니다: ${notCaught.map((k) => what[k] || k).join(" · ")} — 오류 없이 통과해 실행해 봐야 압니다.`, `strict tsc 에서 @ts-expect-error 가 쓰이지 않음(TS2578) ${notCaught.length}/5건 — S1BaseProps 의 [attribute: string]: unknown(아무 prop 이나 통과) · event: any`, "인덱스 시그니처 대신 React.HTMLAttributes<HTMLElement> 상속 + data-*/aria-* 만 허용, onChange 에 구체 이벤트 타입");
+  const expectCount = usage.filter((line) => /@ts-expect-error/.test(line)).length;
+  const what = {
+    variant: '없는 variant("danger")', "typo-prop": "오타 난 prop(varaint)", "size-type": "size 에 숫자", "onchange-param": "onSelectedChange 에 잘못된 함수",
+    "input-onchange-any": "Input onChange 의 event 가 any", "modal-typo": "Modal 의 오타 prop", "value-change-param": "onValueChange 에 잘못된 함수",
+    "option-shape": "value 없는 목록 항목", "event-detail": "이벤트 detail 에 없는 속성", "parts-key": "parts 에 없는 슬롯 이름", "disabled-type": "disabled 에 글자"
+  };
+  if (notCaught.length) add("types:not-caught", "types", "friction", `타입 정의가 흔한 실수를 못 잡습니다: ${notCaught.map((k) => what[k] || k).join(" · ")} — 오류 없이 통과해 실행해 봐야 압니다.`, `strict tsc 에서 @ts-expect-error 가 쓰이지 않음(TS2578) ${notCaught.length}/${expectCount}건 — S1BaseProps 의 [attribute: string]: unknown(아무 prop 이나 통과) · event: any`, "인덱스 시그니처 대신 React.HTMLAttributes<HTMLElement> 상속 + data-*/aria-* 만 허용, onChange 에 구체 이벤트 타입");
   return out;
 }
 
@@ -1235,13 +1798,21 @@ async function main() {
   const manifest = JSON.parse(fs.readFileSync(path.join(pkgDir, "manifest.json"), "utf8"));
   log(`묶음 ${manifest.version} · React ${env.versions.react} · Vite ${env.versions.vite} · TypeScript ${env.versions.typescript}`);
   const statics = packageStatic(pkgDir);
+  const readmeText = fs.readFileSync(path.join(pkgDir, "platform/react/README.md"), "utf8");
+  const readme = {
+    css: [...(/```js\n([\s\S]*?)```/.exec(readmeText)?.[1] ?? "").matchAll(/^import "([^"]+\.css)";/gm)].map((m) => m[1]),
+    examples: [...readmeText.matchAll(/```jsx\n([\s\S]*?)```/g)].map((m) => m[1])
+  };
+  README_FONT_LINK = /<link rel="stylesheet" href="(https:[^"]*pretendard[^"]*)">/i.exec(readmeText)?.[1] ?? null;
+  readme.examples.forEach((source, index) => fs.writeFileSync(path.join(appDir, `src/readme-example-${index}.jsx`), source));
+  if (README_FONT_LINK) fs.writeFileSync(path.join(appDir, "index.html"), indexHtml("harness.jsx"));
 
   let builds = null;
   let types = null;
   let ssr = null;
   if (!ONLY.length) {
     log("빌드·타입·서버 렌더 …");
-    try { builds = buildChecks(env, statics.exported); } catch (error) { skip("viteBuild", error.message); }
+    try { builds = buildChecks(env, statics.exported, readme); } catch (error) { skip("viteBuild", error.message); }
     try { types = typeCheck(env, appDir); } catch (error) { skip("typescript", error.message); }
     try { ssr = ssrNode(env, appDir); } catch (error) { skip("ssrNode", error.message); }
   }
@@ -1327,7 +1898,7 @@ async function main() {
       perComponent: "StrictMode 로 붙이기 → 콘솔/React 경고 · 크기 · 아이콘(켠/끈 화면 픽셀 비교) · 실제 렌더 글꼴 · parts 값 A→B 갱신 · 슬롯 겹침 · className 갱신 · 떼기(문서 듣기·스크롤 잠금) · StrictMode 아닌 때와 듣기 수 비교 · renderToString 마크업 위 hydrateRoot",
       listenerCount: "앱보다 먼저 EventTarget.addEventListener/removeEventListener 를 감싸 대상별 살아 있는 듣기 수를 센다",
       viewports: { pc: PC, mobile: MOBILE, rule: "breakName 에 mobile 이 들었거나 이름이 Mobile*/BottomSheet* 인 부품 → 375 폭" },
-      typescript: "strict · skipLibCheck=false · README 예시(OK 구역) + 일부러 틀린 코드 5줄(@ts-expect-error)",
+      typescript: "strict · skipLibCheck=false · README 예시(OK 구역) + 일부러 틀린 코드(@ts-expect-error)",
       treeShaking: "같은 Vite 설정으로 React 만 / 버튼 1종 / 전 종 앱을 각각 build 해 JS gzip 크기 비교",
       ssr: "vite build --ssr 로 묶어 Node 에서 모든 부품·breakName renderToString"
     },

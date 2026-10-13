@@ -951,7 +951,9 @@ for (const id of approvedIds) {
     if (!reactText.includes(`data-s1-component="${id}"`)) failures.push(`${id} React component does not render the component root`);
   }
   if (Object.keys(vueMarkups).length !== declaredExamples.length) failures.push(`${id} wrapper markup set differs from the declared examples`);
-  if (manifest.jsRequired && !reactText.includes("init(root)")) failures.push(`${id} React wrapper does not run the approved runtime`);
+  /* React 껍데기는 kit.js 의 useRuntime 이 배포본 init 을 붙이고(같은 효과 안에서 이벤트도 건다) destroy 로 뗀다. */
+  if (manifest.jsRequired && !/useRuntime\(rootRef, \{ init, destroy \}/.test(reactText)) failures.push(`${id} React wrapper does not run the approved runtime`);
+  if (!reactText.startsWith('"use client";')) failures.push(`${id} React wrapper is missing "use client" (Next.js 서버 컴포넌트에서 import 할 수 없습니다)`);
   if (manifest.jsRequired && !vueText.includes("init(element)")) failures.push(`${id} Vue wrapper does not run the approved runtime`);
 }
 for (const entry of platformContract.components) {
@@ -1143,17 +1145,19 @@ else if (renderCheck.stdout.trim()) console.log(`[guide render check] ${renderCh
     const react = await read(`dist/platform/react/${id}.jsx`);
     const vue = await read(`dist/platform/vue/${vueName}.vue`);
     const rn = await read(`dist/platform/react-native/components/${id}.js`);
-    const reactHasOpenProp = /\bopen = true\b/.test(react);
+    /* React: 처음 열림은 open ?? defaultOpen ?? (기본값) — 기본값이 true 면 처음부터 보이고 false 면 닫힌 채 시작한다. */
+    const reactDefaultsOpen = /useRef\(open \?\? defaultOpen \?\? true\)/.test(react);
+    const reactDefaultsClosed = /useRef\(open \?\? defaultOpen \?\? false\)/.test(react) && /hidden=\{initialOpen \? undefined : true\}/.test(react);
     const vueMarkup = /const MARKUPS = (\{[\s\S]*?\n\});/.exec(vue);
     const vueHiddenRoot = vueMarkup ? Object.values(JSON.parse(vueMarkup[1])).some((markup) => /^<[^>]*\shidden[\s>]/.test(markup)) : null;
     const vueOpenDefaultTrue = /open: \{ type: Boolean, default: true \}/.test(vue);
     const rnOpenDefaultTrue = /\bopen = true\b/.test(rn);
     if (visibleByDefault) {
-      if (!reactHasOpenProp) failures.push(`${id}: React 껍데기는 open 기본값 true(처음부터 보임)여야 합니다`);
+      if (!reactDefaultsOpen) failures.push(`${id}: React 껍데기는 open 기본값 true(처음부터 보임)여야 합니다`);
       if (vueHiddenRoot !== false || !vueOpenDefaultTrue) failures.push(`${id}: Vue 껍데기는 hidden 없이 시작하고 open 기본 true 여야 합니다`);
       if (!rnOpenDefaultTrue) failures.push(`${id}: RN 껍데기는 open 기본값 true 여야 합니다`);
     } else {
-      if (reactHasOpenProp || !/\shidden[\s/>]/.test(react)) failures.push(`${id}: React 껍데기는 처음엔 닫힘(hidden)이어야 합니다`);
+      if (!reactDefaultsClosed) failures.push(`${id}: React 껍데기는 처음엔 닫힘(hidden)이어야 합니다`);
       if (vueHiddenRoot !== true || vueOpenDefaultTrue) failures.push(`${id}: Vue 껍데기는 hidden 으로 시작해야 합니다`);
       if (rnOpenDefaultTrue || !/open \? undefined : ""/.test(rn)) failures.push(`${id}: RN 껍데기는 open 을 주기 전까지 닫힘이어야 합니다`);
     }

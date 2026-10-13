@@ -1,30 +1,32 @@
+"use client";
 /* 자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요. */
 /* S1MobileHeader — 승인된 배포본 마크업을 그대로 옮긴 React 컴포넌트.
    마크업을 새로 쓰지 않는다. dist/examples/mobile-header*.html 의 승인 인스턴스를 JSX 로 옮긴 것이다.
    서버에서 그려도 같은 마크업이 나온다. */
-import { useId, useRef } from "react";
-import { scopeOf, slot } from "./runtime.js";
+import { forwardRef, useId } from "react";
+import { mergeParts, scopeOf, slot } from "./kit.js";
 // mobile-header 는 JavaScript 런타임이 없다 — 브라우저 기본 동작만 쓴다.
+
 
 export const BREAKS = ["pc"];
 export const DEFAULT_BREAK = "pc";
 export const VARIANTS = ["home-title","home-title-subtitle","standard-title","standard-title-close","standard-no-title","standard-no-title-close"];
 export const SIZES = [];
-export const PARTS = ["title","title-row","arrow-icon","stack","subtitle","back","back-icon","close","close-icon","spacer","notification","notification-icon"];
+/* parts 로 줄 수 있는 슬롯 이름(낙타 표기) — 타입 정의의 parts 키와 같다. */
+export const PARTS = ["back","backIcon","title","spacer"];
 
 function assertAllowed(label, value, allowed) {
   if (value === undefined || allowed.length === 0 || allowed.includes(value)) return;
   throw new Error(`[s1-ui] mobile-header: 승인되지 않은 ${label} "${value}". 쓸 수 있는 값: ${allowed.join(", ")}`);
 }
 
-export default function S1MobileHeader({ variant, parts, className, style, ...rest }) {
+const S1MobileHeader = forwardRef(function S1MobileHeader({ variant, parts, title, className, style, ...rest }, forwardedRef) {
   const uid = useId();
-  const rootRef = useRef(null);
-  const partScope = scopeOf(parts);
+  const rootAttr = forwardedRef;
   assertAllowed("variant", variant, VARIANTS);
-
+  const partScope = scopeOf(mergeParts(parts, { title: title }));
   return (
-      <header data-s1-component="mobile-header" data-variant={variant ?? "standard-title"} ref={rootRef} className={className} style={style} {...rest}>
+      <header data-s1-component="mobile-header" data-variant={variant ?? "standard-title"} ref={rootAttr} className={className} style={style} {...rest}>
         <button type="button" data-s1-part="back" aria-label="이전" {...(slot(partScope, "back").attrs ?? {})}>
           <span data-s1-part="back-icon" aria-hidden="true" {...(slot(partScope, "backIcon").attrs ?? {})}>
             {slot(partScope, "backIcon").content ?? ""}
@@ -38,4 +40,6 @@ export default function S1MobileHeader({ variant, parts, className, style, ...re
         </span>
       </header>
   );
-}
+});
+S1MobileHeader.displayName = "S1MobileHeader";
+export default S1MobileHeader;
