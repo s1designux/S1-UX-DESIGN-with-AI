@@ -7433,6 +7433,7 @@ var S1UI = (() => {
     destroy: () => destroy8,
     init: () => init8,
     jsRequired: () => jsRequired8,
+    navState: () => navState,
     runtime: () => runtime8
   });
   var componentId8 = "pagination";
@@ -7468,9 +7469,13 @@ var S1UI = (() => {
     pages.replaceChildren(fragment);
   }
   var blockOf = (page, windowSize) => Math.floor((page - 1) / windowSize);
-  var blockCount = (root, windowSize) => Math.max(1, Math.ceil(total(root) / windowSize));
   var BLOCK_LABELS = { first: "\uC774\uC804 \uD398\uC774\uC9C0 \uBB36\uC74C", last: "\uB2E4\uC74C \uD398\uC774\uC9C0 \uBB36\uC74C" };
   var LEGACY_LABELS = /* @__PURE__ */ new Set(["", "\uCCAB \uD398\uC774\uC9C0", "\uB9C8\uC9C0\uB9C9 \uD398\uC774\uC9C0"]);
+  function navState(page, totalPages, windowSize = MAX_WINDOW) {
+    const lastBlock = Math.max(1, Math.ceil(totalPages / windowSize)) - 1;
+    const block = blockOf(page, windowSize);
+    return { first: block <= 0, previous: page <= 1, next: page >= totalPages, last: block >= lastBlock };
+  }
   function setPage(root, page, windowSize, template) {
     const next = Math.max(1, Math.min(total(root), Number(page) || 1));
     const focusWasInside = root.contains(document.activeElement) && document.activeElement !== root;
@@ -7482,14 +7487,10 @@ var S1UI = (() => {
       if (selected) button.setAttribute("aria-current", "page");
       button.setAttribute("aria-label", selected ? `${button.dataset.page}\uD398\uC774\uC9C0, \uD604\uC7AC \uD398\uC774\uC9C0` : `${button.dataset.page}\uD398\uC774\uC9C0`);
     }
-    const block = blockOf(next, windowSize);
-    const lastBlock = blockCount(root, windowSize) - 1;
+    const blocked = navState(next, total(root), windowSize);
     for (const button of root.querySelectorAll("[data-s1-action]")) {
       const action = button.dataset.s1Action;
-      if (action === "first") button.disabled = block <= 0;
-      else if (action === "last") button.disabled = block >= lastBlock;
-      else if (action === "previous") button.disabled = next <= 1;
-      else button.disabled = next >= total(root);
+      if (action in blocked) button.disabled = blocked[action];
       if (BLOCK_LABELS[action] && LEGACY_LABELS.has((button.getAttribute("aria-label") ?? "").trim())) button.setAttribute("aria-label", BLOCK_LABELS[action]);
     }
     if (focusWasInside && !root.contains(document.activeElement)) root.querySelector('[aria-current="page"]')?.focus();

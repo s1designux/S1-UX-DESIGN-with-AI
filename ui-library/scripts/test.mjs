@@ -827,8 +827,8 @@ if (!/function paginationStateMatrix\(\)[\s\S]*?comp-action-top[\s\S]*?matrix-co
   failures.push("Pagination guide must use the shared Action title and separator block");
 }
 const paginationGuideSource = guideModule.match(/function paginationMarkup\([\s\S]*?function paginationStateMatrix/)?.[0] || "";
-if (!paginationGuideSource.includes("const beforeDisabled = page <= 1") || !paginationGuideSource.includes("const afterDisabled = page >= total") || (paginationGuideSource.match(/beforeDisabled \? \" disabled\"/g) || []).length !== 2 || (paginationGuideSource.match(/afterDisabled \? \" disabled\"/g) || []).length !== 2) {
-  failures.push("Pagination guide must disable both leading or trailing controls at its page boundaries");
+if (!paginationGuideSource.includes("S1UI.pagination.navState(page, total") || ["first", "previous", "next", "last"].some((action) => !paginationGuideSource.includes(`blocked.${action} ? " disabled"`)) || /beforeDisabled|afterDisabled/.test(paginationGuideSource)) {
+  failures.push("Pagination guide must take the disabled state of its four controls from the dist navState (block-aware), not compute it itself");
 }
 if (/PC 3크기\(MD 44 · SM 42 · XSM 40\) · Mobile SM 32/.test(guideModule)) {
   failures.push("Line Tab PC scope must not describe the Mobile content");

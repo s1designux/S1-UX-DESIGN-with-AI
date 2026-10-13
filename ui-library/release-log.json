@@ -36,7 +36,7 @@
           "to": "0.3.0"
         }
       ],
-      "deliveryFingerprint": "de6b6fd9c7aa3aea73c378c5170e24e349178ad096c424503819beb6d6b7c489",
+      "deliveryFingerprint": "8d7e239a6b3d8e3ed0de55a5327ba75bf76648a970711a28fcfa06f6a7f6080d",
       "changes": [
         "페이지네이션 이동 버튼 4개가 정해졌습니다(river 2026-10-13): |< 이전 페이지 묶음 · < 이전 페이지 · > 다음 페이지 · >| 다음 페이지 묶음. |< >| 는 이전/다음 묶음의 첫 쪽으로 가며(종전엔 맨 처음/맨 끝 쪽), 첫/마지막 묶음에서는 막힙니다. 이름(aria-label)도 같이 바뀌었고, 눌러서 막힌 버튼 자리의 초점은 현재 쪽 번호 버튼에 남습니다. 마크업의 data-s1-action 이름(first·last)은 그대로입니다.",
         "날짜 선택(date-picker)을 열면 키보드 초점이 날짜 칸으로 갑니다(PC 팝오버·모바일 시트 공통): 골라 둔 날짜(기간이면 시작일), 없으면 오늘, 오늘이 안 보이는 달이면 그 달의 1일.",
@@ -1949,5 +1949,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "de6b6fd9c7aa3aea73c378c5170e24e349178ad096c424503819beb6d6b7c489"
+  "deliveryFingerprint": "8d7e239a6b3d8e3ed0de55a5327ba75bf76648a970711a28fcfa06f6a7f6080d"
 }

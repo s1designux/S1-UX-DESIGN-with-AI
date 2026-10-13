@@ -37,9 +37,16 @@ function renderWindow(root, page, windowSize, template) {
    묶음 이동은 이전/다음 묶음의 첫 쪽으로 가고(component-behavior.pc.json Pagination), 첫/마지막 묶음에서는 막힌다.
    data-s1-action 이름(first·last)은 기존 마크업과 맞추려고 그대로 쓴다. */
 const blockOf = (page, windowSize) => Math.floor((page - 1) / windowSize);
-const blockCount = (root, windowSize) => Math.max(1, Math.ceil(total(root) / windowSize));
 const BLOCK_LABELS = { first: "이전 페이지 묶음", last: "다음 페이지 묶음" };
 const LEGACY_LABELS = new Set(["", "첫 페이지", "마지막 페이지"]);
+
+/** 네 버튼의 막힘 상태 — 화면 동작(setPage)과 안내 화면이 같은 계산을 쓰도록 순수 함수로 내보낸다.
+ *  |<(first)·>|(last) 는 첫/마지막 묶음에서, <(previous)·>(next) 는 첫/마지막 쪽에서 막힌다. */
+export function navState(page, totalPages, windowSize = MAX_WINDOW) {
+  const lastBlock = Math.max(1, Math.ceil(totalPages / windowSize)) - 1;
+  const block = blockOf(page, windowSize);
+  return { first: block <= 0, previous: page <= 1, next: page >= totalPages, last: block >= lastBlock };
+}
 
 function setPage(root, page, windowSize, template) {
   const next = Math.max(1, Math.min(total(root), Number(page) || 1));
@@ -52,14 +59,10 @@ function setPage(root, page, windowSize, template) {
     if (selected) button.setAttribute("aria-current", "page");
     button.setAttribute("aria-label", selected ? `${button.dataset.page}페이지, 현재 페이지` : `${button.dataset.page}페이지`);
   }
-  const block = blockOf(next, windowSize);
-  const lastBlock = blockCount(root, windowSize) - 1;
+  const blocked = navState(next, total(root), windowSize);
   for (const button of root.querySelectorAll("[data-s1-action]")) {
     const action = button.dataset.s1Action;
-    if (action === "first") button.disabled = block <= 0;
-    else if (action === "last") button.disabled = block >= lastBlock;
-    else if (action === "previous") button.disabled = next <= 1;
-    else button.disabled = next >= total(root);
+    if (action in blocked) button.disabled = blocked[action];
     if (BLOCK_LABELS[action] && LEGACY_LABELS.has((button.getAttribute("aria-label") ?? "").trim())) button.setAttribute("aria-label", BLOCK_LABELS[action]);
   }
   /* 눌러서 막힌 버튼·다시 그려진 번호 버튼에 있던 초점이 body 로 떨어지지 않게 현재 쪽 버튼으로 옮긴다. */
