@@ -4680,7 +4680,7 @@
       <h1>S1 UI 컴포넌트 미리보기 — 32종</h1>
       <p>이 페이지는 배포본에 들어 있는 마크업을 그대로 얹어 그린 것입니다. 여기 보이는 모습이 실제 모습입니다.<br>
          React·Vue 는 제목의 이름을 그대로 부르면 됩니다. 크기·변형은 각 이름 옆에 적힌 값만 쓸 수 있습니다.</p>
-      <p class="fingerprint">버전 0.20.0 · 정본 지문 783486db3584b2bbee00a5fc50150916a1ce3b48c92369ccf8d0e6c6a6d0fd8c</p>
+      <p class="fingerprint">버전 0.21.0 · 정본 지문 3e26c0547b60cfb2fc29649fe95b8cc4ef8ca58f55c652f2054ecf68713f6f51</p>
     </div>
     <nav class="index">
         <a href="#input">S1Input</a>
@@ -5222,9 +5222,9 @@
           <div class="sample">
             <div class="sample-label">pc</div>
             <div class="sample-stage" data-break="pc"><nav data-s1-component="pagination" data-total-pages="6" data-page="1" aria-label="페이지 탐색">
-  <span data-s1-part="arrow-group"><button type="button" data-s1-action="first" aria-label="첫 페이지"><span data-s1-part="icon" data-icon="edge" aria-hidden="true"></span></button><button type="button" data-s1-action="previous" aria-label="이전 페이지"><span data-s1-part="icon" data-icon="chevron" aria-hidden="true"></span></button></span>
+  <span data-s1-part="arrow-group"><button type="button" data-s1-action="first" aria-label="이전 페이지 묶음"><span data-s1-part="icon" data-icon="edge" aria-hidden="true"></span></button><button type="button" data-s1-action="previous" aria-label="이전 페이지"><span data-s1-part="icon" data-icon="chevron" aria-hidden="true"></span></button></span>
   <span data-s1-part="pages"><button type="button" data-s1-part="page" data-page="1" aria-current="page">1</button><button type="button" data-s1-part="page" data-page="2">2</button><button type="button" data-s1-part="page" data-page="3">3</button><button type="button" data-s1-part="page" data-page="4">4</button><button type="button" data-s1-part="page" data-page="5">5</button><button type="button" data-s1-part="page" data-page="6">6</button></span>
-  <span data-s1-part="arrow-group"><button type="button" data-s1-action="next" aria-label="다음 페이지"><span data-s1-part="icon" data-icon="chevron" aria-hidden="true"></span></button><button type="button" data-s1-action="last" aria-label="마지막 페이지"><span data-s1-part="icon" data-icon="edge" aria-hidden="true"></span></button></span>
+  <span data-s1-part="arrow-group"><button type="button" data-s1-action="next" aria-label="다음 페이지"><span data-s1-part="icon" data-icon="chevron" aria-hidden="true"></span></button><button type="button" data-s1-action="last" aria-label="다음 페이지 묶음"><span data-s1-part="icon" data-icon="edge" aria-hidden="true"></span></button></span>
 </nav></div>
           </div>
           </div>
@@ -7467,8 +7467,13 @@ var S1UI = (() => {
     }
     pages.replaceChildren(fragment);
   }
+  var blockOf = (page, windowSize) => Math.floor((page - 1) / windowSize);
+  var blockCount = (root, windowSize) => Math.max(1, Math.ceil(total(root) / windowSize));
+  var BLOCK_LABELS = { first: "\uC774\uC804 \uD398\uC774\uC9C0 \uBB36\uC74C", last: "\uB2E4\uC74C \uD398\uC774\uC9C0 \uBB36\uC74C" };
+  var LEGACY_LABELS = /* @__PURE__ */ new Set(["", "\uCCAB \uD398\uC774\uC9C0", "\uB9C8\uC9C0\uB9C9 \uD398\uC774\uC9C0"]);
   function setPage(root, page, windowSize, template) {
     const next = Math.max(1, Math.min(total(root), Number(page) || 1));
+    const focusWasInside = root.contains(document.activeElement) && document.activeElement !== root;
     root.dataset.page = String(next);
     renderWindow(root, next, windowSize, template);
     for (const button of pageButtons(root)) {
@@ -7477,10 +7482,18 @@ var S1UI = (() => {
       if (selected) button.setAttribute("aria-current", "page");
       button.setAttribute("aria-label", selected ? `${button.dataset.page}\uD398\uC774\uC9C0, \uD604\uC7AC \uD398\uC774\uC9C0` : `${button.dataset.page}\uD398\uC774\uC9C0`);
     }
+    const block = blockOf(next, windowSize);
+    const lastBlock = blockCount(root, windowSize) - 1;
     for (const button of root.querySelectorAll("[data-s1-action]")) {
       const action = button.dataset.s1Action;
-      button.disabled = action === "first" || action === "previous" ? next <= 1 : next >= total(root);
+      if (action === "first") button.disabled = block <= 0;
+      else if (action === "last") button.disabled = block >= lastBlock;
+      else if (action === "previous") button.disabled = next <= 1;
+      else button.disabled = next >= total(root);
+      if (BLOCK_LABELS[action] && LEGACY_LABELS.has((button.getAttribute("aria-label") ?? "").trim())) button.setAttribute("aria-label", BLOCK_LABELS[action]);
     }
+    if (focusWasInside && !root.contains(document.activeElement)) root.querySelector('[aria-current="page"]')?.focus();
+    else if (focusWasInside && document.activeElement?.disabled) root.querySelector('[aria-current="page"]')?.focus();
     root.dispatchEvent(new CustomEvent("s1:pagination:change", { bubbles: true, detail: { page: next, totalPages: total(root) } }));
   }
   function init8(root) {
@@ -7496,10 +7509,10 @@ var S1UI = (() => {
       const action = button.dataset.s1Action;
       const now = current(root);
       if (button.dataset.page) go(button.dataset.page);
-      else if (action === "first") go(1);
+      else if (action === "first") go((blockOf(now, windowSize) - 1) * windowSize + 1);
       else if (action === "previous") go(now - 1);
       else if (action === "next") go(now + 1);
-      else if (action === "last") go(total(root));
+      else if (action === "last") go((blockOf(now, windowSize) + 1) * windowSize + 1);
     };
     root.addEventListener("click", onClick);
     go(current(root));
@@ -8902,6 +8915,17 @@ var S1UI = (() => {
       }
     };
     const handleSheetCloseClick = () => close();
+    const initialFocusDate = () => {
+      const reference = s.mode === "single" ? s.selected : s.selected?.start;
+      if (reference) return reference;
+      if (s.today.getFullYear() === s.viewYear && s.today.getMonth() === s.viewMonth) return s.today;
+      return new Date(s.viewYear, s.viewMonth, 1);
+    };
+    const focusInitialCell = () => {
+      const iso = toISO(initialFocusDate());
+      const cell = container.querySelector(`[data-s1-part="cell"][data-date="${iso}"]:not(:disabled)`) ?? container.querySelector('[data-s1-part="cell"][data-other-month="false"]:not(:disabled)') ?? container.querySelector('[data-s1-part="cell"]:not(:disabled)');
+      cell?.focus();
+    };
     const open = () => {
       if (trigger.disabled || isOpen4(root, trigger)) return;
       trigger.setAttribute("aria-expanded", "true");
@@ -8915,10 +8939,10 @@ var S1UI = (() => {
         document.addEventListener("pointerdown", handleOutsidePointer, true);
         window.addEventListener("scroll", handleReposition, true);
         window.addEventListener("resize", handleReposition);
-        const firstCell = container.querySelector('[data-s1-part="cell"]:not(:disabled)');
-        firstCell?.focus();
+        focusInitialCell();
       } else if (brk === "mobile" && sheet) {
         openSheet();
+        focusInitialCell();
       }
       root.dispatchEvent(new CustomEvent("s1:date-picker:open", { bubbles: true, detail: {} }));
     };

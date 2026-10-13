@@ -11,7 +11,7 @@
  */
 
 /** 동작 설정에 쓰는 숫자 키 — 치수가 아니다(처음 고른 순번·전체 쪽수·분 간격 …). */
-export const ALLOWED_NUMERIC_KEYS = new Set(["index", "initial", "total", "minuteStep"]);
+export const ALLOWED_NUMERIC_KEYS = new Set(["index", "initial", "total", "minuteStep", "block"]);
 
 /** 문자열 값은 내용(글자·data-* 값·tabIndex 같은 속성 문자열)이 숫자처럼 보일 수 있어, 치수를 뜻하는 키일 때만 리터럴로 본다. */
 const DIMENSION_KEY = /^(?:[A-Za-z]*(?:Width|Height|Padding|Margin|Radius|Gap|Size|Spacing|Offset|Basis|Inset|Interval|Translate[XYZ]?)|width|height|top|left|right|bottom|x|y|gap|flex|lineHeight|letterSpacing|fontSize|fontWeight|opacity|zIndex|elevation|translate[XYZ])$/;

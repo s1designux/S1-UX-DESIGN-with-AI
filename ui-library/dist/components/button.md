@@ -18,11 +18,20 @@
 2. 겉모습: 전체 묶음 `s1-ui.css` 한 줄이면 됩니다. 이 부품만 쓰려면 `assets/css/tokens.css` · `assets/css/typography.css` · `components/button.css` 를 읽습니다.
 3. 동작(JS)은 필요 없습니다 — 마크업과 CSS 만으로 동작합니다.
 
-## 고르는 속성
+## 종류를 고르는 속성
+
+이 부품의 종류(모양)는 아래 속성으로 고릅니다. 속성 이름은 부품마다 다릅니다 — 정본 어휘 그대로라 바꾸지 않고 표로 안내합니다.
+
+| 속성 | 값 | 모양·쓰임 |
+|---|---|---|
+| `data-variant` | `primary` | 채운 배경에 흰 글자 — 화면에서 가장 중요한 행동 하나 |
+| `data-variant` | `secondary` | 바탕이 옅고 테두리가 있는 보조 버튼 — 취소·이전 같은 덜 중요한 행동 |
+| `data-variant` | `blue-line` | 흰 바탕에 파란 테두리·파란 글자 — 강조는 하되 가벼운 행동 |
+
+## 고르는 속성(크기·화면)
 
 | 속성 | 뜻 | 쓸 수 있는 값 |
 |---|---|---|
-| `data-variant` | 종류 | `primary` `secondary` `blue-line` |
 | `data-size` | 크기 | `md` `xsm` `xxsm` `lg` |
 | `data-break` | 화면(PC·모바일) | `pc` `mobile` |
 

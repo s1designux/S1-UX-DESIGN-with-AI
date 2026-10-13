@@ -1162,6 +1162,20 @@ else if (renderCheck.stdout.trim()) console.log(`[guide render check] ${renderCh
   if (!vueModal.includes("uniquifyIds(element)")) failures.push("Vue 껍데기는 인스턴스마다 id 를 새로 만들어야 합니다");
 }
 
+
+/* 종류를 고르는 속성 안내(river 2026-10-13) — 표가 있는 부품마다 설명서에 표가 실려야 하고, 배포 manifest 에도 실려야 한다 */
+{
+  const kinds = JSON.parse(await readFile(path.join(libraryRoot, "src/kind-attributes.json"), "utf8"));
+  const distManifest = JSON.parse(await read("dist/manifest.json"));
+  for (const [id, list] of Object.entries(kinds.components)) {
+    const doc = await read(`dist/components/${id}.md`);
+    if (!doc.includes("## 종류를 고르는 속성")) failures.push(`${id}.md 에 종류를 고르는 속성 표가 없습니다`);
+    for (const kind of list) for (const value of Object.keys(kind.values)) if (!doc.includes(`| \`${kind.attribute}\` | \`${value}\` |`)) failures.push(`${id}.md 표에 ${kind.attribute}=${value} 행이 없습니다`);
+    const entry = distManifest.components.find((component) => component.id === id);
+    if (!entry?.kindAttributes) failures.push(`dist manifest 의 ${id} 에 kindAttributes 가 없습니다`);
+  }
+}
+
 if (failures.length) {
   console.error(`UI library technical checks found ${failures.length} issue(s):\n- ${failures.join("\n- ")}`);
   process.exit(1);

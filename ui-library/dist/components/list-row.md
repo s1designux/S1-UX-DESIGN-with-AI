@@ -18,13 +18,19 @@
 2. 겉모습: 전체 묶음 `s1-ui.css` 한 줄이면 됩니다. 이 부품만 쓰려면 `assets/css/tokens.css` · `assets/css/typography.css` · `components/checkbox.css` · `components/toggle.css` · `components/list-row.css` 를 읽습니다.
 3. 동작(JS)은 필요 없습니다 — 마크업과 CSS 만으로 동작합니다.
 
-## 고르는 속성
+## 종류를 고르는 속성
 
-| 속성 | 뜻 | 쓸 수 있는 값 |
+이 부품의 종류(모양)는 아래 속성으로 고릅니다. 속성 이름은 부품마다 다릅니다 — 정본 어휘 그대로라 바꾸지 않고 표로 안내합니다.
+
+| 속성 | 값 | 모양·쓰임 |
 |---|---|---|
-| `data-type` | 종류 | `nav` `value` `read` `pick` `agree` `switch` `thumb` |
-
-예시에는 일부 값만 나옵니다. 다른 값은 속성 값만 바꾸면 됩니다.
+| `data-type` | `nav` | 누르면 다른 화면으로 가는 줄 — 오른쪽 화살표 |
+| `data-type` | `value` | 현재 값을 보여 주고 누르면 바꾸는 줄 — 오른쪽에 값 |
+| `data-type` | `read` | 읽기만 하는 줄 — 정보 표시용 |
+| `data-type` | `pick` | 왼쪽 체크박스로 고르는 줄 |
+| `data-type` | `agree` | 약관 동의처럼 체크박스 + 설명이 붙는 줄 |
+| `data-type` | `switch` | 오른쪽 토글 스위치가 있는 줄 |
+| `data-type` | `thumb` | 왼쪽에 사진·아이콘 자리(40각)가 있는 줄 |
 
 ## 마크업 규칙
 

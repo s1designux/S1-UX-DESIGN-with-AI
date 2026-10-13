@@ -17,6 +17,16 @@
 2. 겉모습: 전체 묶음 `s1-ui.css` 한 줄이면 됩니다. 이 부품만 쓰려면 `assets/css/tokens.css` · `assets/css/typography.css` · `components/gnb-sub-menu-item.css` · `components/gnb-sub-menu.css` 를 읽습니다.
 3. 동작(JS)은 필요 없습니다 — 마크업과 CSS 만으로 동작합니다.
 
+## 종류를 고르는 속성
+
+이 부품의 종류(모양)는 아래 속성으로 고릅니다. 속성 이름은 부품마다 다릅니다 — 정본 어휘 그대로라 바꾸지 않고 표로 안내합니다.
+
+| 속성 | 값 | 모양·쓰임 |
+|---|---|---|
+| `data-type` | `regular` | 카테고리 제목 + 항목 목록이 있는 기본 판(컬럼 4개 기준) |
+| `data-type` | `compact-1` | 제목 없이 항목 6개가 한 줄로 나열되는 판 |
+| `data-type` | `compact-2` | 제목 없이 묶음마다 항목 2개씩 놓이는 판(컬럼 5개 기준) |
+
 ## 마크업 규칙
 
 - 루트: `div[data-s1-component=gnb-sub-menu][data-type]`

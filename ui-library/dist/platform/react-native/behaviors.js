@@ -365,8 +365,13 @@ function usePagination(config, props) {
       }
       const action = a["data-s1-action"];
       if (action !== undefined) {
-        const blocked = (action === "first" || action === "previous") ? page <= 1 : page >= total;
-        const target = action === "first" ? 1 : action === "previous" ? page - 1 : action === "next" ? page + 1 : total;
+        /* |<(first)=이전 묶음의 첫 쪽 · <(previous)=한 쪽 뒤 · >(next)=한 쪽 앞 · >|(last)=다음 묶음의 첫 쪽.
+           묶음은 번호 최대 6개(config.block). 첫 묶음에서 |<, 마지막 묶음에서 >| 는 막힌다(웹 pagination.js 와 같은 규칙). */
+        const block = config.block ?? 6;
+        const blockIndex = Math.floor((page - 1) / block);
+        const lastBlock = Math.max(0, Math.ceil(total / block) - 1);
+        const blocked = action === "first" ? blockIndex <= 0 : action === "previous" ? page <= 1 : action === "next" ? page >= total : blockIndex >= lastBlock;
+        const target = action === "first" ? (blockIndex - 1) * block + 1 : action === "previous" ? page - 1 : action === "next" ? page + 1 : (blockIndex + 1) * block + 1;
         return { a: { disabled: blocked ? "" : undefined }, onPress: () => { if (!blocked) go(target); } };
       }
       return NONE;

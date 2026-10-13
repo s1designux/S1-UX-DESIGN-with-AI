@@ -19,11 +19,19 @@
 3. 동작: `autoInit()` 이 이 부품을 찾아 붙입니다. 이 부품만 쓰려면 `import { init } from "./s1-ui/components/date-picker.js"` 후 `const api = init(요소)` 를 부릅니다.
 4. 페이지가 뜬 뒤에 넣은 마크업은 `autoInit(감쌀요소)` 를 한 번 더 부르면 붙습니다(두 번 불러도 겹치지 않습니다).
 
-## 고르는 속성
+## 종류를 고르는 속성
+
+이 부품의 종류(모양)는 아래 속성으로 고릅니다. 속성 이름은 부품마다 다릅니다 — 정본 어휘 그대로라 바꾸지 않고 표로 안내합니다.
+
+| 속성 | 값 | 모양·쓰임 |
+|---|---|---|
+| `data-mode` | `single` | 날짜 하나를 고름 — 입력칸에 '26.10.15' 같은 표기 |
+| `data-mode` | `range` | 시작일~종료일 기간을 고름 — 입력칸에 '시작 ~ 끝' 표기 |
+
+## 고르는 속성(크기·화면)
 
 | 속성 | 뜻 | 쓸 수 있는 값 |
 |---|---|---|
-| `data-mode` | 종류 | `single` `range` |
 | `data-size` | 크기 | `xxsm` `xsm` `md` |
 | `data-break` | 화면(PC·모바일) | `pc` `mobile` |
 
@@ -68,9 +76,9 @@
 - **역할**: button[aria-haspopup=dialog][aria-expanded] driving role=dialog panel; 날짜 격자는 role=grid/gridcell + aria-selected(+aria-disabled)
 - **이름**: visible label associated with the trigger or aria-label; sheet 는 aria-labelledby(sheet-title)
 - **키보드**: trigger: Enter/Space(native click)로 열기; 격자 안: 화살표=날짜 이동, Home/End=주 시작·끝, PageUp/Down=달 이동, Enter/Space=선택; Esc=닫고 트리거로 포커스 복귀(PC)/시트 닫기(Mobile)
-- **초점**: PC 팝오버가 열리면 격자의 첫 활성 셀로 포커스 이동, 닫히면 트리거로 복귀. Mobile 시트는 열리면 시트 안으로, 닫히면 트리거로 복귀(모달과 동일 패턴, 별도 focus trap은 시트 안에서 Esc·배경·닫기로만 닫히는 단순 계약)
+- **초점**: 열리면 키보드 초점이 달력의 날짜 칸으로 간다 — 골라 둔 날짜(기간이면 시작일), 없으면 오늘, 오늘이 보이는 달에 없으면 그 달의 1일(막힌 날이면 그 달의 첫 선택 가능 날짜). PC 팝오버와 모바일 시트가 같은 규칙이다(river 2026-10-13 '-> 추천안으로'). 닫히면 트리거로 복귀. 모바일 시트는 시트 안에서 Esc·배경·닫기로만 닫히는 단순 계약(모달과 같은 패턴).
 - **상태 표시**: 런타임이 aria-expanded·aria-selected·aria-disabled·data-filled·data-state·data-range-band 를 갱신하고 s1:date-picker:open·close·change 를 낸다
 
 ---
 
-정본 지문 `934945a7ce9d7a374389cebdee02db7ed5398ae19f6abef54428bffcc65cc409` · 부품 버전 0.2.12
+정본 지문 `9739fe37156eac28dd467b2df2ddaabe1f7948e374c9acf08b71143a7ebd125f` · 부품 버전 0.3.0

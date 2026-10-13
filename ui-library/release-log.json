@@ -5,10 +5,44 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.20.0",
-  "releasedAt": "2026-10-12",
-  "canonicalFingerprint": "783486db3584b2bbee00a5fc50150916a1ce3b48c92369ccf8d0e6c6a6d0fd8c",
+  "version": "0.21.0",
+  "releasedAt": "2026-10-13",
+  "canonicalFingerprint": "3e26c0547b60cfb2fc29649fe95b8cc4ef8ca58f55c652f2054ecf68713f6f51",
   "releases": [
+    {
+      "version": "0.21.0",
+      "date": "2026-10-13",
+      "kind": "minor",
+      "canonicalFingerprint": "39e664b6eb97c6a20f8773b0ea73703654ae1e58aaab759b17f366335d9cfe17",
+      "components": [
+        {
+          "id": "tab",
+          "from": "0.2.6",
+          "to": "0.3.0"
+        },
+        {
+          "id": "pagination",
+          "from": "0.2.4",
+          "to": "0.3.0"
+        },
+        {
+          "id": "time-picker",
+          "from": "0.3.17",
+          "to": "0.4.0"
+        },
+        {
+          "id": "date-picker",
+          "from": "0.2.12",
+          "to": "0.3.0"
+        }
+      ],
+      "deliveryFingerprint": "de6b6fd9c7aa3aea73c378c5170e24e349178ad096c424503819beb6d6b7c489",
+      "changes": [
+        "페이지네이션 이동 버튼 4개가 정해졌습니다(river 2026-10-13): |< 이전 페이지 묶음 · < 이전 페이지 · > 다음 페이지 · >| 다음 페이지 묶음. |< >| 는 이전/다음 묶음의 첫 쪽으로 가며(종전엔 맨 처음/맨 끝 쪽), 첫/마지막 묶음에서는 막힙니다. 이름(aria-label)도 같이 바뀌었고, 눌러서 막힌 버튼 자리의 초점은 현재 쪽 번호 버튼에 남습니다. 마크업의 data-s1-action 이름(first·last)은 그대로입니다.",
+        "날짜 선택(date-picker)을 열면 키보드 초점이 날짜 칸으로 갑니다(PC 팝오버·모바일 시트 공통): 골라 둔 날짜(기간이면 시작일), 없으면 오늘, 오늘이 안 보이는 달이면 그 달의 1일.",
+        "종류를 고르는 속성 이름(data-variant·data-type·data-footer·data-mode·data-tone·data-axis·data-icon)은 그대로 두고, README와 부품별 설명서(components/*.md)에 속성·값·모양을 적은 표를 넣었습니다."
+      ]
+    },
     {
       "version": "0.20.0",
       "date": "2026-10-12",
@@ -1915,5 +1949,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "b8fcf23fbd46a8a42aee6da8090608896f8864340209b570844dbc0440d9947d"
+  "deliveryFingerprint": "de6b6fd9c7aa3aea73c378c5170e24e349178ad096c424503819beb6d6b7c489"
 }

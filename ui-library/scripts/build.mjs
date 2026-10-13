@@ -103,6 +103,8 @@ async function createOutputs() {
     if (geometryErrors.length) throw new Error(`icon geometry contract failed:\n- ${geometryErrors.join("\n- ")}`);
     iconAssets.push({ ...icon, asset });
   }
+  /* 종류를 고르는 속성 안내 — 속성 이름은 그대로 두고(river 결정 2026-10-13) 값과 시각적 뜻을 표로 안내한다. */
+  const kindDoc = JSON.parse(await read(path.join(sourceRoot, "kind-attributes.json")));
   const componentOutputs = [];
   const outputs = new Map();
 
@@ -187,6 +189,7 @@ async function createOutputs() {
       js: `components/${id}.js`,
       example: mainDistribution,
       ...(isMobileOnly(id, manifest) ? { mobileOnly: true } : {}),
+      ...(kindDoc.components[id] ? { kindAttributes: kindDoc.components[id] } : {}),
       examples: Object.fromEntries(Object.entries(manifest.htmlContract.breakExamples ?? { pc: { distribution: mainDistribution } })
         .map(([breakName, spec]) => [breakName, spec.distribution]))
     })),
@@ -230,12 +233,23 @@ async function createOutputs() {
   }
   /* 부품별 사람이 읽는 설명서 — manifest·registry usage 에서 생성한다(손으로 쓰지 않는다). */
   const docContract = buildContract(componentOutputs, distManifest);
+  /* 안내 표가 계약과 어긋나면 빌드를 멈춘다 — 종류 속성이 있는데 표에 없거나, 값이 다르면 안 된다. */
+  for (const entry of docContract.components) {
+    if (!entry.variantAttribute || (entry.variants ?? []).length < 2) continue;
+    const kinds = kindDoc.components[entry.id] ?? [];
+    const kind = kinds.find((one) => one.attribute === entry.variantAttribute);
+    if (!kind) throw new Error(`${entry.id}: 종류 속성 ${entry.variantAttribute} 가 src/kind-attributes.json 표에 없습니다.`);
+    const documented = Object.keys(kind.values).sort().join(",");
+    if (documented !== [...entry.variants].sort().join(",")) throw new Error(`${entry.id}: ${entry.variantAttribute} 값이 계약(${entry.variants.join(", ")})과 표(${Object.keys(kind.values).join(", ")})가 다릅니다.`);
+  }
+  for (const id of Object.keys(kindDoc.components)) if (!componentOutputs.some((one) => one.id === id)) throw new Error(`kind-attributes.json: 없는 부품 ${id}`);
   for (const { id, manifest, distCss } of componentOutputs) {
     const distEntry = distManifest.components.find((component) => component.id === id);
     outputs.set(`components/${id}.md`, buildComponentDoc({
       id,
       manifest,
       contract: docContract.components.find((component) => component.id === id),
+      kinds: kindDoc.components[id] ?? [],
       usage: usageById[id],
       css: distCss,
       examplePaths: [...new Set(Object.values(distEntry.examples))]

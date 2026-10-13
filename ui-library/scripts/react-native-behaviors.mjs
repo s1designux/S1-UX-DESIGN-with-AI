@@ -84,7 +84,7 @@ export function behaviorFor(id, { instance, rootAttributes }) {
       const current = pages.find((page) => attr(page, "aria-current") === "page");
       return {
         kind: "pagination",
-        config: { initial: current ? Number(attr(current, "data-page")) : 1, total: numbers.length ? Math.max(...numbers) : 1 },
+        config: { initial: current ? Number(attr(current, "data-page")) : 1, total: numbers.length ? Math.max(...numbers) : 1, block: Math.min(6, numbers.length || 6) },
         props: { page: "page", defaultPage: "defaultPage", totalPages: "totalPages", onChange: "onChange" }
       };
     }

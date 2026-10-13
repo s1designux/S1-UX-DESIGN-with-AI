@@ -1,9 +1,9 @@
 {
   "id": "s1-ui",
-  "version": "0.20.0",
-  "releasedAt": "2026-10-12",
+  "version": "0.21.0",
+  "releasedAt": "2026-10-13",
   "status": "approved",
-  "canonicalFingerprint": "783486db3584b2bbee00a5fc50150916a1ce3b48c92369ccf8d0e6c6a6d0fd8c",
+  "canonicalFingerprint": "3e26c0547b60cfb2fc29649fe95b8cc4ef8ca58f55c652f2054ecf68713f6f51",
   "tokenMapFingerprint": "796fb798dd329910ba6c42a29fb4af9e0fd217446b3fa847e140bc70a0a8f4c7",
   "commonCssDependencies": [
     "assets/css/tokens.css",
@@ -730,6 +730,17 @@
       "css": "components/input.css",
       "js": "components/input.js",
       "example": "examples/input.html",
+      "kindAttributes": [
+        {
+          "attribute": "data-mode",
+          "axis": "입력칸 모드(선택 속성)",
+          "values": {
+            "search": "오른쪽에 지우기 + 돋보기 아이콘이 붙는 검색 입력칸",
+            "password": "오른쪽에 눈(표시 전환) + 지우기 아이콘이 붙는 비밀번호 입력칸"
+          },
+          "extra": true
+        }
+      ],
       "examples": {
         "pc": "examples/input.html",
         "mobile": "examples/input.mobile.html",
@@ -749,6 +760,17 @@
       "css": "components/button.css",
       "js": "components/button.js",
       "example": "examples/button.html",
+      "kindAttributes": [
+        {
+          "attribute": "data-variant",
+          "axis": "버튼 종류",
+          "values": {
+            "primary": "채운 배경에 흰 글자 — 화면에서 가장 중요한 행동 하나",
+            "secondary": "바탕이 옅고 테두리가 있는 보조 버튼 — 취소·이전 같은 덜 중요한 행동",
+            "blue-line": "흰 바탕에 파란 테두리·파란 글자 — 강조는 하되 가벼운 행동"
+          }
+        }
+      ],
       "examples": {
         "pc": "examples/button.html",
         "mobile": "examples/button.mobile.html"
@@ -806,6 +828,16 @@
       "css": "components/chip.css",
       "js": "components/chip.js",
       "example": "examples/chip.html",
+      "kindAttributes": [
+        {
+          "attribute": "data-variant",
+          "axis": "칩 모양",
+          "values": {
+            "line": "흰 바탕에 테두리만 있는 칩 — 기본형, 선택하면 테두리가 파랗게",
+            "solid": "배경을 채운 칩"
+          }
+        }
+      ],
       "examples": {
         "pc": "examples/chip.html",
         "mobile": "examples/chip.mobile.html"
@@ -821,6 +853,16 @@
       "css": "components/dropdown.css",
       "js": "components/dropdown.js",
       "example": "examples/dropdown.html",
+      "kindAttributes": [
+        {
+          "attribute": "data-type",
+          "axis": "옵션 줄 유형",
+          "values": {
+            "text": "글자만 있는 목록 — 하나를 골라 표시",
+            "checkbox": "각 줄 왼쪽에 체크박스가 붙는 목록 — 여러 개를 고르고, 맨 위에 '전체 선택' 줄을 둘 수 있음"
+          }
+        }
+      ],
       "examples": {
         "pc": "examples/dropdown.html"
       }
@@ -850,6 +892,16 @@
       "css": "components/filter-chip.css",
       "js": "components/filter-chip.js",
       "example": "examples/filter-chip.html",
+      "kindAttributes": [
+        {
+          "attribute": "data-variant",
+          "axis": "필터 칩 모양",
+          "values": {
+            "line": "테두리형 — 흰 바탕, 선택하면 테두리·글자가 파랗게",
+            "solid": "배경을 채운 형태"
+          }
+        }
+      ],
       "examples": {
         "pc": "examples/filter-chip.html",
         "mobile": "examples/filter-chip.mobile.html"
@@ -857,11 +909,11 @@
     },
     {
       "id": "tab",
-      "version": "0.2.6",
+      "version": "0.3.0",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "5e8f86f24a6987acea8325575038d4401e300900ce25c64c38cc038757daebe2",
-      "sourceFingerprint": "b58358a966e40fcc49183aea5a14d61723ce19cda784af64a940faff188426a5",
+      "canonicalFingerprint": "1489523e41fe215d47ab297c10681acb6a6e86049131a8f6194079dd61eecf7d",
+      "sourceFingerprint": "e0dc4fdc98bed98156f3e6ea8b877b6ee07a2cbef05db15435a7a0b1efec8ec2",
       "css": "components/tab.css",
       "js": "components/tab.js",
       "example": "examples/tab.html",
@@ -872,11 +924,11 @@
     },
     {
       "id": "pagination",
-      "version": "0.2.4",
+      "version": "0.3.0",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "3df9b1f45e27908f0f7a57fb0fc2c8ab49fe9b2813e212ac4f75c1f930cd3a2c",
-      "sourceFingerprint": "de6541b5b7f6f60ee654863199d2ebf2cb30fc2301d8e90fdb56e110a75039c0",
+      "canonicalFingerprint": "3c065e580950a408cdec221e7bb4d802facbe15a6fb8faa981e29dd9019dd0e1",
+      "sourceFingerprint": "29e8ad5d68935b675a37a11c04831f275f247e453abdc586df9c51dd449fb82c",
       "css": "components/pagination.css",
       "js": "components/pagination.js",
       "example": "examples/pagination.html",
@@ -923,6 +975,16 @@
       "css": "components/modal.css",
       "js": "components/modal.js",
       "example": "examples/modal.html",
+      "kindAttributes": [
+        {
+          "attribute": "data-footer",
+          "axis": "하단 버튼 수",
+          "values": {
+            "single": "버튼 1개(확인) — 알림·설명 팝업",
+            "dual": "버튼 2개(취소 + 확인) — 확인·질문 팝업"
+          }
+        }
+      ],
       "examples": {
         "pc": "examples/modal.html",
         "mobile": "examples/modal.mobile.html"
@@ -953,6 +1015,18 @@
       "js": "components/mobile-bottom-nav.js",
       "example": "examples/mobile-bottom-nav.mobile.html",
       "mobileOnly": true,
+      "kindAttributes": [
+        {
+          "attribute": "data-icon",
+          "axis": "하단 탭 아이콘·항목",
+          "values": {
+            "home": "홈 탭 아이콘",
+            "search": "검색 탭 아이콘",
+            "notification": "알림 탭 아이콘",
+            "settings": "설정 탭 아이콘"
+          }
+        }
+      ],
       "examples": {
         "pc": "examples/mobile-bottom-nav.mobile.html"
       }
@@ -968,20 +1042,45 @@
       "js": "components/mobile-header.js",
       "example": "examples/mobile-header.mobile.html",
       "mobileOnly": true,
+      "kindAttributes": [
+        {
+          "attribute": "data-variant",
+          "axis": "모바일 헤더 유형",
+          "values": {
+            "home-title": "홈 화면용 — 왼쪽 정렬 굵은 제목",
+            "home-title-subtitle": "홈 화면용 — 왼쪽 제목 + 부제 + 오른쪽 알림 아이콘 1개",
+            "standard-title": "일반 화면용 — 가운데 제목, 왼쪽 뒤로가기",
+            "standard-title-close": "일반 화면용 — 가운데 제목 + 오른쪽 닫기",
+            "standard-no-title": "제목 없이 뒤로가기만 있는 일반 화면용",
+            "standard-no-title-close": "제목 없이 뒤로가기 + 오른쪽 닫기"
+          }
+        }
+      ],
       "examples": {
         "pc": "examples/mobile-header.mobile.html"
       }
     },
     {
       "id": "time-picker",
-      "version": "0.3.17",
+      "version": "0.4.0",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "7ebb028fa3968d0141666f463b779aef3baf1f698bc9ea0468e5b4c2e3528428",
-      "sourceFingerprint": "14477d3a5b5bd73b64b381767481d86f7993fb7e1ff45dc99450a63ac1fc581b",
+      "canonicalFingerprint": "d013d8a074953b21edd0ee1eeadb3de9209de8bff1228739bad18ee8eca00143",
+      "sourceFingerprint": "64ca1d601e6b26e25c39bf5afdbfc98492c7519391eb4c7983de03e5e1fc78cd",
       "css": "components/time-picker.css",
       "js": "components/time-picker.js",
       "example": "examples/time-picker.html",
+      "kindAttributes": [
+        {
+          "attribute": "data-type",
+          "axis": "시간 표기",
+          "values": {
+            "24h": "0~23시 24시간 표기 — 시·분 두 칸",
+            "12h": "오전/오후 + 1~12시 12시간 표기 — 칸이 하나 더 있어 목록이 더 넓음"
+          },
+          "extra": true
+        }
+      ],
       "examples": {
         "pc": "examples/time-picker.html",
         "mobile": "examples/time-picker.mobile.html"
@@ -989,14 +1088,24 @@
     },
     {
       "id": "date-picker",
-      "version": "0.2.12",
+      "version": "0.3.0",
       "status": "approved",
       "jsRequired": true,
-      "canonicalFingerprint": "934945a7ce9d7a374389cebdee02db7ed5398ae19f6abef54428bffcc65cc409",
-      "sourceFingerprint": "daab71f42a1a93c80bc6d32153f75867e63ff3e46af59c1db73447fbd135b32e",
+      "canonicalFingerprint": "9739fe37156eac28dd467b2df2ddaabe1f7948e374c9acf08b71143a7ebd125f",
+      "sourceFingerprint": "4c260076fd28b1ed0ec0bc1ce2cb82b569abce4b10db7841004736cff90f220a",
       "css": "components/date-picker.css",
       "js": "components/date-picker.js",
       "example": "examples/date-picker.html",
+      "kindAttributes": [
+        {
+          "attribute": "data-mode",
+          "axis": "날짜 선택 방식",
+          "values": {
+            "single": "날짜 하나를 고름 — 입력칸에 '26.10.15' 같은 표기",
+            "range": "시작일~종료일 기간을 고름 — 입력칸에 '시작 ~ 끝' 표기"
+          }
+        }
+      ],
       "examples": {
         "pc": "examples/date-picker.html",
         "mobile": "examples/date-picker.mobile.html"
@@ -1012,6 +1121,16 @@
       "css": "components/gnb.css",
       "js": "components/gnb.js",
       "example": "examples/gnb.html",
+      "kindAttributes": [
+        {
+          "attribute": "data-variant",
+          "axis": "상단 바 정렬",
+          "values": {
+            "center-between": "로고·메뉴·유틸 아이콘 세 덩어리가 양 끝과 가운데로 벌어져 놓임",
+            "start": "로고와 메뉴가 왼쪽에 함께 붙고, 유틸 아이콘만 오른쪽 끝"
+          }
+        }
+      ],
       "examples": {
         "pc": "examples/gnb.html"
       }
@@ -1040,6 +1159,18 @@
       "css": "components/gnb-sub-menu.css",
       "js": "components/gnb-sub-menu.js",
       "example": "examples/gnb-sub-menu.html",
+      "kindAttributes": [
+        {
+          "attribute": "data-type",
+          "axis": "하위메뉴 판 유형",
+          "values": {
+            "regular": "카테고리 제목 + 항목 목록이 있는 기본 판(컬럼 4개 기준)",
+            "compact-1": "제목 없이 항목 6개가 한 줄로 나열되는 판",
+            "compact-2": "제목 없이 묶음마다 항목 2개씩 놓이는 판(컬럼 5개 기준)"
+          },
+          "extra": true
+        }
+      ],
       "examples": {
         "pc": "examples/gnb-sub-menu.html"
       }
@@ -1068,6 +1199,16 @@
       "css": "components/text-button.css",
       "js": "components/text-button.js",
       "example": "examples/text-button.html",
+      "kindAttributes": [
+        {
+          "attribute": "data-variant",
+          "axis": "글자 버튼 종류",
+          "values": {
+            "primary": "파란(강조) 글자만 있는 버튼 — 링크처럼 쓰는 주 행동",
+            "secondary": "옅은 회색 글자만 있는 버튼 — 덜 중요한 보조 행동"
+          }
+        }
+      ],
       "examples": {
         "pc": "examples/text-button.html"
       }
@@ -1082,6 +1223,16 @@
       "css": "components/modal-content.css",
       "js": "components/modal-content.js",
       "example": "examples/modal-content.html",
+      "kindAttributes": [
+        {
+          "attribute": "data-footer",
+          "axis": "하단 버튼 수",
+          "values": {
+            "single": "버튼 1개(확인)",
+            "dual": "버튼 2개(취소 + 확인)"
+          }
+        }
+      ],
       "examples": {
         "pc": "examples/modal-content.html"
       }
@@ -1096,6 +1247,18 @@
       "css": "components/bottom-sheet-option.css",
       "js": "components/bottom-sheet-option.js",
       "example": "examples/bottom-sheet-option.html",
+      "kindAttributes": [
+        {
+          "attribute": "data-type",
+          "axis": "시트 옵션 줄 유형",
+          "values": {
+            "text": "글자만 있는 한 줄 — 고른 줄 오른쪽에 파란 체크",
+            "checkbox": "왼쪽에 체크박스 — 여러 개 고르기",
+            "radio": "왼쪽에 동그라미 라디오 — 하나만 고르기",
+            "list": "왼쪽 아바타 + 제목/서브 두 줄 + 오른쪽 화살표(비활성이면 자물쇠) — 사람·항목 목록"
+          }
+        }
+      ],
       "examples": {
         "pc": "examples/bottom-sheet-option.html"
       }
@@ -1111,6 +1274,17 @@
       "js": "components/bottom-sheet.js",
       "example": "examples/bottom-sheet.mobile.html",
       "mobileOnly": true,
+      "kindAttributes": [
+        {
+          "attribute": "data-footer",
+          "axis": "하단 버튼 수",
+          "values": {
+            "none": "하단 버튼 없음 — 고르는 즉시 적용되는 목록",
+            "single": "'적용' 버튼 1개",
+            "dual": "'취소 + 적용' 버튼 2개"
+          }
+        }
+      ],
       "examples": {
         "pc": "examples/bottom-sheet.mobile.html"
       }
@@ -1125,6 +1299,21 @@
       "css": "components/list-row.css",
       "js": "components/list-row.js",
       "example": "examples/list-row.html",
+      "kindAttributes": [
+        {
+          "attribute": "data-type",
+          "axis": "목록 줄 유형",
+          "values": {
+            "nav": "누르면 다른 화면으로 가는 줄 — 오른쪽 화살표",
+            "value": "현재 값을 보여 주고 누르면 바꾸는 줄 — 오른쪽에 값",
+            "read": "읽기만 하는 줄 — 정보 표시용",
+            "pick": "왼쪽 체크박스로 고르는 줄",
+            "agree": "약관 동의처럼 체크박스 + 설명이 붙는 줄",
+            "switch": "오른쪽 토글 스위치가 있는 줄",
+            "thumb": "왼쪽에 사진·아이콘 자리(40각)가 있는 줄"
+          }
+        }
+      ],
       "examples": {
         "pc": "examples/list-row.html"
       }
@@ -1153,6 +1342,16 @@
       "css": "components/data-tag.css",
       "js": "components/data-tag.js",
       "example": "examples/data-tag.html",
+      "kindAttributes": [
+        {
+          "attribute": "data-tone",
+          "axis": "태그 색",
+          "values": {
+            "blue": "파란 — 승인·확인",
+            "red": "빨간 — 주의·에러"
+          }
+        }
+      ],
       "examples": {
         "pc": "examples/data-tag.html"
       }
@@ -1167,6 +1366,16 @@
       "css": "components/divider.css",
       "js": "components/divider.js",
       "example": "examples/divider.html",
+      "kindAttributes": [
+        {
+          "attribute": "data-axis",
+          "axis": "선 방향",
+          "values": {
+            "x": "가로선(폭 100%)",
+            "y": "세로선(높이는 놓인 자리가 정함, 14가 기본)"
+          }
+        }
+      ],
       "examples": {
         "pc": "examples/divider.html"
       }
@@ -1181,6 +1390,16 @@
       "css": "components/lnb.css",
       "js": "components/lnb.js",
       "example": "examples/lnb.html",
+      "kindAttributes": [
+        {
+          "attribute": "data-variant",
+          "axis": "왼쪽 메뉴 종류",
+          "values": {
+            "menu": "메뉴만 있는 왼쪽 메뉴",
+            "brand": "맨 위에 로고 자리가 있고 아래에 구분선이 붙는 왼쪽 메뉴"
+          }
+        }
+      ],
       "examples": {
         "pc": "examples/lnb.html"
       }

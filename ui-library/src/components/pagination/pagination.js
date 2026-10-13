@@ -33,8 +33,17 @@ function renderWindow(root, page, windowSize, template) {
   pages.replaceChildren(fragment);
 }
 
+/* 네 버튼 — |<(first)=이전 묶음 · <(previous)=이전 쪽 · >(next)=다음 쪽 · >|(last)=다음 묶음.
+   묶음 이동은 이전/다음 묶음의 첫 쪽으로 가고(component-behavior.pc.json Pagination), 첫/마지막 묶음에서는 막힌다.
+   data-s1-action 이름(first·last)은 기존 마크업과 맞추려고 그대로 쓴다. */
+const blockOf = (page, windowSize) => Math.floor((page - 1) / windowSize);
+const blockCount = (root, windowSize) => Math.max(1, Math.ceil(total(root) / windowSize));
+const BLOCK_LABELS = { first: "이전 페이지 묶음", last: "다음 페이지 묶음" };
+const LEGACY_LABELS = new Set(["", "첫 페이지", "마지막 페이지"]);
+
 function setPage(root, page, windowSize, template) {
   const next = Math.max(1, Math.min(total(root), Number(page) || 1));
+  const focusWasInside = root.contains(document.activeElement) && document.activeElement !== root;
   root.dataset.page = String(next);
   renderWindow(root, next, windowSize, template);
   for (const button of pageButtons(root)) {
@@ -43,10 +52,19 @@ function setPage(root, page, windowSize, template) {
     if (selected) button.setAttribute("aria-current", "page");
     button.setAttribute("aria-label", selected ? `${button.dataset.page}페이지, 현재 페이지` : `${button.dataset.page}페이지`);
   }
+  const block = blockOf(next, windowSize);
+  const lastBlock = blockCount(root, windowSize) - 1;
   for (const button of root.querySelectorAll("[data-s1-action]")) {
     const action = button.dataset.s1Action;
-    button.disabled = (action === "first" || action === "previous") ? next <= 1 : next >= total(root);
+    if (action === "first") button.disabled = block <= 0;
+    else if (action === "last") button.disabled = block >= lastBlock;
+    else if (action === "previous") button.disabled = next <= 1;
+    else button.disabled = next >= total(root);
+    if (BLOCK_LABELS[action] && LEGACY_LABELS.has((button.getAttribute("aria-label") ?? "").trim())) button.setAttribute("aria-label", BLOCK_LABELS[action]);
   }
+  /* 눌러서 막힌 버튼·다시 그려진 번호 버튼에 있던 초점이 body 로 떨어지지 않게 현재 쪽 버튼으로 옮긴다. */
+  if (focusWasInside && !root.contains(document.activeElement)) root.querySelector('[aria-current="page"]')?.focus();
+  else if (focusWasInside && document.activeElement?.disabled) root.querySelector('[aria-current="page"]')?.focus();
   root.dispatchEvent(new CustomEvent("s1:pagination:change", { bubbles: true, detail: { page: next, totalPages: total(root) } }));
 }
 
@@ -63,10 +81,10 @@ export function init(root) {
     const action = button.dataset.s1Action;
     const now = current(root);
     if (button.dataset.page) go(button.dataset.page);
-    else if (action === "first") go(1);
+    else if (action === "first") go((blockOf(now, windowSize) - 1) * windowSize + 1);
     else if (action === "previous") go(now - 1);
     else if (action === "next") go(now + 1);
-    else if (action === "last") go(total(root));
+    else if (action === "last") go((blockOf(now, windowSize) + 1) * windowSize + 1);
   };
   root.addEventListener("click", onClick);
   go(current(root));

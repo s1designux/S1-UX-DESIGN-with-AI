@@ -33,7 +33,7 @@ function attributeTable(contract, manifest) {
   return rows;
 }
 
-export function buildComponentDoc({ id, manifest, contract, usage, css, examplePaths }) {
+export function buildComponentDoc({ id, manifest, contract, usage, css, examplePaths, kinds = [] }) {
   const name = `S1${pascal(id)}`;
   const mobileOnly = isMobileOnly(id, manifest);
   const js = manifest.javascript ?? {};
@@ -59,9 +59,18 @@ export function buildComponentDoc({ id, manifest, contract, usage, css, exampleP
   }
   lines.push("");
 
-  const table = attributeTable(contract, manifest);
+  if (kinds.length) {
+    lines.push("## 종류를 고르는 속성", "", "이 부품의 종류(모양)는 아래 속성으로 고릅니다. 속성 이름은 부품마다 다릅니다 — 정본 어휘 그대로라 바꾸지 않고 표로 안내합니다.", "");
+    lines.push("| 속성 | 값 | 모양·쓰임 |", "|---|---|---|");
+    for (const kind of kinds) {
+      for (const [value, meaning] of Object.entries(kind.values)) lines.push(`| ${code(kind.attribute)} | ${code(value)} | ${meaning} |`);
+    }
+    lines.push("");
+  }
+  const kindAttributes = new Set(kinds.map((kind) => kind.attribute));
+  const table = attributeTable(contract, manifest).filter(([attribute]) => !kindAttributes.has(attribute));
   if (table.length) {
-    lines.push("## 고르는 속성", "", "| 속성 | 뜻 | 쓸 수 있는 값 |", "|---|---|---|");
+    lines.push("## 고르는 속성(크기·화면)", "", "| 속성 | 뜻 | 쓸 수 있는 값 |", "|---|---|---|");
     for (const [attribute, meaning, values] of table) lines.push(`| ${code(attribute)} | ${meaning} | ${values.map(code).join(" ")} |`);
     lines.push("", "예시에는 일부 값만 나옵니다. 다른 값은 속성 값만 바꾸면 됩니다.", "");
   }

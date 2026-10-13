@@ -256,6 +256,19 @@ export const PROBES = {
     await t.focus(`${t.R} [data-s1-part="page"][data-page="2"]`);
     await t.key("Enter");
     t.check("Enter 키로 쪽을 고를 수 있다", (await current()) === "2", `현재 쪽 표시="${await current()}"`);
+    /* 네 버튼(river 2026-10-13): |< 이전 묶음 · < 이전 쪽 · > 다음 쪽 · >| 다음 묶음 — 묶음 이동은 이전/다음 묶음의 첫 쪽 */
+    const names = await t.eval(`JSON.stringify([...document.querySelectorAll(${js(`${t.R} [data-s1-action]`)})].map((b) => b.getAttribute("aria-label")))`);
+    t.check("이동 버튼 네 개의 이름이 묶음/쪽을 구분한다", names === JSON.stringify(["이전 페이지 묶음", "이전 페이지", "다음 페이지", "다음 페이지 묶음"]), `이름=${names}`);
+    await t.eval(`(async()=>{const m=await import("./s1-ui/s1-ui.js"); m.pagination.init(${q(t.R)}).setTotalPages(14); m.pagination.init(${q(t.R)}).setPage(1); return true;})()`);
+    await t.wait(100);
+    const nums = () => t.eval(`[...document.querySelectorAll(${js(`${t.R} [data-s1-part="page"]`)})].map((b) => b.textContent).join(",")`);
+    const lastOff = () => t.eval(`document.querySelector(${js(`${t.R} [data-s1-action="last"]`)}).disabled`);
+    await t.focus(`${t.R} [data-s1-action="last"]`);
+    await t.key("Enter");
+    t.check(">| 는 다음 묶음의 첫 쪽으로 간다", (await current()) !== "1" && (await nums()).split(",")[0] === (await current()), `현재 쪽="${await current()}", 번호 창=${await nums()}`);
+    await t.focus(`${t.R} [data-s1-action="last"]`);
+    await t.key("Enter");
+    t.check("마지막 묶음에서는 >| 가 막히고 초점이 현재 쪽 번호에 남는다", (await lastOff()) === true && (await t.eval(`document.activeElement.getAttribute("aria-current")`)) === "page", `>| 막힘=${await lastOff()}, 초점=${await t.eval(`document.activeElement.tagName + ":" + document.activeElement.getAttribute("aria-current")`)}`);
   },
 
   async "multi-toggle"(t) {
@@ -301,6 +314,9 @@ export const PROBES = {
     const opened = await isOpen(t, root);
     t.check("트리거를 누르면 달력이 열린다", opened.expanded === "true" && opened.surface, `aria-expanded=${opened.expanded}, 달력 보임=${opened.surface}`);
     if (!opened.surface) return;
+    /* 열리면 키보드 초점이 날짜 칸으로 간다 — 고른 날짜(기간이면 시작일), 없으면 오늘, 오늘이 안 보이는 달이면 그 달의 1일 (river 2026-10-13) */
+    const focusInfo = await t.eval(`(()=>{const a=document.activeElement; const d=new Date(); const iso=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); const root=${q(root)}; return {date:a&&a.dataset?a.dataset.date:null, inRoot: root.contains(a), today: iso, preset: !!(root.dataset.value||root.dataset.rangeStart)};})()`);
+    if (!focusInfo.preset) t.check("열리면 초점이 오늘 날짜 칸으로 간다", focusInfo.inRoot && focusInfo.date === focusInfo.today, `초점 날짜=${focusInfo.date}, 오늘=${focusInfo.today}`);
     const days = await t.eval(`[...document.querySelectorAll(${js(cells)})].filter(e=>window.__A.vis(e) && e.getAttribute("aria-disabled")!=="true").length`);
     t.check("달력에 날짜 칸이 그려진다", days >= 28, `보이는 날짜 칸 ${days}개`);
     const pickDay = async (n, name) => {

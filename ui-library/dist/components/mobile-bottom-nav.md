@@ -19,13 +19,16 @@
 2. 겉모습: 전체 묶음 `s1-ui.css` 한 줄이면 됩니다. 이 부품만 쓰려면 `assets/css/tokens.css` · `assets/css/typography.css` · `components/mobile-bottom-nav.css` 를 읽습니다.
 3. 동작(JS)은 필요 없습니다 — 마크업과 CSS 만으로 동작합니다.
 
-## 고르는 속성
+## 종류를 고르는 속성
 
-| 속성 | 뜻 | 쓸 수 있는 값 |
+이 부품의 종류(모양)는 아래 속성으로 고릅니다. 속성 이름은 부품마다 다릅니다 — 정본 어휘 그대로라 바꾸지 않고 표로 안내합니다.
+
+| 속성 | 값 | 모양·쓰임 |
 |---|---|---|
-| `data-icon` | 종류 | `home` `search` `notification` `settings` |
-
-예시에는 일부 값만 나옵니다. 다른 값은 속성 값만 바꾸면 됩니다.
+| `data-icon` | `home` | 홈 탭 아이콘 |
+| `data-icon` | `search` | 검색 탭 아이콘 |
+| `data-icon` | `notification` | 알림 탭 아이콘 |
+| `data-icon` | `settings` | 설정 탭 아이콘 |
 
 ## 마크업 규칙
 

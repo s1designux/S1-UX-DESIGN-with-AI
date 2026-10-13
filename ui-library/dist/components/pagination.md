@@ -23,6 +23,8 @@
 - 루트: `nav[data-s1-component=pagination]`
 - 꼭 있어야 하는 속성: `data-total-pages` `data-page` `aria-label`
 - 꼭 있어야 하는 부분(`data-s1-part`): `arrow-group` `pages` `page`
+- 이동 버튼 4개: data-s1-action=first(|< 이전 페이지 묶음) · previous(< 이전 페이지) · next(> 다음 페이지) · last(>| 다음 페이지 묶음). 이름 first·last 는 기존 마크업과 맞추려고 그대로 두었다 — 동작은 묶음 넘김이다.
+- 묶음 이동은 이전/다음 묶음의 첫 쪽으로 간다(component-behavior.pc.json Pagination). 첫 묶음에서 |<, 마지막 묶음에서 >| 가 막힌다. 번호는 한 묶음에 최대 6개.
 
 ## 값·옵션 속성
 
@@ -38,11 +40,11 @@
 ## 접근성 — 퍼블리셔가 지킬 것
 
 - **역할**: nav landmark with native buttons
-- **이름**: pagination nav and four arrows have Korean labels; pages include their number
+- **이름**: pagination nav 와 이동 버튼 4개에 한국어 이름 — 이전 페이지 묶음 · 이전 페이지 · 다음 페이지 · 다음 페이지 묶음; 번호 버튼은 쪽 번호를 포함한다
 - **키보드**: native Tab, Enter, and Space activation
-- **초점**: 브라우저 기본 포커스 표시를 그대로 쓴다 — 정본에 focus 표현이 없어 웹에서 만들지 않는다(2026-09-02 river 결정).
+- **초점**: 브라우저 기본 포커스 표시를 그대로 쓴다 — 정본에 focus 표현이 없어 웹에서 만들지 않는다(2026-09-02 river 결정). 단, 이동으로 눌린 버튼이 막히거나 번호 버튼이 다시 그려지면 초점을 현재 쪽 번호 버튼으로 옮겨 body 로 떨어지지 않게 한다.
 - **상태 표시**: runtime keeps aria-current=page, arrow disabled states, and current page label in sync
 
 ---
 
-정본 지문 `3df9b1f45e27908f0f7a57fb0fc2c8ab49fe9b2813e212ac4f75c1f930cd3a2c` · 부품 버전 0.2.4
+정본 지문 `3c065e580950a408cdec221e7bb4d802facbe15a6fb8faa981e29dd9019dd0e1` · 부품 버전 0.3.0

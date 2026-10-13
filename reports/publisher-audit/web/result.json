@@ -1,10 +1,10 @@
 {
   "tool": "scripts/publisher-audit/web.mjs",
-  "generatedAt": "2026-10-13T00:34:14.073Z",
+  "generatedAt": "2026-10-13T00:58:51.946Z",
   "package": {
     "zip": "assets/downloads/s1-ui-html-css-js.zip",
-    "version": "0.20.0",
-    "canonicalFingerprint": "783486db3584b2bbee00a5fc50150916a1ce3b48c92369ccf8d0e6c6a6d0fd8c",
+    "version": "0.21.0",
+    "canonicalFingerprint": "39e664b6eb97c6a20f8773b0ea73703654ae1e58aaab759b17f366335d9cfe17",
     "components": 32,
     "readmeStartSteps": [
       "1. 압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.",
@@ -38,8 +38,8 @@
   "summary": {
     "examplesChecked": 46,
     "broken": 0,
-    "friction": 1,
-    "note": 11,
+    "friction": 0,
+    "note": 12,
     "notChecked": [
       {
         "example": "divider.html",
@@ -106,7 +106,7 @@
     "mobileNaming": "pass",
     "examplesExist": "pass",
     "variantCoverage": "fail",
-    "attributeConsistency": "fail",
+    "attributeConsistency": "documented",
     "fontRendered": "fail",
     "darkWorks": "pass",
     "lintRuns": "pass",
@@ -409,20 +409,20 @@
   },
   "findings": [
     {
-      "id": "package:consistency-variant-attr",
-      "area": "consistency",
-      "severity": "friction",
-      "what": "'종류'를 고르는 속성 이름이 부품마다 7가지로 다릅니다. 퍼블리셔가 부품마다 따로 외워야 합니다.",
-      "evidence": "data-variant: button, chip, filter-chip, mobile-header, gnb, text-button, lnb | data-type: dropdown, bottom-sheet-option, list-row | data-footer: modal, modal-content, bottom-sheet | data-icon: mobile-bottom-nav | data-mode: date-picker | data-tone: data-tag | data-axis: divider",
-      "suggestedFix": "data-variant 로 통일하거나 README 에 부품별 속성 표 제공"
-    },
-    {
       "id": "package:coverage-documented",
       "area": "coverage",
       "severity": "note",
       "what": "예시에는 일부 종류·크기만 나옵니다(20건). 나머지는 속성 값만 바꾸면 되고, 쓸 수 있는 값은 각 부품 manifest.json 에 적혀 있습니다 — 다만 README 는 manifest 를 보라고 안내하지 않습니다.",
       "evidence": "input data-size: 예시 md / 빠짐 xxsm/xsm | button data-variant: 예시 primary / 빠짐 secondary/blue-line | button data-size: 예시 md/lg / 빠짐 xsm/xxsm | chip data-variant: 예시 line / 빠짐 solid | dropdown data-size: 예시 md / 빠짐 xxsm/xsm | select data-size: 예시 md / 빠짐 xxsm/xsm | filter-chip data-variant: 예시 line / 빠짐 solid | tab data-size: 예시 md/sm / 빠짐 xsm | multi-toggle data-size: 예시 md / 빠짐 sm/xsm | modal data-footer: 예시 dual / 빠짐 single | table data-size: 예시 md / 빠짐 sm/xsm | mobile-header data-variant: 예시 standard-title / 빠짐 home-title/home-title-subtitle/standard-title-close/standard-no-title/standard-no-title-close | time-picker data-size: 예시 md / 빠짐 xxsm/xsm | date-picker data-size: 예시 md/xsm / 빠짐 xxsm | gnb data-variant: 예시 start / 빠짐 center-between | gnb data-size: 예시 sm / 빠짐 md/xsm | text-button data-variant: 예시 primary / 빠짐 secondary | modal-content data-footer: 예시 dual / 빠짐 single | modal-content data-size: 예시 md / 빠짐 lg/xl | bottom-sheet data-footer: 예시 single / 빠짐 none/dual",
       "suggestedFix": "README 에 'variant·size 값 목록은 components/<id>.manifest.json' 안내, 또는 preview.html 에 값 표"
+    },
+    {
+      "id": "package:consistency-variant-attr",
+      "area": "consistency",
+      "severity": "note",
+      "what": "'종류'를 고르는 속성 이름이 부품마다 7가지로 다릅니다. — 안내로 해결: README 의 「종류를 고르는 속성」 표가 모든 부품·속성·값을 적어 두었습니다(이름은 정본 어휘 그대로 유지).",
+      "evidence": "data-variant: button, chip, filter-chip, mobile-header, gnb, text-button, lnb | data-type: dropdown, bottom-sheet-option, list-row | data-footer: modal, modal-content, bottom-sheet | data-icon: mobile-bottom-nav | data-mode: date-picker | data-tone: data-tag | data-axis: divider",
+      "suggestedFix": "표 유지 — 이름을 바꾸지 않기로 한 결정(river 2026-10-13)"
     },
     {
       "id": "package:consistency-size-values",
@@ -1292,6 +1292,12 @@
         },
         {
           "root": 1,
+          "name": "열리면 초점이 오늘 날짜 칸으로 간다",
+          "status": "pass",
+          "evidence": "초점 날짜=2026-10-13, 오늘=2026-10-13"
+        },
+        {
+          "root": 1,
           "name": "달력에 날짜 칸이 그려진다",
           "status": "pass",
           "evidence": "보이는 날짜 칸 35개"
@@ -1334,6 +1340,12 @@
         },
         {
           "root": 2,
+          "name": "열리면 초점이 오늘 날짜 칸으로 간다",
+          "status": "pass",
+          "evidence": "초점 날짜=2026-10-13, 오늘=2026-10-13"
+        },
+        {
+          "root": 2,
           "name": "달력에 날짜 칸이 그려진다",
           "status": "pass",
           "evidence": "보이는 날짜 칸 35개"
@@ -1373,6 +1385,12 @@
           "name": "트리거를 누르면 달력이 열린다",
           "status": "pass",
           "evidence": "aria-expanded=true, 달력 보임=true"
+        },
+        {
+          "root": 3,
+          "name": "열리면 초점이 오늘 날짜 칸으로 간다",
+          "status": "pass",
+          "evidence": "초점 날짜=2026-10-13, 오늘=2026-10-13"
         },
         {
           "root": 3,
@@ -1482,6 +1500,12 @@
           "name": "트리거를 누르면 달력이 열린다",
           "status": "pass",
           "evidence": "aria-expanded=true, 달력 보임=true"
+        },
+        {
+          "root": 1,
+          "name": "열리면 초점이 오늘 날짜 칸으로 간다",
+          "status": "pass",
+          "evidence": "초점 날짜=2026-10-13, 오늘=2026-10-13"
         },
         {
           "root": 1,
@@ -3565,6 +3589,24 @@
           "name": "Enter 키로 쪽을 고를 수 있다",
           "status": "pass",
           "evidence": "현재 쪽 표시=\"2\""
+        },
+        {
+          "root": 1,
+          "name": "이동 버튼 네 개의 이름이 묶음/쪽을 구분한다",
+          "status": "pass",
+          "evidence": "이름=[\"이전 페이지 묶음\",\"이전 페이지\",\"다음 페이지\",\"다음 페이지 묶음\"]"
+        },
+        {
+          "root": 1,
+          "name": ">| 는 다음 묶음의 첫 쪽으로 간다",
+          "status": "pass",
+          "evidence": "현재 쪽=\"7\", 번호 창=7,8,9,10,11,12"
+        },
+        {
+          "root": 1,
+          "name": "마지막 묶음에서는 >| 가 막히고 초점이 현재 쪽 번호에 남는다",
+          "status": "pass",
+          "evidence": ">| 막힘=true, 초점=BUTTON:page"
         }
       ],
       "componentCount": 1,
@@ -3629,8 +3671,8 @@
         ]
       },
       "keyboard": {
-        "expected": 8,
-        "reached": 8,
+        "expected": 7,
+        "reached": 7,
         "unreachable": 0,
         "noRing": 0
       },

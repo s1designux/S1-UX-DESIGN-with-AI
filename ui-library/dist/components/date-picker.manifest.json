@@ -1,8 +1,8 @@
 {
   "id": "date-picker",
-  "version": "0.2.12",
+  "version": "0.3.0",
   "status": "approved",
-  "canonicalFingerprint": "934945a7ce9d7a374389cebdee02db7ed5398ae19f6abef54428bffcc65cc409",
+  "canonicalFingerprint": "9739fe37156eac28dd467b2df2ddaabe1f7948e374c9acf08b71143a7ebd125f",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -307,7 +307,7 @@
     },
     "focus": {
       "status": "required",
-      "value": "PC 팝오버가 열리면 격자의 첫 활성 셀로 포커스 이동, 닫히면 트리거로 복귀. Mobile 시트는 열리면 시트 안으로, 닫히면 트리거로 복귀(모달과 동일 패턴, 별도 focus trap은 시트 안에서 Esc·배경·닫기로만 닫히는 단순 계약)"
+      "value": "열리면 키보드 초점이 달력의 날짜 칸으로 간다 — 골라 둔 날짜(기간이면 시작일), 없으면 오늘, 오늘이 보이는 달에 없으면 그 달의 1일(막힌 날이면 그 달의 첫 선택 가능 날짜). PC 팝오버와 모바일 시트가 같은 규칙이다(river 2026-10-13 '-> 추천안으로'). 닫히면 트리거로 복귀. 모바일 시트는 시트 안에서 Esc·배경·닫기로만 닫히는 단순 계약(모달과 같은 패턴)."
     },
     "ariaStateSync": {
       "status": "required",
@@ -356,5 +356,5 @@
       "data-name": "폼 전송용 숨은 입력의 name (단일: name · 기간: name-start, name-end)"
     }
   },
-  "sourceFingerprint": "daab71f42a1a93c80bc6d32153f75867e63ff3e46af59c1db73447fbd135b32e"
+  "sourceFingerprint": "4c260076fd28b1ed0ec0bc1ce2cb82b569abce4b10db7841004736cff90f220a"
 }

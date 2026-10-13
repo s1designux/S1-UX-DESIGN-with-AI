@@ -657,8 +657,18 @@ function packageStatic(pkgDir, manifest, readme, contract, exampleFiles) {
     const byAttr = {};
     for (const c of contract.components) if (c.variantAttribute) (byAttr[c.variantAttribute] ||= []).push(c.id);
     const axes = Object.keys(byAttr);
-    checks.attributeConsistency = axes.length > 2 ? "fail" : "pass";
-    if (axes.length > 2) add("consistency-variant-attr", "consistency", "friction", `'종류'를 고르는 속성 이름이 부품마다 ${axes.length}가지로 다릅니다. 퍼블리셔가 부품마다 따로 외워야 합니다.`, axes.map((a) => `${a}: ${byAttr[a].join(", ")}`).join(" | "), "data-variant 로 통일하거나 README 에 부품별 속성 표 제공");
+    /* README 의 「종류를 고르는 속성」 표가 모든 부품·속성·값을 적어 두었으면 이름이 달라도 찾을 수 있다 — 안내로 해결 */
+    const undocumentedKinds = [];
+    for (const c of contract.components) {
+      if (!c.variantAttribute || (c.variants || []).length < 2) continue;
+      for (const value of c.variants) {
+        const row = new RegExp(`\\|\\s*${c.id.replace(/[-]/g, "\\-")}\\s*\\|\\s*\`${c.variantAttribute}\`\\s*\\|\\s*\`${String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\`\\s*\\|`);
+        if (!row.test(readme)) undocumentedKinds.push(`${c.id} ${c.variantAttribute}=${value}`);
+      }
+    }
+    const kindsDocumented = undocumentedKinds.length === 0;
+    checks.attributeConsistency = axes.length > 2 ? (kindsDocumented ? "documented" : "fail") : "pass";
+    if (axes.length > 2) add("consistency-variant-attr", "consistency", kindsDocumented ? "note" : "friction", `'종류'를 고르는 속성 이름이 부품마다 ${axes.length}가지로 다릅니다.${kindsDocumented ? " — 안내로 해결: README 의 「종류를 고르는 속성」 표가 모든 부품·속성·값을 적어 두었습니다(이름은 정본 어휘 그대로 유지)." : ` README 표에 빠진 것: ${undocumentedKinds.slice(0, 8).join(", ")}`}`, axes.map((a) => `${a}: ${byAttr[a].join(", ")}`).join(" | "), kindsDocumented ? "표 유지 — 이름을 바꾸지 않기로 한 결정(river 2026-10-13)" : "README 에 부품별 속성·값 표 제공");
     const odd = contract.components.filter((c) => (c.sizes || []).some((s) => /^\d+$/.test(s)));
     if (odd.length) add("consistency-size-values", "consistency", "note", "크기 값 이름 규칙이 섞여 있습니다 — 대부분 xxsm·xsm·sm·md·lg 인데 숫자로 된 것이 있습니다.", odd.map((c) => `${c.id}: ${c.sizes.join("/")}`).join(" | "), "크기 이름 규칙 통일");
     const breakMixed = [];

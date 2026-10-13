@@ -485,32 +485,33 @@
         },
         {
           "on": "click",
-          "target": "first",
-          "result": "move to page 1"
+          "target": "|< (data-s1-action=first)",
+          "result": "move to the first page of the previous block (river 2026-10-13: 묶음 넘김)"
         },
         {
           "on": "click",
-          "target": "previous block",
-          "result": "move to the first page of the previous block"
+          "target": "< (data-s1-action=previous)",
+          "result": "move one page back; crossing a block edge moves the number window"
         },
         {
           "on": "click",
-          "target": "next block",
-          "result": "move to the first page of the next block"
+          "target": "> (data-s1-action=next)",
+          "result": "move one page forward; crossing a block edge moves the number window"
         },
         {
           "on": "click",
-          "target": "last",
-          "result": "move to the final page"
+          "target": ">| (data-s1-action=last)",
+          "result": "move to the first page of the next block (river 2026-10-13: 묶음 넘김)"
         }
       ],
       "constraints": [
         "show at most 6 page numbers per block",
-        "disable unavailable edge/block actions",
-        "single-page mode disables all navigation actions"
+        "disable unavailable edge/block actions: |< is disabled in the first block and >| in the last block; < is disabled on page 1 and > on the last page",
+        "single-page mode disables all navigation actions",
+        "focus stays on the current page number button when a pressed button becomes disabled or the number buttons are redrawn"
       ],
       "keyboard": "native-button",
-      "focus": "native-button",
+      "focus": "native-button; after a move the focus stays on (or returns to) the current page number button",
       "accessibility": {
         "pageNumber": "aria-label includes the page number and marks the current page in its accessible name"
       }
@@ -565,7 +566,7 @@
         "EnterOrSpace": "select focused day"
       },
       "focus": {
-        "onOpen": "focus the first enabled day",
+        "onOpen": "focus the selected day (range: the start day); if none, today; if today is not in the displayed month, the 1st of that month (river 2026-10-13). Same for the mobile sheet",
         "onEscape": "return to input"
       },
       "accessibility": {

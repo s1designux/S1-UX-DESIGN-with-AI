@@ -478,6 +478,22 @@ export function init(root) {
   // F-4: 등록과 동일 참조로 제거하기 위한 named handler.
   const handleSheetCloseClick = () => close();
 
+  /* 열릴 때 키보드 초점 — 골라 둔 날짜, 없으면 오늘(기간이면 시작일). 오늘이 보이는 달에 없으면 그 달의 1일.
+     (river 결정 2026-10-13 '-> 추천안으로': 「골라 둔 날짜, 없으면 오늘」) 막힌 날이면 그 달의 첫 선택 가능 날짜로 간다. */
+  const initialFocusDate = () => {
+    const reference = s.mode === "single" ? s.selected : s.selected?.start;
+    if (reference) return reference;
+    if (s.today.getFullYear() === s.viewYear && s.today.getMonth() === s.viewMonth) return s.today;
+    return new Date(s.viewYear, s.viewMonth, 1);
+  };
+  const focusInitialCell = () => {
+    const iso = toISO(initialFocusDate());
+    const cell = container.querySelector(`[data-s1-part="cell"][data-date="${iso}"]:not(:disabled)`)
+      ?? container.querySelector('[data-s1-part="cell"][data-other-month="false"]:not(:disabled)')
+      ?? container.querySelector('[data-s1-part="cell"]:not(:disabled)');
+    cell?.focus();
+  };
+
   const open = () => {
     if (trigger.disabled || isOpen(root, trigger)) return;
     trigger.setAttribute("aria-expanded", "true");
@@ -491,10 +507,10 @@ export function init(root) {
       document.addEventListener("pointerdown", handleOutsidePointer, true);
       window.addEventListener("scroll", handleReposition, true);
       window.addEventListener("resize", handleReposition);
-      const firstCell = container.querySelector('[data-s1-part="cell"]:not(:disabled)');
-      firstCell?.focus();
+      focusInitialCell();
     } else if (brk === "mobile" && sheet) {
       openSheet();
+      focusInitialCell();
     }
     root.dispatchEvent(new CustomEvent("s1:date-picker:open", { bubbles: true, detail: {} }));
   };

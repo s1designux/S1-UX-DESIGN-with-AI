@@ -1439,7 +1439,7 @@ agent:
       ArrowDown: "next week"
       EnterOrSpace: "select focused day"
     focus:
-      onOpen: "focus the first enabled day"
+      onOpen: "focus the selected day (range: the start day); if none, today; if today is not in the displayed month, the 1st of that month (river 2026-10-13). Same for the mobile sheet"
       onEscape: "return to input"
     accessibility:
       expanded: "synchronize aria-expanded on input and calendar action"
@@ -1624,6 +1624,7 @@ _Don't_
 **접근성 (a11y)**
 - 날짜 셀은 키보드 이동이 가능해야 하고 선택 셀에 aria-selected 를 준다.
 - 비활성 날짜는 aria-disabled 로 표시한다.
+- 열릴 때 키보드 초점 규칙(river 2026-10-13, 질문 '키보드로 달력을 열 때 초점이 어디로 갈까요? 추천은 골라 둔 날짜, 없으면 오늘' 에 '-> 추천안으로'): 골라 둔 날짜(기간이면 시작일) → 없으면 오늘 → 오늘이 보이는 달에 없으면 그 달의 1일. PC 팝오버와 모바일 시트 모두 같다.
 
 ### Divider
 
@@ -4102,7 +4103,7 @@ _Don't_
 
 ### Pagination
 
-페이지네이션 컨트롤. 화살표(first/prev/next/last) + 페이지 번호. 선택 페이지는 텍스트 색으로만 구분.
+페이지네이션 컨트롤. 이동 버튼 4개(|< 이전 페이지 묶음 · < 이전 페이지 · > 다음 페이지 · >| 다음 페이지 묶음) + 페이지 번호. 선택 페이지는 텍스트 색으로만 구분.
 
 **언제 쓰나**
 - 긴 목록·표를 페이지로 나눠 이동할 때.
@@ -4115,7 +4116,7 @@ _Don't_
 
 | 요소 | 역할 |
 | --- | --- |
-| 화살표 | first/prev/next/last 이동. |
+| 화살표 | 이동 버튼 4개 — |<(이전 페이지 묶음) <(이전 페이지) >(다음 페이지) >|(다음 페이지 묶음). |
 | 페이지 번호 | 현재 페이지는 텍스트 색으로만 구분. |
 
 | variant | default | hover | selected | disabled |
@@ -4157,26 +4158,27 @@ agent:
         result: "set the current page and rerender the current number block"
       -
         on: "click"
-        target: "first"
-        result: "move to page 1"
+        target: "|< (data-s1-action=first)"
+        result: "move to the first page of the previous block (river 2026-10-13: 묶음 넘김)"
       -
         on: "click"
-        target: "previous block"
-        result: "move to the first page of the previous block"
+        target: "< (data-s1-action=previous)"
+        result: "move one page back; crossing a block edge moves the number window"
       -
         on: "click"
-        target: "next block"
-        result: "move to the first page of the next block"
+        target: "> (data-s1-action=next)"
+        result: "move one page forward; crossing a block edge moves the number window"
       -
         on: "click"
-        target: "last"
-        result: "move to the final page"
+        target: ">| (data-s1-action=last)"
+        result: "move to the first page of the next block (river 2026-10-13: 묶음 넘김)"
     constraints:
       - "show at most 6 page numbers per block"
-      - "disable unavailable edge/block actions"
+      - "disable unavailable edge/block actions: |< is disabled in the first block and >| in the last block; < is disabled on page 1 and > on the last page"
       - "single-page mode disables all navigation actions"
+      - "focus stays on the current page number button when a pressed button becomes disabled or the number buttons are redrawn"
     keyboard: "native-button"
-    focus: "native-button"
+    focus: "native-button; after a move the focus stays on (or returns to) the current page number button"
     accessibility:
       pageNumber: "aria-label includes the page number and marks the current page in its accessible name"
   geometry:
@@ -4259,7 +4261,8 @@ _Don't_
 
 **접근성 (a11y)**
 - 현재 페이지에 aria-current 를 준다.
-- 화살표 버튼에 이전·다음 등 aria-label 을 단다.
+- 이동 버튼 4개에 aria-label 을 단다 — "이전 페이지 묶음" · "이전 페이지" · "다음 페이지" · "다음 페이지 묶음".
+- 묶음·쪽 이동으로 눌린 버튼이 막히거나 번호 버튼이 다시 그려져도 초점은 현재 쪽 번호 버튼에 남긴다(body 로 떨어지지 않는다).
 
 ### Radio
 
@@ -5601,4 +5604,4 @@ DESIGN_SYSTEM_GAP:
 - 적용 해석 순서(뒤가 앞을 덮음): core → service(extends core) → role → platform → theme. 기본값: service=core · role=user · platform=web · theme=light.
 - 서비스 분기(예: vms 영상관제)는 core 를 상속하고 차이분만 덮는다.
 
-<!-- generated-stamp: 75ec343b9b40 · 손편집 금지 -->
+<!-- generated-stamp: d5335471ccca · 손편집 금지 -->

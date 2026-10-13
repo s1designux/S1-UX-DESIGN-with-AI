@@ -119,6 +119,10 @@ function webGuideMd() {
     const files = [...new Set(Object.values(component.examples ?? { pc: component.example }))];
     return `| ${component.id} | S1${pascal(component.id)} | ${files.map((file) => `\`${file}\``).join(' ')} | \`components/${component.id}.md\` |`;
   }).join('\n');
+  /* 종류를 고르는 속성 표 — 속성 이름은 부품마다 다르다(정본 어휘 그대로). 배포본 manifest 의 kindAttributes(src/kind-attributes.json, 계약과 대조됨)에서 만든다. */
+  const kindRows = manifest.components.flatMap((component) => (component.kindAttributes ?? []).flatMap((kind) => Object.entries(kind.values).map(([value, meaning]) => `| ${component.id} | \`${kind.attribute}\` | \`${value}\` | ${meaning} |`))).join('\n');
+  const kindNames = [...new Set(manifest.components.flatMap((component) => (component.kindAttributes ?? []).map((kind) => kind.attribute)))];
+  const kindByName = kindNames.map((name) => `| \`${name}\` | ${manifest.components.filter((component) => (component.kindAttributes ?? []).some((kind) => kind.attribute === name)).map(({ id }) => id).join(', ')} |`).join('\n');
   const font = manifest.fontDependencies[0].source;
   const [tokensCss, typographyCss] = manifest.commonCssDependencies;
   const baseCss = (manifest.optionalCssDependencies ?? [])[0]?.file ?? 's1-ui.base.css';
@@ -189,6 +193,18 @@ const api = toggle.init(document.querySelector('[data-s1-component="toggle"]'));
 ### 모바일
 
 모바일용 마크업은 \`*.mobile.html\` 입니다(비밀번호·검색 입력도 \`examples/input.password.mobile.html\` · \`examples/input.search.mobile.html\` 처럼 같은 규칙입니다). 모바일에만 쓰는 부품은 PC 용 파일이 따로 없고 파일 이름에 \`.mobile\` 이 붙습니다: **${mobileOnly.join(' · ')}**.
+
+### 종류(모양)를 고르는 속성 — 부품마다 이름이 다릅니다
+
+부품의 종류를 고르는 속성 이름은 정본의 어휘 그대로라 하나로 통일하지 않았습니다. 아래 표에서 부품의 속성과 값을 찾으세요(부품별 설명서 \`components/<이름>.md\` 에도 같은 표가 있습니다).
+
+| 속성 | 쓰는 부품 |
+|---|---|
+${kindByName}
+
+| 부품 | 속성 | 값 | 모양·쓰임 |
+|---|---|---|---|
+${kindRows}
 
 ### 부품 목록 (${count}종)
 

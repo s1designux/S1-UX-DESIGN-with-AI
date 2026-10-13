@@ -18,13 +18,16 @@
 2. 겉모습: 전체 묶음 `s1-ui.css` 한 줄이면 됩니다. 이 부품만 쓰려면 `assets/css/tokens.css` · `assets/css/typography.css` · `components/checkbox.css` · `components/radio.css` · `components/bottom-sheet-option.css` 를 읽습니다.
 3. 동작(JS)은 필요 없습니다 — 마크업과 CSS 만으로 동작합니다.
 
-## 고르는 속성
+## 종류를 고르는 속성
 
-| 속성 | 뜻 | 쓸 수 있는 값 |
+이 부품의 종류(모양)는 아래 속성으로 고릅니다. 속성 이름은 부품마다 다릅니다 — 정본 어휘 그대로라 바꾸지 않고 표로 안내합니다.
+
+| 속성 | 값 | 모양·쓰임 |
 |---|---|---|
-| `data-type` | 종류 | `text` `checkbox` `radio` `list` |
-
-예시에는 일부 값만 나옵니다. 다른 값은 속성 값만 바꾸면 됩니다.
+| `data-type` | `text` | 글자만 있는 한 줄 — 고른 줄 오른쪽에 파란 체크 |
+| `data-type` | `checkbox` | 왼쪽에 체크박스 — 여러 개 고르기 |
+| `data-type` | `radio` | 왼쪽에 동그라미 라디오 — 하나만 고르기 |
+| `data-type` | `list` | 왼쪽 아바타 + 제목/서브 두 줄 + 오른쪽 화살표(비활성이면 자물쇠) — 사람·항목 목록 |
 
 ## 마크업 규칙
 
