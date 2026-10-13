@@ -5957,19 +5957,16 @@ sheet.addEventListener("keydown", (e) =&gt; {
 group.addEventListener("s1:chip:change", (e) =&gt; {
   if (e.detail.selected) loadList(e.target.textContent.trim());
 });
-&lt;/script&gt;</code></pre></figure><figure class="code"><figcaption><span><span class="tag tag-b">B</span> 지금: 화면이 직접</span> <span class="count">17줄</span></figcaption><pre><code>&lt;div class="chips" role="group" aria-label="분류"&gt;
+&lt;/script&gt;</code></pre></figure><figure class="code"><figcaption><span><span class="tag tag-b">B</span> 지금: 화면이 직접</span> <span class="count">14줄</span></figcaption><pre><code>&lt;div class="chips" role="group" aria-label="분류"&gt;
   &lt;button data-s1-component="chip" … aria-pressed="true"&gt;…전체&lt;/button&gt; …
 &lt;/div&gt;
 &lt;script&gt;
 const group = document.querySelector(".chips");
-group.addEventListener("s1:chip:change", (e) =&gt; {
-  const chip = e.target;
-  if (!e.detail.selected) {            // 켜진 걸 다시 눌러 꺼지면 되살린다
-    S1UI.chip.init(chip).set(true);
-    return;
-  }
-  group.querySelectorAll('[data-s1-component="chip"]').forEach((other) =&gt; {
-    if (other !== chip) S1UI.chip.init(other).set(false);
+group.addEventListener("click", (e) =&gt; {
+  const chip = e.target.closest('[data-s1-component="chip"]');
+  if (!chip || chip.disabled) return;
+  group.querySelectorAll('[data-s1-component="chip"]').forEach((c) =&gt; {
+    S1UI.chip.init(c).set(c === chip);   // 누른 것만 켜고 나머지는 끈다
   });
   loadList(chip.textContent.trim());
 });
@@ -5980,7 +5977,7 @@ group.addEventListener("s1:chip:change", (e) =&gt; {
     <thead><tr><th>따져볼 점</th><th><span class="tag tag-a">A</span> 부품이 알아서</th><th><span class="tag tag-b">B</span> 지금: 화면이 직접</th></tr></thead>
     <tbody><tr><th>서비스마다 똑같이 동작</th><td><span class="mark good">○</span> 필터 칩이 어디서나 같은 규칙(항상 하나는 켜짐)으로 움직입니다</td><td><span class="mark bad">✕</span> ‘다 꺼져도 되나’ 같은 규칙이 화면마다 달라집니다</td></tr><tr><th>예외 처리</th><td><span class="mark good">○</span> 여러 개 켜는 칩은 표시를 안 달면 지금처럼 동작합니다</td><td><span class="mark good">○</span> 자유롭습니다</td></tr><tr><th>키보드·화면 낭독</th><td><span class="mark mid">△</span> ‘하나만 고르는 묶음’이라고 알려주는 건 부품이 챙길 수 있습니다. 칩 사이 ↑↓ 이동은 따로 정해야 합니다</td><td><span class="mark bad">✕</span> 묶음 성격을 알리는 걸 화면마다 챙겨야 합니다</td></tr><tr><th>이미 만든 화면</th><td><span class="mark good">○</span> 표시를 단 묶음만 바뀝니다</td><td><span class="mark good">○</span> 바뀌는 것 없음</td></tr><tr><th>React·Vue·앱(RN)</th><td><span class="mark mid">△</span> React·Vue 는 ‘묶음 부품’을 새로 하나 만들어야 깔끔합니다. 지금처럼 부품이 화면 몰래 켜고 끄면 React 가 가진 값과 어긋날 수 있습니다. 앱은 앱 쪽 켜고 끄기 동작에 묶음 규칙을 더해야 합니다</td><td><span class="mark mid">△</span> 각자 매번 짭니다</td></tr></tbody>
   </table></div>
-  <div class="rec"><b>추천: 켜는 표시를 달면 A</b> — 기본을 바꾸면 여러 개 켜는 칩 화면이 깨집니다. 묶음에 <code class="i">data-s1-select="single"</code> 를 단 경우에만 하나만 켜지게 하면 위험 없이 코드가 17줄 → 8줄로 줄어듭니다.</div>
+  <div class="rec"><b>추천: 켜는 표시를 달면 A</b> — 기본을 바꾸면 여러 개 켜는 칩 화면이 깨집니다. 묶음에 <code class="i">data-s1-select="single"</code> 를 단 경우에만 하나만 켜지게 하면 위험 없이 코드가 14줄 → 8줄로 줄어듭니다.</div>
 
   <!-- ─────────────── 3 ─────────────── -->
   <h2>③ 모바일 하단 탭</h2>
@@ -6080,7 +6077,7 @@ nav.addEventListener("click", (e) =&gt; {
     <li><b>칩 하나만 켜기</b> — A(늘 하나만) / B(지금대로) / <b>표시를 단 묶음만 A</b> 중 어느 것으로 할지. 안 정하면 칩은 하나씩 따로 켜지고 꺼집니다.</li>
     <li><b>모바일 하단 탭</b> — A / <b>B(지금대로)</b> / 표시를 단 바만 A 중 어느 것으로 할지. 안 정하면 지금처럼 보고 있는 페이지가 탭을 켭니다.</li>
   </ol>
-  <p class="note">A 쪽 폰은 이 페이지 안의 시연 코드로 움직입니다. 라이브러리에는 아직 없습니다. 고르시면 웹부터 만들고, React·Vue·앱은 그다음 차례입니다. 배포본 0.20.0 기준.</p>
+  <p class="note">A 쪽 폰은 이 페이지 안의 시연 코드로 움직입니다. 라이브러리에는 아직 없습니다. 고르시면 웹부터 만들고, React·Vue·앱은 그다음 차례입니다. 배포본 0.21.0 기준.</p>
 </main>
 
 <script>
@@ -6964,8 +6961,13 @@ var S1UI = (() => {
     }
     pages.replaceChildren(fragment);
   }
+  var blockOf = (page, windowSize) => Math.floor((page - 1) / windowSize);
+  var blockCount = (root, windowSize) => Math.max(1, Math.ceil(total(root) / windowSize));
+  var BLOCK_LABELS = { first: "\uC774\uC804 \uD398\uC774\uC9C0 \uBB36\uC74C", last: "\uB2E4\uC74C \uD398\uC774\uC9C0 \uBB36\uC74C" };
+  var LEGACY_LABELS = /* @__PURE__ */ new Set(["", "\uCCAB \uD398\uC774\uC9C0", "\uB9C8\uC9C0\uB9C9 \uD398\uC774\uC9C0"]);
   function setPage(root, page, windowSize, template) {
     const next = Math.max(1, Math.min(total(root), Number(page) || 1));
+    const focusWasInside = root.contains(document.activeElement) && document.activeElement !== root;
     root.dataset.page = String(next);
     renderWindow(root, next, windowSize, template);
     for (const button of pageButtons(root)) {
@@ -6974,10 +6976,18 @@ var S1UI = (() => {
       if (selected) button.setAttribute("aria-current", "page");
       button.setAttribute("aria-label", selected ? `${button.dataset.page}\uD398\uC774\uC9C0, \uD604\uC7AC \uD398\uC774\uC9C0` : `${button.dataset.page}\uD398\uC774\uC9C0`);
     }
+    const block = blockOf(next, windowSize);
+    const lastBlock = blockCount(root, windowSize) - 1;
     for (const button of root.querySelectorAll("[data-s1-action]")) {
       const action = button.dataset.s1Action;
-      button.disabled = action === "first" || action === "previous" ? next <= 1 : next >= total(root);
+      if (action === "first") button.disabled = block <= 0;
+      else if (action === "last") button.disabled = block >= lastBlock;
+      else if (action === "previous") button.disabled = next <= 1;
+      else button.disabled = next >= total(root);
+      if (BLOCK_LABELS[action] && LEGACY_LABELS.has((button.getAttribute("aria-label") ?? "").trim())) button.setAttribute("aria-label", BLOCK_LABELS[action]);
     }
+    if (focusWasInside && !root.contains(document.activeElement)) root.querySelector('[aria-current="page"]')?.focus();
+    else if (focusWasInside && document.activeElement?.disabled) root.querySelector('[aria-current="page"]')?.focus();
     root.dispatchEvent(new CustomEvent("s1:pagination:change", { bubbles: true, detail: { page: next, totalPages: total(root) } }));
   }
   function init8(root) {
@@ -6993,10 +7003,10 @@ var S1UI = (() => {
       const action = button.dataset.s1Action;
       const now = current(root);
       if (button.dataset.page) go(button.dataset.page);
-      else if (action === "first") go(1);
+      else if (action === "first") go((blockOf(now, windowSize) - 1) * windowSize + 1);
       else if (action === "previous") go(now - 1);
       else if (action === "next") go(now + 1);
-      else if (action === "last") go(total(root));
+      else if (action === "last") go((blockOf(now, windowSize) + 1) * windowSize + 1);
     };
     root.addEventListener("click", onClick);
     go(current(root));
@@ -8399,6 +8409,17 @@ var S1UI = (() => {
       }
     };
     const handleSheetCloseClick = () => close();
+    const initialFocusDate = () => {
+      const reference = s.mode === "single" ? s.selected : s.selected?.start;
+      if (reference) return reference;
+      if (s.today.getFullYear() === s.viewYear && s.today.getMonth() === s.viewMonth) return s.today;
+      return new Date(s.viewYear, s.viewMonth, 1);
+    };
+    const focusInitialCell = () => {
+      const iso = toISO(initialFocusDate());
+      const cell = container.querySelector(`[data-s1-part="cell"][data-date="${iso}"]:not(:disabled)`) ?? container.querySelector('[data-s1-part="cell"][data-other-month="false"]:not(:disabled)') ?? container.querySelector('[data-s1-part="cell"]:not(:disabled)');
+      cell?.focus();
+    };
     const open = () => {
       if (trigger.disabled || isOpen4(root, trigger)) return;
       trigger.setAttribute("aria-expanded", "true");
@@ -8412,10 +8433,10 @@ var S1UI = (() => {
         document.addEventListener("pointerdown", handleOutsidePointer, true);
         window.addEventListener("scroll", handleReposition, true);
         window.addEventListener("resize", handleReposition);
-        const firstCell = container.querySelector('[data-s1-part="cell"]:not(:disabled)');
-        firstCell?.focus();
+        focusInitialCell();
       } else if (brk === "mobile" && sheet) {
         openSheet();
+        focusInitialCell();
       }
       root.dispatchEvent(new CustomEvent("s1:date-picker:open", { bubbles: true, detail: {} }));
     };
@@ -9795,10 +9816,10 @@ S1UI.autoInit();
       out.innerHTML = "켜진 칩: <b>" + (on.join(", ") || "없음") + "</b><br>" + verdict;
     }
     if (phone.dataset.mode === "a" && group.getAttribute("data-s1-select") === "single") {
-      group.addEventListener("s1:chip:change", function (e) {
-        var chip = e.target;
-        if (!e.detail.selected) { S1UI.chip.init(chip).set(true); return; }
-        chips.forEach(function (o) { if (o !== chip) S1UI.chip.init(o).set(false); });
+      group.addEventListener("click", function (e) {
+        var chip = e.target.closest('[data-s1-component="chip"]');
+        if (!chip || chip.disabled) return;
+        chips.forEach(function (c) { S1UI.chip.init(c).set(c === chip); });
       });
     }
     group.addEventListener("click", function () { setTimeout(read, 0); });
