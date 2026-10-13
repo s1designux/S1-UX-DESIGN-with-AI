@@ -27,7 +27,7 @@ export default function S1Toggle({ parts, className, style, ...rest }) {
     const root = rootRef.current;
     if (!root) return undefined;
     init(root);
-    return () => destroy(root);
+    return () => { destroy(root); };
   }, []);
 
   return (

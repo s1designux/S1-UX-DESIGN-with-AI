@@ -324,7 +324,7 @@ class Emitter {
     if (part && !isTemplate) pieces.push(`{...(${scope.slotAttrs(part)} ?? {})}`);
     if (isTemplate) pieces.push(`{...${scope.attrs()}}`);
     if (node === this.controlNode) pieces.push("{...controlProps}");
-    if (isRoot && this.defaultOpen) pieces.push("hidden={open ? undefined : true}");
+    if (isRoot && this.defaultOpen) pieces.push("hidden={initialOpen ? undefined : true}");
     if (isRoot) pieces.push("ref={rootRef}", "className={className}", "style={style}", "{...rest}");
     if (isTemplate) pieces.push(`key={keyOf(item${scope.depth}, index${scope.depth})}`);
     if (leaf && !part && isTextOnly(node) && node.children.length) pieces.push(`{...(${leaf.attrs} ?? {})}`);
@@ -568,15 +568,25 @@ ${controlProps.filter((name) => name !== "inputRef").map((name) => `  if (${name
   if (inputRef !== undefined) controlProps.ref = inputRef;
 ` : "";
 
+  const defaultOpen = manifest.htmlContract?.platformDefaultOpen === true;
   const runtimeEffect = jsRequired ? `
   /* 배포본의 실제 동작 스크립트를 그대로 쓴다 — 브라우저에서만 돈다(서버 렌더링은 마크업까지). */
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return undefined;
-    init(root);
-    return () => destroy(root);
+    ${defaultOpen ? "apiRef.current = init(root);" : "init(root);"}
+    return () => { ${defaultOpen ? "apiRef.current = null; " : ""}destroy(root); };
   }, [${breaks.length > 1 ? "breakName" : ""}]);
-` : "";
+${defaultOpen ? `
+  /* open 이 바뀌면 배포본 api 로 열고 닫는다(스크롤 잠금·초점·Esc·onOpen/onClose 가 함께 따라온다).
+     첫 그리기는 건너뛴다 — 기본(보임)은 마크업 그대로다. hidden 은 처음 값만 쓰고 이후는 api 가 바꾼다. */
+  useEffect(() => {
+    if (!openSeen.current) { openSeen.current = true; return; }
+    const api = apiRef.current;
+    if (!api) return;
+    if (open) api.open(); else api.close();
+  }, [open]);
+` : ""}` : "";
 
   const eventEffect = events.length === 0 ? "" : `
   useEffect(() => {
@@ -617,7 +627,7 @@ function assertAllowed(label, value, allowed) {
 export default function ${componentName}({ ${propNames.join(", ")} }) {
   const uid = useId();
   const rootRef = useRef(null);
-  const partScope = scopeOf(parts);
+${defaultOpen ? "  const apiRef = useRef(null);\n  const openSeen = useRef(false);\n  const initialOpen = useRef(open).current;\n" : ""}  const partScope = scopeOf(parts);
 ${variants.length > 1 ? `  assertAllowed("variant", variant, VARIANTS);\n` : ""}${sizes.length > 1 ? `  assertAllowed("size", size, SIZES);\n` : ""}${breaks.length > 1 ? `  assertAllowed("breakName", breakName, BREAKS);\n` : ""}${controlBlock}${runtimeEffect}${eventEffect}
 ${renderSource}
 }

@@ -44,7 +44,7 @@ export default function S1Input({ size, breakName = DEFAULT_BREAK, parts, value,
     const root = rootRef.current;
     if (!root) return undefined;
     init(root);
-    return () => destroy(root);
+    return () => { destroy(root); };
   }, [breakName]);
 
   useEffect(() => {

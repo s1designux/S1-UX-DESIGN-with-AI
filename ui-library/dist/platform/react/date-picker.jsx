@@ -30,7 +30,7 @@ export default function S1DatePicker({ variant, size, breakName = DEFAULT_BREAK,
     const root = rootRef.current;
     if (!root) return undefined;
     init(root);
-    return () => destroy(root);
+    return () => { destroy(root); };
   }, [breakName]);
 
   useEffect(() => {

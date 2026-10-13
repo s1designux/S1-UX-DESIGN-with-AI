@@ -16,7 +16,12 @@
       "canonicalFingerprint": "783486db3584b2bbee00a5fc50150916a1ce3b48c92369ccf8d0e6c6a6d0fd8c",
       "components": [],
       "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
-      "deliveryFingerprint": "8c36c76b63e8298583976f187926273b7a9ead4893bcd34a88ee11c9d911902f"
+      "deliveryFingerprint": "b8fcf23fbd46a8a42aee6da8090608896f8864340209b570844dbc0440d9947d",
+      "changes": [
+        "Vue 껍데기가 인스턴스마다 안쪽 id(와 그것을 가리키는 aria-*·for·data-s1-open)에 접두사를 붙입니다 — 한 페이지에 같은 껍데기를 여러 개 놓아도 id 가 겹치지 않습니다.",
+        "RN·React·Vue 의 bottom-sheet 껍데기에 open 속성이 생겼습니다(기본 true — 처음부터 보임, open={false} 로 닫음). 열고 닫을 때 스크롤 잠금·초점·Esc 가 배포본 api 로 함께 따라옵니다.",
+        "웹: 모달·바텀시트 열기/닫기 속성(data-s1-open·data-s1-close), 창 안 Esc 는 맨 위 한 겹만 닫기, 페이지네이션 번호 창·총 쪽수, 셀렉트·달력·시간 값 읽기/넣기/폼 전송(data-name), GNB 하위메뉴 겹쳐 뜨기, 부품별 설명서(components/*.md)·README 보강."
+      ]
     },
     {
       "version": "0.19.0",
@@ -1910,5 +1915,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "8c36c76b63e8298583976f187926273b7a9ead4893bcd34a88ee11c9d911902f"
+  "deliveryFingerprint": "b8fcf23fbd46a8a42aee6da8090608896f8864340209b570844dbc0440d9947d"
 }

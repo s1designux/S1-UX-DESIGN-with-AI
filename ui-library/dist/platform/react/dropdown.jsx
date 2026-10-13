@@ -32,7 +32,7 @@ export default function S1Dropdown({ variant, size, parts, options, onChange, cl
     const root = rootRef.current;
     if (!root) return undefined;
     init(root);
-    return () => destroy(root);
+    return () => { destroy(root); };
   }, []);
 
   useEffect(() => {

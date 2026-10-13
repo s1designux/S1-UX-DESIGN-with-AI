@@ -29,7 +29,7 @@ export default function S1Modal({ variant, breakName = DEFAULT_BREAK, parts, onO
     const root = rootRef.current;
     if (!root) return undefined;
     init(root);
-    return () => destroy(root);
+    return () => { destroy(root); };
   }, [breakName]);
 
   useEffect(() => {

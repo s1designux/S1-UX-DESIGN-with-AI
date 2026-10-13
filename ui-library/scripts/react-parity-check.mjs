@@ -246,7 +246,85 @@ for (const component of approved) {
   if (shared.length) capability.push(`${component.id}: 두 번 놓으면 id 가 겹칩니다 (${shared.join(", ")}).`);
 }
 
-if (failures.length || capability.length) {
+
+/* ── 3단계: open 속성이 배포본 api 를 실제로 부르는가 ───────────────────────────
+   bottom-sheet 껍데기의 open 은 hidden 만 바꾸면 안 된다 — 닫을 때 스크롤 잠금이 풀리고, 열 때 잠금·초점·Esc·onOpen 이
+   따라오려면 init 이 돌려준 api.open()/close() 를 불러야 한다. 훅이 실제로 돌고 다시 그려지는 작은 대역으로 시험한다.
+   첫 그리기는 건너뛴다(기본 보임은 마크업 그대로). */
+const STATEFUL_SHIM = `
+let current = null;
+export const Fragment = Symbol.for("s1.fragment");
+export function createElement(type, props, ...children) { return { type, props: props ?? {}, children }; }
+export function isValidElement(value) { return Boolean(value) && typeof value === "object" && "type" in value && "props" in value; }
+export function useId() { return "uid"; }
+export function useRef(initial) { const h = current; const i = h.refIndex++; if (!(i in h.refs)) h.refs[i] = { current: initial ?? null }; return h.refs[i]; }
+export function useEffect(fn, deps) { current.effects.push({ fn, deps }); }
+globalThis.__s1Harness = (Component) => {
+  const h = { refs: {}, refIndex: 0, effects: [], prev: [], cleanups: [] };
+  return {
+    render(props) {
+      current = h; h.refIndex = 0; h.effects = [];
+      const element = Component(props);
+      if (element.props.ref) element.props.ref.current = { fake: true };
+      h.effects.forEach(({ fn, deps }, index) => {
+        const before = h.prev[index];
+        const changed = !before || !deps || !before.deps || deps.length !== before.deps.length || deps.some((value, k) => !Object.is(value, before.deps[k]));
+        if (!changed) return;
+        if (h.cleanups[index]) h.cleanups[index]();
+        h.cleanups[index] = fn();
+        h.prev[index] = { deps };
+      });
+      return element;
+    },
+    unmount() { for (const cleanup of h.cleanups) if (typeof cleanup === "function") cleanup(); }
+  };
+};
+export default { createElement, Fragment, isValidElement, useId, useRef, useEffect };
+`;
+const RECORDING_STUB = `
+export function init() { globalThis.__s1Calls.push("init"); return { open() { globalThis.__s1Calls.push("open"); }, close() { globalThis.__s1Calls.push("close"); } }; }
+export function destroy() { globalThis.__s1Calls.push("destroy"); }
+`;
+const openToggle = [];
+{
+  const dir = await mkdtemp(path.join(tmpdir(), "s1-react-open-"));
+  await writeFile(path.join(dir, "shim.js"), STATEFUL_SHIM);
+  await writeFile(path.join(dir, "stub.js"), RECORDING_STUB);
+  const out = path.join(dir, "bottom-sheet.mjs");
+  await esbuild.build({
+    entryPoints: [path.join(distRoot, "platform", "react", "bottom-sheet.jsx")],
+    outfile: out, bundle: true, format: "esm", platform: "neutral", jsx: "transform", jsxFactory: "createElement", jsxFragment: "Fragment",
+    inject: [path.join(dir, "shim.js")], logLevel: "silent",
+    plugins: [{ name: "open-alias", setup(build) {
+      build.onResolve({ filter: /^react$/ }, () => ({ path: path.join(dir, "shim.js") }));
+      build.onResolve({ filter: /\/components\/[a-z-]+\.js$/ }, () => ({ path: path.join(dir, "stub.js") }));
+    } }]
+  });
+  const sheet = await import(pathToFileURL(out).href);
+  const expect = (label, actual, wanted) => { if (JSON.stringify(actual) !== JSON.stringify(wanted)) openToggle.push(`bottom-sheet open: ${label} — 기대 ${JSON.stringify(wanted)} / 실제 ${JSON.stringify(actual)}`); };
+
+  globalThis.__s1Calls = [];
+  const view = globalThis.__s1Harness(sheet.default);
+  let element = view.render({});
+  expect("처음 그리기(보임, api 호출 없음)", [globalThis.__s1Calls, element.props.hidden], [["init"], undefined]);
+  element = view.render({ open: false });
+  expect("true→false 는 api.close()", globalThis.__s1Calls, ["init", "close"]);
+  element = view.render({ open: true });
+  expect("false→true 는 api.open()", globalThis.__s1Calls, ["init", "close", "open"]);
+  view.render({ open: true });
+  expect("같은 값 다시 그리기는 호출 없음", globalThis.__s1Calls, ["init", "close", "open"]);
+  view.unmount();
+  expect("떼어낼 때 destroy", globalThis.__s1Calls.at(-1), "destroy");
+
+  globalThis.__s1Calls = [];
+  const closedFirst = globalThis.__s1Harness(sheet.default);
+  element = closedFirst.render({ open: false });
+  expect("처음부터 open=false 면 hidden, api 호출은 init 뿐", [globalThis.__s1Calls, element.props.hidden], [["init"], true]);
+  element = closedFirst.render({ open: true });
+  expect("처음 닫힘→열기는 api.open()", globalThis.__s1Calls, ["init", "open"]);
+}
+
+if (failures.length || capability.length || openToggle.length) {
   if (failures.length) {
     console.error(`❌ React 컴포넌트가 승인 마크업과 다릅니다 (${failures.length}건 / ${compared}벌 대조)\n`);
     for (const failure of failures) console.error(`- ${failure}\n`);
@@ -254,6 +332,10 @@ if (failures.length || capability.length) {
   if (capability.length) {
     console.error(`❌ 밖에서 넣은 값이 화면에 반영되지 않습니다 (${capability.length}건)\n`);
     for (const item of capability) console.error(`- ${item}`);
+  }
+  if (openToggle.length) {
+    console.error(`❌ bottom-sheet 의 open 속성이 배포본 api 를 부르지 않습니다 (${openToggle.length}건)\n`);
+    for (const item of openToggle) console.error(`- ${item}`);
   }
   process.exit(1);
 }

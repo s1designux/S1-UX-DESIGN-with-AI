@@ -30,7 +30,7 @@ export default function S1Pagination({ parts, pages, className, style, ...rest }
     const root = rootRef.current;
     if (!root) return undefined;
     init(root);
-    return () => destroy(root);
+    return () => { destroy(root); };
   }, []);
 
   return (
