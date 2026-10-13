@@ -4276,16 +4276,27 @@
   color: var(--color-tag-line-label-red);
 }
 
+[data-s1-component="data-tag"][data-tone="gray"] {
+  border-color: var(--color-tag-line-border-gray);
+  color: var(--color-tag-line-label-gray);
+}
+
 [data-s1-component="data-tag"][data-solid="on"][data-tone="blue"] {
   background: var(--color-tag-solid-bg-blue);
   border-color: var(--color-tag-solid-bg-blue);
-  color: var(--color-tag-solid-label);
+  color: var(--color-tag-solid-label-blue);
 }
 
 [data-s1-component="data-tag"][data-solid="on"][data-tone="red"] {
   background: var(--color-tag-solid-bg-red);
   border-color: var(--color-tag-solid-bg-red);
-  color: var(--color-tag-solid-label);
+  color: var(--color-tag-solid-label-red);
+}
+
+[data-s1-component="data-tag"][data-solid="on"][data-tone="gray"] {
+  background: var(--color-tag-solid-bg-gray);
+  border-color: var(--color-tag-solid-bg-gray);
+  color: var(--color-tag-solid-label-gray);
 }
 
 /* component:divider */
@@ -4682,7 +4693,7 @@
       <h1>S1 UI 컴포넌트 미리보기 — 32종</h1>
       <p>이 페이지는 배포본에 들어 있는 마크업을 그대로 얹어 그린 것입니다. 여기 보이는 모습이 실제 모습입니다.<br>
          React·Vue 는 제목의 이름을 그대로 부르면 됩니다. 크기·변형은 각 이름 옆에 적힌 값만 쓸 수 있습니다.</p>
-      <p class="fingerprint">버전 0.22.1 · 정본 지문 3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71</p>
+      <p class="fingerprint">버전 0.23.0 · 정본 지문 e4df69db429fe61b8840724bf07362abb6beb5017c00bdda90cc03e79ffc56ef</p>
     </div>
     <nav class="index">
         <a href="#input">S1Input</a>
@@ -6437,7 +6448,7 @@
           </div>
           <dl class="component-axes">
             <dt>크기</dt><dd>크기 축 없음</dd>
-            <dt>변형</dt><dd><code>blue</code> <code>red</code></dd>
+            <dt>변형</dt><dd><code>blue</code> <code>red</code> <code>gray</code></dd>
           </dl>
         </header>
         <div class="component-body">
@@ -6448,16 +6459,20 @@
 <span data-s1-component="data-tag" data-shape="chips" data-solid="on" data-tone="red">주의</span>
 <span data-s1-component="data-tag" data-shape="chips" data-solid="off" data-tone="blue">확인</span>
 <span data-s1-component="data-tag" data-shape="chips" data-solid="off" data-tone="red">에러</span>
+<span data-s1-component="data-tag" data-shape="chips" data-solid="on" data-tone="gray">대기</span>
+<span data-s1-component="data-tag" data-shape="chips" data-solid="off" data-tone="gray">대기</span>
 <span data-s1-component="data-tag" data-shape="square" data-solid="on" data-tone="blue">승인</span>
 <span data-s1-component="data-tag" data-shape="square" data-solid="on" data-tone="red">주의</span>
 <span data-s1-component="data-tag" data-shape="square" data-solid="off" data-tone="blue">확인</span>
-<span data-s1-component="data-tag" data-shape="square" data-solid="off" data-tone="red">에러</span></div>
+<span data-s1-component="data-tag" data-shape="square" data-solid="off" data-tone="red">에러</span>
+<span data-s1-component="data-tag" data-shape="square" data-solid="on" data-tone="gray">대기</span>
+<span data-s1-component="data-tag" data-shape="square" data-solid="off" data-tone="gray">대기</span></div>
           </div>
           </div>
           <div class="component-usage">
             <div class="usage-block">
               <div class="usage-title">언제 쓰나</div>
-              <ul><li>표나 목록에서 한 줄의 상태를 한 눈에 보이게 할 때.</li><li>승인·확인(파랑), 주의·에러(빨강)처럼 뜻이 정해진 상태를 표시할 때.</li></ul>
+              <ul><li>표나 목록에서 한 줄의 상태를 한 눈에 보이게 할 때.</li><li>승인·확인(파랑), 주의·에러(빨강)처럼 뜻이 정해진 상태를 표시할 때.</li><li>그 밖의 중립 상태(대기 등)는 회색으로 표시할 때.</li></ul>
             </div>
             <div class="usage-block usage-block-avoid">
               <div class="usage-title">이럴 땐 다른 걸</div>

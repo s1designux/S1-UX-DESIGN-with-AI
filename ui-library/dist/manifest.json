@@ -1,9 +1,9 @@
 {
   "id": "s1-ui",
-  "version": "0.22.1",
+  "version": "0.23.0",
   "releasedAt": "2026-10-13",
   "status": "approved",
-  "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71",
+  "canonicalFingerprint": "e4df69db429fe61b8840724bf07362abb6beb5017c00bdda90cc03e79ffc56ef",
   "tokenMapFingerprint": "796fb798dd329910ba6c42a29fb4af9e0fd217446b3fa847e140bc70a0a8f4c7",
   "commonCssDependencies": [
     "assets/css/tokens.css",
@@ -22,7 +22,7 @@
     }
   ],
   "commonCssFingerprints": {
-    "assets/css/tokens.css": "cd36c222a4c6ab051670903583bdaecaccb38a5be800dda365e44ad2a909c1ec",
+    "assets/css/tokens.css": "4121d2d24fc4afb845ae70ebad928ed5f6f7929cd6a2498f9e28b4d4b3136914",
     "assets/css/typography.css": "cd32269e4b7979eec671ec6eaa40b1e2aa1acccaa8fc0b33201234fb5bf1a65b"
   },
   "jsRequired": true,
@@ -1334,11 +1334,11 @@
     },
     {
       "id": "data-tag",
-      "version": "0.1.1",
+      "version": "0.2.0",
       "status": "approved",
       "jsRequired": false,
-      "canonicalFingerprint": "8077597dca7b6713be2727346a533f058e8b1c8f01f00cc19a90b1a9d6e5c337",
-      "sourceFingerprint": "b4f30132350a92c35e30c1eceb406f50259c9b1145988f51042bb33760d5c215",
+      "canonicalFingerprint": "1d4718bc65a930938a5971757016d81686ec656441309d4c849398f208951deb",
+      "sourceFingerprint": "87b8d86a2aad0f27f2c5e6c2a8154358d889ea7b731093a0ce31ecc4bc99c718",
       "css": "components/data-tag.css",
       "js": "components/data-tag.js",
       "example": "examples/data-tag.html",
@@ -1348,7 +1348,8 @@
           "axis": "태그 색",
           "values": {
             "blue": "파란 — 승인·확인",
-            "red": "빨간 — 주의·에러"
+            "red": "빨간 — 주의·에러",
+            "gray": "회색 — 그 밖의 중립 상태(대기 등)"
           }
         }
       ],

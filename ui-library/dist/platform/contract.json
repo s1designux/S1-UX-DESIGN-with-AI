@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
     "purpose": "개발 툴과 검사기가 함께 읽는 허용목록. 여기 없는 variant·size·속성은 승인된 적이 없는 것이다.",
-    "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71"
+    "canonicalFingerprint": "e4df69db429fe61b8840724bf07362abb6beb5017c00bdda90cc03e79ffc56ef"
   },
   "components": [
     {
@@ -1458,7 +1458,8 @@
       "root": "span[data-s1-component=data-tag] — 누르지 않는 표시. 안에는 글자만 둔다(부품 자리 없음).",
       "variants": [
         "blue",
-        "red"
+        "red",
+        "gray"
       ],
       "sizes": [],
       "breaks": null,
@@ -1478,8 +1479,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "8077597dca7b6713be2727346a533f058e8b1c8f01f00cc19a90b1a9d6e5c337",
-      "sourceFingerprint": "b4f30132350a92c35e30c1eceb406f50259c9b1145988f51042bb33760d5c215"
+      "canonicalFingerprint": "1d4718bc65a930938a5971757016d81686ec656441309d4c849398f208951deb",
+      "sourceFingerprint": "87b8d86a2aad0f27f2c5e6c2a8154358d889ea7b731093a0ce31ecc4bc99c718"
     },
     {
       "id": "divider",
