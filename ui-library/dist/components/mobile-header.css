@@ -25,7 +25,7 @@
   padding-block: var(--spacing-6);
 }
 
-[data-s1-component="mobile-header"] [data-s1-part="title"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)) {
+[data-s1-component="mobile-header"] [data-s1-part="title"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))) {
   color: var(--color-text-title-primary);
   flex: 1 1 auto;
   margin: 0;
@@ -35,7 +35,7 @@
   white-space: nowrap;
 }
 
-[data-s1-component="mobile-header"][data-variant^="standard-"] [data-s1-part="title"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)) {
+[data-s1-component="mobile-header"][data-variant^="standard-"] [data-s1-part="title"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))) {
   font-size: var(--font-size-18);
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--letter-spacing-tight);
@@ -44,19 +44,19 @@
 }
 
 /* 한글 세로 보정 — 웹 전용 */
-[data-s1-component="mobile-header"][data-variant^="standard-"] [data-s1-part="title"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)) {
+[data-s1-component="mobile-header"][data-variant^="standard-"] [data-s1-part="title"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))) {
   position: relative;
   top: 1px;
 }
 
-[data-s1-component="mobile-header"][data-variant="standard-no-title"] [data-s1-part="title"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)),
-[data-s1-component="mobile-header"][data-variant="standard-no-title-close"] [data-s1-part="title"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)) {
+[data-s1-component="mobile-header"][data-variant="standard-no-title"] [data-s1-part="title"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))),
+[data-s1-component="mobile-header"][data-variant="standard-no-title-close"] [data-s1-part="title"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))) {
   height: var(--sizing-24);
 }
 
-[data-s1-component="mobile-header"][data-variant="home-title"] [data-s1-part="title"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)),
-[data-s1-component="mobile-header"][data-variant="home-title-1icon"] [data-s1-part="title"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)),
-[data-s1-component="mobile-header"][data-variant="home-title-subtitle"] [data-s1-part="title"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)) {
+[data-s1-component="mobile-header"][data-variant="home-title"] [data-s1-part="title"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))),
+[data-s1-component="mobile-header"][data-variant="home-title-1icon"] [data-s1-part="title"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))),
+[data-s1-component="mobile-header"][data-variant="home-title-subtitle"] [data-s1-part="title"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))) {
   font-size: var(--font-size-18);
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--letter-spacing-normal);
@@ -68,7 +68,7 @@
   gap: var(--spacing-8);
 }
 
-[data-s1-component="mobile-header"] [data-s1-part="stack"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)) {
+[data-s1-component="mobile-header"] [data-s1-part="stack"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))) {
   align-items: flex-start;
   display: flex;
   flex: 1 1 auto;
@@ -77,18 +77,18 @@
   min-width: 0;
 }
 
-[data-s1-component="mobile-header"] [data-s1-part="title-row"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)) {
+[data-s1-component="mobile-header"] [data-s1-part="title-row"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))) {
   align-items: center;
   display: flex;
   gap: var(--spacing-4);
   max-width: 100%;
 }
 
-[data-s1-component="mobile-header"] [data-s1-part="title-row"] [data-s1-part="title"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)) {
+[data-s1-component="mobile-header"] [data-s1-part="title-row"] [data-s1-part="title"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))) {
   flex: 0 1 auto;
 }
 
-[data-s1-component="mobile-header"] [data-s1-part="subtitle"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)) {
+[data-s1-component="mobile-header"] [data-s1-part="subtitle"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))) {
   color: var(--color-text-body-tertiary);
   font-size: var(--font-size-14);
   font-weight: var(--font-weight-regular);
@@ -100,7 +100,7 @@
   white-space: nowrap;
 }
 
-[data-s1-component="mobile-header"] [data-s1-part="arrow-icon"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)) {
+[data-s1-component="mobile-header"] [data-s1-part="arrow-icon"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))) {
   background-color: var(--color-icon-gray-dark);
   display: block;
   flex: none;
@@ -111,9 +111,9 @@
   width: var(--sizing-24);
 }
 
-[data-s1-component="mobile-header"] [data-s1-part="back"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)),
-[data-s1-component="mobile-header"] [data-s1-part="close"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)),
-[data-s1-component="mobile-header"] [data-s1-part="notification"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)) {
+[data-s1-component="mobile-header"] [data-s1-part="back"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))),
+[data-s1-component="mobile-header"] [data-s1-part="close"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))),
+[data-s1-component="mobile-header"] [data-s1-part="notification"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))) {
   align-items: center;
   appearance: none;
   background: none;
@@ -129,21 +129,21 @@
   width: var(--sizing-32);
 }
 
-[data-s1-component="mobile-header"] [data-s1-part="back"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *))::before,
-[data-s1-component="mobile-header"] [data-s1-part="close"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *))::before,
-[data-s1-component="mobile-header"] [data-s1-part="notification"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *))::before {
+[data-s1-component="mobile-header"] [data-s1-part="back"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *)))::before,
+[data-s1-component="mobile-header"] [data-s1-part="close"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *)))::before,
+[data-s1-component="mobile-header"] [data-s1-part="notification"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *)))::before {
   content: "";
   inset: calc(var(--spacing-6) * -1);
   position: absolute;
 }
 
-[data-s1-component="mobile-header"] [data-s1-part="spacer"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)) {
+[data-s1-component="mobile-header"] [data-s1-part="spacer"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))) {
   flex: none;
   height: var(--sizing-32);
   width: var(--sizing-32);
 }
 
-[data-s1-component="mobile-header"] [data-s1-part="back-icon"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)) {
+[data-s1-component="mobile-header"] [data-s1-part="back-icon"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))) {
   background-color: var(--color-icon-gray-dark);
   display: block;
   height: var(--sizing-24);
@@ -152,7 +152,7 @@
   width: var(--sizing-24);
 }
 
-[data-s1-component="mobile-header"] [data-s1-part="close-icon"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)) {
+[data-s1-component="mobile-header"] [data-s1-part="close-icon"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))) {
   background-color: var(--color-icon-gray-dark);
   display: block;
   height: var(--sizing-24);
@@ -161,7 +161,7 @@
   width: var(--sizing-24);
 }
 
-[data-s1-component="mobile-header"] [data-s1-part="notification-icon"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *)) {
+[data-s1-component="mobile-header"] [data-s1-part="notification-icon"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *))) {
   background-color: var(--color-icon-gray-dark);
   display: block;
   height: var(--sizing-24);
@@ -171,7 +171,7 @@
   width: var(--sizing-24);
 }
 
-[data-s1-component="mobile-header"] [data-s1-part="notification-icon"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *))::after {
+[data-s1-component="mobile-header"] [data-s1-part="notification-icon"]:where(:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) *:not([data-s1-component="mobile-header"] [data-s1-component]:not([data-s1-component="mobile-header"]) [data-s1-component="mobile-header"] *)))::after {
   background-color: var(--color-icon-red);
   content: "";
   inset: 0;

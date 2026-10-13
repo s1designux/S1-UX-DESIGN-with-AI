@@ -90,7 +90,11 @@ export function scopeSelector(selector, id, allowed = []) {
   /* 이 부품이 설계상 품고 있는 코어 부품(manifest dependencies.coreComponents — 예: date-picker 모바일 시트의 bottom-sheet)은
      바깥 규칙이 안쪽 부분을 꾸미는 게 의도이므로 가로막지 않는다. 그 밖의 부품(퍼블리셔가 끼워 넣은 것)만 막는다. */
   const except = allowed.map((one) => `:not([${ATTR}="${one}"])`).join("");
-  const guard = `:where(:not(${root} [${ATTR}]:not(${root})${except} *))`;
+  /* 부분은 가장 가까운 부품 루트에 속한다. 그래서 「X 안의 다른 부품 C 안」에 있는 부분만 막되,
+     그 C 안에 다시 X 가 들어 있고 부분이 그 X 에 속하면(X > C > X' > 부분) 막지 않는다 —
+     같은 종류 부품의 부분을 막으면 시트 안의 달력 안의 시트처럼 겹친 쓰임이 투명하게 깨진다. */
+  const blocked = `${root} [${ATTR}]:not(${root})${except}`;
+  const guard = `:where(:not(${blocked} *:not(${blocked} ${root} *)))`;
   const at = insertionIndex(tokens[last].compound);
   const rebuilt = tokens[last].compound.slice(0, at) + guard + tokens[last].compound.slice(at);
   // 원문 공백을 그대로 두기 위해 마지막 복합부만 바꿔 끼운다.
@@ -158,4 +162,23 @@ function scopeBlock(src, pos, id, allowed) {
 
 export function scopeNestedParts(css, id, allowed = []) {
   return scopeBlock(css, 0, id, allowed)[0];
+}
+
+/** 안전띠(:where(:not(…)))를 걷어낸다. RN·Kotlin·React·Vue 생성기와 값 대조는 안전띠 없는 의미 그대로의 CSS 를 읽어야 한다. */
+export function stripScopeGuard(css) {
+  const mark = `:where(:not([${ATTR}="`;
+  let out = "";
+  let at = 0;
+  for (;;) {
+    const start = css.indexOf(mark, at);
+    if (start === -1) { out += css.slice(at); return out; }
+    out += css.slice(at, start);
+    let depth = 0;
+    let i = start + ":where".length;
+    for (; i < css.length; i += 1) {
+      if (css[i] === "(") depth += 1;
+      else if (css[i] === ")") { depth -= 1; if (depth === 0) { i += 1; break; } }
+    }
+    at = i;
+  }
 }

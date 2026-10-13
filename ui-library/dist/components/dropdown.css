@@ -11,32 +11,32 @@
   width: max-content;
 }
 
-[data-s1-component="dropdown"][data-size="xxsm"] [data-s1-part="option"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *)) {
+[data-s1-component="dropdown"][data-size="xxsm"] [data-s1-part="option"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) [data-s1-component="dropdown"] *))) {
   font-size: var(--font-size-12);
   min-height: var(--sizing-28);
 }
 
-[data-s1-component="dropdown"][data-size="xsm"] [data-s1-part="option"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *)) {
+[data-s1-component="dropdown"][data-size="xsm"] [data-s1-part="option"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) [data-s1-component="dropdown"] *))) {
   font-size: var(--font-size-14);
   min-height: var(--sizing-34);
 }
 
-[data-s1-component="dropdown"][data-size="md"] [data-s1-part="option"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *)) {
+[data-s1-component="dropdown"][data-size="md"] [data-s1-part="option"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) [data-s1-component="dropdown"] *))) {
   font-size: var(--font-size-14);
   min-height: var(--sizing-44);
 }
 
-[data-s1-component="dropdown"][data-size="xxsm"] [data-s1-part="option"][data-select-all="true"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *)) {
+[data-s1-component="dropdown"][data-size="xxsm"] [data-s1-part="option"][data-select-all="true"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) [data-s1-component="dropdown"] *))) {
   min-height: calc(var(--sizing-28) - var(--border-width-1));
 }
-[data-s1-component="dropdown"][data-size="xsm"] [data-s1-part="option"][data-select-all="true"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *)) {
+[data-s1-component="dropdown"][data-size="xsm"] [data-s1-part="option"][data-select-all="true"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) [data-s1-component="dropdown"] *))) {
   min-height: calc(var(--sizing-34) - var(--border-width-1));
 }
-[data-s1-component="dropdown"][data-size="md"] [data-s1-part="option"][data-select-all="true"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *)) {
+[data-s1-component="dropdown"][data-size="md"] [data-s1-part="option"][data-select-all="true"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) [data-s1-component="dropdown"] *))) {
   min-height: calc(var(--sizing-44) - var(--border-width-1));
 }
 
-[data-s1-component="dropdown"] [data-s1-part="option"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *)) {
+[data-s1-component="dropdown"] [data-s1-part="option"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) [data-s1-component="dropdown"] *))) {
   align-items: center;
   background: var(--color-dropdown-option-bg-default);
   box-sizing: border-box;
@@ -50,22 +50,22 @@
   padding-inline: var(--spacing-12);
 }
 
-[data-s1-component="dropdown"][data-type="checkbox"] [data-s1-part="option"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *)) {
+[data-s1-component="dropdown"][data-type="checkbox"] [data-s1-part="option"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) [data-s1-component="dropdown"] *))) {
   gap: var(--spacing-8);
 }
 
 @media (hover: hover) {
-  [data-s1-component="dropdown"] [data-s1-part="option"]:hover:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *)) {
+  [data-s1-component="dropdown"] [data-s1-part="option"]:hover:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) [data-s1-component="dropdown"] *))) {
     background: var(--color-dropdown-option-bg-hover);
     color: var(--color-dropdown-option-label-hover);
   }
 }
 
-[data-s1-component="dropdown"][data-type="text"] [data-s1-part="option"][aria-selected="true"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *)) {
+[data-s1-component="dropdown"][data-type="text"] [data-s1-part="option"][aria-selected="true"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) [data-s1-component="dropdown"] *))) {
   color: var(--color-dropdown-option-label-selected);
 }
 
-[data-s1-component="dropdown"] [data-s1-part="option"] [data-s1-part="option-label"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *)) {
+[data-s1-component="dropdown"] [data-s1-part="option"] [data-s1-part="option-label"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) [data-s1-component="dropdown"] *))) {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -76,7 +76,7 @@
   flex: 0 0 auto;
 }
 
-[data-s1-component="dropdown"] [data-s1-part="divider"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *)) {
+[data-s1-component="dropdown"] [data-s1-part="divider"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) [data-s1-component="dropdown"] *))) {
   background: var(--color-dropdown-list-border);
   flex: 0 0 auto;
   height: var(--border-width-1);
@@ -86,29 +86,29 @@
   pointer-events: none;
 }
 
-[data-s1-density="wide"] [data-s1-component="dropdown"]:not([data-size]) [data-s1-part="option"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *)) {
+[data-s1-density="wide"] [data-s1-component="dropdown"]:not([data-size]) [data-s1-part="option"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) [data-s1-component="dropdown"] *))) {
   font-size: var(--font-size-14);
   min-height: var(--sizing-44);
 }
 
-[data-s1-density="wide"] [data-s1-component="dropdown"]:not([data-size]) [data-s1-part="option"][data-select-all="true"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *)) {
+[data-s1-density="wide"] [data-s1-component="dropdown"]:not([data-size]) [data-s1-part="option"][data-select-all="true"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) [data-s1-component="dropdown"] *))) {
   min-height: calc(var(--sizing-44) - var(--border-width-1));
 }
 
-[data-s1-density="normal"] [data-s1-component="dropdown"]:not([data-size]) [data-s1-part="option"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *)) {
+[data-s1-density="normal"] [data-s1-component="dropdown"]:not([data-size]) [data-s1-part="option"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) [data-s1-component="dropdown"] *))) {
   font-size: var(--font-size-14);
   min-height: var(--sizing-34);
 }
 
-[data-s1-density="normal"] [data-s1-component="dropdown"]:not([data-size]) [data-s1-part="option"][data-select-all="true"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *)) {
+[data-s1-density="normal"] [data-s1-component="dropdown"]:not([data-size]) [data-s1-part="option"][data-select-all="true"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) [data-s1-component="dropdown"] *))) {
   min-height: calc(var(--sizing-34) - var(--border-width-1));
 }
 
-[data-s1-density="narrow"] [data-s1-component="dropdown"]:not([data-size]) [data-s1-part="option"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *)) {
+[data-s1-density="narrow"] [data-s1-component="dropdown"]:not([data-size]) [data-s1-part="option"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) [data-s1-component="dropdown"] *))) {
   font-size: var(--font-size-12);
   min-height: var(--sizing-28);
 }
 
-[data-s1-density="narrow"] [data-s1-component="dropdown"]:not([data-size]) [data-s1-part="option"][data-select-all="true"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *)) {
+[data-s1-density="narrow"] [data-s1-component="dropdown"]:not([data-size]) [data-s1-part="option"][data-select-all="true"]:where(:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) *:not([data-s1-component="dropdown"] [data-s1-component]:not([data-s1-component="dropdown"]):not([data-s1-component="checkbox"]) [data-s1-component="dropdown"] *))) {
   min-height: calc(var(--sizing-28) - var(--border-width-1));
 }

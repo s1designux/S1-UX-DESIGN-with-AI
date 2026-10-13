@@ -22,7 +22,7 @@ object S1CheckboxSpec {
         "checked" to mapOf(
             "root" to S1Box(gap = 8f),
             "control" to S1Box(background = S1Palette.colorControlBgSelected, foreground = S1Palette.colorControlIndicatorSelected, borderColor = S1Palette.colorControlBorderSelected, borderWidth = 1f, radius = 2f, height = 18f, width = 18f),
-            "indicator" to S1Box(),
+            "indicator" to S1Box(backgroundInherit = true, height = 16f, width = 16f, icon = "check"),
             "label" to S1Box(foreground = S1Palette.colorControlLabelDefault, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 500)
         ),
         "disabled" to mapOf(
@@ -34,7 +34,7 @@ object S1CheckboxSpec {
         "disabledChecked" to mapOf(
             "root" to S1Box(gap = 8f),
             "control" to S1Box(background = S1Palette.colorControlBgDisabled, foreground = S1Palette.colorControlIndicatorDisabled, borderColor = S1Palette.colorControlBorderDisabled, borderWidth = 1f, radius = 2f, height = 18f, width = 18f),
-            "indicator" to S1Box(),
+            "indicator" to S1Box(backgroundInherit = true, height = 16f, width = 16f, icon = "check"),
             "label" to S1Box(foreground = S1Palette.colorControlLabelDisabled, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 500)
         )
     )

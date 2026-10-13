@@ -19,7 +19,7 @@ object S1ModalSpec {
             "message" to S1Box(foreground = S1Palette.colorTextBodyPrimary, fontSize = 16f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 400),
             "footer" to S1Box(gap = 8f),
             "close" to S1Box(radius = 4f, height = 24f, width = 24f),
-            "closeIcon" to S1Box()
+            "closeIcon" to S1Box(background = S1Palette.colorIconGrayDark, icon = "close")
         ),
         "mobile|dual" to mapOf(
             "root" to S1Box(left = 0f, right = 0f),
@@ -32,7 +32,7 @@ object S1ModalSpec {
             "message" to S1Box(foreground = S1Palette.colorTextBodyPrimary, fontSize = 16f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 400),
             "footer" to S1Box(gap = 8f),
             "close" to S1Box(radius = 4f, height = 24f, width = 24f),
-            "closeIcon" to S1Box()
+            "closeIcon" to S1Box(background = S1Palette.colorIconGrayDark, icon = "close")
         )
     )
 

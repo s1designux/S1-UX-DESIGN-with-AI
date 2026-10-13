@@ -5,7 +5,7 @@ import { spawnSync } from "node:child_process";
 import iconGeometryCheck from "../../scripts/ui-library-icon-geometry-check.js";
 
 import { extractInstance } from "./platform.mjs";
-import { scopeSelector } from "./css-scope.mjs";
+import { scopeSelector, stripScopeGuard } from "./css-scope.mjs";
 
 const libraryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repositoryRoot = path.resolve(libraryRoot, "..");
@@ -13,10 +13,9 @@ const checkOnly = process.argv.includes("--check");
 const failures = [];
 /* 배포 CSS 는 안쪽 부품의 부분까지 먹지 않게 부분 선택자 끝에 :where(:not(…)) 안전띠를 붙여 나간다(scripts/css-scope.mjs).
    안전띠는 선택 범위만 좁힐 뿐 값은 그대로이므로, 규칙 모양을 보는 아래 검사들은 띠를 걷어낸 글자로 읽는다. */
-const SCOPE_GUARD = /:where\(:not\(\[data-s1-component="[^"]+"\] \[data-s1-component\](?::not\(\[data-s1-component="[^"]+"\]\))+ \*\)\)/g;
 const read = async (relative) => {
   const text = await readFile(path.join(libraryRoot, relative), "utf8");
-  return /\.css$/.test(relative) ? text.replace(SCOPE_GUARD, "") : text;
+  return /\.css$/.test(relative) ? stripScopeGuard(text) : text;
 };
 
 const build = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/build.mjs"), "--check"], { encoding: "utf8" });
@@ -1109,6 +1108,27 @@ else if (renderCheck.stdout.trim()) console.log(`[guide render check] ${renderCh
   const rawSheet = await readFile(path.join(libraryRoot, "dist/components/modal-content.css"), "utf8");
   if (rawSheet === sheet) failures.push("dist modal-content.css must carry the nested-part guard");
   if (!/\[data-size="md"\] \[data-s1-part="panel"\]:where\(:not\(/.test(rawSheet)) failures.push("modal-content panel width rule must be guarded against nested panels");
+}
+
+
+/* 플랫폼 표(RN·Kotlin·React·Vue)는 안전띠 없는 의미 그대로의 CSS 에서 만든다 — 안전띠가 새어 들어가면 모델이
+   ::before/::after/::placeholder 를 못 맞춰 아이콘·점·밑줄·자리표시 색이 통째로 사라진다(그래도 모델과 표가 똑같이 깨져 대조 검사는 통과한다).
+   그래서 원본 CSS 가 쓰는 가상 요소 종류가 RN 표의 가상 요소 목록에 모두 있는지 따로 본다. */
+{
+  const webOnlyPseudo = { "mobile-header": ["after"] };   // 알림 아이콘 별색 점 — RN 틀에 없는 웹 전용 변형(95fe778d 에서도 동일)
+  for (const id of componentIds) {
+    const css = (await readFile(path.join(libraryRoot, `src/components/${id}/${id}.css`), "utf8")).replace(/\/\*[\s\S]*?\*\//g, "");
+    const wanted = new Set([...css.matchAll(/::(before|after|placeholder)/g)].map((match) => match[1]));
+    let spec = "";
+    try { spec = await readFile(path.join(libraryRoot, `dist/platform/react-native/specs/${id}.js`), "utf8"); } catch { /* 틀이 없는 부품 */ }
+    const have = new Set([...spec.matchAll(/"ps":\[([^\]]*)\]/g)].flatMap((match) => [...match[1].matchAll(/"([a-z]+)"/g)].map((one) => one[1])));
+    const lost = [...wanted].filter((name) => !have.has(name) && !(webOnlyPseudo[id] ?? []).includes(name));
+    if (spec && lost.length) failures.push(`${id}: 원본 CSS 의 가상 요소(${lost.join(", ")})가 RN 표에서 사라졌습니다 — 안전띠가 생성기 입력에 섞였는지 확인하세요`);
+  }
+  for (const file of ["dist/platform/react-native/specs/modal.js", "dist/platform/kotlin/S1Modal.kt", "dist/platform/react/modal.jsx"]) {
+    const text = await readFile(path.join(libraryRoot, file), "utf8").catch(() => "");
+    if (text.includes(":where(")) failures.push(`${file}: 플랫폼 산출물에 웹 전용 안전띠(:where)가 섞였습니다`);
+  }
 }
 
 if (failures.length) {

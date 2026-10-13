@@ -22,7 +22,7 @@ object S1RadioSpec {
         "checked" to mapOf(
             "root" to S1Box(gap = 8f),
             "control" to S1Box(background = S1Palette.colorControlBgDefault, foreground = S1Palette.colorControlIndicatorSelectedAlt, borderColor = S1Palette.colorControlBorderSelected, borderWidth = 1f, radius = 9999f, height = 18f, width = 18f),
-            "indicator" to S1Box(),
+            "indicator" to S1Box(backgroundInherit = true, radius = 9999f, height = 10f, width = 10f),
             "label" to S1Box(foreground = S1Palette.colorControlLabelDefault, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 500)
         ),
         "disabled" to mapOf(
@@ -34,7 +34,7 @@ object S1RadioSpec {
         "disabledChecked" to mapOf(
             "root" to S1Box(gap = 8f),
             "control" to S1Box(background = S1Palette.colorControlBgDisabled, foreground = S1Palette.colorControlIndicatorDisabled, borderColor = S1Palette.colorControlBorderDisabled, borderWidth = 1f, radius = 9999f, height = 18f, width = 18f),
-            "indicator" to S1Box(),
+            "indicator" to S1Box(backgroundInherit = true, radius = 9999f, height = 10f, width = 10f),
             "label" to S1Box(foreground = S1Palette.colorControlLabelDisabled, fontSize = 14f, letterSpacing = -0.02f, lineHeight = 1.3f, fontWeight = 500)
         )
     )

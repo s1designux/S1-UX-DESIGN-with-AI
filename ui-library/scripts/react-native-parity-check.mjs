@@ -21,6 +21,7 @@ import { readTokens } from "./platform.mjs";
 import { Converter } from "./react-native-css.mjs";
 import { ABSENT, OTHER, STATIC_ATTRIBUTES, buildTemplate, combineStylesheets, evaluateFull } from "./react-native-model.mjs";
 import { augmentExample, nestedIdOf } from "./react-native-emit.mjs";
+import { stripScopeGuard } from "./css-scope.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const libraryRoot = path.resolve(here, "..");
@@ -55,7 +56,7 @@ async function main() {
   const componentOutputs = [];
   for (const entry of distManifest.components) {
     const manifest = JSON.parse(fs.readFileSync(path.join(dist, "components", `${entry.id}.manifest.json`), "utf8"));
-    componentOutputs.push({ id: entry.id, css: fs.readFileSync(path.join(dist, "components", `${entry.id}.css`), "utf8"), manifest });
+    componentOutputs.push({ id: entry.id, css: stripScopeGuard(fs.readFileSync(path.join(dist, "components", `${entry.id}.css`), "utf8")), manifest });
   }
   const manifests = new Map(componentOutputs.map(({ id, manifest }) => [id, manifest]));
   const rules = combineStylesheets(componentOutputs);

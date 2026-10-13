@@ -23,14 +23,14 @@
   font-family: inherit;
 }
 
-[data-s1-component="lnb"] [data-s1-part="head"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="head"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   align-items: center;
   display: flex;
   gap: var(--spacing-8);
   min-height: var(--sizing-40);
 }
 
-[data-s1-component="lnb"] [data-s1-part="brand"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="brand"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   align-items: center;
   display: flex;
   min-width: 0;
@@ -39,14 +39,14 @@
   text-decoration: none;
 }
 
-[data-s1-component="lnb"] [data-s1-part="brand-logo"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="brand-logo"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   display: block;
   height: auto;
   max-width: 100%;
   width: 150px;
 }
 
-[data-s1-component="lnb"][data-size="lg"] [data-s1-part="brand-logo"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"][data-size="lg"] [data-s1-part="brand-logo"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   width: 178px;
 }
 
@@ -54,21 +54,21 @@
   --s1-brand-logo: initial;
 }
 
-[data-theme="dark"] [data-s1-component="lnb"] [data-s1-part="brand"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-theme="dark"] [data-s1-component="lnb"] [data-s1-part="brand"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   --s1-brand-logo-w: 150px;
   position: relative;
 }
 
-[data-theme="dark"] [data-s1-component="lnb"][data-size="lg"] [data-s1-part="brand"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-theme="dark"] [data-s1-component="lnb"][data-size="lg"] [data-s1-part="brand"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   --s1-brand-logo-w: 178px;
 }
 
-[data-theme="dark"] [data-s1-component="lnb"] [data-s1-part="brand"] [data-s1-part="brand-logo"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-theme="dark"] [data-s1-component="lnb"] [data-s1-part="brand"] [data-s1-part="brand-logo"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   -webkit-mask: var(--s1-brand-logo) 0 0 / 0 0 no-repeat;
   mask: var(--s1-brand-logo) 0 0 / 0 0 no-repeat;
 }
 
-[data-theme="dark"] [data-s1-component="lnb"] [data-s1-part="brand"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *))::after {
+[data-theme="dark"] [data-s1-component="lnb"] [data-s1-part="brand"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *)))::after {
   background: var(--s1-brand-logo) 0 0 / 0 0 no-repeat, var(--color-text-title-primary);
   content: "";
   inset: 0 0 0 var(--spacing-10);
@@ -78,18 +78,18 @@
   position: absolute;
 }
 
-[data-s1-component="lnb"]:not([data-variant="brand"]) [data-s1-part="brand"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"]:not([data-variant="brand"]) [data-s1-part="brand"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   display: none;
 }
 
-[data-s1-component="lnb"][data-variant="brand"] [data-s1-part="head"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"][data-variant="brand"] [data-s1-part="head"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   border-bottom: var(--border-width-default) solid var(--color-line-default);
   margin-bottom: var(--spacing-8);
   min-height: var(--sizing-48);
   padding-bottom: var(--spacing-12);
 }
 
-[data-s1-component="lnb"] [data-s1-part="collapse"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="collapse"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   align-items: center;
   background: transparent;
   border: 0;
@@ -104,11 +104,11 @@
   width: var(--sizing-32);
 }
 
-[data-s1-component="lnb"] [data-s1-part="collapse"]:hover:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="collapse"]:hover:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   background: var(--color-navigation-bg--hover);
 }
 
-[data-s1-component="lnb"] [data-s1-part="collapse-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="collapse-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   background-color: var(--color-icon-gray-dark);
   height: var(--sizing-20);
   -webkit-mask: var(--s1-collapse-icon, url("../assets/icons/panel-fold.svg")) center / contain no-repeat;
@@ -117,24 +117,24 @@
   width: var(--sizing-20);
 }
 
-[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="collapse-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="collapse-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   transform: scaleX(-1);
 }
 
-[data-theme="dark"] [data-s1-component="lnb"] [data-s1-part="collapse-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-theme="dark"] [data-s1-component="lnb"] [data-s1-part="collapse-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   -webkit-mask-image: var(--s1-collapse-icon-solid, var(--s1-collapse-icon, url("../assets/icons/panel-fold-solid.svg")));
   mask-image: var(--s1-collapse-icon-solid, var(--s1-collapse-icon, url("../assets/icons/panel-fold-solid.svg")));
 }
 
-[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="collapse"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="collapse"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   margin-inline: auto;
 }
 
-[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="head"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="head"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   margin-bottom: var(--spacing-16);
 }
 
-[data-s1-component="lnb"] [data-s1-part="group"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="group"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   color: var(--color-text-body-tertiary);
   display: block;
   font-size: var(--font-size-12);
@@ -144,11 +144,11 @@
   padding: var(--spacing-16) var(--spacing-10) var(--spacing-6);
 }
 
-[data-s1-component="lnb"]:not([data-variant="grouped"]) [data-s1-part="group"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"]:not([data-variant="grouped"]) [data-s1-part="group"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   display: none;
 }
 
-[data-s1-component="lnb"] [data-s1-part="items"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="items"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   display: flex;
   flex-direction: column;
   list-style: none;
@@ -156,11 +156,11 @@
   padding: 0;
 }
 
-[data-s1-component="lnb"] [data-s1-part="items"][hidden]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="items"][hidden]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   display: none;
 }
 
-[data-s1-component="lnb"] [data-s1-part="item"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="item"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   align-items: center;
   background: transparent;
   border: 0;
@@ -182,28 +182,28 @@
   width: 100%;
 }
 
-[data-s1-component="lnb"] a[data-s1-part="item"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)),
-[data-s1-component="lnb"] button[data-s1-part="item"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] a[data-s1-part="item"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))),
+[data-s1-component="lnb"] button[data-s1-part="item"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   cursor: pointer;
 }
 
-[data-s1-component="lnb"] [data-s1-part="item"]:hover:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="item"]:hover:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   background: var(--color-navigation-bg--hover);
 }
 
-[data-s1-component="lnb"] [data-s1-part="item"][aria-current="page"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="item"][aria-current="page"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   background: transparent;
   color: var(--color-navigation-label-selected);
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--letter-spacing-normal);
 }
 
-[data-s1-component="lnb"] [data-s1-part="item"][aria-disabled="true"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="item"][aria-disabled="true"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   color: var(--color-text-state-disabled);
   pointer-events: none;
 }
 
-[data-s1-component="lnb"] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   background-color: var(--color-icon-gray-dark);
   display: inline-block;
   flex: none;
@@ -219,15 +219,15 @@
   width: var(--sizing-20);
 }
 
-[data-s1-component="lnb"] [data-s1-part="item"][aria-current="page"] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="item"][aria-current="page"] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   background-color: var(--color-navigation-label-selected);
 }
 
-[data-s1-component="lnb"] [data-s1-part="item"][aria-disabled="true"] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="item"][aria-disabled="true"] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   background-color: var(--color-icon-gray-light);
 }
 
-[data-s1-component="lnb"] [data-s1-part="item-toggle"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="item-toggle"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   background-color: var(--color-icon-gray-dark);
   flex: none;
   height: var(--sizing-20);
@@ -239,11 +239,11 @@
   width: var(--sizing-20);
 }
 
-[data-s1-component="lnb"] [data-s1-part="item"][aria-expanded="true"] [data-s1-part="item-toggle"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="item"][aria-expanded="true"] [data-s1-part="item-toggle"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   transform: rotate(90deg) scaleX(-1);
 }
 
-[data-s1-component="lnb"] [data-s1-part="subitems"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="subitems"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   display: flex;
   flex-direction: column;
   list-style: none;
@@ -251,22 +251,22 @@
   padding: 0 0 0 calc(var(--sizing-20) + var(--spacing-8));
 }
 
-[data-s1-component="lnb"] [data-s1-part="subitems"][hidden]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"] [data-s1-part="subitems"][hidden]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   display: none;
 }
 
-[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="group"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)),
-[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item-toggle"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)),
-[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="subitems"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)),
-[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="brand"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="group"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))),
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item-toggle"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))),
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="subitems"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))),
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="brand"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   display: none;
 }
 
-[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="items"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="items"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   gap: var(--spacing-16);
 }
 
-[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   align-content: center;
   display: block;
   font-size: var(--font-size-12);
@@ -282,32 +282,32 @@
   word-break: keep-all;
 }
 
-[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   display: block;
   height: var(--sizing-24);
   margin: 0 auto var(--spacing-2);
   width: var(--sizing-24);
 }
 
-[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][aria-current="page"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][aria-current="page"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   background: var(--color-button-bg-primary--default);
   color: var(--color-button-label-primary--default);
   font-weight: var(--font-weight-bold);
 }
 
-[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][aria-current="page"] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][aria-current="page"] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   background-color: var(--color-button-label-primary--default);
 }
 
-[data-theme="dark"] [data-s1-component="lnb"] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+[data-theme="dark"] [data-s1-component="lnb"] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   -webkit-mask-image: var(--s1-icon-solid, var(--s1-icon, url("../assets/icons/menu.svg")));
   mask-image: var(--s1-icon-solid, var(--s1-icon, url("../assets/icons/menu.svg")));
 }
 
 @media (prefers-reduced-motion: reduce) {
   [data-s1-component="lnb"],
-  [data-s1-component="lnb"] [data-s1-part="collapse-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)),
-  [data-s1-component="lnb"] [data-s1-part="item-toggle"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *)) {
+  [data-s1-component="lnb"] [data-s1-part="collapse-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))),
+  [data-s1-component="lnb"] [data-s1-part="item-toggle"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
     transition: none;
   }
 }

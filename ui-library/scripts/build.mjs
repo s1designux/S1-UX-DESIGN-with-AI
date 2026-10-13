@@ -116,7 +116,10 @@ async function createOutputs() {
     const sourceCss = await read(path.join(base, `${id}.css`));
     /* 밀도 규칙은 원본 CSS 안의 크기 규칙을 선택자만 바꿔 복사한 것이다 — 값이 갈라지지 않는다.
        전체 묶음과 개별 설치가 같은 CSS 를 쓰도록 여기서 한 번만 붙인다. */
-    const css = scopeNestedParts(`${sourceCss}${densityCssFor(id, sourceCss, densityPolicy, manifest.breaks)}`, id, manifest.dependencies?.coreComponents ?? []);
+    /* css = 의미 그대로의 원본(안전띠 없음) — React·Vue·RN·Kotlin 생성기와 값 대조는 이것을 읽는다.
+       안전띠(scopeNestedParts)는 웹 배포 CSS(distCss)에만 붙는다. */
+    const css = `${sourceCss}${densityCssFor(id, sourceCss, densityPolicy, manifest.breaks)}`;
+    const distCss = stripCssComments(scopeNestedParts(css, id, manifest.dependencies?.coreComponents ?? []));
     const js = await read(path.join(base, `${id}.js`));
     const example = await read(path.join(base, `${id}.example.html`));
     /* 플랫폼별 예제 — Mobile 크기·break 가 PC 와 다른 컴포넌트는 mobile 예제를 따로 낸다.
@@ -141,8 +144,8 @@ async function createOutputs() {
       const match = extraExamples.find(([distPath]) => distPath === spec.distribution);
       exampleByBreak[breakName] = match ? match[1] : example;
     }
-    componentOutputs.push({ id, css, js, example, exampleByBreak, manifest: outputManifest, mainDistribution, distCss: stripCssComments(css) });
-    outputs.set(`components/${id}.css`, stripCssComments(css));
+    componentOutputs.push({ id, css, js, example, exampleByBreak, manifest: outputManifest, mainDistribution, distCss });
+    outputs.set(`components/${id}.css`, distCss);
     outputs.set(`components/${id}.js`, js);
     outputs.set(`components/${id}.manifest.json`, stableJson(outputManifest));
     outputs.set(mainDistribution, `${exampleHeader(id)}${stripHtmlComments(example)}`);

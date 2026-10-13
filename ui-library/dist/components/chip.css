@@ -21,7 +21,7 @@
   white-space: nowrap;
 }
 
-[data-s1-component="chip"] [data-s1-part="label"]:where(:not([data-s1-component="chip"] [data-s1-component]:not([data-s1-component="chip"]) *)) {
+[data-s1-component="chip"] [data-s1-part="label"]:where(:not([data-s1-component="chip"] [data-s1-component]:not([data-s1-component="chip"]) *:not([data-s1-component="chip"] [data-s1-component]:not([data-s1-component="chip"]) [data-s1-component="chip"] *))) {
   pointer-events: none;
 }
 

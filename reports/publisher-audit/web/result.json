@@ -1,6 +1,6 @@
 {
   "tool": "scripts/publisher-audit/web.mjs",
-  "generatedAt": "2026-10-12T08:19:13.776Z",
+  "generatedAt": "2026-10-13T00:01:39.368Z",
   "package": {
     "zip": "assets/downloads/s1-ui-html-css-js.zip",
     "version": "0.20.0",
@@ -117,6 +117,7 @@
     "doubleInitSafe": "pass",
     "classicScript": "fail",
     "nestedPopoverSize": "pass",
+    "nestedSheetBox": "pass",
     "nestedModalOpen": "pass",
     "nestedDetail": {
       "popovers": [
@@ -308,7 +309,41 @@
       "modalOpenFromModal": {
         "responsive": true,
         "exceptions": []
-      }
+      },
+      "sheets": [
+        {
+          "component": "date-picker",
+          "std": {
+            "x": 8,
+            "w": 360,
+            "bg": "rgb(255, 255, 255)",
+            "headerH": 26
+          },
+          "inSheet": {
+            "x": 8,
+            "w": 360,
+            "bg": "rgb(255, 255, 255)",
+            "headerH": 26
+          },
+          "diffs": []
+        },
+        {
+          "component": "time-picker",
+          "std": {
+            "x": 8,
+            "w": 360,
+            "bg": "rgb(255, 255, 255)",
+            "headerH": 26
+          },
+          "inSheet": {
+            "x": 8,
+            "w": 360,
+            "bg": "rgb(255, 255, 255)",
+            "headerH": 26
+          },
+          "diffs": []
+        }
+      ]
     },
     "previewHttp": "pass",
     "previewFile": "pass",

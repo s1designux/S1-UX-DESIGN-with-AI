@@ -749,6 +749,51 @@ async function nestedLayerChecks(cdp, origin, siteDir, pkgDir) {
     } finally { await page.close(); }
   }
 
+  /* 모바일: 바텀시트 안에서 날짜·시간 시트를 열었을 때 단독으로 열 때와 같은 상자(위치·폭·바탕·머리)인가 */
+  out.sheets = [];
+  const sheetNames = ["date-picker", "time-picker"];
+  const mobileSnippets = {};
+  for (const name of sheetNames) mobileSnippets[name] = extractDiv(read(`examples/${name}.mobile.html`), name);
+  const sheetHtml = stripOpener(read("examples/bottom-sheet.mobile.html")).replace(/(<div id="[^"]*" data-s1-component="bottom-sheet"[^>]*?)\shidden/, "$1");
+  const sheetAt = sheetHtml.search(/<div data-s1-part="sheet-footer"/);
+  const measureSheet = `(async () => {
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    const results = {};
+    for (const holder of document.querySelectorAll("[data-nest]")) {
+      const name = holder.dataset.nest;
+      const root = holder.querySelector('[data-s1-component="' + name + '"]');
+      if (!root) continue;
+      root.querySelector('[data-s1-part="trigger"]').click();
+      await sleep(250);
+      const panel = root.querySelector('[data-s1-part="sheet-panel"]');
+      const header = root.querySelector('[data-s1-part="sheet-header"]');
+      if (!panel) continue;
+      const r = panel.getBoundingClientRect();
+      const h = header ? header.getBoundingClientRect() : null;
+      const key = holder.classList.contains("__std") ? "std" : "inSheet";
+      (results[name] ||= {})[key] = { x: Math.round(r.x), w: Math.round(r.width), bg: getComputedStyle(panel).backgroundColor, headerH: h ? Math.round(h.height) : 0 };
+      root.querySelector('[data-s1-part="trigger"]').click();
+      await sleep(120);
+    }
+    return JSON.stringify(results);
+  })()`;
+  if (sheetAt !== -1 && sheetNames.every((name) => mobileSnippets[name])) {
+    const stdMobile = sheetNames.map((name) => `<div class="__std" data-nest="${name}">${mobileSnippets[name]}</div>`).join("\n");
+    const nestedMobile = sheetNames.map((name) => `<div class="__nest" data-nest="${name}">${mobileSnippets[name]}</div>`).join("\n");
+    const withSheet = sheetHtml.slice(0, sheetAt) + nestedMobile + sheetHtml.slice(sheetAt);
+    const mp = await pageProbe(cdp, origin, siteDir, "__audit_nested_sheet.html", readmePage(`<div style="padding:8px">${stdMobile}</div>${withSheet}`, { title: "nested sheet" }), MOBILE);
+    try {
+      await waitFor(mp, "window.__s1ready === true", 5000);
+      const got = JSON.parse(await mp.eval(measureSheet));
+      for (const [name, byContext] of Object.entries(got)) {
+        if (!byContext.std || !byContext.inSheet) continue;
+        const diffs = [];
+        for (const key of ["x", "w", "bg", "headerH"]) if (byContext.std[key] !== byContext.inSheet[key]) diffs.push(`${key} ${byContext.std[key]} → ${byContext.inSheet[key]}`);
+        out.sheets.push({ component: name, std: byContext.std, inSheet: byContext.inSheet, diffs });
+      }
+    } finally { await mp.close(); }
+  }
+
   /* 창 안에서 다른 창 열기 — 예외 없이 응답해야 한다 */
   /* 예시에 id 가 있든 없든 같은 조건으로 시험한다 — 루트 id 를 우리가 지정한다 */
   const withRootId = (html, id) => html.replace(/^(\s*)<div\b([^>]*?)>/, (m, lead, attrs) => `${lead}<div id="${id}"${attrs.replace(/\sid="[^"]*"/, "")}>`);
@@ -848,7 +893,7 @@ async function main() {
   if (args.includes("--nested-only")) {
     /* 빠른 확인용: 겹쳐 쓰기 검사만 돌린다(결과 파일은 쓰지 않는다) */
     const nested = await nestedLayerChecks(cdp, origin, siteDir, pkgDir);
-    console.log(JSON.stringify({ popoverDiffs: nested.popovers.filter((p) => p.diffs.length).map((p) => `${p.component} in ${p.wrapper}: ${p.diffs.join(", ")}`), modalOpenFromModal: nested.modalOpenFromModal }, null, 2));
+    console.log(JSON.stringify({ popoverDiffs: nested.popovers.filter((p) => p.diffs.length).map((p) => `${p.component} in ${p.wrapper}: ${p.diffs.join(", ")}`), sheetDiffs: (nested.sheets || []).map((s) => `${s.component}: ${s.diffs.join(", ") || "same"}`), modalOpenFromModal: nested.modalOpenFromModal }, null, 2));
     cleanupAll();
     process.exit(0);
   }
@@ -976,6 +1021,9 @@ async function main() {
     const bad = nested.popovers.filter((p) => p.diffs.length);
     pkgChecks.nestedPopoverSize = nested.popovers.length ? (bad.length ? "fail" : "pass") : "notChecked";
     if (bad.length) pkgAdd("nested-popover-size", "nested", "broken", `창(modal·modal-content) 안에 넣은 팝업이 창 밖에서 열 때와 다른 모양으로 열립니다 — 창 CSS 가 안쪽 부품의 부분까지 먹고 있습니다(${bad.length}건).`, bad.map((p) => `${p.component} in ${p.wrapper}: ${p.diffs.join(", ")}`).join(" | "), "창 CSS 의 부분 선택자를 그 부품 자신의 부분만 고르게 좁힌다");
+    const badSheets = (nested.sheets || []).filter((s) => s.diffs.length);
+    pkgChecks.nestedSheetBox = (nested.sheets || []).length ? (badSheets.length ? "fail" : "pass") : "notChecked";
+    if (badSheets.length) pkgAdd("nested-sheet-box", "nested", "broken", "바텀시트 안에서 연 날짜·시간 시트가 단독으로 열 때와 다른 상자(위치·폭·바탕·머리)로 열립니다 — 겹친 시트의 CSS 가 서로를 가리고 있습니다.", badSheets.map((s) => `${s.component}: ${s.diffs.join(", ")}`).join(" | "), "같은 종류 부품의 부분은 가장 가까운 부품 루트 기준으로 고른다");
     pkgChecks.nestedModalOpen = nested.modalOpenFromModal && nested.modalOpenFromModal.responsive && !nested.modalOpenFromModal.exceptions.length ? "pass" : "fail";
     if (pkgChecks.nestedModalOpen === "fail") pkgAdd("nested-modal-crash", "nested", "broken", "열린 창 안의 버튼으로 다른 창을 열면 오류가 나거나 페이지가 멈춥니다.", js(nested.modalOpenFromModal), "열린 겹 중 맨 위 하나만 초점 가둠을 맡게 한다");
     pkgChecks.nestedDetail = nested;

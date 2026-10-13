@@ -14,7 +14,7 @@
   font-family: inherit;
 }
 
-[data-s1-component="expandable-card"] [data-s1-part="header"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)) {
+[data-s1-component="expandable-card"] [data-s1-part="header"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
   align-items: flex-start;
   background: var(--color-bg-level-0);
   border: 0;
@@ -29,16 +29,16 @@
   width: 100%;
 }
 
-[data-s1-component="expandable-card"] [data-s1-part="header"]:hover:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)) {
+[data-s1-component="expandable-card"] [data-s1-part="header"]:hover:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
   background: var(--color-bg-level-1);
 }
 
-[data-s1-component="expandable-card"] [data-s1-part="header"][aria-expanded="true"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)),
-[data-s1-component="expandable-card"] [data-s1-part="header"][aria-expanded="true"]:hover:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)) {
+[data-s1-component="expandable-card"] [data-s1-part="header"][aria-expanded="true"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))),
+[data-s1-component="expandable-card"] [data-s1-part="header"][aria-expanded="true"]:hover:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
   background: var(--color-bg-level-0);
 }
 
-[data-s1-component="expandable-card"] [data-s1-part="text"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)) {
+[data-s1-component="expandable-card"] [data-s1-part="text"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -46,7 +46,7 @@
   min-width: 0;
 }
 
-[data-s1-component="expandable-card"] [data-s1-part="title"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)) {
+[data-s1-component="expandable-card"] [data-s1-part="title"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
   color: var(--color-text-title-primary);
   font-size: var(--font-size-16);
   font-weight: var(--font-weight-bold);
@@ -54,7 +54,7 @@
   line-height: var(--line-height-130);
 }
 
-[data-s1-component="expandable-card"] [data-s1-part="subtitle"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)) {
+[data-s1-component="expandable-card"] [data-s1-part="subtitle"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
   color: var(--color-text-body-secondary);
   font-size: var(--font-size-14);
   font-weight: var(--font-weight-bold);
@@ -62,7 +62,7 @@
   line-height: var(--line-height-130);
 }
 
-[data-s1-component="expandable-card"] [data-s1-part="body"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)) {
+[data-s1-component="expandable-card"] [data-s1-part="body"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
   color: var(--color-text-body-secondary);
   font-size: var(--font-size-14);
   font-weight: var(--font-weight-regular);
@@ -70,7 +70,7 @@
   line-height: var(--line-height-130);
 }
 
-[data-s1-component="expandable-card"] [data-s1-part="note"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)) {
+[data-s1-component="expandable-card"] [data-s1-part="note"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
   color: var(--color-text-body-secondary);
   font-size: var(--font-size-12);
   font-weight: var(--font-weight-regular);
@@ -78,7 +78,7 @@
   line-height: var(--line-height-130);
 }
 
-[data-s1-component="expandable-card"] [data-s1-part="caption"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)) {
+[data-s1-component="expandable-card"] [data-s1-part="caption"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
   color: var(--color-text-body-tertiary);
   font-size: var(--font-size-12);
   font-weight: var(--font-weight-regular);
@@ -86,13 +86,13 @@
   line-height: var(--line-height-130);
 }
 
-[data-s1-component="expandable-card"] [data-s1-part="header"] [data-s1-part="title"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)) {
+[data-s1-component="expandable-card"] [data-s1-part="header"] [data-s1-part="title"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
   align-items: center;
   display: flex;
   min-height: var(--sizing-24);
 }
 
-[data-s1-component="expandable-card"] [data-s1-part="toggle-icon"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)) {
+[data-s1-component="expandable-card"] [data-s1-part="toggle-icon"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
   background-color: var(--color-icon-gray-dark);
   flex: none;
   height: var(--sizing-24);
@@ -103,11 +103,11 @@
   width: var(--sizing-24);
 }
 
-[data-s1-component="expandable-card"] [data-s1-part="header"][aria-expanded="true"] [data-s1-part="toggle-icon"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)) {
+[data-s1-component="expandable-card"] [data-s1-part="header"][aria-expanded="true"] [data-s1-part="toggle-icon"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
   transform: rotate(90deg) scaleX(-1);
 }
 
-[data-s1-component="expandable-card"] [data-s1-part="panel-wrap"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)) {
+[data-s1-component="expandable-card"] [data-s1-part="panel-wrap"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
   display: grid;
   grid-template-rows: 0fr;
   opacity: 0;
@@ -115,14 +115,14 @@
   visibility: hidden;
 }
 
-[data-s1-component="expandable-card"] [data-s1-part="panel-wrap"][data-open="true"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)) {
+[data-s1-component="expandable-card"] [data-s1-part="panel-wrap"][data-open="true"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
   grid-template-rows: 1fr;
   opacity: 1;
   transition: grid-template-rows .22s ease, opacity .22s ease, visibility 0s;
   visibility: visible;
 }
 
-[data-s1-component="expandable-card"] [data-s1-part="panel"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)) {
+[data-s1-component="expandable-card"] [data-s1-part="panel"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
   background: var(--color-bg-level-2);
   display: flex;
   flex-direction: column;
@@ -133,15 +133,15 @@
   transition: padding .22s ease;
 }
 
-[data-s1-component="expandable-card"] [data-s1-part="panel-wrap"][data-open="true"] [data-s1-part="panel"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)) {
+[data-s1-component="expandable-card"] [data-s1-part="panel-wrap"][data-open="true"] [data-s1-part="panel"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
   padding: var(--spacing-16) var(--spacing-16) var(--spacing-16) var(--spacing-20);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-s1-component="expandable-card"] [data-s1-part="header"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)),
-  [data-s1-component="expandable-card"] [data-s1-part="panel-wrap"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)),
-  [data-s1-component="expandable-card"] [data-s1-part="panel"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)),
-  [data-s1-component="expandable-card"] [data-s1-part="toggle-icon"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *)) {
+  [data-s1-component="expandable-card"] [data-s1-part="header"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))),
+  [data-s1-component="expandable-card"] [data-s1-part="panel-wrap"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))),
+  [data-s1-component="expandable-card"] [data-s1-part="panel"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))),
+  [data-s1-component="expandable-card"] [data-s1-part="toggle-icon"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
     transition: none;
   }
 }

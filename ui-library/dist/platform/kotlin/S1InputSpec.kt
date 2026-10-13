@@ -17,7 +17,7 @@ object S1InputSpec {
             "action" to S1Box(foreground = S1Palette.colorFormControlIconDefault, height = 48f, width = 48f),
             "actionIcon" to S1Box(backgroundInherit = true, height = 24f, width = 24f, icon = "remove"),
             "message" to S1Box(foreground = S1Palette.colorTextStateCaption, fontSize = 12f, lineHeight = 1.3f, fontWeight = 400),
-            "placeholder" to S1Box()
+            "placeholder" to S1Box(foreground = S1Palette.colorFormControlTextPlaceholder, opacity = 1f)
         ),
         "md|mobile|filled" to mapOf(
             "root" to S1Box(width = 200f, gap = 6f),
@@ -27,7 +27,7 @@ object S1InputSpec {
             "action" to S1Box(foreground = S1Palette.colorFormControlIconDefault, height = 48f, width = 48f),
             "actionIcon" to S1Box(backgroundInherit = true, height = 24f, width = 24f, icon = "remove"),
             "message" to S1Box(foreground = S1Palette.colorTextStateCaption, fontSize = 12f, lineHeight = 1.3f, fontWeight = 400),
-            "placeholder" to S1Box()
+            "placeholder" to S1Box(foreground = S1Palette.colorFormControlTextPlaceholder, opacity = 1f)
         ),
         "md|mobile|focus" to mapOf(
             "root" to S1Box(width = 200f, gap = 6f),
@@ -37,7 +37,7 @@ object S1InputSpec {
             "action" to S1Box(foreground = S1Palette.colorFormControlIconDefault, height = 48f, width = 48f),
             "actionIcon" to S1Box(backgroundInherit = true, height = 24f, width = 24f, icon = "remove"),
             "message" to S1Box(foreground = S1Palette.colorTextStateCaption, fontSize = 12f, lineHeight = 1.3f, fontWeight = 400),
-            "placeholder" to S1Box()
+            "placeholder" to S1Box(foreground = S1Palette.colorFormControlTextPlaceholder, opacity = 1f)
         ),
         "md|mobile|error" to mapOf(
             "root" to S1Box(width = 200f, gap = 6f),
@@ -47,7 +47,7 @@ object S1InputSpec {
             "action" to S1Box(foreground = S1Palette.colorFormControlIconDefault, height = 48f, width = 48f),
             "actionIcon" to S1Box(backgroundInherit = true, height = 24f, width = 24f, icon = "remove"),
             "message" to S1Box(foreground = S1Palette.colorTextStateCaution, fontSize = 12f, lineHeight = 1.3f, fontWeight = 400),
-            "placeholder" to S1Box()
+            "placeholder" to S1Box(foreground = S1Palette.colorFormControlTextPlaceholder, opacity = 1f)
         ),
         "md|mobile|correct" to mapOf(
             "root" to S1Box(width = 200f, gap = 6f),
@@ -57,7 +57,7 @@ object S1InputSpec {
             "action" to S1Box(foreground = S1Palette.colorFormControlIconDefault, height = 48f, width = 48f),
             "actionIcon" to S1Box(backgroundInherit = true, height = 24f, width = 24f, icon = "remove"),
             "message" to S1Box(foreground = S1Palette.colorTextStateCorrect, fontSize = 12f, lineHeight = 1.3f, fontWeight = 400),
-            "placeholder" to S1Box()
+            "placeholder" to S1Box(foreground = S1Palette.colorFormControlTextPlaceholder, opacity = 1f)
         ),
         "md|mobile|readOnly" to mapOf(
             "root" to S1Box(width = 200f, gap = 6f),
@@ -67,7 +67,7 @@ object S1InputSpec {
             "action" to S1Box(foreground = S1Palette.colorFormControlIconDefault, height = 48f, width = 48f),
             "actionIcon" to S1Box(backgroundInherit = true, height = 24f, width = 24f, icon = "remove"),
             "message" to S1Box(foreground = S1Palette.colorTextStateCaption, fontSize = 12f, lineHeight = 1.3f, fontWeight = 400),
-            "placeholder" to S1Box()
+            "placeholder" to S1Box(foreground = S1Palette.colorFormControlTextPlaceholder, opacity = 1f)
         ),
         "md|mobile|disabled" to mapOf(
             "root" to S1Box(width = 200f, gap = 6f),
@@ -77,7 +77,7 @@ object S1InputSpec {
             "action" to S1Box(foreground = S1Palette.colorFormControlIconDefault, height = 48f, width = 48f),
             "actionIcon" to S1Box(backgroundInherit = true, height = 24f, width = 24f, icon = "remove"),
             "message" to S1Box(foreground = S1Palette.colorTextStateDisabled, fontSize = 12f, lineHeight = 1.3f, fontWeight = 400),
-            "placeholder" to S1Box()
+            "placeholder" to S1Box(foreground = S1Palette.colorFormControlTextDisabled, opacity = 1f)
         )
     )
 

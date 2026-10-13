@@ -5,13 +5,16 @@
     "rule": "reason=pc-only 는 안드로이드가 쓰지 않는 PC 조합이라 안 읽은 것이고, reason=display-rule 은 값이 아니라 표시·배치 규칙이라 부품 뼈대가 직접 담당하는 것이다. 둘 중 어느 쪽도 아닌 색·치수가 남으면 부품이 그만큼 정본과 다르다는 뜻이다."
   },
   "icons": [
+    "check",
     "chevron",
+    "close",
     "eye_hide",
     "eye_show",
     "mobile-header-arrow-down",
     "mobile-header-back",
     "mobile-header-close",
     "mobile-header-notification",
+    "mobile-header-notification-accent",
     "mobile-nav-home",
     "nav-notification",
     "nav-search",
@@ -362,35 +365,35 @@
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"button\"]:not([data-size]) [data-s1-part=\"label\"]:where(:not([data-s1-component=\"button\"] [data-s1-component]:not([data-s1-component=\"button\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"button\"]:not([data-size]) [data-s1-part=\"label\"]",
           "media": null,
           "property": "align-items",
           "value": "center",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"button\"]:not([data-size]) [data-s1-part=\"label\"]:where(:not([data-s1-component=\"button\"] [data-s1-component]:not([data-s1-component=\"button\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"button\"]:not([data-size]) [data-s1-part=\"label\"]",
           "media": null,
           "property": "display",
           "value": "flex",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"button\"]:not([data-size]) [data-s1-part=\"label\"]:where(:not([data-s1-component=\"button\"] [data-s1-component]:not([data-s1-component=\"button\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"button\"]:not([data-size]) [data-s1-part=\"label\"]",
           "media": null,
           "property": "justify-content",
           "value": "center",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"button\"]:not([data-size]) [data-s1-part=\"label\"]:where(:not([data-s1-component=\"button\"] [data-s1-component]:not([data-s1-component=\"button\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"button\"]:not([data-size]) [data-s1-part=\"label\"]",
           "media": null,
           "property": "min-width",
           "value": "0",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"button\"]:not([data-size]) [data-s1-part=\"label\"]:where(:not([data-s1-component=\"button\"] [data-s1-component]:not([data-s1-component=\"button\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"button\"]:not([data-size]) [data-s1-part=\"label\"]",
           "media": null,
           "property": "width",
           "value": "100%",
@@ -412,619 +415,598 @@
         "placeholder"
       ],
       "unreadPcOnly": 80,
-      "unreadDisplayRules": 8,
+      "unreadDisplayRules": 5,
       "unreadDeclarations": [
         {
-          "selector": "[data-s1-component=\"input\"][data-mode=\"search\"], [data-s1-component=\"input\"][data-mode=\"search\"] [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-mode=\"search\"], [data-s1-component=\"input\"][data-mode=\"search\"] [data-s1-part=\"field\"]",
           "media": null,
           "property": "min-width",
           "value": "200px",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-component=\"input\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))::placeholder",
-          "media": null,
-          "property": "color",
-          "value": "var(--color-form-control-text-placeholder)",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"input\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))::placeholder",
-          "media": null,
-          "property": "opacity",
-          "value": "var(--opacity-100)",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"input\"] [data-s1-part=\"action\"][hidden]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"] [data-s1-part=\"action\"][hidden]",
           "media": null,
           "property": "display",
           "value": "none",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-component=\"input\"][data-break=\"mobile\"] [data-s1-part=\"action\"]:has(+ [data-s1-part=\"action\"]:not([hidden])):where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-break=\"mobile\"] [data-s1-part=\"action\"]:has(+ [data-s1-part=\"action\"]:not([hidden]))",
           "media": null,
           "property": "justify-content",
           "value": "flex-end",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-component=\"input\"]:not([data-break=\"mobile\"]):is([data-break=\"pc\"], :not([data-s1-break=\"mobile\"] *)) [data-s1-part=\"action\"]:hover:not(:disabled):where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"]:not([data-break=\"mobile\"]):is([data-break=\"pc\"], :not([data-s1-break=\"mobile\"] *)) [data-s1-part=\"action\"]:hover:not(:disabled)",
           "media": "(hover: hover)",
           "property": "background",
           "value": "var(--color-form-control-bg-hover)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"]:not([data-break=\"mobile\"]):is([data-break=\"pc\"], :not([data-s1-break=\"mobile\"] *)) [data-s1-part=\"action\"]:hover:not(:disabled):where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"]:not([data-break=\"mobile\"]):is([data-break=\"pc\"], :not([data-s1-break=\"mobile\"] *)) [data-s1-part=\"action\"]:hover:not(:disabled)",
           "media": "(hover: hover)",
           "property": "border-radius",
           "value": "var(--radius-control-sm)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"][data-size=\"xxsm\"] [data-s1-part=\"action-icon\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-size=\"xxsm\"] [data-s1-part=\"action-icon\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-20)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"][data-size=\"xxsm\"] [data-s1-part=\"action-icon\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-size=\"xxsm\"] [data-s1-part=\"action-icon\"]",
           "media": null,
           "property": "width",
           "value": "var(--sizing-20)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xxsm\"] [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xxsm\"] [data-s1-part=\"field\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-28)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xxsm\"] [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xxsm\"] [data-s1-part=\"field\"]",
           "media": null,
           "property": "padding-inline",
           "value": "var(--spacing-12) var(--spacing-8)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xxsm\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xxsm\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-12)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xxsm\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xxsm\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "letter-spacing",
           "value": "var(--letter-spacing-normal)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xxsm\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xxsm\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "padding-inline",
           "value": "0",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xsm\"] [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xsm\"] [data-s1-part=\"field\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-34)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xsm\"] [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xsm\"] [data-s1-part=\"field\"]",
           "media": null,
           "property": "padding-inline",
           "value": "var(--spacing-12) var(--spacing-8)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xsm\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xsm\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-14)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xsm\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xsm\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "letter-spacing",
           "value": "var(--letter-spacing-tight)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xsm\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"xsm\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "padding-inline",
           "value": "0",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"md\"] [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"md\"] [data-s1-part=\"field\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-44)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"md\"] [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"md\"] [data-s1-part=\"field\"]",
           "media": null,
           "property": "padding-inline",
           "value": "var(--spacing-12) var(--spacing-12)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"md\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"md\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-14)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"md\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"md\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "letter-spacing",
           "value": "var(--letter-spacing-tight)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"md\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-component=\"input\"][data-break=\"pc\"][data-size=\"md\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "padding-inline",
           "value": "0",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"input\"] [data-s1-part=\"control\"]:disabled:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))::placeholder",
-          "media": null,
-          "property": "color",
-          "value": "var(--color-form-control-text-disabled)",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-44)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]",
           "media": null,
           "property": "padding-inline",
           "value": "var(--spacing-12) var(--spacing-12)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-14)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "letter-spacing",
           "value": "var(--letter-spacing-tight)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "padding-inline",
           "value": "0",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-44)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]",
           "media": null,
           "property": "padding-inline",
           "value": "var(--spacing-12) var(--spacing-12)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-14)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "letter-spacing",
           "value": "var(--letter-spacing-tight)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"wide\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "padding-inline",
           "value": "0",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-34)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]",
           "media": null,
           "property": "padding-inline",
           "value": "var(--spacing-12) var(--spacing-8)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-14)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "letter-spacing",
           "value": "var(--letter-spacing-tight)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "padding-inline",
           "value": "0",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-34)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]",
           "media": null,
           "property": "padding-inline",
           "value": "var(--spacing-12) var(--spacing-8)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-14)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "letter-spacing",
           "value": "var(--letter-spacing-tight)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"normal\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "padding-inline",
           "value": "0",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-size]) [data-s1-part=\"action-icon\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-size]) [data-s1-part=\"action-icon\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-20)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-size]) [data-s1-part=\"action-icon\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-size]) [data-s1-part=\"action-icon\"]",
           "media": null,
           "property": "width",
           "value": "var(--sizing-20)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-28)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]",
           "media": null,
           "property": "padding-inline",
           "value": "var(--spacing-12) var(--spacing-8)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-12)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "letter-spacing",
           "value": "var(--letter-spacing-normal)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "padding-inline",
           "value": "0",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-28)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"field\"]",
           "media": null,
           "property": "padding-inline",
           "value": "var(--spacing-12) var(--spacing-8)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-12)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "letter-spacing",
           "value": "var(--letter-spacing-normal)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"narrow\"] [data-s1-component=\"input\"]:not([data-break=\"mobile\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "padding-inline",
           "value": "0",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xxsm\"] [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xxsm\"] [data-s1-part=\"field\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-28)",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xxsm\"] [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xxsm\"] [data-s1-part=\"field\"]",
           "media": null,
           "property": "padding-inline",
           "value": "var(--spacing-12) var(--spacing-8)",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xxsm\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xxsm\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-12)",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xxsm\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xxsm\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "letter-spacing",
           "value": "var(--letter-spacing-normal)",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xxsm\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xxsm\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "padding-inline",
           "value": "0",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xsm\"] [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xsm\"] [data-s1-part=\"field\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-34)",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xsm\"] [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xsm\"] [data-s1-part=\"field\"]",
           "media": null,
           "property": "padding-inline",
           "value": "var(--spacing-12) var(--spacing-8)",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xsm\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xsm\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-14)",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xsm\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xsm\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "letter-spacing",
           "value": "var(--letter-spacing-tight)",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xsm\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"xsm\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "padding-inline",
           "value": "0",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"md\"] [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"md\"] [data-s1-part=\"field\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-44)",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"md\"] [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"md\"] [data-s1-part=\"field\"]",
           "media": null,
           "property": "padding-inline",
           "value": "var(--spacing-12) var(--spacing-12)",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"md\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"md\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-14)",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"md\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"md\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "letter-spacing",
           "value": "var(--letter-spacing-tight)",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"md\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"input\"]:not([data-break=\"mobile\"])[data-size=\"md\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "padding-inline",
           "value": "0",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]) [data-s1-part=\"action\"] + [data-s1-part=\"action\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]) [data-s1-part=\"action\"] + [data-s1-part=\"action\"]",
           "media": null,
           "property": "margin-inline-start",
           "value": "0",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]) [data-s1-part=\"action\"]:has(+ [data-s1-part=\"action\"]:not([hidden])):where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]) [data-s1-part=\"action\"]:has(+ [data-s1-part=\"action\"]:not([hidden]))",
           "media": null,
           "property": "justify-content",
           "value": "flex-end",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]) [data-s1-part=\"action\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]) [data-s1-part=\"action\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-48)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]) [data-s1-part=\"action\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]) [data-s1-part=\"action\"]",
           "media": null,
           "property": "width",
           "value": "var(--sizing-48)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"])[data-size=\"md\"] [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"])[data-size=\"md\"] [data-s1-part=\"field\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-48)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"])[data-size=\"md\"] [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"])[data-size=\"md\"] [data-s1-part=\"field\"]",
           "media": null,
           "property": "min-height",
           "value": "var(--sizing-48)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"])[data-size=\"md\"] [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"])[data-size=\"md\"] [data-s1-part=\"field\"]",
           "media": null,
           "property": "padding-inline",
           "value": "var(--spacing-12) 0",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"])[data-size=\"md\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"])[data-size=\"md\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-14)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"])[data-size=\"md\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"])[data-size=\"md\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "letter-spacing",
           "value": "var(--letter-spacing-tight)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"])[data-size=\"md\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"])[data-size=\"md\"] [data-s1-part=\"control\"]",
           "media": null,
           "property": "padding-inline",
           "value": "0",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]):not([data-size]) [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]):not([data-size]) [data-s1-part=\"field\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-48)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]):not([data-size]) [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]):not([data-size]) [data-s1-part=\"field\"]",
           "media": null,
           "property": "min-height",
           "value": "var(--sizing-48)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]):not([data-size]) [data-s1-part=\"field\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]):not([data-size]) [data-s1-part=\"field\"]",
           "media": null,
           "property": "padding-inline",
           "value": "var(--spacing-12) 0",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-14)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "letter-spacing",
           "value": "var(--letter-spacing-tight)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]):not([data-size]) [data-s1-part=\"control\"]:where(:not([data-s1-component=\"input\"] [data-s1-component]:not([data-s1-component=\"input\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"input\"]:not([data-break=\"pc\"]):not([data-size]) [data-s1-part=\"control\"]",
           "media": null,
           "property": "padding-inline",
           "value": "0",
@@ -1042,51 +1024,8 @@
         "label"
       ],
       "unreadPcOnly": 0,
-      "unreadDisplayRules": 6,
-      "unreadDeclarations": [
-        {
-          "selector": "[data-s1-component=\"checkbox\"] [data-s1-part=\"control\"]:checked:where(:not([data-s1-component=\"checkbox\"] [data-s1-component]:not([data-s1-component=\"checkbox\"]) *))::before",
-          "media": null,
-          "property": "background-color",
-          "value": "currentColor",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"checkbox\"] [data-s1-part=\"control\"]:checked:where(:not([data-s1-component=\"checkbox\"] [data-s1-component]:not([data-s1-component=\"checkbox\"]) *))::before",
-          "media": null,
-          "property": "content",
-          "value": "\"\"",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"checkbox\"] [data-s1-part=\"control\"]:checked:where(:not([data-s1-component=\"checkbox\"] [data-s1-component]:not([data-s1-component=\"checkbox\"]) *))::before",
-          "media": null,
-          "property": "display",
-          "value": "block",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"checkbox\"] [data-s1-part=\"control\"]:checked:where(:not([data-s1-component=\"checkbox\"] [data-s1-component]:not([data-s1-component=\"checkbox\"]) *))::before",
-          "media": null,
-          "property": "height",
-          "value": "var(--sizing-16)",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"checkbox\"] [data-s1-part=\"control\"]:checked:where(:not([data-s1-component=\"checkbox\"] [data-s1-component]:not([data-s1-component=\"checkbox\"]) *))::before",
-          "media": null,
-          "property": "mask",
-          "value": "url(\"../assets/icons/check.svg\") center / contain no-repeat",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"checkbox\"] [data-s1-part=\"control\"]:checked:where(:not([data-s1-component=\"checkbox\"] [data-s1-component]:not([data-s1-component=\"checkbox\"]) *))::before",
-          "media": null,
-          "property": "width",
-          "value": "var(--sizing-16)",
-          "reason": "display-rule"
-        }
-      ]
+      "unreadDisplayRules": 0,
+      "unreadDeclarations": []
     },
     {
       "component": "radio",
@@ -1098,51 +1037,8 @@
         "label"
       ],
       "unreadPcOnly": 0,
-      "unreadDisplayRules": 6,
-      "unreadDeclarations": [
-        {
-          "selector": "[data-s1-component=\"radio\"] [data-s1-part=\"control\"]:checked:where(:not([data-s1-component=\"radio\"] [data-s1-component]:not([data-s1-component=\"radio\"]) *))::before",
-          "media": null,
-          "property": "background-color",
-          "value": "currentColor",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"radio\"] [data-s1-part=\"control\"]:checked:where(:not([data-s1-component=\"radio\"] [data-s1-component]:not([data-s1-component=\"radio\"]) *))::before",
-          "media": null,
-          "property": "border-radius",
-          "value": "var(--radius-full)",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"radio\"] [data-s1-part=\"control\"]:checked:where(:not([data-s1-component=\"radio\"] [data-s1-component]:not([data-s1-component=\"radio\"]) *))::before",
-          "media": null,
-          "property": "content",
-          "value": "\"\"",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"radio\"] [data-s1-part=\"control\"]:checked:where(:not([data-s1-component=\"radio\"] [data-s1-component]:not([data-s1-component=\"radio\"]) *))::before",
-          "media": null,
-          "property": "display",
-          "value": "block",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"radio\"] [data-s1-part=\"control\"]:checked:where(:not([data-s1-component=\"radio\"] [data-s1-component]:not([data-s1-component=\"radio\"]) *))::before",
-          "media": null,
-          "property": "height",
-          "value": "var(--sizing-10)",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"radio\"] [data-s1-part=\"control\"]:checked:where(:not([data-s1-component=\"radio\"] [data-s1-component]:not([data-s1-component=\"radio\"]) *))::before",
-          "media": null,
-          "property": "width",
-          "value": "var(--sizing-10)",
-          "reason": "display-rule"
-        }
-      ]
+      "unreadDisplayRules": 0,
+      "unreadDeclarations": []
     },
     {
       "component": "toggle",
@@ -1531,63 +1427,63 @@
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"dropdown\"]:not([data-size]) [data-s1-part=\"option\"]:where(:not([data-s1-component=\"dropdown\"] [data-s1-component]:not([data-s1-component=\"dropdown\"]):not([data-s1-component=\"checkbox\"]) *))",
+          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"dropdown\"]:not([data-size]) [data-s1-part=\"option\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-14)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"dropdown\"]:not([data-size]) [data-s1-part=\"option\"]:where(:not([data-s1-component=\"dropdown\"] [data-s1-component]:not([data-s1-component=\"dropdown\"]):not([data-s1-component=\"checkbox\"]) *))",
+          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"dropdown\"]:not([data-size]) [data-s1-part=\"option\"]",
           "media": null,
           "property": "min-height",
           "value": "var(--sizing-44)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"dropdown\"]:not([data-size]) [data-s1-part=\"option\"][data-select-all=\"true\"]:where(:not([data-s1-component=\"dropdown\"] [data-s1-component]:not([data-s1-component=\"dropdown\"]):not([data-s1-component=\"checkbox\"]) *))",
+          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"dropdown\"]:not([data-size]) [data-s1-part=\"option\"][data-select-all=\"true\"]",
           "media": null,
           "property": "min-height",
           "value": "calc(var(--sizing-44) - var(--border-width-1))",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"dropdown\"]:not([data-size]) [data-s1-part=\"option\"]:where(:not([data-s1-component=\"dropdown\"] [data-s1-component]:not([data-s1-component=\"dropdown\"]):not([data-s1-component=\"checkbox\"]) *))",
+          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"dropdown\"]:not([data-size]) [data-s1-part=\"option\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-14)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"dropdown\"]:not([data-size]) [data-s1-part=\"option\"]:where(:not([data-s1-component=\"dropdown\"] [data-s1-component]:not([data-s1-component=\"dropdown\"]):not([data-s1-component=\"checkbox\"]) *))",
+          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"dropdown\"]:not([data-size]) [data-s1-part=\"option\"]",
           "media": null,
           "property": "min-height",
           "value": "var(--sizing-34)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"dropdown\"]:not([data-size]) [data-s1-part=\"option\"][data-select-all=\"true\"]:where(:not([data-s1-component=\"dropdown\"] [data-s1-component]:not([data-s1-component=\"dropdown\"]):not([data-s1-component=\"checkbox\"]) *))",
+          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"dropdown\"]:not([data-size]) [data-s1-part=\"option\"][data-select-all=\"true\"]",
           "media": null,
           "property": "min-height",
           "value": "calc(var(--sizing-34) - var(--border-width-1))",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"dropdown\"]:not([data-size]) [data-s1-part=\"option\"]:where(:not([data-s1-component=\"dropdown\"] [data-s1-component]:not([data-s1-component=\"dropdown\"]):not([data-s1-component=\"checkbox\"]) *))",
+          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"dropdown\"]:not([data-size]) [data-s1-part=\"option\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-12)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"dropdown\"]:not([data-size]) [data-s1-part=\"option\"]:where(:not([data-s1-component=\"dropdown\"] [data-s1-component]:not([data-s1-component=\"dropdown\"]):not([data-s1-component=\"checkbox\"]) *))",
+          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"dropdown\"]:not([data-size]) [data-s1-part=\"option\"]",
           "media": null,
           "property": "min-height",
           "value": "var(--sizing-28)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"dropdown\"]:not([data-size]) [data-s1-part=\"option\"][data-select-all=\"true\"]:where(:not([data-s1-component=\"dropdown\"] [data-s1-component]:not([data-s1-component=\"dropdown\"]):not([data-s1-component=\"checkbox\"]) *))",
+          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"dropdown\"]:not([data-size]) [data-s1-part=\"option\"][data-select-all=\"true\"]",
           "media": null,
           "property": "min-height",
           "value": "calc(var(--sizing-28) - var(--border-width-1))",
@@ -1609,77 +1505,77 @@
       "unreadDisplayRules": 22,
       "unreadDeclarations": [
         {
-          "selector": "[data-s1-component=\"select\"][data-size=\"xxsm\"] [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"select\"][data-size=\"xxsm\"] [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-12)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"select\"][data-size=\"xxsm\"] [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"select\"][data-size=\"xxsm\"] [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-28)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"select\"][data-size=\"xsm\"] [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"select\"][data-size=\"xsm\"] [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-14)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"select\"][data-size=\"xsm\"] [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"select\"][data-size=\"xsm\"] [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-34)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"select\"][data-size=\"xxsm\"] [data-s1-part=\"icon\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"select\"][data-size=\"xxsm\"] [data-s1-part=\"icon\"]",
           "media": null,
           "property": "width",
           "value": "var(--sizing-20)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"select\"][data-size=\"xxsm\"] [data-s1-part=\"icon\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"select\"][data-size=\"xxsm\"] [data-s1-part=\"icon\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-20)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"select\"] [data-s1-part=\"panel\"][hidden]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"select\"] [data-s1-part=\"panel\"][hidden]",
           "media": null,
           "property": "display",
           "value": "none",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-component=\"select\"] [data-s1-part=\"panel\"][data-s1-float=\"fixed\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"select\"] [data-s1-part=\"panel\"][data-s1-float=\"fixed\"]",
           "media": null,
           "property": "z-index",
           "value": "1001",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-component=\"select\"] [data-s1-part=\"panel\"][data-s1-float=\"fixed\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"select\"] [data-s1-part=\"panel\"][data-s1-float=\"fixed\"]",
           "media": null,
           "property": "margin-top",
           "value": "0",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-component=\"select\"] [data-s1-part=\"panel\"][data-s1-float=\"fixed\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"select\"] [data-s1-part=\"panel\"][data-s1-float=\"fixed\"]",
           "media": null,
           "property": "position",
           "value": "fixed",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-component=\"select\"] [data-s1-part=\"panel\"][data-s1-float=\"fixed\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"select\"] [data-s1-part=\"panel\"][data-s1-float=\"fixed\"]",
           "media": null,
           "property": "top",
           "value": "auto",
@@ -1693,140 +1589,140 @@
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-14)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-44)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"icon\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"icon\"]",
           "media": null,
           "property": "width",
           "value": "var(--sizing-24)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"icon\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"icon\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-24)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-14)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-34)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"icon\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"icon\"]",
           "media": null,
           "property": "width",
           "value": "var(--sizing-24)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"icon\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"icon\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-24)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-12)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-28)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"icon\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"icon\"]",
           "media": null,
           "property": "width",
           "value": "var(--sizing-20)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"icon\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"icon\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-20)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"select\"][data-size=\"md\"]:not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"select\"][data-size=\"md\"]:not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-48)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"select\"][data-size=\"md\"]:not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"select\"][data-size=\"md\"]:not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-right",
           "value": "var(--spacing-12)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-14)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-44)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"icon\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"icon\"]",
           "media": null,
           "property": "width",
           "value": "var(--sizing-24)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"icon\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"select\"]:not([data-size]) [data-s1-part=\"icon\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-24)",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"select\"]:not([data-size]):not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"select\"]:not([data-size]):not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-48)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"select\"]:not([data-size]):not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"select\"] [data-s1-component]:not([data-s1-component=\"select\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"select\"]:not([data-size]):not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-right",
           "value": "var(--spacing-12)",
@@ -1844,105 +1740,49 @@
         "indicator"
       ],
       "unreadPcOnly": 6,
-      "unreadDisplayRules": 9,
+      "unreadDisplayRules": 1,
       "unreadDeclarations": [
         {
-          "selector": "[data-s1-component=\"tab\"][data-size=\"md\"][data-break=\"pc\"] [data-s1-part=\"tab\"]:where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))",
+          "selector": "[data-s1-component=\"tab\"][data-size=\"md\"][data-break=\"pc\"] [data-s1-part=\"tab\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-44)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"tab\"][data-size=\"md\"][data-break=\"pc\"] [data-s1-part=\"tab\"]:where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))",
+          "selector": "[data-s1-component=\"tab\"][data-size=\"md\"][data-break=\"pc\"] [data-s1-part=\"tab\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-18)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"tab\"][data-size=\"sm\"][data-break=\"pc\"] [data-s1-part=\"tab\"]:where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))",
+          "selector": "[data-s1-component=\"tab\"][data-size=\"sm\"][data-break=\"pc\"] [data-s1-part=\"tab\"]",
           "media": null,
           "property": "height",
           "value": "42px",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"tab\"][data-size=\"sm\"][data-break=\"pc\"] [data-s1-part=\"tab\"]:where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))",
+          "selector": "[data-s1-component=\"tab\"][data-size=\"sm\"][data-break=\"pc\"] [data-s1-part=\"tab\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-16)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"tab\"][data-size=\"xsm\"][data-break=\"pc\"] [data-s1-part=\"tab\"]:where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))",
+          "selector": "[data-s1-component=\"tab\"][data-size=\"xsm\"][data-break=\"pc\"] [data-s1-part=\"tab\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-40)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"tab\"][data-size=\"xsm\"][data-break=\"pc\"] [data-s1-part=\"tab\"]:where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))",
+          "selector": "[data-s1-component=\"tab\"][data-size=\"xsm\"][data-break=\"pc\"] [data-s1-part=\"tab\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-14)",
           "reason": "pc-only"
-        },
-        {
-          "selector": "[data-s1-component=\"tab\"] [data-s1-part=\"tab\"]:hover:not([aria-selected=\"true\"]):where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after, [data-s1-component=\"tab\"] [data-s1-part=\"tab\"][data-force-state=\"hover\"]:not([aria-selected=\"true\"]):where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after, [data-s1-component=\"tab\"] [data-s1-part=\"tab\"][aria-selected=\"true\"]:where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after",
-          "media": null,
-          "property": "bottom",
-          "value": "0",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"tab\"] [data-s1-part=\"tab\"]:hover:not([aria-selected=\"true\"]):where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after, [data-s1-component=\"tab\"] [data-s1-part=\"tab\"][data-force-state=\"hover\"]:not([aria-selected=\"true\"]):where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after, [data-s1-component=\"tab\"] [data-s1-part=\"tab\"][aria-selected=\"true\"]:where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after",
-          "media": null,
-          "property": "content",
-          "value": "\"\"",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"tab\"] [data-s1-part=\"tab\"]:hover:not([aria-selected=\"true\"]):where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after, [data-s1-component=\"tab\"] [data-s1-part=\"tab\"][data-force-state=\"hover\"]:not([aria-selected=\"true\"]):where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after, [data-s1-component=\"tab\"] [data-s1-part=\"tab\"][aria-selected=\"true\"]:where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after",
-          "media": null,
-          "property": "height",
-          "value": "var(--border-width-2)",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"tab\"] [data-s1-part=\"tab\"]:hover:not([aria-selected=\"true\"]):where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after, [data-s1-component=\"tab\"] [data-s1-part=\"tab\"][data-force-state=\"hover\"]:not([aria-selected=\"true\"]):where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after, [data-s1-component=\"tab\"] [data-s1-part=\"tab\"][aria-selected=\"true\"]:where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after",
-          "media": null,
-          "property": "left",
-          "value": "0",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"tab\"] [data-s1-part=\"tab\"]:hover:not([aria-selected=\"true\"]):where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after, [data-s1-component=\"tab\"] [data-s1-part=\"tab\"][data-force-state=\"hover\"]:not([aria-selected=\"true\"]):where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after, [data-s1-component=\"tab\"] [data-s1-part=\"tab\"][aria-selected=\"true\"]:where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after",
-          "media": null,
-          "property": "position",
-          "value": "absolute",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"tab\"] [data-s1-part=\"tab\"]:hover:not([aria-selected=\"true\"]):where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after, [data-s1-component=\"tab\"] [data-s1-part=\"tab\"][data-force-state=\"hover\"]:not([aria-selected=\"true\"]):where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after, [data-s1-component=\"tab\"] [data-s1-part=\"tab\"][aria-selected=\"true\"]:where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after",
-          "media": null,
-          "property": "right",
-          "value": "0",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"tab\"] [data-s1-part=\"tab\"]:hover:not([aria-selected=\"true\"]):where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after, [data-s1-component=\"tab\"] [data-s1-part=\"tab\"][data-force-state=\"hover\"]:not([aria-selected=\"true\"]):where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after",
-          "media": null,
-          "property": "background",
-          "value": "var(--color-navigation-indicator-hover)",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"tab\"] [data-s1-part=\"tab\"][aria-selected=\"true\"]:where(:not([data-s1-component=\"tab\"] [data-s1-component]:not([data-s1-component=\"tab\"]) *))::after",
-          "media": null,
-          "property": "background",
-          "value": "var(--color-navigation-indicator-selected)",
-          "reason": "display-rule"
         },
         {
           "selector": "[data-s1-component=\"tab\"] [role=\"tabpanel\"][hidden]",
@@ -1970,7 +1810,7 @@
         "closeIcon"
       ],
       "unreadPcOnly": 10,
-      "unreadDisplayRules": 8,
+      "unreadDisplayRules": 2,
       "unreadDeclarations": [
         {
           "selector": "[data-s1-component=\"modal\"][hidden]",
@@ -1980,112 +1820,70 @@
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-component=\"modal\"] [data-s1-part=\"close\"]:where(:not([data-s1-component=\"modal\"] [data-s1-component]:not([data-s1-component=\"modal\"]):not([data-s1-component=\"button\"]) *))::after",
-          "media": null,
-          "property": "background",
-          "value": "var(--color-icon-gray-dark)",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"modal\"] [data-s1-part=\"close\"]:where(:not([data-s1-component=\"modal\"] [data-s1-component]:not([data-s1-component=\"modal\"]):not([data-s1-component=\"button\"]) *))::after",
-          "media": null,
-          "property": "content",
-          "value": "\"\"",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"modal\"] [data-s1-part=\"close\"]:where(:not([data-s1-component=\"modal\"] [data-s1-component]:not([data-s1-component=\"modal\"]):not([data-s1-component=\"button\"]) *))::after",
-          "media": null,
-          "property": "display",
-          "value": "block",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"modal\"] [data-s1-part=\"close\"]:where(:not([data-s1-component=\"modal\"] [data-s1-component]:not([data-s1-component=\"modal\"]):not([data-s1-component=\"button\"]) *))::after",
-          "media": null,
-          "property": "height",
-          "value": "100%",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"modal\"] [data-s1-part=\"close\"]:where(:not([data-s1-component=\"modal\"] [data-s1-component]:not([data-s1-component=\"modal\"]):not([data-s1-component=\"button\"]) *))::after",
-          "media": null,
-          "property": "mask",
-          "value": "url(\"../assets/icons/close.svg\") center / contain no-repeat",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"modal\"] [data-s1-part=\"close\"]:where(:not([data-s1-component=\"modal\"] [data-s1-component]:not([data-s1-component=\"modal\"]):not([data-s1-component=\"button\"]) *))::after",
-          "media": null,
-          "property": "width",
-          "value": "100%",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"modal\"]:not([data-break=\"mobile\"]) [data-s1-part=\"close\"]:hover:where(:not([data-s1-component=\"modal\"] [data-s1-component]:not([data-s1-component=\"modal\"]):not([data-s1-component=\"button\"]) *))",
+          "selector": "[data-s1-component=\"modal\"]:not([data-break=\"mobile\"]) [data-s1-part=\"close\"]:hover",
           "media": "(hover: hover)",
           "property": "background",
           "value": "var(--color-control-bg-hover)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"panel\"]:where(:not([data-s1-component=\"modal\"] [data-s1-component]:not([data-s1-component=\"modal\"]):not([data-s1-component=\"button\"]) *))",
+          "selector": "[data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"panel\"]",
           "media": null,
           "property": "gap",
           "value": "var(--spacing-32)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"panel\"]:where(:not([data-s1-component=\"modal\"] [data-s1-component]:not([data-s1-component=\"modal\"]):not([data-s1-component=\"button\"]) *))",
+          "selector": "[data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"panel\"]",
           "media": null,
           "property": "width",
           "value": "360px",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"content\"]:where(:not([data-s1-component=\"modal\"] [data-s1-component]:not([data-s1-component=\"modal\"]):not([data-s1-component=\"button\"]) *))",
+          "selector": "[data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"content\"]",
           "media": null,
           "property": "gap",
           "value": "var(--spacing-32)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"header\"]:where(:not([data-s1-component=\"modal\"] [data-s1-component]:not([data-s1-component=\"modal\"]):not([data-s1-component=\"button\"]) *)), [data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"body\"]:where(:not([data-s1-component=\"modal\"] [data-s1-component]:not([data-s1-component=\"modal\"]):not([data-s1-component=\"button\"]) *)), [data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"footer\"]:where(:not([data-s1-component=\"modal\"] [data-s1-component]:not([data-s1-component=\"modal\"]):not([data-s1-component=\"button\"]) *))",
+          "selector": "[data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"header\"], [data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"body\"], [data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"footer\"]",
           "media": null,
           "property": "padding-inline",
           "value": "var(--spacing-24)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"title\"]:where(:not([data-s1-component=\"modal\"] [data-s1-component]:not([data-s1-component=\"modal\"]):not([data-s1-component=\"button\"]) *))",
+          "selector": "[data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"title\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-16)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"title\"]:where(:not([data-s1-component=\"modal\"] [data-s1-component]:not([data-s1-component=\"modal\"]):not([data-s1-component=\"button\"]) *))",
+          "selector": "[data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"title\"]",
           "media": null,
           "property": "font-weight",
           "value": "var(--font-weight-bold)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"message\"]:where(:not([data-s1-component=\"modal\"] [data-s1-component]:not([data-s1-component=\"modal\"]):not([data-s1-component=\"button\"]) *))",
+          "selector": "[data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"message\"]",
           "media": null,
           "property": "font-size",
           "value": "var(--font-size-14)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"message\"]:where(:not([data-s1-component=\"modal\"] [data-s1-component]:not([data-s1-component=\"modal\"]):not([data-s1-component=\"button\"]) *))",
+          "selector": "[data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"message\"]",
           "media": null,
           "property": "font-weight",
           "value": "var(--font-weight-regular)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"footer\"]:where(:not([data-s1-component=\"modal\"] [data-s1-component]:not([data-s1-component=\"modal\"]):not([data-s1-component=\"button\"]) *))",
+          "selector": "[data-s1-component=\"modal\"][data-break=\"pc\"] [data-s1-part=\"footer\"]",
           "media": null,
           "property": "justify-content",
           "value": "flex-end",
@@ -2108,76 +1906,13 @@
         "title"
       ],
       "unreadPcOnly": 0,
-      "unreadDisplayRules": 10,
+      "unreadDisplayRules": 1,
       "unreadDeclarations": [
         {
           "selector": "[data-s1-component=\"mobile-header\"][data-variant=\"home-title-1icon\"]",
           "media": null,
           "property": "gap",
           "value": "var(--spacing-8)",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"mobile-header\"] [data-s1-part=\"back\"]:where(:not([data-s1-component=\"mobile-header\"] [data-s1-component]:not([data-s1-component=\"mobile-header\"]) *))::before, [data-s1-component=\"mobile-header\"] [data-s1-part=\"close\"]:where(:not([data-s1-component=\"mobile-header\"] [data-s1-component]:not([data-s1-component=\"mobile-header\"]) *))::before, [data-s1-component=\"mobile-header\"] [data-s1-part=\"notification\"]:where(:not([data-s1-component=\"mobile-header\"] [data-s1-component]:not([data-s1-component=\"mobile-header\"]) *))::before",
-          "media": null,
-          "property": "content",
-          "value": "\"\"",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"mobile-header\"] [data-s1-part=\"back\"]:where(:not([data-s1-component=\"mobile-header\"] [data-s1-component]:not([data-s1-component=\"mobile-header\"]) *))::before, [data-s1-component=\"mobile-header\"] [data-s1-part=\"close\"]:where(:not([data-s1-component=\"mobile-header\"] [data-s1-component]:not([data-s1-component=\"mobile-header\"]) *))::before, [data-s1-component=\"mobile-header\"] [data-s1-part=\"notification\"]:where(:not([data-s1-component=\"mobile-header\"] [data-s1-component]:not([data-s1-component=\"mobile-header\"]) *))::before",
-          "media": null,
-          "property": "inset",
-          "value": "calc(var(--spacing-6) * -1)",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"mobile-header\"] [data-s1-part=\"back\"]:where(:not([data-s1-component=\"mobile-header\"] [data-s1-component]:not([data-s1-component=\"mobile-header\"]) *))::before, [data-s1-component=\"mobile-header\"] [data-s1-part=\"close\"]:where(:not([data-s1-component=\"mobile-header\"] [data-s1-component]:not([data-s1-component=\"mobile-header\"]) *))::before, [data-s1-component=\"mobile-header\"] [data-s1-part=\"notification\"]:where(:not([data-s1-component=\"mobile-header\"] [data-s1-component]:not([data-s1-component=\"mobile-header\"]) *))::before",
-          "media": null,
-          "property": "position",
-          "value": "absolute",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"mobile-header\"] [data-s1-part=\"notification-icon\"]:where(:not([data-s1-component=\"mobile-header\"] [data-s1-component]:not([data-s1-component=\"mobile-header\"]) *))::after",
-          "media": null,
-          "property": "background-color",
-          "value": "var(--color-icon-red)",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"mobile-header\"] [data-s1-part=\"notification-icon\"]:where(:not([data-s1-component=\"mobile-header\"] [data-s1-component]:not([data-s1-component=\"mobile-header\"]) *))::after",
-          "media": null,
-          "property": "content",
-          "value": "\"\"",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"mobile-header\"] [data-s1-part=\"notification-icon\"]:where(:not([data-s1-component=\"mobile-header\"] [data-s1-component]:not([data-s1-component=\"mobile-header\"]) *))::after",
-          "media": null,
-          "property": "inset",
-          "value": "0",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"mobile-header\"] [data-s1-part=\"notification-icon\"]:where(:not([data-s1-component=\"mobile-header\"] [data-s1-component]:not([data-s1-component=\"mobile-header\"]) *))::after",
-          "media": null,
-          "property": "-webkit-mask",
-          "value": "url(\"../assets/icons/mobile-header-notification-accent.svg\") center / contain no-repeat",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"mobile-header\"] [data-s1-part=\"notification-icon\"]:where(:not([data-s1-component=\"mobile-header\"] [data-s1-component]:not([data-s1-component=\"mobile-header\"]) *))::after",
-          "media": null,
-          "property": "mask",
-          "value": "url(\"../assets/icons/mobile-header-notification-accent.svg\") center / contain no-repeat",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"mobile-header\"] [data-s1-part=\"notification-icon\"]:where(:not([data-s1-component=\"mobile-header\"] [data-s1-component]:not([data-s1-component=\"mobile-header\"]) *))::after",
-          "media": null,
-          "property": "position",
-          "value": "absolute",
           "reason": "display-rule"
         }
       ]
@@ -2203,30 +1938,8 @@
         "placeholder"
       ],
       "unreadPcOnly": 0,
-      "unreadDisplayRules": 3,
-      "unreadDeclarations": [
-        {
-          "selector": "[data-s1-component=\"textarea\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"textarea\"] [data-s1-component]:not([data-s1-component=\"textarea\"]) *))::placeholder",
-          "media": null,
-          "property": "color",
-          "value": "var(--color-form-control-text-placeholder)",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"textarea\"] [data-s1-part=\"control\"]:where(:not([data-s1-component=\"textarea\"] [data-s1-component]:not([data-s1-component=\"textarea\"]) *))::placeholder",
-          "media": null,
-          "property": "opacity",
-          "value": "var(--opacity-100)",
-          "reason": "display-rule"
-        },
-        {
-          "selector": "[data-s1-component=\"textarea\"] [data-s1-part=\"control\"]:disabled:where(:not([data-s1-component=\"textarea\"] [data-s1-component]:not([data-s1-component=\"textarea\"]) *))::placeholder",
-          "media": null,
-          "property": "color",
-          "value": "var(--color-form-control-text-disabled)",
-          "reason": "display-rule"
-        }
-      ]
+      "unreadDisplayRules": 0,
+      "unreadDeclarations": []
     },
     {
       "component": "text-button",
@@ -2265,42 +1978,42 @@
       "unreadDisplayRules": 5,
       "unreadDeclarations": [
         {
-          "selector": "[data-s1-component=\"filter-chip\"][data-size=\"sm\"][data-break=\"pc\"] [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"filter-chip\"][data-size=\"sm\"][data-break=\"pc\"] [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-28)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"filter-chip\"][data-size=\"sm\"][data-break=\"pc\"] [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"filter-chip\"][data-size=\"sm\"][data-break=\"pc\"] [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-left",
           "value": "var(--spacing-12)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"filter-chip\"][data-size=\"sm\"][data-break=\"pc\"] [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"filter-chip\"][data-size=\"sm\"][data-break=\"pc\"] [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-right",
           "value": "var(--spacing-6)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"filter-chip\"][data-size=\"md\"][data-break=\"pc\"] [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"filter-chip\"][data-size=\"md\"][data-break=\"pc\"] [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-34)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"filter-chip\"][data-size=\"md\"][data-break=\"pc\"] [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"filter-chip\"][data-size=\"md\"][data-break=\"pc\"] [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-left",
           "value": "var(--spacing-16)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-component=\"filter-chip\"][data-size=\"md\"][data-break=\"pc\"] [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"filter-chip\"][data-size=\"md\"][data-break=\"pc\"] [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-right",
           "value": "var(--spacing-8)",
@@ -2314,238 +2027,238 @@
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-component=\"filter-chip\"] [data-s1-part=\"panel\"][data-s1-float=\"fixed\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"filter-chip\"] [data-s1-part=\"panel\"][data-s1-float=\"fixed\"]",
           "media": null,
           "property": "z-index",
           "value": "1001",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-component=\"filter-chip\"] [data-s1-part=\"panel\"][data-s1-float=\"fixed\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"filter-chip\"] [data-s1-part=\"panel\"][data-s1-float=\"fixed\"]",
           "media": null,
           "property": "margin-top",
           "value": "0",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-component=\"filter-chip\"] [data-s1-part=\"panel\"][data-s1-float=\"fixed\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"filter-chip\"] [data-s1-part=\"panel\"][data-s1-float=\"fixed\"]",
           "media": null,
           "property": "position",
           "value": "fixed",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-component=\"filter-chip\"] [data-s1-part=\"panel\"][data-s1-float=\"fixed\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-component=\"filter-chip\"] [data-s1-part=\"panel\"][data-s1-float=\"fixed\"]",
           "media": null,
           "property": "top",
           "value": "auto",
           "reason": "display-rule"
         },
         {
-          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-34)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-left",
           "value": "var(--spacing-16)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"wide\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-right",
           "value": "var(--spacing-8)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"wide\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"wide\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-34)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"wide\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"wide\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-left",
           "value": "var(--spacing-16)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"wide\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"wide\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-right",
           "value": "var(--spacing-8)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-34)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-left",
           "value": "var(--spacing-16)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"normal\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-right",
           "value": "var(--spacing-8)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"normal\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"normal\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-34)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"normal\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"normal\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-left",
           "value": "var(--spacing-16)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"normal\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"normal\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-right",
           "value": "var(--spacing-8)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-28)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-left",
           "value": "var(--spacing-12)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-density=\"narrow\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-right",
           "value": "var(--spacing-6)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"narrow\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"narrow\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-28)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"narrow\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"narrow\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-left",
           "value": "var(--spacing-12)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"narrow\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"pc\"][data-s1-density=\"narrow\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-right",
           "value": "var(--spacing-6)",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"filter-chip\"][data-size=\"sm\"]:not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"filter-chip\"][data-size=\"sm\"]:not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-28)",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"filter-chip\"][data-size=\"sm\"]:not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"filter-chip\"][data-size=\"sm\"]:not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-left",
           "value": "var(--spacing-12)",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"filter-chip\"][data-size=\"sm\"]:not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"filter-chip\"][data-size=\"sm\"]:not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-right",
           "value": "var(--spacing-6)",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"filter-chip\"][data-size=\"md\"]:not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"filter-chip\"][data-size=\"md\"]:not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-34)",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"filter-chip\"][data-size=\"md\"]:not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"filter-chip\"][data-size=\"md\"]:not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-left",
           "value": "var(--spacing-16)",
           "reason": "pc-only"
         },
         {
-          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"filter-chip\"][data-size=\"md\"]:not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": ":is([data-s1-break=\"pc\"], [data-s1-density=\"wide\"], [data-s1-density=\"normal\"], [data-s1-density=\"narrow\"]) [data-s1-component=\"filter-chip\"][data-size=\"md\"]:not([data-break=\"mobile\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-right",
           "value": "var(--spacing-8)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"filter-chip\"][data-size=\"md\"]:not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"filter-chip\"][data-size=\"md\"]:not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-30)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"filter-chip\"][data-size=\"md\"]:not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"filter-chip\"][data-size=\"md\"]:not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-left",
           "value": "var(--spacing-12)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"filter-chip\"][data-size=\"md\"]:not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"filter-chip\"][data-size=\"md\"]:not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-right",
           "value": "var(--spacing-6)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "height",
           "value": "var(--sizing-30)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-left",
           "value": "var(--spacing-12)",
           "reason": "pc-only"
         },
         {
-          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]:where(:not([data-s1-component=\"filter-chip\"] [data-s1-component]:not([data-s1-component=\"filter-chip\"]):not([data-s1-component=\"dropdown\"]) *))",
+          "selector": "[data-s1-break=\"mobile\"] [data-s1-component=\"filter-chip\"]:not([data-size]):not([data-break=\"pc\"]) [data-s1-part=\"trigger\"]",
           "media": null,
           "property": "padding-right",
           "value": "var(--spacing-6)",

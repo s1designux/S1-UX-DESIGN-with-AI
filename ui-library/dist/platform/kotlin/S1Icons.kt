@@ -12,6 +12,25 @@ import androidx.compose.ui.graphics.vector.PathParser
 import androidx.compose.ui.unit.dp
 
 object S1Icons {
+    /** check.svg (16×16) */
+    val check: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "check",
+            defaultWidth = 16f.dp,
+            defaultHeight = 16f.dp,
+            viewportWidth = 16f,
+            viewportHeight = 16f
+        )
+            .addPath(
+                pathData = PathParser().parsePathString("M 2.9375 8 L 6.1325 11.375 L 13.0625 4.625").toNodes(),
+                stroke = SolidColor(Color.Black),
+                strokeLineWidth = 1.5f,
+                strokeLineCap = StrokeCap.Butt,
+                strokeLineJoin = StrokeJoin.Round
+            )
+            .build()
+    }
+
     /** chevron.svg (24×24) */
     val chevron: ImageVector by lazy {
         ImageVector.Builder(
@@ -27,6 +46,22 @@ object S1Icons {
                 strokeLineWidth = 1f,
                 strokeLineCap = StrokeCap.Square,
                 strokeLineJoin = StrokeJoin.Miter
+            )
+            .build()
+    }
+
+    /** close.svg (24×24) */
+    val close: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "close",
+            defaultWidth = 24f.dp,
+            defaultHeight = 24f.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        )
+            .addPath(
+                pathData = PathParser().parsePathString("M 4.7231 20 L 11.9949 12.718 L 19.2769 20 L 20 19.2769 L 12.718 11.9949 L 20 4.7231 L 19.2769 4 L 11.9949 11.282 L 4.7231 4 L 4 4.7231 L 11.282 11.9949 L 4 19.2769 L 4.7231 20 Z").toNodes(),
+                fill = SolidColor(Color.Black)
             )
             .build()
     }
@@ -154,6 +189,22 @@ object S1Icons {
             .build()
     }
 
+    /** mobile-header-notification-accent.svg (24×24) */
+    val mobileHeaderNotificationAccent: ImageVector by lazy {
+        ImageVector.Builder(
+            name = "mobile-header-notification-accent",
+            defaultWidth = 24f.dp,
+            defaultHeight = 24f.dp,
+            viewportWidth = 24f,
+            viewportHeight = 24f
+        )
+            .addPath(
+                pathData = PathParser().parsePathString("M 16.8773 5.3791 C 16.8773 5.3791 16.8323 5.3791 16.8098 5.3791 C 16.5964 5.3791 16.3941 5.424 16.2031 5.5027 C 16.0233 5.5701 15.8548 5.6825 15.7087 5.8061 C 15.3042 6.1431 15.0458 6.6375 15.0458 7.1993 C 15.0458 8.2105 15.866 9.0196 16.866 9.0196 C 16.9559 9.0196 17.0458 9.0083 17.1245 8.9971 C 17.3155 8.9634 17.5065 8.9072 17.675 8.8285 C 17.8773 8.7274 18.0458 8.6038 18.2031 8.4353 C 18.5065 8.1094 18.6975 7.6712 18.6975 7.1993 C 18.6975 6.1881 17.8773 5.3791 16.8773 5.3791 Z").toNodes(),
+                fill = SolidColor(Color.Black)
+            )
+            .build()
+    }
+
     /** mobile-nav-home.svg (24×24) */
     val mobileNavHome: ImageVector by lazy {
         ImageVector.Builder(
@@ -270,13 +321,16 @@ object S1Icons {
 
     /** 배포본이 이름으로 가리키는 아이콘을 찾는다(스타일 표의 icon 값). */
     fun byName(name: String): ImageVector = when (name) {
+        "check" -> check
         "chevron" -> chevron
+        "close" -> close
         "eye_hide" -> eyeHide
         "eye_show" -> eyeShow
         "mobile-header-arrow-down" -> mobileHeaderArrowDown
         "mobile-header-back" -> mobileHeaderBack
         "mobile-header-close" -> mobileHeaderClose
         "mobile-header-notification" -> mobileHeaderNotification
+        "mobile-header-notification-accent" -> mobileHeaderNotificationAccent
         "mobile-nav-home" -> mobileNavHome
         "nav-notification" -> navNotification
         "nav-search" -> navSearch

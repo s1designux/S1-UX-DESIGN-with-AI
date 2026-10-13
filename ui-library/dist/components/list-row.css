@@ -39,7 +39,7 @@
   cursor: not-allowed;
 }
 
-[data-s1-component="list-row"] [data-s1-part="thumbnail"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"] [data-s1-part="thumbnail"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   border-radius: var(--radius-4);
   flex: none;
   height: var(--sizing-40);
@@ -47,7 +47,7 @@
   width: var(--sizing-40);
 }
 
-[data-s1-component="list-row"] [data-s1-part="thumbnail"]:empty:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"] [data-s1-part="thumbnail"]:empty:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   background: var(--color-bg-level-2);
 }
 
@@ -64,7 +64,7 @@
   width: 100%;
 }
 
-[data-s1-component="list-row"] [data-s1-part="lead"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"] [data-s1-part="lead"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   align-items: center;
   display: flex;
   flex: none;
@@ -72,11 +72,11 @@
   overflow: hidden;
 }
 
-[data-s1-component="list-row"] [data-s1-part="lead"]:empty:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"] [data-s1-part="lead"]:empty:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   display: none;
 }
 
-[data-s1-component="list-row"] [data-s1-part="text"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"] [data-s1-part="text"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
@@ -86,7 +86,7 @@
   min-width: 0;
 }
 
-[data-s1-component="list-row"] [data-s1-part="title"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"] [data-s1-part="title"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   font-family: "Pretendard Variable", "Pretendard", sans-serif;
   color: var(--color-text-title-primary);
   font-size: var(--font-size-16);
@@ -98,7 +98,7 @@
   white-space: nowrap;
 }
 
-[data-s1-component="list-row"] [data-s1-part="description"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"] [data-s1-part="description"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   font-family: "Pretendard Variable", "Pretendard", sans-serif;
   color: var(--color-text-body-tertiary);
   font-size: var(--font-size-14);
@@ -110,15 +110,15 @@
   white-space: nowrap;
 }
 
-[data-s1-component="list-row"]:is(:disabled, [aria-disabled="true"], [data-state="disabled"]) [data-s1-part="title"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"]:is(:disabled, [aria-disabled="true"], [data-state="disabled"]) [data-s1-part="title"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   color: var(--color-text-state-disabled);
 }
 
-[data-s1-component="list-row"]:is(:disabled, [aria-disabled="true"], [data-state="disabled"]) [data-s1-part="description"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"]:is(:disabled, [aria-disabled="true"], [data-state="disabled"]) [data-s1-part="description"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   color: var(--color-text-state-disabled);
 }
 
-[data-s1-component="list-row"] [data-s1-part="trail"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"] [data-s1-part="trail"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   align-items: center;
   display: flex;
   flex: none;
@@ -127,11 +127,11 @@
   overflow: hidden;
 }
 
-[data-s1-component="list-row"] [data-s1-part="trail"]:empty:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"] [data-s1-part="trail"]:empty:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   display: none;
 }
 
-[data-s1-component="list-row"] [data-s1-part="value"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"] [data-s1-part="value"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   font-family: "Pretendard Variable", "Pretendard", sans-serif;
   color: var(--color-text-body-primary);
   font-size: var(--font-size-14);
@@ -141,11 +141,11 @@
   white-space: nowrap;
 }
 
-[data-s1-component="list-row"]:is(:disabled, [aria-disabled="true"], [data-state="disabled"]) [data-s1-part="value"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"]:is(:disabled, [aria-disabled="true"], [data-state="disabled"]) [data-s1-part="value"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   color: var(--color-text-state-disabled);
 }
 
-[data-s1-component="list-row"] [data-s1-part="chevron"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"] [data-s1-part="chevron"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   background-color: var(--color-icon-gray);
   flex: none;
   height: var(--sizing-24);
@@ -154,7 +154,7 @@
   width: var(--sizing-24);
 }
 
-[data-s1-component="list-row"]:is(:disabled, [aria-disabled="true"], [data-state="disabled"]) [data-s1-part="chevron"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"]:is(:disabled, [aria-disabled="true"], [data-state="disabled"]) [data-s1-part="chevron"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   background-color: var(--color-icon-gray-light);
 }
 
@@ -162,7 +162,7 @@
   flex: none;
 }
 
-[data-s1-component="list-row"] [data-s1-part="check"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"] [data-s1-part="check"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   align-items: center;
   box-sizing: border-box;
   cursor: pointer;
@@ -174,11 +174,11 @@
   padding: var(--spacing-12) 0 var(--spacing-12) var(--spacing-20);
 }
 
-[data-s1-component="list-row"]:is([aria-disabled="true"], [data-state="disabled"]) [data-s1-part="check"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"]:is([aria-disabled="true"], [data-state="disabled"]) [data-s1-part="check"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   cursor: not-allowed;
 }
 
-[data-s1-component="list-row"] [data-s1-part="open"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"] [data-s1-part="open"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   align-items: center;
   appearance: none;
   background: transparent;
@@ -193,10 +193,10 @@
   width: var(--sizing-24);
 }
 
-[data-s1-component="list-row"] [data-s1-part="open"]:disabled:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"] [data-s1-part="open"]:disabled:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   cursor: not-allowed;
 }
 
-[data-s1-component="list-row"] [data-s1-part="open"]:disabled [data-s1-part="chevron"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *)) {
+[data-s1-component="list-row"] [data-s1-part="open"]:disabled [data-s1-part="chevron"]:where(:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) *:not([data-s1-component="list-row"] [data-s1-component]:not([data-s1-component="list-row"]):not([data-s1-component="checkbox"]):not([data-s1-component="toggle"]) [data-s1-component="list-row"] *))) {
   background-color: var(--color-icon-gray-light);
 }
