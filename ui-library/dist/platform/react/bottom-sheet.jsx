@@ -17,7 +17,7 @@ function assertAllowed(label, value, allowed) {
   throw new Error(`[s1-ui] bottom-sheet: 승인되지 않은 ${label} "${value}". 쓸 수 있는 값: ${allowed.join(", ")}`);
 }
 
-export default function S1BottomSheet({ variant, parts, onOpen, onClose, className, style, ...rest }) {
+export default function S1BottomSheet({ variant, parts, onOpen, onClose, open = true, className, style, ...rest }) {
   const uid = useId();
   const rootRef = useRef(null);
   const partScope = scopeOf(parts);
@@ -41,7 +41,7 @@ export default function S1BottomSheet({ variant, parts, onOpen, onClose, classNa
   });
 
   return (
-      <div id={`${uid}-sheet`} data-s1-component="bottom-sheet" data-s1-part="sheet" data-break="mobile" data-footer={variant ?? "single"} hidden {...(slot(partScope, "sheet").attrs ?? {})} ref={rootRef} className={className} style={style} {...rest}>
+      <div id={`${uid}-sheet`} data-s1-component="bottom-sheet" data-s1-part="sheet" data-break="mobile" data-footer={variant ?? "single"} {...(slot(partScope, "sheet").attrs ?? {})} hidden={open ? undefined : true} ref={rootRef} className={className} style={style} {...rest}>
         <div data-s1-part="sheet-backdrop" {...(slot(partScope, "sheetBackdrop").attrs ?? {})}>
           {slot(partScope, "sheetBackdrop").content ?? ""}
         </div>

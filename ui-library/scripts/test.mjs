@@ -4,7 +4,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
 import iconGeometryCheck from "../../scripts/ui-library-icon-geometry-check.js";
 
-import { extractInstance } from "./platform.mjs";
+import { extractInstance, isPlatformDefaultOpen, stripDefaultOpenHidden } from "./platform.mjs";
 import { scopeSelector, stripScopeGuard } from "./css-scope.mjs";
 
 const libraryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -940,7 +940,9 @@ for (const id of approvedIds) {
   for (const [breakName, spec] of declaredExamples) {
     /* 예제 파일은 인스턴스 1개가 아닐 수 있다(변형 나열·화면 소유 껍데기).
        껍데기는 그 안의 승인된 인스턴스 하나와 글자 단위로 같아야 한다. */
-    const deployed = extractInstance(await read(`dist/${spec.distribution}`), id).trim();
+    /* 기본 열림 부품(bottom-sheet)의 껍데기는 웹 예시의 hidden 과 무관하게 처음부터 보인다 — manifest 선언이 정한다. */
+    const deployedRaw = extractInstance(await read(`dist/${spec.distribution}`), id).trim();
+    const deployed = isPlatformDefaultOpen(manifest) ? stripDefaultOpenHidden(deployedRaw, id) : deployedRaw;
     if (vueMarkups[breakName] !== deployed) failures.push(`${id} ${breakName} wrapper markup differs from the approved instance in ${spec.distribution}`);
     if (!/^<[a-zA-Z][^>]*data-s1-component\s*=\s*["']/.test(vueMarkups[breakName])) {
       failures.push(`${id} ${breakName} wrapper markup does not start at the component root`);
@@ -1129,6 +1131,35 @@ else if (renderCheck.stdout.trim()) console.log(`[guide render check] ${renderCh
     const text = await readFile(path.join(libraryRoot, file), "utf8").catch(() => "");
     if (text.includes(":where(")) failures.push(`${file}: 플랫폼 산출물에 웹 전용 안전띠(:where)가 섞였습니다`);
   }
+}
+
+
+/* 껍데기 기본 보임 — eb180827 동작을 지킨다: modal·modal-content 는 처음엔 닫힘, bottom-sheet 는 처음부터 보임(open 기본 true).
+   웹 예시가 hidden 으로 시작하는 것과 무관해야 한다(manifest htmlContract.platformDefaultOpen 이 정한다). */
+{
+  const expectations = [["modal", "Modal", false], ["modal-content", "ModalContent", false], ["bottom-sheet", "BottomSheet", true]];
+  for (const [id, vueName, visibleByDefault] of expectations) {
+    const react = await read(`dist/platform/react/${id}.jsx`);
+    const vue = await read(`dist/platform/vue/${vueName}.vue`);
+    const rn = await read(`dist/platform/react-native/components/${id}.js`);
+    const reactHasOpenProp = /\bopen = true\b/.test(react);
+    const vueMarkup = /const MARKUPS = (\{[\s\S]*?\n\});/.exec(vue);
+    const vueHiddenRoot = vueMarkup ? Object.values(JSON.parse(vueMarkup[1])).some((markup) => /^<[^>]*\shidden[\s>]/.test(markup)) : null;
+    const vueOpenDefaultTrue = /open: \{ type: Boolean, default: true \}/.test(vue);
+    const rnOpenDefaultTrue = /\bopen = true\b/.test(rn);
+    if (visibleByDefault) {
+      if (!reactHasOpenProp) failures.push(`${id}: React 껍데기는 open 기본값 true(처음부터 보임)여야 합니다`);
+      if (vueHiddenRoot !== false || !vueOpenDefaultTrue) failures.push(`${id}: Vue 껍데기는 hidden 없이 시작하고 open 기본 true 여야 합니다`);
+      if (!rnOpenDefaultTrue) failures.push(`${id}: RN 껍데기는 open 기본값 true 여야 합니다`);
+    } else {
+      if (reactHasOpenProp || !/\shidden[\s/>]/.test(react)) failures.push(`${id}: React 껍데기는 처음엔 닫힘(hidden)이어야 합니다`);
+      if (vueHiddenRoot !== true || vueOpenDefaultTrue) failures.push(`${id}: Vue 껍데기는 hidden 으로 시작해야 합니다`);
+      if (rnOpenDefaultTrue || !/open \? undefined : ""/.test(rn)) failures.push(`${id}: RN 껍데기는 open 을 주기 전까지 닫힘이어야 합니다`);
+    }
+  }
+  /* 같은 페이지에 껍데기가 여럿이어도 id 가 겹치지 않아야 한다 */
+  const vueModal = await read("dist/platform/vue/Modal.vue");
+  if (!vueModal.includes("uniquifyIds(element)")) failures.push("Vue 껍데기는 인스턴스마다 id 를 새로 만들어야 합니다");
 }
 
 if (failures.length) {

@@ -95,7 +95,7 @@ export declare function S1Gallery(props: { only?: readonly string[]; breakName?:
     for (const name of facts.controlProps) add(name, propType(name));
     for (const { eventName, propName } of facts.events) add(propName, propType(propName), eventName);
     for (const name of facts.behaviorProps ?? []) add(name, propType(name));
-    if (facts.hasOpen) add("open", "boolean", "열려 있나 — 안 주면 닫힘(그려지지 않음).");
+    if (facts.hasOpen) add("open", "boolean", facts.defaultOpen ? "열려 있나 — 안 주면 열림(기본 true). false 면 닫힘." : "열려 있나 — 안 주면 닫힘(그려지지 않음).");
     if (facts.hasChildrenSlot) add("children", "ReactNode", "앱이 소유하는 내용(탭 내용 등). 주면 예제 내용을 대신한다.");
     return `export interface ${facts.componentName}Props extends S1BaseProps {\n${lines.join("\n")}\n}\nexport declare function ${facts.componentName}(props: ${facts.componentName}Props): ReactElement;`;
   }).join("\n\n");

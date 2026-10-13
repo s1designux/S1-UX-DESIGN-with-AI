@@ -49,7 +49,7 @@ function pickTemplate(breakName, mode, current) {
   return 0;
 }
 
-export default function S1BottomSheet({ variant, parts, onOpen, onClose, open, onConfirm, onCancel, partProps, style, outer, omit, lifted: initialLifted, forceState, ...rest }) {
+export default function S1BottomSheet({ variant, parts, onOpen, onClose, open = true, onConfirm, onCancel, partProps, style, outer, omit, lifted: initialLifted, forceState, ...rest }) {
   const uid = useId();
   const partScope = scopeOf(parts);
   assertAllowed("variant", variant, VARIANTS);

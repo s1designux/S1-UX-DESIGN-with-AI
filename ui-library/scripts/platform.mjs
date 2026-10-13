@@ -480,6 +480,22 @@ function detectAttribute(attributes, allowed) {
   return null;
 }
 
+/** 껍데기 기본 열림 여부는 웹 예시의 hidden 이 아니라 manifest 선언(htmlContract.platformDefaultOpen)이 정한다. */
+export const isPlatformDefaultOpen = (manifest) => manifest?.htmlContract?.platformDefaultOpen === true;
+
+/** React·Vue 껍데기에 넘길 입력 — 기본 열림 부품은 웹 예시의 루트 hidden 을 걷어 처음부터 보이게 한다. */
+export const stripDefaultOpenHidden = (html, id) => html.replace(new RegExp(`(<[^>]*data-s1-component="${id}"[^>]*?)\\shidden(?:=""|=\\"\\")?(?=[\\s>/])`), "$1");
+
+export function platformView(component) {
+  if (!isPlatformDefaultOpen(component.manifest)) return component;
+  const strip = (html) => stripDefaultOpenHidden(html, component.id);
+  return {
+    ...component,
+    example: strip(component.example),
+    exampleByBreak: component.exampleByBreak ? Object.fromEntries(Object.entries(component.exampleByBreak).map(([name, html]) => [name, strip(html)])) : component.exampleByBreak
+  };
+}
+
 function wrapperFacts({ id, manifest, example, exampleByBreak }) {
   const events = manifest.javascript?.events ?? [];
   const markups = {};
@@ -509,6 +525,7 @@ function wrapperFacts({ id, manifest, example, exampleByBreak }) {
     sizeAttribute,
     parts: manifest.parts ?? [],
     jsRequired: Boolean(manifest.jsRequired),
+    defaultOpen: isPlatformDefaultOpen(manifest),
     events: events.map((eventName) => ({ eventName, propName: eventPropName(eventName) }))
   };
 }
@@ -523,7 +540,7 @@ export function buildVueComponent(component) {
 <!-- ${facts.componentName} — 승인된 배포본을 그대로 마운트하는 Vue 껍데기.
      MARKUPS 는 dist/examples/${facts.id}*.html 안의 승인된 인스턴스를 그대로 도려낸 것이다. -->
 <script setup>
-import { onBeforeUnmount, onMounted, ref, watch, watchEffect } from "vue";
+import { getCurrentInstance, onBeforeUnmount, onMounted, ref, watch, watchEffect } from "vue";
 ${runtimeImport}
 
 const MARKUPS = ${JSON.stringify(facts.markups, null, 2)};
@@ -544,7 +561,7 @@ const props = defineProps({
   size: { type: String, default: undefined, validator: (value) => ${facts.sizes.length ? `${JSON.stringify(facts.sizes)}.includes(value)` : "true"} },
   breakName: { type: String, default: ${JSON.stringify(facts.defaultBreak)}, validator: (value) => ${JSON.stringify(Object.keys(facts.markups))}.includes(value) },
   parts: { type: Object, default: () => ({}) },
-  attrs: { type: Object, default: () => ({}) }
+  attrs: { type: Object, default: () => ({}) }${facts.defaultOpen ? ",\n  open: { type: Boolean, default: true }" : ""}
 });
 const emit = defineEmits(${JSON.stringify(emitNames)});
 
@@ -562,10 +579,28 @@ function assertAllowed(label, value, allowed) {
   throw new Error(\`[s1-ui] ${facts.id}: 승인되지 않은 \${label} "\${value}". 쓸 수 있는 값: \${allowed.join(", ")}\`);
 }
 
+/* 같은 페이지에 껍데기가 여럿이어도 id 가 겹치지 않게, 인스턴스마다 접두사를 붙인다(React 껍데기의 useId 와 같은 목적).
+   마크업 안의 id 와 그것을 가리키는 속성(aria-*·for·data-s1-open)을 함께 바꾼다. */
+const uid = \`s1v\${getCurrentInstance()?.uid ?? 0}\`;
+function uniquifyIds(element) {
+  const nodes = [element, ...element.querySelectorAll("*")];
+  const ids = new Set(nodes.map((node) => node.id).filter(Boolean));
+  if (!ids.size) return;
+  const rename = (value) => (ids.has(value) ? \`\${uid}-\${value}\` : value);
+  for (const node of nodes) {
+    if (node.id) node.id = rename(node.id);
+    for (const name of ["aria-labelledby", "aria-describedby", "aria-controls", "for", "data-s1-open"]) {
+      const value = node.getAttribute(name);
+      if (value) node.setAttribute(name, value.split(/\\s+/).map(rename).join(" "));
+    }
+  }
+}
+${facts.defaultOpen ? "let api = null;\n" : ""}
 function mount() {
   host.value.innerHTML = MARKUPS[props.breakName] ?? MARKUPS[DEFAULT_BREAK];
   const element = host.value.firstElementChild;
-${facts.jsRequired ? "  init(element);\n" : ""}  for (const [eventName, emitName] of ${JSON.stringify(facts.events.map(({ eventName, propName }) => [eventName, propName.replace(/^on/, "").toLowerCase()]))}) {
+  uniquifyIds(element);
+${facts.defaultOpen ? "  if (!props.open) element.hidden = true;\n" : ""}${facts.jsRequired ? `  ${facts.defaultOpen ? "api = " : ""}init(element);\n` : ""}  for (const [eventName, emitName] of ${JSON.stringify(facts.events.map(({ eventName, propName }) => [eventName, propName.replace(/^on/, "").toLowerCase()]))}) {
     const handler = (event) => emit(emitName, event.detail ?? event);
     element.addEventListener(eventName, handler);
     listeners.push([eventName, handler]);
@@ -577,11 +612,18 @@ function unmount() {
   const element = root.value;
   if (!element) return;
   for (const [eventName, handler] of listeners.splice(0)) element.removeEventListener(eventName, handler);
-${facts.jsRequired ? "  destroy(element);\n" : ""}  root.value = null;
+${facts.jsRequired ? "  destroy(element);\n" : ""}${facts.defaultOpen ? "  api = null;\n" : ""}  root.value = null;
 }
 
 onMounted(mount);
 onBeforeUnmount(unmount);
+${facts.defaultOpen ? `
+/* open 속성 — 기본 true(처음부터 보임). false 로 바꾸면 닫고, 다시 true 면 연다. */
+watch(() => props.open, (value) => {
+  if (!api) return;
+  if (value) api.open(); else api.close();
+});
+` : ""}
 
 /* break 가 바뀌면 마크업 자체가 다른 파일이라 다시 마운트해야 한다.
    mount() 는 onMounted 로 한 번만 도니 여기서 갈아 끼운다
@@ -668,10 +710,11 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
 
   const approved = componentOutputs.filter(({ manifest }) => manifest.status === "approved");
   for (const component of approved) {
-    outputs.set(`platform/react/${component.id}.jsx`, buildReactComponent(component));
-    outputs.set(`platform/vue/${pascalId(component.id)}.vue`, buildVueComponent(component));
+    const view = platformView(component);
+    outputs.set(`platform/react/${component.id}.jsx`, buildReactComponent(view));
+    outputs.set(`platform/vue/${pascalId(component.id)}.vue`, buildVueComponent(view));
   }
-  const reactFacts = approved.map((component) => reactComponentFacts(component));
+  const reactFacts = approved.map((component) => reactComponentFacts(platformView(component)));
   outputs.set("platform/react/runtime.js", buildReactRuntime());
   outputs.set("platform/react/package.json", buildReactPackage(release));
   outputs.set("platform/react/version.js", versionJs(release));

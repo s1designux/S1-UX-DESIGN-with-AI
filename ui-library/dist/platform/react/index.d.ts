@@ -323,6 +323,8 @@ export interface S1BottomSheetProps extends S1BaseProps {
   onOpen?: (event: CustomEvent) => void;
   /** s1:bottom-sheet:close */
   onClose?: (event: CustomEvent) => void;
+  /** 열려 있나 — 기본 true(처음부터 보임). false 면 닫힌 채 그려진다. */
+  open?: boolean;
 }
 export declare function S1BottomSheet(props: S1BottomSheetProps): ReactElement;
 

@@ -19,6 +19,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import esbuild from "esbuild";
 import { firstInstance, parseHtml } from "./react.mjs";
+import { stripDefaultOpenHidden } from "./platform.mjs";
 
 const libraryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const distRoot = path.join(libraryRoot, "dist");
@@ -118,6 +119,9 @@ function describe(node, depth = 0) {
 /* ── 실행 ─────────────────────────────────────────────────────────────── */
 
 const manifest = JSON.parse(await readFile(path.join(distRoot, "manifest.json"), "utf8"));
+const componentManifests = new Map();
+for (const entry of manifest.components) componentManifests.set(entry.id, JSON.parse(await readFile(path.join(distRoot, "components", `${entry.id}.manifest.json`), "utf8")));
+const componentManifestOf = (id) => componentManifests.get(id);
 const approved = manifest.components.filter((component) => component.status === "approved");
 const workspace = await mkdtemp(path.join(tmpdir(), "s1-react-parity-"));
 await writeFile(path.join(workspace, "react-shim.js"), SHIM);
@@ -152,7 +156,8 @@ for (const component of approved) {
   const module = await import(pathToFileURL(bundlePath).href);
 
   for (const [breakName, examplePath] of Object.entries(component.examples)) {
-    const html = await readFile(path.join(distRoot, examplePath), "utf8");
+    const rawHtml = await readFile(path.join(distRoot, examplePath), "utf8");
+    const html = componentManifestOf(component.id)?.htmlContract?.platformDefaultOpen === true ? stripDefaultOpenHidden(rawHtml, component.id) : rawHtml;
     const expected = fromExample(firstInstance(parseHtml(html, component.id), component.id));
     const rendered = [];
     const props = module.BREAKS.length > 1 ? { breakName } : {};

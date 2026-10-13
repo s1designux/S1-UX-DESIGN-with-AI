@@ -748,6 +748,7 @@ export function buildRnComponent({ component, rules, converter, manifests, neste
     events: eventPropNames,
     hasChildrenSlot,
     hasOpen: usesOpen,
+    defaultOpen: manifest.htmlContract?.platformDefaultOpen === true,
     behaviorKind: behavior ? behavior.kind : null,
     behaviorProps: behavior ? [...new Set(Object.values(behavior.props))].filter((name) => name !== 'variant') : [],
     axisAttrs: axisAttrsOf(templates),
@@ -810,7 +811,7 @@ function componentSource({ id, manifest, facts, sources, usesOpen, behavior, beh
     ...facts.controlProps,
     ...eventPropNames.map(({ propName }) => propName),
     hasChildrenSlot ? "children" : null,
-    usesOpen ? "open" : null,
+    usesOpen ? (manifest.htmlContract?.platformDefaultOpen === true ? "open = true" : "open") : null,
     ...behaviorExternal,
     "partProps",
     "style", "outer", "omit", "lifted: initialLifted", "forceState", "...rest"

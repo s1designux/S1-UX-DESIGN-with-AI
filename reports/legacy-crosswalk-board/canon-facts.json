@@ -3,7 +3,7 @@
     "목적": "검수판 카드에 박는 정본 사실 — 사람이 요약하지 않고 기계가 뽑는다",
     "출처": "ui-library/dist/components/*.manifest.json (정본 build-components.ts 에서 생성)",
     "재생성": "npm run board:facts",
-    "생성일": "2026-10-12"
+    "생성일": "2026-10-13"
   },
   "components": {
     "assist-button": {
@@ -111,7 +111,7 @@
           "reason": "정본에 Break 축이 없다. 시트 자체가 모바일 전용이다."
         }
       ],
-      "sourceFingerprint": "a05edefbbec1ae799da4835af05b9b6e6c2f4062914c8adf4e00cfb51800280c"
+      "sourceFingerprint": "3a9aabfe02cdd2bbe7929b99772af19f205e194a3cfc1156da18e0021e7798e4"
     },
     "button": {
       "id": "button",

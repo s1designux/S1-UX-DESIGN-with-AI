@@ -290,8 +290,9 @@ class ItemScope {
 }
 
 class Emitter {
-  constructor({ id, ids, idSlugs, controlNode, variants, sizes, suffix = "" }) {
+  constructor({ id, ids, idSlugs, controlNode, variants, sizes, suffix = "", defaultOpen = false }) {
     this.suffix = suffix;
+    this.defaultOpen = defaultOpen;
     this.id = id;
     this.ids = ids;
     this.idSlugs = idSlugs;
@@ -323,6 +324,7 @@ class Emitter {
     if (part && !isTemplate) pieces.push(`{...(${scope.slotAttrs(part)} ?? {})}`);
     if (isTemplate) pieces.push(`{...${scope.attrs()}}`);
     if (node === this.controlNode) pieces.push("{...controlProps}");
+    if (isRoot && this.defaultOpen) pieces.push("hidden={open ? undefined : true}");
     if (isRoot) pieces.push("ref={rootRef}", "className={className}", "style={style}", "{...rest}");
     if (isTemplate) pieces.push(`key={keyOf(item${scope.depth}, index${scope.depth})}`);
     if (leaf && !part && isTextOnly(node) && node.children.length) pieces.push(`{...(${leaf.attrs} ?? {})}`);
@@ -527,7 +529,7 @@ export function buildReactComponent({ id, manifest, example, exampleByBreak }) {
     const ids = new Set();
     collectIds(tree, ids);
     const suffix = breaks.length > 1 ? `_${constantName(breakName)}` : "";
-    const emitter = new Emitter({ id, ids, idSlugs: idSlugMap(tree), controlNode: primaryControl(tree), variants, sizes, suffix });
+    const emitter = new Emitter({ id, ids, idSlugs: idSlugMap(tree), controlNode: primaryControl(tree), variants, sizes, suffix, defaultOpen: manifest.htmlContract?.platformDefaultOpen === true });
     const body = emitter.element(tree, { scope: new RootScope(), isRoot: true, indent: "      " });
     return { breakName, body, emitter };
   });
@@ -551,6 +553,7 @@ export function buildReactComponent({ id, manifest, example, exampleByBreak }) {
     ...controlProps,
     ...events.map(({ propName }) => propName),
     hasChildrenSlot ? "children" : null,
+    manifest.htmlContract?.platformDefaultOpen === true ? "open = true" : null,
     "className", "style", "...rest"
   ].filter(Boolean);
 
@@ -658,6 +661,7 @@ export function reactComponentFacts({ id, manifest, example, exampleByBreak }) {
     isCheckLike,
     events,
     hasChildrenSlot,
+    defaultOpen: manifest.htmlContract?.platformDefaultOpen === true,
     jsRequired: Boolean(manifest.jsRequired)
   };
 }
@@ -714,6 +718,7 @@ export interface S1BaseProps {
     }
     for (const { eventName, propName } of facts.events) lines.push(`  /** ${eventName} */\n  ${propName}?: (event: CustomEvent) => void;`);
     if (facts.hasChildrenSlot) lines.push("  /** 앱이 소유하는 내용(탭 내용 등). 주면 예제 내용을 대신한다. */\n  children?: ReactNode;");
+    if (facts.defaultOpen) lines.push("  /** 열려 있나 — 기본 true(처음부터 보임). false 면 닫힌 채 그려진다. */\n  open?: boolean;");
     return `export interface ${facts.componentName}Props extends S1BaseProps {\n${lines.join("\n")}\n}\nexport declare function ${facts.componentName}(props: ${facts.componentName}Props): ReactElement;`;
   }).join("\n\n");
   return `${header}\n${body}\n`;
