@@ -35,29 +35,48 @@ const textOf = (children) => {
 /* ── 1. 켜고 끄기 (chip · toggle) ──────────────────────────────────── */
 
 function useToggle(config, props) {
-  /* 웹처럼 루트에 aria-pressed="true" 같은 속성을 직접 준 경우도 처음 상태로 받는다 */
+  /* 웹처럼 루트에 aria-pressed="true" 같은 속성을 직접 준 경우도 처음 상태로 받는다.
+     값이 true/false 글자가 아닌 속성(data-state=selected)은 "켜짐 값"과 같은지로 읽는다. */
   const given = props.rest?.[config.attr];
-  const [on, setOn] = useControlled(props.value, props.defaultValue ?? (given !== undefined ? isTrue(given) : config.initial));
+  const givenOn = given === undefined ? undefined : config.values ? given === config.values[0] : isTrue(given);
+  const [on, setOn] = useControlled(props.value, props.defaultValue ?? (givenOn !== undefined ? givenOn : config.initial));
   const disabled = Boolean(props.disabled);
+  const controlled = props.value !== undefined;
+  /* 손잡이는 매번 새로 오니 ref 로 들고 있는다 — useMemo 가 낡은 함수를 붙들지 않게 */
+  const latest = useRef(props);
+  latest.current = props;
+  const selectable = Boolean(config.values || config.also);
+  const shown = config.values ? (on ? config.values[0] : config.values[1]) : String(on);
   return useMemo(() => ({
+    /** 지금 켜짐 여부를 속성 값으로 — 템플릿을 고르는 부품(시트 줄)이 읽는다 */
+    state: shown,
     bind(part, at, ctx) {
       if (!ctx.isRoot) return NONE;
       /* config.values: 켜짐·꺼짐 값이 true/false 글자가 아닌 속성(예: data-state=selected|default). config.also: 함께 맞출 속성. */
-      const shown = config.values ? (on ? config.values[0] : config.values[1]) : String(on);
       const also = Object.fromEntries(Object.entries(config.also ?? {}).map(([name, pair]) => [name, on ? pair[0] : pair[1]]));
       return {
         a: { [config.attr]: shown, ...also },
         onPress: () => {
           if (disabled) return;
           /* 선택형(탭·시트 줄)은 켜진 것을 다시 눌러도 꺼지지 않는다 — 웹 런타임과 같다. */
-          if (config.values || config.also) { if (on) return; }
+          if (selectable && on) return;
           const next = !on;
+          const now = latest.current;
+          /* 웹의 beforechange 와 같다: onBeforechange(event) 에서 event.preventDefault() 하면 아무것도 바뀌지 않는다.
+             event = { detail: { selected, value }, preventDefault(), defaultPrevented } */
+          let prevented = false;
+          const detail = { selected: next, value: now.rest?.["data-value"] };
+          const event = { detail, preventDefault() { prevented = true; }, get defaultPrevented() { return prevented; } };
+          now.onBeforechange?.(event);
+          if (prevented) return;
           setOn(next);
-          props.onChange?.(next);
+          now.onChange?.(next);                 // onSelectedChange(selected) — 제어형이면 화면이 값을 바꿔야 모양이 바뀐다
+          /* 웹의 change 는 모양이 실제로 바뀐 뒤에 난다 — 제어형에서는 화면이 값을 바꾸기 전이라 내지 않는다(웹 껍데기와 같다). */
+          if (!controlled) now.onAfterchange?.({ detail });
         }
       };
     }
-  }), [on, disabled, config.attr]);
+  }), [on, disabled, config.attr, shown, controlled, selectable]);
 }
 
 /* ── 2. 하나 고르기 (tab · multi-toggle · dropdown · 페이지) ───────── */

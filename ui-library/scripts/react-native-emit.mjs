@@ -828,7 +828,8 @@ function componentSource({ id, manifest, facts, sources, usesOpen, behavior, beh
   const selectorNames = [...new Set(sources.flatMap((source) => Object.keys(source.selects ?? {})))];
   const axisNames = new Set(facts.axisNames ?? []);
 
-  const behaviorBlock = behavior ? behaviorSource(behavior, behaviorConfigs, declared, behaviorExternal) : "  const controller = undefined;\n";
+  const revisitTemplate = Boolean(behavior && behavior.kind === "toggle" && behavior.config?.values && selectorNames.includes("data-state"));
+  const behaviorBlock = behavior ? behaviorSource(behavior, behaviorConfigs, declared, behaviorExternal, revisitTemplate) : "  const controller = undefined;\n";
   const controlBlock = controlFacts ? controlSource(controlFacts) : "  const lifted = initialLifted;\n";
   const stateBlock = `  const uid = useId();
   const partScope = scopeOf(parts);
@@ -859,8 +860,10 @@ function assertAllowed(label, value, allowed) {
 ${behavior ? `/* 동작의 처음 상태 — 승인 예제가 정한 값(고른 탭·열린 카드·체크된 줄 …). 템플릿(화면·모드·유형)마다 하나. */\nconst BEHAVIOR = ${JSON.stringify(behaviorConfigs.map((one) => one ?? null))};\n\n` : ""}${selection}
 
 export default function ${componentName}({ ${propNames.join(", ")} }) {
-${stateBlock}  const tpl = pickTemplate(${breaks.length > 1 ? "breakName" : "DEFAULT_BREAK"}, ${modes.length > 0 ? "mode" : "undefined"}, ${currentSource(selectorNames, facts)});
-${needsSvgColor}${behaviorBlock}${controlBlock}
+${stateBlock}  const ${revisitTemplate ? "tpl0" : "tpl"} = pickTemplate(${breaks.length > 1 ? "breakName" : "DEFAULT_BREAK"}, ${modes.length > 0 ? "mode" : "undefined"}, ${currentSource(selectorNames, facts)});
+${needsSvgColor}${behaviorBlock}${revisitTemplate ? `  /* 틀(템플릿)은 처음 속성이 아니라 지금 켜짐 상태로 고른다 — selected 를 주거나 눌러서 바뀌면 고른 줄 틀(체크 조각 포함)로 바뀐다. */
+  const tpl = pickTemplate(${breaks.length > 1 ? "breakName" : "DEFAULT_BREAK"}, ${modes.length > 0 ? "mode" : "undefined"}, ${currentSource(selectorNames, facts).replace('rest["data-state"]', '(rest["data-state"] === "disabled" ? "disabled" : controller.state)')});
+` : ""}${controlBlock}
 ${renderSource}
   throw new Error("[s1-ui] ${id}: 그릴 템플릿을 고르지 못했습니다.");
 }
@@ -915,12 +918,12 @@ function templateSelection(sources, breaks, modes) {
   return lines.join("\n");
 }
 
-function behaviorSource(behavior, configs, declared, external) {
+function behaviorSource(behavior, configs, declared, external, revisit = false) {
   const names = new Set([...declared, ...external]);
   const input = Object.entries(behavior.props).map(([internal, outer]) => (internal === outer ? internal : `${internal}: ${outer}`));
   input.push(`disabled: ${names.has("disabled") ? "disabled" : "rest.disabled"}`, "rest");
   return `  /* 동작 — 눌렀을 때 무엇이 바뀌는지는 behaviors.js 가 정한다(승인 배포본의 동작 · platform/behavior.json). */
-  const controller = useBehavior(${JSON.stringify(behavior.kind)}, { ...BEHAVIOR[tpl], ...SPEC.templates[tpl].metrics }, { ${input.join(", ")} });
+  const controller = useBehavior(${JSON.stringify(behavior.kind)}, { ...BEHAVIOR[${revisit ? "tpl0" : "tpl"}], ...SPEC.templates[${revisit ? "tpl0" : "tpl"}].metrics }, { ${input.join(", ")} });
 `;
 }
 

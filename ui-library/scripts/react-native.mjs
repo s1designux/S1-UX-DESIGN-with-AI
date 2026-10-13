@@ -34,7 +34,7 @@ const ROOT = "platform/react-native";
 const pascalId = (id) => id.split("-").map((part) => part[0].toUpperCase() + part.slice(1)).join("");
 
 /** 손으로 쓴 엔진 파일 목록 — 생성물과 같은 폴더에 그대로 복사한다(머리에 생성물 문구를 붙이지 않는다: 이 파일들은 손 원본이다). */
-export const HAND_WRITTEN = ["engine.js", "text.js", "behaviors.js"];
+export const HAND_WRITTEN = ["engine.js", "text.js", "behaviors.js", "chip-group.js"];
 
 export function buildReactNativeOutputs({ componentOutputs, tokenData, iconAssets, typographyCss, usageById, release, behaviorLedger, only = null }) {
   const outputs = new Map();
@@ -233,6 +233,7 @@ function indexSource(approved) {
   return `/* ${GENERATED_NOTE} */
 export { S1Provider, useS1, Icon } from "./engine.js";
 export { S1Text } from "./text.js";
+export { S1ChipGroup } from "./chip-group.js";
 export { COLORS, DIMENS, NUMBERS, SHADOWS } from "./tokens.js";
 export { TYPES } from "./typography.js";
 export { ICONS } from "./icons.js";

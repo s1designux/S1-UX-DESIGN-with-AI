@@ -201,8 +201,9 @@ const api = toggle.init(document.querySelector('[data-s1-component="toggle"]'));
 | mobile-bottom-nav | (표시 없이 기본 동작) | 탭을 누르면 활성 탭과 \`aria-current\` 가 옮겨감 · ←→ 로 탭 사이 초점 이동 | \`s1:mobile-bottom-nav:beforechange\` → \`s1:mobile-bottom-nav:change\` |
 
 - **막고 싶을 때**: \`beforechange\` 에서 \`event.preventDefault()\` 하면 모양이 바뀌지 않습니다(로그인 확인·저장 안 한 변경 등). 막은 뒤 화면이 직접 정합니다 — 탭은 \`mobileBottomNav.init(탭).setActive()\`, 칩 묶음은 \`chip.setGroupValue(묶음, 값)\`, 시트 목록은 \`bottomSheetOption.init(줄).setValue(값)\`(모두 이벤트 없음).
+- **React 껍데기로 탭을 여러 개 놓을 때**: 예시 마크업이 탭마다 켜진 모양이라 \`selected\`/\`defaultSelected\` 를 안 주면 처음엔 모두 켜진 모양으로 시작합니다(처음 모습은 그대로 둡니다). 첫 탭을 누르면 눌린 탭 하나만 남습니다. 처음부터 맞추려면 \`defaultSelected\`(또는 \`selected\`)를 주세요.
 - **라우팅이 정하는 화면**: 활성 탭을 \`aria-selected\` 로 직접 정해도 그대로 읽힙니다.
-- **React·Vue·React Native**: 제어형/비제어형을 모두 지원합니다. React·RN 은 \`selected\`(제어형) · \`defaultSelected\` · \`onSelectedChange(selected)\`, Vue 는 \`v-model\`(제어형) · \`defaultSelected\`. 값을 주면(제어형) 눌러도 부품이 스스로 바뀌지 않고, 값이 바뀔 때만 모양이 바뀝니다.
+- **React·Vue·React Native**: 제어형/비제어형을 모두 지원합니다. React·RN 은 \`selected\`(제어형) · \`defaultSelected\` · \`onSelectedChange(selected)\`(RN 은 \`onBeforechange(event)\` 에서 \`event.preventDefault()\` 로 막고, 칩 하나만 켜기는 \`<S1ChipGroup value onChange>\`), Vue 는 \`v-model\`(제어형) · \`defaultSelected\`. 값을 주면(제어형) 눌러도 부품이 스스로 바뀌지 않고, 값이 바뀔 때만 모양이 바뀝니다.
 
 ### 모바일
 

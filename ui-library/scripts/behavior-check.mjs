@@ -58,6 +58,7 @@ const sheetPage = (bodyAttrs) => page(sheetSource
 const pages = {
   "chips.html": chipsPage,
   "nav.html": page(navHtml),
+  "nav-all.html": page(navHtml.replaceAll('aria-selected="false"', 'aria-selected="true"')),
   "sheet-on.html": sheetPage(' data-s1-select="single" data-s1-close-on-select'),
   "sheet-off.html": sheetPage(""),
   "pc.html": page(`<div id="a">${withAttrs(pcPicker, 'data-value="2026-10-15"')}</div><div id="b">${pcPicker}</div><div id="c">${withAttrs(pcRange, 'data-range-start="2026-11-04" data-range-end="2026-11-09"')}</div>`),
@@ -169,6 +170,13 @@ try {
   check("하단 탭: 화면이 beforechange 를 막으면 탭이 그대로다(change 도 안 나간다)", [await navState(), await eval$(p, `JSON.stringify(window.__nav)`)], [[["false", null], ["false", null], ["true", "page"], ["false", null]], ["notification"]]);
   await p.eval(`(async () => { const m = await import('/s1-ui.js'); m.mobileBottomNav.init(document.querySelectorAll('[data-s1-component="mobile-bottom-nav"]')[0]).setActive(); return true; })()`);
   check("하단 탭: setActive() 는 이벤트 없이 화면이 직접 활성 탭을 정한다", [await navState(), await eval$(p, `JSON.stringify(window.__nav)`)], [[["true", "page"], ["false", null], ["false", null], ["false", null]], ["notification"]]);
+  await p.close();
+
+  /* 하단 탭 — React 껍데기를 props 없이 여러 개 놓으면 탭마다 aria-selected=true 로 시작한다. 눌러서 하나만 남아야 한다. */
+  p = await openPage(chrome.cdp, `${origin}/nav-all.html`, { width: 375, height: 812, mobile: true });
+  await ready(p);
+  await p.eval(`document.querySelectorAll('[data-s1-component="mobile-bottom-nav"]')[1].click(), true`);
+  check("하단 탭(전부 켜진 채 시작): 눌러서 그 탭만 남는다", await eval$(p, `JSON.stringify([...document.querySelectorAll('[data-s1-component="mobile-bottom-nav"]')].map((t) => t.getAttribute('aria-selected')))`), ["false", "true", "false", "false"]);
   await p.close();
 
   /* 바텀시트 목록 */

@@ -58,7 +58,7 @@ export default function S1Chip({ variant, size, breakName = DEFAULT_BREAK, parts
   assertAllowed("breakName", breakName, BREAKS);
   const tpl = pickTemplate(breakName, undefined, undefined);
   /* 동작 — 눌렀을 때 무엇이 바뀌는지는 behaviors.js 가 정한다(승인 배포본의 동작 · platform/behavior.json). */
-  const controller = useBehavior("toggle", { ...BEHAVIOR[tpl], ...SPEC.templates[tpl].metrics }, { value: selected, defaultValue: defaultSelected, onChange: onSelectedChange, disabled: rest.disabled, rest });
+  const controller = useBehavior("toggle", { ...BEHAVIOR[tpl], ...SPEC.templates[tpl].metrics }, { value: selected, defaultValue: defaultSelected, onChange: onSelectedChange, onBeforechange, onAfterchange: onChange, disabled: rest.disabled, rest });
   const lifted = initialLifted;
 
   if (tpl === 0) {

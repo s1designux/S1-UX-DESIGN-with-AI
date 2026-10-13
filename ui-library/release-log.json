@@ -56,12 +56,13 @@
           "to": "0.3.0"
         }
       ],
-      "deliveryFingerprint": "64025f8aca691b4de8376e3b16c35b75085461c32d316b1429b596a2b3c09cc4",
+      "deliveryFingerprint": "b2313c5c9ef1097d82aaf9222c4be9b14269e1d288d9e26be9afd53dd07c3c55",
       "changes": [
         "고르기를 부품이 알아서 합니다(river 2026-10-13 「전부 부품이 알아서」). 표시가 없으면 종전과 똑같이 아무것도 바뀌지 않습니다.",
         "칩: 칩을 감싼 요소에 data-s1-select=\"single\" 을 달면 하나만 켜집니다. 시트 목록: 목록 묶음에 data-s1-select=\"single\"(+고른 뒤 닫으려면 data-s1-close-on-select) — 줄을 누르거나 ↑↓·Enter/Space 로 고르고, 시트를 연 요소(data-s1-open) 안 [data-s1-part=\"value\"] 글자가 바뀝니다. 하단 탭: 누르면 활성 탭이 옮겨갑니다(2026-09-02 '호스트가 정적으로 설정'을 뒤집음).",
         "세 부품 모두 먼저 취소 가능한 beforechange 를 내고(화면이 막을 수 있음) 그다음 change 를 냅니다: s1:chip:*, s1:bottom-sheet-option:*, s1:mobile-bottom-nav:*. 화면이 직접 정하려면 setSelected·setActive·setGroupValue·setValue(이벤트 없음).",
-        "React·RN: selected(제어형)·defaultSelected·onSelectedChange, Vue: v-model·defaultSelected. 제어형에서는 값이 바뀔 때만 모양이 바뀝니다(런타임이 껍데기 몰래 상태를 뒤집지 않음)."
+        "React·RN: selected(제어형)·defaultSelected·onSelectedChange, Vue: v-model·defaultSelected. 제어형에서는 값이 바뀔 때만 모양이 바뀝니다(런타임이 껍데기 몰래 상태를 뒤집지 않음).",
+        "React Native: 시트 줄은 켜짐 상태에 따라 체크 조각이 붙고 사라지며(틀을 현재 상태로 고름), onBeforechange(event.preventDefault 로 막기)·onChange 가 실제로 연결되고, 칩 하나만 켜기는 S1ChipGroup(value·onChange)으로 묶습니다. React 하단 탭은 처음 모양은 그대로이고 첫 탭에 하나만 남습니다."
       ]
     },
     {
@@ -2004,5 +2005,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "64025f8aca691b4de8376e3b16c35b75085461c32d316b1429b596a2b3c09cc4"
+  "deliveryFingerprint": "b2313c5c9ef1097d82aaf9222c4be9b14269e1d288d9e26be9afd53dd07c3c55"
 }

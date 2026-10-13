@@ -34,8 +34,12 @@ export function init(root) {
   if (isActive() && !root.hasAttribute("aria-current")) root.setAttribute("aria-current", "page");
 
   const handleClick = () => {
-    if (root.disabled || isActive()) return;
-    const previous = tabsOf(root).find((tab) => tab.getAttribute("aria-selected") === "true") ?? null;
+    if (root.disabled) return;
+    /* 활성 탭이 이 탭 하나뿐이면 아무 일도 없다. 하지만 탭 여러 개가 함께 켜져 있으면(React 껍데기를 props 없이 여러 개 놓은 처음 모습 —
+       예시 마크업이 탭마다 aria-selected=true 다) 이 탭만 남기고 나머지를 끈다 — 그래야 처음 모습을 바꾸지 않고도 눌러서 고를 수 있다. */
+    const others = tabsOf(root).filter((tab) => tab !== root && tab.getAttribute("aria-selected") === "true");
+    if (isActive() && others.length === 0) return;
+    const previous = others[0] ?? tabsOf(root).find((tab) => tab.getAttribute("aria-selected") === "true") ?? null;
     const detail = { value: valueOf(root), selected: true, tab: root, previous };
     if (!root.dispatchEvent(new CustomEvent("s1:mobile-bottom-nav:beforechange", { bubbles: true, cancelable: true, detail }))) return;
     activate(root);

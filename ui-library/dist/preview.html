@@ -7984,8 +7984,10 @@ var S1UI = (() => {
     const isActive = () => root.getAttribute("aria-selected") === "true";
     if (isActive() && !root.hasAttribute("aria-current")) root.setAttribute("aria-current", "page");
     const handleClick = () => {
-      if (root.disabled || isActive()) return;
-      const previous = tabsOf(root).find((tab) => tab.getAttribute("aria-selected") === "true") ?? null;
+      if (root.disabled) return;
+      const others = tabsOf(root).filter((tab) => tab !== root && tab.getAttribute("aria-selected") === "true");
+      if (isActive() && others.length === 0) return;
+      const previous = others[0] ?? tabsOf(root).find((tab) => tab.getAttribute("aria-selected") === "true") ?? null;
       const detail = { value: valueOf2(root), selected: true, tab: root, previous };
       if (!root.dispatchEvent(new CustomEvent("s1:mobile-bottom-nav:beforechange", { bubbles: true, cancelable: true, detail }))) return;
       activate(root);

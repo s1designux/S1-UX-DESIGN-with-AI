@@ -1177,6 +1177,23 @@ else if (renderCheck.stdout.trim()) console.log(`[guide render check] ${renderCh
   }
 }
 
+
+/* RN 선택형(river 2026-10-13) — S1ChipGroup 이 내보내지고 타입·설명이 있고, 시트 줄이 켜짐 상태로 틀을 고르고, onBeforechange·onChange 가 동작에 연결돼 있다 */
+{
+  const index = await read("dist/platform/react-native/index.js");
+  const types = await read("dist/platform/react-native/index.d.ts");
+  const readme = await read("dist/platform/react-native/README.md");
+  const behaviors = await read("dist/platform/react-native/behaviors.js");
+  if (!index.includes('export { S1ChipGroup } from "./chip-group.js"')) failures.push("RN index must export S1ChipGroup");
+  if (!types.includes("S1ChipGroupProps")) failures.push("RN index.d.ts must declare S1ChipGroup");
+  if (!readme.includes("S1ChipGroup")) failures.push("RN README must explain S1ChipGroup");
+  if (!/now\.onBeforechange\?\.\(event\)/.test(behaviors) || !/now\.onAfterchange\?\./.test(behaviors)) failures.push("RN behaviors must wire onBeforechange and onChange");
+  for (const id of ["chip", "mobile-bottom-nav", "bottom-sheet-option"]) {
+    const source = await read(`dist/platform/react-native/components/${id}.js`);
+    if (!/onBeforechange, onAfterchange: onChange/.test(source)) failures.push(`RN ${id} must pass onBeforechange/onChange to the behavior`);
+  }
+}
+
 if (failures.length) {
   console.error(`UI library technical checks found ${failures.length} issue(s):\n- ${failures.join("\n- ")}`);
   process.exit(1);

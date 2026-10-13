@@ -46,6 +46,19 @@ export declare const ICONS: Record<string, unknown>;
 export declare const S1_VERSION: string;
 export declare const S1_RELEASED_AT: string;
 export declare const S1_CANONICAL_FINGERPRINT: string;
+/** 칩 여러 개 중 하나만 켠다(웹의 data-s1-select="single"). 칩의 값은 data-value(없으면 value, 그것도 없으면 순서). */
+export interface S1ChipGroupProps {
+  /** 켜진 칩의 값 — 주면 제어형(값이 바뀌어야 켜진 칩이 바뀐다) */
+  value?: string | number | null;
+  /** 비제어형의 처음 값 */
+  defaultValue?: string | number | null;
+  /** 다른 칩이 켜졌을 때(켜진 칩을 다시 눌러도 꺼지지 않는다) */
+  onChange?: (value: string | number, event: { detail: { value: string | number; selected: true } }) => void;
+  /** 켜지기 전 — event.preventDefault() 하면 아무것도 바뀌지 않는다 */
+  onBeforechange?: (event: { detail: { selected: boolean; value: string | number }; preventDefault(): void; readonly defaultPrevented: boolean }) => void;
+  children?: ReactNode;
+}
+export declare function S1ChipGroup(props: S1ChipGroupProps): ReactElement;
 export declare function S1Gallery(props: { only?: readonly string[]; breakName?: "pc" | "mobile" }): ReactElement;
 
 export interface S1InputProps extends S1BaseProps {

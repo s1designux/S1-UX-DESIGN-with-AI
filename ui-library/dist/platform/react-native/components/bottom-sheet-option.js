@@ -53,9 +53,11 @@ export default function S1BottomSheetOption({ variant, parts, onBeforechange, on
   const uid = useId();
   const partScope = scopeOf(parts);
   assertAllowed("variant", variant, VARIANTS);
-  const tpl = pickTemplate(DEFAULT_BREAK, undefined, { "data-type": variant, "data-state": rest["data-state"] });
+  const tpl0 = pickTemplate(DEFAULT_BREAK, undefined, { "data-type": variant, "data-state": rest["data-state"] });
   /* 동작 — 눌렀을 때 무엇이 바뀌는지는 behaviors.js 가 정한다(승인 배포본의 동작 · platform/behavior.json). */
-  const controller = useBehavior("toggle", { ...BEHAVIOR[tpl], ...SPEC.templates[tpl].metrics }, { value: selected, defaultValue: defaultSelected, onChange: onSelectedChange, disabled: rest.disabled, rest });
+  const controller = useBehavior("toggle", { ...BEHAVIOR[tpl0], ...SPEC.templates[tpl0].metrics }, { value: selected, defaultValue: defaultSelected, onChange: onSelectedChange, onBeforechange, onAfterchange: onChange, disabled: rest.disabled, rest });
+  /* 틀(템플릿)은 처음 속성이 아니라 지금 켜짐 상태로 고른다 — selected 를 주거나 눌러서 바뀌면 고른 줄 틀(체크 조각 포함)로 바뀐다. */
+  const tpl = pickTemplate(DEFAULT_BREAK, undefined, { "data-type": variant, "data-state": (rest["data-state"] === "disabled" ? "disabled" : controller.state) });
   const lifted = initialLifted;
 
   if (tpl === 0) {

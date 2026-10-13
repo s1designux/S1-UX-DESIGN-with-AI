@@ -80,6 +80,19 @@ export declare const ICONS: Record<string, unknown>;
 export declare const S1_VERSION: string;
 export declare const S1_RELEASED_AT: string;
 export declare const S1_CANONICAL_FINGERPRINT: string;
+/** 칩 여러 개 중 하나만 켠다(웹의 data-s1-select="single"). 칩의 값은 data-value(없으면 value, 그것도 없으면 순서). */
+export interface S1ChipGroupProps {
+  /** 켜진 칩의 값 — 주면 제어형(값이 바뀌어야 켜진 칩이 바뀐다) */
+  value?: string | number | null;
+  /** 비제어형의 처음 값 */
+  defaultValue?: string | number | null;
+  /** 다른 칩이 켜졌을 때(켜진 칩을 다시 눌러도 꺼지지 않는다) */
+  onChange?: (value: string | number, event: { detail: { value: string | number; selected: true } }) => void;
+  /** 켜지기 전 — event.preventDefault() 하면 아무것도 바뀌지 않는다 */
+  onBeforechange?: (event: { detail: { selected: boolean; value: string | number }; preventDefault(): void; readonly defaultPrevented: boolean }) => void;
+  children?: ReactNode;
+}
+export declare function S1ChipGroup(props: S1ChipGroupProps): ReactElement;
 export declare function S1Gallery(props: { only?: readonly string[]; breakName?: "pc" | "mobile" }): ReactElement;
 `;
   const body = factsList.map((facts) => {
@@ -252,6 +265,7 @@ ${rows}
 - **그림자·테두리 모양**은 RN \`boxShadow\`(0.76 이상)로 그립니다. 안쪽 그림자(inset)도 같은 속성입니다.
 - **한글 세로 1px 보정**은 웹 브라우저가 글자를 1px 단위로 놓는 보정이라 RN 에는 옮기지 않았습니다(정본 결정).
 - **마스크 아이콘**(CSS mask)은 같은 SVG path 에 색을 직접 칠합니다. 모양은 같습니다.
+- **고르기는 부품이 알아서(river 2026-10-13)**: 칩·하단 탭·시트 줄은 \`selected\`(제어형) · \`defaultSelected\` · \`onSelectedChange(selected)\` 를 받습니다. 값을 주면(제어형) 눌러도 모양이 안 바뀌고 화면이 값을 바꿀 때만 바뀝니다. \`onBeforechange(event)\` 에서 \`event.preventDefault()\` 하면 아무것도 바뀌지 않고(웹 beforechange 와 같음), \`onChange(event)\` 는 모양이 실제로 바뀐 뒤(비제어형)에 불립니다. 시트 줄은 켜지면 체크 조각이 붙고 꺼지면 사라집니다. **칩 하나만 켜기**는 \`<S1ChipGroup value onChange>\` 로 묶습니다(칩의 값은 \`data-value\`) — 웹의 \`data-s1-select="single"\` 에 해당합니다. 하단 탭·시트 줄의 하나만 켜기는 화면이 각 항목의 \`selected\` 를 정합니다.
 - **모달·바텀시트**는 RN \`Modal\` 에 그립니다(\`open\` 일 때만). \`<S1Provider inline>\` 이면 놓인 자리 안에 그립니다(미리보기용).
 - **팝업(셀렉트·날짜·시간)**은 트리거 아래에 겹쳐 그립니다. 바깥을 눌러 닫는 동작은 없고, 고르거나 트리거를 다시 눌러 닫습니다.
 - 날짜·시간 휠의 **스크롤 스냅**은 \`snapToInterval\` 로 옮겼습니다(칸 간격은 CSS 계산값).
