@@ -40,7 +40,9 @@ function useToggle(config, props) {
   const given = props.rest?.[config.attr];
   const givenOn = given === undefined ? undefined : config.values ? given === config.values[0] : isTrue(given);
   const [on, setOn] = useControlled(props.value, props.defaultValue ?? (givenOn !== undefined ? givenOn : config.initial));
-  const disabled = Boolean(props.disabled);
+  /* 비활성은 어떤 경우에도 덮어쓰지 않는다 — disabled 속성·aria-disabled·data-state=disabled 어느 쪽이든 줄은 비활성 모양 그대로이고 눌러도 반응하지 않는다(웹과 같다). */
+  const rest = props.rest ?? {};
+  const disabled = Boolean(props.disabled) || isTrue(rest["aria-disabled"]) || rest["data-state"] === "disabled" || rest.disabled === true || rest.disabled === "";
   const controlled = props.value !== undefined;
   /* 손잡이는 매번 새로 오니 ref 로 들고 있는다 — useMemo 가 낡은 함수를 붙들지 않게 */
   const latest = useRef(props);
@@ -48,10 +50,12 @@ function useToggle(config, props) {
   const selectable = Boolean(config.values || config.also);
   const shown = config.values ? (on ? config.values[0] : config.values[1]) : String(on);
   return useMemo(() => ({
-    /** 지금 켜짐 여부를 속성 값으로 — 템플릿을 고르는 부품(시트 줄)이 읽는다 */
-    state: shown,
+    /** 지금 켜짐 여부를 속성 값으로 — 템플릿을 고르는 부품(시트 줄)이 읽는다. 비활성이면 disabled, 이 유형이 고르지 않으면 undefined */
+    state: !config.attr ? undefined : disabled ? "disabled" : shown,
     bind(part, at, ctx) {
       if (!ctx.isRoot) return NONE;
+      /* 고르지 않는 유형(config 없음 — 시트 줄의 List·Checkbox)이거나 비활성이면 속성도 눌림도 주지 않는다. */
+      if (!config.attr || (disabled && config.attr === "data-state")) return NONE;
       /* config.values: 켜짐·꺼짐 값이 true/false 글자가 아닌 속성(예: data-state=selected|default). config.also: 함께 맞출 속성. */
       const also = Object.fromEntries(Object.entries(config.also ?? {}).map(([name, pair]) => [name, on ? pair[0] : pair[1]]));
       return {

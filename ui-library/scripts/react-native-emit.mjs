@@ -862,7 +862,7 @@ ${behavior ? `/* 동작의 처음 상태 — 승인 예제가 정한 값(고른 
 export default function ${componentName}({ ${propNames.join(", ")} }) {
 ${stateBlock}  const ${revisitTemplate ? "tpl0" : "tpl"} = pickTemplate(${breaks.length > 1 ? "breakName" : "DEFAULT_BREAK"}, ${modes.length > 0 ? "mode" : "undefined"}, ${currentSource(selectorNames, facts)});
 ${needsSvgColor}${behaviorBlock}${revisitTemplate ? `  /* 틀(템플릿)은 처음 속성이 아니라 지금 켜짐 상태로 고른다 — selected 를 주거나 눌러서 바뀌면 고른 줄 틀(체크 조각 포함)로 바뀐다. */
-  const tpl = pickTemplate(${breaks.length > 1 ? "breakName" : "DEFAULT_BREAK"}, ${modes.length > 0 ? "mode" : "undefined"}, ${currentSource(selectorNames, facts).replace('rest["data-state"]', '(rest["data-state"] === "disabled" ? "disabled" : controller.state)')});
+  const tpl = pickTemplate(${breaks.length > 1 ? "breakName" : "DEFAULT_BREAK"}, ${modes.length > 0 ? "mode" : "undefined"}, ${currentSource(selectorNames, facts).replace('rest["data-state"]', '(controller.state ?? rest["data-state"])')});
 ` : ""}${controlBlock}
 ${renderSource}
   throw new Error("[s1-ui] ${id}: 그릴 템플릿을 고르지 못했습니다.");

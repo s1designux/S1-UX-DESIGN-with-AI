@@ -19,7 +19,8 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import esbuild from "esbuild";
 
 const libraryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const dist = path.join(libraryRoot, "dist/platform/react-native");
+const dist = process.env.S1_SELECT_CHECK_DIST ?? path.join(libraryRoot, "dist/platform/react-native");
+const behaviorsPath = process.env.S1_SELECT_CHECK_BEHAVIORS ?? path.join(libraryRoot, "src/react-native/behaviors.js");
 
 const SHIM = `
 let current = null;
@@ -55,7 +56,7 @@ const bundle = async (entry, name) => {
 
 /* 두 파일을 한 번에 묶어야 같은 훅 대역을 쓴다(따로 묶으면 상태 칸이 갈라진다). */
 const entry = path.join(workspace, "entry.js");
-await writeFile(entry, `export * as behaviors from ${JSON.stringify(path.join(libraryRoot, "src/react-native/behaviors.js"))};\nexport * as group from ${JSON.stringify(path.join(libraryRoot, "src/react-native/chip-group.js"))};\n`);
+await writeFile(entry, `export * as behaviors from ${JSON.stringify(behaviorsPath)};\nexport * as group from ${JSON.stringify(path.join(libraryRoot, "src/react-native/chip-group.js"))};\n`);
 const { behaviors, group } = await bundle(entry, "select");
 const problems = [];
 const expect = (label, actual, wanted) => { if (JSON.stringify(actual) !== JSON.stringify(wanted)) problems.push(`${label} — 기대 ${JSON.stringify(wanted)} / 실제 ${JSON.stringify(actual)}`); };
@@ -146,6 +147,46 @@ const run = (config, propsOf) => {
   cout[1].props.onSelectedChange(true);
   cout = controlled.render(cprops);
   expect("S1ChipGroup 제어형: 값이 바뀌기 전엔 켜진 칩이 그대로이고 onChange 만 부른다", [cout.map((chip) => chip.props.selected), changes.at(-1)], [[true, false], "c:b"]);
+}
+
+
+/* 비활성은 덮어쓰지 않는다 · 고르지 않는 유형은 컨트롤러를 안 단다 (0.22.0 에서 놓쳤던 것) */
+{
+  const log = [];
+  const handlers = { onBeforechange: () => log.push("before"), onChange: () => log.push("selectedChange"), onAfterchange: () => log.push("after") };
+  /* 시트 줄 — data-state=disabled */
+  const disabledRow = run(ROW);
+  const props = { rest: { "data-state": "disabled" }, ...handlers };
+  const controller = disabledRow.view(props);
+  const bound = controller.bind("root", undefined, root);
+  expect("시트 줄(비활성): 컨트롤러가 data-state 를 덮어쓰지 않는다(속성도 눌림도 없음)", bound === undefined, true);
+  expect("시트 줄(비활성): state 는 disabled 로 남아 틀이 비활성 모양을 고른다", controller.state, "disabled");
+  expect("시트 줄(비활성): 눌러도 아무 알림이 없다", log, []);
+  const disabledByProp = run(ROW).view({ disabled: true, rest: {}, ...handlers });
+  expect("시트 줄(disabled 속성): 덮어쓰지 않는다", disabledByProp.bind("root", undefined, root) === undefined, true);
+  /* 칩·탭 — 비활성이면 눌림이 막힌다(비활성 상태 자체는 컨트롤러가 건드리지 않는다) */
+  for (const [label, config] of [["칩", CHIP], ["하단 탭", NAV]]) {
+    const unit = run(config);
+    const logged = [];
+    const inert = { disabled: true, rest: {}, onBeforechange: () => logged.push("before"), onChange: () => logged.push("selectedChange"), onAfterchange: () => logged.push("after") };
+    const after = unit.press(inert);
+    const attrs = after.bind("root", undefined, root)?.a ?? {};
+    expect(`${label}(비활성): 눌러도 아무 알림이 없고 값이 안 바뀐다`, [logged, attrs[config.attr]], [[], "false"]);
+    expect(`${label}(비활성): 컨트롤러는 disabled 속성을 건드리지 않는다`, Object.keys(attrs).includes("disabled"), false);
+    const byAria = run(config).press({ ...inert, rest: { "aria-disabled": "true" }, disabled: undefined });
+    expect(`${label}(aria-disabled): 눌려도 값이 안 바뀐다`, byAria.bind("root", undefined, root)?.a?.[config.attr], "false");
+  }
+  /* 고르지 않는 유형(config 없음) */
+  const inertConfig = run({});
+  const unselectable = inertConfig.view({ rest: {}, ...handlers });
+  expect("고르지 않는 유형(List·Checkbox): 컨트롤러가 아무것도 주지 않는다", [unselectable.bind("root", undefined, root) === undefined, unselectable.state], [true, undefined]);
+  /* 생성물 — 시트 줄 틀마다 컨트롤러 설정이 Text·Radio 에만 있다 */
+  const source = await readFile(path.join(dist, "components/bottom-sheet-option.js"), "utf8");
+  const behavior = JSON.parse(/const BEHAVIOR = (\[[\s\S]*?\]);\n/.exec(source)?.[1] ?? "[]");
+  const spec = (await import(pathToFileURL(path.join(dist, "specs/bottom-sheet-option.js")).href)).default;
+  const typeOf = (index) => spec.templates[index]?.rootAttributes?.["data-type"];
+  const wrong = spec.templates.map((_, index) => [index, typeOf(index), behavior[index] !== null && behavior[index] !== undefined]).filter(([, type, has]) => has !== ["text", "radio"].includes(type));
+  expect("시트 줄 생성물: 컨트롤러 설정은 Text·Radio 틀에만 있다(웹과 같다)", wrong.map(([index, type]) => `${index}:${type}`), []);
 }
 
 if (problems.length) {

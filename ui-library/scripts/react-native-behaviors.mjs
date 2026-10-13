@@ -53,6 +53,8 @@ export function behaviorFor(id, { instance, rootAttributes }) {
         props: { value: "selected", defaultValue: "defaultSelected", onChange: "onSelectedChange", onBeforechange: "onBeforechange", onAfterchange: "onChange" }
       };
     case "bottom-sheet-option":
+      /* 웹과 같다: 고르는 줄은 Text·Radio 뿐이다. List 는 선택 모양이 정본에 없고(list:selected 없음) Checkbox 는 여러 개 고르는 줄이다. */
+      if (!["text", "radio"].includes(rootAttributes["data-type"])) return null;
       return {
         kind: "toggle",
         config: { attr: "data-state", values: ["selected", "default"], initial: rootAttributes["data-state"] === "selected", also: { "aria-selected": ["true", "false"] } },

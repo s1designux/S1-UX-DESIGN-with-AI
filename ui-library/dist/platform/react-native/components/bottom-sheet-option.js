@@ -23,7 +23,7 @@ function assertAllowed(label, value, allowed) {
 }
 
 /* 동작의 처음 상태 — 승인 예제가 정한 값(고른 탭·열린 카드·체크된 줄 …). 템플릿(화면·모드·유형)마다 하나. */
-const BEHAVIOR = [{"attr":"data-state","values":["selected","default"],"initial":false,"also":{"aria-selected":["true","false"]}},{"attr":"data-state","values":["selected","default"],"initial":true,"also":{"aria-selected":["true","false"]}},{"attr":"data-state","values":["selected","default"],"initial":false,"also":{"aria-selected":["true","false"]}},{"attr":"data-state","values":["selected","default"],"initial":false,"also":{"aria-selected":["true","false"]}},{"attr":"data-state","values":["selected","default"],"initial":false,"also":{"aria-selected":["true","false"]}},{"attr":"data-state","values":["selected","default"],"initial":false,"also":{"aria-selected":["true","false"]}}];
+const BEHAVIOR = [{"attr":"data-state","values":["selected","default"],"initial":false,"also":{"aria-selected":["true","false"]}},{"attr":"data-state","values":["selected","default"],"initial":true,"also":{"aria-selected":["true","false"]}},null,{"attr":"data-state","values":["selected","default"],"initial":false,"also":{"aria-selected":["true","false"]}},null,null];
 
 /* 같은 화면·모드에 구조가 다른 템플릿이 여럿이면, 루트 속성이 가장 많이 맞는 것을 고른다(안 준 속성은 따지지 않는다). */
 function pickGroup(current, groups) {
@@ -57,7 +57,7 @@ export default function S1BottomSheetOption({ variant, parts, onBeforechange, on
   /* 동작 — 눌렀을 때 무엇이 바뀌는지는 behaviors.js 가 정한다(승인 배포본의 동작 · platform/behavior.json). */
   const controller = useBehavior("toggle", { ...BEHAVIOR[tpl0], ...SPEC.templates[tpl0].metrics }, { value: selected, defaultValue: defaultSelected, onChange: onSelectedChange, onBeforechange, onAfterchange: onChange, disabled: rest.disabled, rest });
   /* 틀(템플릿)은 처음 속성이 아니라 지금 켜짐 상태로 고른다 — selected 를 주거나 눌러서 바뀌면 고른 줄 틀(체크 조각 포함)로 바뀐다. */
-  const tpl = pickTemplate(DEFAULT_BREAK, undefined, { "data-type": variant, "data-state": (rest["data-state"] === "disabled" ? "disabled" : controller.state) });
+  const tpl = pickTemplate(DEFAULT_BREAK, undefined, { "data-type": variant, "data-state": (controller.state ?? rest["data-state"]) });
   const lifted = initialLifted;
 
   if (tpl === 0) {
