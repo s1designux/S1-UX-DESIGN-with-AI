@@ -5,10 +5,22 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.23.1",
-  "releasedAt": "2026-10-13",
+  "version": "0.23.2",
+  "releasedAt": "2026-10-14",
   "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71",
   "releases": [
+    {
+      "version": "0.23.2",
+      "date": "2026-10-14",
+      "kind": "patch",
+      "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "bd77246c0a6071fa48d27dbfe8892c187c96f5492b142a381dc1a8c771941ae5",
+      "changes": [
+        "0.22.1 의 GNB 유틸 아이콘 24×24 수정을 0.23 줄기에 합쳤습니다(React판 개선과 함께 배포)."
+      ]
+    },
     {
       "version": "0.23.1",
       "date": "2026-10-13",
@@ -42,6 +54,20 @@
         "설명서: 바깥·안쪽 README 가 같은 상대 경로(./s1-ui/…)와 같은 CSS 목록을 알려 주고, 글꼴·다크 모드·바탕 스타일(s1-ui.base.css 를 React 묶음에 담음)·칩 묶음·시트 고르기·이벤트 값 표·Next.js·TypeScript 를 안내합니다. 예시는 전부 그대로 붙여 넣으면 빌드되고 서버에서 그려지며 누르면 설명대로 움직입니다. 부품 수는 배포본에서 읽어 채웁니다.",
         "웹판은 동작이 그대로이고 React 가 쓸 작은 통로만 더했습니다: 입력칸 지우기가 브라우저 기본 setter 로 비움(React 제어형 입력이 변화를 놓치지 않음), 드롭다운·필터 칩 value/setValue(필터 칩은 data-value·data-name 도), 시간 선택 setValue·data-value·data-placeholder, 셀렉트 data-placeholder, 모바일 시간 선택의 닫기 단추·바탕 듣기가 destroy 때 떼지지 않던 누수. 규칙 검사기(s1-ui-lint)는 소스 폴더 안의 묶음 폴더 자신을 검사에서 뺍니다."
       ]
+    },
+    {
+      "version": "0.22.1",
+      "date": "2026-10-13",
+      "kind": "patch",
+      "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71",
+      "components": [
+        "gnb"
+      ],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "changes": [
+        "GNB 유틸 아이콘(지구본·계정·메뉴)을 24×24 로 그립니다 — 그동안 32 로 그려 그림이 4/3 배 컸습니다. 계정·메뉴 버튼 칸 32×32 는 그대로, 언어 버튼의 지구본은 32 칸 안에 24 아이콘(사방 4 여백)으로 Figma 와 같습니다. md·sm·xsm 공통."
+      ],
+      "deliveryFingerprint": "970c027e4c5b48f743f411adedfee41ae55aef0ff7ace0f011b7342e354c73f0"
     },
     {
       "version": "0.22.0",
@@ -2040,5 +2066,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "5d1b06f01d518d1b3fb9cbcb0f119b5329f7874ac96b62d1ed46ebf3e2292303"
+  "deliveryFingerprint": "bd77246c0a6071fa48d27dbfe8892c187c96f5492b142a381dc1a8c771941ae5"
 }

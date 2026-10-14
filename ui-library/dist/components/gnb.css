@@ -182,26 +182,28 @@
   background-color: var(--color-icon-gray-dark);
   display: block;
   flex: none;
-  height: var(--sizing-32);
+  height: var(--sizing-24);
+
+  margin: var(--spacing-4);
   -webkit-mask: url("../assets/icons/globe.svg") center / contain no-repeat;
   mask: url("../assets/icons/globe.svg") center / contain no-repeat;
-  width: var(--sizing-32);
+  width: var(--sizing-24);
 }
 
 [data-s1-component="gnb"] [data-s1-part="account-icon"]:where(:not([data-s1-component="gnb"] [data-s1-component]:not([data-s1-component="gnb"]) *:not([data-s1-component="gnb"] [data-s1-component]:not([data-s1-component="gnb"]) [data-s1-component="gnb"] *))) {
   background-color: var(--color-icon-gray-dark);
   display: block;
-  height: var(--sizing-32);
+  height: var(--sizing-24);
   -webkit-mask: url("../assets/icons/account.svg") center / contain no-repeat;
   mask: url("../assets/icons/account.svg") center / contain no-repeat;
-  width: var(--sizing-32);
+  width: var(--sizing-24);
 }
 
 [data-s1-component="gnb"] [data-s1-part="menu-icon"]:where(:not([data-s1-component="gnb"] [data-s1-component]:not([data-s1-component="gnb"]) *:not([data-s1-component="gnb"] [data-s1-component]:not([data-s1-component="gnb"]) [data-s1-component="gnb"] *))) {
   background-color: var(--color-icon-gray-dark);
   display: block;
-  height: var(--sizing-32);
+  height: var(--sizing-24);
   -webkit-mask: url("../assets/icons/menu.svg") center / contain no-repeat;
   mask: url("../assets/icons/menu.svg") center / contain no-repeat;
-  width: var(--sizing-32);
+  width: var(--sizing-24);
 }

@@ -3,7 +3,7 @@
     "목적": "검수판 카드에 박는 정본 사실 — 사람이 요약하지 않고 기계가 뽑는다",
     "출처": "ui-library/dist/components/*.manifest.json (정본 build-components.ts 에서 생성)",
     "재생성": "npm run board:facts",
-    "생성일": "2026-10-13"
+    "생성일": "2026-10-14"
   },
   "components": {
     "assist-button": {
@@ -588,7 +588,7 @@
           "reason": "GNB Utility Icon 세트는 language·menu·user on/off 5변형을 갖지만, GNB 바가 실제로 쓰는 것은 all-on(GNBUtil:full) 1개뿐이다(buildGNB:3607, registry 서술). 다른 4변형은 이 컴포넌트가 배포하지 않는다 — 유틸 영역 구성을 바꾸려면 host 화면이 data-s1-part 를 골라 빼고 넣는다."
         }
       ],
-      "sourceFingerprint": "0525d79f01ef80ec02dcb5bddfbb1287613c11a3057ca86acf2319bbc2cda040"
+      "sourceFingerprint": "85d2593d46fc08428c76880fc428c536f211a25bf130cfef9ccf0a550c0f0ad7"
     },
     "input": {
       "id": "input",
