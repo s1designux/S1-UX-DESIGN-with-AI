@@ -1,8 +1,8 @@
 /* Data Tag (뱃지) — 승격 후보 시제품 승인본 그대로.
    원본: PC S/W UX GUIDE V1.0 「03.component/table04」 4-3 Data Tag (287:13552).
-   축: data-shape=chips|square · data-solid=on|off · data-tone=blue|red
-   뜻이 정해진 두 가지만 쓴다(river 2026-09-29):
-     · blue = 승인 / 확인      · red = 주의 / 에러
+   축: data-shape=chips|square · data-solid=on|off · data-tone=blue|red|gray
+   뜻이 정해진 세 가지만 쓴다(river 2026-09-29 · 회색 2026-10-13):
+     · blue = 승인 / 확인      · red = 주의 / 에러      · gray = 그 밖의 중립 상태(대기 등)
    원본에 있던 청록·주황·초록은 쓰임이 정해지지 않아 넣지 않는다.
 
    색은 뱃지 전용 쓰임 이름(tag/*)을 쓴다 — river 승인 2026-09-30 "토큰은 제안한대로 추가하자".
@@ -44,15 +44,26 @@
   color: var(--color-tag-line-label-red);
 }
 
-/* 채움형 — 바탕에 색을 깔고 글자는 흰색 */
+[data-s1-component="data-tag"][data-tone="gray"] {
+  border-color: var(--color-tag-line-border-gray);
+  color: var(--color-tag-line-label-gray);
+}
+
+/* 채움형 — 바탕에 색을 깐다. 글자는 파랑·빨강은 흰색, 회색은 회색 글자(색깔별 이름이 정한다) */
 [data-s1-component="data-tag"][data-solid="on"][data-tone="blue"] {
   background: var(--color-tag-solid-bg-blue);
   border-color: var(--color-tag-solid-bg-blue);
-  color: var(--color-tag-solid-label);
+  color: var(--color-tag-solid-label-blue);
 }
 
 [data-s1-component="data-tag"][data-solid="on"][data-tone="red"] {
   background: var(--color-tag-solid-bg-red);
   border-color: var(--color-tag-solid-bg-red);
-  color: var(--color-tag-solid-label);
+  color: var(--color-tag-solid-label-red);
+}
+
+[data-s1-component="data-tag"][data-solid="on"][data-tone="gray"] {
+  background: var(--color-tag-solid-bg-gray);
+  border-color: var(--color-tag-solid-bg-gray);
+  color: var(--color-tag-solid-label-gray);
 }

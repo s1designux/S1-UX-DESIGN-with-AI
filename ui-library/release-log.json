@@ -5,10 +5,23 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.23.2",
+  "version": "0.24.0",
   "releasedAt": "2026-10-14",
-  "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71",
+  "canonicalFingerprint": "e4df69db429fe61b8840724bf07362abb6beb5017c00bdda90cc03e79ffc56ef",
   "releases": [
+    {
+      "version": "0.24.0",
+      "date": "2026-10-14",
+      "kind": "minor",
+      "canonicalFingerprint": "e4df69db429fe61b8840724bf07362abb6beb5017c00bdda90cc03e79ffc56ef",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "1773146a38aebbf72e74245ec0c5a13fd99d84c132e03398c5b6fe63bc1dd6f5",
+      "changes": [
+        "데이터 태그에 회색 뱃지를 추가하고 채움형 글자 색을 색깔별로 나눴습니다(다른 작업에서 0.23.0 으로 냈던 변경 — React판 0.23.x 와 번호가 겹쳐 0.24.0 으로 합쳐 기록).",
+        "React판 0.23.0~0.23.2 개선(데이터로 그리는 부품·하위호환)과 0.22.1 GNB 유틸 아이콘 24 수정이 함께 들어 있습니다."
+      ]
+    },
     {
       "version": "0.23.2",
       "date": "2026-10-14",
@@ -2066,5 +2079,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "bd77246c0a6071fa48d27dbfe8892c187c96f5492b142a381dc1a8c771941ae5"
+  "deliveryFingerprint": "1773146a38aebbf72e74245ec0c5a13fd99d84c132e03398c5b6fe63bc1dd6f5"
 }

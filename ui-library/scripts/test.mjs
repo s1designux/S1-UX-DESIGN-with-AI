@@ -680,8 +680,8 @@ for (const id of componentIds) {
     if (!example.includes('aria-expanded="true"') || !example.includes('aria-expanded="false"')) failures.push("expandable-card example must show open and closed");
   }
   if (id === "data-tag") {
-    if (JSON.stringify(manifest.variants) !== JSON.stringify(["blue", "red"])) failures.push("data-tag tones must be exactly blue and red (river 2026-09-29)");
-    for (const shape of ["chips", "square"]) for (const solid of ["on", "off"]) for (const tone of ["blue", "red"]) {
+    if (JSON.stringify(manifest.variants) !== JSON.stringify(["blue", "red", "gray"])) failures.push("data-tag tones must be exactly blue, red and gray (river 2026-09-29 · gray 2026-10-13)");
+    for (const shape of ["chips", "square"]) for (const solid of ["on", "off"]) for (const tone of ["blue", "red", "gray"]) {
       if (!new RegExp(`data-shape="${shape}"\\s+data-solid="${solid}"\\s+data-tone="${tone}"`).test(example)) failures.push(`data-tag example must show ${shape}/${solid}/${tone}`);
     }
     if (/--color-(green|teal|cyan|orange|yellow)-/.test(css)) failures.push("data-tag must not use the dropped teal/orange/green tones");

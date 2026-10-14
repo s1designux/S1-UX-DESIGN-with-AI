@@ -882,8 +882,8 @@ export declare function S1ExpandableCard(props: S1ExpandableCardProps): ReactEle
 export interface S1DataTagProps extends Omit<HTMLAttributes<HTMLSpanElement>, keyof AriaAttributes | "parts" | "className" | "style" | "children" | "ref" | "variant" | "label">, S1Aria {
   /** 슬롯 이름별 내용·속성. 예: parts={{ label: "확인" }} */
   parts?: S1Parts<"label">;
-  /** 승인된 변형: blue · red */
-  variant?: "blue" | "red";
+  /** 승인된 변형: blue · red · gray */
+  variant?: "blue" | "red" | "gray";
   /** 꼬리표 글자 (label 과 같다) */
   children?: ReactNode;
   /** 꼬리표 글자 — children 으로도 줄 수 있다 */

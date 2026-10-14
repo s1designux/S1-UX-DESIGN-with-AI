@@ -1,6 +1,6 @@
 # S1 UI — React 부품 설명서
 
-**배포본 번호 0.23.2** · 2026-10-14 판
+**배포본 번호 0.24.0** · 2026-10-14 판
 이 번호가 최신인지는 디자인가이드 내려받기 화면에서 확인하세요 — 번호가 다르면 새로 받으면 됩니다.
 코드에서는 `import { S1_VERSION } from "./s1-ui/platform/react"` 로 읽습니다(TypeScript 타입도 들어 있습니다).
 
@@ -285,7 +285,7 @@ export default function Filters() {
 | `S1BottomSheet` | `none` `single` `dual` | — | — | `open` · `defaultOpen` · `onOpenChange` · `options` · `value` · `defaultValue` · `onValueChange` · `closeOnSelect` · `title` · `applyLabel` | 모바일에서 목록을 띄워 고르게 할 때 — 드롭다운 대신 쓴다(density-policy mobileSubstitutes.dropdown). 모바일에서 날짜·시간처럼 넓은 선택 UI 를 띄울 때. Footer=None 은 고르는 즉시 적용되는 목록, Single 은 '적용' 하나, Dual 은 '취소+적용'. |
 | `S1ListRow` | `variant` | — | — | `title` · `description` · `value` · `checked` · `defaultChecked` · `onCheckedChange` · `onChange` · `name` | 같은 모양의 줄이 반복되는 목록을 만들 때. |
 | `S1ExpandableCard` | — | — | — | `open` · `defaultOpen` · `onOpenChange` · `title` · `subtitle` · `body` · `note` · `caption` · `onChange` | 한 화면에 여러 덩어리를 쌓아 두고, 필요한 것만 펴서 보게 할 때. 질문과 답처럼 제목만으로 고르고 내용은 접어 두는 목록. |
-| `S1DataTag` | `blue` `red` | — | — | `label` | 표나 목록에서 한 줄의 상태를 한 눈에 보이게 할 때. 승인·확인(파랑), 주의·에러(빨강)처럼 뜻이 정해진 상태를 표시할 때. |
+| `S1DataTag` | `blue` `red` `gray` | — | — | `label` | 표나 목록에서 한 줄의 상태를 한 눈에 보이게 할 때. 승인·확인(파랑), 주의·에러(빨강)처럼 뜻이 정해진 상태를 표시할 때. 그 밖의 중립 상태(대기 등)는 회색으로 표시할 때. |
 | `S1Divider` | `x` `y` | — | — | `parts` | 목록 줄 사이를 나눌 때. 표 위·아래처럼 영역을 크게 끊을 때(강한선). 한 줄 안에서 값과 값을 끊을 때(세로선). |
 | `S1Lnb` | `variant` | `md` `lg` | — | `onCollapse` · `onToggle` · `items` | 화면 왼쪽에 세로로 서서 같은 서비스 안의 큰 영역을 오가는 메뉴가 필요할 때. 하위메뉴(2뎁스)까지 한 판에서 보여 줄 때. |
 

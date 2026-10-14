@@ -10,7 +10,7 @@ import { mergeParts, scopeOf, slot } from "./kit.js";
 
 export const BREAKS = ["pc"];
 export const DEFAULT_BREAK = "pc";
-export const VARIANTS = ["blue","red"];
+export const VARIANTS = ["blue","red","gray"];
 export const SIZES = [];
 /* parts 로 줄 수 있는 슬롯 이름(낙타 표기) — 타입 정의의 parts 키와 같다. */
 export const PARTS = ["label"];
