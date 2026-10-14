@@ -44,9 +44,9 @@ const TOOL_PACKAGES = {
   },
   react: {
     title: 'React · Next.js',
-    include: ['manifest.json', 'assets', 's1-ui.css', 's1-ui.auto.js', 'components', 'platform/react', 'platform/manifest.json', 'platform/contract.json', 'platform/tokens.json', 'tools', 'preview.html'],
+    include: ['manifest.json', 'assets', 's1-ui.css', 's1-ui.base.css', 's1-ui.auto.js', 'components', 'platform/react', 'platform/manifest.json', 'platform/contract.json', 'platform/tokens.json', 'tools', 'preview.html'],
     filter: (relative) => !relative.startsWith('components/') || relative.endsWith('.js'),
-    start: ['압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.', '**`preview.html` 을 브라우저로 열면 컴포넌트 {{count}}종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.', '앱 진입 파일에서 `assets/css/tokens.css` 와 `s1-ui.css` 를 한 번 읽힙니다.', '`import { S1Button } from "./s1-ui/platform/react";` 처럼 쓸 것만 꺼내 씁니다.', '받는 값과 쓰는 법은 `platform/react/README.md` 에 있습니다.']
+    start: ['압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트의 `src/` 안에 그대로 넣습니다.', '**`preview.html` 을 브라우저로 열면 컴포넌트 {{count}}종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.', '앱 진입 파일(Vite `src/main.jsx` · Next.js `app/layout.tsx`)에서 CSS 를 한 번, 이 순서로 읽힙니다: `assets/css/tokens.css`(필수) · `assets/css/typography.css`(선택) · `s1-ui.base.css`(선택 — 페이지 바탕·기본 글자색) · `s1-ui.css`(필수).', '글꼴 Pretendard 는 묶음에 들어 있지 않습니다 — `index.html` 의 `<head>` 에 `<link rel="stylesheet" href="{{fontSource}}">` 를 넣습니다. 다크 모드는 `<html data-theme="dark">` 입니다.', '`import { S1Button } from "./s1-ui/platform/react";` 처럼 쓸 것만 꺼내 씁니다(Next.js 에서도 그대로 — 부품 파일마다 "use client" 가 들어 있습니다).', '받는 값과 쓰는 법·예시는 `platform/react/README.md` 에 있습니다.']
   },
   vue: {
     title: 'Vue',
@@ -412,7 +412,7 @@ function assertSelfContained(stage, key) {
 function toolReadme(key, spec) {
   const facts = FACTS.get(key);
   /* 숫자는 손으로 적지 않는다 — 배포본 manifest 의 컴포넌트 수로 채운다. */
-  const start = spec.start.map((step) => step.replaceAll('{{count}}', String(manifest.components.length)));
+  const start = spec.start.map((step) => step.replaceAll('{{count}}', String(manifest.components.length)).replaceAll('{{fontSource}}', manifest.fontDependencies[0].source));
   /* 사람이 적은 시작 순서가 배포본과 어긋나면 여기서 멈춘다 — 옛 안내가 남지 않게. */
   const problems = assertProse(facts, start);
   if (problems.length) {

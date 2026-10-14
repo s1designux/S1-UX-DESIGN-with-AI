@@ -19,7 +19,7 @@
 import { buildKotlinOutputs, COMPOSE_COMPONENTS } from "./kotlin-compose.mjs";
 import { sampleFiles } from "./kotlin-sample.mjs";
 import { buildReactNativeOutputs } from "./react-native.mjs";
-import { buildReactComponent, buildReactPackage, buildReactReadme, buildReactRuntime, buildReactTypes, reactComponentFacts } from "./react.mjs";
+import { buildReactComponent, buildReactKit, buildReactPackage, buildReactReadme, buildReactTypes, reactComponentFacts } from "./react-gen.mjs";
 
 const GENERATED_NOTE = "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.";
 
@@ -729,13 +729,13 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
     outputs.set(`platform/vue/${pascalId(component.id)}.vue`, buildVueComponent(view));
   }
   const reactFacts = approved.map((component) => reactComponentFacts(platformView(component)));
-  outputs.set("platform/react/runtime.js", buildReactRuntime());
+  outputs.set("platform/react/kit.js", buildReactKit());
   outputs.set("platform/react/package.json", buildReactPackage(release));
   outputs.set("platform/react/version.js", versionJs(release));
   outputs.set("platform/vue/version.js", versionJs(release));
   outputs.set("platform/vue/package.json", vuePackage(release));
   outputs.set("platform/react/index.d.ts", buildReactTypes(reactFacts));
-  outputs.set("platform/react/README.md", buildReactReadme(reactFacts, usageById, release));
+  outputs.set("platform/react/README.md", buildReactReadme(reactFacts, usageById, release, { font: distManifest.fontDependencies?.[0]?.source }));
   outputs.set("platform/react/index.js", `/* ${GENERATED_NOTE} */\n${approved.map(({ id }) => `export { default as S1${pascalId(id)} } from "./${id}.jsx";`).join("\n")}\nexport { S1_VERSION, S1_RELEASED_AT } from "./version.js";\n`);
   outputs.set("platform/vue/index.js", `/* ${GENERATED_NOTE} */\n${approved.map(({ id }) => `export { default as S1${pascalId(id)} } from "./${pascalId(id)}.vue";`).join("\n")}\nexport { S1_VERSION, S1_RELEASED_AT } from "./version.js";\n`);
 

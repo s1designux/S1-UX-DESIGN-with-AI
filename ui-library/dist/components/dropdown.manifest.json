@@ -187,14 +187,17 @@
       "selectAllChecked": "selectAll=false(일반 옵션 토글)일 때만: 토글 후 select-all 행의 현재 checked 값"
     },
     "methods": [
-      "focusActive()"
+      "focusActive()",
+      "value",
+      "setValue(value)"
     ],
     "lifecycle": [
       "init(root)",
       "destroy(root)"
     ],
     "controlMode": "uncontrolled",
-    "behaviorContract": "registry/components/component-behavior.pc.json 의 \"Dropdown (Checkbox)\" 장부(status=verified)를 그대로 구현한다 — 옵션 개별 토글은 형제에 영향 없음, select-all 은 전체를 자신의 반대 상태로 맞춤, 모든 옵션이 켜지면 select-all 이 스스로 켜짐, 선택은 패널을 닫지 않음."
+    "behaviorContract": "registry/components/component-behavior.pc.json 의 \"Dropdown (Checkbox)\" 장부(status=verified)를 그대로 구현한다 — 옵션 개별 토글은 형제에 영향 없음, select-all 은 전체를 자신의 반대 상태로 맞춤, 모든 옵션이 켜지면 select-all 이 스스로 켜짐, 선택은 패널을 닫지 않음.",
+    "valueNote": "text 형만 값을 읽고 넣는다. 값은 옵션의 data-value, 없으면 옵션 글자. setValue 는 change 이벤트를 내지 않는다(화면이 넣은 값)."
   },
-  "sourceFingerprint": "2a259dc08e5847f7717957ddfb19c1592d1bc8ba1d4f0d0d8ed8908f6dbdcc38"
+  "sourceFingerprint": "d757c8cddb53810a22bb9479be786f591287f6de879ca539a754b4448c6d28b4"
 }

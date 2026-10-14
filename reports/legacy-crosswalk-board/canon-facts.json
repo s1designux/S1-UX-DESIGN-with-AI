@@ -3,7 +3,7 @@
     "목적": "검수판 카드에 박는 정본 사실 — 사람이 요약하지 않고 기계가 뽑는다",
     "출처": "ui-library/dist/components/*.manifest.json (정본 build-components.ts 에서 생성)",
     "재생성": "npm run board:facts",
-    "생성일": "2026-10-13"
+    "생성일": "2026-10-14"
   },
   "components": {
     "assist-button": {
@@ -280,13 +280,14 @@
     "data-tag": {
       "id": "data-tag",
       "status": "approved",
-      "version": "0.1.2",
+      "version": "0.2.1",
       "sizes": [],
       "breaks": {},
       "sizeBreakGrid": [],
       "variants": [
         "blue",
-        "red"
+        "red",
+        "gray"
       ],
       "types": null,
       "states": [
@@ -294,7 +295,7 @@
       ],
       "canonicalStateMap": {},
       "absentCombinations": [],
-      "sourceFingerprint": "e16eed9a44447b77cd8a62c2e49ac6656b56b9f1434113a0fc13302b1cf410ab"
+      "sourceFingerprint": "2a8bc16776f9b44b64d5ae40395aecc11e4b89d0d9a6385239f5de0be013c19a"
     },
     "date-picker": {
       "id": "date-picker",
@@ -419,7 +420,7 @@
           "reason": "정본 buildDropdown 은 패널 자체의 state 축이 없다(항상 State=Default) — 상태는 옵션 행이 담당한다. 패널에 별도 open/closed 시각 변형을 만들지 않았다."
         }
       ],
-      "sourceFingerprint": "2a259dc08e5847f7717957ddfb19c1592d1bc8ba1d4f0d0d8ed8908f6dbdcc38"
+      "sourceFingerprint": "d757c8cddb53810a22bb9479be786f591287f6de879ca539a754b4448c6d28b4"
     },
     "expandable-card": {
       "id": "expandable-card",
@@ -504,7 +505,7 @@
           "reason": "정본에 Error 상태가 없다."
         }
       ],
-      "sourceFingerprint": "19d4ccf8f420515d9b0f13d37fb4a229c62d6c49030c2ee03bd452cd31ec1d4f"
+      "sourceFingerprint": "3cdb176b874bcdb02194d063f5213bae6e45ce96bc4bb608046b78a9da4bd79a"
     },
     "gnb-sub-menu-item": {
       "id": "gnb-sub-menu-item",
@@ -662,7 +663,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "41430a7bc66cd1c67d74e0561152948acfe04bd89b32fc2dfce8d3d21b3496e0"
+      "sourceFingerprint": "a34f6105813bcfad3c3bb4e0beeb87247d2190ddc1f04128cbe8008e9eebfac3"
     },
     "list-row": {
       "id": "list-row",
@@ -1039,7 +1040,7 @@
           "reason": "정본에 Error 상태가 없다."
         }
       ],
-      "sourceFingerprint": "c1d08994e6b3848454dccaf6b589807a1e28e6b9b5364708a42141dea0b358b9"
+      "sourceFingerprint": "bc8e2aee1521756e9efeeeebe3b6d58fb4fdd45e8f888e378988a497e00f528c"
     },
     "tab": {
       "id": "tab",
@@ -1312,7 +1313,7 @@
           "reason": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
         }
       ],
-      "sourceFingerprint": "562204c15b8526a6bc6c2fc81b16f1801c52a6419f43c050008252f4a60a33a8"
+      "sourceFingerprint": "2bf8bd5dd94f6910a1ba90db303bd349cf33f1fa81ff9d2e152f9e2e3dcf5795"
     },
     "toggle": {
       "id": "toggle",

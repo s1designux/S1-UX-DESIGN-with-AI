@@ -106,7 +106,7 @@ window.REGISTRY_BUNDLE = {
           "name": "SW Foundation Colors",
           "version": "2.4",
           "status": "stable",
-          "updatedAt": "2026-10-02",
+          "updatedAt": "2026-10-13",
           "source": "plugins/figma-vars-installer/src/vars-data.ts (FOUNDATION_COLOR)",
           "description": "Official SW Design System V2.4 foundation color foundation. Raw HEX values are allowed here only.",
           "generated": true,
@@ -10280,7 +10280,8 @@ window.REGISTRY_BUNDLE = {
       },
       "a11y": [
         "선택 상태를 aria-pressed 또는 role 로 노출한다.",
-        "닫기(X)에는 삭제·해제 aria-label 을 단다."
+        "닫기(X)에는 삭제·해제 aria-label 을 단다.",
+        "river 결정 2026-10-13 「전부 부품이 알아서」: 칩을 감싼 요소에 data-s1-select=\"single\" 을 달면 하나만 켠다 — 켜진 칩을 다시 눌러도 꺼지지 않고, 다른 칩을 누르면 그 칩이 켜진다. 표시가 없으면 칩마다 따로 켜고 끈다(여러 개 고르는 화면은 그대로). 화면이 막으려면 s1:chip:beforechange 에서 preventDefault."
       ],
       "variants": {
         "line": {
@@ -10585,7 +10586,8 @@ window.REGISTRY_BUNDLE = {
       },
       "a11y": [
         "날짜 셀은 키보드 이동이 가능해야 하고 선택 셀에 aria-selected 를 준다.",
-        "비활성 날짜는 aria-disabled 로 표시한다."
+        "비활성 날짜는 aria-disabled 로 표시한다.",
+        "열릴 때 키보드 초점 규칙(river 2026-10-13, 질문 '키보드로 달력을 열 때 초점이 어디로 갈까요? 추천은 골라 둔 날짜, 없으면 오늘' 에 '-> 추천안으로'): 골라 둔 날짜(기간이면 시작일) → 없으면 오늘 → 오늘이 보이는 달에 없으면 그 달의 1일. PC 팝오버와 모바일 시트 모두 같다."
       ],
       "baseComponent": "Input",
       "composition": [
@@ -12603,7 +12605,8 @@ window.REGISTRY_BUNDLE = {
       "a11y": [
         "탭 목록은 role=tablist·각 항목 role=tab 으로 표시하고 현재 탭에 aria-selected 를 준다.",
         "아이콘만으로 의미를 전달하지 않는다 — 라벨을 항상 함께 보여준다.",
-        "터치 타깃은 60×60 으로 최소 권장치를 만족한다."
+        "터치 타깃은 60×60 으로 최소 권장치를 만족한다.",
+        "river 결정 2026-10-13 「전부 부품이 알아서」: 탭을 누르면 부품이 활성 탭을 옮긴다(2026-09-02 HD-1 '호스트가 정적으로 설정'을 뒤집음). 먼저 s1:mobile-bottom-nav:beforechange(취소 가능)를 내서 화면이 막을 수 있고(로그인 확인·저장 안 한 변경), 막지 않으면 aria-selected·aria-current=page 를 옮기고 s1:mobile-bottom-nav:change 를 낸다. 라우팅이 정하는 화면은 api.setActive() 또는 aria-selected 로 직접 정한다. ←→ 는 탭 사이 초점 이동."
       ],
       "states": [
         "unselected",
@@ -14322,8 +14325,10 @@ window.REGISTRY_BUNDLE = {
         "a11yStatus": "implemented",
         "figmaStatus": "confirmed",
         "harnessStatus": "implemented",
-        "description": "페이지네이션 컨트롤. 화살표(first/prev/next/last) + 페이지 번호. 선택 페이지는 텍스트 색으로만 구분.",
+        "description": "페이지네이션 컨트롤. 이동 버튼 4개(|< 이전 페이지 묶음 · < 이전 페이지 · > 다음 페이지 · >| 다음 페이지 묶음) + 페이지 번호. 선택 페이지는 텍스트 색으로만 구분.",
         "notes": [
+          "2026-10-13 river 결정: 버튼은 네 개 — |<(묶음 넘김, 이전 묶음) · <(이전 페이지) · >(다음 페이지) · >|(묶음 넘김, 다음 묶음). river 원문: \"-> 페이지네이션에는 버튼이 네개있어 ㅣ< (묶음넘김)  <(이전페이지)  이렇게 되어야하는데\". 종전 웹의 |< >| 는 처음/마지막 쪽으로 갔다(정본 Figma 아이콘·배치는 그대로 — 동작과 이름만 바뀜).",
+          "묶음 이동 착지 규칙: 이전/다음 묶음의 첫 쪽으로 간다(registry/components/component-behavior.pc.json Pagination 의 'previous block/next block → first page of the previous/next block' 규칙을 그대로 따름). 첫 묶음에서 |< 는, 마지막 묶음에서 >| 는 막힌다. < > 는 한 쪽씩 움직이고 묶음 경계를 넘으면 번호 창도 따라 넘어간다. 번호는 한 묶음에 최대 6개.",
           "Figma 확인: 선택 페이지 = bg 변화 없음, 텍스트 색만 변경 (#9D9D9D → #353535).",
           "Disabled 화살표 = 전용 토큰 사용(bg gray/50 · border gray/100 · icon gray/300). V3.0 재실측(2026-07-08, node 956:19066)으로 확정 — 종전 '옵션 없이 opacity:0.9만 적용' 서술은 폐기(2026-08-01 교정).",
           "hover 는 전용 토큰이 V3.0 원본에 정의됨(color/pagination/control/bg·border·icon/hover) — 종전 'Figma 미정의 · assumed' 상태 해소(2026-07-08 재실측).",
@@ -14344,7 +14349,7 @@ window.REGISTRY_BUNDLE = {
       "anatomy": [
         {
           "part": "화살표",
-          "role": "first/prev/next/last 이동."
+          "role": "이동 버튼 4개 — |<(이전 페이지 묶음) <(이전 페이지) >(다음 페이지) >|(다음 페이지 묶음)."
         },
         {
           "part": "페이지 번호",
@@ -14363,7 +14368,8 @@ window.REGISTRY_BUNDLE = {
       },
       "a11y": [
         "현재 페이지에 aria-current 를 준다.",
-        "화살표 버튼에 이전·다음 등 aria-label 을 단다."
+        "이동 버튼 4개에 aria-label 을 단다 — \"이전 페이지 묶음\" · \"이전 페이지\" · \"다음 페이지\" · \"다음 페이지 묶음\".",
+        "묶음·쪽 이동으로 눌린 버튼이 막히거나 번호 버튼이 다시 그려져도 초점은 현재 쪽 번호 버튼에 남긴다(body 로 떨어지지 않는다)."
       ],
       "variants": {
         "arrow": {
@@ -14460,10 +14466,10 @@ window.REGISTRY_BUNDLE = {
         "interactionPattern": "paged-navigation",
         "webTag": "nav",
         "labels": {
-          "first": "첫 페이지",
+          "first": "이전 페이지 묶음",
           "previous": "이전 페이지",
           "next": "다음 페이지",
-          "last": "마지막 페이지"
+          "last": "다음 페이지 묶음"
         }
       },
       "governance": {
@@ -15726,7 +15732,8 @@ window.REGISTRY_BUNDLE = {
         "Checkbox·Radio 는 native input 을 그대로 쓴다(코어 배포본의 계약).",
         "Text 의 선택 표시(파란 체크)는 장식이다 — 선택 상태는 aria-selected·aria-checked 로 따로 알린다.",
         "비활성 줄은 disabled 또는 aria-disabled 로 알리고 초점 순서에서 뺀다.",
-        "List 의 아바타 아이콘은 장식이다 — 이름은 제목 글자가 갖는다."
+        "List 의 아바타 아이콘은 장식이다 — 이름은 제목 글자가 갖는다.",
+        "river 결정 2026-10-13 「전부 부품이 알아서」: 목록 묶음에 data-s1-select=\"single\" 을 달면 부품이 알아서 하나를 고른다 — Text(role=option·aria-selected·파란 체크)·Radio(native)만. 방향키·Home·End 이동, Enter/Space 선택, roving tabindex(고른 줄이 Tab 정거장). s1:bottom-sheet-option:beforechange(취소 가능) → change. data-s1-close-on-select 면 고른 뒤 시트가 닫힌다. 표시가 없으면 종전처럼 모양만 소유한다."
       ],
       "variantAxis": {
         "property": [
@@ -16385,7 +16392,7 @@ window.REGISTRY_BUNDLE = {
         "id": "data-tag",
         "name": "Data Tag",
         "category": "core",
-        "updatedAt": "2026-09-30",
+        "updatedAt": "2026-10-13",
         "version": "0.1.0",
         "tokenStatus": "stable",
         "codeStatus": "planned",
@@ -16393,15 +16400,16 @@ window.REGISTRY_BUNDLE = {
         "a11yStatus": "candidate",
         "figmaStatus": "planned",
         "harnessStatus": "planned",
-        "description": "상태를 보여주기만 하는 작은 라벨. 누르지 않는다. 둥근·각진 두 모양, 채움·선 두 형태, 파랑·빨강 두 색을 갖는다.",
+        "description": "상태를 보여주기만 하는 작은 라벨. 누르지 않는다. 둥근·각진 두 모양, 채움·선 두 형태, 파랑·빨강·회색 세 색을 갖는다.",
         "a11yApproval": "미확정 — 표 안에서 쓸 때 그 칸의 뜻을 글자로 읽히게 둔다. 3-build 에서 확정한다.",
-        "codeStatusNote": "정본 buildDataTag 는 2026-09-30 신설. 색은 뱃지 전용 쓰임 이름(color/tag/*)이며 river 승인 \"토큰은 제안한대로 추가하자\".",
+        "codeStatusNote": "정본 buildDataTag 는 2026-09-30 신설. 색은 뱃지 전용 쓰임 이름(color/tag/*)이며 river 승인 \"토큰은 제안한대로 추가하자\". 회색은 2026-10-13 river 승인으로 추가, 채움 글자는 색깔별(solid/label/{blue,red,gray})로 나눴다.",
         "platform": "both"
       },
       "usage": {
         "whenToUse": [
           "표나 목록에서 한 줄의 상태를 한 눈에 보이게 할 때.",
-          "승인·확인(파랑), 주의·에러(빨강)처럼 뜻이 정해진 상태를 표시할 때."
+          "승인·확인(파랑), 주의·에러(빨강)처럼 뜻이 정해진 상태를 표시할 때.",
+          "그 밖의 중립 상태(대기 등)는 회색으로 표시할 때."
         ],
         "whenNotToUse": [
           "누르는 것 — Chip 이나 Button 을 쓴다.",
@@ -16418,7 +16426,7 @@ window.REGISTRY_BUNDLE = {
       ],
       "doDont": {
         "do": [
-          "뜻이 정해진 두 색만 쓴다 — 파랑은 승인·확인, 빨강은 주의·에러.",
+          "정해진 세 색만 쓴다 — 파랑은 승인·확인, 빨강은 주의·에러, 회색은 그 밖의 중립 상태.",
           "표 안에서는 각진 모양을 쓴다."
         ],
         "dont": [
@@ -16448,7 +16456,8 @@ window.REGISTRY_BUNDLE = {
           ],
           "Color": [
             "Blue",
-            "Red"
+            "Red",
+            "Gray"
           ]
         },
         "absentCombinations": [],
@@ -16458,16 +16467,21 @@ window.REGISTRY_BUNDLE = {
       "tokens": {
         "bg": [
           "color/tag/solid/bg/blue",
-          "color/tag/solid/bg/red"
+          "color/tag/solid/bg/red",
+          "color/tag/solid/bg/gray"
         ],
         "line": [
           "color/tag/line/border/blue",
-          "color/tag/line/border/red"
+          "color/tag/line/border/red",
+          "color/tag/line/border/gray"
         ],
         "text": [
-          "color/tag/solid/label",
+          "color/tag/solid/label/blue",
+          "color/tag/solid/label/red",
+          "color/tag/solid/label/gray",
           "color/tag/line/label/blue",
-          "color/tag/line/label/red"
+          "color/tag/line/label/red",
+          "color/tag/line/label/gray"
         ],
         "number": [
           "spacing/6",
@@ -16497,16 +16511,17 @@ window.REGISTRY_BUNDLE = {
           ],
           "color": [
             "blue",
-            "red"
+            "red",
+            "gray"
           ]
         },
-        "note": "8칸(2 × 2 × 2). Dark 는 Appearance 모드로 제공한다. 설치기 묶음은 Chip(river 결정 2026-09-29)."
+        "note": "12칸(2 × 2 × 3). Dark 는 Appearance 모드로 제공한다. 설치기 묶음은 Chip(river 결정 2026-09-29)."
       },
       "governance": {
         "verify": "new",
         "verifyNote": "2026-09-30 정본 신설. Figma 실물 설치·렌더 대조는 아직 하지 않았다 — component-verifier 가 맡는다.",
-        "canonApproval": "Gate 34 승인 기록 — 색 7줄(color/tag/*) by river 2026-09-30, 부품 신설 by river 2026-09-29.",
-        "origin": "PC S/W UX GUIDE V1.0 「03.component/table04」 4-3 Data Tag (287:13552) 참고, 쓰임이 정해진 두 색만 채택."
+        "canonApproval": "Gate 34 승인 기록 — 색 7줄(color/tag/*) by river 2026-09-30, 부품 신설 by river 2026-09-29, 회색 4줄·채움 글자 색깔별 분리 by river 2026-10-13.",
+        "origin": "PC S/W UX GUIDE V1.0 「03.component/table04」 4-3 Data Tag (287:13552) 참고, 쓰임이 정해진 두 색만 채택, 회색은 2026-10-13 추가."
       },
       "webDistribution": {
         "status": "in-progress",
@@ -17128,9 +17143,57 @@ window.REGISTRY_BUNDLE = {
     }
   },
   "reportsIndex": {
-    "generatedAt": "2026-09-16T10:43:47.826Z",
-    "totalCount": 84,
+    "generatedAt": "2026-10-02T13:08:52.800Z",
+    "totalCount": 87,
     "reports": [
+      {
+        "id": "installer-s1-colors-2026-10-01",
+        "filename": "installer-s1-colors-2026-10-01.md",
+        "title": "installer s1 colors 2026 10 01",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/installer-s1-colors-2026-10-01.md",
+        "updatedAt": "2026-10-02",
+        "summary": "- 초록 완료 → 파랑(text-state-correct), 노랑·주황 주의 → 빨강(text-state-caution)",
+        "fileSizeKB": 2
+      },
+      {
+        "id": "mvp-t2-token-sync",
+        "filename": "mvp-t2-token-sync.md",
+        "title": "MVP-T2 Token Sync Plugin Report",
+        "stage": "T2",
+        "category": "token",
+        "status": "archive",
+        "sourcePath": "reports/mvp-t2-token-sync.md",
+        "updatedAt": "2026-10-02",
+        "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
+        "fileSizeKB": 5
+      },
+      {
+        "id": "harness-audit-2026-09-30",
+        "filename": "harness-audit-2026-09-30.md",
+        "title": "Harness Audit Report — 2026-09-30",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-09-30.md",
+        "updatedAt": "2026-09-30",
+        "summary": "- 🟡 HTML 코드탭 pane \"btn-pri-pc\" 을 찾을 수 없음",
+        "fileSizeKB": 2.3
+      },
+      {
+        "id": "harness-audit-2026-09-21",
+        "filename": "harness-audit-2026-09-21.md",
+        "title": "Harness Audit Report — 2026-09-21",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-09-21.md",
+        "updatedAt": "2026-09-21",
+        "summary": "- 🟡 HTML 코드탭 pane \"btn-pri-pc\" 을 찾을 수 없음",
+        "fileSizeKB": 2.3
+      },
       {
         "id": "harness-audit-2026-09-15",
         "filename": "harness-audit-2026-09-15.md",
@@ -17142,18 +17205,6 @@ window.REGISTRY_BUNDLE = {
         "updatedAt": "2026-09-15",
         "summary": "- 🟡 HTML 코드탭 pane \"btn-pri-pc\" 을 찾을 수 없음",
         "fileSizeKB": 2.3
-      },
-      {
-        "id": "mvp-t2-token-sync",
-        "filename": "mvp-t2-token-sync.md",
-        "title": "MVP-T2 Token Sync Plugin Report",
-        "stage": "T2",
-        "category": "token",
-        "status": "archive",
-        "sourcePath": "reports/mvp-t2-token-sync.md",
-        "updatedAt": "2026-09-15",
-        "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
-        "fileSizeKB": 5
       },
       {
         "id": "harness-audit-2026-09-10",
@@ -17501,7 +17552,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/changelog-archive.md",
         "updatedAt": "2026-06-17",
         "summary": "이 파일은 CLAUDE.md `변경 이력` 표의 **상세 보존본**이다. 컨텍스트 비용을 줄이기 위해 CLAUDE.md 본문에서 분리했다.",
-        "fileSizeKB": 82.9
+        "fileSizeKB": 85.4
       },
       {
         "id": "harness-audit-2026-06-17",

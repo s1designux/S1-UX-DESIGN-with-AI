@@ -220,7 +220,8 @@
     "disableCloseContract": "registry/components/component-behavior.pc.json 의 \"Select Box\" 계약(on: disable → close and block trigger clicks, status=verified)을 그대로 구현한다. 클릭 차단은 open() 의 disabled 가드, 자동 닫힘은 trigger 의 disabled 속성 변화를 관찰하는 MutationObserver 가 담당한다(인스턴스마다 자기 trigger 하나만 관찰 — 누적 없음, destroy() 가 disconnect).",
     "attributes": {
       "data-value": "처음에 골라 둘 옵션의 값",
-      "data-name": "폼 전송용 숨은 입력의 name (고른 옵션 값이 실린다)"
+      "data-name": "폼 전송용 숨은 입력의 name (고른 옵션 값이 실린다)",
+      "data-placeholder": "비웠을 때 돌아갈 트리거 글자(서버가 이미 고른 값의 라벨로 그렸을 때 쓴다 — 없으면 처음 글자)"
     }
   }
 }

@@ -54,8 +54,8 @@
 [data-s1-cand="data-tag"][data-tone="red"]  { --tag-color: var(--color-tag-line-border-red);  --tag-label: var(--color-tag-line-label-red); }
 
 /* 채움형 — 바탕에 색을 깔고 글자는 흰색 */
-[data-s1-cand="data-tag"][data-solid="on"][data-tone="blue"] { background: var(--color-tag-solid-bg-blue); border-color: var(--color-tag-solid-bg-blue); color: var(--color-tag-solid-label); }
-[data-s1-cand="data-tag"][data-solid="on"][data-tone="red"]  { background: var(--color-tag-solid-bg-red);  border-color: var(--color-tag-solid-bg-red);  color: var(--color-tag-solid-label); }
+[data-s1-cand="data-tag"][data-solid="on"][data-tone="blue"] { background: var(--color-tag-solid-bg-blue); border-color: var(--color-tag-solid-bg-blue); color: var(--color-tag-solid-label-blue); }
+[data-s1-cand="data-tag"][data-solid="on"][data-tone="red"]  { background: var(--color-tag-solid-bg-red);  border-color: var(--color-tag-solid-bg-red);  color: var(--color-tag-solid-label-red); }
 
 /* ══ 2. Divider (구분선) ═══════════════════════════════
    축: data-axis=x|y · data-weight=default|strong · data-inset=none|text

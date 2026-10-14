@@ -1,9 +1,9 @@
 {
   "id": "s1-ui",
-  "version": "0.22.2",
-  "releasedAt": "2026-10-13",
+  "version": "0.24.1",
+  "releasedAt": "2026-10-14",
   "status": "approved",
-  "canonicalFingerprint": "eb3fb29a0f0e1417bafc1dc99d697185619e4b51087b6f2610e453475667bf42",
+  "canonicalFingerprint": "53db1bd8eb3a824ca156e744fe04866dce887b81f21bad0194a061f7f608e83d",
   "tokenMapFingerprint": "796fb798dd329910ba6c42a29fb4af9e0fd217446b3fa847e140bc70a0a8f4c7",
   "commonCssDependencies": [
     "assets/css/tokens.css",
@@ -22,7 +22,7 @@
     }
   ],
   "commonCssFingerprints": {
-    "assets/css/tokens.css": "cd36c222a4c6ab051670903583bdaecaccb38a5be800dda365e44ad2a909c1ec",
+    "assets/css/tokens.css": "4121d2d24fc4afb845ae70ebad928ed5f6f7929cd6a2498f9e28b4d4b3136914",
     "assets/css/typography.css": "cd32269e4b7979eec671ec6eaa40b1e2aa1acccaa8fc0b33201234fb5bf1a65b"
   },
   "jsRequired": true,
@@ -726,7 +726,7 @@
       "status": "approved",
       "jsRequired": true,
       "canonicalFingerprint": "5e024b9bc5a879381fd8832a4d353df65757700d5714b735ad2a7868db778345",
-      "sourceFingerprint": "41430a7bc66cd1c67d74e0561152948acfe04bd89b32fc2dfce8d3d21b3496e0",
+      "sourceFingerprint": "a34f6105813bcfad3c3bb4e0beeb87247d2190ddc1f04128cbe8008e9eebfac3",
       "css": "components/input.css",
       "js": "components/input.js",
       "example": "examples/input.html",
@@ -849,7 +849,7 @@
       "status": "approved",
       "jsRequired": true,
       "canonicalFingerprint": "93c277610de52701b5f6b3fc4ea925e601a86a29f7229df99fcfea4e80abb31b",
-      "sourceFingerprint": "2a259dc08e5847f7717957ddfb19c1592d1bc8ba1d4f0d0d8ed8908f6dbdcc38",
+      "sourceFingerprint": "d757c8cddb53810a22bb9479be786f591287f6de879ca539a754b4448c6d28b4",
       "css": "components/dropdown.css",
       "js": "components/dropdown.js",
       "example": "examples/dropdown.html",
@@ -873,7 +873,7 @@
       "status": "approved",
       "jsRequired": true,
       "canonicalFingerprint": "2ebe07ca09e01257f5713e3faccd28918dabf09d97d8b96aa0e01f2670bed868",
-      "sourceFingerprint": "c1d08994e6b3848454dccaf6b589807a1e28e6b9b5364708a42141dea0b358b9",
+      "sourceFingerprint": "bc8e2aee1521756e9efeeeebe3b6d58fb4fdd45e8f888e378988a497e00f528c",
       "css": "components/select.css",
       "js": "components/select.js",
       "example": "examples/select.html",
@@ -888,7 +888,7 @@
       "status": "approved",
       "jsRequired": true,
       "canonicalFingerprint": "e9ee9098166ab334c5cd6e353abd207bf7cfbec36b8515bdf2cb9fbd2dfb52d8",
-      "sourceFingerprint": "19d4ccf8f420515d9b0f13d37fb4a229c62d6c49030c2ee03bd452cd31ec1d4f",
+      "sourceFingerprint": "3cdb176b874bcdb02194d063f5213bae6e45ce96bc4bb608046b78a9da4bd79a",
       "css": "components/filter-chip.css",
       "js": "components/filter-chip.js",
       "example": "examples/filter-chip.html",
@@ -1066,7 +1066,7 @@
       "status": "approved",
       "jsRequired": true,
       "canonicalFingerprint": "bdf304ea39d52ed35c85eb07447f737ea68b7a591a6af4126e5f73a64542c604",
-      "sourceFingerprint": "562204c15b8526a6bc6c2fc81b16f1801c52a6419f43c050008252f4a60a33a8",
+      "sourceFingerprint": "2bf8bd5dd94f6910a1ba90db303bd349cf33f1fa81ff9d2e152f9e2e3dcf5795",
       "css": "components/time-picker.css",
       "js": "components/time-picker.js",
       "example": "examples/time-picker.html",
@@ -1334,11 +1334,11 @@
     },
     {
       "id": "data-tag",
-      "version": "0.1.2",
+      "version": "0.2.1",
       "status": "approved",
       "jsRequired": false,
-      "canonicalFingerprint": "84acfd74ce904a6aaabf7c9b8dceebdd7f3389707fe077b7290d72e41f3bfada",
-      "sourceFingerprint": "e16eed9a44447b77cd8a62c2e49ac6656b56b9f1434113a0fc13302b1cf410ab",
+      "canonicalFingerprint": "97087c3be948d3c15cf72a655b08d466714542df62d09520c33841d6a9a9a364",
+      "sourceFingerprint": "2a8bc16776f9b44b64d5ae40395aecc11e4b89d0d9a6385239f5de0be013c19a",
       "css": "components/data-tag.css",
       "js": "components/data-tag.js",
       "example": "examples/data-tag.html",
@@ -1348,7 +1348,8 @@
           "axis": "태그 색",
           "values": {
             "blue": "파란 — 승인·확인",
-            "red": "빨간 — 주의·에러"
+            "red": "빨간 — 주의·에러",
+            "gray": "회색 — 그 밖의 중립 상태(대기 등)"
           }
         }
       ],

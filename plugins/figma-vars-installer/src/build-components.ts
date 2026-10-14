@@ -7376,20 +7376,20 @@ async function buildMultiToggle(maps: BuildMaps, originY: number): Promise<{ set
 
 // ── Data Tag (뱃지) — 상태를 보여주기만 하는 작은 라벨 ──────────────────────
 //   river 승인 2026-09-29 "오케이 4종 승인할게" · 색 이름 승인 2026-09-30 "토큰은 제안한대로 추가하자".
-//   축: Type(Chips 둥근 · Square 각진) × Variant(Line 선 · Solid 채움) × Color(Blue · Red)
-//   뜻이 정해진 두 색만 쓴다 — 파랑 = 승인·확인 / 빨강 = 주의·에러.
+//   축: Type(Chips 둥근 · Square 각진) × Variant(Line 선 · Solid 채움) × Color(Blue · Red · Gray)
+//   파랑 = 승인·확인 / 빨강 = 주의·에러 / 회색 = 그 밖의 중립 상태(대기 등) — 회색은 river 승인 2026-10-13.
 //   색은 뱃지 전용 쓰임 이름(color/tag/*)이 갖는다. 라이트·다크가 그 이름 안에 들어 있다.
 async function buildDataTag(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const types = ["Chips", "Square"];
   const variants = ["Line", "Solid"];
-  const colors = ["Blue", "Red"];
+  const colors = ["Blue", "Red", "Gray"];
   const num = (k: string): Variable => requireVar(maps.foundationNumber, k, "Foundation Number");
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; type: string; variant: string; color: string }[] = [];
   for (const type of types) {
     for (const variant of variants) {
       for (const color of colors) {
-        const tone = color.toLowerCase();               // blue | red
+        const tone = color.toLowerCase();               // blue | red | gray
         const solid = variant === "Solid";
         const comp = figma.createComponent();
         comp.name = `Type=${type}, Variant=${variant}, Color=${color}`;
@@ -7410,7 +7410,7 @@ async function buildDataTag(maps: BuildMaps, originY: number): Promise<{ set: Co
         comp.strokes = [boundPaint(scv(maps, solid ? `color/tag/solid/bg/${tone}` : `color/tag/line/border/${tone}`))];
         comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
         comp.setBoundVariable("strokeWeight", num("border-width/1"));
-        const labelVar = solid ? scv(maps, "color/tag/solid/label") : scv(maps, `color/tag/line/label/${tone}`);
+        const labelVar = solid ? scv(maps, `color/tag/solid/label/${tone}`) : scv(maps, `color/tag/line/label/${tone}`);
         comp.appendChild(await makeBoundText("라벨", 12, "Medium", labelVar));
         setLightMode(comp, maps);
         comps.push(comp);
