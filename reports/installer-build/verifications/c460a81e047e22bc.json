@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:c460a81e047e22bc5cc67b0351d65ea54e531fb7cd49c50e185f0eaea9b4681e",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-10-14T01:24:49.170Z",
+  "notes": "sizeIconInstance: makeRequiredIconInstance 전용, 자식 중 INSTANCE/비SCALE 제약이 있을 때만 rescale. REST 대조 결과 해당 아이콘은 navSearch(97:124: 중첩 INSTANCE CENTER + ELLIPSE LEFT/TOP)뿐, navNotification/navSettings 는 SCALE→기존 resize 그대로, Mobile Header 4종은 24 원본이라 크기 조정 없음. 획 없는 채움 아이콘이라 rescale 부작용 없음, accent 는 24 경로라 무관. Input trail resize(0.01) 후 HUG: 보이는 자식 생기면(Focus ×, Password Icon on) 내용 맞춤, field itemSpacing 0·counter CENTER 라 영향 없음. 기존 파일은 Input·Mobile Bottom Nav 세트 삭제 후 재설치 필요. Figma 캔버스 렌더 육안 미검증."
+}

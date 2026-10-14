@@ -1740,6 +1740,11 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           const trail = figma.createFrame();
           trail.name = "trail"; trail.fills = [];
           trail.layoutMode = "HORIZONTAL"; trail.counterAxisAlignItems = "CENTER";
+          // 내용 맞춤(HUG) 상자는 **보이는 자식이 없으면 처음 크기에 머문다** — createFrame 기본 100×100 이
+          //   그대로 남아, 눈(숨김)만 든 상태에서 글자 자리가 100 줄고 MD 의 「입력해 주세요」가 두 줄로 꺾였다
+          //   (river 발견 2026-10-14 · Figma 실측 trail 폭 100). 처음 크기를 0 에 가깝게 두고 내용 맞춤으로 바꾼다.
+          //   resize 는 두 방향을 FIXED 로 되돌리므로 resize 를 먼저 한다.
+          trail.resize(0.01, 0.01);
           trail.primaryAxisSizingMode = "AUTO"; trail.counterAxisSizingMode = "AUTO";
           // PC 2px(spacing/2). Mobile 은 0 — 48×48 칸을 맞붙이고 왼쪽 그림만 안쪽으로 당겨
           // 보이는 간격을 좁힌다(river HD-3 A). 칸은 겹치지 않는다.
@@ -1972,6 +1977,26 @@ async function makeIconInstance(role: string, colorVar: Variable, size: number, 
   }
 }
 
+/** 아이콘 인스턴스를 size 정사각으로 맞춘다.
+ *  아이콘 안 도형이 모두 「크기 따라 늘기(SCALE)」면 resize 로 충분하지만, 중첩 인스턴스·고정 위치
+ *  (CENTER·TOP/LEFT 등) 조각이 섞인 아이콘은 resize 하면 조각마다 따로 움직여 그림이 어긋난다
+ *  — 하단 탭 검색(Solid) 아이콘이 24→32 에서 속 채운 원만 왼쪽 위에 남던 원인(river 발견 2026-10-14).
+ *  그런 아이콘은 rescale 로 통째로 키운다. */
+function sizeIconInstance(inst: InstanceNode, size: number): void {
+  if (!size || (inst.width === size && inst.height === size)) return;
+  let uniform = true;
+  try {
+    for (const c of inst.children as SceneNode[]) {
+      const k = (c as any).constraints as { horizontal?: string; vertical?: string } | undefined;
+      if (c.type === "INSTANCE" || !k || k.horizontal !== "SCALE" || k.vertical !== "SCALE") { uniform = false; break; }
+    }
+  } catch (e) { uniform = true; }
+  if (!uniform && inst.width === inst.height && typeof (inst as any).rescale === "function") {
+    try { (inst as any).rescale(size / inst.width); return; } catch (e) { /* 아래 resize 로 */ }
+  }
+  inst.resize(size, size);
+}
+
 /** Mobile Header 전용 아이콘 import. 원본 라이브러리 인스턴스가 아니면 빌드를 중단한다.
  *  raw SVG/hex 폴백을 두지 않아 Semantic-only·원본 provenance 규칙을 지킨다. */
 async function makeRequiredIconInstance(
@@ -1986,7 +2011,7 @@ async function makeRequiredIconInstance(
   const remote = await figma.importComponentByKeyAsync(key);
   const inst = remote.createInstance();
   inst.name = role;
-  if (size && (inst.width !== size || inst.height !== size)) inst.resize(size, size);
+  sizeIconInstance(inst, size);
   rebindIconColor(inst, colorVar);
   if (rotation) inst.rotation = rotation;
   if (accentVar) {

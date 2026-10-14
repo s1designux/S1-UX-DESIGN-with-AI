@@ -2,7 +2,7 @@
 
 /// 이 파일 묶음이 나온 배포본 번호. 디자인가이드가 공개한 번호와 다르면 낡은 것이다.
 public enum S1Version {
-    public static let version = "0.24.1"
+    public static let version = "0.24.2"
     public static let releasedAt = "2026-10-14"
-    public static let canonicalFingerprint = "53db1bd8eb3a824ca156e744fe04866dce887b81f21bad0194a061f7f608e83d"
+    public static let canonicalFingerprint = "74173580fab2dea369607efb6164a895d246c9da4cb993284b35d04f2e9b7db8"
 }

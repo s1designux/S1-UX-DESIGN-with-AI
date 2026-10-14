@@ -594,7 +594,7 @@
     "input": {
       "id": "input",
       "status": "approved",
-      "version": "0.3.9",
+      "version": "0.3.10",
       "sizes": [
         "xxsm",
         "xsm",
@@ -663,7 +663,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "a34f6105813bcfad3c3bb4e0beeb87247d2190ddc1f04128cbe8008e9eebfac3"
+      "sourceFingerprint": "b3d087d5528895e08fea7a8a4d60d146050b48090b5d31c9ccd7bfeca903bd27"
     },
     "list-row": {
       "id": "list-row",
@@ -724,7 +724,7 @@
     "mobile-bottom-nav": {
       "id": "mobile-bottom-nav",
       "status": "approved",
-      "version": "0.4.1",
+      "version": "0.4.2",
       "sizes": [],
       "breaks": {},
       "sizeBreakGrid": [],
@@ -753,12 +753,12 @@
           "reason": "icon 축은 2026-09-14 river 승인으로 신설했다 — 홈 하나만 있어 4칸 바를 만들면 네 칸이 모두 홈 그림이었다. 여기 네 가지는 **예시**다(river 2026-09-14: \"예시로만 아이콘을 얹어놓고 개발자가 다운받은 아이콘으로 교체할 수 있도록\"). 실제 서비스의 칸 구성은 서비스마다 다르므로, 화면은 --s1-mobile-nav-icon(웹) · customIcon(Compose)으로 받은 아이콘을 끼운다. 예시 네 가지를 늘리는 것은 승인 사항이지만, 교체 통로로 넣는 아이콘은 화면 소유라 승인 대상이 아니다. 교체해 넣는 아이콘도 Solid 변형이어야 한다."
         }
       ],
-      "sourceFingerprint": "fdb62ba9cb0b35d04da7f6310ca705447820b347370244667d443f10c8b39708"
+      "sourceFingerprint": "f60d7e7d34f0d59df2318921f2ab72a97451bd01163a3b82b6888b43c0ad04a5"
     },
     "mobile-header": {
       "id": "mobile-header",
       "status": "approved",
-      "version": "0.2.5",
+      "version": "0.2.6",
       "sizes": [],
       "breaks": {},
       "sizeBreakGrid": [],
@@ -779,7 +779,7 @@
           "reason": "StatusBar 제외로 App/Web 차이(상태바 높이만 다름)가 사라져 Platform 축도 함께 뺀다 — Type 6종 1축만 배포한다."
         }
       ],
-      "sourceFingerprint": "8335afce00b77743405164b312797470b3f6a1b8359b05a521a8dee24dc416fa"
+      "sourceFingerprint": "c1a79378de6cdd89edee2115a3cb5f7ae5aa71ed510beb7d0ede6e00b0d3fd6e"
     },
     "modal-content": {
       "id": "modal-content",
