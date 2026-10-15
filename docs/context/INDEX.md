@@ -1,0 +1,40 @@
+# 작업 맥락 목록
+
+이 프로젝트의 작업 맥락(결정·진행·주의점). 새 결정·진행은 여기에 파일로 추가하고 이 목록에 한 줄 추가한다.
+
+- [프로젝트 위치 — 내부망 이관설 반증](project-moved-to-intranet.md) — 이 Mac 폴더가 정상 작업처, GitHub 원격과 동기화 (2026-09-08 확인)
+- [CLAUDE.md 토큰 효율](claudemd-token-efficiency.md) — 규칙은 얇은 라우터로, 참조/집행되는 건 밖으로 (본문 slim 유지)
+- [멀티세션 작업트리 함정](multi-session-shared-worktree-hazard.md) — 여러 세션이 같은 폴더 공유 시 커밋이 남의 변경을 삼킴
+- [세션 하나 = 작업 폴더 하나](worktree-per-session.md) — 고치는 작업은 **기본값으로** 별도 폴더에서 시작(2026-09-28), 합치기는 wt:merge 한 명령
+- [CLAUDE.md 진단 이어하기](claudemd-audit-followup.md) — 신호>잡음 기준 진단 중단, 내일 24k Orchestrator 섹션 등 개선 후보 도출
+- [time-picker V3.0 후속 backlog](time-picker-v3-followups.md) — calendar 이관 완료(1b60de3); 남은 3건 + date-picker 전체 V3.0 이행(큰건)
+- [영상 도메인 패턴/컴포넌트 진행](video-domain-progress.md) — Figma 부품8+위젯모듈7 완료·다크/라이트 2벌·원본대조(V3.0 TEST 16:1170); 코드/포털 등록 미착수
+- [Figma 다크 appearance 핀 함정](figma-darkmode-appearance-pin.md) — 컬렉션 토글만으론 핀 걸린 인스턴스 안 뒤집힘; core 다크 부재로 오진 말 것
+- [DESIGN.md 9섹션 확장](design-md-9section.md) — AI 소비용 md 서술 편집처: design-narrative.json(전역) + components/*.json usage/anatomy/doDont/a11y
+- [서술 필드 구체 사양 보강 backlog](design-md-prose-spec-backlog.md) — _meta.notes 는 AI 프롬프트 미노출; table 아이콘·textarea helper 승격 우선
+- [site-base 정리 판정 (지난 기록)](site-base-cleanup-verdicts.md) — ④23개 전량 판정(치환11·삭제4·버그3·하향6); text-state-error는 caution 치환 확정 — 2026-07-28 실행 안 하기로 결정
+- [레거시 부품 이름은 우리 부품이 아니다](legacy-part-name-is-not-our-part.md) — 이름만 보고 단정 말고 렌더로 확인 (하단 바를 앱 탭바로 착각)
+- [토큰 부재 판정은 값 배선까지](token-absence-needs-value-tracing.md) — 이름·개수 세기로 "없다"/"필수다" 하지 말 것 (2회 발생)
+- [가이드 배포 = GitHub 저장소](github-guideline-repo-distribution.md) — MD 붙여넣기 폐기; 컴포넌트 CSS는 손관리 화면에서 긁지 말 것
+- [모바일 가이드 레이아웃 정합](mobile-guide-layout-parity.md) — 축이 하나면 축으로 세우지 말 것, Mobile은 PC와 같은 자리에서 시작 (검사기 강제)
+- [설치기 재설치는 기존 것을 건너뛴다](installer-reinstall-skips-existing.md) — 정본을 고쳐도 옛 산출물이 남는다; 세트를 지우고 설치해야 보인다
+- [Date Picker 웹 배포본 승인](date-picker-approved.md) — 2026-09-04 approved; 재설치해야 SM 달력 보임
+- [UI 라이브러리 목표: 퍼블리셔 없이](ui-library-goal-no-publisher.md) — 패턴까지 우리가 소유, 배치도 결국 우리 칸으로
+- [Input 라벨 축 제거는 결정 완료](input-label-axis-removed.md) — 라벨은 화면에서 별도 글자로 조합; "Input Slots"는 부품이 아님
+- [신규 컴포넌트는 중간 확인](new-component-needs-midway-confirm.md) — 끝까지 혼자 가지 말고 사이트·설치기로 보여주고 확인받기
+- [가이드 저장소 자동 갱신 구조](guideline-repo-nightly-sync.md) — 저쪽이 매일 당겨가고, 검사 실패하면 조용히 멈춘다
+- [패턴 빌더 진행](pattern-builder-progress.md) — 묶음 4개(모두앱·통근버스 웹/앱/관리자), 매체×서비스별 판독 (2026-09-18)
+- [Figma 섹션 읽기 함정](figma-section-read-blindspot.md) — 밖에서 id 로 부르면 안 연 페이지·묶음 상자가 빈 채로 온다
+- [스크린샷은 마스크 아이콘을 못 그린다](shot-masks-need-http.md) — 파일로 열면 아이콘이 빈다, http 로 확인할 것
+- [레거시 서비스 패턴은 정본과 분리](legacy-service-patterns-separate.md) — 모두앱 등 운영 서비스 패턴을 최신 가이드에 병합 금지 (2026-09-18)
+- [Figma 판독은 열쇠로 직접 내려받기](figma-rest-key-beats-desktop.md) — 데스크톱 연결은 일부만 읽혀 547 vs 1084 차이가 났다
+- [묶음 규칙 정본](composition-rules-canon.md) — 라벨·간격은 composition-rules.json 이 정본, 빌더가 읽어 쓴다 (2026-09-18)
+- [검수기: 손그림은 모양으로 부품 안 맞힌다](audit-hand-drawn-no-shape-guess.md) — 부품 근거는 라이브러리 부품의 실제 토큰(사실표), 교체는 레거시 부품만 (2026-09-23 합침)
+- [설치기는 쓰던 자리에 덮어쓰기](installer-overwrite-in-place.md) — 새 폴더·새 이름 금지, Figma 등록 경로가 저장소 dist (2026-09-23)
+- [역할색 판은 공통 29개만](unused-role-colors-hidden.md) — 부품별 「쓰는 색」 꼬리표는 철거됨, 되살리려면 자리 계산부터 (2026-09-23)
+- [검사기 크롬 누수](headless-chrome-leaks.md) — 그룹째 죽이지 않으면 쌓여서 검사가 시간 초과, 원인은 코드가 아닐 수 있다 (2026-09-23)
+- [가이드 사이트 재입힘 작업](site-restyle-branch.md) — site-restyle 가지에서 진행, 확정된 것과 남은 결정 (2026-09-29)
+- [시안은 정본을 비춘다](draft-must-mirror-canon.md) — 시안·정본이 갈리면 시안을 정본에 맞춘다, 정본 변경은 river 가 고를 때만 (2026-09-30)
+- [검수판 갱신은 조용히](board-refresh-silent.md) — board:refresh·재게시는 하되 river 보고에서 뺀다 (2026-10-02)
+- [PC 라이브러리 후보](pc-library-candidates.md) — C#·Java·Qt 골라둠, 부서 확인 후 제작 (2026-10-04)
+- [로그인은 패턴이 정본](login-is-a-pattern.md) — 통합화면 패턴이 있으니 부품으로 임의 조립 금지 (2026-10-12)
