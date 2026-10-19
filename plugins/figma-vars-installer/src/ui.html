@@ -419,6 +419,11 @@
   #audit-root .check-row.unjudged .check-icon { border-radius:4px; background:var(--code-bg); }
   #audit-root .check-name { flex:1; font-size:11.5px; }
   #audit-root .check-result { color:var(--muted); font-size:10.5px; white-space:nowrap; }
+  /* 걸린 항목은 눌러서 그 칸으로 간다(river 지시 2026-10-19) */
+  #audit-root .check-row.go { cursor:pointer; }
+  #audit-root .check-row.go:hover { background:var(--code-bg); }
+  #audit-root .check-row.go .check-result::after { content:" ›"; }
+  #audit-root .detail-item.flash, #audit-root .issue.flash { background:var(--code-bg); }
   #audit-root .audit-checklist.only-hits .check-row:not(.has-hit) { display:none; }
   #audit-root .audit-checklist.only-hits .check-group { display:none; }
   #audit-root .checklist-more { display:block; width:100%; padding:8px 16px; border:0; border-top:1px solid var(--line);
@@ -1542,6 +1547,10 @@ function renderChecklistResults(items) {
       result.textContent = item.count + '건';
       result.classList.add(item.status);
       row.classList.add('has-hit');
+      // 누르면 그 항목이 모인 칸(컴포넌트·색·텍스트·그림자)으로 넘어간다(river 지시 2026-10-19).
+      row.classList.add('go');
+      row.setAttribute('role', 'button');
+      row.addEventListener('click', () => goToChecklistSection(item.id));
     } else {
       result.textContent = '통과';
     }
@@ -1564,6 +1573,33 @@ function renderChecklistResults(items) {
       more.textContent = open ? '통과한 ' + passed + '개도 보기' : '통과한 것 접기';
     });
     target.appendChild(more);
+  }
+}
+
+// 항목 번호 → 그 항목이 모인 칸. 화면(종류·모드) 두 항목은 컴포넌트 칸 아래에 붙어 있다.
+const CHECK_BUCKET = { 0: 'component', 1: 'color', 2: 'color', 3: 'color', 4: 'color',
+  5: 'text', 6: 'text', 7: 'text', 8: 'text', 9: 'shadow', 10: 'component', 11: 'component' };
+function goToChecklistSection(id) {
+  const bucket = CHECK_BUCKET[id];
+  if (!bucket) return;
+  const chip = document.querySelector('#result-chips button[data-bucket="' + bucket + '"]');
+  if (chip && !chip.hidden) chip.click();
+  // 그 항목의 첫 줄로 내린다 — 같은 칸에 여러 항목이 섞여 있어도(텍스트 4종 등) 찾아다니지 않게.
+  const view = document.getElementById('bucket-' + bucket);
+  if (!view) return;
+  let el = null;
+  if (id === 10) el = view.querySelector('[data-role="mode-head"]');
+  else if (id === 11) el = view.querySelector('[data-role="platform-head"]');
+  else el = view.querySelector('[data-check="' + id + '"]');
+  if (!el && id === 1) el = view.querySelector('.issue');
+  if (el) {
+    el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    if (el.classList.contains('detail-item') || el.classList.contains('issue')) {
+      el.classList.add('flash');
+      setTimeout(() => el.classList.remove('flash'), 1200);
+    }
+  } else {
+    view.scrollIntoView({ block: 'start' });
   }
 }
 
@@ -1595,7 +1631,7 @@ function detailItemHtml(issue) {
       + (fix.exact ? '' : '<span class="fix-note">크기가 가이드에 없어 가장 가까운 것으로 맞춥니다</span>')
       + '</div>'
     : '';
-  return '<div class="detail-item" data-node-id="' + escape(issue.nodeId) + '" data-issue-id="' + escape(issue.id) + '">'
+  return '<div class="detail-item" data-node-id="' + escape(issue.nodeId) + '" data-issue-id="' + escape(issue.id) + '" data-check="' + escape(String(issue.checklistId)) + '">'
     + '<b>' + escape(issue.nodeName) + '</b><span>' + escape(issue.detail) + '</span>' + fixHtml + '</div>';
 }
 
@@ -3048,7 +3084,7 @@ function renderInspectionResult(payload) {
   if (extraColor.length) {
     const block = document.createElement('div');
     block.innerHTML = extraColor.map((issue) =>
-      '<div class="detail-item" data-node-id="' + escape(issue.nodeId) + '"><b>' + escape(issue.nodeName) + '</b><span>' + escape(issue.detail) + '</span></div>'
+      '<div class="detail-item" data-node-id="' + escape(issue.nodeId) + '" data-check="' + escape(String(issue.checklistId)) + '"><b>' + escape(issue.nodeName) + '</b><span>' + escape(issue.detail) + '</span></div>'
     ).join('');
     block.querySelectorAll('[data-node-id]').forEach((row) => row.addEventListener('click', () => send('select-node', { nodeId: row.dataset.nodeId })));
     list.appendChild(block);
