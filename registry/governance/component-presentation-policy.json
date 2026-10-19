@@ -777,6 +777,60 @@
       "note": "Figma 세트 이름 Side Nav · Side Nav Item · Side Nav Sub Item 을 표 세 개로 그대로 세운다 — 판은 Type×Size(행) × State(열) 여덟 칸, 메뉴 칸은 Mode(행) × State 4종(열) 여덟 칸, 하위 메뉴 줄은 State 3종. 크기(MD 240 · LG 280)는 판 표의 행에 함께 둔다(펼침 폭은 크기 토큰이 없어 결정 대기). Hover 는 검수 전용 data-force-state 로 표시. Action 은 기본·로고 두 벌의 실제 판(접기·하위메뉴 여닫이 동작).",
       "managedBy": "ui-library-guide"
     },
+    "footer": {
+      "platform": "pc+mobile",
+      "archetype": "base",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "states": [],
+      "extraAxes": {
+        "platform": [
+          "pc",
+          "mobile"
+        ]
+      },
+      "statesLayout": "row",
+      "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id platform-web-3, 2026-10-02 river \"응 맞아, 진행해\").",
+      "note": "상태 축이 없고 Platform(PC · Mobile) 한 축뿐이다. PC 는 가로(링크·회사 정보·카피라이트 + 로고), Mobile 은 세로(링크 + 가운데 카피라이트). 정본에 hover 가 없다.",
+      "managedBy": "ui-library-guide"
+    },
+    "ci": {
+      "platform": "pc+mobile",
+      "archetype": "base",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "states": [],
+      "extraAxes": {
+        "brand": [
+          "s1",
+          "samsung"
+        ],
+        "color": [
+          "white",
+          "blue",
+          "dark"
+        ]
+      },
+      "statesLayout": "matrix",
+      "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id platform-web-3, 2026-10-02 river \"응 맞아, 진행해\").",
+      "note": "상태 축이 없는 로고다 — 표는 Brand(행) × Color(열) 여섯 칸이다. White 는 밝은 로고라 어두운 바탕 위에서 본다.",
+      "managedBy": "ui-library-guide"
+    },
+    "login-gnb": {
+      "platform": "pc",
+      "archetype": "base",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "states": [],
+      "extraAxes": {},
+      "statesLayout": "row",
+      "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id platform-web-3, 2026-10-02 river \"응 맞아, 진행해\").",
+      "note": "변형·상태 축이 없는 단일 바다. 삼성 로고는 정본에서 제거됐다(2026-06-24).",
+      "managedBy": "ui-library-guide"
+    },
     "list-row": {
       "platform": "mobile",
       "archetype": "current-plus-action",

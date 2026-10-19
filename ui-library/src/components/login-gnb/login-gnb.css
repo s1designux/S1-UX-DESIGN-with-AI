@@ -1,0 +1,76 @@
+/* LoginGNB (로그인 상단바) — 정본 buildLoginGNB(build-components.ts:6786-6833) 기준. 변형 없음(단일).
+   정본은 바 폭을 1920 고정(좌우 패딩 320)으로 표현한다. 웹은 바 배경이 화면 폭을 채우되 안쪽 내용은
+   가운데 1280(canon breakpoint/xl = --breakpoint-xl) 열이다 — 좌우 여백 = (100% − 1280)/2 를 320 까지로 제한
+   (1920 → 320 · 1600 → 160 · 1280 → 0). 1280 보다 좁아져도 줄어들지 않는다(min-width 1280 — 넘치면 가로로 민다)
+   (river D-2 2026-10-12 "가운데 1280폭을 지키고 그 이후로는 대응 안함.").
+   GNB 의 값(지구본 32 · 글자색 text/body/primary · 간격 4)을 가져오지 않는다 — 정본 값은 따로 있다.
+   삼성 로고는 2026-06-24 정본에서 제거됐다 — 왼쪽은 서비스명 글자 자리 하나뿐. */
+[data-s1-component="login-gnb"] {
+  align-items: center;
+  background: var(--color-navigation-bg);
+  box-sizing: border-box;
+  display: flex;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
+  height: var(--sizing-56);
+  justify-content: space-between;
+  margin: 0;
+  padding-block: var(--spacing-12);
+  min-width: var(--breakpoint-xl);
+  padding-inline: clamp(0px, calc((100% - var(--breakpoint-xl)) / 2), 320px);
+  position: relative;
+  width: 100%;
+}
+
+/* 하단 1px 선 — 정본은 안쪽 선이라 내용 높이를 깎지 않는다. 흐름에서 빠진 겹침 레이어로 그린다(gnb.css 선례). */
+[data-s1-component="login-gnb"]::after {
+  background: var(--color-line-default);
+  bottom: 0;
+  content: "";
+  height: var(--border-width-default);
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+}
+
+[data-s1-component="login-gnb"] [data-s1-part="service"] {
+  color: var(--color-text-title-primary);
+  flex: none;
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-normal);
+  line-height: var(--line-height-130);
+  white-space: nowrap;
+}
+
+/* 언어 — GNB 의 언어 조작과 같은 button 이다(새 동작을 만들지 않는다. 눌렀을 때 무엇을 할지는 화면이 배선). */
+[data-s1-component="login-gnb"] [data-s1-part="lang"] {
+  align-items: center;
+  appearance: none;
+  background: none;
+  border: 0;
+  box-sizing: border-box;
+  color: var(--color-icon-gray-dark);
+  cursor: pointer;
+  display: flex;
+  flex: none;
+  font: inherit;
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-medium);
+  gap: var(--spacing-8);
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: var(--line-height-130);
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+}
+
+[data-s1-component="login-gnb"] [data-s1-part="lang-icon"] {
+  background-color: var(--color-icon-gray-dark);
+  display: block;
+  flex: none;
+  height: var(--sizing-24);
+  -webkit-mask: url("../assets/icons/globe.svg") center / contain no-repeat;
+  mask: url("../assets/icons/globe.svg") center / contain no-repeat;
+  width: var(--sizing-24);
+}

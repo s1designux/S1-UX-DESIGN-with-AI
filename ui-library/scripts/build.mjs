@@ -103,6 +103,14 @@ async function createOutputs() {
     if (geometryErrors.length) throw new Error(`icon geometry contract failed:\n- ${geometryErrors.join("\n- ")}`);
     iconAssets.push({ ...icon, asset });
   }
+  /* 래스터 이미지 자산 — 아이콘 목록과 별개의 등재처. 등재된 파일만 dist 로 복사하고 지문이 다르면 멈춘다. */
+  const imageManifest = JSON.parse(await read(path.join(sourceRoot, "assets/images/manifest.json")));
+  const imageAssets = [];
+  for (const image of imageManifest.images) {
+    const bytes = await readFile(path.join(sourceRoot, "assets/images", image.file));
+    if (createHash("sha256").update(bytes).digest("hex") !== image.sha256) throw new Error(`${image.id} image fingerprint is stale`);
+    imageAssets.push({ ...image, bytes });
+  }
   /* 종류를 고르는 속성 안내 — 속성 이름은 그대로 두고(river 결정 2026-10-13) 값과 시각적 뜻을 표로 안내한다. */
   const kindDoc = JSON.parse(await read(path.join(sourceRoot, "kind-attributes.json")));
   const componentOutputs = [];
@@ -155,7 +163,7 @@ async function createOutputs() {
   }
 
   const toIdentifier = (id) => id.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
-  const bundleCss = `${componentOutputs.map(({ id, distCss }) => `/* component:${id} */\n${distCss.trimEnd().replaceAll('url("../assets/icons/', 'url("./assets/icons/')}`).join("\n\n")}\n`;
+  const bundleCss = `${componentOutputs.map(({ id, distCss }) => `/* component:${id} */\n${distCss.trimEnd().replaceAll('url("../assets/', 'url("./assets/')}`).join("\n\n")}\n`;
   const bundleJs = `${componentOutputs.map(({ id }) => `export * as ${toIdentifier(id)} from "./components/${id}.js";`).join("\n")}\n`;
   const runtimeIds = componentOutputs.filter(({ manifest }) => manifest.jsRequired).map(({ id }) => id);
   const autoImports = runtimeIds.map((id) => `import { init as init_${toIdentifier(id)} } from "./components/${id}.js";`).join("\n");
@@ -178,6 +186,7 @@ async function createOutputs() {
     },
     jsRequired: componentOutputs.some(({ manifest }) => manifest.jsRequired),
     icons: iconManifest.icons,
+    images: imageManifest.images,
     components: componentOutputs.map(({ id, manifest, mainDistribution }) => ({
       id,
       version: manifest.version,
@@ -207,6 +216,8 @@ async function createOutputs() {
   outputs.set("assets/css/typography.css", typographyCss);
   outputs.set("assets/icons/manifest.json", stableJson(iconManifest));
   for (const icon of iconAssets) outputs.set(`assets/icons/${icon.file}`, icon.asset);
+  outputs.set("assets/images/manifest.json", stableJson(imageManifest));
+  for (const image of imageAssets) outputs.set(`assets/images/${image.file}`, image.bytes);
   outputs.set("component-token-map.json", tokenMap);
   outputs.set("manifest.json", stableJson(distManifest));
   outputs.set("../verification/empty-consumer.html", await read(path.join(sourceRoot, "verification", "empty-consumer.html")));
@@ -298,6 +309,7 @@ body {
     distManifest,
     behaviorLedger,
     iconAssets,
+    imageAssets,
     usageById,
     fingerprints: {
       "assets/css/tokens.css": hash(tokensCss),
@@ -347,8 +359,10 @@ async function checkOutputs(outputs) {
   for (const [relative, expected] of outputs) {
     const target = path.resolve(distRoot, relative);
     let actual;
-    try { actual = await read(target); } catch { mismatches.push(`${relative}: missing`); continue; }
-    if (actual !== expected) mismatches.push(`${relative}: stale`);
+    /* 그림 파일(Buffer)은 바이트로 비교한다 — 글자로 읽으면 항상 달라 보인다. */
+    const binary = Buffer.isBuffer(expected);
+    try { actual = binary ? await readFile(target) : await read(target); } catch { mismatches.push(`${relative}: missing`); continue; }
+    if (binary ? !actual.equals(expected) : actual !== expected) mismatches.push(`${relative}: stale`);
   }
   let existing = [];
   try {

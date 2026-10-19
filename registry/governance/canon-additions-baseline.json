@@ -1,8 +1,8 @@
 {
   "_note": "정본(textstyles-data.ts · vars-data.ts)의 항목 이름 전집합. Gate 34 가 여기 없는 신설을 차단한다. ⭐ 는 스스로 이 목록에 추가할 수 없고, 사용자 승인(--approve)만이 편입한다.",
   "_why": "CLAUDE.md §⚖️ 하드룰 H7. 2026-08-03: ⭐ 가 사용자가 거부한 스타일 신설을 자기 규칙을 만들어 강행했는데, 32개 게이트 전부가 \"정본→파생 일치\"만 봐서 아무도 못 잡았다.",
-  "_updated": "2026-10-13",
-  "count": 706,
+  "_updated": "2026-10-19",
+  "count": 709,
   "items": [
     "color:base/black",
     "color:base/home-bg",
@@ -616,6 +616,7 @@
     "uistate:chip.disabled",
     "uistate:chip.hover",
     "uistate:chip.selected",
+    "uistate:ci.default",
     "uistate:data-tag.default",
     "uistate:date-picker.default",
     "uistate:date-picker.disabled",
@@ -635,6 +636,7 @@
     "uistate:filter-chip.disabled",
     "uistate:filter-chip.hover",
     "uistate:filter-chip.selected",
+    "uistate:footer.default",
     "uistate:gnb-sub-menu-item.default",
     "uistate:gnb-sub-menu-item.hover",
     "uistate:gnb-sub-menu-item.selected",
@@ -656,6 +658,7 @@
     "uistate:lnb.disabled",
     "uistate:lnb.expanded",
     "uistate:lnb.hover",
+    "uistate:login-gnb.default",
     "uistate:mobile-bottom-nav.selected",
     "uistate:mobile-bottom-nav.unselected",
     "uistate:modal-content.closed",
@@ -1990,6 +1993,42 @@
       "evidence": {
         "transcript": "62ccc89a-c3c3-4772-8560-50b5c820802a.jsonl",
         "at": "2026-10-13T08:00:32.683Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:ci.default",
+      "by": "river",
+      "reason": "Platform 부품 3종(Footer·CI·LoginGNB) 웹 배포본 착수 승인 2026-10-02 — 정본 build-components.ts 에 이미 있는 세트를 웹으로 옮기며 생긴 기본 상태 이름(default)",
+      "approvedAt": "2026-10-19T01:47:53.293Z",
+      "quote": "응 맞아, 진행해",
+      "evidence": {
+        "transcript": "8a2e4f6c-18cc-48c8-9bf4-624458df5738.jsonl",
+        "at": "2026-10-02T06:51:55.245Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:footer.default",
+      "by": "river",
+      "reason": "Platform 부품 3종(Footer·CI·LoginGNB) 웹 배포본 착수 승인 2026-10-02 — 정본 build-components.ts 에 이미 있는 세트를 웹으로 옮기며 생긴 기본 상태 이름(default)",
+      "approvedAt": "2026-10-19T01:47:53.293Z",
+      "quote": "응 맞아, 진행해",
+      "evidence": {
+        "transcript": "8a2e4f6c-18cc-48c8-9bf4-624458df5738.jsonl",
+        "at": "2026-10-02T06:51:55.245Z"
+      },
+      "recordedBy": "orchestrator"
+    },
+    {
+      "item": "uistate:login-gnb.default",
+      "by": "river",
+      "reason": "Platform 부품 3종(Footer·CI·LoginGNB) 웹 배포본 착수 승인 2026-10-02 — 정본 build-components.ts 에 이미 있는 세트를 웹으로 옮기며 생긴 기본 상태 이름(default)",
+      "approvedAt": "2026-10-19T01:47:53.294Z",
+      "quote": "응 맞아, 진행해",
+      "evidence": {
+        "transcript": "8a2e4f6c-18cc-48c8-9bf4-624458df5738.jsonl",
+        "at": "2026-10-02T06:51:55.245Z"
       },
       "recordedBy": "orchestrator"
     }

@@ -364,6 +364,8 @@ function enumerate(dims, callback) {
 export const mediaActive = (condition) => {
   if (/prefers-reduced-motion/.test(condition)) return false;
   if (/hover:\s*hover/.test(condition)) return true;
+  /* 화면 폭 조건(Footer PC 의 768 미만 모바일 전환 — river D-3)은 웹 전용이다. 앱은 data-platform="mobile" 을 직접 고른다. */
+  if (/\((max|min)-width:/.test(condition)) return false;
   throw new Error(`알 수 없는 @media 조건: ${condition}`);
 };
 

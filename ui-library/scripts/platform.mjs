@@ -676,7 +676,7 @@ watchEffect(() => {
 
 /* ── 6. 전체 묶음 ────────────────────────────────────────────────────── */
 
-export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCss, distManifest, behaviorLedger, fingerprints, iconAssets, usageById = {} }) {
+export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCss, distManifest, behaviorLedger, fingerprints, iconAssets, imageAssets = [], usageById = {} }) {
   const outputs = new Map();
   const tokenData = readTokens(tokensCss);
   const stable = (value) => `${JSON.stringify(value, null, 2)}\n`;
@@ -709,7 +709,7 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
   }));
 
   /* React Native(Expo) 부품 — Kotlin 과 같은 원칙: 배포본 CSS 를 계산해 굳힌 표 + 승인 예제에서 옮긴 구조. */
-  const reactNative = buildReactNativeOutputs({ componentOutputs, tokenData, iconAssets, typographyCss, usageById, release, behaviorLedger });
+  const reactNative = buildReactNativeOutputs({ componentOutputs, tokenData, iconAssets, imageAssets, typographyCss, usageById, release, behaviorLedger });
   for (const [relative, content] of reactNative.outputs) outputs.set(relative, content);
 
   outputs.set("platform/contract.json", stable(buildContract(componentOutputs, distManifest)));

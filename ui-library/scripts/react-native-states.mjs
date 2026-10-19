@@ -150,5 +150,8 @@ export const STATE_ALSO = {
   modal: { open: "axes" },
   "modal-content": { open: "axes" },
   "data-tag": { default: "axes" },
-  divider: { default: "axes" }
+  divider: { default: "axes" },
+  footer: { default: "axes" },
+  ci: { default: "axes" },
+  "login-gnb": { default: "axes" }
 };
