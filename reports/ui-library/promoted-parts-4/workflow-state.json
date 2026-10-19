@@ -76,7 +76,7 @@
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "c460a81e047e22bc5cc67b0351d65ea54e531fb7cd49c50e185f0eaea9b4681e"
+      "sha256": "bf554394f88448477c06153da07fb1ace9b2aceabf55019acb9117455fd77916"
     },
     {
       "role": "token-values",
@@ -283,6 +283,13 @@
       "by": "orchestrator",
       "decision": "정본 지문 재기록 — 직전 기록 이후 정본 변경 3건 중 4종에 닿는 것은 dcbf9ac5(Data Tag 회색 Color 축 추가·채움 글자 색깔별, river 승인 2026-10-13) 하나다. 359ce35f(설치기 다크 모드 고정)·a9f197e0(하단 탭 아이콘·입력칸 안내 문구)는 4종 빌더와 무관. Data Tag 가 바뀌었으므로 이번 검증은 델타가 아닌 전수로 한다.",
       "basis": "git log fcb6a0a9..HEAD -- build-components.ts vars-data.ts restyle-candidates.css 의 hunk 범위(buildDataTag 7303~7331 · setMode/buildAllComponents · buildInput/makeIconInstance)"
+    },
+    {
+      "id": "D-14",
+      "at": "2026-10-19",
+      "by": "orchestrator",
+      "decision": "정본 지문 재기록 — main 들여오며 바뀐 build-components.ts 는 buildFooter 한 줄(6611)뿐, 4종 빌더와 무관해 검증 유지",
+      "basis": "git diff -U0 34696013 -- build-components.ts → @@ -6611 buildFooter"
     }
   ],
   "handoff": {

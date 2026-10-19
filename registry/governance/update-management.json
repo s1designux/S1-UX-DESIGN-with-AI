@@ -482,6 +482,48 @@
         "html": ""
       },
       "note": "신규 편입(2026-10-02, work-id promoted-parts-4). 사이드바 메뉴 판 — Menu·Brand × MD(240)·LG(280) × 펼침·접힘, 메뉴 칸·하위메뉴 줄 포함. 정본 buildSideNav·buildSideNavItem·buildSideNavSubItem(커밋 8b385c0f, 검증 PASS). 설치기 묶음 Navigation. origin 분류 tbd — river 결정 필요. 웹 배포본 독립 검증 대기."
+    },
+    {
+      "id": "footer",
+      "origin": "tbd",
+      "sourceNode": "",
+      "verify": "none",
+      "verifyDate": "",
+      "mobile": "미확인",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "웹 배포 신규 편입(2026-10-02, work-id platform-web-3). 풋터 PC·Mobile. 정본 buildFooter 는 이전부터 설치기에 있었다. origin 분류 tbd — river 결정 필요. 웹 배포본 독립 검증 대기."
+    },
+    {
+      "id": "ci",
+      "origin": "tbd",
+      "sourceNode": "",
+      "verify": "none",
+      "verifyDate": "",
+      "mobile": "미확인",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "웹 배포 신규 편입(2026-10-02, work-id platform-web-3). CI 에스원·삼성 × White·Blue·Dark. 정본 buildCI 는 이전부터 설치기에 있었다. 삼성 그림 3종은 Figma 파일 내장 이미지를 내려받아 배포본에 담았다. origin 분류 tbd — river 결정 필요. 웹 배포본 독립 검증 대기."
+    },
+    {
+      "id": "login-gnb",
+      "origin": "tbd",
+      "sourceNode": "",
+      "verify": "none",
+      "verifyDate": "",
+      "mobile": "미확인",
+      "dates": {
+        "installer": "",
+        "tokens": "",
+        "html": ""
+      },
+      "note": "웹 배포 신규 편입(2026-10-02, work-id platform-web-3). 로그인 상단바 단일 변형. 정본 buildLoginGNB 는 이전부터 설치기에 있었다. origin 분류 tbd — river 결정 필요. 웹 배포본 독립 검증 대기."
     }
   ],
   "patterns": [

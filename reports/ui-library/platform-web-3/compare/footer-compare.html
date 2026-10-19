@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>푸터 원본 대조</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="stylesheet" href="../../../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../../../assets/css/typography.css">
+<link rel="stylesheet" href="../../../../ui-library/dist/s1-ui.css">
+<style>
+  /* 대조판 배치 전용 — 부품 모양은 건드리지 않는다 */
+  body { margin: 0; background: #f2f3f5; font-family: "Pretendard Variable", sans-serif; color: #222; }
+  h1 { font-size: 28px; margin: 32px 40px 8px; }
+  .lead { margin: 0 40px 24px; font-size: 16px; color: #555; }
+  h2 { font-size: 22px; margin: 40px 40px 12px; }
+  .row-label { font-size: 15px; font-weight: 700; margin: 18px 40px 6px; color: #333; }
+  .row-label span { font-weight: 400; color: #777; margin-left: 8px; }
+  .stage { position: relative; margin: 0 0 0 0; background: #fff; }
+  .stage img { display: block; }
+  .pc .stage { width: 1920px; height: 116px; }
+  .pc img { width: 1920px; height: 116px; }
+  .mo .stage { width: 315px; height: 52px; margin-left: 40px; }
+  .mo img { width: 315px; height: 52px; }
+  .mo [data-s1-component="footer"] { width: 315px; }
+  .overlay > * { position: absolute; inset: 0; }
+  .overlay .web { mix-blend-mode: difference; }
+  .web-wrap { position: relative; }
+  .mo .row { display: flex; gap: 40px; align-items: flex-start; }
+</style>
+</head>
+<body>
+<h1>푸터 — Figma 원본 vs 웹 배포본</h1>
+<p class="lead">세 줄씩 봅니다: ① Figma 원본(설치기로 그린 Core 페이지 Footer) ② 웹 배포본 ③ 둘을 겹친 그림 — 같은 자리는 까맣게 지워지고, 어긋난 글자·로고만 밝게 남습니다.</p>
+
+<section class="pc">
+  <h2>PC · 1920 × 116</h2>
+  <div class="row-label">① Figma 원본</div>
+  <div class="stage"><img src="2759_41167.png" alt="Figma 원본 PC 푸터"></div>
+  <div class="row-label">② 웹 배포본</div>
+  <div class="stage web-wrap" id="pc-web"></div>
+  <div class="row-label">③ 겹친 그림 <span>까만 바탕 = 일치 · 밝게 남은 것 = 어긋남</span></div>
+  <div class="stage overlay"><img src="2759_41167.png" alt=""><div class="web" id="pc-over"></div></div>
+</section>
+
+<section class="zoom">
+  <h2>PC 링크 줄 4배 확대</h2>
+  <p class="lead">원본은 링크 사이 세로선이 글자 줄 <b>위쪽에 붙어</b> 있고(세로선 위 끝 = 글자 상자 위 끝), 웹은 글자 줄 <b>가운데</b>에 있습니다. 차이 3px. 글자 시작 위치는 오른쪽으로 갈수록 최대 1.2px 앞당겨져 있습니다(원본이 글자 상자 폭을 정수로 올림).</p>
+  <div class="row-label">① Figma 원본</div>
+  <div class="zbox"><div class="zin"><img src="2759_41167.png" alt="" style="width:1920px;height:116px"></div></div>
+  <div class="row-label">② 웹 배포본</div>
+  <div class="zbox"><div class="zin" id="pc-zoom"></div></div>
+</section>
+<style>
+  .zbox { width: 1200px; height: 104px; overflow: hidden; margin-left: 40px; background: #fff; position: relative; outline: 1px solid #ddd; }
+  .zin { position: absolute; left: 0; top: 0; width: 1920px; height: 116px; transform-origin: 0 0; transform: scale(4) translate(-312px, -28px); background: #fff; }
+  .zin img { image-rendering: pixelated; }
+</style>
+
+<section class="mo">
+  <h2>Mobile · 315 × 52</h2>
+  <div class="row-label">① Figma 원본 · ② 웹 배포본 · ③ 겹친 그림</div>
+  <div class="row">
+    <div class="stage"><img src="2759_41179.png" alt="Figma 원본 모바일 푸터"></div>
+    <div class="stage web-wrap" id="mo-web" style="margin-left:0"></div>
+    <div class="stage overlay" style="margin-left:0"><img src="2759_41179.png" alt=""><div class="web" id="mo-over" style="background:#fff"></div></div>
+  </div>
+</section>
+
+<script>
+  fetch("../../../../ui-library/dist/examples/footer.html").then(r => r.text()).then(html => {
+    const t = document.createElement("template"); t.innerHTML = html;
+    const pc = t.content.querySelector('[data-platform="pc"]');
+    const mo = t.content.querySelector('[data-platform="mobile"]');
+    document.getElementById("pc-web").appendChild(pc.cloneNode(true));
+    document.getElementById("pc-over").appendChild(pc.cloneNode(true));
+    document.getElementById("pc-zoom").appendChild(pc.cloneNode(true));
+    document.getElementById("mo-web").appendChild(mo.cloneNode(true));
+    document.getElementById("mo-over").appendChild(mo.cloneNode(true));
+  });
+</script>
+</body>
+</html>

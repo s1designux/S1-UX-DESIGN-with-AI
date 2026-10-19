@@ -197,6 +197,27 @@ const componentConfig = {
     approvedScope: "유형 7종(Nav · Value · Read · Pick · Agree · Switch · Thumb) × 상태 3종(Default · Pressed · Disabled) · 내용을 바꿔 끼우는 자리 3곳(왼쪽 칸 · 그림 · 오른쪽 칸) · 동의 줄은 체크와 약관 열기 버튼이 따로 · 줄 높이 68(여백 토큰 + 글 자리) · Hover 없음 · 크기 축 없음 · 모바일 전용 · 줄 자체는 JavaScript 불필요",
     runtime: null
   },
+  "login-gnb": {
+    title: "Login GNB",
+    description: "로그인 화면 맨 위에 서는 바입니다. 왼쪽은 서비스 이름 글자, 오른쪽은 지구본과 언어 버튼이며 변형이 하나뿐입니다.",
+    approvedScope: "변형 1가지(단일) · 왼쪽 서비스 이름 · 오른쪽 언어 버튼(지구본 + 글자) · 폭은 화면 전체(반응형) · 상태 축 없음 · PC 전용 · JavaScript 불필요",
+    runtime: null
+  },
+  footer: {
+    title: "Footer",
+    description: "화면 맨 아래에 놓는 회사 정보 영역입니다. 링크 · 회사 정보 · 카피라이트 글자는 회사 정본 문구 그대로 씁니다.",
+    approvedScope: {
+      pc: "PC 가로 배치 — 링크 3개 · 회사 정보 · 카피라이트 + 오른쪽 로고 · 폭은 화면 전체(반응형) · 상태 축 없음 · JavaScript 불필요",
+      mobile: "Mobile 세로 배치 — 링크 줄 + 가운데 카피라이트(회사 정보 · 로고 없음) · 상태 축 없음 · JavaScript 불필요"
+    },
+    runtime: null
+  },
+  ci: {
+    title: "CI",
+    description: "회사 로고입니다. 에스원 · 삼성 두 브랜드를 White · Blue · Dark 세 색으로 씁니다.",
+    approvedScope: "브랜드 2종(에스원 · 삼성) × 색 3종(White · Blue · Dark) 여섯 벌 · 다크 전용 변형 없음 · 상태 축 없음 · 크기 축 없음 · JavaScript 불필요",
+    runtime: null
+  },
   "bottom-sheet-option": {
     title: "Bottom Sheet Option",
     description: "바텀시트 안에 놓이는 한 줄입니다. 단독으로 쓰지 않고 시트 본문에 넣어 씁니다.",
@@ -1559,7 +1580,8 @@ function multiToggleStateMatrix() {
 
 /* ── State matrix: Modal ──
    정본 buildModalShell 의 변형은 Break(PC·Mobile) × Footer(Single·Dual) 4가지뿐이고 상태 축이 없다.
-   Action 은 실제로 열리는 진짜 모달(딤이 화면을 덮는다)이고, 아래 칸은 지면에 눕혀 보여주는 검수 표시다. */
+   Action 은 실제로 열리는 진짜 모달(딤이 화면을 덮는다)이며 크기마다 여는 버튼을 하나씩 둔다
+   (river 2026-10-12 "모달의 경우 사이즈별로 볼 수 있어야해"), 아래 칸은 지면에 눕혀 보여주는 검수 표시다. */
 
 let modalId = 0;
 
@@ -1641,7 +1663,8 @@ function modalStateMatrix() {
 /* ── State matrix: Modal Content ──
    정본 buildModalContent 의 변형은 Size(MD·LG·XL) × Footer(Single·Dual) 6가지뿐이고 PC 전용이다
    (breaks.mobile 없음 — river 지시 2026-09-08 "확인계열은 360으로만, 컨텐츠계열은 MD 이상부터").
-   Action 은 실제로 열리는 진짜 모달(딤이 화면을 덮는다)이고, 아래 칸은 지면에 눕혀 보여주는 검수 표시다. */
+   Action 은 실제로 열리는 진짜 모달(딤이 화면을 덮는다)이며 크기마다 여는 버튼을 하나씩 둔다
+   (river 2026-10-12 "모달의 경우 사이즈별로 볼 수 있어야해"), 아래 칸은 지면에 눕혀 보여주는 검수 표시다. */
 
 let modalContentId = 0;
 
@@ -1689,11 +1712,13 @@ function modalContentStateMatrix() {
 
   const action = `<div class="comp-action-top">
     <div class="matrix-col-header-action">Action</div>
-    <div class="uilg-modal-content-action">
-      <button type="button" data-s1-component="button" data-variant="secondary" data-size="md" data-modal-open><span data-s1-part="label">콘텐츠 모달 열기</span></button>
-      ${modalContentMarkup({ size: "lg", footer: "dual" })}
+    <div class="uilg-modal-content-actions">${sizes.map(([size, sLabel, w]) => `
+      <div class="uilg-modal-content-action">
+        <button type="button" data-s1-component="button" data-variant="secondary" data-size="md" data-modal-open><span data-s1-part="label">${sLabel} 열기 (${w})</span></button>
+        ${modalContentMarkup({ size, footer: "dual" })}
+      </div>`).join("")}
     </div>
-    <p class="uilg-demo-note">눌러서 열어 보세요. 본문은 입력창·표·이미지가 들어갈 자리표시입니다(실제 화면에서 교체). 콘텐츠가 늘면 패널이 커지다가 화면 높이의 85%에서 멈추고 본문 안에서만 스크롤합니다.</p>
+    <p class="uilg-demo-note">크기(MD 520 · LG 1000 · XL 1200)를 골라 눌러 보세요 — 그 폭 그대로 진짜 모달이 열립니다. 본문은 입력창·표·이미지가 들어갈 자리표시입니다(실제 화면에서 교체). 콘텐츠가 늘면 패널이 커지다가 화면 높이의 85%에서 멈추고 본문 안에서만 스크롤합니다.</p>
   </div>`;
 
   const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
@@ -3288,7 +3313,98 @@ function listRowStateMatrix() {
     </div></div>`;
 }
 
-function stateMatrix(id) {
+/* ── State matrix: Login GNB · Footer · CI (정본 buildLoginGNB · buildFooter · buildCI) ──
+   셋 다 jsRequired=false 이고 상태 축이 없다. 표본 마크업은 이 파일에 옮겨 적지 않는다 —
+   배포본 예제(dist examples/{id}.html, 「개발 코드」 HTML 탭과 같은 파일)를 읽어 그 요소를
+   자리마다 새로 복제한다. 회사 정본 문구(풋터)와 에스원 로고 그림을 사본으로 두지 않기 위해서다.
+   예제에는 id 가 없어 복제해도 문서 안 id 가 겹치지 않는다. */
+function exampleElement(html, selector, { isPreview = false } = {}) {
+  const template = document.createElement("template");
+  template.innerHTML = html;
+  const element = template.content.querySelector(selector);
+  if (!element) throw new Error(`배포본 예제에 ${selector} 가 없습니다.`);
+  element.setAttribute("data-guide-sample", "set");
+  if (isPreview) element.classList.add("is-preview");
+  return element.outerHTML;
+}
+
+function loginGnbStateMatrix(html) {
+  const bar = (isPreview) => exampleElement(html, '[data-s1-component="login-gnb"]', { isPreview });
+  const block = () => {
+    const action = `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="uilg-gnb-row-bar">${bar(false)}</div>
+      <p class="uilg-demo-note">로그인 화면 맨 위에 그대로 놓습니다. 언어 버튼은 눌러지는 실제 버튼이며, 눌렀을 때 무엇을 할지는 쓰는 화면이 정합니다. 마우스를 올려도 색이 바뀌지 않습니다(정본에 올림 상태가 없습니다).</p>
+    </div>`;
+    const rows = [
+      ["카드 폭", "가운데 1280 폭 · 1280 보다 좁으면 줄지 않음", bar(true)],
+      ["실제 1920 폭", "좌우 여백 320(정본 그대로) · 좌우로 밀어 보세요", `<div class="uilg-wide-frame">${bar(true)}</div>`]
+    ];
+    const header = `<div class="matrix-col-header" style="grid-column:1"></div><div class="matrix-col-header">Default</div>`;
+    const body = rows.map(([label, dim, markup]) =>
+      `<div class="matrix-row-label">${label}<span class="uilg-size-dim">${dim}</span></div><div class="comp-state-cell uilg-bar-cell">${markup}</div>`).join("");
+    return `${action}<div class="comp-state-matrix" style="grid-template-columns: 132px minmax(0, 1fr);">${header}${body}</div>`;
+  };
+  return `<div class="platform-section platform-section-pc"><div class="preview-area">${block()}</div></div>
+    <div class="platform-section platform-section-mobile"><div class="preview-area">${block()}</div></div>`;
+}
+
+function footerStateMatrix(html) {
+  const pc = (isPreview) => exampleElement(html, '[data-s1-component="footer"][data-platform="pc"]', { isPreview });
+  const mobile = (isPreview) => exampleElement(html, '[data-s1-component="footer"][data-platform="mobile"]', { isPreview });
+  const header = `<div class="matrix-col-header" style="grid-column:1"></div><div class="matrix-col-header">Default</div>`;
+  const pcBlock = () => {
+    const action = `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="uilg-gnb-row-bar">${pc(false)}</div>
+      <p class="uilg-demo-note">화면 맨 아래에 놓습니다. 링크는 실제 링크라 Tab 으로 들어가 Enter 로 이동하며, 이동할 주소는 쓰는 화면이 채웁니다. 글자는 회사 정본 문구 그대로입니다.</p>
+    </div>`;
+    const body = [
+      ["Platform=PC", "가운데 1280 폭 · 768 미만은 모바일 모양", pc(true)],
+      ["Platform=PC", "실제 1920 폭 · 좌우 여백 320 · 좌우로 밀어 보세요", `<div class="uilg-wide-frame">${pc(true)}</div>`]
+    ].map(([label, dim, markup]) =>
+      `<div class="matrix-row-label">${label}<span class="uilg-size-dim">${dim}</span></div><div class="comp-state-cell uilg-bar-cell">${markup}</div>`).join("");
+    return `${action}<div class="comp-state-matrix" style="grid-template-columns: 132px minmax(0, 1fr);">${header}${body}</div>`;
+  };
+  const mobileBlock = () => {
+    const action = `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="uilg-footer-mobile-box">${mobile(false)}</div>
+      <p class="uilg-demo-note">모바일 화면 맨 아래에 놓습니다. 회사 정보와 로고가 없고, 카피라이트는 가운데 정렬입니다. 링크는 실제 링크입니다.</p>
+    </div>`;
+    const body = `<div class="matrix-row-label">Platform=Mobile</div><div class="comp-state-cell"><div class="uilg-footer-mobile-box">${mobile(true)}</div></div>`;
+    return `${action}<div class="comp-state-matrix" style="grid-template-columns: 132px minmax(0, 1fr);">${header}${body}</div>`;
+  };
+  return `<div class="platform-section platform-section-pc"><div class="preview-area">${pcBlock()}</div></div>
+    <div class="platform-section platform-section-mobile"><div class="preview-area">${mobileBlock()}</div></div>`;
+}
+
+function ciStateMatrix(html) {
+  const logo = (brand, color, isPreview) =>
+    exampleElement(html, `[data-s1-component="ci"][data-brand="${brand}"][data-color="${color}"]`, { isPreview });
+  const brands = [["s1", "에스원"], ["samsung", "삼성"]];
+  const colors = [["white", "Color=White"], ["blue", "Color=Blue"], ["dark", "Color=Dark"]];
+  const block = () => {
+    const action = `<div class="comp-action-top">
+      <div class="matrix-col-header-action">Action</div>
+      <div class="uilg-ci-action">${logo("s1", "blue", false)}${logo("samsung", "blue", false)}</div>
+      <p class="uilg-demo-note">로고가 회사 이름을 알려 주는 자리에서는 화면 낭독기가 「에스원」 · 「삼성」으로 읽습니다. 옆 글자가 이미 이름을 말하는 자리면 쓰는 화면이 로고를 읽히지 않게 둡니다. White 는 밝은 로고라 어두운 바탕 위에 놓습니다 — 아래 표의 White 칸은 밝은 테마에서 흐리게 보이니 어두운 테마로 바꿔 확인하세요.</p>
+    </div>`;
+    const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
+      colors.map(([, label]) => `<div class="matrix-col-header">${label}</div>`).join("");
+    const body = brands.map(([brand, label]) =>
+      `<div class="matrix-row-label">${label}</div>` +
+      colors.map(([color]) => `<div class="comp-state-cell uilg-ci-stage">${logo(brand, color, true)}</div>`).join("")).join("");
+    return `${action}<div class="comp-state-matrix" style="grid-template-columns: 132px repeat(${colors.length}, minmax(160px, 1fr));">${header}${body}</div>`;
+  };
+  return `<div class="platform-section platform-section-pc"><div class="preview-area">${block()}</div></div>
+    <div class="platform-section platform-section-mobile"><div class="preview-area">${block()}</div></div>`;
+}
+
+function stateMatrix(id, html = "") {
+  if (id === "login-gnb") return loginGnbStateMatrix(html);
+  if (id === "footer") return footerStateMatrix(html);
+  if (id === "ci") return ciStateMatrix(html);
   if (id === "list-row") return listRowStateMatrix();
   if (id === "lnb") return lnbStateMatrix();
   if (id === "date-picker") return datePickerStateMatrix();
@@ -3502,7 +3618,7 @@ async function mountGuide(id) {
     /* 상자(demo + 개발 코드) 목록. 기본은 한 상자다.
        상자를 여럿 두는 컴포넌트는 stateMatrix 가 객체를 돌려주고, 각 상자의 예제 파일은
        배포본 manifest 의 htmlContract.breakExamples 선언을 그대로 쓴다 — 새 이름을 만들지 않는다. */
-    const matrix = stateMatrix(id);
+    const matrix = stateMatrix(id, htmlPc);
     const blocks = [];
     if (typeof matrix === "string") {
       const mainExample = hasMobileExample && platform === "mobile"
@@ -3584,6 +3700,10 @@ async function mountGuide(id) {
       /* 줄 자체는 런타임이 없다(jsRequired:false). Action 의 토글 줄만 승인된 toggle 배포본 런타임으로 살린다 —
          미리보기 칸은 지면에 눕힌 표본이라 init 하지 않는다. */
       section.querySelectorAll('.uilg-list-row-action [data-s1-component="toggle"]').forEach((root) => S1UI.toggle.init(root));
+    }
+    if (id === "footer") {
+      /* 견본 링크의 href="#" 가 안내 화면을 맨 위로 튕기지 않게 한다 — 이동 주소는 쓰는 화면이 채운다(LNB 와 같은 처리). */
+      section.querySelectorAll('[data-s1-component="footer"] a[href="#"]').forEach((link) => link.addEventListener("click", (event) => event.preventDefault()));
     }
     if (id === "lnb") {
       /* 견본 메뉴의 href="#" 가 안내 화면을 맨 위로 튕기지 않게 한다 — 이동 자체는 쓰는 화면(라우터)의 몫이다. */
@@ -3730,6 +3850,6 @@ async function mountGuide(id) {
   }
 }
 
-const guideComponents = ["input", "button", "assist-button", "text-button", "checkbox", "radio", "toggle", "chip", "select", "dropdown", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "modal-content", "table", "mobile-bottom-nav", "mobile-header", "gnb", "gnb-sub-menu-item", "gnb-sub-menu", "time-picker", "date-picker", "bottom-sheet", "bottom-sheet-option", "expandable-card", "divider", "data-tag", "lnb", "list-row"];
+const guideComponents = ["input", "button", "assist-button", "text-button", "checkbox", "radio", "toggle", "chip", "select", "dropdown", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "modal-content", "table", "mobile-bottom-nav", "mobile-header", "gnb", "gnb-sub-menu-item", "gnb-sub-menu", "time-picker", "date-picker", "bottom-sheet", "bottom-sheet-option", "expandable-card", "divider", "data-tag", "lnb", "list-row", "login-gnb", "footer", "ci"];
 await Promise.all(guideComponents.map(mountGuide));
 document.dispatchEvent(new CustomEvent("s1:component-guide:ready", { detail: { components: guideComponents } }));

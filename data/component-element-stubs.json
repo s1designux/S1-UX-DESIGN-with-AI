@@ -5,7 +5,7 @@
     "paneId 는 규칙으로 파생할 수 없어(lt·sb·lgnb·mte·gui …) 필드로 보관한다. 새 항목은 기존과 겹치지 않는 값을 쓴다.",
     "exposed:true 는 좌측 필터·딥링크에 노출한다는 뜻. 부품은 기본 비노출(상위 섹션 안에서 표출하는 것이 정책)이고, 상위가 없는 회사 고유 자산만 노출한다."
   ],
-  "_updated": "2026-08-02",
+  "_updated": "2026-10-02",
   "stubs": [
     {
       "id": "line-tab",
@@ -89,31 +89,6 @@
       ]
     },
     {
-      "id": "login-gnb",
-      "title": "Login GNB",
-      "paneId": "lgnb-tokens",
-      "rows": [
-        {
-          "token": "--color-navigation-bg",
-          "value": "var(--color-base-white)",
-          "role": "background"
-        },
-        {
-          "token": "--color-text-title-primary",
-          "value": "var(--color-gray-900)",
-          "role": "text"
-        },
-        {
-          "token": "--color-icon-gray",
-          "value": "var(--color-gray-dark-600)",
-          "role": "icon"
-        }
-      ],
-      "exposed": true,
-      "navLabel": "Login GNB",
-      "navPlatforms": "pc"
-    },
-    {
       "id": "web-tab-bar",
       "title": "Web Tab Bar",
       "paneId": "wtb-tokens",
@@ -141,26 +116,6 @@
       ]
     },
     {
-      "id": "ci",
-      "title": "CI",
-      "paneId": "ci-tokens",
-      "rows": [
-        {
-          "token": "--color-brand-blue",
-          "value": "#0072CE",
-          "role": "brand primary"
-        },
-        {
-          "token": "--color-brand-gray",
-          "value": "#DFDEDE",
-          "role": "brand secondary"
-        }
-      ],
-      "exposed": true,
-      "navLabel": "CI Logo",
-      "navPlatforms": "pc mobile"
-    },
-    {
       "id": "multi-toggle-element",
       "title": "Multi Toggle Element",
       "paneId": "mte-tokens",
@@ -186,36 +141,6 @@
           "role": "text · selected"
         }
       ]
-    },
-    {
-      "id": "footer",
-      "title": "Footer",
-      "paneId": "footer-tokens",
-      "rows": [
-        {
-          "token": "--color-bg-default",
-          "value": "var(--color-gray-0)",
-          "role": "background"
-        },
-        {
-          "token": "--color-text-body-primary",
-          "value": "var(--color-gray-900)",
-          "role": "text primary"
-        },
-        {
-          "token": "--color-text-body-secondary",
-          "value": "var(--color-gray-800)",
-          "role": "text secondary"
-        },
-        {
-          "token": "--color-action-primary-default",
-          "value": "var(--color-blue-400)",
-          "role": "link"
-        }
-      ],
-      "exposed": true,
-      "navLabel": "Footer",
-      "navPlatforms": "pc"
     },
     {
       "id": "gnb-util-icon",
@@ -444,5 +369,5 @@
       ]
     }
   ],
-  "_exposeNote": "회사 고유 자산(CI 로고·푸터·로그인 GNB)만 노출한다(river 결정 2026-08-02). 기기/OS 크롬(상태바·내비바·웹탭바)은 범용이라 가이드에 올리지 않고, 나머지 부품은 상위 섹션 안에서 표출하는 정책이라 비노출 유지."
+  "_exposeNote": "회사 고유 자산(CI 로고·푸터·로그인 GNB)만 노출한다(river 결정 2026-08-02). 기기/OS 크롬(상태바·내비바·웹탭바)은 범용이라 가이드에 올리지 않고, 나머지 부품은 상위 섹션 안에서 표출하는 정책이라 비노출 유지. — 2026-10-02: CI 로고·푸터·로그인 GNB 는 UI 라이브러리 배포본(ci·footer·login-gnb)으로 옮겨져 이 토큰 표 대신 ui-library-guide.js 승인 배포본 틀(§A mount)로 안내한다(platform-web-3)."
 }

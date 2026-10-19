@@ -33,9 +33,9 @@
       "memberOrder": 2,
       "category": "Platform",
       "name": "CI",
-      "visibility": "excluded",
-      "sectionId": null,
-      "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)"
+      "visibility": "public",
+      "sectionId": "ci",
+      "reason": null
     },
     {
       "order": 3,
@@ -44,9 +44,9 @@
       "memberOrder": 3,
       "category": "Platform",
       "name": "LoginGNB",
-      "visibility": "excluded",
-      "sectionId": null,
-      "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)"
+      "visibility": "public",
+      "sectionId": "login-gnb",
+      "reason": null
     },
     {
       "order": 4,
@@ -66,9 +66,9 @@
       "memberOrder": 5,
       "category": "Platform",
       "name": "Footer",
-      "visibility": "excluded",
-      "sectionId": null,
-      "reason": "Platform/Shell — 제외(사용자 결정 2026-06-30 A)"
+      "visibility": "public",
+      "sectionId": "footer",
+      "reason": null
     },
     {
       "order": 6,
@@ -19535,7 +19535,7 @@
     },
     {
       "name": "CI",
-      "gridMembership": "excluded",
+      "gridMembership": "public",
       "variantCount": 6,
       "axes": {
         "Brand": [
@@ -20284,7 +20284,7 @@
     },
     {
       "name": "LoginGNB",
-      "gridMembership": "excluded",
+      "gridMembership": "public",
       "variantCount": 1,
       "axes": {},
       "presentationAxes": {
@@ -21759,7 +21759,7 @@
     },
     {
       "name": "Footer",
-      "gridMembership": "excluded",
+      "gridMembership": "public",
       "variantCount": 2,
       "axes": {
         "Platform": [
@@ -22726,12 +22726,12 @@
                     },
                     "text": null,
                     "appearance": {
-                      "fill": "color/line/default",
+                      "fill": "color/icon/gray-light",
                       "stroke": null,
                       "fillPaints": [
                         {
                           "type": "SOLID",
-                          "__tokenKey": "color/line/default",
+                          "__tokenKey": "color/icon/gray-light",
                           "color": {
                             "r": 0,
                             "g": 0,
@@ -22861,12 +22861,12 @@
                     },
                     "text": null,
                     "appearance": {
-                      "fill": "color/line/default",
+                      "fill": "color/icon/gray-light",
                       "stroke": null,
                       "fillPaints": [
                         {
                           "type": "SOLID",
-                          "__tokenKey": "color/line/default",
+                          "__tokenKey": "color/icon/gray-light",
                           "color": {
                             "r": 0,
                             "g": 0,

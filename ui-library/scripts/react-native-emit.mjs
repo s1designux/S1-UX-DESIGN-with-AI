@@ -295,6 +295,14 @@ class RnEmitter extends Emitter {
   element(node, options) {
     const { isRoot = false, indent } = options;
     const key = this.keyOf(node);
+    /* 자기 자신이 칸(data-s1-part)인 svg(Footer 로고) — 웹 CSS 가 그 칸에 크기를 준다. RN 에서는 칸 View(El) 가 그 크기를 갖고, 안에 Svg 가 100% 로 채운다. */
+    if (node.tag === "svg" && partOf(node) && !options.isRoot) {
+      this.visited.push({ node, key, isRoot: false });
+      const holder = { ...node, tag: "span", attributes: node.attributes.filter(([attribute]) => attribute.toLowerCase() === "data-s1-part"), children: [] };
+      this.keys.set(holder, key);
+      const attributes = this.attributeText(holder, { ...options, part: partOf(node) });
+      return `${indent}<El${attributes}>\n${this.svgElement(node, `${indent}  `)}\n${indent}</El>`;
+    }
     if (SVG_TAGS[node.tag]) return this.svgElement(node, indent);
     this.visited.push({ node, key, isRoot });
     if (this.isNested(node)) return this.nestedElement(node, options);
@@ -376,7 +384,7 @@ class RnEmitter extends Emitter {
     const name = SVG_TAGS[node.tag];
     this.svgUsed.add(name);
     const attributes = node.attributes
-      .filter(([attribute]) => !["role", "aria-hidden", "xmlns"].includes(attribute.toLowerCase()))
+      .filter(([attribute]) => !["role", "aria-hidden", "xmlns", "data-s1-part"].includes(attribute.toLowerCase()) && !(node.tag === "svg" && ["width", "height"].includes(attribute.toLowerCase())))
       .map(([attribute, value]) => {
         const jsx = attribute.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
         if (jsx === "fill" && value === "currentColor") return "fill={svgColor}";

@@ -36,7 +36,7 @@ const pascalId = (id) => id.split("-").map((part) => part[0].toUpperCase() + par
 /** 손으로 쓴 엔진 파일 목록 — 생성물과 같은 폴더에 그대로 복사한다(머리에 생성물 문구를 붙이지 않는다: 이 파일들은 손 원본이다). */
 export const HAND_WRITTEN = ["engine.js", "text.js", "behaviors.js", "chip-group.js"];
 
-export function buildReactNativeOutputs({ componentOutputs, tokenData, iconAssets, typographyCss, usageById, release, behaviorLedger, only = null }) {
+export function buildReactNativeOutputs({ componentOutputs, tokenData, iconAssets, imageAssets = [], typographyCss, usageById, release, behaviorLedger, only = null }) {
   const outputs = new Map();
   const stable = (value) => `${JSON.stringify(value, null, 2)}\n`;
 
@@ -55,6 +55,7 @@ export function buildReactNativeOutputs({ componentOutputs, tokenData, iconAsset
   outputs.set(`${ROOT}/typography.js`, typographySource(textStyles));
   const icons = readAllIcons(iconAssets);
   outputs.set(`${ROOT}/icons.js`, iconsSource(icons));
+  outputs.set(`${ROOT}/images.js`, imagesSource(imageAssets));
 
   /* 손으로 쓴 엔진 */
   for (const name of HAND_WRITTEN) outputs.set(`${ROOT}/${name}`, read(name));
@@ -202,6 +203,15 @@ export const ICONS = ${JSON.stringify(icons)};
 `;
 }
 
+function imagesSource(imageAssets) {
+  const images = {};
+  for (const { id, bytes, width, height } of imageAssets) images[id] = { w: width, h: height, uri: `data:image/png;base64,${Buffer.from(bytes).toString("base64")}` };
+  return `/* ${GENERATED_NOTE} */
+/* 원본: ui-library/src/assets/images/*.png — 색까지 담긴 그림. 번들러 설정 없이 쓰도록 데이터 주소(data URI)로 담았다. */
+export const IMAGES = ${JSON.stringify(images)};
+`;
+}
+
 /* ── 패키지 파일 ─────────────────────────────────────────────────────── */
 
 function packageJson(release) {
@@ -237,6 +247,7 @@ export { S1ChipGroup } from "./chip-group.js";
 export { COLORS, DIMENS, NUMBERS, SHADOWS } from "./tokens.js";
 export { TYPES } from "./typography.js";
 export { ICONS } from "./icons.js";
+export { IMAGES } from "./images.js";
 ${approved.map(({ id }) => `export { default as S1${pascalId(id)} } from "./components/${id}.js";`).join("\n")}
 export { S1Gallery } from "./gallery/S1Gallery.js";
 export { S1_VERSION, S1_RELEASED_AT, S1_CANONICAL_FINGERPRINT } from "./version.js";

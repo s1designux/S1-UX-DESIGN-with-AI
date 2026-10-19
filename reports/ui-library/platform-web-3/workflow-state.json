@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "workflow": "ui-library-code",
+  "workId": "platform-web-3",
+  "objective": "Figma 설치기에만 있던 플랫폼 부품 3종(Footer · CI 로고 · Login GNB)을 웹 배포본(ui-library)과 안내 페이지로 옮긴다.",
+  "intent": {
+    "approvedBy": "river",
+    "approvedAt": "2026-10-02",
+    "quote": "응 맞아, 진행해",
+    "principles": [
+      "대상은 Platform 묶음 중 실제 화면 부품 3종 — Footer · CI · LoginGNB. StatusBar·NavBar·WebTabBar 는 기기·브라우저 겉모습이라 제외.",
+      "시각 정본은 build-components.ts(buildFooter · buildLoginGNB · buildCI). 정본에 없는 수치를 ⭐ 가 만들지 않는다.",
+      "삼성 로고는 정본이 쓰는 Figma 이미지(imageHash 3종)를 그대로 내려받아 쓴다 — 다른 출처의 로고로 바꾸지 않는다.",
+      "Footer 법인 문구는 registry/content/footer.json 단일 출처(Gate 14).",
+      "component-page-coverage 의 'Platform/Shell 제외(2026-06-30 A)' 는 이번 river 지시로 세 부품에 한해 해제된다."
+    ]
+  },
+  "contract": {
+    "path": "registry/governance/ui-library-code-contract.json",
+    "status": "candidate",
+    "version": "0.1.2"
+  },
+  "target": {
+    "kind": "core-component",
+    "components": [
+      "footer",
+      "ci",
+      "login-gnb"
+    ]
+  },
+  "figmaSources": {
+    "role": "시각 정본은 build-components.ts 다. 삼성 로고 이미지만 Figma 파일 내장 이미지를 열쇠(REST)로 내려받았다.",
+    "requiredForInventory": false,
+    "fileKey": "cysG5U1udpQqVagYY1hWHW",
+    "fileName": "SW-UX-GUIDE V3.0 TEST",
+    "components": {
+      "footer": {
+        "nodeId": null,
+        "source": "not-consulted",
+        "status": "레지스트리에 현재 노드 기록 없음"
+      },
+      "ci": {
+        "nodeId": null,
+        "source": "image-fills-only",
+        "status": "삼성 이미지 3종을 /v1/files/{key}/images 로 내려받음(1600×425 PNG)"
+      },
+      "login-gnb": {
+        "nodeId": null,
+        "source": "not-consulted",
+        "status": "레지스트리에 현재 노드 기록 없음"
+      }
+    }
+  },
+  "currentPhase": "complete",
+  "workflowStatus": "complete",
+  "uiLibraryStatus": "approved",
+  "lastCompletedCheckpoint": 6,
+  "nextAction": "완료 — 사이트 메뉴(CI Logo·Footer·Login GNB) 등재, 전달본 0.19.4. 삼성 로고 공식 선(SVG) 교체는 river 보류 후속.",
+  "canonicalInputs": [
+    {
+      "role": "component-visual",
+      "path": "plugins/figma-vars-installer/src/build-components.ts",
+      "sha256": "c5a2d1f8bb21fb036fdf34d0051acee8c085f258798053c6cd702dc723bd001d"
+    },
+    {
+      "role": "token-values",
+      "path": "plugins/figma-vars-installer/src/vars-data.ts",
+      "sha256": "7b171e55bb86f1e98f176130662e07c3216773f09320eb107ddd9a19d6265885"
+    },
+    {
+      "role": "text-styles",
+      "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
+      "sha256": "ca379bfa2203aa12e647e636a561cc84fe925af11fef5df6194a13b248625fb5"
+    },
+    {
+      "role": "content",
+      "path": "registry/content/footer.json",
+      "sha256": "492381d945059bea277de1b0a8865b90626c9f42158c79df82123e3d3832ed5f"
+    },
+    {
+      "role": "image-asset-samsung-white",
+      "path": "reports/ui-library/platform-web-3/assets/samsung-white.png",
+      "sha256": "1bc9ad20e3a01f3977f8fb16c0fd342a54b21115264d8b09b89096a2acccea78",
+      "figmaImageHash": "5ef070ce43a101a072964c656c0e666fe81e4f78"
+    },
+    {
+      "role": "image-asset-samsung-blue",
+      "path": "reports/ui-library/platform-web-3/assets/samsung-blue.png",
+      "sha256": "c4bd9477e460a2f924329aef53ff66e4d47b775a7d30f363dd73559586bb7a1c",
+      "figmaImageHash": "8de26dc1976bd0a64ea5b7207b6bf6d9e0396053"
+    },
+    {
+      "role": "image-asset-samsung-dark",
+      "path": "reports/ui-library/platform-web-3/assets/samsung-dark.png",
+      "sha256": "ade94e407d795c49b58e2711410b60c77f9c11771f9556d2c8cf455c31a3fc94",
+      "figmaImageHash": "100a4d3fdd0a5a9304c8251792f2d96089ac458a"
+    }
+  ],
+  "inventory": {
+    "report": "reports/ui-library/platform-web-3/1-inventory-facts.md",
+    "registryEntry": "없음 — footer/ci/login-gnb json 미존재(이번에 신설)",
+    "distComponent": "없음",
+    "siteSection": "pages/components.html 에 토큰 표만 있는 낡은 섹션(login-gnb · ci · footer), 내비 버튼 disabled"
+  },
+  "blockers": [],
+  "evidence": {
+    "sourceAudit": {
+      "observedAt": "2026-10-02",
+      "basis": "📖 source-reader 코드 추적(B) — 1-inventory-facts.md"
+    },
+    "verification": {
+      "observedAt": "2026-10-02",
+      "report": "reports/ui-library/platform-web-3/4-verification-F.md",
+      "firstPass": "FAIL 2 (F-1·F-2) · HOLD 2 (C-1·C-2) · H-0 상태파일",
+      "rework": "F-1·F-2·H-0 반영, 0.19.1",
+      "deltaPass": "2026-10-02 델타 1 — FAIL 0 · HOLD 2(C-1·C-2 river 결정)",
+      "deltaPass2": "2026-10-12 델타 2 — D-2·D-3 PASS, C-1·C-2 종결. D2-1(안내 화면 옛 설명 2줄) ⭐ 문구 수정(기계적, 렌더·liveness 검사 통과)"
+    },
+    "riverApproval": {
+      "status": "approved",
+      "date": "2026-10-19",
+      "version": "0.19.4",
+      "scope": "Footer(PC·Mobile) · CI 6종 · Login GNB",
+      "quote": "세 부품 모두 승인할게, 합쳐줘"
+    },
+    "promotion": {
+      "date": "2026-10-19",
+      "report": "reports/ui-library/platform-web-3/6-promotion.md"
+    },
+    "independentVerification": {
+      "verdict": "PASS",
+      "by": "component-verifier",
+      "date": "2026-10-12",
+      "report": "reports/ui-library/platform-web-3/4-verification-F.md",
+      "note": "1차 FAIL 2 → 델타1 FAIL 0 → 델타2 D-2·D-3 PASS(안내 문구 2줄 ⭐ 수정). 이후 D-4 구분선 토큰 1건은 기계적 교체(검사기 통과)."
+    }
+  },
+  "handoff": {
+    "lastActor": "orchestrator",
+    "updatedAt": "2026-10-19",
+    "summary": "river 승인 → approved 0.19.4. 합치기."
+  },
+  "decisions": [
+    {
+      "id": "D-1",
+      "at": "2026-10-02",
+      "by": "river",
+      "decision": "Platform 묶음 중 Footer · CI · LoginGNB 3종을 웹 배포본으로 옮긴다(StatusBar·NavBar·WebTabBar 제외)",
+      "quote": "응 맞아, 진행해"
+    },
+    {
+      "id": "D-2",
+      "at": "2026-10-12",
+      "by": "river",
+      "decision": "C-1 바 좌우 여백 — 가운데 1280 폭을 지키고, 그보다 좁은 화면에는 대응하지 않는다(1280 아래로 줄어들지 않음)",
+      "quote": "가운데 1280폭을 지키고 그 이후로는 대응 안함."
+    },
+    {
+      "id": "D-3",
+      "at": "2026-10-12",
+      "by": "river",
+      "decision": "C-2 좁은 화면 Footer — 정본 브레이크포인트에 따라 모바일 모양으로 바뀐다. 기준은 정본 breakpoint/md(768) 미만(⭐ 선택 — river 가 다른 값을 고르면 교체)",
+      "quote": "브레이크포인트에 따라 모바일 모양으로 바뀜"
+    },
+    {
+      "id": "D-4",
+      "at": "2026-10-19",
+      "by": "river",
+      "decision": "Footer Mobile 구분선 색을 PC 와 같게(color/icon/gray-light). 글자색은 원래 같음.",
+      "quote": "모바일푸터의 폰트 색상, 라인색상을 pc웹에 맞춰줘"
+    }
+  ],
+  "artifacts": {
+    "policyContract": "registry/governance/ui-library-code-contract.json",
+    "humanGuide": "registry/governance/ui-library-authoring-guide.md",
+    "componentChecklist": "registry/governance/ui-library-component-checklist.md",
+    "repositoryInventory": "reports/component-inventory-audit.md",
+    "inventory": "reports/ui-library/platform-web-3/1-inventory-facts.md",
+    "sourceRoot": "ui-library/src",
+    "distManifest": "ui-library/dist/manifest.json",
+    "reviewPage": "pages/ui-review.html",
+    "guidePage": "pages/components.html#footer",
+    "migrationRecord": "registry/governance/ui-library-migration.json",
+    "canonReadiness": "reports/ui-library/platform-web-3/2-canon-readiness.md",
+    "build": "reports/ui-library/platform-web-3/3-build.md",
+    "reviewPageBuild": "reports/ui-library/platform-web-3/3-build-review-page.md",
+    "verification": "reports/ui-library/platform-web-3/4-verification-F.md",
+    "promotion": "reports/ui-library/platform-web-3/6-promotion.md",
+    "humanReview": "reports/ui-library/platform-web-3/5-human-review.md"
+  }
+}

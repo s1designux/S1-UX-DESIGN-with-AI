@@ -468,7 +468,12 @@ export function convertDeclarations(ranked, { converter, where, tag, notes }) {
     for (const side of SIDES) {
       const name = `${kind}-${side}`;
       if (!L.has(name)) continue;
-      const value = converter.length(L.get(name), `${where} ${name}`);
+      let raw = L.get(name);
+      /* clamp(최소, 창 폭 기준 식, 최대) 여백 — 웹 창이 1280 보다 넓을 때만 커지는 가운데 열 여백이다.
+         앱 화면은 그보다 좁아 웹도 최솟값을 내므로 RN 은 최솟값(첫 인자)을 쓴다. 최솟값이 길이가 아니면 예외로 멈춘다. */
+      const clamp = /^clamp\(/.test(raw.trim()) ? splitCommas(raw.trim().slice(6, -1)) : null;
+      if (clamp) { raw = clamp[0].trim(); note(name, "web-viewport-clamp-min"); }
+      const value = converter.length(raw, `${where} ${name}`);
       if (value === "auto") { style[`${kind}${cap(side)}Auto`] = true; continue; }
       if (value !== null) style[`${kind}${cap(side)}`] = value;
     }
@@ -513,7 +518,12 @@ export function convertDeclarations(ranked, { converter, where, tag, notes }) {
   }
   if (L.has("background-image")) {
     const raw = L.get("background-image");
-    if (raw !== "none") {
+    const picture = /^url\(\s*["']?[^"')]*\/images\/([a-z0-9-]+)\.png["']?\s*\)$/.exec(raw.trim());
+    if (picture) {
+      /* 래스터 그림(삼성 CI) — 정본 scaleMode FILL = cover. 다른 크기 지정이면 멈춘다. */
+      if (L.get("background-size") !== "cover") throw new Error(`${where}: 그림 배경은 background-size: cover 만 지원합니다.`);
+      style.image = { name: picture[1] };
+    } else if (raw !== "none") {
       const parsed = parseGradient(raw, converter, `${where} background-image`);
       if (parsed.kind === "line") style.line = { color: parsed.color, insetX: parsed.insetX, height: parsed.height };
       else style.gradient = { to: parsed.to, stops: parsed.stops };

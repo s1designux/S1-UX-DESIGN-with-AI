@@ -6608,7 +6608,7 @@ async function buildFooter(maps: BuildMaps, originY: number): Promise<{ set: Com
     mLinks.appendChild(await makeBoundText(LINK_NAMES[i], 12, "Regular", scv(maps, "color/text/body/tertiary")));
     if (i < LINK_NAMES.length - 1) {
       const sep = figma.createRectangle(); sep.name = "sep";
-      sep.resize(1, 10); sep.fills = [boundPaint(scv(maps, "color/line/default"))];
+      sep.resize(1, 10); sep.fills = [boundPaint(scv(maps, "color/icon/gray-light"))]; // PC 와 같은 구분선 색(river 2026-10-19 "모바일푸터의 폰트 색상, 라인색상을 pc웹에 맞춰줘")
       mLinks.appendChild(sep);
     }
   }

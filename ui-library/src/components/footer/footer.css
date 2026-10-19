@@ -1,0 +1,198 @@
+/* Footer (풋터) — 정본 buildFooter(build-components.ts:6429-6535) 기준. 축: data-platform=pc|mobile.
+   정본 PC 는 바 폭을 1920 고정(좌우 패딩 320)으로 표현한다. 웹은 바 배경이 화면 폭을 채우되 안쪽 내용은
+   가운데 1280(canon breakpoint/xl = --breakpoint-xl) 열이다 — 좌우 여백 = (100% − 1280)/2 를 320 까지로 제한
+   (1920 → 320 · 1600 → 160 · 1280 → 0). 1280 보다 좁아져도 줄어들지 않는다(min-width 1280 — 넘치면 가로로 민다)
+   (river D-2 2026-10-12 "가운데 1280폭을 지키고 그 이후로는 대응 안함.").
+   canon breakpoint/md(768) 미만에서는 PC 도 Mobile 모양으로 바뀐다(river D-3 2026-10-12
+   "브레이크포인트에 따라 모바일 모양으로 바뀜", 파일 맨 아래 @media). 명시 data-platform="mobile" 은 그대로.
+   정본에는 hover·pressed 가 없다 — 링크 색을 바꾸지 않는다. 키보드 초점은 다른 코어와 같이
+   브라우저 기본 표시에 맡긴다(2026-09-02 river 결정). */
+[data-s1-component="footer"] {
+  box-sizing: border-box;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
+  color: var(--color-text-body-tertiary);
+  display: flex;
+  margin: 0;
+  position: relative;
+  width: 100%;
+}
+
+[data-s1-component="footer"] p,
+[data-s1-component="footer"] ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* 링크 줄 — 글자 사이에 1px 세로 구분선. 정본은 글자·구분선·글자 순서로 같은 간격을 둔다. */
+[data-s1-component="footer"] [data-s1-part="links"] {
+  align-items: center;
+  display: flex;
+  list-style: none;
+}
+
+[data-s1-component="footer"] [data-s1-part="links"] > li {
+  align-items: center;
+  display: flex;
+}
+
+[data-s1-component="footer"] [data-s1-part="links"] > li + li::before {
+  background: currentColor;
+  content: "";
+  flex: none;
+  width: var(--border-width-default);
+}
+
+[data-s1-component="footer"] [data-s1-part="link"] {
+  color: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* 회사 정보 — 정본 글자에 연속 공백이 들어 있다(registry/content/footer.json). 공백을 접지 않는다. */
+[data-s1-component="footer"] [data-s1-part="company"] {
+  white-space: pre-wrap;
+}
+
+[data-s1-component="footer"] [data-s1-part="logo"] {
+  color: var(--color-icon-gray);
+  display: block;
+  flex: none;
+  height: var(--sizing-16);
+  width: 42px;
+}
+
+/* ── PC — 정본 1920×116, 가로·양끝·가운데, 위 1px 선(안쪽 선이라 높이를 깎지 않는 겹침 레이어) ── */
+[data-s1-component="footer"][data-platform="pc"] {
+  align-items: center;
+  background: var(--color-navigation-bg);
+  justify-content: space-between;
+  min-height: 116px;
+  padding-block: var(--spacing-28);
+  min-width: var(--breakpoint-xl);
+  padding-inline: clamp(0px, calc((100% - var(--breakpoint-xl)) / 2), 320px);
+}
+
+[data-s1-component="footer"][data-platform="pc"]::before {
+  background: var(--color-line-default);
+  content: "";
+  height: var(--border-width-default);
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+[data-s1-component="footer"][data-platform="pc"] [data-s1-part="content"] {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+[data-s1-component="footer"][data-platform="pc"] [data-s1-part="links"] {
+  gap: var(--spacing-12);
+}
+
+[data-s1-component="footer"][data-platform="pc"] [data-s1-part="links"] > li {
+  gap: var(--spacing-12);
+}
+
+[data-s1-component="footer"][data-platform="pc"] [data-s1-part="links"] > li + li::before {
+  color: var(--color-icon-gray-light);
+  height: var(--spacing-8);
+}
+
+[data-s1-component="footer"][data-platform="pc"] :is([data-s1-part="link"], [data-s1-part="company"], [data-s1-part="copyright"]) {
+  font-size: var(--font-size-10);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-wide);
+  line-height: var(--line-height-140);
+}
+
+/* ── Mobile — 정본 가로·세로 모두 hug, 세로 쌓기·왼쪽 정렬, 배경·테두리 없음, 로고·회사 정보 없음 ── */
+[data-s1-component="footer"][data-platform="mobile"] {
+  /* 정본 Mobile 은 가로·세로 모두 hug 다 — 안쪽 내용 폭(링크 줄)이 카피라이트 가운데의 기준이다.
+     바깥 상자를 내용 폭(fit-content)으로 줄여 왼쪽에 두고, 카피라이트는 그 폭만큼 늘린다(배경·테두리가 없어 보이는 모양은 같다). */
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  justify-content: flex-start;
+  width: fit-content;
+  padding: var(--spacing-8) var(--spacing-16);
+}
+
+[data-s1-component="footer"][data-platform="mobile"] [data-s1-part="links"] {
+  gap: var(--spacing-8);
+}
+
+[data-s1-component="footer"][data-platform="mobile"] [data-s1-part="links"] > li {
+  gap: var(--spacing-8);
+}
+
+[data-s1-component="footer"][data-platform="mobile"] [data-s1-part="links"] > li + li::before {
+  color: var(--color-icon-gray-light);
+  height: var(--sizing-10);
+}
+
+[data-s1-component="footer"][data-platform="mobile"] :is([data-s1-part="link"], [data-s1-part="copyright"]) {
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-normal);
+  line-height: var(--line-height-130);
+}
+
+/* 카피라이트는 링크 줄 폭에 맞춰 가운데(정본 layoutAlign=STRETCH · 가운데 정렬) */
+[data-s1-component="footer"][data-platform="mobile"] [data-s1-part="copyright"] {
+  align-self: stretch;
+  text-align: center;
+}
+
+/* ── PC → Mobile 자동 전환 — canon breakpoint/md(768) 미만(river D-3). 값은 위 Mobile 블록과 같다.
+   @media 조건에는 CSS 변수를 쓸 수 없어 768 을 직접 적는다(= --breakpoint-md). ── */
+@media (max-width: 767.98px) {
+  [data-s1-component="footer"][data-platform="pc"] {
+    align-items: flex-start;
+    background: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+    justify-content: flex-start;
+    min-height: 0;
+    min-width: 0;
+    width: fit-content;
+    padding: var(--spacing-8) var(--spacing-16);
+  }
+
+  [data-s1-component="footer"][data-platform="pc"]::before,
+  [data-s1-component="footer"][data-platform="pc"] [data-s1-part="company"],
+  [data-s1-component="footer"][data-platform="pc"] [data-s1-part="logo"] {
+    display: none;
+  }
+
+  [data-s1-component="footer"][data-platform="pc"] [data-s1-part="content"] {
+    display: contents;
+  }
+
+  [data-s1-component="footer"][data-platform="pc"] [data-s1-part="links"],
+  [data-s1-component="footer"][data-platform="pc"] [data-s1-part="links"] > li {
+    gap: var(--spacing-8);
+  }
+
+  [data-s1-component="footer"][data-platform="pc"] [data-s1-part="links"] > li + li::before {
+    color: var(--color-icon-gray-light);
+    height: var(--sizing-10);
+  }
+
+  [data-s1-component="footer"][data-platform="pc"] :is([data-s1-part="link"], [data-s1-part="copyright"]) {
+    font-size: var(--font-size-12);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: var(--letter-spacing-normal);
+    line-height: var(--line-height-130);
+  }
+
+  [data-s1-component="footer"][data-platform="pc"] [data-s1-part="copyright"] {
+    align-self: stretch;
+    text-align: center;
+  }
+}
