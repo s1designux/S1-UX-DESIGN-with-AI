@@ -3018,12 +3018,11 @@ function expandableCardStateMatrix() {
 /* ── State matrix: Divider ──
    정본 buildDivider 의 변형 축은 Axis(X · Y) × Weight(Default · Strong) × Tone(Default · Strong)
    이고 상태 축이 없다. 굵기(data-weight)와 색(data-tone)을 따로 고른다 — 정본도 여덟 벌이다(2026-09-30).
-   들여쓰기(data-inset)는 부품 축이 아니라 놓이는 자리가 정한다 — Action 의 목록에서 보인다. */
-function dividerMarkup({ axis = "x", weight = "default", tone = "default", inset = "" } = {}) {
+   들여쓰기는 부품 축이 아니라 담는 목록의 여백이 정한다 — Action 의 목록에서 보인다. */
+function dividerMarkup({ axis = "x", weight = "default", tone = "default" } = {}) {
   const attrs = [`data-axis="${axis}"`];
   if (weight === "strong") attrs.push('data-weight="strong"');
   if (tone === "strong") attrs.push('data-tone="strong"');
-  if (inset) attrs.push(`data-inset="${inset}"`);
   if (axis === "y") attrs.push('aria-orientation="vertical"');
   return `<hr data-s1-component="divider" data-guide-sample="set" ${attrs.join(" ")}>`;
 }
@@ -3041,7 +3040,7 @@ function dividerStateMatrix() {
     /* 목록·한 줄 묶음의 감싸개는 안내 화면이 만든다(부품은 선 하나만 그린다).
        ul/p 안에 hr 을 넣으면 파서가 단락을 먼저 닫아 세로선이 줄에서 떨어져 나간다 — div 로 짠다. */
     const rows = ["오늘 할 일", "어제 한 일", "지난주 요약"]
-      .map((label, index) => `<div class="uilg-divider-row">${escapeHtml(label)}</div>${index < 2 ? dividerMarkup({ axis: "x", inset: "text" }) : ""}`)
+      .map((label, index) => `<div class="uilg-divider-row">${escapeHtml(label)}</div>${index < 2 ? `<div class="uilg-divider-inset">${dividerMarkup({ axis: "x" })}</div>` : ""}`)
       .join("");
     const meta = ["2026.09.30", "작성자", "조회 12"]
       .map((label, index) => `${index ? dividerMarkup({ axis: "y" }) : ""}<span>${escapeHtml(label)}</span>`)
@@ -3052,7 +3051,7 @@ function dividerStateMatrix() {
         <div class="uilg-divider-list">${rows}</div>
         <div class="uilg-divider-meta">${meta}</div>
       </div>
-      <p class="uilg-demo-note">목록 줄 사이는 글 줄에 맞춰 좌우를 들여 쓴 가로선으로 나누고, 한 줄 안의 값과 값은 세로선으로 끊습니다. 선의 길이와 자리를 만드는 감싸개는 화면이 갖습니다.</p>
+      <p class="uilg-demo-note">목록 줄 사이는 목록의 좌우 여백 안에 놓인 가로선으로 나누고, 한 줄 안의 값과 값은 세로선으로 끊습니다. 선의 길이와 자리를 만드는 감싸개는 화면이 갖습니다.</p>
     </div>`;
     const header = `<div class="matrix-col-header" style="grid-column:1"></div>` +
       weights.map(([, label]) => `<div class="matrix-col-header">${label}</div>`).join("");

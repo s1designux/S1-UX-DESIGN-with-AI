@@ -217,7 +217,7 @@ const api = toggle.init(document.querySelector('[data-s1-component="toggle"]'));
 |---|---|
 ${kindByName}
 
-> 보조 축: divider 는 선 방향(\`data-axis\`) 말고도 \`data-tone\`·\`data-weight\`·\`data-inset\` 으로 선 색·굵기·들여쓰기를 고릅니다. 위 표의 \`data-tone\` 은 data-tag 의 색입니다.
+> 보조 축: divider 는 선 방향(\`data-axis\`) 말고도 \`data-tone\`·\`data-weight\` 로 선 색·굵기를 고릅니다(들여쓰기는 감싸는 목록의 여백으로 줍니다). 위 표의 \`data-tone\` 은 data-tag 의 색입니다.
 
 | 부품 | 속성 | 값 | 모양·쓰임 |
 |---|---|---|---|

@@ -933,6 +933,10 @@
   padding: var(--spacing-12) var(--spacing-20);
 }
 
+.uilg-divider-inset {
+  padding-inline: var(--spacing-20);
+}
+
 .uilg-divider-meta {
   align-items: center;
   color: var(--color-text-body-secondary);

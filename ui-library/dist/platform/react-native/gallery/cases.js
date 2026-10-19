@@ -5977,25 +5977,6 @@ export const CASES = [
   }
  },
  {
-  "id": "divider/pc/x/-/data-inset=text",
-  "component": "S1Divider",
-  "break": "pc",
-  "title": "divider · pc · x/-/data-inset=text",
-  "props": {
-   "breakName": "pc",
-   "data-inset": "text",
-   "variant": "x"
-  },
-  "web": {
-   "example": "pc",
-   "instance": 0,
-   "attributes": {
-    "data-axis": "x",
-    "data-inset": "text"
-   }
-  }
- },
- {
   "id": "divider/pc/x/-/data-weight=strong",
   "component": "S1Divider",
   "break": "pc",
@@ -6029,25 +6010,6 @@ export const CASES = [
    "instance": 0,
    "attributes": {
     "data-axis": "y"
-   }
-  }
- },
- {
-  "id": "divider/pc/y/-/data-inset=text",
-  "component": "S1Divider",
-  "break": "pc",
-  "title": "divider · pc · y/-/data-inset=text",
-  "props": {
-   "breakName": "pc",
-   "data-inset": "text",
-   "variant": "y"
-  },
-  "web": {
-   "example": "pc",
-   "instance": 0,
-   "attributes": {
-    "data-axis": "y",
-    "data-inset": "text"
    }
   }
  },

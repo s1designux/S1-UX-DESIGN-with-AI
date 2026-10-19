@@ -62,16 +62,11 @@
     "fileKey": "yE5UCFEbmXJBlYJWB24Lz2",
     "fileName": "SW UX GUIDE V2.4 (접힘카드 원본만)"
   },
-  "currentPhase": "4-verification",
-  "workflowStatus": "in-progress",
+  "currentPhase": "complete",
+  "workflowStatus": "complete",
   "uiLibraryStatus": "approved",
-  "lastCompletedCheckpoint": 3,
-  "nextAction": "남은 것: river 결정 C-3(구분선 data-inset 옵션) → 반영 → complete.",
-  "ownership": {
-    "currentActor": "orchestrator",
-    "startedAt": "2026-09-29T00:00:00+09:00",
-    "note": "상태 파일은 오케스트레이터만 수정한다."
-  },
+  "lastCompletedCheckpoint": 6,
+  "nextAction": "완료 — 승격 4종 approved · 독립 검증 PASS(2026-10-19, 배포본 0.26.0).",
   "canonicalInputs": [
     {
       "role": "component-visual",
@@ -91,7 +86,7 @@
     {
       "role": "approved-prototype",
       "path": "assets/css/restyle-candidates.css",
-      "sha256": "856f3d74d2428de8a88fdb866ac62467bceeea2c89c2b7f6950abebee794b4bc"
+      "sha256": "e36da5c060cf4ba0858e40f126403ff3d6a83acc1bc6a66fc3034318e614ed7b"
     }
   ],
   "installerGroups": {
@@ -125,9 +120,9 @@
     {
       "id": "B-4",
       "component": "lnb·expandable-card·data-tag·divider",
-      "what": "독립 검증 HOLD 1건(C-3 구분선 data-inset 옵션) — C-1 은 D-12 로 반영, C-2 는 D-11 로 해소",
-      "impact": "검증 PASS 기록이 없어 complete 로 닫지 못한다",
-      "needs": "river 결정 — verify-f/decisions.html"
+      "what": "독립 검증 HOLD",
+      "impact": "-",
+      "needs": "해소 — C-1 D-12 · C-2 D-11 · C-3 D-15, 최종 PASS 2026-10-19"
     }
   ],
   "evidence": {
@@ -173,8 +168,18 @@
         "verify-f/consumer-bundle-pc-tall-light.png",
         "verify-f/consumer-bundle-pc-tall-dark.png"
       ],
-      "openHold": "C-3 구분선 data-inset 옵션 — river 결정 대기. C-1 D-12 반영(전수 재검증 대기), C-2 D-11 해소.",
+      "openHold": "없음",
       "fullPass2": "2026-10-19 전수 재검증(D-13 이후) — LNB·Expandable Card PASS(C-1 해소), Data Tag FAIL A-5(안내 화면 상태표에 Gray 열 누락) → 오케스트레이터가 ui-library-guide.js tones·설명 문구 정정, 렌더로 12칸 확인. Divider HOLD C-3."
+    },
+    "independentVerification": {
+      "verdict": "PASS",
+      "by": "component-verifier (scenario F)",
+      "at": "2026-10-19",
+      "summary": "4종(LNB · Expandable Card · Divider · Data Tag) FAIL 0 · HOLD 0. 전수(D-13 이후) + 델타: C-1 테두리 보정 일치, A-5 가이드 Gray 열, C-3 data-inset 제거(D-15), A-6 배포 README, A-7 presentation-policy note·extraAxes 정정. 번들=개별 설치 바이트 동일(Light·Dark).",
+      "renders": [
+        "verify-f/consumer-bundle-pc-tall-light.png",
+        "verify-f/consumer-bundle-pc-tall-dark.png"
+      ]
     }
   },
   "artifacts": {
@@ -190,7 +195,10 @@
     "migrationRecord": "registry/governance/ui-library-migration.json",
     "approvedPrototype": "pages/_restyle-test/parts.html",
     "canonReadiness": "reports/ui-library/promoted-parts-4/2-canon-readiness.md",
-    "build": "reports/ui-library/promoted-parts-4/3-build.md"
+    "build": "reports/ui-library/promoted-parts-4/3-build.md",
+    "promotion": "reports/ui-library/promoted-parts-4/6-promotion.md",
+    "verification": "reports/ui-library/promoted-parts-4/4-verification-F.md",
+    "humanReview": "reports/ui-library/promoted-parts-4/5-human-review.md"
   },
   "decisions": [
     {
@@ -290,6 +298,13 @@
       "by": "orchestrator",
       "decision": "정본 지문 재기록 — main 들여오며 바뀐 build-components.ts 는 buildFooter 한 줄(6611)뿐, 4종 빌더와 무관해 검증 유지",
       "basis": "git diff -U0 34696013 -- build-components.ts → @@ -6611 buildFooter"
+    },
+    {
+      "id": "D-15",
+      "at": "2026-10-19",
+      "by": "orchestrator (river 위임)",
+      "decision": "C-3 구분선 data-inset 옵션 제거 — 정본 buildDivider 는 들여쓰기를 부품 축으로 두지 않고 담는 목록이 정한다. 변형 구성은 정확 대조 대상이며, 개발 관점에서도 같은 효과의 길을 하나(담는 쪽 여백)로 둔다. 배포본 0.26.0(minor), manifest 에 이행 메모.",
+      "quote": "개발 기준으로 맞는 쪽으로 정해줘"
     }
   ],
   "handoff": {

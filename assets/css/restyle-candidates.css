@@ -58,7 +58,7 @@
 [data-s1-cand="data-tag"][data-solid="on"][data-tone="red"]  { background: var(--color-tag-solid-bg-red);  border-color: var(--color-tag-solid-bg-red);  color: var(--color-tag-solid-label-red); }
 
 /* ══ 2. Divider (구분선) ═══════════════════════════════
-   축: data-axis=x|y · data-weight=default|strong · data-inset=none|text
+   축: data-axis=x|y · data-weight=default|strong
    색은 선 토큰 두 개가 정한다 — 기본선은 --color-line-default(gray/100),
    표 위·아래 같은 강한 선은 --color-line-strong(gray/800).
    파란 선(--color-line-blue)은 쓰지 않는다(river 2026-09-29).
@@ -85,9 +85,6 @@
   width: var(--border-width-default);
 }
 [data-s1-cand="divider"][data-axis="y"][data-weight="strong"] { width: var(--border-width-strong); }
-
-/* 글자 줄에 맞춰 좌우를 들여 쓰는 형태 — 목록 안 구분선에 쓴다 */
-[data-s1-cand="divider"][data-inset="text"] { width: auto; margin-inline: var(--spacing-20); }
 
 /* ══ 3. LNB (사이드바 메뉴) ═══════════════════════════
    축
