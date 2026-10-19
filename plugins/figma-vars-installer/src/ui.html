@@ -869,6 +869,8 @@
     </div>
     <div class="footer">
       <div class="selected-info"><b id="picked-count">0</b>개 항목 선택됨</div>
+      <!-- 고친 뒤 바로 다시 볼 수 있게 — 보조 버튼으로 적용 버튼 왼쪽에(river 지시 2026-10-19) -->
+      <button id="btn-color-reinspect" type="button">다시 검사</button>
       <button class="primary" id="btn-apply-selected" disabled>선택 항목 적용</button>
     </div>
   </div>
@@ -1734,6 +1736,9 @@ $("#btn-audit").addEventListener("click", () => {
 });
 
 $('#btn-component-reinspect').addEventListener('click', () => {
+  startAuditInspection('details');
+});
+$('#btn-color-reinspect').addEventListener('click', () => {
   startAuditInspection('details');
 });
 
