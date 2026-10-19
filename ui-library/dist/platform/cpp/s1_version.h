@@ -4,7 +4,7 @@
 #ifndef S1_VERSION_H
 #define S1_VERSION_H
 
-#define S1_UI_VERSION "0.25.0"
+#define S1_UI_VERSION "0.25.1"
 #define S1_UI_RELEASED_AT "2026-10-19"
 #define S1_UI_CANONICAL_FINGERPRINT "0355d63d1dcb6b68d01c8db5adc618f811faf403b39d2a8aff8cde7f7e2beae5"
 

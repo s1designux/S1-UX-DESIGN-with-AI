@@ -27,7 +27,8 @@
   display: flex;
   flex-direction: column;
   font-family: "Pretendard Variable", "Pretendard", sans-serif;
-  padding: var(--spacing-12) var(--spacing-12) var(--spacing-16);
+  /* 오른쪽 여백은 테두리 두께만큼 줄인다 — Figma 는 선을 안쪽에 그려 자리를 차지하지 않는다(river 2026-10-19). */
+  padding: var(--spacing-12) calc(var(--spacing-12) - var(--border-width-default)) var(--spacing-16) var(--spacing-12);
   transition: width .18s ease;
   width: 240px;
 }
@@ -37,7 +38,7 @@
 }
 
 [data-s1-component="lnb"][data-state="collapsed"] {
-  padding-inline: var(--spacing-8);   /* 80 − 8×2 = 64 — 접힌 칸 폭 */
+  padding-inline: var(--spacing-8) calc(var(--spacing-8) - var(--border-width-default));   /* 80 − 8×2 = 64 — 접힌 칸 폭(오른쪽은 테두리만큼 줄여 내용 64 유지) */
   width: var(--sizing-80);            /* 원본(60)보다 넓힌다 — 메뉴명이 잘리지 않게(river 2026-09-30) */
 }
 

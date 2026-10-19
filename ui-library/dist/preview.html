@@ -4116,7 +4116,8 @@
   display: flex;
   gap: var(--spacing-10);
   margin: 0;
-  padding: var(--spacing-16) var(--spacing-16) var(--spacing-16) var(--spacing-20);
+
+  padding: calc(var(--spacing-16) - var(--border-width-default)) calc(var(--spacing-16) - var(--border-width-default)) calc(var(--spacing-16) - var(--border-width-default)) calc(var(--spacing-20) - var(--border-width-default));
   text-align: left;
   transition: background-color .18s ease;
   width: 100%;
@@ -4124,6 +4125,10 @@
 
 [data-s1-component="expandable-card"] [data-s1-part="header"]:hover:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
   background: var(--color-bg-level-1);
+}
+
+[data-s1-component="expandable-card"] [data-s1-part="header"][aria-expanded="true"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
+  padding-bottom: var(--spacing-16);
 }
 
 [data-s1-component="expandable-card"] [data-s1-part="header"][aria-expanded="true"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))),
@@ -4222,12 +4227,12 @@
   gap: var(--spacing-10);
   min-height: 0;
   overflow: hidden;
-  padding: 0 var(--spacing-16) 0 var(--spacing-20);
+  padding: 0 calc(var(--spacing-16) - var(--border-width-default)) 0 calc(var(--spacing-20) - var(--border-width-default));
   transition: padding .22s ease;
 }
 
 [data-s1-component="expandable-card"] [data-s1-part="panel-wrap"][data-open="true"] [data-s1-part="panel"]:where(:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) *:not([data-s1-component="expandable-card"] [data-s1-component]:not([data-s1-component="expandable-card"]) [data-s1-component="expandable-card"] *))) {
-  padding: var(--spacing-16) var(--spacing-16) var(--spacing-16) var(--spacing-20);
+  padding: var(--spacing-16) calc(var(--spacing-16) - var(--border-width-default)) calc(var(--spacing-16) - var(--border-width-default)) calc(var(--spacing-20) - var(--border-width-default));
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -4254,7 +4259,8 @@
 
   letter-spacing: var(--letter-spacing-normal);
   line-height: 1;
-  padding: var(--spacing-6) var(--spacing-8);
+
+  padding: var(--spacing-6) calc(var(--spacing-8) - var(--border-width-default));
   white-space: nowrap;
 }
 
@@ -4344,7 +4350,8 @@
   display: flex;
   flex-direction: column;
   font-family: "Pretendard Variable", "Pretendard", sans-serif;
-  padding: var(--spacing-12) var(--spacing-12) var(--spacing-16);
+
+  padding: var(--spacing-12) calc(var(--spacing-12) - var(--border-width-default)) var(--spacing-16) var(--spacing-12);
   transition: width .18s ease;
   width: 240px;
 }
@@ -4354,7 +4361,7 @@
 }
 
 [data-s1-component="lnb"][data-state="collapsed"] {
-  padding-inline: var(--spacing-8);
+  padding-inline: var(--spacing-8) calc(var(--spacing-8) - var(--border-width-default));
   width: var(--sizing-80);
 }
 
@@ -4996,7 +5003,7 @@
       <h1>S1 UI 컴포넌트 미리보기 — 35종</h1>
       <p>이 페이지는 배포본에 들어 있는 마크업을 그대로 얹어 그린 것입니다. 여기 보이는 모습이 실제 모습입니다.<br>
          React·Vue 는 제목의 이름을 그대로 부르면 됩니다. 크기·변형은 각 이름 옆에 적힌 값만 쓸 수 있습니다.</p>
-      <p class="fingerprint">버전 0.25.0 · 정본 지문 0355d63d1dcb6b68d01c8db5adc618f811faf403b39d2a8aff8cde7f7e2beae5</p>
+      <p class="fingerprint">버전 0.25.1 · 정본 지문 0355d63d1dcb6b68d01c8db5adc618f811faf403b39d2a8aff8cde7f7e2beae5</p>
     </div>
     <nav class="index">
         <a href="#input">S1Input</a>

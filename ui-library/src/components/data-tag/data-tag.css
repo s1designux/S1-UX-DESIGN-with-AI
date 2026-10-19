@@ -21,7 +21,8 @@
   /* 글자를 세로 가운데에 앉히려고 1 로 둔다 — 130% 를 쓰면 Pretendard 메트릭 때문에 살짝 위로 뜬다(river 2026-09-29). */
   letter-spacing: var(--letter-spacing-normal);
   line-height: 1;
-  padding: var(--spacing-6) var(--spacing-8);
+  /* 가로 여백은 테두리 두께만큼 줄인다 — Figma 는 선을 안쪽에 그려 자리를 차지하지 않는다(river 2026-10-19). 세로(높이 26)는 D-11 로 유지. */
+  padding: var(--spacing-6) calc(var(--spacing-8) - var(--border-width-default));
   white-space: nowrap;
 }
 

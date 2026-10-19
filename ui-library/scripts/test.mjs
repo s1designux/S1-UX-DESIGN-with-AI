@@ -669,7 +669,7 @@ for (const id of componentIds) {
   }
   if (id === "expandable-card") {
     if (manifest.jsRequired !== true) failures.push("expandable-card must declare its runtime (open/close)");
-    if (!css.includes("padding: var(--spacing-16) var(--spacing-16) var(--spacing-16) var(--spacing-20);")) failures.push("expandable-card padding must be top16/right16/bottom16/left20 (river E option 2026-09-30)");
+    if (!css.includes("padding: calc(var(--spacing-16) - var(--border-width-default)) calc(var(--spacing-16) - var(--border-width-default)) calc(var(--spacing-16) - var(--border-width-default)) calc(var(--spacing-20) - var(--border-width-default));") || !css.includes("padding: var(--spacing-16) calc(var(--spacing-16) - var(--border-width-default)) calc(var(--spacing-16) - var(--border-width-default)) calc(var(--spacing-20) - var(--border-width-default));")) failures.push("expandable-card padding must be top16/right16/bottom16/left20 minus the inside-drawn border (river E option 2026-09-30 · border-inside 2026-10-19)");
     if (/\[data-theme="dark"\][^{]*expandable-card[^{]*\{[^}]*\bcolor:/.test(css)) failures.push("expandable-card must not override text color per theme — the text step carries light/dark (river 2026-09-30)");
     if (!/\[data-part="caption"\]|\[data-s1-part="caption"\]\s*\{[^}]*--color-text-body-tertiary/.test(css)) failures.push("expandable-card caption must use the text step text/body/tertiary (river 2026-09-30)");
     if (!css.includes("var(--radius-card-md)") || !css.includes("var(--color-bg-level-2)")) failures.push("expandable-card needs radius/card/md and bg/level-2 panel");

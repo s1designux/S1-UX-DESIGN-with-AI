@@ -66,7 +66,7 @@
   "workflowStatus": "in-progress",
   "uiLibraryStatus": "approved",
   "lastCompletedCheckpoint": 3,
-  "nextAction": "남은 것: river 결정 C-1·C-3(verify-f/decisions.html) → 반영·델타 재검증 → complete. C-2 해소(D-11).",
+  "nextAction": "남은 것: river 결정 C-3(구분선 data-inset 옵션) → 반영 → complete.",
   "ownership": {
     "currentActor": "orchestrator",
     "startedAt": "2026-09-29T00:00:00+09:00",
@@ -76,12 +76,12 @@
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "ff7fbdb30bf167a2e324619d3d019f2d5c6d251d916bcfaa66d77af8b51f030b"
+      "sha256": "bf554394f88448477c06153da07fb1ace9b2aceabf55019acb9117455fd77916"
     },
     {
       "role": "token-values",
       "path": "plugins/figma-vars-installer/src/vars-data.ts",
-      "sha256": "7b171e55bb86f1e98f176130662e07c3216773f09320eb107ddd9a19d6265885"
+      "sha256": "89727e6a19d3780cdef36181de081fe957114b490342a4f1f44a0c2cf616a123"
     },
     {
       "role": "text-styles",
@@ -91,7 +91,7 @@
     {
       "role": "approved-prototype",
       "path": "assets/css/restyle-candidates.css",
-      "sha256": "2a67f9027c3490f5c9fc7ee98d76125675b0aea3c5a5c50173d39b6cef39e15b"
+      "sha256": "856f3d74d2428de8a88fdb866ac62467bceeea2c89c2b7f6950abebee794b4bc"
     }
   ],
   "installerGroups": {
@@ -125,7 +125,7 @@
     {
       "id": "B-4",
       "component": "lnb·expandable-card·data-tag·divider",
-      "what": "독립 검증 HOLD 2건(C-1 테두리 자리 차지 1px · C-3 구분선 data-inset 옵션) — C-2 는 D-11 로 해소",
+      "what": "독립 검증 HOLD 1건(C-3 구분선 data-inset 옵션) — C-1 은 D-12 로 반영, C-2 는 D-11 로 해소",
       "impact": "검증 PASS 기록이 없어 complete 로 닫지 못한다",
       "needs": "river 결정 — verify-f/decisions.html"
     }
@@ -173,7 +173,8 @@
         "verify-f/consumer-bundle-pc-tall-light.png",
         "verify-f/consumer-bundle-pc-tall-dark.png"
       ],
-      "openHold": "C-1 테두리 자리 차지(1px) · C-3 구분선 data-inset 옵션 — river 결정 대기. C-2 는 D-11(웹·Figma 의도적 차이 유지)로 해소."
+      "openHold": "C-3 구분선 data-inset 옵션 — river 결정 대기. C-1 D-12 반영(전수 재검증 대기), C-2 D-11 해소.",
+      "fullPass2": "2026-10-19 전수 재검증(D-13 이후) — LNB·Expandable Card PASS(C-1 해소), Data Tag FAIL A-5(안내 화면 상태표에 Gray 열 누락) → 오케스트레이터가 ui-library-guide.js tones·설명 문구 정정, 렌더로 12칸 확인. Divider HOLD C-3."
     }
   },
   "artifacts": {
@@ -268,6 +269,27 @@
       "by": "river",
       "decision": "C-2 뱃지 높이 — 웹 26px(line-height 1)을 유지한다. 웹에서 글자가 위로 뜨는 문제 때문에 웹과 Figma 를 일부러 다르게 만든 것이다(Figma 27.6px 그대로).",
       "quote": "버튼 내 텍스트가 웹에서 이상하게 나와서 일부러 웹과 피그마를 다르게 제작함."
+    },
+    {
+      "id": "D-12",
+      "at": "2026-10-19",
+      "by": "river",
+      "decision": "C-1 테두리 — CSS border(border-box) 유지 + 안쪽 여백을 테두리 두께만큼 줄여(calc(spacing − border-width-default)) Figma 정본과 위치·크기를 같게 맞춘다. box-shadow/outline 선 흉내는 쓰지 않는다(고대비 모드·포커스/그림자 충돌).",
+      "quote": "응 그렇게 맞춰줘"
+    },
+    {
+      "id": "D-13",
+      "at": "2026-10-19",
+      "by": "orchestrator",
+      "decision": "정본 지문 재기록 — 직전 기록 이후 정본 변경 3건 중 4종에 닿는 것은 dcbf9ac5(Data Tag 회색 Color 축 추가·채움 글자 색깔별, river 승인 2026-10-13) 하나다. 359ce35f(설치기 다크 모드 고정)·a9f197e0(하단 탭 아이콘·입력칸 안내 문구)는 4종 빌더와 무관. Data Tag 가 바뀌었으므로 이번 검증은 델타가 아닌 전수로 한다.",
+      "basis": "git log fcb6a0a9..HEAD -- build-components.ts vars-data.ts restyle-candidates.css 의 hunk 범위(buildDataTag 7303~7331 · setMode/buildAllComponents · buildInput/makeIconInstance)"
+    },
+    {
+      "id": "D-14",
+      "at": "2026-10-19",
+      "by": "orchestrator",
+      "decision": "정본 지문 재기록 — main 들여오며 바뀐 build-components.ts 는 buildFooter 한 줄(6611)뿐, 4종 빌더와 무관해 검증 유지",
+      "basis": "git diff -U0 34696013 -- build-components.ts → @@ -6611 buildFooter"
     }
   ],
   "handoff": {
