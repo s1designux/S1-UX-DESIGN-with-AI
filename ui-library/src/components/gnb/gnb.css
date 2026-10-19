@@ -3,6 +3,7 @@
    정본은 바 폭을 1920 고정으로 표현하지만 웹은 full-width 반응형이다
    (viewport 1280/1440/1920 는 full-width 반응형으로 통합 — registry gnb.json 선언, river 승인). */
 [data-s1-component="gnb"] {
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
   align-items: center;
   background: var(--color-navigation-bg);
   box-sizing: border-box;
@@ -159,7 +160,10 @@
 }
 
 /* ── 유틸리티 — 언어·계정·메뉴. 정본 buildGNBUtilIcon 은 GNB 사이즈와 무관하게
-   32×32 프레임(24 glyph) 고정 1종만 만든다(:3157-3230, sk 를 받지 않는다) —
+   32×32 프레임 안에 24 아이콘을 가운데 둔 1종만 만든다(buildGNBUtilIcon iconBox ·
+   buildLanguageIcon globe 프레임, sk 를 받지 않는다). 아이콘 SVG 는 24 viewBox 안에
+   여백을 이미 품고 있으므로 아이콘 요소는 24 로 그린다 — 32 로 그리면 그림이 4/3 배 커진다.
+   (:3157-3230 · md·sm·xsm 공통) —
    registry gnb.json 의 xsm 전용 축소값(24/18)은 정본 근거가 없어 따르지 않는다. */
 [data-s1-component="gnb"] [data-s1-part="util"] {
   align-items: center;
@@ -208,26 +212,28 @@
   background-color: var(--color-icon-gray-dark);
   display: block;
   flex: none;
-  height: var(--sizing-32);
+  height: var(--sizing-24);
+  /* 정본 globe 프레임 32 안에 24 아이콘 가운데 — 사방 4 여백을 margin 으로 만든다. */
+  margin: var(--spacing-4);
   -webkit-mask: url("../assets/icons/globe.svg") center / contain no-repeat;
   mask: url("../assets/icons/globe.svg") center / contain no-repeat;
-  width: var(--sizing-32);
+  width: var(--sizing-24);
 }
 
 [data-s1-component="gnb"] [data-s1-part="account-icon"] {
   background-color: var(--color-icon-gray-dark);
   display: block;
-  height: var(--sizing-32);
+  height: var(--sizing-24);
   -webkit-mask: url("../assets/icons/account.svg") center / contain no-repeat;
   mask: url("../assets/icons/account.svg") center / contain no-repeat;
-  width: var(--sizing-32);
+  width: var(--sizing-24);
 }
 
 [data-s1-component="gnb"] [data-s1-part="menu-icon"] {
   background-color: var(--color-icon-gray-dark);
   display: block;
-  height: var(--sizing-32);
+  height: var(--sizing-24);
   -webkit-mask: url("../assets/icons/menu.svg") center / contain no-repeat;
   mask: url("../assets/icons/menu.svg") center / contain no-repeat;
-  width: var(--sizing-32);
+  width: var(--sizing-24);
 }

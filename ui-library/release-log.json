@@ -5,10 +5,235 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.18.4",
-  "releasedAt": "2026-10-02",
-  "canonicalFingerprint": "783486db3584b2bbee00a5fc50150916a1ce3b48c92369ccf8d0e6c6a6d0fd8c",
+  "version": "0.24.2",
+  "releasedAt": "2026-10-14",
+  "canonicalFingerprint": "74173580fab2dea369607efb6164a895d246c9da4cb993284b35d04f2e9b7db8",
   "releases": [
+    {
+      "version": "0.24.2",
+      "date": "2026-10-14",
+      "kind": "patch",
+      "canonicalFingerprint": "74173580fab2dea369607efb6164a895d246c9da4cb993284b35d04f2e9b7db8",
+      "components": [
+        {
+          "id": "input",
+          "from": "0.3.9",
+          "to": "0.3.10"
+        },
+        {
+          "id": "mobile-bottom-nav",
+          "from": "0.4.1",
+          "to": "0.4.2"
+        },
+        {
+          "id": "mobile-header",
+          "from": "0.2.5",
+          "to": "0.2.6"
+        }
+      ],
+      "deliveryFingerprint": "157920f87d0eeb4e1bbd60d6437e32bb13b80ed1b437c45e9e80c3817a461688"
+    },
+    {
+      "version": "0.24.1",
+      "date": "2026-10-14",
+      "kind": "patch",
+      "canonicalFingerprint": "53db1bd8eb3a824ca156e744fe04866dce887b81f21bad0194a061f7f608e83d",
+      "components": [
+        {
+          "id": "data-tag",
+          "from": "0.2.0",
+          "to": "0.2.1"
+        }
+      ],
+      "deliveryFingerprint": "393290abc7cfb7aa203a3bc0173fed8344a3577a10e94b40ae3490522c37365d"
+    },
+    {
+      "version": "0.24.0",
+      "date": "2026-10-14",
+      "kind": "minor",
+      "canonicalFingerprint": "e4df69db429fe61b8840724bf07362abb6beb5017c00bdda90cc03e79ffc56ef",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "1773146a38aebbf72e74245ec0c5a13fd99d84c132e03398c5b6fe63bc1dd6f5",
+      "changes": [
+        "데이터 태그에 회색 뱃지를 추가하고 채움형 글자 색을 색깔별로 나눴습니다(다른 작업에서 0.23.0 으로 냈던 변경 — React판 0.23.x 와 번호가 겹쳐 0.24.0 으로 합쳐 기록).",
+        "React판 0.23.0~0.23.2 개선(데이터로 그리는 부품·하위호환)과 0.22.1 GNB 유틸 아이콘 24 수정이 함께 들어 있습니다."
+      ]
+    },
+    {
+      "version": "0.23.2",
+      "date": "2026-10-14",
+      "kind": "patch",
+      "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "bd77246c0a6071fa48d27dbfe8892c187c96f5492b142a381dc1a8c771941ae5",
+      "changes": [
+        "0.22.1 의 GNB 유틸 아이콘 24×24 수정을 0.23 줄기에 합쳤습니다(React판 개선과 함께 배포)."
+      ]
+    },
+    {
+      "version": "0.23.1",
+      "date": "2026-10-13",
+      "kind": "patch",
+      "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "5d1b06f01d518d1b3fb9cbcb0f119b5329f7874ac96b62d1ed46ebf3e2292303",
+      "changes": [
+        "0.22.0 코드가 그대로 도는 길을 복원했습니다(0.23.0 검증에서 옛 코드가 달라진 것을 찾아 고침). 옛 슬롯 이름은 새 이름의 별칭으로 계속 받습니다: 모달·모달 콘텐츠 parts.label → 취소·확인 단추 둘 다, 바텀시트 parts.label → applyLabel(견본 줄 글자도 예전처럼 따라감), 접힘 카드 parts.title·subtitle·body·note·caption → 펼침 판 안쪽까지, LNB parts.item·itemIcon·itemToggle(글자 포함)은 items 를 안 줘도·줘도 모든 항목에 같게. 새 이름(prop·parts)을 같이 주면 새 이름이 이깁니다. 리스트 행 스위치형은 parts.chevron 에 준 토글을 예전처럼 씁니다.",
+        "고장 수리: 드롭다운에 아무것도 안 주거나 값을 안 주면 처음에 켜진 줄(최신순)이 마운트 직후 꺼지던 것(드롭다운·필터 칩·셀렉트 공통), 리스트 행 스위치의 기본이 켜짐이던 것(이제 꺼진 채 시작, checked·defaultChecked 를 따름), 스위치 줄에 name 을 줘도 폼에 안 실리던 것(켜져 있을 때 \"on\").",
+        "견본 글자 규칙: 견본은 내용 prop(label·children·title·message·description …)을 하나도 안 줬을 때만 그려집니다. 하나라도 주면 안 준 설명 글자 칸은 비거나 그려지지 않습니다(꼭 필요한 단추 글자 취소·확인·적용과 aria-label 은 기본 글자가 남음)(예: 리스트 행 값 표시형에 title 만 주면 \"라이트\" 가 끼지 않음). parts 로만 쓰던 0.22.0 코드는 예전 그대로 견본이 남습니다.",
+        "타입이 엄격해졌다는 안내(0.23.0 부터): 아무 prop 이나 통과시키던 열린 타입을 닫았기 때문에 TypeScript 프로젝트는 0.22.0 코드에서 타입 오류가 새로 보일 수 있습니다(동작은 같음). 흔한 고침 — 오타 난 prop 이름은 타입이 가리키는 이름으로, 슬롯 attrs 의 이벤트 핸들러는 DOM 의 MouseEvent 대신 React 의 MouseEvent 로, aria-* 는 문자열도 받도록 넓혔습니다(aria-checked={String(on)} 도 통과, 표준 boolean·\"true\"·\"false\"·\"mixed\" 도 통과).",
+        "onChange / onValueChange 구분을 설명서와 타입 정의에 분명히 적었습니다: 고르는 부품의 onChange 는 0.22.0 과 같은 이벤트(CustomEvent, event.detail.value), 값만 받는 새 길은 onValueChange(value, detail). 입력칸·체크박스·라디오의 onChange 는 브라우저 표준 ChangeEvent 입니다."
+      ]
+    },
+    {
+      "version": "0.23.0",
+      "date": "2026-10-13",
+      "kind": "minor",
+      "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71",
+      "components": [],
+      "deliveryFingerprint": "c943f143751695092eb018c6db03da54045b583bbc08b37bb2c9dead307d06ff",
+      "changes": [
+        "React판을 '모양 견본을 감싼 것' 에서 '실제 데이터로 화면을 만드는 부품' 으로 바꿨습니다(React판 개발자 검수 후속, river 2026-10-13 「응 고쳐줘」). 부품에 아무것도 안 주면 종전과 똑같이 그려지고, 옛 prop 이름·옛 목록 모양({ optionLabel, attrs } 등)·onChange(이벤트)는 그대로 받습니다.",
+        "메뉴·목록·본문·버튼 글자를 props 로 넣습니다. 목록 항목은 모든 부품이 { value, label, disabled? } 한 모양입니다(글자 하나는 값=글자): options(셀렉트·드롭다운·필터 칩·바텀시트) · cells(멀티 토글) · tabs(+panel) · rows · menus(+columns) · items(LNB, children 로 묶음) · columns. children/label 이 버튼·칩·꼬리표·체크의 글자가 되고, 모달·시트·접힘 카드·하위 메뉴·모바일 헤더는 title·message·confirmLabel·cancelLabel 같은 이름 있는 글자 칸을 받습니다. 같은 슬롯 이름이 여러 곳에 겹쳐 들어가던 것을 자리마다 나눴습니다.",
+        "값은 value/defaultValue + onValueChange(value), 열림은 open/defaultOpen/onOpenChange(open, detail.reason), 켜짐은 selected·checked + onSelectedChange·onCheckedChange, 쪽은 page/totalPages/onPageChange. 모달·모달 콘텐츠·바텀시트·셀렉트·날짜·시간·필터 칩·접힘 카드를 React 상태로 열고 닫고, 화면이 정한 변화는 되알리지 않습니다. 날짜·시간·페이지네이션에 값을 넣고 읽을 수 있습니다(시간은 24시간 \"HH:mm\").",
+        "고장 수리: 모달·모달 콘텐츠에 여는 방법이 없던 것, 바텀시트 open 때 onOpen 이 안 오던 것, 셀렉트·정렬 칩의 모든 줄 값이 같아지던 것, 리스트 행 스위치형·값 표시형이 깨지던 것(종류마다 마크업을 따로 그림), 검색창 X 를 눌러도 React 상태가 안 비워지던 것, 여러 줄 입력에 처음 값을 주면 앱이 멈추던 것, 모바일 시간 선택이 StrictMode 에서 두 번 반응하던 것, ref 를 주면 동작이 꺼지던 것, GNB 하위 메뉴가 안 펼쳐지던 것, 폼에 셀렉트·날짜·시간·토글·칩·멀티 토글 값이 안 실리던 것.",
+        "ref 는 루트 DOM 으로 전달되고 안쪽 배선과 합쳐집니다(forwardRef). 훅을 쓰는 파일은 전부 \"use client\" 라 Next.js 서버 컴포넌트에서 import 해도 됩니다. name 을 주면 폼 전송에 값이 실립니다. 이벤트 이름은 React 대소문자(onBeforeChange · onSelectionChange)이고 옛 이름도 함께 받습니다. 입력칸은 breakName(pc·mobile)과 type(text·password·search)을 나눴습니다(옛 breakName=\"password-mobile\" 도 받습니다).",
+        "타입 정의: 아무 prop 이나 통과시키던 인덱스 시그니처를 없애고 루트 요소의 HTML 속성만 열어 오타를 잡습니다(data-*·aria-* 는 그대로 가능). 이벤트는 detail 모양까지 적었고, S1_VERSION·S1_RELEASED_AT 타입을 추가했습니다. 체크박스·라디오에 뜻 없던 prop 타입을 걷어냈습니다.",
+        "설명서: 바깥·안쪽 README 가 같은 상대 경로(./s1-ui/…)와 같은 CSS 목록을 알려 주고, 글꼴·다크 모드·바탕 스타일(s1-ui.base.css 를 React 묶음에 담음)·칩 묶음·시트 고르기·이벤트 값 표·Next.js·TypeScript 를 안내합니다. 예시는 전부 그대로 붙여 넣으면 빌드되고 서버에서 그려지며 누르면 설명대로 움직입니다. 부품 수는 배포본에서 읽어 채웁니다.",
+        "웹판은 동작이 그대로이고 React 가 쓸 작은 통로만 더했습니다: 입력칸 지우기가 브라우저 기본 setter 로 비움(React 제어형 입력이 변화를 놓치지 않음), 드롭다운·필터 칩 value/setValue(필터 칩은 data-value·data-name 도), 시간 선택 setValue·data-value·data-placeholder, 셀렉트 data-placeholder, 모바일 시간 선택의 닫기 단추·바탕 듣기가 destroy 때 떼지지 않던 누수. 규칙 검사기(s1-ui-lint)는 소스 폴더 안의 묶음 폴더 자신을 검사에서 뺍니다."
+      ]
+    },
+    {
+      "version": "0.22.1",
+      "date": "2026-10-13",
+      "kind": "patch",
+      "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71",
+      "components": [
+        "gnb"
+      ],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "changes": [
+        "GNB 유틸 아이콘(지구본·계정·메뉴)을 24×24 로 그립니다 — 그동안 32 로 그려 그림이 4/3 배 컸습니다. 계정·메뉴 버튼 칸 32×32 는 그대로, 언어 버튼의 지구본은 32 칸 안에 24 아이콘(사방 4 여백)으로 Figma 와 같습니다. md·sm·xsm 공통."
+      ],
+      "deliveryFingerprint": "970c027e4c5b48f743f411adedfee41ae55aef0ff7ace0f011b7342e354c73f0"
+    },
+    {
+      "version": "0.22.0",
+      "date": "2026-10-13",
+      "kind": "minor",
+      "canonicalFingerprint": "3293d4203abdfd3eecb91c74299c2fac5f94cd3972c861270f06895a17f69c71",
+      "components": [
+        {
+          "id": "chip",
+          "from": "0.2.3",
+          "to": "0.3.0"
+        },
+        {
+          "id": "tab",
+          "from": "0.3.0",
+          "to": "0.4.0"
+        },
+        {
+          "id": "pagination",
+          "from": "0.3.0",
+          "to": "0.4.0"
+        },
+        {
+          "id": "mobile-bottom-nav",
+          "from": "0.3.6",
+          "to": "0.4.0"
+        },
+        {
+          "id": "time-picker",
+          "from": "0.4.0",
+          "to": "0.5.0"
+        },
+        {
+          "id": "date-picker",
+          "from": "0.3.0",
+          "to": "0.4.0"
+        },
+        {
+          "id": "bottom-sheet-option",
+          "from": "0.2.6",
+          "to": "0.3.0"
+        },
+        {
+          "id": "bottom-sheet",
+          "from": "0.2.6",
+          "to": "0.3.0"
+        }
+      ],
+      "deliveryFingerprint": "a67aee81a129bb50decc8b8df94a527e8c0b0471ba34c49c8fdf80f86ab4070e",
+      "changes": [
+        "고르기를 부품이 알아서 합니다(river 2026-10-13 「전부 부품이 알아서」). 표시가 없으면 종전과 똑같이 아무것도 바뀌지 않습니다.",
+        "칩: 칩을 감싼 요소에 data-s1-select=\"single\" 을 달면 하나만 켜집니다. 시트 목록: 목록 묶음에 data-s1-select=\"single\"(+고른 뒤 닫으려면 data-s1-close-on-select) — 줄을 누르거나 ↑↓·Enter/Space 로 고르고, 시트를 연 요소(data-s1-open) 안 [data-s1-part=\"value\"] 글자가 바뀝니다. 하단 탭: 누르면 활성 탭이 옮겨갑니다(2026-09-02 '호스트가 정적으로 설정'을 뒤집음).",
+        "세 부품 모두 먼저 취소 가능한 beforechange 를 내고(화면이 막을 수 있음) 그다음 change 를 냅니다: s1:chip:*, s1:bottom-sheet-option:*, s1:mobile-bottom-nav:*. 화면이 직접 정하려면 setSelected·setActive·setGroupValue·setValue(이벤트 없음).",
+        "React·RN: selected(제어형)·defaultSelected·onSelectedChange, Vue: v-model·defaultSelected. 제어형에서는 값이 바뀔 때만 모양이 바뀝니다(런타임이 껍데기 몰래 상태를 뒤집지 않음).",
+        "React Native: 시트 줄은 켜짐 상태에 따라 체크 조각이 붙고 사라지며(틀을 현재 상태로 고름), onBeforechange(event.preventDefault 로 막기)·onChange 가 실제로 연결되고, 칩 하나만 켜기는 S1ChipGroup(value·onChange)으로 묶습니다. React 하단 탭은 처음 모양은 그대로이고 첫 탭에 하나만 남습니다.",
+        "React Native: 비활성 시트 줄(data-state=disabled·disabled)은 컨트롤러가 덮어쓰지 않아 비활성 모양 그대로이고 눌러도 반응하지 않습니다. 시트 줄 컨트롤러는 웹처럼 Text·Radio 에만 붙습니다(List·Checkbox 제외)."
+      ]
+    },
+    {
+      "version": "0.21.0",
+      "date": "2026-10-13",
+      "kind": "minor",
+      "canonicalFingerprint": "39e664b6eb97c6a20f8773b0ea73703654ae1e58aaab759b17f366335d9cfe17",
+      "components": [
+        {
+          "id": "tab",
+          "from": "0.2.6",
+          "to": "0.3.0"
+        },
+        {
+          "id": "pagination",
+          "from": "0.2.4",
+          "to": "0.3.0"
+        },
+        {
+          "id": "time-picker",
+          "from": "0.3.17",
+          "to": "0.4.0"
+        },
+        {
+          "id": "date-picker",
+          "from": "0.2.12",
+          "to": "0.3.0"
+        }
+      ],
+      "deliveryFingerprint": "8d7e239a6b3d8e3ed0de55a5327ba75bf76648a970711a28fcfa06f6a7f6080d",
+      "changes": [
+        "페이지네이션 이동 버튼 4개가 정해졌습니다(river 2026-10-13): |< 이전 페이지 묶음 · < 이전 페이지 · > 다음 페이지 · >| 다음 페이지 묶음. |< >| 는 이전/다음 묶음의 첫 쪽으로 가며(종전엔 맨 처음/맨 끝 쪽), 첫/마지막 묶음에서는 막힙니다. 이름(aria-label)도 같이 바뀌었고, 눌러서 막힌 버튼 자리의 초점은 현재 쪽 번호 버튼에 남습니다. 마크업의 data-s1-action 이름(first·last)은 그대로입니다.",
+        "날짜 선택(date-picker)을 열면 키보드 초점이 날짜 칸으로 갑니다(PC 팝오버·모바일 시트 공통): 골라 둔 날짜(기간이면 시작일), 없으면 오늘, 오늘이 안 보이는 달이면 그 달의 1일.",
+        "종류를 고르는 속성 이름(data-variant·data-type·data-footer·data-mode·data-tone·data-axis·data-icon)은 그대로 두고, README와 부품별 설명서(components/*.md)에 속성·값·모양을 적은 표를 넣었습니다."
+      ]
+    },
+    {
+      "version": "0.20.0",
+      "date": "2026-10-12",
+      "kind": "minor",
+      "canonicalFingerprint": "783486db3584b2bbee00a5fc50150916a1ce3b48c92369ccf8d0e6c6a6d0fd8c",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "b8fcf23fbd46a8a42aee6da8090608896f8864340209b570844dbc0440d9947d",
+      "changes": [
+        "Vue 껍데기가 인스턴스마다 안쪽 id(와 그것을 가리키는 aria-*·for·data-s1-open)에 접두사를 붙입니다 — 한 페이지에 같은 껍데기를 여러 개 놓아도 id 가 겹치지 않습니다.",
+        "RN·React·Vue 의 bottom-sheet 껍데기에 open 속성이 생겼습니다(기본 true — 처음부터 보임, open={false} 로 닫음). React·Vue 는 열고 닫을 때 스크롤 잠금·초점·Esc 가 배포본 api 로 함께 따라옵니다(RN 은 보임·숨김만 바뀝니다).",
+        "웹: 모달·바텀시트 열기/닫기 속성(data-s1-open·data-s1-close), 창 안 Esc 는 맨 위 한 겹만 닫기, 페이지네이션 번호 창·총 쪽수, 셀렉트·달력·시간 값 읽기/넣기/폼 전송(data-name), GNB 하위메뉴 겹쳐 뜨기, 부품별 설명서(components/*.md)·README 보강."
+      ]
+    },
+    {
+      "version": "0.19.0",
+      "date": "2026-10-12",
+      "kind": "minor",
+      "canonicalFingerprint": "783486db3584b2bbee00a5fc50150916a1ce3b48c92369ccf8d0e6c6a6d0fd8c",
+      "components": [],
+      "note": "정본은 그대로고 옮기는 코드가 달라졌다(전달본 내용 변경).",
+      "deliveryFingerprint": "f8fb1ad433a03b4737138c3465b6438cf8b5652cbfcdb4a7f1120d7661d1f655"
+    },
     {
       "version": "0.18.4",
       "date": "2026-10-02",
@@ -1892,5 +2117,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "3cf33d09bc18ce5c73dbaf67c1f1eafc8fd3931cc32fa090c5b73ea8ff3353d3"
+  "deliveryFingerprint": "157920f87d0eeb4e1bbd60d6437e32bb13b80ed1b437c45e9e80c3817a461688"
 }

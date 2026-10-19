@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:27c986542853bb669740c784379bd23c9e059ce1bd10136886c5f929bbbeec43",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-10-13T23:36:20.519Z",
+  "notes": "dynamic-page 모드 고정: 개체판 pinMode/unpinMode + primeModeCollections(buildAllComponents·buildTokenSheets), 실패 집계→failed/skipped 노출, repinInstalledDarkSpecs(빌더와 동일 모드·Light 자리 덮음 없음 확인). 문자열판 호출 0건. 모의 실행 mock 개체 키 반영 후 Gate55 통과. 캔버스 육안 미검증."
+}

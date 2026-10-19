@@ -307,12 +307,8 @@
       margin: 0;
     }
     .uilg-gnb-assembled { display: flex; flex-direction: column; min-width: 640px; }
-    /* 패널이 펼쳐질 자리를 미리 비워 둔다(river 지시 2026-09-10) — 세 패널을 같은 칸에 겹쳐 두면
-       슬롯 높이는 가장 높은 패널이 정한다. 닫힌 패널은 자리만 지키고 보이지 않는다
-       (visibility:hidden 은 [hidden] 과 같이 접근성 트리·초점에서도 빠진다). */
-    .uilg-gnb-panel-slot { display: grid; }
-    .uilg-gnb-panel-slot > [data-s1-component="gnb-sub-menu"] { grid-area: 1 / 1; }
-    .uilg-gnb-panel-slot > [data-s1-component="gnb-sub-menu"][hidden] { display: flex; visibility: hidden; }
+    /* 하위메뉴 패널은 본문을 밀지 않고 GNB 바 바로 아래에 겹쳐 뜬다(river 결정 2026-10-12). 안내 칸에서 잘리지 않도록 앉을 높이만 빈 자리로 둔다. */
+    .uilg-gnb-panel-slot { min-height: 280px; }
     /* 판 배경이 흰색이라 흰 칸 위에서는 경계가 안 보인다 — 조립 액션 묶음만 옅은 회색(river 지시 2026-09-10). */
     .review-gnb-action { background: var(--color-bg-level-2); border-radius: 12px; padding: var(--spacing-16); }
     [data-theme="dark"] .review-gnb-action { background: var(--color-bg-level-3); }
@@ -1896,7 +1892,7 @@
         </nav>`;
       const panel = (id, name, columns) =>
         `<div data-s1-component="gnb-sub-menu" data-type="${set.type}" id="${id}" aria-label="${name} ${uniqueId}" hidden>${gnbActionColumnsMarkup(columns)}</div>`;
-      // 판 3개는 자리 예약 슬롯 안에 겹쳐 둔다 — 열고 닫아도 아래 내용이 밀리지 않는다(river 지시 2026-09-10).
+      // 판은 본문을 밀지 않고 바 아래에 겹쳐 뜬다(river 결정 2026-10-12) — 안내 칸은 앉을 높이만 비워 둔다.
       const panels = `<div class="uilg-gnb-panel-slot">${panel(noticeId, "공지사항 하위 메뉴", set.notice)}${panel(serviceId, "서비스 하위 메뉴", set.service)}${panel(statsId, "통계 하위 메뉴", set.stats)}</div>`;
       return `<div class="uilg-gnb-assembled">${bar}${panels}</div>`;
     }
@@ -1927,7 +1923,7 @@
           <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">정본 변형 6가지(Align 2종 × Size 3종) · 메뉴 상태 9가지(Size 3종 × State 3종) · PC 전용 · 바 자체는 JavaScript 없이 동작(하위메뉴를 여닫는 부분만 JavaScript 필요)</p></div>
           <div class="review-group">
             <h4 class="review-group-title">조립 액션 3벌 — Center-Between · SM 바 × 하단메뉴 유형 3가지 (실제로 열립니다)</h4>
-            <p class="review-panel-description"><strong>마우스를 올려 확인하세요.</strong> 각 벌의 세 메뉴에 마우스를 올리면 그 벌의 하단메뉴가 펼쳐집니다. <strong>한 벌 안에서는 세 메뉴가 같은 유형의 판을 엽니다</strong> — 유형은 사이트가 하나 고르는 것이지 메뉴마다 고르는 것이 아닙니다. 마우스를 바·판 밖으로 빼면 닫히고(짧은 유예 있음 — 둘 사이 틈을 지날 때 안 깜빡입니다), <kbd>Tab</kbd> 으로 메뉴에 들어가도 펼쳐지며 <kbd>Esc</kbd> 로 닫으면 초점이 그 메뉴로 돌아옵니다. 한 번에 한 판만 열립니다. 판이 펼쳐질 자리는 미리 비워 두어 열고 닫아도 아래 내용이 밀리지 않으며, 흰 판이 잘 보이도록 이 묶음 배경만 옅은 회색입니다(실제 화면 배경은 아닙니다).</p>
+            <p class="review-panel-description"><strong>마우스를 올려 확인하세요.</strong> 각 벌의 세 메뉴에 마우스를 올리면 그 벌의 하단메뉴가 펼쳐집니다. <strong>한 벌 안에서는 세 메뉴가 같은 유형의 판을 엽니다</strong> — 유형은 사이트가 하나 고르는 것이지 메뉴마다 고르는 것이 아닙니다. 마우스를 바·판 밖으로 빼면 닫히고(짧은 유예 있음 — 둘 사이 틈을 지날 때 안 깜빡입니다), <kbd>Tab</kbd> 으로 메뉴에 들어가도 펼쳐지며 <kbd>Esc</kbd> 로 닫으면 초점이 그 메뉴로 돌아옵니다. 한 번에 한 판만 열립니다. 판은 아래 내용을 밀어내지 않고 바 아래에 겹쳐 뜨며(안내 칸은 판이 앉을 높이만 비워 둡니다), 흰 판이 잘 보이도록 이 묶음 배경만 옅은 회색입니다(실제 화면 배경은 아닙니다).</p>
             ${gnbActionSetsMarkup()}
           </div>
           <hr class="review-separator">
@@ -2675,6 +2671,8 @@
     document.querySelectorAll('[data-s1-component="multi-toggle"]:not([data-review-static])').forEach((root) => S1UI.multiToggle.init(root));
     /* 표도 정적 표본(data-review-static)은 초기화하지 않는다 — 초기화하면 강제 표시한 Hover·선택 칸이 풀린다. */
     document.querySelectorAll('[data-s1-component="table"]:not([data-review-static])').forEach((root) => S1UI.table.init(root));
+    document.querySelectorAll('[data-s1-component="bottom-sheet-option"]:not([data-review-static])').forEach((root) => S1UI.bottomSheetOption.init(root));
+    document.querySelectorAll('[data-s1-component="mobile-bottom-nav"]:not([data-review-static])').forEach((root) => S1UI.mobileBottomNav.init(root));
     /* 모달도 정적 표본(data-review-static)은 초기화하지 않는다 — 초기화하면 배경 스크롤이 잠긴 채 남는다. */
     document.querySelectorAll('[data-s1-component="modal"]:not([data-review-static])').forEach((root) => {
       const opener = root.parentElement?.querySelector("[data-modal-open]");

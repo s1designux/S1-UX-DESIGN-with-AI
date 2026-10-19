@@ -251,7 +251,11 @@ async function runBuild(mod, opts) {
         }
         if (prop === 'setExplicitVariableModeForCollection') {
           return (collectionId, modeId) => {
-            if (collectionId && modeId) state.explicitVariableModes[String(collectionId)] = String(modeId);
+            if (collectionId && modeId) {
+              // 실제 API 는 컬렉션 개체를 받는다 — 키는 그 id(개체가 아니면 받은 값 그대로).
+              const key = typeof collectionId === 'object' && typeof collectionId.id === 'string' ? collectionId.id : String(collectionId);
+              state.explicitVariableModes[key] = String(modeId);
+            }
           };
         }
         // 텍스트 스타일 바인딩 결과를 기록한다. 종전엔 makeStub() 이 삼켜서

@@ -290,8 +290,9 @@ class ItemScope {
 }
 
 class Emitter {
-  constructor({ id, ids, idSlugs, controlNode, variants, sizes, suffix = "" }) {
+  constructor({ id, ids, idSlugs, controlNode, variants, sizes, suffix = "", defaultOpen = false }) {
     this.suffix = suffix;
+    this.defaultOpen = defaultOpen;
     this.id = id;
     this.ids = ids;
     this.idSlugs = idSlugs;
@@ -323,6 +324,7 @@ class Emitter {
     if (part && !isTemplate) pieces.push(`{...(${scope.slotAttrs(part)} ?? {})}`);
     if (isTemplate) pieces.push(`{...${scope.attrs()}}`);
     if (node === this.controlNode) pieces.push("{...controlProps}");
+    if (isRoot && this.defaultOpen) pieces.push("hidden={initialOpen ? undefined : true}");
     if (isRoot) pieces.push("ref={rootRef}", "className={className}", "style={style}", "{...rest}");
     if (isTemplate) pieces.push(`key={keyOf(item${scope.depth}, index${scope.depth})}`);
     if (leaf && !part && isTextOnly(node) && node.children.length) pieces.push(`{...(${leaf.attrs} ?? {})}`);
@@ -527,7 +529,7 @@ export function buildReactComponent({ id, manifest, example, exampleByBreak }) {
     const ids = new Set();
     collectIds(tree, ids);
     const suffix = breaks.length > 1 ? `_${constantName(breakName)}` : "";
-    const emitter = new Emitter({ id, ids, idSlugs: idSlugMap(tree), controlNode: primaryControl(tree), variants, sizes, suffix });
+    const emitter = new Emitter({ id, ids, idSlugs: idSlugMap(tree), controlNode: primaryControl(tree), variants, sizes, suffix, defaultOpen: manifest.htmlContract?.platformDefaultOpen === true });
     const body = emitter.element(tree, { scope: new RootScope(), isRoot: true, indent: "      " });
     return { breakName, body, emitter };
   });
@@ -551,6 +553,10 @@ export function buildReactComponent({ id, manifest, example, exampleByBreak }) {
     ...controlProps,
     ...events.map(({ propName }) => propName),
     hasChildrenSlot ? "children" : null,
+    manifest.htmlContract?.platformDefaultOpen === true ? "open = true" : null,
+    manifest.javascript?.selectable === true ? "selected" : null,
+    manifest.javascript?.selectable === true ? "defaultSelected" : null,
+    manifest.javascript?.selectable === true ? "onSelectedChange" : null,
     "className", "style", "...rest"
   ].filter(Boolean);
 
@@ -565,15 +571,53 @@ ${controlProps.filter((name) => name !== "inputRef").map((name) => `  if (${name
   if (inputRef !== undefined) controlProps.ref = inputRef;
 ` : "";
 
+  const defaultOpen = manifest.htmlContract?.platformDefaultOpen === true;
+  /* 선택형(chip · bottom-sheet-option · mobile-bottom-nav) — river 결정 2026-10-13 「전부 부품이 알아서」.
+     selected 를 주면 제어형: 사용자가 눌러도 부품 모양은 selected 가 바뀔 때만 바뀐다(런타임의 beforechange 를 막고 onSelectedChange 만 부른다).
+     안 주면 부품이 알아서 바꾸고 onSelectedChange 로 알려 준다. defaultSelected 는 처음 값. */
+  const selectable = manifest.javascript?.selectable === true;
+  const keepsApi = defaultOpen || selectable;
+  const selectableEffect = selectable ? `
+  /* 제어형이면 부품이 스스로 모양을 바꾸지 못하게 막고 알리기만 한다. 비제어형이면 바뀐 뒤에 알린다. */
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return undefined;
+    const controlled = selected !== undefined;
+    const before = (event) => { if (controlled) { event.preventDefault(); onSelectedChange?.(event.detail?.selected ?? true); } };
+    const after = (event) => { if (!controlled) onSelectedChange?.(event.detail?.selected ?? true); };
+    root.addEventListener(${literal(`s1:${id}:beforechange`)}, before);
+    root.addEventListener(${literal(`s1:${id}:change`)}, after);
+    return () => { root.removeEventListener(${literal(`s1:${id}:beforechange`)}, before); root.removeEventListener(${literal(`s1:${id}:change`)}, after); };
+  });
+
+  /* 값이 바뀌면 이벤트 없이 부품에 넣는다(제어형). 처음 값(defaultSelected)도 한 번 넣는다. */
+  useEffect(() => {
+    const api = apiRef.current;
+    if (!api) return;
+    if (selected !== undefined) api.setSelected(selected);
+    else if (defaultSelected !== undefined && !selectedSeen.current) api.setSelected(defaultSelected);
+    selectedSeen.current = true;
+  }, [selected, ${breaks.length > 1 ? "breakName" : "defaultSelected"}]);
+` : "";
   const runtimeEffect = jsRequired ? `
   /* 배포본의 실제 동작 스크립트를 그대로 쓴다 — 브라우저에서만 돈다(서버 렌더링은 마크업까지). */
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return undefined;
-    init(root);
-    return () => destroy(root);
+    ${keepsApi ? "apiRef.current = init(root);" : "init(root);"}
+    return () => { ${keepsApi ? "apiRef.current = null; " : ""}destroy(root); };
   }, [${breaks.length > 1 ? "breakName" : ""}]);
-` : "";
+${selectableEffect}
+${defaultOpen ? `
+  /* open 이 바뀌면 배포본 api 로 열고 닫는다(스크롤 잠금·초점·Esc·onOpen/onClose 가 함께 따라온다).
+     첫 그리기는 건너뛴다 — 기본(보임)은 마크업 그대로다. hidden 은 처음 값만 쓰고 이후는 api 가 바꾼다. */
+  useEffect(() => {
+    if (!openSeen.current) { openSeen.current = true; return; }
+    const api = apiRef.current;
+    if (!api) return;
+    if (open) api.open(); else api.close();
+  }, [open]);
+` : ""}` : "";
 
   const eventEffect = events.length === 0 ? "" : `
   useEffect(() => {
@@ -614,7 +658,7 @@ function assertAllowed(label, value, allowed) {
 export default function ${componentName}({ ${propNames.join(", ")} }) {
   const uid = useId();
   const rootRef = useRef(null);
-  const partScope = scopeOf(parts);
+${defaultOpen || manifest.javascript?.selectable === true ? "  const apiRef = useRef(null);\n" : ""}${defaultOpen ? "  const openSeen = useRef(false);\n  const initialOpen = useRef(open).current;\n" : ""}${manifest.javascript?.selectable === true ? "  const selectedSeen = useRef(false);\n" : ""}  const partScope = scopeOf(parts);
 ${variants.length > 1 ? `  assertAllowed("variant", variant, VARIANTS);\n` : ""}${sizes.length > 1 ? `  assertAllowed("size", size, SIZES);\n` : ""}${breaks.length > 1 ? `  assertAllowed("breakName", breakName, BREAKS);\n` : ""}${controlBlock}${runtimeEffect}${eventEffect}
 ${renderSource}
 }
@@ -658,6 +702,8 @@ export function reactComponentFacts({ id, manifest, example, exampleByBreak }) {
     isCheckLike,
     events,
     hasChildrenSlot,
+    defaultOpen: manifest.htmlContract?.platformDefaultOpen === true,
+    selectable: manifest.javascript?.selectable === true,
     jsRequired: Boolean(manifest.jsRequired)
   };
 }
@@ -714,6 +760,8 @@ export interface S1BaseProps {
     }
     for (const { eventName, propName } of facts.events) lines.push(`  /** ${eventName} */\n  ${propName}?: (event: CustomEvent) => void;`);
     if (facts.hasChildrenSlot) lines.push("  /** 앱이 소유하는 내용(탭 내용 등). 주면 예제 내용을 대신한다. */\n  children?: ReactNode;");
+    if (facts.selectable) lines.push("  /** 켜져 있나(제어형) — 주면 부품은 이 값이 바뀔 때만 모양이 바뀐다. 사용자가 눌러도 onSelectedChange 로 알리기만 한다. */\n  selected?: boolean;\n  /** 처음 켜져 있나(비제어형) */\n  defaultSelected?: boolean;\n  /** 눌려서 켜지거나(true) 꺼질(false) 때 — 제어형이면 바뀌기 전에, 비제어형이면 바뀐 뒤에 불린다 */\n  onSelectedChange?: (selected: boolean) => void;");
+    if (facts.defaultOpen) lines.push("  /** 열려 있나 — 기본 true(처음부터 보임). false 면 닫힌 채 그려진다. */\n  open?: boolean;");
     return `export interface ${facts.componentName}Props extends S1BaseProps {\n${lines.join("\n")}\n}\nexport declare function ${facts.componentName}(props: ${facts.componentName}Props): ReactElement;`;
   }).join("\n\n");
   return `${header}\n${body}\n`;
@@ -896,3 +944,12 @@ export function keyOf(item, index) {
 }
 
 export const _internal = { repeatGroups, defaultItem, pluralize, signature };
+
+/* React Native 생성기(react-native-emit.mjs)가 같은 분석(슬롯·반복 목록 판정)을 그대로 쓰도록 연다.
+   이 export 는 React 산출물에 영향을 주지 않는다. */
+export {
+  RootScope, listSlots, leafOf, defaultItem, dataSource,
+  Emitter, primaryControl, collectIds, idSlugMap, partOf, attributeValue, camel, constantName, literal, textOf,
+  ITEM_ATTRIBUTES, reactAttributeName, BOOLEAN_ATTRIBUTES, VOID_ELEMENTS, eventPropName, isTextOnly, runsOf, repeatGroups, pluralize, signature, shape,
+  ItemScope, isVariable, itemAttributes
+};

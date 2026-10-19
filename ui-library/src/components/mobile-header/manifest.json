@@ -1,8 +1,8 @@
 {
   "id": "mobile-header",
-  "version": "0.2.4",
+  "version": "0.2.6",
   "status": "approved",
-  "canonicalFingerprint": "3303abdc3a7be8f46cea85599ae878aee46096c8ffd72ddfe18199a69f7421a4",
+  "canonicalFingerprint": "b28908d8fe3feb18913b99f0d34c935eff24f66216f94bcb19761316e5f0fc33",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -49,6 +49,9 @@
   ],
   "htmlContract": {
     "root": "header[data-s1-component=mobile-header][data-variant]",
+    "requiredAttributes": [
+      "data-variant"
+    ],
     "perVariantParts": {
       "home-title": [
         "title"
@@ -97,7 +100,8 @@
     ],
     "grouping": "코어는 AppBar 56px 한 줄만 소유한다. StatusBar·모바일 목업 크롬은 화면(안내 페이지)이 소유한다.",
     "source": "components/mobile-header/mobile-header.example.html",
-    "distribution": "examples/mobile-header.html"
+    "distribution": "examples/mobile-header.mobile.html",
+    "mobileOnly": true
   },
   "cssContract": {
     "entry": "components/mobile-header.css",

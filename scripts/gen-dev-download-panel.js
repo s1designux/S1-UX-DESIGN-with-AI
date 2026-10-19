@@ -57,6 +57,7 @@ const TOOL_SOURCES = {
   'html-css-js': ['s1-ui.css', 's1-ui.js', 's1-ui.auto.js', 'components', 'examples', 'assets', 'tools'],
   react: ['platform/react'],
   vue: ['platform/vue'],
+  'react-native': ['platform/react-native', 'platform/behavior.json'],
   kotlin: ['platform/kotlin', 'platform/behavior.json'],
   swift: ['platform/swift', 'platform/behavior.json'],
   cpp: ['platform/cpp', 'platform/behavior.json']
@@ -135,7 +136,8 @@ const TOOL_CARDS = [
   {
     key: 'react',
     title: 'React · Next.js',
-    note: `${approved.length}종 전부 · JSX 빌드 도구 필요 · 서버 렌더링·타입 정의 포함`,
+    note: `${approved.length}종 전부 · 웹 전용 · JSX 빌드 도구 필요 · 서버 렌더링·타입 정의 포함`,
+    warn: 'Expo·React Native 앱(iOS·Android)은 아래 <strong>React Native (Expo)</strong> 를 받으세요',
     install: [
       `압축을 풀면 나오는 <code>s1-ui</code> 폴더를 프로젝트에 그대로 넣습니다 — 안에 있는 <code>preview.html</code> 을 열면 ${approved.length}종이 실제 모습으로 보입니다`,
       '앱 진입 파일에서 겉모습 CSS 를 한 번 읽힙니다 (<code>tokens.css</code> · <code>s1-ui.css</code>)',
@@ -155,6 +157,21 @@ const TOOL_CARDS = [
     ],
     code: `import { S1Button, S1DatePicker }
   from "./s1-ui/platform/vue";`,
+  },
+  {
+    key: 'react-native',
+    title: 'React Native (Expo)',
+    note: (facts) => `${facts.componentCount}종 전부 · PC·Mobile 모두 · iOS·Android·웹 · 텍스트 스타일 ${facts.textStyles}종`,
+    install: [
+      '압축을 풀면 나오는 <code>platform/react-native</code> 폴더를 프로젝트에 넣고 <code>npx expo install react-native-svg</code> 를 실행합니다',
+      '<code>platform/react-native-sample</code> 폴더에서 먼저 <code>npm install</code> 을 한 번 실행한 뒤 <code>npx expo start</code> 로 열면 승인된 조합이 한 화면에 보입니다',
+      '앱 맨 위를 <code>S1Provider</code> 로 감싸면 다크 모드와 서체(Pretendard)가 정해집니다',
+      '부품은 이름으로 부르고 화면은 <code>breakName="pc" | "mobile"</code> 로 고릅니다 — 값을 눈으로 보고 옮겨 적지 마세요'
+    ],
+    code: `<S1Provider dark={isDark} fontFamily="Pretendard">
+  <S1Button variant="primary" size="lg" breakName="mobile"
+    parts={{ label: "확인" }} onPress={save} />
+</S1Provider>`,
   },
   {
     key: 'kotlin',
@@ -217,7 +234,7 @@ function toolCard(tool) {
     process.exit(1);
   }
   /* 사람이 적은 설치 순서·예시 코드가 배포본과 어긋나면 여기서 멈춘다. */
-  const problems = assertProse(facts, [...tool.install, tool.code, noteOf(tool, facts)]);
+  const problems = assertProse(facts, [...tool.install, tool.code, noteOf(tool, facts), tool.warn ?? '']);
   if (problems.length) {
     console.error(`❌ ${tool.key} 카드 문장이 배포본과 다릅니다:\n   - ${problems.join('\n   - ')}`);
     process.exit(1);
@@ -226,35 +243,36 @@ function toolCard(tool) {
   const lint = facts.lint
     ? '<span class="devtool-check">자가 검사기 사용 가능</span>'
     : '<span class="devtool-check devtool-check-off">자가 검사기 없음 — 값 대조까지만</span>';
+  const warn = tool.warn ? `\n            <p class="devtool-warn">${tool.warn}</p>` : '';
   return `          <div class="devtool-card">
             <div class="devtool-head">
-              <div>
-                <div class="devtool-title">${escape(tool.title)}</div>
-                <div class="devtool-note">${escape(noteOf(tool, facts))}</div>
-              </div>
-              <div class="devtool-head-right">
-                ${badge}
-                <span class="devtool-updated">v${escape(manifest.version)} · 업데이트 ${escape(updatedAt[tool.key] ?? '—')}</span>
-              </div>
+              <div class="devtool-title">${escape(tool.title)}</div>
+              ${badge}
             </div>
-            <div class="devtool-section">설치</div>
-            <ol class="devtool-steps">
-              ${tool.install.map((step) => `<li>${step}</li>`).join('\n              ')}
-            </ol>
-            <pre class="devtool-code"><code>${escape(tool.code)}</code></pre>
-            <div class="devtool-section">들어있는 것</div>
-            <p class="devtool-contains">${facts.contains}</p>
+            <p class="devtool-note">${escape(noteOf(tool, facts))}</p>${warn}
             <div class="devtool-get">
               <a class="devtool-btn" href="../assets/downloads/${escape(packageInfo.zip)}" download>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                 다운로드
               </a>
-              <span class="devtool-size">${packageInfo.sizeKB}KB · 파일 ${packageInfo.files}개</span>
+              <span class="devtool-meta">
+                <span class="devtool-size">${packageInfo.sizeKB}KB · 파일 ${packageInfo.files}개</span>
+                <span class="devtool-updated">v${escape(manifest.version)} · 업데이트 ${escape(updatedAt[tool.key] ?? '—')}</span>
+              </span>
             </div>
-            <div class="devtool-foot">
-              <span class="devtool-files">${facts.files.map((file) => `<code>${escape(file)}</code>`).join(' ')}</span>
-              ${lint}
-            </div>
+            <details class="devtool-more">
+              <summary>설치 방법 · 들어있는 것</summary>
+              <ol class="devtool-steps">
+                ${tool.install.map((step) => `<li>${step}</li>`).join('\n                ')}
+              </ol>
+              <pre class="devtool-code"><code>${escape(tool.code)}</code></pre>
+              <div class="devtool-section">들어있는 것</div>
+              <p class="devtool-contains">${facts.contains}</p>
+              <div class="devtool-foot">
+                <span class="devtool-files">${facts.files.map((file) => `<code>${escape(file)}</code>`).join(' ')}</span>
+                ${lint}
+              </div>
+            </details>
           </div>`;
 }
 
@@ -295,7 +313,7 @@ const PANELS = {
     id: 'top-dev',
     toolKeys: TOOL_CARDS.map((tool) => tool.key),
     kitTitle: 'S-1 UI 개발 키트',
-    versionHowTo: '번호 읽는 법 — 웹·React·Vue <code>node s1-ui/tools/s1-ui-lint.mjs --version</code> · Kotlin <code>S1Version.VERSION</code> · Swift <code>S1Version.version</code> · C++ <code>S1_UI_VERSION</code>',
+    versionHowTo: '번호 읽는 법 — 웹·React·Vue <code>node s1-ui/tools/s1-ui-lint.mjs --version</code> · React Native <code>S1_VERSION</code> · Kotlin <code>S1Version.VERSION</code> · Swift <code>S1Version.version</code> · C++ <code>S1_UI_VERSION</code>',
     toolTitle: '내 개발 툴에서 시작하기',
     caveat: true,
     componentDesc: `${approved.length}종 전부 들어 있습니다. HTML 은 <code>examples/</code> 파일을 복사해 쓰고(모바일용 <code>*.mobile.html</code>), React·Vue 는 이름 앞에 <code>S1</code> 을 붙입니다 — <code>input → S1Input</code>.`
