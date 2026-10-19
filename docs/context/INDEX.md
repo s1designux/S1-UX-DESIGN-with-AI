@@ -38,3 +38,4 @@
 - [검수판 갱신은 조용히](board-refresh-silent.md) — board:refresh·재게시는 하되 river 보고에서 뺀다 (2026-10-02)
 - [PC 라이브러리 후보](pc-library-candidates.md) — C#·Java·Qt 골라둠, 부서 확인 후 제작 (2026-10-04)
 - [로그인은 패턴이 정본](login-is-a-pattern.md) — 통합화면 패턴이 있으니 부품으로 임의 조립 금지 (2026-10-12)
+- [검수기 추천 칩 줄이기](audit-chip-narrowing.md) — 원본 자리 토큰 1순위 · 역할 안 맞는 칩 숨김 · 근거는 부품 자기 토큰만 (2026-10-19)
