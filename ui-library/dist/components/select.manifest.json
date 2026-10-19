@@ -1,8 +1,8 @@
 {
   "id": "select",
-  "version": "0.2.12",
+  "version": "0.3.0",
   "status": "approved",
-  "canonicalFingerprint": "18c3bac6333c269d9e2a7e9e52372b31960e4b01d03b53f2ee166d99d7790456",
+  "canonicalFingerprint": "2ebe07ca09e01257f5713e3faccd28918dabf09d97d8b96aa0e01f2670bed868",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -207,7 +207,9 @@
     },
     "methods": [
       "openPanel()",
-      "closePanel()"
+      "closePanel()",
+      "value",
+      "setValue(value)"
     ],
     "lifecycle": [
       "init(root)",
@@ -215,7 +217,12 @@
     ],
     "controlMode": "uncontrolled",
     "singleSelectNote": "select 는 단일 선택이라 조립한 dropdown 이 Type=Text 로 고정된다(정본이 Select Box·Filter Chip 에 항상 Type=Text 패널만 붙인다). 런타임은 s1:dropdown:change 의 detail.type이 \"text\" 일 때만 반응하고 checkbox 유형 변화(전체 선택 포함)는 의도적으로 무시한다 — select 자신이 체크박스 유형 패널을 조립하지 않기 때문이며 방어적 무시가 아니다.",
-    "disableCloseContract": "registry/components/component-behavior.pc.json 의 \"Select Box\" 계약(on: disable → close and block trigger clicks, status=verified)을 그대로 구현한다. 클릭 차단은 open() 의 disabled 가드, 자동 닫힘은 trigger 의 disabled 속성 변화를 관찰하는 MutationObserver 가 담당한다(인스턴스마다 자기 trigger 하나만 관찰 — 누적 없음, destroy() 가 disconnect)."
+    "disableCloseContract": "registry/components/component-behavior.pc.json 의 \"Select Box\" 계약(on: disable → close and block trigger clicks, status=verified)을 그대로 구현한다. 클릭 차단은 open() 의 disabled 가드, 자동 닫힘은 trigger 의 disabled 속성 변화를 관찰하는 MutationObserver 가 담당한다(인스턴스마다 자기 trigger 하나만 관찰 — 누적 없음, destroy() 가 disconnect).",
+    "attributes": {
+      "data-value": "처음에 골라 둘 옵션의 값",
+      "data-name": "폼 전송용 숨은 입력의 name (고른 옵션 값이 실린다)",
+      "data-placeholder": "비웠을 때 돌아갈 트리거 글자(서버가 이미 고른 값의 라벨로 그렸을 때 쓴다 — 없으면 처음 글자)"
+    }
   },
-  "sourceFingerprint": "72138742a76e5aa267012beb868c74ee6b32cbfadc429d030c183f47ff3ac763"
+  "sourceFingerprint": "ec6f68c147240022fb1a4f21cdf2ea0754e7563165f392e078bf3c3fedb9fc5d"
 }

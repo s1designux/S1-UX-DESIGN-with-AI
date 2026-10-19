@@ -2,9 +2,81 @@
    Run: npm run reports:sync
 */
 window.REPORTS_INDEX = {
-  "generatedAt": "2026-09-16T10:43:47.826Z",
-  "totalCount": 84,
+  "generatedAt": "2026-10-19T01:57:10.231Z",
+  "totalCount": 88,
   "reports": [
+    {
+      "id": "harness-audit-2026-10-19",
+      "filename": "harness-audit-2026-10-19.md",
+      "title": "Harness Audit Report — 2026-10-19",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/harness-audit-2026-10-19.md",
+      "updatedAt": "2026-10-19",
+      "summary": "- 🟡 HTML 코드탭 pane \"btn-pri-pc\" 을 찾을 수 없음",
+      "fileSizeKB": 2.3
+    },
+    {
+      "id": "button-sync-check",
+      "filename": "button-sync-check.md",
+      "title": "Button Sync Check Report",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/button-sync-check.md",
+      "updatedAt": "2026-10-14",
+      "summary": "- **Variants:** primary, secondary, blue-line",
+      "fileSizeKB": 3.2
+    },
+    {
+      "id": "installer-s1-colors-2026-10-01",
+      "filename": "installer-s1-colors-2026-10-01.md",
+      "title": "installer s1 colors 2026 10 01",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/installer-s1-colors-2026-10-01.md",
+      "updatedAt": "2026-10-02",
+      "summary": "- 초록 완료 → 파랑(text-state-correct), 노랑·주황 주의 → 빨강(text-state-caution)",
+      "fileSizeKB": 2
+    },
+    {
+      "id": "mvp-t2-token-sync",
+      "filename": "mvp-t2-token-sync.md",
+      "title": "MVP-T2 Token Sync Plugin Report",
+      "stage": "T2",
+      "category": "token",
+      "status": "archive",
+      "sourcePath": "reports/mvp-t2-token-sync.md",
+      "updatedAt": "2026-10-02",
+      "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
+      "fileSizeKB": 5
+    },
+    {
+      "id": "harness-audit-2026-09-30",
+      "filename": "harness-audit-2026-09-30.md",
+      "title": "Harness Audit Report — 2026-09-30",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/harness-audit-2026-09-30.md",
+      "updatedAt": "2026-09-30",
+      "summary": "- 🟡 HTML 코드탭 pane \"btn-pri-pc\" 을 찾을 수 없음",
+      "fileSizeKB": 2.3
+    },
+    {
+      "id": "harness-audit-2026-09-21",
+      "filename": "harness-audit-2026-09-21.md",
+      "title": "Harness Audit Report — 2026-09-21",
+      "stage": "Audit",
+      "category": "audit",
+      "status": "archive",
+      "sourcePath": "reports/harness-audit-2026-09-21.md",
+      "updatedAt": "2026-09-21",
+      "summary": "- 🟡 HTML 코드탭 pane \"btn-pri-pc\" 을 찾을 수 없음",
+      "fileSizeKB": 2.3
+    },
     {
       "id": "harness-audit-2026-09-15",
       "filename": "harness-audit-2026-09-15.md",
@@ -16,18 +88,6 @@ window.REPORTS_INDEX = {
       "updatedAt": "2026-09-15",
       "summary": "- 🟡 HTML 코드탭 pane \"btn-pri-pc\" 을 찾을 수 없음",
       "fileSizeKB": 2.3
-    },
-    {
-      "id": "mvp-t2-token-sync",
-      "filename": "mvp-t2-token-sync.md",
-      "title": "MVP-T2 Token Sync Plugin Report",
-      "stage": "T2",
-      "category": "token",
-      "status": "archive",
-      "sourcePath": "reports/mvp-t2-token-sync.md",
-      "updatedAt": "2026-09-15",
-      "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
-      "fileSizeKB": 5
     },
     {
       "id": "harness-audit-2026-09-10",
@@ -64,18 +124,6 @@ window.REPORTS_INDEX = {
       "updatedAt": "2026-09-07",
       "summary": "**읽기 전용 감사였다** — 감사 과정에서 정본·파생을 한 글자도 고치지 않았다.",
       "fileSizeKB": 20.4
-    },
-    {
-      "id": "button-sync-check",
-      "filename": "button-sync-check.md",
-      "title": "Button Sync Check Report",
-      "stage": "Audit",
-      "category": "audit",
-      "status": "archive",
-      "sourcePath": "reports/button-sync-check.md",
-      "updatedAt": "2026-09-02",
-      "summary": "- **Variants:** primary, secondary, blue-line",
-      "fileSizeKB": 3.2
     },
     {
       "id": "harness-audit-2026-09-01",
@@ -375,7 +423,7 @@ window.REPORTS_INDEX = {
       "sourcePath": "reports/changelog-archive.md",
       "updatedAt": "2026-06-17",
       "summary": "이 파일은 CLAUDE.md `변경 이력` 표의 **상세 보존본**이다. 컨텍스트 비용을 줄이기 위해 CLAUDE.md 본문에서 분리했다.",
-      "fileSizeKB": 82.9
+      "fileSizeKB": 85.4
     },
     {
       "id": "harness-audit-2026-06-17",

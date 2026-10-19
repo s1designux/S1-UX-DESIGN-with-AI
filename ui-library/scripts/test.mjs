@@ -4,13 +4,19 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { spawnSync } from "node:child_process";
 import iconGeometryCheck from "../../scripts/ui-library-icon-geometry-check.js";
 
-import { extractInstance } from "./platform.mjs";
+import { extractInstance, isPlatformDefaultOpen, stripDefaultOpenHidden } from "./platform.mjs";
+import { scopeSelector, stripScopeGuard } from "./css-scope.mjs";
 
 const libraryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repositoryRoot = path.resolve(libraryRoot, "..");
 const checkOnly = process.argv.includes("--check");
 const failures = [];
-const read = (relative) => readFile(path.join(libraryRoot, relative), "utf8");
+/* 배포 CSS 는 안쪽 부품의 부분까지 먹지 않게 부분 선택자 끝에 :where(:not(…)) 안전띠를 붙여 나간다(scripts/css-scope.mjs).
+   안전띠는 선택 범위만 좁힐 뿐 값은 그대로이므로, 규칙 모양을 보는 아래 검사들은 띠를 걷어낸 글자로 읽는다. */
+const read = async (relative) => {
+  const text = await readFile(path.join(libraryRoot, relative), "utf8");
+  return /\.css$/.test(relative) ? stripScopeGuard(text) : text;
+};
 
 const build = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/build.mjs"), "--check"], { encoding: "utf8" });
 if (build.status !== 0) failures.push(`build freshness: ${build.stderr || build.stdout}`);
@@ -23,12 +29,14 @@ for (const id of componentIds) {
   if (/#[0-9a-f]{3,8}\b/i.test(css)) failures.push(`${id}.css contains raw HEX`);
   if (/!important\b/.test(css)) failures.push(`${id}.css contains !important`);
   if (/(^|[,{]\s*)(body|html|input|button)(?=[\s,.:{#[])/m.test(css)) failures.push(`${id}.css contains an unscoped tag selector`);
-  const example = await read(`dist/examples/${id}.html`);
   const manifest = JSON.parse(await read(`dist/components/${id}.manifest.json`));
+  /* 기본 예시 경로 — 모바일 전용 부품(bottom-sheet·mobile-bottom-nav·mobile-header)은 examples/{id}.mobile.html. */
+  const example = await read(`dist/${manifest.htmlContract.distribution ?? `examples/${id}.html`}`);
   for (const field of ["id", "version", "status", "canonicalFingerprint", "rootSelector", "variants", "sizes", "states", "parts", "htmlContract", "cssContract", "dependencies", "icons", "a11y", "jsRequired"]) {
     if (!(field in manifest)) failures.push(`${id} manifest missing ${field}`);
   }
-  if (manifest.htmlContract.distribution !== `examples/${id}.html`) failures.push(`${id} HTML contract distribution path differs from build output`);
+  const expectedMainExample = manifest.htmlContract.mobileOnly === true ? `examples/${id}.mobile.html` : `examples/${id}.html`;
+  if (manifest.htmlContract.distribution !== expectedMainExample) failures.push(`${id} HTML contract distribution path differs from build output`);
   /* 플랫폼별 예제 — Mobile 크기·break 가 따로 있는 컴포넌트는 mobile 예제를 배포해야 한다.
      퍼블리셔가 Mobile 화면에서 PC 마크업을 복사하는 사고를 막는다(river 결정 2026-09-02). */
   if (manifest.breaks?.mobile?.length) {
@@ -101,11 +109,11 @@ for (const id of componentIds) {
       failures.push("input.search example search action must always be visible (no hidden attribute)");
     }
 
-    const passwordMobileExample = await read(`dist/examples/input.password-mobile.html`);
-    if (!passwordMobileExample.includes('data-break="mobile"')) failures.push("input.password-mobile example must declare data-break=mobile");
-    const searchMobileExample = await read(`dist/examples/input.search-mobile.html`);
+    const passwordMobileExample = await read(`dist/examples/input.password.mobile.html`);
+    if (!passwordMobileExample.includes('data-break="mobile"')) failures.push("input.password.mobile example must declare data-break=mobile");
+    const searchMobileExample = await read(`dist/examples/input.search.mobile.html`);
     if (!searchMobileExample.includes('data-break="mobile"') || !searchMobileExample.includes('data-mode="search"')) {
-      failures.push("input.search-mobile example must declare data-break=mobile and data-mode=search");
+      failures.push("input.search.mobile example must declare data-break=mobile and data-mode=search");
     }
 
     for (const iconId of ["eye_hide", "eye_show", "search"]) {
@@ -600,7 +608,8 @@ for (const id of componentIds) {
   /* Bottom Sheet Option — 정본 buildBottomSheetOption(build-components.ts:4957-5150). 실제로 존재하는
      칸은 9개(12칸 매트릭스가 아니다) — absentCombinations 3건이 만들어지지 않았는지도 여기서 지킨다. */
   if (id === "bottom-sheet-option") {
-    if (manifest.jsRequired !== false) failures.push("bottom-sheet-option must remain jsRequired=false; row shape only, no local state or events");
+    /* river 결정 2026-10-13 「전부 부품이 알아서」 — 종전 "줄 모양만, 런타임 없음" 을 뒤집었다. 목록 묶음에 data-s1-select 가 있을 때만 고른다. */
+    if (manifest.jsRequired !== true) failures.push("bottom-sheet-option must have a runtime (opt-in single select via data-s1-select)");
     if (JSON.stringify(manifest.variants) !== JSON.stringify(["text", "checkbox", "radio", "list"])) failures.push("bottom-sheet-option variants differ from canon Type axis");
     if (!Array.isArray(manifest.absentCombinations) || manifest.absentCombinations.length !== 3) {
       failures.push("bottom-sheet-option manifest must declare exactly 3 absentCombinations (checkbox:disabled, radio:disabled, list:selected)");
@@ -671,8 +680,8 @@ for (const id of componentIds) {
     if (!example.includes('aria-expanded="true"') || !example.includes('aria-expanded="false"')) failures.push("expandable-card example must show open and closed");
   }
   if (id === "data-tag") {
-    if (JSON.stringify(manifest.variants) !== JSON.stringify(["blue", "red"])) failures.push("data-tag tones must be exactly blue and red (river 2026-09-29)");
-    for (const shape of ["chips", "square"]) for (const solid of ["on", "off"]) for (const tone of ["blue", "red"]) {
+    if (JSON.stringify(manifest.variants) !== JSON.stringify(["blue", "red", "gray"])) failures.push("data-tag tones must be exactly blue, red and gray (river 2026-09-29 · gray 2026-10-13)");
+    for (const shape of ["chips", "square"]) for (const solid of ["on", "off"]) for (const tone of ["blue", "red", "gray"]) {
       if (!new RegExp(`data-shape="${shape}"\\s+data-solid="${solid}"\\s+data-tone="${tone}"`).test(example)) failures.push(`data-tag example must show ${shape}/${solid}/${tone}`);
     }
     if (/--color-(green|teal|cyan|orange|yellow)-/.test(css)) failures.push("data-tag must not use the dropped teal/orange/green tones");
@@ -739,7 +748,7 @@ for (const id of componentIds) {
     failures.push("input runtime lifecycle is incomplete");
   }
   if (id === "button" && (module.jsRequired !== false || module.runtime !== null)) failures.push("button module unexpectedly requires runtime");
-  if ((id === "checkbox" || id === "radio" || id === "textarea" || id === "assist-button" || id === "text-button" || id === "gnb-sub-menu-item" || id === "gnb-sub-menu" || id === "bottom-sheet-option") && (module.jsRequired !== false || module.runtime !== null)) failures.push(`${id} module unexpectedly requires runtime`);
+  if ((id === "checkbox" || id === "radio" || id === "textarea" || id === "assist-button" || id === "text-button" || id === "gnb-sub-menu-item" || id === "gnb-sub-menu") && (module.jsRequired !== false || module.runtime !== null)) failures.push(`${id} module unexpectedly requires runtime`);
   if ((id === "toggle" || id === "chip" || id === "dropdown" || id === "select" || id === "filter-chip" || id === "tab" || id === "pagination" || id === "multi-toggle" || id === "modal" || id === "modal-content" || id === "table" || id === "time-picker" || id === "gnb" || id === "bottom-sheet") && (module.jsRequired !== true || typeof module.init !== "function" || typeof module.destroy !== "function")) {
     failures.push(`${id} runtime lifecycle is incomplete`);
   }
@@ -868,8 +877,8 @@ if (!/function paginationStateMatrix\(\)[\s\S]*?comp-action-top[\s\S]*?matrix-co
   failures.push("Pagination guide must use the shared Action title and separator block");
 }
 const paginationGuideSource = guideModule.match(/function paginationMarkup\([\s\S]*?function paginationStateMatrix/)?.[0] || "";
-if (!paginationGuideSource.includes("const beforeDisabled = page <= 1") || !paginationGuideSource.includes("const afterDisabled = page >= total") || (paginationGuideSource.match(/beforeDisabled \? \" disabled\"/g) || []).length !== 2 || (paginationGuideSource.match(/afterDisabled \? \" disabled\"/g) || []).length !== 2) {
-  failures.push("Pagination guide must disable both leading or trailing controls at its page boundaries");
+if (!paginationGuideSource.includes("S1UI.pagination.navState(page, total") || ["first", "previous", "next", "last"].some((action) => !paginationGuideSource.includes(`blocked.${action} ? " disabled"`)) || /beforeDisabled|afterDisabled/.test(paginationGuideSource)) {
+  failures.push("Pagination guide must take the disabled state of its four controls from the dist navState (block-aware), not compute it itself");
 }
 if (/PC 3크기\(MD 44 · SM 42 · XSM 40\) · Mobile SM 32/.test(guideModule)) {
   failures.push("Line Tab PC scope must not describe the Mobile content");
@@ -977,11 +986,13 @@ for (const id of approvedIds) {
   const vueMarkupBlock = /const MARKUPS = (\{[\s\S]*?\n\});/.exec(vueText);
   if (!vueMarkupBlock) { failures.push(`${id} Vue wrapper does not expose MARKUPS`); continue; }
   const vueMarkups = JSON.parse(vueMarkupBlock[1]);
-  const declaredExamples = Object.entries(manifest.htmlContract.breakExamples ?? { pc: { distribution: `examples/${id}.html` } });
+  const declaredExamples = Object.entries(manifest.htmlContract.breakExamples ?? { pc: { distribution: manifest.htmlContract.distribution ?? `examples/${id}.html` } });
   for (const [breakName, spec] of declaredExamples) {
     /* 예제 파일은 인스턴스 1개가 아닐 수 있다(변형 나열·화면 소유 껍데기).
        껍데기는 그 안의 승인된 인스턴스 하나와 글자 단위로 같아야 한다. */
-    const deployed = extractInstance(await read(`dist/${spec.distribution}`), id).trim();
+    /* 기본 열림 부품(bottom-sheet)의 껍데기는 웹 예시의 hidden 과 무관하게 처음부터 보인다 — manifest 선언이 정한다. */
+    const deployedRaw = extractInstance(await read(`dist/${spec.distribution}`), id).trim();
+    const deployed = isPlatformDefaultOpen(manifest) ? stripDefaultOpenHidden(deployedRaw, id) : deployedRaw;
     if (vueMarkups[breakName] !== deployed) failures.push(`${id} ${breakName} wrapper markup differs from the approved instance in ${spec.distribution}`);
     if (!/^<[a-zA-Z][^>]*data-s1-component\s*=\s*["']/.test(vueMarkups[breakName])) {
       failures.push(`${id} ${breakName} wrapper markup does not start at the component root`);
@@ -989,7 +1000,9 @@ for (const id of approvedIds) {
     if (!reactText.includes(`data-s1-component="${id}"`)) failures.push(`${id} React component does not render the component root`);
   }
   if (Object.keys(vueMarkups).length !== declaredExamples.length) failures.push(`${id} wrapper markup set differs from the declared examples`);
-  if (manifest.jsRequired && !reactText.includes("init(root)")) failures.push(`${id} React wrapper does not run the approved runtime`);
+  /* React 껍데기는 kit.js 의 useRuntime 이 배포본 init 을 붙이고(같은 효과 안에서 이벤트도 건다) destroy 로 뗀다. */
+  if (manifest.jsRequired && !/useRuntime\(rootRef, \{ init, destroy \}/.test(reactText)) failures.push(`${id} React wrapper does not run the approved runtime`);
+  if (!reactText.startsWith('"use client";')) failures.push(`${id} React wrapper is missing "use client" (Next.js 서버 컴포넌트에서 import 할 수 없습니다)`);
   if (manifest.jsRequired && !vueText.includes("init(element)")) failures.push(`${id} Vue wrapper does not run the approved runtime`);
 }
 for (const entry of platformContract.components) {
@@ -1063,6 +1076,61 @@ for (const entry of platformContract.components) {
   if (skipped.length) console.log(`[platform compile check] 건너뜀: ${skipped.join(" · ")} — 이 항목은 이번 실행에서 검증되지 않았습니다.`);
 }
 
+/* React Native 전달본 — 전달본이 배포본과 같은 정본에서 나왔고, 부품마다 표·부품 파일이 있고, 번들이 되며,
+   표의 값이 CSS 계산과 한 자리도 어긋나지 않는다. 화면을 실제로 그려 웹과 견주는 일(react-native-render-compare)과
+   눌러 보는 일(react-native-behavior-check)은 크롬이 필요해 `npm run rn:compare` · `npm run rn:behavior` 로 따로 돈다. */
+{
+  const rnManifest = platformManifest.platforms["react-native"];
+  if (!rnManifest) failures.push("platform/manifest.json 에 react-native 선언이 없습니다");
+  else {
+    const rnVersion = await read("dist/platform/react-native/version.js");
+    if (!rnVersion.includes(`"${platformManifest.version}"`)) failures.push("react-native/version.js 의 번호가 배포본과 다릅니다");
+    for (const id of approvedIds) {
+      for (const file of [`components/${id}.js`, `specs/${id}.js`]) {
+        try { await read(`dist/platform/react-native/${file}`); } catch { failures.push(`react-native/${file} 가 없습니다`); }
+      }
+    }
+    /* 부품 코드에는 치수·색 리터럴이 없다 — 값은 표(specs)와 토큰(tokens.js)에만 있다.
+       검사기(react-native-literals.mjs)는 키 이름이 아니라 "키: 숫자" 꼴 전부를 리터럴로 본다(동작 키만 허용). */
+    const { scanLiterals, ADVERSARIAL_SAMPLES } = await import("./react-native-literals.mjs");
+    let sampleSource = "";
+    for (const id of approvedIds) {
+      const source = await read(`dist/platform/react-native/components/${id}.js`);
+      sampleSource = sampleSource || source;
+      const hits = scanLiterals(source);
+      if (hits.length) failures.push(`react-native/components/${id}.js 에 직접 적은 치수·색이 있습니다 (${hits.slice(0, 5).join(" · ")})`);
+    }
+    /* 적대 테스트 — 진짜 부품 코드 사본에 일부러 리터럴을 심어, 검사기가 반드시 실패하는지 본다(구멍이 나면 여기서 잡힌다). */
+    if (scanLiterals(sampleSource).length !== 0) failures.push("react-native 리터럴 검사의 적대 테스트: 깨끗한 사본이 이미 실패합니다");
+    for (const sample of ADVERSARIAL_SAMPLES) {
+      if (scanLiterals(`${sampleSource}\n${sample}\n`).length === 0) failures.push(`react-native 리터럴 검사에 구멍이 있습니다 — 심은 리터럴을 못 잡았습니다: ${sample}`);
+    }
+    let esbuildRn = null;
+    try { esbuildRn = (await import("esbuild")).default ?? await import("esbuild"); } catch { console.log("[react-native bundle check] 건너뜀: esbuild 없음 — 이 항목은 검증되지 않았습니다."); }
+    if (esbuildRn) {
+      try {
+        await esbuildRn.build({
+          entryPoints: [path.join(libraryRoot, "dist/platform/react-native/index.js")],
+          bundle: true,
+          write: false,
+          format: "esm",
+          jsx: "automatic",
+          loader: { ".js": "jsx" },
+          external: ["react", "react-native", "react-native-svg", "react/jsx-runtime"],
+          logLevel: "silent"
+        });
+      } catch (error) {
+        const detail = (error.errors ?? []).slice(0, 5).map((item) => `${item.location?.file ?? "?"}: ${item.text}`).join("\n");
+        failures.push(`React Native 전달본이 번들되지 않습니다:\n${detail || error.message}`);
+      }
+      const rnParity = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/react-native-parity-check.mjs")], { encoding: "utf8" });
+      if (rnParity.status !== 0) failures.push(`${(rnParity.stdout || "")}${(rnParity.stderr || "")}`.trim());
+      const rnIcons = spawnSync(process.execPath, [path.join(libraryRoot, "scripts/react-native-icon-check.mjs")], { encoding: "utf8" });
+      if (rnIcons.status !== 0) failures.push(`${(rnIcons.stdout || "")}${(rnIcons.stderr || "")}`.trim());
+    }
+  }
+}
+
 /* 동작 검사 — 컴파일은 "열리는가"까지만 증명한다.
    2026-09-04 독립 검증 3차: Vue 19종이 컴파일도 마운트도 됐는데 prop 을 조용히 버렸다.
    사다리의 마지막 칸 — 실제로 값을 주입하고 DOM 을 읽는다. */
@@ -1077,6 +1145,107 @@ if (renderCheck.status !== 0) failures.push(`guide render check: ${(renderCheck.
 /* 건너뛴 사실은 반드시 눈에 보여야 한다 — 크롬 없는 환경 + S1_SKIP_RENDER_CHECK 조합에서
    렌더 검사가 통째로 사라졌는데 "PASS" 로만 보이던 문제(2026-09-02 재검증 지적). */
 else if (renderCheck.stdout.trim()) console.log(`[guide render check] ${renderCheck.stdout.trim()}`);
+
+
+/* 부분 선택자 좁히기(css-scope) — 안에 끼운 다른 부품의 부분을 먹지 않는가 */
+{
+  const guarded = scopeSelector('[data-s1-component="modal-content"][data-size="md"] [data-s1-part="panel"]', "modal-content", ["button"]);
+  if (!guarded.includes(":where(:not(") || !guarded.includes(':not([data-s1-component="button"])')) failures.push("descendant part selector must be scoped away from nested components");
+  const untouched = [
+    '[data-s1-component="modal"] > [data-s1-part="panel"]',
+    '[data-s1-component="modal"] [data-s1-component="button"] [data-s1-part="label"]',
+    '[data-s1-component="modal"] [data-s1-part="panel"]::after:hover'
+  ].map((selector) => scopeSelector(selector, "modal", []));
+  if (untouched[0] !== '[data-s1-component="modal"] > [data-s1-part="panel"]') failures.push("child-only part selector must not be rewritten");
+  if (untouched[1].includes(":where(")) failures.push("selector that names a nested component must not be rewritten");
+  const sheet = await read("dist/components/modal-content.css");
+  const rawSheet = await readFile(path.join(libraryRoot, "dist/components/modal-content.css"), "utf8");
+  if (rawSheet === sheet) failures.push("dist modal-content.css must carry the nested-part guard");
+  if (!/\[data-size="md"\] \[data-s1-part="panel"\]:where\(:not\(/.test(rawSheet)) failures.push("modal-content panel width rule must be guarded against nested panels");
+}
+
+
+/* 플랫폼 표(RN·Kotlin·React·Vue)는 안전띠 없는 의미 그대로의 CSS 에서 만든다 — 안전띠가 새어 들어가면 모델이
+   ::before/::after/::placeholder 를 못 맞춰 아이콘·점·밑줄·자리표시 색이 통째로 사라진다(그래도 모델과 표가 똑같이 깨져 대조 검사는 통과한다).
+   그래서 원본 CSS 가 쓰는 가상 요소 종류가 RN 표의 가상 요소 목록에 모두 있는지 따로 본다. */
+{
+  const webOnlyPseudo = { "mobile-header": ["after"] };   // 알림 아이콘 별색 점 — RN 틀에 없는 웹 전용 변형(95fe778d 에서도 동일)
+  for (const id of componentIds) {
+    const css = (await readFile(path.join(libraryRoot, `src/components/${id}/${id}.css`), "utf8")).replace(/\/\*[\s\S]*?\*\//g, "");
+    const wanted = new Set([...css.matchAll(/::(before|after|placeholder)/g)].map((match) => match[1]));
+    let spec = "";
+    try { spec = await readFile(path.join(libraryRoot, `dist/platform/react-native/specs/${id}.js`), "utf8"); } catch { /* 틀이 없는 부품 */ }
+    const have = new Set([...spec.matchAll(/"ps":\[([^\]]*)\]/g)].flatMap((match) => [...match[1].matchAll(/"([a-z]+)"/g)].map((one) => one[1])));
+    const lost = [...wanted].filter((name) => !have.has(name) && !(webOnlyPseudo[id] ?? []).includes(name));
+    if (spec && lost.length) failures.push(`${id}: 원본 CSS 의 가상 요소(${lost.join(", ")})가 RN 표에서 사라졌습니다 — 안전띠가 생성기 입력에 섞였는지 확인하세요`);
+  }
+  for (const file of ["dist/platform/react-native/specs/modal.js", "dist/platform/kotlin/S1Modal.kt", "dist/platform/react/modal.jsx"]) {
+    const text = await readFile(path.join(libraryRoot, file), "utf8").catch(() => "");
+    if (text.includes(":where(")) failures.push(`${file}: 플랫폼 산출물에 웹 전용 안전띠(:where)가 섞였습니다`);
+  }
+}
+
+
+/* 껍데기 기본 보임 — eb180827 동작을 지킨다: modal·modal-content 는 처음엔 닫힘, bottom-sheet 는 처음부터 보임(open 기본 true).
+   웹 예시가 hidden 으로 시작하는 것과 무관해야 한다(manifest htmlContract.platformDefaultOpen 이 정한다). */
+{
+  const expectations = [["modal", "Modal", false], ["modal-content", "ModalContent", false], ["bottom-sheet", "BottomSheet", true]];
+  for (const [id, vueName, visibleByDefault] of expectations) {
+    const react = await read(`dist/platform/react/${id}.jsx`);
+    const vue = await read(`dist/platform/vue/${vueName}.vue`);
+    const rn = await read(`dist/platform/react-native/components/${id}.js`);
+    /* React: 처음 열림은 open ?? defaultOpen ?? (기본값) — 기본값이 true 면 처음부터 보이고 false 면 닫힌 채 시작한다. */
+    const reactDefaultsOpen = /useRef\(open \?\? defaultOpen \?\? true\)/.test(react);
+    const reactDefaultsClosed = /useRef\(open \?\? defaultOpen \?\? false\)/.test(react) && /hidden=\{initialOpen \? undefined : true\}/.test(react);
+    const vueMarkup = /const MARKUPS = (\{[\s\S]*?\n\});/.exec(vue);
+    const vueHiddenRoot = vueMarkup ? Object.values(JSON.parse(vueMarkup[1])).some((markup) => /^<[^>]*\shidden[\s>]/.test(markup)) : null;
+    const vueOpenDefaultTrue = /open: \{ type: Boolean, default: true \}/.test(vue);
+    const rnOpenDefaultTrue = /\bopen = true\b/.test(rn);
+    if (visibleByDefault) {
+      if (!reactDefaultsOpen) failures.push(`${id}: React 껍데기는 open 기본값 true(처음부터 보임)여야 합니다`);
+      if (vueHiddenRoot !== false || !vueOpenDefaultTrue) failures.push(`${id}: Vue 껍데기는 hidden 없이 시작하고 open 기본 true 여야 합니다`);
+      if (!rnOpenDefaultTrue) failures.push(`${id}: RN 껍데기는 open 기본값 true 여야 합니다`);
+    } else {
+      if (!reactDefaultsClosed) failures.push(`${id}: React 껍데기는 처음엔 닫힘(hidden)이어야 합니다`);
+      if (vueHiddenRoot !== true || vueOpenDefaultTrue) failures.push(`${id}: Vue 껍데기는 hidden 으로 시작해야 합니다`);
+      if (rnOpenDefaultTrue || !/open \? undefined : ""/.test(rn)) failures.push(`${id}: RN 껍데기는 open 을 주기 전까지 닫힘이어야 합니다`);
+    }
+  }
+  /* 같은 페이지에 껍데기가 여럿이어도 id 가 겹치지 않아야 한다 */
+  const vueModal = await read("dist/platform/vue/Modal.vue");
+  if (!vueModal.includes("uniquifyIds(element)")) failures.push("Vue 껍데기는 인스턴스마다 id 를 새로 만들어야 합니다");
+}
+
+
+/* 종류를 고르는 속성 안내(river 2026-10-13) — 표가 있는 부품마다 설명서에 표가 실려야 하고, 배포 manifest 에도 실려야 한다 */
+{
+  const kinds = JSON.parse(await readFile(path.join(libraryRoot, "src/kind-attributes.json"), "utf8"));
+  const distManifest = JSON.parse(await read("dist/manifest.json"));
+  for (const [id, list] of Object.entries(kinds.components)) {
+    const doc = await read(`dist/components/${id}.md`);
+    if (!doc.includes("## 종류를 고르는 속성")) failures.push(`${id}.md 에 종류를 고르는 속성 표가 없습니다`);
+    for (const kind of list) for (const value of Object.keys(kind.values)) if (!doc.includes(`| \`${kind.attribute}\` | \`${value}\` |`)) failures.push(`${id}.md 표에 ${kind.attribute}=${value} 행이 없습니다`);
+    const entry = distManifest.components.find((component) => component.id === id);
+    if (!entry?.kindAttributes) failures.push(`dist manifest 의 ${id} 에 kindAttributes 가 없습니다`);
+  }
+}
+
+
+/* RN 선택형(river 2026-10-13) — S1ChipGroup 이 내보내지고 타입·설명이 있고, 시트 줄이 켜짐 상태로 틀을 고르고, onBeforechange·onChange 가 동작에 연결돼 있다 */
+{
+  const index = await read("dist/platform/react-native/index.js");
+  const types = await read("dist/platform/react-native/index.d.ts");
+  const readme = await read("dist/platform/react-native/README.md");
+  const behaviors = await read("dist/platform/react-native/behaviors.js");
+  if (!index.includes('export { S1ChipGroup } from "./chip-group.js"')) failures.push("RN index must export S1ChipGroup");
+  if (!types.includes("S1ChipGroupProps")) failures.push("RN index.d.ts must declare S1ChipGroup");
+  if (!readme.includes("S1ChipGroup")) failures.push("RN README must explain S1ChipGroup");
+  if (!/now\.onBeforechange\?\.\(event\)/.test(behaviors) || !/now\.onAfterchange\?\./.test(behaviors)) failures.push("RN behaviors must wire onBeforechange and onChange");
+  for (const id of ["chip", "mobile-bottom-nav", "bottom-sheet-option"]) {
+    const source = await read(`dist/platform/react-native/components/${id}.js`);
+    if (!/onBeforechange, onAfterchange: onChange/.test(source)) failures.push(`RN ${id} must pass onBeforechange/onChange to the behavior`);
+  }
+}
 
 if (failures.length) {
   console.error(`UI library technical checks found ${failures.length} issue(s):\n- ${failures.join("\n- ")}`);

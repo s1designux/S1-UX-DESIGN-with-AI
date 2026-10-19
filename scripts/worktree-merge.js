@@ -197,6 +197,37 @@ if (rebuild.code === 0) {
   console.error(`      ${(rebuild.err || rebuild.out || '').split('\n').filter(Boolean).slice(-3).join('\n      ')}`);
 }
 
+// ── 5c. 시스템 맵(pipeline-status.html) — 낡았으면 다시 만들어 커밋 ─────────────
+//   이 페이지는 저장소 전체에서 만들어지는 생성물이라 거의 모든 커밋마다 낡는다. 커밋을 막으면 남의
+//   세션까지 막혀 Gate 28 은 경고로 둔다(2026-07-14 결정) — 그 대신 **합칠 때마다 여기서 새로 만든다**
+//   (river 결정 2026-10-02 (A)). 낡지 않았으면 아무것도 안 한다(빈 커밋을 만들지 않는다).
+//   실패해도 되돌리지 않는다 — main 은 이미 정상이고, 낡는 건 화면 하나뿐이다(Gate 28 경고가 계속 알린다).
+step('5c/6 본 폴더: 시스템 맵 신선도 (낡았으면 다시 만들어 커밋)');
+const MAP = 'pages/pipeline-status.html';
+const mapSkip = ['--skip', 'gate:check,components:presentation'];
+const mapCheck = run('node', ['pipeline-status.js', '--self-check', ...mapSkip], MAIN);
+if (mapCheck.code === 0) {
+  console.log('   ✅ 시스템 맵 최신 — 할 일 없음');
+} else {
+  const gen = run('node', ['pipeline-status.js', '--check', ...mapSkip, '--out', MAP], MAIN);
+  if (gen.code !== 0 || run('node', ['pipeline-status.js', '--self-check', ...mapSkip], MAIN).code !== 0) {
+    git(['checkout', '--', MAP], MAIN);
+    console.error('   ⚠️ 시스템 맵 재생성 실패 — main 합치기는 끝났습니다(맵 화면만 낡은 채, Gate 28 경고가 계속 알립니다).');
+    console.error(`      ${(gen.err || gen.out || '').split('\n').filter(Boolean).slice(-3).join('\n      ')}`);
+  } else {
+    git(['add', MAP], MAIN);
+    // 커밋 시 pre-commit 훅이 gate:check 를 돌린다. 막히면 맵만 되돌리고 합치기는 그대로 둔다.
+    const c = git(['commit', '-m', `chore(map): 시스템 맵 재생성 (${branch} 합치기)`], MAIN);
+    if (c.code !== 0) {
+      git(['reset', '-q', 'HEAD', '--', MAP], MAIN);
+      git(['checkout', '--', MAP], MAIN);
+      console.error('   ⚠️ 시스템 맵 커밋이 검문소에 막혀 되돌렸습니다 — main 합치기는 끝났습니다.');
+    } else {
+      console.log('   ✅ 시스템 맵 재생성 커밋');
+    }
+  }
+}
+
 // ── 6. push ────────────────────────────────────────────────────────────────
 step('6/6 원격 push');
 if (NO_PUSH) console.log('   (--no-push) 생략');

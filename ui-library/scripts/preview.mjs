@@ -6,7 +6,8 @@
  *
  *   - 승인된 예제 마크업을 **그대로** 얹는다(새로 쓰지 않는다) → 실제 모습 그대로다.
  *   - 옆에 React·Vue 이름, 고를 수 있는 크기·변형, "언제 쓰나 / 이럴 땐 다른 걸" 을 붙인다.
- *   - 빌드 도구가 필요 없다 — 파일을 더블클릭하면 열린다.
+ *   - 빌드 도구도 서버도 필요 없다 — 파일을 더블클릭(file://)해도 열린다. 겉모습 CSS(아이콘은 data URI)와
+ *     동작 스크립트를 이 파일 안에 담았기 때문이다(file:// 에서는 마스크 아이콘 이미지와 ES module import 가 막힌다).
  */
 
 const GENERATED_NOTE = "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run ui:build` 를 실행하세요.";
@@ -101,7 +102,7 @@ function componentSection({ id, manifest, exampleByBreak, usage }) {
       </section>`;
 }
 
-export function buildPreviewPage({ componentOutputs, usageById, version, canonicalFingerprint }) {
+export function buildPreviewPage({ componentOutputs, usageById, version, canonicalFingerprint, inlineCss, inlineScript }) {
   const approved = componentOutputs.filter(({ manifest }) => manifest.status === "approved");
   const index = approved
     .map(({ id }) => `<a href="#${id}">S1${pascal(id)}</a>`)
@@ -120,7 +121,9 @@ export function buildPreviewPage({ componentOutputs, usageById, version, canonic
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <link rel="stylesheet" href="assets/css/tokens.css">
   <link rel="stylesheet" href="assets/css/typography.css">
-  <link rel="stylesheet" href="s1-ui.css">
+  <style data-s1-bundle>
+${inlineCss}
+  </style>
   <style>
     body { margin:0; background:#f6f7f9; color:#111827;
            font-family:Pretendard Variable, Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
@@ -169,9 +172,9 @@ export function buildPreviewPage({ componentOutputs, usageById, version, canonic
     </nav>
 ${sections}
   </div>
-  <script type="module">
-    import { autoInit } from "./s1-ui.auto.js";
-    autoInit();
+  <script>
+${inlineScript.replace(/<\/script/gi, "<\\/script")}
+  S1UI.autoInit();
   </script>
 </body>
 </html>

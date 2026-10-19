@@ -112,12 +112,13 @@
 /* ── Mobile — 정본 가로·세로 모두 hug, 세로 쌓기·왼쪽 정렬, 배경·테두리 없음, 로고·회사 정보 없음 ── */
 [data-s1-component="footer"][data-platform="mobile"] {
   /* 정본 Mobile 은 가로·세로 모두 hug 다 — 안쪽 내용 폭(링크 줄)이 카피라이트 가운데의 기준이다.
-     바깥은 폭 100% 를 유지하되 칸 하나를 내용 폭(max-content)으로 잡아 왼쪽에 둔다. */
-  align-items: start;
-  display: grid;
+     바깥 상자를 내용 폭(fit-content)으로 줄여 왼쪽에 두고, 카피라이트는 그 폭만큼 늘린다(배경·테두리가 없어 보이는 모양은 같다). */
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
   gap: var(--spacing-4);
-  grid-template-columns: max-content;
-  justify-content: start;
+  justify-content: flex-start;
+  width: fit-content;
   padding: var(--spacing-8) var(--spacing-16);
 }
 
@@ -143,7 +144,7 @@
 
 /* 카피라이트는 링크 줄 폭에 맞춰 가운데(정본 layoutAlign=STRETCH · 가운데 정렬) */
 [data-s1-component="footer"][data-platform="mobile"] [data-s1-part="copyright"] {
-  justify-self: stretch;
+  align-self: stretch;
   text-align: center;
 }
 
@@ -151,14 +152,15 @@
    @media 조건에는 CSS 변수를 쓸 수 없어 768 을 직접 적는다(= --breakpoint-md). ── */
 @media (max-width: 767.98px) {
   [data-s1-component="footer"][data-platform="pc"] {
-    align-items: start;
+    align-items: flex-start;
     background: none;
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: var(--spacing-4);
-    grid-template-columns: max-content;
-    justify-content: start;
+    justify-content: flex-start;
     min-height: 0;
     min-width: 0;
+    width: fit-content;
     padding: var(--spacing-8) var(--spacing-16);
   }
 
@@ -190,7 +192,7 @@
   }
 
   [data-s1-component="footer"][data-platform="pc"] [data-s1-part="copyright"] {
-    justify-self: stretch;
+    align-self: stretch;
     text-align: center;
   }
 }

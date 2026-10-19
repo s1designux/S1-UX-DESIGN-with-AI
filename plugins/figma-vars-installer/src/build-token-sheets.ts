@@ -23,7 +23,7 @@
  */
 
 import type { BuildMaps } from "./build-components";
-import { boundPaint, setMode, findAllOfTypes, wrapCategoryInSection, primeSpecMaps, buildAreaTitle, AREA_TITLE_SPACE, AREA_TITLE_SUFFIX, AREA_RULE_SUFFIX, SECTION_HEADER_SUFFIX } from "./build-components";
+import { boundPaint, setMode, primeModeCollections, modePinFailures, findAllOfTypes, wrapCategoryInSection, primeSpecMaps, buildAreaTitle, AREA_TITLE_SPACE, AREA_TITLE_SUFFIX, AREA_RULE_SUFFIX, SECTION_HEADER_SUFFIX } from "./build-components";
 import { FOUNDATION_COLOR, FOUNDATION_NUMBER, SEMANTIC_COLOR, SEMANTIC_NUMBER } from "./vars-data";
 import { TEXT_STYLES as TEXT_STYLE_DEFS, TEXT_STYLE_FONT_FAMILY } from "./textstyles-data";
 
@@ -607,6 +607,7 @@ export async function buildTokenSheets(
   const result: TokenSheetResult = { sections: [], swatches: 0, styles: 0, numbers: 0, skipped: [] };
   if (typeof figma.createFrame !== "function") return result;   // mock(키체크) 환경
   primeSpecMaps(maps);                                          // 섹션 면·선 토큰 바인딩에 사용
+  await primeModeCollections(maps);                             // 모드 고정은 컬렉션 개체로(dynamic-page)
   PENDING_NODES = [];
   await loadSheetFonts();
 
@@ -793,5 +794,8 @@ export async function buildTokenSheets(
   }
 
   stampSheets(stamp, result, totalW, origin);
+  // 모드 고정 실패를 삼키지 않는다 — 다크 견본이 라이트로 깔리던 사고(2026-10-02, build-components pinMode 주석).
+  const pinFail = modePinFailures();
+  if (pinFail.count) result.skipped.push(`모드 고정 실패 ${pinFail.count}건 — ${pinFail.lastError}`);
   return result;
 }

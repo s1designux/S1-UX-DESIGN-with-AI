@@ -5,9 +5,12 @@ import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
 import iconGeometryCheck from "../../scripts/ui-library-icon-geometry-check.js";
 import { componentIds } from "./component-ids.mjs";
-import { buildPlatformOutputs } from "./platform.mjs";
+import { buildPlatformOutputs, buildContract } from "./platform.mjs";
 import { buildPreviewPage } from "./preview.mjs";
 import { densityCssFor } from "./density.mjs";
+import { buildComponentDoc, isMobileOnly } from "./component-doc.mjs";
+import esbuild from "esbuild";
+import { scopeNestedParts } from "./css-scope.mjs";
 
 const libraryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const repositoryRoot = path.resolve(libraryRoot, "..");
@@ -20,12 +23,57 @@ const read = (file) => readFile(file, "utf8");
 const hash = (value) => createHash("sha256").update(value).digest("hex");
 const stableJson = (value) => `${JSON.stringify(value, null, 2)}\n`;
 
+/* 배포본에는 내부 작업 메모(결정 날짜·사람 이름·내부 문서 이름)를 싣지 않는다.
+   원본(src)의 설명 주석은 그대로 두고, 나가는 CSS·예시에서만 주석을 걷어낸다. 쓰는 법은 components/{id}.md 가 맡는다. */
+/* 예외 하나: 「한글 세로 보정」 주석은 css-model 이 "웹 전용 규칙" 표식으로 읽는다(RN 표에서 뺀다).
+   표식은 남기되 내부 메모(날짜·사람 이름·실측 문서)는 빼고 짧은 한 줄로 바꾼다. */
+const WEB_ONLY_MARK = "/* 한글 세로 보정 — 웹 전용 */";
+const stripCssComments = (css) => css
+  .replace(/\/\*(?:(?!\*\/)[\s\S])*?한글 세로 보정(?:(?!\*\/)[\s\S])*?\*\//g, "\u0000WEBONLY\u0000")
+  .replace(/\/\*[\s\S]*?\*\//g, "")
+  .replaceAll("\u0000WEBONLY\u0000", WEB_ONLY_MARK)
+  .replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").replace(/^\s+/, "");
+const stripHtmlComments = (html) => html.replace(/<!--[\s\S]*?-->\s*/g, "");
+const exampleHeader = (id) => `<!-- 쓰는 법(옵션·값·이벤트·여닫기)은 components/${id}.md 에 있습니다. -->\n`;
+/* 예시 파일 이름 — 모바일 변형은 어느 부품이든 *.mobile.html 로 읽히게 한다(password-mobile → password.mobile). */
+const exampleFileKey = (breakName) => (breakName.endsWith("-mobile") ? `${breakName.slice(0, -"-mobile".length)}.mobile` : breakName);
+const toIdentifierName = (id) => id.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
+
 /* 정본 지문 = **부품 몫만** 센다. 계산은 저장소 한 곳(scripts/lib/canonical-fingerprint.js)에
    있고 `npm run ui:version` 도 같은 모듈을 쓴다 — 두 벌로 두면 갈라진다.
    종전에는 정본 파일을 통째로 세서 주석 한 줄만 고쳐도 부품 27종이 전부 "달라짐"이 됐다. */
 const { canonicalFingerprint } = createRequire(import.meta.url)(
   path.join(repositoryRoot, "scripts/lib/canonical-fingerprint.js")
 );
+
+/* 가상 파일(아직 디스크에 없는 dist 출력)을 esbuild 로 한 덩어리 일반 스크립트(IIFE)로 묶는다. */
+async function bundleClassicScript(entrySource, outputs) {
+  const result = await esbuild.build({
+    stdin: { contents: entrySource, resolveDir: libraryRoot, sourcefile: "s1-ui.auto.js" },
+    bundle: true,
+    format: "iife",
+    globalName: "S1UI",
+    write: false,
+    legalComments: "none",
+    target: "es2020",
+    logLevel: "silent",
+    plugins: [{
+      name: "dist-virtual",
+      setup(build) {
+        build.onResolve({ filter: /^\.\.?\// }, (args) => {
+          const base = args.namespace === "dist-virtual" ? path.posix.dirname(args.importer) : "";
+          return { path: path.posix.normalize(path.posix.join(base, args.path)), namespace: "dist-virtual" };
+        });
+        build.onLoad({ filter: /.*/, namespace: "dist-virtual" }, (args) => {
+          const contents = outputs.get(args.path);
+          if (contents === undefined) return { errors: [{ text: `preview 번들: ${args.path} 가 출력에 없습니다` }] };
+          return { contents, loader: "js" };
+        });
+      }
+    }]
+  });
+  return result.outputFiles[0].text;
+}
 
 async function createOutputs() {
   const packageData = JSON.parse(await read(path.join(libraryRoot, "package.json")));
@@ -63,6 +111,8 @@ async function createOutputs() {
     if (createHash("sha256").update(bytes).digest("hex") !== image.sha256) throw new Error(`${image.id} image fingerprint is stale`);
     imageAssets.push({ ...image, bytes });
   }
+  /* 종류를 고르는 속성 안내 — 속성 이름은 그대로 두고(river 결정 2026-10-13) 값과 시각적 뜻을 표로 안내한다. */
+  const kindDoc = JSON.parse(await read(path.join(sourceRoot, "kind-attributes.json")));
   const componentOutputs = [];
   const outputs = new Map();
 
@@ -76,18 +126,24 @@ async function createOutputs() {
     const sourceCss = await read(path.join(base, `${id}.css`));
     /* 밀도 규칙은 원본 CSS 안의 크기 규칙을 선택자만 바꿔 복사한 것이다 — 값이 갈라지지 않는다.
        전체 묶음과 개별 설치가 같은 CSS 를 쓰도록 여기서 한 번만 붙인다. */
+    /* css = 의미 그대로의 원본(안전띠 없음) — React·Vue·RN·Kotlin 생성기와 값 대조는 이것을 읽는다.
+       안전띠(scopeNestedParts)는 웹 배포 CSS(distCss)에만 붙는다. */
     const css = `${sourceCss}${densityCssFor(id, sourceCss, densityPolicy, manifest.breaks)}`;
+    const distCss = stripCssComments(scopeNestedParts(css, id, manifest.dependencies?.coreComponents ?? []));
     const js = await read(path.join(base, `${id}.js`));
     const example = await read(path.join(base, `${id}.example.html`));
     /* 플랫폼별 예제 — Mobile 크기·break 가 PC 와 다른 컴포넌트는 mobile 예제를 따로 낸다.
        manifest.htmlContract.breakExamples 가 선언한 것만 읽는다(선언 없으면 PC 1벌). */
     const breakExamples = manifest.htmlContract.breakExamples ?? {};
+    /* 기본 예시의 배포 경로 — 모바일 전용 부품은 manifest 가 examples/{id}.mobile.html 로 선언한다. */
+    const mainDistribution = manifest.htmlContract.distribution ?? `examples/${id}.html`;
     const extraExamples = [];
     for (const [breakName, spec] of Object.entries(breakExamples)) {
-      if (spec.distribution === `examples/${id}.html`) continue;
-      const expected = `components/${id}/${id}.${breakName}.example.html`;
+      if (spec.distribution === mainDistribution) continue;
+      const fileKey = exampleFileKey(breakName);
+      const expected = `components/${id}/${id}.${fileKey}.example.html`;
       if (spec.source !== expected) throw new Error(`${id} ${breakName} example source must be ${expected}`);
-      if (spec.distribution !== `examples/${id}.${breakName}.html`) throw new Error(`${id} ${breakName} example distribution must be examples/${id}.${breakName}.html`);
+      if (spec.distribution !== `examples/${id}.${fileKey}.html`) throw new Error(`${id} ${breakName} example distribution must be examples/${id}.${fileKey}.html`);
       extraExamples.push([spec.distribution, await read(path.join(sourceRoot, spec.source))]);
     }
     const componentIconAssets = iconAssets.filter(({ id: iconId }) => manifest.icons.some(({ id: usedId }) => usedId === iconId));
@@ -98,16 +154,16 @@ async function createOutputs() {
       const match = extraExamples.find(([distPath]) => distPath === spec.distribution);
       exampleByBreak[breakName] = match ? match[1] : example;
     }
-    componentOutputs.push({ id, css, js, example, exampleByBreak, manifest: outputManifest });
-    outputs.set(`components/${id}.css`, css);
+    componentOutputs.push({ id, css, js, example, exampleByBreak, manifest: outputManifest, mainDistribution, distCss });
+    outputs.set(`components/${id}.css`, distCss);
     outputs.set(`components/${id}.js`, js);
     outputs.set(`components/${id}.manifest.json`, stableJson(outputManifest));
-    outputs.set(`examples/${id}.html`, example);
-    for (const [distPath, text] of extraExamples) outputs.set(distPath, text);
+    outputs.set(mainDistribution, `${exampleHeader(id)}${stripHtmlComments(example)}`);
+    for (const [distPath, text] of extraExamples) outputs.set(distPath, `${exampleHeader(id)}${stripHtmlComments(text)}`);
   }
 
   const toIdentifier = (id) => id.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase());
-  const bundleCss = `${componentOutputs.map(({ id, css }) => `/* component:${id} */\n${css.trimEnd().replaceAll('url("../assets/', 'url("./assets/')}`).join("\n\n")}\n`;
+  const bundleCss = `${componentOutputs.map(({ id, distCss }) => `/* component:${id} */\n${distCss.trimEnd().replaceAll('url("../assets/', 'url("./assets/')}`).join("\n\n")}\n`;
   const bundleJs = `${componentOutputs.map(({ id }) => `export * as ${toIdentifier(id)} from "./components/${id}.js";`).join("\n")}\n`;
   const runtimeIds = componentOutputs.filter(({ manifest }) => manifest.jsRequired).map(({ id }) => id);
   const autoImports = runtimeIds.map((id) => `import { init as init_${toIdentifier(id)} } from "./components/${id}.js";`).join("\n");
@@ -122,6 +178,7 @@ async function createOutputs() {
     canonicalFingerprint: canonicalFingerprintValue,
     tokenMapFingerprint: hash(tokenMap),
     commonCssDependencies: ["assets/css/tokens.css", "assets/css/typography.css"],
+    optionalCssDependencies: [{ file: "s1-ui.base.css", note: "선택 — 페이지 바탕·기본 글자색·글꼴을 토큰으로 잡는다(다크 모드에서 바탕이 따라오게 한다)" }],
     fontDependencies: [{ family: "Pretendard Variable", source: "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" }],
     commonCssFingerprints: {
       "assets/css/tokens.css": hash(tokensCss),
@@ -130,7 +187,7 @@ async function createOutputs() {
     jsRequired: componentOutputs.some(({ manifest }) => manifest.jsRequired),
     icons: iconManifest.icons,
     images: imageManifest.images,
-    components: componentOutputs.map(({ id, manifest }) => ({
+    components: componentOutputs.map(({ id, manifest, mainDistribution }) => ({
       id,
       version: manifest.version,
       status: manifest.status,
@@ -139,8 +196,10 @@ async function createOutputs() {
       sourceFingerprint: manifest.sourceFingerprint,
       css: `components/${id}.css`,
       js: `components/${id}.js`,
-      example: `examples/${id}.html`,
-      examples: Object.fromEntries(Object.entries(manifest.htmlContract.breakExamples ?? { pc: { distribution: `examples/${id}.html` } })
+      example: mainDistribution,
+      ...(isMobileOnly(id, manifest) ? { mobileOnly: true } : {}),
+      ...(kindDoc.components[id] ? { kindAttributes: kindDoc.components[id] } : {}),
+      examples: Object.fromEntries(Object.entries(manifest.htmlContract.breakExamples ?? { pc: { distribution: mainDistribution } })
         .map(([breakName, spec]) => [breakName, spec.distribution]))
     })),
     bundleParity: {
@@ -167,7 +226,7 @@ async function createOutputs() {
     status: "fixture",
     components: componentIds,
     fullCssSha256: hash(bundleCss),
-    individualCssSha256: hash(componentOutputs.map(({ css }) => css).join("\0")),
+    individualCssSha256: hash(componentOutputs.map(({ distCss }) => distCss).join("\0")),
     note: "Independent verification must render and judge parity; this file only records deterministic build inputs."
   }));
 
@@ -183,11 +242,64 @@ async function createOutputs() {
     if (!registry.usage) throw new Error(`registry/components/${id}.json 에 usage 가 없습니다 — 고르기 안내를 만들 수 없습니다.`);
     usageById[id] = registry.usage;
   }
+  /* 부품별 사람이 읽는 설명서 — manifest·registry usage 에서 생성한다(손으로 쓰지 않는다). */
+  const docContract = buildContract(componentOutputs, distManifest);
+  /* 안내 표가 계약과 어긋나면 빌드를 멈춘다 — 종류 속성이 있는데 표에 없거나, 값이 다르면 안 된다. */
+  for (const entry of docContract.components) {
+    if (!entry.variantAttribute || (entry.variants ?? []).length < 2) continue;
+    const kinds = kindDoc.components[entry.id] ?? [];
+    const kind = kinds.find((one) => one.attribute === entry.variantAttribute);
+    if (!kind) throw new Error(`${entry.id}: 종류 속성 ${entry.variantAttribute} 가 src/kind-attributes.json 표에 없습니다.`);
+    const documented = Object.keys(kind.values).sort().join(",");
+    if (documented !== [...entry.variants].sort().join(",")) throw new Error(`${entry.id}: ${entry.variantAttribute} 값이 계약(${entry.variants.join(", ")})과 표(${Object.keys(kind.values).join(", ")})가 다릅니다.`);
+  }
+  for (const id of Object.keys(kindDoc.components)) if (!componentOutputs.some((one) => one.id === id)) throw new Error(`kind-attributes.json: 없는 부품 ${id}`);
+  for (const { id, manifest, distCss } of componentOutputs) {
+    const distEntry = distManifest.components.find((component) => component.id === id);
+    outputs.set(`components/${id}.md`, buildComponentDoc({
+      id,
+      manifest,
+      contract: docContract.components.find((component) => component.id === id),
+      kinds: kindDoc.components[id] ?? [],
+      usage: usageById[id],
+      css: distCss,
+      examplePaths: [...new Set(Object.values(distEntry.examples))]
+    }));
+  }
+
+  /* 선택형 페이지 기본 스타일 — 다크 모드에서 페이지 바탕이 따라오지 않던 문제(퍼블리셔가 body 를 직접 칠해야 했음)를
+     토큰으로 해결한다. 부품 CSS(s1-ui.css)에는 넣지 않는다 — 퍼블리셔 페이지 body 를 말없이 바꾸지 않기 위해서다. */
+  outputs.set("s1-ui.base.css", `/* S1 UI — 선택: 페이지 바탕·기본 글자색·글꼴. tokens.css 다음에 읽습니다.
+   <html data-theme="dark"> 로 다크 모드를 켜면 바탕·글자색이 같이 바뀝니다. */
+html {
+  background: var(--color-bg-level-0);
+  color: var(--color-text-body-primary);
+}
+
+body {
+  background: var(--color-bg-level-0);
+  color: var(--color-text-body-primary);
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
+  margin: 0;
+}
+`);
+
+  /* preview.html 은 서버 없이 더블클릭(file://)으로도 보여야 한다 — 그래서 자기 안에 다 넣는다.
+     ① 마스크 아이콘은 file:// 에서 CORS 로 막히므로 data URI 로 바꾼 CSS 를 안에 싣고
+     ② ES module 은 file:// 에서 import 가 막히므로 한 덩어리 일반 스크립트로 묶어 싣는다. */
+  const iconByFile = new Map(iconAssets.map((icon) => [icon.file, icon.asset]));
+  const previewCss = bundleCss.replace(/url\("\.\/assets\/icons\/([^"]+)"\)/g, (match, file) => {
+    const asset = iconByFile.get(file);
+    return asset ? `url("data:image/svg+xml;base64,${Buffer.from(asset).toString("base64")}")` : match;
+  });
+  const previewScript = await bundleClassicScript(autoJs, outputs);
   outputs.set("preview.html", buildPreviewPage({
     componentOutputs,
     usageById,
     version: distManifest.version,
-    canonicalFingerprint: distManifest.canonicalFingerprint
+    canonicalFingerprint: distManifest.canonicalFingerprint,
+    inlineCss: previewCss,
+    inlineScript: previewScript
   }));
 
   const platformOutputs = buildPlatformOutputs({
@@ -197,6 +309,7 @@ async function createOutputs() {
     distManifest,
     behaviorLedger,
     iconAssets,
+    imageAssets,
     usageById,
     fingerprints: {
       "assets/css/tokens.css": hash(tokensCss),

@@ -89,22 +89,35 @@ if (state.workflow !== 'screen-rebuild') errors.push('workflow는 screen-rebuild
 if (!allowedStatus.has(state.status)) errors.push(`허용되지 않은 status: ${state.status}`);
 if (!allowedPhase.has(state.currentPhase)) errors.push(`허용되지 않은 currentPhase: ${state.currentPhase}`);
 if (!Number.isInteger(state.lastCompletedCheckpoint) || state.lastCompletedCheckpoint < 0 || state.lastCompletedCheckpoint > 5) errors.push('lastCompletedCheckpoint는 0~5 정수여야 합니다.');
-if (!state.source?.fileKey || !state.source?.nodeId || !state.source?.url) errors.push('source.url, fileKey, nodeId가 모두 필요합니다.');
+// 기준이 둘이다(2026-10-02 — 레거시 기준만 알던 검사기가 의도 선언서 화면을 실패로 오판하던 것 교정):
+//   레거시 재현   → 원본 주소·파일·노드, 화면마다 원본 노드(sourceNodeId)+이름, 완료 시 원본 전수표(1-inventory.md)
+//   intent-spec   → 레거시가 없으므로 원본 대신 **사람이 쓴 의도 선언서**(source.doc)가 실제로 있어야 하고,
+//                   화면마다 화면 번호(code)+만든 노드(targetNodeId), 완료 시 원본 전수표 대신 의도 선언서.
+//   어느 쪽도 요구를 줄이지 않는다 — 원본이 없는 자리에 원본에 해당하는 근거를 요구한다.
+const intentSpec = state.source?.kind === 'intent-spec';
+const flowDir = path.dirname(statePath);
+if (intentSpec) {
+  if (!state.source?.doc) errors.push('intent-spec 화면은 source.doc(의도 선언서)이 필요합니다.');
+  else if (!fs.existsSync(path.join(flowDir, state.source.doc))) errors.push(`의도 선언서가 없습니다: ${state.source.doc}`);
+} else if (!state.source?.fileKey || !state.source?.nodeId || !state.source?.url) errors.push('source.url, fileKey, nodeId가 모두 필요합니다.');
 if (!state.target?.service || !state.target?.flow) errors.push('target.service와 target.flow가 필요합니다.');
 if (!Array.isArray(state.screens) || state.screens.length === 0) errors.push('screens는 한 개 이상이어야 합니다.');
 
+const idKey = intentSpec ? 'targetNodeId' : 'sourceNodeId';
+const nameKey = intentSpec ? 'code' : 'name';
 const ids = new Set();
 for (const [index, screen] of (state.screens || []).entries()) {
-  if (!screen.sourceNodeId || !screen.name) errors.push(`screens[${index}]에 sourceNodeId와 name이 필요합니다.`);
+  if (!screen[idKey] || !screen[nameKey]) errors.push(`screens[${index}]에 ${idKey}와 ${nameKey}이 필요합니다.`);
   if (!allowedScreenStatus.has(screen.status)) errors.push(`screens[${index}]의 status가 유효하지 않습니다: ${screen.status}`);
-  if (ids.has(screen.sourceNodeId)) errors.push(`중복 sourceNodeId: ${screen.sourceNodeId}`);
-  ids.add(screen.sourceNodeId);
+  if (ids.has(screen[idKey])) errors.push(`중복 ${idKey}: ${screen[idKey]}`);
+  ids.add(screen[idKey]);
 }
 
 if (state.status === 'complete') {
   const unfinished = (state.screens || []).filter(screen => !['verified', 'excluded'].includes(screen.status));
   if (unfinished.length) errors.push(`complete 상태인데 미완료 화면이 ${unfinished.length}개 있습니다.`);
-  for (const file of ['1-inventory.md', '2-mapping.md', '3-build.md', 'node-map.json', '4-verification.md', '5-registration.md']) {
+  const firstDoc = intentSpec ? (state.source?.doc || 'intent.md') : '1-inventory.md';
+  for (const file of [firstDoc, '2-mapping.md', '3-build.md', 'node-map.json', '4-verification.md', '5-registration.md']) {
     if (!fs.existsSync(path.join(path.dirname(statePath), file))) errors.push(`complete 상태에 필요한 파일이 없습니다: ${file}`);
   }
 }

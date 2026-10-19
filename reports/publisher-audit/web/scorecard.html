@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>웹판 퍼블리셔 성적표</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--text:#1d2128;--sub:#5b6370;--line:#e2e5ea;--red:#d6332a;--redbg:#fdecea;--amber:#a86300;--amberbg:#fff4e0;--green:#1f7a3d;--greenbg:#e7f5ec;--blue:#1f5fd6;--bluebg:#e8f0fd}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15181d;--card:#1f232a;--text:#e9ecf1;--sub:#a3abb8;--line:#333944;--red:#ff7b72;--redbg:#3a1d1b;--amber:#f2b24c;--amberbg:#3a2c12;--green:#5cd08a;--greenbg:#16301f;--blue:#7aa7ff;--bluebg:#1a2742}}
+:root[data-theme="dark"]{--bg:#15181d;--card:#1f232a;--text:#e9ecf1;--sub:#a3abb8;--line:#333944;--red:#ff7b72;--redbg:#3a1d1b;--amber:#f2b24c;--amberbg:#3a2c12;--green:#5cd08a;--greenbg:#16301f;--blue:#7aa7ff;--bluebg:#1a2742}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 Pretendard,-apple-system,"Apple SD Gothic Neo",sans-serif}
+main{max-width:1080px;margin:0 auto;padding:32px 16px 80px}
+h1{font-size:26px;margin:0 0 6px}
+h2{font-size:19px;margin:44px 0 6px}
+.lead{color:var(--sub);margin:0 0 24px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.stat b{display:block;font-size:26px}
+.stat span{color:var(--sub);font-size:13px}
+.ok b{color:var(--green)}.bad b{color:var(--red)}.mid b{color:var(--amber)}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:10px 0;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:start}
+.item p{margin:2px 0 0;color:var(--sub);font-size:14px}
+.tag{font-size:12px;font-weight:600;padding:3px 8px;border-radius:99px;white-space:nowrap}
+.t-broken{background:var(--redbg);color:var(--red)}
+.t-friction{background:var(--amberbg);color:var(--amber)}
+.who{font-size:12px;padding:3px 8px;border-radius:6px;white-space:nowrap}
+.me{background:var(--greenbg);color:var(--green)}
+.river{background:var(--bluebg);color:var(--blue);font-weight:700}
+.sec-note{color:var(--sub);font-size:14px;margin:0 0 8px}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:12px}
+figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img{width:100%;display:block;border-bottom:1px solid var(--line)}
+figcaption{padding:10px 12px;font-size:13px;color:var(--sub)}
+.good{background:var(--greenbg);border-radius:12px;padding:14px 18px}
+.good li{margin:4px 0}
+@media (max-width:560px){.item{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<h1>웹판(HTML·CSS·JS) 퍼블리셔 성적표</h1>
+<p class="lead">2026-10-12 · 배포본 0.19.0 · 두 가지로 검수했습니다 → ① 견본 46장을 하나씩 띄워 클릭·키보드까지 기계로 확인 ② 퍼블리셔 역할 에이전트가 받은 파일만 보고 화면 3개를 직접 만들어 봄</p>
+
+<div class="stats">
+  <div class="stat ok"><b>46 / 46</b><span>견본 동작 검사 통과</span></div>
+  <div class="stat bad"><b>2</b><span>받자마자 고장</span></div>
+  <div class="stat mid"><b>약 25</b><span>쓰기 불편 (두 검사 합침)</span></div>
+  <div class="stat"><b>3 / 4</b><span>화면 만들기 과제 완료</span></div>
+</div>
+
+<h2>한 줄 판정</h2>
+<p><b>부품은 튼튼한데, 설명서와 '부품끼리 엮는 부분'이 약합니다.</b> 견본을 그대로 붙이면 거의 다 돌아갑니다. 그런데 여러 부품을 섞어 실제 화면을 만들면 퍼블리셔가 스크립트 속을 뒤져야 하는 곳이 많습니다.</p>
+
+<h2>① 받자마자 고장 — 2건</h2>
+<div class="item"><span class="tag t-broken">고장</span><div><b>묶음에 든 '규칙 검사 도구'가 실행되지 않음</b><p>설명서가 알려준 "최신인지 확인" 명령도 같이 멈춥니다. 도구가 웹 묶음에 없는 파일을 찾기 때문입니다.</p></div><span class="who me">제가 고침</span></div>
+<div class="item"><span class="tag t-broken">고장</span><div><b>미리보기 파일을 더블클릭하면 아이콘이 전부 빈 칸</b><p>설명서는 "브라우저로 열라"고 하는데, 그렇게 열면 아이콘 40개가 다 비고 동작도 안 붙습니다. 작은 서버를 띄워야만 정상으로 보입니다.</p></div><span class="who me">제가 고침</span></div>
+
+<h2>② 동작 결함 — 화면을 조합할 때 드러남</h2>
+<div class="item"><span class="tag t-friction">불편</span><div><b>모달 안에서 달력을 열고 Esc → 모달까지 같이 닫힘</b><p>입력하던 내용이 날아갑니다. Esc는 맨 위 창 하나만 닫아야 합니다.</p></div><span class="who me">제가 고침</span></div>
+<div class="item"><span class="tag t-friction">불편</span><div><b>페이지 번호가 5쪽을 넘어가면 따라오지 않음</b><p>12쪽에서 '마지막'을 누르면 1~5만 남고 현재 쪽 표시가 사라집니다.</p></div><span class="who me">제가 고침</span></div>
+<div class="item"><span class="tag t-friction">불편</span><div><b>모달·바텀시트를 여는 방법이 없음, 취소 버튼을 눌러도 안 닫힘</b><p>버튼에 속성 한 줄로 열고, 취소는 기본으로 닫히게 하면 됩니다.</p></div><span class="who me">제가 고침</span></div>
+<div class="item"><span class="tag t-friction">불편</span><div><b>스스로 동작하지 않는 부품들</b><p>시트 안 옵션 고르기, 하단 탭 이동, 칩 하나만 켜기를 퍼블리셔가 직접 짜야 했습니다. 시트 옵션은 키보드로 고를 수도 없습니다.</p></div><span class="who me">제가 고침</span></div>
+<div class="item"><span class="tag t-friction">불편</span><div><b>값을 미리 채우거나 폼으로 보내기 어려움</b><p>달력에 날짜를 미리 넣는 방법이 숨어 있고, 셀렉트는 값을 넣는 방법이 없습니다. 폼 전송용 이름표도 없습니다.</p></div><span class="who me">제가 고침</span></div>
+<div class="item"><span class="tag t-friction">불편</span><div><b>GNB 하위메뉴가 열리면 페이지 전체가 아래로 밀림</b><p>아래 그림 참고. 위에 겹쳐 뜨게 할지, 지금처럼 밀어낼지는 디자인 결정입니다.</p></div><span class="who river">river 결정</span></div>
+<div class="item"><span class="tag t-friction">불편</span><div><b>달력이 칸보다 훨씬 크게 열려 모달 밖으로 나감</b><p>140px 칸에서 520px 달력이 열립니다. 날짜는 '26.10.15'처럼 연도가 두 자리로 나옵니다. 크기와 표기는 디자인 정본에 정해진 값이라 바꾸려면 결정이 필요합니다.</p></div><span class="who river">river 결정</span></div>
+
+<h2>③ 설명서 부족 — 가장 많이 걸린 곳</h2>
+<p class="sec-note">지금 설명서는 시작 5줄이 전부입니다. 아래는 모두 퍼블리셔가 파일 속을 뒤져서야 알아낸 것들입니다.</p>
+<div class="item"><span class="tag t-friction">불편</span><div><b>스크립트를 어떻게 넣는지 안 알려줌</b><p>평소처럼 넣으면 오류가 나고 아무것도 동작하지 않습니다.</p></div><span class="who me">제가 고침</span></div>
+<div class="item"><span class="tag t-friction">불편</span><div><b>글꼴(Pretendard)이 묶음에 없고, 넣으라는 말도 없음</b><p>글꼴이 안 깔린 컴퓨터에서는 다른 글꼴로 보입니다. 부품 5종은 글꼴을 스스로 정하지도 않습니다.</p></div><span class="who me">제가 고침</span></div>
+<div class="item"><span class="tag t-friction">불편</span><div><b>다크 모드 켜는 법이 없음, 켜도 페이지 바탕은 흰색 그대로</b><p>속성 한 줄이면 되는데 그 한 줄이 설명서에 없습니다. 바탕과 기본 글자색을 잡아주는 기본 스타일도 없습니다.</p></div><span class="who me">제가 고침</span></div>
+<div class="item"><span class="tag t-friction">불편</span><div><b>부품마다 사람이 읽는 설명 한 장이 없음</b><p>크기·옵션·여닫기·이벤트가 설정 파일과 스크립트 속에만 있습니다. 견본 주석이 가리키는 설명도 실제로는 없습니다.</p></div><span class="who me">제가 고침</span></div>
+<div class="item"><span class="tag t-friction">불편</span><div><b>나중에 넣은 화면 조각에 동작 붙이는 법이 없음</b><p>실제로는 잘 되는데 안내가 없습니다.</p></div><span class="who me">제가 고침</span></div>
+<div class="item"><span class="tag t-friction">불편</span><div><b>숫자·이름 엇갈림과 내부 메모 노출</b><p>"22종"이라고 적혔는데 실제는 32종입니다. 모바일 파일 이름 규칙도 지켜지지 않았습니다. 스타일 파일에는 사람 이름이 든 작업 메모가 125곳 실려 나갑니다.</p></div><span class="who me">제가 고침</span></div>
+
+<h2>④ 일관성 — 고치면 기존 화면이 바뀜</h2>
+<div class="item"><span class="tag t-friction">불편</span><div><b>'종류'를 고르는 속성 이름이 부품마다 7가지</b><p>통일하면 외울 것이 줄어듭니다. 다만 이미 쓰는 곳이 있으면 그 화면을 고쳐야 합니다. 옛 이름도 당분간 같이 받게 만들 수 있습니다.</p></div><span class="who river">river 결정</span></div>
+<div class="item"><span class="tag t-friction">불편</span><div><b>같은 크기 이름인데 부품마다 높이가 다름</b><p>검색창 xsm·칩 md·필터칩 md가 모두 34px이라, 한 줄에 놓으면 높이를 따로 맞춰야 합니다. 높이는 정본 값이라 이름 체계를 손볼지 정해야 합니다.</p></div><span class="who river">river 결정</span></div>
+<div class="item"><span class="tag t-friction">불편</span><div><b>글자 대비가 낮은 곳</b><p>페이지 번호 2.7:1, 데이터 태그 3.4:1입니다. 권장 기준은 4.5:1입니다. 색 정본을 바꾸는 일입니다.</p></div><span class="who river">river 결정</span></div>
+
+<h2>퍼블리셔가 만든 화면</h2>
+<div class="shots">
+  <figure><img src="trial/02-list.png" alt=""><figcaption>관리자 목록 — 손 안 대도 그럴듯하게 나옵니다</figcaption></figure>
+  <figure><img src="trial/02-list-modal.png" alt=""><figcaption>행을 눌러 여는 모달 — 여는 코드는 퍼블리셔가 직접 짰습니다</figcaption></figure>
+  <figure><img src="trial/02-list-gnb-lnb.png" alt=""><figcaption>GNB 하위메뉴가 본문을 아래로 밀어냄</figcaption></figure>
+  <figure><img src="trial/01-login-filled.png" alt=""><figcaption>로그인 — 완료</figcaption></figure>
+  <figure><img src="trial/04-login-dark-empty.png" alt=""><figcaption>다크 모드 — 퍼블리셔가 쓴 제목이 검게 남음</figcaption></figure>
+  <figure><img src="trial/03-settings-sheet.png" alt=""><figcaption>모바일 설정 + 바텀시트</figcaption></figure>
+</div>
+
+<h2>잘 된 점</h2>
+<ul class="good">
+  <li>견본을 붙이고 한 줄만 부르면 거의 다 바로 동작합니다.</li>
+  <li>모양 완성도가 높습니다.</li>
+  <li>다크 모드가 속성 한 줄로 부품 전체에 깔끔하게 적용됩니다.</li>
+  <li>모달 초점 가두기, 배경 스크롤 막기 같은 까다로운 동작이 이미 들어 있습니다.</li>
+</ul>
+
+<h2>아직 못 믿는 부분</h2>
+<p class="sec-note">이 맥에는 Pretendard가 깔려 있어서 글꼴 문제는 화면으로 직접 확인하지 못했습니다. 파일 속을 읽어서 판단했습니다. 모바일 시간 휠은 굴리지 않고 눌러서만 시험했습니다.</p>
+</main>
+</body>
+</html>

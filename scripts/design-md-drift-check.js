@@ -17,23 +17,28 @@ const ROOT = path.resolve(__dirname, '..');
 // PC UI 라이브러리의 실제 JavaScript 근거가 행동 계약과 먼저 일치해야 한다.
 const behavior = spawnSync('node', [path.join(ROOT, 'scripts/component-behavior-check.js')], { encoding: 'utf-8' });
 const behaviorOut = (behavior.stdout || '') + (behavior.stderr || '');
+// 2026-10-02: 행동 계약이 어긋나도 **멈추지 않고** 아래 facts 검사까지 돈다. 옛 Gate 9e(facts 재생성
+//   대조)를 이 검사가 흡수했으므로, 행동 계약 실패가 facts 낡음 보고를 가리면 9e 가 따로 알려 주던
+//   것을 한 번에 못 보게 된다(🤖 component-verifier 적발). 차단 여부는 종전과 같다.
+let failed = false;
 if (behavior.status !== 0) {
   console.error('🔎 DESIGN.md 드리프트 검사기 (Design MD Drift)');
   console.error('  ❌ PC component behavior 계약이 UI 라이브러리 JavaScript와 어긋남:');
   console.error(behaviorOut.trim());
-  process.exit(1);
+  failed = true;
 }
 
 // build-components 정본 파생 facts 가 먼저 최신이어야 DESIGN.md 최신성도 의미가 있다.
 const facts = spawnSync('node', [path.join(ROOT, 'scripts/gen-component-facts.js')], { encoding: 'utf-8' });
 const factsOut = (facts.stdout || '') + (facts.stderr || '');
 if (facts.status !== 0) {
-  console.error('🔎 DESIGN.md 드리프트 검사기 (Design MD Drift)');
+  if (!failed) console.error('🔎 DESIGN.md 드리프트 검사기 (Design MD Drift)');
   console.error('  ❌ component-facts.json 이 build-components.ts 보다 낡았거나 생성에 실패함:');
   console.error(factsOut.trim());
   console.error('  → npm run components:facts:write 후 npm run design:md:write 를 실행하세요.');
   process.exit(1);
 }
+if (failed) process.exit(1);
 
 const r = spawnSync('node', [path.join(ROOT, 'scripts/gen-design-md.js')], { encoding: 'utf-8' });
 const out = (r.stdout || '') + (r.stderr || '');

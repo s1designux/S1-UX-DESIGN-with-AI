@@ -1,15 +1,18 @@
+"use client";
 /* 자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요. */
 /* S1Footer — 승인된 배포본 마크업을 그대로 옮긴 React 컴포넌트.
    마크업을 새로 쓰지 않는다. dist/examples/footer*.html 의 승인 인스턴스를 JSX 로 옮긴 것이다.
    서버에서 그려도 같은 마크업이 나온다. */
-import { useId, useRef } from "react";
-import { scopeOf, slot } from "./runtime.js";
+import { forwardRef, useId } from "react";
+import { mergeParts, scopeOf, slot } from "./kit.js";
 // footer 는 JavaScript 런타임이 없다 — 브라우저 기본 동작만 쓴다.
+
 
 export const BREAKS = ["pc"];
 export const DEFAULT_BREAK = "pc";
 export const VARIANTS = ["pc","mobile"];
 export const SIZES = [];
+/* parts 로 줄 수 있는 슬롯 이름(낙타 표기) — 타입 정의의 parts 키와 같다. */
 export const PARTS = ["content","links","link","company","copyright","logo"];
 
 function assertAllowed(label, value, allowed) {
@@ -17,14 +20,13 @@ function assertAllowed(label, value, allowed) {
   throw new Error(`[s1-ui] footer: 승인되지 않은 ${label} "${value}". 쓸 수 있는 값: ${allowed.join(", ")}`);
 }
 
-export default function S1Footer({ variant, parts, className, style, ...rest }) {
+const S1Footer = forwardRef(function S1Footer({ variant, parts, className, style, ...rest }, forwardedRef) {
   const uid = useId();
-  const rootRef = useRef(null);
-  const partScope = scopeOf(parts);
+  const rootAttr = forwardedRef;
   assertAllowed("variant", variant, VARIANTS);
-
+  const partScope = scopeOf(parts);
   return (
-      <footer data-s1-component="footer" data-platform={variant ?? "pc"} ref={rootRef} className={className} style={style} {...rest}>
+      <footer data-s1-component="footer" data-platform={variant ?? "pc"} ref={rootAttr} className={className} style={style} {...rest}>
         <div data-s1-part="content" {...(slot(partScope, "content").attrs ?? {})}>
           <ul data-s1-part="links" {...(slot(partScope, "links").attrs ?? {})}>
             <li>
@@ -55,4 +57,6 @@ export default function S1Footer({ variant, parts, className, style, ...rest }) 
         </svg>
       </footer>
   );
-}
+});
+S1Footer.displayName = "S1Footer";
+export default S1Footer;

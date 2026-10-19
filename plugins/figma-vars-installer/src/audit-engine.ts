@@ -2081,24 +2081,31 @@ async function setVariablesMode(mode: "light" | "dark" | "clear"): Promise<{ cou
     // 선택 노드와 모든 자손 노드에 있는 모든 컬렉션의 explicit mode 제거
     let cleared = 0;
     let skipped = 0;
+    // id 문자열판 clearExplicitVariableModeForCollection(cid) 은 dynamic-page 에서 예외를 던진다 —
+    //   컬렉션 **개체**로 푼다(build-components.ts pinMode 주석 · 2026-10-13).
+    const pinned: { n: SceneNode; cid: string }[] = [];
     const visit = (n: SceneNode) => {
       const modes = (n as any).explicitVariableModes as { [collectionId: string]: string } | undefined;
-      if (modes) {
-        const collectionIds = Object.keys(modes);
-        for (const cid of collectionIds) {
-          try {
-            (n as any).clearExplicitVariableModeForCollection(cid);
-            cleared++;
-          } catch (e) {
-            skipped++;
-          }
-        }
-      }
+      if (modes) for (const cid of Object.keys(modes)) pinned.push({ n, cid });
       if ("children" in n) {
         for (const c of (n as any).children) visit(c as SceneNode);
       }
     };
     for (const root of sel) visit(root);
+    const colls: Record<string, VariableCollection | null> = {};
+    for (const { n, cid } of pinned) {
+      if (!(cid in colls)) {
+        try { colls[cid] = await figma.variables.getVariableCollectionByIdAsync(cid); } catch (e) { colls[cid] = null; }
+      }
+      const coll = colls[cid];
+      if (!coll) { skipped++; continue; }
+      try {
+        (n as any).clearExplicitVariableModeForCollection(coll);
+        cleared++;
+      } catch (e) {
+        skipped++;
+      }
+    }
     if (cleared === 0 && skipped === 0) {
       return { count: 0, skipped: 0, cleared: 0, message: "초기화할 모드 override 없음" };
     }
@@ -2121,7 +2128,7 @@ async function setVariablesMode(mode: "light" | "dark" | "clear"): Promise<{ cou
   let skipped = 0;
   for (const node of sel) {
     try {
-      (node as any).setExplicitVariableModeForCollection(semantic.id, found.modeId);
+      (node as any).setExplicitVariableModeForCollection(semantic, found.modeId);
       count++;
     } catch (e) {
       skipped++;
@@ -3845,7 +3852,7 @@ async function fitInstanceToMode(
     if (pinned === wantModeId) continue;
     if (pinned) {
       try {
-        (node as any).clearExplicitVariableModeForCollection(semantic.id);
+        (node as any).clearExplicitVariableModeForCollection(semantic);
         changed++;
       } catch (e) { /* */ }
     }
@@ -3860,7 +3867,7 @@ async function fitInstanceToMode(
     }
     if (resolved !== wantModeId) {
       try {
-        (node as any).setExplicitVariableModeForCollection(semantic.id, wantModeId);
+        (node as any).setExplicitVariableModeForCollection(semantic, wantModeId);
         changed++;
       } catch (e) { /* */ }
     }
