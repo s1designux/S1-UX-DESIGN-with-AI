@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>S1 UI 컴포넌트 미리보기 — 32종</title>
+  <title>S1 UI 컴포넌트 미리보기 — 35종</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <link rel="stylesheet" href="assets/css/tokens.css">
   <link rel="stylesheet" href="assets/css/typography.css">
@@ -47,10 +47,10 @@
 <body>
   <div class="page">
     <div class="page-head">
-      <h1>S1 UI 컴포넌트 미리보기 — 32종</h1>
+      <h1>S1 UI 컴포넌트 미리보기 — 35종</h1>
       <p>이 페이지는 배포본에 들어 있는 마크업을 그대로 얹어 그린 것입니다. 여기 보이는 모습이 실제 모습입니다.<br>
          React·Vue 는 제목의 이름을 그대로 부르면 됩니다. 크기·변형은 각 이름 옆에 적힌 값만 쓸 수 있습니다.</p>
-      <p class="fingerprint">버전 0.19.3 · 정본 지문 4183ab50f447f77e5f0d8dd999038bdd9e3a8d2478d049f9d41ad8b7ec1cfe5f</p>
+      <p class="fingerprint">버전 0.19.4 · 정본 지문 239a9359656687400cf6ae52dfb53ff023142ebc11515f21c041a8ffdf2511b9</p>
     </div>
     <nav class="index">
         <a href="#input">S1Input</a>
@@ -85,6 +85,9 @@
         <a href="#data-tag">S1DataTag</a>
         <a href="#divider">S1Divider</a>
         <a href="#lnb">S1Lnb</a>
+        <a href="#footer">S1Footer</a>
+        <a href="#ci">S1Ci</a>
+        <a href="#login-gnb">S1LoginGnb</a>
     </nav>
       <section class="component" id="input">
         <header class="component-head">
@@ -1951,6 +1954,126 @@
             <div class="usage-block usage-block-avoid">
               <div class="usage-title">이럴 땐 다른 걸</div>
               <ul><li>화면 위쪽 가로 메뉴가 필요할 때 — GNB 를 쓴다.</li><li>모바일 하단 이동 막대가 필요할 때 — Mobile Bottom Nav 를 쓴다.</li></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="component" id="footer">
+        <header class="component-head">
+          <div>
+            <h2>S1Footer</h2>
+            <p class="component-id">React·Vue 이름 · 마크업은 <code>data-s1-component="footer"</code></p>
+          </div>
+          <dl class="component-axes">
+            <dt>크기</dt><dd>크기 축 없음</dd>
+            <dt>변형</dt><dd><code>pc</code> <code>mobile</code></dd>
+          </dl>
+        </header>
+        <div class="component-body">
+          <div class="samples">
+          <div class="sample">
+            <div class="sample-label">pc</div>
+            <div class="sample-stage" data-break="pc"><footer data-s1-component="footer" data-platform="pc">
+    <div data-s1-part="content">
+      <ul data-s1-part="links">
+        <li><a data-s1-part="link" href="#">이용약관</a></li>
+        <li><a data-s1-part="link" href="#">개인정보 처리방침</a></li>
+        <li><a data-s1-part="link" href="#">위치기반 서비스 이용약관</a></li>
+      </ul>
+      <p data-s1-part="company">(주)에스원   사업자등록번호 208-81-13302    대표이사 정해린    04511 서울특별시 중구 세종대로 7길 25 에스원 빌딩</p>
+      <p data-s1-part="copyright">© S-1 Corp. All Rights Reserved.</p>
+    </div>
+    <svg data-s1-part="logo" width="42" height="16" viewBox="0 0 42 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M32.6826 14.3262H41.5254V16H30.6992V10.2461H32.6826V14.3262ZM10.1426 15.9902H8.32129V7.07812H7.39258C7.30419 11.1554 5.68825 13.0125 3.70117 13.0127C1.65723 13.0127 0 11.0554 0 6.73047C0 2.41216 1.65721 0.448242 3.70117 0.448242C5.52602 0.448409 7.03869 2.01912 7.34277 5.42676H8.32129V0.172852H10.1426V15.9902ZM12.9111 15.9902H11.084V0.173828H12.9111V15.9902ZM28.084 15.2305H15.084V13.5811H28.084V15.2305ZM41.2891 0.182617V13.0557H39.46V11.2832H36.459V9.64453H39.46V0.182617H41.2891ZM38.8672 8.87891H35.3379V12.1885H33.3799V8.87891H29.7305V7.3291H38.8672V8.87891ZM22.6143 2.46875C22.6143 4.89881 24.005 8.20501 27.7148 9.30078V11.0654C27.6961 11.063 23.8792 10.5615 21.583 6.69531C19.2775 10.5711 15.4512 11.0654 15.4512 11.0654V9.30078C19.1607 8.21325 20.5518 4.89883 20.5518 2.46875V0.551758H22.6143V2.46875ZM3.70215 2.41211C2.66837 2.41211 1.83011 3.41277 1.83008 6.7334C1.83008 10.0732 2.66835 11.0557 3.70215 11.0557C4.73624 11.0556 5.57422 10.0731 5.57422 6.7334C5.57418 3.41295 4.73622 2.41222 3.70215 2.41211ZM34.3525 0C36.6151 0 38.4492 1.17983 38.4492 3.41797C38.449 5.69092 36.615 6.83496 34.3525 6.83496C32.0903 6.83485 30.2561 5.69081 30.2559 3.41797C30.2559 1.17994 32.0901 0 34.3525 0ZM34.3486 1.57227C33.1672 1.57227 32.2091 2.36269 32.209 3.44043C32.209 4.51861 33.1671 5.30859 34.3486 5.30859C35.5303 5.3084 36.4883 4.51026 36.4883 3.44043C36.4882 2.35834 35.5302 1.57246 34.3486 1.57227Z"/></svg>
+  </footer>
+<footer data-s1-component="footer" data-platform="mobile">
+    <ul data-s1-part="links">
+      <li><a data-s1-part="link" href="#">이용약관</a></li>
+      <li><a data-s1-part="link" href="#">개인정보 처리방침</a></li>
+      <li><a data-s1-part="link" href="#">위치기반 서비스 이용약관</a></li>
+    </ul>
+    <p data-s1-part="copyright">© S-1 Corp. All Rights Reserved.</p>
+  </footer></div>
+          </div>
+          </div>
+          <div class="component-usage">
+            <div class="usage-block">
+              <div class="usage-title">언제 쓰나</div>
+              <ul><li>화면 맨 아래에 이용약관·개인정보 처리방침·회사 정보·카피라이트를 보여줄 때.</li><li>PC 화면에서는 회사 정보와 로고까지 함께 보여줄 때(PC), 모바일 화면에서는 링크와 카피라이트만 간단히 보여줄 때(Mobile).</li></ul>
+            </div>
+            <div class="usage-block usage-block-avoid">
+              <div class="usage-title">이럴 땐 다른 걸</div>
+              <ul><li>화면 맨 위 바가 필요할 때 — 그건 GNB 나 로그인 상단바의 몫이다.</li><li>법인 문구를 화면마다 고쳐 쓰고 싶을 때 — 문구는 registry/content/footer.json 이 단일 출처이며 임의로 바꾸지 않는다.</li></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="component" id="ci">
+        <header class="component-head">
+          <div>
+            <h2>S1Ci</h2>
+            <p class="component-id">React·Vue 이름 · 마크업은 <code>data-s1-component="ci"</code></p>
+          </div>
+          <dl class="component-axes">
+            <dt>크기</dt><dd>크기 축 없음</dd>
+            <dt>변형</dt><dd><code>s1</code> <code>samsung</code></dd>
+          </dl>
+        </header>
+        <div class="component-body">
+          <div class="samples">
+          <div class="sample">
+            <div class="sample-label">pc</div>
+            <div class="sample-stage" data-break="pc"><span data-s1-component="ci" data-brand="s1" data-color="white" role="img" aria-label="에스원"><svg viewBox="0 0 42 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M32.6826 14.3262H41.5254V16H30.6992V10.2461H32.6826V14.3262ZM10.1426 15.9902H8.32129V7.07812H7.39258C7.30419 11.1554 5.68825 13.0125 3.70117 13.0127C1.65723 13.0127 0 11.0554 0 6.73047C0 2.41216 1.65721 0.448242 3.70117 0.448242C5.52602 0.448409 7.03869 2.01912 7.34277 5.42676H8.32129V0.172852H10.1426V15.9902ZM12.9111 15.9902H11.084V0.173828H12.9111V15.9902ZM28.084 15.2305H15.084V13.5811H28.084V15.2305ZM41.2891 0.182617V13.0557H39.46V11.2832H36.459V9.64453H39.46V0.182617H41.2891ZM38.8672 8.87891H35.3379V12.1885H33.3799V8.87891H29.7305V7.3291H38.8672V8.87891ZM22.6143 2.46875C22.6143 4.89881 24.005 8.20501 27.7148 9.30078V11.0654C27.6961 11.063 23.8792 10.5615 21.583 6.69531C19.2775 10.5711 15.4512 11.0654 15.4512 11.0654V9.30078C19.1607 8.21325 20.5518 4.89883 20.5518 2.46875V0.551758H22.6143V2.46875ZM3.70215 2.41211C2.66837 2.41211 1.83011 3.41277 1.83008 6.7334C1.83008 10.0732 2.66835 11.0557 3.70215 11.0557C4.73624 11.0556 5.57422 10.0731 5.57422 6.7334C5.57418 3.41295 4.73622 2.41222 3.70215 2.41211ZM34.3525 0C36.6151 0 38.4492 1.17983 38.4492 3.41797C38.449 5.69092 36.615 6.83496 34.3525 6.83496C32.0903 6.83485 30.2561 5.69081 30.2559 3.41797C30.2559 1.17994 32.0901 0 34.3525 0ZM34.3486 1.57227C33.1672 1.57227 32.2091 2.36269 32.209 3.44043C32.209 4.51861 33.1671 5.30859 34.3486 5.30859C35.5303 5.3084 36.4883 4.51026 36.4883 3.44043C36.4882 2.35834 35.5302 1.57246 34.3486 1.57227Z"/></svg></span>
+<span data-s1-component="ci" data-brand="s1" data-color="blue" role="img" aria-label="에스원"><svg viewBox="0 0 42 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M32.6826 14.3262H41.5254V16H30.6992V10.2461H32.6826V14.3262ZM10.1426 15.9902H8.32129V7.07812H7.39258C7.30419 11.1554 5.68825 13.0125 3.70117 13.0127C1.65723 13.0127 0 11.0554 0 6.73047C0 2.41216 1.65721 0.448242 3.70117 0.448242C5.52602 0.448409 7.03869 2.01912 7.34277 5.42676H8.32129V0.172852H10.1426V15.9902ZM12.9111 15.9902H11.084V0.173828H12.9111V15.9902ZM28.084 15.2305H15.084V13.5811H28.084V15.2305ZM41.2891 0.182617V13.0557H39.46V11.2832H36.459V9.64453H39.46V0.182617H41.2891ZM38.8672 8.87891H35.3379V12.1885H33.3799V8.87891H29.7305V7.3291H38.8672V8.87891ZM22.6143 2.46875C22.6143 4.89881 24.005 8.20501 27.7148 9.30078V11.0654C27.6961 11.063 23.8792 10.5615 21.583 6.69531C19.2775 10.5711 15.4512 11.0654 15.4512 11.0654V9.30078C19.1607 8.21325 20.5518 4.89883 20.5518 2.46875V0.551758H22.6143V2.46875ZM3.70215 2.41211C2.66837 2.41211 1.83011 3.41277 1.83008 6.7334C1.83008 10.0732 2.66835 11.0557 3.70215 11.0557C4.73624 11.0556 5.57422 10.0731 5.57422 6.7334C5.57418 3.41295 4.73622 2.41222 3.70215 2.41211ZM34.3525 0C36.6151 0 38.4492 1.17983 38.4492 3.41797C38.449 5.69092 36.615 6.83496 34.3525 6.83496C32.0903 6.83485 30.2561 5.69081 30.2559 3.41797C30.2559 1.17994 32.0901 0 34.3525 0ZM34.3486 1.57227C33.1672 1.57227 32.2091 2.36269 32.209 3.44043C32.209 4.51861 33.1671 5.30859 34.3486 5.30859C35.5303 5.3084 36.4883 4.51026 36.4883 3.44043C36.4882 2.35834 35.5302 1.57246 34.3486 1.57227Z"/></svg></span>
+<span data-s1-component="ci" data-brand="s1" data-color="dark" role="img" aria-label="에스원"><svg viewBox="0 0 42 16" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false"><path d="M32.6826 14.3262H41.5254V16H30.6992V10.2461H32.6826V14.3262ZM10.1426 15.9902H8.32129V7.07812H7.39258C7.30419 11.1554 5.68825 13.0125 3.70117 13.0127C1.65723 13.0127 0 11.0554 0 6.73047C0 2.41216 1.65721 0.448242 3.70117 0.448242C5.52602 0.448409 7.03869 2.01912 7.34277 5.42676H8.32129V0.172852H10.1426V15.9902ZM12.9111 15.9902H11.084V0.173828H12.9111V15.9902ZM28.084 15.2305H15.084V13.5811H28.084V15.2305ZM41.2891 0.182617V13.0557H39.46V11.2832H36.459V9.64453H39.46V0.182617H41.2891ZM38.8672 8.87891H35.3379V12.1885H33.3799V8.87891H29.7305V7.3291H38.8672V8.87891ZM22.6143 2.46875C22.6143 4.89881 24.005 8.20501 27.7148 9.30078V11.0654C27.6961 11.063 23.8792 10.5615 21.583 6.69531C19.2775 10.5711 15.4512 11.0654 15.4512 11.0654V9.30078C19.1607 8.21325 20.5518 4.89883 20.5518 2.46875V0.551758H22.6143V2.46875ZM3.70215 2.41211C2.66837 2.41211 1.83011 3.41277 1.83008 6.7334C1.83008 10.0732 2.66835 11.0557 3.70215 11.0557C4.73624 11.0556 5.57422 10.0731 5.57422 6.7334C5.57418 3.41295 4.73622 2.41222 3.70215 2.41211ZM34.3525 0C36.6151 0 38.4492 1.17983 38.4492 3.41797C38.449 5.69092 36.615 6.83496 34.3525 6.83496C32.0903 6.83485 30.2561 5.69081 30.2559 3.41797C30.2559 1.17994 32.0901 0 34.3525 0ZM34.3486 1.57227C33.1672 1.57227 32.2091 2.36269 32.209 3.44043C32.209 4.51861 33.1671 5.30859 34.3486 5.30859C35.5303 5.3084 36.4883 4.51026 36.4883 3.44043C36.4882 2.35834 35.5302 1.57246 34.3486 1.57227Z"/></svg></span>
+<span data-s1-component="ci" data-brand="samsung" data-color="white" role="img" aria-label="삼성"></span>
+<span data-s1-component="ci" data-brand="samsung" data-color="blue" role="img" aria-label="삼성"></span>
+<span data-s1-component="ci" data-brand="samsung" data-color="dark" role="img" aria-label="삼성"></span></div>
+          </div>
+          </div>
+          <div class="component-usage">
+            <div class="usage-block">
+              <div class="usage-title">언제 쓰나</div>
+              <ul><li>화면에 회사 로고를 보여줄 때(에스원 · 삼성).</li><li>밝은 로고(White)가 필요한 어두운 바탕, 브랜드색(Blue), 회색(Dark) 중에서 바탕에 맞춰 고를 때.</li></ul>
+            </div>
+            <div class="usage-block usage-block-avoid">
+              <div class="usage-title">이럴 땐 다른 걸</div>
+              <ul><li>서비스 이름 글자를 보여줄 때 — 그건 서비스 이름 글자 자리의 몫이다.</li><li>로고를 임의로 늘리거나 색을 바꿀 때 — 크기와 색은 이 부품의 값만 쓴다.</li></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="component" id="login-gnb">
+        <header class="component-head">
+          <div>
+            <h2>S1LoginGnb</h2>
+            <p class="component-id">React·Vue 이름 · 마크업은 <code>data-s1-component="login-gnb"</code></p>
+          </div>
+          <dl class="component-axes">
+            <dt>크기</dt><dd>크기 축 없음</dd>
+            <dt>변형</dt><dd>변형 없음</dd>
+          </dl>
+        </header>
+        <div class="component-body">
+          <div class="samples">
+          <div class="sample">
+            <div class="sample-label">pc</div>
+            <div class="sample-stage" data-break="pc"><header data-s1-component="login-gnb">
+  <span data-s1-part="service">[서비스명]</span>
+  <button type="button" data-s1-part="lang">
+    <span data-s1-part="lang-icon" aria-hidden="true"></span>
+    <span data-s1-part="lang-label">한국어</span>
+  </button>
+</header></div>
+          </div>
+          </div>
+          <div class="component-usage">
+            <div class="usage-block">
+              <div class="usage-title">언제 쓰나</div>
+              <ul><li>로그인 화면 맨 위에 서비스 이름과 언어 선택을 보여줄 때.</li></ul>
+            </div>
+            <div class="usage-block usage-block-avoid">
+              <div class="usage-title">이럴 땐 다른 걸</div>
+              <ul><li>로그인 후 화면의 주 메뉴가 필요할 때 — 그건 GNB 의 몫이다.</li><li>삼성 로고를 이 바 안에 넣으려 할 때 — 정본에서 2026-06-24 제거됐다.</li></ul>
             </div>
           </div>
         </div>

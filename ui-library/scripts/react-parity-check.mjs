@@ -11,6 +11,7 @@
  *   - id / for / aria-controls 처럼 서로를 가리키는 값은 "누가 누구를 가리키는가"만 본다
  *     (컴포넌트는 화면마다 다른 id 를 쓰므로 글자 자체는 달라야 정상이다).
  *   - React 가 쓰는 이름(className·htmlFor·tabIndex)은 HTML 이름으로 되돌려 비교한다.
+ *   - 속성 이름은 양쪽 모두 소문자로 맞춰 비교한다(SVG viewBox 처럼 대소문자만 다른 이름 — 예제 쪽은 이미 소문자).
  */
 
 import { mkdtemp, readFile, writeFile } from "node:fs/promises";
@@ -68,7 +69,7 @@ function renderNode(node, into) {
   for (const [name, value] of Object.entries(node.props ?? {})) {
     if (["key", "ref", "children"].includes(name)) continue;
     if (value === undefined || value === null || value === false) continue;
-    attributes.set(HTML_NAMES.get(name) ?? name, value === true ? "" : String(value));
+    attributes.set((HTML_NAMES.get(name) ?? name).toLowerCase(), value === true ? "" : String(value));
   }
   const children = [];
   for (const child of node.children) renderNode(child, children);

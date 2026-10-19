@@ -2,7 +2,7 @@
   "_meta": {
     "note": "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.",
     "purpose": "개발 툴과 검사기가 함께 읽는 허용목록. 여기 없는 variant·size·속성은 승인된 적이 없는 것이다.",
-    "canonicalFingerprint": "4183ab50f447f77e5f0d8dd999038bdd9e3a8d2478d049f9d41ad8b7ec1cfe5f"
+    "canonicalFingerprint": "239a9359656687400cf6ae52dfb53ff023142ebc11515f21c041a8ffdf2511b9"
   },
   "components": [
     {
@@ -1504,7 +1504,7 @@
     },
     {
       "id": "footer",
-      "status": "candidate",
+      "status": "approved",
       "rootSelector": "[data-s1-component=\"footer\"]",
       "root": "footer[data-s1-component=footer][data-platform]. 화면 맨 아래 영역(contentinfo 랜드마크).",
       "variants": [
@@ -1537,12 +1537,12 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "60fae52ccce16ab32a863dec150e6de10a1eb0e670dc052c1eaaf426df24e249",
-      "sourceFingerprint": "f390d599bd17cc4a27f54daeb1c35ebfc0bc215654564a75d88d863f300db545"
+      "canonicalFingerprint": "c0996570a3b344fc01f1f50f26a606203df5dc0e55ef7baf358d6069f58bb401",
+      "sourceFingerprint": "61a2271b88e224e618e830f87b1d70cfef2216d9c0a9af38c5b50f41155f56a1"
     },
     {
       "id": "ci",
-      "status": "candidate",
+      "status": "approved",
       "rootSelector": "[data-s1-component=\"ci\"]",
       "root": "span[data-s1-component=ci][data-brand][data-color][role=img][aria-label]. 에스원은 안에 인라인 svg(viewBox 0 0 42 16, aria-hidden) 한 개, 삼성은 비어 있다.",
       "variants": [
@@ -1565,12 +1565,12 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "ee6bc53ebfbc31ef81122e030070cc57130f9c198331dbc8107ceeaadfd5324a",
-      "sourceFingerprint": "b6af52c22d5bb9cb5e2a5a46c9d6f271477085ddc0ef4d969fc3af2d5d516940"
+      "canonicalFingerprint": "2920e79b31a56fbb98b08c3a48817ed7aac933cc075d5efa1420e55928204356",
+      "sourceFingerprint": "dfe559533999086d2826fcf5517db06a3310884bcd51072233b42f2cc43e9c6b"
     },
     {
       "id": "login-gnb",
-      "status": "candidate",
+      "status": "approved",
       "rootSelector": "[data-s1-component=\"login-gnb\"]",
       "root": "header[data-s1-component=login-gnb]. 화면 맨 위 바(banner 랜드마크). 변형 속성이 없다.",
       "variants": [],
@@ -1597,8 +1597,8 @@
       "jsRequired": false,
       "events": [],
       "lifecycle": [],
-      "canonicalFingerprint": "bf6aee70e5529103d10d9d1e0ddf647cbbba66ff5664997afbc2484b59b3189a",
-      "sourceFingerprint": "26918ad06a9d6d95942b43c7805b4cf03cbff3d9ed958bce2359f116d5a8904b"
+      "canonicalFingerprint": "7700759022687aa416d1739f4c2210ae73c450338b9166d30567ec211821fc1f",
+      "sourceFingerprint": "2dcc7912ff175094ad47ef6aeda383fc2a5136c0c1ecbbbe750699f852748479"
     }
   ]
 }

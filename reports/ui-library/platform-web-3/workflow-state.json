@@ -51,11 +51,11 @@
       }
     }
   },
-  "currentPhase": "5-human-review",
-  "workflowStatus": "awaiting-user",
-  "uiLibraryStatus": "candidate",
-  "lastCompletedCheckpoint": 4,
-  "nextAction": "river 정리 대기: ① 삼성 로고를 공식 .ai 원본 선(SVG)으로 교체할지 ② 세 부품 승인.",
+  "currentPhase": "complete",
+  "workflowStatus": "complete",
+  "uiLibraryStatus": "approved",
+  "lastCompletedCheckpoint": 6,
+  "nextAction": "완료 — 사이트 메뉴(CI Logo·Footer·Login GNB) 등재, 전달본 0.19.4. 삼성 로고 공식 선(SVG) 교체는 river 보류 후속.",
   "canonicalInputs": [
     {
       "role": "component-visual",
@@ -115,12 +115,30 @@
       "rework": "F-1·F-2·H-0 반영, 0.19.1",
       "deltaPass": "2026-10-02 델타 1 — FAIL 0 · HOLD 2(C-1·C-2 river 결정)",
       "deltaPass2": "2026-10-12 델타 2 — D-2·D-3 PASS, C-1·C-2 종결. D2-1(안내 화면 옛 설명 2줄) ⭐ 문구 수정(기계적, 렌더·liveness 검사 통과)"
+    },
+    "riverApproval": {
+      "status": "approved",
+      "date": "2026-10-19",
+      "version": "0.19.4",
+      "scope": "Footer(PC·Mobile) · CI 6종 · Login GNB",
+      "quote": "세 부품 모두 승인할게, 합쳐줘"
+    },
+    "promotion": {
+      "date": "2026-10-19",
+      "report": "reports/ui-library/platform-web-3/6-promotion.md"
+    },
+    "independentVerification": {
+      "verdict": "PASS",
+      "by": "component-verifier",
+      "date": "2026-10-12",
+      "report": "reports/ui-library/platform-web-3/4-verification-F.md",
+      "note": "1차 FAIL 2 → 델타1 FAIL 0 → 델타2 D-2·D-3 PASS(안내 문구 2줄 ⭐ 수정). 이후 D-4 구분선 토큰 1건은 기계적 교체(검사기 통과)."
     }
   },
   "handoff": {
     "lastActor": "orchestrator",
     "updatedAt": "2026-10-19",
-    "summary": "모바일 구분선 색·검사 도구 수정 커밋(c12388f5). river 정리 대기."
+    "summary": "river 승인 → approved 0.19.4. 합치기."
   },
   "decisions": [
     {
@@ -166,6 +184,8 @@
     "canonReadiness": "reports/ui-library/platform-web-3/2-canon-readiness.md",
     "build": "reports/ui-library/platform-web-3/3-build.md",
     "reviewPageBuild": "reports/ui-library/platform-web-3/3-build-review-page.md",
-    "verification": "reports/ui-library/platform-web-3/4-verification-F.md"
+    "verification": "reports/ui-library/platform-web-3/4-verification-F.md",
+    "promotion": "reports/ui-library/platform-web-3/6-promotion.md",
+    "humanReview": "reports/ui-library/platform-web-3/5-human-review.md"
   }
 }
