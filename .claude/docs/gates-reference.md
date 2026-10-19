@@ -43,7 +43,7 @@ git 이력을 되짚거나(6c) 크롬을 띄워 화면을 그리거나(44·53) �
 | 9c | Registry Foundation Colors | registry/tokens/foundation.colors.json 이 vars-data 생성물과 같은지 |
 | 9d | Component Element Stubs | components.html 부품 섹션이 component-element-stubs.json 생성물과 같은지 |
 | 10 | Doc Token Ref Drift | 옛 토큰명 잔재·폐기 토큰 재유입·유령행 차단 |
-| 11 | Component Anatomy | 상태별 필수/금지 하위 요소(caret·clear 등) |
+| 11 | Component Anatomy | 상태별 필수/금지 하위 요소(caret·clear 등) · 기대 부품 전부 생성 · BOOLEAN 스위치 결속 |
 | 12 | Icon Instance Policy | 아이콘=라이브러리 인스턴스 강제 |
 | 13 | Installer Build Verification | build-components.ts 독립 검증(해시)·⭐ 자가검증 차단 |
 | 14 | Verified Content | 검증 고정 문구 verbatim·날조 차단 |
@@ -197,6 +197,7 @@ git 이력을 되짚거나(6c) 크롬을 띄워 화면을 그리거나(44·53) �
 **역할:** 빌더가 각 상태(variant)에서 **반드시 포함해야 하는 하위 요소**(예: Input·Search Input·Text Area 의 Focus 입력 커서 `caret`, Input·Search 의 selected 삭제 아이콘 `clear`)를 실제로 생성하는지, 또 **있으면 안 되는 요소**(예: Text Area 는 `clear` 미포함)를 기계 판정. **기존 게이트는 전부 토큰만 검사** — 컴포넌트 **구조(하위 요소 유무)** 를 보는 게이트가 없어 작거나 보조 변형축(icon=on)에 있는 요소가 누락돼도 전 게이트 ✅ 였다.
 **방법:** Gate 8 과 동일 전략 — esbuild CJS 번들 후, **노드 트리를 기록하는 recording mock figma**로 `buildAllComponents` 를 실제 실행, combineAsVariants 세트별로 manifest(세트명·variant 정규식·`require`/`forbid` 이름들) 대조. 매칭 variant 0개면 selector 부패로 ❌(Gate 7 "추출 0건=안됨" 사상).
 **확장:** 새 필수/금지 하위 요소는 `component-anatomy-check.js` 의 `ANATOMY` 배열에 한 줄 추가(`require`/`forbid`).
+**2026-10-19 확장 (river 지시 2026-09-22, 사각지대 가) — 부품이 사라지면 빨강.** 빌더는 부품마다 try/catch 로 예외를 삼키고 계속 가는데, 이 게이트는 ANATOMY 8개 세트만 찾고 예외는 경고였다 — 세트가 통째로 없어져도 초록이었다(2026-09-22 List Row 가 mock 슬롯키 때문에 검사에서 빠져 있던 것을 우연히 발견). 이제 ①`buildAllComponents` 가 던지면 ❌ ②반환 `failed[]`·`noRunner[]` 가 비어 있지 않으면 ❌ ③**만들어진 세트 목록 ↔ `COMPONENT_CATEGORIES_GRID` members 전부**를 대조해 빠진 부품이 있으면 ❌(기대치 밖 보조 세트 — `GNB Menu` 등 — 는 문제 삼지 않음). **BOOLEAN 스위치 결속**도 같이 본다: `addComponentProperty(…, "BOOLEAN")` 으로 만든 스위치가 어느 레이어 `visible` 에도 묶이지 않으면 ❌(종전 mock 은 `findChild`/`findOne` 이 빈 stub 이라 결속 대입이 사라져 어느 게이트도 못 봤다 — component-verifier 13차 관찰). mock 이 못 찾는 노드(라이브러리 인스턴스 속)는 종전처럼 stub 을 주되, 거기 한 결속은 기록되지 않아 "안 묶임"으로 드러난다(안전한 방향). 적대 4종 확인(건별 예외·세트 이름 이탈·결속 줄 삭제·전체 중단 → 전부 ❌).
 **도입 사유:** 2026-06-19 설치기 Input·Search Input 의 **입력 커서(caret) 와 selected 삭제(close) 아이콘이 빌더에서 누락**됐는데 토큰 게이트(3·6·7·8)가 전부 ✅ 라 사용자에게 2회 유출. 구조 사각지대를 **커밋 단계에서 기계 차단**해 동일 클래스(하위 요소 드롭) 재발 방지.
 
 ### Gate 12: Icon Instance Policy (2026-06-19 신설)
@@ -400,6 +401,8 @@ DESIGN.md(AI 소비용) 가 정본(tokens.css+registry)보다 낡으면 차단
 **정본에 새 항목이 생기는 것을 사건으로 보는 유일한 게이트.** 추적 대상 = 텍스트 스타일명·토큰 키·**컴포넌트 세트 이름**·**컴포넌트 속성 이름**(`addComponentProperty`)·**웹 UI 라이브러리 상태 이름**(ui-library manifest `states`) (2026-08-03 확장 — H7 이 "컴포넌트·variant"를 명시하는데 게이트는 토큰·스타일만 봤고, Gate 30 은 "등록됐나"(커버리지)지 "생겨도 되나"(승인)가 아니라 신설+성실등록이면 전 게이트를 통과했다. variant 축은 마찰 과잉이라 제외). 새 종류 감시 시작은 `--extend-tracking <종류>`(정본을 안 건드리는 감시 확대라 승인 불필요하되 **1회만**·지정 종류 밖 신설이 섞이면 거부 — 적대 테스트로 우회로 4종 확인). ⭐ 가 텍스트 스타일·토큰을 임의로 신설하면 **커밋 차단**, 사용자 승인 기록이 있으면 통과(`npm run canon:approve -- --by river --reason "…" --quote "<사용자 실제 발화>"`).
 
 **2026-09-03 확장 (river 지시 HD-3) — 승인의 근거를 기계가 확인한다.** 2026-08-25 focus-visible 사태에서 ⭐ 가 `--by river` 라고 타이핑해 **자기가 자기를 승인**했고 그 줄이 이후 모든 근거로 재인용됐다(보고서·registry·rules). `--by` 는 자기신고라 검증되지 않는다. 이제 승인하려면 `--quote` 로 **사용자의 실제 발화를 그대로 인용**해야 하고, 그 말이 세션 기록(`~/.claude/projects/<repo>/*.jsonl`)의 `origin.kind === "human"` 항목에 실재해야 통과한다(이 표식은 하네스가 붙이며 ⭐ 출력·도구 결과·시스템 알림에는 안 붙는다). 원장에는 `quote`·`evidence`(기록 파일·시각)와 함께 **`recordedBy`(누가 타이핑했나, 기계가 정함 — 손으로 못 바꿈)** 를 `by`(누가 결정했나)와 분리해 남긴다. 근거 없는 옛 승인은 차단하지 않되 **매번 경고로 보인다**(조용히 신뢰받지 않도록). 뒤늦게 근거를 붙이는 경로는 `--reapprove --item <항목> --by <사용자> --quote "…"` 이며 같은 대조를 통과해야 한다. 적대 테스트 4종 확인(지어낸 인용 차단 · `--quote` 누락 차단 · ⭐ 자기승인 차단 · 실제 발화 통과). **한계(정직하게): 완벽한 위조 방지가 아니다** — 기록 파일 자체를 고치면 뚫리고, 인용문이 그 항목과 정말 관련된 말인지까지는 기계가 판정하지 못한다. 목적은 "근거 없이 승인 줄을 만드는 일"을 한 단계의 명시적 위조로 바꾸고, **실제 발화가 원장에 남아 사람이 관련성을 눈으로 확인할 수 있게** 하는 것이다.
+
+**2026-10-19 확장 (river 지시 2026-09-22, 사각지대 나) — 짧은 승인어는 직전 선택지와 짝지어 검증.** "A로 넣어줘"·"좋아" 같은 가장 분명한 승인이 8자 기준에 걸려 근거가 될 수 없었다(우회로 `reason` 에 적었지만 그 칸은 대조하지 않는다). 기준만 낮추면 "좋아" 는 기록 어디에나 있어 아무 승인이나 통과하므로, 8자 미만 인용은 **`--prompt "<직전 ⭐ 가 선택지를 내민 문장 일부, 8자 이상>"`** 와 짝지어야 통과한다: ①사람 발화(`origin.kind=human`, 장문 경로와 같은 기준)가 그 말을 담고 발화 전체가 짧은 한마디(system-reminder 덧붙임 제외 ≤40자) ②**같은 기록 파일에서 바로 앞 사람 발화 이후 ~ 이 발화 직전** 사이의 ⭐ 글에 prompt 조각이 실재(순서) ③그 ⭐ 글 시각 ≤ 사람 발화 시각. 원장 `evidence` 에 `prompt`·`promptAt`·`pairing: "short-approval"` 이 남아 "무엇에 대한 대답이었나"를 사람이 대조할 수 있다. 8자 이상 인용 경로는 **그대로**(약화 없음). 적대 6종 확인(실제 짝 통과 · prompt 누락 · 지어낸 prompt · 다른 대답 · 짧은 prompt · 사람 발화 속 문장을 prompt 로 → 전부 차단).
  종전엔 32개 게이트 전부가 "정본→파생 일치"만 봐서 **정본에 줄이 늘어나는 것을 아무도 안 봤다** — 재생성만 돌리면 전 게이트가 통과했다. 하드룰 H6②(구 H7) 집행. 정본=`registry/governance/canon-additions-baseline.json`. 단독 `npm run canon:check`
 
 ### Gate 35: Typography Generation

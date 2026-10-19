@@ -433,7 +433,7 @@ try {
 
 // ── Gate 11: Component Anatomy ────────────────────────────────────
 // 상태별 필수 하위 요소(Focus 의 caret·selected 의 clear 아이콘 등)를 빌더가 실제로
-// 생성하는지 강제. 토큰만 보던 게이트들의 "구조 사각지대" — caret·close 누락 2회 유출 차단.
+// 생성하는지 강제(+ 기대 부품 전부 생성 · BOOLEAN 스위치 결속, 2026-10-19). 토큰만 보던 게이트들의 "구조 사각지대" — caret·close 누락 2회 유출 차단.
 // esbuild 번들 + recording mock 실행이 필요해 별도 프로세스로 호출(spawnSync).
 gateHeader('[Gate 11] 부품해부 검사기 (Component Anatomy)');
 try {
@@ -442,7 +442,8 @@ try {
   const out = (r.stdout || '') + (r.stderr || '');
   if (r.status === 0) {
     const m = out.match(/(\d+)개 규칙 전부 충족/);
-    pass(`상태별 필수 하위 요소 누락 0${m ? ` (${m[1]}개 규칙)` : ''}`);
+    const e = out.match(/기대 부품 (\d+)개 전부 생성 · BOOLEAN 스위치 (\d+)개 전부 결속/);
+    pass(`상태별 필수 하위 요소 누락 0${m ? ` (${m[1]}개 규칙)` : ''}${e ? ` · 기대 부품 ${e[1]}개 전부 생성 · BOOLEAN 스위치 ${e[2]}개 결속` : ''}`);
   } else {
     const lines = out.split('\n').filter((l) => l.includes('❌'));
     for (const l of lines) fail(l.replace(/^\s*❌\s*/, ''));

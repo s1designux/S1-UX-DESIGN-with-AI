@@ -21,6 +21,19 @@
  *   - 매칭되는 variant 가 0개면 selector 부패로 보고 ❌ (Gate 7 "추출 0건=안됨" 과 동일 사상).
  *
  * 확장: 새 필수 하위 요소가 생기면 아래 ANATOMY 에 한 줄 추가하면 된다.
+ *
+ * 사각지대 보강 (2026-10-19, project-status 0-Z 가):
+ *   빌더는 부품마다 try/catch 로 예외를 삼키고 계속 간다(failed[] 에 모음). 종전 이 검사기는
+ *   ANATOMY 에 적힌 8개 세트만 찾았고 예외(threw)는 경고였다 — 세트가 통째로 사라져도 초록이었다.
+ *   이제 ① buildAllComponents 가 던지면 ❌ ② 반환값 failed[]·noRunner[] 가 비어 있지 않으면 ❌
+ *   ③ 실제로 만들어진 세트 목록 ↔ 기대치(COMPONENT_CATEGORIES_GRID members 전부)를 대조해 빠진 것이 있으면 ❌.
+ *   (기대치에 없는 보조 세트 — 예: GNB 가 함께 만드는 "GNB Menu" — 는 문제 삼지 않는다.)
+ *
+ * BOOLEAN 속성 결속 (2026-10-19, component-verifier 13차 관찰):
+ *   addComponentProperty(…, "BOOLEAN") 로 만든 스위치가 어느 레이어의 visible 에도 묶이지 않으면
+ *   Figma 에서 켜고 꺼도 아무 일도 안 일어난다. 종전 mock 은 findChild/findOne 을 빈 stub 로 돌려줘
+ *   결속 대입이 그냥 사라졌고, 그래서 어느 게이트도 이걸 볼 수 없었다. 이제 mock 이 실제 기록 트리에서
+ *   찾아 주고 componentPropertyReferences 대입을 기록한다 → 스위치마다 "묶인 레이어가 1개 이상"인지 ❌ 판정.
  */
 
 const fs = require("fs");
@@ -75,8 +88,31 @@ function makeStub() {
 
 // ── 노드 트리를 기록하는 recording 노드 ─────────────────────────────────
 // { type, name, children:[state...] } 를 보유. 알 수 없는 prop/method 는 makeStub 로 폴백.
+// 서브트리 탐색(findChild/findOne/findAll) — 판정 함수에는 실제 노드(proxy)를 넘긴다.
+function findIn(state, pred, deep, all) {
+  const hits = [];
+  const walk = (st) => {
+    for (const ch of st.children || []) {
+      const px = ch.__proxy;
+      let ok = false;
+      if (px) { try { ok = !!pred(px); } catch (_) { ok = false; } }
+      if (ok) { hits.push(px); if (!all) return true; }
+      if (deep && walk(ch) && !all) return true;
+    }
+    return false;
+  };
+  walk(state);
+  // 기록 트리에서 못 찾으면 종전처럼 만능 stub 을 돌려준다 — 라이브러리 인스턴스(importComponentByKeyAsync)
+  //   처럼 mock 이 속을 모르는 노드가 있어서, null 을 주면 빌더가 실제 Figma 에선 안 나는 실패로 빠진다.
+  //   대신 stub 에 한 결속 대입은 기록되지 않으므로 BOOLEAN 검사에서 "안 묶임"으로 드러난다(안전한 방향).
+  if (hits.length === 0) return makeStub();
+  return all ? hits : hits[0];
+}
+
+let propCounter = 0;
+
 function recNode(type) {
-  const state = { type, name: undefined, children: [], componentPropertyDefinitions: {} };
+  const state = { type, name: undefined, children: [], componentPropertyDefinitions: {}, booleanProps: [], propRefs: null, visible: true };
   const pushChild = (c) => {
     state.children.push(c && c.__state ? c.__state : { type: "?", name: undefined, children: [] });
     return c;
@@ -90,6 +126,20 @@ function recNode(type) {
       if (prop === "componentPropertyDefinitions") return state.componentPropertyDefinitions;
       if (prop === "appendChild") return pushChild;
       if (prop === "insertChild") return (_i, c) => pushChild(c);
+      if (prop === "findChild") return (pred) => findIn(state, pred, false, false);
+      if (prop === "findOne") return (pred) => findIn(state, pred, true, false);
+      if (prop === "findAll") return (pred) => findIn(state, pred || (() => true), true, true);
+      if (prop === "findChildren") return (pred) => findIn(state, pred || (() => true), false, true);
+      if (prop === "componentPropertyReferences") return state.propRefs;
+      if (prop === "visible") return state.visible;
+      if (prop === "addComponentProperty") {
+        return (propName, propType, defaultValue) => {
+          const id = `${propName}#mock:${++propCounter}`;
+          state.componentPropertyDefinitions[id] = { type: propType, defaultValue };
+          if (propType === "BOOLEAN") state.booleanProps.push({ id, name: propName });
+          return id;
+        };
+      }
       if (prop === "createSlot" && state.type === "COMPONENT") {
         return () => {
           // 슬롯이 둘 이상인 컴포넌트(List Row 의 왼쪽 칸 + 오른쪽 칸)를 위해 **호출마다 다른 키**를 준다.
@@ -109,10 +159,14 @@ function recNode(type) {
     },
     set(_t, prop, val) {
       if (prop === "name") state.name = val;
+      if (prop === "visible") state.visible = val;
+      if (prop === "componentPropertyReferences") state.propRefs = val;
       return true;
     },
   };
-  return new Proxy(function () {}, handler);
+  const px = new Proxy(function () {}, handler);
+  state.__proxy = px;
+  return px;
 }
 
 // ── build-components.ts 를 CJS 로 번들해서 require ───────────────────────
@@ -173,14 +227,50 @@ async function audit() {
   };
 
   let threw = null;
+  let result = null;
   const bc = loadBuildComponents();
   try {
-    await bc.buildAllComponents(maps);
+    result = await bc.buildAllComponents(maps);
   } catch (e) {
     threw = e && e.message ? e.message : String(e);
   }
 
   const violations = [];
+
+  // ── ① 빌드 자체가 던졌나 · 건별 실패/빌더 없음이 있나 ───────────────────
+  if (threw) violations.push({ label: "빌드 전체", kind: "threw", detail: `buildAllComponents 가 중간에 멈춤: ${threw}` });
+  for (const f of (result && result.failed) || []) {
+    violations.push({ label: f.name, kind: "failed", detail: `빌드 중 예외로 세트를 만들지 못함: ${f.reason}` });
+  }
+  for (const n of (result && result.noRunner) || []) {
+    violations.push({ label: n, kind: "no-runner", detail: "members 에 있는데 빌더가 없음" });
+  }
+
+  // ── ② 만들어진 세트 목록 ↔ 기대치(COMPONENT_CATEGORIES_GRID members) ─────
+  const builtNames = new Set(sets.map((s) => s.__state.name));
+  const expected = [];
+  for (const row of bc.COMPONENT_CATEGORIES_GRID || []) for (const cat of row) for (const m of cat.members) expected.push(m);
+  if (expected.length === 0) violations.push({ label: "기대치", kind: "no-expected", detail: "COMPONENT_CATEGORIES_GRID 에서 부품 목록을 0개 읽음 (selector 부패 의심)" });
+  const reported = new Set([...((result && result.failed) || []).map((f) => f.name), ...((result && result.noRunner) || [])]);
+  for (const m of expected) {
+    if (!builtNames.has(m) && !reported.has(m)) violations.push({ label: m, kind: "vanished", detail: `기대 부품 "${m}" 의 세트가 빌드 결과에 없음 (조용히 사라짐)` });
+  }
+
+  // ── ③ BOOLEAN 스위치가 실제 레이어에 묶였나 ──────────────────────────
+  const boolChecks = [];
+  for (const set of sets) {
+    for (const bp of set.__state.booleanProps) {
+      let bound = 0;
+      const walk = (st) => {
+        if (st.propRefs && st.propRefs.visible === bp.id) bound++;
+        for (const ch of st.children || []) walk(ch);
+      };
+      walk(set.__state);
+      boolChecks.push({ set: set.__state.name, name: bp.name, bound });
+      if (bound === 0) violations.push({ label: `${set.__state.name} / ${bp.name}`, kind: "bool-unbound", detail: `BOOLEAN 스위치 "${bp.name}" 이 어느 레이어 visible 에도 묶이지 않음 (켜고 꺼도 변화 없음)` });
+    }
+  }
+
   for (const rule of ANATOMY) {
     const set = sets.find((s) => s.__state.name === rule.set);
     if (!set) { violations.push({ label: rule.label, kind: "no-set", detail: `세트 "${rule.set}" 를 빌더가 생성하지 않음` }); continue; }
@@ -195,7 +285,7 @@ async function audit() {
     }
   }
 
-  return { violations, checked: ANATOMY.length, setsFound: sets.length, threw };
+  return { violations, checked: ANATOMY.length, setsFound: sets.length, expected: expected.length, boolChecks, threw };
 }
 
 module.exports = { audit };
@@ -211,13 +301,12 @@ if (require.main === module) {
       console.error(`  ❌ 검사 실행 실패: ${e.message}`);
       process.exit(1);
     }
-    if (r.threw) console.warn(`  ⚠️  buildAllComponents 예외(로직): ${r.threw}`);
     if (r.violations.length === 0) {
-      console.log(`  ✅ ${r.checked}개 규칙 전부 충족 — 필수 하위 요소(caret·clear 등) 누락 0\n`);
+      console.log(`  ✅ ${r.checked}개 규칙 전부 충족 — 필수 하위 요소(caret·clear 등) 누락 0 · 기대 부품 ${r.expected}개 전부 생성 · BOOLEAN 스위치 ${r.boolChecks.length}개 전부 결속\n`);
       process.exit(0);
     }
     for (const v of r.violations) console.error(`  ❌ [${v.label}] ${v.detail}`);
-    console.error(`\n  ${r.violations.length}건 — 빌더가 필수 하위 요소를 생성하지 않음\n`);
+    console.error(`\n  ${r.violations.length}건 — 빌더 결과에 빠진 부품·하위 요소·결속이 있음\n`);
     process.exit(1);
   })();
 }

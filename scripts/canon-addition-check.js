@@ -34,6 +34,9 @@
  *   node scripts/canon-addition-check.js                    # 검사 (gate:check 가 호출)
  *   node scripts/canon-addition-check.js --approve --by river --reason "표 헤더용 title/14M" \\
  *        --quote "<river 가 실제로 한 말 그대로>"   # 세션 기록의 사람 발화와 대조해 검증한다
+ *   node scripts/canon-addition-check.js --approve --by river --reason "..." \
+ *        --quote "A로 넣어줘" --prompt "<그 직전 ⭐ 가 선택지를 내민 문장 일부>"
+ *                                                           # 짧은 승인어(8자 미만)는 직전 선택지와 짝지어 검증
  *   node scripts/canon-addition-check.js --update-baseline   # 삭제분만 반영(축소 전용)
  *   node scripts/canon-addition-check.js --extend-tracking component --reason "..."
  *                                                           # 새 종류 감시 시작(1회만·정본 불변)
@@ -183,7 +186,8 @@ function check({ pass, warn, fail }) {
     // 근거(사용자 실제 발화 인용)가 붙어 있는 승인만 "검증됨"이다. 2026-09-03 이전 승인은
     // 그 장치가 없던 시절 것이라 차단하지 않되 **매번 보이게** 한다 — 조용히 신뢰받지 않도록.
     if (a.evidence && a.quote) {
-      pass(`정본 신설 승인됨(근거 검증) — ${k} (by ${a.by} · 세션기록 ${a.evidence.transcript})`);
+      const pair = a.evidence.pairing === "short-approval" ? ` · 짧은 승인어 "${a.quote}" ↔ 직전 선택지 짝` : "";
+      pass(`정본 신설 승인됨(근거 검증) — ${k} (by ${a.by} · 세션기록 ${a.evidence.transcript}${pair})`);
     } else {
       warn(`Gate 34: 승인 근거 미검증 — ${k} (by ${a.by}, 2026-09-03 근거검증 도입 이전 기록)\n` +
         '       이 줄은 `--by` 자기신고만으로 남았습니다. 사용자 실제 발화 인용이 없어 "승인이 있었다"를 증명하지 못합니다.\n' +
@@ -228,10 +232,26 @@ function check({ pass, warn, fail }) {
  *   **"근거 없이 승인 줄을 만드는 일"을 한 단계의 명시적 위조로 바꾸는 것**이다.
  *   기록을 찾을 수 없으면 통과시키지 않고 막는다(모르면 승인 아님).
  */
-function findHumanQuote(quote) {
+const SHORT_QUOTE_MIN = 8;          // 이보다 짧으면 혼자서는 누구 말인지 특정되지 않는다(종전 기준 그대로)
+const SHORT_UTTERANCE_MAX = 40;     // 짧은 승인어 경로는 "그 말 한마디만 친 발화"에만 쓴다
+
+function recText(rec) {
+  const c = rec.message && rec.message.content;
+  if (typeof c === 'string') return c;
+  if (Array.isArray(c)) return c.filter((p) => p && p.type === 'text').map((p) => p.text).join(' ');
+  return '';
+}
+
+function findHumanQuote(quote, prompt) {
   const norm = (t) => String(t).replace(/\s+/g, ' ').trim();
   const needle = norm(quote);
-  if (needle.length < 8) return { ok: false, why: '인용문이 너무 짧습니다(8자 이상) — 누구 말인지 특정되지 않습니다.' };
+  if (needle.length < SHORT_QUOTE_MIN) {
+    if (!prompt) {
+      return { ok: false, why: `인용문이 너무 짧습니다(${SHORT_QUOTE_MIN}자 이상) — 누구 말인지 특정되지 않습니다.\n` +
+        '       "A로 넣어줘"·"좋아" 같은 짧은 승인이면 --prompt "<그 직전 ⭐ 가 선택지를 내민 문장 일부>" 를 함께 주세요.' };
+    }
+    return findShortApproval(needle, norm(prompt), norm);
+  }
 
   // 세션 기록 폴더 — 본 폴더 것 + 별도 작업 폴더(.claude/worktrees/*) 세션 것 전부.
   // 하네스 규칙: 경로의 / . _ 를 '-' 로 (본 폴더 → -Users-…-S1-UX-DESIGN-with-AI,
@@ -268,6 +288,65 @@ function findHumanQuote(quote) {
     '       ⭐ 가 요약·의역한 문장이 아니라 **river 가 실제로 친 말 그대로**를 인용해야 합니다.' };
 }
 
+/**
+ * 짧은 승인어 검증 (2026-10-19, project-status 0-Z 나 — river 지시 2026-09-22)
+ * ─────────────────────────────────────────────────────────────────────────
+ * "A로 넣어줘"·"좋아" 는 가장 분명한 승인인데 8자 기준에 걸려 근거가 될 수 없었다.
+ * 그렇다고 기준만 낮추면 "좋아" 는 기록 어디에나 있어 아무 승인이나 통과한다.
+ * 그래서 짧은 말은 **혼자 세우지 않고 짝을 지운다** — 다음을 모두 만족해야 통과:
+ *   ① 사람 발화(origin.kind=human — 장문 경로와 같은 기준)가 그 짧은 말을 담고, 발화 전체가 짧다
+ *      (system-reminder 덧붙임을 뺀 길이 ≤ SHORT_UTTERANCE_MAX). 긴 발화 속 "좋아" 는 이 경로로 못 쓴다
+ *      — 긴 발화면 8자 이상을 그대로 인용하면 된다.
+ *   ② 같은 기록 파일에서 **바로 앞 사람 발화 이후 ~ 이 발화 직전** 사이의 ⭐(assistant) 글에
+ *      --prompt 조각(8자 이상)이 실재한다 = "선택지를 내민 직후에 나온 대답"이다(순서).
+ *   ③ 그 ⭐ 글의 시각 ≤ 사람 발화의 시각(시각).
+ * 원장에는 quote 와 함께 prompt·promptAt 이 남아, 사람이 "무엇에 대한 대답이었나"를 눈으로 대조할 수 있다.
+ * 한계: 대답이 그 선택지에 대한 것인지(의미)까지는 기계가 보지 않는다 — 장문 경로와 같은 한계다.
+ */
+function findShortApproval(needle, promptNeedle, norm) {
+  if (!needle) return { ok: false, why: '인용문이 비어 있습니다.' };
+  if (promptNeedle.length < SHORT_QUOTE_MIN) {
+    return { ok: false, why: `--prompt 가 너무 짧습니다(${SHORT_QUOTE_MIN}자 이상) — 어떤 선택지에 대한 대답인지 특정되지 않습니다.` };
+  }
+  const dirs = require('./lib/worktree').transcriptDirs(ROOT);
+  if (dirs.length === 0) return { ok: false, why: '세션 기록 폴더를 찾을 수 없습니다 — 근거를 확인할 수 없으므로 승인하지 않습니다(모르면 승인 아님).' };
+  const stripReminders = (t) => String(t).replace(/<system-reminder>[\s\S]*?<\/system-reminder>/g, ' ');
+  let sawQuote = false;
+  for (const dir of dirs) {
+    let names = [];
+    try { names = fs.readdirSync(dir).filter((n) => n.endsWith('.jsonl')); } catch (_) { continue; }
+    for (const name of names) {
+      let lines;
+      try { lines = fs.readFileSync(path.join(dir, name), 'utf8').split('\n'); } catch (_) { continue; }
+      let since = [];   // 바로 앞 사람 발화 이후의 ⭐ 글 [{text, at}]
+      for (const line of lines) {
+        if (!line) continue;
+        let rec; try { rec = JSON.parse(line); } catch (_) { continue; }
+        if (rec.type === 'assistant') {
+          const t = recText(rec);
+          if (t) since.push({ text: norm(t), at: rec.timestamp || null });
+          continue;
+        }
+        if (rec.type !== 'user' || !rec.origin || rec.origin.kind !== 'human') continue;
+        const said = norm(stripReminders(recText(rec)));
+        const prev = since;
+        since = [];
+        if (!said || !said.includes(needle)) continue;
+        sawQuote = true;
+        if (said.length > SHORT_UTTERANCE_MAX) continue;
+        const hit = prev.find((p) => p.text.includes(promptNeedle));
+        if (!hit) continue;
+        if (hit.at && rec.timestamp && Date.parse(hit.at) > Date.parse(rec.timestamp)) continue;
+        return { ok: true, evidence: { transcript: name, at: rec.timestamp || null, prompt: promptNeedle, promptAt: hit.at || null, pairing: 'short-approval' } };
+      }
+    }
+  }
+  return { ok: false, why: sawQuote
+    ? '그 짧은 말을 한 사람 발화는 있지만, 바로 앞 ⭐ 글에 --prompt 조각이 없거나 발화가 짧은 승인 한마디가 아닙니다.\n' +
+      '       선택지를 내민 **직전 ⭐ 글의 문장 그대로**를 --prompt 로 주세요(다른 사람 발화가 끼어 있으면 짝이 아닙니다).'
+    : '이 저장소의 세션 기록에서 그 말을 한 사람 발화를 찾지 못했습니다.' };
+}
+
 function approve(argv) {
   const arg = (n, d) => { const i = argv.indexOf(`--${n}`); return i >= 0 && argv[i + 1] && !argv[i + 1].startsWith('--') ? argv[i + 1] : d; };
   const by = arg('by', '');
@@ -288,7 +367,7 @@ function approve(argv) {
     console.error('   ⭐ 가 `--by river` 라고 적는 것만으로는 승인이 되지 않습니다(2026-08-25 사태).');
     process.exit(1);
   }
-  const ev = findHumanQuote(quote);
+  const ev = findHumanQuote(quote, arg('prompt', ''));
   if (!ev.ok) {
     console.error(`❌ 승인 근거를 확인하지 못했습니다 — ${ev.why}`);
     process.exit(1);
@@ -349,7 +428,7 @@ function reapprove(argv) {
   const reason = arg('reason', '');
   if (!item || !by || !quote) { console.error('❌ --item · --by · --quote 가 모두 필요합니다.'); process.exit(1); }
   if (by === 'orchestrator' || by === '⭐') { console.error('❌ ⭐ 는 정본 신설을 스스로 승인할 수 없습니다 — 하드룰 H6②.'); process.exit(1); }
-  const ev = findHumanQuote(quote);
+  const ev = findHumanQuote(quote, arg('prompt', ''));
   if (!ev.ok) { console.error(`❌ 승인 근거를 확인하지 못했습니다 — ${ev.why}`); process.exit(1); }
   const base = loadBaseline();
   if (!base) { console.error('❌ baseline 이 없습니다.'); process.exit(1); }
@@ -450,7 +529,7 @@ function updateBaseline() {
   console.log(`✅ Gate 34 baseline 갱신 — ${cur.length}항목 동결`);
 }
 
-module.exports = { check };
+module.exports = { check, findHumanQuote };
 
 if (require.main === module) {
   const argv = process.argv.slice(2);
