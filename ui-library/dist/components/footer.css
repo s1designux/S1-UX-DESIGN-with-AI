@@ -130,7 +130,7 @@
 }
 
 [data-s1-component="footer"][data-platform="mobile"] [data-s1-part="links"] > li + li::before {
-  color: var(--color-line-default);
+  color: var(--color-icon-gray-light);
   height: var(--sizing-10);
 }
 
@@ -178,7 +178,7 @@
   }
 
   [data-s1-component="footer"][data-platform="pc"] [data-s1-part="links"] > li + li::before {
-    color: var(--color-line-default);
+    color: var(--color-icon-gray-light);
     height: var(--sizing-10);
   }
 

@@ -383,9 +383,18 @@ async function runBuild(mod, opts) {
   }
 
   // 세트 소속 역참조: COMPONENT_SET 의 자식(=variant)에 세트 이름을 달아 준다.
+  //   variant 안쪽 자손에도 같은 세트 이름을 달아 준다 — 안 달면 구분선 색처럼 깊은 노드만 바뀐 변경이
+  //   "(세트 밖)"으로 빠져 업데이트 툴팁이 설명할 말이 없다며 멈춘다(2026-10-19 Footer Mobile 구분선 색,
+  //   river 승인 "검사도 함께 고치고 수정한 내용 커밋해줘").
+  const markSet = (node, setName) => {
+    for (const c of node.children || []) {
+      if (!c.parentSet) c.parentSet = setName;
+      markSet(c, setName);
+    }
+  };
   for (const n of NODES) {
     if (n.type !== 'COMPONENT_SET') continue;
-    for (const c of n.children) c.parentSet = n.props.name || '(무명 세트)';
+    markSet(n, n.props.name || '(무명 세트)');
   }
 
   const unknownProps = [...seenProps].filter((p) => !(p in PROP_CLASS)).sort();

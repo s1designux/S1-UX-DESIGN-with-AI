@@ -55,12 +55,12 @@
   "workflowStatus": "awaiting-user",
   "uiLibraryStatus": "candidate",
   "lastCompletedCheckpoint": 4,
-  "nextAction": "river UX 검수 → 승인 시 6-promotion(사이트 메뉴 등재·전달본).",
+  "nextAction": "river 가 다음에 정리해 주기로 함(2026-10-19 \"일단 이대로 두자. 다음에 정리해줄게\"). 대기 결정: ① 삼성 로고를 공식 .ai 원본의 선(SVG)으로 교체할지(비교판 compare/samsung-render.html E) ② 업데이트 안내 문구 검사(installer-update-notes — 깊은 자식 노드 변경을 세트 밖으로 빼서 0건 판정)를 고쳐도 될지 ③ 세 부품 승인.",
   "canonicalInputs": [
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "ff7fbdb30bf167a2e324619d3d019f2d5c6d251d916bcfaa66d77af8b51f030b"
+      "sha256": "c5a2d1f8bb21fb036fdf34d0051acee8c085f258798053c6cd702dc723bd001d"
     },
     {
       "role": "token-values",
@@ -102,7 +102,13 @@
     "distComponent": "없음",
     "siteSection": "pages/components.html 에 토큰 표만 있는 낡은 섹션(login-gnb · ci · footer), 내비 버튼 disabled"
   },
-  "blockers": [],
+  "blockers": [
+    {
+      "id": "U-1",
+      "kind": "tooling",
+      "summary": "Footer Mobile 구분선 색 변경(정본+웹 0.19.3)이 커밋 안 됨 — 업데이트 안내 문구 검사가 깊은 노드 변경을 설명 못 해 gate:check 실패. 검사 수정은 river 승인 필요."
+    }
+  ],
   "evidence": {
     "sourceAudit": {
       "observedAt": "2026-10-02",
@@ -119,8 +125,8 @@
   },
   "handoff": {
     "lastActor": "orchestrator",
-    "updatedAt": "2026-10-12",
-    "summary": "0.19.2 기술 검증 통과. river 검수 대기."
+    "updatedAt": "2026-10-19",
+    "summary": "모바일 구분선 색 반영(미커밋), 삼성 로고 선명도 검토 — river 보류."
   },
   "decisions": [
     {
@@ -143,6 +149,13 @@
       "by": "river",
       "decision": "C-2 좁은 화면 Footer — 정본 브레이크포인트에 따라 모바일 모양으로 바뀐다. 기준은 정본 breakpoint/md(768) 미만(⭐ 선택 — river 가 다른 값을 고르면 교체)",
       "quote": "브레이크포인트에 따라 모바일 모양으로 바뀜"
+    },
+    {
+      "id": "D-4",
+      "at": "2026-10-19",
+      "by": "river",
+      "decision": "Footer Mobile 구분선 색을 PC 와 같게(color/icon/gray-light). 글자색은 원래 같음.",
+      "quote": "모바일푸터의 폰트 색상, 라인색상을 pc웹에 맞춰줘"
     }
   ],
   "artifacts": {
