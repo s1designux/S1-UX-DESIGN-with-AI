@@ -32,7 +32,9 @@
   display: flex;
   gap: var(--spacing-10);
   margin: 0;
-  padding: var(--spacing-16) var(--spacing-16) var(--spacing-16) var(--spacing-20);
+  /* 여백은 테두리 두께만큼 줄인다 — Figma 는 선을 안쪽에 그려 자리를 차지하지 않는다(river 2026-10-19).
+     바깥 변(위·오른·왼)만 줄이고, 아래는 닫힘일 때만 줄인다(열리면 펼침칸이 맨 아래). */
+  padding: calc(var(--spacing-16) - var(--border-width-default)) calc(var(--spacing-16) - var(--border-width-default)) calc(var(--spacing-16) - var(--border-width-default)) calc(var(--spacing-20) - var(--border-width-default));
   text-align: left;
   transition: background-color .18s ease;
   width: 100%;
@@ -40,6 +42,11 @@
 
 [data-s1-component="expandable-card"] [data-s1-part="header"]:hover {
   background: var(--color-bg-level-1);
+}
+
+/* 열리면 헤더 아래 여백은 원래 값(맨 아래는 펼침칸이 된다) */
+[data-s1-component="expandable-card"] [data-s1-part="header"][aria-expanded="true"] {
+  padding-bottom: var(--spacing-16);
 }
 
 /* 누른 뒤(=열린 뒤)에는 기본색으로 — 마우스가 위에 남아 있어도 회색으로 두지 않는다 */
@@ -149,13 +156,13 @@
   gap: var(--spacing-10);
   min-height: 0;
   overflow: hidden;
-  padding: 0 var(--spacing-16) 0 var(--spacing-20);
+  padding: 0 calc(var(--spacing-16) - var(--border-width-default)) 0 calc(var(--spacing-20) - var(--border-width-default));
   transition: padding .22s ease;
 }
 
 /* 원본은 헤더와 펼침칸 사이에 선이 없다 — 바탕색 차이로만 나뉜다 */
 [data-s1-component="expandable-card"] [data-s1-part="panel-wrap"][data-open="true"] [data-s1-part="panel"] {
-  padding: var(--spacing-16) var(--spacing-16) var(--spacing-16) var(--spacing-20);
+  padding: var(--spacing-16) calc(var(--spacing-16) - var(--border-width-default)) calc(var(--spacing-16) - var(--border-width-default)) calc(var(--spacing-20) - var(--border-width-default));
 }
 
 @media (prefers-reduced-motion: reduce) {

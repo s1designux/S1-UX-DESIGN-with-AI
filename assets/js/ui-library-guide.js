@@ -170,7 +170,7 @@ const componentConfig = {
   "data-tag": {
     title: "Data Tag",
     description: "상태를 보여주기만 하는 작은 라벨입니다. 누르지 않으며, 파랑은 승인·확인, 빨강은 주의·에러를 뜻합니다.",
-    approvedScope: "모양 2종(Chips 알약 · Square 네모) × 형태 2종(Line 테두리 · Solid 채움) × 색 2종(Blue · Red) 여덟 벌 · 상태 축 없음 · 크기 축 없음 · JavaScript 불필요",
+    approvedScope: "모양 2종(Chips 알약 · Square 네모) × 형태 2종(Line 테두리 · Solid 채움) × 색 3종(Blue · Red · Gray) 열두 벌 · 상태 축 없음 · 크기 축 없음 · JavaScript 불필요",
     runtime: S1UI.dataTag
   },
   "expandable-card": {
@@ -3043,8 +3043,8 @@ function dividerStateMatrix() {
 }
 
 /* ── State matrix: Data Tag ──
-   정본 buildDataTag 의 변형 축은 Type(Chips · Square) × Variant(Line · Solid) × Color(Blue · Red)
-   여덟 벌이고 상태 축이 없다(보여주기만 하는 표시라 hover·pressed 가 없다).
+   정본 buildDataTag 의 변형 축은 Type(Chips · Square) × Variant(Line · Solid) × Color(Blue · Red · Gray)
+   열두 벌이고 상태 축이 없다(보여주기만 하는 표시라 hover·pressed 가 없다).
    세 축을 블록으로 가르지 않고 한 표에서 본다 — 모양·형태를 행으로 겹쳐 쌓고 색을 열로 둔다
    (표출 정책 A-5: 합칠 수 있는 유형을 선으로 가르지 않는다).
    색은 뱃지 전용 쓰임 이름(--color-tag-*)이 라이트·다크 값을 함께 갖는다 — 안내 화면에서
@@ -3054,14 +3054,14 @@ function dataTagMarkup({ shape = "chips", solid = "off", tone = "blue", label = 
 }
 
 function dataTagStateMatrix() {
-  const tones = [["blue", "Color=Blue"], ["red", "Color=Red"]];
+  const tones = [["blue", "Color=Blue"], ["red", "Color=Red"], ["gray", "Color=Gray"]];
   const rows = [
     ["chips", "off", "Chips · Line"],
     ["chips", "on", "Chips · Solid"],
     ["square", "off", "Square · Line"],
     ["square", "on", "Square · Solid"]
   ];
-  const toneLabel = { blue: { off: "확인", on: "승인" }, red: { off: "에러", on: "주의" } };
+  const toneLabel = { blue: { off: "확인", on: "승인" }, red: { off: "에러", on: "주의" }, gray: { off: "대기", on: "대기" } };
 
   const block = () => {
     const sample = (shape, solid) => tones
