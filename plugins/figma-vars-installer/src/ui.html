@@ -2832,7 +2832,12 @@ function rerenderTab() {
     // 이 자리의 «근거» 카테고리 — 부품 안이면 그 부품(이름이 근거), 맨 도형·글자·아이콘이면 공통 역할
     //   토큰(text·bg·border·icon…)뿐이다. 모양으로 짐작한 부품(guess)은 근거가 아니라 참고다
     //   (river 결정 2026-09-22: 손으로 그린 건 사람이 라이브러리 부품으로 직접 바꾼다).
-    const ctxCats = (issue.componentContext || []).filter((c) => catGroups[c]);
+    // 원본 부품의 같은 자리 토큰 — 색까지 맞으면 그 칩·그 토큰 하나만 보이고 나머지는 접는다(river 결정 2026-10-19).
+    const slotSug = issue.suggestions[0] && issue.suggestions[0].slot ? issue.suggestions[0] : null;
+    const slotCat = slotSug ? slotSug.category : null;
+    const slotSolo = !!(slotSug && issue.slotMatch);
+    const ctxCats0 = (issue.componentContext || []).filter((c) => catGroups[c]);
+    const ctxCats = slotCat && ctxCats0.indexOf(slotCat) < 0 ? [slotCat].concat(ctxCats0) : ctxCats0;
     const hasCtx = ctxCats.length > 0;
     const roleCats = catKeys.filter((c) => isRoleCategory(c));
     const guessCatKey = issue.guess ? issue.guess.category : null;
@@ -2841,18 +2846,38 @@ function rerenderTab() {
       const autoCat = typeof issue.autoPick === 'number' && issue.suggestions[issue.autoPick]
         ? issue.suggestions[issue.autoPick].category : null;
       const evidence = hasCtx ? ctxCats : roleCats;
-      curCat = (autoCat && evidence.indexOf(autoCat) >= 0 ? autoCat : null) || evidence[0] || (catKeys[0] || "");
+      // 원본 자리가 색까지 맞으면 그 칩, 아니면 미리 골라 둔 후보의 칩이 먼저 — 체크된 후보가 접힌 칩에 숨지 않게.
+      curCat = (slotSolo ? slotCat : null) || (autoCat && evidence.indexOf(autoCat) >= 0 ? autoCat : null) || slotCat || evidence[0] || (catKeys[0] || "");
     }
     activeCat[issue.id] = curCat;
 
     // 칩을 **볼 만한 것만** 남긴다(river 지시 2026-09-21: "헷갈리는 것 외에는 칩 자체를 지워").
     //   부품 안: 그 부품 + 팔레트 유사색. 맨 도형: 공통 역할 토큰 + 팔레트 유사색 + 짐작한 부품(참고).
     //   나머지 부품은 "다른 부품 N개"로 접는다.
-    const worthCat = (cat) => cat === 'foundation'
+    //   (river 결정 2026-10-19) 더 줄인다:
+    //   ① 원본 자리 토큰이 색까지 맞으면 그 칩 하나만.
+    //   ② 이 자리 역할과 맞는 후보가 하나도 없는 칩(배경 칸의 글자색 칩)은 뺀다.
+    //   ③ 근거 칩 중 색이 같은(거의 같은) 후보가 있는 칩이 있으면, 그런 후보가 없는 칩과 팔레트 칩은 접는다.
+    const fitsRole = (cat) => catGroups[cat].some(({ s }) => s.roleFit === undefined || s.roleFit < 2);
+    const hasCloseColor = (cat) => catGroups[cat].some(({ s }) => (s.roleFit === undefined || s.roleFit < 2)
+      && (s.exact || (typeof s.dist === 'number' && s.dist <= 12)));
+    const worthCat0 = (cat) => cat === 'foundation'
       || (hasCtx ? ctxCats.indexOf(cat) >= 0 : (isRoleCategory(cat) || cat === guessCatKey));
-    const keptCats = catKeys.filter(worthCat);
+    const roleKept = catKeys.filter((c) => worthCat0(c) && (c === 'foundation' || fitsRole(c)));
+    const closeEvidence = roleKept.filter((c) => c !== 'foundation' && c !== guessCatKey && hasCloseColor(c));
+    const keptCats0 = slotSolo ? [slotCat]
+      : closeEvidence.length ? closeEvidence.concat(roleKept.filter((c) => c === guessCatKey && closeEvidence.indexOf(c) < 0))
+      : roleKept;
+    // 원본 자리 칩은 색이 달라도 남긴다(맨 앞).
+    const keptCats1 = slotCat && keptCats0.indexOf(slotCat) < 0 ? [slotCat].concat(keptCats0) : keptCats0;
+    // 미리 골라 둔 후보의 칩도 남긴다 — 체크된 후보가 접힌 칩 안에 숨으면 모르고 일괄 적용된다.
+    const pickNow = picks[issue.id] !== undefined ? picks[issue.id] : issue.autoPick;
+    const pickCat = typeof pickNow === 'number' && issue.suggestions[pickNow] ? issue.suggestions[pickNow].category : null;
+    const keptCats = pickCat && keptCats1.indexOf(pickCat) < 0 ? keptCats1.concat([pickCat]) : keptCats1;
     const hiddenCats = catKeys.filter((c) => keptCats.indexOf(c) < 0);
     const showAllCats = !!catsOpen[issue.id] || keptCats.length === 0;
+    // 처음 펼 칩이 접힌 칩이면 보이는 첫 칩으로 바꾼다 — 안 보이는 칩의 후보가 펼쳐져 있지 않게.
+    if (!showAllCats && keptCats.indexOf(curCat) < 0) { curCat = keptCats[0]; activeCat[issue.id] = curCat; }
     const baseCats = showAllCats ? catKeys : keptCats;
     // 근거 카테고리를 맨 앞으로 — 눌러야 할 칩을 찾아다니지 않게 한다. 짐작한 부품은 그 뒤.
     const catRank = (cat) => {
@@ -2870,7 +2895,7 @@ function rerenderTab() {
       const isGuess = !hasCtx && cat === guessCatKey && !isRoleCategory(cat);
       return `<button class="cat-chip ${cat === curCat ? 'active' : ''}" data-cat="${cat}" data-issue-id="${issue.id}">${catLabel(cat)}${isCtx ? ' ●' : (isGuess ? ' (짐작)' : '')}<span class="ct">${catGroups[cat].length}</span></button>`;
     }).join("") + ((hiddenCats.length && !showAllCats)
-      ? `<button class="cat-chip" data-action="more-cats" data-issue-id="${issue.id}">다른 부품 ${hiddenCats.length}개</button>`
+      ? `<button class="cat-chip" data-action="more-cats" data-issue-id="${issue.id}">다른 칩 ${hiddenCats.length}개</button>`
       : '');
 
     const pickedIdx = picks[issue.id];
@@ -2884,7 +2909,9 @@ function rerenderTab() {
     const roleOk = allSugs.filter((one) => one.s && (one.s.roleFit === undefined || one.s.roleFit < 2));
     const baseSugs = roleOk.length ? roleOk : allSugs;
     const exactSugs = baseSugs.filter((one) => one.s && (one.s.exact || (typeof one.s.dist === 'number' && one.s.dist <= 12)));
-    const primarySugs = exactSugs.length ? exactSugs : baseSugs;
+    // 원본 자리 토큰이 색까지 맞으면 그 칩 안에서도 그 토큰 하나만 먼저 보인다.
+    const slotOnly = slotSolo && curCat === slotCat ? allSugs.filter((one) => one.s && one.s.slot) : [];
+    const primarySugs = slotOnly.length ? slotOnly : exactSugs.length ? exactSugs : baseSugs;
     const showAll = !!moreOpen[issue.id] || primarySugs.length === allSugs.length;
     const visibleSugs = showAll ? allSugs : primarySugs;
     const foldedCount = allSugs.length - visibleSugs.length;
@@ -2892,7 +2919,7 @@ function rerenderTab() {
       ? '<div class="sug"><span class="name" style="color:var(--muted)">이 카테고리에 매칭 토큰 없음</span></div>'
       : visibleSugs.map(({ s, i }) => {
           const mtClass = s.matchType === "role+component" ? "role" : s.matchType === "role" ? "role" : s.matchType;
-          const mtLabel = (mtLabelMap[s.matchType] || s.matchType) + (s.matchInfo ? ` ${s.matchInfo}` : "");
+          const mtLabel = s.slot ? '원본 자리' : (mtLabelMap[s.matchType] || s.matchType) + (s.matchInfo ? ` ${s.matchInfo}` : "");
           const isPicked = pickedIdx === i;
           return `
             <label class="sug ${isPicked ? 'picked' : ''}" data-sug-idx="${i}">
