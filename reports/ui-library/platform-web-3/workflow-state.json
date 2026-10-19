@@ -55,7 +55,7 @@
   "workflowStatus": "awaiting-user",
   "uiLibraryStatus": "candidate",
   "lastCompletedCheckpoint": 4,
-  "nextAction": "river 가 다음에 정리해 주기로 함(2026-10-19 \"일단 이대로 두자. 다음에 정리해줄게\"). 대기 결정: ① 삼성 로고를 공식 .ai 원본의 선(SVG)으로 교체할지(비교판 compare/samsung-render.html E) ② 업데이트 안내 문구 검사(installer-update-notes — 깊은 자식 노드 변경을 세트 밖으로 빼서 0건 판정)를 고쳐도 될지 ③ 세 부품 승인.",
+  "nextAction": "river 정리 대기: ① 삼성 로고를 공식 .ai 원본 선(SVG)으로 교체할지 ② 세 부품 승인.",
   "canonicalInputs": [
     {
       "role": "component-visual",
@@ -102,13 +102,7 @@
     "distComponent": "없음",
     "siteSection": "pages/components.html 에 토큰 표만 있는 낡은 섹션(login-gnb · ci · footer), 내비 버튼 disabled"
   },
-  "blockers": [
-    {
-      "id": "U-1",
-      "kind": "tooling",
-      "summary": "Footer Mobile 구분선 색 변경(정본+웹 0.19.3)이 커밋 안 됨 — 업데이트 안내 문구 검사가 깊은 노드 변경을 설명 못 해 gate:check 실패. 검사 수정은 river 승인 필요."
-    }
-  ],
+  "blockers": [],
   "evidence": {
     "sourceAudit": {
       "observedAt": "2026-10-02",
@@ -126,7 +120,7 @@
   "handoff": {
     "lastActor": "orchestrator",
     "updatedAt": "2026-10-19",
-    "summary": "모바일 구분선 색 반영(미커밋), 삼성 로고 선명도 검토 — river 보류."
+    "summary": "모바일 구분선 색·검사 도구 수정 커밋(c12388f5). river 정리 대기."
   },
   "decisions": [
     {
