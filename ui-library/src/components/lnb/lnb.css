@@ -240,6 +240,16 @@
 /* 선택된 항목은 배경을 깔지 않는다 — 글자·아이콘 색과 굵기로 알린다.
    굵기는 볼드(river 2026-09-30 "일단 볼드로 적용해보자") — 어두운 화면에서 파랑이 옆 회색 글자보다
    흐려 보이는 것을 색을 더 밝히지 않고(프라이머리 파랑 유지) 두께로 보완한다. 라이트·다크 같은 값. */
+/* 잠깐 펼침 직후 — 누른 메뉴에 호버와 같은 바탕을 주고, 마우스를 움직이기 전까지 다른 칸 호버는 막는다
+   (펼치면 칸 높이가 바뀌어 마우스 아래에 다른 메뉴가 놓이기 때문, river 2026-10-21). 표시·해제는 런타임이 한다. */
+[data-s1-component="lnb"] [data-s1-part="item"][data-peek-focus] {
+  background: var(--color-navigation-bg--hover);
+}
+
+[data-s1-component="lnb"][data-peek-hold] [data-s1-part="item"]:hover:not([data-peek-focus]) {
+  background: transparent;
+}
+
 [data-s1-component="lnb"] [data-s1-part="item"][aria-current="page"] {
   background: transparent;
   color: var(--color-navigation-label-selected);

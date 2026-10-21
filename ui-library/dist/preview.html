@@ -4532,6 +4532,14 @@
   background: var(--color-navigation-bg--hover);
 }
 
+[data-s1-component="lnb"] [data-s1-part="item"][data-peek-focus]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
+  background: var(--color-navigation-bg--hover);
+}
+
+[data-s1-component="lnb"][data-peek-hold] [data-s1-part="item"]:hover:not([data-peek-focus]):where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
+  background: transparent;
+}
+
 [data-s1-component="lnb"] [data-s1-part="item"][aria-current="page"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   background: transparent;
   color: var(--color-navigation-label-selected);
@@ -10875,10 +10883,23 @@ var S1UI = (() => {
       root.setAttribute("data-state", "expanded");
       syncCollapsedDisclosure();
       setExpanded(trigger, true);
+      markPeekFocus(trigger);
+      root.setAttribute("data-peek-hold", "");
+      trigger.focus({ preventScroll: true });
+    };
+    const markPeekFocus = (trigger) => {
+      for (const marked of root.querySelectorAll("[data-peek-focus]")) marked.removeAttribute("data-peek-focus");
+      if (trigger) trigger.setAttribute("data-peek-focus", "");
+    };
+    const releaseHold = () => {
+      if (!root.hasAttribute("data-peek-hold")) return;
+      root.removeAttribute("data-peek-hold");
+      markPeekFocus(null);
     };
     const endPeek = () => {
       if (!peeking) return;
       peeking = false;
+      releaseHold();
       root.removeAttribute("data-peek");
       root.setAttribute("data-state", "collapsed");
       syncCollapsedDisclosure();
@@ -10946,6 +10967,9 @@ var S1UI = (() => {
     const handlePointerLeave = (event) => {
       if (peeking && event.pointerType !== "touch") endPeek();
     };
+    const handlePointerMove = (event) => {
+      if (event.movementX || event.movementY) releaseHold();
+    };
     const handleFocusOut = (event) => {
       if (peeking && !(event.relatedTarget instanceof Node && root.contains(event.relatedTarget)) && !root.matches(":hover")) endPeek();
     };
@@ -10957,6 +10981,7 @@ var S1UI = (() => {
       if (owner) owner.focus();
     };
     root.addEventListener("pointerleave", handlePointerLeave);
+    root.addEventListener("pointermove", handlePointerMove);
     root.addEventListener("focusout", handleFocusOut);
     root.addEventListener("keydown", handleKeydown);
     const api = Object.freeze({
@@ -10975,6 +11000,7 @@ var S1UI = (() => {
       destroy() {
         root.removeEventListener("click", handleClick);
         root.removeEventListener("pointerleave", handlePointerLeave);
+        root.removeEventListener("pointermove", handlePointerMove);
         root.removeEventListener("focusout", handleFocusOut);
         root.removeEventListener("keydown", handleKeydown);
         instances20.delete(root);

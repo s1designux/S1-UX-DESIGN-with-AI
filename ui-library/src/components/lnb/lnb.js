@@ -11,7 +11,9 @@ const instances = new WeakMap();
    잠깐 펼침(peek, river 2026-10-21) — 접힌 상태에서 하위메뉴를 가진 항목을 누르면 펼침 모습 그대로 판을 잠깐 펼치고 그 하위메뉴를 연다.
    마우스가 판을 떠나거나, 초점이 판 밖으로 나가거나, Esc 를 누르면 다시 접힌 모습으로 돌아간다.
    잠깐 펼친 동안 루트는 data-state=expanded + data-peek 이고, 사용자가 고른 상태는 여전히 접힘이다(collapsed 는 true, 접기 단추 aria-pressed 도 true).
-   이때 접기 단추를 누르면 바로 접힌 모습으로 돌아간다. */
+   이때 접기 단추를 누르면 바로 접힌 모습으로 돌아간다.
+   펼치면 칸 높이가 달라져 마우스 아래에 다른 메뉴가 놓인다 — 누른 메뉴에 초점과 표시(data-peek-focus)를 주고,
+   마우스를 실제로 움직이기 전까지는 다른 칸의 호버 표시를 막는다(root data-peek-hold, river 2026-10-21). */
 export function init(root) {
   if (!(root instanceof Element) || root.dataset.s1Component !== componentId) return null;
   if (instances.has(root)) return instances.get(root);
@@ -49,10 +51,23 @@ export function init(root) {
     root.setAttribute("data-state", "expanded");
     syncCollapsedDisclosure();
     setExpanded(trigger, true);
+    markPeekFocus(trigger);
+    root.setAttribute("data-peek-hold", "");
+    trigger.focus({ preventScroll: true });
+  };
+  const markPeekFocus = (trigger) => {
+    for (const marked of root.querySelectorAll("[data-peek-focus]")) marked.removeAttribute("data-peek-focus");
+    if (trigger) trigger.setAttribute("data-peek-focus", "");
+  };
+  const releaseHold = () => {
+    if (!root.hasAttribute("data-peek-hold")) return;
+    root.removeAttribute("data-peek-hold");
+    markPeekFocus(null);
   };
   const endPeek = () => {
     if (!peeking) return;
     peeking = false;
+    releaseHold();
     root.removeAttribute("data-peek");
     root.setAttribute("data-state", "collapsed");
     syncCollapsedDisclosure();
@@ -129,6 +144,10 @@ export function init(root) {
   const handlePointerLeave = (event) => {
     if (peeking && event.pointerType !== "touch") endPeek();
   };
+  /* 마우스를 실제로 움직이면(펼침으로 생긴 칸 이동이 아니라) 표시를 풀고 평소 호버로 돌아간다. */
+  const handlePointerMove = (event) => {
+    if (event.movementX || event.movementY) releaseHold();
+  };
   const handleFocusOut = (event) => {
     if (peeking && !(event.relatedTarget instanceof Node && root.contains(event.relatedTarget)) && !root.matches(":hover")) endPeek();
   };
@@ -140,6 +159,7 @@ export function init(root) {
     if (owner) owner.focus();
   };
   root.addEventListener("pointerleave", handlePointerLeave);
+  root.addEventListener("pointermove", handlePointerMove);
   root.addEventListener("focusout", handleFocusOut);
   root.addEventListener("keydown", handleKeydown);
 
@@ -151,6 +171,7 @@ export function init(root) {
     destroy() {
       root.removeEventListener("click", handleClick);
       root.removeEventListener("pointerleave", handlePointerLeave);
+      root.removeEventListener("pointermove", handlePointerMove);
       root.removeEventListener("focusout", handleFocusOut);
       root.removeEventListener("keydown", handleKeydown);
       instances.delete(root);

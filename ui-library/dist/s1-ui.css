@@ -4521,6 +4521,14 @@
   background: var(--color-navigation-bg--hover);
 }
 
+[data-s1-component="lnb"] [data-s1-part="item"][data-peek-focus]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
+  background: var(--color-navigation-bg--hover);
+}
+
+[data-s1-component="lnb"][data-peek-hold] [data-s1-part="item"]:hover:not([data-peek-focus]):where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
+  background: transparent;
+}
+
 [data-s1-component="lnb"] [data-s1-part="item"][aria-current="page"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   background: transparent;
   color: var(--color-navigation-label-selected);
