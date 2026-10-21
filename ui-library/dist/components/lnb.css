@@ -322,12 +322,12 @@
 
 [data-s1-component="lnb"][data-peek] [data-s1-part="item"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   height: var(--sizing-40);
-  transition: height .24s cubic-bezier(.35, 0, .15, 1), padding .24s cubic-bezier(.35, 0, .15, 1), font-size .24s cubic-bezier(.35, 0, .15, 1), background-color .16s ease, color .16s ease;
+  transition: height .24s cubic-bezier(.35, 0, .15, 1), padding .24s cubic-bezier(.35, 0, .15, 1), font-size .24s cubic-bezier(.35, 0, .15, 1);
   white-space: nowrap;
 }
 
 [data-s1-component="lnb"][data-peek] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
-  transition: width .24s cubic-bezier(.35, 0, .15, 1), height .24s cubic-bezier(.35, 0, .15, 1), background-color .16s ease;
+  transition: width .24s cubic-bezier(.35, 0, .15, 1), height .24s cubic-bezier(.35, 0, .15, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {

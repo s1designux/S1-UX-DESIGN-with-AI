@@ -382,7 +382,8 @@
 }
 
 /* 잠깐 펼침의 움직임 — 접힌 칸(64 정사각·아이콘 24·글자 12)이 펼친 줄(높이 40·아이콘 20·글자 14)로 한꺼번에 툭 바뀌지 않고
-   폭·칸 높이·안쪽 여백·아이콘 크기·글자 크기·바탕색이 같은 곡선으로 함께 줄고 늘어 모양이 이어지게 한다
+   폭·칸 높이·안쪽 여백·아이콘 크기·글자 크기가 같은 곡선으로 함께 줄고 늘어 모양이 이어지게 한다.
+   고른 칸의 파란 바탕·흰 글자는 전환하지 않고 펼치는 순간 바로 없앤다 — 접힐 때처럼(river 2026-10-21 "없어진 상태에서 확장이 되면 좋겠어")
    (river 2026-10-21 "너무 빨리 열리는거같아" · "좀더 스무스하게" · "아까처럼 빠르게 나오면서도 너무 인스턴트한 느낌이 나지않았으면").
    곡선은 첫 출발을 아주 조금 늦추고 끝을 살짝 더 길게 끄는 모양(.35, 0, .15, 1)이다(river 2026-10-21 "첫 시작을 아주 조금만 느리게해주고 마지막도 살짝 더 느리게"). 글자는 처음부터 보인다 — 투명에서 띄우면 빈 흰 판이 비쳤다.
    폭이 늘어나는 동안 메뉴명이 줄바꿈되며 출렁이지 않게 한 줄로 묶고, 판 밖으로 넘치는 것만 가린다.
@@ -394,12 +395,12 @@
 
 [data-s1-component="lnb"][data-peek] [data-s1-part="item"] {
   height: var(--sizing-40);
-  transition: height .24s cubic-bezier(.35, 0, .15, 1), padding .24s cubic-bezier(.35, 0, .15, 1), font-size .24s cubic-bezier(.35, 0, .15, 1), background-color .16s ease, color .16s ease;
+  transition: height .24s cubic-bezier(.35, 0, .15, 1), padding .24s cubic-bezier(.35, 0, .15, 1), font-size .24s cubic-bezier(.35, 0, .15, 1);
   white-space: nowrap;
 }
 
 [data-s1-component="lnb"][data-peek] [data-s1-part="item-icon"] {
-  transition: width .24s cubic-bezier(.35, 0, .15, 1), height .24s cubic-bezier(.35, 0, .15, 1), background-color .16s ease;
+  transition: width .24s cubic-bezier(.35, 0, .15, 1), height .24s cubic-bezier(.35, 0, .15, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
