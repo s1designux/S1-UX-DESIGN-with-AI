@@ -6,5 +6,5 @@ package com.s1.designsystem
 public object S1Version {
     public const val VERSION: String = "0.27.0"
     public const val RELEASED_AT: String = "2026-10-21"
-    public const val CANONICAL_FINGERPRINT: String = "a8715579da2f67dc1599adc6c8603db00ca5ddd2e8c2f408a0706ca4218e6794"
+    public const val CANONICAL_FINGERPRINT: String = "57ed600226cd783560beb8ed0a2b5d53ab848da5b8ecdc9d0a4e23e5132096ee"
 }

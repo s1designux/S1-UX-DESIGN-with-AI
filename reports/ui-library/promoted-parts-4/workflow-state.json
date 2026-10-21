@@ -180,6 +180,14 @@
         "verify-f/consumer-bundle-pc-tall-light.png",
         "verify-f/consumer-bundle-pc-tall-dark.png"
       ]
+    },
+    "lnbPeekRiverApproval": {
+      "date": "2026-10-21",
+      "status": "approved",
+      "target": "ui-library lnb v0.4.0 (배포본 0.27.0) — 접힌 띠 잠깐 펼침(호버 즉시·하위메뉴 칸 누름) · 누른 메뉴로 aria-current 옮김 · 하위메뉴 선택 시 접힌 띠 상위 칸 선택 표시(data-current-parent) · 펼침 전환 .24s cubic-bezier(.35,0,.15,1), 선택 바탕은 즉시 제거",
+      "quote": "오케이 현재 안으로 승인할게. 정본에 반영후에 관련된 컴포넌트 안내쪽 html/css까지만 내용 반영해줘. 개발툴별 라이브러리는 추후에 업데이트할게",
+      "scope": "웹 배포본(HTML·CSS·JS)과 디자인가이드 안내 화면까지. 개발툴별 라이브러리(React Native 등 플랫폼 이식)의 동작 반영은 river 지시로 추후 — 이번에는 번호만 따라 올랐다.",
+      "verification": "⭐ 실제 dist 렌더·마우스 동작 확인(비교 화면·안내 화면). 🤖 독립 검증 미실시."
     }
   },
   "artifacts": {
@@ -310,6 +318,6 @@
   "handoff": {
     "lastActor": "orchestrator",
     "updatedAt": "2026-09-29",
-    "summary": "접힘카드·구분선: 정본 신설(Gate 34 승인)·registry·설치기(52종)·웹 배포본 0.13.17 완료. 사이드바·뱃지: 웹 원본 코드만 두고 배포·정본에서 보류(needs-decision 3건)."
+    "summary": "접힘카드·구분선: 정본 신설(Gate 34 승인)·registry·설치기(52종)·웹 배포본 0.13.17 완료. 사이드바·뱃지: 웹 원본 코드만 두고 배포·정본에서 보류(needs-decision 3건). | 2026-10-21 LNB 잠깐 펼침 승인·반영(0.4.0). 후속: 개발툴별 라이브러리에 같은 동작 이식(river 추후 지시)."
   }
 }
