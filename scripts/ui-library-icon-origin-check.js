@@ -290,6 +290,14 @@ function run({ record = false } = {}) {
   }
 
   if (record) {
+    // 대조 결과가 그대로면 확인한 날짜(observedAt)도 그대로 둔다 — 날짜만 바뀐 기록이 매번 남아
+    //   합치기(wt:merge)를 막던 것(2026-10-21 river 지시). 지문·판정이 바뀐 아이콘만 새 날짜를 받는다.
+    for (const label of Object.keys(results)) {
+      const prev = previous.icons && previous.icons[label];
+      if (!prev || !prev.observedAt || !results[label] || !results[label].observedAt) continue;
+      const same = JSON.stringify({ ...results[label], observedAt: '' }) === JSON.stringify({ ...prev, observedAt: '' });
+      if (same) results[label] = { ...results[label], observedAt: prev.observedAt };
+    }
     fs.mkdirSync(path.dirname(RECORD), { recursive: true });
     fs.writeFileSync(RECORD, `${JSON.stringify({
       _role: '웹 아이콘 ↔ 라이브러리 원본 내보내기 픽셀 대조 기록. ui:icons 가 이 기록의 지문이 현재 파일과 맞는지 확인한다.',
