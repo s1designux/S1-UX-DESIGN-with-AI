@@ -3,7 +3,7 @@
     "목적": "검수판 카드에 박는 정본 사실 — 사람이 요약하지 않고 기계가 뽑는다",
     "출처": "ui-library/dist/components/*.manifest.json (정본 build-components.ts 에서 생성)",
     "재생성": "npm run board:facts",
-    "생성일": "2026-10-19"
+    "생성일": "2026-10-21"
   },
   "components": {
     "assist-button": {
@@ -736,7 +736,7 @@
     "lnb": {
       "id": "lnb",
       "status": "approved",
-      "version": "0.3.0",
+      "version": "0.4.0",
       "sizes": [
         "md",
         "lg"
@@ -757,7 +757,7 @@
       ],
       "canonicalStateMap": {},
       "absentCombinations": [],
-      "sourceFingerprint": "2a9ea8e05f72ee6d402f9582dfc297fae0f4aef8c7727dc721fa60b3668cd5d0"
+      "sourceFingerprint": "54ff203d14a4fa49f6a5d847d95ea7ca5adaf0fce6176f8f8d42240780f97b63"
     },
     "login-gnb": {
       "id": "login-gnb",

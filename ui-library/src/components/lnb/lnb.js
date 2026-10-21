@@ -7,7 +7,11 @@ const instances = new WeakMap();
    여닫는 것은 aria-expanded ↔ 하위 목록의 hidden, 접는 것은 aria-pressed ↔ 루트 data-state 다.
    접힘 상태에서는 하위 목록이 CSS 로 감춰지므로(display:none) 트리거의 aria-expanded 도 닫힘으로 맞추고,
    열려 있던 것은 remembered 에 기억해 두었다가 다시 펼치면 이어서 연다.
-   준비 중 항목([aria-disabled=true])은 눌러도 동작하지 않고(click·Enter 취소) 탭 순서에서도 뺀다(date-picker 의 비활성 칸과 같은 관례: tabIndex -1). */
+   준비 중 항목([aria-disabled=true])은 눌러도 동작하지 않고(click·Enter 취소) 탭 순서에서도 뺀다(date-picker 의 비활성 칸과 같은 관례: tabIndex -1).
+   잠깐 펼침(peek, river 2026-10-21) — 접힌 상태에서 하위메뉴를 가진 항목을 누르면 펼침 모습 그대로 판을 잠깐 펼치고 그 하위메뉴를 연다.
+   마우스가 판을 떠나거나, 초점이 판 밖으로 나가거나, Esc 를 누르면 다시 접힌 모습으로 돌아간다.
+   잠깐 펼친 동안 루트는 data-state=expanded + data-peek 이고, 사용자가 고른 상태는 여전히 접힘이다(collapsed 는 true, 접기 단추 aria-pressed 도 true).
+   이때 접기 단추를 누르면 바로 접힌 모습으로 돌아간다. */
 export function init(root) {
   if (!(root instanceof Element) || root.dataset.s1Component !== componentId) return null;
   if (instances.has(root)) return instances.get(root);
@@ -16,6 +20,7 @@ export function init(root) {
   const collapseButton = root.querySelector('[data-s1-part="collapse"]');
 
   const isCollapsed = () => root.getAttribute("data-state") === "collapsed";
+  let peeking = false;
 
   const triggers = () => root.querySelectorAll('[data-s1-part="item"][aria-controls][aria-expanded]');
   const remembered = new Set();
@@ -37,8 +42,28 @@ export function init(root) {
     }
   };
 
+  /* 잠깐 펼침 — 펼친 모습으로 바꾸되 사용자가 고른 접힘은 그대로 둔다(이벤트 없음). */
+  const startPeek = (trigger) => {
+    peeking = true;
+    root.setAttribute("data-peek", "");
+    root.setAttribute("data-state", "expanded");
+    syncCollapsedDisclosure();
+    setExpanded(trigger, true);
+  };
+  const endPeek = () => {
+    if (!peeking) return;
+    peeking = false;
+    root.removeAttribute("data-peek");
+    root.setAttribute("data-state", "collapsed");
+    syncCollapsedDisclosure();
+  };
+
   const setCollapsed = (next) => {
     const value = Boolean(next);
+    if (peeking) {
+      endPeek();
+      if (value) return;
+    }
     if (value === isCollapsed()) return;
     root.setAttribute("data-state", value ? "collapsed" : "expanded");
     if (collapseButton) collapseButton.setAttribute("aria-pressed", String(value));
@@ -90,18 +115,44 @@ export function init(root) {
     }
     const trigger = event.target.closest('[data-s1-part="item"][aria-controls][aria-expanded]');
     if (trigger && root.contains(trigger)) {
+      if (isCollapsed()) {
+        startPeek(trigger);
+        return;
+      }
       setExpanded(trigger, trigger.getAttribute("aria-expanded") !== "true");
       if (byPointer(event) && trigger.matches(":hover")) trigger.blur();
     }
   };
   root.addEventListener("click", handleClick);
 
+  /* 잠깐 펼침 끝내기 — 마우스가 판을 떠날 때(터치는 떠남이 없어 초점·Esc 로 끝낸다). */
+  const handlePointerLeave = (event) => {
+    if (peeking && event.pointerType !== "touch") endPeek();
+  };
+  const handleFocusOut = (event) => {
+    if (peeking && !(event.relatedTarget instanceof Node && root.contains(event.relatedTarget)) && !root.matches(":hover")) endPeek();
+  };
+  const handleKeydown = (event) => {
+    if (!peeking || event.key !== "Escape") return;
+    const opened = event.target.closest?.('[data-s1-part="subitems"]');
+    const owner = opened ? root.querySelector(`[aria-controls="${opened.id}"]`) : null;
+    endPeek();
+    if (owner) owner.focus();
+  };
+  root.addEventListener("pointerleave", handlePointerLeave);
+  root.addEventListener("focusout", handleFocusOut);
+  root.addEventListener("keydown", handleKeydown);
+
   const api = Object.freeze({
-    get collapsed() { return isCollapsed(); },
+    get collapsed() { return isCollapsed() || peeking; },
+    get peeking() { return peeking; },
     collapse(next = true) { setCollapsed(next); },
     toggleCollapse() { setCollapsed(!isCollapsed()); },
     destroy() {
       root.removeEventListener("click", handleClick);
+      root.removeEventListener("pointerleave", handlePointerLeave);
+      root.removeEventListener("focusout", handleFocusOut);
+      root.removeEventListener("keydown", handleKeydown);
       instances.delete(root);
     }
   });
