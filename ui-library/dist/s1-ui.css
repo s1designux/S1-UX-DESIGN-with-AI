@@ -4627,13 +4627,15 @@
   width: var(--sizing-24);
 }
 
-[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][aria-current="page"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][aria-current="page"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))),
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][data-current-parent]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   background: var(--color-button-bg-primary--default);
   color: var(--color-button-label-primary--default);
   font-weight: var(--font-weight-bold);
 }
 
-[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][aria-current="page"] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][aria-current="page"] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))),
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][data-current-parent] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   background-color: var(--color-button-label-primary--default);
 }
 

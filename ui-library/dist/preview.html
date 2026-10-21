@@ -4638,13 +4638,15 @@
   width: var(--sizing-24);
 }
 
-[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][aria-current="page"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][aria-current="page"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))),
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][data-current-parent]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   background: var(--color-button-bg-primary--default);
   color: var(--color-button-label-primary--default);
   font-weight: var(--font-weight-bold);
 }
 
-[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][aria-current="page"] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][aria-current="page"] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))),
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][data-current-parent] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   background-color: var(--color-button-label-primary--default);
 }
 
@@ -5026,7 +5028,7 @@
       <h1>S1 UI 컴포넌트 미리보기 — 35종</h1>
       <p>이 페이지는 배포본에 들어 있는 마크업을 그대로 얹어 그린 것입니다. 여기 보이는 모습이 실제 모습입니다.<br>
          React·Vue 는 제목의 이름을 그대로 부르면 됩니다. 크기·변형은 각 이름 옆에 적힌 값만 쓸 수 있습니다.</p>
-      <p class="fingerprint">버전 0.27.0 · 정본 지문 9971d5d18b813d06fc1f8b2a833cf4a7b977b96becd37a506bb07df91ca657df</p>
+      <p class="fingerprint">버전 0.27.0 · 정본 지문 a8715579da2f67dc1599adc6c8603db00ca5ddd2e8c2f408a0706ca4218e6794</p>
     </div>
     <nav class="index">
         <a href="#input">S1Input</a>
@@ -10869,7 +10871,6 @@ var S1UI = (() => {
   var componentId20 = "lnb";
   var jsRequired20 = true;
   var instances20 = /* @__PURE__ */ new WeakMap();
-  var HOVER_DELAY = 120;
   function init20(root) {
     if (!(root instanceof Element) || root.dataset.s1Component !== componentId20) return null;
     if (instances20.has(root)) return instances20.get(root);
@@ -10904,7 +10905,7 @@ var S1UI = (() => {
       root.setAttribute("data-peek", "");
       root.setAttribute("data-state", "expanded");
       syncCollapsedDisclosure();
-      setExpanded(trigger, true);
+      if (trigger.matches("[aria-controls][aria-expanded]")) setExpanded(trigger, true);
       markPeekFocus(trigger);
       root.setAttribute("data-peek-hold", "");
       if (focus) trigger.focus({ preventScroll: true });
@@ -10957,12 +10958,26 @@ var S1UI = (() => {
       panel.hidden = !value;
       root.dispatchEvent(new CustomEvent("s1:lnb:toggle", { bubbles: true, detail: { trigger, expanded: value } }));
     };
+    const markCurrentParent = () => {
+      for (const t of triggers()) {
+        const panel = doc.getElementById(t.getAttribute("aria-controls"));
+        t.toggleAttribute("data-current-parent", Boolean(panel && panel.querySelector('[aria-current="page"]')));
+      }
+    };
+    const setCurrent = (item) => {
+      for (const other of root.querySelectorAll('[data-s1-part="item"][aria-current]')) {
+        if (other !== item) other.removeAttribute("aria-current");
+      }
+      item.setAttribute("aria-current", "page");
+      markCurrentParent();
+    };
     for (const trigger of root.querySelectorAll('[data-s1-part="item"][aria-controls][aria-expanded]')) {
       const panel = doc.getElementById(trigger.getAttribute("aria-controls"));
       if (panel) panel.hidden = trigger.getAttribute("aria-expanded") !== "true";
     }
     if (collapseButton) collapseButton.setAttribute("aria-pressed", String(isCollapsed()));
     syncCollapsedDisclosure();
+    markCurrentParent();
     for (const item of root.querySelectorAll('[data-s1-part="item"][aria-disabled="true"]')) item.tabIndex = -1;
     const byPointer = (event) => event.detail > 0;
     const handleClick = (event) => {
@@ -10978,10 +10993,14 @@ var S1UI = (() => {
         if (byPointer(event) && collapse.matches(":hover")) collapse.blur();
         return;
       }
+      const link = event.target.closest('a[data-s1-part="item"]');
+      if (link && root.contains(link)) {
+        setCurrent(link);
+        return;
+      }
       const trigger = event.target.closest('[data-s1-part="item"][aria-controls][aria-expanded]');
       if (trigger && root.contains(trigger)) {
         if (isCollapsed()) {
-          cancelHover();
           startPeek(trigger);
           return;
         }
@@ -10990,27 +11009,13 @@ var S1UI = (() => {
       }
     };
     root.addEventListener("click", handleClick);
-    let hoverTimer = 0;
-    const cancelHover = () => {
-      clearTimeout(hoverTimer);
-      hoverTimer = 0;
-    };
     const handlePointerOver = (event) => {
       if (event.pointerType === "touch" || !isCollapsed()) return;
-      const trigger = event.target.closest('[data-s1-part="item"][aria-controls][aria-expanded]');
-      if (!trigger || !root.contains(trigger) || trigger.getAttribute("aria-disabled") === "true") return;
-      cancelHover();
-      hoverTimer = setTimeout(() => {
-        hoverTimer = 0;
-        if (isCollapsed() && trigger.matches(":hover")) startPeek(trigger, { focus: false });
-      }, HOVER_DELAY);
-    };
-    const handlePointerOut = (event) => {
-      const trigger = event.target.closest('[data-s1-part="item"][aria-controls][aria-expanded]');
-      if (trigger && !(event.relatedTarget instanceof Node && trigger.contains(event.relatedTarget))) cancelHover();
+      const item = event.target.closest('[data-s1-part="item"]');
+      if (!item || !root.contains(item) || item.getAttribute("aria-disabled") === "true") return;
+      startPeek(item, { focus: false });
     };
     const handlePointerLeave = (event) => {
-      cancelHover();
       if (peeking && event.pointerType !== "touch") endPeek();
     };
     const handlePointerMove = (event) => {
@@ -11029,7 +11034,6 @@ var S1UI = (() => {
     root.addEventListener("pointerleave", handlePointerLeave);
     root.addEventListener("pointermove", handlePointerMove);
     root.addEventListener("pointerover", handlePointerOver);
-    root.addEventListener("pointerout", handlePointerOut);
     root.addEventListener("focusout", handleFocusOut);
     root.addEventListener("keydown", handleKeydown);
     const api = Object.freeze({
@@ -11050,8 +11054,6 @@ var S1UI = (() => {
         root.removeEventListener("pointerleave", handlePointerLeave);
         root.removeEventListener("pointermove", handlePointerMove);
         root.removeEventListener("pointerover", handlePointerOver);
-        root.removeEventListener("pointerout", handlePointerOut);
-        cancelHover();
         root.removeEventListener("focusout", handleFocusOut);
         root.removeEventListener("keydown", handleKeydown);
         instances20.delete(root);

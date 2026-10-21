@@ -360,14 +360,17 @@
   width: var(--sizing-24);
 }
 
-/* 접힌 칸의 선택 — 파란 바탕 + 흰 아이콘·흰 글자(원본 그대로 button primary 토큰). 라이트·다크 같은 규칙. */
-[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][aria-current="page"] {
+/* 접힌 칸의 선택 — 파란 바탕 + 흰 아이콘·흰 글자(원본 그대로 button primary 토큰). 라이트·다크 같은 규칙.
+   하위메뉴 줄이 골라졌으면 접힌 띠에서는 그 줄이 안 보이므로 상위 칸(data-current-parent, 런타임이 단다)을 같은 모양으로 칠한다(river 2026-10-21). */
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][aria-current="page"],
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][data-current-parent] {
   background: var(--color-button-bg-primary--default);
   color: var(--color-button-label-primary--default);
   font-weight: var(--font-weight-bold);   /* 접힘 선택 메뉴명도 볼드(river 2026-09-30) */
 }
 
-[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][aria-current="page"] [data-s1-part="item-icon"] {
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][aria-current="page"] [data-s1-part="item-icon"],
+[data-s1-component="lnb"][data-state="collapsed"] [data-s1-part="item"][data-current-parent] [data-s1-part="item-icon"] {
   background-color: var(--color-button-label-primary--default);
 }
 

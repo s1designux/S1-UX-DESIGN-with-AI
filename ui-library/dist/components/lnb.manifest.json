@@ -2,7 +2,7 @@
   "id": "lnb",
   "version": "0.4.0",
   "status": "approved",
-  "canonicalFingerprint": "47d97b2ddad40828324948a56853448c967d7450e5142bc74aaa25e7c91ee113",
+  "canonicalFingerprint": "4cfb45568de4a4c929b8d517dc9f4ba0b281cb5dde0eadcd93bbf96dc25eeb24",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -21,7 +21,7 @@
   "states": {
     "expanded": "속성 생략 또는 data-state=expanded — 가로 240(md)·280(lg)",
     "collapsed": "data-state=collapsed — 아이콘 아래 메뉴명이 붙은 띠(sizing/80). 선택 칸은 파란 바탕(button primary)+흰 아이콘·글자",
-    "current": "항목 [aria-current=page] — 글자·아이콘이 navigation/label/selected 색(배경 없음)",
+    "current": "항목 [aria-current=page] — 글자·아이콘이 navigation/label/selected 색(배경 없음) · 누르면 런타임이 옮긴다. 하위메뉴 줄이 골라지면 접힌 띠에서는 상위 칸(data-current-parent)이 고른 모양이 된다.",
     "hover": "항목 :hover — 바탕 navigation/bg--hover, 글자색은 그대로",
     "disabled": "항목 [aria-disabled=true] — 눌리지 않고(click·Enter 취소) 탭 순서에서 빠지며 disabled 색"
   },
@@ -191,8 +191,9 @@
       "s1:lnb:collapse",
       "s1:lnb:toggle"
     ],
-    "reason": "하위메뉴 여닫이(aria-expanded ↔ hidden)와 우측 상단 접기 단추(aria-pressed ↔ data-state)를 맞춘다. 접힌 상태에서 하위메뉴 항목을 누르거나 마우스를 올려 두면 잠깐 펼쳤다가 마우스가 떠나면 다시 접는다(peek).",
-    "peek": "런타임만 붙인다 — 접힌 상태에서 하위메뉴를 가진 항목을 누르거나 마우스를 0.12초 올려 두면 data-state=expanded + data-peek 로 펼침 모습을 잠깐 보여 주고 그 하위메뉴를 연다. 마우스가 판을 떠나거나 초점이 판 밖으로 나가거나 Esc 면 다시 접힌다(river 2026-10-21). 펼치는 순간 누른 메뉴에 초점과 호버 바탕(data-peek-focus)을 주고, 마우스를 실제로 움직이기 전까지 다른 칸 호버는 막는다(data-peek-hold) — 칸 높이가 바뀌어 마우스 아래에 다른 메뉴가 놓이기 때문. 펼칠 때 폭은 .26s 감속으로 늘고, 메뉴 글자는 서서히 나타난다(런타임이 data-peek-enter 출발점을 한 장면 붙였다 뗀다)(reduced-motion 이면 끈다)."
+    "reason": "하위메뉴 여닫이(aria-expanded ↔ hidden)와 우측 상단 접기 단추(aria-pressed ↔ data-state)를 맞춘다. 접힌 상태에서 메뉴에 마우스를 올리거나 하위메뉴 칸을 누르면 잠깐 펼쳤다가 마우스가 떠나면 다시 접고(peek), 누른 이동 항목으로 aria-current 를 옮긴다.",
+    "peek": "런타임만 붙인다 — 접힌 상태에서 메뉴 칸에 마우스를 올리면 바로(고른 칸·하위메뉴 없는 칸 포함), 하위메뉴를 가진 칸은 눌러도 data-state=expanded + data-peek 로 펼침 모습을 잠깐 보여 준다. 하위메뉴를 가진 칸이면 그 하위메뉴도 연다. 마우스가 판을 떠나거나 초점이 판 밖으로 나가거나 Esc 면 다시 접힌다(river 2026-10-21). 펼치는 순간 그 칸에 호버 바탕(data-peek-focus)을 주고(누른 경우 초점도), 마우스를 실제로 움직이기 전까지 다른 칸 호버는 막는다(data-peek-hold). 펼칠 때 폭은 .26s 감속으로 늘고 메뉴 글자는 서서히 나타난다(런타임이 data-peek-enter 출발점을 한 장면 붙였다 뗀다, reduced-motion 이면 끈다).",
+    "select": "이동 항목(a)을 누르면 aria-current=page 를 그 항목으로 옮긴다(이벤트 없음 — 이동은 href 가 한다). 하위메뉴 줄이 골라지면 상위 칸에 data-current-parent 를 달아 접힌 띠에서 그 칸을 고른 모양으로 칠한다(river 2026-10-21)."
   },
-  "sourceFingerprint": "f6c7cadce7c8d5b9aadebd90c176b53f556313521b66e3fc40e0311ce26dd8f6"
+  "sourceFingerprint": "c8f355a09dba0756ee09357358f6afc91286a6936914f7c9f2ffa791f5525f2c"
 }
