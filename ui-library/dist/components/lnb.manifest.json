@@ -2,7 +2,7 @@
   "id": "lnb",
   "version": "0.4.0",
   "status": "approved",
-  "canonicalFingerprint": "083bd207ffef29f170028a8171f520bba856c179ce311c55a0610965aa01ba9c",
+  "canonicalFingerprint": "47d97b2ddad40828324948a56853448c967d7450e5142bc74aaa25e7c91ee113",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -191,8 +191,8 @@
       "s1:lnb:collapse",
       "s1:lnb:toggle"
     ],
-    "reason": "하위메뉴 여닫이(aria-expanded ↔ hidden)와 우측 상단 접기 단추(aria-pressed ↔ data-state)를 맞춘다. 접힌 상태에서 하위메뉴 항목을 누르면 잠깐 펼쳤다가 마우스가 떠나면 다시 접는다(peek).",
-    "peek": "런타임만 붙인다 — 접힌 상태에서 하위메뉴를 가진 항목을 누르면 data-state=expanded + data-peek 로 펼침 모습을 잠깐 보여 주고 그 하위메뉴를 연다. 마우스가 판을 떠나거나 초점이 판 밖으로 나가거나 Esc 면 다시 접힌다(river 2026-10-21). 펼치는 순간 누른 메뉴에 초점과 호버 바탕(data-peek-focus)을 주고, 마우스를 실제로 움직이기 전까지 다른 칸 호버는 막는다(data-peek-hold) — 칸 높이가 바뀌어 마우스 아래에 다른 메뉴가 놓이기 때문."
+    "reason": "하위메뉴 여닫이(aria-expanded ↔ hidden)와 우측 상단 접기 단추(aria-pressed ↔ data-state)를 맞춘다. 접힌 상태에서 하위메뉴 항목을 누르거나 마우스를 올려 두면 잠깐 펼쳤다가 마우스가 떠나면 다시 접는다(peek).",
+    "peek": "런타임만 붙인다 — 접힌 상태에서 하위메뉴를 가진 항목을 누르거나 마우스를 0.12초 올려 두면 data-state=expanded + data-peek 로 펼침 모습을 잠깐 보여 주고 그 하위메뉴를 연다. 마우스가 판을 떠나거나 초점이 판 밖으로 나가거나 Esc 면 다시 접힌다(river 2026-10-21). 펼치는 순간 누른 메뉴에 초점과 호버 바탕(data-peek-focus)을 주고, 마우스를 실제로 움직이기 전까지 다른 칸 호버는 막는다(data-peek-hold) — 칸 높이가 바뀌어 마우스 아래에 다른 메뉴가 놓이기 때문. 펼칠 때 폭은 .26s 감속으로 늘고, 메뉴 글자는 서서히 나타난다(런타임이 data-peek-enter 출발점을 한 장면 붙였다 뗀다)(reduced-motion 이면 끈다)."
   },
-  "sourceFingerprint": "01a82fe716046b73108f8e561ec7702b50827f667ff15ea8e80ccfddfed6000d"
+  "sourceFingerprint": "f6c7cadce7c8d5b9aadebd90c176b53f556313521b66e3fc40e0311ce26dd8f6"
 }
