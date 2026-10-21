@@ -50,7 +50,6 @@ export function init(root) {
   /* 잠깐 펼침 — 펼친 모습으로 바꾸되 사용자가 고른 접힘은 그대로 둔다(이벤트 없음). */
   const startPeek = (trigger, { focus = true } = {}) => {
     peeking = true;
-    root.setAttribute("data-peek-enter", "");
     root.setAttribute("data-peek", "");
     root.setAttribute("data-state", "expanded");
     syncCollapsedDisclosure();
@@ -59,9 +58,6 @@ export function init(root) {
     root.setAttribute("data-peek-hold", "");
     /* 마우스만 올려 펼친 경우는 초점을 옮기지 않는다 — 옮기면 누르지도 않았는데 초점 테두리가 뜬다. */
     if (focus) trigger.focus({ preventScroll: true });
-    /* 출발점(투명)을 한 번 그린 뒤 떼어 글자가 서서히 나타나게 한다. */
-    void root.offsetWidth;
-    requestAnimationFrame(() => root.removeAttribute("data-peek-enter"));
   };
   const markPeekFocus = (trigger) => {
     for (const marked of root.querySelectorAll("[data-peek-focus]")) marked.removeAttribute("data-peek-focus");
@@ -76,7 +72,6 @@ export function init(root) {
     if (!peeking) return;
     peeking = false;
     releaseHold();
-    root.removeAttribute("data-peek-enter");
     root.removeAttribute("data-peek");
     root.setAttribute("data-state", "collapsed");
     syncCollapsedDisclosure();

@@ -4656,27 +4656,17 @@
 }
 
 [data-s1-component="lnb"][data-peek] {
+  overflow: hidden;
   transition: width .26s cubic-bezier(.2, 0, 0, 1);
 }
 
-[data-s1-component="lnb"][data-peek] [data-s1-part="items"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))),
-[data-s1-component="lnb"][data-peek] [data-s1-part="head"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
-  transition: opacity .22s cubic-bezier(.2, 0, 0, 1) .06s;
-}
-
-[data-s1-component="lnb"][data-peek-enter] [data-s1-part="items"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))),
-[data-s1-component="lnb"][data-peek-enter] [data-s1-part="head"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
-  opacity: 0;
-  transition: none;
+[data-s1-component="lnb"][data-peek] [data-s1-part="item"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
+  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-s1-component="lnb"][data-peek] [data-s1-part="items"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))),
-  [data-s1-component="lnb"][data-peek] [data-s1-part="head"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
-    transition: none;
-  }
-
   [data-s1-component="lnb"],
+  [data-s1-component="lnb"][data-peek],
   [data-s1-component="lnb"] [data-s1-part="collapse-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))),
   [data-s1-component="lnb"] [data-s1-part="item-toggle"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
     transition: none;
@@ -10901,7 +10891,6 @@ var S1UI = (() => {
     };
     const startPeek = (trigger, { focus = true } = {}) => {
       peeking = true;
-      root.setAttribute("data-peek-enter", "");
       root.setAttribute("data-peek", "");
       root.setAttribute("data-state", "expanded");
       syncCollapsedDisclosure();
@@ -10909,8 +10898,6 @@ var S1UI = (() => {
       markPeekFocus(trigger);
       root.setAttribute("data-peek-hold", "");
       if (focus) trigger.focus({ preventScroll: true });
-      void root.offsetWidth;
-      requestAnimationFrame(() => root.removeAttribute("data-peek-enter"));
     };
     const markPeekFocus = (trigger) => {
       for (const marked of root.querySelectorAll("[data-peek-focus]")) marked.removeAttribute("data-peek-focus");
@@ -10925,7 +10912,6 @@ var S1UI = (() => {
       if (!peeking) return;
       peeking = false;
       releaseHold();
-      root.removeAttribute("data-peek-enter");
       root.removeAttribute("data-peek");
       root.setAttribute("data-state", "collapsed");
       syncCollapsedDisclosure();
