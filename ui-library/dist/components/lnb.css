@@ -317,16 +317,24 @@
 
 [data-s1-component="lnb"][data-peek] {
   overflow: hidden;
-  transition: width .26s cubic-bezier(.2, 0, 0, 1);
+  transition: width .32s cubic-bezier(.2, 0, 0, 1);
 }
 
 [data-s1-component="lnb"][data-peek] [data-s1-part="item"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
+  height: var(--sizing-40);
+  transition: height .32s cubic-bezier(.2, 0, 0, 1), padding .32s cubic-bezier(.2, 0, 0, 1), font-size .32s cubic-bezier(.2, 0, 0, 1), background-color .24s ease, color .24s ease;
   white-space: nowrap;
+}
+
+[data-s1-component="lnb"][data-peek] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
+  transition: width .32s cubic-bezier(.2, 0, 0, 1), height .32s cubic-bezier(.2, 0, 0, 1), background-color .24s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
   [data-s1-component="lnb"],
   [data-s1-component="lnb"][data-peek],
+  [data-s1-component="lnb"][data-peek] [data-s1-part="item"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))),
+  [data-s1-component="lnb"][data-peek] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))),
   [data-s1-component="lnb"] [data-s1-part="collapse-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))),
   [data-s1-component="lnb"] [data-s1-part="item-toggle"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
     transition: none;
