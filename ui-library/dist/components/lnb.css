@@ -317,17 +317,17 @@
 
 [data-s1-component="lnb"][data-peek] {
   overflow: hidden;
-  transition: width .2s cubic-bezier(.2, 0, 0, 1);
+  transition: width .24s cubic-bezier(.35, 0, .15, 1);
 }
 
 [data-s1-component="lnb"][data-peek] [data-s1-part="item"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
   height: var(--sizing-40);
-  transition: height .2s cubic-bezier(.2, 0, 0, 1), padding .2s cubic-bezier(.2, 0, 0, 1), font-size .2s cubic-bezier(.2, 0, 0, 1), background-color .16s ease, color .16s ease;
+  transition: height .24s cubic-bezier(.35, 0, .15, 1), padding .24s cubic-bezier(.35, 0, .15, 1), font-size .24s cubic-bezier(.35, 0, .15, 1), background-color .16s ease, color .16s ease;
   white-space: nowrap;
 }
 
 [data-s1-component="lnb"][data-peek] [data-s1-part="item-icon"]:where(:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) *:not([data-s1-component="lnb"] [data-s1-component]:not([data-s1-component="lnb"]) [data-s1-component="lnb"] *))) {
-  transition: width .2s cubic-bezier(.2, 0, 0, 1), height .2s cubic-bezier(.2, 0, 0, 1), background-color .16s ease;
+  transition: width .24s cubic-bezier(.35, 0, .15, 1), height .24s cubic-bezier(.35, 0, .15, 1), background-color .16s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
