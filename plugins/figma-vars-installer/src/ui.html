@@ -5,6 +5,8 @@
 <style>
   /*{{S1_TOKENS}}*/
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  /* 디자인 시스템 부품(웹 배포본 그대로 — 빌드 때 심는다) */
+  /*{{S1_COMPONENTS}}*/
   /* ── 앱셸 ──
      문서(html/body)는 스크롤하지 않는다. 스크롤은 내부 .iscroll 한 곳만 담당하고
      하단 버튼 행(.install-footer)은 스크롤 영역 밖의 고정 행이다.
@@ -294,14 +296,22 @@
   #audit-root .tabs button.active { background:var(--btn-bg); border-color:var(--btn-bg); color:var(--btn-fg); font-weight:600; }
   #audit-root .tabs .count { display:inline-block; padding:0 5px; margin-left:4px; background:var(--code-bg); border-radius:8px; font-size:10px; }
   #audit-root .tabs button.active .count { background:var(--color-bg-level-0); color:var(--color-text-state-accent); }
-  #audit-root button { font:inherit; cursor:pointer; padding:6px 12px; border-radius:6px; border:1px solid var(--line); background:transparent; color:var(--fg); }
+  #audit-root button:not([data-s1-component]) { font:inherit; cursor:pointer; padding:6px 12px; border-radius:6px; border:1px solid var(--line); background:transparent; color:var(--fg); }
   #audit-root button.primary { background:var(--btn-bg); color:var(--btn-fg); border-color:var(--btn-bg); }
   #audit-root button.primary:disabled { background:var(--color-button-bg-disabled); border-color:var(--color-button-border-disabled); color:var(--color-button-label-disabled); cursor:not-allowed; }
-  #audit-root button:hover:not(:disabled) { filter: brightness(0.95); }
+  #audit-root button:not([data-s1-component]):hover:not(:disabled) { filter: brightness(0.95); }
   #audit-root .list { padding:8px 0; max-height:calc(100vh - 200px); overflow-y:auto; }
   #audit-root .empty { padding:48px 16px; text-align:center; color:var(--muted); }
-  #audit-root .issue { padding:10px 16px; border-bottom:1px solid var(--line); cursor:pointer; }
-  #audit-root .issue:hover { background:var(--code-bg); }
+  /* 색 칸 — 항목마다 따로 띄운 카드(river 결정 2026-10-21) */
+  #audit-root #list { background:var(--color-bg-level-1); padding:var(--spacing-12); display:flex; flex-direction:column; gap:var(--spacing-8); }
+  #audit-root .issue { padding:var(--spacing-12) var(--spacing-16); background:var(--color-bg-level-0); border:var(--border-width-default) solid var(--color-line-default); border-radius:var(--radius-8); cursor:pointer; }
+  #audit-root .issue .why { margin:var(--spacing-4) 0 var(--spacing-4); font-size:var(--font-size-12); color:var(--color-text-body-tertiary); }
+  #audit-root .issue .more-wrap { margin-top:var(--spacing-8); }
+  #audit-root .issue .more-wrap > [data-s1-component="text-button"] { margin-top:var(--spacing-8); }
+  #audit-root .issue .gh { margin:var(--spacing-8) 0 0; font-size:var(--font-size-12); color:var(--color-text-body-tertiary); }
+  #audit-root .issue.done { background:var(--color-bg-level-1); border-style:dashed; display:flex; align-items:center; gap:var(--spacing-8); padding:var(--spacing-8) var(--spacing-12); }
+  #audit-root .issue.done .nm { font-size:var(--font-size-12); font-weight:var(--font-weight-bold); flex:0 0 auto; }
+  #audit-root .issue.done .tk { font-size:var(--font-size-12); color:var(--color-text-body-secondary); flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   #audit-root .issue-head { display:flex; align-items:center; gap:8px; }
   /* 판정 꼬리표(미바인딩·외부 변수·팔레트 외·역할·근접·정확·높음/보통·컬렉션)는 평소에 감춘다.
      작업자는 «어떤 토큰으로 바꿀까» 만 고르면 되고, 저 표시는 우리가 어떻게 골랐는지의 설명이다.
@@ -327,11 +337,11 @@
   #audit-root .cat-chip:hover { border-color:var(--btn-bg); }
   #audit-root .cat-chip.active { background:var(--btn-bg); color:var(--btn-fg); border-color:var(--btn-bg); }
   #audit-root .cat-chip .ct { font-size:10px; opacity:0.7; margin-left:3px; }
-  #audit-root .sugs { margin-top:6px; display:flex; flex-direction:column; gap:4px; max-height:280px; overflow-y:auto; }
-  #audit-root .sug { display:flex; align-items:center; gap:8px; padding:6px 8px; background:var(--code-bg); border-radius:4px; font-size:11px; cursor:pointer; border:1px solid transparent; }
-  #audit-root .sug:hover { border-color:var(--line); }
-  #audit-root .sug.picked { border-color:var(--btn-bg); background:var(--color-dropdown-option-bg-selected); }
-  #audit-root .sug input[type=radio] { margin:0; cursor:pointer; flex-shrink:0; }
+  #audit-root .sugs { display:flex; flex-direction:column; }
+  /* 후보 줄 — DS Radio + DS Button. 고른 줄을 칠하지 않는다(파랑은 동그라미만) */
+  #audit-root .sug { display:flex; align-items:center; gap:var(--spacing-8); padding:var(--spacing-4) 0; }
+  #audit-root .sug [data-s1-component="radio"] { flex:1; min-width:0; }
+  #audit-root .sug [data-s1-component="radio"] [data-s1-part="label"] { font-size:var(--font-size-12); word-break:break-all; }
   #audit-root .sug .name { flex:1; min-width:0; font-family:ui-monospace, "SF Mono", monospace; word-break:break-all; line-height:1.4; }
   #audit-root .sug .col { color:var(--muted); font-size:10px; flex-shrink:0; }
   #audit-root .sug .conf-high { color: var(--high); font-weight:600; font-size:10px; }
@@ -341,7 +351,7 @@
   #audit-root .sug .mt.role { background:var(--color-bg-level-3); color:var(--color-text-state-accent); }
   #audit-root .sug .mt.exact { background:transparent; color:var(--color-text-state-correct); box-shadow:inset 0 0 0 1px var(--color-line-blue); }
   #audit-root .sug .mt.near { background:var(--color-bg-level-3); color:var(--color-text-state-caution); }
-  #audit-root .sug button { padding:3px 8px; font-size:11px; flex-shrink:0; }
+  #audit-root .sug button:not([data-s1-component]) { padding:3px 8px; font-size:11px; flex-shrink:0; }
   #audit-root .sug button.applied { background:var(--btn-bg); color:var(--btn-fg); border-color:var(--btn-bg); cursor:default; }
   #audit-root .sug button.applied:hover { filter:none; }
   #audit-root .footer { position:sticky; bottom:0; padding:10px 16px; border-top:1px solid var(--line); background:var(--bg); display:flex; align-items:center; gap:8px; }
@@ -870,8 +880,8 @@
     <div class="footer">
       <div class="selected-info"><b id="picked-count">0</b>개 항목 선택됨</div>
       <!-- 고친 뒤 바로 다시 볼 수 있게 — 보조 버튼으로 적용 버튼 왼쪽에(river 지시 2026-10-19) -->
-      <button id="btn-color-reinspect" type="button">다시 검사</button>
-      <button class="primary" id="btn-apply-selected" disabled>선택 항목 적용</button>
+      <button id="btn-color-reinspect" type="button" data-s1-component="button" data-variant="secondary" data-size="xsm"><span data-s1-part="label">다시 검사</span></button>
+      <button id="btn-apply-selected" type="button" data-s1-component="button" data-variant="primary" data-size="xsm" disabled><span data-s1-part="label">선택 항목 적용</span></button>
     </div>
   </div>
 
@@ -1388,6 +1398,7 @@ let activeTab = "component"; // component | generic
 let picks = {}; // { issueId: suggestionIndex }
 let activeCat = {}; // { issueId: 'tab' | 'button' | 'foundation' | ... }
 let detailOpen = {}; // { issueId: true } — 「자세히」로 펴 둔 카드. 다시 그려도 유지한다.
+let appliedMap = {}; // { issueId: { name, paired } } — 적용이 끝난 카드. 한 줄로 접어 맨 아래로(river 결정 2026-10-21).
 let moreOpen = {};   // { issueId: true } — 「색이 다른 후보」를 펴 둔 카드(기본은 접힘).
 let catsOpen = {};   // { issueId: true } — 「다른 부품」 칩까지 펴 둔 카드(기본은 접힘).
 let activeMode = "color"; // color | swap
@@ -1720,7 +1731,7 @@ function startAuditInspection(phase) {
   const btn = $("#btn-audit");
   btn.disabled = true;
   btn.textContent = "검사 중…";
-  picks = {}; detailOpen = {}; moreOpen = {}; catsOpen = {};
+  picks = {}; detailOpen = {}; moreOpen = {}; catsOpen = {}; appliedMap = {};
   activeCat = {};
   updatePickedCount();
   resetAuditChecklist('running');
@@ -2789,7 +2800,7 @@ btnApplySelected.addEventListener("click", () => {
   }
   if (picksList.length === 0) return;
   btnApplySelected.disabled = true;
-  btnApplySelected.textContent = "적용 중…";
+  btnApplySelected.querySelector('[data-s1-part="label"]').textContent = "적용 중…";
   send("apply-multi", { picks: picksList });
 });
 
@@ -2820,7 +2831,7 @@ function updatePickedCount() {
   const n = Object.keys(picks).length;
   $("#picked-count").textContent = n;
   btnApplySelected.disabled = n === 0;
-  btnApplySelected.textContent = n > 0 ? `선택 항목 적용 (${n})` : "선택 항목 적용";
+  btnApplySelected.querySelector('[data-s1-part="label"]').textContent = n > 0 ? `선택 항목 적용 (${n})` : "선택 항목 적용";
 }
 
 // 색이 «어디에» 칠해져 있나 — fills/strokes 같은 속성 이름 대신 사람 말로.
@@ -2835,9 +2846,28 @@ function rerenderTab() {
   // 설명 배너는 두지 않는다(river 지시 2026-09-22) — 미리 골라 둔 칸은 라디오가 이미 켜져 있고,
   //   팔레트 밖 색은 카드마다 «팔레트 외» 표로 보인다.
   list.innerHTML = "";
-  for (const issue of filtered) {
+  // 적용이 끝난 카드는 맨 아래로 — 남은 일만 위에 보인다.
+  const ordered = filtered.filter((x) => !appliedMap[x.id]).concat(filtered.filter((x) => appliedMap[x.id]));
+  for (const issue of ordered) {
     const div = document.createElement("div");
-    div.className = "issue" + (detailOpen[issue.id] ? " show-detail" : "");
+    const doneInfo = appliedMap[issue.id];
+    if (doneInfo) {
+      div.className = "issue done";
+      div.dataset.id = issue.id;
+      div.innerHTML =
+        `<span data-s1-component="data-tag" data-shape="chips" data-solid="off" data-tone="blue">${doneInfo.paired ? '함께 적용됨' : '적용됨'}</span>`
+        + `<span class="nm">${escape(issue.nodeName)}</span>`
+        + `<span class="tk">${escape(doneInfo.name || '')}</span>`
+        + `<button type="button" data-s1-component="text-button" data-variant="secondary" data-action="reopen"><span data-s1-part="label">다시 고르기</span></button>`;
+      div.addEventListener("click", (e) => {
+        const btn = e.target.closest && e.target.closest('[data-action="reopen"]');
+        if (btn) { delete appliedMap[issue.id]; rerenderTab(); e.stopPropagation(); return; }
+        send("select-node", { nodeId: issue.nodeId });
+      });
+      list.appendChild(div);
+      continue;
+    }
+    div.className = "issue";
     div.dataset.id = issue.id;
     const kindLabel = issue.reasonKind === "external-var" ? "외부 변수" : "미바인딩";
     const confLabelMap = { high: "높음", medium: "보통", low: "낮음" };
@@ -2930,81 +2960,75 @@ function rerenderTab() {
       return 3;
     };
     const orderedCatKeys = baseCats.slice().sort((a, b) => catRank(a) - catRank(b) || baseCats.indexOf(a) - baseCats.indexOf(b));
-    const chipsHtml = orderedCatKeys.length === 0 ? '' : orderedCatKeys.map((cat) => {
-      const isCtx = ctxCats.indexOf(cat) >= 0;
-      // 짐작 표기는 부품 카테고리에만 — 큰 면을 '배경'으로 짐작한 경우 bg 는 공통 역할이라 붙이지 않는다.
-      const isGuess = !hasCtx && cat === guessCatKey && !isRoleCategory(cat);
-      return `<button class="cat-chip ${cat === curCat ? 'active' : ''}" data-cat="${cat}" data-issue-id="${issue.id}">${catLabel(cat)}${isCtx ? ' ●' : (isGuess ? ' (짐작)' : '')}<span class="ct">${catGroups[cat].length}</span></button>`;
-    }).join("") + ((hiddenCats.length && !showAllCats)
-      ? `<button class="cat-chip" data-action="more-cats" data-issue-id="${issue.id}">다른 칩 ${hiddenCats.length}개</button>`
-      : '');
-
+    // 칩은 두지 않는다(river 결정 2026-10-21) — 고를 게 없는 칩 대신 «왜 이 색인가» 한 줄을 쓴다.
     const pickedIdx = picks[issue.id];
     const allSugs = catGroups[curCat] || [];
     // 색이 정확히 같은 후보가 있으면 **그것만** 먼저 보여 준다 — 색이 다른 후보는 접는다.
     //   (river 지적 2026-09-21: 블루라인부터 프라이머리까지 다 나와 고르기 어렵다)
-    // 정확히 같은 색이 없으면 **가장 가까운 색들**(Δ12 이내)을 앞에 둔다 — 시안 색이 정본과
-    //   미세하게 다른 경우가 많아, 그때도 고를 것을 좁혀 준다.
-    // 역할이 어긋난 후보(아이콘 자리의 label·글자색 토큰)는 뒤로 접는다 — 아이콘은 icon 토큰에서 고른다
-    //   (river 지시 2026-09-21). 맞는 역할이 하나도 없을 때만 그대로 다 보여 준다.
+    // 정확히 같은 색이 없으면 **가장 가까운 색들**(Δ12 이내)을 앞에 둔다.
+    // 역할이 어긋난 후보(아이콘 자리의 label·글자색 토큰)는 뒤로 접는다(river 지시 2026-09-21).
     const roleOk = allSugs.filter((one) => one.s && (one.s.roleFit === undefined || one.s.roleFit < 2));
     const baseSugs = roleOk.length ? roleOk : allSugs;
     const exactSugs = baseSugs.filter((one) => one.s && (one.s.exact || (typeof one.s.dist === 'number' && one.s.dist <= 12)));
-    // 원본 자리 토큰이 색까지 맞으면 그 칩 안에서도 그 토큰 하나만 먼저 보인다.
+    // 원본 자리 토큰이 색까지 맞으면 그 토큰 하나만 먼저 보인다.
     const slotOnly = slotSolo && curCat === slotCat ? allSugs.filter((one) => one.s && one.s.slot) : [];
-    const primarySugs = slotOnly.length ? slotOnly : exactSugs.length ? exactSugs : baseSugs;
-    const showAll = !!moreOpen[issue.id] || primarySugs.length === allSugs.length;
-    const visibleSugs = showAll ? allSugs : primarySugs;
-    const foldedCount = allSugs.length - visibleSugs.length;
-    const sugsHtml = visibleSugs.length === 0
-      ? '<div class="sug"><span class="name" style="color:var(--muted)">이 카테고리에 매칭 토큰 없음</span></div>'
-      : visibleSugs.map(({ s, i }) => {
-          const mtClass = s.matchType === "role+component" ? "role" : s.matchType === "role" ? "role" : s.matchType;
-          const mtLabel = s.slot ? '원본 자리' : (mtLabelMap[s.matchType] || s.matchType) + (s.matchInfo ? ` ${s.matchInfo}` : "");
-          const isPicked = pickedIdx === i;
-          return `
-            <label class="sug ${isPicked ? 'picked' : ''}" data-sug-idx="${i}">
-              <input type="radio" name="pick-${issue.id}" data-issue-id="${issue.id}" data-sug-idx="${i}" ${isPicked ? 'checked' : ''}/>
-              <span class="name">${s.variableName}</span>
-              <span class="mt ${mtClass}">${mtLabel}</span>
-              <span class="col">${collectionLabel(s.collectionName)}</span>
-              <span class="conf-${s.confidence}">${confLabelMap[s.confidence] || s.confidence}</span>
-              <button data-action="apply" data-sug="${i}">적용</button>
-            </label>
-          `;
-        }).join("");
+    let primarySugs = slotOnly.length ? slotOnly : exactSugs.length ? exactSugs : baseSugs;
+    // 고른 후보가 접힌 쪽에 있으면 앞으로 꺼낸다 — 체크된 후보가 숨은 채로 일괄 적용되지 않게.
+    if (typeof pickNow === 'number' && !primarySugs.some((one) => one.i === pickNow) && issue.suggestions[pickNow]) {
+      primarySugs = primarySugs.concat([{ s: issue.suggestions[pickNow], i: pickNow }]);
+    }
+    const primaryIdx = primarySugs.map((one) => one.i);
+    // 나머지 후보 — 부품·역할별 소제목 아래 한꺼번에(river 결정 2026-10-21: 한 번 누르면 전부).
+    const restGroups = orderedCatKeys.concat(catKeys.filter((c) => orderedCatKeys.indexOf(c) < 0))
+      .map((cat) => ({ cat, rows: catGroups[cat].filter((one) => primaryIdx.indexOf(one.i) < 0) }))
+      .filter((g) => g.rows.length > 0);
+    const restCount = restGroups.reduce((n, g) => n + g.rows.length, 0);
+    const groupTitle = (cat) => cat === 'foundation' ? '팔레트 가까운 색'
+      : isRoleCategory(cat) ? `공통 ${catLabel(cat)} 색` : `${catLabel(cat)} 부품 색`;
+    // 근거 한 줄
+    const sameCount = primarySugs.filter((one) => one.s && one.s.exact).length;
+    let why = slotSug && curCat === slotCat
+      ? `${catLabel(slotCat)} 부품의 같은 자리 색${issue.slotMatch ? '' : ' — 지금 칠한 색과 다름'}`
+      : hasCtx && ctxCats.indexOf(curCat) >= 0 ? `${catLabel(curCat)} 부품이 쓰는 색`
+      : curCat === 'foundation' ? '팔레트 색'
+      : isRoleCategory(curCat) ? `공통 ${catLabel(curCat)} 색` : `${catLabel(curCat)} 색`;
+    if (sameCount >= 2) why += ` · 같은 색 ${sameCount}개`;
+    else if (sameCount === 0 && primarySugs.length && primarySugs[0].s && typeof primarySugs[0].s.dist === 'number') why += ' · 가장 가까운 색';
+    if (issue.offGuide) why += ' · 팔레트에 없는 색';
+    const rowHtml = ({ s, i }) => `
+            <div class="sug" data-sug-idx="${i}">
+              <div data-s1-component="radio">
+                <input type="radio" id="pick-${issue.id}-${i}" name="pick-${issue.id}" data-s1-part="control" data-issue-id="${issue.id}" data-sug-idx="${i}" ${pickedIdx === i ? 'checked' : ''}/>
+                <label data-s1-part="label" for="pick-${issue.id}-${i}">${escape(s.variableName)}</label>
+              </div>
+              <button type="button" data-s1-component="button" data-variant="secondary" data-size="xxsm" data-action="apply" data-sug="${i}"><span data-s1-part="label">적용</span></button>
+            </div>`;
+    const sugsHtml = primarySugs.length === 0
+      ? '<p class="why">맞는 토큰이 없습니다</p>'
+      : primarySugs.map(rowHtml).join("");
+    const restOpen = !!moreOpen[issue.id];
+    const moreHtml = restCount === 0 ? '' : `
+      <div class="more-wrap">
+        <hr data-s1-component="divider" data-axis="x">
+        <button type="button" data-s1-component="text-button" data-variant="secondary" data-action="more-sugs"><span data-s1-part="label">${restOpen ? '다른 후보 접기' : `다른 후보 ${restCount}개 보기`}</span></button>
+        ${restOpen ? restGroups.map((g) => `<p class="gh">${escape(groupTitle(g.cat))} ${g.rows.length}개</p>${g.rows.map(rowHtml).join("")}`).join("") : ''}
+      </div>`;
     div.innerHTML = `
       <div class="issue-head">
         <div class="swatch" style="background:${issue.hex}"></div>
         <div class="name">${escape(issue.nodeName)}</div>
         <span class="hex">${issue.hex}</span>
-        ${issue.offGuide ? '<span class="offguide-note">팔레트 외</span>' : ''}
       </div>
-      <div class="cat-chips">${chipsHtml}</div>
+      <p class="why">${escape(why)}</p>
       <div class="sugs">${sugsHtml}</div>
-      ${(foldedCount > 0 && !showAll) ? `<button class="detail-toggle" data-action="more-sugs" type="button">다른 후보 ${foldedCount}개 보기</button>` : ''}
+      ${moreHtml}
     `;
     div.addEventListener("click", (e) => {
-      const t = e.target;
-      // "색이 다른 후보 보기" → 이 카드만 펼친다
-      if (t && t.dataset && t.dataset.action === "more-cats") {
-        catsOpen[issue.id] = true;
-        rerenderTab();
-        e.stopPropagation();
-        return;
-      }
+      // DS 부품은 글자를 안쪽 span 에 담는다 — 누른 곳이 글자여도 버튼으로 본다.
+      const t = (e.target.closest && e.target.closest('[data-action]')) || e.target;
+      // 「다른 후보 보기/접기」 → 이 카드만 펴고 접는다
       if (t && t.dataset && t.dataset.action === "more-sugs") {
-        moreOpen[issue.id] = true;
-        rerenderTab();
-        e.stopPropagation();
-        return;
-      }
-      // 카테고리 칩 클릭 → 활성 카테고리 변경 후 issue 카드만 다시 렌더링
-      const chip = t.closest && t.closest(".cat-chip");
-      if (chip) {
-        const newCat = chip.dataset.cat;
-        const issueId = chip.dataset.issueId;
-        activeCat[issueId] = newCat;
+        moreOpen[issue.id] = !moreOpen[issue.id];
         rerenderTab();
         e.stopPropagation();
         return;
@@ -3019,7 +3043,7 @@ function rerenderTab() {
         const idx = parseInt(t.dataset.sug, 10);
         send("apply-one", { issue, suggestionIndex: idx });
         // 시각 피드백은 apply-result 받은 후 처리 (낙관적 표시 X)
-        t.textContent = "...";
+        t.querySelector('[data-s1-part="label"]').textContent = "...";
         t.disabled = true;
         e.stopPropagation();
         return;
@@ -3029,26 +3053,13 @@ function rerenderTab() {
         const issueId = t.dataset.issueId;
         const sugIdx = parseInt(t.dataset.sugIdx, 10);
         picks[issueId] = sugIdx;
-        // 같은 issue의 모든 sug 라벨에서 picked class 갱신
-        div.querySelectorAll(".sug").forEach((el) => {
-          const elIdx = parseInt(el.dataset.sugIdx, 10);
-          el.classList.toggle("picked", elIdx === sugIdx);
-        });
         updatePickedCount();
         e.stopPropagation();
         return;
       }
-      // sug label 영역 클릭 → 해당 라디오 선택
+      // 후보 줄의 글자(label)는 브라우저가 라디오를 대신 눌러 준다 — 노드 이동으로 새지 않게만 막는다.
       const sugEl = t.closest && t.closest(".sug");
-      if (sugEl && sugEl.dataset.sugIdx !== undefined) {
-        const radio = sugEl.querySelector('input[type="radio"]');
-        if (radio && !radio.checked) {
-          radio.checked = true;
-          radio.dispatchEvent(new Event("click", { bubbles: true }));
-        }
-        e.stopPropagation();
-        return;
-      }
+      if (sugEl) { e.stopPropagation(); return; }
       // 그 외 (issue 카드 빈 영역, head, meta) → 노드 선택
       send("select-node", { nodeId: issue.nodeId });
     });
@@ -3080,7 +3091,7 @@ function renderInspectionResult(payload) {
   renderRecentSwaps();
 
   lastIssues = payload.colorIssues || [];
-  picks = {}; activeCat = {}; detailOpen = {}; moreOpen = {}; catsOpen = {};
+  picks = {}; activeCat = {}; detailOpen = {}; moreOpen = {}; catsOpen = {}; appliedMap = {};
   // 아이콘처럼 «바로 걸어도 되는» 칸은 미리 골라 둔다 — 아래 [선택 항목 적용] 한 번이면 끝난다.
   lastIssues.forEach((issue) => { if (typeof issue.autoPick === 'number') picks[issue.id] = issue.autoPick; });
   updatePickedCount();
@@ -3232,48 +3243,32 @@ function handleAuditUiMessage(msg) {
     rerenderTab();
   } else if (msg.type === "apply-result") {
     const { issueId, suggestionIndex, ok, paired } = msg.payload;
-    const el = list.querySelector(`[data-id="${issueId}"]`);
-    if (el) {
-      // 같은 issue의 모든 apply 버튼을 활성 상태로 복원 + applied 표시 해제
-      el.querySelectorAll('button[data-action="apply"]').forEach((b) => {
-        b.disabled = false;
-        b.textContent = "적용";
-        b.classList.remove("applied");
-      });
-      if (ok) {
-        // 방금 적용된 sug만 Applied 표시 (다른 후보는 클릭 가능 — 덮어쓰기 허용)
-        const target = el.querySelector(`button[data-action="apply"][data-sug="${suggestionIndex}"]`);
-        if (target) {
-          target.disabled = true;
-          target.textContent = "적용됨";
-          target.classList.add("applied");
-        }
+    const done = (lastIssues || []).filter((x) => x.id === issueId)[0];
+    if (ok && done) {
+      // 적용이 끝난 카드는 한 줄로 접어 맨 아래로(river 결정 2026-10-21).
+      const sug = done.suggestions[suggestionIndex];
+      appliedMap[issueId] = { name: sug ? sug.variableName : '' };
+      delete picks[issueId];
+      // 같은 도형의 채움↔테두리를 함께 걸었으면 짝 카드도 접는다
+      //   (river 지적 2026-09-21: 연동이 안 되는 것처럼 보인다 — 실제로는 짝 카드가 남아 있었다).
+      if (paired) {
+        const twinProp = done.property === "fills" ? "strokes" : "fills";
+        (lastIssues || []).filter((x) => x.nodeId === done.nodeId && x.property === twinProp)
+          .forEach((twin) => { appliedMap[twin.id] = { name: sug ? sug.variableName : '', paired: true }; delete picks[twin.id]; });
       }
+      updatePickedCount();
+      rerenderTab();
+    } else {
+      const el = list.querySelector(`[data-id="${issueId}"]`);
+      if (el) el.querySelectorAll('button[data-action="apply"]').forEach((b) => {
+        b.disabled = false;
+        b.querySelector('[data-s1-part="label"]').textContent = "적용";
+      });
     }
-    // 같은 도형의 채움↔테두리를 함께 걸었으면 그 사실을 알리고, **짝 카드도 목록에서 지운다**
-    //   (river 지적 2026-09-21: 연동이 안 되는 것처럼 보인다 — 실제로는 짝 카드가 남아 있었다).
     let applyMsg;
     if (!ok) applyMsg = "적용 실패";
     else if (paired) applyMsg = "적용 완료 · 같은 도형의 테두리/배경도 함께 연결했습니다";
     else applyMsg = "적용 완료";
-    if (ok && paired) {
-      const done = (lastIssues || []).filter((x) => x.id === issueId)[0];
-      if (done) {
-        const twinProp = done.property === "fills" ? "strokes" : "fills";
-        const twins = (lastIssues || []).filter((x) => x.nodeId === done.nodeId && x.property === twinProp);
-        for (const twin of twins) {
-          const twinEl = list.querySelector(`[data-id="${twin.id}"]`);
-          if (twinEl) {
-            twinEl.style.opacity = "0.5";
-            twinEl.querySelectorAll('button[data-action="apply"]').forEach((b) => {
-              b.disabled = true;
-              b.textContent = "함께 적용됨";
-              b.classList.add("applied");
-            });
-          }
-        }
-      }
-    }
     showToast(applyMsg);
   } else if (msg.type === "apply-text-style-result") {
     const p = msg.payload || {};
@@ -3296,22 +3291,12 @@ function handleAuditUiMessage(msg) {
   } else if (msg.type === "apply-multi-result") {
     const p = msg.payload;
     for (const a of p.applied) {
-      const el = list.querySelector(`[data-id="${a.issueId}"]`);
-      if (el) {
-        el.querySelectorAll('button[data-action="apply"]').forEach((b) => {
-          b.disabled = false;
-          b.textContent = "적용";
-          b.classList.remove("applied");
-        });
-        const target = el.querySelector(`button[data-action="apply"][data-sug="${a.suggestionIndex}"]`);
-        if (target) {
-          target.disabled = true;
-          target.textContent = "적용됨";
-          target.classList.add("applied");
-        }
-      }
+      const done = (lastIssues || []).filter((x) => x.id === a.issueId)[0];
+      const sug = done && done.suggestions[a.suggestionIndex];
+      appliedMap[a.issueId] = { name: sug ? sug.variableName : '' };
       delete picks[a.issueId];
     }
+    rerenderTab();
     updatePickedCount();
     showToast(`${p.ok}건 적용 완료${p.fail ? ` · ${p.fail}건 실패` : ""}.`);
   } else if (msg.type === "set-mode-result") {
@@ -3337,7 +3322,7 @@ function handleAuditUiMessage(msg) {
       renderRecentSwaps();
       // ── 그 외 버킷: HEX 색상 → 시멘틱 토큰 제안 ──
       lastIssues = msg.payload.colorIssues || [];
-      picks = {}; activeCat = {}; detailOpen = {}; moreOpen = {}; catsOpen = {}; updatePickedCount();
+      picks = {}; activeCat = {}; detailOpen = {}; moreOpen = {}; catsOpen = {}; appliedMap = {}; updatePickedCount();
       rerenderTab();
       // ── 칩 카운트 + 결과 칩 노출 ──
       const compCount = swapCandidates.length + manual.length + modules.length;
