@@ -7712,8 +7712,8 @@ async function buildSideNavItem(maps: BuildMaps, originY: number): Promise<{ set
         icon.name = "icon";
         bindIconSize(icon, num("sizing/20"));
         comp.appendChild(icon);
-        // 선택만 Bold(title/14B) — 나머지는 14 Medium(body/14M · 자간 tight). figmaBuildSpec ①.
-        const label = await makeBoundText("메뉴", 14, state === "Selected" ? "Bold" : "Medium", scv(maps, c.label));
+        // 선택만 Bold(title/14B) — 나머지는 14 Regular(body/14R · 자간 tight, river 2026-10-01 "보통으로 하자"). figmaBuildSpec ①.
+        const label = await makeBoundText("메뉴", 14, state === "Selected" ? "Bold" : "Regular", scv(maps, c.label));
         label.name = "label";
         comp.appendChild(label);
         label.layoutGrow = 1;
@@ -7816,7 +7816,7 @@ async function buildSideNavSubItem(maps: BuildMaps, originY: number): Promise<{ 
     comp.setBoundVariable("paddingRight", num("spacing/10"));
     comp.fills = c.bg ? [boundPaint(scv(maps, c.bg))] : [];
     bindRadius(comp, maps, "radius/6");
-    const label = await makeBoundText("하위 메뉴", 14, state === "Selected" ? "Bold" : "Medium", scv(maps, c.label));
+    const label = await makeBoundText("하위 메뉴", 14, state === "Selected" ? "Bold" : "Regular", scv(maps, c.label));
     label.name = "label";
     comp.appendChild(label);
     label.layoutGrow = 1;
