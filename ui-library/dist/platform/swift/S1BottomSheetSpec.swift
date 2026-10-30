@@ -15,7 +15,7 @@ public enum S1BottomSheetSpec {
             "content": S1Box(gap: 24),
             "header": S1Box(paddingStart: 20, paddingEnd: 20, spaceBetween: true),
             "title": S1Box(foreground: S1Palette.colorTextTitlePrimary, fontSize: 20, fontWeight: 700, lineHeight: 1.3),
-            "close": S1Box(background: S1Palette.colorIconGrayDark, height: 24, width: 24, icon: "close"),
+            "close": S1Box(height: 24, width: 24),
             "body": S1Box()
         ]
         table["single"] = [
@@ -25,7 +25,7 @@ public enum S1BottomSheetSpec {
             "content": S1Box(gap: 24),
             "header": S1Box(paddingStart: 20, paddingEnd: 20, spaceBetween: true),
             "title": S1Box(foreground: S1Palette.colorTextTitlePrimary, fontSize: 20, fontWeight: 700, lineHeight: 1.3),
-            "close": S1Box(background: S1Palette.colorIconGrayDark, height: 24, width: 24, icon: "close"),
+            "close": S1Box(height: 24, width: 24),
             "body": S1Box(),
             "footer": S1Box(paddingStart: 20, paddingEnd: 20, gap: 8)
         ]
@@ -36,7 +36,7 @@ public enum S1BottomSheetSpec {
             "content": S1Box(gap: 24),
             "header": S1Box(paddingStart: 20, paddingEnd: 20, spaceBetween: true),
             "title": S1Box(foreground: S1Palette.colorTextTitlePrimary, fontSize: 20, fontWeight: 700, lineHeight: 1.3),
-            "close": S1Box(background: S1Palette.colorIconGrayDark, height: 24, width: 24, icon: "close"),
+            "close": S1Box(height: 24, width: 24),
             "body": S1Box(),
             "footer": S1Box(paddingStart: 20, paddingEnd: 20, gap: 8)
         ]

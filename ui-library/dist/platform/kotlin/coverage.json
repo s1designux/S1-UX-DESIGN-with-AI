@@ -2417,13 +2417,55 @@
         "body"
       ],
       "unreadPcOnly": 0,
-      "unreadDisplayRules": 3,
+      "unreadDisplayRules": 9,
       "unreadDeclarations": [
         {
           "selector": "[data-s1-component=\"bottom-sheet\"][hidden]",
           "media": null,
           "property": "display",
           "value": "none",
+          "reason": "display-rule"
+        },
+        {
+          "selector": "[data-s1-component=\"bottom-sheet\"] [data-s1-part=\"sheet-close\"]::after",
+          "media": null,
+          "property": "background-color",
+          "value": "var(--color-icon-gray-dark)",
+          "reason": "display-rule"
+        },
+        {
+          "selector": "[data-s1-component=\"bottom-sheet\"] [data-s1-part=\"sheet-close\"]::after",
+          "media": null,
+          "property": "content",
+          "value": "\"\"",
+          "reason": "display-rule"
+        },
+        {
+          "selector": "[data-s1-component=\"bottom-sheet\"] [data-s1-part=\"sheet-close\"]::after",
+          "media": null,
+          "property": "display",
+          "value": "block",
+          "reason": "display-rule"
+        },
+        {
+          "selector": "[data-s1-component=\"bottom-sheet\"] [data-s1-part=\"sheet-close\"]::after",
+          "media": null,
+          "property": "height",
+          "value": "100%",
+          "reason": "display-rule"
+        },
+        {
+          "selector": "[data-s1-component=\"bottom-sheet\"] [data-s1-part=\"sheet-close\"]::after",
+          "media": null,
+          "property": "mask",
+          "value": "url(\"../assets/icons/close.svg\") center / contain no-repeat",
+          "reason": "display-rule"
+        },
+        {
+          "selector": "[data-s1-component=\"bottom-sheet\"] [data-s1-part=\"sheet-close\"]::after",
+          "media": null,
+          "property": "width",
+          "value": "100%",
           "reason": "display-rule"
         },
         {
@@ -3909,7 +3951,7 @@
           "selector": "[data-s1-component=\"time-picker\"] [data-s1-part=\"cell\"]",
           "media": null,
           "property": "font-family",
-          "value": "\"Pretendard\", sans-serif",
+          "value": "\"Pretendard Variable\", \"Pretendard\", sans-serif",
           "reason": "pc-only"
         },
         {
@@ -4084,7 +4126,7 @@
           "selector": "[data-s1-component=\"time-picker\"] [data-s1-part=\"confirm\"]",
           "media": null,
           "property": "font-family",
-          "value": "\"Pretendard\", sans-serif",
+          "value": "\"Pretendard Variable\", \"Pretendard\", sans-serif",
           "reason": "pc-only"
         },
         {
@@ -4445,7 +4487,7 @@
     },
     {
       "component": "data-tag",
-      "combinations": 8,
+      "combinations": 12,
       "parts": [
         "root"
       ],

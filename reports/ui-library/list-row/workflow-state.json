@@ -38,31 +38,26 @@
       }
     }
   },
-  "currentPhase": "3-build",
-  "workflowStatus": "in-progress",
-  "uiLibraryStatus": "draft",
-  "lastCompletedCheckpoint": 2,
-  "nextAction": "ui-library-builder 가 ui-library/src 와 생성 경로를 구현 중. 끝나면 4-verification.",
-  "ownership": {
-    "currentActor": "ui-library-builder",
-    "startedAt": "2026-09-21T00:00:00+09:00",
-    "note": "3-build 구현 중. 상태 파일은 오케스트레이터만 수정한다."
-  },
+  "currentPhase": "complete",
+  "workflowStatus": "complete",
+  "uiLibraryStatus": "approved",
+  "lastCompletedCheckpoint": 6,
+  "nextAction": "완료 — 안내 페이지(Mobile Components › List › List Row)·전달본(HTML/CSS/JS·React·Vue) 반영. Kotlin Compose·Swift·C++ 부품 전달본은 별도 작업.",
   "canonicalInputs": [
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "51685fedf195c44eb6c0c043c465eba13195060ddb6e575bcc6adad618a30206"
+      "sha256": "43b9a91c0f5aca1a4685eba69cf83c6878e6d96be047504d1e93706af082433a"
     },
     {
       "role": "token-values",
       "path": "plugins/figma-vars-installer/src/vars-data.ts",
-      "sha256": "14c5df38e32f154da10e83370004726971c11511f0108b94719a08f109433bc0"
+      "sha256": "cb52040749c66d29ec7f0090788df3b63ebd91214b68be9992df646f68101283"
     },
     {
       "role": "text-styles",
       "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
-      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+      "sha256": "f43fa1c9ce2c1b1ffcc014a5ef57f84493327f62a011735ef3061af12a827da7"
     }
   ],
   "inventory": {
@@ -99,6 +94,51 @@
     "sourceAudit": {
       "observedAt": "2026-09-21",
       "basis": "build-components.ts 빌드 함수 목록·ui-library/dist/components 목록·registry/components 목록 직접 확인(📖 source-reader 판독 포함)"
+    },
+    "verification": {
+      "observedAt": "2026-10-02",
+      "report": "reports/ui-library/list-row/4-verification-F.md",
+      "firstPass": "FAIL 2 (F-1 토글 꺼짐·F-2 개별 설치 깨짐) · HOLD 3 (C-1·C-2·C-3)",
+      "rework": "F-1·F-2·C-2·C-3 반영, 배포본 0.16.3. C-1 은 river 결정 대기",
+      "renders": [
+        "screens/review-pc-light.png",
+        "screens/review-pc-dark.png",
+        "screens/review-mobile-light.png",
+        "screens/review-mobile-dark.png"
+      ],
+      "deltaPass": "2026-10-02 델타 재검증 FAIL 0 · HOLD 1(C-1 river 결정)",
+      "deltaPass2": "2026-10-02 델타 재검증 2(D-6 약관 열기 버튼) PASS — FAIL 0 · HOLD 0"
+    },
+    "riverApproval": {
+      "status": "approved",
+      "date": "2026-10-02",
+      "version": "0.17.0 (list-row 0.4.0)",
+      "scope": "List Row 21칸 + 슬롯 3자리 + 동의 줄 약관 열기 버튼",
+      "quote": "승인할게, 사이트 메뉴랑 전달본에 넣어줘"
+    },
+    "promotion": {
+      "date": "2026-10-02",
+      "distVersion": "0.17.1",
+      "guideScreens": [
+        "screens/guide-pc-light.png",
+        "screens/guide-pc-dark.png",
+        "screens/guide-mobile-390-light.png",
+        "screens/guide-mobile-390-dark.png"
+      ],
+      "deliverables": [
+        "html-css-js",
+        "react",
+        "vue"
+      ],
+      "notIncluded": "kotlin(부품 16종 한정 생성기)·swift·cpp(토큰만)"
+    },
+    "independentVerification": {
+      "verdict": "PASS",
+      "by": "component-verifier",
+      "scenario": "F",
+      "date": "2026-10-02",
+      "report": "reports/ui-library/list-row/4-verification-F.md",
+      "note": "전수 1회(FAIL 2·HOLD 3) → 델타 2회 후 FAIL 0·HOLD 0"
     }
   },
   "artifacts": {
@@ -110,10 +150,15 @@
     "sourceRoot": "ui-library/src",
     "distManifest": "ui-library/dist/manifest.json",
     "reviewPage": "pages/ui-review.html",
-    "guidePage": "pages/components.html",
+    "guidePage": "pages/components.html#list-row",
     "migrationRecord": "registry/governance/ui-library-migration.json",
     "serviceProfile": "reports/pattern-builder/profiles/app-modu/list-row/",
-    "canonReadiness": "reports/ui-library/list-row/2-canon-readiness.md"
+    "canonReadiness": "reports/ui-library/list-row/2-canon-readiness.md",
+    "build": "reports/ui-library/list-row/3-build.md",
+    "reviewPageBuild": "reports/ui-library/list-row/3-build-review-page.md",
+    "verification": "reports/ui-library/list-row/4-verification-F.md",
+    "promotion": "reports/ui-library/list-row/6-promotion.md",
+    "humanReview": "reports/ui-library/list-row/5-human-review.md"
   },
   "decisions": [
     {
@@ -150,11 +195,18 @@
       "by": "river",
       "decision": "공용 목록 줄 높이를 치수 토큰 눈금에 맞추지 않는다 — 여백 토큰과 글 자리로 높이가 잡힌다",
       "quote": "간격을 패딩 토큰으로 적용하면 자연스럽게 전체 하이트가 잡히는거지"
+    },
+    {
+      "id": "D-6",
+      "at": "2026-10-02",
+      "by": "river",
+      "decision": "동의 줄 오른쪽 화살표는 꾸밈이 아니라 약관 열기 버튼으로 분리한다 — 화살표를 눌러도 동의 체크가 켜지지 않는다",
+      "quote": "약관열기 버튼으로 가야함."
     }
   ],
   "handoff": {
     "lastActor": "orchestrator",
-    "updatedAt": "2026-09-21",
-    "summary": "정본 buildListRow 신설(Gate 34 승인)·registry/components/list-row.json 신설 완료. 3-build 를 ui-library-builder 에 넘김."
+    "updatedAt": "2026-10-02",
+    "summary": "river 승인 → approved. 안내 섹션·메뉴 등재, 전달본 재생성. 완료."
   }
 }

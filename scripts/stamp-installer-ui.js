@@ -113,6 +113,23 @@ function s1TokensCss() {
 }
 
 /**
+ * 디자인 시스템 부품 CSS 를 ui.html 에 심는다(river 결정 2026-10-21 — 검수 색 칸을 DS 부품으로).
+ *   손으로 베끼지 않는다: 웹 배포본 ui-library/dist/components/*.css 를 그대로 가져온다.
+ *   배포본은 ui:build 가 정본에서 다시 만들므로 정본 → 배포본 → 설치기 화면이 따라온다.
+ */
+const DS_COMPONENTS_MARK = "/*{{S1_COMPONENTS}}*/";
+const DS_COMPONENTS = ["radio", "button", "text-button", "data-tag", "divider"];
+function s1ComponentsCss() {
+  return DS_COMPONENTS.map((name) => {
+    const abs = path.join(ROOT, "ui-library/dist/components", name + ".css");
+    if (!fs.existsSync(abs)) throw new Error(`[installer] 웹 배포본에 ${name}.css 가 없습니다 — npm run ui:build 후 다시 지으세요.`);
+    const css = fs.readFileSync(abs, "utf8");
+    if (/url\(/.test(css)) throw new Error(`[installer] ${name}.css 가 바깥 파일(url)을 부릅니다 — 플러그인 화면에 심을 수 없어 중단합니다.`);
+    return `/* ds:${name} */\n${css}`;
+  }).join("\n");
+}
+
+/**
  * 아이콘 라이브러리 PNG 를 data URI 로 심는다 — 손으로 base64 를 붙여 두지 않는다.
  *   화면에서는 mask 로 쓰고 색은 토큰으로 칠한다(예: 주의 아이콘 = color-icon-red).
  */
@@ -131,6 +148,10 @@ async function run() {
     throw new Error(`[installer] ui.html 에 가이드 색 자리 ${TOKENS_MARK} 가 없습니다 — 손으로 지웠는지 확인하세요.`);
   }
   html = html.replace(TOKENS_MARK, s1TokensCss());
+  if (!html.includes(DS_COMPONENTS_MARK)) {
+    throw new Error(`[installer] ui.html 에 부품 자리 ${DS_COMPONENTS_MARK} 가 없습니다 — 손으로 지웠는지 확인하세요.`);
+  }
+  html = html.replace(DS_COMPONENTS_MARK, s1ComponentsCss());
   // 빌드 시각은 화면에서 뺐다(river 지시 2026-09-18) — 검수 화면은 작업자용이라 우리 쪽 시각이 필요 없다.
   // 로그에는 그대로 남기므로 배포본이 언제 구워졌는지는 여기서 확인한다.
   html = replaceAll(html, {

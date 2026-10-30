@@ -1,8 +1,8 @@
 {
   "id": "textarea",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "status": "approved",
-  "canonicalFingerprint": "10f9384cabeb960c182b0fe2216f0ebbc9704e7a9006a9859927d07f5a124e56",
+  "canonicalFingerprint": "3414cf4b12485787412bfbd013348f770cab7cca4b1aabee20b8bd86cc73ecde",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -95,8 +95,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [

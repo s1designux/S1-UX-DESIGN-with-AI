@@ -150,7 +150,7 @@ export function parseSelector(selector) {
 
 const PSEUDO_CLASSES = new Set([
   "hover", "active", "focus", "focus-within", "focus-visible",
-  "disabled", "checked", "not", "is", "has", "first-child", "last-child"
+  "disabled", "checked", "not", "is", "where", "has", "first-child", "last-child", "empty"
 ]);
 const PSEUDO_ELEMENTS = new Set(["before", "after", "placeholder"]);
 
@@ -270,13 +270,22 @@ function matchesPseudoClass(node, pseudo, options) {
     case "hover": case "active": case "focus": case "focus-within":
     case "focus-visible": case "disabled": case "checked":
       return node.states.has(pseudo.name);
+    /* :empty — 자식도 글자도 없는 요소. 모델 요소는 글자를 들고 있지 않으므로 검사 쪽이
+       "empty" 상태로 직접 알려 준다(list-row 의 thumbnail·lead·trail 이 쓴다). */
+    case "empty":
+      return node.states.has("empty");
+    /* positional — 반복 목록의 틀 요소는 실제 순번이 아니라 쓰는 쪽이 정한 "처음/마지막" 으로 묻는다
+       (react-native-model.mjs 가 항목이 몇 번째인지에 따라 달라지는 표를 만들 때 쓴다). */
     case "first-child":
+      if (node.positional) return node.positional.first;
       return node.parent ? node.parent.children[0] === node : true;
     case "last-child":
+      if (node.positional) return node.positional.last;
       return node.parent ? node.parent.children[node.parent.children.length - 1] === node : true;
     case "not":
       return splitTopLevel(pseudo.args, ",").every((one) => !matchesRelative(node, one.trim(), options));
     case "is":
+    case "where":   // :where 는 :is 와 같게 맞춘다(명시도만 0 — specificity 참고)
       return splitTopLevel(pseudo.args, ",").some((one) => matchesRelative(node, one.trim(), options));
     case "has":
       return splitTopLevel(pseudo.args, ",").some((one) => matchesHas(node, one.trim(), options));
@@ -357,6 +366,7 @@ export function specificity(sequence) {
   for (const { compound } of sequence) {
     b += compound.attributes.length;
     for (const pseudo of compound.pseudoClasses) {
+      if (pseudo.name === "where") continue;   // :where() 는 명시도에 더하지 않는다
       if (pseudo.name === "not" || pseudo.name === "is" || pseudo.name === "has") {
         const inner = splitTopLevel(pseudo.args, ",").map((one) => specificity(parseSelector(one.replace(/^\s*\+/, "").trim())));
         const best = inner.sort((x, y) => y[0] - x[0] || y[1] - x[1])[0] ?? [0, 0];
@@ -378,6 +388,25 @@ export function specificity(sequence) {
  * 소비된 규칙은 usage 집합에 기록해, 아무도 쓰지 않은 선언을 나중에 드러낸다.
  */
 export function computeStyle(node, rules, { pseudoElement = null, mediaActive = () => true, usage = null } = {}) {
+  const winners = computeWinners(node, rules, { pseudoElement, mediaActive, usage });
+  const style = {};
+  for (const [property, entry] of winners) style[property] = entry.value;
+  return style;
+}
+
+/** 캐스케이드 승자를 **순위와 함께** 돌려준다 — [{ property, value, rank }] 를 순위 오름차순으로.
+ *  shorthand(padding)와 longhand(padding-inline)가 함께 이긴 경우 어느 쪽이 나중인지 알아야
+ *  값을 풀 수 있다. computeStyle 은 속성 이름별 값만 주므로 이 순서를 잃는다. */
+export function computeStyleRanked(node, rules, options = {}) {
+  const winners = computeWinners(node, rules, options);
+  return [...winners].map(([property, entry]) => ({ property, value: entry.value, rank: entry.rank }))
+    .sort((a, b) => {
+      for (let i = 0; i < a.rank.length; i += 1) if (a.rank[i] !== b.rank[i]) return a.rank[i] - b.rank[i];
+      return 0;
+    });
+}
+
+function computeWinners(node, rules, { pseudoElement = null, mediaActive = () => true, usage = null } = {}) {
   const winners = new Map();
   for (const rule of rules) {
     if (rule.media && !mediaActive(rule.media)) continue;
@@ -398,9 +427,7 @@ export function computeStyle(node, rules, { pseudoElement = null, mediaActive = 
       }
     }
   }
-  const style = {};
-  for (const [property, entry] of winners) style[property] = entry.value;
-  return style;
+  return winners;
 }
 
 function outranks(rank, previous) {

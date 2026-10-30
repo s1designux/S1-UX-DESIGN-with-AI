@@ -1,8 +1,8 @@
 {
   "id": "chip",
-  "version": "0.2.2",
+  "version": "0.4.0",
   "status": "approved",
-  "canonicalFingerprint": "3574b18f80aaed407cf6a057fbba276e7b9ceb9627008ba5b69a613eb6f75b04",
+  "canonicalFingerprint": "fb526cdc4dd78be9d50610c4048b5b6fcda2fdc5b922aa5bdcc34cbd4c8a202e",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -125,8 +125,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [
@@ -169,7 +169,34 @@
   "jsRequired": true,
   "javascript": {
     "runtime": "components/chip.js",
-    "reason": "registry 가 선언한 aria-pressed 선택 상태 전환을 런타임이 담당한다."
+    "reason": "registry 가 선언한 aria-pressed 선택 상태 전환을 런타임이 담당한다. 칩을 감싼 요소에 data-s1-select=\"single\" 을 달면 부품이 알아서 하나만 켠다(river 결정 2026-10-13 「전부 부품이 알아서」).",
+    "events": [
+      "s1:chip:beforechange",
+      "s1:chip:change"
+    ],
+    "eventDetail": {
+      "beforechange": "{ selected(다음 값), value, group } — 취소 가능(preventDefault 하면 모양이 그대로)",
+      "change": "{ selected, value, group }"
+    },
+    "methods": [
+      "set(next)",
+      "setSelected(next)",
+      "selected"
+    ],
+    "lifecycle": [
+      "init(root)",
+      "destroy(root)"
+    ],
+    "controlMode": "uncontrolled",
+    "selectable": true,
+    "attributes": {
+      "data-s1-select": "칩을 감싼 요소에 single 을 달면 하나만 켠다(켜진 칩을 다시 눌러도 꺼지지 않는다). 없으면 칩마다 따로 켜고 끈다",
+      "data-value": "칩의 값(detail.value). 없으면 글자"
+    },
+    "groupHelpers": [
+      "getGroupValue(묶음)",
+      "setGroupValue(묶음, 값)"
+    ]
   },
-  "sourceFingerprint": "eda60b714328db2019291a8ce0e71820a831234635332f73d30559d0dc1ce94b"
+  "sourceFingerprint": "0442ba9e7a4059c8f6580a94f629ca235cdf142de77e7e279f3b6197162729b2"
 }

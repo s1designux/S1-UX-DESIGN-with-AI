@@ -3,12 +3,13 @@
   "category": "uncategorized",
   "label": "짧은 승인어는 근거로 못 쓴다",
   "count": 1,
-  "promotionStatus": "watching",
+  "promotionStatus": "promoted",
   "occurrences": [
     {
       "date": "2026-09-22",
       "summary": "Gate 34 승인 인용이 8자 이상을 요구해 'A로 넣어줘'·'좋아'·'그렇게 해' 같은 가장 명확한 승인어를 근거로 쓸 수 없다 — 우회로 reason 에 적지만 그 칸은 검사기가 대조하지 않는다"
     }
   ],
-  "recommendedRule": "짧은 승인 발화도 시각(timestamp)과 함께 검증하는 칸을 두어, 직전 선택지 제시와 짝지어 확인한다"
+  "recommendedRule": "짧은 승인 발화도 시각(timestamp)과 함께 검증하는 칸을 두어, 직전 선택지 제시와 짝지어 확인한다",
+  "promotedRule": "**Gate 34(canon-addition-check.js) 확장 2026-10-19** — 8자 미만 인용은 --prompt(직전 ⭐ 선택지 문장 8자 이상)와 짝지어야 통과: 같은 기록 파일에서 바로 앞 사람 발화 이후 ⭐ 글에 prompt 실재 + 시각 순서 + 사람 발화 전체가 짧은 한마디(≤40자). 장문 인용 경로(origin.kind=human 실재)는 그대로. 원장에 prompt·promptAt 이 남는다. 적대 6종 확인."
 }

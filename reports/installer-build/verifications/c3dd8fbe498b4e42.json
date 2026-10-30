@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:c3dd8fbe498b4e42908a4427bfe634726fe9ae6448a5947e3a8e00781e7af69a",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-10-14T00:45:04.050Z",
+  "notes": "main(0.24.0 데이터 태그 Gray) 합치기 델타: buildDataTag 색 축 Gray·solid label 토큰 변경만 섞임, setLightMode(COMPONENT 건너뜀) 경로라 모드 고정 변경과 충돌 없음. 문자열판 호출 0건 유지, prime·repin·failed 노출 배선 유지. 모의 실행 모드 실패 0."
+}

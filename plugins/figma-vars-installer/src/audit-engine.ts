@@ -185,6 +185,9 @@ type Suggestion = {
   //   2=어긋남(아이콘에 label/text 토큰). 아이콘 자리에 글자색 토큰이 먼저 서던 것을 막는다
   //   (river 지시 2026-09-21: "아이콘이라고 인지되는 것들은 icon 컬러에서 고르게").
   roleFit?: 0 | 1 | 2;
+  // 원본 부품의 **같은 자리**(인스턴스가 본뜬 메인 컴포넌트 속 같은 레이어)에 걸린 토큰인가.
+  //   라이브러리가 그 자리에 쓴다고 정한 토큰이라 가장 강한 근거다(river 결정 2026-10-19).
+  slot?: boolean;
 };
 
 /** 이 도형이 무엇인지 **모양·크기·글자로 읽은** 추정. 그림을 보고 판단하는 것이 아니라
@@ -214,6 +217,11 @@ type Issue = {
   // 물어보지 않고 바로 걸어도 되는 후보(번호)와 그 근거 문구. 아이콘은 여기서 거의 다 채워진다.
   autoPick?: number;
   autoWhy?: string;
+  // 원본 부품의 같은 자리에 걸린 토큰 이름(소문자)과, 그 토큰 색이 지금 칠해진 색과 같은지(거의 같은지).
+  //   같으면 그 토큰 하나만 보여 주고 바로 건다. 다르면 디자이너가 일부러 바꾼 색일 수 있어 맨 앞에만 둔다.
+  slotToken?: string;
+  slotMatch?: boolean;
+  slotConflict?: boolean;           // 묶인 잎들의 원본 자리 토큰이 서로 다름 — 자동 선택하지 않는다
 };
 
 type ChecklistItemResult = {
@@ -791,10 +799,28 @@ function partTokenScopes(setName: string): string[][] {
   return out;
 }
 
-/** 부품 세트 이름이 쓰는 토큰 카테고리 — 자기 것 먼저, 물려받은 것 다음(칩 순서·이름 조각용). */
+/** 부품 세트 이름이 **직접** 바인딩한 토큰(자식 부품에서 물려받은 것 제외). 모르는 부품이면 빈 배열. */
+function partOwnTokens(setName: string): string[] {
+  const direct = PART_TOKENS[refNameKey(setName)];
+  if (direct) return direct.own.slice();
+  const out: string[] = [];
+  const rows = LEGACY_INDEX[normalizeName(setName)] || [];
+  for (const row of rows) for (const canon of row.canonSets || []) {
+    const pt = PART_TOKENS[refNameKey(canon)];
+    if (pt) for (const t of pt.own) if (out.indexOf(t) < 0) out.push(t);
+  }
+  return out;
+}
+
+/** 부품 세트 이름이 쓰는 토큰 카테고리(칩 근거·이름 조각용) — **자기 것만** 본다.
+ *  자식 부품에서 물려받은 토큰(Navigation 안의 Button 색 등)은 이 자리의 근거가 아니다 — 그 자식 부품 안에 있는
+ *  노드라면 자식 인스턴스가 조상 체인에 있어 그쪽에서 근거가 선다(river 지시 2026-10-19: 칩이 너무 많다).
+ *  자기 것이 하나도 없는 부품(전부 물려받는 껍데기)만 물려받은 것까지 쓴다. */
 function partTokenCategories(setName: string): string[] {
   const out: string[] = [];
-  for (const scope of partTokenScopes(setName)) {
+  const own = partOwnTokens(setName);
+  const scopes = own.length ? [own] : partTokenScopes(setName);
+  for (const scope of scopes) {
     for (const t of scope) {
       const cat = categoryOf(t);
       if (out.indexOf(cat) < 0) out.push(cat);
@@ -888,6 +914,118 @@ async function getComponentContext(node: SceneNode): Promise<PartContext> {
     cur = cur.parent;
   }
   return { segs: out, scopes };
+}
+
+// 한 번의 검사 동안 인스턴스별 메인 컴포넌트를 기억한다.
+let mainCompCache: Map<string, ComponentNode | null> = new Map();
+
+async function mainOf(inst: InstanceNode): Promise<ComponentNode | null> {
+  let main = mainCompCache.get(inst.id);
+  if (main === undefined) {
+    try { main = await inst.getMainComponentAsync(); } catch (e) { main = null; }
+    mainCompCache.set(inst.id, main);
+  }
+  return main;
+}
+
+/** 원본 부품의 **같은 자리**에 걸린 토큰 이름(소문자)을 읽는다 — 못 읽으면 null.
+ *  인스턴스 속 레이어는 메인 컴포넌트의 같은 레이어를 본뜬 것이다. 그 레이어의 같은 칠(선)에 걸린 변수가
+ *  «라이브러리가 이 자리에 쓰라고 정한 토큰»이다. 바깥 부품부터 본다 — 바깥 부품이 안쪽 부품 색을 바꿔 둔
+ *  경우(Button 안 아이콘을 라벨색으로) 그 값이 바깥 메인에만 남아 있기 때문이다. 바깥 메인에서 자리가 안
+ *  맞으면(화면에서 안쪽 부품을 바꿔 끼움 등) 한 겹씩 안으로 들어간다.
+ *  라이브러리 부품(정본·레거시 표·라이브러리 연결)만 근거로 쓴다 — 직접 만든 컴포넌트는 근거가 아니다. */
+async function slotTokenOf(node: SceneNode, prop: "fills" | "strokes", paintIndex: number): Promise<string | null> {
+  const chain: BaseNode[] = [];   // 가까운 것부터
+  if (node.type === "INSTANCE") chain.push(node);
+  let cur: BaseNode | null = node.parent;
+  while (cur && cur.id !== figma.currentPage.id) {
+    if (cur.type === "INSTANCE") chain.push(cur);
+    cur = cur.parent;
+  }
+  for (let k = chain.length - 1; k >= 0; k--) {
+    const inst = chain[k] as InstanceNode;
+    const pc = await partSegmentsOf(inst);
+    if (pc.segs.length === 0 && pc.scopes.length === 0) continue;   // 라이브러리 부품이 아니다
+    // 인스턴스에서 노드까지의 자식 순번 길
+    const path: { idx: number; type: string; screen: BaseNode }[] = [];
+    let n: BaseNode = node;
+    let ok = true;
+    while (n.id !== inst.id) {
+      const parent = n.parent as (BaseNode & ChildrenMixin) | null;
+      if (!parent || !("children" in parent)) { ok = false; break; }
+      path.unshift({ idx: parent.children.indexOf(n as SceneNode), type: n.type, screen: n });
+      n = parent;
+    }
+    if (!ok) continue;
+    const main = await mainOf(inst);
+    if (!main) continue;
+    let m: BaseNode = main;
+    for (const step of path) {
+      const kids = (m as any).children as readonly SceneNode[] | undefined;
+      const next = kids && step.idx >= 0 ? kids[step.idx] : undefined;
+      if (!next || next.type !== step.type) { ok = false; break; }
+      // 길 중간의 부품은 **같은 부품·같은 변형**이어야 같은 자리다 — 화면에서 다른 부품으로 바꿔 끼웠거나
+      //   변형(선택됨 등)만 바꿨으면 바깥 메인의 그 자리 색은 이 노드의 답이 아니다(🤖 component-verifier 적발 2026-10-19).
+      if (next.type === "INSTANCE") {
+        const a = await mainOf(step.screen as InstanceNode);
+        const b = await mainOf(next as InstanceNode);
+        if (!a || !b || a.id !== b.id) { ok = false; break; }
+      }
+      m = next;
+    }
+    if (!ok) continue;
+    const paints = (m as any)[prop];
+    if (!Array.isArray(paints)) continue;
+    const p = paints[paintIndex];
+    if (!p || p.type !== "SOLID") continue;
+    const bound = p.boundVariables && p.boundVariables.color;
+    if (!bound || !bound.id) continue;
+    let v: Variable | null = null;
+    try { v = await figma.variables.getVariableByIdAsync(bound.id); } catch (e) { v = null; }
+    if (v && v.name) return v.name.toLowerCase();
+  }
+  return null;
+}
+
+/** 원본 자리 토큰을 후보 맨 앞에 세운다. V2 정본 토큰이 아니면 아무것도 하지 않는다. 결과: 색이 맞는가. */
+function promoteSlotSuggestion(
+  suggestions: Suggestion[],
+  slotName: string,
+  v2All: V2Var[],
+  hex: string,
+  modeName?: string
+): { applied: boolean; match: boolean } {
+  let idx = suggestions.findIndex((s) => s.variableName.toLowerCase() === slotName && s.collectionName === SEMANTIC_COLOR_COLLECTION);
+  let sug: Suggestion;
+  if (idx >= 0) {
+    sug = suggestions[idx];
+    suggestions.splice(idx, 1);
+  } else {
+    const v = v2All.find((x) => x.collectionName === SEMANTIC_COLOR_COLLECTION && x.name.toLowerCase() === slotName);
+    if (!v) return { applied: false, match: false };
+    const vh = (modeName && v.hexByModeName && v.hexByModeName[modeName]) || v.fallbackHex || "";
+    const d = vh ? hexDistance(hex, vh) : 9999;
+    sug = {
+      variableId: v.id,
+      variableName: v.name,
+      collectionName: v.collectionName,
+      confidence: "high",
+      exact: d === 0,
+      dist: d,
+      state: stateOf(v.name),
+      matchType: "role+component",
+      category: categoryOf(v.name),
+      roleFit: 0,
+    };
+  }
+  sug.slot = true;
+  sug.matchType = "role+component";
+  sug.confidence = "high";
+  suggestions.unshift(sug);
+  // 역할이 어긋나는 원본 자리(면 자리에 글자색 토큰 등)는 맨 앞에만 두고 바로 걸지 않는다 —
+  //   역할 어긋난 토큰은 자동으로 걸지 않는다는 규칙(river 2026-09-21)이 먼저다.
+  const match = sug.roleFit !== 2 && (sug.exact === true || (typeof sug.dist === "number" && sug.dist <= NEAR_SAME));
+  return { applied: true, match };
 }
 
 // 노드 종류와 paint 속성, 외부 변수 이름으로부터 "역할(role)" segment 결정
@@ -1222,6 +1360,7 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?:
 
   const issues: Issue[] = [];
   const groupedIssues = new Map<string, Issue>();
+  const slotSeen = new Map<string, Set<string>>();   // 카드마다 묶인 잎들이 읽은 원본 자리 토큰("" = 못 읽음)
   let issueCounter = 0;
 
   const pushGroupedIssue = (leaf: SceneNode, issue: Omit<Issue, "id" | "nodeId" | "nodeName" | "targets">) => {
@@ -1230,6 +1369,18 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?:
     const target = { nodeId: leaf.id, property: issue.property, paintIndex: issue.paintIndex };
     const existing = groupedIssues.get(key);
     if (existing) {
+      // 한 카드로 묶인 잎들의 원본 자리가 서로 다르면(버튼 라벨 = label 색 · 글리프 = icon 색) 원본 자리를 근거로 쓰지 않는다 —
+      //   적용은 묶인 잎 전부에 같은 토큰을 걸기 때문이다(🤖 component-verifier 적발 2026-10-19).
+      //   서로 다른 원본 자리가 둘 이상 읽혔으면 «이 잎들은 다른 토큰을 쓴다»는 확실한 신호라 자동 선택도 하지 않는다.
+      const seen = slotSeen.get(key) as Set<string>;
+      seen.add(issue.slotToken || "");
+      const readSlots = Array.from(seen).filter(Boolean);
+      if (readSlots.length > 1) existing.slotConflict = true;
+      if (seen.size > 1 && existing.slotToken) {
+        existing.slotToken = undefined;
+        existing.slotMatch = undefined;
+        for (const sg of existing.suggestions) if (sg.slot) sg.slot = undefined;
+      }
       if (!existing.targets) existing.targets = [];
       if (!existing.targets.some((item) => item.nodeId === target.nodeId && item.property === target.property && item.paintIndex === target.paintIndex)) {
         existing.targets.push(target);
@@ -1244,10 +1395,12 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?:
       targets: [target],
     };
     groupedIssues.set(key, created);
+    slotSeen.set(key, new Set([issue.slotToken || ""]));
     issues.push(created);
   };
 
   partSegmentsCache = new Map();
+  mainCompCache = new Map();
   for (const n of allNodes) {
     if (isDummyChromePart(n)) continue;   // 더미 크롬(상태바·내비바/키보드·웹 탭바)은 검수 대상이 아니다
     const partCtx = await getComponentContext(n);
@@ -1282,6 +1435,10 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?:
         }
         const guess = kind === "shape" || kind === "text" || kind === "icon" ? guessPartKind(n) : null;
         const suggestions = pickSuggestions(hex, byHex, v2, prop, kind, ctx, externalVarName, guess, modeName, partBound);
+        // ① 원본 부품의 같은 자리에 걸린 토큰 — 찾으면 맨 앞에 세운다(가장 강한 근거).
+        const slotName = ctx.length ? await slotTokenOf(n, prop, i) : null;
+        const slot = slotName ? promoteSlotSuggestion(suggestions, slotName, v2, hex, modeName) : { applied: false, match: false };
+        const slotFields = slot.applied ? { slotToken: slotName as string, slotMatch: slot.match } : {};
         // 노드가 어떤 컴포넌트/인스턴스에 속하면 컴포넌트 매칭 탭으로 분류
         // (V2에 해당 컴포넌트 토큰이 정의되어 있는지 여부는 suggestion 점수에만 영향)
         const hasComponentMatch = ctx.length > 0;
@@ -1307,6 +1464,7 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?:
             suggestions,
             offGuide,
             nearestDistance,
+            ...slotFields,
           });
         } else {
           pushGroupedIssue(n, {
@@ -1323,6 +1481,7 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?:
             suggestions,
             offGuide,
             nearestDistance,
+            ...slotFields,
           });
         }
       }
@@ -1331,6 +1490,12 @@ async function audit(rootOverride?: SceneNode | readonly SceneNode[], modeName?:
 
   // 어느 칸을 물어보지 않고 걸 수 있는지 미리 새겨 둔다 — 화면이 그 근거를 그대로 보여 준다.
   for (const issue of issues) {
+    if (issue.slotConflict) continue;
+    if (issue.slotMatch && issue.suggestions[0] && issue.suggestions[0].slot) {
+      issue.autoPick = 0;
+      issue.autoWhy = "원본 부품의 같은 자리 토큰";
+      continue;
+    }
     const icon = iconAutoPick(issue);
     if (icon) {
       issue.autoPick = icon.index;
@@ -1414,7 +1579,7 @@ async function applyTextStyleFix(styleName: string, targetIds: string[]): Promis
   try {
     await figma.loadFontAsync(style.fontName as FontName);
   } catch (e) {
-    return { ok: 0, fail: targetIds.length, reason: "Pretendard 글꼴을 불러오지 못했습니다" };
+    return { ok: 0, fail: targetIds.length, reason: `${TEXT_STYLE_FONT_FAMILY} 글꼴을 불러오지 못했습니다` };
   }
   let ok = 0;
   let fail = 0;
@@ -1981,13 +2146,19 @@ function iconAutoPick(issue: Issue): { index: number; why: string } | null {
 }
 
 function autoPickIndex(issue: Issue): number | null {
+  if (issue.slotConflict) return null;
+  // 원본 부품의 같은 자리 토큰이 색까지 맞으면 그것이 답이다 — 다른 규칙보다 먼저 본다.
+  if (issue.slotMatch && issue.suggestions[0] && issue.suggestions[0].slot) return 0;
   // 아이콘은 아이콘색으로 바로 건다 — 다른 규칙보다 먼저 본다.
   const icon = iconAutoPick(issue);
   if (icon) return icon.index;
   // 역할이 어긋난 토큰(아이콘 자리의 label 토큰 등)은 색이 같아도 자동으로 걸지 않는다.
-  if (issue.suggestions.length > 0 && issue.suggestions[0].roleFit === 2) return null;
+  //   맨 앞이 역할 어긋난 «원본 자리» 후보면 그 다음 후보로 판정한다 — 원본 자리를 앞에 세웠다고 예전에
+  //   자동으로 걸리던 칸이 막히지 않게(🤖 component-verifier 적발 2026-10-19).
+  const lead = issue.suggestions.find((s) => !(s.slot && s.roleFit === 2));
+  if (lead && lead.roleFit === 2) return null;
   // 종전 규칙 — 후보가 아예 하나뿐이고 확신도가 높으면 그대로.
-  if (issue.suggestions.length === 1 && issue.suggestions[0].confidence === "high") return 0;
+  if (issue.suggestions.length === 1 && issue.suggestions[0].confidence === "high" && issue.suggestions[0].roleFit !== 2) return 0;
 
   // «부품 안»은 부품 이름이 실제 후보 카테고리와 겹칠 때만(pickSuggestions·화면과 같은 정의).
   const ctx = (issue.componentContext || []).filter((c) => issue.suggestions.some((s) => s.category === c));
@@ -2081,24 +2252,31 @@ async function setVariablesMode(mode: "light" | "dark" | "clear"): Promise<{ cou
     // 선택 노드와 모든 자손 노드에 있는 모든 컬렉션의 explicit mode 제거
     let cleared = 0;
     let skipped = 0;
+    // id 문자열판 clearExplicitVariableModeForCollection(cid) 은 dynamic-page 에서 예외를 던진다 —
+    //   컬렉션 **개체**로 푼다(build-components.ts pinMode 주석 · 2026-10-13).
+    const pinned: { n: SceneNode; cid: string }[] = [];
     const visit = (n: SceneNode) => {
       const modes = (n as any).explicitVariableModes as { [collectionId: string]: string } | undefined;
-      if (modes) {
-        const collectionIds = Object.keys(modes);
-        for (const cid of collectionIds) {
-          try {
-            (n as any).clearExplicitVariableModeForCollection(cid);
-            cleared++;
-          } catch (e) {
-            skipped++;
-          }
-        }
-      }
+      if (modes) for (const cid of Object.keys(modes)) pinned.push({ n, cid });
       if ("children" in n) {
         for (const c of (n as any).children) visit(c as SceneNode);
       }
     };
     for (const root of sel) visit(root);
+    const colls: Record<string, VariableCollection | null> = {};
+    for (const { n, cid } of pinned) {
+      if (!(cid in colls)) {
+        try { colls[cid] = await figma.variables.getVariableCollectionByIdAsync(cid); } catch (e) { colls[cid] = null; }
+      }
+      const coll = colls[cid];
+      if (!coll) { skipped++; continue; }
+      try {
+        (n as any).clearExplicitVariableModeForCollection(coll);
+        cleared++;
+      } catch (e) {
+        skipped++;
+      }
+    }
     if (cleared === 0 && skipped === 0) {
       return { count: 0, skipped: 0, cleared: 0, message: "초기화할 모드 override 없음" };
     }
@@ -2121,7 +2299,7 @@ async function setVariablesMode(mode: "light" | "dark" | "clear"): Promise<{ cou
   let skipped = 0;
   for (const node of sel) {
     try {
-      (node as any).setExplicitVariableModeForCollection(semantic.id, found.modeId);
+      (node as any).setExplicitVariableModeForCollection(semantic, found.modeId);
       count++;
     } catch (e) {
       skipped++;
@@ -3727,13 +3905,13 @@ function captureLabels(inst: InstanceNode): CapturedLabels {
 const LABEL_SIDE_PARTS = ["checkbox", "radio", "toggle"];
 const LABEL_FORM_PARTS = ["input", "selectbox", "textarea", "searchinput"];
 // 라벨 글꼴 — 정본 글꼴(Pretendard)로 쓰고, 크기·굵기가 같은 정본 텍스트 스타일이 있으면 그것을 붙인다(하드룰 H3).
-//   레거시의 'Pretendard Variable' 은 같은 서체의 다른 배포본이라 Pretendard 로 읽는다.
+//   정본 글꼴은 'Pretendard Variable'(2026-10-02 river 결정) — 레거시의 일반 'Pretendard' 는 같은 서체라 같은 굵기로 옮긴다.
 async function labelTextStyle(lab: CapturedLabel): Promise<{ font: FontName; styleId: string | null }> {
   const style = lab.fontName && lab.fontName.style ? lab.fontName.style : "Regular";
-  const font: FontName = { family: "Pretendard", style };
+  const font: FontName = { family: TEXT_STYLE_FONT_FAMILY, style };
   try {
     const styles = await figma.getLocalTextStylesAsync();
-    const hit = styles.filter((st) => st.fontName.family === "Pretendard" && st.fontName.style === style && Math.abs(st.fontSize - lab.fontSize) < 0.01);
+    const hit = styles.filter((st) => st.fontName.family === TEXT_STYLE_FONT_FAMILY && st.fontName.style === style && Math.abs(st.fontSize - lab.fontSize) < 0.01);
     const pick = hit.filter((st) => /^body\//i.test(st.name))[0] || hit[0];
     if (pick) return { font: pick.fontName, styleId: pick.id };
   } catch (e) { /* */ }
@@ -3845,7 +4023,7 @@ async function fitInstanceToMode(
     if (pinned === wantModeId) continue;
     if (pinned) {
       try {
-        (node as any).clearExplicitVariableModeForCollection(semantic.id);
+        (node as any).clearExplicitVariableModeForCollection(semantic);
         changed++;
       } catch (e) { /* */ }
     }
@@ -3860,7 +4038,7 @@ async function fitInstanceToMode(
     }
     if (resolved !== wantModeId) {
       try {
-        (node as any).setExplicitVariableModeForCollection(semantic.id, wantModeId);
+        (node as any).setExplicitVariableModeForCollection(semantic, wantModeId);
         changed++;
       } catch (e) { /* */ }
     }

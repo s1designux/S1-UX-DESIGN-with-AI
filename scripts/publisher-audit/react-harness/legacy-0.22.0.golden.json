@@ -1,0 +1,280 @@
+{
+  "_meta": {
+    "note": "0.22.0 묶음(zip-0.22.0.zip)을 같은 시험대에서 돌려 얻은 실측값 — 새 버전이 옛 코드를 깨지 않는지 견주는 기준. node scripts/publisher-audit/react.mjs --zip <0.22.0 zip> --legacy-record 로 다시 만든다.",
+    "recordedAt": "2026-10-13"
+  },
+  "facts": {
+    "modal-parts-label-pc": [
+      "modal |  | ,,,,,,,,,,, | 숨김",
+      "overlay |  | ,,,,,,,,,,,",
+      "panel |  | ,,,,,,,,,,,",
+      "content |  | ,,,,,,,,,,,",
+      "header |  | ,,,,,,,,,,,",
+      "title | T | ,,,,,,,,,,,",
+      "close |  | ,,,,,,,,,,,",
+      "body |  | ,,,,,,,,,,,",
+      "message | M | ,,,,,,,,,,,",
+      "footer |  | ,,,,,,,,,,,",
+      "button |  | ,,,,,,,,,,,",
+      "label | 예 | ,,,,,,,,,,,",
+      "button |  | ,,,,,,,,,,,",
+      "label | 예 | ,,,,,,,,,,,"
+    ],
+    "modal-parts-label-mobile": [
+      "modal |  | ,,,,,,,,,,, | 숨김",
+      "overlay |  | ,,,,,,,,,,,",
+      "panel |  | ,,,,,,,,,,,",
+      "content |  | ,,,,,,,,,,,",
+      "header |  | ,,,,,,,,,,,",
+      "title | 자동 로그인 설정 | ,,,,,,,,,,,",
+      "body |  | ,,,,,,,,,,,",
+      "message | 로그인되었어요. 다음부터 자동으로 로그인할까요? | ,,,,,,,,,,,",
+      "footer |  | ,,,,,,,,,,,",
+      "button |  | ,,,,,,,,,,,",
+      "label | 닫기 | ,,,,,,,,,,,",
+      "button |  | ,,,,,,,,,,,",
+      "label | 닫기 | ,,,,,,,,,,,"
+    ],
+    "modal-parts-title-message": [
+      "modal |  | ,,,,,,,,,,, | 숨김",
+      "overlay |  | ,,,,,,,,,,,",
+      "panel |  | ,,,,,,,,,,,",
+      "content |  | ,,,,,,,,,,,",
+      "header |  | ,,,,,,,,,,,",
+      "title | 알림 화면으로 이동 | ,,,,,,,,,,,",
+      "body |  | ,,,,,,,,,,,",
+      "message | 이동할까요? | ,,,,,,,,,,,",
+      "footer |  | ,,,,,,,,,,,",
+      "button |  | ,,,,,,,,,,,",
+      "label | 아니오 | ,,,,,,,,,,,",
+      "button |  | ,,,,,,,,,,,",
+      "label | 네 | ,,,,,,,,,,,"
+    ],
+    "modal-content-parts-label": [
+      "modal-content |  | ,,,,,,,,,,, | 숨김",
+      "overlay |  | ,,,,,,,,,,,",
+      "panel |  | ,,,,,,,,,,,",
+      "header |  | ,,,,,,,,,,,",
+      "title | 수정 | ,,,,,,,,,,,",
+      "close |  | ,,,,,,,,,,,",
+      "content-area |  | ,,,,,,,,,,,",
+      "content |  | ,,,,,,,,,,,",
+      "content-label | 컨텐츠 영역 | ,,,,,,,,,,,",
+      "footer |  | ,,,,,,,,,,,",
+      "button |  | ,,,,,,,,,,,",
+      "label | 닫기 | ,,,,,,,,,,,",
+      "button |  | ,,,,,,,,,,,",
+      "label | 닫기 | ,,,,,,,,,,,"
+    ],
+    "sheet-parts-label": [
+      "sheet |  | ,,,,,,,,,,,",
+      "sheet-backdrop |  | ,,,,,,,,,,,",
+      "sheet-panel |  | ,,,,,,,,,,,",
+      "sheet-content |  | ,,,,,,,,,,,",
+      "sheet-header |  | ,,,,,,,,,,,",
+      "sheet-title | 정렬 | ,,,,,,,,,,,",
+      "sheet-close |  | ,,,,,,,,,,,",
+      "sheet-body |  | ,,,,,,,,,,,",
+      "bottom-sheet-option |  | ,,,,,default,,,,,,",
+      "label | 완료 | ,,,,,,,,,,,",
+      "bottom-sheet-option |  | ,,,,,selected,,,,,,",
+      "label | 완료 | ,,,,,,,,,,,",
+      "check |  | ,,,,,,,,,,,",
+      "bottom-sheet-option |  | ,,,,,default,,,,,,",
+      "label | 완료 | ,,,,,,,,,,,",
+      "bottom-sheet-option |  | ,,,,,default,,,,,,",
+      "label | 완료 | ,,,,,,,,,,,",
+      "sheet-footer |  | ,,,,,,,,,,,",
+      "button |  | ,,,,,,,,,,,",
+      "label | 완료 | ,,,,,,,,,,,"
+    ],
+    "sheet-parts-title-only": [
+      "sheet |  | ,,,,,,,,,,,",
+      "sheet-backdrop |  | ,,,,,,,,,,,",
+      "sheet-panel |  | ,,,,,,,,,,,",
+      "sheet-content |  | ,,,,,,,,,,,",
+      "sheet-header |  | ,,,,,,,,,,,",
+      "sheet-title | 글자 크기 | ,,,,,,,,,,,",
+      "sheet-close |  | ,,,,,,,,,,,",
+      "sheet-body |  | ,,,,,,,,,,,",
+      "bottom-sheet-option |  | ,,,,,default,,,,,,",
+      "label | 항목 1 | ,,,,,,,,,,,",
+      "bottom-sheet-option |  | ,,,,,selected,,,,,,",
+      "label | 항목 2 | ,,,,,,,,,,,",
+      "check |  | ,,,,,,,,,,,",
+      "bottom-sheet-option |  | ,,,,,default,,,,,,",
+      "label | 항목 3 | ,,,,,,,,,,,",
+      "bottom-sheet-option |  | ,,,,,default,,,,,,",
+      "label | 항목 4 | ,,,,,,,,,,,",
+      "sheet-footer |  | ,,,,,,,,,,,",
+      "button |  | ,,,,,,,,,,,",
+      "label | 적용 | ,,,,,,,,,,,"
+    ],
+    "card-parts-panel": [
+      "expandable-card |  | ,,,,,,,,,,,",
+      "header |  | ,,false,,,,,,,,,",
+      "text |  | ,,,,,,,,,,,",
+      "title | 질문1 | ,,,,,,,,,,,",
+      "subtitle | 부제 | ,,,,,,,,,,,",
+      "body | 본문1 | ,,,,,,,,,,,",
+      "note | 서브타이틀 | ,,,,,,,,,,,",
+      "caption | 서브타이틀 | ,,,,,,,,,,,",
+      "toggle-icon |  | ,,,,,,,,,,,",
+      "panel-wrap |  | ,,,,,,,,,,,",
+      "panel |  | ,,,,,,,,,,,",
+      "title | 질문1 | ,,,,,,,,,,,",
+      "subtitle | 부제 | ,,,,,,,,,,,",
+      "body | 본문1 | ,,,,,,,,,,,",
+      "note | 서브타이틀 | ,,,,,,,,,,,",
+      "caption | 서브타이틀 | ,,,,,,,,,,,"
+    ],
+    "card-parts-note-caption": [
+      "expandable-card |  | ,,,,,,,,,,,",
+      "header |  | ,,false,,,,,,,,,",
+      "text |  | ,,,,,,,,,,,",
+      "title | 타이틀 | ,,,,,,,,,,,",
+      "subtitle | 서브타이틀 | ,,,,,,,,,,,",
+      "body | 서브타이틀 | ,,,,,,,,,,,",
+      "note | 메모 | ,,,,,,,,,,,",
+      "caption | 설명 | ,,,,,,,,,,,",
+      "toggle-icon |  | ,,,,,,,,,,,",
+      "panel-wrap |  | ,,,,,,,,,,,",
+      "panel |  | ,,,,,,,,,,,",
+      "title | 타이틀 | ,,,,,,,,,,,",
+      "subtitle | 서브타이틀 | ,,,,,,,,,,,",
+      "body | 서브타이틀 | ,,,,,,,,,,,",
+      "note | 메모 | ,,,,,,,,,,,",
+      "caption | 설명 | ,,,,,,,,,,,"
+    ],
+    "lnb-parts-item": [
+      "lnb |  | ,,,,,expanded,,,,,,",
+      "head |  | ,,,,,,,,,,,",
+      "collapse |  | ,,,false,,,,,,,,",
+      "collapse-icon |  | ,,,,,,,,,,,",
+      "items |  | ,,,,,,,,,,,",
+      "item | 개요 | ,,,,page,,,it,,,#,공통",
+      "item-icon |  | ,,,,,,,,,,,",
+      "item | 기반 토큰 | ,,,,,,,it,,,#,공통",
+      "item-icon |  | ,,,,,,,,,,,",
+      "item | 컴포넌트 | ,,false,,,,,it,,,,공통",
+      "item-icon |  | ,,,,,,,,,,,",
+      "item-toggle |  | ,,,,,,,,,,,",
+      "subitems |  | ,,,,,,,,,,, | 숨김",
+      "item | PC 컴포넌트 | ,,,,,,,it,,,#,공통",
+      "item | Mobile 컴포넌트 | ,,,,,,,it,,,#,공통",
+      "item | 준비 중 | ,,,,,,,it,,,#,공통",
+      "item-icon |  | ,,,,,,,,,,,"
+    ],
+    "lnb-parts-icon": [
+      "lnb |  | ,,,,,expanded,,,,,,",
+      "head |  | ,,,,,,,,,,,",
+      "collapse |  | ,,,false,,,,,,,,",
+      "collapse-icon |  | ,,,,,,,,,,,",
+      "items |  | ,,,,,,,,,,,",
+      "item | 개요 | ,,,,page,,,,,,#,개요",
+      "item-icon | ★ | ,,,,,,,,,,,",
+      "item | 기반 토큰 | ,,,,,,,,,,#,기반 토큰",
+      "item-icon | ★ | ,,,,,,,,,,,",
+      "item | 컴포넌트 | ,,false,,,,,,,,,컴포넌트",
+      "item-icon | ★ | ,,,,,,,,,,,",
+      "item-toggle | ▾ | ,,,,,,,,,,,",
+      "subitems |  | ,,,,,,,,,,, | 숨김",
+      "item | 하위 | ,,,,,,,,,,#,",
+      "item | 하위 | ,,,,,,,,,,#,",
+      "item | 준비 중 | ,,,,,,,,,,#,준비 중",
+      "item-icon | ★ | ,,,,,,,,,,,"
+    ],
+    "listrow-nav-title-only": [
+      "list-row |  | ,,,,,default,,,,,,",
+      "text |  | ,,,,,,,,,,,",
+      "title | 버전 정보 | ,,,,,,,,,,,",
+      "description | 환경설정 및 계정 관리 | ,,,,,,,,,,,",
+      "trail |  | ,,,,,,,,,,,",
+      "chevron |  | ,,,,,,,,,,,"
+    ],
+    "listrow-nav": [
+      "list-row |  | ,,,,,default,,,,,,",
+      "text |  | ,,,,,,,,,,,",
+      "title | 버전 정보 | ,,,,,,,,,,,",
+      "description | 0.22.0 | ,,,,,,,,,,,",
+      "trail |  | ,,,,,,,,,,,",
+      "chevron |  | ,,,,,,,,,,,"
+    ],
+    "listrow-value-parts": {
+      "title": [
+        "글자 크기"
+      ],
+      "description": [
+        "보통"
+      ],
+      "value": []
+    },
+    "listrow-switch-chevron-toggle": {
+      "texts": [
+        "푸시 알림",
+        "새 출입 기록을 알려 드려요"
+      ],
+      "before": [
+        "false"
+      ],
+      "after": [
+        "true"
+      ],
+      "userClicks": 1
+    },
+    "listrow-switch-chevron-toggle-on": {
+      "before": [
+        "true"
+      ],
+      "after": [
+        "false"
+      ]
+    },
+    "select-parts-value": {
+      "first": "도시 선택",
+      "afterPick": "부산",
+      "afterSet": "직접 지정",
+      "onChange": 1,
+      "picked": "busan"
+    },
+    "dropdown-no-prop": [
+      "최신순|true|0",
+      "인기순|false|-1",
+      "과거순|false|-1"
+    ],
+    "dropdown-legacy-items": [
+      "A|true|a",
+      "B|true|b"
+    ],
+    "gnb-parts-logo": {
+      "menus": [
+        "공지사항",
+        "서비스",
+        "통계"
+      ],
+      "logo": [
+        "S1 관제"
+      ]
+    },
+    "filter-chip-parts": [
+      "filter-chip |  | ,,,,,,,,,,,",
+      "trigger |  | ,,false,,,,,,,,,",
+      "title | 정렬 | ,,,,,,,,,,,",
+      "value | 최신순 | ,,,,,,,,,,,",
+      "icon |  | ,,,,,,,,,,,",
+      "panel |  | ,,,,,,,,,,, | 숨김",
+      "dropdown |  | ,,,,,,,,,,,",
+      "option |  | ,true,,,,,,,,latest,,",
+      "option-label | 최신순 | ,,,,,,,,,,,",
+      "option |  | ,false,,,,,,,,popular,,",
+      "option-label | 인기순 | ,,,,,,,,,,,",
+      "option |  | ,false,,,,,,,,past,,",
+      "option-label | 과거순 | ,,,,,,,,,,,"
+    ],
+    "time-parts-value": {
+      "value": [
+        "09:10"
+      ]
+    }
+  }
+}

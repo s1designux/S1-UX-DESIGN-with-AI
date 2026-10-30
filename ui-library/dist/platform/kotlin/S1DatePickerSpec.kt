@@ -50,7 +50,7 @@ object S1DatePickerSpec {
             "panel" to S1Box(background = S1Palette.colorSurfaceRaised, paddingTop = 20f, paddingBottom = 20f, gap = 32f, maxWidth = 360f, maxHeightVh = 92f, radiusTopStart = 8f, radiusTopEnd = 8f),
             "header" to S1Box(paddingStart = 20f, paddingEnd = 20f, spaceBetween = true),
             "title" to S1Box(foreground = S1Palette.colorTextTitlePrimary, fontSize = 20f, lineHeight = 1.3f, fontWeight = 700),
-            "close" to S1Box(background = S1Palette.colorIconGrayDark, height = 24f, width = 24f, icon = "close"),
+            "close" to S1Box(height = 24f, width = 24f),
             "calendarWrap" to S1Box(paddingStart = 24f, paddingEnd = 24f),
             "footer" to S1Box(paddingStart = 20f, paddingEnd = 20f, gap = 8f),
             "apply" to S1Box()

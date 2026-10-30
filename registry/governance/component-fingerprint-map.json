@@ -50,6 +50,12 @@
       ],
       "why": "buildChip 가 만드는 세트 1개."
     },
+    "ci": {
+      "canonSets": [
+        "CI"
+      ],
+      "why": "buildCI 가 만드는 세트 1개(Brand × Color 6칸). 삼성 이미지 3종은 배포본 assets/images 로 담긴다. river 2026-10-02 「응 맞아, 진행해」로 웹 배포 대상이 됐다(work-id platform-web-3)."
+    },
     "data-tag": {
       "canonSets": [
         "Data Tag"
@@ -92,6 +98,12 @@
       ],
       "why": "buildFilterChip 가 만드는 세트 1개. 패널은 dropdown 부품(manifest coreComponents=dropdown)."
     },
+    "footer": {
+      "canonSets": [
+        "Footer"
+      ],
+      "why": "buildFooter 가 만드는 세트 1개(Platform PC·Mobile). river 2026-10-02 「응 맞아, 진행해」로 웹 배포 대상이 됐다(work-id platform-web-3)."
+    },
     "gnb": {
       "canonSets": [
         "GNB",
@@ -133,6 +145,12 @@
         "Side Nav Sub Item"
       ],
       "why": "buildSideNav 판 세트 + BUILD_DEPENDENCIES: Side Nav→Side Nav Item·Side Nav Sub Item. 메뉴 칸·하위 줄을 담는 별도 배포 부품이 없다(웹 lnb 의 item·subitems 부분이 곧 두 세트다)."
+    },
+    "login-gnb": {
+      "canonSets": [
+        "LoginGNB"
+      ],
+      "why": "buildLoginGNB 가 만드는 단일 세트. 지구본은 아이콘 라이브러리 globe 인스턴스라 별도 배포 부품이 없다. river 2026-10-02 「응 맞아, 진행해」로 웹 배포 대상이 됐다(work-id platform-web-3)."
     },
     "mobile-bottom-nav": {
       "canonSets": [
@@ -230,11 +248,8 @@
     "sets": [
       "StatusBar",
       "NavBar",
-      "CI",
-      "LoginGNB",
-      "WebTabBar",
-      "Footer"
+      "WebTabBar"
     ],
-    "why": "웹으로 배포하지 않는 화면 틀(상태바·주소창·로그인 상단바·웹 탭바·푸터)이라 대응할 배포 부품이 없다. 실제 서비스에서는 OS·브라우저가 그리는 영역이다(river 결정 D5 2026-09-02 계열)."
+    "why": "웹으로 배포하지 않는 화면 틀(상태바·주소창·웹 탭바)이라 대응할 배포 부품이 없다. CI·LoginGNB·Footer 는 2026-10-02 river 지시로 웹 배포 부품이 됐다. 실제 서비스에서는 OS·브라우저가 그리는 영역이다(river 결정 D5 2026-09-02 계열)."
   }
 }

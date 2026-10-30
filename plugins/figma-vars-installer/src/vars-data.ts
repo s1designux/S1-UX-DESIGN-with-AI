@@ -621,7 +621,9 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
 
   // ── line ────────────────────────────────
   "color/line/blue": { light: "blue/400", dark: "blue-dark/300" },
-  "color/line/default": { light: "gray/100", dark: "gray-dark/300" },
+  // 다크는 gray-dark/400 — 300 은 올린 바탕(level-2·3) 위에서 거의 안 보였다
+  // (river 지시 2026-10-02 — "기본선은 gray-dark 400으로 적용해줘").
+  "color/line/default": { light: "gray/100", dark: "gray-dark/400" },
   // 표 위·아래 같은 "강한 구분선". 값은 이미 있던 color/table/border/strong 과 같은 짝이다
   // (river 지시 2026-09-29 — "line의 스트롱은 gray800이야. 테이블 그릴때 상하에 있는 그 라인 말야").
   // 종전 이름 color/line/default 은 같은 지시로 color/line/default 로 개명했다.
@@ -743,13 +745,21 @@ export const SEMANTIC_COLOR: Record<string, SemanticColorEntry> = {
   //   뜻이 정해진 두 색만 쓴다: 파랑 = 승인·확인 / 빨강 = 주의·에러.
   //   채움형은 바탕에 색을 깔고 글자는 흰색, 선형은 바탕 없이 테두리·글자에 색을 쓴다.
   //   (선형 바탕 칸은 두지 않는다 — 비어 있는 것이 기본이다.)
+  // river 승인 2026-10-13 — 회색 추가("회색 컴포넌트만 tag 토큰 구조를 안지키네. 신규 컴포넌트니까 생성하는것도 가능해").
+  //   회색은 채움 글자도 회색이라, 채움 글자를 색깔별로 나눴다(solid/label → solid/label/{blue,red,gray}, river "셋으로 나눠서 진행해").
+  //   파랑·빨강 채움 글자는 그대로 흰색. 회색 값은 river 가 시안에서 고른 것(입력창 테두리 · 캡션 글자 · 3단계 바탕과 같은 단계).
   "color/tag/solid/bg/blue": { light: "blue/400", dark: "blue-dark/300" },
   "color/tag/solid/bg/red": { light: "red/300", dark: "red-dark/350" },
-  "color/tag/solid/label": { light: "base/white", dark: "base/white" },
+  "color/tag/solid/bg/gray": { light: "gray/100", dark: "gray-dark/200" },
+  "color/tag/solid/label/blue": { light: "base/white", dark: "base/white" },
+  "color/tag/solid/label/red": { light: "base/white", dark: "base/white" },
+  "color/tag/solid/label/gray": { light: "gray/500", dark: "gray-dark/800" },
   "color/tag/line/border/blue": { light: "blue/400", dark: "blue-dark/300" },
   "color/tag/line/border/red": { light: "red/300", dark: "red-dark/350" },
+  "color/tag/line/border/gray": { light: "gray/200", dark: "gray-dark/500" },
   "color/tag/line/label/blue": { light: "blue/400", dark: "blue-dark/300" },
   "color/tag/line/label/red": { light: "red/300", dark: "red-dark/350" },
+  "color/tag/line/label/gray": { light: "gray/500", dark: "gray-dark/800" },
 
   // ── text ────────────────────────────────
   "color/text/body/primary": { light: "gray/800", dark: "gray-dark/900" },

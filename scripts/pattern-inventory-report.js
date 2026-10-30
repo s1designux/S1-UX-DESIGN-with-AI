@@ -63,7 +63,7 @@ const html = `<!doctype html>
 <html lang="ko"><head><meta charset="utf-8">
 <title>${esc(service)} 레거시 판독 한눈표</title>
 <style>
- body{font-family:Pretendard,-apple-system,sans-serif;margin:0;padding:32px;background:#fafafa;color:#1a1a1a}
+ body{font-family:Pretendard Variable, Pretendard,-apple-system,sans-serif;margin:0;padding:32px;background:#fafafa;color:#1a1a1a}
  h1{font-size:22px;margin:0 0 4px} p.sub{color:#666;font-size:13px;margin:0 0 28px}
  h2{font-size:16px;margin:32px 0 10px}
  table{border-collapse:collapse;width:100%;background:#fff;font-size:13px}

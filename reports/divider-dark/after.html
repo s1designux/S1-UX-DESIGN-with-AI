@@ -1,0 +1,21 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>구분선 다크 확인</title>
+<link rel="stylesheet" href="../../assets/css/tokens.css"><link rel="stylesheet" href="../../ui-library/dist/s1-ui.css">
+<style>
+body{margin:0;padding:24px;font-family:Pretendard,system-ui,sans-serif;background:#fff}
+.row{display:flex;gap:0}
+.box{width:200px;height:90px;padding:20px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:16px;font-size:12px;color:var(--color-text-secondary)}
+h2{font-size:14px;margin:16px 0 6px;color:#333}
+</style></head><body>
+<h2>라이트 (바탕 0~3)</h2>
+<div class="row" id="light"></div>
+<h2>다크 (바탕 0~3)</h2>
+<div class="row" data-theme="dark" id="dark"></div>
+<script>
+for (const id of ['light','dark']) {
+  const el = document.getElementById(id);
+  for (let i=0;i<4;i++) el.insertAdjacentHTML('beforeend',
+    `<div class="box" style="background:var(--color-bg-level-${i})">바탕 ${i}
+      <div data-s1-component="divider" data-axis="x"></div>
+      <div data-s1-component="divider" data-axis="x" data-weight="strong" data-tone="strong"></div></div>`);
+}
+</script></body></html>

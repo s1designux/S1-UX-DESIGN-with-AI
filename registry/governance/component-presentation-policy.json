@@ -710,11 +710,15 @@
         "weight": [
           "default",
           "strong"
+        ],
+        "tone": [
+          "default",
+          "strong"
         ]
       },
       "statesLayout": "matrix",
       "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id promoted-parts-4, 2026-09-30).",
-      "note": "상태 축이 없는 정적 선이다 — 표는 Axis(행) × Weight(열) 네 칸이다. 정본(buildDivider)은 Weight=Strong 에 색(line/strong)까지 묶으므로 배포본에서 data-weight=\"strong\" + data-tone=\"strong\" 두 속성으로 같은 모습을 만든다. 배포본만 따로 갖는 색·들여쓰기 축(data-tone 단독 · data-inset)은 정본 축이 아니라 표로 세우지 않고 Action 의 실제 쓰임(목록)에서 보인다. 접힘카드는 모바일 전용이라 이 정책 범위 밖(coverage mobileOnly).",
+      "note": "상태 축이 없는 정적 선이다 — 정본(buildDivider)은 Axis(X·Y) × Weight(굵기 1·2) × Tone(색 line/default·line/strong) 여덟 칸이며 배포본도 data-axis·data-weight·data-tone 세 속성으로 같은 여덟 칸을 갖는다. 들여쓰기는 부품 축이 아니라 감싸는 목록의 여백으로 준다(D-15 · 2026-10-19 data-inset 제거). 접힘카드는 모바일 전용이라 이 정책 범위 밖(coverage mobileOnly).",
       "managedBy": "ui-library-guide"
     },
     "data-tag": {
@@ -735,7 +739,8 @@
         ],
         "color": [
           "blue",
-          "red"
+          "red",
+          "gray"
         ]
       },
       "statesLayout": "matrix",
@@ -775,6 +780,87 @@
       "statesLayout": "matrix",
       "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id promoted-parts-4, 2026-10-02 river \"남은 검수 마저 하고 사이트에 올려줘\").",
       "note": "Figma 세트 이름 Side Nav · Side Nav Item · Side Nav Sub Item 을 표 세 개로 그대로 세운다 — 판은 Type×Size(행) × State(열) 여덟 칸, 메뉴 칸은 Mode(행) × State 4종(열) 여덟 칸, 하위 메뉴 줄은 State 3종. 크기(MD 240 · LG 280)는 판 표의 행에 함께 둔다(펼침 폭은 크기 토큰이 없어 결정 대기). Hover 는 검수 전용 data-force-state 로 표시. Action 은 기본·로고 두 벌의 실제 판(접기·하위메뉴 여닫이 동작).",
+      "managedBy": "ui-library-guide"
+    },
+    "footer": {
+      "platform": "pc+mobile",
+      "archetype": "base",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "states": [],
+      "extraAxes": {
+        "platform": [
+          "pc",
+          "mobile"
+        ]
+      },
+      "statesLayout": "row",
+      "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id platform-web-3, 2026-10-02 river \"응 맞아, 진행해\").",
+      "note": "상태 축이 없고 Platform(PC · Mobile) 한 축뿐이다. PC 는 가로(링크·회사 정보·카피라이트 + 로고), Mobile 은 세로(링크 + 가운데 카피라이트). 정본에 hover 가 없다.",
+      "managedBy": "ui-library-guide"
+    },
+    "ci": {
+      "platform": "pc+mobile",
+      "archetype": "base",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "states": [],
+      "extraAxes": {
+        "brand": [
+          "s1",
+          "samsung"
+        ],
+        "color": [
+          "white",
+          "blue",
+          "dark"
+        ]
+      },
+      "statesLayout": "matrix",
+      "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id platform-web-3, 2026-10-02 river \"응 맞아, 진행해\").",
+      "note": "상태 축이 없는 로고다 — 표는 Brand(행) × Color(열) 여섯 칸이다. White 는 밝은 로고라 어두운 바탕 위에서 본다.",
+      "managedBy": "ui-library-guide"
+    },
+    "login-gnb": {
+      "platform": "pc",
+      "archetype": "base",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "states": [],
+      "extraAxes": {},
+      "statesLayout": "row",
+      "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id platform-web-3, 2026-10-02 river \"응 맞아, 진행해\").",
+      "note": "변형·상태 축이 없는 단일 바다. 삼성 로고는 정본에서 제거됐다(2026-06-24).",
+      "managedBy": "ui-library-guide"
+    },
+    "list-row": {
+      "platform": "mobile",
+      "archetype": "current-plus-action",
+      "actionRequired": true,
+      "sizePlacement": "none",
+      "sizes": [],
+      "states": [
+        "default",
+        "pressed",
+        "disabled"
+      ],
+      "extraAxes": {
+        "type": [
+          "nav",
+          "value",
+          "read",
+          "pick",
+          "agree",
+          "switch",
+          "thumb"
+        ]
+      },
+      "statesLayout": "matrix",
+      "changeFromCurrent": "신규 컴포넌트 — ui-library dist 배포본 소비로 신설(work-id list-row, 2026-10-02 river \"승인할게, 사이트 메뉴랑 전달본에 넣어줘\").",
+      "note": "Type(행) × State(열) 21칸 전수 한 표. 모바일 전용이라 Hover 없음, 크기·촘촘함 축 없음. Pressed 는 documented data-state 로 켠 표본. Action 은 일곱 유형을 목록 폭(최대 360)에 쌓은 실제 쓰임(체크·토글 실물). 슬롯 3자리(왼쪽 칸 · 그림 · 오른쪽 칸) 갈아끼운 보기 4줄을 표 아래에 둔다. 동의 줄은 체크 영역과 약관 열기 버튼이 형제(river D-6).",
       "managedBy": "ui-library-guide"
     }
   },

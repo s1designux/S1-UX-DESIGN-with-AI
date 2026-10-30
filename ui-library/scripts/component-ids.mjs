@@ -5,4 +5,4 @@
  */
 // lnb(사이드바 메뉴)는 판 접기 아이콘 ic_패널접기가 V2.2 아이콘 라이브러리에 게시되고(river 2026-09-30) 정본 buildSideNav 3종이 편입돼(커밋 8b385c0f) 함께 담는다.
 // data-tag 는 뱃지 전용 색 7줄을 정본에 넣어(river 승인 2026-09-30) 함께 담는다.
-export const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker", "gnb", "gnb-sub-menu-item", "gnb-sub-menu", "assist-button", "text-button", "modal-content", "bottom-sheet-option", "bottom-sheet", "list-row", "expandable-card", "data-tag", "divider", "lnb"];
+export const componentIds = ["input", "button", "checkbox", "radio", "toggle", "chip", "dropdown", "select", "filter-chip", "tab", "pagination", "textarea", "multi-toggle", "modal", "table", "mobile-bottom-nav", "mobile-header", "time-picker", "date-picker", "gnb", "gnb-sub-menu-item", "gnb-sub-menu", "assist-button", "text-button", "modal-content", "bottom-sheet-option", "bottom-sheet", "list-row", "expandable-card", "data-tag", "divider", "lnb", "footer", "ci", "login-gnb"];

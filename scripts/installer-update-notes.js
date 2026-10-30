@@ -70,11 +70,23 @@ function diffTokens(oldT, newT) {
  * (세트, 이름, 타입) 을 키로 묶어 속성 차이를 본다.
  */
 function diffSpec(oldSpec, newSpec) {
+  /* 같은 (세트, 이름, 타입) 행이 여러 개다 — 변형마다 label 이 하나씩 있다. 마지막 행만 남기면
+     "선택(Bold)은 그대로, 나머지(Regular)만 바뀜" 같은 변경이 가려진다(2026-10-30 Side Nav 굵기).
+     그래서 속성마다 값의 집합을 모아 집합끼리 비교한다. */
   const index = (rows) => {
     const m = new Map();
     for (const r of rows) {
       const p = parseRow(r);
-      m.set([p.owner, p.ident, p.type].join(ROW_SEP), p);
+      const k = [p.owner, p.ident, p.type].join(ROW_SEP);
+      if (!m.has(k)) m.set(k, { owner: p.owner, props: new Map() });
+      const e = m.get(k);
+      for (const [prop, v] of p.props) {
+        if (!e.props.has(prop)) e.props.set(prop, new Set());
+        e.props.get(prop).add(v);
+      }
+    }
+    for (const e of m.values()) {
+      for (const [prop, set] of e.props) e.props.set(prop, [...set].sort().join(ROW_SEP));
     }
     return m;
   };

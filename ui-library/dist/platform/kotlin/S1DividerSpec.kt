@@ -14,25 +14,25 @@ object S1DividerSpec {
             "root" to S1Box(background = S1Palette.colorLineDefault, height = 1f)
         ),
         "x|default|default|text" to mapOf(
-            "root" to S1Box(background = S1Palette.colorLineDefault, height = 1f, marginStart = 20f, marginEnd = 20f)
+            "root" to S1Box(background = S1Palette.colorLineDefault, height = 1f)
         ),
         "x|default|strong|none" to mapOf(
             "root" to S1Box(background = S1Palette.colorLineStrong, height = 1f)
         ),
         "x|default|strong|text" to mapOf(
-            "root" to S1Box(background = S1Palette.colorLineStrong, height = 1f, marginStart = 20f, marginEnd = 20f)
+            "root" to S1Box(background = S1Palette.colorLineStrong, height = 1f)
         ),
         "x|strong|default|none" to mapOf(
             "root" to S1Box(background = S1Palette.colorLineDefault, height = 2f)
         ),
         "x|strong|default|text" to mapOf(
-            "root" to S1Box(background = S1Palette.colorLineDefault, height = 2f, marginStart = 20f, marginEnd = 20f)
+            "root" to S1Box(background = S1Palette.colorLineDefault, height = 2f)
         ),
         "x|strong|strong|none" to mapOf(
             "root" to S1Box(background = S1Palette.colorLineStrong, height = 2f)
         ),
         "x|strong|strong|text" to mapOf(
-            "root" to S1Box(background = S1Palette.colorLineStrong, height = 2f, marginStart = 20f, marginEnd = 20f)
+            "root" to S1Box(background = S1Palette.colorLineStrong, height = 2f)
         ),
         "y|default|default|none" to mapOf(
             "root" to S1Box(background = S1Palette.colorLineDefault, height = 14f, width = 1f)

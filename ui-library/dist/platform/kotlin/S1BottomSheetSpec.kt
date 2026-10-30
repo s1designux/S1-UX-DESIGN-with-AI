@@ -14,7 +14,7 @@ object S1BottomSheetSpec {
             "content" to S1Box(gap = 24f),
             "header" to S1Box(paddingStart = 20f, paddingEnd = 20f, spaceBetween = true),
             "title" to S1Box(foreground = S1Palette.colorTextTitlePrimary, fontSize = 20f, lineHeight = 1.3f, fontWeight = 700),
-            "close" to S1Box(background = S1Palette.colorIconGrayDark, height = 24f, width = 24f, icon = "close"),
+            "close" to S1Box(height = 24f, width = 24f),
             "body" to S1Box()
         ),
         "single" to mapOf(
@@ -24,7 +24,7 @@ object S1BottomSheetSpec {
             "content" to S1Box(gap = 24f),
             "header" to S1Box(paddingStart = 20f, paddingEnd = 20f, spaceBetween = true),
             "title" to S1Box(foreground = S1Palette.colorTextTitlePrimary, fontSize = 20f, lineHeight = 1.3f, fontWeight = 700),
-            "close" to S1Box(background = S1Palette.colorIconGrayDark, height = 24f, width = 24f, icon = "close"),
+            "close" to S1Box(height = 24f, width = 24f),
             "body" to S1Box(),
             "footer" to S1Box(paddingStart = 20f, paddingEnd = 20f, gap = 8f)
         ),
@@ -35,7 +35,7 @@ object S1BottomSheetSpec {
             "content" to S1Box(gap = 24f),
             "header" to S1Box(paddingStart = 20f, paddingEnd = 20f, spaceBetween = true),
             "title" to S1Box(foreground = S1Palette.colorTextTitlePrimary, fontSize = 20f, lineHeight = 1.3f, fontWeight = 700),
-            "close" to S1Box(background = S1Palette.colorIconGrayDark, height = 24f, width = 24f, icon = "close"),
+            "close" to S1Box(height = 24f, width = 24f),
             "body" to S1Box(),
             "footer" to S1Box(paddingStart = 20f, paddingEnd = 20f, gap = 8f)
         )

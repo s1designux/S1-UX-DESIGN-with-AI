@@ -251,7 +251,11 @@ async function runBuild(mod, opts) {
         }
         if (prop === 'setExplicitVariableModeForCollection') {
           return (collectionId, modeId) => {
-            if (collectionId && modeId) state.explicitVariableModes[String(collectionId)] = String(modeId);
+            if (collectionId && modeId) {
+              // 실제 API 는 컬렉션 개체를 받는다 — 키는 그 id(개체가 아니면 받은 값 그대로).
+              const key = typeof collectionId === 'object' && typeof collectionId.id === 'string' ? collectionId.id : String(collectionId);
+              state.explicitVariableModes[key] = String(modeId);
+            }
           };
         }
         // 텍스트 스타일 바인딩 결과를 기록한다. 종전엔 makeStub() 이 삼켜서
@@ -383,9 +387,18 @@ async function runBuild(mod, opts) {
   }
 
   // 세트 소속 역참조: COMPONENT_SET 의 자식(=variant)에 세트 이름을 달아 준다.
+  //   variant 안쪽 자손에도 같은 세트 이름을 달아 준다 — 안 달면 구분선 색처럼 깊은 노드만 바뀐 변경이
+  //   "(세트 밖)"으로 빠져 업데이트 툴팁이 설명할 말이 없다며 멈춘다(2026-10-19 Footer Mobile 구분선 색,
+  //   river 승인 "검사도 함께 고치고 수정한 내용 커밋해줘").
+  const markSet = (node, setName) => {
+    for (const c of node.children || []) {
+      if (!c.parentSet) c.parentSet = setName;
+      markSet(c, setName);
+    }
+  };
   for (const n of NODES) {
     if (n.type !== 'COMPONENT_SET') continue;
-    for (const c of n.children) c.parentSet = n.props.name || '(무명 세트)';
+    markSet(n, n.props.name || '(무명 세트)');
   }
 
   const unknownProps = [...seenProps].filter((p) => !(p in PROP_CLASS)).sort();

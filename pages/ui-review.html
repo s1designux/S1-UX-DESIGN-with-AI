@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>S1 UI Library · 승인 배포본 검수</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <link rel="stylesheet" href="../ui-library/dist/assets/css/tokens.css">
   <link rel="stylesheet" href="../ui-library/dist/assets/css/typography.css">
   <link rel="stylesheet" href="../ui-library/dist/s1-ui.css">
@@ -12,7 +12,7 @@
     /* 검수 페이지의 배치·설명 전용 CSS. 컴포넌트 시각 스타일은 s1-ui.css만 담당한다. */
     :root {
       color-scheme: light;
-      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     body {
@@ -263,6 +263,8 @@
        크기를 지정하지 않는다(내용이 줄어든 만큼 스스로 줄어든다). 상세 사유는 위 JS
        scaledModalContentOverflowSample() 주석. */
     .review-modal-content-zoom { display: inline-block; }
+    /* 크기마다 여는 버튼 1개씩 — 버튼·모달 짝을 한 묶음에 넣어 배선이 parentElement 로 자기 버튼을 찾는다(river 2026-10-12). */
+    .review-modal-content-openers { display: flex; flex-wrap: wrap; gap: var(--spacing-8); }
 
     /* GNB — 배치 전용(컴포넌트 시각 아님). 바는 dist 계약대로 full-width 반응형이라 검수 칸(≈630px)보다
        넓다. 폭 값·배율은 건드리지 않고, 넘치는 만큼만 슬롯 안에서 가로 스크롤한다 —
@@ -283,8 +285,30 @@
        줄은 폭 100% 부품이라 검수 표본만 모바일 목록 폭(360)으로 감싼다 — 이 CSS 는 이 페이지 것이고
        색·크기·간격·높이는 전부 dist(s1-ui.css)가 그린다. */
     [data-component-id="list-row"] .review-matrix { grid-template-columns: 1fr; }
-    [data-component-id="list-row"] .review-grid { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+    [data-component-id="list-row"] .review-grid { grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); }
     .review-list-row-box { max-width: 360px; width: 100%; }
+    /* Login GNB · Footer · CI — 배치 전용(컴포넌트 시각 아님). 바는 dist 계약대로 full-width 반응형이라
+       GNB 섹션과 같은 결로 Light·Dark 를 위아래로 놓아 칸을 넓히고, 넘치면 그 칸 안에서만 좌우로 민다.
+       「실제 1920 폭」 상자는 정본 화면 폭을 그대로 주는 틀일 뿐 바 자체의 폭·여백 규칙은 dist 가 그린다.
+       CI 칸 바탕은 정본 진열면(gray/50)과 같은 토큰을 쓴다. 이 CSS 는 이 페이지 것이고 dist 에 넣지 않는다. */
+    [data-component-id="login-gnb"] .review-matrix,
+    [data-component-id="footer"] .review-matrix,
+    [data-component-id="ci"] .review-matrix { grid-template-columns: minmax(0, 1fr); }
+    [data-component-id="login-gnb"] .review-grid,
+    [data-component-id="footer"] .review-grid { grid-template-columns: minmax(0, 1fr); }
+    [data-component-id="login-gnb"] .review-component-slot,
+    [data-component-id="footer"] .review-component-slot { overflow-x: auto; }
+    .review-wide-frame { width: 1920px; }
+    .review-footer-mobile-box { max-width: 360px; width: 100%; }
+    [data-component-id="ci"] .review-grid { grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); }
+    .review-ci-stage {
+      align-items: center;
+      background: var(--color-bg-level-2);
+      border-radius: var(--radius-8);
+      display: flex;
+      justify-content: center;
+      min-height: 88px;
+    }
 
     /* 바 6종은 한 줄에 하나씩(가로로 긴 요소), 메뉴 슬롯 9칸은 상태 3열로 나란히 본다. */
     .review-gnb-bar-grid { grid-template-columns: 1fr; }
@@ -307,12 +331,8 @@
       margin: 0;
     }
     .uilg-gnb-assembled { display: flex; flex-direction: column; min-width: 640px; }
-    /* 패널이 펼쳐질 자리를 미리 비워 둔다(river 지시 2026-09-10) — 세 패널을 같은 칸에 겹쳐 두면
-       슬롯 높이는 가장 높은 패널이 정한다. 닫힌 패널은 자리만 지키고 보이지 않는다
-       (visibility:hidden 은 [hidden] 과 같이 접근성 트리·초점에서도 빠진다). */
-    .uilg-gnb-panel-slot { display: grid; }
-    .uilg-gnb-panel-slot > [data-s1-component="gnb-sub-menu"] { grid-area: 1 / 1; }
-    .uilg-gnb-panel-slot > [data-s1-component="gnb-sub-menu"][hidden] { display: flex; visibility: hidden; }
+    /* 하위메뉴 패널은 본문을 밀지 않고 GNB 바 바로 아래에 겹쳐 뜬다(river 결정 2026-10-12). 안내 칸에서 잘리지 않도록 앉을 높이만 빈 자리로 둔다. */
+    .uilg-gnb-panel-slot { min-height: 280px; }
     /* 판 배경이 흰색이라 흰 칸 위에서는 경계가 안 보인다 — 조립 액션 묶음만 옅은 회색(river 지시 2026-09-10). */
     .review-gnb-action { background: var(--color-bg-level-2); border-radius: 12px; padding: var(--spacing-16); }
     [data-theme="dark"] .review-gnb-action { background: var(--color-bg-level-3); }
@@ -797,9 +817,30 @@
     <section class="review-section" aria-labelledby="list-row-review-title" data-component-id="list-row">
       <div>
         <h2 class="review-section-title" id="list-row-review-title">26. List Row — 목록 안 한 줄</h2>
-        <p class="review-note">목록에 들어가는 <strong>줄 한 개</strong>입니다. <strong>모바일에서만 쓰는 줄</strong>이라 마우스를 올리는 상태(Hover)가 없습니다(river 2026-09-21) — 유형 7가지(이동 · 값 · 읽기 · 선택 · 동의 · 토글 · 썸네일) × 상태 3가지(기본 · 누름 · 비활성) <strong>21칸 전부</strong>를 보여 드립니다. <strong>촘촘함(Compact) 축도 없습니다</strong> — 한 벌만 씁니다. 눌렀을 때는 <strong>한 단계 밝은 배경</strong>으로만 바뀝니다. <strong>높이를 숫자로 고정하지 않습니다</strong> — 위아래 여백 토큰과 글 자리가 높이를 만듭니다(여백 12 + 글 자리 최소 44 + 여백 12 = <strong>68</strong>, 일곱 유형 모두 같습니다). 제목만 있는 줄도 설명까지 있는 줄과 높이가 같습니다(글 자리를 미리 잡아 둡니다). <strong>줄 사이 구분선은 이 부품이 긋지 않습니다</strong> — 목록을 그리는 화면이 긋습니다. 유형마다 <strong>바탕 요소가 다릅니다</strong>: 눌러서 넘어가는 이동 · 값은 버튼, 보여주기만 하는 읽기 · 썸네일은 누를 수 없는 칸, 고르는 선택 · 동의는 체크 상자를 감싸 클릭 영역을 넓힌 이름표, 토글은 토글 자체가 누르는 것입니다. <strong>체크와 토글은 이미 승인된 배포본(3번 · 5번)을 그대로 끼워 넣었고</strong>, 보이는 글자인 제목이 그 둘의 이름이 됩니다. <strong>줄이 비활성이면 그 안의 체크 · 토글도 함께 비활성입니다</strong> — 눌리지 않고 흐리게 보입니다. 누름 칸은 손가락 없이도 보이도록 <strong>상태를 강제로 켜 둔 표본</strong>이고, 실제로는 손가락으로 누르는 동안 같은 모양이 됩니다. <strong>키보드 초점 표시는 브라우저 기본에 맡깁니다</strong> — 정본에 초점 모양이 없어 따로 만들지 않았습니다. 실제 이동 · 선택 반영 같은 동작은 목록을 그리는 화면이 맡습니다.</p>
+        <p class="review-note">목록에 들어가는 <strong>줄 한 개</strong>입니다. <strong>모바일에서만 쓰는 줄</strong>이라 마우스를 올리는 상태(Hover)가 없습니다(river 2026-09-21) — 유형 7가지(이동 · 값 · 읽기 · 선택 · 동의 · 토글 · 썸네일) × 상태 3가지(기본 · 누름 · 비활성) <strong>21칸 전부</strong>를 보여 드립니다. <strong>촘촘함(Compact) 축도 없습니다</strong> — 한 벌만 씁니다. 눌렀을 때는 <strong>한 단계 밝은 배경</strong>으로만 바뀝니다. <strong>높이를 숫자로 고정하지 않습니다</strong> — 위아래 여백 토큰과 글 자리가 높이를 만듭니다(여백 12 + 글 자리 최소 44 + 여백 12 = <strong>68</strong>, 일곱 유형 모두 같습니다). 제목만 있는 줄도 설명까지 있는 줄과 높이가 같습니다(글 자리를 미리 잡아 둡니다). <strong>줄 사이 구분선은 이 부품이 긋지 않습니다</strong> — 목록을 그리는 화면이 긋습니다. 유형마다 <strong>바탕 요소가 다릅니다</strong>: 눌러서 넘어가는 이동 · 값은 버튼, 보여주기만 하는 읽기 · 썸네일은 누를 수 없는 칸, 고르는 선택은 체크 상자를 감싸 줄 전체를 누를 수 있게 한 이름표, 토글은 토글 자체가 누르는 것입니다. <strong>동의 줄은 두 부분으로 나뉩니다</strong> — 왼쪽 체크와 글을 누르면 동의가 체크되고, 오른쪽 화살표는 <strong>약관을 여는 버튼</strong>이라 눌러도 체크가 바뀌지 않습니다(river 2026-10-02). 약관 화면을 실제로 여는 일은 목록을 그리는 화면이 맡습니다. <strong>줄에는 내용을 바꿔 끼우는 자리가 세 군데 있습니다</strong> — 왼쪽 칸(체크 자리) · 그림 자리(썸네일) · 오른쪽 칸(화살표 · 값 · 토글 자리). 왼쪽 · 오른쪽 칸은 라디오나 작은 버튼으로 바꾸거나 비울 수 있고(비우면 칸이 사라집니다), 그림 자리는 비우면 회색 자리표시가 보이고 그림을 넣으면 채워집니다 — 아래 각 패널의 「슬롯 갈아끼운 보기」에서 확인하세요. <strong>체크와 토글은 이미 승인된 배포본(3번 · 5번)을 그대로 끼워 넣었고</strong>, 보이는 글자인 제목이 그 둘의 이름이 됩니다. <strong>줄이 비활성이면 그 안의 체크 · 토글도 함께 비활성입니다</strong> — 눌리지 않고 흐리게 보입니다. 누름 칸은 손가락 없이도 보이도록 <strong>상태를 강제로 켜 둔 표본</strong>이고, 실제로는 손가락으로 누르는 동안 같은 모양이 됩니다. <strong>키보드 초점 표시는 브라우저 기본에 맡깁니다</strong> — 정본에 초점 모양이 없어 따로 만들지 않았습니다. 실제 이동 · 선택 반영 같은 동작은 목록을 그리는 화면이 맡습니다.</p>
       </div>
       <div class="review-matrix" id="list-row-review-matrix"></div>
+    </section>
+    <section class="review-section" aria-labelledby="login-gnb-review-title" data-component-id="login-gnb">
+      <div>
+        <h2 class="review-section-title" id="login-gnb-review-title">27. Login GNB — 로그인 화면 상단바</h2>
+        <p class="review-note">로그인 화면 맨 위에 서는 바입니다. <strong>변형이 하나뿐</strong>입니다 — 왼쪽은 서비스 이름 글자 자리, 오른쪽은 지구본 + 「한국어」 언어 버튼입니다(삼성 로고는 2026-06-24 정본에서 빠졌습니다). 높이 56, 아래 1px 선은 바 안쪽에 겹쳐 그려 높이를 깎지 않습니다. 지구본은 24, 글자와의 간격은 8로 <strong>GNB(21번)의 언어 버튼(32 · 간격 4)과 값이 다릅니다</strong> — 정본 값을 따로 옮겼습니다. 바 배경은 화면 전체를 채우고 <strong>안쪽 내용은 가운데 1280 폭</strong>입니다 — 화면 폭 1920 에서 좌우 여백이 정본 그대로 320, 1600 에서 160, 1280 에서 0 이 되고, 1280 보다 좁아져도 줄어들지 않습니다(넘치면 가로로 밉니다). 그래서 아래에 <strong>검수 칸 폭</strong>과 <strong>실제 1920 폭</strong>(칸 안에서 좌우로 밀어 보세요) 두 가지를 놓았습니다. 정본에 마우스 올림 · 누름 상태가 없어 언어 버튼 색은 바뀌지 않고, 키보드 초점 표시는 브라우저 기본에 맡깁니다. 언어 버튼을 눌렀을 때 무엇을 할지는 쓰는 화면이 정합니다. JavaScript 가 없습니다.</p>
+      </div>
+      <div class="review-matrix" id="login-gnb-review-matrix"></div>
+    </section>
+    <section class="review-section" aria-labelledby="footer-review-title" data-component-id="footer">
+      <div>
+        <h2 class="review-section-title" id="footer-review-title">28. Footer — 화면 맨 아래 회사 정보</h2>
+        <p class="review-note">화면 맨 아래에 놓는 회사 정보 영역입니다. 정본 변형 2가지(<strong>PC · Mobile</strong>)를 그대로 옮겼습니다. <strong>PC</strong>는 가로 배치 — 왼쪽에 링크 3개 · 회사 정보 · 카피라이트, 오른쪽에 에스원 로고가 있고 위쪽에 1px 선이 있습니다. <strong>Mobile</strong>은 세로 배치 — 링크 줄과 가운데 정렬 카피라이트만 있고 <strong>회사 정보 · 로고 · 배경 · 선이 없습니다</strong>. 링크 · 회사 정보 · 카피라이트 글자는 회사 정본 문구 그대로이며(회사 정보 사이의 넓은 띄어쓰기도 정본 그대로입니다), 링크 사이 세로선은 이 부품이 그립니다. PC 바 배경은 화면 전체를 채우고 안쪽 내용은 <strong>가운데 1280 폭</strong>입니다(1920 → 여백 320, 1600 → 160, 1280 → 0, 그보다 좁아도 줄지 않고 넘치면 가로로 밉니다). 다만 <strong>화면 폭이 768 미만이 되면 PC 도 Mobile 모양으로 자동 전환</strong>됩니다. 그래서 <strong>검수 칸 폭</strong>과 <strong>실제 1920 폭</strong>을 함께 놓았습니다. PC 높이는 정본 116 이 최소값이고, 글자가 줄바꿈되면 늘어납니다. 정본에 마우스 올림 상태가 없어 링크 색은 바뀌지 않습니다. 로고는 옆 글자가 이미 회사 이름을 말하므로 화면 낭독기에는 읽히지 않게 두었습니다. JavaScript 가 없습니다.</p>
+      </div>
+      <div class="review-matrix" id="footer-review-matrix"></div>
+    </section>
+    <section class="review-section" aria-labelledby="ci-review-title" data-component-id="ci">
+      <div>
+        <h2 class="review-section-title" id="ci-review-title">29. CI — 회사 로고</h2>
+        <p class="review-note">회사 로고입니다. 정본 변형 6가지(<strong>브랜드 에스원 · 삼성 × 색 White · Blue · Dark</strong>)를 전부 보여 드립니다. 에스원은 정본 로고 그림 그대로 78.75×30, 삼성은 정본 이미지 그대로 134×36 입니다. <strong>다크 전용 변형은 없습니다</strong> — White · Blue 는 모드가 바뀌어도 그대로이고, 에스원 Dark 만 다크 모드에서 밝은 회색으로 바뀝니다(삼성은 이미지라 그대로입니다). 칸 바탕은 정본 진열면과 같은 옅은 회색입니다. <strong>White 로고는 밝은 바탕 위에서는 거의 보이지 않습니다</strong> — 이 화면에 따로 어두운 바탕 표본이 없어, <strong>White 는 아래 Dark 패널에서 확인해 주세요</strong>. 로고가 회사 이름을 알려 주는 자리에서는 화면 낭독기가 「에스원」 · 「삼성」으로 읽습니다. JavaScript 가 없습니다.</p>
+      </div>
+      <div class="review-matrix" id="ci-review-matrix"></div>
     </section>
     </div>
 
@@ -1663,10 +1704,12 @@
           <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">정본 변형 6가지(Size MD·LG·XL × Footer Single·Dual) · PC 전용</p></div>
           <div class="review-group">
             <h4 class="review-group-title">실제로 열어보기</h4>
-            <p class="review-panel-description">누르면 화면 전체를 덮는 진짜 팝업이 뜹니다. Esc로 닫히고 닫으면 초점이 이 버튼으로 돌아옵니다.</p>
-            <div class="review-component-slot">
-              <button type="button" data-s1-component="button" data-variant="secondary" data-size="md" data-modal-content-open><span data-s1-part="label">모달 열기</span></button>
-              ${modalContentMarkup({ size: "md", footer: "dual" })}
+            <p class="review-panel-description">크기(MD 520 · LG 1000 · XL 1200)를 골라 누르면 그 폭 그대로 화면 전체를 덮는 진짜 팝업이 뜹니다. Esc로 닫히고 닫으면 초점이 누른 버튼으로 돌아옵니다.</p>
+            <div class="review-component-slot review-modal-content-openers">${Object.entries(MODAL_CONTENT_REVIEW_DIMS).map(([size, [w]]) => `
+              <span class="review-modal-content-opener">
+                <button type="button" data-s1-component="button" data-variant="secondary" data-size="md" data-modal-content-open><span data-s1-part="label">${size.toUpperCase()} 열기 (${w})</span></button>
+                ${modalContentMarkup({ size, footer: "dual" })}
+              </span>`).join("")}
             </div>
           </div>
           <hr class="review-separator">
@@ -1896,7 +1939,7 @@
         </nav>`;
       const panel = (id, name, columns) =>
         `<div data-s1-component="gnb-sub-menu" data-type="${set.type}" id="${id}" aria-label="${name} ${uniqueId}" hidden>${gnbActionColumnsMarkup(columns)}</div>`;
-      // 판 3개는 자리 예약 슬롯 안에 겹쳐 둔다 — 열고 닫아도 아래 내용이 밀리지 않는다(river 지시 2026-09-10).
+      // 판은 본문을 밀지 않고 바 아래에 겹쳐 뜬다(river 결정 2026-10-12) — 안내 칸은 앉을 높이만 비워 둔다.
       const panels = `<div class="uilg-gnb-panel-slot">${panel(noticeId, "공지사항 하위 메뉴", set.notice)}${panel(serviceId, "서비스 하위 메뉴", set.service)}${panel(statsId, "통계 하위 메뉴", set.stats)}</div>`;
       return `<div class="uilg-gnb-assembled">${bar}${panels}</div>`;
     }
@@ -1927,7 +1970,7 @@
           <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">정본 변형 6가지(Align 2종 × Size 3종) · 메뉴 상태 9가지(Size 3종 × State 3종) · PC 전용 · 바 자체는 JavaScript 없이 동작(하위메뉴를 여닫는 부분만 JavaScript 필요)</p></div>
           <div class="review-group">
             <h4 class="review-group-title">조립 액션 3벌 — Center-Between · SM 바 × 하단메뉴 유형 3가지 (실제로 열립니다)</h4>
-            <p class="review-panel-description"><strong>마우스를 올려 확인하세요.</strong> 각 벌의 세 메뉴에 마우스를 올리면 그 벌의 하단메뉴가 펼쳐집니다. <strong>한 벌 안에서는 세 메뉴가 같은 유형의 판을 엽니다</strong> — 유형은 사이트가 하나 고르는 것이지 메뉴마다 고르는 것이 아닙니다. 마우스를 바·판 밖으로 빼면 닫히고(짧은 유예 있음 — 둘 사이 틈을 지날 때 안 깜빡입니다), <kbd>Tab</kbd> 으로 메뉴에 들어가도 펼쳐지며 <kbd>Esc</kbd> 로 닫으면 초점이 그 메뉴로 돌아옵니다. 한 번에 한 판만 열립니다. 판이 펼쳐질 자리는 미리 비워 두어 열고 닫아도 아래 내용이 밀리지 않으며, 흰 판이 잘 보이도록 이 묶음 배경만 옅은 회색입니다(실제 화면 배경은 아닙니다).</p>
+            <p class="review-panel-description"><strong>마우스를 올려 확인하세요.</strong> 각 벌의 세 메뉴에 마우스를 올리면 그 벌의 하단메뉴가 펼쳐집니다. <strong>한 벌 안에서는 세 메뉴가 같은 유형의 판을 엽니다</strong> — 유형은 사이트가 하나 고르는 것이지 메뉴마다 고르는 것이 아닙니다. 마우스를 바·판 밖으로 빼면 닫히고(짧은 유예 있음 — 둘 사이 틈을 지날 때 안 깜빡입니다), <kbd>Tab</kbd> 으로 메뉴에 들어가도 펼쳐지며 <kbd>Esc</kbd> 로 닫으면 초점이 그 메뉴로 돌아옵니다. 한 번에 한 판만 열립니다. 판은 아래 내용을 밀어내지 않고 바 아래에 겹쳐 뜨며(안내 칸은 판이 앉을 높이만 비워 둡니다), 흰 판이 잘 보이도록 이 묶음 배경만 옅은 회색입니다(실제 화면 배경은 아닙니다).</p>
             ${gnbActionSetsMarkup()}
           </div>
           <hr class="review-separator">
@@ -2473,7 +2516,9 @@
        Hover 축 없음 — 모바일 전용이라 마우스오버가 없다(river 2026-09-21). 눌림 배경은
        한 단계 밝은 배경(bg/level-1) 이다. Density(촘촘) 축도 없다 — 한 벌만 쓴다.
        루트 요소는 유형이 하는 일에 맞춘다(manifest htmlContract.typeStructure):
-         nav·value = button · read·thumb = div · pick·agree = label(체크 코어를 감싼다) · switch = div.
+         nav·value = button · read·thumb = div · pick = label(체크 코어를 감싼다) · switch = div.
+         agree = div(체크 영역 label[data-s1-part=check] + 오른쪽 칸 안 약관 열기 button[data-s1-part=open]) —
+         label 안에 button 을 넣지 않으므로 약관 열기 버튼을 눌러도 체크가 바뀌지 않는다(river D-6).
        상태는 manifest states 표기대로 documented data-state 로 보인다. Disabled 는 button 이면
        native disabled 를, button 이 아닌 루트면 aria-disabled 를 함께 단다(계약이 정한 두 길).
        체크·토글은 승인된 코어 배포본을 그대로 조립한다 — 내부를 복제하지 않고 자리만 준다.
@@ -2497,7 +2542,7 @@
       const content = listRowContent[type];
       const isButton = type === "nav" || type === "value";
       const isPickLike = type === "pick" || type === "agree";
-      const tag = isButton ? "button" : isPickLike ? "label" : "div";
+      const tag = isButton ? "button" : type === "pick" ? "label" : "div";
       const disabled = state === "disabled";
       /* 코어(checkbox·toggle)에 이름을 넘겨야 하는 유형만 제목에 id 를 붙인다. */
       const needsTitleId = isPickLike || type === "switch";
@@ -2519,15 +2564,79 @@
       if (type === "nav") inner = `${text}<span data-s1-part="trail">${chevron}</span>`;
       else if (type === "value") inner = `${text}<span data-s1-part="trail"><span data-s1-part="value">${content.value}</span>${chevron}</span>`;
       else if (type === "read") inner = text;
-      else if (type === "pick") inner = `${checkbox}${text}`;
-      else if (type === "agree") inner = `${checkbox}${text}<span data-s1-part="trail">${chevron}</span>`;
+      /* lead 는 슬롯(왼쪽 칸)이다 — 기본 내용인 checkbox control 을 lead 래퍼 안에 넣는다(manifest typeStructure). */
+      else if (type === "pick") inner = `<span data-s1-part="lead">${checkbox}</span>${text}`;
+      /* agree: 체크 영역(label.check = 왼쪽 칸 + 글 자리)과 약관 열기 button 은 형제다.
+         줄이 비활성이면 input 과 버튼 둘 다 native disabled. */
+      else if (type === "agree") inner = `<label data-s1-part="check"><span data-s1-part="lead">${checkbox}</span>${text}</label><span data-s1-part="trail">
+            <button type="button" data-s1-part="open" aria-label="${content.title.replace(/ 동의$/, "")} 보기"${disabled ? " disabled" : ""}>${chevron}</button>
+          </span>`;
       else if (type === "switch") inner = `${text}<span data-s1-part="trail">
-            <button type="button" data-s1-component="toggle" role="switch" aria-checked="false" aria-labelledby="${titleId}"${disabled ? " disabled" : ""}>
+            <button type="button" data-s1-component="toggle" role="switch" aria-checked="true" aria-labelledby="${titleId}"${disabled ? " disabled" : ""}>
               <span data-s1-part="knob" aria-hidden="true"></span>
             </button>
           </span>`;
       else inner = `<div data-s1-part="thumbnail" aria-hidden="true"></div>${text}`;
       return `<${tag} ${root}>${inner}</${tag}>`;
+    }
+
+    /* 슬롯 갈아끼운 보기 — dist examples/list-row.html 의 슬롯 예시와 같은 구성.
+       radio · text-button 코어는 각자 dist example 마크업 그대로(radio 는 Label=Off, control 만).
+       그림 SVG 는 외부 의존 없는 인라인 그림이며, 이 페이지에 HEX 를 들이지 않으려고
+       채움을 currentColor(부모 글자색 상속) + 투명도로만 둔다 — 색을 새로 정하지 않는다.
+       자리마다 uniqueId 를 새로 받아 id·radio name 이 겹치지 않게 한다. */
+    function listRowSlotSwapMarkup(kind) {
+      uniqueId += 1;
+      const uid = `review-list-row-swap-${uniqueId}`;
+      const titleId = `${uid}-title`;
+      if (kind === "thumb-filled") return `<div data-s1-component="list-row" data-type="thumb" data-state="default">
+            <div data-s1-part="thumbnail">
+              <svg viewBox="0 0 40 40" role="img" aria-hidden="true">
+                <rect width="40" height="40" fill="currentColor" opacity="0.25"></rect>
+                <circle cx="14" cy="16" r="5" fill="currentColor" opacity="0.7"></circle>
+                <path d="M0 34 L14 20 L24 30 L30 24 L40 34 V40 H0 Z" fill="currentColor" opacity="0.55"></path>
+              </svg>
+            </div>
+            <div data-s1-part="text">
+              <span data-s1-part="title">프로필 사진</span>
+              <span data-s1-part="description">그림을 채운 예시</span>
+            </div>
+          </div>`;
+      if (kind === "lead-radio") return `<label data-s1-component="list-row" data-type="pick" data-state="default">
+            <span data-s1-part="lead">
+              <div data-s1-component="radio">
+                <input type="radio" id="${uid}-control" name="${uid}-group" data-s1-part="control" aria-labelledby="${titleId}">
+              </div>
+            </span>
+            <div data-s1-part="text">
+              <span data-s1-part="title" id="${titleId}">카드 결제</span>
+              <span data-s1-part="description">한 가지만 고르는 목록의 예시</span>
+            </div>
+          </label>`;
+      /* agree 는 루트 div — 체크 영역 label 과 오른쪽 칸(약관 보기 버튼)이 형제라 버튼은 체크를 바꾸지 않는다. */
+      if (kind === "trail-text-button") return `<div data-s1-component="list-row" data-type="agree" data-state="default">
+            <label data-s1-part="check">
+              <span data-s1-part="lead">
+                <div data-s1-component="checkbox">
+                  <input type="checkbox" id="${uid}-control" data-s1-part="control" aria-labelledby="${titleId}">
+                </div>
+              </span>
+              <div data-s1-part="text">
+                <span data-s1-part="title" id="${titleId}">마케팅 수신 동의</span>
+                <span data-s1-part="description">화살표 대신 약관 보기 버튼</span>
+              </div>
+            </label>
+            <span data-s1-part="trail">
+              <button type="button" data-s1-component="text-button" data-variant="secondary" aria-label="마케팅 수신 약관 보기">
+                <span data-s1-part="label">약관 보기</span>
+              </button>
+            </span>
+          </div>`;
+      /* 왼쪽·오른쪽 칸을 둘 다 비운 줄 — :empty 로 칸 자체가 사라져야 한다(공백도 넣지 않는다). */
+      return `<div data-s1-component="list-row" data-type="read" data-state="default"><span data-s1-part="lead"></span><div data-s1-part="text">
+              <span data-s1-part="title">빈 칸 두 개</span>
+              <span data-s1-part="description">왼쪽 · 오른쪽 칸을 비우면 칸이 사라집니다</span>
+            </div><span data-s1-part="trail"></span></div>`;
     }
 
     function renderListRowPanel(combo) {
@@ -2539,12 +2648,22 @@
       const cells = types.flatMap(([type, typeLabel]) => states.map(([state, stateLabel]) =>
         sample(`${typeLabel} · ${stateLabel}`,
           `<div class="review-list-row-box">${listRowMarkup({ type, state })}</div>`))).join("");
+      const swaps = [
+        ["thumb-filled", "그림 칸 채움 · Thumb"], ["lead-radio", "왼쪽 칸 → 라디오 · Pick"],
+        ["trail-text-button", "오른쪽 칸 → 약관 보기 · Agree"], ["empty-both", "왼쪽 · 오른쪽 칸 비움 · Read"]
+      ];
+      const swapCells = swaps.map(([kind, label]) =>
+        sample(label, `<div class="review-list-row-box">${listRowSlotSwapMarkup(kind)}</div>`)).join("");
       return `
         <article class="review-panel" data-theme="${combo.theme}">
-          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">유형 7 × 상태 3 = 21칸 전수 · Hover 없음(모바일 전용) · 촘촘함 축 없음 · 크기 축 없음 · 줄 자체는 JavaScript 불필요</p></div>
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">유형 7 × 상태 3 = 21칸 전수 + 슬롯 갈아끼운 보기 4줄 · Hover 없음(모바일 전용) · 촘촘함 축 없음 · 크기 축 없음 · 줄 자체는 JavaScript 불필요</p></div>
           <div class="review-group">
             <p class="review-panel-description">각 칸은 목록 폭(최대 360) 상자 안에 넣어 보입니다. <strong>높이는 여백 토큰과 글 자리가 만듭니다</strong> — 일곱 유형 모두 68 로 같아야 합니다. 선택 · 동의의 체크와 토글은 실제로 눌러 보세요. <strong>줄 사이 구분선은 이 부품이 긋지 않습니다.</strong></p>
             <div class="review-grid">${cells}</div>
+          </div>
+          <div class="review-group">
+            <p class="review-panel-description"><strong>슬롯 갈아끼운 보기</strong> — 줄에는 내용을 바꿔 끼울 수 있는 자리가 세 군데 있습니다: <strong>왼쪽 칸</strong>(기본은 체크), <strong>그림 자리</strong>(썸네일), <strong>오른쪽 칸</strong>(기본은 화살표 · 값 · 토글). 그림 자리는 비우면 회색 자리표시가 보이고 그림을 넣으면 채워집니다. 왼쪽 · 오른쪽 칸은 다른 부품으로 바꿔 끼우거나 비울 수 있고, 비우면 칸 자체가 사라집니다. 넣은 것이 44 보다 크면 넘치는 부분은 잘려 줄 높이 68 을 지킵니다.</p>
+            <div class="review-grid">${swapCells}</div>
           </div>
         </article>`;
     }
@@ -2560,6 +2679,85 @@
     document.querySelector("#bottom-sheet-review-matrix").innerHTML = controlThemes.map(renderBottomSheetPanel).join("");
     document.querySelector("#bottom-sheet-option-review-matrix").innerHTML = controlThemes.map(renderBottomSheetOptionPanel).join("");
     document.querySelector("#list-row-review-matrix").innerHTML = controlThemes.map(renderListRowPanel).join("");
+
+    /* ── Login GNB · Footer · CI — 정본 buildLoginGNB · buildFooter · buildCI. 셋 다 jsRequired=false.
+       표본 마크업은 이 페이지가 손으로 옮겨 적지 않는다 — dist examples/{id}.html 을 읽어 그 요소를
+       자리마다 새로 복제한다(회사 정본 문구 · 에스원 로고 그림을 사본으로 두지 않기 위해서다).
+       예시에는 id 가 없어 복제해도 문서 안 id 가 겹치지 않는다. */
+    async function distExample(id) {
+      const response = await fetch(`../ui-library/dist/examples/${id}.html`);
+      if (!response.ok) throw new Error(`${response.status} examples/${id}.html`);
+      const template = document.createElement("template");
+      template.innerHTML = await response.text();
+      return template.content;
+    }
+    const [loginGnbExample, footerExample, ciExample] = await Promise.all(["login-gnb", "footer", "ci"].map(distExample))
+      .catch((error) => { console.error(error); return []; });
+    const cloneOuter = (root, selector) => root.querySelector(selector).outerHTML;
+
+    function renderLoginGnbPanel(combo) {
+      const bar = () => cloneOuter(loginGnbExample, '[data-s1-component="login-gnb"]');
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">변형 1가지(단일) · PC 바 · 상태 축 없음 · JavaScript 불필요</p></div>
+          <div class="review-group">
+            <div class="review-grid">
+              ${sample("검수 칸 폭 — 칸 폭에 맞춰 여백이 변함 · 1280 아래로는 줄지 않음", bar())}
+              ${sample("실제 1920 폭 — 좌우 여백 320(정본 그대로) · 칸 안에서 좌우로 밀어 보세요", `<div class="review-wide-frame">${bar()}</div>`)}
+            </div>
+          </div>
+        </article>`;
+    }
+
+    function renderFooterPanel(combo) {
+      const pc = () => cloneOuter(footerExample, '[data-s1-component="footer"][data-platform="pc"]');
+      const mobile = () => cloneOuter(footerExample, '[data-s1-component="footer"][data-platform="mobile"]');
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">변형 2가지(Platform PC · Mobile) · 상태 축 없음 · JavaScript 불필요</p></div>
+          <div class="review-group">
+            <h4 class="review-group-title">PC</h4>
+            <div class="review-grid">
+              ${sample("PC · 검수 칸 폭 — 칸 폭에 맞춰 여백이 변함 · 1280 아래로는 줄지 않음", pc())}
+              ${sample("PC · 실제 1920 폭 — 좌우 여백 320(정본 그대로) · 칸 안에서 좌우로 밀어 보세요", `<div class="review-wide-frame">${pc()}</div>`)}
+            </div>
+          </div>
+          <hr class="review-separator">
+          <div class="review-group">
+            <h4 class="review-group-title">Mobile</h4>
+            <div class="review-grid">
+              ${sample("Mobile · 모바일 화면 폭(360) 상자 안 — 회사 정보 · 로고 없음", `<div class="review-footer-mobile-box">${mobile()}</div>`)}
+            </div>
+          </div>
+        </article>`;
+    }
+
+    function renderCiPanel(combo) {
+      const brands = [["s1", "에스원"], ["samsung", "삼성"]];
+      const colors = [["white", "White"], ["blue", "Blue"], ["dark", "Dark"]];
+      const cells = brands.flatMap(([brand, brandLabel]) => colors.map(([color, colorLabel]) =>
+        sample(`${brandLabel} · ${colorLabel}`,
+          `<div class="review-ci-stage">${cloneOuter(ciExample, `[data-s1-component="ci"][data-brand="${brand}"][data-color="${color}"]`)}</div>`))).join("");
+      return `
+        <article class="review-panel" data-theme="${combo.theme}">
+          <div class="review-panel-heading"><h3 class="review-panel-title">${combo.label}</h3><p class="review-panel-description">브랜드 2 × 색 3 = 6칸 전수 · 다크 전용 변형 없음 · 상태 축 없음 · JavaScript 불필요${combo.theme === "light" ? " · White 는 밝은 바탕이라 흐립니다 — Dark 패널에서 확인" : ""}</p></div>
+          <div class="review-group">
+            <div class="review-grid">${cells}</div>
+          </div>
+        </article>`;
+    }
+
+    if (loginGnbExample && footerExample && ciExample) {
+      document.querySelector("#login-gnb-review-matrix").innerHTML = controlThemes.map(renderLoginGnbPanel).join("");
+      document.querySelector("#footer-review-matrix").innerHTML = controlThemes.map(renderFooterPanel).join("");
+      document.querySelector("#ci-review-matrix").innerHTML = controlThemes.map(renderCiPanel).join("");
+    } else {
+      /* 예시를 못 읽으면 세 칸만 비우고 알린다 — 다른 검수 섹션까지 멈추지 않게 한다. */
+      for (const id of ["login-gnb", "footer", "ci"]) {
+        document.querySelector(`#${id}-review-matrix`).textContent = `배포본 예시(ui-library/dist/examples/${id}.html)를 읽지 못했습니다.`;
+      }
+    }
+    /* Login GNB · Footer · CI 는 런타임이 없다(jsRequired:false) — init 하지 않는다. */
     /* GNB 도 런타임이 없다(jsRequired:false) — CSS 의 :hover 와 네이티브 ARIA(aria-current)만으로 상태가 드러난다. */
     /* Mobile Bottom Nav · Mobile Header 는 런타임이 없다(jsRequired:false) — CSS·네이티브 ARIA만으로 상태가 반영된다. */
 
@@ -2599,6 +2797,8 @@
     document.querySelectorAll('[data-s1-component="multi-toggle"]:not([data-review-static])').forEach((root) => S1UI.multiToggle.init(root));
     /* 표도 정적 표본(data-review-static)은 초기화하지 않는다 — 초기화하면 강제 표시한 Hover·선택 칸이 풀린다. */
     document.querySelectorAll('[data-s1-component="table"]:not([data-review-static])').forEach((root) => S1UI.table.init(root));
+    document.querySelectorAll('[data-s1-component="bottom-sheet-option"]:not([data-review-static])').forEach((root) => S1UI.bottomSheetOption.init(root));
+    document.querySelectorAll('[data-s1-component="mobile-bottom-nav"]:not([data-review-static])').forEach((root) => S1UI.mobileBottomNav.init(root));
     /* 모달도 정적 표본(data-review-static)은 초기화하지 않는다 — 초기화하면 배경 스크롤이 잠긴 채 남는다. */
     document.querySelectorAll('[data-s1-component="modal"]:not([data-review-static])').forEach((root) => {
       const opener = root.parentElement?.querySelector("[data-modal-open]");

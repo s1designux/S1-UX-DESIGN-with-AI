@@ -7,7 +7,7 @@ import SwiftUI
 /// 안에는 글자만 넣는다. 글자 크기는 부품이 정한다.
 ///
 /// 쓸 수 있는 값
-///   · tone   blue · red (blue 승인·확인 / red 주의·에러)
+///   · tone   blue · red · gray (blue 승인·확인 / red 주의·에러)
 ///   · shape  chips(알약) · square(네모)
 ///   · solid  true = 채움 · false = 테두리만
 public struct S1DataTag: View {

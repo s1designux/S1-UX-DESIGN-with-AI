@@ -10,11 +10,11 @@ public enum S1ExpandableCardSpec {
         var table: [String: [String: S1Box]] = [:]
         table["closed"] = [
             "root": S1Box(background: S1Palette.colorBgLevel0, borderColor: S1Palette.colorLineDefault, borderWidth: 1, radius: 10),
-            "header": S1Box(background: S1Palette.colorBgLevel0, paddingStart: 20, paddingEnd: 16, paddingTop: 16, paddingBottom: 16, gap: 10, durationMs: 180),
+            "header": S1Box(background: S1Palette.colorBgLevel0, paddingStart: 19, paddingEnd: 15, paddingTop: 15, paddingBottom: 15, gap: 10, durationMs: 180),
             "text": S1Box(minWidth: 0, gap: 10),
             "toggleIcon": S1Box(background: S1Palette.colorIconGrayDark, height: 24, width: 24, rotation: 90, icon: "chevron", durationMs: 220),
             "panelWrap": S1Box(opacity: 0, durationMs: 220),
-            "panel": S1Box(background: S1Palette.colorBgLevel2, minHeight: 0, paddingStart: 20, paddingEnd: 16, gap: 10, durationMs: 220),
+            "panel": S1Box(background: S1Palette.colorBgLevel2, minHeight: 0, paddingStart: 19, paddingEnd: 15, gap: 10, durationMs: 220),
             "title": S1Box(foreground: S1Palette.colorTextTitlePrimary, minHeight: 24, fontSize: 16, fontWeight: 700, lineHeight: 1.3),
             "panelTitle": S1Box(foreground: S1Palette.colorTextTitlePrimary, fontSize: 16, fontWeight: 700, lineHeight: 1.3),
             "subtitle": S1Box(foreground: S1Palette.colorTextBodySecondary, fontSize: 14, fontWeight: 700, lineHeight: 1.3),
@@ -28,11 +28,11 @@ public enum S1ExpandableCardSpec {
         ]
         table["hover"] = [
             "root": S1Box(background: S1Palette.colorBgLevel0, borderColor: S1Palette.colorLineDefault, borderWidth: 1, radius: 10),
-            "header": S1Box(background: S1Palette.colorBgLevel1, paddingStart: 20, paddingEnd: 16, paddingTop: 16, paddingBottom: 16, gap: 10, durationMs: 180),
+            "header": S1Box(background: S1Palette.colorBgLevel1, paddingStart: 19, paddingEnd: 15, paddingTop: 15, paddingBottom: 15, gap: 10, durationMs: 180),
             "text": S1Box(minWidth: 0, gap: 10),
             "toggleIcon": S1Box(background: S1Palette.colorIconGrayDark, height: 24, width: 24, rotation: 90, icon: "chevron", durationMs: 220),
             "panelWrap": S1Box(opacity: 0, durationMs: 220),
-            "panel": S1Box(background: S1Palette.colorBgLevel2, minHeight: 0, paddingStart: 20, paddingEnd: 16, gap: 10, durationMs: 220),
+            "panel": S1Box(background: S1Palette.colorBgLevel2, minHeight: 0, paddingStart: 19, paddingEnd: 15, gap: 10, durationMs: 220),
             "title": S1Box(foreground: S1Palette.colorTextTitlePrimary, minHeight: 24, fontSize: 16, fontWeight: 700, lineHeight: 1.3),
             "panelTitle": S1Box(foreground: S1Palette.colorTextTitlePrimary, fontSize: 16, fontWeight: 700, lineHeight: 1.3),
             "subtitle": S1Box(foreground: S1Palette.colorTextBodySecondary, fontSize: 14, fontWeight: 700, lineHeight: 1.3),
@@ -46,11 +46,11 @@ public enum S1ExpandableCardSpec {
         ]
         table["open"] = [
             "root": S1Box(background: S1Palette.colorBgLevel0, borderColor: S1Palette.colorLineDefault, borderWidth: 1, radius: 10),
-            "header": S1Box(background: S1Palette.colorBgLevel0, paddingStart: 20, paddingEnd: 16, paddingTop: 16, paddingBottom: 16, gap: 10, durationMs: 180),
+            "header": S1Box(background: S1Palette.colorBgLevel0, paddingStart: 19, paddingEnd: 15, paddingTop: 15, paddingBottom: 16, gap: 10, durationMs: 180),
             "text": S1Box(minWidth: 0, gap: 10),
             "toggleIcon": S1Box(background: S1Palette.colorIconGrayDark, height: 24, width: 24, rotation: 90, icon: "chevron", scaleX: -1, durationMs: 220),
             "panelWrap": S1Box(opacity: 1, durationMs: 220),
-            "panel": S1Box(background: S1Palette.colorBgLevel2, minHeight: 0, paddingStart: 20, paddingEnd: 16, paddingTop: 16, paddingBottom: 16, gap: 10, durationMs: 220),
+            "panel": S1Box(background: S1Palette.colorBgLevel2, minHeight: 0, paddingStart: 19, paddingEnd: 15, paddingTop: 16, paddingBottom: 15, gap: 10, durationMs: 220),
             "title": S1Box(foreground: S1Palette.colorTextTitlePrimary, minHeight: 24, fontSize: 16, fontWeight: 700, lineHeight: 1.3),
             "panelTitle": S1Box(foreground: S1Palette.colorTextTitlePrimary, fontSize: 16, fontWeight: 700, lineHeight: 1.3),
             "subtitle": S1Box(foreground: S1Palette.colorTextBodySecondary, fontSize: 14, fontWeight: 700, lineHeight: 1.3),

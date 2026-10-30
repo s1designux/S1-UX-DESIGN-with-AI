@@ -19,6 +19,7 @@
  */
 
 import { SEMANTIC_SHADOW } from "./vars-data";
+import { TEXT_STYLE_FONT_FAMILY } from "./textstyles-data";
 import { toDropShadowEffects, shadowVarName } from "./shadow-parse";
 
 export interface BuildMaps {
@@ -144,9 +145,36 @@ function textStyleKey(fontSize: number, style: string): string {
   return `${letter === "B" ? "title" : "body"}/${size}${letter}`;
 }
 
+/** 페이지 전체에서 **종류(type)가 맞는 노드만** 골라 조건으로 거른다.
+ *  findAll(콜백)은 페이지의 노드 하나하나마다 자바스크립트 함수를 불러, 부품이 깔린 큰 페이지에서는
+ *  한 번에 수 초씩 걸린다. 설치 한 번에 이런 전체 훑기가 수십 번 돌아 설치 시간을 늘렸다(2026-10-02).
+ *  findAllWithCriteria 는 종류 거르기를 Figma 가 직접 하므로 훨씬 빠르고, 찾는 범위·순서는 같다.
+ *  API 가 없는 환경(키체크용 가짜 Figma)에서는 종전 findAll 경로를 그대로 탄다 — 결과 지문이 바뀌지 않게. */
+export function findAllOfTypes(
+  root: PageNode | SceneNode, types: NodeType[], pred: (n: SceneNode) => boolean = () => true,
+): SceneNode[] {
+  try {
+    const hits = (root as any).findAllWithCriteria({ types });
+    if (Array.isArray(hits)) return (hits as SceneNode[]).filter(pred);
+  } catch (e) { /* 구버전·가짜 환경 → 아래 종전 경로 */ }
+  return (root as any).findAll((n: SceneNode) => types.indexOf(n.type as NodeType) >= 0 && pred(n));
+}
+
+/** findAllOfTypes 의 첫 번째 것(findOne 대체). 없는 환경에서는 종전 findOne 경로. */
+function findOneOfType(root: PageNode, types: NodeType[], pred: (n: SceneNode) => boolean): SceneNode | null {
+  try {
+    const hits = (root as any).findAllWithCriteria({ types });
+    if (Array.isArray(hits)) {
+      for (const n of hits as SceneNode[]) if (pred(n)) return n;
+      return null;
+    }
+  } catch (e) { /* 구버전·가짜 환경 → 아래 종전 경로 */ }
+  return (root as any).findOne((n: SceneNode) => types.indexOf(n.type as NodeType) >= 0 && pred(n));
+}
+
 async function getBuiltSet(name: string): Promise<ComponentSetNode | null> {
   if (BUILT_SETS[name]) return BUILT_SETS[name];
-  try { const f = figma.currentPage.findOne((n) => n.type === "COMPONENT_SET" && n.name === name); return (f as ComponentSetNode) || null; } catch (e) { return null; }
+  try { const f = findOneOfType(figma.currentPage, ["COMPONENT_SET"], (n) => n.name === name); return (f as ComponentSetNode) || null; } catch (e) { return null; }
 }
 
 /** 세트 안의 변형 컴포넌트를 BUILT_COMPS → 캔버스 순으로 찾고, 찾으면 BUILT_COMPS 에 **재등록**한다.
@@ -170,21 +198,74 @@ async function reuseVariant(setName: string, cacheKey: string, matches: string[]
 async function getBuiltComp(name: string): Promise<ComponentNode | null> {
   if (BUILT_COMPS[name]) return BUILT_COMPS[name];
   try {
-    const f = figma.currentPage.findOne((n) => n.type === "COMPONENT" && n.name === name && (!n.parent || n.parent.type !== "COMPONENT_SET"));
+    const f = findOneOfType(figma.currentPage, ["COMPONENT"], (n) => n.name === name && (!n.parent || n.parent.type !== "COMPONENT_SET"));
     return (f as ComponentNode) || null;
   } catch (e) { return null; }
 }
 
+// ── 모드 고정(Appearance) — 컬렉션 **개체**로 건다 ─────────────────────────────
+// 🚨 id 문자열판 set/clearExplicitVariableModeForCollection(cid: string, …) 은 manifest 에
+//   "documentAccess": "dynamic-page" 가 있으면 **예외를 던진다**(plugin-typings @deprecated 문구).
+//   2026-10-01 dynamic-page 전환(6979fd40) 뒤로 모든 모드 고정이 조용히 실패해, 10-02 재설치부터
+//   Spec Dark 56개가 이름만 Dark 이고 라이트로 그려졌다(river 발견 2026-10-13).
+//   → 설치 시작 때 컬렉션 개체를 한 번 받아 두고(primeModeCollections) 개체판으로만 건다.
+//   실패는 삼키지 않고 세어서 설치 끝에 알린다(MODE_PIN_FAILURES).
+const MODE_COLLECTIONS: Record<string, VariableCollection> = {};
+let MODE_PIN_FAILURES = 0;
+let MODE_PIN_LAST_ERROR = "";
+
+/** 설치 시작 때 한 번 — 모드를 걸 컬렉션 개체를 받아 둔다(동기 setMode 가 쓸 수 있게). */
+export async function primeModeCollections(maps: { semanticColorCollectionId?: string; semanticShadowCollectionId?: string }): Promise<void> {
+  MODE_PIN_FAILURES = 0;
+  MODE_PIN_LAST_ERROR = "";
+  for (const cid of [maps.semanticColorCollectionId, maps.semanticShadowCollectionId]) {
+    if (!cid || MODE_COLLECTIONS[cid]) continue;
+    try {
+      const c = await figma.variables.getVariableCollectionByIdAsync(cid);
+      if (c) MODE_COLLECTIONS[cid] = c;
+    } catch (e) { /* 모의 실행 — 아래 pinMode 가 실패로 센다 */ }
+  }
+}
+
+/** 이번 설치에서 모드 고정에 실패한 횟수와 마지막 오류. */
+export function modePinFailures(): { count: number; lastError: string } {
+  return { count: MODE_PIN_FAILURES, lastError: MODE_PIN_LAST_ERROR };
+}
+
+function noteModeFailure(e: unknown): void {
+  MODE_PIN_FAILURES++;
+  MODE_PIN_LAST_ERROR = String((e as Error)?.message ?? e);
+}
+
+/** cid 컬렉션의 모드를 node 에 고정한다. 성공 여부를 돌려준다. */
+function pinMode(node: SceneNode, cid: string | undefined, modeId: string | undefined): boolean {
+  if (!cid || !modeId) return false;
+  const coll = MODE_COLLECTIONS[cid];
+  if (!coll) { noteModeFailure(`컬렉션 ${cid} 개체를 받지 못함(primeModeCollections 누락)`); return false; }
+  try {
+    (node as unknown as {
+      setExplicitVariableModeForCollection: (c: VariableCollection, mid: string) => void;
+    }).setExplicitVariableModeForCollection(coll, modeId);
+    return true;
+  } catch (e) { noteModeFailure(e); return false; }
+}
+
+/** cid 컬렉션의 모드 고정을 푼다. 성공 여부를 돌려준다. */
+function unpinMode(node: SceneNode, cid: string | undefined): boolean {
+  if (!cid) return false;
+  const coll = MODE_COLLECTIONS[cid];
+  if (!coll) { noteModeFailure(`컬렉션 ${cid} 개체를 받지 못함(primeModeCollections 누락)`); return false; }
+  try {
+    (node as unknown as {
+      clearExplicitVariableModeForCollection: (c: VariableCollection) => void;
+    }).clearExplicitVariableModeForCollection(coll);
+    return true;
+  } catch (e) { noteModeFailure(e); return false; }
+}
+
 /** 노드 Appearance 에 Semantic Color V2 컬렉션의 특정 모드를 명시적으로 연결한다. */
 export function setMode(node: SceneNode, maps: BuildMaps, modeId: string): void {
-  try {
-    // 프로젝트 표준 시그니처: (collectionId, modeId), 타이핑 차이로 any 캐스팅 (figma-component-audit 동일)
-    (node as unknown as {
-      setExplicitVariableModeForCollection: (cid: string, mid: string) => void;
-    }).setExplicitVariableModeForCollection(maps.semanticColorCollectionId, modeId);
-  } catch (e) {
-    console.warn("[SW Installer] 모드 연결 실패:", e);
-  }
+  pinMode(node, maps.semanticColorCollectionId, modeId);
 }
 
 /** 이미 깔려 있는 부품 마스터에 박혀 있던 모드 고정을 걷어낸다(2026-09-21).
@@ -243,11 +324,7 @@ async function unpinInstalledMasters(maps: BuildMaps): Promise<number> {
         if (!pins) continue;
         const clear = (cid: string | undefined): boolean => {
           if (!cid || !pins[cid]) return false;
-          try {
-            (child as unknown as { clearExplicitVariableModeForCollection: (c: string) => void })
-              .clearExplicitVariableModeForCollection(cid);
-            return true;
-          } catch (e) { return false; }
+          return unpinMode(child, cid);
         };
         const a = clear(colorCid);
         const b = clear(shadowCid);
@@ -264,13 +341,7 @@ async function unpinInstalledMasters(maps: BuildMaps): Promise<number> {
  * 라이트로 남는다(2026-08-25 Mobile Header 안 StatusBar 가 흰 띠로 남던 원인).
  */
 function clearMode(node: SceneNode, maps: BuildMaps): void {
-  try {
-    (node as unknown as {
-      clearExplicitVariableModeForCollection: (cid: string) => void;
-    }).clearExplicitVariableModeForCollection(maps.semanticColorCollectionId);
-  } catch (e) {
-    console.warn("[SW Installer] 모드 핀 해제 실패:", e);
-  }
+  unpinMode(node, maps.semanticColorCollectionId);
 }
 
 /**
@@ -286,11 +357,50 @@ function setShadowMode(node: SceneNode, maps: BuildMaps, modeId: string | undefi
   let kind = "";
   try { kind = String(node.type); } catch (e) { kind = ""; }
   if (kind === "COMPONENT") return;
-  try {
-    (node as unknown as {
-      setExplicitVariableModeForCollection: (cid: string, mid: string) => void;
-    }).setExplicitVariableModeForCollection(sCid, modeId);
-  } catch (e) { /* 컬렉션 미설치·모의 실행 */ }
+  pinMode(node, sCid, modeId);
+}
+
+/** 그림자 모드까지 함께 거는 다크 스펙 — buildGroupedSpec 에 `shadowMode: true` 로 넘기는 세트 제목. */
+const SHADOW_SPEC_TITLES = new Set(["Modal", "Modal Content"]);
+
+/** 이미 깔린 `<이름> — Spec Dark` 프레임에 Dark 를 다시 건다.
+ *  설치기는 있는 세트를 건너뛰므로(기존 보존), 모드 고정이 빠진 채 깔린 다크 스펙은 재설치로도
+ *  고쳐지지 않는다(2026-10-02~13 dynamic-page 사고 — primeModeCollections 주석). 그래서 설치할 때마다
+ *  다크 스펙 프레임과 그 안 인스턴스를 새로 만들 때와 같은 방식(buildGroupedSpec·buildSpec)으로 다시 건다.
+ *  대상은 설치기만 붙이는 접미사 ` — Spec Dark` 를 가진 프레임뿐이다. 이미 Dark 면 건드리지 않는다. */
+async function repinInstalledDarkSpecs(maps: BuildMaps): Promise<number> {
+  const cid = maps.semanticColorCollectionId;
+  const dark = maps.semanticDarkModeId;
+  if (!cid || !dark || dark === maps.semanticLightModeId) return 0;
+  const SUFFIX = " — Spec Dark";
+  let count = 0;
+  let pages: readonly PageNode[] = [];
+  try { pages = figma.root.children; } catch (e) { return 0; }
+  if (!Array.isArray(pages)) return 0;
+  for (const page of pages) {
+    try { await page.loadAsync(); } catch (e) { continue; }
+    let frames: SceneNode[] = [];
+    try { frames = page.findAllWithCriteria({ types: ["FRAME"] }) as SceneNode[]; } catch (e) { continue; }
+    if (!Array.isArray(frames)) continue;
+    for (const frame of frames) {
+      const nm = String(frame.name || "");
+      if (!(nm.length > SUFFIX.length && nm.slice(nm.length - SUFFIX.length) === SUFFIX)) continue;
+      const withShadow = SHADOW_SPEC_TITLES.has(nm.slice(0, nm.length - SUFFIX.length));
+      const targets: SceneNode[] = [frame];
+      try { (frame as FrameNode).findAll((n) => n.type === "INSTANCE").forEach((n) => targets.push(n)); } catch (e) { /* */ }
+      let touched = false;
+      for (const t of targets) {
+        const pins = ((t as any).explicitVariableModes || {}) as { [c: string]: string };
+        if (pins[cid] !== dark && pinMode(t, cid, dark)) touched = true;
+        if (withShadow && maps.semanticShadowCollectionId && maps.semanticShadowDarkModeId
+          && pins[maps.semanticShadowCollectionId] !== maps.semanticShadowDarkModeId) {
+          if (pinMode(t, maps.semanticShadowCollectionId, maps.semanticShadowDarkModeId)) touched = true;
+        }
+      }
+      if (touched) count++;
+    }
+  }
+  return count;
 }
 
 // ── 그림자 Effect 생성 (2026-07-29) ──────────────────────────────────────────
@@ -531,9 +641,9 @@ async function buildOne(variant: VariantId, size: SizeId, state: StateId, maps: 
   comp.minWidth = cfg.minWidth; // 사이즈별 디폴트 최소 너비 (MD/LG=80, XSM=64, XXSM=56)
 
   // ── 텍스트 노드 (V2.4 텍스트 스타일 적용) ──
-  await figma.loadFontAsync({ family: "Pretendard", style: "Medium" });
+  await figma.loadFontAsync({ family: TEXT_STYLE_FONT_FAMILY, style: "Medium" });
   const text = figma.createText();
-  text.fontName = { family: "Pretendard", style: "Medium" };
+  text.fontName = { family: TEXT_STYLE_FONT_FAMILY, style: "Medium" };
   text.characters = "버튼";
   const ts = requireStyle(maps.textStyles, cfg.textStyle);
   await text.setTextStyleIdAsync(ts.id);
@@ -570,9 +680,9 @@ async function makeLabel(
   x: number, y: number, w: number,
   align: "LEFT" | "CENTER", role: SpecRole, dark: boolean
 ): Promise<TextNode> {
-  await figma.loadFontAsync({ family: "Pretendard", style });
+  await figma.loadFontAsync({ family: TEXT_STYLE_FONT_FAMILY, style });
   const t = figma.createText();
-  t.fontName = { family: "Pretendard", style };
+  t.fontName = { family: TEXT_STYLE_FONT_FAMILY, style };
   t.fontSize = fontSize;
   t.characters = text;
   // 정본 텍스트 스타일 바인딩 — 스타일이 없으면(mock·설치 누락) raw 글꼴로 폴백해 빌드는 계속한다.
@@ -943,9 +1053,9 @@ function scv(maps: BuildMaps, key: string): Variable {
 
 /** 변수에 바인딩된 채움색을 가진 텍스트 노드. */
 async function makeBoundText(chars: string, fontSize: number, style: string, colorVar: Variable, requiredStyleKey?: string): Promise<TextNode> {
-  await figma.loadFontAsync({ family: "Pretendard", style });
+  await figma.loadFontAsync({ family: TEXT_STYLE_FONT_FAMILY, style });
   const t = figma.createText();
-  t.fontName = { family: "Pretendard", style };
+  t.fontName = { family: TEXT_STYLE_FONT_FAMILY, style };
   t.fontSize = fontSize;
   t.characters = chars;
   // V2.4 텍스트 스타일 바인딩 — 타이포(크기·행간·자간·폰트)를 정본 스타일에 연결(Button 과 동일 방식).
@@ -1630,6 +1740,11 @@ async function buildInput(maps: BuildMaps, originY: number, originX: number = IN
           const trail = figma.createFrame();
           trail.name = "trail"; trail.fills = [];
           trail.layoutMode = "HORIZONTAL"; trail.counterAxisAlignItems = "CENTER";
+          // 내용 맞춤(HUG) 상자는 **보이는 자식이 없으면 처음 크기에 머문다** — createFrame 기본 100×100 이
+          //   그대로 남아, 눈(숨김)만 든 상태에서 글자 자리가 100 줄고 MD 의 「입력해 주세요」가 두 줄로 꺾였다
+          //   (river 발견 2026-10-14 · Figma 실측 trail 폭 100). 처음 크기를 0 에 가깝게 두고 내용 맞춤으로 바꾼다.
+          //   resize 는 두 방향을 FIXED 로 되돌리므로 resize 를 먼저 한다.
+          trail.resize(0.01, 0.01);
           trail.primaryAxisSizingMode = "AUTO"; trail.counterAxisSizingMode = "AUTO";
           // PC 2px(spacing/2). Mobile 은 0 — 48×48 칸을 맞붙이고 왼쪽 그림만 안쪽으로 당겨
           // 보이는 간격을 좁힌다(river HD-3 A). 칸은 겹치지 않는다.
@@ -1862,6 +1977,26 @@ async function makeIconInstance(role: string, colorVar: Variable, size: number, 
   }
 }
 
+/** 아이콘 인스턴스를 size 정사각으로 맞춘다.
+ *  아이콘 안 도형이 모두 「크기 따라 늘기(SCALE)」면 resize 로 충분하지만, 중첩 인스턴스·고정 위치
+ *  (CENTER·TOP/LEFT 등) 조각이 섞인 아이콘은 resize 하면 조각마다 따로 움직여 그림이 어긋난다
+ *  — 하단 탭 검색(Solid) 아이콘이 24→32 에서 속 채운 원만 왼쪽 위에 남던 원인(river 발견 2026-10-14).
+ *  그런 아이콘은 rescale 로 통째로 키운다. */
+function sizeIconInstance(inst: InstanceNode, size: number): void {
+  if (!size || (inst.width === size && inst.height === size)) return;
+  let uniform = true;
+  try {
+    for (const c of inst.children as SceneNode[]) {
+      const k = (c as any).constraints as { horizontal?: string; vertical?: string } | undefined;
+      if (c.type === "INSTANCE" || !k || k.horizontal !== "SCALE" || k.vertical !== "SCALE") { uniform = false; break; }
+    }
+  } catch (e) { uniform = true; }
+  if (!uniform && inst.width === inst.height && typeof (inst as any).rescale === "function") {
+    try { (inst as any).rescale(size / inst.width); return; } catch (e) { /* 아래 resize 로 */ }
+  }
+  inst.resize(size, size);
+}
+
 /** Mobile Header 전용 아이콘 import. 원본 라이브러리 인스턴스가 아니면 빌드를 중단한다.
  *  raw SVG/hex 폴백을 두지 않아 Semantic-only·원본 provenance 규칙을 지킨다. */
 async function makeRequiredIconInstance(
@@ -1876,7 +2011,7 @@ async function makeRequiredIconInstance(
   const remote = await figma.importComponentByKeyAsync(key);
   const inst = remote.createInstance();
   inst.name = role;
-  if (size && (inst.width !== size || inst.height !== size)) inst.resize(size, size);
+  sizeIconInstance(inst, size);
   rebindIconColor(inst, colorVar);
   if (rotation) inst.rotation = rotation;
   if (accentVar) {
@@ -6473,7 +6608,7 @@ async function buildFooter(maps: BuildMaps, originY: number): Promise<{ set: Com
     mLinks.appendChild(await makeBoundText(LINK_NAMES[i], 12, "Regular", scv(maps, "color/text/body/tertiary")));
     if (i < LINK_NAMES.length - 1) {
       const sep = figma.createRectangle(); sep.name = "sep";
-      sep.resize(1, 10); sep.fills = [boundPaint(scv(maps, "color/line/default"))];
+      sep.resize(1, 10); sep.fills = [boundPaint(scv(maps, "color/icon/gray-light"))]; // PC 와 같은 구분선 색(river 2026-10-19 "모바일푸터의 폰트 색상, 라인색상을 pc웹에 맞춰줘")
       mLinks.appendChild(sep);
     }
   }
@@ -7266,20 +7401,20 @@ async function buildMultiToggle(maps: BuildMaps, originY: number): Promise<{ set
 
 // ── Data Tag (뱃지) — 상태를 보여주기만 하는 작은 라벨 ──────────────────────
 //   river 승인 2026-09-29 "오케이 4종 승인할게" · 색 이름 승인 2026-09-30 "토큰은 제안한대로 추가하자".
-//   축: Type(Chips 둥근 · Square 각진) × Variant(Line 선 · Solid 채움) × Color(Blue · Red)
-//   뜻이 정해진 두 색만 쓴다 — 파랑 = 승인·확인 / 빨강 = 주의·에러.
+//   축: Type(Chips 둥근 · Square 각진) × Variant(Line 선 · Solid 채움) × Color(Blue · Red · Gray)
+//   파랑 = 승인·확인 / 빨강 = 주의·에러 / 회색 = 그 밖의 중립 상태(대기 등) — 회색은 river 승인 2026-10-13.
 //   색은 뱃지 전용 쓰임 이름(color/tag/*)이 갖는다. 라이트·다크가 그 이름 안에 들어 있다.
 async function buildDataTag(maps: BuildMaps, originY: number): Promise<{ set: ComponentSetNode; bottomY: number }> {
   const types = ["Chips", "Square"];
   const variants = ["Line", "Solid"];
-  const colors = ["Blue", "Red"];
+  const colors = ["Blue", "Red", "Gray"];
   const num = (k: string): Variable => requireVar(maps.foundationNumber, k, "Foundation Number");
   const comps: ComponentNode[] = [];
   const cells: { comp: ComponentNode; type: string; variant: string; color: string }[] = [];
   for (const type of types) {
     for (const variant of variants) {
       for (const color of colors) {
-        const tone = color.toLowerCase();               // blue | red
+        const tone = color.toLowerCase();               // blue | red | gray
         const solid = variant === "Solid";
         const comp = figma.createComponent();
         comp.name = `Type=${type}, Variant=${variant}, Color=${color}`;
@@ -7300,7 +7435,7 @@ async function buildDataTag(maps: BuildMaps, originY: number): Promise<{ set: Co
         comp.strokes = [boundPaint(scv(maps, solid ? `color/tag/solid/bg/${tone}` : `color/tag/line/border/${tone}`))];
         comp.strokeWeight = 1; comp.strokeAlign = "INSIDE";
         comp.setBoundVariable("strokeWeight", num("border-width/1"));
-        const labelVar = solid ? scv(maps, "color/tag/solid/label") : scv(maps, `color/tag/line/label/${tone}`);
+        const labelVar = solid ? scv(maps, `color/tag/solid/label/${tone}`) : scv(maps, `color/tag/line/label/${tone}`);
         comp.appendChild(await makeBoundText("라벨", 12, "Medium", labelVar));
         setLightMode(comp, maps);
         comps.push(comp);
@@ -7577,8 +7712,8 @@ async function buildSideNavItem(maps: BuildMaps, originY: number): Promise<{ set
         icon.name = "icon";
         bindIconSize(icon, num("sizing/20"));
         comp.appendChild(icon);
-        // 선택만 Bold(title/14B) — 나머지는 14 Medium(body/14M · 자간 tight). figmaBuildSpec ①.
-        const label = await makeBoundText("메뉴", 14, state === "Selected" ? "Bold" : "Medium", scv(maps, c.label));
+        // 선택만 Bold(title/14B) — 나머지는 14 Regular(body/14R · 자간 tight, river 2026-10-01 "보통으로 하자"). figmaBuildSpec ①.
+        const label = await makeBoundText("메뉴", 14, state === "Selected" ? "Bold" : "Regular", scv(maps, c.label));
         label.name = "label";
         comp.appendChild(label);
         label.layoutGrow = 1;
@@ -7681,7 +7816,7 @@ async function buildSideNavSubItem(maps: BuildMaps, originY: number): Promise<{ 
     comp.setBoundVariable("paddingRight", num("spacing/10"));
     comp.fills = c.bg ? [boundPaint(scv(maps, c.bg))] : [];
     bindRadius(comp, maps, "radius/6");
-    const label = await makeBoundText("하위 메뉴", 14, state === "Selected" ? "Bold" : "Medium", scv(maps, c.label));
+    const label = await makeBoundText("하위 메뉴", 14, state === "Selected" ? "Bold" : "Regular", scv(maps, c.label));
     label.name = "label";
     comp.appendChild(label);
     label.layoutGrow = 1;
@@ -8091,6 +8226,7 @@ export async function buildAllComponents(
   for (const key of Object.keys(BUILT_COMPS)) delete BUILT_COMPS[key];
   TEXT_STYLES = maps.textStyles || {};  // makeBoundText 가 텍스트 스타일 바인딩에 사용
   SPEC_MAPS = maps;                     // 스펙 시트 라벨·밴드·배경의 토큰 바인딩에 사용
+  await primeModeCollections(maps);     // 모드 고정은 컬렉션 개체로만 건다(dynamic-page — pinMode 주석)
   const page = figma.currentPage;
   // 가이드 페이지 바탕도 정본 토큰(섹션보다 한 단계 아래 면). Figma 기본 배경은 raw 색이라 토큰 밖이었다.
   bindSurface("page", (paint) => { page.backgrounds = [paint]; });
@@ -8191,7 +8327,7 @@ export async function buildAllComponents(
   const sectionByName = (nm: string): SectionNode | null => {
     let found: SectionNode | null = null;
     try {
-      const hits = page.findAll((n) => n.type === "SECTION" && n.name === nm);
+      const hits = findAllOfTypes(page, ["SECTION"], (n) => n.name === nm);
       if (Array.isArray(hits) && hits.length) found = hits[0] as SectionNode;
     } catch (e) {
       try {
@@ -8218,7 +8354,7 @@ export async function buildAllComponents(
   };
   let existing = new Set<string>();
   try {
-    const r = page.findAll((n) => n.type === "COMPONENT_SET");
+    const r = findAllOfTypes(page, ["COMPONENT_SET"]);
     if (Array.isArray(r)) existing = new Set((r as ComponentSetNode[]).map((n) => n.name));
   } catch (e) { /* mock/no-page → fresh */ }
 
@@ -8365,8 +8501,8 @@ export async function buildAllComponents(
   //   꺼내 놓으면 아래 1단계가 "보존한 기존 부품"으로 알아보고 새 카테고리 소유로 등록한다.
   try {
     const RETIRED = ["Line Tab", "Pagination", "Filter Chip", "Modal", "Bottom Sheet"];
-    const olds = figma.currentPage.findAll(
-      (n) => n.type === "SECTION" && RETIRED.indexOf(String(n.name)) >= 0,
+    const olds = findAllOfTypes(figma.currentPage, ["SECTION"],
+      (n) => RETIRED.indexOf(String(n.name)) >= 0,
     ) as SectionNode[];
     if (Array.isArray(olds)) {
       for (const sec of olds) {
@@ -8612,7 +8748,7 @@ export async function buildAllComponents(
   //   mock(키체크) 환경은 createSection/relocate no-op → 가드로 통과.
   try {
     const findSec = (nm: string): SectionNode | null => {
-      const a = figma.currentPage.findAll((n) => n.type === "SECTION" && n.name === nm);
+      const a = findAllOfTypes(figma.currentPage, ["SECTION"], (n) => n.name === nm);
       return Array.isArray(a) && a.length ? (a[0] as SectionNode) : null;
     };
     const widthOf = (s: SectionNode): number => {
@@ -8688,7 +8824,7 @@ export async function buildAllComponents(
     // 바깥 묶음("Mobile Pattern")은 걷어낸다(river 지시 2026-09-28) — 묶음 안 묶음 대신
     //   아주 큰 영역 제목으로 구분한다. 섹션을 그냥 지우면 자식까지 지워지므로 먼저 꺼낸다.
     try {
-      const mps = figma.currentPage.findAll((n) => n.type === "SECTION" && n.name === "Mobile Pattern");
+      const mps = findAllOfTypes(figma.currentPage, ["SECTION"], (n) => n.name === "Mobile Pattern");
       if (Array.isArray(mps)) {
         for (const mp of mps as SectionNode[]) {
           let kids: SceneNode[] = [];
@@ -8808,6 +8944,17 @@ export async function buildAllComponents(
     const unpinned = await unpinInstalledMasters(maps);
     if (unpinned) console.log(`[installer] 옛 부품 ${unpinned}개의 모드 고정을 걷어냈습니다(다크 화면에서 따라 뒤집히게).`);
   } catch (e) { console.warn("[installer] 모드 고정 정리 실패(설치 자체는 정상):", e); }
+  if (onProgress) onProgress("다크 스펙에 Dark 모드를 다시 거는 중…", 99);
+  try {
+    const repinned = await repinInstalledDarkSpecs(maps);
+    if (repinned) console.log(`[installer] 다크 스펙 ${repinned}개에 Dark 모드를 다시 걸었습니다.`);
+  } catch (e) { console.warn("[installer] 다크 스펙 재고정 실패:", e); }
+  const pinFail = modePinFailures();
+  if (pinFail.count) {
+    // 조용히 넘기지 않는다 — 다크가 통째로 사라진 사고(2026-10-02)는 이 실패를 삼켜서 몰랐다.
+    console.error(`[installer] 모드 고정 실패 ${pinFail.count}건 — 다크/라이트가 의도대로 안 걸린 자리가 있습니다. 마지막 오류: ${pinFail.lastError}`);
+    failed.push({ name: "다크/라이트 모드 고정", reason: `${pinFail.count}건 실패 — ${pinFail.lastError}` });
+  }
   if (onProgress) {
     onProgress(
       `완료 — 추가 ${added.length}개 · 기존 보존 ${skipped.length}개` +
@@ -8872,10 +9019,11 @@ export const AREA_RULE_GAP = 40;                 // 제목 글자와 줄 사이
 /** 같은 이름의 옛 영역 제목과 그 줄을 걷어낸다(멱등). 이 이름은 설치기만 쓴다. */
 export function removeAreaTitle(label: string): void {
   try {
-    const olds = figma.currentPage.findAll(
+    // 설치기가 만든 제목은 글자(TEXT), 옆 줄은 사각형(RECTANGLE)뿐이다 — 그 종류만 찾는다(속도).
+    const olds = findAllOfTypes(figma.currentPage, ["TEXT", "RECTANGLE", "FRAME", "LINE"],
       (n) => String(n.name) === `${label} ${AREA_TITLE_SUFFIX}`
         || String(n.name) === `${label} ${AREA_RULE_SUFFIX}`,
-    ) as SceneNode[];
+    );
     if (Array.isArray(olds)) for (const n of olds) { try { n.remove(); } catch (e) { /* 이미 지워짐 */ } }
   } catch (e) { /* mock/no-page */ }
 }
@@ -8887,12 +9035,12 @@ export async function buildAreaTitle(
   if (typeof figma.createText !== "function") return null;
   if (!SPEC_MAPS) return null;
   removeAreaTitle(label);
-  try { await figma.loadFontAsync({ family: "Pretendard", style: "Bold" }); } catch (e) { return null; }
+  try { await figma.loadFontAsync({ family: TEXT_STYLE_FONT_FAMILY, style: "Bold" }); } catch (e) { return null; }
   let t: TextNode;
   try { t = figma.createText(); } catch (e) { return null; }
   try {
     t.name = `${label} ${AREA_TITLE_SUFFIX}`;
-    t.fontName = { family: "Pretendard", style: "Bold" };
+    t.fontName = { family: TEXT_STYLE_FONT_FAMILY, style: "Bold" };
     t.characters = label;
     t.fontSize = AREA_TITLE_SIZE;
     t.textAutoResize = "WIDTH_AND_HEIGHT";
@@ -8940,7 +9088,7 @@ export const AREA_TITLE_SPACE = Math.round(AREA_TITLE_SIZE * 1.3) + 280;
 //  · 색은 전부 Variable 바인딩 — H2. 면=Foundation gray/700(Semantic 에 '진한 면' 역할이 없다 · river
 //    지시 2026-09-28 로 진하기 3회 조정), 글자=Semantic text/state/accent-inverse. 테두리는 쓰지 않는다.
 //  · 모서리는 Foundation radius/16 바인딩, 글자는 정본 텍스트 스타일 바인딩 — H3.
-const SECTION_HEADER_SUFFIX = "— Section Header";
+export const SECTION_HEADER_SUFFIX = "— Section Header";
 const SECTION_HEADER_H = 104;
 const SECTION_RADIUS_TOKEN = "radius/16";   // 섹션·머리띠 모서리 둥글기 = 정본 숫자 토큰
 const SECTION_RADIUS = 16;                  // 위 토큰의 값(Variable 바인딩이 안 될 때만 쓰는 대체값)
@@ -9001,9 +9149,9 @@ async function headerText(
   if (!ts && !rawSize) return null;
   const bold = styleKey.indexOf("B") === styleKey.length - 1;
   const style = bold ? "Bold" : "Medium";
-  try { await figma.loadFontAsync({ family: "Pretendard", style }); } catch (e) { return null; }
+  try { await figma.loadFontAsync({ family: TEXT_STYLE_FONT_FAMILY, style }); } catch (e) { return null; }
   const t = figma.createText();
-  t.fontName = { family: "Pretendard", style };
+  t.fontName = { family: TEXT_STYLE_FONT_FAMILY, style };
   t.characters = chars;
   if (rawSize) {
     // 정본 스타일에 없는 크기 — figma-font-policy.json 의 승인된 예외 자리에서만 쓴다.
@@ -9037,9 +9185,10 @@ async function buildSectionHeaderInner(
   // 섹션 밖으로 꺼내진 옛 머리띠도 걷어낸다 — 섹션 직속만 보면 페이지에 영구 고아가 쌓인다
   //   (🤖 component-verifier 지적 2026-09-23). 이 이름은 설치기만 쓰므로 이름으로 지워도 안전하다.
   try {
-    const stale = figma.currentPage.findAll(
+    // 머리띠는 설치기가 늘 틀(FRAME)로 만든다 — 그 종류만 찾는다(속도).
+    const stale = findAllOfTypes(figma.currentPage, ["FRAME", "GROUP", "RECTANGLE", "TEXT"],
       (n) => String(n.name) === `${title} ${SECTION_HEADER_SUFFIX}`,
-    ) as SceneNode[];
+    );
     if (Array.isArray(stale)) for (const n of stale) { try { n.remove(); } catch (e) { /* 이미 지워짐 */ } }
   } catch (e) { /* mock/no-page */ }
   const band = figma.createFrame();
@@ -9130,7 +9279,7 @@ export async function wrapCategoryInSection(
   // 같은 이름 섹션 재사용(멱등) 또는 신규 생성
   let section: SectionNode | null = null;
   try {
-    const secs = figma.currentPage.findAll((n) => n.type === "SECTION" && n.name === title);
+    const secs = findAllOfTypes(figma.currentPage, ["SECTION"], (n) => n.name === title);
     if (Array.isArray(secs) && secs.length) section = secs[0] as SectionNode;
   } catch (e) { /* mock → 신규 */ }
   if (!section) section = figma.createSection();

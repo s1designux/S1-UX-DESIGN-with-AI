@@ -37,6 +37,13 @@ const EXTRA_CANDIDATES = {
     ifExists('platform/react/index.d.ts', '타입 정의(<code>index.d.ts</code>)')
   ],
   vue: () => [],
+  'react-native': (platform) => [
+    ifExists('platform/react-native/README.md', '사용 설명서(<code>README.md</code>)'),
+    ifExists('platform/react-native/index.d.ts', '타입 정의(<code>index.d.ts</code>)'),
+    ifExists(platform.sample ?? '', '바로 여는 Expo 예제 앱(<code>platform/react-native-sample</code>)'),
+    ifExists('platform/react-native/gallery/S1Gallery.js', '조합을 한 화면에 늘어놓는 갤러리(<code>S1Gallery</code>)'),
+    ifExists('platform/react-native/coverage.json', 'RN 에 못 옮긴 CSS 목록(<code>coverage.json</code>)')
+  ],
   kotlin: (platform) => [
     ifExists(platform.sample ?? '', '바로 돌려 보는 예제 앱(<code>platform/kotlin-sample</code>)'),
     ifExists(platform.preview ?? '', '부품을 한 화면에 늘어놓은 미리보기(<code>preview/S1Gallery.kt</code>)'),

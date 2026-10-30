@@ -32,20 +32,32 @@ const ZIP_NAME = 's1-ui-dev-package.zip';
 const TOOL_PACKAGES = {
   'html-css-js': {
     title: 'HTML · CSS · JavaScript',
-    include: ['manifest.json', 'component-token-map.json', 'assets', 's1-ui.css', 's1-ui.js', 's1-ui.auto.js', 'components', 'examples', 'tools', 'preview.html'],
-    start: ['압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.', '**`preview.html` 을 브라우저로 열면 컴포넌트 22종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.', '`assets/css/tokens.css` 와 `s1-ui.css` 를 `<head>` 에서 읽힙니다.', '`s1-ui.auto.js` 의 `autoInit()` 을 한 번 부르면 동작이 전부 붙습니다.', '마크업은 `examples/` 폴더의 파일을 복사해서 씁니다(모바일용은 `*.mobile.html`).']
+    include: ['manifest.json', 'component-token-map.json', 'assets', 's1-ui.css', 's1-ui.base.css', 's1-ui.js', 's1-ui.auto.js', 'components', 'examples', 'tools', 'preview.html', 'platform/manifest.json', 'platform/contract.json', 'platform/tokens.json'],
+    start: [
+      '압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.',
+      '**`preview.html` 을 더블클릭하면 컴포넌트 {{count}}종이 실제 모습으로 보입니다**(서버 없이 열립니다) — 무엇을 쓸지 여기서 고르세요.',
+      '내 페이지 `<head>` 에 글꼴·`assets/css/tokens.css`·`s1-ui.css` 를 읽힙니다(아래 「내 페이지에 붙이기」 코드 그대로).',
+      '페이지 끝에 `<script type="module">` 로 `s1-ui.auto.js` 를 불러 `autoInit()` 을 한 번 부르면 동작이 전부 붙습니다. 일반 `<script src>` 로는 동작하지 않습니다.',
+      '마크업은 `examples/` 폴더의 파일을 복사해서 씁니다(모바일용은 `*.mobile.html`). 부품마다 쓰는 법은 `components/` 폴더의 같은 이름 `.md` 설명서에 있습니다.'
+    ],
+    guide: true
   },
   react: {
     title: 'React · Next.js',
-    include: ['manifest.json', 'assets', 's1-ui.css', 's1-ui.auto.js', 'components', 'platform/react', 'platform/contract.json', 'tools', 'preview.html'],
+    include: ['manifest.json', 'assets', 's1-ui.css', 's1-ui.base.css', 's1-ui.auto.js', 'components', 'platform/react', 'platform/manifest.json', 'platform/contract.json', 'platform/tokens.json', 'tools', 'preview.html'],
     filter: (relative) => !relative.startsWith('components/') || relative.endsWith('.js'),
-    start: ['압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.', '**`preview.html` 을 브라우저로 열면 컴포넌트 22종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.', '앱 진입 파일에서 `assets/css/tokens.css` 와 `s1-ui.css` 를 한 번 읽힙니다.', '`import { S1Button } from "./s1-ui/platform/react";` 처럼 쓸 것만 꺼내 씁니다.', '받는 값과 쓰는 법은 `platform/react/README.md` 에 있습니다.']
+    start: ['압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트의 `src/` 안에 그대로 넣습니다.', '**`preview.html` 을 브라우저로 열면 컴포넌트 {{count}}종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.', '앱 진입 파일(Vite `src/main.jsx` · Next.js `app/layout.tsx`)에서 CSS 를 한 번, 이 순서로 읽힙니다: `assets/css/tokens.css`(필수) · `assets/css/typography.css`(선택) · `s1-ui.base.css`(선택 — 페이지 바탕·기본 글자색) · `s1-ui.css`(필수).', '글꼴 Pretendard 는 묶음에 들어 있지 않습니다 — `index.html` 의 `<head>` 에 `<link rel="stylesheet" href="{{fontSource}}">` 를 넣습니다. 다크 모드는 `<html data-theme="dark">` 입니다.', '`import { S1Button } from "./s1-ui/platform/react";` 처럼 쓸 것만 꺼내 씁니다(Next.js 에서도 그대로 — 부품 파일마다 "use client" 가 들어 있습니다).', '받는 값과 쓰는 법·예시는 `platform/react/README.md` 에 있습니다.']
   },
   vue: {
     title: 'Vue',
-    include: ['manifest.json', 'assets', 's1-ui.css', 's1-ui.auto.js', 'components', 'platform/vue', 'platform/contract.json', 'tools', 'preview.html'],
+    include: ['manifest.json', 'assets', 's1-ui.css', 's1-ui.auto.js', 'components', 'platform/vue', 'platform/manifest.json', 'platform/contract.json', 'platform/tokens.json', 'tools', 'preview.html'],
     filter: (relative) => !relative.startsWith('components/') || relative.endsWith('.js'),
-    start: ['압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.', '**`preview.html` 을 브라우저로 열면 컴포넌트 22종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.', '앱 진입 파일에서 `assets/css/tokens.css` 와 `s1-ui.css` 를 한 번 읽힙니다.', '`import { S1Button } from "./s1-ui/platform/vue";` 처럼 쓸 것만 꺼내 씁니다.']
+    start: ['압축을 풀면 나오는 `s1-ui` 폴더를 프로젝트에 그대로 넣습니다.', '**`preview.html` 을 브라우저로 열면 컴포넌트 {{count}}종이 실제 모습으로 보입니다** — 무엇을 쓸지 여기서 고르세요.', '앱 진입 파일에서 `assets/css/tokens.css` 와 `s1-ui.css` 를 한 번 읽힙니다.', '`import { S1Button } from "./s1-ui/platform/vue";` 처럼 쓸 것만 꺼내 씁니다.']
+  },
+  'react-native': {
+    title: 'React Native (Expo)',
+    include: ['manifest.json', 'platform/react-native', 'platform/react-native-sample', 'platform/behavior.json', 'platform/tokens.json'],
+    start: ['압축을 풀면 나오는 `s1-ui` 폴더에서 `platform/react-native` 폴더를 프로젝트에 넣습니다(예: `src/s1-ui`). `react-native-svg` 를 설치합니다(`npx expo install react-native-svg`).', '**`platform/react-native-sample` 을 `npm install` · `npx expo start` 로 열면 승인된 조합이 한 화면에 보입니다** — PC·Mobile 모두 담겨 있습니다.', '앱 맨 위를 `S1Provider` 로 감쌉니다 — 다크 모드와 서체(Pretendard)가 여기서 정해집니다.', '부품은 이름으로 부릅니다 — `S1Button` 처럼 `S1` 로 시작하고, 화면은 `breakName="pc" | "mobile"` 로 고릅니다.', '쓰는 법과 RN 에서 원리상 다른 점은 `platform/react-native/README.md` 에 있습니다.']
   },
   kotlin: {
     title: 'Kotlin (Android)',
@@ -97,6 +109,130 @@ function distFingerprint() {
 const componentList = manifest.components.filter((component) => component.status === 'approved').map(({ id }) => id);
 const FACTS = allToolFacts(manifest, platform);
 
+/** 웹(HTML·CSS·JS) 사용 안내 — 전체 README 와 html-css-js 묶음 README 가 같은 내용을 쓴다.
+ *  숫자·목록은 배포본 manifest 에서 읽는다(손으로 적지 않는다). */
+function webGuideMd() {
+  const pascal = (id) => id.replace(/(^|-)([a-z0-9])/g, (_, __, c) => c.toUpperCase());
+  const count = manifest.components.length;
+  const mobileOnly = manifest.components.filter((component) => component.mobileOnly).map(({ id }) => id);
+  const rows = manifest.components.map((component) => {
+    const files = [...new Set(Object.values(component.examples ?? { pc: component.example }))];
+    return `| ${component.id} | S1${pascal(component.id)} | ${files.map((file) => `\`${file}\``).join(' ')} | \`components/${component.id}.md\` |`;
+  }).join('\n');
+  /* 종류를 고르는 속성 표 — 속성 이름은 부품마다 다르다(정본 어휘 그대로). 배포본 manifest 의 kindAttributes(src/kind-attributes.json, 계약과 대조됨)에서 만든다. */
+  const kindRows = manifest.components.flatMap((component) => (component.kindAttributes ?? []).flatMap((kind) => Object.entries(kind.values).map(([value, meaning]) => `| ${component.id} | \`${kind.attribute}\` | \`${value}\` | ${meaning} |`))).join('\n');
+  const kindNames = [...new Set(manifest.components.flatMap((component) => (component.kindAttributes ?? []).map((kind) => kind.attribute)))];
+  const kindByName = kindNames.map((name) => `| \`${name}\` | ${manifest.components.filter((component) => (component.kindAttributes ?? []).some((kind) => kind.attribute === name)).map(({ id }) => id).join(', ')} |`).join('\n');
+  const font = manifest.fontDependencies[0].source;
+  const [tokensCss, typographyCss] = manifest.commonCssDependencies;
+  const baseCss = (manifest.optionalCssDependencies ?? [])[0]?.file ?? 's1-ui.base.css';
+
+  return `### 내 페이지에 붙이기
+
+\`\`\`html
+<!doctype html>
+<html lang="ko">                       <!-- 다크 모드: <html lang="ko" data-theme="dark"> -->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 글꼴 Pretendard (묶음에 들어 있지 않습니다 — 아래 링크로 받습니다) -->
+  <link rel="stylesheet" href="${font}">
+  <link rel="stylesheet" href="s1-ui/${tokensCss}">
+  <link rel="stylesheet" href="s1-ui/${typographyCss}">   <!-- 선택: typo-* 글자 클래스를 쓸 때 -->
+  <link rel="stylesheet" href="s1-ui/${baseCss}">            <!-- 선택: 페이지 바탕·기본 글자색 (다크 모드에서 바탕이 따라옵니다) -->
+  <link rel="stylesheet" href="s1-ui/s1-ui.css">
+</head>
+<body>
+  <!-- examples/ 에서 복사한 마크업 -->
+  <script type="module">
+    import { autoInit } from "./s1-ui/s1-ui.auto.js";
+    autoInit();
+  </script>
+</body>
+</html>
+\`\`\`
+
+- **\`<script type="module">\` 이어야 합니다.** 일반 \`<script src="…s1-ui.auto.js">\` 로 넣으면 오류가 나고 아무 동작도 붙지 않습니다.
+- 모듈 스크립트는 파일을 더블클릭(\`file://\`)해서 연 내 페이지에서는 브라우저가 막습니다 — 로컬 서버(예: \`npx serve\`)로 여세요. (\`preview.html\` 은 서버 없이 열리도록 따로 만들어 둔 파일입니다.)
+- 글꼴은 위 Pretendard 링크가 있어야 설계한 모양 그대로 나옵니다. 링크가 없으면 부품은 글꼴이 깔린 컴퓨터에서만 그대로 보입니다.
+
+### 다크 모드
+
+\`<html>\` 에 \`data-theme="dark"\` 를 달면 부품 전체가 다크로 바뀝니다(끄려면 속성을 지웁니다). 페이지 바탕과 기본 글자색은 부품이 아니라 내 페이지의 몫이라 그냥 두면 흰색 그대로입니다 — \`${baseCss}\` 를 읽거나, 직접 \`background: var(--color-bg-level-0)\` 를 칠하세요.
+
+### 나중에 넣은 마크업에 동작 붙이기
+
+\`autoInit()\` 은 부른 시점에 있는 마크업에만 동작을 붙입니다. 목록을 불러와 그린 화면처럼 나중에 넣은 조각은 그 조각을 감싼 요소를 넘겨 다시 부르세요 — 두 번 불러도 겹치지 않습니다.
+
+\`\`\`js
+autoInit(document.getElementById("late-area"));
+\`\`\`
+
+부품 하나만 직접 붙이려면(자동 연결 없이):
+
+\`\`\`js
+import { toggle } from "./s1-ui/s1-ui.js";
+const api = toggle.init(document.querySelector('[data-s1-component="toggle"]'));
+\`\`\`
+
+### 모달·바텀시트 열고 닫기
+
+처음에는 숨겨져 있습니다. **속성 한 줄로** 엽니다 — 열 버튼에 창의 id 를, 창 안에서 닫을 요소에 \`data-s1-close\` 를 답니다(값은 닫힌 이유: \`cancel\`·\`confirm\` 등).
+
+\`\`\`html
+<button type="button" data-s1-open="my-modal">열기</button>
+<div id="my-modal" data-s1-component="modal" data-break="pc" data-footer="dual" hidden> … <button type="button" data-s1-close="cancel">취소</button> … </div>
+\`\`\`
+
+스크립트로 열려면 \`import { modal } from "./s1-ui/s1-ui.js"; modal.init(요소).open()\`, 닫으려면 \`.close()\` 입니다. 창 안에서 달력·시간·드롭다운이 열려 있을 때 Esc 는 그것만 닫고 창은 남깁니다. 자세한 것은 \`components/modal.md\` · \`components/modal-content.md\` · \`components/bottom-sheet.md\`.
+
+### 값 넣기·읽기·폼 전송
+
+셀렉트·달력·시간 선택은 \`data-name="이름"\` 을 주면 숨은 입력이 만들어져 \`<form>\` 으로 함께 전송됩니다. 셀렉트는 \`data-value\`(처음 값)·\`api.value\`·\`api.setValue()\`, 달력은 \`data-value\`(단일)·\`data-range-start\`/\`data-range-end\`(기간)·\`api.value\`·\`api.setValue()\`, 페이지네이션은 총 쪽수만 \`api.setTotalPages(n)\` 으로 주면 번호 줄을 다시 그립니다.
+
+### 고르기는 부품이 알아서 (표시만 달면 됩니다)
+
+칩·시트 목록·하단 탭은 고르는 동작을 스크립트로 짜지 않아도 됩니다. **표시가 없으면 종전과 똑같이 아무것도 바뀌지 않습니다.**
+
+| 부품 | 표시 | 하는 일 | 이벤트(\`element.addEventListener\`) |
+|---|---|---|---|
+| chip | 칩을 감싼 요소에 \`data-s1-select="single"\` | 하나만 켜진다(켜진 칩을 다시 눌러도 꺼지지 않음). 표시가 없으면 칩마다 따로 켜고 끈다 | \`s1:chip:beforechange\` → \`s1:chip:change\` |
+| bottom-sheet-option | 목록 묶음(시트 본문)에 \`data-s1-select="single"\`, 고른 뒤 닫으려면 \`data-s1-close-on-select\` | 줄을 누르면 고르고 나머지는 풀림 · ↑↓·Home·End 이동, Enter/Space 선택 · 시트를 연 요소(\`data-s1-open\`) 안 \`[data-s1-part="value"]\` 글자가 고른 라벨로 바뀜 | \`s1:bottom-sheet-option:beforechange\` → \`s1:bottom-sheet-option:change\` |
+| mobile-bottom-nav | (표시 없이 기본 동작) | 탭을 누르면 활성 탭과 \`aria-current\` 가 옮겨감 · ←→ 로 탭 사이 초점 이동 | \`s1:mobile-bottom-nav:beforechange\` → \`s1:mobile-bottom-nav:change\` |
+
+- **막고 싶을 때**: \`beforechange\` 에서 \`event.preventDefault()\` 하면 모양이 바뀌지 않습니다(로그인 확인·저장 안 한 변경 등). 막은 뒤 화면이 직접 정합니다 — 탭은 \`mobileBottomNav.init(탭).setActive()\`, 칩 묶음은 \`chip.setGroupValue(묶음, 값)\`, 시트 목록은 \`bottomSheetOption.init(줄).setValue(값)\`(모두 이벤트 없음).
+- **React 껍데기로 탭을 여러 개 놓을 때**: 예시 마크업이 탭마다 켜진 모양이라 \`selected\`/\`defaultSelected\` 를 안 주면 처음엔 모두 켜진 모양으로 시작합니다(처음 모습은 그대로 둡니다). 첫 탭을 누르면 눌린 탭 하나만 남습니다. 처음부터 맞추려면 \`defaultSelected\`(또는 \`selected\`)를 주세요.
+- **라우팅이 정하는 화면**: 활성 탭을 \`aria-selected\` 로 직접 정해도 그대로 읽힙니다.
+- **React·Vue·React Native**: 제어형/비제어형을 모두 지원합니다. React·RN 은 \`selected\`(제어형) · \`defaultSelected\` · \`onSelectedChange(selected)\`(RN 은 \`onBeforechange(event)\` 에서 \`event.preventDefault()\` 로 막고, 칩 하나만 켜기는 \`<S1ChipGroup value onChange>\`), Vue 는 \`v-model\`(제어형) · \`defaultSelected\`. 값을 주면(제어형) 눌러도 부품이 스스로 바뀌지 않고, 값이 바뀔 때만 모양이 바뀝니다.
+
+### 모바일
+
+모바일용 마크업은 \`*.mobile.html\` 입니다(비밀번호·검색 입력도 \`examples/input.password.mobile.html\` · \`examples/input.search.mobile.html\` 처럼 같은 규칙입니다). 모바일에만 쓰는 부품은 PC 용 파일이 따로 없고 파일 이름에 \`.mobile\` 이 붙습니다: **${mobileOnly.join(' · ')}**.
+
+### 종류(모양)를 고르는 속성 — 부품마다 이름이 다릅니다
+
+부품의 종류를 고르는 속성 이름은 정본의 어휘 그대로라 하나로 통일하지 않았습니다. 아래 표에서 부품의 속성과 값을 찾으세요(부품별 설명서 \`components/<이름>.md\` 에도 같은 표가 있습니다).
+
+| 속성 | 쓰는 부품 |
+|---|---|
+${kindByName}
+
+> 보조 축: divider 는 선 방향(\`data-axis\`) 말고도 \`data-tone\`·\`data-weight\` 로 선 색·굵기를 고릅니다(들여쓰기는 감싸는 목록의 여백으로 줍니다). 위 표의 \`data-tone\` 은 data-tag 의 색입니다.
+
+| 부품 | 속성 | 값 | 모양·쓰임 |
+|---|---|---|---|
+${kindRows}
+
+### 부품 목록 (${count}종)
+
+부품마다 마크업·고르는 속성·옵션·이벤트·여닫기를 적은 설명서가 있습니다. 쓰려는 부품의 \`components/<이름>.md\` 를 먼저 읽으세요. 쓸 수 있는 종류·크기 값도 거기 있습니다.
+
+| 이름 | React·Vue 이름 | 마크업 예시 | 설명서 |
+|---|---|---|---|
+${rows}
+`;
+}
+
 function readme() {
   /* "어디까지 쓰나" 는 배포본이 선언한 사실에서 온다(scripts/lib/platform-facts.js). */
   const toolRows = [...FACTS.values()]
@@ -121,21 +257,11 @@ function readme() {
 - 승인 컴포넌트: **${componentList.length}종** (${componentList.join(', ')})
 - 토큰: **${platform.tokenCount}개**
 
-## 1. 웹(HTML·CSS·JS)에서 쓰기 — 3줄
+## 1. 웹(HTML·CSS·JS)에서 쓰기
 
-\`\`\`html
-<link rel="stylesheet" href="s1-ui/assets/css/tokens.css">
-<link rel="stylesheet" href="s1-ui/s1-ui.css">
-<script type="module">
-  import { autoInit } from "./s1-ui/s1-ui.auto.js";
-  autoInit();
-</script>
-\`\`\`
+\`preview.html\` 을 더블클릭하면 컴포넌트 ${manifest.components.length}종이 실제 모습으로 보입니다 — 무엇을 쓸지 여기서 고르세요.
 
-글꼴은 Pretendard 입니다: \`${manifest.fontDependencies[0].source}\`
-
-마크업은 상상하지 말고 \`examples/\` 안의 파일을 복사해서 쓰세요. 모바일용은 \`*.mobile.html\` 입니다.
-
+${webGuideMd()}
 ## 2. 내 개발 툴에서 쓰기
 
 | 툴 | 시작 파일 | 어디까지 쓰나 | 자가 검사 |
@@ -144,6 +270,7 @@ ${toolRows}
 
 - **React**: \`import { S1Button } from "./s1-ui/platform/react/index.js"\` — 승인된 마크업을 그대로 마운트하는 껍데기입니다. JSX 빌드 도구가 필요하고, **JSX 런타임은 automatic 이어야 합니다**(요즘 기본값입니다. \`tsconfig\` 의 \`"jsx": "react-jsx"\`, Babel 의 \`runtime: "automatic"\`). 옛 classic 설정이면 컴파일되지 않습니다.
 - **Vue**: \`import { S1Button } from "./s1-ui/platform/vue/index.js"\` — SFC(.vue) 빌드 도구가 필요합니다.
+- **React Native(Expo)**: \`import { S1Provider, S1Button } from "./s1-ui/platform/react-native"\` — iOS·Android·웹. 위 React 는 React DOM(웹)이라 RN 에서 쓰지 못합니다. PC·Mobile 두 화면 기준을 모두 담았습니다.
 - **이벤트 받는 모양이 둘이 다릅니다**: React 는 핸들러가 **이벤트 객체**를 받고(\`event.detail\` 로 값을 꺼냅니다), Vue 는 emit 이 **detail 값 자체**를 바로 넘깁니다.
 - **화면 크기별 마크업**: PC·Mobile 마크업이 다른 컴포넌트는 \`breakName\` 으로 고릅니다(\`"pc"\` / \`"mobile"\`). 값을 바꾸면 마크업이 다시 마운트됩니다.
 ${nativeLines}
@@ -284,8 +411,10 @@ function assertSelfContained(stage, key) {
 
 function toolReadme(key, spec) {
   const facts = FACTS.get(key);
+  /* 숫자는 손으로 적지 않는다 — 배포본 manifest 의 컴포넌트 수로 채운다. */
+  const start = spec.start.map((step) => step.replaceAll('{{count}}', String(manifest.components.length)).replaceAll('{{fontSource}}', manifest.fontDependencies[0].source));
   /* 사람이 적은 시작 순서가 배포본과 어긋나면 여기서 멈춘다 — 옛 안내가 남지 않게. */
-  const problems = assertProse(facts, spec.start);
+  const problems = assertProse(facts, start);
   if (problems.length) {
     console.error(`❌ ${key} 묶음 안내가 배포본과 다릅니다:\n   - ${problems.join('\n   - ')}`);
     process.exit(1);
@@ -306,8 +435,8 @@ ${facts.containsMd}
 
 ## 시작하기
 
-${spec.start.map((step, index) => `${index + 1}. ${step}`).join('\n')}
-
+${start.map((step, index) => `${index + 1}. ${step}`).join('\n')}
+${spec.guide ? `\n## 자세한 사용법\n\n${webGuideMd()}` : ''}
 ## 내 배포본이 최신인지 확인
 
 디자인가이드 다운로드 화면의 지문과 위 정본 지문이 같아야 최신입니다.${spec.include.includes('tools') ? `

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>삼성 로고 렌더 비교</title>
+<style>
+  body { margin: 24px; font-family: sans-serif; background: #f3f3f3; }
+  h2 { font-size: 15px; margin: 24px 0 4px; }
+  .row { display: flex; gap: 24px; align-items: center; margin: 10px 0; }
+  .lab { width: 420px; font-size: 13px; }
+  .box { width: 134px; height: 36px; background: #fff center / cover no-repeat; }
+  .big { zoom: 4; image-rendering: pixelated; }
+</style></head><body>
+<h2>실제 크기 (134 × 36)</h2>
+<div class="row"><div class="lab">A. 지금 배포본 — 큰 원본(1600)을 브라우저가 한 번에 줄임</div><div class="box" style="background-image:url(../assets/samsung-blue.png)"></div></div>
+<div class="row"><div class="lab">D. 새 안 — 원본에서 정확히 134×36 · 2배 · 3배로 미리 줄인 그림</div><div class="box" style="background-image:image-set(url(sam-blue-l1x.png) 1x, url(sam-blue-l2x.png) 2x, url(sam-blue-l3x.png) 3x)"></div></div>
+<div class="row"><div class="lab">E. 공식 원본 파일(.ai)의 선 그대로 — 어떤 크기에서도 또렷</div><div class="box" style="background-image:url(sam-blue-from-ai.svg)"></div></div>
+<h2>4배 확대 (가장자리 비교용)</h2>
+<div class="row"><div class="lab">A. 지금 배포본</div><div class="box big" style="background-image:url(../assets/samsung-blue.png)"></div></div>
+<div class="row"><div class="lab">D. 새 안</div><div class="box big" style="background-image:image-set(url(sam-blue-l1x.png) 1x, url(sam-blue-l2x.png) 2x, url(sam-blue-l3x.png) 3x)"></div></div>
+<div class="row"><div class="lab">E. 공식 원본 선</div><div class="box" style="background-image:url(sam-blue-from-ai.svg);width:536px;height:144px"></div></div>
+</body></html>

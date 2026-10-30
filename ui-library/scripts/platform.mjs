@@ -20,7 +20,8 @@ import { buildKotlinOutputs, COMPOSE_COMPONENTS } from "./kotlin-compose.mjs";
 import { sampleFiles } from "./kotlin-sample.mjs";
 import { buildSwiftOutputs } from "./swift-compose.mjs";
 import { swiftReadme } from "./swift-readme.mjs";
-import { buildReactComponent, buildReactPackage, buildReactReadme, buildReactRuntime, buildReactTypes, reactComponentFacts } from "./react.mjs";
+import { buildReactNativeOutputs } from "./react-native.mjs";
+import { buildReactComponent, buildReactKit, buildReactPackage, buildReactReadme, buildReactTypes, reactComponentFacts } from "./react-gen.mjs";
 
 const GENERATED_NOTE = "자동 생성물 — 손으로 고치지 마세요. 정본을 고치고 `npm run tokens:reconcile` 또는 `npm run ui:build` 를 실행하세요.";
 
@@ -332,6 +333,14 @@ function attributeOf(componentOutputs, id, allowed) {
   }
 }
 
+/** 이름이 aria-label·aria-labelledby 로만 생기는 부품이면 그 속성 목록을 돌려준다(a11y.accessibleName 이 그렇게 선언한 경우만).
+ *  "보이는 글자가 이름"인 부품은 비운다 — 검사기가 짐작으로 요구하지 않는다. */
+function nameFromAttributesOf(manifest) {
+  const name = manifest.a11y?.accessibleName;
+  if (name?.status !== "required" || typeof name.value !== "string") return [];
+  return /^(root )?aria-label( or aria-labelledby)?$/i.test(name.value.trim()) ? ["aria-label", "aria-labelledby"] : [];
+}
+
 export function buildContract(componentOutputs, distManifest) {
   return {
     _meta: {
@@ -355,6 +364,7 @@ export function buildContract(componentOutputs, distManifest) {
       sizeAttribute: attributeOf(componentOutputs, id, manifest.sizes ?? []),
       requiredAttributes: manifest.htmlContract.requiredAttributes ?? [],
       requiredParts: manifest.htmlContract.requiredParts ?? [],
+      nameFromAttributes: nameFromAttributesOf(manifest),
       jsRequired: manifest.jsRequired,
       events: manifest.javascript?.events ?? [],
       lifecycle: manifest.javascript?.lifecycle ?? [],
@@ -472,6 +482,22 @@ function detectAttribute(attributes, allowed) {
   return null;
 }
 
+/** 껍데기 기본 열림 여부는 웹 예시의 hidden 이 아니라 manifest 선언(htmlContract.platformDefaultOpen)이 정한다. */
+export const isPlatformDefaultOpen = (manifest) => manifest?.htmlContract?.platformDefaultOpen === true;
+
+/** React·Vue 껍데기에 넘길 입력 — 기본 열림 부품은 웹 예시의 루트 hidden 을 걷어 처음부터 보이게 한다. */
+export const stripDefaultOpenHidden = (html, id) => html.replace(new RegExp(`(<[^>]*data-s1-component="${id}"[^>]*?)\\shidden(?:=""|=\\"\\")?(?=[\\s>/])`), "$1");
+
+export function platformView(component) {
+  if (!isPlatformDefaultOpen(component.manifest)) return component;
+  const strip = (html) => stripDefaultOpenHidden(html, component.id);
+  return {
+    ...component,
+    example: strip(component.example),
+    exampleByBreak: component.exampleByBreak ? Object.fromEntries(Object.entries(component.exampleByBreak).map(([name, html]) => [name, strip(html)])) : component.exampleByBreak
+  };
+}
+
 function wrapperFacts({ id, manifest, example, exampleByBreak }) {
   const events = manifest.javascript?.events ?? [];
   const markups = {};
@@ -501,6 +527,8 @@ function wrapperFacts({ id, manifest, example, exampleByBreak }) {
     sizeAttribute,
     parts: manifest.parts ?? [],
     jsRequired: Boolean(manifest.jsRequired),
+    defaultOpen: isPlatformDefaultOpen(manifest),
+    selectable: manifest.javascript?.selectable === true,
     events: events.map((eventName) => ({ eventName, propName: eventPropName(eventName) }))
   };
 }
@@ -510,12 +538,12 @@ export function buildVueComponent(component) {
   const runtimeImport = facts.jsRequired
     ? `import { init, destroy } from "../../components/${facts.id}.js";`
     : `// ${facts.id} 는 JavaScript 런타임이 없다 — 브라우저 기본 동작만 쓴다.`;
-  const emitNames = facts.events.map(({ propName }) => propName.replace(/^on/, "").toLowerCase());
+  const emitNames = [...facts.events.map(({ propName }) => propName.replace(/^on/, "").toLowerCase()), ...(facts.selectable ? ["update:modelValue"] : [])];
   return `<!-- ${GENERATED_NOTE} -->
 <!-- ${facts.componentName} — 승인된 배포본을 그대로 마운트하는 Vue 껍데기.
      MARKUPS 는 dist/examples/${facts.id}*.html 안의 승인된 인스턴스를 그대로 도려낸 것이다. -->
 <script setup>
-import { onBeforeUnmount, onMounted, ref, watch, watchEffect } from "vue";
+import { getCurrentInstance, onBeforeUnmount, onMounted, ref, watch, watchEffect } from "vue";
 ${runtimeImport}
 
 const MARKUPS = ${JSON.stringify(facts.markups, null, 2)};
@@ -536,7 +564,7 @@ const props = defineProps({
   size: { type: String, default: undefined, validator: (value) => ${facts.sizes.length ? `${JSON.stringify(facts.sizes)}.includes(value)` : "true"} },
   breakName: { type: String, default: ${JSON.stringify(facts.defaultBreak)}, validator: (value) => ${JSON.stringify(Object.keys(facts.markups))}.includes(value) },
   parts: { type: Object, default: () => ({}) },
-  attrs: { type: Object, default: () => ({}) }
+  attrs: { type: Object, default: () => ({}) }${facts.defaultOpen ? ",\n  open: { type: Boolean, default: true }" : ""}${facts.selectable ? ",\n  modelValue: { type: Boolean, default: undefined },\n  defaultSelected: { type: Boolean, default: undefined }" : ""}
 });
 const emit = defineEmits(${JSON.stringify(emitNames)});
 
@@ -554,10 +582,36 @@ function assertAllowed(label, value, allowed) {
   throw new Error(\`[s1-ui] ${facts.id}: 승인되지 않은 \${label} "\${value}". 쓸 수 있는 값: \${allowed.join(", ")}\`);
 }
 
+/* 같은 페이지에 껍데기가 여럿이어도 id 가 겹치지 않게, 인스턴스마다 접두사를 붙인다(React 껍데기의 useId 와 같은 목적).
+   마크업 안의 id 와 그것을 가리키는 속성(aria-*·for·data-s1-open)을 함께 바꾼다. */
+const uid = \`s1v\${getCurrentInstance()?.uid ?? 0}\`;
+function uniquifyIds(element) {
+  const nodes = [element, ...element.querySelectorAll("*")];
+  const ids = new Set(nodes.map((node) => node.id).filter(Boolean));
+  if (!ids.size) return;
+  const rename = (value) => (ids.has(value) ? \`\${uid}-\${value}\` : value);
+  for (const node of nodes) {
+    if (node.id) node.id = rename(node.id);
+    for (const name of ["aria-labelledby", "aria-describedby", "aria-controls", "for", "data-s1-open"]) {
+      const value = node.getAttribute(name);
+      if (value) node.setAttribute(name, value.split(/\\s+/).map(rename).join(" "));
+    }
+  }
+}
+${facts.defaultOpen || facts.selectable ? "let api = null;\n" : ""}
 function mount() {
   host.value.innerHTML = MARKUPS[props.breakName] ?? MARKUPS[DEFAULT_BREAK];
   const element = host.value.firstElementChild;
-${facts.jsRequired ? "  init(element);\n" : ""}  for (const [eventName, emitName] of ${JSON.stringify(facts.events.map(({ eventName, propName }) => [eventName, propName.replace(/^on/, "").toLowerCase()]))}) {
+  uniquifyIds(element);
+${facts.defaultOpen ? "  if (!props.open) element.hidden = true;\n" : ""}${facts.jsRequired ? `  ${facts.defaultOpen || facts.selectable ? "api = " : ""}init(element);\n` : ""}${facts.selectable ? `  /* 제어형(v-model)이면 부품이 스스로 모양을 바꾸지 못하게 막고 알리기만 한다. 비제어형이면 바뀐 뒤에 알린다. */
+  const before = (event) => { if (props.modelValue !== undefined) { event.preventDefault(); emit("update:modelValue", event.detail?.selected ?? true); } };
+  const after = (event) => { if (props.modelValue === undefined) emit("update:modelValue", event.detail?.selected ?? true); };
+  element.addEventListener(${JSON.stringify(`s1:${facts.id}:beforechange`)}, before);
+  element.addEventListener(${JSON.stringify(`s1:${facts.id}:change`)}, after);
+  listeners.push([${JSON.stringify(`s1:${facts.id}:beforechange`)}, before], [${JSON.stringify(`s1:${facts.id}:change`)}, after]);
+  if (props.modelValue !== undefined) api?.setSelected(props.modelValue);
+  else if (props.defaultSelected !== undefined) api?.setSelected(props.defaultSelected);
+` : ""}  for (const [eventName, emitName] of ${JSON.stringify(facts.events.map(({ eventName, propName }) => [eventName, propName.replace(/^on/, "").toLowerCase()]))}) {
     const handler = (event) => emit(emitName, event.detail ?? event);
     element.addEventListener(eventName, handler);
     listeners.push([eventName, handler]);
@@ -569,11 +623,23 @@ function unmount() {
   const element = root.value;
   if (!element) return;
   for (const [eventName, handler] of listeners.splice(0)) element.removeEventListener(eventName, handler);
-${facts.jsRequired ? "  destroy(element);\n" : ""}  root.value = null;
+${facts.jsRequired ? "  destroy(element);\n" : ""}${facts.defaultOpen || facts.selectable ? "  api = null;\n" : ""}  root.value = null;
 }
 
 onMounted(mount);
 onBeforeUnmount(unmount);
+${facts.selectable ? `
+/* v-model 값이 바뀌면 이벤트 없이 부품에 넣는다(제어형). */
+watch(() => props.modelValue, (value) => {
+  if (value !== undefined) api?.setSelected(value);
+});
+` : ""}${facts.defaultOpen ? `
+/* open 속성 — 기본 true(처음부터 보임). false 로 바꾸면 닫고, 다시 true 면 연다. */
+watch(() => props.open, (value) => {
+  if (!api) return;
+  if (value) api.open(); else api.close();
+});
+` : ""}
 
 /* break 가 바뀌면 마크업 자체가 다른 파일이라 다시 마운트해야 한다.
    mount() 는 onMounted 로 한 번만 도니 여기서 갈아 끼운다
@@ -612,7 +678,7 @@ watchEffect(() => {
 
 /* ── 6. 전체 묶음 ────────────────────────────────────────────────────── */
 
-export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCss, distManifest, behaviorLedger, fingerprints, iconAssets, usageById = {} }) {
+export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCss, distManifest, behaviorLedger, fingerprints, iconAssets, imageAssets = [], usageById = {} }) {
   const outputs = new Map();
   const tokenData = readTokens(tokensCss);
   const stable = (value) => `${JSON.stringify(value, null, 2)}\n`;
@@ -659,6 +725,10 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
     components: swift.coverage
   }));
 
+  /* React Native(Expo) 부품 — Kotlin 과 같은 원칙: 배포본 CSS 를 계산해 굳힌 표 + 승인 예제에서 옮긴 구조. */
+  const reactNative = buildReactNativeOutputs({ componentOutputs, tokenData, iconAssets, imageAssets, typographyCss, usageById, release, behaviorLedger });
+  for (const [relative, content] of reactNative.outputs) outputs.set(relative, content);
+
   outputs.set("platform/contract.json", stable(buildContract(componentOutputs, distManifest)));
   outputs.set("platform/behavior.json", stable({
     _meta: {
@@ -671,17 +741,18 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
 
   const approved = componentOutputs.filter(({ manifest }) => manifest.status === "approved");
   for (const component of approved) {
-    outputs.set(`platform/react/${component.id}.jsx`, buildReactComponent(component));
-    outputs.set(`platform/vue/${pascalId(component.id)}.vue`, buildVueComponent(component));
+    const view = platformView(component);
+    outputs.set(`platform/react/${component.id}.jsx`, buildReactComponent(view));
+    outputs.set(`platform/vue/${pascalId(component.id)}.vue`, buildVueComponent(view));
   }
-  const reactFacts = approved.map((component) => reactComponentFacts(component));
-  outputs.set("platform/react/runtime.js", buildReactRuntime());
+  const reactFacts = approved.map((component) => reactComponentFacts(platformView(component)));
+  outputs.set("platform/react/kit.js", buildReactKit());
   outputs.set("platform/react/package.json", buildReactPackage(release));
   outputs.set("platform/react/version.js", versionJs(release));
   outputs.set("platform/vue/version.js", versionJs(release));
   outputs.set("platform/vue/package.json", vuePackage(release));
   outputs.set("platform/react/index.d.ts", buildReactTypes(reactFacts));
-  outputs.set("platform/react/README.md", buildReactReadme(reactFacts, usageById, release));
+  outputs.set("platform/react/README.md", buildReactReadme(reactFacts, usageById, release, { font: distManifest.fontDependencies?.[0]?.source }));
   outputs.set("platform/react/index.js", `/* ${GENERATED_NOTE} */\n${approved.map(({ id }) => `export { default as S1${pascalId(id)} } from "./${id}.jsx";`).join("\n")}\nexport { S1_VERSION, S1_RELEASED_AT } from "./version.js";\n`);
   outputs.set("platform/vue/index.js", `/* ${GENERATED_NOTE} */\n${approved.map(({ id }) => `export { default as S1${pascalId(id)} } from "./${pascalId(id)}.vue";`).join("\n")}\nexport { S1_VERSION, S1_RELEASED_AT } from "./version.js";\n`);
 
@@ -695,6 +766,19 @@ export function buildPlatformOutputs({ componentOutputs, tokensCss, typographyCs
       "html-css-js": { entry: "s1-ui.css · s1-ui.auto.js", componentSupport: "full", lint: true },
       react: { entry: "platform/react/index.js", componentSupport: "full", lint: true, requires: "JSX 빌드 도구", note: "진짜 React 컴포넌트 — 서버 렌더링·데이터 목록·자식 요소·폼 연결을 지원한다." },
       vue: { entry: "platform/vue/index.js", componentSupport: "full", lint: true, requires: "SFC 빌드 도구" },
+      "react-native": {
+        entry: "platform/react-native/index.js",
+        componentSupport: "full",
+        ui: "React Native (Expo)",
+        lint: false,
+        requires: "Expo / React Native 0.76 이상 · react-native-svg",
+        textStyles: reactNative.textStyles.length,
+        icons: reactNative.icons.length,
+        sample: "platform/react-native-sample",
+        preview: "platform/react-native/gallery/S1Gallery.js",
+        readme: "platform/react-native/README.md",
+        note: "PC·Mobile 화면 축을 모두 낸다 — 배포본 CSS 를 계산해 굳힌 표를 그리는 엔진(iOS·Android·웹)."
+      },
       kotlin: {
         entry: "platform/kotlin/S1Tokens.kt",
         componentSupport: "components",

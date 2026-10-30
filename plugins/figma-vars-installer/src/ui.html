@@ -5,6 +5,8 @@
 <style>
   /*{{S1_TOKENS}}*/
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  /* 디자인 시스템 부품(웹 배포본 그대로 — 빌드 때 심는다) */
+  /*{{S1_COMPONENTS}}*/
   /* ── 앱셸 ──
      문서(html/body)는 스크롤하지 않는다. 스크롤은 내부 .iscroll 한 곳만 담당하고
      하단 버튼 행(.install-footer)은 스크롤 영역 밖의 고정 행이다.
@@ -139,6 +141,16 @@
   #pattern-label { font-size: 11px; color: var(--color-text-body-tertiary); margin: 8px 0 12px; word-break: break-all; text-align: center; min-height: 15px; }
   #pattern-bar-track { height: 6px; background: var(--color-bg-level-3); border-radius: 3px; overflow: hidden; }
   #pattern-bar-fill { height: 100%; background: var(--color-line-blue); border-radius: 3px; width: 0%; transition: width 0.2s ease; }
+  /* 매체 거르기 칩 — 디자인가이드 Chip(Line · PC SM) 그대로. ui-library/src/components/chip/chip.css 의 규칙을 옮긴 것이다. */
+  .pattern-filter { display: flex; gap: var(--spacing-8); margin-bottom: var(--spacing-12); }
+  .pattern-filter.hidden { display: none; }
+  [data-s1-component="chip"] { align-items: center; appearance: none; border-radius: var(--radius-full); border-style: solid; border-width: var(--border-width-1); box-sizing: border-box; cursor: pointer; display: inline-flex; flex: 0 0 auto; font-family: "Pretendard Variable", "Pretendard", sans-serif; font-weight: var(--font-weight-medium); justify-content: center; line-height: normal; margin: 0; padding-block: 0; text-align: center; user-select: none; white-space: nowrap; }
+  [data-s1-component="chip"] [data-s1-part="label"] { pointer-events: none; }
+  [data-s1-component="chip"][data-size="sm"][data-break="pc"] { font-size: var(--font-size-12); height: var(--sizing-28); letter-spacing: var(--letter-spacing-normal); padding-inline: var(--spacing-16); }
+  [data-s1-component="chip"][data-variant="line"] { background: var(--color-chip-line-bg-default); border-color: var(--color-chip-line-border-default); color: var(--color-chip-line-label-default); }
+  @media (hover: hover) { [data-s1-component="chip"][data-variant="line"]:hover:not(:disabled):not([aria-pressed="true"]) { background: var(--color-chip-line-bg-hover); } }
+  [data-s1-component="chip"][data-variant="line"][aria-pressed="true"]:not(:disabled) { background: var(--color-chip-line-bg-selected); border-color: var(--color-chip-line-border-selected); color: var(--color-chip-line-label-selected); }
+  .select-row.filtered-out { display: none; }
   .pattern-empty { font-size: 12px; color: var(--color-text-state-helper); padding: 24px 4px; text-align: center; }
   /* 설치 카드의 .select-date 와 같은 모양이지만 클래스는 따로 둔다 —
      Gate 6c 가 .select-date 개수로 '설치 카드 4장'을 세기 때문. */
@@ -162,6 +174,7 @@
   /* 만들 수 있는 패턴이 하나도 없을 때 — 지금 할 일은 설치뿐이므로 목록·설명·버튼줄을 모두 감추고
      안내와 버튼만 화면 가운데 둔다 (검수 탭의 '최신 가이드가 아닙니다' 화면과 같은 모양). */
   #pscreen-select.need-only #pattern-list,
+  #pscreen-select.need-only #pattern-filter,
   #pscreen-select.need-only #pattern-note,
   #pscreen-select.need-only .install-footer { display: none; }
   #pscreen-select.need-only .iscroll { display: flex; align-items: center; justify-content: center; }
@@ -207,7 +220,7 @@
      색은 빌드 때 들어오는 가이드 토큰을 그대로 쓴다(form-control-* — 다크도 토큰이 바꾼다). */
   .ds-select {
     flex: 0 0 140px; width: 140px; height: 28px;
-    font: 400 12px/1 -apple-system, "SF Pro Text", Pretendard, sans-serif;
+    font: 400 12px/1 -apple-system, "SF Pro Text", Pretendard Variable, Pretendard, sans-serif;
     padding: 0 28px 0 16px; margin: 0;
     border: 1px solid var(--color-form-control-border-default); border-radius: 4px;
     background-color: var(--color-form-control-bg-default); color: var(--color-form-control-text-default);
@@ -228,7 +241,7 @@
   .module-card button, #audit-root .swap-card button {
     height: 28px; min-width: 56px; padding: 0 8px; border-radius: 4px;
     border: 1px solid var(--color-button-border-secondary--default); background: var(--color-button-bg-secondary--default); color: var(--color-button-label-secondary--default);
-    font: 500 12px/1.3 -apple-system, "SF Pro Text", Pretendard, sans-serif;
+    font: 500 12px/1.3 -apple-system, "SF Pro Text", Pretendard Variable, Pretendard, sans-serif;
     white-space: nowrap;
   }
   .module-card button.primary, #audit-root .swap-card button.primary { background: var(--color-button-bg-primary--default); border-color: var(--color-button-border-primary--default); color: var(--color-button-label-primary--default); }
@@ -264,7 +277,7 @@
     --high: var(--color-text-state-accent); --med: var(--color-text-state-caution); --low: var(--color-text-body-tertiary);
     --btn-bg: var(--color-button-bg-primary--default); --btn-fg: var(--color-button-label-primary--default);
     --code-bg: var(--color-bg-level-2);
-    font:13px/1.45 -apple-system, "SF Pro Text", Pretendard, sans-serif;
+    font:13px/1.45 -apple-system, "SF Pro Text", Pretendard Variable, Pretendard, sans-serif;
     color:var(--fg); background:var(--bg);
     flex:1 1 auto; min-height:0; overflow-y:auto;
   }
@@ -283,56 +296,35 @@
   #audit-root .tabs button.active { background:var(--btn-bg); border-color:var(--btn-bg); color:var(--btn-fg); font-weight:600; }
   #audit-root .tabs .count { display:inline-block; padding:0 5px; margin-left:4px; background:var(--code-bg); border-radius:8px; font-size:10px; }
   #audit-root .tabs button.active .count { background:var(--color-bg-level-0); color:var(--color-text-state-accent); }
-  #audit-root button { font:inherit; cursor:pointer; padding:6px 12px; border-radius:6px; border:1px solid var(--line); background:transparent; color:var(--fg); }
+  #audit-root button:not([data-s1-component]) { font:inherit; cursor:pointer; padding:6px 12px; border-radius:6px; border:1px solid var(--line); background:transparent; color:var(--fg); }
   #audit-root button.primary { background:var(--btn-bg); color:var(--btn-fg); border-color:var(--btn-bg); }
   #audit-root button.primary:disabled { background:var(--color-button-bg-disabled); border-color:var(--color-button-border-disabled); color:var(--color-button-label-disabled); cursor:not-allowed; }
-  #audit-root button:hover:not(:disabled) { filter: brightness(0.95); }
+  #audit-root button:not([data-s1-component]):hover:not(:disabled) { filter: brightness(0.95); }
   #audit-root .list { padding:8px 0; max-height:calc(100vh - 200px); overflow-y:auto; }
   #audit-root .empty { padding:48px 16px; text-align:center; color:var(--muted); }
-  #audit-root .issue { padding:10px 16px; border-bottom:1px solid var(--line); cursor:pointer; }
-  #audit-root .issue:hover { background:var(--code-bg); }
+  /* 색 칸 — 항목마다 따로 띄운 카드(river 결정 2026-10-21) */
+  #audit-root #list { background:var(--color-bg-level-1); padding:var(--spacing-12); display:flex; flex-direction:column; gap:var(--spacing-8); }
+  #audit-root .issue { padding:var(--spacing-12) var(--spacing-16); background:var(--color-bg-level-0); border:var(--border-width-default) solid var(--color-line-default); border-radius:var(--radius-8); cursor:pointer; }
+  #audit-root .issue .why { margin:var(--spacing-4) 0 var(--spacing-4); font-size:var(--font-size-12); color:var(--color-text-body-tertiary); }
+  #audit-root .issue .more-wrap { margin-top:var(--spacing-8); }
+  #audit-root .issue .more-wrap > [data-s1-component="text-button"] { margin-top:var(--spacing-8); }
+  #audit-root .issue .gh { margin:var(--spacing-8) 0 0; font-size:var(--font-size-12); color:var(--color-text-body-tertiary); }
+  #audit-root .issue.done { background:var(--color-bg-level-1); border-style:dashed; display:flex; align-items:center; gap:var(--spacing-8); padding:var(--spacing-8) var(--spacing-12); }
+  #audit-root .issue.done .nm { font-size:var(--font-size-12); font-weight:var(--font-weight-bold); flex:0 0 auto; }
+  #audit-root .issue.done .tk { font-size:var(--font-size-12); color:var(--color-text-body-secondary); flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   #audit-root .issue-head { display:flex; align-items:center; gap:8px; }
-  /* 판정 꼬리표(미바인딩·외부 변수·팔레트 외·역할·근접·정확·높음/보통·컬렉션)는 평소에 감춘다.
-     작업자는 «어떤 토큰으로 바꿀까» 만 고르면 되고, 저 표시는 우리가 어떻게 골랐는지의 설명이다.
-     [자세히] 를 누른 카드에서만 펴진다(river 지시 2026-09-18). */
-  #audit-root .issue:not(.show-detail) .issue-head .kind,
-  #audit-root .issue:not(.show-detail) .sug .mt,
-  #audit-root .issue:not(.show-detail) .sug .col,
-  #audit-root .issue:not(.show-detail) .sug .conf-high,
-  #audit-root .issue:not(.show-detail) .sug .conf-medium { display:none; }
-  /* «낮음» 은 감추지 않는다 — 접힌 상태에서 믿을 만한 후보와 짐작에 가까운 후보가 같아 보이면 안 된다. */
-  #audit-root .detail-toggle { flex-shrink:0; padding:1px 7px; font-size:10px; border-radius:10px;
-    border:1px solid var(--line); background:transparent; color:var(--muted); cursor:pointer; }
   #audit-root .issue-head .swatch { width:14px; height:14px; border-radius:3px; border:1px solid var(--line); }
   #audit-root .issue-head .name { font-weight:500; flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  #audit-root .issue-head .kind { font-size:11px; padding:2px 6px; border-radius:4px; background:var(--code-bg); color:var(--muted); }
   #audit-root .issue-head .hex { font-size:10.5px; padding:1px 5px; background:var(--code-bg); border-radius:3px; color:var(--muted); font-family:ui-monospace, "SF Mono", monospace; }
   #audit-root .issue-head .offguide-note { font-size:10px; font-weight:600; }
   /* 설명은 사람 말이라 보통 글꼴로, 색 코드만 고정폭으로 둔다. */
   #audit-root .issue-meta { margin-top:4px; font-size:11px; color:var(--muted); }
   #audit-root .issue-meta .hex { padding:1px 5px; background:var(--code-bg); border-radius:3px; font-family:ui-monospace, "SF Mono", monospace; }
-  #audit-root .cat-chips { margin-top:8px; display:flex; flex-wrap:wrap; gap:4px; }
-  #audit-root .cat-chip { font-size:11px; padding:3px 8px; border-radius:12px; border:1px solid var(--line); background:transparent; color:var(--fg); cursor:pointer; }
-  #audit-root .cat-chip:hover { border-color:var(--btn-bg); }
-  #audit-root .cat-chip.active { background:var(--btn-bg); color:var(--btn-fg); border-color:var(--btn-bg); }
-  #audit-root .cat-chip .ct { font-size:10px; opacity:0.7; margin-left:3px; }
-  #audit-root .sugs { margin-top:6px; display:flex; flex-direction:column; gap:4px; max-height:280px; overflow-y:auto; }
-  #audit-root .sug { display:flex; align-items:center; gap:8px; padding:6px 8px; background:var(--code-bg); border-radius:4px; font-size:11px; cursor:pointer; border:1px solid transparent; }
-  #audit-root .sug:hover { border-color:var(--line); }
-  #audit-root .sug.picked { border-color:var(--btn-bg); background:var(--color-dropdown-option-bg-selected); }
-  #audit-root .sug input[type=radio] { margin:0; cursor:pointer; flex-shrink:0; }
-  #audit-root .sug .name { flex:1; min-width:0; font-family:ui-monospace, "SF Mono", monospace; word-break:break-all; line-height:1.4; }
-  #audit-root .sug .col { color:var(--muted); font-size:10px; flex-shrink:0; }
-  #audit-root .sug .conf-high { color: var(--high); font-weight:600; font-size:10px; }
-  #audit-root .sug .conf-medium { color: var(--med); font-size:10px; }
-  #audit-root .sug .conf-low { color: var(--low); font-size:10px; }
-  #audit-root .sug .mt { font-size:9px; padding:1px 4px; border-radius:3px; background:var(--bg); color:var(--muted); flex-shrink:0; }
-  #audit-root .sug .mt.role { background:var(--color-bg-level-3); color:var(--color-text-state-accent); }
-  #audit-root .sug .mt.exact { background:transparent; color:var(--color-text-state-correct); box-shadow:inset 0 0 0 1px var(--color-line-blue); }
-  #audit-root .sug .mt.near { background:var(--color-bg-level-3); color:var(--color-text-state-caution); }
-  #audit-root .sug button { padding:3px 8px; font-size:11px; flex-shrink:0; }
-  #audit-root .sug button.applied { background:var(--btn-bg); color:var(--btn-fg); border-color:var(--btn-bg); cursor:default; }
-  #audit-root .sug button.applied:hover { filter:none; }
+  #audit-root .sugs { display:flex; flex-direction:column; }
+  /* 후보 줄 — DS Radio + DS Button. 고른 줄을 칠하지 않는다(파랑은 동그라미만) */
+  #audit-root .sug { display:flex; align-items:center; gap:var(--spacing-8); padding:var(--spacing-4) 0; }
+  #audit-root .sug [data-s1-component="radio"] { flex:1; min-width:0; }
+  #audit-root .sug [data-s1-component="radio"] [data-s1-part="label"] { font-size:var(--font-size-12); word-break:break-all; }
   #audit-root .footer { position:sticky; bottom:0; padding:10px 16px; border-top:1px solid var(--line); background:var(--bg); display:flex; align-items:center; gap:8px; }
   #audit-root .footer .selected-info { flex:1; font-size:11px; color:var(--muted); }
   #audit-root .footer .selected-info b { color:var(--fg); font-weight:600; }
@@ -408,6 +400,11 @@
   #audit-root .check-row.unjudged .check-icon { border-radius:4px; background:var(--code-bg); }
   #audit-root .check-name { flex:1; font-size:11.5px; }
   #audit-root .check-result { color:var(--muted); font-size:10.5px; white-space:nowrap; }
+  /* 걸린 항목은 눌러서 그 칸으로 간다(river 지시 2026-10-19) */
+  #audit-root .check-row.go { cursor:pointer; }
+  #audit-root .check-row.go:hover { background:var(--code-bg); }
+  #audit-root .check-row.go .check-result::after { content:" ›"; }
+  #audit-root .detail-item.flash, #audit-root .issue.flash { background:var(--code-bg); }
   #audit-root .audit-checklist.only-hits .check-row:not(.has-hit) { display:none; }
   #audit-root .audit-checklist.only-hits .check-group { display:none; }
   #audit-root .checklist-more { display:block; width:100%; padding:8px 16px; border:0; border-top:1px solid var(--line);
@@ -678,6 +675,11 @@
     <div class="need-desc" id="pattern-need-desc">패턴 화면은 설치된 컴포넌트를 조립해 만듭니다.</div>
     <button class="btn-need" onclick="goInstallFromPattern()">가이드 설치하러 가기</button>
   </div>
+  <div class="pattern-filter" id="pattern-filter" role="group" aria-label="화면 매체로 거르기">
+    <button type="button" data-s1-component="chip" data-variant="line" data-size="sm" data-break="pc" aria-pressed="true" data-platform="all"><span data-s1-part="label">전체</span></button>
+    <button type="button" data-s1-component="chip" data-variant="line" data-size="sm" data-break="pc" aria-pressed="false" data-platform="pc"><span data-s1-part="label">PC</span></button>
+    <button type="button" data-s1-component="chip" data-variant="line" data-size="sm" data-break="pc" aria-pressed="false" data-platform="mobile"><span data-s1-part="label">모바일</span></button>
+  </div>
   <div class="select-list" id="pattern-list">
     <div class="pattern-empty">패턴 목록을 불러오는 중…</div>
   </div>
@@ -848,7 +850,9 @@
     </div>
     <div class="footer">
       <div class="selected-info"><b id="picked-count">0</b>개 항목 선택됨</div>
-      <button class="primary" id="btn-apply-selected" disabled>선택 항목 적용</button>
+      <!-- 고친 뒤 바로 다시 볼 수 있게 — 보조 버튼으로 적용 버튼 왼쪽에(river 지시 2026-10-19) -->
+      <button id="btn-color-reinspect" type="button" data-s1-component="button" data-variant="secondary" data-size="xsm"><span data-s1-part="label">다시 검사</span></button>
+      <button id="btn-apply-selected" type="button" data-s1-component="button" data-variant="primary" data-size="xsm" disabled><span data-s1-part="label">선택 항목 적용</span></button>
     </div>
   </div>
 
@@ -1060,7 +1064,16 @@
         if (msg.sheetSwatches) parts.push(`색 ${msg.sheetSwatches}칸`);
         if (msg.sheetStyles)   parts.push(`글자 ${msg.sheetStyles}종`);
         if (msg.sheetNumbers)  parts.push(`숫자 ${msg.sheetNumbers}개`);
-        lines.push(`토큰 견본 화면: <strong>${sheetSections.length}장</strong>${parts.length ? ` (${parts.join(' · ')})` : ''}`);
+        const reusedNote = msg.sheetReused ? ' <span style="color:var(--color-text-state-helper);font-size:11px;">(이미 최신이라 그대로 둠)</span>' : '';
+        lines.push(`토큰 견본 화면: <strong>${sheetSections.length}장</strong>${parts.length ? ` (${parts.join(' · ')})` : ''}${reusedNote}`);
+      }
+      // 걸린 시간 — 어디서 오래 걸렸는지 한 줄로(river 2026-10-02 설치 시간 줄이기).
+      if (msg.elapsed && msg.elapsed.totalMs) {
+        const dur = (ms) => { const sec = Math.round(ms / 1000); return sec >= 60 ? `${Math.floor(sec / 60)}분 ${sec % 60}초` : `${sec}초`; };
+        const sub = [];
+        if (msg.elapsed.componentsMs) sub.push(`부품 ${dur(msg.elapsed.componentsMs)}`);
+        if (msg.elapsed.sheetsMs >= 0 && sheetSections.length) sub.push(`견본판 ${dur(msg.elapsed.sheetsMs)}`);
+        lines.push(`걸린 시간: <strong>${dur(msg.elapsed.totalMs)}</strong>${sub.length ? ` <span style="color:var(--color-text-state-helper);font-size:11px;">(${sub.join(' · ')})</span>` : ''}`);
       }
       if (msg.removedCount)    lines.push(`옛 잔재 변수 <strong>${msg.removedCount}개</strong> 정리`);
       // 건별 실패·빌더 미등록 — 설치가 조용히 반쪽이 되지 않도록 완료 화면에 명시한다.
@@ -1205,7 +1218,7 @@
       const missing = it.ready ? '' :
         '<div class="pattern-missing">아직 없는 부품 · ' + esc(it.missing.join(', ')) + '</div>';
       return '' +
-        '<label class="select-row' + blocked + '" data-opt="' + id + '">' +
+        '<label class="select-row' + blocked + '" data-opt="' + id + '" data-platform="' + esc(it.platform || '') + '">' +
           '<input type="checkbox" id="' + id + '" value="' + esc(it.id) + '"' + (it.ready ? '' : ' disabled') + '>' +
           '<div class="select-body">' +
             '<div class="select-name">' + esc(it.label) +
@@ -1224,9 +1237,29 @@
         syncPatternButton();
       });
     });
+    applyPatternFilter();
     renderPatternNeedInstall();
     syncPatternButton();
   }
+
+  // 매체 거르기(전체/PC/모바일) — 디자인가이드 Chip 의 aria-pressed 로 선택을 표시한다.
+  //   가려진 패턴은 선택도 풀어, 보이지 않는 화면이 같이 만들어지지 않게 한다.
+  let PATTERN_FILTER = 'all';
+  function applyPatternFilter() {
+    document.querySelectorAll('#pattern-filter [data-s1-component="chip"]').forEach((chip) => {
+      chip.setAttribute('aria-pressed', chip.dataset.platform === PATTERN_FILTER ? 'true' : 'false');
+    });
+    document.querySelectorAll('#pattern-list .select-row').forEach((row) => {
+      const hide = PATTERN_FILTER !== 'all' && row.dataset.platform !== PATTERN_FILTER;
+      row.classList.toggle('filtered-out', hide);
+      const cb = row.querySelector('input[type=checkbox]');
+      if (hide && cb && cb.checked) { cb.checked = false; row.classList.remove('checked'); }
+    });
+    syncPatternButton();
+  }
+  document.querySelectorAll('#pattern-filter [data-s1-component="chip"]').forEach((chip) => {
+    chip.addEventListener('click', () => { PATTERN_FILTER = chip.dataset.platform; applyPatternFilter(); });
+  });
 
   // 만들 수 없는 패턴이 있으면 목록보다 먼저 '가이드부터 설치하세요'를 보여준다.
   // 전부 막혔으면 지금 할 일이 설치뿐이므로 문구를 그에 맞게 바꾼다.
@@ -1334,10 +1367,8 @@
 let lastIssues = [];
 let activeTab = "component"; // component | generic
 let picks = {}; // { issueId: suggestionIndex }
-let activeCat = {}; // { issueId: 'tab' | 'button' | 'foundation' | ... }
-let detailOpen = {}; // { issueId: true } — 「자세히」로 펴 둔 카드. 다시 그려도 유지한다.
+let appliedMap = {}; // { issueId: { name, paired } } — 적용이 끝난 카드. 한 줄로 접어 맨 아래로(river 결정 2026-10-21).
 let moreOpen = {};   // { issueId: true } — 「색이 다른 후보」를 펴 둔 카드(기본은 접힘).
-let catsOpen = {};   // { issueId: true } — 「다른 부품」 칩까지 펴 둔 카드(기본은 접힘).
 let activeMode = "color"; // color | swap
 
 // 컴포넌트 교체 모드 상태
@@ -1497,6 +1528,10 @@ function renderChecklistResults(items) {
       result.textContent = item.count + '건';
       result.classList.add(item.status);
       row.classList.add('has-hit');
+      // 누르면 그 항목이 모인 칸(컴포넌트·색·텍스트·그림자)으로 넘어간다(river 지시 2026-10-19).
+      row.classList.add('go');
+      row.setAttribute('role', 'button');
+      row.addEventListener('click', () => goToChecklistSection(item.id));
     } else {
       result.textContent = '통과';
     }
@@ -1519,6 +1554,33 @@ function renderChecklistResults(items) {
       more.textContent = open ? '통과한 ' + passed + '개도 보기' : '통과한 것 접기';
     });
     target.appendChild(more);
+  }
+}
+
+// 항목 번호 → 그 항목이 모인 칸. 화면(종류·모드) 두 항목은 컴포넌트 칸 아래에 붙어 있다.
+const CHECK_BUCKET = { 0: 'component', 1: 'color', 2: 'color', 3: 'color', 4: 'color',
+  5: 'text', 6: 'text', 7: 'text', 8: 'text', 9: 'shadow', 10: 'component', 11: 'component' };
+function goToChecklistSection(id) {
+  const bucket = CHECK_BUCKET[id];
+  if (!bucket) return;
+  const chip = document.querySelector('#result-chips button[data-bucket="' + bucket + '"]');
+  if (chip && !chip.hidden) chip.click();
+  // 그 항목의 첫 줄로 내린다 — 같은 칸에 여러 항목이 섞여 있어도(텍스트 4종 등) 찾아다니지 않게.
+  const view = document.getElementById('bucket-' + bucket);
+  if (!view) return;
+  let el = null;
+  if (id === 10) el = view.querySelector('[data-role="mode-head"]');
+  else if (id === 11) el = view.querySelector('[data-role="platform-head"]');
+  else el = view.querySelector('[data-check="' + id + '"]');
+  if (!el && id === 1) el = view.querySelector('.issue');
+  if (el) {
+    el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    if (el.classList.contains('detail-item') || el.classList.contains('issue')) {
+      el.classList.add('flash');
+      setTimeout(() => el.classList.remove('flash'), 1200);
+    }
+  } else {
+    view.scrollIntoView({ block: 'start' });
   }
 }
 
@@ -1550,7 +1612,7 @@ function detailItemHtml(issue) {
       + (fix.exact ? '' : '<span class="fix-note">크기가 가이드에 없어 가장 가까운 것으로 맞춥니다</span>')
       + '</div>'
     : '';
-  return '<div class="detail-item" data-node-id="' + escape(issue.nodeId) + '" data-issue-id="' + escape(issue.id) + '">'
+  return '<div class="detail-item" data-node-id="' + escape(issue.nodeId) + '" data-issue-id="' + escape(issue.id) + '" data-check="' + escape(String(issue.checklistId)) + '">'
     + '<b>' + escape(issue.nodeName) + '</b><span>' + escape(issue.detail) + '</span>' + fixHtml + '</div>';
 }
 
@@ -1637,8 +1699,7 @@ function startAuditInspection(phase) {
   const btn = $("#btn-audit");
   btn.disabled = true;
   btn.textContent = "검사 중…";
-  picks = {}; detailOpen = {}; moreOpen = {}; catsOpen = {};
-  activeCat = {};
+  picks = {}; moreOpen = {}; appliedMap = {};
   updatePickedCount();
   resetAuditChecklist('running');
   $('#audit-running-selection').textContent = $('#audit-selection-label').textContent;
@@ -1653,6 +1714,9 @@ $("#btn-audit").addEventListener("click", () => {
 });
 
 $('#btn-component-reinspect').addEventListener('click', () => {
+  startAuditInspection('details');
+});
+$('#btn-color-reinspect').addEventListener('click', () => {
   startAuditInspection('details');
 });
 
@@ -2248,7 +2312,7 @@ const VALUE_WORD = {
   depth: { '1depth': '1단계', '2depth': '2단계' },
   element: { arrow: '화살표', edge: '처음·끝', number: '숫자' },
   platform: { app: '앱', web: '웹', 'app+keyboard': '앱 + 자판', 'web+keyboard': '웹 + 자판', pc: 'PC', mobile: '모바일' },
-  color: { white: '흰색', blue: '파랑', red: '빨강', dark: '어두움' },
+  color: { white: '흰색', blue: '파랑', red: '빨강', gray: '회색', dark: '어두움' },
   brand: { '에스원': '에스원', '삼성': '삼성' },   // 이미 우리말 — 축 이름만 붙인다
   position: { first: '첫째', 'middle-left': '가운데 왼쪽', 'middle-right': '가운데 오른쪽', last: '마지막' },
   icon: { home: '홈', search: '검색', notification: '알림', settings: '설정' },
@@ -2703,7 +2767,7 @@ btnApplySelected.addEventListener("click", () => {
   }
   if (picksList.length === 0) return;
   btnApplySelected.disabled = true;
-  btnApplySelected.textContent = "적용 중…";
+  btnApplySelected.querySelector('[data-s1-part="label"]').textContent = "적용 중…";
   send("apply-multi", { picks: picksList });
 });
 
@@ -2734,7 +2798,7 @@ function updatePickedCount() {
   const n = Object.keys(picks).length;
   $("#picked-count").textContent = n;
   btnApplySelected.disabled = n === 0;
-  btnApplySelected.textContent = n > 0 ? `선택 항목 적용 (${n})` : "선택 항목 적용";
+  btnApplySelected.querySelector('[data-s1-part="label"]').textContent = n > 0 ? `선택 항목 적용 (${n})` : "선택 항목 적용";
 }
 
 // 색이 «어디에» 칠해져 있나 — fills/strokes 같은 속성 이름 대신 사람 말로.
@@ -2749,22 +2813,29 @@ function rerenderTab() {
   // 설명 배너는 두지 않는다(river 지시 2026-09-22) — 미리 골라 둔 칸은 라디오가 이미 켜져 있고,
   //   팔레트 밖 색은 카드마다 «팔레트 외» 표로 보인다.
   list.innerHTML = "";
-  for (const issue of filtered) {
+  // 적용이 끝난 카드는 맨 아래로 — 남은 일만 위에 보인다.
+  const ordered = filtered.filter((x) => !appliedMap[x.id]).concat(filtered.filter((x) => appliedMap[x.id]));
+  for (const issue of ordered) {
     const div = document.createElement("div");
-    div.className = "issue" + (detailOpen[issue.id] ? " show-detail" : "");
+    const doneInfo = appliedMap[issue.id];
+    if (doneInfo) {
+      div.className = "issue done";
+      div.dataset.id = issue.id;
+      div.innerHTML =
+        `<span data-s1-component="data-tag" data-shape="chips" data-solid="off" data-tone="blue">${doneInfo.paired ? '함께 적용됨' : '적용됨'}</span>`
+        + `<span class="nm">${escape(issue.nodeName)}</span>`
+        + `<span class="tk">${escape(doneInfo.name || '')}</span>`
+        + `<button type="button" data-s1-component="text-button" data-variant="secondary" data-action="reopen"><span data-s1-part="label">다시 고르기</span></button>`;
+      div.addEventListener("click", (e) => {
+        const btn = e.target.closest && e.target.closest('[data-action="reopen"]');
+        if (btn) { delete appliedMap[issue.id]; rerenderTab(); e.stopPropagation(); return; }
+        send("select-node", { nodeId: issue.nodeId });
+      });
+      list.appendChild(div);
+      continue;
+    }
+    div.className = "issue";
     div.dataset.id = issue.id;
-    const kindLabel = issue.reasonKind === "external-var" ? "외부 변수" : "미바인딩";
-    const confLabelMap = { high: "높음", medium: "보통", low: "낮음" };
-    const mtLabelMap = {
-      "role+component": "컴포넌트·역할",
-      "role": "역할",
-      "exact": "정확",
-      "near": "근접",
-    };
-    const collectionLabel = (name) =>
-      name === "Semantic Color V2" ? "Semantic" :
-      name === "Foundation V2" ? "Foundation" :
-      name.replace(" V2", "");
 
     // 카테고리별 그룹화
     const catGroups = {};
@@ -2775,43 +2846,51 @@ function rerenderTab() {
     });
     const catKeys = Object.keys(catGroups);
 
-    // 활성 카테고리 결정: picks가 있으면 그 sug의 카테고리, 없으면 contextSegments와 일치하는 첫 카테고리,
-    //   그것도 없으면 첫 번째 카테고리 (정렬에 의해 가장 적절한 카테고리)
-    let curCat = activeCat[issue.id];
-    if (!curCat || !catGroups[curCat]) {
-      const pickedIdxInit = picks[issue.id];
-      if (pickedIdxInit !== undefined && issue.suggestions[pickedIdxInit]) {
-        curCat = issue.suggestions[pickedIdxInit].category;
-      }
-    }
     // 이 자리의 «근거» 카테고리 — 부품 안이면 그 부품(이름이 근거), 맨 도형·글자·아이콘이면 공통 역할
     //   토큰(text·bg·border·icon…)뿐이다. 모양으로 짐작한 부품(guess)은 근거가 아니라 참고다
     //   (river 결정 2026-09-22: 손으로 그린 건 사람이 라이브러리 부품으로 직접 바꾼다).
-    const ctxCats = (issue.componentContext || []).filter((c) => catGroups[c]);
+    // 원본 부품의 같은 자리 토큰 — 색까지 맞으면 그 칩·그 토큰 하나만 보이고 나머지는 접는다(river 결정 2026-10-19).
+    const slotSug = issue.suggestions[0] && issue.suggestions[0].slot ? issue.suggestions[0] : null;
+    const slotCat = slotSug ? slotSug.category : null;
+    const slotSolo = !!(slotSug && issue.slotMatch);
+    const ctxCats0 = (issue.componentContext || []).filter((c) => catGroups[c]);
+    const ctxCats = slotCat && ctxCats0.indexOf(slotCat) < 0 ? [slotCat].concat(ctxCats0) : ctxCats0;
     const hasCtx = ctxCats.length > 0;
     const roleCats = catKeys.filter((c) => isRoleCategory(c));
     const guessCatKey = issue.guess ? issue.guess.category : null;
-    if (!curCat || !catGroups[curCat]) {
-      // 처음 펴는 칩 — 근거 카테고리 중 미리 골라 둔 것이 있으면 그것, 없으면 첫 근거 카테고리.
+    // 맨 앞에 보일 후보 묶음(근거) — 다시 그려도 바뀌지 않게 근거로만 정한다(사람이 고른 후보는 아래에서 앞으로 꺼낸다).
+    let curCat;
+    {
       const autoCat = typeof issue.autoPick === 'number' && issue.suggestions[issue.autoPick]
         ? issue.suggestions[issue.autoPick].category : null;
       const evidence = hasCtx ? ctxCats : roleCats;
-      curCat = (autoCat && evidence.indexOf(autoCat) >= 0 ? autoCat : null) || evidence[0] || (catKeys[0] || "");
+      // 원본 자리가 색까지 맞으면 그 칩, 아니면 미리 골라 둔 후보의 칩이 먼저 — 체크된 후보가 접힌 칩에 숨지 않게.
+      curCat = (slotSolo ? slotCat : null) || (autoCat && evidence.indexOf(autoCat) >= 0 ? autoCat : null) || slotCat || evidence[0] || (catKeys[0] || "");
     }
-    activeCat[issue.id] = curCat;
 
-    // 칩을 **볼 만한 것만** 남긴다(river 지시 2026-09-21: "헷갈리는 것 외에는 칩 자체를 지워").
-    //   부품 안: 그 부품 + 팔레트 유사색. 맨 도형: 공통 역할 토큰 + 팔레트 유사색 + 짐작한 부품(참고).
-    //   나머지 부품은 "다른 부품 N개"로 접는다.
+    // 근거가 되는 묶음만 앞에 세운다 — 나머지는 「다른 후보」 안 소제목으로 내려간다.
+    //   ① 원본 자리 토큰이 색까지 맞으면 그 묶음 하나만(river 결정 2026-10-19).
+    //   ② 이 자리 역할과 맞는 후보가 하나도 없는 묶음(배경 칸의 글자색)은 뺀다.
+    //   ③ 색이 같은(거의 같은) 후보가 있는 근거 묶음이 있으면 그것만.
+    //   부품 안이면 그 부품, 맨 도형·글자·아이콘이면 공통 역할 토큰 — 모양 짐작(guess)은 근거가 아니다(river 결정 2026-09-22).
+    const fitsRole = (cat) => catGroups[cat].some(({ s }) => s.roleFit === undefined || s.roleFit < 2);
+    const hasCloseColor = (cat) => catGroups[cat].some(({ s }) => (s.roleFit === undefined || s.roleFit < 2)
+      && (s.exact || (typeof s.dist === 'number' && s.dist <= 12)));
     const worthCat = (cat) => cat === 'foundation'
       || (hasCtx ? ctxCats.indexOf(cat) >= 0 : (isRoleCategory(cat) || cat === guessCatKey));
-    const keptCats = catKeys.filter(worthCat);
-    const hiddenCats = catKeys.filter((c) => keptCats.indexOf(c) < 0);
-    const showAllCats = !!catsOpen[issue.id] || keptCats.length === 0;
-    const baseCats = showAllCats ? catKeys : keptCats;
-    // 근거 카테고리를 맨 앞으로 — 눌러야 할 칩을 찾아다니지 않게 한다. 짐작한 부품은 그 뒤.
+    const roleKept = catKeys.filter((c) => worthCat(c) && (c === 'foundation' || fitsRole(c)));
+    const closeEvidence = roleKept.filter((c) => c !== 'foundation' && c !== guessCatKey && hasCloseColor(c));
+    const keptCats0 = slotSolo ? [slotCat]
+      : closeEvidence.length ? closeEvidence.concat(roleKept.filter((c) => c === guessCatKey && closeEvidence.indexOf(c) < 0))
+      : roleKept;
+    // 원본 자리 묶음은 색이 달라도 남긴다(맨 앞).
+    const keptCats = slotCat && keptCats0.indexOf(slotCat) < 0 ? [slotCat].concat(keptCats0) : keptCats0;
+    if (keptCats.length && keptCats.indexOf(curCat) < 0) curCat = keptCats[0];
+    // 고른 후보(사람이 고른 것 → 미리 골라 둔 것). 접힌 쪽에 있으면 아래에서 앞으로 꺼낸다.
+    const pickNow = picks[issue.id] !== undefined ? picks[issue.id] : issue.autoPick;
+    const baseCats = keptCats.length ? keptCats : catKeys;
+    // 근거 묶음 순서 — 부품이 겹치면 가까운 부품이 먼저(ctx 는 가까운 것부터, 엔진 guessRank 와 같은 규칙).
     const catRank = (cat) => {
-      // 부품이 겹치면 가까운 부품이 먼저 — ctx 는 가까운 것부터 늘어서 있다(엔진 guessRank 와 같은 규칙).
       if (hasCtx) { const i = ctxCats.indexOf(cat); return i >= 0 ? i : ctxCats.length + 3; }
       if (isRoleCategory(cat)) return 0;
       if (cat === 'foundation') return 1;
@@ -2819,79 +2898,75 @@ function rerenderTab() {
       return 3;
     };
     const orderedCatKeys = baseCats.slice().sort((a, b) => catRank(a) - catRank(b) || baseCats.indexOf(a) - baseCats.indexOf(b));
-    const chipsHtml = orderedCatKeys.length === 0 ? '' : orderedCatKeys.map((cat) => {
-      const isCtx = ctxCats.indexOf(cat) >= 0;
-      // 짐작 표기는 부품 카테고리에만 — 큰 면을 '배경'으로 짐작한 경우 bg 는 공통 역할이라 붙이지 않는다.
-      const isGuess = !hasCtx && cat === guessCatKey && !isRoleCategory(cat);
-      return `<button class="cat-chip ${cat === curCat ? 'active' : ''}" data-cat="${cat}" data-issue-id="${issue.id}">${catLabel(cat)}${isCtx ? ' ●' : (isGuess ? ' (짐작)' : '')}<span class="ct">${catGroups[cat].length}</span></button>`;
-    }).join("") + ((hiddenCats.length && !showAllCats)
-      ? `<button class="cat-chip" data-action="more-cats" data-issue-id="${issue.id}">다른 부품 ${hiddenCats.length}개</button>`
-      : '');
-
+    // 칩은 두지 않는다(river 결정 2026-10-21) — 고를 게 없는 칩 대신 «왜 이 색인가» 한 줄을 쓴다.
     const pickedIdx = picks[issue.id];
     const allSugs = catGroups[curCat] || [];
     // 색이 정확히 같은 후보가 있으면 **그것만** 먼저 보여 준다 — 색이 다른 후보는 접는다.
     //   (river 지적 2026-09-21: 블루라인부터 프라이머리까지 다 나와 고르기 어렵다)
-    // 정확히 같은 색이 없으면 **가장 가까운 색들**(Δ12 이내)을 앞에 둔다 — 시안 색이 정본과
-    //   미세하게 다른 경우가 많아, 그때도 고를 것을 좁혀 준다.
-    // 역할이 어긋난 후보(아이콘 자리의 label·글자색 토큰)는 뒤로 접는다 — 아이콘은 icon 토큰에서 고른다
-    //   (river 지시 2026-09-21). 맞는 역할이 하나도 없을 때만 그대로 다 보여 준다.
+    // 정확히 같은 색이 없으면 **가장 가까운 색들**(Δ12 이내)을 앞에 둔다.
+    // 역할이 어긋난 후보(아이콘 자리의 label·글자색 토큰)는 뒤로 접는다(river 지시 2026-09-21).
     const roleOk = allSugs.filter((one) => one.s && (one.s.roleFit === undefined || one.s.roleFit < 2));
     const baseSugs = roleOk.length ? roleOk : allSugs;
     const exactSugs = baseSugs.filter((one) => one.s && (one.s.exact || (typeof one.s.dist === 'number' && one.s.dist <= 12)));
-    const primarySugs = exactSugs.length ? exactSugs : baseSugs;
-    const showAll = !!moreOpen[issue.id] || primarySugs.length === allSugs.length;
-    const visibleSugs = showAll ? allSugs : primarySugs;
-    const foldedCount = allSugs.length - visibleSugs.length;
-    const sugsHtml = visibleSugs.length === 0
-      ? '<div class="sug"><span class="name" style="color:var(--muted)">이 카테고리에 매칭 토큰 없음</span></div>'
-      : visibleSugs.map(({ s, i }) => {
-          const mtClass = s.matchType === "role+component" ? "role" : s.matchType === "role" ? "role" : s.matchType;
-          const mtLabel = (mtLabelMap[s.matchType] || s.matchType) + (s.matchInfo ? ` ${s.matchInfo}` : "");
-          const isPicked = pickedIdx === i;
-          return `
-            <label class="sug ${isPicked ? 'picked' : ''}" data-sug-idx="${i}">
-              <input type="radio" name="pick-${issue.id}" data-issue-id="${issue.id}" data-sug-idx="${i}" ${isPicked ? 'checked' : ''}/>
-              <span class="name">${s.variableName}</span>
-              <span class="mt ${mtClass}">${mtLabel}</span>
-              <span class="col">${collectionLabel(s.collectionName)}</span>
-              <span class="conf-${s.confidence}">${confLabelMap[s.confidence] || s.confidence}</span>
-              <button data-action="apply" data-sug="${i}">적용</button>
-            </label>
-          `;
-        }).join("");
+    // 원본 자리 토큰이 색까지 맞으면 그 토큰 하나만 먼저 보인다.
+    const slotOnly = slotSolo && curCat === slotCat ? allSugs.filter((one) => one.s && one.s.slot) : [];
+    let primarySugs = slotOnly.length ? slotOnly : exactSugs.length ? exactSugs : baseSugs;
+    // 고른 후보가 접힌 쪽에 있으면 앞으로 꺼낸다 — 체크된 후보가 숨은 채로 일괄 적용되지 않게.
+    if (typeof pickNow === 'number' && !primarySugs.some((one) => one.i === pickNow) && issue.suggestions[pickNow]) {
+      primarySugs = primarySugs.concat([{ s: issue.suggestions[pickNow], i: pickNow }]);
+    }
+    const primaryIdx = primarySugs.map((one) => one.i);
+    // 나머지 후보 — 부품·역할별 소제목 아래 한꺼번에(river 결정 2026-10-21: 한 번 누르면 전부).
+    const restGroups = orderedCatKeys.concat(catKeys.filter((c) => orderedCatKeys.indexOf(c) < 0))
+      .map((cat) => ({ cat, rows: catGroups[cat].filter((one) => primaryIdx.indexOf(one.i) < 0) }))
+      .filter((g) => g.rows.length > 0);
+    const restCount = restGroups.reduce((n, g) => n + g.rows.length, 0);
+    const groupTitle = (cat) => cat === 'foundation' ? '팔레트 가까운 색'
+      : isRoleCategory(cat) ? `공통 ${catLabel(cat)} 색` : `${catLabel(cat)} 부품 색`;
+    // 근거 한 줄
+    const sameCount = primarySugs.filter((one) => one.s && one.s.exact).length;
+    let why = slotSug && curCat === slotCat
+      ? `${catLabel(slotCat)} 부품의 같은 자리 색${issue.slotMatch ? '' : ' — 지금 칠한 색과 다름'}`
+      : hasCtx && ctxCats.indexOf(curCat) >= 0 ? `${catLabel(curCat)} 부품이 쓰는 색`
+      : curCat === 'foundation' ? '팔레트 색'
+      : isRoleCategory(curCat) ? `공통 ${catLabel(curCat)} 색` : `${catLabel(curCat)} 색`;
+    if (sameCount >= 2) why += ` · 같은 색 ${sameCount}개`;
+    else if (sameCount === 0 && primarySugs.length && primarySugs[0].s && typeof primarySugs[0].s.dist === 'number') why += ' · 가장 가까운 색';
+    if (issue.offGuide) why += ' · 팔레트에 없는 색';
+    const rowHtml = ({ s, i }) => `
+            <div class="sug" data-sug-idx="${i}">
+              <div data-s1-component="radio">
+                <input type="radio" id="pick-${issue.id}-${i}" name="pick-${issue.id}" data-s1-part="control" data-issue-id="${issue.id}" data-sug-idx="${i}" ${pickedIdx === i ? 'checked' : ''}/>
+                <label data-s1-part="label" for="pick-${issue.id}-${i}">${escape(s.variableName)}</label>
+              </div>
+              <button type="button" data-s1-component="button" data-variant="secondary" data-size="xxsm" data-action="apply" data-sug="${i}"><span data-s1-part="label">적용</span></button>
+            </div>`;
+    const sugsHtml = primarySugs.length === 0
+      ? '<p class="why">맞는 토큰이 없습니다</p>'
+      : primarySugs.map(rowHtml).join("");
+    const restOpen = !!moreOpen[issue.id];
+    const moreHtml = restCount === 0 ? '' : `
+      <div class="more-wrap">
+        <hr data-s1-component="divider" data-axis="x">
+        <button type="button" data-s1-component="text-button" data-variant="secondary" data-action="more-sugs"><span data-s1-part="label">${restOpen ? '다른 후보 접기' : `다른 후보 ${restCount}개 보기`}</span></button>
+        ${restOpen ? restGroups.map((g) => `<p class="gh">${escape(groupTitle(g.cat))} ${g.rows.length}개</p>${g.rows.map(rowHtml).join("")}`).join("") : ''}
+      </div>`;
     div.innerHTML = `
       <div class="issue-head">
         <div class="swatch" style="background:${issue.hex}"></div>
         <div class="name">${escape(issue.nodeName)}</div>
         <span class="hex">${issue.hex}</span>
-        ${issue.offGuide ? '<span class="offguide-note">팔레트 외</span>' : ''}
       </div>
-      <div class="cat-chips">${chipsHtml}</div>
+      <p class="why">${escape(why)}</p>
       <div class="sugs">${sugsHtml}</div>
-      ${(foldedCount > 0 && !showAll) ? `<button class="detail-toggle" data-action="more-sugs" type="button">다른 후보 ${foldedCount}개 보기</button>` : ''}
+      ${moreHtml}
     `;
     div.addEventListener("click", (e) => {
-      const t = e.target;
-      // "색이 다른 후보 보기" → 이 카드만 펼친다
-      if (t && t.dataset && t.dataset.action === "more-cats") {
-        catsOpen[issue.id] = true;
-        rerenderTab();
-        e.stopPropagation();
-        return;
-      }
+      // DS 부품은 글자를 안쪽 span 에 담는다 — 누른 곳이 글자여도 버튼으로 본다.
+      const t = (e.target.closest && e.target.closest('[data-action]')) || e.target;
+      // 「다른 후보 보기/접기」 → 이 카드만 펴고 접는다
       if (t && t.dataset && t.dataset.action === "more-sugs") {
-        moreOpen[issue.id] = true;
-        rerenderTab();
-        e.stopPropagation();
-        return;
-      }
-      // 카테고리 칩 클릭 → 활성 카테고리 변경 후 issue 카드만 다시 렌더링
-      const chip = t.closest && t.closest(".cat-chip");
-      if (chip) {
-        const newCat = chip.dataset.cat;
-        const issueId = chip.dataset.issueId;
-        activeCat[issueId] = newCat;
+        moreOpen[issue.id] = !moreOpen[issue.id];
         rerenderTab();
         e.stopPropagation();
         return;
@@ -2906,7 +2981,7 @@ function rerenderTab() {
         const idx = parseInt(t.dataset.sug, 10);
         send("apply-one", { issue, suggestionIndex: idx });
         // 시각 피드백은 apply-result 받은 후 처리 (낙관적 표시 X)
-        t.textContent = "...";
+        t.querySelector('[data-s1-part="label"]').textContent = "...";
         t.disabled = true;
         e.stopPropagation();
         return;
@@ -2916,26 +2991,13 @@ function rerenderTab() {
         const issueId = t.dataset.issueId;
         const sugIdx = parseInt(t.dataset.sugIdx, 10);
         picks[issueId] = sugIdx;
-        // 같은 issue의 모든 sug 라벨에서 picked class 갱신
-        div.querySelectorAll(".sug").forEach((el) => {
-          const elIdx = parseInt(el.dataset.sugIdx, 10);
-          el.classList.toggle("picked", elIdx === sugIdx);
-        });
         updatePickedCount();
         e.stopPropagation();
         return;
       }
-      // sug label 영역 클릭 → 해당 라디오 선택
+      // 후보 줄의 글자(label)는 브라우저가 라디오를 대신 눌러 준다 — 노드 이동으로 새지 않게만 막는다.
       const sugEl = t.closest && t.closest(".sug");
-      if (sugEl && sugEl.dataset.sugIdx !== undefined) {
-        const radio = sugEl.querySelector('input[type="radio"]');
-        if (radio && !radio.checked) {
-          radio.checked = true;
-          radio.dispatchEvent(new Event("click", { bubbles: true }));
-        }
-        e.stopPropagation();
-        return;
-      }
+      if (sugEl) { e.stopPropagation(); return; }
       // 그 외 (issue 카드 빈 영역, head, meta) → 노드 선택
       send("select-node", { nodeId: issue.nodeId });
     });
@@ -2967,7 +3029,7 @@ function renderInspectionResult(payload) {
   renderRecentSwaps();
 
   lastIssues = payload.colorIssues || [];
-  picks = {}; activeCat = {}; detailOpen = {}; moreOpen = {}; catsOpen = {};
+  picks = {}; moreOpen = {}; appliedMap = {};
   // 아이콘처럼 «바로 걸어도 되는» 칸은 미리 골라 둔다 — 아래 [선택 항목 적용] 한 번이면 끝난다.
   lastIssues.forEach((issue) => { if (typeof issue.autoPick === 'number') picks[issue.id] = issue.autoPick; });
   updatePickedCount();
@@ -2976,7 +3038,7 @@ function renderInspectionResult(payload) {
   if (extraColor.length) {
     const block = document.createElement('div');
     block.innerHTML = extraColor.map((issue) =>
-      '<div class="detail-item" data-node-id="' + escape(issue.nodeId) + '"><b>' + escape(issue.nodeName) + '</b><span>' + escape(issue.detail) + '</span></div>'
+      '<div class="detail-item" data-node-id="' + escape(issue.nodeId) + '" data-check="' + escape(String(issue.checklistId)) + '"><b>' + escape(issue.nodeName) + '</b><span>' + escape(issue.detail) + '</span></div>'
     ).join('');
     block.querySelectorAll('[data-node-id]').forEach((row) => row.addEventListener('click', () => send('select-node', { nodeId: row.dataset.nodeId })));
     list.appendChild(block);
@@ -3119,48 +3181,32 @@ function handleAuditUiMessage(msg) {
     rerenderTab();
   } else if (msg.type === "apply-result") {
     const { issueId, suggestionIndex, ok, paired } = msg.payload;
-    const el = list.querySelector(`[data-id="${issueId}"]`);
-    if (el) {
-      // 같은 issue의 모든 apply 버튼을 활성 상태로 복원 + applied 표시 해제
-      el.querySelectorAll('button[data-action="apply"]').forEach((b) => {
-        b.disabled = false;
-        b.textContent = "적용";
-        b.classList.remove("applied");
-      });
-      if (ok) {
-        // 방금 적용된 sug만 Applied 표시 (다른 후보는 클릭 가능 — 덮어쓰기 허용)
-        const target = el.querySelector(`button[data-action="apply"][data-sug="${suggestionIndex}"]`);
-        if (target) {
-          target.disabled = true;
-          target.textContent = "적용됨";
-          target.classList.add("applied");
-        }
+    const done = (lastIssues || []).filter((x) => x.id === issueId)[0];
+    if (ok && done) {
+      // 적용이 끝난 카드는 한 줄로 접어 맨 아래로(river 결정 2026-10-21).
+      const sug = done.suggestions[suggestionIndex];
+      appliedMap[issueId] = { name: sug ? sug.variableName : '' };
+      delete picks[issueId];
+      // 같은 도형의 채움↔테두리를 함께 걸었으면 짝 카드도 접는다
+      //   (river 지적 2026-09-21: 연동이 안 되는 것처럼 보인다 — 실제로는 짝 카드가 남아 있었다).
+      if (paired) {
+        const twinProp = done.property === "fills" ? "strokes" : "fills";
+        (lastIssues || []).filter((x) => x.nodeId === done.nodeId && x.property === twinProp)
+          .forEach((twin) => { appliedMap[twin.id] = { name: sug ? sug.variableName : '', paired: true }; delete picks[twin.id]; });
       }
+      updatePickedCount();
+      rerenderTab();
+    } else {
+      const el = list.querySelector(`[data-id="${issueId}"]`);
+      if (el) el.querySelectorAll('button[data-action="apply"]').forEach((b) => {
+        b.disabled = false;
+        b.querySelector('[data-s1-part="label"]').textContent = "적용";
+      });
     }
-    // 같은 도형의 채움↔테두리를 함께 걸었으면 그 사실을 알리고, **짝 카드도 목록에서 지운다**
-    //   (river 지적 2026-09-21: 연동이 안 되는 것처럼 보인다 — 실제로는 짝 카드가 남아 있었다).
     let applyMsg;
     if (!ok) applyMsg = "적용 실패";
     else if (paired) applyMsg = "적용 완료 · 같은 도형의 테두리/배경도 함께 연결했습니다";
     else applyMsg = "적용 완료";
-    if (ok && paired) {
-      const done = (lastIssues || []).filter((x) => x.id === issueId)[0];
-      if (done) {
-        const twinProp = done.property === "fills" ? "strokes" : "fills";
-        const twins = (lastIssues || []).filter((x) => x.nodeId === done.nodeId && x.property === twinProp);
-        for (const twin of twins) {
-          const twinEl = list.querySelector(`[data-id="${twin.id}"]`);
-          if (twinEl) {
-            twinEl.style.opacity = "0.5";
-            twinEl.querySelectorAll('button[data-action="apply"]').forEach((b) => {
-              b.disabled = true;
-              b.textContent = "함께 적용됨";
-              b.classList.add("applied");
-            });
-          }
-        }
-      }
-    }
     showToast(applyMsg);
   } else if (msg.type === "apply-text-style-result") {
     const p = msg.payload || {};
@@ -3183,22 +3229,12 @@ function handleAuditUiMessage(msg) {
   } else if (msg.type === "apply-multi-result") {
     const p = msg.payload;
     for (const a of p.applied) {
-      const el = list.querySelector(`[data-id="${a.issueId}"]`);
-      if (el) {
-        el.querySelectorAll('button[data-action="apply"]').forEach((b) => {
-          b.disabled = false;
-          b.textContent = "적용";
-          b.classList.remove("applied");
-        });
-        const target = el.querySelector(`button[data-action="apply"][data-sug="${a.suggestionIndex}"]`);
-        if (target) {
-          target.disabled = true;
-          target.textContent = "적용됨";
-          target.classList.add("applied");
-        }
-      }
+      const done = (lastIssues || []).filter((x) => x.id === a.issueId)[0];
+      const sug = done && done.suggestions[a.suggestionIndex];
+      appliedMap[a.issueId] = { name: sug ? sug.variableName : '' };
       delete picks[a.issueId];
     }
+    rerenderTab();
     updatePickedCount();
     showToast(`${p.ok}건 적용 완료${p.fail ? ` · ${p.fail}건 실패` : ""}.`);
   } else if (msg.type === "set-mode-result") {
@@ -3224,7 +3260,7 @@ function handleAuditUiMessage(msg) {
       renderRecentSwaps();
       // ── 그 외 버킷: HEX 색상 → 시멘틱 토큰 제안 ──
       lastIssues = msg.payload.colorIssues || [];
-      picks = {}; activeCat = {}; detailOpen = {}; moreOpen = {}; catsOpen = {}; updatePickedCount();
+      picks = {}; moreOpen = {}; appliedMap = {}; updatePickedCount();
       rerenderTab();
       // ── 칩 카운트 + 결과 칩 노출 ──
       const compCount = swapCandidates.length + manual.length + modules.length;

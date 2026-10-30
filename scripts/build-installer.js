@@ -15,6 +15,7 @@ const zlib = require("zlib");
 const { execFileSync } = require("child_process");
 const esbuild = require("esbuild");
 const { fingerprint } = require("./lib/installer-fingerprint");
+const { tokenSheetFingerprint } = require("./lib/token-sheet-fingerprint");
 
 const ROOT = path.resolve(__dirname, "..");
 const SRC_DIR = path.join(ROOT, "plugins/figma-vars-installer/src");
@@ -33,7 +34,7 @@ async function run() {
   // ── 부품 사실표 최신 검사 ────────────────────────────────────────────────
   //   검수기의 «정본 부품 이름표»와 «부품이 쓰는 토큰»이 이 표에서 나온다. 정본을 고치고 표를 다시
   //   만들지 않은 채 플러그인을 지으면, 새 부품이 «우리 부품이 아닌 것»으로 조용히 새어 나간다
-  //   (GNB Menu 사고 2026-09-22). 낡은 표로는 짓지 않는다. 커밋 검문소(Gate 9e)보다 앞선 자리다.
+  //   (GNB Menu 사고 2026-09-22). 낡은 표로는 짓지 않는다. 커밋 검문소(Gate 24 — 옛 9e)보다 앞선 자리다.
   console.log("[installer] 부품 사실표 최신 검사…");
   try {
     execFileSync(process.execPath, [path.join(ROOT, "scripts/gen-component-facts.js")], { stdio: "inherit" });
@@ -57,6 +58,8 @@ async function run() {
     platform: "browser",
     define: {
       __CURRENT_GUIDE_FINGERPRINT__: JSON.stringify(guideFingerprint.hash),
+      // 토큰 견본판을 다시 그릴지 가르는 지문 — 판 모양 소스가 그대로면 이미 깔린 판을 건너뛴다.
+      __TOKEN_SHEET_FINGERPRINT__: JSON.stringify(tokenSheetFingerprint(SRC_DIR)),
     },
   });
 

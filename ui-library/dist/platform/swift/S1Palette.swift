@@ -438,8 +438,8 @@ public enum S1Palette {
     public static let colorIconWhite = S1Color(0xFFFFFFFF, 0xFFFFFFFF)
     /// --color-line-blue — 라이트 #1D6CEB · 다크 #3070D8
     public static let colorLineBlue = S1Color(0xFF1D6CEB, 0xFF3070D8)
-    /// --color-line-default — 라이트 #E9E9E9 · 다크 #2E2F38
-    public static let colorLineDefault = S1Color(0xFFE9E9E9, 0xFF2E2F38)
+    /// --color-line-default — 라이트 #E9E9E9 · 다크 #35363F
+    public static let colorLineDefault = S1Color(0xFFE9E9E9, 0xFF35363F)
     /// --color-line-strong — 라이트 #353535 · 다크 #8A8C96
     public static let colorLineStrong = S1Color(0xFF353535, 0xFF8A8C96)
     /// --color-modal-panel-border — 라이트 #D9D9D9 · 다크 #3E4049
@@ -698,18 +698,28 @@ public enum S1Palette {
     public static let colorTableHeaderBg = S1Color(0xFFFAFAFA, 0xFF24252C)
     /// --color-tag-line-border-blue — 라이트 #1D6CEB · 다크 #3070D8
     public static let colorTagLineBorderBlue = S1Color(0xFF1D6CEB, 0xFF3070D8)
+    /// --color-tag-line-border-gray — 라이트 #D9D9D9 · 다크 #3E4049
+    public static let colorTagLineBorderGray = S1Color(0xFFD9D9D9, 0xFF3E4049)
     /// --color-tag-line-border-red — 라이트 #FF4554 · 다크 #F06070
     public static let colorTagLineBorderRed = S1Color(0xFFFF4554, 0xFFF06070)
     /// --color-tag-line-label-blue — 라이트 #1D6CEB · 다크 #3070D8
     public static let colorTagLineLabelBlue = S1Color(0xFF1D6CEB, 0xFF3070D8)
+    /// --color-tag-line-label-gray — 라이트 #757575 · 다크 #B8BABF
+    public static let colorTagLineLabelGray = S1Color(0xFF757575, 0xFFB8BABF)
     /// --color-tag-line-label-red — 라이트 #FF4554 · 다크 #F06070
     public static let colorTagLineLabelRed = S1Color(0xFFFF4554, 0xFFF06070)
     /// --color-tag-solid-bg-blue — 라이트 #1D6CEB · 다크 #3070D8
     public static let colorTagSolidBgBlue = S1Color(0xFF1D6CEB, 0xFF3070D8)
+    /// --color-tag-solid-bg-gray — 라이트 #E9E9E9 · 다크 #24252C
+    public static let colorTagSolidBgGray = S1Color(0xFFE9E9E9, 0xFF24252C)
     /// --color-tag-solid-bg-red — 라이트 #FF4554 · 다크 #F06070
     public static let colorTagSolidBgRed = S1Color(0xFFFF4554, 0xFFF06070)
-    /// --color-tag-solid-label — 라이트 #FFFFFF
-    public static let colorTagSolidLabel = S1Color(0xFFFFFFFF, 0xFFFFFFFF)
+    /// --color-tag-solid-label-blue — 라이트 #FFFFFF
+    public static let colorTagSolidLabelBlue = S1Color(0xFFFFFFFF, 0xFFFFFFFF)
+    /// --color-tag-solid-label-gray — 라이트 #757575 · 다크 #B8BABF
+    public static let colorTagSolidLabelGray = S1Color(0xFF757575, 0xFFB8BABF)
+    /// --color-tag-solid-label-red — 라이트 #FFFFFF
+    public static let colorTagSolidLabelRed = S1Color(0xFFFFFFFF, 0xFFFFFFFF)
     /// --color-text-body-primary — 라이트 #353535 · 다크 #ECEDF0
     public static let colorTextBodyPrimary = S1Color(0xFF353535, 0xFFECEDF0)
     /// --color-text-body-secondary — 라이트 #555555 · 다크 #B8BABF

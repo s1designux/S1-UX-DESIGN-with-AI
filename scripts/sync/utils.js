@@ -25,8 +25,15 @@ function readFile(relPath) {
   }
 }
 
+// 날짜 줄(`**Date:** YYYY-MM-DD`)만 바뀐 보고서는 다시 쓰지 않는다 — 검사를 돌릴 때마다 날짜만 바뀐
+//   변경이 남아 합치기(wt:merge)를 막던 것(2026-10-21 river 지시). 내용이 바뀌면 날짜도 함께 새로 쓴다.
+const DATE_LINE = /^\*\*Date:\*\* .*$/m;
 function writeReport(relPath, content) {
   const abs = path.join(ROOT, relPath);
+  if (fs.existsSync(abs)) {
+    const prev = fs.readFileSync(abs, 'utf8');
+    if (prev === content || prev.replace(DATE_LINE, '') === content.replace(DATE_LINE, '')) return;
+  }
   fs.mkdirSync(path.dirname(abs), { recursive: true });
   fs.writeFileSync(abs, content, 'utf8');
 }

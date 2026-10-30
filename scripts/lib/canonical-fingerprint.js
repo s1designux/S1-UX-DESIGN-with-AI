@@ -9,7 +9,7 @@
  *
  * 무엇을 세는가 (river 승인 2026-09-16 — "다 묶는 걸로 하고, 글자 변화도 잡고, 빌려쓰는 것도 같이 올려"):
  *   ① 그 부품 몫의 정본 세트 이름 (registry/governance/component-fingerprint-map.json)
- *   ② 그 세트들의 실측 (registry/components/component-facts.json — Gate 9e 가 손편집에서 지킨다)
+ *   ② 그 세트들의 실측 (registry/components/component-facts.json — Gate 24(옛 9e) 가 손편집에서 지킨다)
  *   ③ 그 세트를 **만드는 코드 구간**과 그 코드가 부르는 것들 전부 (주석·빈 줄은 뺀 상태)
  *      → 라벨·안내문구 같은 **글자 변화**와 실측이 못 담는 속살 변화가 여기서 잡힌다.
  *        주석만 고치면 아무 부품도 반응하지 않는다.

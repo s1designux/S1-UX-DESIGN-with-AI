@@ -32,17 +32,18 @@ git 이력을 되짚거나(6c) 크롬을 띄워 화면을 그리거나(44·53) �
 | 1 | Registry | registry JSON 구조·Semantic 경유·네이밍·필드 |
 | 2 | Figma | 등록 nodeId/componentKey 유효성 — **gate:check 미배선 · 수동** |
 | 3 | Quality | Foundation 외 raw HEX 금지·rgba 예외만 |
-| 4 | Report | reports 색인 커버리지 |
+| 4 | Report | reports 색인 커버리지 — **2026-10-02 차단 승격** |
 | 5 | UI + Harness Audit | 사이즈 분기·다크 비교·아이콘 색 — **`npm run harness:audit` 단독 · UI 부분 수동** |
 | 6 | Installer Coverage | 설치기 토큰 커버리지 |
 | 6b | Installer Build Freshness | 커밋 zip 이 최신 빌드인지 |
 | 6c | Installer Tooltip | zip 안 ui.html 툴팁·날짜가 소스 재계산값과 같은지 |
-| 7 | Token Sync Monitor | 전 표면 토큰 '값' 일치(정본=vars-data) |
-| 7b | Token Value Consistency | 해석 HEX 표면 일치(tokens.css↔vars-data↔semantic.html) |
+| 7 | Token Sync Monitor | 전 표면 토큰 '값' 일치(정본=vars-data) + 표면 간 해석 HEX 교차 대조(tokens.css↔vars-data↔semantic.html — 옛 7b, 2026-10-02 합침) |
 | 8 | Component Key Coverage | 빌더 동적 조합 키가 정본에 다 있나 |
-| 9 | Number/Sizing Page | number 토큰 페이지 일치·폐지 사이징 재유입 0 |
+| 9 | Number/Sizing Page | number 토큰 페이지 일치·폐지 사이징 재유입 0 · foundation.html 색 팔레트 정본 일치(옛 9b, 2026-10-02 합침) |
+| 9c | Registry Foundation Colors | registry/tokens/foundation.colors.json 이 vars-data 생성물과 같은지 |
+| 9d | Component Element Stubs | components.html 부품 섹션이 component-element-stubs.json 생성물과 같은지 |
 | 10 | Doc Token Ref Drift | 옛 토큰명 잔재·폐기 토큰 재유입·유령행 차단 |
-| 11 | Component Anatomy | 상태별 필수/금지 하위 요소(caret·clear 등) |
+| 11 | Component Anatomy | 상태별 필수/금지 하위 요소(caret·clear 등) · 기대 부품 전부 생성 · BOOLEAN 스위치 결속 |
 | 12 | Icon Instance Policy | 아이콘=라이브러리 인스턴스 강제 |
 | 13 | Installer Build Verification | build-components.ts 독립 검증(해시)·⭐ 자가검증 차단 |
 | 14 | Verified Content | 검증 고정 문구 verbatim·날조 차단 |
@@ -56,11 +57,11 @@ git 이력을 되짚거나(6c) 크롬을 띄워 화면을 그리거나(44·53) �
 | 21 | Registry Active/Legacy | 은퇴 파일이 index active 로 남는 좀비 등록 차단 |
 | 22 | Page Layout Policy | 페이지 공통 틀·폭 정책(wide/readable) |
 | 23 | Component Presentation | PC 컴포넌트 표출 규칙(실제 렌더 DOM 대조) |
-| 24 | DESIGN.md Drift | DESIGN.md 가 정본보다 낡으면 차단 |
+| 24 | DESIGN.md Drift | 부품 행동 계약 · component-facts.json(옛 9e, 2026-10-02 합침) · DESIGN.md 가 정본보다 낡으면 차단 |
 | 25 | Component Alias Canonical | 컴포넌트-별칭이 정본 토큰으로 해석되나 |
 | 26 | Icons Stats Consistency | 아이콘 개수가 정본(icons-data.js)과 일치 |
 | 27 | Token Role | **글자엔 글자 토큰** — border/bg/surface 오연결 차단 |
-| 28 | System Map Drift | 대시보드가 낡았나 — **불일치=경고(비차단)** |
+| 28 | System Map Drift | 대시보드가 낡았나 — **불일치=경고(비차단)** · 합칠 때(`wt:merge` 5c) 자동 재생성 |
 | 29 | Dark Divergence | 라이트 같은데 다크만 갈리는 이상치(래칫) |
 | 30 | Component Registration | 설치기 전집합 ↔ 등록 4면 차집합 대조 |
 | 31 | Icon Key Consistency | 설치기 `ICON_KEYS` ↔ provenance 3면 정합 |
@@ -72,14 +73,15 @@ git 이력을 되짚거나(6c) 크롬을 띄워 화면을 그리거나(44·53) �
 | 37 | Doc Budget | **CLAUDE.md 재비대화 차단** — 크기 래칫·참조 경로 실존·변경이력 3행 |
 | 38 | Component Guide Generation | `build-components.ts` → guide model 드리프트 차단 (메인 사이트는 손관리) |
 | 39 | Canonical Value → Web Guide | 정본 수치가 웹 가이드에 반영됐나 |
-| 40 | Screen Rebuild Evidence | 화면 재현 근거(기준 선언·스냅샷) 존재 — **warn** |
-| 41 | Screen Rebuild State | 화면 작업 상태 파일 정합, 전 플로우 일괄 — **warn** |
+| 40 | Screen Rebuild Evidence | 화면 재현 근거(기준 선언·스냅샷) 존재 — **2026-10-02 차단 승격** |
+| 41 | Screen Rebuild State | 화면 작업 상태 파일 정합, 전 플로우 일괄 — **2026-10-02 차단 승격** |
 | 42 | Screen Naming | 화면 프레임 이름과 흐름 코드 규칙 |
 | 43 | UI Icon Geometry | 누르는 영역과 분리된 SVG 틀·실제 도형 크기, source↔dist 일치 |
 | 44 | UI Guide Render | 안내 화면을 실제로 그려서 검사 — 개발 코드 플랫폼 일치 · 부품 표본이 세트 장식을 함께 보여주지 않는지 |
 | 45 | CSS Var Reference | 실재하지 않는 CSS 변수를 참조하는 죽은 선언 차단 — 「없는 이름을 지어내는」 실수를 커밋 시점에 막는다 |
 | 46 | Developer Handoff | 개발자가 받아 가는 전달본(ZIP·다운로드 화면·색/크기 값)이 현재 배포본보다 낡지 않았나 |
-| 42 | Screen Naming | 화면 프레임 이름이 네이밍 정본 규칙을 지키나 |
+| 47 | Review Board Freshness | 검수판 화면·사실표가 현재 배포본 지문과 같은지 |
+| 48 | Session Ledger Split | 옛 단일 장부 부활·낱장 장부 형식 오류 차단 |
 | 49 | Spec Label Width | 스펙(설명용) 시트 라벨이 상자 폭을 넘어 두 줄이 되는지 — 설치기 mock 라벨 전수 × 설치된 Pretendard 실측. 단독 `npm run spec:labelwidth` (폰트 미설치 시 SKIP) |
 | 50 | UI Library Version | 정본이 바뀌었는데 배포본 번호가 그대로면 차단 — 받아 간 개발자가 낡았는지 알 수 있게 한다. 번호는 `npm run ui:bump`(값만=끝자리) · `npm run ui:bump -- --minor`(쓰는 법이 바뀜)이 매긴다. 장부 `ui-library/release-log.json` · 단독 `npm run ui:version` |
 | 51 | GNB Keyboard Order | 상단바 하위메뉴를 키보드로 쓰는 길이 깨졌는지 실제 DOM 에서 잰다 · 적대 시험 내장. 단독 `npm run ui:keyboard` (크롬 없으면 SKIP) |
@@ -128,6 +130,7 @@ git 이력을 되짚거나(6c) 크롬을 띄워 화면을 그리거나(44·53) �
 - `reports/reports-index.json` vs 실제 `.md` 파일 커버리지
 - 미색인 report 파일 탐지
 **자동 스크립트:** `npm run reports:sync && npm run reports:check`
+**세기:** 2026-10-02 경고 → **차단**(river 결정) — 경고로는 9/16 이후 2주 넘게 미색인 3건이 방치됐다. 고치는 방법이 `npm run reports:sync` 한 번이라 막아도 부담이 적다.
 
 ### Gate 5: UI Gate + Harness Audit
 **파일:** `.claude/agents/guide-builder.md`
@@ -194,6 +197,7 @@ git 이력을 되짚거나(6c) 크롬을 띄워 화면을 그리거나(44·53) �
 **역할:** 빌더가 각 상태(variant)에서 **반드시 포함해야 하는 하위 요소**(예: Input·Search Input·Text Area 의 Focus 입력 커서 `caret`, Input·Search 의 selected 삭제 아이콘 `clear`)를 실제로 생성하는지, 또 **있으면 안 되는 요소**(예: Text Area 는 `clear` 미포함)를 기계 판정. **기존 게이트는 전부 토큰만 검사** — 컴포넌트 **구조(하위 요소 유무)** 를 보는 게이트가 없어 작거나 보조 변형축(icon=on)에 있는 요소가 누락돼도 전 게이트 ✅ 였다.
 **방법:** Gate 8 과 동일 전략 — esbuild CJS 번들 후, **노드 트리를 기록하는 recording mock figma**로 `buildAllComponents` 를 실제 실행, combineAsVariants 세트별로 manifest(세트명·variant 정규식·`require`/`forbid` 이름들) 대조. 매칭 variant 0개면 selector 부패로 ❌(Gate 7 "추출 0건=안됨" 사상).
 **확장:** 새 필수/금지 하위 요소는 `component-anatomy-check.js` 의 `ANATOMY` 배열에 한 줄 추가(`require`/`forbid`).
+**2026-10-19 확장 (river 지시 2026-09-22, 사각지대 가) — 부품이 사라지면 빨강.** 빌더는 부품마다 try/catch 로 예외를 삼키고 계속 가는데, 이 게이트는 ANATOMY 8개 세트만 찾고 예외는 경고였다 — 세트가 통째로 없어져도 초록이었다(2026-09-22 List Row 가 mock 슬롯키 때문에 검사에서 빠져 있던 것을 우연히 발견). 이제 ①`buildAllComponents` 가 던지면 ❌ ②반환 `failed[]`·`noRunner[]` 가 비어 있지 않으면 ❌ ③**만들어진 세트 목록 ↔ `COMPONENT_CATEGORIES_GRID` members 전부**를 대조해 빠진 부품이 있으면 ❌(기대치 밖 보조 세트 — `GNB Menu` 등 — 는 문제 삼지 않음). **BOOLEAN 스위치 결속**도 같이 본다: `addComponentProperty(…, "BOOLEAN")` 으로 만든 스위치가 어느 레이어 `visible` 에도 묶이지 않으면 ❌(종전 mock 은 `findChild`/`findOne` 이 빈 stub 이라 결속 대입이 사라져 어느 게이트도 못 봤다 — component-verifier 13차 관찰). mock 이 못 찾는 노드(라이브러리 인스턴스 속)는 종전처럼 stub 을 주되, 거기 한 결속은 기록되지 않아 "안 묶임"으로 드러난다(안전한 방향). 적대 4종 확인(건별 예외·세트 이름 이탈·결속 줄 삭제·전체 중단 → 전부 ❌).
 **도입 사유:** 2026-06-19 설치기 Input·Search Input 의 **입력 커서(caret) 와 selected 삭제(close) 아이콘이 빌더에서 누락**됐는데 토큰 게이트(3·6·7·8)가 전부 ✅ 라 사용자에게 2회 유출. 구조 사각지대를 **커밋 단계에서 기계 차단**해 동일 클래스(하위 요소 드롭) 재발 방지.
 
 ### Gate 12: Icon Instance Policy (2026-06-19 신설)
@@ -285,15 +289,15 @@ git 이력을 되짚거나(6c) 크롬을 띄워 화면을 그리거나(44·53) �
   22. Gate 22 (Page Layout Policy) — pages/*.html·page-layout-policy.json 변경 시 / 항상. **페이지가 공통 레이아웃 틀(헤더가 사이드바 LNB 에 붙음)과 폭 정책(wide/readable)을 지키는지** 정본(`registry/governance/page-layout-policy.json`)과 기계 대조. ❌차단 = 미분류 페이지(escape)·틀 이탈(헤더가 main 밖/앞=LNB 미부착)·wide 인데 폭 제한 상속·wide 인데 헤더만 안 넓힘(헤더↔컨텐츠 폭 불일치)·readable 인데 임의 전폭·retired 페이지 nav/검색 부활. ⚠️경고 = stale config. 폭 위반은 `npm run layout:check -- --fix` 자동 교정(틀/미분류/부활은 수동). "헤더 안 붙음·wide 드리프트"를 ⭐ 눈 대신 기계가 판정(self-certify 사각지대 차단). 단독 `npm run layout:check`
   23. Gate 23 (Component Presentation Policy) — pages/components.html·component-presentation-policy.json 변경 시 / 항상. **각 PC 컴포넌트 섹션이 표출 레이아웃 규칙(컴포넌트별 개별 규칙)을 지키는지** 정본(`registry/governance/component-presentation-policy.json`)과 **실제 렌더 DOM**(헤드리스 크롬 --dump-dom, JS 재배치 후) 기준으로 대조. 소스 순서가 아니라 렌더 결과로 판정(§⚖️ 정본 오독 차단). ❌차단 = Action(인터랙티브) 없음·별도 사이즈/라벨 블록 금지 위반(action-only/in-action-state-area/merged-section)·정본 섹션 부재. ℹ️미계측(정직 보고, 비차단) = 세트 Action 여부·사이즈 양성확인·상태 세로·hover 유지·정보보완(거짓 완전성 차단). 상태 '값' 완전성은 Gate 19 담당. 크롬 없으면 SKIP(exit 0, 3회 재시도). 단독 `npm run components:presentation`
   24. Gate 24 (DESIGN.md Drift) — tokens.css·registry 변경 시 / 항상. **AI 소비용 단일 컨텍스트 `design/DESIGN.*.md` 가 정본(tokens.css+registry)보다 낡으면 차단**(재생성 강제). gen-design-md dry-run 에 "변경감지"면 fail. 갱신 `npm run design:md:write`, 단독 `npm run design:md:check`
-  7b. Gate 7b (Token Value Consistency) — 항상. 존재하나 gate:check 에 미연결이던 `token-value-consistency-check` 를 배선(2026-07-10). token-sync-monitor(정본↔각 표면)와 달리 **`tokens.css` ↔ `vars-data.ts` ↔ `pages/semantic.html` 의 "해석된 HEX"가 Light/Dark 모두 일치**하는지 교차 대조. 불일치=차단. 단독 `npm run tokens:consistency`
+  7b. *(2026-10-02 Gate 7 로 합침)* 옛 Gate 7b — `token-value-consistency-check` 의 교차 대조(**`tokens.css` ↔ `vars-data.ts` ↔ `pages/semantic.html` 의 "해석된 HEX"가 Light/Dark 모두 일치**)는 이제 Gate 7 블록 안에서 그대로 돈다. 불일치=차단(변함없음). 단독 `npm run tokens:consistency`
   25. Gate 25 (Component Alias Canonical) — pages/*.html 변경 시 / 항상. **활성 페이지에 정의된 컴포넌트-별칭 토큰(`--{button|chip|input|dropdown|select|table|nav|gnb|pagination|checkbox|radio|toggle|tab}-*`)의 var() 체인이 정본(tokens.css∪site-base∪페이지-로컬)까지 해석되는지** 검사. ❌차단 = ①유령참조(체인이 정의 없는 토큰에 닿음 = 정본 밖 별칭 이름·오타·삭제 토큰 재유입) ②표면드리프트(같은 별칭 이름이 페이지 간 다른 최종 HEX). 배경: 모든 토큰 게이트가 vars-data/tokens.css 만 봐서 그 바깥 `--{comp}-*` 별칭층은 사각지대였다(`--dropdown-trigger-*` 유출 계기). 은퇴 별칭 CSS(component-tokens.css)는 legacyFiles 라 제외. 단독 `node scripts/component-alias-canonical-check.js`
   26. Gate 26 (Icons Stats Consistency) — 표출용 아이콘 개수(icons-stats.js)가 정본(icons-data.js)과 일치하나(손편집 후 재생성 누락 차단·재생성 `npm run icons:stats`)
   27. Gate 27 (Token Role / 글자엔 글자 토큰) — 글자(TEXT) 색은 text/*·label/*·number/* 만 — border/*·bg/*·surface/* 오연결 차단(icon/*=허용목록만). build-components.ts mock 실행해 글자 fill 역할 대조. Input 안내메시지 테두리토큰 오연결(값 게이트 전부 ✅였던 사각지대) 재발 차단. 단독 `npm run tokens:rolecheck`
-  28. Gate 28 (System Map Drift) — `pipeline-status.js --self-check` 로 현재 코드에서 시스템 맵을 재생성해 커밋본과 대조(휘발성 제외) — pipeline-status.html 이 낡았나. **불일치=경고(비차단)**: 대시보드는 생성물이라 낡아도 빌드가 안 깨지고, error 로 걸면 타 세션 커밋까지 막혀 `--no-verify` 를 부르고 그러면 Gate 1~27 이 전부 무력화되기 때문(2026-07-14 결정 — 신선도보다 게이트 생태계 보존 우선). 재생성 `node pipeline-status.js --check --skip gate:check,components:presentation --out pages/pipeline-status.html`
+  28. Gate 28 (System Map Drift) — `pipeline-status.js --self-check` 로 현재 코드에서 시스템 맵을 재생성해 커밋본과 대조(휘발성 제외) — pipeline-status.html 이 낡았나. **불일치=경고(비차단)**: 대시보드는 생성물이라 낡아도 빌드가 안 깨지고, error 로 걸면 타 세션 커밋까지 막혀 `--no-verify` 를 부르고 그러면 Gate 1~27 이 전부 무력화되기 때문(2026-07-14 결정 — 신선도보다 게이트 생태계 보존 우선). 재생성 `node pipeline-status.js --check --skip gate:check,components:presentation --out pages/pipeline-status.html`. **2026-10-02(river 결정 A): 경고는 그대로 두고, `npm run wt:merge` 5c 단계가 합칠 때마다 낡았는지 보고 낡았으면 다시 만들어 커밋한다**(낡지 않았으면 아무것도 안 함 · 실패해도 합치기는 되돌리지 않음). 9/29 이후 경고가 떠 있어도 아무도 다시 만들지 않던 방치를 자동 연동으로 메운다.
   29. Gate 29 (Dark Divergence / 다크값갈림) — vars-data.ts 변경 시 / 항상. **라이트 최종값이 같은데 같은 비교 단위 안에서 다크 최종값만 갈리는 이상치 토큰**을 baseline(`registry/governance/dark-divergence-baseline.json`) 대조로 차단. 비교 단위 = 컴포넌트 계열은 `컴포넌트/역할`(예 chip/bg · chip/icon · form-control/icon — 역할 마디를 뒤에서부터 찾아 붙인다. 변형 이름이 역할 낱말과 겹치는 `chip/line/border/*` 오인 방지), 역할 계열(text·icon·bg·line·overlay·surface)은 seg1/seg2. **2026-09-10 river 지시로 컴포넌트 단위를 역할별로 좁혔다** — 종전에는 컴포넌트 하나로 묶어 라이트가 같은 흰색이면 배경과 글자·아이콘이 한 그룹이 됐고, 동수가 되면 무고한 토큰까지 신규 이상치로 승격됐다. 이상치 = 단위×라이트값 그룹에서 다수파와 다른 다크값(동수면 전원 등록·`[동수]` 표시, 옳은 쪽 판정 안 함). ❌차단 = baseline 에 없는 신규 이상치·끊긴 참조. ⚠️기록만 = 단위 간 갈림(의도 가능 — form-control 이 다크에서 밝게 가는 류)·baseline 해소분 알림·**역할을 가로지르는 갈림**(`crossRole` — 역할별로 좁히면서 차단 범위에서 빠진 유형. 도입 사유였던 '칩 선택 라벨만 다른 단계'가 여기 보인다. 사람이 판단). baseline 키 = `<단위>::<라이트값>::<토큰명>::<다크값>` (이상치 토큰 자체가 키 — 정상 토큰 추가로는 안 흔들림), reason 선택. **갱신은 줄이기 전용 래칫**(`--update-baseline` — 신규 있으면 기록 거부, gate20-fix A안 선반영). 도입 사유(2026-07-28): chip 선택 라벨 다크(blue-dark/350)가 같은 chip 선택 계열(300)과 홀로 어긋난 것을 사람이 발견 — 같은 유형을 기계가 잡도록 신설. 단독 `npm run tokens:darkdiv`
 ```
 
-스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 6b + 6c + 7 + 7b + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 15b + 16 + 17 + 18 + 19 + 20 + 21 + 22 + 23 + 24 + 25 + 26 + 27 + 28 + 29 자동)
+스크립트 일괄 실행: `npm run gate:check` (Gate 1 + 3 + 4 + 6 + 6b + 6c + 7(옛 7b 포함) + 8 + 9 + 10 + 11 + 12 + 13 + 14 + 15 + 15b + 16 + 17 + 18 + 19 + 20 + 21 + 22 + 23 + 24 + 25 + 26 + 27 + 28 + 29 자동)
 
 > **Gate 10 (doc-token-ref-check):** 토큰을 rename/remove 하면 옛 이름을 쥔 가이드 문서가 자동 적발된다. **정본 rename 시 `registry/tokens/deprecated-tokens.json` 의 `renamedGroups` 에 `{from,to}` 한 줄 추가**하면 이후 게이트가 전 활성 페이지에서 잔재를 차단(Check B). `--color-*` 참조 존재성은 Check A(경고)로 가시화. **정본 삭제 시 `deprecated-tokens.json` 의 `deprecatedTokens` 에 `{cssVariable}` 한 줄 추가**하면 Check C 가 그 폐기 토큰(컴포넌트 토큰 `--button-*`·`--input-*` 포함, 와일드카드)이 활성 페이지에 **재유입되는 것을 차단**한다(예: 삭제한 `--button-*-focus-ring` 이 Token Details 에 되살아남 방지). 또 Token Details 값 칸이 `(none)`·`미정의` 로 **존재하지 않는 토큰을 문서화하면 차단**(없는 토큰은 행 삭제 — 이 유령행이 레거시 재유입 통로였음, 2026-07-03 신설). 단독 실행 `npm run docs:tokencheck`. `components.html`(폐기 예정)은 검사 제외.
 
@@ -316,13 +320,17 @@ git 이력을 되짚거나(6c) 크롬을 띄워 화면을 그리거나(44·53) �
 
 커밋 zip 안 ui.html 의 "이번 업데이트" 툴팁·카드 4개 날짜가 소스 재계산값과 같은지. Gate 6b 는 code.js 의 토큰 "키"만 봐서 ui.html 의 "문장"(툴팁·날짜)은 사각지대였음 — 소스를 고치고 `installer:build` 를 잊은 채 커밋하면 사용자가 낡은 툴팁을 봄. 검사기 `scripts/installer-tooltip-check.js`(별도 프로세스 spawnSync)
 
-### Gate 7b: Token Value Consistency
+### Gate 7b: Token Value Consistency — *2026-10-02 Gate 7 로 합침*
 
-tokens.css↔vars-data↔semantic.html 해석 HEX 표면 일치(Gate 7 옆 배선)
+tokens.css↔vars-data↔semantic.html 해석 HEX 표면 일치. 정본 대조(Gate 7 본체)는 정본 라이트·다크가 **둘 다** 색으로 풀릴 때만 올리고, 이 교차 대조는 한쪽만 풀려도 보며 정본에 없는 토큰의 semantic.html↔tokens.css 도 직접 본다 — 이 가장자리 때문에 지우지 않고 **Gate 7 안으로 옮겼다**. 같은 토큰·모드를 Gate 7 본체가 이미 실패로 보고했으면 중복 줄만 생략한다(실패 판정은 그대로).
 
 ### Gate 9: Number/Sizing Page
 
-number 토큰 페이지 일치·폐지 사이징 재유입 0
+number 토큰 페이지 일치·폐지 사이징 재유입 0. **foundation.html 색 팔레트(BRAND·PALETTES·DARK_PALETTES) 정본 대조(A' 단계, `gen-foundation-color.js --check`)도 여기서 돈다** — 옛 Gate 9b 는 같은 명령을 한 번 더 돌리던 중복이라 2026-10-02 뺐다(실패 집합 동일, river 결정).
+
+### Gate 9e: Component Facts — *2026-10-02 Gate 24 로 흡수*
+
+`component-facts.json` 재생성 대조는 Gate 24(`design-md-drift-check.js`) 둘째 단계(행동 계약 검사 다음)가 **같은 명령**(`gen-component-facts.js` 무인자)으로 돌려 비0이면 막는다. 같은 검사가 두 번 돌던 것을 하나로 줄였다(실패 집합 동일). 행동 계약이 어긋나도 멈추지 않고 facts 검사까지 돌아 둘 다 한 번에 보고하며, Gate 24 출력이 ❌·→ 줄을 함께 싣도록 고쳐 facts 낡음의 원인·고치는 명령(`npm run components:facts:write`)이 그대로 보인다.
 
 ### Gate 10: Doc Token Ref Drift
 
@@ -393,11 +401,13 @@ DESIGN.md(AI 소비용) 가 정본(tokens.css+registry)보다 낡으면 차단
 **정본에 새 항목이 생기는 것을 사건으로 보는 유일한 게이트.** 추적 대상 = 텍스트 스타일명·토큰 키·**컴포넌트 세트 이름**·**컴포넌트 속성 이름**(`addComponentProperty`)·**웹 UI 라이브러리 상태 이름**(ui-library manifest `states`) (2026-08-03 확장 — H7 이 "컴포넌트·variant"를 명시하는데 게이트는 토큰·스타일만 봤고, Gate 30 은 "등록됐나"(커버리지)지 "생겨도 되나"(승인)가 아니라 신설+성실등록이면 전 게이트를 통과했다. variant 축은 마찰 과잉이라 제외). 새 종류 감시 시작은 `--extend-tracking <종류>`(정본을 안 건드리는 감시 확대라 승인 불필요하되 **1회만**·지정 종류 밖 신설이 섞이면 거부 — 적대 테스트로 우회로 4종 확인). ⭐ 가 텍스트 스타일·토큰을 임의로 신설하면 **커밋 차단**, 사용자 승인 기록이 있으면 통과(`npm run canon:approve -- --by river --reason "…" --quote "<사용자 실제 발화>"`).
 
 **2026-09-03 확장 (river 지시 HD-3) — 승인의 근거를 기계가 확인한다.** 2026-08-25 focus-visible 사태에서 ⭐ 가 `--by river` 라고 타이핑해 **자기가 자기를 승인**했고 그 줄이 이후 모든 근거로 재인용됐다(보고서·registry·rules). `--by` 는 자기신고라 검증되지 않는다. 이제 승인하려면 `--quote` 로 **사용자의 실제 발화를 그대로 인용**해야 하고, 그 말이 세션 기록(`~/.claude/projects/<repo>/*.jsonl`)의 `origin.kind === "human"` 항목에 실재해야 통과한다(이 표식은 하네스가 붙이며 ⭐ 출력·도구 결과·시스템 알림에는 안 붙는다). 원장에는 `quote`·`evidence`(기록 파일·시각)와 함께 **`recordedBy`(누가 타이핑했나, 기계가 정함 — 손으로 못 바꿈)** 를 `by`(누가 결정했나)와 분리해 남긴다. 근거 없는 옛 승인은 차단하지 않되 **매번 경고로 보인다**(조용히 신뢰받지 않도록). 뒤늦게 근거를 붙이는 경로는 `--reapprove --item <항목> --by <사용자> --quote "…"` 이며 같은 대조를 통과해야 한다. 적대 테스트 4종 확인(지어낸 인용 차단 · `--quote` 누락 차단 · ⭐ 자기승인 차단 · 실제 발화 통과). **한계(정직하게): 완벽한 위조 방지가 아니다** — 기록 파일 자체를 고치면 뚫리고, 인용문이 그 항목과 정말 관련된 말인지까지는 기계가 판정하지 못한다. 목적은 "근거 없이 승인 줄을 만드는 일"을 한 단계의 명시적 위조로 바꾸고, **실제 발화가 원장에 남아 사람이 관련성을 눈으로 확인할 수 있게** 하는 것이다.
+
+**2026-10-19 확장 (river 지시 2026-09-22, 사각지대 나) — 짧은 승인어는 직전 선택지와 짝지어 검증.** "A로 넣어줘"·"좋아" 같은 가장 분명한 승인이 8자 기준에 걸려 근거가 될 수 없었다(우회로 `reason` 에 적었지만 그 칸은 대조하지 않는다). 기준만 낮추면 "좋아" 는 기록 어디에나 있어 아무 승인이나 통과하므로, 8자 미만 인용은 **`--prompt "<직전 ⭐ 가 선택지를 내민 문장 일부, 8자 이상>"`** 와 짝지어야 통과한다: ①사람 발화(`origin.kind=human`, 장문 경로와 같은 기준)가 그 말을 담고 발화 전체가 짧은 한마디(system-reminder 덧붙임 제외 ≤40자) ②**같은 기록 파일에서 바로 앞 사람 발화 이후 ~ 이 발화 직전** 사이의 ⭐ 글에 prompt 조각이 실재(순서) ③그 ⭐ 글 시각 ≤ 사람 발화 시각. 원장 `evidence` 에 `prompt`·`promptAt`·`pairing: "short-approval"` 이 남아 "무엇에 대한 대답이었나"를 사람이 대조할 수 있다. 8자 이상 인용 경로는 **그대로**(약화 없음). 적대 6종 확인(실제 짝 통과 · prompt 누락 · 지어낸 prompt · 다른 대답 · 짧은 prompt · 사람 발화 속 문장을 prompt 로 → 전부 차단).
  종전엔 32개 게이트 전부가 "정본→파생 일치"만 봐서 **정본에 줄이 늘어나는 것을 아무도 안 봤다** — 재생성만 돌리면 전 게이트가 통과했다. 하드룰 H6②(구 H7) 집행. 정본=`registry/governance/canon-additions-baseline.json`. 단독 `npm run canon:check`
 
 ### Gate 35: Typography Generation
 
-`typography.css` 가 텍스트 스타일 정본(`textstyles-data.ts`)과 일치하나. `typo:check` 가 **존재하는데 배선돼 있지 않아** 텍스트 스타일 정본은 게이트가 0개였다(Gate 7b·9b 와 같은 "존재하나 미연결" 유형). 재생성 `npm run typo:gen`(이제 `tokens:reconcile` 1단계에 편입)
+`typography.css` 가 텍스트 스타일 정본(`textstyles-data.ts`)과 일치하나. `typo:check` 가 **존재하는데 배선돼 있지 않아** 텍스트 스타일 정본은 게이트가 0개였다(옛 Gate 7b·9b 와 같은 "존재하나 미연결" 유형). 재생성 `npm run typo:gen`(이제 `tokens:reconcile` 1단계에 편입)
 
 ### Gate 36: Canon Manifest (정본 목록)
 
@@ -407,11 +417,15 @@ DESIGN.md(AI 소비용) 가 정본(tokens.css+registry)보다 낡으면 차단
 
 컴포넌트 정본의 실제 scene graph에서 생성한 `component-guide-model.json`이 최신인지 `--check` byte 대조로 차단한다. 메인 사이트 `components.html`은 기존 손관리 화면을 유지하며 자동 생성·byte 대조 대상이 아니다. Gate 18의 공개·제외 분류, Gate 19의 variant 커버리지, Gate 23의 실제 렌더, Gate 32의 크기 어휘가 사이트를 별도로 검증한다. 모델 재생성은 `npm run components:guide-model:write`, 일괄은 `npm run tokens:reconcile`이다. 단독 `npm run components:guide:check`.
 
+### Gate 40: Screen Rebuild Evidence (화면 재현 근거)
+
+화면 작업이 **무엇을 기준으로 맞다고 판정됐는지**의 근거가 남아 있나 — 선언한 기준(`legacy`·`existing-nodes`·`intent-spec`)마다 원본 전수표·스냅샷 3종(before·expect·after)+snapdiff 기록·의도 선언서+승인을 요구한다. **2026-10-02 차단으로 승격**(사용자 결정 2026-08-24 "안정되면 승격"의 이행). 남아 있던 경고 1건(modu-app/signup-mobile-web)은 고친 차례마다 이름을 붙인 스냅샷 묶음(`snapshot-fix3-before.json` 등)을 검사기가 못 알아본 오탐이었다 — 이제 **같은 이름의 before·expect·after 가 한 벌 이상 다 갖춰져** 있으면 기본 3종과 같은 근거로 인정한다(한 벌이라도 빠지면 종전처럼 누락). 기존 부채는 `evidence.exempt` 로 동결. 단독 `npm run screen-rebuild:evidence`
+
 ### Gate 41: Screen Rebuild State (화면 작업 상태 파일)
 
 `reports/screen-rebuild/*/*/workflow-state.json` 을 **전 플로우 일괄** 검사한다. 단건 검사기 `screen-rebuild:statecheck` 는 **존재했지만 수동이라** 2026-08-21~24 사이 실패를 아무도 몰랐다(반복 패턴 `rule-written-but-not-enforced` — Gate 35·7b·9b 와 같은 "존재하나 미연결" 유형). 배선하자마자 진행 중 플로우에서 아무도 모르던 불일치 1건이 드러났다.
 
-낡음(`_stale`) 규약을 존중한다: 사양이 축소되면 과거 산출물(`screen-spec.json`·`scan-summary.json`)은 당시 증거로 보존되므로 화면 수를 현재와 비교하면 영원히 실패한다. `_stale: true` **이면서 `_supersededBy`(대체 문서)가 있을 때만** 오류를 경고로 낮추고 제외 사유를 파일명과 함께 출력한다 — 도장만 찍어 검사를 피하는 것은 막는다. **현재 warn 단계**(래칫 — 진행 중 플로우의 기존 부채가 정리되면 승격 검토). 단독 `npm run screen-rebuild:statecheck:all`
+낡음(`_stale`) 규약을 존중한다: 사양이 축소되면 과거 산출물(`screen-spec.json`·`scan-summary.json`)은 당시 증거로 보존되므로 화면 수를 현재와 비교하면 영원히 실패한다. `_stale: true` **이면서 `_supersededBy`(대체 문서)가 있을 때만** 오류를 경고로 낮추고 제외 사유를 파일명과 함께 출력한다 — 도장만 찍어 검사를 피하는 것은 막는다. **2026-10-02 차단으로 승격**(river 지시). 남아 있던 실패 1건(login/pc-web)은 의도 선언서로 만든 화면(`source.kind: "intent-spec"`)을 레거시 재현 기준(원본 주소·원본 노드·원본 전수표)으로 따지던 검사기 쪽 오해였다 — 이제 intent-spec 화면은 원본 대신 **의도 선언서(`source.doc`)가 실제로 있어야** 하고, 화면마다 화면 번호(`code`)+만든 노드(`targetNodeId`), 완료 시 원본 전수표 대신 의도 선언서를 요구한다(요구를 빼지 않고 원본 자리에 원본에 해당하는 근거를 요구). 단독 `npm run screen-rebuild:statecheck:all`
 
 ### Gate 42: Screen Naming (화면 프레임 네이밍)
 
@@ -448,6 +462,8 @@ DESIGN.md(AI 소비용) 가 정본(tokens.css+registry)보다 낡으면 차단
 **적대 시험 내장** — `npm run ui:keyboard:selftest` 가 옛 결함 3종을 코드에 되살려 **이 검사기가 실제로 잡는지** 확인한다. 잡지 못하면 그물에 구멍이 난 것이므로 실패로 보고한다.
 
 **못 재는 것(정직하게):** 브라우저가 Tab 을 **실제로 어디로 옮기는지**는 재현하지 않는다(헤드리스로 진짜 키를 보내려면 디버깅 프로토콜이 필요하다). 지금 런타임은 순서를 스스로 계산하지 않고 브라우저가 옮긴 뒤 보정하는 방식이라, 여기서 재는 것은 **"보정이 맞나"** 다. 크롬이 없으면 경고로 건너뛴다.
+
+**크롬 한 번이 결과를 못 내면 새 크롬으로 다시 띄운다(2026-10-02, river 결정).** 9/16~10/02 이 검사는 진짜 결함을 0회 잡았고, 대신 "크롬이 시간 안에 끝내지 못했습니다"로 커밋을 13번 넘게 잘못 막았다. 원인은 시험이 아니라 크롬 실행이었다 — 결과 없이 DOM 을 내보내거나 먼저 꺼져도 옛 코드는 알아채지 못하고 120초를 다 기다렸다. 이제 세 경우(결과 없는 DOM · 먼저 꺼짐 · 30초 초과)를 바로 알아채고 최대 3번 띄운다. **다시 띄우는 것은 결과를 아예 못 받은 경우뿐**이다 — 시험이 ❌ 를 낸 결과는 재시도 없이 그대로 실패이고, 3번 다 결과를 못 받아도 여전히 실패로 막는다(경고로 내리지 않는다).
 
 단독 실행 `npm run ui:keyboard` · 적대 시험 `npm run ui:keyboard:selftest`.
 
@@ -553,7 +569,7 @@ CSS 가 참조하는 `var(--이름)` 이 **실제로 정의된 토큰인지** �
 
 **목록은 `registry/components/component-facts.json` 의 `variantAxes` 에서 읽는다** — 정본(`build-components.ts`)에서 생성되는 기계가독 표면이다. 정본 소스를 직접 글자로 훑지 않는 이유는, 컴포넌트 이름이 대부분 `Size=${size}` 처럼 변수로 조립돼 **글자만 긁으면 값이 거의 안 잡히고 «다 덮었다»가 거짓말이 되기 때문**이다(첫 판 실측: 축 4개만 잡혔다).
 
-**그 표면이 낡으면?** `component-facts.json` 자체의 최신성은 **Gate 9e** 가 정본과 대조해 지킨다. 사슬은 정본 → (Gate 9e) → 기계가독 표면 → (Gate 54) → 화면 사전이라, 한 칸이라도 어긋나면 어느 한쪽 게이트가 먼저 막는다.
+**그 표면이 낡으면?** `component-facts.json` 자체의 최신성은 **Gate 24 둘째 단계(옛 9e)** 가 정본과 대조해 지킨다. 사슬은 정본 → (Gate 24) → 기계가독 표면 → (Gate 54) → 화면 사전이라, 한 칸이라도 어긋나면 어느 한쪽 게이트가 먼저 막는다.
 
 **적대 시험(2026-09-18):** ①사전에서 값 한 줄(`size: xl`)을 빼면 `size=xl` 을 지목하며 막는다 ②우리말 자리에 영어를 넣어도(`xl: 'XL'`, `size: 'Size'`) 막는다 ③파서를 끊는 덩어리를 넣으면 **실패 쪽으로 넘어진다**(통과시키지 않는다).
 

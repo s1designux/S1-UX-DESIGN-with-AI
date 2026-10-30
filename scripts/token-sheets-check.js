@@ -125,7 +125,8 @@ class Node {
   remove() { if (this.parent) this.parent.children = this.parent.children.filter((c) => c !== this); this.parent = null; }
   setBoundVariable(field, v) { this.boundVariables[field] = v; }
   async setTextStyleIdAsync(id) { this.textStyleId = id; }
-  setExplicitVariableModeForCollection(cid, mid) { this.modes[cid] = mid; }
+  // 실제 API 는 컬렉션 **개체**를 받는다(dynamic-page 에서 id 문자열판은 예외) — 키는 그 id 로 기록한다.
+  setExplicitVariableModeForCollection(c, mid) { this.modes[typeof c === "object" && c ? c.id : c] = mid; }
   get absoluteBoundingBox() {
     let x = this.x, y = this.y, p = this.parent;
     while (p && p.type !== "PAGE") { x += p.x; y += p.y; p = p.parent; }
@@ -158,6 +159,7 @@ function mockPage() {
     loadFontAsync: async () => {},
     currentPage: page,
     variables: {
+      getVariableCollectionByIdAsync: async (id) => ({ id }),
       setBoundVariableForPaint: (paint, field, v) => Object.assign({}, paint, { boundVariables: { [field]: { id: v.id, type: "VARIABLE_ALIAS" } } }),
     },
   };

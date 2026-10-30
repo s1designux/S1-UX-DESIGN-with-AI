@@ -83,7 +83,11 @@ window.REGISTRY_BUNDLE = {
       "list-row": "registry/components/list-row.json",
       "expandable-card": "registry/components/expandable-card.json",
       "divider": "registry/components/divider.json",
-      "data-tag": "registry/components/data-tag.json"
+      "data-tag": "registry/components/data-tag.json",
+      "lnb": "registry/components/lnb.json",
+      "footer": "registry/components/footer.json",
+      "ci": "registry/components/ci.json",
+      "login-gnb": "registry/components/login-gnb.json"
     },
     "figma": "registry/figma/figma-map.json",
     "governance": {
@@ -105,7 +109,7 @@ window.REGISTRY_BUNDLE = {
           "name": "SW Foundation Colors",
           "version": "2.4",
           "status": "stable",
-          "updatedAt": "2026-10-02",
+          "updatedAt": "2026-10-30",
           "source": "plugins/figma-vars-installer/src/vars-data.ts (FOUNDATION_COLOR)",
           "description": "Official SW Design System V2.4 foundation color foundation. Raw HEX values are allowed here only.",
           "generated": true,
@@ -9887,6 +9891,46 @@ window.REGISTRY_BUNDLE = {
         "status": "in-progress",
         "harnessStatus": "planned",
         "priority": 32
+      },
+      {
+        "id": "lnb",
+        "name": "LNB",
+        "label": "LNB",
+        "category": "core",
+        "path": "registry/components/lnb.json",
+        "status": "in-progress",
+        "harnessStatus": "planned",
+        "priority": 33
+      },
+      {
+        "id": "footer",
+        "name": "Footer",
+        "label": "Footer",
+        "category": "core",
+        "path": "registry/components/footer.json",
+        "status": "in-progress",
+        "harnessStatus": "planned",
+        "priority": 34
+      },
+      {
+        "id": "ci",
+        "name": "CI",
+        "label": "CI",
+        "category": "core",
+        "path": "registry/components/ci.json",
+        "status": "in-progress",
+        "harnessStatus": "planned",
+        "priority": 35
+      },
+      {
+        "id": "login-gnb",
+        "name": "Login GNB",
+        "label": "Login GNB",
+        "category": "core",
+        "path": "registry/components/login-gnb.json",
+        "status": "in-progress",
+        "harnessStatus": "planned",
+        "priority": 36
       }
     ]
   },
@@ -10269,7 +10313,8 @@ window.REGISTRY_BUNDLE = {
       },
       "a11y": [
         "선택 상태를 aria-pressed 또는 role 로 노출한다.",
-        "닫기(X)에는 삭제·해제 aria-label 을 단다."
+        "닫기(X)에는 삭제·해제 aria-label 을 단다.",
+        "river 결정 2026-10-13 「전부 부품이 알아서」: 칩을 감싼 요소에 data-s1-select=\"single\" 을 달면 하나만 켠다 — 켜진 칩을 다시 눌러도 꺼지지 않고, 다른 칩을 누르면 그 칩이 켜진다. 표시가 없으면 칩마다 따로 켜고 끈다(여러 개 고르는 화면은 그대로). 화면이 막으려면 s1:chip:beforechange 에서 preventDefault."
       ],
       "variants": {
         "line": {
@@ -10574,7 +10619,8 @@ window.REGISTRY_BUNDLE = {
       },
       "a11y": [
         "날짜 셀은 키보드 이동이 가능해야 하고 선택 셀에 aria-selected 를 준다.",
-        "비활성 날짜는 aria-disabled 로 표시한다."
+        "비활성 날짜는 aria-disabled 로 표시한다.",
+        "열릴 때 키보드 초점 규칙(river 2026-10-13, 질문 '키보드로 달력을 열 때 초점이 어디로 갈까요? 추천은 골라 둔 날짜, 없으면 오늘' 에 '-> 추천안으로'): 골라 둔 날짜(기간이면 시작일) → 없으면 오늘 → 오늘이 보이는 달에 없으면 그 달의 1일. PC 팝오버와 모바일 시트 모두 같다."
       ],
       "baseComponent": "Input",
       "composition": [
@@ -12592,7 +12638,8 @@ window.REGISTRY_BUNDLE = {
       "a11y": [
         "탭 목록은 role=tablist·각 항목 role=tab 으로 표시하고 현재 탭에 aria-selected 를 준다.",
         "아이콘만으로 의미를 전달하지 않는다 — 라벨을 항상 함께 보여준다.",
-        "터치 타깃은 60×60 으로 최소 권장치를 만족한다."
+        "터치 타깃은 60×60 으로 최소 권장치를 만족한다.",
+        "river 결정 2026-10-13 「전부 부품이 알아서」: 탭을 누르면 부품이 활성 탭을 옮긴다(2026-09-02 HD-1 '호스트가 정적으로 설정'을 뒤집음). 먼저 s1:mobile-bottom-nav:beforechange(취소 가능)를 내서 화면이 막을 수 있고(로그인 확인·저장 안 한 변경), 막지 않으면 aria-selected·aria-current=page 를 옮기고 s1:mobile-bottom-nav:change 를 낸다. 라우팅이 정하는 화면은 api.setActive() 또는 aria-selected 로 직접 정한다. ←→ 는 탭 사이 초점 이동."
       ],
       "states": [
         "unselected",
@@ -14311,8 +14358,10 @@ window.REGISTRY_BUNDLE = {
         "a11yStatus": "implemented",
         "figmaStatus": "confirmed",
         "harnessStatus": "implemented",
-        "description": "페이지네이션 컨트롤. 화살표(first/prev/next/last) + 페이지 번호. 선택 페이지는 텍스트 색으로만 구분.",
+        "description": "페이지네이션 컨트롤. 이동 버튼 4개(|< 이전 페이지 묶음 · < 이전 페이지 · > 다음 페이지 · >| 다음 페이지 묶음) + 페이지 번호. 선택 페이지는 텍스트 색으로만 구분.",
         "notes": [
+          "2026-10-13 river 결정: 버튼은 네 개 — |<(묶음 넘김, 이전 묶음) · <(이전 페이지) · >(다음 페이지) · >|(묶음 넘김, 다음 묶음). river 원문: \"-> 페이지네이션에는 버튼이 네개있어 ㅣ< (묶음넘김)  <(이전페이지)  이렇게 되어야하는데\". 종전 웹의 |< >| 는 처음/마지막 쪽으로 갔다(정본 Figma 아이콘·배치는 그대로 — 동작과 이름만 바뀜).",
+          "묶음 이동 착지 규칙: 이전/다음 묶음의 첫 쪽으로 간다(registry/components/component-behavior.pc.json Pagination 의 'previous block/next block → first page of the previous/next block' 규칙을 그대로 따름). 첫 묶음에서 |< 는, 마지막 묶음에서 >| 는 막힌다. < > 는 한 쪽씩 움직이고 묶음 경계를 넘으면 번호 창도 따라 넘어간다. 번호는 한 묶음에 최대 6개.",
           "Figma 확인: 선택 페이지 = bg 변화 없음, 텍스트 색만 변경 (#9D9D9D → #353535).",
           "Disabled 화살표 = 전용 토큰 사용(bg gray/50 · border gray/100 · icon gray/300). V3.0 재실측(2026-07-08, node 956:19066)으로 확정 — 종전 '옵션 없이 opacity:0.9만 적용' 서술은 폐기(2026-08-01 교정).",
           "hover 는 전용 토큰이 V3.0 원본에 정의됨(color/pagination/control/bg·border·icon/hover) — 종전 'Figma 미정의 · assumed' 상태 해소(2026-07-08 재실측).",
@@ -14333,7 +14382,7 @@ window.REGISTRY_BUNDLE = {
       "anatomy": [
         {
           "part": "화살표",
-          "role": "first/prev/next/last 이동."
+          "role": "이동 버튼 4개 — |<(이전 페이지 묶음) <(이전 페이지) >(다음 페이지) >|(다음 페이지 묶음)."
         },
         {
           "part": "페이지 번호",
@@ -14352,7 +14401,8 @@ window.REGISTRY_BUNDLE = {
       },
       "a11y": [
         "현재 페이지에 aria-current 를 준다.",
-        "화살표 버튼에 이전·다음 등 aria-label 을 단다."
+        "이동 버튼 4개에 aria-label 을 단다 — \"이전 페이지 묶음\" · \"이전 페이지\" · \"다음 페이지\" · \"다음 페이지 묶음\".",
+        "묶음·쪽 이동으로 눌린 버튼이 막히거나 번호 버튼이 다시 그려져도 초점은 현재 쪽 번호 버튼에 남긴다(body 로 떨어지지 않는다)."
       ],
       "variants": {
         "arrow": {
@@ -14449,10 +14499,10 @@ window.REGISTRY_BUNDLE = {
         "interactionPattern": "paged-navigation",
         "webTag": "nav",
         "labels": {
-          "first": "첫 페이지",
+          "first": "이전 페이지 묶음",
           "previous": "이전 페이지",
           "next": "다음 페이지",
-          "last": "마지막 페이지"
+          "last": "다음 페이지 묶음"
         }
       },
       "governance": {
@@ -15715,7 +15765,8 @@ window.REGISTRY_BUNDLE = {
         "Checkbox·Radio 는 native input 을 그대로 쓴다(코어 배포본의 계약).",
         "Text 의 선택 표시(파란 체크)는 장식이다 — 선택 상태는 aria-selected·aria-checked 로 따로 알린다.",
         "비활성 줄은 disabled 또는 aria-disabled 로 알리고 초점 순서에서 뺀다.",
-        "List 의 아바타 아이콘은 장식이다 — 이름은 제목 글자가 갖는다."
+        "List 의 아바타 아이콘은 장식이다 — 이름은 제목 글자가 갖는다.",
+        "river 결정 2026-10-13 「전부 부품이 알아서」: 목록 묶음에 data-s1-select=\"single\" 을 달면 부품이 알아서 하나를 고른다 — Text(role=option·aria-selected·파란 체크)·Radio(native)만. 방향키·Home·End 이동, Enter/Space 선택, roving tabindex(고른 줄이 Tab 정거장). s1:bottom-sheet-option:beforechange(취소 가능) → change. data-s1-close-on-select 면 고른 뒤 시트가 닫힌다. 표시가 없으면 종전처럼 모양만 소유한다."
       ],
       "variantAxis": {
         "property": [
@@ -15873,7 +15924,7 @@ window.REGISTRY_BUNDLE = {
       "a11y": [
         "줄이 하는 일에 맞는 요소를 쓴다 — 눌러서 이동하면 button·link, 보여주기만 하면 요소를 누르게 두지 않는다.",
         "체크·토글은 코어 배포본의 접근성 계약을 그대로 따른다(체크=native input, 토글=role switch).",
-        "화살표 아이콘은 장식이다 — 이름은 제목 글자가 갖는다.",
+        "화살표 아이콘은 장식이다 — 이름은 제목 글자가 갖는다. 단 동의(Agree) 줄의 화살표는 **약관 열기 버튼**이다 — 체크와 따로 누르는 자리이고 눌러도 동의 체크가 바뀌지 않는다. 버튼 이름은 \"약관 보기\"처럼 하는 일을 말한다(river 2026-10-02).",
         "비활성 줄은 초점 순서에서 뺀다."
       ],
       "variantAxis": {
@@ -16374,7 +16425,7 @@ window.REGISTRY_BUNDLE = {
         "id": "data-tag",
         "name": "Data Tag",
         "category": "core",
-        "updatedAt": "2026-09-30",
+        "updatedAt": "2026-10-13",
         "version": "0.1.0",
         "tokenStatus": "stable",
         "codeStatus": "planned",
@@ -16382,15 +16433,16 @@ window.REGISTRY_BUNDLE = {
         "a11yStatus": "candidate",
         "figmaStatus": "planned",
         "harnessStatus": "planned",
-        "description": "상태를 보여주기만 하는 작은 라벨. 누르지 않는다. 둥근·각진 두 모양, 채움·선 두 형태, 파랑·빨강 두 색을 갖는다.",
+        "description": "상태를 보여주기만 하는 작은 라벨. 누르지 않는다. 둥근·각진 두 모양, 채움·선 두 형태, 파랑·빨강·회색 세 색을 갖는다.",
         "a11yApproval": "미확정 — 표 안에서 쓸 때 그 칸의 뜻을 글자로 읽히게 둔다. 3-build 에서 확정한다.",
-        "codeStatusNote": "정본 buildDataTag 는 2026-09-30 신설. 색은 뱃지 전용 쓰임 이름(color/tag/*)이며 river 승인 \"토큰은 제안한대로 추가하자\".",
+        "codeStatusNote": "정본 buildDataTag 는 2026-09-30 신설. 색은 뱃지 전용 쓰임 이름(color/tag/*)이며 river 승인 \"토큰은 제안한대로 추가하자\". 회색은 2026-10-13 river 승인으로 추가, 채움 글자는 색깔별(solid/label/{blue,red,gray})로 나눴다.",
         "platform": "both"
       },
       "usage": {
         "whenToUse": [
           "표나 목록에서 한 줄의 상태를 한 눈에 보이게 할 때.",
-          "승인·확인(파랑), 주의·에러(빨강)처럼 뜻이 정해진 상태를 표시할 때."
+          "승인·확인(파랑), 주의·에러(빨강)처럼 뜻이 정해진 상태를 표시할 때.",
+          "그 밖의 중립 상태(대기 등)는 회색으로 표시할 때."
         ],
         "whenNotToUse": [
           "누르는 것 — Chip 이나 Button 을 쓴다.",
@@ -16407,7 +16459,7 @@ window.REGISTRY_BUNDLE = {
       ],
       "doDont": {
         "do": [
-          "뜻이 정해진 두 색만 쓴다 — 파랑은 승인·확인, 빨강은 주의·에러.",
+          "정해진 세 색만 쓴다 — 파랑은 승인·확인, 빨강은 주의·에러, 회색은 그 밖의 중립 상태.",
           "표 안에서는 각진 모양을 쓴다."
         ],
         "dont": [
@@ -16437,7 +16489,8 @@ window.REGISTRY_BUNDLE = {
           ],
           "Color": [
             "Blue",
-            "Red"
+            "Red",
+            "Gray"
           ]
         },
         "absentCombinations": [],
@@ -16447,16 +16500,21 @@ window.REGISTRY_BUNDLE = {
       "tokens": {
         "bg": [
           "color/tag/solid/bg/blue",
-          "color/tag/solid/bg/red"
+          "color/tag/solid/bg/red",
+          "color/tag/solid/bg/gray"
         ],
         "line": [
           "color/tag/line/border/blue",
-          "color/tag/line/border/red"
+          "color/tag/line/border/red",
+          "color/tag/line/border/gray"
         ],
         "text": [
-          "color/tag/solid/label",
+          "color/tag/solid/label/blue",
+          "color/tag/solid/label/red",
+          "color/tag/solid/label/gray",
           "color/tag/line/label/blue",
-          "color/tag/line/label/red"
+          "color/tag/line/label/red",
+          "color/tag/line/label/gray"
         ],
         "number": [
           "spacing/6",
@@ -16486,16 +16544,17 @@ window.REGISTRY_BUNDLE = {
           ],
           "color": [
             "blue",
-            "red"
+            "red",
+            "gray"
           ]
         },
-        "note": "8칸(2 × 2 × 2). Dark 는 Appearance 모드로 제공한다. 설치기 묶음은 Chip(river 결정 2026-09-29)."
+        "note": "12칸(2 × 2 × 3). Dark 는 Appearance 모드로 제공한다. 설치기 묶음은 Chip(river 결정 2026-09-29)."
       },
       "governance": {
         "verify": "new",
         "verifyNote": "2026-09-30 정본 신설. Figma 실물 설치·렌더 대조는 아직 하지 않았다 — component-verifier 가 맡는다.",
-        "canonApproval": "Gate 34 승인 기록 — 색 7줄(color/tag/*) by river 2026-09-30, 부품 신설 by river 2026-09-29.",
-        "origin": "PC S/W UX GUIDE V1.0 「03.component/table04」 4-3 Data Tag (287:13552) 참고, 쓰임이 정해진 두 색만 채택."
+        "canonApproval": "Gate 34 승인 기록 — 색 7줄(color/tag/*) by river 2026-09-30, 부품 신설 by river 2026-09-29, 회색 4줄·채움 글자 색깔별 분리 by river 2026-10-13.",
+        "origin": "PC S/W UX GUIDE V1.0 「03.component/table04」 4-3 Data Tag (287:13552) 참고, 쓰임이 정해진 두 색만 채택, 회색은 2026-10-13 추가."
       },
       "webDistribution": {
         "status": "in-progress",
@@ -16513,6 +16572,592 @@ window.REGISTRY_BUNDLE = {
         "mobile": true,
         "pc": true,
         "note": "두 매체가 같은 부품을 쓴다."
+      }
+    },
+    "lnb": {
+      "_meta": {
+        "id": "lnb",
+        "name": "LNB",
+        "category": "core",
+        "updatedAt": "2026-10-02",
+        "version": "0.1.0",
+        "tokenStatus": "stable",
+        "codeStatus": "planned",
+        "darkModeStatus": "stable",
+        "a11yStatus": "candidate",
+        "figmaStatus": "planned",
+        "harnessStatus": "planned",
+        "description": "화면 왼쪽에 세로로 서는 메뉴 판(사이드바 메뉴). 우측 상단 접기 단추 하나로 펼침(240·280)과 접힘(80)을 오간다. 메뉴 칸·하위메뉴 줄·로고 얹음 두 벌(Menu·Brand)로 짜인다. 위쪽 메뉴 GNB 와 짝이다.",
+        "a11yApproval": "미확정 — nav[aria-label] 안의 목록, 하위메뉴는 button + aria-expanded/aria-controls, 접기 단추는 aria-pressed. 3-build 에서 확정한다.",
+        "codeStatusNote": "정본 buildSideNav · buildSideNavItem · buildSideNavSubItem 은 2026-09-30 편입(커밋 8b385c0f, 검증 reports/figma-library-build/side-nav/4-verification.md). 판 접기 아이콘 ic_패널접기(1767:44)는 V2.2 아이콘 라이브러리에 게시됐다(river 2026-09-30). 웹 배포본은 work-id promoted-parts-4.",
+        "platform": "pc"
+      },
+      "usage": {
+        "whenToUse": [
+          "화면 왼쪽에 세로로 서서 같은 서비스 안의 큰 영역을 오가는 메뉴가 필요할 때.",
+          "하위메뉴(2뎁스)까지 한 판에서 보여 줄 때."
+        ],
+        "whenNotToUse": [
+          "화면 위쪽 가로 메뉴가 필요할 때 — GNB 를 쓴다.",
+          "모바일 하단 이동 막대가 필요할 때 — Mobile Bottom Nav 를 쓴다."
+        ],
+        "note": "중간 구분명(grouped) 벌은 보류했다(river 2026-09-29). 로고는 data-variant=brand 에서만 보이며 배포본에 로고 파일은 싣지 않는다."
+      },
+      "anatomy": [
+        {
+          "part": "머리줄(head)",
+          "role": "로고 자리(brand 벌만)와 우측 상단 접기 단추."
+        },
+        {
+          "part": "메뉴 칸(item)",
+          "role": "아이콘 + 메뉴명 + (하위메뉴가 있으면) 여닫이 화살표. 접힘에서는 아이콘 아래 메뉴명이 붙는 정사각 칸이 된다."
+        },
+        {
+          "part": "하위메뉴 줄(subitems)",
+          "role": "2뎁스 줄. 아이콘이 없고 글자색은 상위 메뉴와 같다."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "묶음 사이 간격이 필요하면 메뉴 목록(items)을 여러 개 나란히 둔다.",
+          "접힌 상태에서는 title 속성으로 메뉴 이름을 함께 준다.",
+          "접힌 상태에서 메뉴에 마우스를 올리면 바로 판이 잠깐 펼쳐지고, 하위메뉴를 가진 메뉴면 그 하위메뉴가 열린다. 마우스가 판을 떠나면 다시 접힌다. 메뉴를 누르면 그 메뉴가 고른 상태가 되고, 하위메뉴 줄을 고르면 접힌 띠에서는 상위 메뉴가 고른 모양이 된다(river 2026-10-21) — 화면이 따로 만들지 않는다."
+        ],
+        "dont": [
+          "하위메뉴 글자를 연하게 낮추지 않는다(river 2026-09-29).",
+          "로고에 집 아이콘을 넣지 않는다.",
+          "접기 단추를 글자 단추로 만들지 않는다 — 아이콘 단추 하나만 둔다."
+        ]
+      },
+      "a11y": [
+        "nav 는 aria-label 로 이름을 갖는다.",
+        "접기 단추는 aria-label 과 aria-pressed 를 갖는다.",
+        "현재 위치는 aria-current=page 로 알린다."
+      ],
+      "variantAxis": {
+        "property": [
+          "Type",
+          "Size",
+          "State"
+        ],
+        "values": {
+          "Type": [
+            "Menu",
+            "Brand"
+          ],
+          "Size": [
+            "MD",
+            "LG"
+          ],
+          "State": [
+            "Expanded",
+            "Collapsed"
+          ]
+        },
+        "absentCombinations": [],
+        "sizeAxis": "MD(240) · LG(280) 두 폭. 접힘은 두 크기 모두 폭 80(sizing/80). 칸 세트는 Side Nav Item(Mode × State 8) · Side Nav Sub Item(State 3)."
+      },
+      "scope": "light+dark",
+      "tokens": {
+        "bg": [
+          "color/navigation/bg",
+          "color/navigation/bg--hover",
+          "color/button/bg/primary--default"
+        ],
+        "line": [
+          "color/line/default"
+        ],
+        "text": [
+          "color/navigation/label/default-side",
+          "color/navigation/label/selected",
+          "color/button/label/primary--default",
+          "color/text/title/primary",
+          "color/text/body/tertiary",
+          "color/text/state/disabled"
+        ],
+        "icon": [
+          "color/icon/gray-dark",
+          "color/icon/gray-light"
+        ],
+        "number": [
+          "border-width/1",
+          "radius/6",
+          "sizing/20",
+          "sizing/24",
+          "sizing/32",
+          "sizing/40",
+          "sizing/48",
+          "sizing/64",
+          "sizing/80",
+          "spacing/2",
+          "spacing/6",
+          "spacing/8",
+          "spacing/10",
+          "spacing/12",
+          "spacing/16"
+        ]
+      },
+      "reuses": {
+        "coreComponents": [],
+        "note": "여닫이 화살표는 아이콘 라이브러리 chevron, 접기 아이콘은 ic_패널접기(1767:44) 인스턴스다."
+      },
+      "figma": {
+        "componentSetKey": "(미발행 — 라이브러리 publish 시 기록)",
+        "fileKey": "cysG5U1udpQqVagYY1hWHW",
+        "targetFile": "SW UX GUIDE V3.0-TEST",
+        "builder": "plugins/figma-vars-installer/src/build-components.ts · buildSideNav · buildSideNavItem · buildSideNavSubItem",
+        "propertyMap": {
+          "type": [
+            "menu",
+            "brand"
+          ],
+          "size": [
+            "md",
+            "lg"
+          ],
+          "state": [
+            "expanded",
+            "collapsed"
+          ]
+        },
+        "note": "세트 3개 — Side Nav(판 8칸) · Side Nav Item(8칸) · Side Nav Sub Item(3칸). Dark 는 Appearance 모드로 제공한다. 설치기 묶음은 Navigation."
+      },
+      "governance": {
+        "verify": "new",
+        "verifyNote": "정본 편입 검증 reports/figma-library-build/side-nav/4-verification.md PASS(Gate 13 기록). 웹 배포본의 독립 검수는 아직 하지 않았다.",
+        "canonApproval": "river 승인 2026-09-29 \"오케이 4종 승인할게\" · 2026-09-30 \"LNB 부품도 이어서 만들어줘\" · 2026-10-21 접힌 띠 잠깐 펼침·선택 옮기기·상위 칸 선택 표시 \"오케이 현재 안으로 승인할게\".",
+        "origin": "site-restyle 승격 후보 검수(2026-09-29). 레거시 원본 없음 — river 지시로 설계(두 벌 · 240/280 · 접힘 80)."
+      },
+      "webDistribution": {
+        "status": "in-progress",
+        "manifest": "ui-library/src/components/lnb/manifest.json",
+        "runtime": "init(root) → { collapsed, peeking, collapse(next), toggleCollapse(), destroy() }",
+        "note": "하위메뉴 여닫이와 접기 단추 상태를 부품이 갖고, 메뉴 항목과 로고 그림은 쓰는 화면이 정한다. 펼침 폭 240·280 은 raw 값 그대로 쓰기로 결정(river 2026-10-02 \"지금 숫자 그대로 둘게\"). needs-decision — 다크 메뉴명 밝기, 접기 아이콘 배포 자산.",
+        "workId": "promoted-parts-4"
+      },
+      "geometry": {
+        "width": "펼침 MD 240 · LG 280(정본에 크기 토큰이 없어 raw 값 — needs-decision). 접힘 80(sizing/80).",
+        "height": "놓인 자리가 정한다(화면 높이를 채운다).",
+        "provenance": "river 결정 2026-09-29(두 벌 · 240/280). 접힘 칸 64×64 는 원본 dev-screen-qa-test 325:3749 에서 river 지시로 넓혔다."
+      },
+      "platformSupport": {
+        "mobile": false,
+        "pc": true,
+        "note": "PC 화면 왼쪽 메뉴다. 모바일은 Mobile Bottom Nav 를 쓴다."
+      }
+    },
+    "footer": {
+      "_meta": {
+        "id": "footer",
+        "name": "Footer",
+        "category": "core",
+        "updatedAt": "2026-10-02",
+        "version": "0.1.0",
+        "tokenStatus": "stable",
+        "codeStatus": "planned",
+        "darkModeStatus": "stable",
+        "a11yStatus": "candidate",
+        "figmaStatus": "planned",
+        "harnessStatus": "planned",
+        "description": "화면 맨 아래 법인 정보 영역. PC 는 가로 — 왼쪽에 링크 줄·회사 정보·카피라이트, 오른쪽에 에스원 로고. Mobile 은 세로 — 링크 줄과 가운데 정렬 카피라이트만 있다.",
+        "a11yApproval": "3-build 에서 정의, river UX 검수에서 확정 — 화면 맨 아래 영역은 <footer>(contentinfo 랜드마크), 링크 줄은 진짜 <a> 목록, 로고는 회사 이름이 글자로 이미 나와 있어 읽히지 않게 둔다(aria-hidden).",
+        "codeStatusNote": "정본 buildFooter 는 설치기에 이미 있었다(Gate 14 content-verbatim-check 가 문구를 지킨다). 웹 배포본은 work-id platform-web-3 로 신설.",
+        "platform": "both"
+      },
+      "usage": {
+        "whenToUse": [
+          "화면 맨 아래에 이용약관·개인정보 처리방침·회사 정보·카피라이트를 보여줄 때.",
+          "PC 화면에서는 회사 정보와 로고까지 함께 보여줄 때(PC), 모바일 화면에서는 링크와 카피라이트만 간단히 보여줄 때(Mobile)."
+        ],
+        "whenNotToUse": [
+          "화면 맨 위 바가 필요할 때 — 그건 GNB 나 로그인 상단바의 몫이다.",
+          "법인 문구를 화면마다 고쳐 쓰고 싶을 때 — 문구는 registry/content/footer.json 이 단일 출처이며 임의로 바꾸지 않는다."
+        ],
+        "note": "정본에 hover·pressed 가 없다. 링크 색은 바뀌지 않는다."
+      },
+      "anatomy": [
+        {
+          "part": "링크 줄",
+          "role": "이용약관 · 개인정보 처리방침 · 위치기반 서비스 이용약관 세 링크. 사이에 1px 세로 구분선."
+        },
+        {
+          "part": "회사 정보 (PC 만)",
+          "role": "상호·사업자등록번호·대표이사·주소 한 줄. 정본 글자의 연속 공백을 그대로 보존한다."
+        },
+        {
+          "part": "카피라이트",
+          "role": "© S-1 Corp. All Rights Reserved. PC 는 왼쪽 정렬, Mobile 은 링크 줄 폭에 맞춰 가운데 정렬."
+        },
+        {
+          "part": "로고 (PC 만)",
+          "role": "에스원 로고 42×16. 오른쪽 끝."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "링크는 진짜 링크(<a>)로 두고 href 는 쓰는 화면이 채운다.",
+          "법인 문구는 registry/content/footer.json 에 있는 글자 그대로 쓴다."
+        ],
+        "dont": [
+          "회사 정보의 연속 공백을 한 칸으로 접지 않는다.",
+          "정본에 없는 hover 색을 만들지 않는다.",
+          "Mobile 에 회사 정보나 로고를 넣지 않는다."
+        ]
+      },
+      "a11y": [
+        "화면 맨 아래 영역은 <footer> 요소를 쓴다(contentinfo 랜드마크).",
+        "링크는 <a> 요소이고 보이는 글자가 곧 접근 가능한 이름이다.",
+        "로고는 옆의 회사 정보 글자가 이미 이름을 말하므로 aria-hidden 으로 읽히지 않게 둔다.",
+        "키보드 초점 표시는 다른 코어와 같이 브라우저 기본에 맡긴다(2026-09-02 river 결정)."
+      ],
+      "variantAxis": {
+        "property": [
+          "Platform"
+        ],
+        "values": {
+          "Platform": [
+            "PC",
+            "Mobile"
+          ]
+        },
+        "absentCombinations": [],
+        "sizeAxis": "없음 — PC 는 1920×116 고정(웹은 바 배경 full-width·안쪽 가운데 1280 열, 768 미만은 Mobile 모양), Mobile 은 가로·세로 모두 hug."
+      },
+      "scope": "light+dark",
+      "tokens": {
+        "bg": [
+          "color/navigation/bg"
+        ],
+        "line": [
+          "color/line/default"
+        ],
+        "text": [
+          "color/text/body/tertiary"
+        ],
+        "icon": [
+          "color/icon/gray",
+          "color/icon/gray-light"
+        ],
+        "number": [
+          "border-width/1",
+          "sizing/10",
+          "sizing/16",
+          "spacing/4",
+          "spacing/8",
+          "spacing/12",
+          "spacing/16",
+          "spacing/24",
+          "spacing/28"
+        ]
+      },
+      "reuses": {
+        "coreComponents": [],
+        "note": "다른 부품을 붙이지 않는다. 로고는 정본이 CI 인스턴스가 아니라 같은 S1 로고 도형(42×16)을 직접 그린다."
+      },
+      "figma": {
+        "componentSetKey": "(미발행 — 라이브러리 publish 시 기록)",
+        "fileKey": "cysG5U1udpQqVagYY1hWHW",
+        "targetFile": "SW UX GUIDE V3.0-TEST",
+        "builder": "plugins/figma-vars-installer/src/build-components.ts · buildFooter",
+        "propertyMap": {
+          "platform": [
+            "pc",
+            "mobile"
+          ]
+        },
+        "note": "2칸(PC · Mobile). Dark 는 Appearance 모드로 제공한다."
+      },
+      "governance": {
+        "verify": "new",
+        "verifyNote": "웹 배포본은 2026-10-02 신설. 4-verification 에서 🤖 component-verifier 가 맡는다.",
+        "canonApproval": "river 2026-10-02 \"응 맞아, 진행해\" — Footer · CI · LoginGNB 웹 배포(work-id platform-web-3). 정본(buildFooter)은 이전부터 있었다.",
+        "contentSource": "registry/content/footer.json (Gate 14 content-verbatim-check)"
+      },
+      "webDistribution": {
+        "status": "approved",
+        "manifest": "ui-library/src/components/footer/manifest.json",
+        "runtime": null,
+        "note": "동작이 없는 표시 전용 부품이다. 링크 href 는 쓰는 화면이 채운다.",
+        "workId": "platform-web-3"
+      },
+      "geometry": {
+        "pc": {
+          "size": "1920×116 (웹: 폭 100%, 최소 높이 116)",
+          "paddingBlock": "spacing/28",
+          "paddingInline": "320 (웹: 가운데 1280 열 — 좌우 여백 (100%−1280)/2 를 320 까지로 제한, 1280 아래로는 줄지 않음 · river D-2 2026-10-12 \"가운데 1280폭을 지키고 그 이후로는 대응 안함.\" · 768 미만은 Mobile 모양 · river D-3 \"브레이크포인트에 따라 모바일 모양으로 바뀜\")",
+          "contentGap": "spacing/4",
+          "linkGap": "spacing/12",
+          "separator": "1×8",
+          "typography": "body/10R",
+          "logo": "42×16"
+        },
+        "mobile": {
+          "size": "hug × hug",
+          "padding": "위아래 spacing/8, 좌우 spacing/16",
+          "gap": "spacing/4",
+          "linkGap": "spacing/8",
+          "separator": "1×10",
+          "typography": "body/12R"
+        },
+        "provenance": "정본 buildFooter(build-components.ts:6429-6535). 웹의 폭 처리는 바 배경 full-width·안쪽 가운데 1280 열(river D-2)·768 미만 Mobile 자동 전환(river D-3)."
+      },
+      "platformSupport": {
+        "mobile": true,
+        "pc": true,
+        "note": "Platform 축으로 두 매체 모양이 다르다."
+      }
+    },
+    "ci": {
+      "_meta": {
+        "id": "ci",
+        "name": "CI",
+        "category": "core",
+        "updatedAt": "2026-10-02",
+        "version": "0.1.0",
+        "tokenStatus": "stable",
+        "codeStatus": "planned",
+        "darkModeStatus": "stable",
+        "a11yStatus": "candidate",
+        "figmaStatus": "planned",
+        "harnessStatus": "planned",
+        "description": "브랜드 로고. 브랜드(에스원·삼성) × 색(White·Blue·Dark) 6가지. 에스원은 벡터 로고(78.75×30)이고 색은 토큰이 정한다. 삼성은 정본 이미지(134×36)이고 색별 그림이 따로 있다.",
+        "a11yApproval": "3-build 에서 정의, river UX 검수에서 확정 — 로고가 회사를 알려 주는 자리면 role=img 와 aria-label(에스원 · 삼성)을 준다. 옆 글자가 이미 이름을 말하는 장식 자리는 쓰는 화면이 aria-hidden 으로 바꾼다.",
+        "codeStatusNote": "정본 buildCI 는 설치기에 이미 있었다. 웹 배포본은 work-id platform-web-3 로 신설. 삼성 이미지는 Figma 파일 내장 이미지(imageHash 3종)를 내려받아 배포본에 담는다.",
+        "platform": "both"
+      },
+      "usage": {
+        "whenToUse": [
+          "화면에 회사 로고를 보여줄 때(에스원 · 삼성).",
+          "밝은 로고(White)가 필요한 어두운 바탕, 브랜드색(Blue), 회색(Dark) 중에서 바탕에 맞춰 고를 때."
+        ],
+        "whenNotToUse": [
+          "서비스 이름 글자를 보여줄 때 — 그건 서비스 이름 글자 자리의 몫이다.",
+          "로고를 임의로 늘리거나 색을 바꿀 때 — 크기와 색은 이 부품의 값만 쓴다."
+        ],
+        "note": "White·Blue 는 라이트·다크에서 같은 색이다(정본 모드 불변). Dark 만 다크 모드에서 바뀐다."
+      },
+      "anatomy": [
+        {
+          "part": "에스원 로고",
+          "role": "78.75×30 벡터. 색은 currentColor — White(icon/white) · Blue(Foundation brand/ci) · Dark(icon/gray)."
+        },
+        {
+          "part": "삼성 로고",
+          "role": "134×36 칸에 정본 이미지를 꽉 채운다(cover). 색별로 이미지가 다르다."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "바탕에 맞는 색을 고른다(어두운 바탕 → White).",
+          "로고가 이름을 알려 주는 자리에는 role=img 와 aria-label 을 준다."
+        ],
+        "dont": [
+          "에스원 로고를 78.75×30 이 아닌 비율로 늘리지 않는다.",
+          "삼성 로고를 다른 출처의 그림으로 바꾸지 않는다(정본 이미지만)."
+        ]
+      },
+      "a11y": [
+        "로고가 회사를 알려 주는 자리에서는 role=img 와 aria-label(에스원 또는 삼성)을 준다.",
+        "옆 글자가 이미 이름을 말하는 장식 자리에서는 쓰는 화면이 aria-hidden=true 로 바꾼다.",
+        "초점을 받는 요소가 아니다 — 키보드 조작이 없다."
+      ],
+      "variantAxis": {
+        "property": [
+          "Brand",
+          "Color"
+        ],
+        "values": {
+          "Brand": [
+            "에스원",
+            "삼성"
+          ],
+          "Color": [
+            "White",
+            "Blue",
+            "Dark"
+          ]
+        },
+        "absentCombinations": [],
+        "sizeAxis": "없음 — 브랜드마다 크기가 고정이다(에스원 78.75×30 · 삼성 134×36)."
+      },
+      "scope": "light+dark",
+      "tokens": {
+        "icon": [
+          "color/icon/white",
+          "color/icon/gray"
+        ],
+        "foundation": [
+          "brand/ci"
+        ],
+        "number": [
+          "sizing/30"
+        ]
+      },
+      "reuses": {
+        "coreComponents": [],
+        "note": "다른 부품을 붙이지 않는다. 에스원 도형은 정본 S1_LOGO_SVG 한 곳, 삼성 그림은 정본 imageHash 3종이다."
+      },
+      "figma": {
+        "componentSetKey": "(미발행 — 라이브러리 publish 시 기록)",
+        "fileKey": "cysG5U1udpQqVagYY1hWHW",
+        "targetFile": "SW UX GUIDE V3.0-TEST",
+        "builder": "plugins/figma-vars-installer/src/build-components.ts · buildCI",
+        "propertyMap": {
+          "brand": [
+            "s1",
+            "samsung"
+          ],
+          "color": [
+            "white",
+            "blue",
+            "dark"
+          ]
+        },
+        "note": "6칸(2 × 3). Dark 는 Appearance 모드로 제공한다. Blue 는 Semantic 별칭 없이 Foundation brand/ci 를 직접 묶는다(정본)."
+      },
+      "governance": {
+        "verify": "new",
+        "verifyNote": "웹 배포본은 2026-10-02 신설. 4-verification 에서 🤖 component-verifier 가 맡는다.",
+        "canonApproval": "river 2026-10-02 \"응 맞아, 진행해\" — Footer · CI · LoginGNB 웹 배포(work-id platform-web-3). 정본(buildCI)은 이전부터 있었다.",
+        "foundationDirectBinding": "정본이 Color=Blue 에서 Foundation brand/ci 를 Semantic 경유 없이 직접 묶는다 — 정본을 따른 예외(CLAUDE.md 「색상은 Semantic 경유」의 알려진 예외, tokens.css 주석 'CI·로고 전용')."
+      },
+      "webDistribution": {
+        "status": "approved",
+        "manifest": "ui-library/src/components/ci/manifest.json",
+        "runtime": null,
+        "note": "동작이 없는 표시 전용 부품이다. 삼성 그림은 배포본 assets/images 에 담긴다.",
+        "workId": "platform-web-3"
+      },
+      "geometry": {
+        "s1": "78.75×30 (viewBox 42×16 고정, 비율 2.625 보존)",
+        "samsung": "134×36 (이미지 1600×425, scaleMode FILL = cover)",
+        "provenance": "정본 buildCI(build-components.ts:6970-7031)."
+      },
+      "platformSupport": {
+        "mobile": true,
+        "pc": true,
+        "note": "두 매체가 같은 부품을 쓴다."
+      }
+    },
+    "login-gnb": {
+      "_meta": {
+        "id": "login-gnb",
+        "name": "Login GNB",
+        "category": "core",
+        "updatedAt": "2026-10-02",
+        "version": "0.1.0",
+        "tokenStatus": "stable",
+        "codeStatus": "planned",
+        "darkModeStatus": "stable",
+        "a11yStatus": "candidate",
+        "figmaStatus": "planned",
+        "harnessStatus": "planned",
+        "description": "로그인 화면 맨 위의 얇은 바(높이 56). 왼쪽은 서비스 이름 글자 자리, 오른쪽은 지구본 + 언어 이름. 변형이 없다.",
+        "a11yApproval": "3-build 에서 정의, river UX 검수에서 확정 — 바는 <header>(banner 랜드마크), 서비스 이름은 글자 자체가 이름, 언어 조작은 GNB 와 같은 <button> 이며 보이는 글자가 곧 이름이다(지구본은 장식).",
+        "codeStatusNote": "정본 buildLoginGNB 는 설치기에 이미 있었다(삼성 로고는 2026-06-24 제거). 웹 배포본은 work-id platform-web-3 로 신설.",
+        "platform": "pc"
+      },
+      "usage": {
+        "whenToUse": [
+          "로그인 화면 맨 위에 서비스 이름과 언어 선택을 보여줄 때."
+        ],
+        "whenNotToUse": [
+          "로그인 후 화면의 주 메뉴가 필요할 때 — 그건 GNB 의 몫이다.",
+          "삼성 로고를 이 바 안에 넣으려 할 때 — 정본에서 2026-06-24 제거됐다."
+        ],
+        "note": "GNB 의 값(지구본 32·글자색·간격)을 가져오지 않는다. 이 바는 지구본 24, 글자색 icon/gray-dark, 간격 8 이다."
+      },
+      "anatomy": [
+        {
+          "part": "서비스 이름",
+          "role": "왼쪽 글자 자리. 기본 글자 [서비스명], title/16B. 쓰는 화면이 채운다."
+        },
+        {
+          "part": "언어",
+          "role": "오른쪽. 지구본 아이콘 24 + 글자 한국어(body/14M), 간격 8."
+        }
+      ],
+      "doDont": {
+        "do": [
+          "서비스 이름은 쓰는 화면이 실제 이름으로 채운다.",
+          "언어를 눌렀을 때 무엇을 할지는 화면이 배선한다."
+        ],
+        "dont": [
+          "GNB 의 32 지구본이나 글자색을 가져오지 않는다.",
+          "정본에서 빠진 삼성 로고를 되살리지 않는다."
+        ]
+      },
+      "a11y": [
+        "바는 <header> 요소를 쓴다(banner 랜드마크).",
+        "서비스 이름 글자가 곧 접근 가능한 이름이다.",
+        "언어 조작은 <button type=button> 이고 보이는 글자(한국어)가 곧 이름이다. 지구본은 장식이라 aria-hidden.",
+        "키보드 초점 표시는 다른 코어와 같이 브라우저 기본에 맡긴다(2026-09-02 river 결정)."
+      ],
+      "variantAxis": {
+        "property": [],
+        "values": {},
+        "absentCombinations": [],
+        "sizeAxis": "없음 — 높이 56 단일. 폭은 웹에서 바 배경 full-width·안쪽 가운데 1280 열(1280 아래로 줄지 않음)."
+      },
+      "scope": "light+dark",
+      "tokens": {
+        "bg": [
+          "color/navigation/bg"
+        ],
+        "line": [
+          "color/line/default"
+        ],
+        "text": [
+          "color/text/title/primary"
+        ],
+        "icon": [
+          "color/icon/gray-dark"
+        ],
+        "number": [
+          "border-width/1",
+          "sizing/24",
+          "sizing/56",
+          "spacing/8",
+          "spacing/12",
+          "spacing/24"
+        ]
+      },
+      "reuses": {
+        "coreComponents": [],
+        "note": "지구본은 아이콘 라이브러리 globe(ic_인터넷)이다. 다른 부품을 붙이지 않는다."
+      },
+      "figma": {
+        "componentSetKey": "(미발행 — 라이브러리 publish 시 기록)",
+        "fileKey": "cysG5U1udpQqVagYY1hWHW",
+        "targetFile": "SW UX GUIDE V3.0-TEST",
+        "builder": "plugins/figma-vars-installer/src/build-components.ts · buildLoginGNB",
+        "propertyMap": {},
+        "note": "단일 컴포넌트. Dark 는 Appearance 모드로 제공한다."
+      },
+      "governance": {
+        "verify": "new",
+        "verifyNote": "웹 배포본은 2026-10-02 신설. 4-verification 에서 🤖 component-verifier 가 맡는다.",
+        "canonApproval": "river 2026-10-02 \"응 맞아, 진행해\" — Footer · CI · LoginGNB 웹 배포(work-id platform-web-3). 정본(buildLoginGNB)은 이전부터 있었다."
+      },
+      "webDistribution": {
+        "status": "approved",
+        "manifest": "ui-library/src/components/login-gnb/manifest.json",
+        "runtime": null,
+        "note": "바 모양만 소유한다. 언어 선택 동작은 쓰는 화면이 배선한다.",
+        "workId": "platform-web-3"
+      },
+      "geometry": {
+        "size": "1920×56 (웹: 폭 100%, 높이 sizing/56)",
+        "paddingBlock": "spacing/12",
+        "paddingInline": "320 (웹: 가운데 1280 열 — 좌우 여백 (100%−1280)/2 를 320 까지로 제한, 1280 아래로는 줄지 않음 · river D-2 2026-10-12 \"가운데 1280폭을 지키고 그 이후로는 대응 안함.\")",
+        "languageGap": "spacing/8",
+        "globe": "24",
+        "provenance": "정본 buildLoginGNB(build-components.ts:6786-6833). 웹의 폭 처리는 바 배경 full-width·안쪽 가운데 1280 열(river D-2)."
+      },
+      "platformSupport": {
+        "mobile": false,
+        "pc": true,
+        "note": "PC 로그인 화면용 상단 바다."
       }
     }
   },
@@ -16946,9 +17591,81 @@ window.REGISTRY_BUNDLE = {
     }
   },
   "reportsIndex": {
-    "generatedAt": "2026-09-16T10:43:47.826Z",
-    "totalCount": 84,
+    "generatedAt": "2026-10-19T01:57:10.231Z",
+    "totalCount": 88,
     "reports": [
+      {
+        "id": "harness-audit-2026-10-19",
+        "filename": "harness-audit-2026-10-19.md",
+        "title": "Harness Audit Report — 2026-10-19",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-10-19.md",
+        "updatedAt": "2026-10-19",
+        "summary": "- 🟡 HTML 코드탭 pane \"btn-pri-pc\" 을 찾을 수 없음",
+        "fileSizeKB": 2.3
+      },
+      {
+        "id": "button-sync-check",
+        "filename": "button-sync-check.md",
+        "title": "Button Sync Check Report",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/button-sync-check.md",
+        "updatedAt": "2026-10-14",
+        "summary": "- **Variants:** primary, secondary, blue-line",
+        "fileSizeKB": 3.2
+      },
+      {
+        "id": "installer-s1-colors-2026-10-01",
+        "filename": "installer-s1-colors-2026-10-01.md",
+        "title": "installer s1 colors 2026 10 01",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/installer-s1-colors-2026-10-01.md",
+        "updatedAt": "2026-10-02",
+        "summary": "- 초록 완료 → 파랑(text-state-correct), 노랑·주황 주의 → 빨강(text-state-caution)",
+        "fileSizeKB": 2
+      },
+      {
+        "id": "mvp-t2-token-sync",
+        "filename": "mvp-t2-token-sync.md",
+        "title": "MVP-T2 Token Sync Plugin Report",
+        "stage": "T2",
+        "category": "token",
+        "status": "archive",
+        "sourcePath": "reports/mvp-t2-token-sync.md",
+        "updatedAt": "2026-10-02",
+        "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
+        "fileSizeKB": 5
+      },
+      {
+        "id": "harness-audit-2026-09-30",
+        "filename": "harness-audit-2026-09-30.md",
+        "title": "Harness Audit Report — 2026-09-30",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-09-30.md",
+        "updatedAt": "2026-09-30",
+        "summary": "- 🟡 HTML 코드탭 pane \"btn-pri-pc\" 을 찾을 수 없음",
+        "fileSizeKB": 2.3
+      },
+      {
+        "id": "harness-audit-2026-09-21",
+        "filename": "harness-audit-2026-09-21.md",
+        "title": "Harness Audit Report — 2026-09-21",
+        "stage": "Audit",
+        "category": "audit",
+        "status": "archive",
+        "sourcePath": "reports/harness-audit-2026-09-21.md",
+        "updatedAt": "2026-09-21",
+        "summary": "- 🟡 HTML 코드탭 pane \"btn-pri-pc\" 을 찾을 수 없음",
+        "fileSizeKB": 2.3
+      },
       {
         "id": "harness-audit-2026-09-15",
         "filename": "harness-audit-2026-09-15.md",
@@ -16960,18 +17677,6 @@ window.REGISTRY_BUNDLE = {
         "updatedAt": "2026-09-15",
         "summary": "- 🟡 HTML 코드탭 pane \"btn-pri-pc\" 을 찾을 수 없음",
         "fileSizeKB": 2.3
-      },
-      {
-        "id": "mvp-t2-token-sync",
-        "filename": "mvp-t2-token-sync.md",
-        "title": "MVP-T2 Token Sync Plugin Report",
-        "stage": "T2",
-        "category": "token",
-        "status": "archive",
-        "sourcePath": "reports/mvp-t2-token-sync.md",
-        "updatedAt": "2026-09-15",
-        "summary": "MVP-T1에서 구축한 CSS Token ↔ Registry Token ↔ Figma Variable mapping registry를 기반으로,",
-        "fileSizeKB": 5
       },
       {
         "id": "harness-audit-2026-09-10",
@@ -17008,18 +17713,6 @@ window.REGISTRY_BUNDLE = {
         "updatedAt": "2026-09-07",
         "summary": "**읽기 전용 감사였다** — 감사 과정에서 정본·파생을 한 글자도 고치지 않았다.",
         "fileSizeKB": 20.4
-      },
-      {
-        "id": "button-sync-check",
-        "filename": "button-sync-check.md",
-        "title": "Button Sync Check Report",
-        "stage": "Audit",
-        "category": "audit",
-        "status": "archive",
-        "sourcePath": "reports/button-sync-check.md",
-        "updatedAt": "2026-09-02",
-        "summary": "- **Variants:** primary, secondary, blue-line",
-        "fileSizeKB": 3.2
       },
       {
         "id": "harness-audit-2026-09-01",
@@ -17319,7 +18012,7 @@ window.REGISTRY_BUNDLE = {
         "sourcePath": "reports/changelog-archive.md",
         "updatedAt": "2026-06-17",
         "summary": "이 파일은 CLAUDE.md `변경 이력` 표의 **상세 보존본**이다. 컨텍스트 비용을 줄이기 위해 CLAUDE.md 본문에서 분리했다.",
-        "fileSizeKB": 82.9
+        "fileSizeKB": 85.4
       },
       {
         "id": "harness-audit-2026-06-17",

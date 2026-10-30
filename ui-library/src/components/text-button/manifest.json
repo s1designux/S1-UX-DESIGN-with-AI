@@ -1,8 +1,8 @@
 {
   "id": "text-button",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "status": "approved",
-  "canonicalFingerprint": "2fd0b287ddb85f252b13b9b645ccf20ad166b8cc1c2d59ecc89123f7aa123eae",
+  "canonicalFingerprint": "e3c547c1aefa2bd8f9093f208daac59c4be3e1d89df25c5ff9e9068ea1e725b2",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -71,8 +71,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [

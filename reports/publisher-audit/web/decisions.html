@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>웹판 수정 결과와 결정</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--text:#1d2128;--sub:#5b6370;--line:#e2e5ea;--green:#1f7a3d;--greenbg:#e7f5ec;--blue:#1f5fd6;--bluebg:#e8f0fd;--amber:#a86300;--amberbg:#fff4e0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15181d;--card:#1f232a;--text:#e9ecf1;--sub:#a3abb8;--line:#333944;--green:#5cd08a;--greenbg:#16301f;--blue:#7aa7ff;--bluebg:#1a2742;--amber:#f2b24c;--amberbg:#3a2c12}}
+:root[data-theme="dark"]{--bg:#15181d;--card:#1f232a;--text:#e9ecf1;--sub:#a3abb8;--line:#333944;--green:#5cd08a;--greenbg:#16301f;--blue:#7aa7ff;--bluebg:#1a2742;--amber:#f2b24c;--amberbg:#3a2c12}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.65 Pretendard,-apple-system,"Apple SD Gothic Neo",sans-serif}
+main{max-width:1000px;margin:0 auto;padding:32px 16px 80px}
+h1{font-size:26px;margin:0 0 6px}
+h2{font-size:20px;margin:48px 0 8px;padding-top:12px;border-top:1px solid var(--line)}
+h3{font-size:16px;margin:24px 0 6px}
+.lead,.sub{color:var(--sub)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:16px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.stat b{display:block;font-size:24px}
+.stat span{color:var(--sub);font-size:13px}
+.ok b{color:var(--green)}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px;margin:8px 0}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--sub);font-weight:600;font-size:13px}
+tr:last-child td{border-bottom:0}
+code{font:13px ui-monospace,Menlo,monospace;background:var(--bg);padding:1px 5px;border-radius:4px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.ask{background:var(--bluebg);border-radius:12px;padding:14px 18px;margin:14px 0}
+.ask b{color:var(--blue)}
+.rec{display:inline-block;font-size:12px;font-weight:700;color:var(--green);background:var(--greenbg);padding:2px 8px;border-radius:99px;margin-left:6px}
+.done{display:inline-block;font-size:12px;font-weight:700;color:var(--green);background:var(--greenbg);padding:2px 8px;border-radius:99px}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-top:12px}
+figure{margin:0;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+figure img{width:100%;display:block;border-bottom:1px solid var(--line)}
+figcaption{padding:10px 12px;font-size:13px;color:var(--sub)}
+ul{padding-left:20px}
+@media (max-width:560px){table{display:block;overflow-x:auto}}
+</style>
+</head>
+<body>
+<main>
+<h1>웹판 수정 결과와 결정할 것</h1>
+<p class="lead">2026-10-13 · 배포본 0.20.0 · 직전 성적표 → <a href="scorecard.html">scorecard.html</a></p>
+
+<div class="stats">
+  <div class="stat ok"><b>2 → 0</b><span>받자마자 고장</span></div>
+  <div class="stat ok"><b>15 → 1</b><span>쓰기 불편 (남은 1건 = 아래 ①)</span></div>
+  <div class="stat ok"><b>통과</b><span>독립 검수 (다섯 차례 끝에)</span></div>
+  <div class="stat"><b>본 폴더 반영 전</b><span>합치기만 남음</span></div>
+</div>
+
+<h2>고친 것</h2>
+<table>
+<tr><th>무엇</th><th>지금</th></tr>
+<tr><td>규칙 검사 도구가 안 돎</td><td>웹 묶음만 받아도 돌아갑니다. 이름표(aria-label) 빠진 스위치도 잡습니다</td></tr>
+<tr><td>미리보기 더블클릭 시 아이콘 빈 칸</td><td>더블클릭으로 열어도 아이콘·동작이 다 보입니다</td></tr>
+<tr><td>모달 안 달력에서 Esc → 모달까지 닫힘</td><td>Esc 한 번에 맨 위 한 겹만 닫힙니다</td></tr>
+<tr><td>모달 안에서 달력이 520px로 커짐</td><td>모달 스타일이 안쪽 부품에 새어 들어가던 버그였습니다. 이제 정본 크기(356 / 작은 달력 267)로 열립니다. 시간·셀렉트·필터칩 팝업도 같이 바로잡았습니다</td></tr>
+<tr><td>페이지 번호 5쪽 넘으면 안 따라옴</td><td>쪽이 넘어가면 번호 줄이 다시 그려지고 현재 쪽 표시가 유지됩니다</td></tr>
+<tr><td>모달·바텀시트 여는 법 없음</td><td>버튼에 속성 한 줄로 엽니다. 취소·확인·닫기는 기본으로 닫힙니다</td></tr>
+<tr><td>값 미리 채우기·폼 전송</td><td>셀렉트·달력에 값 넣기/읽기와 폼 전송용 이름표가 생겼습니다. 시간 선택은 값 읽기만 됩니다</td></tr>
+<tr><td>GNB 하위메뉴가 본문을 밀어냄</td><td><b>본문 위에 겹쳐 뜹니다</b>(river 결정). 안내 사이트 화면도 맞췄습니다</td></tr>
+<tr><td>설명서 5줄</td><td>스크립트 넣는 법·글꼴·다크 모드·바탕 스타일·여닫기·값·모바일까지 담았습니다. 부품 32종마다 설명 한 장씩 생겼습니다</td></tr>
+<tr><td>숫자 엇갈림·파일 이름·내부 메모</td><td>숫자는 자동 계산, 모바일 파일 이름 통일, 내부 메모(사람 이름 125곳) 제거</td></tr>
+<tr><td>글꼴을 안 정하던 부품 5종</td><td>Pretendard로 고정</td></tr>
+</table>
+<p class="sub">수정 중에 앱판(React Native·안드로이드)의 작은 장식이 빠지는 문제, 바텀시트 기본값이 바뀌는 문제가 새로 생겼습니다. 둘 다 바로잡았고, 다음에도 기계가 잡도록 검사를 붙였습니다. 로그인 화면은 패턴 쪽 통합화면을 쓰도록 기억해 두었습니다.</p>
+
+<div class="shots">
+  <figure><img src="after/components-gnb-light-0.png" alt=""><figcaption>GNB 하위메뉴 — 바 바로 아래, 같은 폭으로 겹쳐 뜸</figcaption></figure>
+  <figure><img src="after/dp-in-modal-open.png" alt=""><figcaption>모달 안 달력 — 정본 크기 356px</figcaption></figure>
+</div>
+
+<h2>① '종류'를 고르는 속성 이름 — 7가지</h2>
+<p>웹 마크업에서 "이 부품을 어떤 모양으로 쓸지" 고르는 속성 이름이 부품마다 다릅니다.</p>
+<table>
+<tr><th>속성 이름</th><th>쓰는 부품</th><th>무엇을 고르나</th></tr>
+<tr><td><code>data-variant</code></td><td>버튼, 텍스트 버튼, 칩, 필터칩, LNB, GNB, 모바일 헤더 (7)</td><td>겉모양의 위계 — 채움·테두리, 제목·닫기 구성</td></tr>
+<tr><td><code>data-type</code></td><td>드롭다운, 바텀시트 옵션, 리스트 행 (+ GNB 하위메뉴, 시간 선택)</td><td>줄 안에 무엇이 들었나 — 글자만, 체크박스, 스위치… / 12시간·24시간</td></tr>
+<tr><td><code>data-footer</code></td><td>모달, 내용 모달, 바텀시트</td><td>아래 버튼 개수 — 없음·1개·2개</td></tr>
+<tr><td><code>data-mode</code></td><td>달력</td><td>날짜 하나 / 기간</td></tr>
+<tr><td><code>data-tone</code></td><td>데이터 태그</td><td>색 — 파랑·빨강</td></tr>
+<tr><td><code>data-axis</code></td><td>구분선</td><td>방향 — 가로·세로</td></tr>
+<tr><td><code>data-icon</code></td><td>모바일 하단 탭</td><td>지금 켜진 탭</td></tr>
+</table>
+
+<h3>알아둘 사실 세 가지</h3>
+<ul>
+<li><b>Figma 정본부터 이름이 섞여 있습니다.</b> Variant·Type·Footer·Axis·Mode가 섞여 있고, 웹은 이것을 거의 그대로 옮겼습니다.</li>
+<li><b>이름은 달라도 뜻도 다릅니다.</b> 버튼 개수, 선 방향, 날짜 하나/기간을 모두 '종류'로 묶으면 오히려 뜻이 흐려집니다.</li>
+<li><b>React·Vue는 이미 하나로 통일돼 있습니다.</b> 모두 <code>variant</code> 하나로 받고 안에서 번역합니다. 헷갈림은 HTML을 직접 쓰는 퍼블리셔에게만 남아 있습니다.</li>
+</ul>
+
+<table>
+<tr><th>선택지</th><th>장점</th><th>대가</th></tr>
+<tr><td><b>A. 그대로 두고 표 한 장으로 안내</b><span class="rec">추천</span></td><td>Figma와 이름이 맞고, 이름에 뜻이 남습니다. 기존 화면에 손댈 것이 없습니다</td><td>퍼블리셔가 부품마다 이름을 확인해야 합니다. 대신 부품 설명서와 규칙 검사 도구가 틀린 이름을 바로 알려줍니다</td></tr>
+<tr><td>B. 겉모양 위계만 <code>data-variant</code>로 통일</td><td>데이터 태그 색, 드롭다운·리스트 행 형태처럼 진짜 '종류'인 것만 모읍니다</td><td>Figma 이름과 어긋납니다. 옛 이름도 한동안 함께 받아야 합니다</td></tr>
+<tr><td>C. 전부 <code>data-variant</code>로 통일</td><td>외울 이름이 하나뿐입니다</td><td>버튼 개수·방향처럼 뜻이 다른 것까지 섞입니다. 이미 쓰는 화면을 모두 고쳐야 합니다</td></tr>
+</table>
+<div class="ask"><b>정할 것:</b> A·B·C 중 어느 쪽으로 할까요? 안 정하시면 A로 둡니다. 이 경우 검수기의 '불편' 1건은 "안내로 해결"로 닫습니다.</div>
+
+<h2>② 달력 — 크기·연도 표기·열릴 때 초점</h2>
+
+<h3>크기 <span class="done">해결됨</span></h3>
+<p>퍼블리셔가 본 520px 달력은 디자인 값이 아니라 버그였습니다. 모달 스타일이 안에 든 달력까지 덮어쓰고 있었습니다. 이제 어디서 열든 정본 크기로 열립니다.</p>
+<table>
+<tr><th></th><th>달력 판 크기</th><th>칸 크기</th><th>언제</th></tr>
+<tr><td>보통(MD)</td><td>356 × 352</td><td>44 × 44, 글자 16</td><td>입력칸이 보통 크기일 때</td></tr>
+<tr><td>작은(SM)</td><td>267 × 266</td><td>33 × 33, 글자 12</td><td>입력칸이 작은 크기(xsm·xxsm)일 때 자동 (river 2026-09-04)</td></tr>
+<tr><td>모바일</td><td colspan="3">아래에서 올라오는 시트로 엽니다</td></tr>
+</table>
+<p class="sub">입력칸(140px)보다 달력이 넓은 건 정상입니다. 달력은 화면 위에 떠서 열리고, 아래 공간이 모자라면 위로 뒤집혀 열립니다. 모달 밖으로 조금 나가도 가리지 않고 위에 뜹니다.</p>
+
+<h3>연도 표기 '26.10.15' <span class="done">river 결정된 사항</span></h3>
+<p>2026-09-08에 river님이 4자리로 바꿨다가 같은 날 "2자리 유지"로 되돌린 기록이 있습니다. 화면에만 2자리로 보이고, 서버로 보내는 값은 <code>2026-10-15</code> 네 자리입니다. 그대로 두려고 하는데, 생각이 바뀌셨으면 말씀해 주세요.</p>
+
+<h3>열릴 때 초점이 지난달 27일로 감 <span class="rec">결정 필요</span></h3>
+<p>키보드로 달력을 열면 칸 안에 깜빡이는 표시가 갑니다. 지금은 격자의 첫 칸으로 가서, 지난달 날짜에 먼저 닿습니다. 이미 날짜를 골라 둔 상태에서도 그 날짜가 아니라 첫 칸으로 갑니다. 정본에 정해진 규칙이 없어서 제가 임의로 정하지 않았습니다.</p>
+<table>
+<tr><th>선택지</th><th>열었을 때 초점</th></tr>
+<tr><td><b>A. 고른 날짜 → 없으면 오늘</b><span class="rec">추천</span></td><td>웹 접근성 표준 달력과 같은 방식입니다. 키보드 사용자가 바로 이어서 고를 수 있습니다</td></tr>
+<tr><td>B. 지금처럼 첫 칸</td><td>바꾸지 않습니다</td></tr>
+</table>
+
+<h2>③ 그 밖에 정해야 할 것 (작은 것)</h2>
+<table>
+<tr><th>무엇</th><th>지금</th><th>선택지</th></tr>
+<tr><td>바텀시트 안 옵션 고르기·칩 하나만 켜기·하단 탭 이동을 부품이 알아서 할지</td><td>정본에 "선택은 화면이 정한다"고 되어 있어 손대지 않았습니다. 퍼블리셔가 직접 짭니다</td><td>A. 부품이 알아서 (정본에 동작 추가) / B. 지금처럼 화면이 정함</td></tr>
+<tr><td>페이지 번호의 '이전·다음'</td><td>한 쪽씩 이동합니다. 정본 설명은 "이전·다음 묶음 이동"(번호 줄 한 묶음씩)입니다</td><td>A. 묶음 이동으로 맞춤 / B. 한 쪽 이동 유지하고 설명을 고침</td></tr>
+<tr><td>모달 위에 모달 겹쳐 열기</td><td>정본에서 지원하지 않습니다. 겹쳐 열었을 때 페이지가 멈추던 문제만 막았습니다</td><td>지금처럼 지원하지 않음으로 둡니다</td></tr>
+</table>
+
+<h2>아직 못 믿는 부분</h2>
+<p class="sub">React는 실제 React를 깔아 돌리지 않고, 똑같이 동작하는 대역으로 시험했습니다. React Native는 코드를 따라 읽는 데까지만 확인했습니다. 글꼴이 없는 컴퓨터에서 어떻게 보이는지는 이 맥에 Pretendard가 깔려 있어 직접 보지 못했습니다.</p>
+</main>
+</body>
+</html>

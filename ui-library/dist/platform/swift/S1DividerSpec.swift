@@ -15,25 +15,25 @@ public enum S1DividerSpec {
             "root": S1Box(background: S1Palette.colorLineDefault, height: 1)
         ]
         table["x|default|default|text"] = [
-            "root": S1Box(background: S1Palette.colorLineDefault, height: 1, marginStart: 20, marginEnd: 20)
+            "root": S1Box(background: S1Palette.colorLineDefault, height: 1)
         ]
         table["x|default|strong|none"] = [
             "root": S1Box(background: S1Palette.colorLineStrong, height: 1)
         ]
         table["x|default|strong|text"] = [
-            "root": S1Box(background: S1Palette.colorLineStrong, height: 1, marginStart: 20, marginEnd: 20)
+            "root": S1Box(background: S1Palette.colorLineStrong, height: 1)
         ]
         table["x|strong|default|none"] = [
             "root": S1Box(background: S1Palette.colorLineDefault, height: 2)
         ]
         table["x|strong|default|text"] = [
-            "root": S1Box(background: S1Palette.colorLineDefault, height: 2, marginStart: 20, marginEnd: 20)
+            "root": S1Box(background: S1Palette.colorLineDefault, height: 2)
         ]
         table["x|strong|strong|none"] = [
             "root": S1Box(background: S1Palette.colorLineStrong, height: 2)
         ]
         table["x|strong|strong|text"] = [
-            "root": S1Box(background: S1Palette.colorLineStrong, height: 2, marginStart: 20, marginEnd: 20)
+            "root": S1Box(background: S1Palette.colorLineStrong, height: 2)
         ]
         table["y|default|default|none"] = [
             "root": S1Box(background: S1Palette.colorLineDefault, height: 14, width: 1)

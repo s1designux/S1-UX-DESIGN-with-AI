@@ -65,35 +65,35 @@
     }
   },
   "ownership": {
-    "currentActor": "orchestrator",
-    "startedAt": "2026-09-09"
+    "currentActor": null,
+    "startedAt": null
   },
   "handoff": {
     "lastActor": "orchestrator",
-    "updatedAt": "2026-09-09",
-    "summary": "river 지시로 gnb 에 여닫는 런타임이 추가된다 — 2026-09-09 verified 는 superseded. 이어지는 작업은 gnb-sub-menu 상태 파일이 가진다."
+    "updatedAt": "2026-10-02",
+    "summary": "gnb 는 gnb-sub-menu 작업에서 여닫는 런타임까지 포함해 재검증·river 승인(\"b로하고 승인\")됐다. nav 는 D5 로 웹 배포 대상 밖."
   },
   "currentPhase": "3-build",
-  "workflowStatus": "in-progress",
-  "uiLibraryStatus": "draft",
+  "workflowStatus": "superseded",
+  "uiLibraryStatus": "approved",
   "lastCompletedCheckpoint": 2,
-  "nextAction": "work-id gnb-sub-menu 에서 gnb 여닫는 런타임을 구현하고 다시 검증한다.",
+  "nextAction": "없음 — gnb 는 work-id gnb-sub-menu 에서 승인됐다(2026-10-02).",
   "blockers": [],
   "canonicalInputs": [
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "29f118c6de7933706e1d9897478312392c2e9df29d8146258962051c53ee1210"
+      "sha256": "43b9a91c0f5aca1a4685eba69cf83c6878e6d96be047504d1e93706af082433a"
     },
     {
       "role": "token-values",
       "path": "plugins/figma-vars-installer/src/vars-data.ts",
-      "sha256": "14c5df38e32f154da10e83370004726971c11511f0108b94719a08f109433bc0"
+      "sha256": "cb52040749c66d29ec7f0090788df3b63ebd91214b68be9992df646f68101283"
     },
     {
       "role": "text-styles",
       "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
-      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+      "sha256": "f43fa1c9ce2c1b1ffcc014a5ef57f84493327f62a011735ef3061af12a827da7"
     },
     {
       "role": "ui-library-contract",
@@ -149,6 +149,14 @@
     "sourceAudit": {
       "observedAt": "2026-09-09",
       "basis": "build-components.ts buildGNB(3515)·fillGnbMenu(3133)·GNB_MENU_SIZE(3060)·buildGNBUtilIcon(3155)·buildLanguageIcon·buildNavBar(5818)·카테고리 선언(6461~6462) 직접 판독 + ui-library/dist 실물 목록 대조"
+    },
+    "riverApproval": {
+      "status": "approved",
+      "date": "2026-10-02",
+      "scope": "gnb · gnb-sub-menu · gnb-sub-menu-item",
+      "quote": "b로하고 승인",
+      "reviewPage": "reports/ui-library/gnb-sub-menu/review/gnb-review.html",
+      "via": "reports/ui-library/gnb-sub-menu/workflow-state.json (D16)"
     }
   },
   "verificationOutcome": {

@@ -13,11 +13,11 @@
  *   · +2%: body/10M·10R
  *   ·  0%: 나머지 전부
  *
- * 폰트: Pretendard (참고 컴포넌트 design_context "Pretendard:Medium" 일치).
+ * 폰트: Pretendard Variable (2026-10-02 river 결정 — 일반 Pretendard 에서 전환. 굵기는 Variable 의 이름 붙은 굵기 Regular/Medium/Bold 를 쓴다).
  * Figma 그룹은 "/" 로 표현 (예: "body/14M" = 그룹 body > 스타일 14M).
  */
 
-export const TEXT_STYLE_FONT_FAMILY = "Pretendard";
+export const TEXT_STYLE_FONT_FAMILY = "Pretendard Variable";
 
 export interface TextStyleDef {
   name: string;                 // Figma 스타일명. "/" = 그룹

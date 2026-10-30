@@ -125,6 +125,8 @@ export interface PatternDef {
   id: string;
   /** 목록에 보여줄 이름 */
   label: string;
+  /** 화면 매체 — 패턴 탭의 전체/PC/모바일 칩이 이 값으로 거른다. */
+  platform: "pc" | "mobile";
   /** 목록에 보여줄 설명 */
   desc: string;
   /** 만들어지는 섹션 이름 */
@@ -327,6 +329,7 @@ function filledBody(): PNode[] {
 export const MOBILE_LOGIN: PatternDef = {
   id: "mobile-login",
   label: "모바일 로그인",
+  platform: "mobile",
   desc: "아이디·비밀번호 입력, 로그인 실패, 자동 로그인, 새 기기 인증까지 10개 화면",
   section: "Pattern / App Login",
   // 화면은 color/bg/level-0(흰색)이라 흰 바탕에 묻힌다 → 섹션은 한 단계 어두운 면(#E9E9E9).
@@ -588,6 +591,7 @@ function signupScreen(name: string, x: number, y: number, children: PNode[], al?
 export const MOBILE_WEB_SIGNUP: PatternDef = {
   id: "mobile-web-signup",
   label: "모바일웹 회원가입",
+  platform: "mobile",
   desc: "약관 동의, 외부 본인인증, 아이디·비밀번호·이메일 입력, 앱 설치 안내까지 11개 화면",
   section: "Pattern / Mobile Web Signup",
   sectionFillVar: "color/bg/level-3",
@@ -879,6 +883,7 @@ function pcErrorBox(h: number, message: string): PcBoxState {
 export const PC_LOGIN: PatternDef = {
   id: "pc-login",
   label: "PC 로그인",
+  platform: "pc",
   desc: "브라우저 창틀·맨 위 줄 아래 로그인 상자(아이디·비밀번호·로그인·보조 링크 슬롯), 입력 중·로그인 실패 3종까지 7개 화면",
   section: "Pattern / PC Login",
   sectionFillVar: "color/bg/level-3",

@@ -53,7 +53,7 @@ public enum S1TimePickerSpec {
             "panel": S1Box(background: S1Palette.colorSurfaceRaised, paddingTop: 20, paddingBottom: 20, gap: 32, maxWidth: 360, maxHeightVh: 92, radiusTopStart: 8, radiusTopEnd: 8),
             "header": S1Box(paddingStart: 20, paddingEnd: 20, spaceBetween: true),
             "title": S1Box(foreground: S1Palette.colorTextTitlePrimary, fontSize: 20, fontWeight: 700, lineHeight: 1.3),
-            "close": S1Box(background: S1Palette.colorIconGrayDark, height: 24, width: 24, icon: "close"),
+            "close": S1Box(height: 24, width: 24),
             "footer": S1Box(paddingStart: 20, paddingEnd: 20, gap: 8),
             "apply": S1Box()
         ]
@@ -63,7 +63,7 @@ public enum S1TimePickerSpec {
             "panel": S1Box(background: S1Palette.colorSurfaceRaised, paddingTop: 20, paddingBottom: 20, gap: 32, maxWidth: 360, maxHeightVh: 92, radiusTopStart: 8, radiusTopEnd: 8),
             "header": S1Box(paddingStart: 20, paddingEnd: 20, spaceBetween: true),
             "title": S1Box(foreground: S1Palette.colorTextTitlePrimary, fontSize: 20, fontWeight: 700, lineHeight: 1.3),
-            "close": S1Box(background: S1Palette.colorIconGrayDark, height: 24, width: 24, icon: "close"),
+            "close": S1Box(height: 24, width: 24),
             "footer": S1Box(paddingStart: 20, paddingEnd: 20, gap: 8),
             "apply": S1Box(),
             "tabs": S1Box(paddingStart: 24, paddingEnd: 24),

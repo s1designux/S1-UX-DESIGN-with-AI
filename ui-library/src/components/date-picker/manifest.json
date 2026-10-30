@@ -1,8 +1,8 @@
 {
   "id": "date-picker",
-  "version": "0.2.11",
+  "version": "0.5.0",
   "status": "approved",
-  "canonicalFingerprint": "5a0acd77602e23b5e4a70dc4de27bcf8690941d67641794e1d8d444d632ce577",
+  "canonicalFingerprint": "0ab29faac87cf30a9075a948f7cc869ceec840a30dd0edf836e9ea2c94d8ee34",
   "canonicalSources": [
     "plugins/figma-vars-installer/src/build-components.ts",
     "plugins/figma-vars-installer/src/vars-data.ts",
@@ -253,8 +253,8 @@
   "dependencies": {
     "font": [
       {
-        "family": "Pretendard",
-        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"
+        "family": "Pretendard Variable",
+        "source": "https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
       }
     ],
     "css": [
@@ -307,7 +307,7 @@
     },
     "focus": {
       "status": "required",
-      "value": "PC 팝오버가 열리면 격자의 첫 활성 셀로 포커스 이동, 닫히면 트리거로 복귀. Mobile 시트는 열리면 시트 안으로, 닫히면 트리거로 복귀(모달과 동일 패턴, 별도 focus trap은 시트 안에서 Esc·배경·닫기로만 닫히는 단순 계약)"
+      "value": "열리면 키보드 초점이 달력의 날짜 칸으로 간다 — 골라 둔 날짜(기간이면 시작일), 없으면 오늘, 오늘이 보이는 달에 없으면 그 달의 1일(막힌 날이면 그 달의 첫 선택 가능 날짜). PC 팝오버와 모바일 시트가 같은 규칙이다(river 2026-10-13 '-> 추천안으로'). 닫히면 트리거로 복귀. 모바일 시트는 시트 안에서 Esc·배경·닫기로만 닫히는 단순 계약(모달과 같은 패턴)."
     },
     "ariaStateSync": {
       "status": "required",
@@ -339,13 +339,21 @@
     },
     "methods": [
       "openPanel()",
-      "closePanel()"
+      "closePanel()",
+      "value",
+      "setValue(value)"
     ],
     "lifecycle": [
       "init(root)",
       "destroy(root)"
     ],
     "controlMode": "uncontrolled",
-    "progressiveEnhancementNote": "JavaScript 없이는 캘린더가 렌더되지 않아 날짜를 고를 수 없다 — 복합 Picker(정본 계약)라 native fallback이 없다. 트리거는 native button 이라 포커스·이름은 유지된다."
+    "progressiveEnhancementNote": "JavaScript 없이는 캘린더가 렌더되지 않아 날짜를 고를 수 없다 — 복합 Picker(정본 계약)라 native fallback이 없다. 트리거는 native button 이라 포커스·이름은 유지된다.",
+    "attributes": {
+      "data-value": "단일 모드의 처음 날짜(YYYY-MM-DD)",
+      "data-range-start": "기간 모드의 처음 시작일(YYYY-MM-DD)",
+      "data-range-end": "기간 모드의 처음 종료일(YYYY-MM-DD)",
+      "data-name": "폼 전송용 숨은 입력의 name (단일: name · 기간: name-start, name-end)"
+    }
   }
 }

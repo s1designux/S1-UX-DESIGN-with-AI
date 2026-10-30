@@ -1,8 +1,9 @@
 {
   "$comment": "use_figma 로 Figma 캔버스에 쓰는 텍스트의 폰트 정본 정책. 폰트는 '파일'이 아니라 'Figma 노드'에 있어 어떤 파일 게이트(1~15)·pre-commit 도 닿지 못하는 사각지대다(hex 와 동일 계열). 이 JSON 이 폰트 정본의 단일 출처이며, L1 예방 훅(figma-code-font-check.js)·L2 런타임 스캔(figma-font-scan.md)·L3 검증자 체크리스트(component-verifier)가 모두 이 파일을 참조한다.",
-  "lastUpdated": "2026-09-28",
+  "lastUpdated": "2026-10-02",
   "reason": "mobile_datepicker_bottomsheet 재구성 시 인스턴스 라벨(날짜·시간 탭, 적용 버튼)을 덮어쓰며 Pretendard 가 MCP 에서 로드 불가라 Noto 로 입력했는데, 원래 텍스트 스타일로 재바인딩하지 않아 3개 라벨이 Noto 로 박혔다. 토큰 게이트 전부 통과(폰트는 캔버스 노드라 파일 게이트 사각지대) → 사용자가 Figma Desktop 에서 폰트 불일치 발견. 동일 클래스 재발 방지.",
-  "canonicalFamily": "Pretendard",
+  "canonicalFamily": "Pretendard Variable",
+  "$familyChange": "2026-10-02 river 결정으로 일반 'Pretendard' 에서 'Pretendard Variable' 로 전환(설치 파일 1개·웹 경량·레거시 파일과 이름 일치). 아래 문서의 'Pretendard' 는 이 서체를 뜻한다.",
   "$canonicalNote": "디자인 시스템 정본 폰트. 캔버스에 author/override 한 모든 텍스트의 최종 폰트는 Pretendard 여야 한다(렌더가 아니라 노드 fontName 데이터 기준).",
   "tempAllowedFamilies": [
     "Noto Sans KR"
@@ -17,31 +18,31 @@
   },
   "weightStyleMap": {
     "$comment": "오버라이드한 라벨을 정본으로 되돌릴 때 참조하는 (resolved 폰트 → 텍스트 스타일) 맵. 원본 컴포넌트 라벨의 size/weight 를 읽어 동일한 스타일로 바인딩한다.",
-    "Pretendard Medium 14": {
+    "Pretendard Variable Medium 14": {
       "style": "body/14M",
       "id": "S:0b8aad8ca7e2cfac03033ed19607a4d2fb76aa2a,"
     },
-    "Pretendard Medium 16": {
+    "Pretendard Variable Medium 16": {
       "style": "body/16M",
       "id": "S:886ca7d230530051af94c90c7b7931f98b8b23ae,"
     },
-    "Pretendard Medium 18": {
+    "Pretendard Variable Medium 18": {
       "style": "body/18M",
       "id": "S:7b5562a74cbd7f9ba38f03d4800cbcfa3b7e1207,"
     },
-    "Pretendard Medium 12": {
+    "Pretendard Variable Medium 12": {
       "style": "body/12M",
       "id": "S:3d9482ca20d89ee38849e1a9903a16527afe55bd,"
     },
-    "Pretendard Medium 10": {
+    "Pretendard Variable Medium 10": {
       "style": "body/10M",
       "id": "S:f07625115203afb65c8cb45b5f380b231060a37d,"
     },
-    "Pretendard Bold 20": {
+    "Pretendard Variable Bold 20": {
       "style": "title/20B",
       "id": "S:46f6df226b7078240376de6530ae592e02a48416,"
     },
-    "Pretendard Regular 32": {
+    "Pretendard Variable Regular 32": {
       "style": "title/32R",
       "id": "",
       "$idNote": "신규 스타일(2026-07-07 추가, textstyles-data.ts). Figma 파일에 설치기가 생성해야 고유 id 가 생김 → 설치 후 getLocalTextStylesAsync 로 name='title/32R' 조회해 바인딩(id 하드코딩 대신 이름 조회 권장). Time Picker Mobile Bottom Sheet 휠 32px accent 숫자용."
@@ -56,7 +57,7 @@
       "id": "installer-section-header-title",
       "where": "설치기가 캔버스에 까는 섹션 머리말(… — Section Header 프레임)의 제목 글자",
       "parentNameEndsWith": "— Section Header",
-      "family": "Pretendard",
+      "family": "Pretendard Variable",
       "fontStyle": "Bold",
       "fontSize": 44,
       "approvedBy": "river",
@@ -71,7 +72,7 @@
       "id": "installer-area-title",
       "where": "설치기가 캔버스에 놓는 영역 제목(Tokens · Core Component · Mobile Pattern — '… — Area Title' 노드)",
       "nodeNameEndsWith": "— Area Title",
-      "family": "Pretendard",
+      "family": "Pretendard Variable",
       "fontStyle": "Bold",
       "fontSize": 200,
       "approvedBy": "river",

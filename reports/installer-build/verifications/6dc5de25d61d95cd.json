@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:6dc5de25d61d95cdac9b43f155e03611ddded6cc20bb77bf33df17e2494c0197",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-10-13T08:11:36.452Z",
+  "notes": "buildDataTag Color 축 Blue·Red→Blue·Red·Gray(12칸). 셀별 바인딩 12/12 확인(선형 line/border·line/label/{tone}, 채움 solid/bg·solid/label/{tone}), keycheck 누락 0, 스펙시트 colHeaders/cellAt 3색 정합, 옛 color/tag/solid/label 참조 0"
+}

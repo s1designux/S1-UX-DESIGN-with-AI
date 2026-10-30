@@ -62,36 +62,31 @@
     "fileKey": "yE5UCFEbmXJBlYJWB24Lz2",
     "fileName": "SW UX GUIDE V2.4 (접힘카드 원본만)"
   },
-  "currentPhase": "4-verification",
-  "workflowStatus": "in-progress",
+  "currentPhase": "complete",
+  "workflowStatus": "complete",
   "uiLibraryStatus": "approved",
-  "lastCompletedCheckpoint": 3,
-  "nextAction": "승격 4종 모두 approved(2026-10-02). 남은 결정: B-3 다크 메뉴명 밝기(LNB).",
-  "ownership": {
-    "currentActor": "orchestrator",
-    "startedAt": "2026-09-29T00:00:00+09:00",
-    "note": "site-restyle 작업 폴더에서 진행. 상태 파일은 오케스트레이터만 수정한다."
-  },
+  "lastCompletedCheckpoint": 6,
+  "nextAction": "완료 — 승격 4종 approved · 독립 검증 PASS(2026-10-19, 배포본 0.26.0).",
   "canonicalInputs": [
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "80bbf33724e572be4a1ebac2bd646bff8a068e8307636345467d100164b4725b"
+      "sha256": "bf554394f88448477c06153da07fb1ace9b2aceabf55019acb9117455fd77916"
     },
     {
       "role": "token-values",
       "path": "plugins/figma-vars-installer/src/vars-data.ts",
-      "sha256": "ebf1ef2f712e522788c7ff54fb39a6b3a3d961cb99017a5dfbf25dbf7a4b3a36"
+      "sha256": "89727e6a19d3780cdef36181de081fe957114b490342a4f1f44a0c2cf616a123"
     },
     {
       "role": "text-styles",
       "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
-      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+      "sha256": "ca379bfa2203aa12e647e636a561cc84fe925af11fef5df6194a13b248625fb5"
     },
     {
       "role": "approved-prototype",
       "path": "assets/css/restyle-candidates.css",
-      "sha256": "4a4addb718c03522dc052fd34170f628c9fb1f99d2c77fed244185b81b313614"
+      "sha256": "e36da5c060cf4ba0858e40f126403ff3d6a83acc1bc6a66fc3034318e614ed7b"
     }
   ],
   "installerGroups": {
@@ -120,7 +115,14 @@
       "component": "lnb",
       "what": "정본 navigation 라벨의 다크값이 아이콘보다 어둡다",
       "impact": "지금은 이 부품 안에서만 밝은 글자 토큰으로 덮어 두었다",
-      "needs": "river 결정 — 정본을 고칠지"
+      "needs": "해소 2026-10-01 — navigation/label/default-side 신설(라이트 gray/600 · 다크 gray-dark/900), LNB 메뉴명 전용. river \"승인할게, 넷 다 같이 바꿔줘\" (813dfad2)"
+    },
+    {
+      "id": "B-4",
+      "component": "lnb·expandable-card·data-tag·divider",
+      "what": "독립 검증 HOLD",
+      "impact": "-",
+      "needs": "해소 — C-1 D-12 · C-2 D-11 · C-3 D-15, 최종 PASS 2026-10-19"
     }
   ],
   "evidence": {
@@ -155,6 +157,37 @@
       "scope": "승격 4종 전부 approved — LNB(D-7) · Expandable Card · Divider · Data Tag(D-9)",
       "quote": "나머지 3종도 승인으로 바꿔줘",
       "lnb": "evidence.lnbRiverApproval 참조"
+    },
+    "verification": {
+      "observedAt": "2026-10-02",
+      "by": "component-verifier (scenario F)",
+      "firstPass": "FAIL — LNB A-1(비활성 메뉴 Enter 로 열림)·A-2(키보드 포커스 유실)·A-4(manifest 낡은 서술), Expandable Card A-3(포커스 유실) · HOLD C-1·C-2·C-3·C-4",
+      "rework": "ui-library-builder — A-1~A-4·C-4 수정, empty-consumer 에 LNB 추가, 배포본 0.18.4",
+      "deltaPass": "2026-10-02 델타 재검증 — 코드 결함 전부 해소, A-4 잔여 문구 2건은 오케스트레이터가 manifest 문구 정정(기계적)",
+      "renders": [
+        "verify-f/consumer-bundle-pc-tall-light.png",
+        "verify-f/consumer-bundle-pc-tall-dark.png"
+      ],
+      "openHold": "없음",
+      "fullPass2": "2026-10-19 전수 재검증(D-13 이후) — LNB·Expandable Card PASS(C-1 해소), Data Tag FAIL A-5(안내 화면 상태표에 Gray 열 누락) → 오케스트레이터가 ui-library-guide.js tones·설명 문구 정정, 렌더로 12칸 확인. Divider HOLD C-3."
+    },
+    "independentVerification": {
+      "verdict": "PASS",
+      "by": "component-verifier (scenario F)",
+      "at": "2026-10-19",
+      "summary": "4종(LNB · Expandable Card · Divider · Data Tag) FAIL 0 · HOLD 0. 전수(D-13 이후) + 델타: C-1 테두리 보정 일치, A-5 가이드 Gray 열, C-3 data-inset 제거(D-15), A-6 배포 README, A-7 presentation-policy note·extraAxes 정정. 번들=개별 설치 바이트 동일(Light·Dark).",
+      "renders": [
+        "verify-f/consumer-bundle-pc-tall-light.png",
+        "verify-f/consumer-bundle-pc-tall-dark.png"
+      ]
+    },
+    "lnbPeekRiverApproval": {
+      "date": "2026-10-21",
+      "status": "approved",
+      "target": "ui-library lnb v0.4.0 (배포본 0.27.0) — 접힌 띠 잠깐 펼침(호버 즉시·하위메뉴 칸 누름) · 누른 메뉴로 aria-current 옮김 · 하위메뉴 선택 시 접힌 띠 상위 칸 선택 표시(data-current-parent) · 펼침 전환 .24s cubic-bezier(.35,0,.15,1), 선택 바탕은 즉시 제거",
+      "quote": "오케이 현재 안으로 승인할게. 정본에 반영후에 관련된 컴포넌트 안내쪽 html/css까지만 내용 반영해줘. 개발툴별 라이브러리는 추후에 업데이트할게",
+      "scope": "웹 배포본(HTML·CSS·JS)과 디자인가이드 안내 화면까지. 개발툴별 라이브러리(React Native 등 플랫폼 이식)의 동작 반영은 river 지시로 추후 — 이번에는 번호만 따라 올랐다.",
+      "verification": "⭐ 실제 dist 렌더·마우스 동작 확인(비교 화면·안내 화면). 🤖 독립 검증 미실시."
     }
   },
   "artifacts": {
@@ -170,7 +203,10 @@
     "migrationRecord": "registry/governance/ui-library-migration.json",
     "approvedPrototype": "pages/_restyle-test/parts.html",
     "canonReadiness": "reports/ui-library/promoted-parts-4/2-canon-readiness.md",
-    "build": "reports/ui-library/promoted-parts-4/3-build.md"
+    "build": "reports/ui-library/promoted-parts-4/3-build.md",
+    "promotion": "reports/ui-library/promoted-parts-4/6-promotion.md",
+    "verification": "reports/ui-library/promoted-parts-4/4-verification-F.md",
+    "humanReview": "reports/ui-library/promoted-parts-4/5-human-review.md"
   },
   "decisions": [
     {
@@ -235,11 +271,53 @@
       "by": "river",
       "decision": "Expandable Card · Divider · Data Tag 를 승인(approved)으로 올린다",
       "quote": "나머지 3종도 승인으로 바꿔줘"
+    },
+    {
+      "id": "D-10",
+      "at": "2026-10-02",
+      "by": "orchestrator",
+      "decision": "정본 지문 재기록 — 승인 이후 정본 변경은 모두 각자 river 결정·검증을 거친 별도 작업이라 이 4종 승인 검증을 무효로 하지 않는다",
+      "basis": "813dfad2 LNB 메뉴명 다크 토큰 신설(river 승인) · 04b0bb3a/6486ae33 글꼴 Pretendard Variable 상수화(구조 무변경) · 9ea0f94e 구분선 다크 기본선 gray-dark/400(river 지시) · 90eb7284/96782862 LNB 접기 아이콘 Line·Solid 웹 자산(component-verifier F PASS) · restyle-candidates.css 후보 시험 화면 동기화. 4종 빌더의 구조·variant 변경 없음."
+    },
+    {
+      "id": "D-11",
+      "at": "2026-10-19",
+      "by": "river",
+      "decision": "C-2 뱃지 높이 — 웹 26px(line-height 1)을 유지한다. 웹에서 글자가 위로 뜨는 문제 때문에 웹과 Figma 를 일부러 다르게 만든 것이다(Figma 27.6px 그대로).",
+      "quote": "버튼 내 텍스트가 웹에서 이상하게 나와서 일부러 웹과 피그마를 다르게 제작함."
+    },
+    {
+      "id": "D-12",
+      "at": "2026-10-19",
+      "by": "river",
+      "decision": "C-1 테두리 — CSS border(border-box) 유지 + 안쪽 여백을 테두리 두께만큼 줄여(calc(spacing − border-width-default)) Figma 정본과 위치·크기를 같게 맞춘다. box-shadow/outline 선 흉내는 쓰지 않는다(고대비 모드·포커스/그림자 충돌).",
+      "quote": "응 그렇게 맞춰줘"
+    },
+    {
+      "id": "D-13",
+      "at": "2026-10-19",
+      "by": "orchestrator",
+      "decision": "정본 지문 재기록 — 직전 기록 이후 정본 변경 3건 중 4종에 닿는 것은 dcbf9ac5(Data Tag 회색 Color 축 추가·채움 글자 색깔별, river 승인 2026-10-13) 하나다. 359ce35f(설치기 다크 모드 고정)·a9f197e0(하단 탭 아이콘·입력칸 안내 문구)는 4종 빌더와 무관. Data Tag 가 바뀌었으므로 이번 검증은 델타가 아닌 전수로 한다.",
+      "basis": "git log fcb6a0a9..HEAD -- build-components.ts vars-data.ts restyle-candidates.css 의 hunk 범위(buildDataTag 7303~7331 · setMode/buildAllComponents · buildInput/makeIconInstance)"
+    },
+    {
+      "id": "D-14",
+      "at": "2026-10-19",
+      "by": "orchestrator",
+      "decision": "정본 지문 재기록 — main 들여오며 바뀐 build-components.ts 는 buildFooter 한 줄(6611)뿐, 4종 빌더와 무관해 검증 유지",
+      "basis": "git diff -U0 34696013 -- build-components.ts → @@ -6611 buildFooter"
+    },
+    {
+      "id": "D-15",
+      "at": "2026-10-19",
+      "by": "orchestrator (river 위임)",
+      "decision": "C-3 구분선 data-inset 옵션 제거 — 정본 buildDivider 는 들여쓰기를 부품 축으로 두지 않고 담는 목록이 정한다. 변형 구성은 정확 대조 대상이며, 개발 관점에서도 같은 효과의 길을 하나(담는 쪽 여백)로 둔다. 배포본 0.26.0(minor), manifest 에 이행 메모.",
+      "quote": "개발 기준으로 맞는 쪽으로 정해줘"
     }
   ],
   "handoff": {
     "lastActor": "orchestrator",
     "updatedAt": "2026-09-29",
-    "summary": "접힘카드·구분선: 정본 신설(Gate 34 승인)·registry·설치기(52종)·웹 배포본 0.13.17 완료. 사이드바·뱃지: 웹 원본 코드만 두고 배포·정본에서 보류(needs-decision 3건)."
+    "summary": "접힘카드·구분선: 정본 신설(Gate 34 승인)·registry·설치기(52종)·웹 배포본 0.13.17 완료. 사이드바·뱃지: 웹 원본 코드만 두고 배포·정본에서 보류(needs-decision 3건). | 2026-10-21 LNB 잠깐 펼침 승인·반영(0.4.0). 후속: 개발툴별 라이브러리에 같은 동작 이식(river 추후 지시)."
   }
 }
