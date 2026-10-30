@@ -1,32 +1,1236 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>S-1 디자인 시스템 운영 안내서</title>
-<meta name="description" content="S-1 디자인 시스템을 처음 맡는 디자이너를 위한 인수인계서">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* 레이아웃: 왼쪽 고정 목차 + 본문 한 단(65자 폭). 좁은 화면에선 목차가 위로 올라간다.
-   색은 S-1 Foundation 팔레트(gray / gray-dark / blue)에서 골랐다. */
+/* ── S-1 디자인 시스템 웹 키트 0.27.0 — tokens.css (다크: data-theme + 시스템 설정) ── */
+/* >>> GEN:FOUNDATION >>> Auto-generated from vars-data.ts (npm run tokens:gen:foundation) — Variables 정본. 수동 편집 금지. */
+/* ══════════════════════════════════════════════════
+   0. FOUNDATION — Base & Brand
+   ══════════════════════════════════════════════════ */
 :root {
-  --bg: #FFFFFF;
-  --surface: #FAFAFA;
-  --surface-2: #F3F5F8;
-  --line: #E9E9E9;
-  --fg: #202020;
-  --fg-2: #555555;
-  --fg-3: #757575;
-  --accent: #1D6CEB;
-  --accent-soft: #EAF3FF;
-  --accent-fg: #FFFFFF;
-  --warn: #B4540A;
-  --warn-soft: #FFF4E5;
-  --ok: #157347;
-  --ok-soft: #E8F6EE;
-  --stop: #C42B2B;
-  --stop-soft: #FDECEC;
+  --color-base-white  : #FFFFFF;
+  --color-base-black  : #000000;
+  --color-base-home-bg: #F5F6FB;
+  --color-brand-blue  : #0072CE;
+  --color-brand-red   : #FF312C;
+  --color-brand-gray  : #DFDEDE;
+  --color-brand-ci    : #004097; /* CI·로고 전용. UI 직접 사용 금지 */
+}
+
+
+/* ══════════════════════════════════════════════════
+   1. FOUNDATION — Color Foundation
+   ══════════════════════════════════════════════════ */
+:root {
+
+  /* ── Gray · Light ── */
+  --color-gray-0  : #FAFAFA;
+  --color-gray-50 : #F5F5F5;
+  --color-gray-100: #E9E9E9;
+  --color-gray-200: #D9D9D9;
+  --color-gray-300: #C4C4C4;
+  --color-gray-400: #9D9D9D;
+  --color-gray-500: #757575;
+  --color-gray-600: #555555;
+  --color-gray-700: #434343;
+  --color-gray-800: #353535;
+  --color-gray-900: #202020;
+
+  /* ── Gray · Dark ── */
+  --color-gray-dark-0  : #0D0E12;
+  --color-gray-dark-50 : #131418;
+  --color-gray-dark-100: #1C1D23;
+  --color-gray-dark-200: #24252C;
+  --color-gray-dark-300: #2E2F38;
+  --color-gray-dark-400: #35363F;
+  --color-gray-dark-500: #3E4049;
+  --color-gray-dark-600: #55575F;
+  --color-gray-dark-700: #8A8C96;
+  --color-gray-dark-800: #B8BABF;
+  --color-gray-dark-900: #ECEDF0;
+
+  /* ── Blue · Light ── */
+  --color-blue-50 : #E2F1FF;
+  --color-blue-100: #C8E4FF;
+  --color-blue-150: #A4D4FF;
+  --color-blue-200: #8BC6FF;
+  --color-blue-250: #5BB2FF;
+  --color-blue-300: #2B9EFF;
+  --color-blue-350: #268CF8;
+  --color-blue-400: #1D6CEB;
+  --color-blue-450: #2158C8;
+  --color-blue-500: #2747B9;
+
+  /* ── Blue · Dark ── */
+  --color-blue-dark-50 : #0C1D38;
+  --color-blue-dark-100: #112B55;
+  --color-blue-dark-150: #1A3D72;
+  --color-blue-dark-200: #214EA0;
+  --color-blue-dark-250: #2A65C8;
+  --color-blue-dark-300: #3070D8;
+  --color-blue-dark-350: #4285E8;
+  --color-blue-dark-400: #6FA5F8;
+  --color-blue-dark-450: #96BEF9;
+  --color-blue-dark-500: #C0D8FC;
+
+  /* ── Red · Light ── */
+  --color-red-50 : #FFEBEF;
+  --color-red-100: #FFCCD6;
+  --color-red-150: #FBB2BA;
+  --color-red-200: #F8979E;
+  --color-red-250: #FC6E79;
+  --color-red-300: #FF4554;
+  --color-red-350: #F22544;
+  --color-red-400: #E50533;
+  --color-red-450: #D60228;
+  --color-red-500: #C8001E;
+
+  /* ── Red · Dark ── */
+  --color-red-dark-50 : #2A0F14;
+  --color-red-dark-100: #3D1520;
+  --color-red-dark-150: #5C1E2E;
+  --color-red-dark-200: #8A2A3E;
+  --color-red-dark-250: #C03850;
+  --color-red-dark-300: #E04860;
+  --color-red-dark-350: #F06070;
+  --color-red-dark-400: #F48890;
+  --color-red-dark-450: #F8A8B0;
+  --color-red-dark-500: #FCD0D5;
+
+  /* ── Orange · Light ── */
+  --color-orange-50 : #FFEDE0;
+  --color-orange-100: #FDDBBF;
+  --color-orange-150: #FEC6A0;
+  --color-orange-200: #FFB482;
+  --color-orange-250: #FF954E;
+  --color-orange-300: #FF761A;
+  --color-orange-350: #EE680D;
+  --color-orange-400: #DA4C00;
+  --color-orange-450: #B63C00;
+  --color-orange-500: #8E2E00;
+
+  /* ── Orange · Dark ── */
+  --color-orange-dark-50 : #2E1505;
+  --color-orange-dark-100: #42200A;
+  --color-orange-dark-150: #6B3512;
+  --color-orange-dark-200: #A05020;
+  --color-orange-dark-250: #D06828;
+  --color-orange-dark-300: #E88038;
+  --color-orange-dark-350: #F09548;
+  --color-orange-dark-400: #F5AA68;
+  --color-orange-dark-450: #F8C090;
+  --color-orange-dark-500: #FCD8B8;
+
+  /* ── Yellow · Light ── */
+  --color-yellow-50 : #FFF4CE;
+  --color-yellow-100: #FEE89A;
+  --color-yellow-150: #FEDE6C;
+  --color-yellow-200: #FFD53D;
+  --color-yellow-250: #FFCC1E;
+  --color-yellow-300: #FFC200;
+  --color-yellow-350: #F5B900;
+  --color-yellow-400: #DBA400;
+  --color-yellow-450: #BA8900;
+  --color-yellow-500: #8F6A00;
+
+  /* ── Yellow · Dark ── */
+  --color-yellow-dark-50 : #2A2005;
+  --color-yellow-dark-100: #3D2E08;
+  --color-yellow-dark-150: #605010;
+  --color-yellow-dark-200: #907818;
+  --color-yellow-dark-250: #C09828;
+  --color-yellow-dark-300: #D8B038;
+  --color-yellow-dark-350: #E8C048;
+  --color-yellow-dark-400: #F0D068;
+  --color-yellow-dark-450: #F5DE90;
+  --color-yellow-dark-500: #FAEAB8;
+
+  /* ── Green · Light ── */
+  --color-green-50 : #E3F2EA;
+  --color-green-100: #CAECDA;
+  --color-green-150: #9CD8BD;
+  --color-green-200: #6FC4A2;
+  --color-green-250: #47BB8E;
+  --color-green-300: #1FB279;
+  --color-green-350: #10A86C;
+  --color-green-400: #009E5E;
+  --color-green-450: #008650;
+  --color-green-500: #006F42;
+
+  /* ── Green · Dark ── */
+  --color-green-dark-50 : #0A2018;
+  --color-green-dark-100: #102E22;
+  --color-green-dark-150: #184530;
+  --color-green-dark-200: #206840;
+  --color-green-dark-250: #288A55;
+  --color-green-dark-300: #30A868;
+  --color-green-dark-350: #3FBE7E;
+  --color-green-dark-400: #68D098;
+  --color-green-dark-450: #98E0B8;
+  --color-green-dark-500: #C5F0D8;
+
+  /* ── Skyblue · Light ── */
+  --color-skyblue-50 : #C4EEF7;
+  --color-skyblue-100: #A5E5F3;
+  --color-skyblue-150: #7BD6EA;
+  --color-skyblue-200: #51C7E1;
+  --color-skyblue-250: #3BC0DD;
+  --color-skyblue-300: #25B9DA;
+  --color-skyblue-350: #1DAACB;
+  --color-skyblue-400: #159BBC;
+  --color-skyblue-450: #1284A0;
+  --color-skyblue-500: #0F6C84;
+
+  /* ── Skyblue · Dark ── */
+  --color-skyblue-dark-50 : #081E28;
+  --color-skyblue-dark-100: #102A38;
+  --color-skyblue-dark-150: #184050;
+  --color-skyblue-dark-200: #205A70;
+  --color-skyblue-dark-250: #287890;
+  --color-skyblue-dark-300: #3090A8;
+  --color-skyblue-dark-350: #40A8C0;
+  --color-skyblue-dark-400: #68C0D8;
+  --color-skyblue-dark-450: #98D8E8;
+  --color-skyblue-dark-500: #C0E8F0;
+
+  /* ── Purple · Light ── */
+  --color-purple-50 : #E8E9FC;
+  --color-purple-100: #CFD1F9;
+  --color-purple-150: #C0C0FC;
+  --color-purple-200: #B0B0FF;
+  --color-purple-250: #8B8BEE;
+  --color-purple-300: #6666DD;
+  --color-purple-350: #4E4EC3;
+  --color-purple-400: #3535A8;
+  --color-purple-450: #2D2D8F;
+  --color-purple-500: #252576;
+
+  /* ── Purple · Dark ── */
+  --color-purple-dark-50 : #14142A;
+  --color-purple-dark-100: #1E1E3D;
+  --color-purple-dark-150: #2A2A58;
+  --color-purple-dark-200: #383878;
+  --color-purple-dark-250: #4848A0;
+  --color-purple-dark-300: #5858B8;
+  --color-purple-dark-350: #7070D0;
+  --color-purple-dark-400: #9090E0;
+  --color-purple-dark-450: #B0B0EA;
+  --color-purple-dark-500: #D0D0F5;
+
+  /* ── Brown · Light ── */
+  --color-brown-50 : #F6EEE9;
+  --color-brown-100: #E4D5C8;
+  --color-brown-150: #DBC6B3;
+  --color-brown-200: #D1B69F;
+  --color-brown-250: #A68C75;
+  --color-brown-300: #7C614A;
+  --color-brown-350: #685240;
+  --color-brown-400: #554435;
+  --color-brown-450: #483A2D;
+  --color-brown-500: #3B3025;
+
+  /* ── Brown · Dark ── */
+  --color-brown-dark-50 : #1E1610;
+  --color-brown-dark-100: #2A2018;
+  --color-brown-dark-150: #3D3025;
+  --color-brown-dark-200: #584535;
+  --color-brown-dark-250: #786050;
+  --color-brown-dark-300: #907868;
+  --color-brown-dark-350: #A89080;
+  --color-brown-dark-400: #C0A898;
+  --color-brown-dark-450: #D8C0B0;
+  --color-brown-dark-500: #E8D8C8;
+
+  /* ── Visual Gray · Light ── */
+  --color-visual-gray-50 : #F3F5F7;
+  --color-visual-gray-100: #E8EBEF;
+  --color-visual-gray-150: #DADEE5;
+  --color-visual-gray-200: #CDD2DE;
+  --color-visual-gray-250: #ABB2BF;
+  --color-visual-gray-300: #808796;
+  --color-visual-gray-350: #646A74;
+  --color-visual-gray-400: #3E4347;
+  --color-visual-gray-450: #2B2F32;
+  --color-visual-gray-500: #1B1D1F;
+
+  /* ── Visual Gray · Dark ── */
+  --color-visual-gray-dark-50 : #12141A;
+  --color-visual-gray-dark-100: #1A1D25;
+  --color-visual-gray-dark-150: #252830;
+  --color-visual-gray-dark-200: #353840;
+  --color-visual-gray-dark-250: #484C58;
+  --color-visual-gray-dark-300: #606470;
+  --color-visual-gray-dark-350: #787C88;
+  --color-visual-gray-dark-400: #989CA8;
+  --color-visual-gray-dark-450: #B8BCC5;
+  --color-visual-gray-dark-500: #D8DBE0;
+}
+
+
+/* ══════════════════════════════════════════════════
+   2. FOUNDATION — Spacing, Radius, Border Width, Typography
+   ══════════════════════════════════════════════════ */
+:root {
+
+  /* ── Spacing ── */
+  --spacing-2  : 2px;
+  --spacing-4  : 4px;
+  --spacing-6  : 6px;
+  --spacing-8  : 8px;
+  --spacing-10 : 10px;
+  --spacing-12 : 12px;
+  --spacing-14 : 14px;
+  --spacing-16 : 16px;
+  --spacing-20 : 20px;
+  --spacing-24 : 24px;
+  --spacing-28 : 28px;
+  --spacing-32 : 32px;
+  --spacing-36 : 36px;
+  --spacing-40 : 40px;
+  --spacing-44 : 44px;
+  --spacing-48 : 48px;
+  --spacing-56 : 56px;
+  --spacing-64 : 64px;
+  --spacing-80 : 80px;
+  --spacing-96 : 96px;
+  --spacing-128: 128px;
+
+  /* ── Sizing ── */
+  --sizing-10 : 10px;
+  --sizing-16 : 16px;
+  --sizing-18 : 18px;
+  --sizing-20 : 20px;
+  --sizing-24 : 24px;
+  --sizing-28 : 28px;
+  --sizing-30 : 30px;
+  --sizing-32 : 32px;
+  --sizing-34 : 34px;
+  --sizing-38 : 38px;
+  --sizing-40 : 40px;
+  --sizing-44 : 44px;
+  --sizing-48 : 48px;
+  --sizing-56 : 56px;
+  --sizing-60 : 60px;
+  --sizing-64 : 64px;
+  --sizing-80 : 80px;
+  --sizing-128: 128px;
+
+  /* ── Radius ── */
+  --radius-0   : 0px;
+  --radius-2   : 2px;
+  --radius-4   : 4px;
+  --radius-6   : 6px;
+  --radius-8   : 8px;
+  --radius-10  : 10px;
+  --radius-12  : 12px;
+  --radius-16  : 16px;
+  --radius-20  : 20px;
+  --radius-full: 9999px;
+
+  /* ── Border Width ── */
+  --border-width-1: 1px;
+  --border-width-2: 2px;
+
+  /* ── Font Size ── */
+  --font-size-10: 10px;
+  --font-size-12: 12px;
+  --font-size-14: 14px;
+  --font-size-16: 16px;
+  --font-size-18: 18px;
+  --font-size-20: 20px;
+  --font-size-24: 24px;
+  --font-size-32: 32px;
+
+  /* ── Font Weight ── */
+  --font-weight-regular: 400;
+  --font-weight-medium : 500;
+  --font-weight-bold   : 700;
+
+  /* ── Line Height ── */
+  --line-height-130: 1.3;
+  --line-height-140: 1.4;
+
+  /* ── Opacity ── */
+  --opacity-0  : 0;
+  --opacity-25 : 0.25;
+  --opacity-50 : 0.5;
+  --opacity-75 : 0.75;
+  --opacity-100: 1;
+
+  /* ── Breakpoint ── */
+  --breakpoint-xs : 320px;
+  --breakpoint-sm : 600px;
+  --breakpoint-md : 768px;
+  --breakpoint-lg : 1024px;
+  --breakpoint-xl : 1280px;
+  --breakpoint-2xl: 1440px;
+}
+/* <<< GEN:FOUNDATION <<< */
+
+
+/* ══════════════════════════════════════════════════
+   0b. Status Dark Alias (수동 — vars-data 밖 관리, 350 step alias. registry statusDarkAlias 참조)
+   ══════════════════════════════════════════════════ */
+:root {
+  /* ── Status · Dark (피드백 상태 전용 Dark Foundation) ── */
+  --color-status-dark-red:    #F06070; /* = color-red-dark-350 */
+  --color-status-dark-green:  #3FBE7E; /* = color-green-dark-350 */
+  --color-status-dark-yellow: #E8C048; /* = color-yellow-dark-350 */
+}
+
+
+/* ══════════════════════════════════════════════════
+   2b. Letter Spacing (수동 — 타이포 파이프라인 소속. textstyles-data.ts/typography-gen.js 참조)
+   ══════════════════════════════════════════════════ */
+:root {
+  /* ── Letter Spacing ── */
+  --letter-spacing-tight:  -0.02em;
+  --letter-spacing-normal: 0em;
+  --letter-spacing-wide:   0.02em;
+}
+
+
+:root {
+  /* ══ semantic number (sizing·spacing·radius·border-width) — 763a70a 자동생성기 누락분 복원 2026-06-11 ══ */
+  /* ── spacing (semantic) ── */
+  --spacing-label-gap-inline-sm: var(--spacing-8);
+  --spacing-label-gap-inline-md: var(--spacing-12);
+  --spacing-label-gap-inline-lg: var(--spacing-16);
+  --spacing-label-gap-block-sm:  var(--spacing-4);
+  --spacing-label-gap-block-md:  var(--spacing-8);
+
+  /* ── sizing (semantic) ── */
+  /* 2026-06-12 폐지: 컴포넌트별 사이징 토큰 전부 제거 → 컴포넌트가 Foundation --sizing-N 직접 참조.
+     (값 보존: 옛 토큰은 모두 Foundation sizing step과 1:1 매핑) */
+
+  /* ── radius (semantic) ── */
+  --radius-control-xs: var(--radius-2);
+  --radius-control-sm: var(--radius-4);
+  --radius-button-md:  var(--radius-4);
+  --radius-card-md:    var(--radius-10);
+  --radius-modal-md:   var(--radius-8);
+
+  /* ── border-width (semantic) ── */
+  --border-width-default: var(--border-width-1);
+  --border-width-strong:  var(--border-width-2);
+}
+
+
+/* >>> GEN:SEMANTIC >>> Auto-generated from vars-data.ts (npm run tokens:gen) — Variables 정본. 수동 편집 금지. */
+/* ══════════════════════════════════════════════════
+   SEMANTIC TOKENS — Light (Variables 기준 자동 생성)
+   ══════════════════════════════════════════════════ */
+:root {
+  /* ── bg ── */
+  --color-bg-level-0: var(--color-base-white);
+  --color-bg-level-1: var(--color-gray-0);
+  --color-bg-level-2: var(--color-gray-50);
+  --color-bg-level-3: var(--color-gray-100);
+  --color-bg-home   : var(--color-base-home-bg);
+
+  /* ── surface ── */
+  --color-surface-raised: var(--color-base-white);
+
+  /* ── button ── */
+  --color-button-bg-blue-line--default    : var(--color-base-white);
+  --color-button-bg-blue-line--hover      : var(--color-blue-50);
+  --color-button-bg-disabled              : var(--color-gray-50);
+  --color-button-bg-primary--default      : var(--color-blue-400);
+  --color-button-bg-primary--hover        : var(--color-blue-500);
+  --color-button-bg-secondary--default    : var(--color-base-white);
+  --color-button-bg-secondary--hover      : var(--color-gray-50);
+  --color-button-border-assist--hover     : var(--color-gray-200);
+  --color-button-border-blue-line--default: var(--color-blue-400);
+  --color-button-border-blue-line--hover  : var(--color-blue-400);
+  --color-button-border-disabled          : var(--color-gray-200);
+  --color-button-border-primary--default  : var(--color-blue-400);
+  --color-button-border-primary--hover    : var(--color-blue-500);
+  --color-button-border-secondary--default: var(--color-gray-200);
+  --color-button-border-secondary--hover  : var(--color-gray-200);
+  --color-button-label-assist--default    : var(--color-gray-500);
+  --color-button-label-assist--hover      : var(--color-gray-500);
+  --color-button-label-blue-line--default : var(--color-blue-400);
+  --color-button-label-blue-line--hover   : var(--color-blue-500);
+  --color-button-label-disabled           : var(--color-gray-300);
+  --color-button-label-primary--default   : var(--color-base-white);
+  --color-button-label-primary--hover     : var(--color-base-white);
+  --color-button-label-secondary--default : var(--color-gray-800);
+  --color-button-label-secondary--hover   : var(--color-gray-800);
+
+  /* ── chip ── */
+  --color-chip-line-bg-default        : var(--color-base-white);
+  --color-chip-line-bg-disabled       : var(--color-gray-50);
+  --color-chip-line-bg-hover          : var(--color-gray-0);
+  --color-chip-line-bg-selected       : var(--color-base-white);
+  --color-chip-line-border-default    : var(--color-gray-300);
+  --color-chip-line-border-disabled   : var(--color-gray-100);
+  --color-chip-line-border-selected   : var(--color-blue-400);
+  --color-chip-line-icon-default      : var(--color-gray-500);
+  --color-chip-line-icon-disabled     : var(--color-gray-300);
+  --color-chip-line-label-default     : var(--color-gray-500);
+  --color-chip-line-label-disabled    : var(--color-gray-300);
+  --color-chip-line-label-selected    : var(--color-blue-400);
+  --color-chip-solid-bg-default       : var(--color-gray-50);
+  --color-chip-solid-bg-disabled      : var(--color-gray-50);
+  --color-chip-solid-bg-hover         : var(--color-gray-100);
+  --color-chip-solid-bg-selected      : var(--color-blue-400);
+  --color-chip-solid-bg-selected-hover: var(--color-blue-500);
+  --color-chip-solid-border-default   : var(--color-gray-50);
+  --color-chip-solid-border-disabled  : var(--color-gray-50);
+  --color-chip-solid-border-selected  : var(--color-blue-400);
+  --color-chip-solid-icon-default     : var(--color-gray-800);
+  --color-chip-solid-icon-disabled    : var(--color-gray-300);
+  --color-chip-solid-icon-selected    : var(--color-base-white);
+  --color-chip-solid-label-default    : var(--color-gray-800);
+  --color-chip-solid-label-disabled   : var(--color-gray-300);
+  --color-chip-solid-label-selected   : var(--color-base-white);
+
+  /* ── control ── */
+  --color-control-bg-default            : var(--color-base-white);
+  --color-control-bg-disabled           : var(--color-gray-100);
+  --color-control-bg-hover              : var(--color-gray-50);
+  --color-control-bg-selected           : var(--color-blue-400);
+  --color-control-border-default        : var(--color-gray-200);
+  --color-control-border-disabled       : var(--color-gray-200);
+  --color-control-border-selected       : var(--color-blue-400);
+  --color-control-indicator-disabled    : var(--color-gray-300);
+  --color-control-indicator-selected    : var(--color-base-white);
+  --color-control-indicator-selected-alt: var(--color-blue-400);
+  --color-control-indicator-unselected  : var(--color-gray-300);
+  --color-control-label-default         : var(--color-gray-800);
+  --color-control-label-disabled        : var(--color-gray-300);
+
+  /* ── table ── */
+  --color-table-border-default: var(--color-gray-100);
+  --color-table-border-strong : var(--color-gray-800);
+  --color-table-header-bg     : var(--color-gray-0);
+  --color-table-cell-default  : var(--color-base-white);
+  --color-table-cell-hover    : var(--color-gray-50);
+  --color-table-cell-selected : var(--color-blue-50);
+
+  /* ── dropdown ── */
+  --color-dropdown-list-bg              : var(--color-base-white);
+  --color-dropdown-list-border          : var(--color-gray-200);
+  --color-dropdown-option-bg-default    : var(--color-base-white);
+  --color-dropdown-option-bg-hover      : var(--color-gray-50);
+  --color-dropdown-option-bg-selected   : var(--color-blue-50);
+  --color-dropdown-option-label-default : var(--color-gray-800);
+  --color-dropdown-option-label-hover   : var(--color-gray-900);
+  --color-dropdown-option-label-selected: var(--color-blue-400);
+
+  /* ── form-control ── */
+  --color-form-control-bg-default      : var(--color-base-white);
+  --color-form-control-bg-disabled     : var(--color-gray-50);
+  --color-form-control-bg-hover        : var(--color-gray-0);
+  --color-form-control-bg-selected     : var(--color-base-white);
+  --color-form-control-border-correct  : var(--color-blue-400);
+  --color-form-control-border-default  : var(--color-gray-200);
+  --color-form-control-border-disabled : var(--color-gray-100);
+  --color-form-control-border-error    : var(--color-red-300);
+  --color-form-control-border-selected : var(--color-blue-400);
+  --color-form-control-label-default   : var(--color-gray-800);
+  --color-form-control-label-disabled  : var(--color-gray-300);
+  --color-form-control-text-default    : var(--color-gray-800);
+  --color-form-control-text-disabled   : var(--color-gray-300);
+  --color-form-control-text-placeholder: var(--color-gray-500);
+  --color-form-control-text-selected   : var(--color-gray-900);
+  --color-form-control-icon-default    : var(--color-gray-800);
+  --color-form-control-icon-hover      : var(--color-gray-900);
+  --color-form-control-icon-selected   : var(--color-gray-900);
+  --color-form-control-icon-disabled   : var(--color-gray-300);
+  --color-form-control-text-cursor     : var(--color-blue-400);
+  --color-form-control-text-read-only  : var(--color-gray-500);
+
+  /* ── icon ── */
+  --color-icon-blue      : var(--color-blue-400);
+  --color-icon-gray      : var(--color-gray-dark-600);
+  --color-icon-gray-dark : var(--color-gray-800);
+  --color-icon-gray-light: var(--color-gray-300);
+  --color-icon-red       : var(--color-red-300);
+  --color-icon-white     : var(--color-base-white);
+
+  /* ── line ── */
+  --color-line-blue   : var(--color-blue-400);
+  --color-line-default: var(--color-gray-100);
+  --color-line-strong : var(--color-gray-800);
+
+  /* ── navigation ── */
+  --color-navigation-bg                   : var(--color-base-white);
+  --color-navigation-bg--hover            : var(--color-gray-0);
+  --color-navigation-icon-default         : var(--color-gray-300);
+  --color-navigation-indicator-default    : var(--color-gray-200);
+  --color-navigation-indicator-hover      : var(--color-blue-400);
+  --color-navigation-indicator-selected   : var(--color-blue-400);
+  --color-navigation-label-default        : var(--color-gray-600);
+  --color-navigation-label-default-alt    : var(--color-gray-700);
+  --color-navigation-label-default-side   : var(--color-gray-600);
+  --color-navigation-label-hover          : var(--color-blue-400);
+  --color-navigation-label-selected       : var(--color-blue-400);
+  --color-navigation-submenu-label-default: var(--color-gray-800);
+
+  /* ── overlay ── */
+  --color-overlay           : rgba(0,0,0,0.5);
+  --color-overlay-wheel-fade: var(--color-base-white);
+
+  /* ── date-picker ── */
+  --color-date-picker-panel-bg              : var(--color-base-white);
+  --color-date-picker-panel-border          : var(--color-gray-200);
+  --color-date-picker-cell-bg-hover         : var(--color-gray-50);
+  --color-date-picker-cell-bg-today         : var(--color-base-white);
+  --color-date-picker-cell-bg-selected      : var(--color-blue-400);
+  --color-date-picker-cell-bg-selected-hover: var(--color-blue-500);
+  --color-date-picker-cell-bg-range         : var(--color-blue-50);
+  --color-date-picker-cell-border-today     : var(--color-blue-400);
+  --color-date-picker-icon-default          : var(--color-gray-900);
+  --color-date-picker-icon-hover            : var(--color-gray-800);
+  --color-date-picker-icon-disabled         : var(--color-gray-300);
+  --color-date-picker-text-primary          : var(--color-gray-900);
+  --color-date-picker-text-secondary        : var(--color-gray-800);
+  --color-date-picker-text-disabled         : var(--color-gray-300);
+  --color-date-picker-text-other-month      : var(--color-gray-300);
+  --color-date-picker-text-sunday           : var(--color-red-300);
+  --color-date-picker-text-saturday         : var(--color-blue-400);
+  --color-date-picker-text-today            : var(--color-blue-400);
+  --color-date-picker-text-selected         : var(--color-base-white);
+  --color-date-picker-tile-bg-default       : var(--color-base-white);
+  --color-date-picker-tile-bg-hover         : var(--color-gray-50);
+  --color-date-picker-tile-bg-selected      : var(--color-base-white);
+  --color-date-picker-tile-bg-disabled      : var(--color-gray-100);
+  --color-date-picker-tile-border-default   : var(--color-gray-200);
+  --color-date-picker-tile-border-disabled  : var(--color-gray-100);
+
+  /* ── modal ── */
+  --color-modal-panel-border: var(--color-gray-200);
+
+  /* ── pagination ── */
+  --color-pagination-control-bg-default     : var(--color-base-white);
+  --color-pagination-control-bg-disabled    : var(--color-gray-50);
+  --color-pagination-control-bg-hover       : var(--color-gray-50);
+  --color-pagination-control-border-default : var(--color-gray-200);
+  --color-pagination-control-border-disabled: var(--color-gray-100);
+  --color-pagination-control-border-hover   : var(--color-gray-200);
+  --color-pagination-control-icon-default   : var(--color-gray-800);
+  --color-pagination-control-icon-hover     : var(--color-gray-800);
+  --color-pagination-control-icon-selected  : var(--color-gray-800);
+  --color-pagination-control-icon-disabled  : var(--color-gray-300);
+  --color-pagination-number-default         : var(--color-gray-400);
+  --color-pagination-number-hover           : var(--color-gray-400);
+  --color-pagination-number-selected        : var(--color-gray-800);
+
+  /* ── status-card ── */
+  --color-status-card-text-disabled          : var(--color-gray-300);
+  --color-status-card-text-error             : var(--color-red-300);
+  --color-status-card-text-primary--default  : var(--color-gray-900);
+  --color-status-card-text-primary--sub      : var(--color-gray-800);
+  --color-status-card-text-secondary--default: var(--color-gray-600);
+  --color-status-card-text-secondary--sub    : var(--color-gray-500);
+  --color-status-card-text-tertiary--default : var(--color-gray-400);
+  --color-status-card-text-tertiary--sub     : var(--color-gray-300);
+
+  /* ── tag ── */
+  --color-tag-solid-bg-blue   : var(--color-blue-400);
+  --color-tag-solid-bg-red    : var(--color-red-300);
+  --color-tag-solid-bg-gray   : var(--color-gray-100);
+  --color-tag-solid-label-blue: var(--color-base-white);
+  --color-tag-solid-label-red : var(--color-base-white);
+  --color-tag-solid-label-gray: var(--color-gray-500);
+  --color-tag-line-border-blue: var(--color-blue-400);
+  --color-tag-line-border-red : var(--color-red-300);
+  --color-tag-line-border-gray: var(--color-gray-200);
+  --color-tag-line-label-blue : var(--color-blue-400);
+  --color-tag-line-label-red  : var(--color-red-300);
+  --color-tag-line-label-gray : var(--color-gray-500);
+
+  /* ── text ── */
+  --color-text-body-primary        : var(--color-gray-800);
+  --color-text-body-secondary      : var(--color-gray-600);
+  --color-text-body-tertiary       : var(--color-gray-500);
+  --color-text-state-accent        : var(--color-blue-400);
+  --color-text-state-accent-inverse: var(--color-base-white);
+  --color-text-state-caption       : var(--color-gray-500);
+  --color-text-state-caution       : var(--color-red-300);
+  --color-text-state-correct       : var(--color-blue-400);
+  --color-text-state-disabled      : var(--color-gray-300);
+  --color-text-state-helper        : var(--color-gray-400);
+  --color-text-title-primary       : var(--color-base-black);
+  --color-text-title-secondary     : var(--color-gray-800);
+
+  /* ── scroll ── */
+  --color-scroll-bg: var(--color-gray-200);
+
+  /* ── shadow ── */
+  --shadow-raised   : 0 4px 6px -2px rgba(0,0,0,0.06), 0 12px 20px -4px rgba(0,0,0,0.10);
+  --shadow-raised-up: 0 -4px 16px rgba(0,0,0,0.15);
+  --shadow-dropdown : 0 4px 8px 0 rgba(0,0,0,0.15);
+}
+
+/* ══════════════════════════════════════════════════
+   SEMANTIC TOKENS — Dark (Variables 기준 자동 생성)
+   ══════════════════════════════════════════════════ */
+[data-theme="dark"] {
+  /* ── bg ── */
+  --color-bg-level-0: var(--color-gray-dark-0);
+  --color-bg-level-1: var(--color-gray-dark-50);
+  --color-bg-level-2: var(--color-gray-dark-100);
+  --color-bg-level-3: var(--color-gray-dark-200);
+  --color-bg-home   : var(--color-blue-dark-50);
+
+  /* ── surface ── */
+  --color-surface-raised: var(--color-gray-dark-100);
+
+  /* ── button ── */
+  --color-button-bg-blue-line--default    : var(--color-gray-dark-100);
+  --color-button-bg-blue-line--hover      : var(--color-blue-dark-50);
+  --color-button-bg-disabled              : var(--color-gray-dark-300);
+  --color-button-bg-primary--default      : var(--color-blue-dark-300);
+  --color-button-bg-primary--hover        : var(--color-blue-dark-250);
+  --color-button-bg-secondary--default    : var(--color-gray-dark-100);
+  --color-button-bg-secondary--hover      : var(--color-gray-dark-200);
+  --color-button-border-assist--hover     : var(--color-gray-dark-500);
+  --color-button-border-blue-line--default: var(--color-blue-dark-300);
+  --color-button-border-blue-line--hover  : var(--color-blue-dark-300);
+  --color-button-border-disabled          : var(--color-gray-dark-300);
+  --color-button-border-primary--default  : var(--color-blue-dark-300);
+  --color-button-border-primary--hover    : var(--color-blue-dark-250);
+  --color-button-border-secondary--default: var(--color-gray-dark-500);
+  --color-button-border-secondary--hover  : var(--color-gray-dark-500);
+  --color-button-label-assist--default    : var(--color-gray-dark-700);
+  --color-button-label-assist--hover      : var(--color-gray-dark-700);
+  --color-button-label-blue-line--default : var(--color-blue-dark-300);
+  --color-button-label-blue-line--hover   : var(--color-blue-dark-300);
+  --color-button-label-disabled           : var(--color-gray-dark-600);
+  --color-button-label-primary--default   : var(--color-base-white);
+  --color-button-label-primary--hover     : var(--color-base-white);
+  --color-button-label-secondary--default : var(--color-gray-dark-800);
+  --color-button-label-secondary--hover   : var(--color-gray-dark-800);
+
+  /* ── chip ── */
+  --color-chip-line-bg-default        : var(--color-gray-dark-100);
+  --color-chip-line-bg-disabled       : var(--color-gray-dark-200);
+  --color-chip-line-bg-hover          : var(--color-gray-dark-200);
+  --color-chip-line-bg-selected       : var(--color-gray-dark-100);
+  --color-chip-line-border-default    : var(--color-gray-dark-500);
+  --color-chip-line-border-disabled   : var(--color-gray-dark-200);
+  --color-chip-line-border-selected   : var(--color-blue-dark-300);
+  --color-chip-line-icon-default      : var(--color-gray-dark-700);
+  --color-chip-line-icon-disabled     : var(--color-gray-dark-600);
+  --color-chip-line-label-default     : var(--color-gray-dark-700);
+  --color-chip-line-label-disabled    : var(--color-gray-dark-600);
+  --color-chip-line-label-selected    : var(--color-blue-dark-350);
+  --color-chip-solid-bg-default       : var(--color-gray-dark-300);
+  --color-chip-solid-bg-disabled      : var(--color-gray-dark-200);
+  --color-chip-solid-bg-hover         : var(--color-gray-dark-400);
+  --color-chip-solid-bg-selected      : var(--color-blue-dark-300);
+  --color-chip-solid-bg-selected-hover: var(--color-blue-dark-250);
+  --color-chip-solid-border-default   : var(--color-gray-dark-200);
+  --color-chip-solid-border-disabled  : var(--color-gray-dark-200);
+  --color-chip-solid-border-selected  : var(--color-blue-dark-300);
+  --color-chip-solid-icon-default     : var(--color-gray-dark-700);
+  --color-chip-solid-icon-disabled    : var(--color-gray-dark-600);
+  --color-chip-solid-icon-selected    : var(--color-base-white);
+  --color-chip-solid-label-default    : var(--color-gray-dark-700);
+  --color-chip-solid-label-disabled   : var(--color-gray-dark-600);
+  --color-chip-solid-label-selected   : var(--color-base-white);
+
+  /* ── control ── */
+  --color-control-bg-default            : var(--color-gray-dark-100);
+  --color-control-bg-disabled           : var(--color-gray-dark-300);
+  --color-control-bg-hover              : var(--color-gray-dark-200);
+  --color-control-bg-selected           : var(--color-blue-dark-300);
+  --color-control-border-default        : var(--color-gray-dark-500);
+  --color-control-border-disabled       : var(--color-gray-dark-300);
+  --color-control-border-selected       : var(--color-blue-dark-300);
+  --color-control-indicator-disabled    : var(--color-gray-dark-500);
+  --color-control-indicator-selected    : var(--color-base-white);
+  --color-control-indicator-selected-alt: var(--color-blue-dark-300);
+  --color-control-indicator-unselected  : var(--color-gray-dark-400);
+  --color-control-label-default         : var(--color-gray-dark-800);
+  --color-control-label-disabled        : var(--color-gray-dark-600);
+
+  /* ── table ── */
+  --color-table-border-default: var(--color-gray-dark-300);
+  --color-table-border-strong : var(--color-gray-dark-700);
+  --color-table-header-bg     : var(--color-gray-dark-200);
+  --color-table-cell-default  : var(--color-gray-dark-100);
+  --color-table-cell-hover    : var(--color-gray-dark-200);
+  --color-table-cell-selected : var(--color-blue-dark-100);
+
+  /* ── dropdown ── */
+  --color-dropdown-list-bg              : var(--color-gray-dark-100);
+  --color-dropdown-list-border          : var(--color-gray-dark-500);
+  --color-dropdown-option-bg-default    : var(--color-gray-dark-100);
+  --color-dropdown-option-bg-hover      : var(--color-gray-dark-200);
+  --color-dropdown-option-bg-selected   : var(--color-blue-dark-100);
+  --color-dropdown-option-label-default : var(--color-gray-dark-800);
+  --color-dropdown-option-label-hover   : var(--color-gray-dark-900);
+  --color-dropdown-option-label-selected: var(--color-blue-dark-350);
+
+  /* ── form-control ── */
+  --color-form-control-bg-default      : var(--color-gray-dark-100);
+  --color-form-control-bg-disabled     : var(--color-gray-dark-200);
+  --color-form-control-bg-hover        : var(--color-gray-dark-200);
+  --color-form-control-bg-selected     : var(--color-gray-dark-100);
+  --color-form-control-border-correct  : var(--color-blue-dark-350);
+  --color-form-control-border-default  : var(--color-gray-dark-500);
+  --color-form-control-border-disabled : var(--color-gray-dark-300);
+  --color-form-control-border-error    : var(--color-red-dark-350);
+  --color-form-control-border-selected : var(--color-blue-dark-350);
+  --color-form-control-label-default   : var(--color-gray-dark-800);
+  --color-form-control-label-disabled  : var(--color-gray-dark-600);
+  --color-form-control-text-default    : var(--color-gray-dark-800);
+  --color-form-control-text-disabled   : var(--color-gray-dark-600);
+  --color-form-control-text-placeholder: var(--color-gray-dark-700);
+  --color-form-control-text-selected   : var(--color-gray-dark-800);
+  --color-form-control-icon-default    : var(--color-gray-dark-800);
+  --color-form-control-icon-hover      : var(--color-gray-dark-800);
+  --color-form-control-icon-selected   : var(--color-gray-dark-800);
+  --color-form-control-icon-disabled   : var(--color-gray-dark-600);
+  --color-form-control-text-cursor     : var(--color-blue-dark-350);
+  --color-form-control-text-read-only  : var(--color-gray-dark-700);
+
+  /* ── icon ── */
+  --color-icon-blue      : var(--color-blue-dark-300);
+  --color-icon-gray      : var(--color-gray-dark-700);
+  --color-icon-gray-dark : var(--color-gray-dark-800);
+  --color-icon-gray-light: var(--color-gray-dark-400);
+  --color-icon-red       : var(--color-red-dark-350);
+  --color-icon-white     : var(--color-base-white);
+
+  /* ── line ── */
+  --color-line-blue   : var(--color-blue-dark-300);
+  --color-line-default: var(--color-gray-dark-400);
+  --color-line-strong : var(--color-gray-dark-700);
+
+  /* ── navigation ── */
+  --color-navigation-bg                   : var(--color-gray-dark-100);
+  --color-navigation-bg--hover            : var(--color-gray-dark-300);
+  --color-navigation-icon-default         : var(--color-gray-dark-800);
+  --color-navigation-indicator-default    : var(--color-gray-dark-300);
+  --color-navigation-indicator-hover      : var(--color-blue-dark-350);
+  --color-navigation-indicator-selected   : var(--color-blue-dark-350);
+  --color-navigation-label-default        : var(--color-gray-dark-800);
+  --color-navigation-label-default-alt    : var(--color-gray-dark-700);
+  --color-navigation-label-default-side   : var(--color-gray-dark-900);
+  --color-navigation-label-hover          : var(--color-blue-dark-350);
+  --color-navigation-label-selected       : var(--color-blue-dark-350);
+  --color-navigation-submenu-label-default: var(--color-gray-dark-900);
+
+  /* ── overlay ── */
+  --color-overlay           : rgba(0,0,0,0.75);
+  --color-overlay-wheel-fade: var(--color-gray-dark-100);
+
+  /* ── date-picker ── */
+  --color-date-picker-panel-bg              : var(--color-gray-dark-100);
+  --color-date-picker-panel-border          : var(--color-gray-dark-500);
+  --color-date-picker-cell-bg-hover         : var(--color-gray-dark-200);
+  --color-date-picker-cell-bg-today         : var(--color-gray-dark-100);
+  --color-date-picker-cell-bg-selected      : var(--color-blue-dark-300);
+  --color-date-picker-cell-bg-selected-hover: var(--color-blue-dark-250);
+  --color-date-picker-cell-bg-range         : var(--color-blue-dark-100);
+  --color-date-picker-cell-border-today     : var(--color-blue-dark-300);
+  --color-date-picker-icon-default          : var(--color-gray-dark-900);
+  --color-date-picker-icon-hover            : var(--color-gray-dark-800);
+  --color-date-picker-icon-disabled         : var(--color-gray-dark-500);
+  --color-date-picker-text-primary          : var(--color-gray-dark-900);
+  --color-date-picker-text-secondary        : var(--color-gray-dark-800);
+  --color-date-picker-text-disabled         : var(--color-gray-dark-500);
+  --color-date-picker-text-other-month      : var(--color-gray-dark-400);
+  --color-date-picker-text-sunday           : var(--color-red-dark-350);
+  --color-date-picker-text-saturday         : var(--color-blue-dark-300);
+  --color-date-picker-text-today            : var(--color-blue-dark-300);
+  --color-date-picker-text-selected         : var(--color-base-white);
+  --color-date-picker-tile-bg-default       : var(--color-gray-dark-100);
+  --color-date-picker-tile-bg-hover         : var(--color-gray-dark-200);
+  --color-date-picker-tile-bg-selected      : var(--color-gray-dark-100);
+  --color-date-picker-tile-bg-disabled      : var(--color-gray-dark-200);
+  --color-date-picker-tile-border-default   : var(--color-gray-dark-500);
+  --color-date-picker-tile-border-disabled  : var(--color-gray-dark-300);
+
+  /* ── modal ── */
+  --color-modal-panel-border: var(--color-gray-dark-500);
+
+  /* ── pagination ── */
+  --color-pagination-control-bg-default     : var(--color-gray-dark-100);
+  --color-pagination-control-bg-disabled    : var(--color-gray-dark-300);
+  --color-pagination-control-bg-hover       : var(--color-gray-dark-200);
+  --color-pagination-control-border-default : var(--color-gray-dark-500);
+  --color-pagination-control-border-disabled: var(--color-gray-dark-300);
+  --color-pagination-control-border-hover   : var(--color-gray-dark-500);
+  --color-pagination-control-icon-default   : var(--color-gray-dark-800);
+  --color-pagination-control-icon-hover     : var(--color-gray-dark-800);
+  --color-pagination-control-icon-selected  : var(--color-gray-dark-800);
+  --color-pagination-control-icon-disabled  : var(--color-gray-dark-600);
+  --color-pagination-number-default         : var(--color-gray-dark-600);
+  --color-pagination-number-hover           : var(--color-gray-dark-600);
+  --color-pagination-number-selected        : var(--color-gray-dark-800);
+
+  /* ── status-card ── */
+  --color-status-card-text-disabled          : var(--color-gray-dark-400);
+  --color-status-card-text-error             : var(--color-red-dark-350);
+  --color-status-card-text-primary--default  : var(--color-gray-dark-900);
+  --color-status-card-text-primary--sub      : var(--color-gray-dark-800);
+  --color-status-card-text-secondary--default: var(--color-gray-dark-700);
+  --color-status-card-text-secondary--sub    : var(--color-gray-dark-700);
+  --color-status-card-text-tertiary--default : var(--color-gray-dark-600);
+  --color-status-card-text-tertiary--sub     : var(--color-gray-dark-400);
+
+  /* ── tag ── */
+  --color-tag-solid-bg-blue   : var(--color-blue-dark-300);
+  --color-tag-solid-bg-red    : var(--color-red-dark-350);
+  --color-tag-solid-bg-gray   : var(--color-gray-dark-200);
+  --color-tag-solid-label-blue: var(--color-base-white);
+  --color-tag-solid-label-red : var(--color-base-white);
+  --color-tag-solid-label-gray: var(--color-gray-dark-800);
+  --color-tag-line-border-blue: var(--color-blue-dark-300);
+  --color-tag-line-border-red : var(--color-red-dark-350);
+  --color-tag-line-border-gray: var(--color-gray-dark-500);
+  --color-tag-line-label-blue : var(--color-blue-dark-300);
+  --color-tag-line-label-red  : var(--color-red-dark-350);
+  --color-tag-line-label-gray : var(--color-gray-dark-800);
+
+  /* ── text ── */
+  --color-text-body-primary        : var(--color-gray-dark-900);
+  --color-text-body-secondary      : var(--color-gray-dark-800);
+  --color-text-body-tertiary       : var(--color-gray-dark-700);
+  --color-text-state-accent        : var(--color-blue-dark-300);
+  --color-text-state-accent-inverse: var(--color-base-white);
+  --color-text-state-caption       : var(--color-gray-dark-800);
+  --color-text-state-caution       : var(--color-red-dark-350);
+  --color-text-state-correct       : var(--color-blue-dark-300);
+  --color-text-state-disabled      : var(--color-gray-dark-400);
+  --color-text-state-helper        : var(--color-gray-dark-600);
+  --color-text-title-primary       : var(--color-gray-dark-900);
+  --color-text-title-secondary     : var(--color-gray-dark-800);
+
+  /* ── scroll ── */
+  --color-scroll-bg: var(--color-gray-dark-600);
+
+  /* ── shadow ── */
+  --shadow-raised   : 0 8px 8px -4px rgba(0,0,0,1), 0 20px 24px -4px rgba(0,0,0,1);
+  --shadow-raised-up: 0 -4px 16px rgba(0,0,0,0.15);
+  --shadow-dropdown : 0 4px 8px 0 rgba(0,0,0,0.15);
+}
+/* <<< GEN:SEMANTIC <<< */
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+  /* ── bg ── */
+  --color-bg-level-0: var(--color-gray-dark-0);
+  --color-bg-level-1: var(--color-gray-dark-50);
+  --color-bg-level-2: var(--color-gray-dark-100);
+  --color-bg-level-3: var(--color-gray-dark-200);
+  --color-bg-home   : var(--color-blue-dark-50);
+
+  /* ── surface ── */
+  --color-surface-raised: var(--color-gray-dark-100);
+
+  /* ── button ── */
+  --color-button-bg-blue-line--default    : var(--color-gray-dark-100);
+  --color-button-bg-blue-line--hover      : var(--color-blue-dark-50);
+  --color-button-bg-disabled              : var(--color-gray-dark-300);
+  --color-button-bg-primary--default      : var(--color-blue-dark-300);
+  --color-button-bg-primary--hover        : var(--color-blue-dark-250);
+  --color-button-bg-secondary--default    : var(--color-gray-dark-100);
+  --color-button-bg-secondary--hover      : var(--color-gray-dark-200);
+  --color-button-border-assist--hover     : var(--color-gray-dark-500);
+  --color-button-border-blue-line--default: var(--color-blue-dark-300);
+  --color-button-border-blue-line--hover  : var(--color-blue-dark-300);
+  --color-button-border-disabled          : var(--color-gray-dark-300);
+  --color-button-border-primary--default  : var(--color-blue-dark-300);
+  --color-button-border-primary--hover    : var(--color-blue-dark-250);
+  --color-button-border-secondary--default: var(--color-gray-dark-500);
+  --color-button-border-secondary--hover  : var(--color-gray-dark-500);
+  --color-button-label-assist--default    : var(--color-gray-dark-700);
+  --color-button-label-assist--hover      : var(--color-gray-dark-700);
+  --color-button-label-blue-line--default : var(--color-blue-dark-300);
+  --color-button-label-blue-line--hover   : var(--color-blue-dark-300);
+  --color-button-label-disabled           : var(--color-gray-dark-600);
+  --color-button-label-primary--default   : var(--color-base-white);
+  --color-button-label-primary--hover     : var(--color-base-white);
+  --color-button-label-secondary--default : var(--color-gray-dark-800);
+  --color-button-label-secondary--hover   : var(--color-gray-dark-800);
+
+  /* ── chip ── */
+  --color-chip-line-bg-default        : var(--color-gray-dark-100);
+  --color-chip-line-bg-disabled       : var(--color-gray-dark-200);
+  --color-chip-line-bg-hover          : var(--color-gray-dark-200);
+  --color-chip-line-bg-selected       : var(--color-gray-dark-100);
+  --color-chip-line-border-default    : var(--color-gray-dark-500);
+  --color-chip-line-border-disabled   : var(--color-gray-dark-200);
+  --color-chip-line-border-selected   : var(--color-blue-dark-300);
+  --color-chip-line-icon-default      : var(--color-gray-dark-700);
+  --color-chip-line-icon-disabled     : var(--color-gray-dark-600);
+  --color-chip-line-label-default     : var(--color-gray-dark-700);
+  --color-chip-line-label-disabled    : var(--color-gray-dark-600);
+  --color-chip-line-label-selected    : var(--color-blue-dark-350);
+  --color-chip-solid-bg-default       : var(--color-gray-dark-300);
+  --color-chip-solid-bg-disabled      : var(--color-gray-dark-200);
+  --color-chip-solid-bg-hover         : var(--color-gray-dark-400);
+  --color-chip-solid-bg-selected      : var(--color-blue-dark-300);
+  --color-chip-solid-bg-selected-hover: var(--color-blue-dark-250);
+  --color-chip-solid-border-default   : var(--color-gray-dark-200);
+  --color-chip-solid-border-disabled  : var(--color-gray-dark-200);
+  --color-chip-solid-border-selected  : var(--color-blue-dark-300);
+  --color-chip-solid-icon-default     : var(--color-gray-dark-700);
+  --color-chip-solid-icon-disabled    : var(--color-gray-dark-600);
+  --color-chip-solid-icon-selected    : var(--color-base-white);
+  --color-chip-solid-label-default    : var(--color-gray-dark-700);
+  --color-chip-solid-label-disabled   : var(--color-gray-dark-600);
+  --color-chip-solid-label-selected   : var(--color-base-white);
+
+  /* ── control ── */
+  --color-control-bg-default            : var(--color-gray-dark-100);
+  --color-control-bg-disabled           : var(--color-gray-dark-300);
+  --color-control-bg-hover              : var(--color-gray-dark-200);
+  --color-control-bg-selected           : var(--color-blue-dark-300);
+  --color-control-border-default        : var(--color-gray-dark-500);
+  --color-control-border-disabled       : var(--color-gray-dark-300);
+  --color-control-border-selected       : var(--color-blue-dark-300);
+  --color-control-indicator-disabled    : var(--color-gray-dark-500);
+  --color-control-indicator-selected    : var(--color-base-white);
+  --color-control-indicator-selected-alt: var(--color-blue-dark-300);
+  --color-control-indicator-unselected  : var(--color-gray-dark-400);
+  --color-control-label-default         : var(--color-gray-dark-800);
+  --color-control-label-disabled        : var(--color-gray-dark-600);
+
+  /* ── table ── */
+  --color-table-border-default: var(--color-gray-dark-300);
+  --color-table-border-strong : var(--color-gray-dark-700);
+  --color-table-header-bg     : var(--color-gray-dark-200);
+  --color-table-cell-default  : var(--color-gray-dark-100);
+  --color-table-cell-hover    : var(--color-gray-dark-200);
+  --color-table-cell-selected : var(--color-blue-dark-100);
+
+  /* ── dropdown ── */
+  --color-dropdown-list-bg              : var(--color-gray-dark-100);
+  --color-dropdown-list-border          : var(--color-gray-dark-500);
+  --color-dropdown-option-bg-default    : var(--color-gray-dark-100);
+  --color-dropdown-option-bg-hover      : var(--color-gray-dark-200);
+  --color-dropdown-option-bg-selected   : var(--color-blue-dark-100);
+  --color-dropdown-option-label-default : var(--color-gray-dark-800);
+  --color-dropdown-option-label-hover   : var(--color-gray-dark-900);
+  --color-dropdown-option-label-selected: var(--color-blue-dark-350);
+
+  /* ── form-control ── */
+  --color-form-control-bg-default      : var(--color-gray-dark-100);
+  --color-form-control-bg-disabled     : var(--color-gray-dark-200);
+  --color-form-control-bg-hover        : var(--color-gray-dark-200);
+  --color-form-control-bg-selected     : var(--color-gray-dark-100);
+  --color-form-control-border-correct  : var(--color-blue-dark-350);
+  --color-form-control-border-default  : var(--color-gray-dark-500);
+  --color-form-control-border-disabled : var(--color-gray-dark-300);
+  --color-form-control-border-error    : var(--color-red-dark-350);
+  --color-form-control-border-selected : var(--color-blue-dark-350);
+  --color-form-control-label-default   : var(--color-gray-dark-800);
+  --color-form-control-label-disabled  : var(--color-gray-dark-600);
+  --color-form-control-text-default    : var(--color-gray-dark-800);
+  --color-form-control-text-disabled   : var(--color-gray-dark-600);
+  --color-form-control-text-placeholder: var(--color-gray-dark-700);
+  --color-form-control-text-selected   : var(--color-gray-dark-800);
+  --color-form-control-icon-default    : var(--color-gray-dark-800);
+  --color-form-control-icon-hover      : var(--color-gray-dark-800);
+  --color-form-control-icon-selected   : var(--color-gray-dark-800);
+  --color-form-control-icon-disabled   : var(--color-gray-dark-600);
+  --color-form-control-text-cursor     : var(--color-blue-dark-350);
+  --color-form-control-text-read-only  : var(--color-gray-dark-700);
+
+  /* ── icon ── */
+  --color-icon-blue      : var(--color-blue-dark-300);
+  --color-icon-gray      : var(--color-gray-dark-700);
+  --color-icon-gray-dark : var(--color-gray-dark-800);
+  --color-icon-gray-light: var(--color-gray-dark-400);
+  --color-icon-red       : var(--color-red-dark-350);
+  --color-icon-white     : var(--color-base-white);
+
+  /* ── line ── */
+  --color-line-blue   : var(--color-blue-dark-300);
+  --color-line-default: var(--color-gray-dark-400);
+  --color-line-strong : var(--color-gray-dark-700);
+
+  /* ── navigation ── */
+  --color-navigation-bg                   : var(--color-gray-dark-100);
+  --color-navigation-bg--hover            : var(--color-gray-dark-300);
+  --color-navigation-icon-default         : var(--color-gray-dark-800);
+  --color-navigation-indicator-default    : var(--color-gray-dark-300);
+  --color-navigation-indicator-hover      : var(--color-blue-dark-350);
+  --color-navigation-indicator-selected   : var(--color-blue-dark-350);
+  --color-navigation-label-default        : var(--color-gray-dark-800);
+  --color-navigation-label-default-alt    : var(--color-gray-dark-700);
+  --color-navigation-label-default-side   : var(--color-gray-dark-900);
+  --color-navigation-label-hover          : var(--color-blue-dark-350);
+  --color-navigation-label-selected       : var(--color-blue-dark-350);
+  --color-navigation-submenu-label-default: var(--color-gray-dark-900);
+
+  /* ── overlay ── */
+  --color-overlay           : rgba(0,0,0,0.75);
+  --color-overlay-wheel-fade: var(--color-gray-dark-100);
+
+  /* ── date-picker ── */
+  --color-date-picker-panel-bg              : var(--color-gray-dark-100);
+  --color-date-picker-panel-border          : var(--color-gray-dark-500);
+  --color-date-picker-cell-bg-hover         : var(--color-gray-dark-200);
+  --color-date-picker-cell-bg-today         : var(--color-gray-dark-100);
+  --color-date-picker-cell-bg-selected      : var(--color-blue-dark-300);
+  --color-date-picker-cell-bg-selected-hover: var(--color-blue-dark-250);
+  --color-date-picker-cell-bg-range         : var(--color-blue-dark-100);
+  --color-date-picker-cell-border-today     : var(--color-blue-dark-300);
+  --color-date-picker-icon-default          : var(--color-gray-dark-900);
+  --color-date-picker-icon-hover            : var(--color-gray-dark-800);
+  --color-date-picker-icon-disabled         : var(--color-gray-dark-500);
+  --color-date-picker-text-primary          : var(--color-gray-dark-900);
+  --color-date-picker-text-secondary        : var(--color-gray-dark-800);
+  --color-date-picker-text-disabled         : var(--color-gray-dark-500);
+  --color-date-picker-text-other-month      : var(--color-gray-dark-400);
+  --color-date-picker-text-sunday           : var(--color-red-dark-350);
+  --color-date-picker-text-saturday         : var(--color-blue-dark-300);
+  --color-date-picker-text-today            : var(--color-blue-dark-300);
+  --color-date-picker-text-selected         : var(--color-base-white);
+  --color-date-picker-tile-bg-default       : var(--color-gray-dark-100);
+  --color-date-picker-tile-bg-hover         : var(--color-gray-dark-200);
+  --color-date-picker-tile-bg-selected      : var(--color-gray-dark-100);
+  --color-date-picker-tile-bg-disabled      : var(--color-gray-dark-200);
+  --color-date-picker-tile-border-default   : var(--color-gray-dark-500);
+  --color-date-picker-tile-border-disabled  : var(--color-gray-dark-300);
+
+  /* ── modal ── */
+  --color-modal-panel-border: var(--color-gray-dark-500);
+
+  /* ── pagination ── */
+  --color-pagination-control-bg-default     : var(--color-gray-dark-100);
+  --color-pagination-control-bg-disabled    : var(--color-gray-dark-300);
+  --color-pagination-control-bg-hover       : var(--color-gray-dark-200);
+  --color-pagination-control-border-default : var(--color-gray-dark-500);
+  --color-pagination-control-border-disabled: var(--color-gray-dark-300);
+  --color-pagination-control-border-hover   : var(--color-gray-dark-500);
+  --color-pagination-control-icon-default   : var(--color-gray-dark-800);
+  --color-pagination-control-icon-hover     : var(--color-gray-dark-800);
+  --color-pagination-control-icon-selected  : var(--color-gray-dark-800);
+  --color-pagination-control-icon-disabled  : var(--color-gray-dark-600);
+  --color-pagination-number-default         : var(--color-gray-dark-600);
+  --color-pagination-number-hover           : var(--color-gray-dark-600);
+  --color-pagination-number-selected        : var(--color-gray-dark-800);
+
+  /* ── status-card ── */
+  --color-status-card-text-disabled          : var(--color-gray-dark-400);
+  --color-status-card-text-error             : var(--color-red-dark-350);
+  --color-status-card-text-primary--default  : var(--color-gray-dark-900);
+  --color-status-card-text-primary--sub      : var(--color-gray-dark-800);
+  --color-status-card-text-secondary--default: var(--color-gray-dark-700);
+  --color-status-card-text-secondary--sub    : var(--color-gray-dark-700);
+  --color-status-card-text-tertiary--default : var(--color-gray-dark-600);
+  --color-status-card-text-tertiary--sub     : var(--color-gray-dark-400);
+
+  /* ── tag ── */
+  --color-tag-solid-bg-blue   : var(--color-blue-dark-300);
+  --color-tag-solid-bg-red    : var(--color-red-dark-350);
+  --color-tag-solid-bg-gray   : var(--color-gray-dark-200);
+  --color-tag-solid-label-blue: var(--color-base-white);
+  --color-tag-solid-label-red : var(--color-base-white);
+  --color-tag-solid-label-gray: var(--color-gray-dark-800);
+  --color-tag-line-border-blue: var(--color-blue-dark-300);
+  --color-tag-line-border-red : var(--color-red-dark-350);
+  --color-tag-line-border-gray: var(--color-gray-dark-500);
+  --color-tag-line-label-blue : var(--color-blue-dark-300);
+  --color-tag-line-label-red  : var(--color-red-dark-350);
+  --color-tag-line-label-gray : var(--color-gray-dark-800);
+
+  /* ── text ── */
+  --color-text-body-primary        : var(--color-gray-dark-900);
+  --color-text-body-secondary      : var(--color-gray-dark-800);
+  --color-text-body-tertiary       : var(--color-gray-dark-700);
+  --color-text-state-accent        : var(--color-blue-dark-300);
+  --color-text-state-accent-inverse: var(--color-base-white);
+  --color-text-state-caption       : var(--color-gray-dark-800);
+  --color-text-state-caution       : var(--color-red-dark-350);
+  --color-text-state-correct       : var(--color-blue-dark-300);
+  --color-text-state-disabled      : var(--color-gray-dark-400);
+  --color-text-state-helper        : var(--color-gray-dark-600);
+  --color-text-title-primary       : var(--color-gray-dark-900);
+  --color-text-title-secondary     : var(--color-gray-dark-800);
+
+  /* ── scroll ── */
+  --color-scroll-bg: var(--color-gray-dark-600);
+
+  /* ── shadow ── */
+  --shadow-raised   : 0 8px 8px -4px rgba(0,0,0,1), 0 20px 24px -4px rgba(0,0,0,1);
+  --shadow-raised-up: 0 -4px 16px rgba(0,0,0,0.15);
+  --shadow-dropdown : 0 4px 8px 0 rgba(0,0,0,0.15);
+  }
+}
+
+/* ── S-1 웹 키트 — Line Tab (components/tab.css) ── */
+[data-s1-component="tab"] {
+  align-items: stretch;
+  background: transparent;
+  display: inline-flex;
+  position: relative;
+}
+
+[data-s1-component="tab"]::before {
+  background: var(--color-navigation-indicator-default);
+  bottom: 0;
+  content: "";
+  height: var(--border-width-1);
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+[data-s1-component="tab"] [data-s1-part="tab"]:where(:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) *:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) [data-s1-component="tab"] *))) {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+
+  border: 0;
+  box-sizing: border-box;
+  color: var(--color-navigation-label-default);
+  cursor: pointer;
+  display: inline-flex;
+  flex: 1 1 0;
+  font-family: "Pretendard Variable", "Pretendard", sans-serif;
+  font-weight: var(--font-weight-medium);
+  justify-content: center;
+  margin: 0;
+  min-width: 76px;
+  padding: 0 var(--spacing-16) var(--border-width-2);
+  position: relative;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+[data-s1-component="tab"][data-size="md"][data-break="pc"] [data-s1-part="tab"]:where(:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) *:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) [data-s1-component="tab"] *))) { height: var(--sizing-44); font-size: var(--font-size-18); }
+[data-s1-component="tab"][data-size="sm"][data-break="pc"] [data-s1-part="tab"]:where(:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) *:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) [data-s1-component="tab"] *))) { height: 42px; font-size: var(--font-size-16); }
+[data-s1-component="tab"][data-size="xsm"][data-break="pc"] [data-s1-part="tab"]:where(:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) *:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) [data-s1-component="tab"] *))) { height: var(--sizing-40); font-size: var(--font-size-14); }
+[data-s1-component="tab"][data-size="sm"][data-break="mobile"] [data-s1-part="tab"]:where(:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) *:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) [data-s1-component="tab"] *))) { height: var(--sizing-32); font-size: var(--font-size-16); }
+
+@media (hover: hover) {
+  [data-s1-component="tab"] [data-s1-part="tab"]:hover:not([aria-selected="true"]):where(:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) *:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) [data-s1-component="tab"] *))),
+  [data-s1-component="tab"] [data-s1-part="tab"][data-force-state="hover"]:not([aria-selected="true"]):where(:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) *:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) [data-s1-component="tab"] *))) { color: var(--color-navigation-label-hover); }
+}
+
+[data-s1-component="tab"] [data-s1-part="tab"]:hover:not([aria-selected="true"]):where(:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) *:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) [data-s1-component="tab"] *)))::after,
+[data-s1-component="tab"] [data-s1-part="tab"][data-force-state="hover"]:not([aria-selected="true"]):where(:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) *:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) [data-s1-component="tab"] *)))::after,
+[data-s1-component="tab"] [data-s1-part="tab"][aria-selected="true"]:where(:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) *:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) [data-s1-component="tab"] *)))::after { bottom: 0; content: ""; height: var(--border-width-2); left: 0; position: absolute; right: 0; }
+[data-s1-component="tab"] [data-s1-part="tab"]:hover:not([aria-selected="true"]):where(:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) *:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) [data-s1-component="tab"] *)))::after,
+[data-s1-component="tab"] [data-s1-part="tab"][data-force-state="hover"]:not([aria-selected="true"]):where(:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) *:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) [data-s1-component="tab"] *)))::after { background: var(--color-navigation-indicator-hover); }
+[data-s1-component="tab"] [data-s1-part="tab"][aria-selected="true"]:where(:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) *:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) [data-s1-component="tab"] *))) { color: var(--color-navigation-label-selected); }
+[data-s1-component="tab"] [data-s1-part="tab"][aria-selected="true"]:where(:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) *:not([data-s1-component="tab"] [data-s1-component]:not([data-s1-component="tab"]) [data-s1-component="tab"] *)))::after { background: var(--color-navigation-indicator-selected); }
+[data-s1-component="tab"] [role="tabpanel"][hidden] { display: none; }
+
+</style>
+<style>
+/* 레이아웃: 한 단. 위에 S-1 Line Tab, 아래 탭 패널(자주 묻는 질문 / 주의점). 색은 S-1 Foundation 팔레트. */
+:root {
+  --bg: #FFFFFF; --surface: #FAFAFA; --surface-2: #F3F5F8; --line: #E9E9E9;
+  --fg: #202020; --fg-2: #555555; --fg-3: #757575;
+  --accent: #1D6CEB; --accent-soft: #EAF3FF; --accent-fg: #FFFFFF;
+  --warn: #B4540A; --warn-soft: #FFF4E5;
+  --stop: #C42B2B; --stop-soft: #FDECEC;
   --font-display: "IBM Plex Sans KR", "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   --font-body: "Pretendard", "Pretendard Variable", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
   --r: 8px;
 }
 @media (prefers-color-scheme: dark) {
@@ -34,8 +1238,7 @@
     --bg: #131418; --surface: #1C1D23; --surface-2: #24252C; --line: #2E2F38;
     --fg: #ECEDF0; --fg-2: #B8BABF; --fg-3: #8A8C96;
     --accent: #6FA5F8; --accent-soft: #112B55; --accent-fg: #0B1220;
-    --warn: #F0A55A; --warn-soft: #3A2610; --ok: #5FCB8E; --ok-soft: #12301F;
-    --stop: #F07A7A; --stop-soft: #3A1717;
+    --warn: #F0A55A; --warn-soft: #3A2610; --stop: #F07A7A; --stop-soft: #3A1717;
     color-scheme: dark;
   }
 }
@@ -43,523 +1246,312 @@
   --bg: #131418; --surface: #1C1D23; --surface-2: #24252C; --line: #2E2F38;
   --fg: #ECEDF0; --fg-2: #B8BABF; --fg-3: #8A8C96;
   --accent: #6FA5F8; --accent-soft: #112B55; --accent-fg: #0B1220;
-  --warn: #F0A55A; --warn-soft: #3A2610; --ok: #5FCB8E; --ok-soft: #12301F;
-  --stop: #F07A7A; --stop-soft: #3A1717;
+  --warn: #F0A55A; --warn-soft: #3A2610; --stop: #F07A7A; --stop-soft: #3A1717;
   color-scheme: dark;
 }
-
 * { box-sizing: border-box; }
-body {
-  background: var(--bg); color: var(--fg);
-  font-family: var(--font-body); font-size: 16px; line-height: 1.7;
-  word-break: keep-all; overflow-wrap: anywhere;
-}
-.shell {
-  display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 56px;
-  max-width: 1120px; margin: 0 auto; padding: 48px 24px 96px;
-}
-nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; font-size: 14px; }
-nav.toc .label { font-family: var(--font-display); font-size: 12px; letter-spacing: .08em; color: var(--fg-3); margin-bottom: 8px; }
-nav.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; counter-reset: t; }
-nav.toc li { counter-increment: t; }
-nav.toc a { display: flex; gap: 10px; padding: 6px 10px; border-radius: 6px; color: var(--fg-2); text-decoration: none; }
-nav.toc a::before { content: counter(t); color: var(--fg-3); font-variant-numeric: tabular-nums; min-width: 1.2em; }
-nav.toc a:hover, nav.toc a:focus-visible { background: var(--surface-2); color: var(--fg); outline: none; }
-main { min-width: 0; max-width: 720px; }
-
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 16px; line-height: 1.65; word-break: keep-all; overflow-wrap: anywhere; }
+.shell { max-width: 820px; margin: 0 auto; padding: 40px 24px 80px; }
+main { min-width: 0; }
 h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.35; }
-h1 { font-size: 34px; font-weight: 700; margin: 0 0 12px; letter-spacing: -.01em; }
-h2 { font-size: 24px; font-weight: 700; margin: 0 0 6px; }
-h3 { font-size: 18px; font-weight: 600; margin: 28px 0 8px; }
-p { margin: 0 0 14px; }
+h1 { font-size: 30px; font-weight: 700; margin: 0 0 10px; }
+h2 { font-size: 21px; font-weight: 700; margin: 0 0 4px; }
+p { margin: 0 0 12px; }
 a { color: var(--accent); }
-code, .mono { font-family: var(--font-mono); font-size: .88em; background: var(--surface-2); padding: 1px 6px; border-radius: 4px; }
-section { padding-block: 40px; border-top: 1px solid var(--line); scroll-margin-top: 16px; }
-section:first-of-type { border-top: 0; padding-top: 0; }
+code { font-family: var(--font-mono); font-size: .88em; background: var(--surface-2); padding: 1px 6px; border-radius: 4px; }
 .eyebrow { font-family: var(--font-display); font-size: 12px; letter-spacing: .08em; color: var(--accent); font-weight: 600; margin-bottom: 6px; }
-.lead { font-size: 18px; color: var(--fg-2); }
-.sub { color: var(--fg-2); margin-bottom: 20px; }
-.small { font-size: 14px; color: var(--fg-3); }
+.lead { color: var(--fg-2); font-size: 16.5px; max-width: 62ch; }
+.small { font-size: 13.5px; color: var(--fg-3); }
+section { padding-block: 8px 32px; }
+header.top { padding-bottom: 16px; }
+.tablist { margin-bottom: 20px; overflow-x: auto; }
 
-/* 기억할 세 가지 */
-.three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 28px; }
-.three div { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px; }
-.three b { display: block; font-family: var(--font-display); font-size: 16px; margin-bottom: 4px; }
-.three span { font-size: 14px; color: var(--fg-2); line-height: 1.6; display: block; }
+/* 한 줄 흐름 */
+.flowline { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 18px 0 4px; font-size: 14px; }
+.flowline .n { border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; background: var(--surface); }
+.flowline .n.c { border-color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+.flowline .ar { color: var(--fg-3); }
 
-/* 흐름 그림 */
-.flow { display: grid; grid-template-columns: minmax(0, 1fr) 40px minmax(0, 1fr) 40px minmax(0, 1fr); align-items: stretch; margin: 24px 0 8px; }
-.flow .col { display: grid; gap: 8px; align-content: start; }
-.flow .head { font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--fg-3); letter-spacing: .04em; padding-left: 2px; }
-.flow .box { border: 1px solid var(--line); border-radius: var(--r); padding: 10px 12px; background: var(--bg); font-size: 14px; line-height: 1.5; }
-.flow .box b { display: block; font-size: 15px; }
-.flow .box small { color: var(--fg-3); font-size: 12.5px; }
-.flow .canon .box { border-color: var(--accent); background: var(--accent-soft); }
-.flow .engine { border-style: dashed; text-align: center; padding: 16px 12px; background: var(--surface); }
-.flow .arrow { display: flex; align-items: center; justify-content: center; color: var(--fg-3); font-size: 20px; }
+/* 주의점 */
+.cautions { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; counter-reset: c; }
+.cautions li { counter-increment: c; display: grid; grid-template-columns: 26px minmax(0, 1fr); gap: 10px; padding: 12px 14px; border-radius: var(--r); background: var(--warn-soft); }
+.cautions li::before { content: counter(c); font-family: var(--font-display); font-weight: 700; color: var(--warn); font-variant-numeric: tabular-nums; }
+.cautions li.no { background: var(--stop-soft); }
+.cautions li.no::before { color: var(--stop); }
+.ch { font-size: 13px; letter-spacing: .06em; color: var(--fg-3); margin: 18px 0 8px; font-weight: 600; }
+#cautions .ch:first-child { margin-top: 0; }
+.cautions b { display: block; }
+.cautions span { display: block; color: var(--fg-2); font-size: 14.5px; }
 
-/* 표 */
-.tablewrap { overflow-x: auto; margin: 16px 0; border: 1px solid var(--line); border-radius: var(--r); }
-table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
-th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
-th { font-family: var(--font-display); font-weight: 600; font-size: 13px; color: var(--fg-2); background: var(--surface); }
-tr:last-child td { border-bottom: 0; }
-td:first-child { white-space: nowrap; font-weight: 600; }
-
-/* 용어집 */
-dl.terms { display: grid; grid-template-columns: 9.5em minmax(0, 1fr); gap: 0; margin: 16px 0; border-top: 1px solid var(--line); }
-dl.terms dt, dl.terms dd { padding: 12px 0; border-bottom: 1px solid var(--line); margin: 0; }
-dl.terms dt { font-weight: 700; font-family: var(--font-display); padding-right: 12px; }
-dl.terms dt small { display: block; font-family: var(--font-body); font-weight: 400; color: var(--fg-3); font-size: 12.5px; }
-dl.terms dd { color: var(--fg-2); font-size: 15px; }
-dl.terms dd i { font-style: normal; color: var(--fg); }
-
-/* 토큰 사다리 */
-.ladder { display: grid; gap: 6px; margin: 16px 0; }
-.rung { display: grid; grid-template-columns: 8.5em minmax(0, 1fr); gap: 12px; align-items: center; padding: 10px 14px; border-radius: var(--r); background: var(--surface); border: 1px solid var(--line); font-size: 14.5px; }
-.rung b { font-family: var(--font-display); }
-.rung .ex { color: var(--fg-2); }
-.swatches { display: inline-flex; gap: 6px; vertical-align: middle; margin-left: 4px; }
-.sw { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--fg-3); }
-.sw i { width: 16px; height: 16px; border-radius: 4px; border: 1px solid var(--line); display: inline-block; }
-
-/* 요청 시나리오 */
-.req { border: 1px solid var(--line); border-radius: 12px; margin: 20px 0; overflow: hidden; }
-.req > header { padding: 14px 18px; background: var(--surface); border-bottom: 1px solid var(--line); display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
-.req > header h3 { margin: 0; font-size: 17px; }
-.req > header .when { font-size: 13.5px; color: var(--fg-3); }
-.req .body { padding: 16px 18px 18px; display: grid; gap: 14px; }
-.say { display: grid; gap: 6px; }
-.say .who { font-size: 12px; color: var(--fg-3); font-family: var(--font-display); letter-spacing: .04em; }
-.bubble { justify-self: start; max-width: 100%; background: var(--accent); color: var(--accent-fg); padding: 10px 14px; border-radius: 14px 14px 14px 4px; font-size: 15px; line-height: 1.55; }
-.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; counter-reset: s; }
-.steps li { counter-increment: s; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; padding: 7px 0; font-size: 15px; position: relative; }
-.steps li::before { content: counter(s); width: 24px; height: 24px; border-radius: 50%; background: var(--surface-2); color: var(--fg-2); font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; margin-top: 2px; font-variant-numeric: tabular-nums; }
-.steps li.you::before { background: var(--accent); color: var(--accent-fg); }
-.steps li .tag { font-size: 12px; color: var(--accent); font-weight: 600; margin-left: 4px; }
-.check { background: var(--ok-soft); border-radius: var(--r); padding: 10px 14px; font-size: 14.5px; }
-.check b { color: var(--ok); }
-.note { background: var(--warn-soft); border-radius: var(--r); padding: 10px 14px; font-size: 14.5px; }
-.note b { color: var(--warn); }
-
-/* 금지 목록 */
-.donts { list-style: none; padding: 0; margin: 16px 0; display: grid; gap: 8px; }
-.donts li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 8px; padding: 10px 14px; background: var(--stop-soft); border-radius: var(--r); font-size: 15px; }
-.donts li::before { content: "✕"; color: var(--stop); font-weight: 700; }
-.donts li span { color: var(--fg-2); display: block; font-size: 14px; }
-
-/* 하루 순서 */
-.day { list-style: none; padding: 0; margin: 16px 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; counter-reset: d; }
-.day li { counter-increment: d; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 12px; font-size: 14px; line-height: 1.5; }
-.day li::before { content: counter(d); display: block; font-family: var(--font-display); font-weight: 700; color: var(--accent); font-size: 20px; margin-bottom: 4px; }
-.day li b { display: block; font-size: 14.5px; }
-.day li span { color: var(--fg-2); }
-
-/* 자주 묻는 */
-details { border-bottom: 1px solid var(--line); padding: 4px 0; }
-details:first-of-type { border-top: 1px solid var(--line); }
-summary { cursor: pointer; padding: 12px 0; font-weight: 600; list-style: none; display: flex; gap: 10px; }
-summary::before { content: "+"; color: var(--accent); font-weight: 700; width: 1em; }
+/* FAQ */
+.faqtools { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 6px; align-items: center; }
+.faqtools input { flex: 1 1 220px; min-width: 0; font: inherit; font-size: 15px; padding: 9px 12px; border: 1px solid var(--line); border-radius: var(--r); background: var(--bg); color: var(--fg); }
+.faqtools input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip { font: inherit; font-size: 13.5px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--fg-2); cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+.chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.group h3 { font-size: 13px; letter-spacing: .06em; color: var(--fg-3); margin: 22px 0 6px; font-weight: 600; }
+details { border-bottom: 1px solid var(--line); }
+.group details:first-of-type { border-top: 1px solid var(--line); }
+summary { cursor: pointer; padding: 12px 0; font-weight: 600; list-style: none; display: grid; grid-template-columns: 1.4em minmax(0, 1fr); }
+summary::-webkit-details-marker { display: none; }
+summary::before { content: "+"; color: var(--accent); font-weight: 700; }
 details[open] summary::before { content: "–"; }
 summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
-details .a { padding: 0 0 14px 1.6em; color: var(--fg-2); font-size: 15px; }
+.a { padding: 0 0 16px 1.4em; color: var(--fg-2); font-size: 15px; display: grid; gap: 10px; }
+.a p { margin: 0; }
+.say { justify-self: start; max-width: 100%; background: var(--accent); color: var(--accent-fg); padding: 8px 13px; border-radius: 14px 14px 14px 4px; font-size: 14.5px; }
+.say::before { content: "이렇게 말하세요 · "; opacity: .75; font-size: 12.5px; }
+.how { font-size: 14px; color: var(--fg-3); }
+.how b { color: var(--fg-2); font-weight: 600; }
+.empty { color: var(--fg-3); font-size: 14.5px; padding: 12px 0; }
 
-.legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 20px; margin: 16px 0; font-size: 14.5px; }
-.legend div { display: grid; grid-template-columns: 1.8em minmax(0, 1fr); }
-
-footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--fg-3); }
-
-@media (max-width: 880px) {
-  .shell { grid-template-columns: minmax(0, 1fr); gap: 24px; padding: 28px 16px 72px; }
-  nav.toc { position: static; }
-  nav.toc ol { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .day { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 640px) {
-  h1 { font-size: 27px; }
-  .three { grid-template-columns: minmax(0, 1fr); }
-  .flow { grid-template-columns: minmax(0, 1fr); }
-  .flow .arrow { transform: rotate(90deg); height: 32px; }
-  dl.terms { grid-template-columns: minmax(0, 1fr); }
-  dl.terms dt { border-bottom: 0; padding-bottom: 0; }
-  .rung { grid-template-columns: minmax(0, 1fr); gap: 2px; }
-  .day { grid-template-columns: minmax(0, 1fr); }
-  .legend { grid-template-columns: minmax(0, 1fr); }
-}
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-html { scroll-behavior: smooth; }
+@media (max-width: 960px) { .shell { padding: 28px 16px 64px; } }
+@media (max-width: 520px) { h1 { font-size: 25px; } }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 </style>
 
 <div class="shell">
-<nav class="toc" aria-label="목차">
-  <div class="label">목차</div>
-  <ol>
-    <li><a href="#start">처음 읽을 것</a></li>
-    <li><a href="#setup">처음 컴퓨터 세팅</a></li>
-    <li><a href="#map">전체 그림</a></li>
-    <li><a href="#words">용어 풀이</a></li>
-    <li><a href="#link">원본 세 개와 연결</a></li>
-    <li><a href="#ask">수정 요청하기</a></li>
-    <li><a href="#figma">Figma에서 확인</a></li>
-    <li><a href="#day">하루 작업 순서</a></li>
-    <li><a href="#safe">안전장치와 금지</a></li>
-    <li><a href="#faq">막혔을 때</a></li>
-    <li><a href="#where">어디에 뭐가 있나</a></li>
-  </ol>
-</nav>
-
 <main>
+  <header class="top">
+    <h1>S-1 디자인 시스템 운영 안내서</h1>
+  </header>
 
-<section id="start">
-  <div class="eyebrow">인수인계서 · 2026년 10월</div>
-  <h1>S-1 디자인 시스템 운영 안내서</h1>
-  <p class="lead">이 프로젝트는 S-1의 색·글자·간격(토큰)과 버튼·입력창 같은 부품(컴포넌트)을 한곳에서 관리하고, 그걸 Figma·가이드 사이트·개발자용 코드로 자동으로 내보내는 작업장입니다.</p>
-  <p>코드를 직접 만질 일은 없습니다. 운영은 <b>Claude에게 말로 요청</b>하는 방식입니다. 이 문서는 "무엇을 고치고 싶을 때 뭐라고 말하면 되고, 그러면 뒤에서 무엇이 바뀌는지"를 알려드립니다.</p>
-
-  <div class="three">
-    <div><b>원본은 세 개뿐</b><span>값은 원본 세 곳에만 적혀 있고, 나머지는 전부 거기서 자동으로 만들어집니다.</span></div>
-    <div><b>결과물은 손대지 않기</b><span>사이트나 문서가 틀렸으면 그걸 고치는 게 아니라 원본을 고치고 다시 만듭니다.</span></div>
-    <div><b>새로 만들 땐 승인</b><span>값을 바꾸는 건 계획 OK 한 번이면 됩니다. 새 색·새 부품을 추가할 때는 승인 문장이 따로 필요합니다.</span></div>
-  </div>
-  <p class="small" style="margin-top:16px">프로젝트 규칙과 기록에 나오는 "river"는 이전 담당자입니다. 이제 여러분이 그 자리입니다.</p>
-</section>
-
-<section id="setup">
-  <div class="eyebrow">처음 컴퓨터 세팅</div>
-  <h2>새 컴퓨터에서 시작하기</h2>
-  <p class="sub">한 번만 하면 됩니다. Claude에게 "이 프로젝트 처음 세팅 도와줘"라고 하면서 아래 순서를 같이 진행하세요.</p>
-  <ol class="steps">
-    <li>Claude 데스크톱 앱, Figma 데스크톱 앱, Node.js를 설치합니다. (지금 PC는 Node 20을 씁니다)</li>
-    <li>GitHub의 <code>s1designux/S1-UX-DESIGN-with-AI</code> 저장소를 내려받습니다. 계정 권한이 필요합니다.</li>
-    <li>Claude에게 "필요한 거 설치해줘"라고 하면 설치하면서 커밋 검문소도 자동으로 깔립니다.</li>
-    <li>Claude에게 "Figma 열쇠 넣을 파일 만들어줘"라고 하면 빈칸 두 개를 묻습니다. Figma 파일 주소의 키, 그리고 개인 열쇠입니다. 개인 열쇠는 Figma 설정 → Personal access tokens에서 읽기 권한으로 만듭니다. 이 파일은 GitHub에 올라가지 않습니다.</li>
-    <li>Figma 데스크톱에서 플러그인 → 개발 → 매니페스트로 가져오기 → <code>plugins/figma-vars-installer/dist/manifest.json</code> 을 등록합니다. 플러그인 폴더가 여러 개이니 이 경로를 정확히 고르세요.</li>
-    <li>Claude에게 "Figma 연결 도와줘", "GitHub 로그인 도와줘"라고 해서 두 연결을 마칩니다. GitHub 로그인이 있어야 저장소에 올리고 공개 가이드 상태도 확인할 수 있습니다.</li>
-  </ol>
-  <div class="note" style="margin-top:14px"><b>미리 알아둘 것</b> · 지금 Claude가 짧고 쉬운 말로 보고하고, 작업 중엔 조용히 있다가 끝에 한 번만 보고하는 방식은 이전 담당자 컴퓨터의 개인 설정입니다. 같은 방식을 원하면 그 설정 내용을 받아 "전역 규칙으로 등록해줘"라고 하세요. 이 설정이 없으면 보고가 길고 기술적인 말로 나옵니다.</div>
-</section>
-
-<section id="map">
-  <div class="eyebrow">전체 그림</div>
-  <h2>데이터 뭉치는 이렇게 이어져 있습니다</h2>
-  <p class="sub">왼쪽 원본을 고치면, 가운데 자동 생성 과정이 오른쪽 결과물을 한꺼번에 다시 만듭니다.</p>
-
-  <div class="flow" role="img" aria-label="원본 세 개에서 자동 생성 과정을 거쳐 네 가지 결과물이 만들어지는 흐름">
-    <div class="col canon">
-      <div class="head">원본 (정본)</div>
-      <div class="box"><b>토큰 값</b><small>색·간격·반경·그림자, 라이트/다크</small></div>
-      <div class="box"><b>글자 스타일</b><small>제목·본문 21종</small></div>
-      <div class="box"><b>컴포넌트 설계도</b><small>부품 56종의 크기·상태·색 연결</small></div>
-    </div>
-    <div class="arrow" aria-hidden="true">→</div>
-    <div class="col">
-      <div class="head">자동 생성</div>
-      <div class="box engine"><b>한 번에 다시 만들기</b><small>16단계를 순서대로 돌려 결과물을 전부 새로 씁니다</small></div>
-      <div class="box engine"><b>검문소</b><small>56개 검사. 어긋나면 저장을 막습니다</small></div>
-    </div>
-    <div class="arrow" aria-hidden="true">→</div>
-    <div class="col">
-      <div class="head">결과물 (파생)</div>
-      <div class="box"><b>가이드 사이트</b><small>토큰·컴포넌트 안내 페이지</small></div>
-      <div class="box"><b>Figma 설치기</b><small>Figma에 변수·스타일·부품을 깔아 주는 플러그인</small></div>
-      <div class="box"><b>웹 UI 키트</b><small>개발자·퍼블리셔가 받는 코드 묶음 (현재 0.27.0)</small></div>
-      <div class="box"><b>AI용 공개 가이드</b><small>다른 팀 AI가 읽는 공개 GitHub 저장소</small></div>
+  <div class="tablist">
+    <div data-s1-component="tab" data-size="md" data-break="pc" role="tablist" aria-label="안내 구분">
+      <button type="button" data-s1-part="tab" role="tab" aria-selected="true" aria-controls="faq" data-value="faq">자주 묻는 질문</button>
+      <button type="button" data-s1-part="tab" role="tab" aria-selected="false" aria-controls="cautions" data-value="cautions">주의점</button>
     </div>
   </div>
-  <p class="small">AI용 공개 가이드는 이쪽에서 보내는 게 아니라, 공개 저장소가 매일 새벽 3시 15분에 이쪽 내용을 가져갑니다.</p>
-</section>
 
-<section id="words">
-  <div class="eyebrow">용어 풀이</div>
-  <h2>처음 듣는 말 정리</h2>
-  <p class="sub">Claude가 보고할 때 이 말들을 씁니다. 외울 필요는 없고 필요할 때 다시 보세요.</p>
 
-  <h3>토큰의 세 층</h3>
-  <p>토큰은 "값에 붙인 이름"입니다. 같은 파란색을 여기저기 직접 쓰지 않고 이름으로 부르게 해서, 한 곳만 바꾸면 전부 따라 바뀌게 합니다.</p>
-  <div class="ladder">
-    <div class="rung"><b>Foundation</b><span class="ex">물감 팔레트. 의미 없는 원재료. <code>gray/0</code>, <code>blue/400</code>, <code>spacing/16</code><span class="swatches"><span class="sw"><i style="background:#FAFAFA"></i></span><span class="sw"><i style="background:#1D6CEB"></i></span></span></span></div>
-    <div class="rung"><b>Semantic</b><span class="ex">쓰임새 이름. "1단계 배경", "본문 글자". 라이트·다크 값을 각각 Foundation에서 고릅니다.<br><code>color/bg/level-1</code> = 라이트 <code>gray/0</code> · 다크 <code>gray-dark/50</code></span></div>
-    <div class="rung"><b>Component</b><span class="ex">부품이 Semantic을 가져다 쓰는 연결. 예: 버튼 배경은 어느 Semantic 색을 쓰는가.</span></div>
-  </div>
-  <p class="small">색은 반드시 Semantic을 거칩니다. 화면에 색 코드(#1D6CEB 같은)를 직접 쓰면 검문소가 막습니다.</p>
 
-  <h3>나머지 용어</h3>
-  <dl class="terms">
-    <dt>정본<small>원본</small></dt><dd>값이 처음 적히는 단 한 곳. <i>여기만 고칩니다.</i></dd>
-    <dt>파생<small>결과물</small></dt><dd>정본에서 자동으로 만들어진 것. 사이트·문서·설치기·키트. 정본과 다르면 <i>무조건 파생이 틀린 것</i>이고, 다시 만들면 고쳐집니다.</dd>
-    <dt>레거시<small>DS 2.4</small></dt><dd>예전 Figma 가이드(SW UX GUIDE V2.4). 참고용 출발점이지 정답지가 아닙니다. 지금 것과 다르다고 지금 것이 틀린 건 아닙니다.</dd>
-    <dt>V3.0</dt><dd>지금 만들고 있는 새 기준. Figma 시험 파일 이름이 "SW-UX-GUIDE-V3.0-TEST"입니다.</dd>
-    <dt>컴포넌트<small>부품</small></dt><dd>버튼·입력창·달력 같은 UI 부품. 현재 56종(묶음 13개).</dd>
-    <dt>Variant · 상태<small>변형</small></dt><dd>한 부품의 여러 모습. 버튼이면 종류 3(primary·secondary·blue-line) × 상태 4(기본·마우스 올림·누름·비활성) × 크기 4 = 48개 조각.</dd>
-    <dt>설치기</dt><dd>Figma 플러그인. 정본을 읽어 Figma 파일에 변수·글자 스타일·부품을 깔아 줍니다.</dd>
-    <dt>웹 UI 키트<small>UI 라이브러리</small></dt><dd>부품을 실제 웹 코드로 만든 묶음. 개발자가 내려받아 씁니다. 버전 번호가 붙습니다.</dd>
-    <dt>검문소<small>Gate</small></dt><dd>저장(커밋)할 때 자동으로 도는 검사 56개. 규칙을 어기면 저장이 안 됩니다.</dd>
-    <dt>커밋 · 푸시</dt><dd>커밋 = 이 컴퓨터에 "여기까지 저장" 도장. 푸시 = 그걸 GitHub(인터넷 보관소)에 올리기. Claude가 둘 다 알아서 합니다.</dd>
-    <dt>별도 작업 폴더</dt><dd>작업마다 따로 쓰는 복사본 폴더. 여러 작업이 서로 덮어쓰지 않게 합니다. 끝나면 본 폴더에 합칩니다.</dd>
-    <dt>에이전트</dt><dd>Claude가 일을 나눠 맡기는 보조 Claude. "만드는 쪽"과 "검사하는 쪽"을 일부러 다르게 씁니다.</dd>
-    <dt>스킬</dt><dd>정해진 작업 순서표. "웹 업데이트 해줘"처럼 특정 말을 하면 해당 순서표대로 진행합니다.</dd>
-    <dt>다운로드 페이지</dt><dd>가이드 사이트의 Design Guide Download 화면. 디자이너(Figma 설치기)·퍼블리셔·개발자(웹 키트)·AI프롬프트 탭이 있습니다.</dd>
-    <dt>AI용 문서</dt><dd>다른 팀의 AI 도구가 읽는 디자인 시스템 설명서. 자동으로 만들어지고 공개 가이드 저장소로 나갑니다.</dd>
-    <dt>사실표 · 안내 모델</dt><dd>부품 설계도에서 자동으로 뽑아낸 부품 정보 정리본. 사람이 볼 일은 거의 없습니다.</dd>
-    <dt>결정 대기<small>needs-decision</small></dt><dd>근거가 없어서 Claude가 마음대로 정하지 않고 사람에게 넘긴 항목. 질문으로 올라옵니다.</dd>
-    <dt>다크모드</dt><dd>모든 색은 라이트·다크 두 값을 가집니다. 한쪽만 정하고 끝내지 않습니다.</dd>
-  </dl>
-</section>
-
-<section id="link">
-  <div class="eyebrow">원본 세 개</div>
-  <h2>무엇을 고치면 어디가 바뀌나</h2>
-  <p class="sub">원본은 Figma 구조상 하나로 합칠 수 없어서 세 개로 나뉘어 있습니다.</p>
-
-  <div class="tablewrap">
-  <table>
-    <thead><tr><th>원본</th><th>여기에 적힌 것</th><th>고치면 다시 만들어지는 것</th></tr></thead>
-    <tbody>
-      <tr><td>토큰 값</td><td>Foundation 색 209 · 숫자 75 · Semantic 색 199 · 숫자 10 · 그림자 3</td><td>토큰 CSS · Foundation·Semantic 안내 페이지 · AI용 문서 · 다운로드 페이지 · Figma 설치기 · 웹 UI 키트</td></tr>
-      <tr><td>글자 스타일</td><td>제목 12 · 본문 9 (Pretendard)</td><td>글자 CSS · Figma 설치기</td></tr>
-      <tr><td>컴포넌트 설계도</td><td>부품 56종의 크기·상태·어떤 토큰을 쓰는지</td><td>부품 사실표 · 부품 안내 모델 · AI용 문서 · Figma 설치기</td></tr>
-    </tbody>
-  </table>
-  </div>
-
-  <h3>원본이 아닌데 사람이 관리하는 곳 두 군데</h3>
-  <p><b>부품 설명 글.</b> "언제 쓰나 · 구성 · 해도 되는 것/안 되는 것 · 접근성" 같은 설명은 원본 세 개에 없어서 부품별 기록장(registry)이 기준입니다. 다만 그 기록장 안의 <i>숫자 값</i>은 오래된 사본이라 믿지 않습니다.</p>
-  <p><b>컴포넌트 안내 페이지.</b> 가이드 사이트의 Components 페이지는 손으로 관리하는 화면이라 자동으로 다시 만들지 않습니다. 부품 설계도를 고쳐도 이 페이지는 자동으로 안 바뀝니다. 바꿔야 하면 따로 요청하세요.</p>
-</section>
-
-<section id="ask">
-  <div class="eyebrow">수정 요청하기</div>
-  <h2>이렇게 말하면, 이렇게 돌아갑니다</h2>
-  <p class="sub">파란 말풍선이 여러분이 할 말입니다. 번호 중 파랗게 칠한 단계만 여러분 차례이고, 나머지는 Claude가 합니다.</p>
-
-  <article class="req">
-    <header><h3>토큰 값 하나 바꾸기</h3><span class="when">가장 흔한 일. 색·간격 값만 바꿀 때</span></header>
-    <div class="body">
-      <div class="say"><span class="who">이렇게 말하세요</span>
-        <div class="bubble">color/bg/level-1 라이트 값을 gray/50 으로 바꿔줘</div>
-      </div>
-      <p class="small" style="margin:0">토큰 이름을 몰라도 됩니다. "1단계 배경색을 한 단계 진하게 해줘"처럼 말하면 Claude가 이름을 찾아 확인합니다. 이름 목록은 가이드 사이트 Semantic 페이지에 있습니다.</p>
-      <ol class="steps">
-        <li>그 토큰이 어디어디에 쓰이는지 먼저 찾아 보여 줍니다.</li>
-        <li class="you">계획을 한 번 보여 주면 확인하고 OK 합니다. <span class="tag">여러분</span></li>
-        <li>토큰 값 원본 한 줄만 고칩니다. 다크 값은 말하지 않았으면 그대로 둡니다.</li>
-        <li>"한 번에 다시 만들기"로 사이트·문서·설치기를 전부 새로 씁니다.</li>
-        <li class="you">웹 UI 키트는 값이 바뀌면 일부러 멈추고 "버전 끝자리를 올릴까요?" 하고 묻습니다. 값만 바꿨으면 "응"이라고 답하세요. <span class="tag">여러분</span></li>
-        <li>검문소를 돌리고, 통과하면 저장하고 GitHub에 올립니다.</li>
-        <li class="you">결과 보고를 읽고 화면을 확인합니다. <span class="tag">여러분</span></li>
-      </ol>
-      <div class="check"><b>확인할 것</b> · 가이드 사이트 Semantic 페이지에서 색이 바뀌었는지. Figma에 반영하는 방법은 <a href="#figma">Figma에서 확인</a>에 있습니다.</div>
+  <section id="faq" role="tabpanel" aria-label="자주 묻는 질문">
+    <div class="faqtools">
+      <input id="faq-q" type="search" placeholder="찾기 (예: Figma, 버전, 저장)" aria-label="질문 찾기">
     </div>
-  </article>
-
-  <article class="req">
-    <header><h3>새 토큰·새 글자 스타일 추가하기</h3><span class="when">없던 것을 새로 만들 때</span></header>
-    <div class="body">
-      <div class="say"><span class="who">이렇게 말하세요</span>
-        <div class="bubble">경고 배경색 토큰을 새로 추가해줘. 라이트는 orange/50, 다크는 orange-dark/100 으로</div>
-      </div>
-      <ol class="steps">
-        <li>Claude가 비슷한 토큰이 이미 있는지, 이름이 규칙에 맞는지 확인합니다.</li>
-        <li class="you">"이 이름으로 추가할까요?" 질문에 분명한 문장으로 답합니다. <span class="tag">여러분</span></li>
-        <li>여러분이 한 말을 <i>그대로 인용해서</i> 승인 기록을 남깁니다. 기계가 대화 기록에 그 문장이 실제로 있는지 대조합니다.</li>
-        <li>원본에 추가 → 한 번에 다시 만들기 → 검문소 → 저장·업로드.</li>
-      </ol>
-      <div class="note"><b>미리 알아둘 것</b> · "응", "그래" 같은 짧은 답도 되지만, 바로 앞 질문과 짝이 맞아야 통과합니다. 헷갈리면 "경고 배경색 토큰 추가해" 처럼 무엇을 승인하는지 넣어 말하세요. 승인 문장 없이 새 항목이 들어가면 검문소가 저장을 막습니다.</div>
+    <div class="chips" role="group" aria-label="분류">
+      <button class="chip" type="button" data-cat="all" aria-pressed="true">전체</button>
+      <button class="chip" type="button" data-cat="edit" aria-pressed="false">고치고 싶을 때</button>
+      <button class="chip" type="button" data-cat="see" aria-pressed="false">결과 확인</button>
+      <button class="chip" type="button" data-cat="stuck" aria-pressed="false">막혔을 때</button>
+      <button class="chip" type="button" data-cat="work" aria-pressed="false">일하는 방법</button>
     </div>
-  </article>
 
-  <article class="req">
-    <header><h3>부품의 모양 바꾸기</h3><span class="when">크기·여백·상태·쓰는 색을 바꿀 때</span></header>
-    <div class="body">
-      <div class="say"><span class="who">이렇게 말하세요</span>
-        <div class="bubble">버튼 MD 크기 높이를 44에서 40으로 바꿔줘</div>
-      </div>
-      <ol class="steps">
-        <li>컴포넌트 설계도 원본에서 해당 부분을 찾아 보여 줍니다.</li>
-        <li class="you">계획 확인 후 OK. <span class="tag">여러분</span></li>
-        <li>설계도를 고칩니다.</li>
-        <li><b>고친 Claude와 다른 검사 담당 Claude</b>가 원본과 대조해 검증합니다. 이 검증 도장이 없으면 저장이 안 됩니다. 값 한 개만 바꾸는 단순 수정은 예외로, 경고만 남기고 통과합니다.</li>
-        <li>한 번에 다시 만들기 → 설치기·안내 모델·AI 문서가 새로 만들어집니다.</li>
-        <li>검문소 → 저장·업로드.</li>
-        <li class="you">Figma와 사이트에서 확인합니다. <span class="tag">여러분</span></li>
-      </ol>
-      <div class="note"><b>미리 알아둘 것</b> · 가이드 사이트의 Components 페이지와 웹 UI 키트는 이 흐름에서 자동으로 안 바뀝니다. 웹 키트까지 반영하려면 다음 카드의 "웹 업데이트 해줘"를 이어서 요청하세요.</div>
+    <div class="group" data-cat="edit">
+      <h3>고치고 싶을 때</h3>
+      <details><summary>토큰 값 하나를 바꾸고 싶어요</summary><div class="a">
+        <div class="say">color/bg/level-1 라이트 값을 gray/50 으로 바꿔줘</div>
+        <p>이름을 몰라도 "1단계 배경색을 한 단계 진하게"처럼 말하면 Claude가 찾아 줍니다. 이름 목록은 가이드 사이트 Semantic 페이지에 있습니다.</p>
+        <p class="how"><b>그러면</b> 쓰이는 곳 찾기 → 계획 확인(여러분 OK) → 원본 한 줄 수정 → 한 번에 다시 만들기 → 웹 키트 버전 끝자리 올릴지 질문(여러분 "응") → 검문소 → 저장·업로드</p>
+      </div></details>
+      <details><summary>새 색이나 새 토큰을 추가하고 싶어요</summary><div class="a">
+        <div class="say">경고 배경색 토큰을 새로 추가해줘. 라이트 orange/50, 다크 orange-dark/100</div>
+        <p>비슷한 게 이미 있는지, 이름이 규칙에 맞는지 먼저 봅니다. "이 이름으로 추가할까요?"라고 물으면 무엇을 승인하는지 넣어서 분명히 답하세요. 그 문장이 그대로 승인 기록이 됩니다.</p>
+        <p class="how"><b>그러면</b> 중복·이름 확인 → 승인 질문(여러분 답) → 원본에 추가 → 다시 만들기 → 검문소 → 저장·업로드</p>
+      </div></details>
+      <details><summary>부품의 크기·여백·상태·쓰는 색을 바꾸고 싶어요</summary><div class="a">
+        <div class="say">버튼 MD 크기 높이를 44에서 40으로 바꿔줘</div>
+        <p>고친 Claude와 다른 검사 담당 Claude가 원본과 대조해 검증 도장을 찍어야 저장됩니다. Figma·Components 페이지·웹 키트는 자동으로 안 바뀌니 필요하면 이어서 요청하세요.</p>
+        <p class="how"><b>그러면</b> 설계도에서 위치 찾기 → 계획 확인(여러분 OK) → 수정 → 다른 Claude가 검증 → 다시 만들기 → 검문소 → 저장·업로드</p>
+      </div></details>
+      <details><summary>개발자가 받는 웹 키트에도 반영하고 싶어요</summary><div class="a">
+        <div class="say">버튼 웹 업데이트 해줘</div>
+        <p>부품 이름 없이 말하면 하던 작업을 이어 하거나 어떤 부품인지 되묻습니다. 마지막에 검수 화면을 보고 여러분이 승인해야 공개됩니다.</p>
+        <p class="how"><b>그러면</b> 원본과 전부 대조 → 근거 없는 항목은 질문 → 코드 담당 Claude가 제작 → 자동 검사·화면 캡처 → 검수 화면 승인(여러분) → 버전 올리고 다운로드 페이지 교체</p>
+      </div></details>
+      <details><summary>부품 설명 글(언제 쓰나, 해도 되는 것)을 고치고 싶어요</summary><div class="a">
+        <div class="say">체크박스 설명에 "여러 개를 고를 때 쓴다" 추가해줘</div>
+        <p>설명 글은 부품별 기록장이 기준입니다. 숫자 값은 설명에 넣지 않습니다. 결과는 다운로드 페이지 AI프롬프트 탭과 다음 날 AI용 공개 가이드에서 확인합니다.</p>
+      </div></details>
+      <details><summary>Figma에 부품이나 화면을 만들고 싶어요</summary><div class="a">
+        <div class="say">Figma에 체크박스 에러 상태 추가해줘</div>
+        <div class="say">이 레거시 화면 그대로 V3.0 부품으로 만들어줘 (Figma 링크)</div>
+        <p>만드는 Claude와 검사하는 Claude가 따로 일합니다. 화면은 기준을 먼저 정합니다: 예전 화면 그대로 옮기기 · 이미 만든 화면 고치기 · 레거시 없이 새로 만들기. 새로 만들 땐 여러분이 "무엇을 만들려는지" 적은 글이 기준입니다.</p>
+      </div></details>
     </div>
-  </article>
 
-  <article class="req">
-    <header><h3>웹 UI 키트에 반영하기</h3><span class="when">개발자가 받는 코드까지 바꿀 때</span></header>
-    <div class="body">
-      <div class="say"><span class="who">이렇게 말하세요</span>
-        <div class="bubble">버튼 웹 업데이트 해줘</div>
-      </div>
-      <ol class="steps">
-        <li>지금 상태와 원본을 전부 대조해 무엇이 다른지 정리합니다.</li>
-        <li>원본에 근거가 없는 항목이 있으면 멈추고 질문합니다.</li>
-        <li>코드 담당 Claude가 웹 코드를 만듭니다.</li>
-        <li>자동 검사를 전부 통과시키고, PC·모바일 × 라이트·다크 화면을 찍어 둡니다.</li>
-        <li class="you">검수 화면을 열어 보고 "승인"합니다. <span class="tag">여러분</span></li>
-        <li>버전 번호를 올리고 다운로드 페이지의 키트를 새것으로 바꿉니다.</li>
-      </ol>
-      <div class="check"><b>확인할 것</b> · 가이드 사이트 다운로드 페이지에 새 버전 번호가 보이는지. 부품 이름 없이 "웹 업데이트 해줘"만 하면 하던 작업을 이어 하거나 어떤 부품인지 되묻습니다.</div>
+    <div class="group" data-cat="see">
+      <h3>결과 확인</h3>
+      <details><summary>원본을 고쳤는데 Figma에는 옛날 모습이에요</summary><div class="a">
+        <p>설치기는 같은 이름의 부품이 이미 있으면 건너뜁니다(배치해 둔 부품이 끊기지 않게). 그 부품 세트와 옆의 다크 견본 판(이름 끝 "Spec Dark")을 지우고 설치기에서 그 부품만 [선택 항목 설치] 하세요. [재설치]는 전부 지우고 다시 깔아서 배치된 부품 연결이 끊길 수 있습니다.</p>
+        <p>토큰 값만 바꿨다면 변수 항목을 다시 설치하면 됩니다. 이 동작은 아직 끝까지 확인하지 못했으니 "Figma 변수 값 바뀌었는지 확인해줘"라고 한 번 요청하세요.</p>
+      </div></details>
+      <details><summary>Figma에서 다크로 바꿨는데 일부가 안 바뀌어요</summary><div class="a">
+        <p>그 부품에 라이트 모드가 고정으로 걸려 있는 경우가 많습니다. 다크 색이 없는 게 아닙니다.</p>
+        <div class="say">이 부품 라이트 고정 풀어줘</div>
+      </div></details>
+      <details><summary>가이드 사이트는 어떻게 열어요? 아이콘이 비어 보여요</summary><div class="a">
+        <div class="say">가이드 사이트 열어줘</div>
+        <p>파일을 직접 열면 아이콘이 안 그려집니다. Claude가 여는 주소(localhost:4173)로 보세요.</p>
+      </div></details>
+      <details><summary>AI용 공개 가이드가 며칠째 안 바뀌어요</summary><div class="a">
+        <p>공개 저장소가 매일 새벽 3시 15분에 이쪽 내용을 가져가고 자체 검사를 돌립니다. 검사가 실패하면 알림 없이 멈춥니다(13일 연속 멈춘 적 있음).</p>
+        <div class="say">공개 가이드 저장소 동기화 실패하고 있는지 확인해줘</div>
+      </div></details>
     </div>
-  </article>
 
-  <article class="req">
-    <header><h3>부품 설명 글 고치기</h3><span class="when">"언제 쓰나", 해도 되는 것/안 되는 것, 접근성 문구</span></header>
-    <div class="body">
-      <div class="say"><span class="who">이렇게 말하세요</span>
-        <div class="bubble">체크박스 설명에 "여러 개를 고를 때 쓴다"는 문장 추가해줘</div>
-      </div>
-      <ol class="steps">
-        <li>체크박스 기록장의 설명 칸을 고칩니다. 숫자 값은 설명에 넣지 않습니다.</li>
-        <li>AI용 문서와 다운로드 페이지를 다시 만듭니다.</li>
-        <li>검문소 → 저장·업로드.</li>
-        <li class="you">결과를 확인합니다. <span class="tag">여러분</span></li>
-      </ol>
-      <div class="check"><b>확인할 것</b> · 가이드 사이트 다운로드 페이지의 AI프롬프트 탭, 그리고 다음 날 AI용 공개 가이드에 문장이 들어갔는지.</div>
+    <div class="group" data-cat="stuck">
+      <h3>막혔을 때</h3>
+      <details><summary>저장(커밋)이 막혔대요</summary><div class="a">
+        <div class="say">검문소에서 뭐가 막혔는지 쉽게 알려주고 고쳐줘</div>
+        <p>대부분 "한 번에 다시 만들기"로 풀립니다. 새 항목 승인 문제면 승인 문장을 달라는 질문이 옵니다. 자주 막히는 이유: 색 코드 직접 사용, 결과물 값이 원본과 다름, 폐기된 옛 이름, 승인 없는 추가, 검증 도장 없음.</p>
+      </div></details>
+      <details><summary>웹 키트 만들기가 중간에 멈췄어요</summary><div class="a">
+        <p>토큰 값이 바뀌면 일부러 멈추는 단계입니다. 값만 바뀌었으면 끝자리 +1, 부품이 늘거나 쓰는 법이 바뀌었으면 가운데 자리 +1.</p>
+        <div class="say">웹 키트 버전 끝자리 올려줘</div>
+      </div></details>
+      <details><summary>합치는데 부딪혔대요</summary><div class="a">
+        <p>자동으로 만들어지는 파일끼리 부딪힌 거면 Claude가 다시 만들어서 풉니다. 원본끼리 부딪혔을 때만 어느 쪽을 남길지 물어봅니다.</p>
+      </div></details>
+      <details><summary>예전 부품 이름이 지금 무슨 부품인지 모르겠어요</summary><div class="a">
+        <div class="say">레거시 이름 ○○는 지금 무슨 부품이야?</div>
+        <p>대응표에서 찾아 줍니다. 아직 정해지지 않은 거면 마음대로 정하지 않고 그렇다고 알려 줍니다.</p>
+      </div></details>
+      <details><summary>Claude가 같은 실수를 반복해요</summary><div class="a">
+        <div class="say">이거 반복 요청으로 기록해줘</div>
+        <p>같은 게 3번 쌓이면 규칙으로 만들자는 제안이 올라옵니다.</p>
+      </div></details>
     </div>
-  </article>
 
-  <article class="req">
-    <header><h3>Figma에 부품 만들거나 화면 만들기</h3><span class="when">Figma 파일 안에서 작업할 때</span></header>
-    <div class="body">
-      <div class="say"><span class="who">부품을 만들 때</span>
-        <div class="bubble">Figma에 체크박스 에러 상태 variant 추가해줘</div>
-      </div>
-      <div class="say"><span class="who">화면을 만들 때</span>
-        <div class="bubble">이 레거시 화면 그대로 V3.0 부품으로 만들어줘 (Figma 링크)</div>
-      </div>
-      <ol class="steps">
-        <li>지금 Figma에 무엇이 있는지 조사합니다.</li>
-        <li class="you">무엇을 어떻게 만들지 계획을 보고 OK. <span class="tag">여러분</span></li>
-        <li>만드는 Claude가 Figma에 그립니다. 색은 전부 변수로 연결하고, 글자는 Pretendard 스타일로 묶습니다.</li>
-        <li>검사하는 Claude가 원본과 대조합니다.</li>
-      </ol>
-      <div class="note"><b>미리 알아둘 것</b> · 화면을 만들 때는 기준을 먼저 정합니다. 예전 화면을 그대로 옮길지, 이미 만든 화면을 고칠지, 레거시 없이 새로 만들지. 새로 만들 때는 여러분이 "무엇을 만들려는지" 적은 글이 기준이 됩니다. 모두앱 같은 운영 중인 서비스 화면은 새 기준과 섞지 않습니다.</div>
+    <div class="group" data-cat="work">
+      <h3>일하는 방법</h3>
+      <details><summary>작업 하나를 어떻게 시작하고 끝내요?</summary><div class="a">
+        <p class="how"><b>순서</b> 새 대화 열기 → "별도 폴더에서 해줘" → 바꾸고 싶은 것만 말하기 → 계획 보고 OK → 결과 확인 → "합쳐줘"</p>
+        <p>숫자나 방법은 말하지 않아도 Claude가 원본에서 찾습니다. 질문만 할 때는 별도 폴더가 필요 없습니다. 합치면 GitHub에도 자동으로 올라갑니다.</p>
+      </div></details>
+      <details><summary>여러 작업을 동시에 해도 되나요?</summary><div class="a">
+        <p>대화를 여러 개 열고 각각 "별도 폴더에서 해줘"라고 하면 됩니다. 같은 부품을 두 대화에서 동시에 고치지는 마세요.</p>
+      </div></details>
+      <details><summary>Claude가 질문을 올렸어요. 어떻게 답해요?</summary><div class="a">
+        <p>근거가 없어 Claude가 마음대로 정하지 않은 "결정 대기" 항목입니다. 질문에 무엇을·왜·선택지·안 정하면 어떻게 되는지가 함께 옵니다. 고른 것을 분명한 문장으로 답하세요.</p>
+      </div></details>
+      <details><summary>새 컴퓨터에서 처음 세팅하려면?</summary><div class="a">
+        <div class="say">이 프로젝트 처음 세팅 도와줘</div>
+        <p class="how"><b>순서</b> Claude 앱·Figma 데스크톱·Node.js 설치 → GitHub 저장소 받기 → "필요한 거 설치해줘" → Figma 열쇠 넣기(Figma 설정 → Personal access tokens) → Figma에서 <code>plugins/figma-vars-installer/dist/manifest.json</code> 플러그인 등록 → Figma·GitHub 연결</p>
+      </div></details>
+      <details><summary>기록에 자주 나오는 "river"는 누구예요?</summary><div class="a">
+        <p>이 시스템을 만든 이전 담당자입니다. 규칙과 기록에서 "river 승인", "river 결정"은 이제 운영자인 여러분의 승인·결정을 뜻합니다.</p>
+        <p>지금처럼 짧고 쉬운 말로 보고받는 방식은 이전 담당자 PC의 개인 설정이라, 같은 방식을 원하면 그 설정을 받아 "전역 규칙으로 등록해줘"라고 하세요.</p>
+      </div></details>
+      <details><summary>보고에 붙는 기호는 무슨 뜻이에요?</summary><div class="a">
+        <p>⭐ 대화 중인 Claude가 직접 · 🤖 따로 띄운 보조 Claude(주로 검사) · 🔎 자동 검사 프로그램 · 🚧 저장할 때 도는 검문소 · 📖 원본 읽기 담당 · 🏗️ Figma 부품 제작 · 🪞 Figma 화면 제작 · 🧱 웹 키트 코드 제작 · 🖥️ 이 컴퓨터의 작은 AI · 🔄 토큰 자동 동기화.</p>
+        <p>중요한 변경인데 보고가 전부 ⭐뿐이면 "다른 Claude로 검증해줘"라고 하세요.</p>
+      </div></details>
     </div>
-  </article>
-</section>
+    <p class="empty" id="faq-empty" hidden>찾는 질문이 없어요. 다른 낱말로 찾아보세요.</p>
+  </section>
 
-<section id="figma">
-  <div class="eyebrow">Figma에서 확인</div>
-  <h2>고쳤는데 Figma에는 옛날 모습일 때</h2>
-  <p>설치기는 <b>같은 이름의 부품이 이미 있으면 건너뜁니다.</b> 이미 화면에 배치해 둔 부품이 끊기지 않게 하려는 장치입니다. 그래서 원본을 고쳐도 이미 설치된 Figma 파일에는 옛 모습이 남습니다.</p>
-  <div class="tablewrap">
-  <table>
-    <thead><tr><th>방법</th><th>어떻게</th><th>주의</th></tr></thead>
-    <tbody>
-      <tr><td>그 부품만 다시</td><td>해당 부품 세트와, 그 옆의 다크모드 견본 판(이름 끝이 "Spec Dark")을 지우고, 설치기에서 그 부품만 골라 [선택 항목 설치]</td><td>안전. 보통 이걸 씁니다</td></tr>
-      <tr><td>전부 다시</td><td>설치기의 [재설치] → [재설치 시작]</td><td>전부 지우고 새로 깔아서, 화면에 배치해 둔 부품 연결이 끊길 수 있습니다</td></tr>
-    </tbody>
-  </table>
-  </div>
-  <p class="small">설치기는 매번 같은 자리에 덮어써지므로 Figma에 플러그인을 다시 등록할 필요는 없습니다. 새 모습이 안 보이면 등록 문제가 아니라 위의 건너뛰기를 먼저 의심하세요. Figma에서 다크로 바꿨는데 일부가 안 바뀌면, 그 부품에 라이트 모드가 고정으로 걸려 있는 경우가 많습니다. "이 부품 라이트 고정 풀어줘"라고 하세요.</p>
-  <p><b>토큰 값만 바꿨을 때.</b> 변수는 같은 이름 그대로 값만 새로 쓰도록 만들어져 있어서, 설치기에서 변수 항목을 다시 설치하면 됩니다. 이 동작은 아직 끝까지 확인하지 못했으니, 반영 후 "Figma 변수 값이 바뀌었는지 확인해줘"라고 한 번 요청하세요.</p>
-</section>
-
-<section id="day">
-  <div class="eyebrow">하루 작업 순서</div>
-  <h2>한 건을 처음부터 끝까지</h2>
-  <ol class="day">
-    <li><b>새 대화 열기</b><span>Claude 앱 Code 탭에서 이 프로젝트 폴더로 새 대화</span></li>
-    <li><b>"별도 폴더에서 해줘"</b><span>고치는 작업은 첫마디에 이렇게. 질문만 할 때는 필요 없습니다</span></li>
-    <li><b>목표만 말하기</b><span>무엇을 바꾸고 싶은지만. 숫자·방법은 Claude가 원본에서 찾습니다</span></li>
-    <li><b>계획 OK 한 번</b><span>계획을 보고 OK. 새 항목 승인이나 웹 키트 검수가 있으면 중간에 한 번 더 묻습니다</span></li>
-    <li><b>"합쳐줘"</b><span>결과를 보고 이렇게 말하면 본 폴더에 합치고 GitHub에 올립니다</span></li>
-  </ol>
-  <p>여러 건을 동시에 하려면 대화를 여러 개 열고 각각 "별도 폴더에서 해줘"라고 하면 됩니다. 끝난 대화를 합치지 않고 오래 내버려 두면 나중에 합칠 때 부딪힐 수 있으니, 끝나면 바로 합치세요.</p>
-  <p>Claude가 질문을 올리면 그건 정말 사람이 정해야 하는 것입니다. 질문에는 "무엇을, 왜, 선택지, 안 정하면 어떻게 되는지"가 함께 옵니다.</p>
-</section>
-
-<section id="safe">
-  <div class="eyebrow">안전장치와 금지</div>
-  <h2>이것만은 하지 마세요</h2>
-  <p class="sub">대부분은 검문소가 자동으로 막지만, 사람이 요청해서 생기는 실수도 있습니다.</p>
-  <ul class="donts">
-    <li><div>결과물을 직접 고쳐 달라고 하기<span>"사이트의 이 색 코드만 바꿔줘"가 아니라 "이 토큰 값 바꿔줘". 결과물만 고치면 다음 생성 때 되돌아갑니다.</span></div></li>
-    <li><div>검문소를 건너뛰고 저장하기<span>저장이 막히면 막힌 이유를 고칩니다. 건너뛰는 옵션은 쓰지 않습니다.</span></div></li>
-    <li><div>화면에 색 코드 직접 쓰기<span>모든 색은 Semantic 토큰을 거칩니다. 반투명 덮개 한 가지만 예외입니다.</span></div></li>
-    <li><div>레거시나 운영 서비스 화면 값을 새 기준에 섞기<span>DS 2.4와 모두앱 같은 서비스 화면은 참고만 합니다. 거기 숫자를 새 기준의 근거로 쓰지 않습니다.</span></div></li>
-    <li><div>버튼 Danger 종류 다시 추가하기<span>삭제가 확정된 항목입니다.</span></div></li>
-    <li><div>"레거시랑 다르니 틀렸다"고 단정하기<span>레거시가 낡았을 수 있습니다. 애매하면 Claude가 묻습니다.</span></div></li>
-  </ul>
-
-  <h3>검문소에서 자주 만나는 것</h3>
-  <div class="tablewrap">
-  <table>
-    <thead><tr><th>막는 것</th><th>뜻</th></tr></thead>
-    <tbody>
-      <tr><td>색 코드 직접 사용</td><td>화면·문서에 #으로 시작하는 색을 직접 썼다</td></tr>
-      <tr><td>토큰 값 불일치</td><td>어떤 결과물의 값이 원본과 다르다 → 다시 만들기로 해결</td></tr>
-      <tr><td>옛 토큰 이름</td><td>폐기된 이름이 다시 들어왔다</td></tr>
-      <tr><td>쓰임새 어긋남</td><td>글자에 배경 토큰을 쓰는 식으로 역할이 안 맞는다</td></tr>
-      <tr><td>승인 없는 추가</td><td>새 토큰·부품·이름이 사람 승인 문장 없이 들어왔다</td></tr>
-      <tr><td>검증 도장 없음</td><td>부품 설계도를 고쳤는데 다른 Claude의 검증 기록이 없다</td></tr>
-      <tr><td>레거시 이름 오매칭</td><td>예전 부품 이름을 지금 부품에 잘못 연결했다</td></tr>
-    </tbody>
-  </table>
-  </div>
-</section>
-
-<section id="faq">
-  <div class="eyebrow">막혔을 때</div>
-  <h2>자주 생기는 상황</h2>
-  <details><summary>원본을 고쳤는데 Figma에 안 바뀌어 보여요</summary><div class="a">설치기가 이미 있는 부품을 건너뛴 경우입니다. <a href="#figma">Figma에서 확인</a>의 "그 부품만 다시"를 하세요.</div></details>
-  <details><summary>저장(커밋)이 막혔다고 해요</summary><div class="a">Claude에게 "검문소에서 뭐가 막혔는지 쉽게 알려주고 고쳐줘"라고 하세요. 대부분 다시 만들기 한 번으로 풀립니다. 새 항목 승인 문제라면 승인 문장을 달라고 질문이 올라옵니다.</div></details>
-  <details><summary>웹 키트 만들기가 중간에 멈췄어요</summary><div class="a">토큰 값이 바뀌면 일부러 멈추는 단계입니다. 값만 바뀌었으면 끝자리 +1, 부품이 추가되거나 쓰는 법이 바뀌었으면 가운데 자리 +1로 버전을 올리면 이어집니다. "웹 키트 버전 올려줘"라고 하세요.</div></details>
-  <details><summary>AI용 공개 가이드가 며칠째 안 바뀌어요</summary><div class="a">공개 저장소는 매일 새벽 3시 15분에 이쪽 내용을 가져간 뒤 자체 검사를 돌립니다. 검사가 실패하면 알림 없이 조용히 멈춥니다(예전에 13일 연속 멈춘 적 있음). "공개 가이드 저장소 동기화가 실패하고 있는지 확인해줘"라고 하세요.</div></details>
-  <details><summary>합치려는데 부딪혔다고 해요</summary><div class="a">자동으로 만들어지는 파일끼리 부딪힌 거면 Claude가 다시 만들어서 풉니다. 원본끼리 부딪혔을 때만 어느 쪽을 남길지 물어봅니다.</div></details>
-  <details><summary>예전 부품 이름이 지금 무엇인지 모르겠어요</summary><div class="a">"레거시 이름 ○○는 지금 무슨 부품이야?"라고 물으세요. 대응표에서 찾아 주고, 아직 정해지지 않은 거면 마음대로 정하지 않고 그렇다고 알려 줍니다.</div></details>
-  <details><summary>Claude가 같은 실수를 반복해요</summary><div class="a">반복 요청은 따로 기록되고, 같은 게 3번 쌓이면 규칙으로 만들자고 제안이 올라옵니다. "이거 반복 요청으로 기록해줘"라고 해도 됩니다.</div></details>
-  <details><summary>스크린샷에 아이콘이 비어 보여요</summary><div class="a">페이지를 파일로 직접 열면 아이콘이 안 그려집니다. "가이드 사이트 열어줘"라고 하면 제대로 된 주소(localhost:4173)로 엽니다.</div></details>
-</section>
-
-
-
-<section id="where">
-  <div class="eyebrow">부록</div>
-  <h2>어디에 뭐가 있나</h2>
-  <p class="sub">Claude가 보고에서 파일 이름을 말할 때 무엇인지 알아보는 용도입니다. 직접 열어 고칠 필요는 없습니다.</p>
-  <div class="tablewrap">
-  <table>
-    <thead><tr><th>이름</th><th>무엇</th></tr></thead>
-    <tbody>
-      <tr><td><span class="mono">vars-data.ts</span></td><td>원본 · 토큰 값</td></tr>
-      <tr><td><span class="mono">textstyles-data.ts</span></td><td>원본 · 글자 스타일</td></tr>
-      <tr><td><span class="mono">build-components.ts</span></td><td>원본 · 컴포넌트 설계도 (겸 Figma 설치기 본체)</td></tr>
-      <tr><td><span class="mono">registry/components/</span></td><td>부품별 기록장 · 설명 글·상태·접근성의 기준</td></tr>
-      <tr><td><span class="mono">pages/</span></td><td>가이드 사이트 페이지들</td></tr>
-      <tr><td><span class="mono">pages/install-prompt.html</span></td><td>다운로드 페이지 · 디자이너/퍼블리셔/개발자/AI 탭</td></tr>
-      <tr><td><span class="mono">pages/ui-review.html</span></td><td>웹 UI 키트 검수 화면</td></tr>
-      <tr><td><span class="mono">ui-library/</span></td><td>웹 UI 키트 코드</td></tr>
-      <tr><td><span class="mono">CLAUDE.md</span></td><td>Claude가 따르는 프로젝트 규칙 전체</td></tr>
-      <tr><td><span class="mono">docs/context/</span></td><td>지금까지의 결정·주의점 메모 (목록은 INDEX.md)</td></tr>
-      <tr><td><span class="mono">BACKLOG.md</span></td><td>나중에 할 일 목록</td></tr>
-      <tr><td><span class="mono">tokens:reconcile</span></td><td>"한 번에 다시 만들기" 명령</td></tr>
-      <tr><td><span class="mono">gate:check</span></td><td>검문소 검사 명령</td></tr>
-    </tbody>
-  </table>
-  </div>
-
-  <h3>Claude 보고에 붙는 표식</h3>
-  <p>보고에 붙는 기호는 "누가 했는지"를 보여 줍니다. 특히 검사를 다른 Claude가 실제로 했는지 확인할 때 봅니다.</p>
-  <div class="legend">
-    <div><span>⭐</span><span>대화 중인 Claude가 직접 한 일</span></div>
-    <div><span>🤖</span><span>따로 띄운 보조 Claude (주로 검사 담당)</span></div>
-    <div><span>🔎</span><span>자동 검사 프로그램</span></div>
-    <div><span>🚧</span><span>저장할 때 도는 검문소</span></div>
-    <div><span>📖</span><span>원본을 읽어 사실만 알려 주는 담당</span></div>
-    <div><span>🏗️</span><span>Figma 부품 만드는 담당</span></div>
-    <div><span>🪞</span><span>Figma 화면 만드는 담당</span></div>
-    <div><span>🧱</span><span>웹 UI 키트 코드 만드는 담당</span></div>
-    <div><span>🖥️</span><span>이 컴퓨터에서 돈 작은 AI (문서 위치 찾기 등)</span></div>
-    <div><span>🔄</span><span>토큰을 고칠 때 자동으로 도는 동기화</span></div>
-  </div>
-  <p class="small">보고가 전부 ⭐뿐이면 스스로 확인만 한 것입니다. 중요한 변경인데 🤖가 없으면 "다른 Claude로 검증해줘"라고 요청하세요.</p>
-
-  <footer>S-1 UX 디자인 시스템 · 인수인계서 · 2026-10-30 기준 (웹 UI 키트 0.27.0, 부품 56종, 검문소 56개). 프로젝트 폴더 docs/handover 에 같은 파일이 있습니다.</footer>
-</section>
-
+  <section id="cautions" role="tabpanel" aria-label="주의점" hidden>
+    <h3 class="ch">자동 흐름을 끊는 것</h3>
+    <ol class="cautions">
+      <li class="no"><div><b>결과물을 손으로 고치지 않습니다</b><span>가이드 사이트·AI용 문서·웹 키트·Figma 설치기는 원본에서 자동으로 만들어집니다. 손으로 고치면 다음에 다시 만들 때 사라지고, 그 전까지는 원본과 어긋나 저장이 막힙니다. 원본을 고치고 "다시 만들어줘"라고 하세요.</span></div></li>
+      <li class="no"><div><b>자동으로 안 따라오는 곳을 손으로 메우지 않습니다</b><span>원본을 고쳤는데 어딘가 안 바뀌었다면 거기만 손으로 맞추지 마세요. 손으로 메운 곳은 다음 변경 때 혼자 낡습니다. "여기도 자동으로 따라오게 연결해줘"라고 하세요.</span></div></li>
+      <li class="no"><div><b>검문소를 끄거나 건너뛰거나 기준을 낮추지 않습니다</b><span>"검사 건너뛰고 저장해", "이 검사 빼줘"는 하지 마세요. 한 번 뚫리면 틀린 값이 GitHub와 공개 가이드까지 그대로 나갑니다. 막히면 막힌 이유를 고칩니다.</span></div></li>
+      <li class="no"><div><b>원본 파일과 설치기 폴더의 이름·위치를 바꾸지 않습니다</b><span>자동 생성과 Figma 플러그인 등록이 그 자리를 보고 있습니다. 옮기거나 새 이름으로 만들면 연결이 끊기고, Figma는 옛 플러그인을 계속 씁니다.</span></div></li>
+      <li class="no"><div><b>승인은 내가 직접 한 말로만 합니다</b><span>새 토큰·부품 추가는 대화 기록 속 사람의 실제 문장으로 확인합니다. "알아서 승인 처리해", "근거 없으면 알아서 정해"라고 하지 마세요. 근거 없는 값이 그대로 원본이 됩니다.</span></div></li>
+      <li class="no"><div><b>만든 Claude가 스스로 검증하게 두지 않습니다</b><span>부품 설계도와 Figma 부품은 만든 쪽과 다른 Claude가 검증해야 합니다. "검증은 생략해"는 하지 마세요. 중요한 변경인데 보고에 🤖 없이 ⭐만 있으면 검증을 다시 요청하세요.</span></div></li>
+      <li class="no"><div><b>비밀 값을 GitHub에 올리지 않습니다</b><span>Figma 열쇠·계정·실제 주소는 저장소에서 빠지는 파일에만 둡니다. 문서나 메모에 붙여 넣으면 저장할 때 함께 올라갑니다.</span></div></li>
+    </ol>
+    <h3 class="ch">조용히 틀어지는 것</h3>
+    <ol class="cautions" style="counter-reset: c 7">
+      <li class=""><div><b>본 폴더에서 바로 고치지 말고, 작업 폴더는 끝나면 바로 합칩니다</b><span>여러 대화가 한 폴더를 쓰면 서로의 변경을 덮어쓰거나, 남의 미완성 작업 때문에 저장이 막힙니다. 합치지 않은 작업 폴더가 쌓이면 나중에 한꺼번에 부딪힙니다. 지금도 10개 넘게 남아 있습니다.</span></div></li>
+      <li class=""><div><b>공개 가이드 동기화는 실패해도 알려주지 않습니다</b><span>공개 저장소가 매일 새벽 3시 15분에 가져가다가 검사가 실패하면 조용히 멈춥니다. 13일 동안 멈춰 있던 적이 있습니다. 일주일에 한 번 "공개 가이드 동기화 확인해줘"라고 하세요.</span></div></li>
+      <li class=""><div><b>웹 키트 버전 올리기를 건너뛰지 않습니다</b><span>값이 바뀌면 웹 키트 만들기가 일부러 멈춥니다. 번호를 안 올리고 넘어가면 개발자는 무엇이 바뀌었는지 알 수 없습니다.</span></div></li>
+      <li class=""><div><b>Figma에 안 바뀌어 보인다고 원본을 또 고치지 않습니다</b><span>설치기는 이미 깔린 부품을 건너뛰어서, 원본이 바뀌어도 기존 Figma 파일은 옛 모습 그대로입니다. 원본 문제로 오해하지 마세요. [재설치]는 화면에 배치해 둔 부품 연결을 끊으니 그 부품만 다시 설치합니다.</span></div></li>
+      <li class=""><div><b>Components 안내 페이지의 값을 근거로 쓰지 않습니다</b><span>이 페이지는 손으로 관리해서 원본과 대조 검사를 받지 않습니다. 여기 값을 베껴 개발자에게 주지 마세요. 기준은 원본이고, 개발자 배포는 웹 키트입니다.</span></div></li>
+      <li class=""><div><b>레거시와 운영 서비스 화면의 값을 원본 근거로 쓰지 않습니다</b><span>예전 가이드(DS 2.4)와 모두앱 같은 서비스 화면은 참고용으로 따로 보관합니다. 섞이면 새 기준이 옛 값으로 오염됩니다.</span></div></li>
+    </ol>
+  </section>
 </main>
+
+
 </div>
+
+<script>
+/* S-1 웹 키트 — Line Tab 동작 (components/tab.js) */
+const componentId = "tab";
+const jsRequired = true;
+const instances = new WeakMap();
+
+function tabs(root) { return [...root.querySelectorAll('[data-s1-part="tab"][role="tab"]')]; }
+function select(root, next, { focus = false } = {}) {
+  const list = tabs(root);
+  if (!list.includes(next)) return;
+  for (const tab of list) {
+    const selected = tab === next;
+    tab.setAttribute("aria-selected", String(selected));
+    tab.tabIndex = selected ? 0 : -1;
+    const panelId = tab.getAttribute("aria-controls");
+    const panel = panelId ? root.querySelector(`#${CSS.escape(panelId)}`) : null;
+    if (panel) panel.hidden = !selected;
+  }
+  if (focus) next.focus();
+  root.dispatchEvent(new CustomEvent("s1:tab:change", { bubbles: true, detail: { tab: next, value: next.dataset.value ?? next.textContent.trim() } }));
+}
+
+function init(root) {
+  if (!(root instanceof Element) || root.dataset.s1Component !== componentId) return null;
+  if (instances.has(root)) return instances.get(root);
+  const list = tabs(root);
+  if (!list.length) return null;
+  if (!root.hasAttribute("role")) root.setAttribute("role", "tablist");
+  const selected = list.find((tab) => tab.getAttribute("aria-selected") === "true") || list[0];
+  for (const tab of list) { if (!tab.hasAttribute("type")) tab.setAttribute("type", "button"); tab.setAttribute("role", "tab"); }
+  select(root, selected);
+  const onClick = (event) => { const tab = event.target.closest('[data-s1-part="tab"]'); if (tab && root.contains(tab)) select(root, tab); };
+  const onKeydown = (event) => {
+    const current = event.target.closest('[data-s1-part="tab"]');
+    if (!current || !root.contains(current)) return;
+    const index = list.indexOf(current);
+    const target = event.key === "ArrowLeft" ? list[(index - 1 + list.length) % list.length]
+      : event.key === "ArrowRight" ? list[(index + 1) % list.length]
+      : event.key === "Home" ? list[0] : event.key === "End" ? list.at(-1) : null;
+    if (target) { event.preventDefault(); select(root, target, { focus: true }); }
+  };
+  root.addEventListener("click", onClick); root.addEventListener("keydown", onKeydown);
+  const api = Object.freeze({ get selected() { return tabs(root).find((tab) => tab.getAttribute("aria-selected") === "true"); }, select: (tab) => select(root, tab), destroy() { root.removeEventListener("click", onClick); root.removeEventListener("keydown", onKeydown); instances.delete(root); } });
+  instances.set(root, api); return api;
+}
+function destroy(root) { instances.get(root)?.destroy(); }
+const runtime = Object.freeze({ init, destroy });
+
+(function () {
+  // 패널은 탭 묶음 밖에 있어서 바뀔 때 직접 보이고 숨긴다
+  const root = document.querySelector('[data-s1-component="tab"]');
+  root.addEventListener("s1:tab:change", ev => {
+    const id = ev.detail.tab.getAttribute("aria-controls");
+    document.querySelectorAll('[role="tabpanel"]').forEach(p => { p.hidden = p.id !== id; });
+  });
+  init(root);
+
+  // FAQ 찾기·분류
+  const q = document.getElementById("faq-q");
+  const chips = [...document.querySelectorAll(".chip")];
+  const groups = [...document.querySelectorAll(".group")];
+  const empty = document.getElementById("faq-empty");
+  let cat = "all";
+  function filter() {
+    const term = q.value.trim().toLowerCase();
+    let shown = 0;
+    groups.forEach(g => {
+      const catOk = cat === "all" || g.dataset.cat === cat;
+      let any = 0;
+      g.querySelectorAll("details").forEach(d => {
+        const hit = catOk && (!term || d.textContent.toLowerCase().includes(term));
+        d.hidden = !hit;
+        if (hit) { any++; if (term) d.open = true; }
+      });
+      g.hidden = !any; shown += any;
+    });
+    empty.hidden = shown > 0;
+  }
+  q.addEventListener("input", filter);
+  chips.forEach(c => c.addEventListener("click", () => {
+    cat = c.dataset.cat;
+    chips.forEach(x => x.setAttribute("aria-pressed", String(x === c)));
+    filter();
+  }));
+})();
+</script>
