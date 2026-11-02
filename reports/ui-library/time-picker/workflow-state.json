@@ -43,7 +43,7 @@
   "workflowStatus": "complete",
   "uiLibraryStatus": "approved",
   "lastCompletedCheckpoint": 6,
-  "nextAction": "완료. 다음 작업은 date-picker — D1 로 미뤄둔 모바일 휠 바텀시트를 그때 함께 만든다.",
+  "nextAction": "river UX 확인. 결정 대기: 날짜+시간 시트에서 고른 날짜를 트리거 글자에 함께 보일지(지금은 시간만 보이고 날짜는 이벤트·api 로만 전달). 별도 과제: date-picker 자체 달력 roving tabindex.",
   "ownership": {
     "currentActor": null,
     "owner": null,
@@ -54,17 +54,20 @@
     {
       "role": "component-visual",
       "path": "plugins/figma-vars-installer/src/build-components.ts",
-      "sha256": "2beb813ff18d9f7670bd11baa876950fee0d7a715ba6994162c9ccfe56c6a27e"
+      "sha256": "bc605422311f1150349eafe332859234b2e42c5ef4cb0d320ab56fdff0844863",
+      "sha256_previous": "2beb813ff18d9f7670bd11baa876950fee0d7a715ba6994162c9ccfe56c6a27e"
     },
     {
       "role": "token-values",
       "path": "plugins/figma-vars-installer/src/vars-data.ts",
-      "sha256": "81eb31cfbd5b1b7041f31967a9592d2181088cf386a9ccb26058a7625ec3c15a"
+      "sha256": "89727e6a19d3780cdef36181de081fe957114b490342a4f1f44a0c2cf616a123",
+      "sha256_previous": "81eb31cfbd5b1b7041f31967a9592d2181088cf386a9ccb26058a7625ec3c15a"
     },
     {
       "role": "text-styles",
       "path": "plugins/figma-vars-installer/src/textstyles-data.ts",
-      "sha256": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
+      "sha256": "ca379bfa2203aa12e647e636a561cc84fe925af11fef5df6194a13b248625fb5",
+      "sha256_previous": "dc0db42d87503e80e9da8ad1246090f58e79106593a57815b0568aebcb9d51d3"
     },
     {
       "role": "ui-library-contract",
@@ -76,8 +79,8 @@
     {
       "role": "component-meaning-time-picker",
       "path": "registry/components/time-picker.json",
-      "sha256": "d4ab66e165709f0fe412f46a51cad322433186720e4e4dd7292b10299ecff672",
-      "sha256_previous": "17f317c9ba15de4641c3847239043f878efb2fb69444cddbfcfbb5ffdea24138",
+      "sha256": "b8834a528a814a2806b0f2083278fbb8e6c58c4fdd6dc7a6dcfd5542ef6056e1",
+      "sha256_previous": "d4ab66e165709f0fe412f46a51cad322433186720e4e4dd7292b10299ecff672",
       "changeNote": "2026-09-03 승격 처리 — _meta.uiLibraryStatus 를 approved 로 올렸다(상태 필드만, 시각·행동 정본 무변경)."
     }
   ],
@@ -297,8 +300,8 @@
   },
   "handoff": {
     "lastActor": "orchestrator",
-    "updatedAt": "2026-09-03",
-    "summary": "river 승인(\"타임피커 승인\")으로 approved 승격 완료. 정본 이탈 3건은 근거와 함께 기록했다. 다음은 date-picker 이며 모바일 휠 바텀시트가 그 작업에 딸려 있다."
+    "updatedAt": "2026-11-02",
+    "summary": "후속 수정: 날짜 탭 달력 본문(time-picker 0.7.0 · 배포본 0.29.0). 독립 검증 PASS. river UX 확인 대기 + 결정 대기 1건(날짜를 트리거 글자에 합쳐 보일지)."
   },
   "checkpointLog": [
     {
@@ -369,6 +372,19 @@
       "supersedesPriorVerification": false,
       "rationale": "정본 build-components.ts 변경분은 buildTableCell·buildTable 안에만 있고 buildTimePicker 는 무변경이다. registry/components/time-picker.json 은 이 작업이 2-canon-readiness 에서 직접 갱신한 산출물이라 지문을 현재 상태로 맞춘다.",
       "diffScopeEvidence": "git diff plugins/figma-vars-installer/src/build-components.ts — hunk 전체가 buildTableCell(1978~2048)·buildTable(2062~2106) 내부"
+    },
+    {
+      "refreshedAt": "2026-11-02",
+      "refreshedBy": "orchestrator",
+      "paths": [
+        "plugins/figma-vars-installer/src/build-components.ts",
+        "plugins/figma-vars-installer/src/vars-data.ts",
+        "plugins/figma-vars-installer/src/textstyles-data.ts",
+        "registry/components/time-picker.json"
+      ],
+      "supersedesPriorVerification": true,
+      "rationale": "후속 수정 — 모바일 휠 시트 DateTime 날짜 탭에 date-picker 달력 본문 조립(river 승인 2026-11-02 \"날짜 탭에서는 날짜선택 바텀시트에서 <년도,월> 아래 달력부분만 그대로 가져오면 되거든?\"). 정본 buildTimePickerMobileBottomSheet 에 Tab 축(Time/Date) 추가.",
+      "diffScopeEvidence": "build-components.ts 변경은 buildTimePickerMobileBottomSheet·BUILD_DEPENDENCIES 한정(🤖 component-verifier 시나리오 D PASS, Gate 13 기록 bc605422311f1150). 웹은 🤖 component-verifier 시나리오 F 3회차(FAIL 6건 → FAIL 1건 → PASS)."
     }
   ]
 }

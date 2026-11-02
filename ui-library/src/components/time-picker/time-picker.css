@@ -201,7 +201,7 @@
 }
 
 /* ── 목록 칸 — build-components.ts buildTimePickerCell 2437-2476(44×32, 테두리 없음, 2026-06-30 제거) ── */
-[data-s1-component="time-picker"] [data-s1-part="cell"] {
+[data-s1-component="time-picker"] [data-s1-part="column"] [data-s1-part="cell"] {
   align-items: center;
   background: var(--color-dropdown-option-bg-default);
   border-radius: var(--radius-4);
@@ -227,13 +227,13 @@
 }
 
 @media (hover: hover) {
-  [data-s1-component="time-picker"] [data-s1-part="cell"]:hover {
+  [data-s1-component="time-picker"] [data-s1-part="column"] [data-s1-part="cell"]:hover {
     background: var(--color-dropdown-option-bg-hover);
     color: var(--color-dropdown-option-label-hover);
   }
 }
 
-[data-s1-component="time-picker"] [data-s1-part="cell"][aria-selected="true"] {
+[data-s1-component="time-picker"] [data-s1-part="column"] [data-s1-part="cell"][aria-selected="true"] {
   background: var(--color-dropdown-option-bg-selected);
   color: var(--color-dropdown-option-label-selected);
 }
@@ -295,16 +295,18 @@
 [data-s1-component="time-picker"] [data-s1-part="date-panel"] {
   padding-inline: var(--spacing-24);
 }
-[data-s1-component="time-picker"] [data-s1-part="date-panel-note"] {
-  color: var(--color-text-body-secondary);
-  font-family: "Pretendard Variable", "Pretendard", sans-serif;
-  font-size: var(--font-size-14);
-  /* 호스트 페이지 상속 차단 — 정본 텍스트 스타일은 전부 130% 이고(10px 만 140%, 여기선 미사용),
-     자간은 스타일마다 다르다: body/14·16 계열과 title/16M·18M 은 -2%(tight), 나머지는 0(normal).
-     정본 = textstyles-data.ts. 선언하지 않으면 화면마다 글자 높이·폭이 달라진다(독립 검증 W-2·X-1·Y-1). */
-  line-height: var(--line-height-130);
-  letter-spacing: var(--letter-spacing-tight);
-  margin: 0;
+/* 날짜 탭 — 달력 본문은 date-picker.css 가 그대로 입힌다(안쪽 data-s1-component="date-picker").
+   여기서는 자리만 준다: 정본 calendar-wrap 좌우 24 · 가운데 정렬(buildTimePickerMobileBottomSheet DateTime/Date). */
+[data-s1-component="time-picker"] [data-s1-part="date-panel"] [data-s1-component="date-picker"] {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+/* calendar-wrap 은 가운데 정렬(정본 calWrap counterAxisAlignItems=CENTER) — 308 달력이 시트 가운데에 온다. */
+[data-s1-component="time-picker"] [data-s1-part="date-panel"] [data-s1-part="calendar-wrap"] {
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 /* 휠 — 4열(오전오후·시·콜론·분), 32px Regular, 전 셀 동일 accent 색(build-components.ts 3864-3882).
@@ -322,6 +324,11 @@
   justify-content: center;
   padding-inline: var(--spacing-24);
   position: relative;
+}
+/* 날짜 탭이 열리면 휠을 숨긴다 — 위 display:flex 가 hidden 속성을 이기므로 따로 적는다
+   (정본 Content=DateTime, Tab=Date 에는 휠이 없다). */
+[data-s1-component="time-picker"] [data-s1-part="wheel"][hidden] {
+  display: none;
 }
 [data-s1-component="time-picker"] [data-s1-part="wheel-col"][data-column="ampm"] + [data-s1-part="wheel-col"] {
   margin-inline-start: var(--spacing-4);

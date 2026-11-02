@@ -5,10 +5,24 @@
     "rule": "색·크기 값만 바뀌면 끝자리(0.1.0 → 0.1.1), 부품이 늘거나 쓰는 법이 바뀌면 가운데 자리(0.1.0 → 0.2.0 · `--minor`). 가운데 자리는 기계가 판단하지 않고 사람이 지시한다. (river 승인 2026-09-14)",
     "enforcedBy": "Gate 50 (scripts/ui-library-version.js)"
   },
-  "version": "0.28.0",
-  "releasedAt": "2026-10-30",
-  "canonicalFingerprint": "bee81fc4fe9df9329471558b08123fdca4144361bc65e0fdc9e44d2d21f3c949",
+  "version": "0.29.0",
+  "releasedAt": "2026-11-02",
+  "canonicalFingerprint": "05a3acfd2ce0ddb8ff82c6c4a9741b490306b0bce14fb2364df5801b1d3d13d5",
   "releases": [
+    {
+      "version": "0.29.0",
+      "date": "2026-11-02",
+      "kind": "minor",
+      "canonicalFingerprint": "4cb3da684bf43a0dac7d2e9565bee5e102cab28c75243450f987fbae5de594df",
+      "components": [
+        {
+          "id": "time-picker",
+          "from": "0.6.0",
+          "to": "0.7.0"
+        }
+      ],
+      "deliveryFingerprint": "d2cdeee10d55f066fe41f0d12924a3e1312e2275cc9f33ca830d7a6098e6aa07"
+    },
     {
       "version": "0.28.0",
       "date": "2026-10-30",
@@ -2356,5 +2370,5 @@
       "note": "번호 매기기를 기계에 넘기기 전 상태를 그대로 기준으로 삼는다. 날짜는 전달본이 마지막으로 달라진 날(assets/downloads/platform-updates.json)."
     }
   ],
-  "deliveryFingerprint": "0cc1d324861ea07bf718f4bac67b5443aa01f89b45986ae8ee607c2285d07c4c"
+  "deliveryFingerprint": "d2cdeee10d55f066fe41f0d12924a3e1312e2275cc9f33ca830d7a6098e6aa07"
 }

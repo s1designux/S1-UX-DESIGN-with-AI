@@ -3,7 +3,7 @@
     "목적": "검수판 카드에 박는 정본 사실 — 사람이 요약하지 않고 기계가 뽑는다",
     "출처": "ui-library/dist/components/*.manifest.json (정본 build-components.ts 에서 생성)",
     "재생성": "npm run board:facts",
-    "생성일": "2026-10-30"
+    "생성일": "2026-11-02"
   },
   "components": {
     "assist-button": {
@@ -384,7 +384,7 @@
         "Disabled": "disabled"
       },
       "absentCombinations": [],
-      "sourceFingerprint": "5fded8d33c5c2c907dc2fcc67fdbc3e25d2a99a8fce8f2dfbd4c1e3292e573f0"
+      "sourceFingerprint": "72e37a79722902ac3c54f8f7179aaa30aa0871e7a0499b3e35505c71d7ae4127"
     },
     "divider": {
       "id": "divider",
@@ -1294,7 +1294,7 @@
     "time-picker": {
       "id": "time-picker",
       "status": "approved",
-      "version": "0.6.0",
+      "version": "0.7.0",
       "sizes": [
         "xxsm",
         "xsm",
@@ -1367,7 +1367,7 @@
           "reason": "정본에 focus 변형이 없다. 2026-09-02 river 결정으로 웹에서도 만들지 않으며, 키보드 초점은 브라우저 기본 표시에 맡긴다."
         }
       ],
-      "sourceFingerprint": "6e6899e38f125dfc7d187bd02cfea6ac738623f5305b4b0eeefad5680314ab48"
+      "sourceFingerprint": "4ee4c705b01734780a1575c2f20256cfd83ff21a182e06991098b3d75bcc222f"
     },
     "toggle": {
       "id": "toggle",

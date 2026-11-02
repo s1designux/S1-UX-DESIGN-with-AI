@@ -1,0 +1,9 @@
+{
+  "sourceFile": "plugins/figma-vars-installer/src/build-components.ts",
+  "sourceHash": "sha256:bc605422311f1150349eafe332859234b2e42c5ef4cb0d320ab56fdff0844863",
+  "verifiedBy": "component-verifier",
+  "verdict": "pass",
+  "changeType": "structural",
+  "verifiedAt": "2026-11-02T01:25:09.626Z",
+  "notes": "Time Picker Mobile Bottom Sheet Tab 축 추가(3변형): 기존 2변형은 이름·스펙셀 좌표 외 동일(mock 트리 diff), 날짜 탭 달력 하위트리는 Date Picker 시트와 136행 완전 동일, 탭 Selected 교대 정확, 색 전부 바인딩·폰트 Pretendard 75/75, Calendar 선빌드(카테고리 순서)·미발견 시 throw, 변형명 소비처 코드 0건; keycheck·anatomy·iconpolicy·installer:check 통과"
+}

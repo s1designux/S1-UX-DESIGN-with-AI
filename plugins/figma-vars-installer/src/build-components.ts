@@ -5491,10 +5491,25 @@ async function buildTimePickerMobileBottomSheet(maps: BuildMaps, originY: number
     return c;
   };
 
-  // 변형 1개 빌드. content: TimeOnly | DateTime.
-  const buildVariant = async (content: "TimeOnly" | "DateTime"): Promise<ComponentNode> => {
+  // 날짜 탭 본문 = Date Picker Mobile Bottom Sheet 의 달력 부분(Calendar:MD:Date 인스턴스) 그대로.
+  //   river 승인 2026-11-02 "날짜 탭에서는 날짜선택 바텀시트에서 <년도,월> 아래 달력부분만 그대로 가져오면 되거든?"
+  //   → 시트 제목·닫기·적용 버튼은 이 시트 것을 쓰고, 년·월 줄부터 날짜 칸까지(달력 인스턴스)만 옮긴다.
+  //   buildDatePickerBottomSheet 와 같은 조회·같은 처리(좌우 패딩 24 · 패널 보더/그림자 제거).
+  const getCalendar = async (): Promise<ComponentNode | undefined> => {
+    let c: ComponentNode | undefined = BUILT_COMPS["Calendar:MD:Date"] ?? BUILT_COMPS["Calendar:Date"];
+    if (!c) {
+      const s = await getBuiltSet("Calendar");
+      if (s) c = (s.children as ComponentNode[]).find((x) => x.type === "COMPONENT" && x.name.includes("Size=MD") && x.name.includes("State=Date"))
+        ?? (s.children as ComponentNode[]).find((x) => x.type === "COMPONENT" && x.name.includes("State=Date"))
+        ?? (s.children as ComponentNode[]).find((x) => x.type === "COMPONENT");
+    }
+    return c;
+  };
+
+  // 변형 1개 빌드. content: TimeOnly | DateTime · tab: 어느 탭이 열린 모습인가(TimeOnly 는 Time 하나뿐).
+  const buildVariant = async (content: "TimeOnly" | "DateTime", tab: "Time" | "Date"): Promise<ComponentNode> => {
     const comp = figma.createComponent();
-    comp.name = `Content=${content}`;
+    comp.name = `Content=${content}, Tab=${tab}`;
     comp.layoutMode = "VERTICAL"; comp.primaryAxisSizingMode = "AUTO"; comp.counterAxisSizingMode = "FIXED";
     comp.resize(SHEET_W, 100);
     comp.itemSpacing = 32; comp.paddingTop = 20; comp.paddingBottom = 20; comp.paddingLeft = 0; comp.paddingRight = 0;
@@ -5525,7 +5540,10 @@ async function buildTimePickerMobileBottomSheet(maps: BuildMaps, originY: number
       tabRow.paddingLeft = 24; tabRow.paddingRight = 24; tabRow.itemSpacing = 0; tabRow.counterAxisAlignItems = "CENTER";
       comp.appendChild(tabRow);
       try { tabRow.layoutAlign = "STRETCH"; } catch (e) { /* */ }
-      const tabDefs = [{ state: "Unselected", label: "날짜" }, { state: "Selected", label: "시간" }];
+      const tabDefs = [
+        { state: tab === "Date" ? "Selected" : "Unselected", label: "날짜" },
+        { state: tab === "Time" ? "Selected" : "Unselected", label: "시간" },
+      ];
       for (const td of tabDefs) {
         const cell = await pickLineTab(td.state);
         if (cell) {
@@ -5539,7 +5557,25 @@ async function buildTimePickerMobileBottomSheet(maps: BuildMaps, originY: number
       }
     }
 
-    // 시간 휠 (4열 + 위/아래 흐림)
+    // 날짜 탭이 열린 모습 — 시간 휠 자리에 달력(년·월 줄 + 날짜 칸)만 놓는다.
+    if (tab === "Date") {
+      const calWrap = figma.createFrame();
+      calWrap.name = "calendar-wrap"; calWrap.fills = [];
+      calWrap.layoutMode = "VERTICAL"; calWrap.primaryAxisSizingMode = "AUTO"; calWrap.counterAxisSizingMode = "FIXED";
+      calWrap.primaryAxisAlignItems = "CENTER"; calWrap.counterAxisAlignItems = "CENTER";
+      calWrap.paddingLeft = 24; calWrap.paddingRight = 24; // 날짜 선택 시트와 같은 좌우 패딩 — spacing/padding-inline/lg
+      comp.appendChild(calWrap);
+      try { calWrap.layoutAlign = "STRETCH"; } catch (e) { /* */ }
+      const calComp = await getCalendar();
+      if (!calComp) throw new Error("[time-picker sheet] 날짜 탭에 넣을 Calendar(MD·Date) 를 찾지 못했습니다 — BUILD_DEPENDENCIES 확인");
+      const calInst = calComp.createInstance();
+      calInst.name = "calendar";
+      try { calInst.strokes = []; calInst.effects = []; } catch (e) { /* */ }
+      calWrap.appendChild(calInst);
+    }
+
+    // 시간 휠 (4열 + 위/아래 흐림) — 시간 탭이 열린 모습에만
+    if (tab === "Time") {
     const wheelWrap = figma.createFrame();
     wheelWrap.name = "wheel"; wheelWrap.fills = [];
     wheelWrap.layoutMode = "HORIZONTAL"; wheelWrap.primaryAxisSizingMode = "FIXED"; wheelWrap.counterAxisSizingMode = "AUTO";
@@ -5576,6 +5612,7 @@ async function buildTimePickerMobileBottomSheet(maps: BuildMaps, originY: number
     const fadeBottom = makeWheelFade("bottom");
     wheelWrap.appendChild(fadeBottom);
     try { fadeBottom.layoutPositioning = "ABSOLUTE"; fadeBottom.x = 0; fadeBottom.y = Math.max(0, wheelH - FADE_H); fadeBottom.constraints = { horizontal: "STRETCH", vertical: "MAX" }; } catch (e) { /* */ }
+    }
 
     // 하단 "적용" 풀폭 버튼 (좌우 패딩 20)
     const actionWrap = figma.createFrame();
@@ -5599,16 +5636,17 @@ async function buildTimePickerMobileBottomSheet(maps: BuildMaps, originY: number
     return comp;
   };
 
-  const timeOnly = await buildVariant("TimeOnly");
-  const dateTime = await buildVariant("DateTime");
-  const set = figma.combineAsVariants([timeOnly, dateTime], figma.currentPage);
+  const timeOnly = await buildVariant("TimeOnly", "Time");
+  const dateTime = await buildVariant("DateTime", "Time");
+  const dateTimeDate = await buildVariant("DateTime", "Date");
+  const set = figma.combineAsVariants([timeOnly, dateTime, dateTimeDate], figma.currentPage);
   set.name = "Time Picker Mobile Bottom Sheet"; set.x = 0; set.y = originY;
   BUILT_SETS["Time Picker Mobile Bottom Sheet"] = set;
 
   const opts: SpecOpts = {
-    title: "Time Picker Mobile Bottom Sheet", colHeaders: [""], rowLabels: ["시간만", "날짜+시간"],
-    cellAt: (r) => (r === 0 ? timeOnly : dateTime),
-    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: SHEET_W + 40, cellH: 560, rowLabelW: 64,
+    title: "Time Picker Mobile Bottom Sheet", colHeaders: [""], rowLabels: ["시간만", "날짜+시간 · 시간 탭", "날짜+시간 · 날짜 탭"],
+    cellAt: (r) => (r === 0 ? timeOnly : r === 1 ? dateTime : dateTimeDate),
+    lightX: SPEC_LIGHT_X, darkX: SPEC_DARK_X, originY, cellW: SHEET_W + 40, cellH: 640, rowLabelW: 112,
   };
   let bottomY = await decorateSetFlat(set, opts, maps);
   try { bottomY = Math.max(bottomY, await buildSpec(opts, maps)); } catch (e) { console.warn(e); }
@@ -8147,7 +8185,7 @@ export const BUILD_DEPENDENCIES: Record<string, string[]> = {
   // 시간 휠 바텀시트: 하단 "적용" Button + (DateTime 변형) 날짜·시간 Line Tab 인스턴스 부착 → 둘 다 선빌드.
   //   Button(Actions)·Line Tab(2026-09-28 부터 Navigation 소속) 은 Time Picker 보다 그리드 앞이라
   //   카테고리 순서로도 보장되나 명시.
-  "Time Picker Mobile Bottom Sheet": ["Button", "Line Tab"],
+  "Time Picker Mobile Bottom Sheet": ["Button", "Line Tab", "Calendar"],
   "Line Tab Set": ["Line Tab"],       // 탭 3개 묶음 세트가 Line Tab 셀 인스턴스 조합
   // Table 푸터가 완성 Pagination 바(BUILT_COMPS["Pagination:Bar/Middle"]) 인스턴스 부착.
   //   (타 묶음 의존 = 묶음 순서로 보장: Pagination 이 속한 Navigation 이 Table 보다 먼저라 선빌드됨.)
